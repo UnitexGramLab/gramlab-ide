@@ -1,0 +1,78 @@
+/*
+ * Unitex
+ *
+ * Copyright (C) 2001-2006 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ *
+ */
+
+package fr.umlv.unitex;
+
+import java.util.*;
+
+import javax.swing.*;
+
+/**
+ * This is the main class of the Unitex system.
+ * 
+ * @author Sébastien Paumier
+ */
+
+public class Unitex {
+
+	/**
+	 * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo
+	 * and then creates a <code>UnitexFrame</code>.
+	 *  
+	 */
+	public static void main(String[] args) {
+		Locale.setDefault(Locale.ENGLISH);
+		try {
+			javax.swing.plaf.metal.MetalLookAndFeel
+					.setCurrentTheme(new javax.swing.plaf.metal.DefaultMetalTheme());
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		} catch (UnsupportedLookAndFeelException e) {
+			System.out
+					.println("Metal Look & Feel not supported on this platform. \nProgram Terminated");
+			System.exit(0);
+		} catch (IllegalAccessException e) {
+			System.out
+					.println("Metal Look & Feel could not be accessed. \nProgram Terminated");
+			System.exit(0);
+		} catch (ClassNotFoundException e) {
+			System.out
+					.println("Your version of Java does not contain all the classes required by Unitex.\nProgram Terminated");
+			System.exit(0);
+		} catch (InstantiationException e) {
+			System.out
+					.println("Metal Look & Feel could not be instantiated. \nProgram Terminated");
+			System.exit(0);
+		} catch (Exception e) {
+			System.out.println("Unexpected error. \nProgram Terminated");
+			e.printStackTrace();
+			System.exit(0);
+		}
+		new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")),
+				1500);
+		Config.initConfig();
+		JFrame frame = new UnitexFrame();
+		frame.setVisible(true);
+	}
+	
+	
+	
+	
+}
