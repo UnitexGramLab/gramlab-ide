@@ -1240,7 +1240,8 @@ public class UnitexFrame extends JFrame {
 		doc.scroll.setPreferredSize(new Dimension(g.width, g.height));
 		doc.graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
 		doc.setGraph(grf);
-		doc.setTitle(grf.getAbsolutePath());
+		//doc.setTitle(grf.getAbsolutePath());
+		doc.setTitle(grf.getName()+" ("+grf.getParent()+")");
 		UnitexFrame.addInternalFrame(doc);
 		try {
 			doc.setVisible(true);
@@ -1299,7 +1300,8 @@ public class UnitexFrame extends JFrame {
 		f.modified = false;
 		g.saveGraph(file);
 		f.setGraph(file);
-		f.setTitle(file.getAbsolutePath());
+		//f.setTitle(file.getAbsolutePath());
+		f.setTitle(file.getName()+" ("+file.getParent()+")");
 		return true;
 	}
 
@@ -1325,7 +1327,8 @@ public class UnitexFrame extends JFrame {
 		g.height = f.graphicalZone.Height;
 		f.modified = false;
 		g.saveGraph(file);
-		f.setTitle(file.getAbsolutePath());
+		//f.setTitle(file.getAbsolutePath());
+		f.setTitle(file.getName()+" ("+file.getParent()+")");
 		return true;
 	}
 
