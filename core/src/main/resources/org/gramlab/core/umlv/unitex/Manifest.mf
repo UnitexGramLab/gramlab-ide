@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Sebastien Paumier
+Main-Class: fr.umlv.unitex.Unitex
+
