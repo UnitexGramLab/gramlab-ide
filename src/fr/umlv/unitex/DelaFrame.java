@@ -23,7 +23,6 @@ package fr.umlv.unitex;
 
 import java.awt.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
