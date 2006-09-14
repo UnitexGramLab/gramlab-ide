@@ -1387,7 +1387,7 @@ public class UnitexFrame extends JFrame {
 			String name_fst_sans_ex= grf.getAbsolutePath().substring(0,
 					grf.getAbsolutePath().length() - 4);
 			
-			Grf2Fst2Command command = new Grf2Fst2Command().grf(grf).tokenizationMode().library();
+			Grf2Fst2Command command = new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library();
 			commands.addCommand(command);
 
 			File map_encoder = new File(Config.getUserCurrentLanguageDir()
@@ -1404,7 +1404,7 @@ public class UnitexFrame extends JFrame {
 			new ProcessInfoFrame(commands, false);
 
 		} else {
-			Grf2Fst2Command command = new Grf2Fst2Command().grf(currentFrame.getGraph()).tokenizationMode().library();
+			Grf2Fst2Command command = new Grf2Fst2Command().grf(currentFrame.getGraph()).enableLoopAndRecursionDetection(true).tokenizationMode().library();
 			new ProcessInfoFrame(command, false);
 			
 		}
@@ -1473,7 +1473,7 @@ public class UnitexFrame extends JFrame {
 			name_fst2 = name_fst2 + ".fst2";
 
 			MultiCommands commands = new MultiCommands();
-			commands.addCommand(new Grf2Fst2Command().grf(grf).tokenizationMode().library());
+			commands.addCommand(new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library());
 			commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
 					.resultType(!rtn.isSelected()).depth(depth.getText()));
 			if(Config.isKorean()) {
@@ -1746,6 +1746,7 @@ public class UnitexFrame extends JFrame {
 			commands.addCommand(new Grf2Fst2Command()
 					.grf(grf)// a Korean morpheme graph must be
 					         // compiled with the default tokenization rules
+					.enableLoopAndRecursionDetection(true)
 					.library()
 					);
 			File map_encoder = new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt");

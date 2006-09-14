@@ -235,6 +235,7 @@ public class LocateFrame extends JInternalFrame {
 			commands.addCommand(reg2GrfCmd);
 			Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(Config
 					.getUserCurrentLanguageDir(), "regexp.grf"))
+					.enableLoopAndRecursionDetection(true)
 					.tokenizationMode().library();
 			commands.addCommand(grfCmd);
 			fst2 = new File(Config.getUserCurrentLanguageDir(), "regexp.fst2");
@@ -251,7 +252,8 @@ public class LocateFrame extends JInternalFrame {
 					.equalsIgnoreCase("grf")) {
 				// we must compile the grf
 				Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(
-						grfName)).tokenizationMode().library();
+						grfName)).enableLoopAndRecursionDetection(true)
+						.tokenizationMode().library();
 				commands.addCommand(grfCmd);
 				String fst2Name = grfName.substring(0, grfName.length() - 3);
 				fst2Name = fst2Name + "fst2";

@@ -263,6 +263,7 @@ public class PreprocessFrame extends JDialog {
 									// we must compile the grf
 									Grf2Fst2Command grfCmd = new Grf2Fst2Command()
 											.grf(new File(grfName))
+											.enableLoopAndRecursionDetection(true)
 											.tokenizationMode().library();
 									commands.addCommand(grfCmd);
 									String fst2Name = grfName.substring(0,
@@ -317,6 +318,7 @@ public class PreprocessFrame extends JDialog {
 									// we must compile the grf
 									Grf2Fst2Command grfCmd = new Grf2Fst2Command()
 											.grf(new File(grfName))
+											.enableLoopAndRecursionDetection(true)
 											.tokenizationMode();
 									commands.addCommand(grfCmd);
 									String fst2Name = grfName.substring(0,
