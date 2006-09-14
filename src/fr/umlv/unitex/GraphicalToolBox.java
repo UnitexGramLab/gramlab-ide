@@ -42,7 +42,7 @@ public class GraphicalToolBox {
 	}
 
 	public static void drawRect(Graphics2D g, int x1, int y1, int w, int h) {
-		// The following commented code produces a bug, because it draws:
+		// Note: the following code produced a bug, because it drawed:
 		//
 		// *******
 		// *
@@ -55,9 +55,10 @@ public class GraphicalToolBox {
 		// *     *
 		// *******
 		//
-		//rectangle.setBounds(x1, y1, w, h);
-		//g.draw(rectangle);
-		g.drawRect(x1, y1, w, h);
+		// This bug was dued to a bug in my graphic controller pilot.
+		// S. Paumier
+		rectangle.setBounds(x1, y1, w, h);
+		g.draw(rectangle);
 	}
 
 	public static void fillRect(Graphics2D g, int x1, int y1, int w, int h) {
