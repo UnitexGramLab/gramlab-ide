@@ -535,7 +535,7 @@ public class ElagCompFrame extends JInternalFrame {
              * "Grf2Fst2" + "\" " + '"' + grf.getAbsolutePath() +
              * '"'; cmds.add(command);
              */
-            commands.addCommand(new Grf2Fst2Command().grf(grf).tokenizationMode().library());
+            commands.addCommand(new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library());
 
             /*
              * command = '"' + Config.getApplicationDir() +

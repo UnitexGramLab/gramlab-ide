@@ -260,7 +260,7 @@ public class Config {
 			graphDialogBox.addChoosableFileFilter(svgFileFilter);
 			graphDialogBox.addChoosableFileFilter(grfFileFilter);
 		} else {
-			graphDialogBox.removeChoosableFileFilter(grfFileFilter);
+			graphDialogBox.addChoosableFileFilter(grfFileFilter);
 		}
 	}
 	public static JFileChooser getGraphDialogBox(boolean allowImageFormats) {

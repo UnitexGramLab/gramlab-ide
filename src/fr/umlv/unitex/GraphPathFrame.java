@@ -154,13 +154,14 @@ public class GraphPathFrame extends JInternalFrame {
 				}
 //				Grf2Fst2Command grfCmd = new Grf2Fst2Command()
 //					.grf(new File(frame.graphName.getText()))
+//				.enableLoopAndRecursionDetection(true)
 //						.tokenizationMode();
 //				File fst2 = new File(Util.getFileNameWithoutExtension(frame.graphName
 //						.getText()) + ".fst2");
 //				File list = new File(Config.getUserCurrentLanguageDir(),"list.txt");
 //				cmd = cmd.output(list);
 //				cmd = cmd.fst2(fst2);
-				grfCmd.grf(new File(frame.graphName.getText())).library();
+				grfCmd.grf(new File(frame.graphName.getText())).enableLoopAndRecursionDetection(true).library();
 				fst2 = new File(Util.getFileNameWithoutExtension(frame.graphName
 						.getText()) + ".fst2");			
 				if(frame.bySansGraph.isSelected()){
