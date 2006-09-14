@@ -42,8 +42,22 @@ public class GraphicalToolBox {
 	}
 
 	public static void drawRect(Graphics2D g, int x1, int y1, int w, int h) {
-		rectangle.setBounds(x1, y1, w, h);
-		g.draw(rectangle);
+		// The following commented code produces a bug, because it draws:
+		//
+		// *******
+		// *
+		// *
+		//
+		// instead of:
+		//
+		// *******
+		// *     *
+		// *     *
+		// *******
+		//
+		//rectangle.setBounds(x1, y1, w, h);
+		//g.draw(rectangle);
+		g.drawRect(x1, y1, w, h);
 	}
 
 	public static void fillRect(Graphics2D g, int x1, int y1, int w, int h) {
