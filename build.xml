@@ -1,0 +1,67 @@
+<project name="MyProject" default="dist" basedir=".">
+
+  <description> simple example build file </description>
+
+  <!-- set global properties for this build -->
+
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="appdir" location="../../../App"/>
+  
+  <!-- targets -->
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source" >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+
+
+  <target name="dist" depends="compile" description="generate the distribution" >
+
+    <mkdir dir="classes"/> 
+
+    <copy todir="classes">
+      <FileSet dir="resources"/>
+    </copy>
+    <copy todir="classes">
+      <FileSet dir="${build}"/>
+    </copy>
+
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+
+    <!-- create MyUnitex.jar -->
+    <jar jarfile="${dist}/MyUnitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf"
+      basedir="classes"/>
+
+    <!--
+    <jar jarfile="${dist}/Grf2ps.jar" manifest="classes/fr/umlv/unitex/grf2ps-manifest.mf"
+      basedir="classes"/>
+
+    <jar jarfile="${dist}/Grf2svg.jar" manifest="classes/fr/umlv/unitex/grf2svg-manifest.mf"
+      basedir="classes"/>
+    -->
+  </target>
+
+  <target name="install" depends="dist">
+    <copy file="${dist}/MyUnitex.jar" todir="${appdir}"/>
+  </target>
+
+  <target name="clean" description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <!--delete dir="classes"/-->
+    <delete includeemptydirs="true">
+      <fileset dir="classes" includes="**/*"/>
+    </delete>
+    <delete dir="${dist}"/>
+  </target>
+</project>
+
