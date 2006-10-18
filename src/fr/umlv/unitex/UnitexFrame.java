@@ -110,7 +110,9 @@ public class UnitexFrame extends JFrame {
 	 */
 	public void buildMenus() {
 		menuBar = new JMenuBar();
-
+		/* We remove the search panel in the menu bar, if any */
+		menuBar.removeAll();
+		
 		menuBar.setOpaque(true);
 
 		JMenu text = buildTextMenu();
