@@ -240,12 +240,13 @@ public class Config {
 	/**
 	 * Initializes the system. This method finds which system is running, which
 	 * user is working. Then, it initalizes dialog boxes and ask the user to
-	 * choose the initial language he wants to work on.
-	 *  
+	 * choose the initial language he wants to work on. if appPath is not
+	 * null, it is supposed to represent the directory in which the
+	 * external programs are located.   
 	 */
-	public static void initConfig() {
+	public static void initConfig(String appPath) {
 		determineWhichSystemIsRunning();
-		determineUnitexDir();
+		determineUnitexDir(appPath);
 		MyCursors.initCursorsAndIcons();
 		determineCurrentUser();
 		chooseInitialLanguage();
@@ -490,11 +491,11 @@ public class Config {
 
 	/**
 	 * Finds the path of the Unitex directory. Sets up the application
-	 * directory.
-	 *  
+	 * directory. If appPath is not null, it represents the external
+	 * programs directory.
 	 */
-	public static void determineUnitexDir() {
-		setApplicationDir(new File(System.getProperty("user.dir")));
+	public static void determineUnitexDir(String appPath) {
+		setApplicationDir(appPath,new File(System.getProperty("user.dir")));
 	}
 
 	/**
@@ -619,12 +620,16 @@ public class Config {
 	/**
 	 * Sets the application directory
 	 * 
-	 * @param s
-	 *            directory's path
+	 * @param appPath if not null, it represents the external programs directory
+	 * @param s directory's path
 	 */
-	public static void setApplicationDir(File s) {
-		applicationDir = s;
-		setUnitexDir(applicationDir.getParentFile());
+	public static void setApplicationDir(String appPath,File s) {
+		if (appPath!=null) {
+			applicationDir = new File(appPath);
+		} else {
+			applicationDir = s;
+		}
+		setUnitexDir(s.getParentFile());
 	}
 
 	/**

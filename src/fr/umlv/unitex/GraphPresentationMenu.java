@@ -41,11 +41,11 @@ public class GraphPresentationMenu extends JDialog {
 	JCheckBox pathnameCheckBox = new JCheckBox();
 	JCheckBox frameCheckBox = new JCheckBox();
 	JCheckBox rightToLeftCheckBox = new JCheckBox();
-	JButton color1 = new JButton("     ");
-	JButton color2 = new JButton("     ");
-	JButton color3 = new JButton("     ");
-	JButton color4 = new JButton("     ");
-	JButton color5 = new JButton("     ");
+	ColorRectangle color1 = new ColorRectangle();
+	ColorRectangle color2 = new ColorRectangle();
+	ColorRectangle color3 = new ColorRectangle();
+	ColorRectangle color4 = new ColorRectangle();
+	ColorRectangle color5 = new ColorRectangle();
 	JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
 	JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
 
