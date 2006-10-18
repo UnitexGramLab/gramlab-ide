@@ -24,7 +24,6 @@ package fr.umlv.unitex;
 import java.util.*;
 import javax.swing.*;
 
-import org.jvnet.substance.*;
 
 
 /**
@@ -47,7 +46,7 @@ public class Unitex {
 			/* The following line seems to have no effect, so the search panel
 			 * is removed by hand during the creation of the menu bar.
 			 */
-			SubstanceLookAndFeel.hideMenuSearchPanels();
+			org.jvnet.substance.SubstanceLookAndFeel.hideMenuSearchPanels();
 		} catch (UnsupportedLookAndFeelException e) {
 			System.out
 					.println("Substance Look & Feel not supported on this platform. \nProgram Terminated");
