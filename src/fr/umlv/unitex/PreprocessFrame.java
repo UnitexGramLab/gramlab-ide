@@ -546,7 +546,11 @@ public class PreprocessFrame extends JDialog {
 						"Dela"), s));
 			}
 			br.close();
-		} catch (IOException e) {
+		} 
+		catch (FileNotFoundException ee) {
+			// nothing to do
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		name2 = new File(Config.getUserCurrentLanguageDir(), "system_dic.def");
@@ -558,7 +562,12 @@ public class PreprocessFrame extends JDialog {
 						"Dela"), s));
 			}
 			br.close();
-		} catch (IOException e) {
+		} 
+		catch (FileNotFoundException ee) {
+			// nothing to do
+		}
+
+		catch (IOException e) {
 			//e.printStackTrace();
 		}
 		return res;

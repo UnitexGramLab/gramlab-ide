@@ -66,16 +66,14 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	JCheckBox charByCharCheckBox = new JCheckBox(
 			"Analyze this language char by char");
 
-	JButton color1 = new JButton("      ");
-
-	JButton color2 = new JButton("      ");
-
-	JButton color3 = new JButton("      ");
-
-	JButton color4 = new JButton("      ");
-
-	JButton color5 = new JButton("      ");
-
+	
+	
+	ColorRectangle color1=new ColorRectangle();
+	ColorRectangle color2=new ColorRectangle();
+	ColorRectangle color3=new ColorRectangle();
+	ColorRectangle color4=new ColorRectangle();
+	ColorRectangle color5=new ColorRectangle();
+	
 	JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
 
 	JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
@@ -609,7 +607,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		g.setConstraints(label1, c);
 		colorPanel.add(label1);
 		build(c, 1, 0, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		g.setConstraints(color1, c);
 		colorPanel.add(color1);
 		build(c, 2, 0, 1, 1, 20, 0);
@@ -622,7 +620,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		g.setConstraints(label2, c);
 		colorPanel.add(label2);
 		build(c, 1, 1, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		g.setConstraints(color2, c);
 		colorPanel.add(color2);
 		build(c, 2, 1, 1, 1, 20, 0);
@@ -635,7 +633,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		g.setConstraints(label3, c);
 		colorPanel.add(label3);
 		build(c, 1, 2, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		g.setConstraints(color3, c);
 		colorPanel.add(color3);
 		build(c, 2, 2, 1, 1, 20, 0);
@@ -648,7 +646,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		g.setConstraints(label4, c);
 		colorPanel.add(label4);
 		build(c, 1, 3, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		g.setConstraints(color4, c);
 		colorPanel.add(color4);
 		build(c, 2, 3, 1, 1, 20, 0);
@@ -661,7 +659,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		g.setConstraints(label5, c);
 		colorPanel.add(label5);
 		build(c, 1, 4, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
+		c.fill = GridBagConstraints.BOTH;
 		g.setConstraints(color5, c);
 		colorPanel.add(color5);
 		build(c, 2, 4, 1, 1, 20, 0);
