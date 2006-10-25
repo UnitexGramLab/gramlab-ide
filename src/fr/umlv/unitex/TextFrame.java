@@ -143,18 +143,18 @@ public class TextFrame extends JInternalFrame {
       } catch (IOException e) {
          return;
       }
-      s= " " + String.valueOf(simple_total) + " (";
-      s= s + String.valueOf(dlf_entries) + " diff) simple word";
+      s= " " + String.valueOf(simple_total) + " occurrence"+(simple_total>1?"s":"")+" (";
+      s= s + String.valueOf(dlf_entries) + " DLF entries) simple word";
       if (dlf_entries > 1)
          s= s + "s";
       s= s + ", ";
-      s= s + String.valueOf(compound_total) + " (";
-      s= s + String.valueOf(dlc_entries) + ") compound word";
+      s= s + String.valueOf(compound_total) + " occurrence"+(compound_total>1?"s":"")+" (";
+      s= s + String.valueOf(dlc_entries) + " DLC entries) compound word";
       if (dlc_entries > 1)
          s= s + "s";
       s= s + ", ";
-      s= s + String.valueOf(err_total) + " (";
-      s= s + String.valueOf(err_entries) + ") unknown token";
+      s= s + String.valueOf(err_total) + " occurrence"+(err_total>1?"s":"")+" (";
+      s= s + String.valueOf(err_entries) + " ERR lines) unknown word";
       if (err_entries > 1)
          s= s + "s";
       frame.ligne2.setText(s);
