@@ -22,6 +22,7 @@
 package fr.umlv.unitex.process;
 
 import java.io.*;
+import fr.umlv.unitex.*;
 
 /**
  * @author Sébastien Paumier
@@ -35,6 +36,7 @@ public class NormalizeCommand extends CommandBuilder {
 
 	public NormalizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
+		protectElement("-f="+new File(Config.getUserCurrentLanguageDir(),"Norm.txt").getAbsolutePath());
 		return this;
 	}
 
