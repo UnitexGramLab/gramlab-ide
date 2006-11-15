@@ -41,23 +41,6 @@ public class Unitex {
 	 */
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.ENGLISH);
-		try {
-			UIManager.setLookAndFeel("org.jvnet.substance.SubstanceLookAndFeel");
-			/* The following line seems to have no effect, so the search panel
-			 * is removed by hand during the creation of the menu bar.
-			 */
-			org.jvnet.substance.SubstanceLookAndFeel.hideMenuSearchPanels();
-		} catch (UnsupportedLookAndFeelException e) {
-			System.out
-					.println("Substance Look & Feel not supported on this platform. \nProgram Terminated");
-			System.exit(0);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
 		new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")),
 				1500);
 		Config.initConfig(args.length==1?args[0]:null);
