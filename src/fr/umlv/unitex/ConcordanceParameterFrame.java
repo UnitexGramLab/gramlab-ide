@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2006 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2006 Universitï¿½ de Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ import fr.umlv.unitex.process.*;
  * This class describes a frame in which the user can select how to use the
  * results of a pattern matching.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class ConcordanceParameterFrame extends JInternalFrame {
@@ -45,6 +45,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	static ConcordanceParameterFrame frame;
 	private NumericTextField leftChars = new NumericTextField("40");
 	private NumericTextField rightChars = new NumericTextField("55");
+	JCheckBox leftCtxStopAtEOS  = new JCheckBox("", false);
+	JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
 	private JComboBox sortBox;
 	JCheckBox checkBox = new JCheckBox(
 			"Use a web browser to view the concordance");
@@ -270,52 +272,59 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	private JPanel constructDownPanel() {
-		JPanel downPanel = new JPanel(new BorderLayout());
+		JPanel downPanel = new JPanel(new GridLayout(1, 2));
 		downPanel.setBorder(new TitledBorder(
-				"Show Matching Sequences in Context:"));
-		JPanel tmp = new JPanel();
-		tmp.setLayout(new GridLayout(1, 2));
-		tmp.add(new JLabel(" Lengths of Contexts:"));
-		tmp.add(new JLabel(" Sort According to:"));
-		downPanel.add(tmp, BorderLayout.NORTH);
-		JPanel tmp2 = new JPanel();
-		tmp2.setLayout(new GridLayout(1, 2));
-		JPanel tmp_left = new JPanel();
-		tmp_left.setLayout(new BorderLayout());
-		JPanel a = new JPanel();
-		a.setLayout(new GridLayout(2, 1));
-		a.add(new JLabel(" Left Col: "));
-		a.add(new JLabel(" Right Col: "));
-		JPanel pp1 = new JPanel();
-		pp1.setLayout(new BorderLayout());
+				"Show matching sequences in context"));
+
+                JPanel CtxLengthCol = new JPanel(new BorderLayout());
+                CtxLengthCol.add(new JLabel("Context length:"), BorderLayout.NORTH);
+		JPanel a = new JPanel(new GridLayout(2, 1));
+		a.add(new JLabel("Left "));
+		a.add(new JLabel("Right "));
+		JPanel b = new JPanel(new GridLayout(2, 1));
 		leftChars.setPreferredSize(new Dimension(30, 20));
 		rightChars.setPreferredSize(new Dimension(30, 20));
-		pp1.add(leftChars, BorderLayout.WEST);
-		pp1.add(new JLabel(" chars."), BorderLayout.CENTER);
-		JPanel b = new JPanel();
-		b.setLayout(new GridLayout(2, 1));
-		JPanel pp2 = new JPanel();
-		pp2.setLayout(new BorderLayout());
-		pp2.add(rightChars, BorderLayout.WEST);
-		pp2.add(new JLabel(" chars."), BorderLayout.CENTER);
-		b.add(pp1);
-		b.add(pp2);
-		tmp_left.add(a, BorderLayout.WEST);
-		tmp_left.add(b, BorderLayout.CENTER);
-		tmp2.add(tmp_left);
-		JPanel tmp_right = new JPanel();
-		tmp_right.setLayout(new GridLayout(2, 1));
+		b.add(leftChars);
+		b.add(rightChars);
+		JPanel c = new JPanel(new GridLayout(2, 1));
+		c.add(new JLabel(" chars "));
+		c.add(new JLabel(" chars "));
+                CtxLengthCol.add(a, BorderLayout.WEST);
+                CtxLengthCol.add(b, BorderLayout.CENTER);
+                CtxLengthCol.add(c, BorderLayout.EAST);
+
+                JPanel StopAtEosCol = new JPanel(new BorderLayout());
+                StopAtEosCol.add(new JLabel("Stop at:"), BorderLayout.NORTH);
+                JPanel s = new JPanel(new GridLayout(2, 2));
+		s.add(leftCtxStopAtEOS);
+                s.add(new JLabel("{S}"));
+ 		s.add(rightCtxStopAtEOS);
+                s.add(new JLabel("{S}"));
+                StopAtEosCol.add(s, BorderLayout.CENTER);
+
+		JPanel tmp_left = new JPanel();
+                tmp_left.add(CtxLengthCol, BorderLayout.WEST);
+                tmp_left.add(StopAtEosCol, BorderLayout.CENTER);
+		JPanel dummy = new JPanel();
+                tmp_left.add(dummy, BorderLayout.EAST);
+                downPanel.add(tmp_left,     BorderLayout.WEST);
+
+                JPanel SortAccTo = new JPanel(new GridLayout(2, 1));
+                SortAccTo.add(new JLabel("Sort according to:"));
 		String[] items = new String[7];
 		items[0] = "Text Order";
-		items[1] = "Left, Center Col.";
-		items[2] = "Left, Right Col.";
-		items[3] = "Center, Left Col.";
-		items[4] = "Center, Right Col.";
-		items[5] = "Right, Left Col.";
-		items[6] = "Right, Center Col.";
+		items[1] = "Left, Center";
+		items[2] = "Left, Right";
+		items[3] = "Center, Left";
+		items[4] = "Center, Right";
+		items[5] = "Right, Left";
+		items[6] = "Right, Center";
 		sortBox = new JComboBox(items);
 		sortBox.setSelectedIndex(3);
-		tmp_right.add(sortBox);
+		SortAccTo.add(sortBox);
+
+		JPanel tmp_right = new JPanel(new GridLayout(2, 1, 0, 5));
+                tmp_right.add(SortAccTo); 
 
 		Action buildAction = new AbstractAction("Build concordance") {
 			public void actionPerformed(ActionEvent arg0) {
@@ -329,8 +338,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		JButton buildConcordance = new JButton(buildAction);
 
 		tmp_right.add(buildConcordance);
-		tmp2.add(tmp_right);
-		downPanel.add(tmp2, BorderLayout.CENTER);
+
+                downPanel.add(tmp_right,    BorderLayout.EAST);
+
 		return downPanel;
 	}
 
@@ -410,7 +420,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	void buildConcordance() {
-    if (leftChars.getText().equals("")) {
+          if (leftChars.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
 					"You must specify the left context length", "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -431,12 +441,19 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		ConcordCommand command;
 		try {
-			command = new ConcordCommand().indFile(indFile).font(
-					Preferences.getConcordanceFontName()).fontSize(
-					Preferences.getConcordanceFontSize()).left(
-					Integer.parseInt(leftChars.getText())).right(Integer.parseInt(rightChars.getText())).order(
-					sortBox.getSelectedIndex()).html().sortAlphabet().thai(
-					Config.getCurrentLanguage().equals("Thai"));
+			command =
+                          new ConcordCommand()
+                                .indFile(indFile)
+                                .font(Preferences.getConcordanceFontName())
+                                .fontSize(Preferences.getConcordanceFontSize())
+                                .left(Integer.parseInt(leftChars.getText())
+                                      + (leftCtxStopAtEOS.isSelected() ? "s" : ""))
+                                .right(Integer.parseInt(rightChars.getText())
+                                      + (rightCtxStopAtEOS.isSelected() ? "s" : ""))
+                                .order(sortBox.getSelectedIndex())
+                                .html()
+                                .sortAlphabet()
+                                .thai(Config.getCurrentLanguage().equals("Thai"));
 		} catch (InvalidConcordanceOrderException e) {
 			e.printStackTrace();
 			return;
