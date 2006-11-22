@@ -23,6 +23,7 @@ package fr.umlv.unitex;
 
 import java.util.*;
 import javax.swing.*;
+import javax.swing.plaf.metal.*;
 
 
 
@@ -43,7 +44,7 @@ public class Unitex {
 		Locale.setDefault(Locale.ENGLISH);
 		try {
 			javax.swing.plaf.metal.MetalLookAndFeel
-					.setCurrentTheme(new javax.swing.plaf.metal.DefaultMetalTheme());
+					.setCurrentTheme(new OceanTheme());
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (UnsupportedLookAndFeelException e) {
 			System.out
