@@ -41,6 +41,31 @@ public class Unitex {
 	 */
 	public static void main(String[] args) {
 		Locale.setDefault(Locale.ENGLISH);
+		try {
+			javax.swing.plaf.metal.MetalLookAndFeel
+					.setCurrentTheme(new javax.swing.plaf.metal.DefaultMetalTheme());
+			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		} catch (UnsupportedLookAndFeelException e) {
+			System.out
+					.println("Metal Look & Feel not supported on this platform. \nProgram Terminated");
+			System.exit(0);
+		} catch (IllegalAccessException e) {
+			System.out
+					.println("Metal Look & Feel could not be accessed. \nProgram Terminated");
+			System.exit(0);
+		} catch (ClassNotFoundException e) {
+			System.out
+					.println("Your version of Java does not contain all the classes required by Unitex.\nProgram Terminated");
+			System.exit(0);
+		} catch (InstantiationException e) {
+			System.out
+					.println("Metal Look & Feel could not be instantiated. \nProgram Terminated");
+			System.exit(0);
+		} catch (Exception e) {
+			System.out.println("Unexpected error. \nProgram Terminated");
+			e.printStackTrace();
+			System.exit(0);
+		}
 		new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")),
 				1500);
 		Config.initConfig(args.length==1?args[0]:null);
