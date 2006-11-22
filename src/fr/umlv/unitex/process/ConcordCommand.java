@@ -57,7 +57,6 @@ public class ConcordCommand extends CommandBuilder {
 	}
 
 	public ConcordCommand left(String size) {
-		new Integer(size);
 		element("" + size);
 		return this;
 	}
@@ -68,7 +67,6 @@ public class ConcordCommand extends CommandBuilder {
 	}
 
 	public ConcordCommand right(String size) {
-		Integer.parseInt(size);
 		element("" + size);
 		return this;
 	}
