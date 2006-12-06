@@ -907,9 +907,9 @@ public class TextAutomatonFrame extends JInternalFrame {
       .automaton(text_fst);
 
     if (implode) {
-      new ProcessInfoFrame(tagsetcmd, true, new ImploseDO(text_fst));
+      new ProcessInfoFrame(tagsetcmd, false, new ImploseDO(text_fst));
     } else {
-      new ProcessInfoFrame(tagsetcmd, true, new loadSentenceDO());
+      new ProcessInfoFrame(tagsetcmd, false, new loadSentenceDO());
     }
   }
 

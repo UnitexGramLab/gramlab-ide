@@ -212,6 +212,7 @@ public class ConstructFstFrame extends JDialog {
                 .tokenizationMode().library();
               commands.addCommand(grfCommand);
                 }
+
             Txt2Fst2Command txtCmd = new Txt2Fst2Command().text(
                 Config.getCurrentSnt()).alphabet().clean(
                 cleanFst.isSelected());
@@ -234,7 +235,7 @@ public class ConstructFstFrame extends JDialog {
                */
 
             TextAutomatonFrame.hideFrame();
-            new ProcessInfoFrame(commands, true,
+            new ProcessInfoFrame(commands, false,
                 new ConstructFstDo(elagFst.isSelected()), false);
           }
         });
