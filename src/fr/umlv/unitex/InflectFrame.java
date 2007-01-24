@@ -80,7 +80,6 @@ public class InflectFrame extends JInternalFrame {
 			init();
 		}
 		frame.setVisible(true);
-		frame.directory.setText(new File(Config.getUserCurrentLanguageDir(),"Inflection").getAbsolutePath());
 		try {
 			frame.setSelected(true);
 			frame.setIcon(false);
@@ -103,6 +102,7 @@ public class InflectFrame extends JInternalFrame {
 				"Directory where inflectional FST2 are stored: "));
 		JPanel tempPanel = new JPanel(new BorderLayout());
 		directory.setPreferredSize(new Dimension(240, 25));
+		directory.setText(new File(Config.getUserCurrentLanguageDir(),"Inflection").getAbsolutePath());
 		tempPanel.add(directory, BorderLayout.CENTER);
 		Action setDirectoryAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
@@ -118,8 +118,8 @@ public class InflectFrame extends JInternalFrame {
 		JButton setDirectory = new JButton(setDirectoryAction);
 		tempPanel.add(setDirectory, BorderLayout.EAST);
 		upPanel.add(tempPanel);
-		upPanel.add(twoPointsCheck);
-		upPanel.add(removeClassNumbers);
+		//upPanel.add(twoPointsCheck);
+		//upPanel.add(removeClassNumbers);
 		return upPanel;
 	}
 
@@ -161,16 +161,11 @@ public class InflectFrame extends JInternalFrame {
             tmp = tmp.substring(0, point);
         }
         tmp = tmp + "flx.dic";
-    InflectCommand command=new InflectCommand().delas(f)
+    	MultiFlexCommand command=new MultiFlexCommand().delas(f)
         .result(new File(tmp))
-        .dir(new File(directory.getText()));
-        if (twoPointsCheck.isSelected()) {
-            command = command.semiColon();
-        }
-        if (!(removeClassNumbers.isSelected())) {
-            command = command.digitsMustRemain();
-        }
-		new ProcessInfoFrame(command, false, null);
+        .alphabet(Config.getAlphabet())
+    	.dir(new File(directory.getText()));
+        new ProcessInfoFrame(command, false, null);
 	}
 
 }
