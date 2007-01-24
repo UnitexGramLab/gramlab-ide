@@ -21,6 +21,8 @@
 
 package fr.umlv.unitex.exceptions;
 
+import java.io.*;
+
 /**
  * This class defines an <code>Exception</code> that is thrown when a file is not a Unicode Little Endian one, whereas it
  * should be.
@@ -28,5 +30,8 @@ package fr.umlv.unitex.exceptions;
  *
  */
 public class NotAUnicodeLittleEndianFileException extends Exception {
-	// nothing to do
+
+	public NotAUnicodeLittleEndianFileException(File f) {
+		super("Non UTF16-LE file: "+f.getAbsolutePath());
+	}
 }
