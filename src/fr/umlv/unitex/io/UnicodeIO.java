@@ -211,7 +211,7 @@ public class UnicodeIO {
          } catch (IOException e) {
             e.printStackTrace();
          }
-         throw new NotAUnicodeLittleEndianFileException();
+         throw new NotAUnicodeLittleEndianFileException(f);
       }
       return stream;
    }
