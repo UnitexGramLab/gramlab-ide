@@ -61,6 +61,7 @@ public class CommandMenuFactory {
             ,LocateCommand.class
             ,MergeBinCommand.class
             ,MergeTextAutomatonCommand.class
+            ,MultiFlexCommand.class
             ,NormalizeCommand.class
             ,PolyLexCommand.class
             ,ReconstrucaoCommand.class
