@@ -26,8 +26,6 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
-
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
@@ -42,8 +40,8 @@ public class DelaFrame extends JInternalFrame {
 
 	static DelaFrame frame;
 
-	private MyTextArea text = new MyTextArea();
-	static boolean FILE_TOO_LARGE = false;
+	JPanel middle;
+	BigTextList text=new BigTextList(true);
 
 	private DelaFrame() {
 		super("", true, true, true, true);
@@ -51,13 +49,10 @@ public class DelaFrame extends JInternalFrame {
 		top.setOpaque(true);
 		top.setLayout(new BorderLayout());
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
-		JScrollPane scroll = new JScrollPane(text);
-		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		JPanel middle = new JPanel();
+		middle = new JPanel();
 		middle.setOpaque(true);
 		middle.setLayout(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
-		middle.add(scroll, BorderLayout.CENTER);
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
@@ -69,6 +64,10 @@ public class DelaFrame extends JInternalFrame {
 				UnitexFrame.mainFrame.closeDELA();
 			}
 		});
+		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+			public void textFontChanged(Font font) {
+				text.setFont(font);
+			}});
 	}
 
 	/**
@@ -110,27 +109,9 @@ public class DelaFrame extends JInternalFrame {
 		if (frame == null) {
 			init();
 		}
+		frame.text.load(dela);
+		frame.middle.add(frame.text);
 		frame.text.setFont(Config.getCurrentTextFont());
-		frame.text.setWrapStyleWord(true);
-		frame.text.setLineWrap(true);
-		frame.text.setEditable(false);
-		if (!dela.exists() || dela.length() <= 2) {
-			FILE_TOO_LARGE = true;
-			frame.text.setDocument(new PlainDocument());
-			frame.text.setText(Config.EMPTY_FILE_MESSAGE);
-		} else if (dela.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-			try {
-				frame.text.load(dela);
-			} catch (java.io.IOException e) {
-				FILE_TOO_LARGE = true;
-				return;
-			}
-			FILE_TOO_LARGE = false;
-		} else {
-			FILE_TOO_LARGE = true;
-			frame.text.setDocument(new PlainDocument());
-			frame.text.setText(Config.FILE_TOO_LARGE_MESSAGE);
-		}
 		frame.setTitle(dela.getAbsolutePath());
 		frame.setVisible(true);
 		try {
@@ -149,9 +130,8 @@ public class DelaFrame extends JInternalFrame {
 		if (frame == null) {
 			return;
 		}
-		frame.text.killTimer();
 		frame.setVisible(false);
-		frame.text.setDocument(new PlainDocument());
+		frame.text=null;
 		System.gc();
 	}
 

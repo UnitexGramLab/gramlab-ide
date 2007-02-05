@@ -24,15 +24,15 @@ package fr.umlv.unitex;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
-
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+
+
 /**
  * This class describes a frame used to display sentence automata.
  * 
@@ -86,8 +86,13 @@ public class TextAutomatonFrame extends JInternalFrame {
     });
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     closeElagFrame();
+    GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+		public void textFontChanged(Font font) {
+			text.setFont(font);
+		}});
   }
-
+  
+  
   private JPanel constructPanel() {
     JPanel panel = new JPanel(new BorderLayout());
     panel.add(constructUpPanel(), BorderLayout.NORTH);

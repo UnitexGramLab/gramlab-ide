@@ -23,14 +23,12 @@ package fr.umlv.unitex;
 
 import java.awt.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
-
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
+
 
 /**
  * This class describes a frame used to display the current corpus.  
@@ -41,8 +39,7 @@ public class TextFrame extends JInternalFrame {
 
    static TextFrame frame;
 
-   protected MyTextArea text= new MyTextArea();
-   protected static boolean FILE_TOO_LARGE= false;
+   protected BigTextArea text= new BigTextArea();
    protected JLabel ligne1= new JLabel("");
    protected JLabel ligne2= new JLabel("");
 
@@ -52,13 +49,14 @@ public class TextFrame extends JInternalFrame {
       JPanel top= new JPanel(new BorderLayout());
       top.setOpaque(true);
       top.setBorder(new EmptyBorder(2, 2, 2, 2));
-      JScrollPane scroll= new JScrollPane(text);
-      scroll.setHorizontalScrollBarPolicy(
-      ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
       JPanel middle= new JPanel(new BorderLayout());
       middle.setOpaque(true);
       middle.setBorder(BorderFactory.createLoweredBevelBorder());
-      middle.add(scroll);
+      middle.add(text);
+      GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+		public void textFontChanged(Font font) {
+			text.setFont(font);
+		}});
       JPanel up= new JPanel(new GridLayout(2, 1));
       up.setOpaque(true);
       up.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -178,28 +176,12 @@ public class TextFrame extends JInternalFrame {
       UnitexFrame.mainFrame.closeText.setEnabled(true);
       loadStatistics();
       frame.text.setFont(Config.getCurrentTextFont());
-      frame.text.setLineWrap(true);
-      frame.text.setEditable(false);
       frame.text.setComponentOrientation(Config.isRightToLeftLanguage()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
       if (sntFile.length() <= 2) {
-         FILE_TOO_LARGE= true;
-         frame.text.setDocument(new PlainDocument());
          frame.text.setText(Config.EMPTY_FILE_MESSAGE);
-      } else
-         if (sntFile.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-            try {
-               frame.text.load(sntFile,Config.isRightToLeftLanguage()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
-            } catch (IOException E) {
-               frame.text.setDocument(new PlainDocument());
-               frame.text.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-               FILE_TOO_LARGE= true;
-            }
-            FILE_TOO_LARGE= false;
-         } else {
-            FILE_TOO_LARGE= true;
-            frame.text.setDocument(new PlainDocument());
-            frame.text.setText(Config.CORPUS_TOO_LARGE_MESSAGE);
-         }
+      } else {
+    	  frame.text.load(sntFile);
+      }
       frame.setTitle(sntFile.getAbsolutePath());
       frame.setVisible(true);
       try {
@@ -218,14 +200,13 @@ public class TextFrame extends JInternalFrame {
       if (frame==null) {
          return;
       }
-      frame.text.killTimer();
       frame.setVisible(false);
       try {
          frame.setIcon(false);
       } catch (java.beans.PropertyVetoException e2) {
     	  e2.printStackTrace();
       }
-      frame.text.setDocument(new PlainDocument());
+      frame.text.reset();
       System.gc();
    }
 

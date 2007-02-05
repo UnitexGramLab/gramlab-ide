@@ -23,11 +23,10 @@ package fr.umlv.unitex;
 
 import java.awt.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
+
 
 /**
  * This class describes a text frame that shows the results of dictionary
@@ -39,7 +38,7 @@ import javax.swing.text.*;
 public class CheckResultFrame extends JInternalFrame {
 
   static CheckResultFrame frame;
-	private MyTextArea text = new MyTextArea();
+	private BigTextList text;
 
     
 	private CheckResultFrame() {
@@ -47,13 +46,10 @@ public class CheckResultFrame extends JInternalFrame {
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(true);
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
-		JScrollPane scroll = new JScrollPane(text);
-		scroll
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		text=new BigTextList();
 		JPanel middle = new JPanel(new BorderLayout());
-		middle.setOpaque(true);
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
-		middle.add(scroll, BorderLayout.CENTER);
+		middle.add(new JScrollPane(text), BorderLayout.CENTER);
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
@@ -86,14 +82,8 @@ public class CheckResultFrame extends JInternalFrame {
 		if (frame == null) {
 			init();
 		}
+		frame.text.load(dela);
 		frame.text.setFont(Config.getCurrentTextFont());
-		frame.text.setLineWrap(true);
-		frame.text.setEditable(false);
-		try {
-			frame.text.load(dela);
-		} catch (java.io.IOException e) {
-			return;
-		}
 		frame.setTitle("Check Results");
 		frame.setVisible(true);
 		try {
@@ -113,7 +103,7 @@ public class CheckResultFrame extends JInternalFrame {
 			return;
 		}
 		frame.setVisible(false);
-		frame.text.setDocument(new PlainDocument());
+		frame.text=null;
 		System.gc();
 	}
 

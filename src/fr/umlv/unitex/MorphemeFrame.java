@@ -1,17 +1,33 @@
-/*
- * Created on 24 déc. 2004
- *
- */
+ /*
+  * Unitex
+  *
+  * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Lesser General Public
+  * License as published by the Free Software Foundation; either
+  * version 2.1 of the License, or (at your option) any later version.
+  *
+  * This library is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  * Lesser General Public License for more details.
+  * 
+  * You should have received a copy of the GNU Lesser General Public
+  * License along with this library; if not, write to the Free Software
+  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+  *
+  */
+
 package fr.umlv.unitex;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
+
 
 /**
  * @author hhuh
@@ -20,7 +36,7 @@ import javax.swing.text.*;
 public class MorphemeFrame extends JInternalFrame {
 	static MorphemeFrame frame;
 
-	MyTextArea text = new MyTextArea();
+	BigTextList text = new BigTextList();
 	static boolean FILE_TOO_LARGE = false;
 
 	private MorphemeFrame() {
@@ -46,6 +62,10 @@ public class MorphemeFrame extends JInternalFrame {
 				}
 			}
 		});
+		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+			public void textFontChanged(Font font) {
+				text.setFont(font);
+			}});
 	}
 
 	private JPanel constructButtonsPanel() {
@@ -124,28 +144,10 @@ public class MorphemeFrame extends JInternalFrame {
 		if (frame == null) {
 			init();
 		}
-		frame.text.killTimer();
+		frame.text.load(file);
 		frame.text.setFont(Config.getCurrentTextFont());
-		frame.text.setLineWrap(true);
-		frame.text.setEditable(false);
 		if (file.length() <= 2) {
-			FILE_TOO_LARGE = true;
-			frame.text.setDocument(new PlainDocument());
 			frame.text.setText(Config.EMPTY_FILE_MESSAGE);
-		} else if (file.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-			try {
-				frame.text.load(file);
-			} catch (java.io.IOException e) {
-				FILE_TOO_LARGE = true;
-				frame.text.setDocument(new PlainDocument());
-				frame.text.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-				return;
-			}
-			FILE_TOO_LARGE = false;
-		} else {
-			FILE_TOO_LARGE = true;
-			frame.text.setDocument(new PlainDocument());
-			frame.text.setText(Config.FILE_TOO_LARGE_MESSAGE);
 		}
 		frame.setVisible(true);
 		try {
@@ -164,9 +166,8 @@ public class MorphemeFrame extends JInternalFrame {
 		if (frame == null) {
 			return;
 		}
-		frame.text.killTimer();
 		frame.setVisible(false);
-		frame.text.setDocument(new PlainDocument());
+		frame.text.reset();
 		try {
 			frame.setIcon(false);
 		} catch (java.beans.PropertyVetoException e2) {

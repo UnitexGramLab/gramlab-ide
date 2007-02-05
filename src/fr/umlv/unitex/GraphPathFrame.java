@@ -40,7 +40,7 @@ import fr.umlv.unitex.process.*;
 public class GraphPathFrame extends JInternalFrame {
 
 	static GraphPathFrame frame;
-	MyTextArea textArea = new MyTextArea();
+	BigTextList textArea = new BigTextList();
 	JTextField graphName = new JTextField();
 	JCheckBox limit;
 	NumericTextField limitSize;
@@ -61,6 +61,10 @@ public class GraphPathFrame extends JInternalFrame {
 			}
 		});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+			public void textFontChanged(Font font) {
+				textArea.setFont(font);
+			}});
 	}
 
 	private static void init() {
@@ -80,7 +84,6 @@ public class GraphPathFrame extends JInternalFrame {
 			init();
 		}
 		frame.graphName.setText(gf.getGraph().getAbsolutePath());
-		frame.textArea.setText("");
 		frame.textArea.setFont(Config.getCurrentTextFont());
 		frame.setVisible(true);
 		try {
@@ -93,8 +96,7 @@ public class GraphPathFrame extends JInternalFrame {
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructTopPanel(), BorderLayout.NORTH);
-		JScrollPane scroll = new JScrollPane(textArea);
-		panel.add(scroll, BorderLayout.CENTER);
+		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
 		return panel;
 	}
 
@@ -177,6 +179,7 @@ public class GraphPathFrame extends JInternalFrame {
 				MultiCommands commands = new MultiCommands();
 				commands.addCommand(grfCmd);
 				commands.addCommand(cmd);
+				frame.textArea.reset();
 				new ProcessInfoFrame(commands, true, new ShowPathsDO(list));
 			}
 		};
@@ -223,8 +226,6 @@ public class GraphPathFrame extends JInternalFrame {
 				frame.textArea.load(name);
 				frame.setSelected(true);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (PropertyVetoException e) {
 				e.printStackTrace();
