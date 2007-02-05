@@ -24,11 +24,10 @@ package fr.umlv.unitex;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
+
 
 /**
  * This class describes a frame used to display current corpus's token lists.
@@ -40,18 +39,14 @@ public class TokensFrame extends JInternalFrame {
 
 	static TokensFrame frame;
 
-	MyTextArea text = new MyTextArea();
-	static boolean FILE_TOO_LARGE = false;
+	BigTextArea text = new BigTextArea();
 
 	private TokensFrame() {
 		super("Token list", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(true);
-		JScrollPane scroll = new JScrollPane(text);
-		scroll
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		top.add(constructButtonsPanel(), BorderLayout.NORTH);
-		top.add(scroll, BorderLayout.CENTER);
+		top.add(text, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
 		setBounds(50, 200, 300, 450);
@@ -66,6 +61,10 @@ public class TokensFrame extends JInternalFrame {
 				}
 			}
 		});
+		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+			public void textFontChanged(Font font) {
+				text.setFont(font);
+			}});
 	}
 
 	private JPanel constructButtonsPanel() {
@@ -128,28 +127,11 @@ public class TokensFrame extends JInternalFrame {
 		if (frame == null) {
 			init();
 		}
-		frame.text.killTimer();
 		frame.text.setFont(Config.getCurrentTextFont());
-		frame.text.setLineWrap(true);
-		frame.text.setEditable(false);
 		if (file.length() <= 2) {
-			FILE_TOO_LARGE = true;
-			frame.text.setDocument(new PlainDocument());
 			frame.text.setText(Config.EMPTY_FILE_MESSAGE);
-		} else if (file.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-			try {
-				frame.text.load(file);
-			} catch (java.io.IOException e) {
-				FILE_TOO_LARGE = true;
-				frame.text.setDocument(new PlainDocument());
-				frame.text.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-				return;
-			}
-			FILE_TOO_LARGE = false;
 		} else {
-			FILE_TOO_LARGE = true;
-			frame.text.setDocument(new PlainDocument());
-			frame.text.setText(Config.FILE_TOO_LARGE_MESSAGE);
+			frame.text.load(file);
 		}
 		frame.setVisible(true);
 		try {
@@ -168,9 +150,8 @@ public class TokensFrame extends JInternalFrame {
 		if (frame == null) {
 			return;
 		}
-		frame.text.killTimer();
+		frame.text.reset();
 		frame.setVisible(false);
-		frame.text.setDocument(new PlainDocument());
 		try {
 			frame.setIcon(false);
 		} catch (java.beans.PropertyVetoException e2) {

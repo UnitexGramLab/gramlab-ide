@@ -23,12 +23,9 @@ package fr.umlv.unitex;
 
 import java.awt.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
-
 import fr.umlv.unitex.io.*;
 
 /**
@@ -41,26 +38,19 @@ public class TextDicFrame extends JInternalFrame {
    JPanel panel= new JPanel();
    JPanel dicPanel= new JPanel();
    JPanel errPanel= new JPanel();
-   MyTextArea dlf= new MyTextArea();
+   BigTextList dlf= new BigTextList(true);
    JScrollPane dlfScroll;
-   MyTextArea dlc= new MyTextArea();
+   BigTextList dlc= new BigTextList(true);
    JScrollPane dlcScroll;
-   MyTextArea err= new MyTextArea();
+   BigTextList err= new BigTextList();
    JScrollPane errScroll;
    JLabel dlfLabel= new JLabel("");
    JLabel dlcLabel= new JLabel("");
    JLabel errLabel= new JLabel("");
-   JPanel morphPanel = new JPanel();
-   MyTextArea morphDic = new MyTextArea();
-   JScrollPane morphScroll;
 
    static TextDicFrame frame;
    
-   static boolean DLF_TOO_LARGE= false;
-   static boolean DLC_TOO_LARGE= false;
-   static boolean ERR_TOO_LARGE= false;
-
-
+   
    private TextDicFrame() {
       super("", true, true, true, true);
       constructPanel();
@@ -70,14 +60,21 @@ public class TextDicFrame extends JInternalFrame {
       setVisible(false);
       setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
       addInternalFrameListener(new InternalFrameAdapter() {
-        public void internalFrameClosing(InternalFrameEvent e) {
-          try {
-             setIcon(true);
-          } catch (java.beans.PropertyVetoException e2) {
-        	  e2.printStackTrace();
-          }
-       }
-        });
+    	  public void internalFrameClosing(InternalFrameEvent e) {
+    		  try {
+    			  setIcon(true);
+    		  } catch (java.beans.PropertyVetoException e2) {
+    			  e2.printStackTrace();
+    		  }
+    	  }
+      });
+      GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+
+		public void textFontChanged(Font font) {
+			dlf.setFont(font);
+			dlc.setFont(font);
+			err.setFont(font);
+		}});
    }
 
    private void constructPanel() {
@@ -153,135 +150,63 @@ public class TextDicFrame extends JInternalFrame {
       if (frame==null) {
          init();
       }
-      frame.dlf.killTimer();
-      frame.dlc.killTimer();
-      frame.err.killTimer();
-      int numberOfErrors= 0;
-      try {
-      	 File FILE = new File(dir,(Config.isAgglutinativeLanguage())? "mdlf":"dlf");
-         frame.dlf.setFont(Config.getCurrentTextFont());
-         frame.dlf.setLineWrap(false);
-         frame.dlf.setEditable(false);
-         String n= UnicodeIO.readFirstLine(new File(dir,(Config.isAgglutinativeLanguage())? "mdlf.n":"dlf.n"));
-         String message= "DLF";
-         if (n != null) {
-            message= message + ": " + n + " simple-word lexical entr";
-            if (new Integer(n).intValue() <= 1)
-               message= message + "y";
-            else
-               message= message + "ies";
-         }
-         if (!FILE.exists() || FILE.length() <= 2) {
-            numberOfErrors++;
-            DLF_TOO_LARGE= true;
-            frame.dlf.setDocument(new PlainDocument());
-            frame.dlf.setText(Config.EMPTY_FILE_MESSAGE);
-            frame.dlfLabel.setText("DLF: simple-word lexical entries");
-         } else
-            if (FILE.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-               try {
-                  frame.dlf.load(FILE);
-               } catch (IOException E) {
-                  frame.dlf.setDocument(new PlainDocument());
-                  frame.dlf.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-                  DLF_TOO_LARGE= true;
-               }
-               DLF_TOO_LARGE= false;
-               frame.dlfLabel.setText(message);
-            } else {
-               frame.dlf.setDocument(new PlainDocument());
-               frame.dlf.setText(Config.FILE_TOO_LARGE_MESSAGE);
-               DLF_TOO_LARGE= true;
-               frame.dlfLabel.setText(message);
-            }
-      } catch (Exception e) {
-         DLF_TOO_LARGE= true;
+      /********* Loading DLF file *********/
+      File FILE = new File(dir,(Config.isAgglutinativeLanguage())? "mdlf":"dlf");
+      frame.dlf.setFont(Config.getCurrentTextFont());
+      String n= UnicodeIO.readFirstLine(new File(dir,(Config.isAgglutinativeLanguage())? "mdlf.n":"dlf.n"));
+      String message= "DLF";
+      if (n != null) {
+         message= message + ": " + n + " simple-word lexical entr";
+         if (new Integer(n).intValue() <= 1)
+            message= message + "y";
+         else
+            message= message + "ies";
       }
-      try {
-      	File FILE= new File(dir,
-      			(Config.isAgglutinativeLanguage())? "mdlc":"dlc");
-         frame.dlc.setFont(Config.getCurrentTextFont());
-         frame.dlc.setWrapStyleWord(true);
-         frame.dlc.setLineWrap(false);
-         frame.dlc.setEditable(false);
-         String n= UnicodeIO.readFirstLine(new File(dir,
+      if (!FILE.exists() || FILE.length() <= 2) {
+         frame.dlf.setText(Config.EMPTY_FILE_MESSAGE);
+         frame.dlfLabel.setText("DLF: simple-word lexical entries");
+      } else  {
+    	  frame.dlf.load(FILE);
+          frame.dlfLabel.setText(message);
+      }
+      /********* Loading DLC file *********/
+      FILE=new File(dir,(Config.isAgglutinativeLanguage())? "mdlc":"dlc");
+      frame.dlc.setFont(Config.getCurrentTextFont());
+      n= UnicodeIO.readFirstLine(new File(dir,
          		(Config.isAgglutinativeLanguage())? "mdlc.n":"dlc.n"));
-         String message= "DLC";
-         if (n != null) {
-            message= message + ": " + n + " compound lexical entr";
-            if (new Integer(n).intValue() <= 1)
-               message= message + "y";
-            else
-               message= message + "ies";
-         }
-         if (!FILE.exists() || FILE.length() <= 2) {
-            numberOfErrors++;
-            DLC_TOO_LARGE= true;
-            frame.dlc.setDocument(new PlainDocument());
-            frame.dlc.setText(Config.EMPTY_FILE_MESSAGE);
-            frame.dlcLabel.setText("DLC: compound lexical entries");
-         } else
-            if (FILE.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-               try {
-                  frame.dlc.load(FILE);
-               } catch (IOException E) {
-                  frame.dlc.setDocument(new PlainDocument());
-                  frame.dlc.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-                  DLC_TOO_LARGE= true;
-               }
-               DLC_TOO_LARGE= false;
-               frame.dlcLabel.setText(message);
-            } else {
-               frame.dlc.setDocument(new PlainDocument());
-               frame.dlc.setText(Config.FILE_TOO_LARGE_MESSAGE);
-               DLC_TOO_LARGE= true;
-               frame.dlcLabel.setText(message);
-            }
-      } catch (Exception e) {
-         DLC_TOO_LARGE= true;
+      message= "DLC";
+      if (n != null) {
+         message= message + ": " + n + " compound lexical entr";
+         if (new Integer(n).intValue() <= 1)
+            message= message + "y";
+         else
+            message= message + "ies";
       }
-      try {
-         File FILE= new File(dir,"err");
-         frame.err.setFont(Config.getCurrentTextFont());
-         frame.err.setWrapStyleWord(true);
-         frame.err.setLineWrap(false);
-         frame.err.setEditable(false);
-         String n= UnicodeIO.readFirstLine(new File(dir,"err.n"));
-         String message= "ERR";
-         if (n != null) {
-            message= message + ": " + n + " unknown simple word";
-            if (new Integer(n).intValue() > 1)
-               message= message + "s";
-         }
-         if (!FILE.exists() || FILE.length() <= 2) {
-            numberOfErrors++;
-            ERR_TOO_LARGE= true;
-            frame.err.setDocument(new PlainDocument());
-            frame.err.setText(Config.EMPTY_FILE_MESSAGE);
-            frame.errLabel.setText("ERR: unknown simple words");
-         } else
-            if (FILE.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
-               try {
-                  frame.err.load(FILE);
-               } catch (IOException E) {
-                  frame.err.setDocument(new PlainDocument());
-                  frame.err.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-                  ERR_TOO_LARGE= true;
-               }
-               ERR_TOO_LARGE= false;
-               frame.errLabel.setText(message);
-            } else {
-               frame.err.setDocument(new PlainDocument());
-               frame.err.setText(Config.FILE_TOO_LARGE_MESSAGE);
-               ERR_TOO_LARGE= true;
-               frame.errLabel.setText(message);
-            }
-      } catch (Exception e) {
-         ERR_TOO_LARGE= true;
+      if (!FILE.exists() || FILE.length() <= 2) {
+         frame.dlc.setText(Config.EMPTY_FILE_MESSAGE);
+         frame.dlcLabel.setText("DLC: compound lexical entries");
+      } else {
+    	  frame.dlc.load(FILE);
+          frame.dlcLabel.setText(message);
       }
-      /*if (numberOfErrors == 3)
-         return;
-      */
+      /********* Loading ERR file *********/
+      FILE=new File(dir,"err");
+      frame.err.setFont(Config.getCurrentTextFont());
+      n= UnicodeIO.readFirstLine(new File(dir,"err.n"));
+      message= "ERR";
+      if (n != null) {
+         message= message + ": " + n + " unknown simple word";
+         if (new Integer(n).intValue() > 1)
+            message= message + "s";
+      }
+      if (!FILE.exists() || FILE.length() <= 2) {
+         frame.err.setText(Config.EMPTY_FILE_MESSAGE);
+         frame.errLabel.setText("ERR: unknown simple words");
+      } else {
+    	  frame.err.load(FILE);
+          frame.errLabel.setText(message);
+      }
+      
       frame.setTitle("Word Lists in " + dir);
       frame.setVisible(true);
       try {
@@ -300,18 +225,15 @@ public class TextDicFrame extends JInternalFrame {
       if (frame==null) {
          return;
       }
-      frame.dlf.killTimer();
-      frame.dlc.killTimer();
-      frame.err.killTimer();
+      frame.dlf.reset();
+      frame.dlc.reset();
+      frame.err.reset();
       frame.setVisible(false);
       try {
          frame.setIcon(false);
       } catch (java.beans.PropertyVetoException e2) {
     	  e2.printStackTrace();
       }
-      frame.dlf.setDocument(new PlainDocument());
-      frame.dlc.setDocument(new PlainDocument());
-      frame.err.setDocument(new PlainDocument());
       System.gc();
    }
 

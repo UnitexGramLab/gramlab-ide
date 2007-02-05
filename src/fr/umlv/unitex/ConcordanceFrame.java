@@ -154,15 +154,13 @@ public class ConcordanceFrame extends JInternalFrame {
 				int a = new Integer(s.nextToken()).intValue();
 				int b = new Integer(s.nextToken()).intValue();
 				int c = new Integer(s.nextToken()).intValue();
-				if (!TextFrame.FILE_TOO_LARGE) {
-					try {
+				try {
 						TextFrame.getFrame().setIcon(false);
-						TextFrame.getFrame().text.setSelectionStart(a);
-						TextFrame.getFrame().text.setSelectionEnd(b);
+						TextFrame.getFrame().text.setSelection(a,b-1);
+						TextFrame.getFrame().text.scrollToSelection();
 						TextFrame.getFrame().setSelected(true);
-					} catch (PropertyVetoException e2) {
-						e2.printStackTrace();
-					}
+				} catch (PropertyVetoException e2) {
+					e2.printStackTrace();
 				}
 				TextAutomatonFrame.loadSentenceFromConcordance(c);
 			}
