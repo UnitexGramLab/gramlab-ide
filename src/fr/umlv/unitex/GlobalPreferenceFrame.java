@@ -24,6 +24,7 @@ package fr.umlv.unitex;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -37,6 +38,8 @@ import javax.swing.event.*;
  */
 public class GlobalPreferenceFrame extends JInternalFrame {
 
+	static ArrayList<TextFontListener> textFontListeners=new ArrayList<TextFontListener>(); 
+	
 	static GlobalPreferenceFrame frame;
 
 	JTextField privateDirectory = new JTextField("");
@@ -46,8 +49,6 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	JTextField concordanceFont = new JTextField("");
 
 	JTextField htmlViewer = new JTextField("");
-
-	NumericTextField maxTextFileSize = new NumericTextField("");
 
 	JCheckBox antialiasingCheckBox = new JCheckBox(
 			"Enable antialising for rendering graphs", false);
@@ -178,6 +179,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		Action okAction = new AbstractAction("OK") {
 
 			public void actionPerformed(ActionEvent arg0) {
+				fireTextFontChanged(pref.textFont);
 				pref.antialiasing = frame.antialiasingCheckBox.isSelected();
 				if (frame.htmlViewer.getText().equals(""))
 					pref.htmlViewer = null;
@@ -200,12 +202,6 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 					pref.iconBarPosition = Preferences.NO_ICON_BAR;
 				} else {
 					pref.iconBarPosition = Preferences.ICON_BAR_DEFAULT;
-				}
-				if (!frame.maxTextFileSize.getText().equals("")
-						&& new Integer(frame.maxTextFileSize.getText())
-								.intValue() != 0) {
-					pref.MAX_TEXT_FILE_SIZE = new Integer(
-							frame.maxTextFileSize.getText()).intValue() * 1024;
 				}
 				pref.charByChar = frame.charByCharCheckBox.isSelected();
 				if (frame.packageDirectory.getText().equals(""))
@@ -264,6 +260,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 				}
 				setVisible(false);
 			}
+
 		};
 		Action cancelAction = new AbstractAction("Cancel") {
 
@@ -460,12 +457,6 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		tmp4.setPreferredSize(new Dimension(180, 60));
 		tmp4.setLayout(new GridLayout(2, 1));
 		tmp4.add(new JLabel("Maximum Text File Size:"));
-		JPanel tmp4_ = new JPanel();
-		tmp4_.setLayout(new BorderLayout());
-		tmp4_.add(maxTextFileSize, BorderLayout.CENTER);
-		tmp4_.add(new JLabel("  Kbytes     "), BorderLayout.EAST);
-		tmp4.add(tmp4_);
-		page2.add(tmp4);
 		return page2;
 	}
 
@@ -792,7 +783,6 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		} else {
 			htmlViewer.setText(pref.htmlViewer.getAbsolutePath());
 		}
-		maxTextFileSize.setText(pref.MAX_TEXT_FILE_SIZE / 1024);
 		charByCharCheckBox.setSelected(pref.charByChar);
 		if (pref.packagePath==null) {
 			packageDirectory.setText("");
@@ -801,6 +791,20 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 			packageDirectory.setText(pref.packagePath.getAbsolutePath());
 		}
 		repaint();
+	}
+	
+	protected static void fireTextFontChanged(Font font) {
+		for (TextFontListener listener:textFontListeners) {
+			listener.textFontChanged(font);
+		}
+	}
+	
+	public static void addTextFontListener(TextFontListener listener) {
+		textFontListeners.add(listener);
+	}
+
+	public static void removeTextFontListener(TextFontListener listener) {
+		textFontListeners.remove(listener);
 	}
 
 }

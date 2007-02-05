@@ -45,34 +45,29 @@ public class AboutUnitexFrame extends JInternalFrame {
 		JPanel top = new JPanel();
 		top.setOpaque(true);
 		top.setLayout(new BorderLayout());
-    MyTextArea licenseGPL = new MyTextArea(); 
-    JScrollPane scrollGPL = new JScrollPane(licenseGPL);
-    MyTextArea licenseLGPL = new MyTextArea(); 
-    JScrollPane scrollLGPL = new JScrollPane(licenseLGPL);
-    MyTextArea licenseLGPLLR = new MyTextArea(); 
-    JScrollPane scrollLGPLLR = new JScrollPane(licenseLGPLLR);
-    MyTextArea disclaimer = new MyTextArea();		
-    JPanel up = new JPanel();
+		BigTextArea licenseGPL=new BigTextArea(new File(Config.getApplicationDir(),"GPL.txt"));
+		BigTextArea licenseLGPL=new BigTextArea(new File(Config.getApplicationDir(),"LGPL.txt"));
+		BigTextArea licenseLGPLLR=new BigTextArea(new File(Config.getApplicationDir(),"LGPLLR.txt"));
+		BigTextArea disclaimer=new BigTextArea(new File(Config.getApplicationDir(),"Disclaimer.txttxt"));
+		JPanel up = new JPanel();
 		up.setOpaque(true);
 		up.setLayout(new BorderLayout());
 		JPanel image = new JPanel();
 		image.setBorder(new EmptyBorder(4, 3, 1, 1));
 		image.setLayout(new BorderLayout());
-		image.add(new JLabel(new ImageIcon(AboutUnitexFrame.class
-				.getResource("Unitex.jpg"))));
+		image.add(new JLabel(new ImageIcon(AboutUnitexFrame.class.getResource("Unitex.jpg"))));
 		up.add(image, BorderLayout.WEST);
 		JPanel info = new JPanel();
 		info.setBorder(new TitledBorder("Unitex"));
 		info.setLayout(new BorderLayout());
-    JScrollPane disclaimerScroll = new JScrollPane(disclaimer);
-    disclaimerScroll.setPreferredSize(new Dimension(400,image.getHeight()));
-    info.add(disclaimerScroll, BorderLayout.CENTER);
+		disclaimer.setPreferredSize(new Dimension(400,image.getHeight()));
+		info.add(disclaimer, BorderLayout.CENTER);
 		up.add(info, BorderLayout.CENTER);
 		top.add(up, BorderLayout.NORTH);
 		JTabbedPane licenses = new JTabbedPane();
-    licenses.add(scrollLGPL,"LGPL");
-    licenses.add(scrollGPL,"GPL");
-    licenses.add(scrollLGPLLR,"LGPLLR");
+		licenses.add(licenseLGPL,"LGPL");
+		licenses.add(licenseGPL,"GPL");
+		licenses.add(licenseLGPLLR,"LGPLLR");
 		top.add(licenses, BorderLayout.CENTER);
 		setContentPane(top);
 		setVisible(false);
@@ -81,29 +76,8 @@ public class AboutUnitexFrame extends JInternalFrame {
 				frame.setVisible(false);
 			}
 		});
-    disclaimer.setWrapStyleWord(true);
-    disclaimer.setLineWrap(true);
-    disclaimer.setEditable(false);
-		licenseGPL.setWrapStyleWord(true);
-		licenseGPL.setLineWrap(true);
-		licenseGPL.setEditable(false);
-    licenses.setPreferredSize(new Dimension(500,300));
-    licenseLGPL.setWrapStyleWord(true);
-    licenseLGPL.setLineWrap(true);
-    licenseLGPL.setEditable(false);
-		try {
-			File f = new File(Config.getApplicationDir(), "GPL.txt");
-			licenseGPL.load(f);
-      f = new File(Config.getApplicationDir(), "LGPL.txt");
-      licenseLGPL.load(f);
-      f = new File(Config.getApplicationDir(), "LGPLLR.txt");
-      licenseLGPLLR.load(f);
-      f = new File(Config.getApplicationDir(), "Disclaimer.txt");
-      disclaimer.load(f);
-		} catch (java.io.IOException e) {
-			// do nothing
-		}
-    pack();
+		licenses.setPreferredSize(new Dimension(500,300));
+		pack();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 

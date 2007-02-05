@@ -54,7 +54,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	static ApplyLexicalResourcesFrame frame;
 	JList userDicList;
 	JList systemDicList;
-	MyTextArea credits; 
+	BigTextArea credits; 
     JScrollPane scrollCredits;
     String noCreditMessage="No available description for the dictionary \"";
 
@@ -202,18 +202,13 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 	private JPanel constructCreditsPanel() {
 		JPanel p=new JPanel(new BorderLayout());
-		p.add(new JLabel( "Right-click a dictionary to get information about it :"),BorderLayout.NORTH);
-		credits=new MyTextArea();
-		credits.setWrapStyleWord(true);
-		credits.setLineWrap(true);
-		credits.setEditable(false);
-		scrollCredits=new JScrollPane(credits);
-		scrollCredits
-		.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollCredits
-		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-
-		p.add(scrollCredits,BorderLayout.CENTER);
+		p.add(new JLabel("Right-click a dictionary to get information about it :"),BorderLayout.NORTH);
+		credits=new BigTextArea();
+		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+			public void textFontChanged(Font font) {
+				credits.setFont(font);
+			}});
+		p.add(credits,BorderLayout.CENTER);
 		return p;
 	}
 
@@ -297,13 +292,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						String s2=Util.getFileNameWithoutExtension(s);
 						File f=new File(new File(Config.getUserCurrentLanguageDir(),"Dela"),s2+".txt");
 						if (f.exists()) {
-							try {
-								credits.load(f);
-							} catch (IllegalArgumentException e1) {
-								e1.printStackTrace();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+							credits.load(f);
 						}
 						else {
 							credits.setText(noCreditMessage+s+"\"");
@@ -376,13 +365,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						String s2=Util.getFileNameWithoutExtension(s);
 						File f=new File(new File(Config.getUnitexCurrentLanguageDir(),"Dela"),s2+".txt");
 						if (f.exists()) {
-							try {
-								credits.load(f);
-							} catch (IllegalArgumentException e1) {
-								e1.printStackTrace();
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
+							credits.load(f);
 						}
 						else {
 							credits.setText(noCreditMessage+s+"\"");
