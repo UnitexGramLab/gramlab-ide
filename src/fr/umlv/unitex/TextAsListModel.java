@@ -46,7 +46,6 @@ public class TextAsListModel extends AbstractListModel {
 	FileChannel channel;
 	FileInputStream stream;
 	File file;
-	
 	boolean dataFromFile;
 	
 	public void load(File f) {
