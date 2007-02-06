@@ -58,16 +58,16 @@ public class GraphSizeMenu extends JDialog {
 	public GraphSizeMenu() {
 		super(UnitexFrame.mainFrame, "Graph Size", true);
 		pref = this;
-		setContentPane(constructPanel());
 		GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 		if (f == null) {
 			return;
 		}
+		setContentPane(constructPanel());
 		X = f.graphicalZone.Width;
 		Y = f.graphicalZone.Height;
+		unit = PIXELS;
 		Width.setText(stringValueOfX());
 		Height.setText(stringValueOfY());
-		unit = PIXELS;
 		pack();
 		setResizable(false);
 		pref = this;
