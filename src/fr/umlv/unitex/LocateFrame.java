@@ -24,14 +24,13 @@ package fr.umlv.unitex;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+
 
 /**
  * This class describes the locate pattern frame.
@@ -50,14 +49,11 @@ public class LocateFrame extends JInternalFrame {
 	JRadioButton shortestMatches = new JRadioButton("Shortest matches", false);
 	JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
 	JRadioButton allMatches = new JRadioButton("All matches", false);
-	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",
-			true);
+	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",true);
 	JRadioButton mergeOutputs = new JRadioButton("Merge with input text", false);
-	JRadioButton replaceOutputs = new JRadioButton(
-			"Replace recognized sequences", false);
+	JRadioButton replaceOutputs = new JRadioButton("Replace recognized sequences", false);
 	JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
-	JRadioButton indexAllMatches = new JRadioButton(
-			"Index all utterances in text", false);
+	JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text", false);
 	NumericTextField nMatches = new NumericTextField("200");
 
 	private LocateFrame() {
@@ -71,6 +67,10 @@ public class LocateFrame extends JInternalFrame {
 				setVisible(false);
 			}
 		});
+		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+			public void textFontChanged(Font font) {
+				regExp.setFont(font);
+			}});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
@@ -91,7 +91,7 @@ public class LocateFrame extends JInternalFrame {
 		if (frame == null) {
 			init();
 		}
-		frame.regExp.setFont(Config.getCurrentTextFont());
+		frame.regExp.setFont(Preferences.pref.textFont);
 		frame.setVisible(true);
 		try {
 			frame.setSelected(true);

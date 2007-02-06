@@ -67,6 +67,7 @@ public class BigTextArea extends JPanel {
 		add(scrollBar,BorderLayout.EAST);
 		model.addListDataListener(new ListDataListener() {
 			public void intervalAdded(ListDataEvent e) {
+				int oldMaximum=scrollBar.getMaximum();
 				scrollBar.setMaximum(model.getSize()-1);
 				int maximum=scrollBar.getMaximum();
 				if (maximum>=1000) {
@@ -74,7 +75,10 @@ public class BigTextArea extends JPanel {
 				} else {
 					scrollBar.setBlockIncrement(1);
 				}
-				refresh();
+				if (oldMaximum<=100) {
+					/* Just to refresh on the first load */
+					refresh();
+				}
 			}
 
 			public void intervalRemoved(ListDataEvent e) {
