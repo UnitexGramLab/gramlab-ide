@@ -24,35 +24,41 @@ package fr.umlv.unitex;
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
+import java.nio.charset.*;
 import java.util.*;
 import javax.swing.*;
 
 
 /**
- * This is a model for representing a text file as the list of its paragraphs.
- * Paragraphs are delimited by new lines. It uses a mapped file to avoid 
- * to store large data in memory.
+ * This is a model for representing an HTML concordance file as the
+ * list of its paragraphs. Paragraphs are delimited by new lines. It uses
+ * a mapped file to avoid to store large data in memory.
  * 
  * @author Sébastien Paumier
  */
-public class TextAsListModel extends AbstractListModel {
+public class ConcordanceAsListModel extends AbstractListModel {
 
+	/**
+	 * An HTML concordance file always starts with a header of
+	 * HTML_START_LINES lines, then there are the real concordance lines, then
+	 * there are HTML_END_LINES that close open HTML tags.
+	 */
+	private static final int HTML_START_LINES = 7;
+	private static final int HTML_END_LINES = 2;
+	private static final int HTML_CONTROL_LINES = HTML_START_LINES+HTML_END_LINES;
 	MappedByteBuffer buffer;
 	ArrayList<Interval> intervals;
 	int dataLength;
 	SwingWorker<Void,Interval> worker;
 	Interval selection;
-	String content=null;
 	FileChannel channel;
 	FileInputStream stream;
 	File file;
-	boolean dataFromFile;
+	private static Charset utf8=Charset.forName("UTF-8");
 	
 	public void load(File f) {
-		content=null;
-		dataFromFile=true;
 		this.file=f;
-		long fileLength=file.length();
+		dataLength=(int)file.length();
 		intervals=new ArrayList<Interval>();
 		try {
 			stream = new FileInputStream(file);
@@ -62,26 +68,22 @@ public class TextAsListModel extends AbstractListModel {
 		}
 		channel=stream.getChannel();
 		try {
-			buffer=channel.map(FileChannel.MapMode.READ_ONLY,2,fileLength-2);
+			buffer=channel.map(FileChannel.MapMode.READ_ONLY,0,dataLength);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
-		dataLength=(int) ((fileLength-2)/2);
-		final ByteBuffer parseBuffer=buffer.duplicate();
 		worker=new SwingWorker<Void,Interval>() {
 
 			@Override
 			protected Void doInBackground() throws Exception {
 				int lastStart=0;
 				for (int pos=0;pos<dataLength;pos=pos+1) {
-					int a=0xFF & parseBuffer.get();
-		        	int b=0xFF & parseBuffer.get();
-		        	char c=(char)(b<<8 |a);
-		        	if (c=='\n') {
+					int a=0xFF & buffer.get();
+		        	if (a=='\n') {
 		        		// if we have an end-of-line
 		        		publish(new Interval(lastStart,pos));
-		        		setProgress((int)((long)pos*100/dataLength));
+		        		setProgress(100*pos/dataLength);
 		        		lastStart=pos+1;
 		        	}
 		        }
@@ -104,95 +106,58 @@ public class TextAsListModel extends AbstractListModel {
 		worker.execute();
 	}
 
-	public TextAsListModel() {
-		dataFromFile=false;
-		setText("");
-	}
-
-	public void setText(String string) {
-		dataFromFile=false;
-		intervals=new ArrayList<Interval>();
-		content=string;
-		fireIntervalAdded(this,0,0);
+	public ConcordanceAsListModel() {
 	}
 
 	public int getSize() {
-		if (content!=null) return 1;
-		return intervals.size();
+		if (intervals==null) return 0;
+		int size=intervals.size()-HTML_CONTROL_LINES;
+		if (size<0) return 0;
+		return size;
 	}
 
-	
-	private final StringBuilder builder=new StringBuilder(40*100);
 	
 	/**
 	 * Returns the text corresponding to the paragraph #i.
 	 */
-	public String getElementAt(int i) {
-		if (!dataFromFile) return content;
+	public String getElementReallyAt(int i) {
 		Interval interval=intervals.get(i);
-		builder.setLength(0);
-		int start=interval.getStart();
-		int end=interval.getEnd();
-		buffer.position(2*start);
-		for (int pos=start;pos<=end;pos++) {
-			int a=0xFF & buffer.get();
-        	int b=0xFF & buffer.get();
-        	char c=(char)(b*256+a);
-        	if (c!='\r' && c!='\n') {
-        		builder.append(c);
-			}
+		long start=interval.getStart()+15; // we don't want neither the "<tr><td nowrap>"
+		long end=interval.getEnd()-12;     // nor the "</td></tr>\r\n"
+		byte[] tmp=new byte[(int) (end-start+1)];
+		int z=0;
+		for (long pos=start;pos<=end;pos++) {
+			tmp[z++]=buffer.get((int)pos);
 		}
-		return builder.toString();
+		return new String(tmp,utf8);
 	}
 
 	
-	public Interval getSelection() {
-		if (!dataFromFile) return null;
-		return selection;
+	/**
+	 * Returns the text corresponding to the concordance line #i.
+	 */
+	public String getElementAt(int i) {
+		int realIndex=i+HTML_START_LINES;
+		return getElementReallyAt(realIndex);
 	}
-
-	public void setSelection(Interval selection) {
-		this.selection=selection;
-		fireContentsChanged(this,0,getSize()-1);
+	
+	public String getHTMLStart() {
+		// TODO take the font from the preferences
+		return 
+		"<html lang=en>\r\n"+
+		"<body>\r\n<font style=\"font-family: Courier new; font-size: 12\">\r\n";
 	}
-
-	public Interval getIntervalAt(int i) {
-		if (!dataFromFile) {
-			return null;
-		}
-		try {
-			return intervals.get(i);
-		} catch (IndexOutOfBoundsException e) {
-			return null;
-		}
+	
+	public String getHTMLEnd() {
+		return "</font></body></html>";
 	}
-
+	
+	
 	/**
 	 * Just to ask the view to refresh.
 	 */
 	public void refresh() {
 		fireContentsChanged(this,0,getSize());
-	}
-
-	/**
-	 * We want to get the number of the interval that contains the given position.
-	 * @param position
-	 * @return the number of the interval, or -1 if the position is not contained 
-	 *         in an interval of the model 
-	 */
-	public int getElementContainingPosition(long position) {
-		if (!dataFromFile) return -1;
-		if (position<0) return -1;
-		int size=getSize();
-		for (int i=0;i<size;i++) {
-			Interval interval=intervals.get(i);
-			if (position>=interval.getStart() && position <=interval.getEnd()) return i;
-		}
-		return -1;
-	}
-
-	public String getContent() {
-		return content;
 	}
 
 	public void reset() {
@@ -214,6 +179,5 @@ public class TextAsListModel extends AbstractListModel {
 			}
 			stream=null;
 		}
-		setText("");
 	}
 }

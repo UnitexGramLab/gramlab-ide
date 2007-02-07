@@ -26,10 +26,10 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
 import java.util.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
 
 /**
  * This class describes a frame that can show an HTML file. It is used to show
@@ -40,22 +40,45 @@ import javax.swing.event.*;
  */
 public class ConcordanceFrame extends JInternalFrame {
 
-	JEditorPane text = new JEditorPane();
+	static ConcordanceFrame frame;
+	
+	BigConcordance list=new BigConcordance();
 	private JLabel nombre_matches = new JLabel("");
-	JRadioButton enableLinks = new JRadioButton("Enable links");
-	JRadioButton enableEdition = new JRadioButton("Allow concordance edition");
+	JComponent invisible=new JComponent() {
+		@Override
+		protected void paintComponent(Graphics g) {
+			/* Do nothing since this is an invisible component
+			 * only used to catch mouse events.
+			 */
+			
+		}
+		
+		@Override
+		public boolean contains(int x, int y) {
+			return true;
+		}
 
-	MyHyperlinkListener listener = new MyHyperlinkListener();
-	File concordanceFile;
-
+		@Override
+		public boolean contains(Point p) {
+			return true;
+		}
+	};
+	
 	/**
 	 * Constructs a new empty <code>ConcordanceFrame</code>.
-	 *  
 	 */
 	public ConcordanceFrame() {
 		super("", true, true, true, true);
-		text.setEditable(false);
-		JScrollPane scroll = new JScrollPane(text);
+		invisible.setOpaque(false);
+		invisible.setVisible(true);
+		invisible.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				getLayeredPane().remove(invisible);
+				revalidate();
+				repaint();
+			}
+		});
+		JScrollPane scroll = new JScrollPane(list);
 		JPanel middle = new JPanel(new BorderLayout());
 		middle.setOpaque(true);
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -68,38 +91,33 @@ public class ConcordanceFrame extends JInternalFrame {
 		up.setOpaque(true);
 		up.setBorder(new EmptyBorder(2, 2, 2, 2));
 		up.add(nombre_matches, BorderLayout.CENTER);
-		JPanel buttons = new JPanel(new BorderLayout());
-		buttons.add(enableLinks, BorderLayout.CENTER);
-		buttons.add(enableEdition, BorderLayout.EAST);
-		enableLinks.setSelected(true);
-		enableEdition.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				text.setEditable(true);
-				text.removeHyperlinkListener(listener);
-			}
-		});
-		enableLinks.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				text.setEditable(false);
-				text.addHyperlinkListener(listener);
-			}
-		});
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(enableLinks);
-		bg.add(enableEdition);
-		up.add(buttons, BorderLayout.EAST);
-		top.add(up, BorderLayout.NORTH);
 		setContentPane(top);
-		pack();
-		setBounds(150, 50, 850, 550);
-		setVisible(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				setVisible(false);
 				dispose();
 			}
+			
+			@Override
+			public void internalFrameDeactivated(InternalFrameEvent e) {
+				/* Don't want to deal with a layout manager on the JLayeredPane,
+				 * so we just set a big size.
+				 */
+				invisible.setSize(2000,2000);
+				/* We add the invisible component on the top of the layered pane */ 
+				getLayeredPane().add(invisible,new Integer(600));
+				revalidate();
+				repaint();
+			}
+			
+			@Override
+			public void internalFrameActivated(InternalFrameEvent e) {
+				getLayeredPane().remove(invisible);
+				revalidate();
+				repaint();
+			}
 		});
-		text.addHyperlinkListener(listener);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
@@ -114,9 +132,10 @@ public class ConcordanceFrame extends JInternalFrame {
      context lengths
 	 */
 	public static void load(File concor, int widthInChars) {
-		ConcordanceFrame frame = new ConcordanceFrame();
+		if (frame==null) {
+			frame = new ConcordanceFrame();
+		}
 		UnitexFrame.addInternalFrame(frame);
-		frame.concordanceFile = concor;
 		frame.setTitle("Concordance: " + concor.getAbsolutePath());
 		frame.nombre_matches.setText(Util.getHtmlPageTitle(concor));
 		try {
@@ -129,42 +148,58 @@ public class ConcordanceFrame extends JInternalFrame {
 		int g = widthInChars * 8;
 		d.setSize((g < 800) ? g : 800, d.height);
 		frame.setSize(d);
-		try {
-      Util.getHtmlPageTitle(concor);
-			frame.text.setPage(concor.toURL());
-			frame.setVisible(true);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Util.getHtmlPageTitle(concor);
+		frame.list.setFont(new Font("Courier new",0,12));
+		frame.list.setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		frame.list.setCellRenderer(new DefaultListCellRenderer() {
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+				StringBuilder builder=new StringBuilder();
+				builder.append("<html><body>");
+				builder.append((String)value);
+				builder.append("</body></html>");
+				setText(builder.toString());
+				return this;
+			}});
+		frame.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		frame.list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				String s=(String) frame.list.getSelectedValue();
+				if (s==null || e.getValueIsAdjusting() || TextFrame.getFrame().isSelected()) return;
+				int start=s.indexOf("<a href=\"")+9;
+				int end=s.indexOf(' ',start);
+				int selectionStart=Integer.valueOf((String) s.subSequence(start,end));
+				start=end+1;
+				end=s.indexOf(' ',start);
+				int selectionEnd=Integer.valueOf((String) s.subSequence(start,end));
+				start=end+1;
+				end=s.indexOf('\"',start);
+				int sentenceNumber=Integer.valueOf((String) s.subSequence(start,end));
+				try {
+					TextFrame.getFrame().setIcon(false);
+					TextFrame.getFrame().text.setSelection(selectionStart,selectionEnd-1);
+					TextFrame.getFrame().text.scrollToSelection();
+					TextFrame.getFrame().setSelected(true);
+			} catch (PropertyVetoException e2) {
+				e2.printStackTrace();
+			}
+			TextAutomatonFrame.loadSentenceFromConcordance(sentenceNumber);
+			}});
+		frame.list.load(concor);
+		frame.setBounds(150, 50, 850, 550);
+		frame.setVisible(true);
 	}
 
 	/**
 	 * Closes the frame.
 	 *  
 	 */
-	public void close() {
-		setVisible(false);
-		UnitexFrame.removeInternalFrame(this);
-	}
-
-	class MyHyperlinkListener implements HyperlinkListener {
-		public void hyperlinkUpdate(HyperlinkEvent e) {
-			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-				StringTokenizer s = new StringTokenizer(e.getDescription());
-				int a = new Integer(s.nextToken()).intValue();
-				int b = new Integer(s.nextToken()).intValue();
-				int c = new Integer(s.nextToken()).intValue();
-				try {
-						TextFrame.getFrame().setIcon(false);
-						TextFrame.getFrame().text.setSelection(a,b-1);
-						TextFrame.getFrame().text.scrollToSelection();
-						TextFrame.getFrame().setSelected(true);
-				} catch (PropertyVetoException e2) {
-					e2.printStackTrace();
-				}
-				TextAutomatonFrame.loadSentenceFromConcordance(c);
-			}
-		}
+	public static void close() {
+		if (frame==null) return;
+		frame.setVisible(false);
+		frame.list.reset();
+		frame.list.clearSelection();
+		UnitexFrame.removeInternalFrame(frame);
 	}
 
 }

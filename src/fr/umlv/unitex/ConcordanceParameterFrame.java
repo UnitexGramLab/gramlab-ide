@@ -420,7 +420,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	void buildConcordance() {
-          if (leftChars.getText().equals("")) {
+        if (leftChars.getText().equals("")) {
 			JOptionPane.showMessageDialog(null,
 					"You must specify the left context length", "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -461,7 +461,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		setVisible(false);
 		int width = Integer.parseInt(leftChars.getText())
 				+ Integer.parseInt(rightChars.getText());
-    new ProcessInfoFrame(command, true, new ConcordanceDo(new File(Config
+		ConcordanceFrame.close();
+		new ProcessInfoFrame(command, true, new ConcordanceDo(new File(Config
 				.getCurrentSntDir(), "concord.html"), checkBox.isSelected(),
 				width));
 	}
