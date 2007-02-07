@@ -22,19 +22,19 @@
 package fr.umlv.unitex;
 
 class Interval {
-	long start;
-	long end;
+	private final int start;
+	private final int end;
 	
-	Interval(long s,long e) {
+	Interval(int s,int e) {
 		start=s;
 		end=e;
 	}
 
-	public long getEnd() {
+	public int getEnd() {
 		return end;
 	}
 
-	public long getStart() {
+	public int getStart() {
 		return start;
 	}
 }

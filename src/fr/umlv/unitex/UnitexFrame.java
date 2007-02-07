@@ -1946,7 +1946,8 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void closeAllConcordanceFrames() {
-		Component[] f = desktop.getComponents();
+		ConcordanceFrame.close();
+		/*Component[] f = desktop.getComponents();
 		for (int i = 0; i < f.length; i++) {
 			try {
 				ConcordanceFrame F = (ConcordanceFrame) f[i];
@@ -1954,7 +1955,7 @@ public class UnitexFrame extends JFrame {
 			} catch (ClassCastException e) {
 				// nothing to do
 			}
-		}
+		}*/
 	}
 
 	/**
