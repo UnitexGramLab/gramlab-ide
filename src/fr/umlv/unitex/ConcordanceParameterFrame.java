@@ -462,7 +462,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		int width = Integer.parseInt(leftChars.getText())
 				+ Integer.parseInt(rightChars.getText());
 		ConcordanceFrame.close();
-		new ProcessInfoFrame(command, true, new ConcordanceDo(new File(Config
+		new ProcessInfoFrame(command, true, new ConcordanceDo(false,new File(Config
 				.getCurrentSntDir(), "concord.html"), checkBox.isSelected(),
 				width));
 	}
@@ -488,7 +488,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 						  .fontSize(Preferences.getConcordanceFontSize());
 			setVisible(false);
 			int width = 160;
-	    new ProcessInfoFrame(command, true, new ConcordanceDo(outputHtmlFile, checkBox.isSelected(),
+	    new ProcessInfoFrame(command, true, new ConcordanceDo(true,outputHtmlFile, checkBox.isSelected(),
 					width));
 		}
 
@@ -499,16 +499,20 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		File htmlFile;
 		final boolean browser;
 		int widthInChars;
+		boolean diff;
 
 		public ConcordanceDo(File page) {
 			htmlFile = page;
 			browser = false;
 			widthInChars = 95;
+			diff=false;
 		}
-		public ConcordanceDo(File page, boolean br, int width) {
+		public ConcordanceDo(boolean diff,File page, boolean br, int width) {
 			htmlFile = page;
 			browser = br;
 			widthInChars = width;
+			this.diff=diff;
+			
 		}
 		public void toDo() {
 			if (browser && Preferences.getCloneOfPreferences().htmlViewer != null) {
@@ -526,7 +530,11 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 					}
 				}.start();
 			} else {
-				ConcordanceFrame.load(htmlFile, widthInChars);
+				if (!diff) {
+					ConcordanceFrame.load(htmlFile, widthInChars);
+				} else {
+					ConcordanceDiffFrame.load(htmlFile, widthInChars);
+				}
 			}
 		}
 	}

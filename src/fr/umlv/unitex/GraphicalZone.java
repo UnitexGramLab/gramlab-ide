@@ -77,7 +77,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			addBox(g2);
 			addBox(g);
 			initText("");
-			texte.setEditable(false);
+			text.setEditable(false);
 		} else {
 			for (int i = 0; i < graphBoxes.size(); i++) {
 				GraphBox g = (GraphBox) graphBoxes.get(i);
@@ -208,7 +208,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					// simple click not on a box
 					unSelectAllBoxes();
 					initText("");
-					texte.setEditable(false);
+					text.setEditable(false);
 				}
 			}
 			paintImmediately();
@@ -285,13 +285,13 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 			dragging = false;
 			initText("");
-			texte.setEditable(false);
+			text.setEditable(false);
 			if (singleDragging) {
 				singleDragging = false;
 				singleDraggedBox.singleDragging = false;
 			} else if (selecting == true) {
 				selectByRectangle(X_drag, Y_drag, dragWidth, dragHeight);
-				texte.setEditable(true);
+				text.setEditable(true);
 				selecting = false;
 			}
 			paintImmediately();

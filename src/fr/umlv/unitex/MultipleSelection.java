@@ -32,7 +32,7 @@ public class MultipleSelection {
 
    int n= 0;
 
-   ArrayList elem;
+   ArrayList<GraphBoxInfo> elem;
 
    /**
     * Creates a new <code>MultipleSelection</code> from a <code>GraphBox</code> vector 
@@ -49,7 +49,7 @@ public class MultipleSelection {
    
    public void multipleSelectionGraphBoxes(ArrayList v) {
       int L= v.size();
-      elem= new ArrayList();
+      elem= new ArrayList<GraphBoxInfo>();
       for (int i= 0; i < L; i++) {
          // here we numerote the selected states
          GraphBox g= (GraphBox)v.get(i);
@@ -59,13 +59,13 @@ public class MultipleSelection {
          gbi.X= g.x;
          gbi.Y= g.Y;
          gbi.content= g.content;
-         gbi.reachableBoxes= new Vector();
+         gbi.reachableBoxes= new Vector<Integer>();
          elem.add(gbi);
       }
       for (int i= 0; i < L; i++) {
          // here we create relative transitions
          GraphBox g= (GraphBox)v.get(i);
-         GraphBoxInfo gbi= (GraphBoxInfo)elem.get(i);
+         GraphBoxInfo gbi= elem.get(i);
          ArrayList temp= g.transitions;
          int k= temp.size();
          for (int j= 0; j < k; j++) {
@@ -90,7 +90,7 @@ public class MultipleSelection {
     */
    public void multipleSelectionFstGraphBoxes(ArrayList v) {
       int L= v.size();
-      elem= new ArrayList();
+      elem= new ArrayList<GraphBoxInfo>();
       for (int i= 0; i < L; i++) {
          // here we numerote the selected states
          FstGraphBox g= (FstGraphBox)v.get(i);
@@ -100,13 +100,13 @@ public class MultipleSelection {
          gbi.X= g.x;
          gbi.Y= g.Y;
          gbi.content= g.content;
-         gbi.reachableBoxes= new Vector();
+         gbi.reachableBoxes= new Vector<Integer>();
          elem.add(gbi);
       }
       for (int i= 0; i < L; i++) {
          // here we create relative transitions
          FstGraphBox g= (FstGraphBox)v.get(i);
-         GraphBoxInfo gbi= (GraphBoxInfo)elem.get(i);
+         GraphBoxInfo gbi= elem.get(i);
          ArrayList temp= g.transitions;
          int k= temp.size();
          for (int j= 0; j < k; j++) {

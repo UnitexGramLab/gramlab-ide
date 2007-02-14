@@ -35,13 +35,13 @@ import fr.umlv.unitex.*;
 public class AddBoxeEdit extends AbstractUndoableEdit {
 	
 	/** boxes of the graph */
-	private ArrayList boxes;
+	private ArrayList<GenericGraphBox> boxes;
 	/** boxe  to add to the graph */
 	private GenericGraphBox boxe;
 	/** area where the graph is drawn */	
 	private  GenericGraphicalZone zone;
 	/** list of transition to the boxe */
-	private ArrayList transtionsToBoxe;
+	private ArrayList<GenericGraphBox> transitionsToBoxe;
 	
 	/**
 	 * contruct an edit to redo and undo an add boxe action 
@@ -49,7 +49,7 @@ public class AddBoxeEdit extends AbstractUndoableEdit {
 	 * @param boxes the unit boxes of a graph
 	 * @param zone the zone where boxes are drawn
 	 */
-	public AddBoxeEdit(GenericGraphBox boxe, ArrayList boxes, GenericGraphicalZone zone ) {
+	public AddBoxeEdit(GenericGraphBox boxe, ArrayList<GenericGraphBox> boxes, GenericGraphicalZone zone ) {
 		this.boxes = boxes;
 		this.boxe = boxe;
 		this.zone = zone;
@@ -63,9 +63,9 @@ public class AddBoxeEdit extends AbstractUndoableEdit {
 		GenericGraphBox g;
 		boxes.remove(boxe);	
 			
-		transtionsToBoxe = zone.getTransitionTo(boxe);
+		transitionsToBoxe = zone.getTransitionTo(boxe);
 		
-		for( Iterator it = transtionsToBoxe.iterator(); it.hasNext() ; ){
+		for( Iterator it = transitionsToBoxe.iterator(); it.hasNext() ; ){
 			g = ( GenericGraphBox )it.next();
 			g.setSelected(true);
 		}
@@ -83,7 +83,7 @@ public class AddBoxeEdit extends AbstractUndoableEdit {
 		GenericGraphBox g;
 		boxes.add(boxe);	
 		// add old transition to boxe
-		for( Iterator it = transtionsToBoxe.iterator(); it.hasNext() ; ){
+		for( Iterator it = transitionsToBoxe.iterator(); it.hasNext() ; ){
 			g = ( GenericGraphBox )it.next();
 			g.addTransitionTo(boxe);
 		}

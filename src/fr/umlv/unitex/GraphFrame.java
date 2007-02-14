@@ -260,7 +260,7 @@ public class GraphFrame extends JInternalFrame {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						((TextField) graphicalZone.texte).specialCopy
+						((TextField) graphicalZone.text).specialCopy
 								.actionPerformed(E);
 						repaint();
 					}
@@ -272,7 +272,7 @@ public class GraphFrame extends JInternalFrame {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						((TextField) graphicalZone.texte).cut
+						((TextField) graphicalZone.text).cut
 								.actionPerformed(E);
 						repaint();
 					}
@@ -284,7 +284,7 @@ public class GraphFrame extends JInternalFrame {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						((TextField) graphicalZone.texte).specialPaste
+						((TextField) graphicalZone.text).specialPaste
 								.actionPerformed(E);
 						repaint();
 					}

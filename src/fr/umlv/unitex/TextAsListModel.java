@@ -38,9 +38,8 @@ import javax.swing.*;
 public class TextAsListModel extends AbstractListModel {
 
 	MappedByteBuffer buffer;
-	ArrayList<Interval> intervals;
 	int dataLength;
-	SwingWorker<Void,Interval> worker;
+	SwingWorker<Void,Integer> worker;
 	Interval selection;
 	String content=null;
 	FileChannel channel;
@@ -48,12 +47,16 @@ public class TextAsListModel extends AbstractListModel {
 	File file;
 	boolean dataFromFile;
 	
+	int[] endOfLines;
+	int numberOfEOL;
+	
 	public void load(File f) {
 		content=null;
 		dataFromFile=true;
 		this.file=f;
 		long fileLength=file.length();
-		intervals=new ArrayList<Interval>();
+		endOfLines=new int[0];
+		numberOfEOL=0;
 		try {
 			stream = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
@@ -69,7 +72,7 @@ public class TextAsListModel extends AbstractListModel {
 		}
 		dataLength=(int) ((fileLength-2)/2);
 		final ByteBuffer parseBuffer=buffer.duplicate();
-		worker=new SwingWorker<Void,Interval>() {
+		worker=new SwingWorker<Void,Integer>() {
 
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -80,45 +83,79 @@ public class TextAsListModel extends AbstractListModel {
 		        	char c=(char)(b<<8 |a);
 		        	if (c=='\n') {
 		        		// if we have an end-of-line
-		        		publish(new Interval(lastStart,pos));
+		        		publish(pos);
 		        		setProgress((int)((long)pos*100/dataLength));
 		        		lastStart=pos+1;
 		        	}
 		        }
 				if (lastStart<(dataLength-1)) {
-		        	publish(new Interval(lastStart,dataLength-1));
+					publish(dataLength-1);
 		        	setProgress(100);
 		        }
+				/* We publish a negative position in order to inform the
+				 * progress method that there are no more ends of line. 
+				 */
+				publish(-1);
 				return null;
 			}
 			
 			@SuppressWarnings("synthetic-access")
 			@Override
-			protected void process(java.util.List<Interval> chunks) {
-				int oldSize=intervals.size();
-				intervals.addAll(chunks);
-				fireIntervalAdded(this,oldSize,intervals.size()-1);
+			protected void process(java.util.List<Integer> chunks) {
+				int oldSize=numberOfEOL;
+				int newSize=oldSize+chunks.size();
+				int multiplier=1;
+				/* We check if it is necessary to enlarge the EOL
+				 * array */
+				if (endOfLines.length==0) {
+					endOfLines=new int[1];
+				}
+				while (multiplier*endOfLines.length < newSize) {
+					multiplier=2*multiplier;
+				}
+				int[] temp=endOfLines;
+				if (multiplier!=1) {
+					temp=Arrays.copyOf(endOfLines,multiplier*endOfLines.length);
+				}
+				int insertPos=oldSize;
+				for (Integer i:chunks) {
+					if (i<0) {
+						/* We assume that a negative position means the end of
+						 * the new lines, and, so, we resize the array. */
+						temp=Arrays.copyOf(temp,insertPos);
+						newSize=insertPos;
+						break;
+					}
+					temp[insertPos++]=i;
+				}
+				/* If we keep the following instructions in this order,
+				 * there is no need to synchronize */
+				endOfLines=temp;
+				numberOfEOL=newSize;
+				fireIntervalAdded(this,oldSize,newSize-1);
 			}
-			
+						
 		};
 		worker.execute();
 	}
 
 	public TextAsListModel() {
+		super();
 		dataFromFile=false;
 		setText("");
 	}
 
 	public void setText(String string) {
 		dataFromFile=false;
-		intervals=new ArrayList<Interval>();
+		numberOfEOL=0;
+		endOfLines=new int[0];
 		content=string;
 		fireIntervalAdded(this,0,0);
 	}
 
 	public int getSize() {
 		if (content!=null) return 1;
-		return intervals.size();
+		return numberOfEOL;
 	}
 
 	
@@ -129,7 +166,7 @@ public class TextAsListModel extends AbstractListModel {
 	 */
 	public String getElementAt(int i) {
 		if (!dataFromFile) return content;
-		Interval interval=intervals.get(i);
+		Interval interval=getInterval(i);
 		builder.setLength(0);
 		int start=interval.getStart();
 		int end=interval.getEnd();
@@ -146,6 +183,15 @@ public class TextAsListModel extends AbstractListModel {
 	}
 
 	
+	Interval getInterval(int i) {
+		if (!dataFromFile) {
+			return null;
+		}
+		int end=endOfLines[i];
+		int start=(i==0)?0:(endOfLines[i-1]+1);
+		return new Interval(start,end);
+	}
+
 	public Interval getSelection() {
 		if (!dataFromFile) return null;
 		return selection;
@@ -154,17 +200,6 @@ public class TextAsListModel extends AbstractListModel {
 	public void setSelection(Interval selection) {
 		this.selection=selection;
 		fireContentsChanged(this,0,getSize()-1);
-	}
-
-	public Interval getIntervalAt(int i) {
-		if (!dataFromFile) {
-			return null;
-		}
-		try {
-			return intervals.get(i);
-		} catch (IndexOutOfBoundsException e) {
-			return null;
-		}
 	}
 
 	/**
@@ -180,15 +215,22 @@ public class TextAsListModel extends AbstractListModel {
 	 * @return the number of the interval, or -1 if the position is not contained 
 	 *         in an interval of the model 
 	 */
-	public int getElementContainingPosition(long position) {
+	public int getElementContainingPosition(int position) {
 		if (!dataFromFile) return -1;
 		if (position<0) return -1;
-		int size=getSize();
-		for (int i=0;i<size;i++) {
-			Interval interval=intervals.get(i);
-			if (position>=interval.getStart() && position <=interval.getEnd()) return i;
+		/* We cache the size and length in case there is a publish
+		 * operation that updates the array.
+		 */ 
+		int size=numberOfEOL;
+		int length=endOfLines.length;
+		int pos=Arrays.binarySearch(endOfLines,0,size,position);
+		if (pos<0) {
+			pos=-1-pos;
+			if (pos==length) {
+				pos=-1;
+			}
 		}
-		return -1;
+		return pos;
 	}
 
 	public String getContent() {
@@ -216,4 +258,5 @@ public class TextAsListModel extends AbstractListModel {
 		}
 		setText("");
 	}
+	
 }
