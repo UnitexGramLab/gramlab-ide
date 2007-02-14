@@ -304,8 +304,8 @@ public class MergeRacineSuffixes extends JInternalFrame {
 	 *            the directory to be scanned
 	 * @return a <code>Vector</code> containing file names.
 	 */
-	public Vector getInfList(File dir,String extFilter) {
-		Vector v = new Vector();
+	public Vector<String> getInfList(File dir,String extFilter) {
+		Vector<String> v = new Vector<String>();
 		if (!dir.exists())
 			return v;
 		File files_list[] = dir.listFiles();
@@ -326,8 +326,8 @@ public class MergeRacineSuffixes extends JInternalFrame {
 	 *            the name of a file containing one ".bin" file name per line
 	 * @return a <code>Vector</code> containing file names.
 	 */
-	public Vector loadDefaultDicList(File name) {
-		Vector v;
+	public Vector<String> loadDefaultDicList(File name) {
+		Vector<String> v;
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(name));
@@ -336,7 +336,7 @@ public class MergeRacineSuffixes extends JInternalFrame {
 		}
 		try {
 			String s;
-			v = new Vector();
+			v = new Vector<String>();
 			while ((s = br.readLine()) != null) {
 				v.add(s);
 			}

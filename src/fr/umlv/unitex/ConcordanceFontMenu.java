@@ -44,18 +44,18 @@ public class ConcordanceFontMenu extends JDialog {
     NumericTextField size = new NumericTextField(3, "");
     JTextField script = new JTextField(10);
     private JTextField example = new JTextField(6);
-  List fontList;
-  List styleList;
-  List sizeList;
-  List scriptList;
-  Hashtable styles;
-  Hashtable ranges;
+    List fontList;
+    List styleList;
+    List sizeList;
+    List scriptList;
+    Hashtable<String,Integer> styles;
+    Hashtable<String,Integer> ranges;
 
-  private static final int ASCII_BASE = 0x0000;
-  private static final int GREEK_BASE = 0x0370;
-  private static final int HEBREW_BASE = 0x0590;
-  private static final int ARABIC_BASE = 0x0600;
-  private static final int THAI_BASE = 0x0E00;
+    private static final int ASCII_BASE = 0x0000;
+    private static final int GREEK_BASE = 0x0370;
+    private static final int HEBREW_BASE = 0x0590;
+    private static final int ARABIC_BASE = 0x0600;
+    private static final int THAI_BASE = 0x0E00;
     private static final int GEORGIAN_BASE = 0x10A0;
     private static final int HIRAGANA_BASE = 0x3040;
     private static final int KATAKANA_BASE = 0x30A0;
@@ -203,7 +203,7 @@ public class ConcordanceFontMenu extends JDialog {
     private void init() {
         // setting the components form
         fontList = new List(7);
-    font.setBackground(Color.white);
+        font.setBackground(Color.white);
         font.setText("");
         styleList = new List(7);
         style.setDisabledTextColor(Color.white);
@@ -224,13 +224,13 @@ public class ConcordanceFontMenu extends JDialog {
         example.setEditable(false);
         example.setBorder(new EmptyBorder(0, 0, 0, 0));
         // setting the components content
-        styles = new Hashtable();
+        styles = new Hashtable<String,Integer>();
         styles.put("Plain", new Integer(Font.PLAIN));
         styles.put("Bold", new Integer(Font.BOLD));
         styles.put("Italic", new Integer(Font.ITALIC));
         styles.put("Bold Italic", new Integer(Font.BOLD | Font.ITALIC));
         String[] styleNames = {"Plain", "Bold", "Italic", "Bold Italic"};
-        ranges = new Hashtable();
+        ranges = new Hashtable<String,Integer>();
         ranges.put("Occidental", new Integer(ASCII_BASE));
         ranges.put("Greek", new Integer(GREEK_BASE));
         ranges.put("Hebrew", new Integer(HEBREW_BASE));
@@ -271,7 +271,7 @@ public class ConcordanceFontMenu extends JDialog {
                 if (e.getStateChange() != ItemEvent.SELECTED)
                     return;
                 style.setText(styleList.getSelectedItem());
-                fontStyle = ((Integer) styles.get(styleList.getSelectedItem()))
+                fontStyle = styles.get(styleList.getSelectedItem())
                         .intValue();
                 refresh();
             }
@@ -309,8 +309,7 @@ public class ConcordanceFontMenu extends JDialog {
                 if (e.getStateChange() != ItemEvent.SELECTED)
                     return;
                 script.setText(scriptList.getSelectedItem());
-                fontScript = ((Integer) ranges
-                        .get(scriptList.getSelectedItem())).intValue();
+                fontScript = ranges.get(scriptList.getSelectedItem()).intValue();
                 refresh();
             }
         });

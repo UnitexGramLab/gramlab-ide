@@ -40,7 +40,7 @@ public class GraphIO {
    /**
     * Boxes of a graph 
     */
-   public ArrayList boxes;
+   public ArrayList<GenericGraphBox> boxes;
 
    /**
     * Rendering properties of a graph 
@@ -116,7 +116,7 @@ public class GraphIO {
          UnicodeIO.skipLine(source); // ignoring PORIENT
          UnicodeIO.skipLine(source); // ignoring #
          res.readBoxNumber(source);
-         res.boxes= new ArrayList();
+         res.boxes= new ArrayList<GenericGraphBox>();
          // adding initial state
          res.boxes.add(new GraphBox(0, 0, 0,null));
          // adding final state
@@ -292,7 +292,7 @@ public class GraphIO {
    }
 
    private void readGraphLine(FileInputStream f, int n) {
-      GenericGraphBox g= (GenericGraphBox)boxes.get(n);
+      GenericGraphBox g= boxes.get(n);
       if (UnicodeIO.readChar(f) == 's') {
          // is a "s" was read, then we read the " char
          UnicodeIO.readChar(f);
@@ -383,7 +383,7 @@ public class GraphIO {
          int dest= 0;
          while (UnicodeIO.isDigit((c= (char)UnicodeIO.readChar(f))))
             dest= dest * 10 + (c - '0');
-         g.addTransitionTo((GenericGraphBox)boxes.get(dest));
+         g.addTransitionTo(boxes.get(dest));
       }
       // skipping the end-of-line
       UnicodeIO.readChar(f);
@@ -502,7 +502,7 @@ public class GraphIO {
          nBoxes= boxes.size();
          UnicodeIO.writeString(dest, String.valueOf(nBoxes) + "\n");
          for (int i= 0; i < nBoxes; i++) {
-            GenericGraphBox g= (GenericGraphBox)boxes.get(i);
+            GenericGraphBox g= boxes.get(i);
             UnicodeIO.writeChar(dest, '"');
             if (g.getType() != 1)
                write_content(dest, g.getContent());
@@ -610,7 +610,7 @@ public class GraphIO {
          UnicodeIO.skipLine(source); // ignoring PORIENT
          UnicodeIO.skipLine(source); // ignoring #
          res.readBoxNumber(source);
-         res.boxes= new ArrayList();
+         res.boxes= new ArrayList<GenericGraphBox>();
          // adding initial state
          res.boxes.add(new FstGraphBox(0, 0, 0, null));
          // adding final state
@@ -715,7 +715,7 @@ public class GraphIO {
          int dest= 0;
          while (UnicodeIO.isDigit((c= (char)UnicodeIO.readChar(f))))
             dest= dest * 10 + (c - '0');
-         g.addTransitionTo((FstGraphBox)boxes.get(dest));
+         g.addTransitionTo(boxes.get(dest));
       }
       // skipping the end-of-line
       UnicodeIO.readChar(f);

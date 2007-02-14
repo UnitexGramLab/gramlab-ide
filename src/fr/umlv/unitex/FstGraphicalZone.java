@@ -147,7 +147,7 @@ public class FstGraphicalZone
                   // simple click not on a box
                   unSelectAllBoxes();
                   initText("");
-                  texte.setEditable(false);
+                  text.setEditable(false);
                }
             }
          repaint();
@@ -202,14 +202,14 @@ public class FstGraphicalZone
             return;
          dragging= false;
          initText("");
-         texte.setEditable(false);
+         text.setEditable(false);
          if (singleDragging) {
             singleDragging= false;
             singleDraggedBox.singleDragging= false;
          } else
             if (selecting == true) {
                selectByRectangle(X_drag, Y_drag, dragWidth, dragHeight);
-               texte.setEditable(true);
+               text.setEditable(true);
                selecting= false;
             }
          repaint();

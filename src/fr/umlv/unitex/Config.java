@@ -1030,7 +1030,7 @@ public class Config {
 		setUserDir(f.getSelectedFile());
 	}
 
-	private static void collectLanguage(File directory, Set languages) {
+	private static void collectLanguage(File directory, Set<String> languages) {
 		File[] fileList = directory.listFiles(new FileFilter() {
 			public boolean accept(File file) {
 				String name = file.getName();
@@ -1052,7 +1052,7 @@ public class Config {
 		JPanel p = new JPanel();
 		p.setLayout(new GridLayout(4, 1));
 		p.setOpaque(true);
-		TreeSet languages = new TreeSet();
+		TreeSet<String> languages = new TreeSet<String>();
 		collectLanguage(getUnitexDir(), languages);
 		collectLanguage(getUserDir(), languages);
 		JComboBox langList = new JComboBox(languages.toArray());
@@ -1076,9 +1076,9 @@ public class Config {
 	 * language.
 	 */
 	public static void changeLanguage() {
-		TreeSet languages = new TreeSet();
-		collectLanguage(getUnitexDir(), languages);
-		collectLanguage(getUserDir(), languages);
+		TreeSet<String> languages = new TreeSet<String>();
+		collectLanguage(getUnitexDir(),languages);
+		collectLanguage(getUserDir(),languages);
 		JComboBox langList = new JComboBox(languages.toArray());
 		String old = getCurrentLanguage();
 		Object[] options = {"OK", "Cancel"};

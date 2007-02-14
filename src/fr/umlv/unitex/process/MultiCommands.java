@@ -31,10 +31,10 @@ import java.util.*;
  */
 public class MultiCommands {
 
-	private final ArrayList list;
+	private final ArrayList<CommandBuilder> list;
 
 	public MultiCommands() {
-		list = new ArrayList();
+		list = new ArrayList<CommandBuilder>();
 	}
 
 	public MultiCommands(CommandBuilder builder) {
@@ -47,7 +47,7 @@ public class MultiCommands {
 	}
 
 	public CommandBuilder getCommand(int n) {
-		return (CommandBuilder) list.get(n);
+		return list.get(n);
 	}
 
 	public int numberOfCommands() {

@@ -134,7 +134,7 @@ public class BigTextArea extends JPanel {
 			e1.printStackTrace();
 		}
 		builder.setLength(0);
-		Interval x=model.getIntervalAt(value);
+		Interval x=model.getInterval(value);
 		if (x==null) {
 			String s=model.getContent();
 			if (s!=null) area.setText(s);
@@ -144,7 +144,7 @@ public class BigTextArea extends JPanel {
 		int start=x.getStart();
 		Interval element=null;
 		for (int i=value;i<=limit;i++) {
-			element=model.getIntervalAt(i);
+			element=model.getInterval(i);
 			builder.append(model.getElementAt(i));
 			builder.append('\r');
 			builder.append('\n');
@@ -211,8 +211,7 @@ public class BigTextArea extends JPanel {
 	public void scrollToSelection() {
 		Interval selection=model.getSelection();
 		if (selection==null) return;
-		long start=selection.getStart();
-		int i=model.getElementContainingPosition(start);
+		int i=model.getElementContainingPosition(selection.getStart());
 		if (i!=-1) scrollBar.setValue(i);
 	}
 

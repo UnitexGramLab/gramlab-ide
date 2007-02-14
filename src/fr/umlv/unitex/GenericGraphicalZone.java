@@ -56,17 +56,17 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Text field in which the content of boxes can be edited.
 	 */
-	public JTextField texte;
+	public JTextField text;
 
 	/**
 	 * ArrayList containing the current selected boxes
 	 */
-	public ArrayList selectedBoxes;
+	public ArrayList<GenericGraphBox> selectedBoxes;
 
 	/**
 	 * ArrayList containing all the graph's boxes
 	 */
-	public ArrayList graphBoxes;
+	public ArrayList<GenericGraphBox> graphBoxes;
 
 	protected boolean is_initialised = false;
 
@@ -126,8 +126,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 		super();
 		Width = w;
 		Height = h;
-		texte = t;
-		texte.getDocument().addDocumentListener(new DocumentListener() {
+		text = t;
+		text.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent arg0) {
 				// nothing to do
 			}
@@ -140,11 +140,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 			}
 		});
 		parentFrame = p;
-		selectedBoxes = new ArrayList();
-		graphBoxes = new ArrayList();
+		selectedBoxes = new ArrayList<GenericGraphBox>();
+		graphBoxes = new ArrayList<GenericGraphBox>();
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
-		texte.setEditable(false);
+		text.setEditable(false);
 		pref = Preferences.getCloneOfPreferences();
 	}
 
@@ -165,13 +165,13 @@ public abstract class GenericGraphicalZone extends JComponent {
 		super();
 		Width = w;
 		Height = h;
-		texte = t;
+		text = t;
 		parentFrame = p;
-		selectedBoxes = new ArrayList();
-		graphBoxes = new ArrayList();
+		selectedBoxes = new ArrayList<GenericGraphBox>();
+		graphBoxes = new ArrayList<GenericGraphBox>();
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
-		texte.setEditable(false);
+		text.setEditable(false);
 		pref = Preferences.getCloneOfPreferences();
 	}
 
@@ -222,14 +222,13 @@ public abstract class GenericGraphicalZone extends JComponent {
 			selectedBoxes.add(g);
 		}
 		for (int i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			tmp = tmp = (GraphBoxInfo) v.get(i);
 			Vector vec = tmp.reachableBoxes;
 			int taille = vec.size();
 			for (int j = 0; j < taille; j++) {
 				Integer n = (Integer) vec.get(j);
-				g.addTransitionTo((GenericGraphBox) selectedBoxes.get(n
-						.intValue()));
+				g.addTransitionTo(selectedBoxes.get(n.intValue()));
 			}
 		}
 		setModified(true);
@@ -243,10 +242,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param s the new content
 	 */
 	public void initText(String s) {
-		if (texte instanceof TextField) {
-			((TextField) texte).initText(s);
-		} else if (texte instanceof FstTextField) {
-			((FstTextField) texte).initText(s);
+		if (text instanceof TextField) {
+			((TextField) text).initText(s);
+		} else if (text instanceof FstTextField) {
+			((FstTextField) text).initText(s);
 		}
 	}
 
@@ -255,10 +254,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 *  
 	 */
 	public void validateTextField() {
-		if (texte instanceof TextField) {
-			((TextField) texte).validateTextField();
-		} else if (texte instanceof FstTextField) {
-			((FstTextField) texte).validateTextField();
+		if (text instanceof TextField) {
+			((TextField) text).validateTextField();
+		} else if (text instanceof FstTextField) {
+			((FstTextField) text).validateTextField();
 		}
 	}
 
@@ -288,7 +287,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			pos = g.transitions.indexOf(dest);
 			if (pos != -1) {
 				g.transitions.remove(pos);
@@ -302,15 +301,15 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param dest the target graph box
 	 * @return the boxes which had transition to dest
 	 */
-	public ArrayList getTransitionTo(GenericGraphBox dest) {
+	public ArrayList<GenericGraphBox> getTransitionTo(GenericGraphBox dest) {
 		int i, L, pos;
-		ArrayList list = new ArrayList();
+		ArrayList<GenericGraphBox> list = new ArrayList<GenericGraphBox>();
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())
 			return null;
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			pos = g.transitions.indexOf(dest);
 			if (pos != -1) {
 				list.add(g);
@@ -330,7 +329,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = selectedBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			if (g.type == 2) {
 				removeTransitionTo(g);
 			}
@@ -351,7 +350,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 				this);
 		postEdit(edit);
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			if (g.type == 2) {
 				graphBoxes.remove(g);
 			}
@@ -378,7 +377,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 		L = selectedBoxes.size();
 		if (L == 1) {
-			g = (GenericGraphBox) selectedBoxes.get(0);
+			g = selectedBoxes.get(0);
 			AbstractUndoableEdit edit = new BoxeTextEdit(g, s, this);
 			postEdit(edit);
 			g.setContent(s);
@@ -387,7 +386,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 					this);
 			postEdit(edit);
 			for (i = 0; i < L; i++) {
-				g = (GenericGraphBox) selectedBoxes.get(i);
+				g = selectedBoxes.get(i);
 				g.setContent(s);
 			}
 		}
@@ -406,7 +405,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			if (x >= g.x && x <= g.x + g.Width && y >= g.Y1
 					&& y <= g.Y1 + g.Height)
 				return i;
@@ -421,11 +420,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public void unSelectAllBoxes() {
 		GenericGraphBox g;
 		while (!selectedBoxes.isEmpty()) {
-			g = (GenericGraphBox) selectedBoxes.get(0);
+			g = selectedBoxes.get(0);
 			g.selected = false;
 			selectedBoxes.remove(0);
 		}
-		texte.setEditable(false);
+		text.setEditable(false);
 	}
 
 	/**
@@ -436,12 +435,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 		unSelectAllBoxes();
 		int L = L = graphBoxes.size();
 		for (int i = 0; i < L; i++) {
-			GenericGraphBox g = (GenericGraphBox) graphBoxes.get(i);
+			GenericGraphBox g = graphBoxes.get(i);
 			g.selected = true;
 			selectedBoxes.add(g);
 			initText(g.content);
 		}
-		texte.setEditable(false);
+		text.setEditable(false);
 		repaint();
 	}
 
@@ -459,7 +458,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			if (g.isSelectedByRectangle(x, y, w, h)) {
 				g.selected = true;
 				selectedBoxes.add(g);
@@ -485,7 +484,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = selectedBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			g.translate(dx, dy);
 		}
 	}
@@ -517,7 +516,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 		}
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			g.addTransitionTo(dest);
 		}
 	}
@@ -534,7 +533,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = selectedBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			UndoableEdit edit = new TransitionEdit(src, g);
 			postEdit(edit);
 			src.addTransitionTo(g);
@@ -553,7 +552,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			g.drawTransitions(gr);
 		}
 	}
@@ -570,7 +569,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		temp.Y_out = Ymouse;
 		int L = selectedBoxes.size();
 		for (int i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			temp.drawTransition(gr, g);
 		}
 	}
@@ -587,7 +586,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		temp.Y_out = Ymouse;
 		int L = selectedBoxes.size();
 		for (int i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			g.drawTransition(gr, temp);
 		}
 	}
@@ -604,7 +603,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			g.draw(gr);
 		}
 	}
@@ -639,16 +638,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		if (selectedBoxes.isEmpty())
 			return;
-		g = (GenericGraphBox) selectedBoxes.get(0);
+		g = selectedBoxes.get(0);
 		y1 = g.Y1;
 		for (i = 1; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			if (g.Y1 < y1)
 				y1 = g.Y1;
 		}
 		// now, y1 is the value that will be common to the selected boxes
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			int dy = y1 - g.Y1;
 			UndoableEdit edit = new TranslationEdit(g, 0, dy);
 			postEdit(edit);
@@ -670,13 +669,13 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		y1 = 0;
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			y1 = y1 + g.Y;
 		}
 		y1 = y1 / selectedBoxes.size();
 		// now, y1 is the value that will be common to the selected boxes
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			int dy = y1 - g.Y;
 			UndoableEdit edit = new TranslationEdit(g, 0, dy);
 			postEdit(edit);
@@ -693,16 +692,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		if (selectedBoxes.isEmpty())
 			return;
-		g = (GenericGraphBox) selectedBoxes.get(0);
+		g = selectedBoxes.get(0);
 		y1 = g.Y1 + g.Height;
 		for (i = 1; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			if ((g.Y1 + g.Height) > y1)
 				y1 = g.Y1 + g.Height;
 		}
 		// now, y1 is the value that will be common to the selected boxes
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			int dy = y1 - (g.Y1 + g.Height);
 			UndoableEdit edit = new TranslationEdit(g, 0, dy);
 			postEdit(edit);
@@ -719,16 +718,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		if (selectedBoxes.isEmpty())
 			return;
-		g = (GenericGraphBox) selectedBoxes.get(0);
+		g = selectedBoxes.get(0);
 		x1 = g.X1;
 		for (i = 1; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			if (g.X1 < x1)
 				x1 = g.X1;
 		}
 		// now, x1 is the value that will be common to the selected boxes
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			int dx = x1 - g.X1;
 			UndoableEdit edit = new TranslationEdit(g, dx, 0);
 			postEdit(edit);
@@ -746,16 +745,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		if (selectedBoxes.isEmpty())
 			return;
-		g = (GenericGraphBox) selectedBoxes.get(0);
+		g = selectedBoxes.get(0);
 		x1 = 0;
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			x1 = x1 + (g.X1 + g.Width / 2);
 		}
 		x1 = x1 / selectedBoxes.size();
 		// now, x1 is the value that will be common to the selected boxes
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			int dx = x1 - (g.X1 + g.Width / 2);
 			UndoableEdit edit = new TranslationEdit(g, dx, 0);
 			postEdit(edit);
@@ -772,16 +771,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		if (selectedBoxes.isEmpty())
 			return;
-		g = (GenericGraphBox) selectedBoxes.get(0);
+		g = selectedBoxes.get(0);
 		x1 = g.X1 + g.Width;
 		for (i = 1; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			if ((g.X1 + g.Width) > x1)
 				x1 = g.X1 + g.Width;
 		}
 		// now, x1 is the value that will be common to the selected boxes
 		for (i = 0; i < selectedBoxes.size(); i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			int dx = x1 - (g.X1 + g.Width);
 			UndoableEdit edit = new TranslationEdit(g, dx, 0);
 			postEdit(edit);
@@ -822,7 +821,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		int i;
 		for (i = 0; i < graphBoxes.size(); i++) {
-			g = (GenericGraphBox) graphBoxes.get(i);
+			g = graphBoxes.get(i);
 			g.update();
 		}
 		repaint();
@@ -854,7 +853,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * @return selected boxes of the graph
 	 */
-	public ArrayList getSelectedBoxes() {
+	public ArrayList<GenericGraphBox> getSelectedBoxes() {
 		return selectedBoxes;
 	}
 

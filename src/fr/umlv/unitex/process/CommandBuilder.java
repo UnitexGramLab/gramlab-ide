@@ -39,15 +39,15 @@ public abstract class CommandBuilder {
 	public static final int MESSAGE=1;
 	public static final int ERROR_MESSAGE=2;
 	
-   private final ArrayList list; 
+   private final ArrayList<String> list; 
    protected int type=PROGRAM;
     
    CommandBuilder(String programName) {
-     list=new ArrayList();
+     list=new ArrayList<String>();
      programName(programName);
    }
 
-   CommandBuilder(ArrayList list) {
+   CommandBuilder(ArrayList<String> list) {
     this.list=list;
   }
 
@@ -72,7 +72,7 @@ public abstract class CommandBuilder {
    }
 
     public String[] getCommandArguments() {
-    String[] res=(String[])list.toArray(new String[list.size()]);
+    String[] res=list.toArray(new String[list.size()]);
     for (int i=0;i<res.length;i++) {
        if (res[i].startsWith("\"")) {
           res[i]=res[i].substring(1,res[i].length()-1);
@@ -85,8 +85,9 @@ public abstract class CommandBuilder {
       return this;        
    }
     
-   ArrayList getCopyOfList() {
-       return (ArrayList)list.clone();
+   @SuppressWarnings("unchecked")
+   ArrayList<String> getCopyOfList() {
+       return (ArrayList<String>) list.clone();
    }
 
    public int getType() {

@@ -185,8 +185,8 @@ public class SVG {
 		}
 		// prints the lines of the box
 		for (int i = 0; i < g.n_lignes; i++) {
-			Boolean is_greyed = (Boolean) g.greyed.get(i);
-			String l = (String) g.lines.get(i);
+			Boolean is_greyed = g.greyed.get(i);
+			String l = g.lines.get(i);
 			if (is_greyed.booleanValue()) {
 				fillRect(g.X1 + 2, g.Y1 + 4 + i * h_ligne, g.Width - 4, h_ligne,(l.startsWith(":")?preferences.packageColor:preferences.subgraphColor));
 			}
@@ -222,8 +222,8 @@ public class SVG {
 		}
 		// prints the lines of the box
 		for (int i = 0; i < g.n_lignes; i++) {
-			Boolean is_greyed = (Boolean) g.greyed.get(i);
-			String l = (String) g.lines.get(i);
+			Boolean is_greyed = g.greyed.get(i);
+			String l = g.lines.get(i);
 			if (is_greyed.booleanValue()) {
 				fillRect(g.X1 + 2, g.Y1 + 3 + i * h_ligne, g.Width - 4, h_ligne,(l.startsWith(":")?preferences.packageColor:preferences.subgraphColor));
 			}
@@ -240,7 +240,7 @@ public class SVG {
 	private void drawContextMark(GenericGraphBox g) throws IOException {
 		Color color=preferences.contextColor;
 		graphics.setFont(GenericGraphBox.variableFont);
-		drawText((String) g.lines.get(0),g.X1+5,
+		drawText(g.lines.get(0),g.X1+5,
 				g.Y1-graphics.getFontMetrics().getDescent() + graphics.getFontMetrics().getHeight(),
 				color,GenericGraphBox.variableFont);
 	}
@@ -249,7 +249,7 @@ public class SVG {
 	private void drawVariable(GenericGraphBox g) throws IOException {
 		Color color=preferences.commentColor;
 		graphics.setFont(GenericGraphBox.variableFont);
-		drawText((String) g.lines.get(0),g.X1+5,
+		drawText(g.lines.get(0),g.X1+5,
 				g.Y1-graphics.getFontMetrics().getDescent() + graphics.getFontMetrics().getHeight(),
 				color,GenericGraphBox.variableFont);
 		graphics.setFont(output);

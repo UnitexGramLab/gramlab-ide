@@ -35,14 +35,15 @@ import fr.umlv.unitex.*;
 public class SelectEdit extends AbstractUndoableEdit {
 
 	/** boxes selected in the graph */
-	private ArrayList selectedBoxes,
+	private ArrayList<GenericGraphBox> selectedBoxes;
 	/** boxes selected in the graph before adding a transition */
-	 oldSelectedBoxes;
+	private ArrayList<GenericGraphBox> oldSelectedBoxes;
 
 /** 
  * @param selectedBoxes boxes selected in the graph
  */
-	public SelectEdit(ArrayList selectedBoxes){
+	@SuppressWarnings("unchecked")
+	public SelectEdit(ArrayList<GenericGraphBox> selectedBoxes){
 		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
 		this.selectedBoxes = selectedBoxes;
 	}

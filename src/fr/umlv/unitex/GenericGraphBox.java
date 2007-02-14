@@ -118,12 +118,12 @@ public abstract class GenericGraphBox {
 	/**
 	 * Tokenized box lines
 	 */
-	public ArrayList lines;
+	public ArrayList<String> lines;
 
 	/**
 	 * greyed[i]==true if the line i is a subgraph call
 	 */
-	public ArrayList greyed;
+	public ArrayList<Boolean> greyed;
 
 	/**
 	 * Transduction text, if exists
@@ -174,7 +174,7 @@ public abstract class GenericGraphBox {
 	/**
 	 * Numbers of boxes that can be reached with transitions going out this box
 	 */
-	protected ArrayList transitions;
+	protected ArrayList<GenericGraphBox> transitions;
 
 	public static Font variableFont = new Font("Times New Roman", Font.BOLD, 30);
 
@@ -207,9 +207,9 @@ public abstract class GenericGraphBox {
 		variable = false;
 		n_lignes = 0;
 		h_ligne = 15;
-		lines = new ArrayList();
-		greyed = new ArrayList();
-		transitions = new ArrayList();
+		lines = new ArrayList<String>();
+		greyed = new ArrayList<Boolean>();
+		transitions = new ArrayList<GenericGraphBox>();
 		Width = 15;
 		Height = 20;
 		if (type == FINAL) {
@@ -249,9 +249,9 @@ public abstract class GenericGraphBox {
 		String s;
 		Boolean b;
 		n = (y - Y1 - 4) / (h_ligne);
-		b = (Boolean) greyed.get(n);
+		b = greyed.get(n);
 		if (b.booleanValue()) {
-			s = (String) lines.get(n);
+			s = lines.get(n);
 			if (!s.endsWith(".grf")) {
 				s = s + ".grf";
 			}
@@ -598,7 +598,7 @@ public abstract class GenericGraphBox {
 		L = transitions.size();
 		gr.setColor(parentGraphicalZone.pref.foregroundColor);
 		for (i = 0; i < L; i++) {
-			g = (GenericGraphBox) transitions.get(i);
+			g = transitions.get(i);
 			drawTransition(gr, g);
 		}
 	}
@@ -690,8 +690,8 @@ public abstract class GenericGraphBox {
 		}
 		// prints the lines of the box
 		for (i = 0; i < n_lignes; i++) {
-			is_greyed = (Boolean) greyed.get(i);
-			l = (String) lines.get(i);
+			is_greyed = greyed.get(i);
+			l = lines.get(i);
 			if (is_greyed.booleanValue()) {
 				g.setColor(parentGraphicalZone.pref.subgraphColor);
 				if (l.startsWith(":")) {
@@ -735,7 +735,7 @@ public abstract class GenericGraphBox {
 	private void drawVariable(Graphics2D g) {
 		g.setColor(parentGraphicalZone.pref.commentColor);
 		g.setFont(variableFont);
-		g.drawString((String) lines.get(0), X1 + 5, Y1
+		g.drawString(lines.get(0), X1 + 5, Y1
 				- g.getFontMetrics().getDescent() + get_h_variable_ligne());
 		g.setFont(parentGraphicalZone.pref.output);
 		g.drawString(transduction, X1 + 10, Y1 + Height
@@ -747,7 +747,7 @@ public abstract class GenericGraphBox {
 		GraphicalToolBox.fillRect(g, X1, Y1, Width, Height);
 		g.setColor(parentGraphicalZone.pref.commentColor);
 		g.setFont(variableFont);
-		g.drawString((String) lines.get(0), X1 + 5, Y1
+		g.drawString(lines.get(0), X1 + 5, Y1
 				- g.getFontMetrics().getDescent() + get_h_variable_ligne());
 
 		g.setColor(parentGraphicalZone.pref.selectedColor);
@@ -768,7 +768,7 @@ public abstract class GenericGraphBox {
 	private void drawContextMark(Graphics2D g) {
 		g.setColor(parentGraphicalZone.pref.contextColor);
 		g.setFont(variableFont);
-		g.drawString((String) lines.get(0), X1 + 5, Y1
+		g.drawString(lines.get(0), X1 + 5, Y1
 				- g.getFontMetrics().getDescent() + get_h_variable_ligne());
 	}
 
@@ -822,8 +822,8 @@ public abstract class GenericGraphBox {
 		}
 		// prints the lines of the box
 		for (i = 0; i < n_lignes; i++) {
-			is_greyed = (Boolean) greyed.get(i);
-			l = (String) lines.get(i);
+			is_greyed = greyed.get(i);
+			l = lines.get(i);
 			if (is_greyed.booleanValue()) {
 				g.setColor(parentGraphicalZone.pref.subgraphColor);
 				if (l.startsWith(":")) {
@@ -886,7 +886,7 @@ public abstract class GenericGraphBox {
 		// prints the lines of the box
 		g.setColor(parentGraphicalZone.pref.backgroundColor);
 		for (i = 0; i < n_lignes; i++) {
-			l = (String) lines.get(i);
+			l = lines.get(i);
 			TextLayout textlayout = new TextLayout(l, parentGraphicalZone.pref.input, g.getFontRenderContext());
 			textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
 		}
@@ -1008,7 +1008,7 @@ public abstract class GenericGraphBox {
 		max = 0;
 		FontMetrics f = context.getFontMetrics(parentGraphicalZone.pref.input);
 		for (i = 0; i < n_lignes; i++) {
-			s = (String) lines.get(i);
+			s = lines.get(i);
 			if (max < f.stringWidth(s))
 				max = f.stringWidth(s);
 		}
@@ -1173,7 +1173,7 @@ public abstract class GenericGraphBox {
 		this.type = type;
 	}
 
-	public void setTransitions(ArrayList transitions) {
+	public void setTransitions(ArrayList<GenericGraphBox> transitions) {
 		this.transitions = transitions;
 	}
 

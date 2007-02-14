@@ -34,9 +34,9 @@ import fr.umlv.unitex.*;
 public class TransitionGroupEdit extends AbstractUndoableEdit {
 
 	/** boxes selected in the graph */
-	private ArrayList selectedBoxes,
+	private ArrayList<GenericGraphBox> selectedBoxes;
 	/** boxes selected in the graph before adding a transition */ 
-	oldSelectedBoxes;
+	private ArrayList<GenericGraphBox> oldSelectedBoxes;
 	/** transition destination boxe */
 	private GenericGraphBox dst;
 	/** zone where the graph is drawn */
@@ -47,11 +47,11 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		* @param dst destination boxe
 		* @param zone the zone where remove the boxe
 		*/
+	@SuppressWarnings("unchecked")
 	public TransitionGroupEdit(
-            ArrayList selectedBoxes,
+            ArrayList<GenericGraphBox> selectedBoxes,
 		GenericGraphBox dst,
 		GenericGraphicalZone zone) {
-
 		this.selectedBoxes = selectedBoxes;
 		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
 		this.dst = dst;

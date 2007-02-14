@@ -33,7 +33,7 @@ import fr.umlv.unitex.*;
  */
 public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 	/** graph's boxes */
-	ArrayList  boxes,
+	ArrayList<GenericGraphBox>  boxes,
 	/** boxes selected in the graph */
 	selectedBoxes,
 	/** boxes selected in the graph before adding a transition */
@@ -41,9 +41,9 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 	/** zone where the graph is drawn */
 	GenericGraphicalZone zone;
 	/** hashmap which store the boxes selected before the delete action and the transitions to its */
-	HashMap selectedBoxesAndTransitionsTo,
+	HashMap<GenericGraphBox,ArrayList<GenericGraphBox>> selectedBoxesAndTransitionsTo;
 	/** hashmap which store the boxes selected before the delete action and the transitions from its */
-	selectedBoxesAndTransitionsFrom;
+	HashMap<GenericGraphBox,ArrayList<GenericGraphBox>> selectedBoxesAndTransitionsFrom;
 
 /**
  * 
@@ -51,13 +51,14 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
  * @param graphBoxes the boxes of the graph 
  * @param zone the zone where the graph is drawn
  */
+	@SuppressWarnings("unchecked")
 	public DeleteBoxGroupEdit(
             ArrayList selectedBoxes,
             ArrayList graphBoxes,
 		GenericGraphicalZone zone) {
 			
-		selectedBoxesAndTransitionsTo = new HashMap();
-		selectedBoxesAndTransitionsFrom = new HashMap();	
+		selectedBoxesAndTransitionsTo = new HashMap<GenericGraphBox,ArrayList<GenericGraphBox>>();
+		selectedBoxesAndTransitionsFrom = new HashMap<GenericGraphBox,ArrayList<GenericGraphBox>>();	
 		this.selectedBoxes = selectedBoxes;		
 		this.oldSelectedBoxes = (ArrayList)selectedBoxes.clone();
 		this.boxes = graphBoxes;
@@ -67,8 +68,8 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 		GenericGraphBox g;		
 		for (Iterator it = selectedBoxes.iterator() ; it.hasNext(); ) {
 			g = (GenericGraphBox)it.next();
-			ArrayList boxeTransitionsTo = zone.getTransitionTo(g);
-			ArrayList boxeTransitionsFrom = (ArrayList)g.getTransitions().clone();
+			ArrayList<GenericGraphBox> boxeTransitionsTo = zone.getTransitionTo(g);
+			ArrayList<GenericGraphBox> boxeTransitionsFrom = (ArrayList)g.getTransitions().clone();
 			selectedBoxesAndTransitionsTo.put(g,boxeTransitionsTo);			
 			selectedBoxesAndTransitionsFrom.put(g,boxeTransitionsFrom);
 		}
@@ -85,9 +86,9 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 		// for each selected boxes before delete
 		for( Iterator it = keys.iterator(); it.hasNext();){
 			g = (GenericGraphBox)it.next();
-			g.setTransitions(new ArrayList());
-			transitionsToBoxe = (ArrayList) selectedBoxesAndTransitionsTo.get(g);
-			transitionsFromBoxe = (ArrayList)selectedBoxesAndTransitionsFrom.get(g);
+			g.setTransitions(new ArrayList<GenericGraphBox>());
+			transitionsToBoxe = selectedBoxesAndTransitionsTo.get(g);
+			transitionsFromBoxe = selectedBoxesAndTransitionsFrom.get(g);
 			boxes.add(g);
 			
 			// select this boxe
@@ -128,7 +129,7 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
       
 			// delete each selected boxes before the delete action
 			  for (i= 0; i < L; i++) {
-				 g= (GenericGraphBox)oldSelectedBoxes.get(i);         
+				 g= oldSelectedBoxes.get(i);         
 				 if (g.getType() == GenericGraphBox.NORMAL){			      
 					boxes.remove(g);
 				 }

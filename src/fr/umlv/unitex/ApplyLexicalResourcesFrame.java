@@ -137,7 +137,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 * @param dicOnDisk
 	 * @return the new list
 	 */
-	private Vector merge(Vector list, Vector dicOnDisk) {
+	private Vector<String> merge(Vector<String> list,Vector<String> dicOnDisk) {
 		if (list==null) {
 			// if the list is empty, then we put in it all the
 			// dictionaries that are on the disk
@@ -156,7 +156,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		// then, we look for dictionaries that are on disk but not in
 		// the list
 		while (!dicOnDisk.isEmpty()) {
-			String dic=(String)dicOnDisk.remove(0);
+			String dic=dicOnDisk.remove(0);
 			if (!list.contains(dic)) {
 				list.addElement(dic);
 			}
@@ -168,10 +168,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 * Refreshes the two dictionary lists.
 	 */
 	void refreshDicLists() {
-		Vector userListDef;
-		Vector systemListDef;
-		Vector userList;
-		Vector systemList;
+		Vector<String> userListDef;
+		Vector<String> systemListDef;
+		Vector<String> userList;
+		Vector<String> systemList;
 		
 		userListDef = loadDicList(new File(Config
 				.getUserCurrentLanguageDir(), "user_dic.def"));
@@ -179,19 +179,16 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				.getUserCurrentLanguageDir(), "system_dic.def"));
 		userList = loadDicList(new File(Config
 				.getUserCurrentLanguageDir(), "user_dic_list.txt"));
-		Vector userDicOnDisk = getDicList(new File(Config
+		Vector<String> userDicOnDisk = getDicList(new File(Config
 		.getUserCurrentLanguageDir(), "Dela"));
 		userList=merge(userList,userDicOnDisk);
 		
 			systemList = loadDicList(new File(
 					Config.getUserCurrentLanguageDir(), "system_dic_list.txt"));
-		Vector systemDicOnDisk = getDicList(new File(Config
+			Vector<String> systemDicOnDisk = getDicList(new File(Config
 				.getUnitexCurrentLanguageDir(), "Dela"));
 		systemList=merge(systemList,systemDicOnDisk);
-
-			//userDicList.setListData(userList);
 		setContent(userDicList,userList);
-		//systemDicList.setListData(systemList);
 		setContent(systemDicList,systemList);
 		userDicList.clearSelection();
 		systemDicList.clearSelection();
@@ -611,9 +608,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            the directory to be scanned
 	 * @return a <code>Vector</code> containing file names.
 	 */
-	public Vector getDicList(File dir) {
+	public Vector<String> getDicList(File dir) {
 	
-		Vector v = new Vector();
+		Vector<String> v = new Vector<String>();
 		if (!dir.exists())
 			return v;
 		File files_list[] = dir.listFiles();
@@ -649,8 +646,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            the name of a file containing one ".bin" file name per line
 	 * @return a <code>Vector</code> containing file names.
 	 */
-	public Vector loadDicList(File name) {
-		Vector v;
+	public Vector<String> loadDicList(File name) {
+		Vector<String> v=null;
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(name));
@@ -659,7 +656,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		}
 		try {
 			String s;
-			v = new Vector();
+			v = new Vector<String>();
 			while ((s = br.readLine()) != null) {
 				v.add(s);
 			}

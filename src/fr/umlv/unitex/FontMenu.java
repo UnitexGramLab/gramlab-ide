@@ -46,8 +46,8 @@ public class FontMenu extends JDialog {
 	StyleList styleList;
 	SizeList sizeList;
 	ScriptList scriptList;
-	Hashtable styles;
-	Hashtable ranges;
+	Hashtable<String,Integer> styles;
+	Hashtable<String,Integer> ranges;
 
 	private static final int ASCII_BASE = 0x0000;
 	private static final int GREEK_BASE = 0x0370;
@@ -265,13 +265,13 @@ public class FontMenu extends JDialog {
 		example.setEditable(false);
 		example.setBorder(new EmptyBorder(0, 0, 0, 0));
 		// setting the components content
-		styles = new Hashtable();
+		styles = new Hashtable<String,Integer>();
 		styles.put("Plain", new Integer(Font.PLAIN));
 		styles.put("Bold", new Integer(Font.BOLD));
 		styles.put("Italic", new Integer(Font.ITALIC));
 		styles.put("Bold Italic", new Integer(Font.BOLD | Font.ITALIC));
 		String[] styleNames = {"Plain", "Bold", "Italic", "Bold Italic"};
-		ranges = new Hashtable();
+		ranges = new Hashtable<String,Integer>();
 		ranges.put("Occidental", new Integer(ASCII_BASE));
 		ranges.put("Greek", new Integer(GREEK_BASE));
 		ranges.put("Hebrew", new Integer(HEBREW_BASE));
@@ -386,7 +386,7 @@ public class FontMenu extends JDialog {
 			if (e.getStateChange() != ItemEvent.SELECTED)
 				return;
 			style.setText(styleList.getSelectedItem());
-			fontStyle = ((Integer) styles.get(styleList.getSelectedItem()))
+			fontStyle = styles.get(styleList.getSelectedItem())
 					.intValue();
 			refresh();
 		}
@@ -407,8 +407,7 @@ public class FontMenu extends JDialog {
 			if (e.getStateChange() != ItemEvent.SELECTED)
 				return;
 			script.setText(scriptList.getSelectedItem());
-			fontScript = ((Integer) ranges.get(scriptList.getSelectedItem()))
-					.intValue();
+			fontScript = ranges.get(scriptList.getSelectedItem()).intValue();
 			refresh();
 		}
 	}

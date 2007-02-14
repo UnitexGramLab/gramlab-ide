@@ -25,15 +25,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.*;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
 
 /**
- * This class describes a frame that can show an HTML file. It is used to show
- * concordances.
+ * This class describes a frame that can show an HTML concordance file.
  * 
  * @author Sébastien Paumier
  *  
@@ -150,17 +148,6 @@ public class ConcordanceFrame extends JInternalFrame {
 		frame.setSize(d);
 		Util.getHtmlPageTitle(concor);
 		frame.list.setFont(new Font("Courier new",0,12));
-		frame.list.setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-		frame.list.setCellRenderer(new DefaultListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-				StringBuilder builder=new StringBuilder();
-				builder.append("<html><body>");
-				builder.append((String)value);
-				builder.append("</body></html>");
-				setText(builder.toString());
-				return this;
-			}});
 		frame.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		frame.list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
