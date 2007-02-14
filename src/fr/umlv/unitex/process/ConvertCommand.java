@@ -36,7 +36,7 @@ public class ConvertCommand extends CommandBuilder {
 		super("Convert");
 	}
 
-    public ConvertCommand(ArrayList l) {
+    public ConvertCommand(ArrayList<String> l) {
         super(l);
     }
 

@@ -373,7 +373,7 @@ public class PreprocessFrame extends JDialog {
 							dicoCmd = new DicoCommand().snt(
 									Config.getCurrentSnt()).alphabet(
 									Config.getAlphabet());
-							ArrayList param = getDefaultDicList();
+							ArrayList<File> param = getDefaultDicList();
 							if (param != null && param.size() > 0) {
 								dicoCmd = dicoCmd.dictionaryList(param);
 								commands.addCommand(dicoCmd);
@@ -534,8 +534,8 @@ public class PreprocessFrame extends JDialog {
 		return buttons;
 	}
 
-	ArrayList getDefaultDicList() {
-		ArrayList res = new ArrayList();
+	ArrayList<File> getDefaultDicList() {
+		ArrayList<File> res = new ArrayList<File>();
 		File name2 = new File(Config.getUserCurrentLanguageDir(),
 				"user_dic.def");
 		try {

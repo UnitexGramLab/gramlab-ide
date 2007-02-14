@@ -748,13 +748,13 @@ public class UnitexFrame extends JFrame {
 				final ActionEvent E = e;
 				if (TextAutomatonFrame.getFrame() != null
 						&& TextAutomatonFrame.getFrame().isSelected()) {
-					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.texte).cut
+					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).cut
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
 					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 					if (f != null) {
-						((TextField) (f.graphicalZone.texte)).cut
+						((TextField) (f.graphicalZone.text)).cut
 								.actionPerformed(E);
 						f.graphicalZone.repaint();
 					}
@@ -769,13 +769,13 @@ public class UnitexFrame extends JFrame {
 				final ActionEvent E = e;
 				if (TextAutomatonFrame.getFrame() != null
 						&& TextAutomatonFrame.getFrame().isSelected()) {
-					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.texte).specialCopy
+					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).specialCopy
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
 					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 					if (f != null) {
-						((TextField) (f.graphicalZone.texte)).specialCopy
+						((TextField) (f.graphicalZone.text)).specialCopy
 								.actionPerformed(E);
 						f.graphicalZone.repaint();
 					}
@@ -790,13 +790,13 @@ public class UnitexFrame extends JFrame {
 				final ActionEvent E = e;
 				if (TextAutomatonFrame.getFrame() != null
 						&& TextAutomatonFrame.getFrame().isSelected()) {
-					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.texte).specialPaste
+					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).specialPaste
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
 					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 					if (f != null) {
-						((TextField) (f.graphicalZone.texte)).specialPaste
+						((TextField) (f.graphicalZone.text)).specialPaste
 								.actionPerformed(E);
 						f.graphicalZone.repaint();
 					}

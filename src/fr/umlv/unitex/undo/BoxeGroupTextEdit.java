@@ -34,11 +34,11 @@ import fr.umlv.unitex.*;
 public class BoxeGroupTextEdit extends AbstractUndoableEdit {
 
 	/** boxes selected in the graph */
-	private ArrayList selectedBoxes;
+	private ArrayList<GenericGraphBox> selectedBoxes;
 	/** boxes selected in the graph before adding a transition */
-	private ArrayList oldSelectedBoxes;
+	private ArrayList<GenericGraphBox> oldSelectedBoxes;
 	/** hasmap of the selected boxes and the text before the boxe group text edit action*/
-	private HashMap selectedBoxesAndOldString;
+	private HashMap<GenericGraphBox,String> selectedBoxesAndOldString;
 	/** remplacement string of each selected boxe of the graph */
 	private String remplacementString;
 	/** araa where the graph is drawn */
@@ -50,10 +50,11 @@ public class BoxeGroupTextEdit extends AbstractUndoableEdit {
 	 * @param s the text to add in all the boxes
 	 * @param zone the zone where boxes are drawn 
 	 */
-	public BoxeGroupTextEdit(ArrayList selectedBoxes, String s, GenericGraphicalZone zone) {	
+	@SuppressWarnings("unchecked")
+	public BoxeGroupTextEdit(ArrayList<GenericGraphBox> selectedBoxes, String s, GenericGraphicalZone zone) {	
 		this.selectedBoxes = selectedBoxes;
-		oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
-		selectedBoxesAndOldString = new HashMap();
+		oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
+		selectedBoxesAndOldString = new HashMap<GenericGraphBox,String>();
 		remplacementString = s;
 		this.zone = zone;
 		
@@ -73,7 +74,7 @@ public class BoxeGroupTextEdit extends AbstractUndoableEdit {
 		// add old text in each boxes
 		for(Iterator it = keys.iterator() ; it.hasNext() ; ){
 			GenericGraphBox g = (GenericGraphBox)it.next();
-			String text = (String)selectedBoxesAndOldString.get(g);
+			String text = selectedBoxesAndOldString.get(g);
 			g.setContent(text);
 			g.setSelected(true);
 			selectedBoxes.add(g);

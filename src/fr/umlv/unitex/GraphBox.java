@@ -316,32 +316,33 @@ public class GraphBox extends GenericGraphBox {
 		return a.compareTo(b);
 	}
 
-	private int partition_pour_quicksort(ArrayList v, ArrayList v2, int m, int n) {
+	private int partition_pour_quicksort(ArrayList<String> v, ArrayList<Boolean> v2, int m, int n) {
 		String pivot;
-		Object tmp;
+		String stringTmp;
+		Boolean booleanTmp;
 		int i = m - 1;
 		int j = n + 1;
-		pivot = (String) v.get((m + n) / 2);
+		pivot = v.get((m + n) / 2);
 		while (true) {
 			do
 				j--;
-			while ((j > (m - 1)) && (strcmp(pivot, (String) v.get(j)) < 0));
+			while ((j > (m - 1)) && (strcmp(pivot, v.get(j)) < 0));
 			do
 				i++;
-			while ((i < n + 1) && (strcmp((String) v.get(i), pivot) < 0));
+			while ((i < n + 1) && (strcmp(v.get(i), pivot) < 0));
 			if (i < j) {
-				tmp = v.get(i);
+				stringTmp = v.get(i);
 				v.set(i,v.get(j));
-				v.set(j,tmp);
-				tmp = v2.get(i);
+				v.set(j,stringTmp);
+				booleanTmp = v2.get(i);
 				v2.set(i,v2.get(j));
-				v2.set(j,tmp);
+				v2.set(j,booleanTmp);
 			} else
 				return j;
 		}
 	}
 
-	private void quicksort(ArrayList v, ArrayList v2, int m, int n) {
+	private void quicksort(ArrayList<String> v, ArrayList<Boolean> v2, int m, int n) {
 		int p;
 		if (m < n) {
 			p = partition_pour_quicksort(v, v2, m, n);
@@ -358,9 +359,9 @@ public class GraphBox extends GenericGraphBox {
 	public void sortNodeLabel() {
 		if (!lines.isEmpty()) {
 			quicksort(lines, greyed, 0, lines.size() - 1);
-			content = (String) lines.get(0);
+			content = lines.get(0);
 			for (int i = 1; i < lines.size(); i++) {
-				content = content + "+" + (String) lines.get(i);
+				content = content + "+" + lines.get(i);
 			}
 		}
 	}

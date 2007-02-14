@@ -48,5 +48,5 @@ public class GraphBoxInfo {
    /**
     * Vector containing integers that are reference to boxes that can be reached from this box 
     */
-   public Vector reachableBoxes;
+   public Vector<Integer> reachableBoxes;
 }

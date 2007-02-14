@@ -39,8 +39,8 @@ import fr.umlv.unitex.io.*;
 public class LexiconGrammarTableFrame extends JInternalFrame {
 
 	static LexiconGrammarTableFrame frame;
-	private Vector rowData;
-	private Vector columnNames;
+	private Vector<Vector<String>> rowData;
+	private Vector<String> columnNames;
 	private static String tableName;
 
 	/**
@@ -118,7 +118,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		FileInputStream source;
 		try {
 			source = UnicodeIO.openUnicodeLittleEndianFileInputStream(f);
-			rowData = new Vector();
+			rowData = new Vector<Vector<String>>();
 			// we process the column names first
 			columnNames = tokenizeToVector(UnicodeIO.readLine(source));
 			// and then the lines
@@ -139,8 +139,8 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		}
 	}
 
-	private Vector tokenizeToVector(String s) {
-		Vector res = new Vector();
+	private Vector<String> tokenizeToVector(String s) {
+		Vector<String> res = new Vector<String>();
 		StringTokenizer st = new StringTokenizer(s, "\t");
 		if (st == null)
 			return res;

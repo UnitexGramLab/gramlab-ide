@@ -43,23 +43,27 @@ public class ConcordanceAsListModel extends AbstractListModel {
 	 * HTML_START_LINES lines, then there are the real concordance lines, then
 	 * there are HTML_END_LINES that close open HTML tags.
 	 */
-	private static final int HTML_START_LINES = 7;
-	private static final int HTML_END_LINES = 2;
-	private static final int HTML_CONTROL_LINES = HTML_START_LINES+HTML_END_LINES;
+	protected int HTML_START_LINES = 7;
+	protected int HTML_END_LINES = 2;
+	protected int HTML_CONTROL_LINES = HTML_START_LINES+HTML_END_LINES;
+	
 	MappedByteBuffer buffer;
-	ArrayList<Interval> intervals;
 	int dataLength;
-	SwingWorker<Void,Interval> worker;
+	SwingWorker<Void,Integer> worker;
 	Interval selection;
 	FileChannel channel;
 	FileInputStream stream;
 	File file;
-	private static Charset utf8=Charset.forName("UTF-8");
+	public static Charset utf8=Charset.forName("UTF-8");
+	
+	int[] endOfLines;
+	int numberOfEOL;	
 	
 	public void load(File f) {
 		this.file=f;
 		dataLength=(int)file.length();
-		intervals=new ArrayList<Interval>();
+		endOfLines=new int[0];
+		numberOfEOL=0;
 		try {
 			stream = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
@@ -73,7 +77,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			e.printStackTrace();
 			return;
 		}
-		worker=new SwingWorker<Void,Interval>() {
+		worker=new SwingWorker<Void,Integer>() {
 
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -82,13 +86,13 @@ public class ConcordanceAsListModel extends AbstractListModel {
 					int a=0xFF & buffer.get();
 		        	if (a=='\n') {
 		        		// if we have an end-of-line
-		        		publish(new Interval(lastStart,pos));
+		        		publish(pos);
 		        		setProgress(100*pos/dataLength);
 		        		lastStart=pos+1;
 		        	}
 		        }
 				if (lastStart<(dataLength-1)) {
-		        	publish(new Interval(lastStart,dataLength-1));
+		        	publish(dataLength-1);
 		        	setProgress(100);
 		        }
 				return null;
@@ -96,10 +100,38 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			
 			@SuppressWarnings("synthetic-access")
 			@Override
-			protected void process(java.util.List<Interval> chunks) {
-				int oldSize=intervals.size();
-				intervals.addAll(chunks);
-				fireIntervalAdded(this,oldSize,intervals.size()-1);
+			protected void process(java.util.List<Integer> chunks) {
+				int oldSize=numberOfEOL;
+				int newSize=oldSize+chunks.size();
+				int multiplier=1;
+				/* We check if it is necessary to enlarge the EOL
+				 * array */
+				if (endOfLines.length==0) {
+					endOfLines=new int[1];
+				}
+				while (multiplier*endOfLines.length < newSize) {
+					multiplier=2*multiplier;
+				}
+				int[] temp=endOfLines;
+				if (multiplier!=1) {
+					temp=Arrays.copyOf(endOfLines,multiplier*endOfLines.length);
+				}
+				int insertPos=oldSize;
+				for (Integer i:chunks) {
+					if (i<0) {
+						/* We assume that a negative position means the end of
+						 * the new lines, and, so, we resize the array. */
+						temp=Arrays.copyOf(temp,insertPos);
+						newSize=insertPos;
+						break;
+					}
+					temp[insertPos++]=i;
+				}
+				/* If we keep the following instructions in this order,
+				 * there is no need to synchronize */
+				endOfLines=temp;
+				numberOfEOL=newSize;
+				fireIntervalAdded(this,oldSize,newSize-1);
 			}
 			
 		};
@@ -107,11 +139,17 @@ public class ConcordanceAsListModel extends AbstractListModel {
 	}
 
 	public ConcordanceAsListModel() {
+		super();
+	}
+
+	public ConcordanceAsListModel(int html_start_lines, int html_end_lines) {
+		this.HTML_START_LINES=html_start_lines;
+		this.HTML_END_LINES=html_end_lines;
+		this.HTML_CONTROL_LINES=HTML_START_LINES+HTML_END_LINES;
 	}
 
 	public int getSize() {
-		if (intervals==null) return 0;
-		int size=intervals.size()-HTML_CONTROL_LINES;
+		int size=numberOfEOL-HTML_CONTROL_LINES;
 		if (size<0) return 0;
 		return size;
 	}
@@ -121,9 +159,9 @@ public class ConcordanceAsListModel extends AbstractListModel {
 	 * Returns the text corresponding to the paragraph #i.
 	 */
 	public String getElementReallyAt(int i) {
-		Interval interval=intervals.get(i);
-		long start=interval.getStart()+15; // we don't want neither the "<tr><td nowrap>"
-		long end=interval.getEnd()-12;     // nor the "</td></tr>\r\n"
+		Interval interval=getInterval(i);
+		long start=interval.getStart()+15; // we don't want neither the <tr><td nowrap>
+		long end=interval.getEnd()-12;     // nor the </td></tr>\r\n
 		byte[] tmp=new byte[(int) (end-start+1)];
 		int z=0;
 		for (long pos=start;pos<=end;pos++) {
@@ -132,24 +170,18 @@ public class ConcordanceAsListModel extends AbstractListModel {
 		return new String(tmp,utf8);
 	}
 
+	Interval getInterval(int i) {
+		int end=endOfLines[i];
+		int start=(i==0)?0:(endOfLines[i-1]+1);
+		return new Interval(start,end);
+	}
 	
 	/**
 	 * Returns the text corresponding to the concordance line #i.
 	 */
-	public String getElementAt(int i) {
+	public Object getElementAt(int i) {
 		int realIndex=i+HTML_START_LINES;
 		return getElementReallyAt(realIndex);
-	}
-	
-	public String getHTMLStart() {
-		// TODO take the font from the preferences
-		return 
-		"<html lang=en>\r\n"+
-		"<body>\r\n<font style=\"font-family: Courier new; font-size: 12\">\r\n";
-	}
-	
-	public String getHTMLEnd() {
-		return "</font></body></html>";
 	}
 	
 	
@@ -180,4 +212,5 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			stream=null;
 		}
 	}
+	
 }

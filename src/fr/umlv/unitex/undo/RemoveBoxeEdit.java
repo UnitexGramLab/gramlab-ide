@@ -35,9 +35,9 @@ import fr.umlv.unitex.*;
 public class RemoveBoxeEdit extends AbstractUndoableEdit {
 
 	/** List of transition to a boxe */
-	private ArrayList transitionsToBoxe;
+	private ArrayList<GenericGraphBox> transitionsToBoxe;
 	/** boxes of the graph */
-	private ArrayList boxes;
+	private ArrayList<GenericGraphBox> boxes;
 	/** boxe to remove */
 	private GenericGraphBox boxe;
 	/** zone where the graph is drawn */
@@ -53,7 +53,7 @@ public class RemoveBoxeEdit extends AbstractUndoableEdit {
  	*/
 	public RemoveBoxeEdit(
 		GenericGraphBox boxe,
-		ArrayList boxes,
+		ArrayList<GenericGraphBox> boxes,
 		GenericGraphicalZone zone) {
 		this.boxes = boxes;
 		this.boxe = boxe;
@@ -68,7 +68,7 @@ public class RemoveBoxeEdit extends AbstractUndoableEdit {
 		boxes.add(boxe);
 		// add thes transition which pointed on this boxe
 		for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
-			GenericGraphBox g = (GenericGraphBox) transitionsToBoxe.get(i);
+			GenericGraphBox g = transitionsToBoxe.get(i);
 			g.addTransitionTo(boxe);
 		}
 		if( itSelfTransition ) boxe.addTransitionTo(boxe);
