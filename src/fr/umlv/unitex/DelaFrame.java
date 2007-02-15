@@ -53,6 +53,7 @@ public class DelaFrame extends JInternalFrame {
 		middle.setOpaque(true);
 		middle.setLayout(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
+		middle.add(new JScrollPane(text));
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
@@ -110,7 +111,6 @@ public class DelaFrame extends JInternalFrame {
 			init();
 		}
 		frame.text.load(dela);
-		frame.middle.add(frame.text);
 		frame.text.setFont(Config.getCurrentTextFont());
 		frame.setTitle(dela.getAbsolutePath());
 		frame.setVisible(true);
@@ -131,7 +131,6 @@ public class DelaFrame extends JInternalFrame {
 			return;
 		}
 		frame.setVisible(false);
-		frame.text=null;
 		System.gc();
 	}
 
