@@ -46,6 +46,7 @@ public class TextAsListModel extends AbstractListModel {
 	FileInputStream stream;
 	File file;
 	boolean dataFromFile;
+	ByteBuffer parseBuffer;
 	
 	int[] endOfLines;
 	int numberOfEOL;
@@ -71,7 +72,13 @@ public class TextAsListModel extends AbstractListModel {
 			return;
 		}
 		dataLength=(int) ((fileLength-2)/2);
-		final ByteBuffer parseBuffer=buffer.duplicate();
+		/*
+		 * parseBuffer must NOT be a final variable, because it would keep
+		 * a reference on the buffer that would never be null, so that the
+		 * buffer can never be garbage collected. As a consequence, the
+		 * underlying file mapping will never be released.
+		 */
+		parseBuffer=buffer.duplicate();
 		worker=new SwingWorker<Void,Integer>() {
 
 			@Override
@@ -238,7 +245,12 @@ public class TextAsListModel extends AbstractListModel {
 	}
 
 	public void reset() {
+		if (worker!=null) {
+			worker.cancel(true);
+			worker=null;
+		}
 		if (buffer!=null) buffer=null;
+		if (parseBuffer!=null) parseBuffer=null;
 		System.gc();
 		if (channel!=null) {
 			try {

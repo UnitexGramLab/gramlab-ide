@@ -95,6 +95,10 @@ public class ConcordanceAsListModel extends AbstractListModel {
 		        	publish(dataLength-1);
 		        	setProgress(100);
 		        }
+				/* We publish a negative position in order to inform the
+				 * progress method that there are no more ends of line. 
+				 */
+				publish(-1);
 				return null;
 			}
 			
