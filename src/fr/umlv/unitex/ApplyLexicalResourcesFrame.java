@@ -435,7 +435,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-
+						TextDicFrame.hideFrame();
 						MultiCommands commands;
 						if(Config.isAgglutinativeLanguage()){
 							commands = getRunCmdForAgglutinativeLanguages();
@@ -444,7 +444,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						}
 						if(commands.numberOfCommands() == 0) return;
 						
-						TextDicFrame.hideFrame();
 						new ProcessInfoFrame(commands, true,
 								new ApplyLexicalResourcesDo());
 					}
