@@ -7,7 +7,7 @@
   <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
-  <property name="appdir" location="../../../App"/>
+  <property name="appdir" location="D:\\Unitex2.0beta\\App"/>
   
   <!-- targets -->
   <target name="init">
@@ -37,8 +37,8 @@
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
 
-    <!-- create MyUnitex.jar -->
-    <jar jarfile="${dist}/MyUnitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf"
+    <!-- create Unitex.jar -->
+    <jar jarfile="${dist}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf"
       basedir="classes"/>
 
     <!--
@@ -51,7 +51,7 @@
   </target>
 
   <target name="install" depends="dist">
-    <copy file="${dist}/MyUnitex.jar" todir="${appdir}"/>
+    <copy file="${dist}/Unitex.jar" todir="${appdir}"/>
   </target>
 
   <target name="clean" description="clean up" >

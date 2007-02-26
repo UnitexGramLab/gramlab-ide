@@ -48,7 +48,6 @@ public class ConcordanceFrame extends JInternalFrame {
 			/* Do nothing since this is an invisible component
 			 * only used to catch mouse events.
 			 */
-			
 		}
 		
 		@Override
@@ -93,7 +92,7 @@ public class ConcordanceFrame extends JInternalFrame {
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
+				close();
 				dispose();
 			}
 			
@@ -147,6 +146,7 @@ public class ConcordanceFrame extends JInternalFrame {
 		d.setSize((g < 800) ? g : 800, d.height);
 		frame.setSize(d);
 		Util.getHtmlPageTitle(concor);
+//TODO ajouter un listener pour ecouter le changement de fonte de la concordance 
 		frame.list.setFont(new Font("Courier new",0,12));
 		frame.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		frame.list.addListSelectionListener(new ListSelectionListener() {
