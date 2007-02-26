@@ -22,7 +22,6 @@
 package fr.umlv.unitex.process;
 
 import java.io.*;
-
 import javax.swing.*;
 
 /**
@@ -32,64 +31,114 @@ import javax.swing.*;
  */
 public class ProcessInfoThread extends Thread {
 
-   JTextArea txt;
+   JList list;
    BufferedReader stream;
    boolean close_on_finish;
    ProcessInfoFrame parent_frame;
-   JScrollBar scroll_bar;
-   JScrollPane scrollPane;
 
    /**
     * Creates a new <code>ProcessInfoThread</code> 
-    * @param t the text area to display messages
+    * @param list the JList to display messages
     * @param s the stream to monitor
     * @param close indicate if the parent frame must be closed after the completion of the process
     * @param f parent frame
-    * @param scroll scroll bar of the text area
-    * @param scr scroll pane that contains the text area
     */
    public ProcessInfoThread(
-      JTextArea t,
+      JList list,
       InputStream s,
       boolean close,
-      ProcessInfoFrame f,
-      JScrollBar scroll,
-      JScrollPane scr) {
+      ProcessInfoFrame f) {
       super();
-      txt= t;
+      this.list=list;
       close_on_finish= close;
       parent_frame= f;
-      scroll_bar= scroll;
-      scrollPane= scr;
       stream= new BufferedReader(new InputStreamReader(s));
    }
 
+   
+   char nextChar='\0';
+   public String myReadLine(BufferedReader reader) {
+      int c;
+      String result="";
+      if (nextChar!='\0') {
+    	  result=""+nextChar;
+    	  nextChar='\0';
+      }
+      try {
+    	  while ((c=reader.read())!=-1) {
+    		  char ch=(char)c;
+			  if (ch=='\r') {
+				  result=result+ch;
+				  if ((c=reader.read())!=-1) {
+					  ch=(char)c;
+					  if (ch=='\n') {
+						  /* If we have a \r\n sequence, we return it */
+						  result=result+ch;
+						  return result;
+					  }
+					  /* Otherwise, we stock the character */
+					  nextChar=ch;
+				  }
+				  return result;
+			  }
+			  else if (ch=='\n') {
+				  /* If we have a single \n, we return it */
+				  result=result+ch;
+				  nextChar='\0';
+				  return result;
+			  } else {
+				  nextChar='\0';
+				  result=result+ch;
+			  }
+		  }
+      } catch (IOException e) {
+		e.printStackTrace();
+		return null;
+      }
+      if ("".equals(result)) return null;
+      return result;
+   }
+   
+   
    /**
     * Runs the monitoring thread 
     */
    public void run() {
       String s;
-      try {
-         while ((s= stream.readLine()) != null) {
-            if (!s.equals("")) {
-               final String s2= s;
-               SwingUtilities.invokeLater(new Runnable() {
-                  public void run() {
-                     txt.append(s2 + "\n");
-                     scroll_bar.setValue(scroll_bar.getMaximum());
-                     scrollPane.repaint();
-                  }
-               });
-            }
-         }
-      } catch (IOException e) {
-    	  e.printStackTrace();
-      }
+      boolean fullReturn;
+      final ProcessOutputListModel model=(ProcessOutputListModel) list.getModel();
+      while ((s=myReadLine(stream)) != null) {
+	    if (!s.equals("")) {
+	    	if (s.endsWith("\r\n") ) {
+	    		s=s.substring(0,s.length()-2);
+	    		fullReturn=true;
+	    		
+	    	} else if (s.endsWith("\r") ) {
+	    		fullReturn=false;
+		    	s=s.substring(0,s.length()-1);
+		    } else if (s.endsWith("\n") ) {
+	    		fullReturn=true;
+		    	s=s.substring(0,s.length()-1);
+		    } else {
+		    	fullReturn=true;
+		    }
+	       final String s2= s;
+	       final boolean ret=fullReturn;
+	       SwingUtilities.invokeLater(new Runnable() {
+	          public void run() {
+	        	  if (ret) {
+	        		  model.addElement(new Couple(s2,false));
+	        	  } else {
+	        		  model.replaceLast(new Couple(s2,false));
+	        	  }
+	        	  list.ensureIndexIsVisible(model.getSize()-1);
+	          }
+	       });
+	    }
+	 }
       if (close_on_finish) {
          parent_frame.setVisible(false);
          parent_frame= null;
-      } else {
-         scroll_bar.setValue(scroll_bar.getMaximum());
       }
    }
 

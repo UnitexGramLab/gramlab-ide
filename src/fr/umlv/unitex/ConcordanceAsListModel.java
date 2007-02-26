@@ -83,7 +83,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			protected Void doInBackground() throws Exception {
 				int lastStart=0;
 				for (int pos=0;pos<dataLength;pos=pos+1) {
-					int a=0xFF & buffer.get();
+					int a=0xFF & buffer.get(pos);
 		        	if (a=='\n') {
 		        		// if we have an end-of-line
 		        		publish(pos);
