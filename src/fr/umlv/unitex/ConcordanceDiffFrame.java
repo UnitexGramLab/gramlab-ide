@@ -59,7 +59,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
+				close();
 				dispose();
 			}
 		});
