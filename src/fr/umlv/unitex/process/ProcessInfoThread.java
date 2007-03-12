@@ -22,6 +22,7 @@
 package fr.umlv.unitex.process;
 
 import java.io.*;
+
 import javax.swing.*;
 
 /**
@@ -52,7 +53,11 @@ public class ProcessInfoThread extends Thread {
       this.list=list;
       close_on_finish= close;
       parent_frame= f;
-      stream= new BufferedReader(new InputStreamReader(s));
+      try {
+		stream= new BufferedReader(new InputStreamReader(s,"UTF8"));
+	} catch (UnsupportedEncodingException e) {
+		e.printStackTrace();
+	}
    }
 
    

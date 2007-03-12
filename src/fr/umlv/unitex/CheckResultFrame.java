@@ -102,8 +102,8 @@ public class CheckResultFrame extends JInternalFrame {
 		if (frame == null) {
 			return;
 		}
+		if (frame.text!=null) frame.text.reset();
 		frame.setVisible(false);
-		frame.text=null;
 		System.gc();
 	}
 
