@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2007 Universitï¿½ de Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ import javax.swing.*;
  * large UTF16-LE files as lists of lines. This is useful to display
  * dictionaries.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  */
 public class BigTextList extends JList {
 
@@ -44,7 +44,10 @@ public class BigTextList extends JList {
 	 */
 	public BigTextList(TextAsListModel m,boolean isDelaf) {
 		super(m);
-		setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxx");
+		/* Set maximal length of a line:
+		 * This value must big enough holding even the longest dlc entries,
+		 * or strange effects (lines cut up somewhere in the middle) will occure! */
+		setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		if (isDelaf) {
 			setCellRenderer(new DefaultListCellRenderer() {
 				@Override
