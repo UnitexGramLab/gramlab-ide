@@ -72,7 +72,6 @@ public class CommandMenuFactory {
             ,Syl2JamoCommand.class
             ,Table2GrfCommand.class
 			,TagsetNormFst2Command.class
-            ,TextAutomaton2MftCommand.class
             ,TokenizeCommand.class
             ,Txt2Fst2Command.class
             ,Txt2Fst2KrCommand.class
