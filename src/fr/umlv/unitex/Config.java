@@ -575,7 +575,8 @@ public class Config {
 				|| currentSystemName.equalsIgnoreCase("Windows 98")
 				|| currentSystemName.equalsIgnoreCase("Windows 95")
 				|| currentSystemName.equalsIgnoreCase("Windows XP")
-				|| currentSystemName.equalsIgnoreCase("Windows ME")) {
+				|| currentSystemName.equalsIgnoreCase("Windows ME")
+				|| currentSystemName.equalsIgnoreCase("Windows Vista")) {
 			currentSystem = WINDOWS_SYSTEM;
 		} else if (currentSystemName.equalsIgnoreCase("linux")) {
 			currentSystem = LINUX_SYSTEM;
@@ -584,7 +585,9 @@ public class Config {
 		} else if (currentSystemName.equalsIgnoreCase("sunos")) {
 			currentSystem = SUN_OS_SYSTEM;
 		} else {
-			System.out.println("Unitex cannot run under " + currentSystemName);
+			JOptionPane.showMessageDialog(null,
+					"Unitex is not configured for "+currentSystemName+".\nPlease contact unitex@univ-mlv.fr", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 		System.out.println("Unitex is running under " + currentSystemName);
