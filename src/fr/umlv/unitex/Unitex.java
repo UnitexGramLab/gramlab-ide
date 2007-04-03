@@ -41,6 +41,15 @@ public class Unitex {
 	 *  
 	 */
 	public static void main(String[] args) {
+		/*JFrame ff=new JFrame("toto");
+		ff.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ff.setSize(600,600);
+		XMLmodel x1=new XMLmodelImpl(43,43);
+		XMLmodel x2=new XMLmodelImpl(86,52);
+		XAlignModel model=new XAlignModelImpl(x1,x2);
+		ff.setContentPane(new XAlignPane(x1,x2,model));
+		ff.setVisible(true);*/
+		
 		Locale.setDefault(Locale.ENGLISH);
 		try {
 			javax.swing.plaf.metal.MetalLookAndFeel
