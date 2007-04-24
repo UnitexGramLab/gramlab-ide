@@ -54,7 +54,6 @@ public class CommandMenuFactory {
             ,Fst2UnambigCommand.class
             ,Grf2Fst2Command.class
             ,ImploseFst2Command.class
-            ,InflectCommand.class
             ,InflectKrCommand.class
             ,Jamo2SylCommand.class
             ,LangCommand.class
