@@ -114,7 +114,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     JButton button = new JButton("Explode");
     button.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        exploseFst(text_fst);
+        explodeTextAutomaton(text_fst);
       }
     });
     p.add(button);
@@ -122,7 +122,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     button = new JButton("Implode");
     button.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        imploseFst(text_fst);
+        implodeTextAutomaton(text_fst);
       }
     });
     p.add(button);
@@ -872,30 +872,30 @@ public class TextAutomatonFrame extends JInternalFrame {
   }
 
   void exploseElagFst() {
-    exploseFst(elag_fst);
+    explodeTextAutomaton(elag_fst);
   }
 
   void imploseElagFst() {
-    imploseFst(elag_fst);
+    implodeTextAutomaton(elag_fst);
   }
 
-  static void exploseFst(File f) {
+  static void explodeTextAutomaton(File f) {
 
     if (!f.exists()) {
       return;
     }
-    File tmpf = new File(f.getParent(), "tmp.fst2");
-    ExploseFst2Command exploseCmd = new ExploseFst2Command().output(
-        tmpf).automaton(f);
-    new ProcessInfoFrame(exploseCmd, false, new SwapTmpDO(f, tmpf));
+    TagsetNormFst2Command tagsetcmd=new TagsetNormFst2Command()
+    	.tagset(new File(Config.getCurrentElagDir(), "tagset.def"))
+    	.automaton(f);
+    new ProcessInfoFrame(tagsetcmd,false,new loadSentenceDO());
   }
 
-  static void imploseFst(File f) {
+  static void implodeTextAutomaton(File f) {
     if (!f.exists()) {
       return;
     }
     File tmpf = new File(f.getParent(), "tmp.fst2");
-    ImploseFst2Command imploseCmd = new ImploseFst2Command().output(
+    ImplodeFst2Command imploseCmd = new ImplodeFst2Command().output(
         tmpf).automaton(f);
     new ProcessInfoFrame(imploseCmd, true, new SwapTmpDO(f, tmpf));
   }
@@ -963,7 +963,7 @@ class ImploseDO extends ToDoAbstract {
   
   public ImploseDO(File f) { fst = f; }
   
-  public void toDo() { TextAutomatonFrame.imploseFst(fst); }
+  public void toDo() { TextAutomatonFrame.implodeTextAutomaton(fst); }
 }
 
 

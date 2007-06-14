@@ -53,7 +53,7 @@ public class CommandMenuFactory {
             ,Fst2TxtCommand.class
             ,Fst2UnambigCommand.class
             ,Grf2Fst2Command.class
-            ,ImploseFst2Command.class
+            ,ImplodeFst2Command.class
             ,InflectKrCommand.class
             ,Jamo2SylCommand.class
             ,LangCommand.class

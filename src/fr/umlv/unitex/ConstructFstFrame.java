@@ -235,8 +235,8 @@ public class ConstructFstFrame extends JDialog {
                */
 
             TextAutomatonFrame.hideFrame();
-            new ProcessInfoFrame(commands, false,
-                new ConstructFstDo(elagFst.isSelected()), false);
+            new ProcessInfoFrame(commands, true,
+                new ConstructFstDo(elagFst.isSelected()),false);
           }
         });
         dispose();
@@ -270,7 +270,7 @@ public class ConstructFstFrame extends JDialog {
         TextAutomatonFrame.getFrame().setIcon(false);
         TextAutomatonFrame.getFrame().setSelected(true);
 
-        if (normalize) { TextAutomatonFrame.normalizeFst(true); }
+        if (normalize) { TextAutomatonFrame.normalizeFst(/*true*/false); }
 
       } catch (java.beans.PropertyVetoException e) {
     	  e.printStackTrace();
