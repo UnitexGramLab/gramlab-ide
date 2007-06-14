@@ -41,11 +41,14 @@
     <jar jarfile="${dist}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf"
       basedir="classes"/>
 
+  	<!-- These two targets will remain commented until their two manifest files
+  	     are committed on the SVN server
     <jar jarfile="${dist}/Grf2ps.jar" manifest="classes/fr/umlv/unitex/grf2ps-manifest.mf"
       basedir="classes"/>
 
     <jar jarfile="${dist}/Grf2svg.jar" manifest="classes/fr/umlv/unitex/grf2svg-manifest.mf"
       basedir="classes"/>
+      -->
   </target>
 
   <target name="install" depends="dist">
