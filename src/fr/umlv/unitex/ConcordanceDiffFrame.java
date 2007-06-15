@@ -91,7 +91,12 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		d.setSize((g < 800) ? g : 800, d.height);
 		frame.setSize(d);
 		Util.getHtmlPageTitle(concor);
-		frame.list.setFont(new Font("Courier new",0,12));
+		frame.list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
+		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
+			public void fontChanged(Font font) {
+				frame.list.setFont(font);
+			}
+		});
 		frame.list.load(concor);
 		frame.setBounds(150, 50, 850, 550);
 		frame.setVisible(true);

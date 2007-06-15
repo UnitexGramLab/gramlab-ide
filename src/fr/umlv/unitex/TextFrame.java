@@ -53,8 +53,8 @@ public class TextFrame extends JInternalFrame {
       middle.setOpaque(true);
       middle.setBorder(BorderFactory.createLoweredBevelBorder());
       middle.add(text);
-      GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
-		public void textFontChanged(Font font) {
+      GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		public void fontChanged(Font font) {
 			text.setFont(font);
 		}});
       JPanel up= new JPanel(new GridLayout(2, 1));
