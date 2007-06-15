@@ -201,8 +201,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		JPanel p=new JPanel(new BorderLayout());
 		p.add(new JLabel("Right-click a dictionary to get information about it :"),BorderLayout.NORTH);
 		credits=new BigTextArea();
-		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
-			public void textFontChanged(Font font) {
+		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+			public void fontChanged(Font font) {
 				credits.setFont(font);
 			}});
 		p.add(credits,BorderLayout.CENTER);

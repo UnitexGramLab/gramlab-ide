@@ -65,8 +65,8 @@ public class DelaFrame extends JInternalFrame {
 				UnitexFrame.mainFrame.closeDELA();
 			}
 		});
-		GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
-			public void textFontChanged(Font font) {
+		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+			public void fontChanged(Font font) {
 				text.setFont(font);
 			}});
 	}

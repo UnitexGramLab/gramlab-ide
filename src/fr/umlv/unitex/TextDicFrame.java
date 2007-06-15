@@ -68,9 +68,9 @@ public class TextDicFrame extends JInternalFrame {
     		  }
     	  }
       });
-      GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
+      GlobalPreferenceFrame.addTextFontListener(new FontListener() {
 
-		public void textFontChanged(Font font) {
+		public void fontChanged(Font font) {
 			dlf.setFont(font);
 			dlc.setFont(font);
 			err.setFont(font);

@@ -86,8 +86,8 @@ public class TextAutomatonFrame extends JInternalFrame {
     });
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     closeElagFrame();
-    GlobalPreferenceFrame.addTextFontListener(new TextFontListener() {
-		public void textFontChanged(Font font) {
+    GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		public void fontChanged(Font font) {
 			text.setFont(font);
 		}});
   }
