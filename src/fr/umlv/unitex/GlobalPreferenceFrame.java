@@ -38,7 +38,8 @@ import javax.swing.event.*;
  */
 public class GlobalPreferenceFrame extends JInternalFrame {
 
-	static ArrayList<TextFontListener> textFontListeners=new ArrayList<TextFontListener>(); 
+	static ArrayList<FontListener> textFontListeners=new ArrayList<FontListener>(); 
+	static ArrayList<FontListener> concordanceFontListeners=new ArrayList<FontListener>(); 
 	
 	static GlobalPreferenceFrame frame;
 
@@ -180,6 +181,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 
 			public void actionPerformed(ActionEvent arg0) {
 				fireTextFontChanged(pref.textFont);
+				fireConcordanceFontChanged(new Font(pref.htmlFontName,0,pref.htmlFontSize));
 				pref.antialiasing = frame.antialiasingCheckBox.isSelected();
 				if (frame.htmlViewer.getText().equals(""))
 					pref.htmlViewer = null;
@@ -794,17 +796,31 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	}
 	
 	protected static void fireTextFontChanged(Font font) {
-		for (TextFontListener listener:textFontListeners) {
-			listener.textFontChanged(font);
+		for (FontListener listener:textFontListeners) {
+			listener.fontChanged(font);
 		}
 	}
 	
-	public static void addTextFontListener(TextFontListener listener) {
+	public static void addTextFontListener(FontListener listener) {
 		textFontListeners.add(listener);
 	}
 
-	public static void removeTextFontListener(TextFontListener listener) {
+	public static void removeTextFontListener(FontListener listener) {
 		textFontListeners.remove(listener);
+	}
+
+	protected static void fireConcordanceFontChanged(Font font) {
+		for (FontListener listener:concordanceFontListeners) {
+			listener.fontChanged(font);
+		}
+	}
+	
+	public static void addConcordanceFontListener(FontListener listener) {
+		concordanceFontListeners.add(listener);
+	}
+
+	public static void removeConcordanceFontListener(FontListener listener) {
+		concordanceFontListeners.remove(listener);
 	}
 
 }

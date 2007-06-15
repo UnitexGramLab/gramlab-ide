@@ -146,8 +146,12 @@ public class ConcordanceFrame extends JInternalFrame {
 		d.setSize((g < 800) ? g : 800, d.height);
 		frame.setSize(d);
 		Util.getHtmlPageTitle(concor);
-//TODO ajouter un listener pour ecouter le changement de fonte de la concordance 
-		frame.list.setFont(new Font("Courier new",0,12));
+		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
+			public void fontChanged(Font font) {
+				frame.list.setFont(font);
+			}
+		});
+		frame.list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
 		frame.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		frame.list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
