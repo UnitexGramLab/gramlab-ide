@@ -21,9 +21,12 @@
 
 package fr.umlv.unitex;
 
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
+
+import fr.umlv.unitex.xalign.*;
 
 
 
@@ -44,12 +47,15 @@ public class Unitex {
 		/*JFrame ff=new JFrame("toto");
 		ff.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ff.setSize(600,600);
-		XMLmodel x1=new XMLmodelImpl(43,43);
-		XMLmodel x2=new XMLmodelImpl(86,52);
-		XAlignModel model=new XAlignModelImpl(x1,x2);
-		ff.setContentPane(new XAlignPane(x1,x2,model));
-		ff.setVisible(true);*/
-		
+		XMLTextModel text1=new XMLTextModel();
+		text1.load(new File("X:\\tmp\\patwat\\LePetPrin.EngID.p5.xml"));
+		XMLTextModel text2=new XMLTextModel();
+		text2.load(new File("X:\\tmp\\patwat\\LePetPrin.FraID.p5.xml"));
+		XAlignModel model=new XAlignModelImpl(text1,text2);
+		model.load(new File("X:\\tmp\\patwat\\TEST.xml"));
+		ff.setContentPane(new XAlignPane(text1,text2,model));
+		ff.setVisible(true);
+		*/
 		Locale.setDefault(Locale.ENGLISH);
 		try {
 			javax.swing.plaf.metal.MetalLookAndFeel
@@ -57,11 +63,11 @@ public class Unitex {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (UnsupportedLookAndFeelException e) {
 			System.out
-					.println("Metal Look & Feel not supported on this platform. \nProgram Terminated");
+					.println("Ocean Theme not supported on this platform. \nProgram Terminated");
 			System.exit(0);
 		} catch (IllegalAccessException e) {
 			System.out
-					.println("Metal Look & Feel could not be accessed. \nProgram Terminated");
+					.println("Ocean Theme could not be accessed. \nProgram Terminated");
 			System.exit(0);
 		} catch (ClassNotFoundException e) {
 			System.out
@@ -69,7 +75,7 @@ public class Unitex {
 			System.exit(0);
 		} catch (InstantiationException e) {
 			System.out
-					.println("Metal Look & Feel could not be instantiated. \nProgram Terminated");
+					.println("Ocean Theme can not be instantiated. \nProgram Terminated");
 			System.exit(0);
 		} catch (Exception e) {
 			System.out.println("Unexpected error. \nProgram Terminated");
