@@ -20,30 +20,7 @@
  */
 package fr.umlv.unitex.xalign;
 
-import java.util.*;
-
-public class XMLmodelImpl implements XMLmodel {
-
-	private int size;
-	private int seed;
-	
-	public XMLmodelImpl(int n, int seed) {
-		size=n;
-		this.seed=seed;
-	}
-
-	public int size() {
-		return size;
-	}
-
-	public String get(int sentence) {
-		Random r=new Random(sentence+seed);
-		int n=r.nextInt(6)+1;
-		String s="sentence #"+sentence+":\n";
-		for (int i=0;i<=n;i++) {
-			s=s+"pouet pouet pouet pouet "+r.nextInt()+"\n";
-		}
-		return s;
-	}
-
+public interface AlignmentListener {
+	public void alignmentChanged();
 }
+

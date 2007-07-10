@@ -26,6 +26,7 @@ import java.awt.geom.*;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.event.*;
 
 public class XAlignPane extends JPanel {
 
@@ -43,8 +44,8 @@ public class XAlignPane extends JPanel {
 	
 	JPanel panelX;
 	JPanel panelY;
-	XMLmodel model1;
-	XMLmodel model2;
+	XMLTextModel model1;
+	XMLTextModel model2;
 	
 	XAlignModel alignmentModel;
 	
@@ -55,13 +56,27 @@ public class XAlignPane extends JPanel {
 	int tmpX=-1;
 	int tmpY=-1;
 	
-	public XAlignPane(final XMLmodel model1,final XMLmodel model2, XAlignModel model) {
+	public XAlignPane(final XMLTextModel model1,final XMLTextModel model2, XAlignModel model) {
 		super(new GridBagLayout());
 		this.model1=model1;
 		this.model2=model2;
 		this.alignmentModel=model;
-		scrollX=new JScrollBar(Adjustable.VERTICAL,0,1,0,model1.size());
-		scrollY=new JScrollBar(Adjustable.VERTICAL,0,1,0,model2.size());
+		scrollX=new JScrollBar(Adjustable.VERTICAL,0,1,0,(model1.getSize()>0)?model1.getSize():1);
+		model1.addListDataListener(new ListDataListener() {
+			public void intervalAdded(ListDataEvent e) {
+				scrollX.setMaximum(model1.getSize());
+			}
+			public void intervalRemoved(ListDataEvent e) {/* */}
+			public void contentsChanged(ListDataEvent e) {/* */}
+		});
+		scrollY=new JScrollBar(Adjustable.VERTICAL,0,1,0,(model2.getSize()>0)?model2.getSize():1);
+		model2.addListDataListener(new ListDataListener() {
+			public void intervalAdded(ListDataEvent e) {
+				scrollY.setMaximum(model2.getSize());
+			}
+			public void intervalRemoved(ListDataEvent e) {/* */}
+			public void contentsChanged(ListDataEvent e) {/* */}
+		});
 		middle=createMiddleComponent();
 		sentencesX=new JTextArea[MAX_SENTENCES];
 		sentencesY=new JTextArea[MAX_SENTENCES];
@@ -76,7 +91,7 @@ public class XAlignPane extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					int tmp=z+scrollX.getValue();
-					if (tmp>=model1.size()) {
+					if (tmp>=model1.getSize()) {
 						/* If we click outside the areas, we do nothing */ 
 						refresh();
 						return;
@@ -139,7 +154,7 @@ public class XAlignPane extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					int tmp=z+scrollY.getValue();
-					if (tmp>=model2.size()) {
+					if (tmp>=model2.getSize()) {
 						/* If we click outside the areas, we do nothing */ 
 						refresh();
 						return;
@@ -248,6 +263,10 @@ public class XAlignPane extends JPanel {
 				refresh();
 			}
 		});
+		model.addAlignmentListener(new AlignmentListener() {
+			public void alignmentChanged() {
+				refresh();
+			}});
 	}
 
 
@@ -273,8 +292,8 @@ public class XAlignPane extends JPanel {
 			} else {
 				sentencesX[j].setBackground(Color.WHITE);
 			}
-			if (i<model1.size()) {
-				sentencesX[j].setText(model1.get(i));
+			if (i<model1.getSize()) {
+				sentencesX[j].setText(model1.getElementAt(i));
 				sentencesX[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			} else {
 				sentencesX[j].setText("");
@@ -293,8 +312,8 @@ public class XAlignPane extends JPanel {
 			} else {
 				sentencesY[j].setBackground(Color.WHITE);
 			}
-			if (i<model2.size()) {
-				sentencesY[j].setText(model2.get(i));
+			if (i<model2.getSize()) {
+				sentencesY[j].setText(model2.getElementAt(i));
 				sentencesY[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			} else {
 				sentencesY[j].setText("");
@@ -396,7 +415,7 @@ public class XAlignPane extends JPanel {
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 				int x=scrollX.getValue();
 				int limit=x+MAX_SENTENCES;
-				if (limit>=model1.size()) limit=model1.size()-1;
+				if (limit>=model1.getSize()) limit=model1.getSize();
 				g2.setStroke(stroke);
 				alignments.clear();
 				boolean drawn=false;
