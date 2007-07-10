@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.xalign;
 
+import java.io.*;
 import java.util.*;
 
 public interface XAlignModel {
@@ -28,7 +29,11 @@ public interface XAlignModel {
 	public ArrayList<Integer> getAlignedSrcSequences(int sentence);
 	public ArrayList<Integer> getAlignedDestSequences(int sentence);
 	
+	public void load(File f);
 	public void align(int sentenceSrc,int sentenceDest);
 	public void unAlign(int sentenceSrc,int sentenceDest);
 	public void changeAlignment(int sentenceSrc,int sentenceDest);
+	
+	public void addAlignmentListener(AlignmentListener l);
+	public void removeAlignmentListener(AlignmentListener l);
 }
