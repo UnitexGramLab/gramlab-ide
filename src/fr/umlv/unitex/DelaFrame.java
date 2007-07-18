@@ -130,6 +130,7 @@ public class DelaFrame extends JInternalFrame {
 		if (frame == null) {
 			return;
 		}
+		frame.text.reset();
 		frame.setVisible(false);
 		System.gc();
 	}
