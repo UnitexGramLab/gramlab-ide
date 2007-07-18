@@ -139,7 +139,9 @@ public class TextAsListModel extends AbstractListModel {
 				 * there is no need to synchronize */
 				endOfLines=temp;
 				numberOfEOL=newSize;
-				fireIntervalAdded(this,oldSize,newSize-1);
+				if (newSize-1>=oldSize) {
+					fireIntervalAdded(this,oldSize,newSize-1);
+				}
 			}
 						
 		};
