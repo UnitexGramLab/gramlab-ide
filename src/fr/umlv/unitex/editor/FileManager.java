@@ -146,12 +146,7 @@ public class FileManager {
          osr.write(0xfeff);
          for (int i=0;i<l;i++) {
             char c=content.charAt(i);
-            if (c!='\n') {
-            	osr.write(c);
-            }
-            else {
-            	osr.write("\r\n");
-            }
+            osr.write(c);
          }
          osr.flush();
          osr.close();
