@@ -148,14 +148,19 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 				FileEditionMenu.openFile();
 			}
 		});
-		JMenuItem save = new JMenuItem("Save");
-		JMenuItem saveAs = new JMenuItem("Save As...");
 		JMenuItem close = new JMenuItem("Close");
 		close.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
 		});
+		JMenuItem save = new JMenuItem("Save");
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				saveFile(file);
+			}
+		});
+		JMenuItem saveAs = new JMenuItem("Save As...");
 		saveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveFile(null);
