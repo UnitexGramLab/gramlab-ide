@@ -34,8 +34,9 @@ public class Version {
    /**
     * The string that contains the version number, and the date of the release.
     */
-   public final static String version= "Unitex 2.0beta "+getJarDate();
+   public final static String version= "Unitex 2.0beta "+getRevisionDate();
 
+   
    /**
     * @return a <code>String</code> representing the date of the .jar file that
     * contains Unitex's graphical interface in the form "(May 10, 2006)". 
@@ -59,6 +60,36 @@ public class Version {
 	   		case Calendar.DECEMBER: date=date+"December "; break;
 	   }
 	   return date+calendar.get(Calendar.DAY_OF_MONTH)+", "+calendar.get(Calendar.YEAR)+")";
+   }
+   
+   private static String getRevisionDate() {
+	   File f=new File(Config.getApplicationDir(),"revision.date");
+	   if (!f.exists() || f.length()==0) {
+		   System.out.println("File not found: "+f.getAbsolutePath());
+		   return getJarDate();
+	   }
+	   System.out.println("ici");
+	   FileInputStream stream;
+	try {
+		stream = new FileInputStream(f);
+	} catch (FileNotFoundException e) {
+		e.printStackTrace();
+		return getJarDate();
+	}
+	   byte[] buffer=new byte[64];
+	   int n;
+	   try {
+		n=stream.read(buffer);
+	} catch (IOException e) {
+		e.printStackTrace();
+		return getJarDate();
+	}
+	   try {
+		return "("+new String(buffer,0,n-1,"UTF8")+")";
+	} catch (UnsupportedEncodingException e) {
+		e.printStackTrace();
+		return getJarDate();
+	}
    }
 
 }
