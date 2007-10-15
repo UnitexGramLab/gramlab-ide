@@ -48,7 +48,8 @@ public class AboutUnitexFrame extends JInternalFrame {
 		BigTextArea licenseGPL=new BigTextArea(new File(Config.getApplicationDir(),"GPL.txt"));
 		BigTextArea licenseLGPL=new BigTextArea(new File(Config.getApplicationDir(),"LGPL.txt"));
 		BigTextArea licenseLGPLLR=new BigTextArea(new File(Config.getApplicationDir(),"LGPLLR.txt"));
-		BigTextArea disclaimer=new BigTextArea(new File(Config.getApplicationDir(),"Disclaimer.txttxt"));
+		BigTextArea apache=new BigTextArea(new File(Config.getApplicationDir(),"Apache-1.1.txt"));
+		BigTextArea disclaimer=new BigTextArea(new File(Config.getApplicationDir(),"Disclaimer.txt"));
 		JPanel up = new JPanel();
 		up.setOpaque(true);
 		up.setLayout(new BorderLayout());
@@ -68,6 +69,7 @@ public class AboutUnitexFrame extends JInternalFrame {
 		licenses.add(licenseLGPL,"LGPL");
 		licenses.add(licenseGPL,"GPL");
 		licenses.add(licenseLGPLLR,"LGPLLR");
+		licenses.add(apache,"Apache");
 		top.add(licenses, BorderLayout.CENTER);
 		setContentPane(top);
 		setVisible(false);
