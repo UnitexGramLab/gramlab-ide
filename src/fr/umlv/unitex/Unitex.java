@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,12 +21,10 @@
 
 package fr.umlv.unitex;
 
-import java.io.*;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
-
-import fr.umlv.unitex.xalign.*;
 
 
 
@@ -44,41 +42,29 @@ public class Unitex {
 	 *  
 	 */
 	public static void main(String[] args) {
-		/*JFrame ff=new JFrame("toto");
-		ff.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ff.setSize(600,600);
-		XMLTextModel text1=new XMLTextModel();
-		text1.load(new File("X:\\tmp\\patwat\\LePetPrin.EngID.p5.xml"));
-		XMLTextModel text2=new XMLTextModel();
-		text2.load(new File("X:\\tmp\\patwat\\LePetPrin.FraID.p5.xml"));
-		XAlignModel model=new XAlignModelImpl(text1,text2);
-		model.load(new File("X:\\tmp\\patwat\\TEST.xml"));
-		ff.setContentPane(new XAlignPane(text1,text2,model));
-		ff.setVisible(true);
-		*/
 		Locale.setDefault(Locale.ENGLISH);
 		try {
 			javax.swing.plaf.metal.MetalLookAndFeel
 					.setCurrentTheme(new OceanTheme());
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (UnsupportedLookAndFeelException e) {
-			System.out
+			System.err
 					.println("Ocean Theme not supported on this platform. \nProgram Terminated");
 			System.exit(0);
 		} catch (IllegalAccessException e) {
-			System.out
+			System.err
 					.println("Ocean Theme could not be accessed. \nProgram Terminated");
 			System.exit(0);
 		} catch (ClassNotFoundException e) {
-			System.out
+			System.err
 					.println("Your version of Java does not contain all the classes required by Unitex.\nProgram Terminated");
 			System.exit(0);
 		} catch (InstantiationException e) {
-			System.out
+			System.err
 					.println("Ocean Theme can not be instantiated. \nProgram Terminated");
 			System.exit(0);
 		} catch (Exception e) {
-			System.out.println("Unexpected error. \nProgram Terminated");
+			System.err.println("Unexpected error. \nProgram Terminated");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -88,8 +74,5 @@ public class Unitex {
 		JFrame frame = new UnitexFrame();
 		frame.setVisible(true);
 	}
-	
-	
-	
 	
 }

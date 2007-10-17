@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -74,6 +74,8 @@ public class CommandMenuFactory {
             ,TokenizeCommand.class
             ,Txt2Fst2Command.class
             ,Txt2Fst2KrCommand.class
+            ,XAlignCommand.class
+            ,XMLizerCommand.class
             };
 		JMenu menu = new JMenu("Help on commands");
     for (int i=0;i<commands.length;i++) {

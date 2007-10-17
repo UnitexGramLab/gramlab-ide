@@ -23,41 +23,38 @@ package fr.umlv.unitex.process;
 
 import java.io.*;
 
-import fr.umlv.unitex.*;
-
 /**
  * @author Sébastien Paumier
  *  
  */
-public class Fst2TxtCommand extends CommandBuilder {
+public class XMLizerCommand extends CommandBuilder {
 
-	public Fst2TxtCommand() {
-		super("Fst2Txt");
+	public XMLizerCommand() {
+		super("XMLizer");
+		this.element("-t");
 	}
 
-	public Fst2TxtCommand text(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-    public Fst2TxtCommand fst2(File s) {
-        protectElement(s.getAbsolutePath());
+    public XMLizerCommand output(File s) {
+    	element("-o");
+    	protectElement(s.getAbsolutePath());
         return this;
     }
 
-    public Fst2TxtCommand alphabet() {
-      protectElement(Config.getAlphabet().getAbsolutePath());
-      return this;
-  }
+    public XMLizerCommand input(File s) {
+    	protectElement(s.getAbsolutePath());
+        return this;
+    }
 
-    public Fst2TxtCommand mode(boolean merge) {
-      element(merge?"-merge":"-replace");
-      return this;
-  }
+    public XMLizerCommand alphabet(File s) {
+    	element("-a");
+    	protectElement(s.getAbsolutePath());
+        return this;
+    }
 
-    public Fst2TxtCommand charByChar() {
-      element("-char_by_char");
-      return this;
-  }
+    public XMLizerCommand sentence(File s) {
+    	element("-s");
+    	protectElement(s.getAbsolutePath());
+        return this;
+    }
 
 }

@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -723,6 +723,7 @@ public class Config {
 	public static String getCurrentLanguageForTitleBar() {
 		if (currentLanguage == null) {
 			System.err.println("ERROR");
+			return null;
 		}
 		/* The following is a private joke */
 		if (!currentLanguage.equals("Greek (Ancient)") 
@@ -1038,7 +1039,9 @@ public class Config {
 			public boolean accept(File file) {
 				String name = file.getName();
 				return file.isDirectory() && !name.equals("App")
-						&& !name.equals("Src") && !name.equals("Users");
+						&& !name.equals("Src") 
+						&& !name.equals("Users")
+						&& !name.equals("XAlign");
 			}
 		});
 		for (int i = 0; i < fileList.length; i++) {
@@ -1390,6 +1393,41 @@ public class Config {
 		String s = Config.getCurrentLanguage();
 		return s.equals("Hungarian") || s.equals("Korean")
 				|| s.equals("Malagasy");
+	}
+
+
+	public static File getXAlignDirectory() {
+		File dir=new File(Config.getUserDir(),"XAlign");
+		if (!dir.exists()) {
+			if (!dir.mkdir()) {
+				JOptionPane
+				.showMessageDialog(
+						null,
+						"Cannot create directory "+dir.getAbsolutePath(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+		return dir;
+	}
+
+	
+	public static File getAlignmentProperties() {
+		File dir=getXAlignDirectory();
+		File f=new File(dir,"multialign.properties");
+		if (!f.exists()) {
+			File tmp=new File(new File(Config.getUnitexDir(),"XAlign"),"multialign.properties");
+			if (!tmp.exists()) {
+				JOptionPane
+				.showMessageDialog(
+						null,
+						"Cannot find XAlign configuration file "+tmp.getAbsolutePath(),
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+			copyFile(tmp,f);
+		}
+		return f;
 	}
 
 }
