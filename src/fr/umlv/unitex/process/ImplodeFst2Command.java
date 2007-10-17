@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -27,18 +27,18 @@ import java.io.*;
  * @author Sébastien Paumier
  *  
  */
-public class ImploseFst2Command extends CommandBuilder {
+public class ImplodeFst2Command extends CommandBuilder {
 
-	public ImploseFst2Command() {
-		super("ImploseFst2");
+	public ImplodeFst2Command() {
+		super("ImplodeFst2");
 	}
 
-	public ImploseFst2Command automaton(File s) {
+	public ImplodeFst2Command automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
 
-    public ImploseFst2Command output(File s) {
+    public ImplodeFst2Command output(File s) {
         element("-o");
         protectElement(s.getAbsolutePath());
         return this;
