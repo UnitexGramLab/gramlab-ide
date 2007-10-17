@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,448 +24,636 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.*;
-
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.border.*;
+import javax.swing.text.*;
+import javax.swing.text.html.*;
 
 public class XAlignPane extends JPanel {
 
-	static final int MAX_SENTENCES=40;
-	
-	JScrollBar scrollX;
-	JScrollBar scrollY;
-	
-	volatile boolean scrollXAdjusting=false;
-	volatile boolean scrollYAdjusting=false;
-	
-	JComponent middle;
-	JTextArea sentencesX[];
-	JTextArea sentencesY[];
-	
-	JPanel panelX;
-	JPanel panelY;
-	XMLTextModel model1;
-	XMLTextModel model2;
-	
-	XAlignModel alignmentModel;
-	
-	int currentSentenceX=-1;
-	int currentSentenceY=-1;
-	
-	Object lock=new Object();
-	int tmpX=-1;
-	int tmpY=-1;
-	
-	public XAlignPane(final XMLTextModel model1,final XMLTextModel model2, XAlignModel model) {
-		super(new GridBagLayout());
-		this.model1=model1;
-		this.model2=model2;
-		this.alignmentModel=model;
-		scrollX=new JScrollBar(Adjustable.VERTICAL,0,1,0,(model1.getSize()>0)?model1.getSize():1);
-		model1.addListDataListener(new ListDataListener() {
-			public void intervalAdded(ListDataEvent e) {
-				scrollX.setMaximum(model1.getSize());
-			}
-			public void intervalRemoved(ListDataEvent e) {/* */}
-			public void contentsChanged(ListDataEvent e) {/* */}
-		});
-		scrollY=new JScrollBar(Adjustable.VERTICAL,0,1,0,(model2.getSize()>0)?model2.getSize():1);
-		model2.addListDataListener(new ListDataListener() {
-			public void intervalAdded(ListDataEvent e) {
-				scrollY.setMaximum(model2.getSize());
-			}
-			public void intervalRemoved(ListDataEvent e) {/* */}
-			public void contentsChanged(ListDataEvent e) {/* */}
-		});
-		middle=createMiddleComponent();
-		sentencesX=new JTextArea[MAX_SENTENCES];
-		sentencesY=new JTextArea[MAX_SENTENCES];
-		panelX=new JPanel(null);
-		panelX.setLayout(new BoxLayout(panelX,BoxLayout.Y_AXIS));
-		panelY=new JPanel(null);
-		panelY.setLayout(new BoxLayout(panelY,BoxLayout.Y_AXIS));
-		for (int i=0;i<MAX_SENTENCES;i++) {
-			final int z=i;
-			sentencesX[i]=new JTextArea();
-			sentencesX[i].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int tmp=z+scrollX.getValue();
-					if (tmp>=model1.getSize()) {
-						/* If we click outside the areas, we do nothing */ 
-						refresh();
-						return;
-					}
-					if (tmp==currentSentenceX) {
-						/* If we click on the selected area in the same row,
-						 * we unselect it. */
-						currentSentenceX=-1;
-						refresh();
-						return;
-					}
-					if (currentSentenceY!=-1) {
-						/* If we click on a src area while a dest one is selected, then
-						 * we must align them */
-						alignmentModel.changeAlignment(tmp,currentSentenceY);
-						currentSentenceY=-1;
-						tmpX=-1;
-						refresh();
-						return;
-					}
-					/* Otherwise, we have to select to clicked area */
-					currentSentenceX=tmp;
-					refresh();
-				}
-				
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					if (currentSentenceY!=-1) {
-						synchronized(lock) {
-							tmpX=z+scrollX.getValue();
-						}
-						refresh();
-					}
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (currentSentenceY!=-1) {
-						synchronized(lock) {
-							int tmp=z+scrollX.getValue();
-							if (tmp==tmpX) {
-								/* We protect this instruction, because when the
-								 * mouse exits an area A to enter into an area B,
-								 * we don't know if A.mouseExited is called before
-								 * B.mouseEntered and so, we don't want to set tmpX
-								 * to -1 if it was allready set to B
-								 */
-								tmpX=-1;
-							}
-							refresh();
-						}
-					}
-				}
-			});
-			sentencesX[i].setEditable(false);
-			sentencesX[i].setLineWrap(true);
-			sentencesX[i].setWrapStyleWord(true);
-			sentencesY[i]=new JTextArea();
-			sentencesY[i].addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int tmp=z+scrollY.getValue();
-					if (tmp>=model2.getSize()) {
-						/* If we click outside the areas, we do nothing */ 
-						refresh();
-						return;
-					}
-					if (tmp==currentSentenceY) {
-						/* If we click on the selected area in the same row,
-						 * we unselect it. */
-						currentSentenceY=-1;
-						refresh();
-						return;
-					}
-					if (currentSentenceX!=-1) {
-						/* If we click on a dest area while a src one is selected, then
-						 * we must align them */
-						alignmentModel.changeAlignment(currentSentenceX,tmp);
-						currentSentenceX=-1;
-						tmpY=-1;
-						refresh();
-						return;
-					}
-					/* Otherwise, we have to select to clicked area */
-					currentSentenceY=tmp;
-					refresh();
-				}
+	JList list1;
 
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					if (currentSentenceX!=-1) {
-						synchronized(lock) {
-							tmpY=z+scrollY.getValue();
-						}
-						refresh();
-					}
-				}
-				
-				@Override
-				public void mouseExited(MouseEvent e) {
-					if (currentSentenceX!=-1) {
-						synchronized(lock) {
-							int tmp=z+scrollY.getValue();
-							if (tmp==tmpY) {
-								/* We protect this instruction, because when the
-								 * mouse exits an area A to enter into an area B,
-								 * we don't know if A.mouseExited is called before
-								 * B.mouseEntered and so, we don't want to set tmpY
-								 * to -1 if it was allready set to B
-								 */
-								tmpY=-1;
-							}
-						}
-						refresh();
-					}
-				}
-			});
-			sentencesY[i].setEditable(false);
-			sentencesY[i].setLineWrap(true);
-			sentencesY[i].setWrapStyleWord(true);
-			panelX.add(sentencesX[i]);
-			panelY.add(sentencesY[i]);
-		}
-		GridBagConstraints gbc=new GridBagConstraints();
-		gbc.weighty=1;
-		gbc.weightx=0;
-		gbc.fill=GridBagConstraints.BOTH;
-		gbc.gridwidth=1;
-		add(scrollX,gbc);
-		gbc.weightx=1;
-		add(panelX,gbc);
-		gbc.weightx=0;
-		add(middle,gbc);
-		gbc.weightx=1;
-		add(panelY,gbc);
-		gbc.weightx=0;
-		add(scrollY,gbc);
-		refresh();
-		scrollX.addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (scrollXAdjusting) return;
-				scrollXAdjusting=true;
-				int val=scrollX.getValue();
-				if (!scrollYAdjusting) {
-					ArrayList<Integer> l=alignmentModel.getAlignedSrcSequences(val);
-					int v=getMinimum(l);
-					if (v!=-1) {
-						scrollY.setValue(v);
-					}
-				}
-				scrollXAdjusting=false;
-				refresh();
-			}
-			
-		});
-		scrollY.addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (scrollYAdjusting) return;
-				scrollYAdjusting=true;
-				int val=scrollY.getValue();
-				if (!scrollXAdjusting) {
-					ArrayList<Integer> l=alignmentModel.getAlignedDestSequences(val);
-					int v=getMinimum(l);
-					if (v!=-1) {
-						scrollX.setValue(v);
-					}
-				}
-				scrollYAdjusting=false;
-				refresh();
-			}
-		});
+	JList list2;
+
+	MyBean bean1;
+
+	MyBean bean2;
+
+	JComponent middle;
+
+	JScrollPane scrollPane1;
+
+	JScrollPane scrollPane2;
+
+	XAlignModel alignmentModel;
+
+	public XAlignPane(final ConcordanceModel model1, final ConcordanceModel model2,
+			XAlignModel model) {
+		super(new GridBagLayout());
+		this.alignmentModel = model;
+		middle = createMiddleComponent();
+		bean1 = new MyBean();
+		list1 = createList(model1,bean1,true,XAlignFrame.sourceFont);
+		list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane1 = new JScrollPane(list1);
+		scrollPane1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		bean2 = new MyBean();
+		list2 = createList(model2,bean2,false,XAlignFrame.targetFont);
+		list2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane2 = new JScrollPane(list2);
+		scrollPane1.getVerticalScrollBar().addAdjustmentListener(
+				createAdjustmentListener(bean1, bean2, list1, list2, true));
+		scrollPane1
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane2.getVerticalScrollBar().addAdjustmentListener(
+				createAdjustmentListener(bean2, bean1, list2, list1, false));
+		scrollPane2
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		list1.addMouseListener(createMouseListener(bean1, bean2, list1, list2,
+				true));
+		list2.addMouseListener(createMouseListener(bean2, bean1, list2, list1,
+				false));
+		list1.addMouseMotionListener(createMouseMotionListener(bean1, bean2,list1,list2));
+		list2.addMouseMotionListener(createMouseMotionListener(bean2, bean1,list2,list1));
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.weighty = 1;
+		gbc.weightx = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridwidth = 1;
+		add(scrollPane1, gbc);
+		gbc.weightx = 0;
+		add(middle, gbc);
+		gbc.weightx = 1;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		add(scrollPane2, gbc);
 		model.addAlignmentListener(new AlignmentListener() {
-			public void alignmentChanged() {
+			public void alignmentChanged(AlignmentEvent e) {
 				refresh();
-			}});
+			}
+		});
 	}
 
+	private MouseMotionAdapter createMouseMotionListener(final MyBean b1,
+			final MyBean b2, final JList l1, final JList l2) {
+		return new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				int sentenceNumber2;
+				if ((sentenceNumber2=b2.getCurrentClickedSentenceNumber()) != -1 
+						&& ((ConcordanceModel)l2.getModel()).getSentenceIndex(sentenceNumber2)!=-1) {
+					int oldSentenceNumber1 = b1.getCurrentFlownOverSentenceNumber();
+					int oldIndex1=((ConcordanceModel)l1.getModel()).getSentenceIndex(oldSentenceNumber1);
+					int newIndex1 = l1.locationToIndex(e.getPoint());
+					int newSentenceNumber1=((ConcordanceModel)l1.getModel()).getSentence(newIndex1);
+					if (newSentenceNumber1 != oldSentenceNumber1) {
+						b1.setCurrentFlownOverSentenceNumber(newSentenceNumber1);
+						l1.paintImmediately(l1.getCellBounds(oldIndex1,oldIndex1));
+						l1.paintImmediately(l1.getCellBounds(newIndex1,newIndex1));
+						refresh();
+					}
+				}
+			}
+		};
+	}
+
+	private MouseAdapter createMouseListener(final MyBean b1, final MyBean b2,
+			final JList l1, final JList l2, final boolean fromSrc) {
+		return new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index1 = l1.locationToIndex(e.getPoint());
+				int sentenceNumber1=((ConcordanceModel)l1.getModel()).getSentence(index1);
+				if (sentenceNumber1!=-1 && sentenceNumber1 == b1.getCurrentClickedSentenceNumber()) {
+					/*
+					 * If we click on the selected area in the same row, we
+					 * unselect it.
+					 */
+					b1.setCurrentClickedSentenceNumber(-1);
+					l1.paintImmediately(l1.getCellBounds(index1,index1));
+					refresh();
+					return;
+				}
+				int sentenceNumber2;
+				int index2;
+				if ((sentenceNumber2 = b2.getCurrentClickedSentenceNumber()) != -1 && 
+						(index2=((ConcordanceModel)l2.getModel()).getSentenceIndex(sentenceNumber2))!=-1) {
+					/*
+					 * If we click on a dest area while a src one is selected,
+					 * then we must align them
+					 */
+					if (fromSrc) {
+						alignmentModel.changeAlignment(sentenceNumber1,
+								sentenceNumber2);
+					} else {
+						alignmentModel.changeAlignment(sentenceNumber2,
+								sentenceNumber1);
+					}
+					b2.setCurrentClickedSentenceNumber(-1);
+					int old = b1.getCurrentFlownOverSentenceNumber();
+					b1.setCurrentFlownOverSentenceNumber(-1);
+					index1=((ConcordanceModel)l1.getModel()).getSentenceIndex(old);
+					if (index1!=-1) {
+						l1.paintImmediately(l1.getCellBounds(index1,index1));
+					}
+					l2.paintImmediately(l2.getCellBounds(index2, index2));
+					refresh();
+					return;
+				}
+				/* Otherwise, we have to select the clicked area */
+				b1.setCurrentClickedSentenceNumber(sentenceNumber1);
+				l1.paintImmediately(l1.getCellBounds(index1,index1));
+				refresh();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				int sentenceNumber2=b2.getCurrentClickedSentenceNumber();
+				if (sentenceNumber2 != -1
+						&& ((ConcordanceModel)l2.getModel()).getSentenceIndex(sentenceNumber2)!=-1) {
+					int index1=l1.locationToIndex(e.getPoint());
+					int sentenceNumber1=((ConcordanceModel)l1.getModel()).getSentence(index1);
+					b1.setCurrentFlownOverSentenceNumber(sentenceNumber1);
+					l1.paintImmediately(l1.getCellBounds(index1,index1));
+					refresh();
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				int sentenceNumber2=b2.getCurrentClickedSentenceNumber();
+				if (sentenceNumber2 != -1
+						&& ((ConcordanceModel)l2.getModel()).getSentenceIndex(sentenceNumber2)!=-1) {
+					int sentenceNumber1=b1.getCurrentFlownOverSentenceNumber();
+					b1.setCurrentFlownOverSentenceNumber(-1);
+					if (sentenceNumber1 != -1) {
+						int index1=((ConcordanceModel)l1.getModel()).getSentenceIndex(sentenceNumber1);
+						if (index1!=-1) {
+							l1.paintImmediately(l1.getCellBounds(index1, index1));
+						}
+					}
+					refresh();
+				}
+			}
+		};
+	}
+
+	private AdjustmentListener createAdjustmentListener(final MyBean b1,
+			final MyBean b2, final JList l1, final JList l2,
+			final boolean fromSrc) {
+		return new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				if (b1.isScrollAdjusting())
+					return;
+				try {
+					b1.setScrollAdjusting(true);
+					int val = l1.getFirstVisibleIndex();
+					if (!b2.isScrollAdjusting()) {
+
+						ArrayList<Integer> l = alignmentModel
+								.getAlignedSequences(val, fromSrc);
+						int v = getMinimum(l);
+						if (v != -1) {
+							l2
+									.ensureIndexIsVisible(l2.getModel()
+											.getSize() - 1);
+							l2.ensureIndexIsVisible(v);
+						}
+					}
+				} finally {
+					b1.setScrollAdjusting(false);
+				}
+				refresh();
+			}
+
+		};
+	}
 
 	int getMinimum(ArrayList<Integer> l) {
-		if (l==null || l.size()==0) return -1;
-		int min=l.get(0);
-		for (Integer i:l) {
-			if (i<min) min=i;
+		if (l == null || l.size() == 0)
+			return -1;
+		int min = l.get(0);
+		for (Integer i : l) {
+			if (i < min)
+				min = i;
 		}
 		return min;
 	}
 
-	
 	void refresh() {
-		int z=scrollX.getValue();
-		int max=z+MAX_SENTENCES;
-		int j=0;
-		for (int i=z;i<max;i++) {
-			if (i==currentSentenceX) {
-				sentencesX[j].setBackground(Color.PINK);
-			} else if (i==tmpX) {
-				sentencesX[j].setBackground(Color.GREEN);
-			} else {
-				sentencesX[j].setBackground(Color.WHITE);
-			}
-			if (i<model1.getSize()) {
-				sentencesX[j].setText(model1.getElementAt(i));
-				sentencesX[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			} else {
-				sentencesX[j].setText("");
-				sentencesX[j].setBorder(BorderFactory.createEmptyBorder());
-			}
-			j++;
-		}
-		z=scrollY.getValue();
-		max=z+MAX_SENTENCES;
-		j=0;
-		for (int i=z;i<max;i++) {
-			if (i==currentSentenceY) {
-				sentencesY[j].setBackground(Color.PINK);
-			} else if (i==tmpY) {
-				sentencesY[j].setBackground(Color.GREEN);
-			} else {
-				sentencesY[j].setBackground(Color.WHITE);
-			}
-			if (i<model2.getSize()) {
-				sentencesY[j].setText(model2.getElementAt(i));
-				sentencesY[j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			} else {
-				sentencesY[j].setText("");
-				sentencesY[j].setBorder(BorderFactory.createEmptyBorder());
-			}
-			j++;
-		}
 		middle.repaint();
 	}
 
-
-
 	private JComponent createMiddleComponent() {
 		return new JComponent() {
-			
-			int selectedSrc=-1;
-			int selectedDest=-1;
-			
+
+			int srcSelectedSentenceIndex = -1;
+
+			int destSelectedSentenceIndex = -1;
+
 			class Alignment {
-				
+
 				Line2D.Double line;
-				int src;
-				int dest;
-				
-				Alignment(Line2D.Double line,int src,int dest) {
-					this.line=line;
-					this.src=src;
-					this.dest=dest;
+
+				/*
+				 * We consider alignements between list cell indices, not
+				 * sentence numbers.
+				 */
+				int srcIndex;
+
+				int destIndex;
+
+				Alignment(Line2D.Double line, int src, int dest) {
+					this.line = line;
+					this.srcIndex = src;
+					this.destIndex = dest;
 				}
 			}
-			
-			ArrayList<Alignment> alignments=new ArrayList<Alignment>();
-			
-			private final Dimension preferredSize=new Dimension(100,100);
-			
+
+			ArrayList<Alignment> alignments = new ArrayList<Alignment>();
+
+			private final Dimension preferredSize = new Dimension(100, 100);
+
 			{
 				addMouseMotionListener(new MouseMotionAdapter() {
 					@Override
 					public void mouseMoved(MouseEvent e) {
-						int oldSrc=selectedSrc;
-						for (Alignment a:alignments) {
-							Line2D.Double l=a.line;
-							if (l.ptLineDist(e.getX(),e.getY())<10) {
-								selectedSrc=a.src;
-								selectedDest=a.dest;
+						int old = srcSelectedSentenceIndex;
+						for (Alignment a : alignments) {
+							Line2D.Double l = a.line;
+							if (l.ptLineDist(e.getX(), e.getY()) < 10) {
+								srcSelectedSentenceIndex = a.srcIndex;
+								destSelectedSentenceIndex = a.destIndex;
 								repaint();
 								return;
 							}
 						}
-						selectedSrc=-1;
-						selectedDest=-1;
-						if (oldSrc!=selectedSrc) repaint();
+						srcSelectedSentenceIndex = -1;
+						destSelectedSentenceIndex = -1;
+						if (old != srcSelectedSentenceIndex)
+							repaint();
 					}
 				});
-				
+
 				addMouseListener(new MouseAdapter() {
 					@Override
 					public void mousePressed(MouseEvent e) {
-						for (Alignment a:alignments) {
-							Line2D.Double l=a.line;
-							if (l.ptLineDist(e.getX(),e.getY())<10) {
-								alignmentModel.unAlign(a.src,a.dest);
+						for (Alignment a : alignments) {
+							Line2D.Double l = a.line;
+							if (l.ptLineDist(e.getX(), e.getY()) < 10) {
+								int srcSentenceNumber = a.srcIndex;
+								if (list1.getModel() instanceof ConcordanceModel) {
+									srcSentenceNumber = ((ConcordanceModel) list1
+											.getModel())
+											.getSentence(srcSentenceNumber);
+								}
+								int destSentenceNumber = a.destIndex;
+								if (list2.getModel() instanceof ConcordanceModel) {
+									destSentenceNumber = ((ConcordanceModel) list2
+											.getModel())
+											.getSentence(destSentenceNumber);
+								}
+								alignmentModel.unAlign(srcSentenceNumber,
+										destSentenceNumber);
 								repaint();
 								return;
 							}
 						}
 					}
-					
+
 					@Override
 					public void mouseExited(MouseEvent e) {
-						int oldSrc=selectedSrc;
-						selectedSrc=-1;
-						selectedDest=-1;
-						if (oldSrc!=selectedSrc) repaint();
+						int old = srcSelectedSentenceIndex;
+						srcSelectedSentenceIndex = -1;
+						destSelectedSentenceIndex = -1;
+						if (old != srcSelectedSentenceIndex)
+							repaint();
 					}
 				});
 			}
-			
+
 			@Override
 			public Dimension getPreferredSize() {
 				return preferredSize;
 			}
-			
+
 			@Override
 			public Dimension getMinimumSize() {
 				return preferredSize;
 			}
-			
-			
-			BasicStroke stroke=new BasicStroke(10,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND);
-			Composite composite=AlphaComposite.getInstance(AlphaComposite.SRC_OVER,0.7f);
-			
+
+			BasicStroke stroke = new BasicStroke(10, BasicStroke.CAP_ROUND,
+					BasicStroke.JOIN_ROUND);
+
+			Composite composite = AlphaComposite.getInstance(
+					AlphaComposite.SRC_OVER, 0.7f);
+
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				Graphics2D g2=(Graphics2D)g;
+				Graphics2D g2 = (Graphics2D) g;
 				g.setColor(Color.LIGHT_GRAY);
-				g2.fillRect(0,0,getWidth(),getHeight());
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-				int x=scrollX.getValue();
-				int limit=x+MAX_SENTENCES;
-				if (limit>=model1.getSize()) limit=model1.getSize();
+				g2.fillRect(0, 0, getWidth(), getHeight());
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+						RenderingHints.VALUE_ANTIALIAS_ON);
 				g2.setStroke(stroke);
 				alignments.clear();
-				boolean drawn=false;
-				for (int i=x;i<limit;i++) {
-					ArrayList<Integer> a=alignmentModel.getAlignedSrcSequences(i);
-					for (Integer u:a) {
-						int indexDest=u.intValue()-scrollY.getValue();
-						if 	(indexDest>=0 && indexDest<MAX_SENTENCES) {
-							JTextArea areaSrc=sentencesX[i-x];
-							int srcY=areaSrc.getY()+areaSrc.getHeight()/2;
-							int srcX=10;
-							JTextArea areaDest=sentencesY[indexDest];
-							int destY=areaDest.getY()+areaDest.getHeight()/2;
-							Line2D.Double line=new Line2D.Double(srcX,srcY,getWidth()-10,destY);
-							alignments.add(new Alignment(line,i,u.intValue()));
-							if ((i==currentSentenceX && u.intValue()==tmpY) ||
-								(i==tmpX && u.intValue()==currentSentenceY)) {
-								g2.setColor(Color.BLACK);
-								drawn=true;
+				boolean drawn = false;
+				int first1 = list1.getFirstVisibleIndex();
+				int last1 = list1.getLastVisibleIndex();
+				int first2 = list2.getFirstVisibleIndex();
+				int last2 = list2.getLastVisibleIndex();
+				if (first1 == -1 || first2 == -1) {
+					/* Nothing to do if no cell is visible */
+					return;
+				}
+				int srcHeightOrigin = (int) scrollPane1.getViewport()
+						.getViewPosition().getY();
+				int destHeightOrigin = (int) scrollPane2.getViewport()
+						.getViewPosition().getY();
+				int currentSentenceNumber1 = bean1
+						.getCurrentClickedSentenceNumber();
+				int currentSentenceNumber2 = bean2
+						.getCurrentClickedSentenceNumber();
+				int currentFlownOverSentenceNumber1 = bean1
+						.getCurrentFlownOverSentenceNumber();
+				int currentFlownOverSentenceNumber2 = bean2
+						.getCurrentFlownOverSentenceNumber();
+				for (int srcIndex = first1; srcIndex <= last1; srcIndex++) {
+					int srcSentence = srcIndex;
+					if (list1.getModel() instanceof ConcordanceModel) {
+						srcSentence = ((ConcordanceModel) list1.getModel()).getSentence(srcIndex);
+					}
+					ArrayList<Integer> a = alignmentModel
+							.getAlignedSrcSequences(srcSentence);
+					for (Integer destSentence : a) {
+						int destIndex = destSentence.intValue();
+						if (list2.getModel() instanceof ConcordanceModel) {
+							destIndex = ((ConcordanceModel) list2.getModel())
+									.getSentenceIndex(destIndex);
+							if (destIndex == -1) {
+								/* If the sentence is not visible, we do nothing */
+								continue;
 							}
-							else if (i==selectedSrc && u.intValue()==selectedDest) g2.setColor(Color.BLACK);
-							else g2.setColor(Color.RED);
+						}
+						if (destIndex >= first2 && destIndex <= last2) {
+							Rectangle srcBounds = list1.getCellBounds(srcIndex,
+									srcIndex);
+							int srcY = (int) (srcBounds.getY() + srcBounds
+									.getHeight() / 2)
+									- srcHeightOrigin;
+							int srcX = 10;
+							Rectangle destBounds = list2.getCellBounds(
+									destIndex, destIndex);
+							int destY = (int) (destBounds.getY() + destBounds
+									.getHeight() / 2)
+									- destHeightOrigin;
+							Line2D.Double line = new Line2D.Double(srcX, srcY,
+									getWidth() - 10, destY);
+							alignments.add(new Alignment(line, srcIndex,
+									destIndex));
+							if ((srcIndex == currentSentenceNumber1 && destIndex == currentFlownOverSentenceNumber2)
+									|| (srcIndex == currentFlownOverSentenceNumber1 && destIndex == currentSentenceNumber2)) {
+								g2.setColor(Color.BLACK);
+								drawn = true;
+							} else if (srcIndex == srcSelectedSentenceIndex
+									&& destIndex == destSelectedSentenceIndex)
+								g2.setColor(Color.BLACK);
+							else
+								g2.setColor(Color.RED);
 							g2.draw(line);
 						}
 					}
 				}
 				/* Now, we draw the selection line, if any */
-				if (drawn) return;
-				int A,B;
-				if (currentSentenceX!=-1 && tmpY!=-1) {
-					A=currentSentenceX;
-					B=tmpY;
-				} else if (tmpX!=-1 && currentSentenceY!=-1) {
-					A=tmpX;
-					B=currentSentenceY;
-				} else return;
-				A=A-scrollX.getValue();
-				if (A<0 || A>=MAX_SENTENCES) return;
-				B=B-scrollY.getValue();
-				if (B<0 || B>=MAX_SENTENCES) return;
+				if (drawn)
+					return;
+				int A, B;
+				if (currentSentenceNumber1 != -1
+						&& currentFlownOverSentenceNumber2 != -1) {
+					A=((ConcordanceModel)list1.getModel()).getSentenceIndex(currentSentenceNumber1);
+					if (A==-1) return;
+					B=((ConcordanceModel)list2.getModel()).getSentenceIndex(currentFlownOverSentenceNumber2);
+					if (B==-1) return;
+				} else if (currentFlownOverSentenceNumber1 != -1
+						&& currentSentenceNumber2 != -1) {
+					A=((ConcordanceModel)list1.getModel()).getSentenceIndex(currentFlownOverSentenceNumber1);
+					if (A==-1) return;
+					B=((ConcordanceModel)list2.getModel()).getSentenceIndex(currentSentenceNumber2);
+					if (B==-1) return;					
+				} else
+					return;
 				g2.setColor(Color.YELLOW);
-				Composite old=g2.getComposite();
+				Composite old = g2.getComposite();
 				g2.setComposite(composite);
-				JTextArea areaSrc=sentencesX[A];
-				int srcY=areaSrc.getY()+areaSrc.getHeight()/2;
-				JTextArea areaDest=sentencesY[B];
-				int destY=areaDest.getY()+areaDest.getHeight()/2;
-				g2.drawLine(10,srcY,getWidth()-10,destY);
+				Rectangle srcBounds = list1.getCellBounds(A, A);
+				int srcY = (int) (srcBounds.getY() + srcBounds.getHeight() / 2)
+						- srcHeightOrigin;
+				Rectangle destBounds = list2.getCellBounds(B, B);
+				int destY = (int) (destBounds.getY() + destBounds.getHeight() / 2)
+						- destHeightOrigin;
+				g2.drawLine(10, srcY, getWidth() - 10, destY);
 				g2.setComposite(old);
 			}
+
 		};
+	}
+
+	JList createList(ListModel model, final MyBean bean, final boolean left,final Font font) {
+		final JList list = new JList(model) {
+			@Override
+			public boolean getScrollableTracksViewportWidth() {
+				return true;
+			}
+			
+			@Override
+			public String getToolTipText(MouseEvent event) {
+				return null;
+			}
+			
+			@Override
+			public String getToolTipText() {
+				return null;
+			}
+		};
+		list.setCellRenderer(new ListCellRenderer() {
+			public Component getListCellRendererComponent(JList l,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				/* First we compute the size of the sentence number label */
+				label.setText("" + index);
+				String s = "" + (l.getModel().getSize());
+				int labelWidth = 5 + s.length() * 10;
+				label.setPreferredSize(new Dimension(labelWidth, 0));
+				/* Then we test the nature of the model */
+				ConcordanceModel m = (ConcordanceModel) l.getModel();
+				JTextComponent textComponent;
+				JTextComponent fooTextComponent;
+				if (m.isMatchedSentenceIndex(index) && m.getMode()!=ConcordanceModel.TEXT) {
+					/*
+					 * If we have to display a sentence with matches, we must
+					 * use an HTML rendering
+					 */
+					textComponent = textPane;
+					fooTextComponent = fooTextPane;
+					value="<html>"+
+							"<font style=\"Font: "+font.getSize()+"pt "+font.getName()+";\">"+
+							value+"</font></html>";
+					textComponent.setText((String)value);
+					fooTextComponent.setText((String)value);
+				} else {
+					textComponent = textArea;
+					fooTextComponent = fooTextArea;
+					textComponent.setText((String) value);
+					fooTextComponent.setText((String) value);
+				}
+				if (fooTextComponent != lastFooTextComponent) {
+					/* If the text component we need is not the current one */
+					pp.remove(lastFooTextComponent);
+					pp.add(fooTextComponent,BorderLayout.NORTH);
+					panel.remove(lastTextComponent);
+					panel.add(textComponent, BorderLayout.CENTER);
+					lastFooTextComponent = fooTextComponent;
+					lastTextComponent = textComponent;
+				}
+				fooTextComponent.setMinimumSize(new Dimension(list.getWidth()
+						- labelWidth, 10));
+				fooTextComponent.setMaximumSize(new Dimension(list.getWidth()
+						- labelWidth, 10000));
+				p.setPreferredSize(new Dimension(list.getWidth() - labelWidth,
+						40));
+				pp.setPreferredSize(new Dimension(list.getWidth() - labelWidth,
+						400));
+				pp.setSize(pp.getLayout().preferredLayoutSize(pp));
+				f.pack();
+				panel.invalidate();
+				textComponent.setPreferredSize(fooTextComponent
+						.getPreferredSize());
+				int sentenceNumber=m.getSentence(index);
+				if (sentenceNumber == bean.getCurrentClickedSentenceNumber())
+					textComponent.setBackground(Color.PINK);
+				else if (sentenceNumber == bean.getCurrentFlownOverSentenceNumber())
+					textComponent.setBackground(Color.GREEN);
+				else
+					textComponent.setBackground(Color.WHITE);
+				if (m != null) {
+					label.setText("" + sentenceNumber);
+				}
+				return panel;
+			}
+
+			private JTextComponent lastTextComponent;
+
+			private JTextComponent lastFooTextComponent;
+
+			private final JTextArea textArea = new JTextArea();
+
+			private final JTextArea fooTextArea = new JTextArea();
+
+			private final JTextPane textPane = new JTextPane();
+
+			private final JTextPane fooTextPane = new JTextPane();
+
+			private final JFrame f = new JFrame();
+
+			private final JPanel p = new JPanel();
+			
+			private final JPanel pp=new JPanel(new BorderLayout());
+			
+			private final JPanel panel = new JPanel(new BorderLayout());
+
+			private final JLabel label = new JLabel();
+
+			{
+				textArea.setWrapStyleWord(true);
+				textArea.setLineWrap(true);
+				textArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				textArea.setFont(font);
+				fooTextArea.setWrapStyleWord(true);
+				fooTextArea.setLineWrap(true);
+				fooTextArea.setBorder(BorderFactory
+						.createLineBorder(Color.BLACK));
+				fooTextArea.setFont(font);
+				pp.add(fooTextArea, BorderLayout.NORTH);
+				pp.add(p,BorderLayout.CENTER);
+				f.setContentPane(pp);
+				label.setOpaque(true);
+				label.setBorder(new EmptyBorder(0, 3, 0, 3) {
+					@Override
+					public void paintBorder(Component c, Graphics g, int x,
+							int y, int width, int height) {
+						super.paintBorder(c, g, x, y, width, height);
+						g.setColor(Color.BLACK);
+						g.drawLine(x, y, x, y + height - 1);
+						g.drawLine(x + width - 1, y, x + width - 1, y + height
+								- 1);
+					}
+				});
+				if (left) {
+					panel.add(label, BorderLayout.WEST);
+					label.setHorizontalAlignment(SwingConstants.RIGHT);
+				} else
+					panel.add(label, BorderLayout.EAST);
+				panel.add(textArea, BorderLayout.CENTER);
+				textPane.setEditorKit(new HTMLEditorKit());
+				textPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				textPane.setFont(font);
+				fooTextPane.setEditorKit(new HTMLEditorKit());
+				fooTextPane.setBorder(BorderFactory
+						.createLineBorder(Color.BLACK));
+				fooTextPane.setFont(font);
+				lastFooTextComponent = fooTextArea;
+				lastTextComponent = textArea;
+			}
+		});
+		list.addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent e) {
+				ListModel m = list.getModel();
+				if (m instanceof ConcordanceModel) {
+					ConcordanceModel m2 = (ConcordanceModel) m;
+					m2.refresh();
+					return;
+				}
+			}
+		});
+		return list;
+	}
+
+	public class MyBean {
+		private int currentClickedSentenceNumber;
+
+		private int currentFlownOverSentenceNumber;
+
+		private boolean scrollAdjusting;
+
+		public MyBean() {
+			currentClickedSentenceNumber = -1;
+			currentFlownOverSentenceNumber = -1;
+			scrollAdjusting = false;
+		}
+
+		public int getCurrentClickedSentenceNumber() {
+			return currentClickedSentenceNumber;
+		}
+
+		public void setCurrentClickedSentenceNumber(int currentClickedSentence) {
+			this.currentClickedSentenceNumber = currentClickedSentence;
+		}
+
+		public int getCurrentFlownOverSentenceNumber() {
+			return currentFlownOverSentenceNumber;
+		}
+
+		public void setCurrentFlownOverSentenceNumber(
+				int currentFlownOverSentence) {
+			this.currentFlownOverSentenceNumber = currentFlownOverSentence;
+		}
+
+		public boolean isScrollAdjusting() {
+			return scrollAdjusting;
+		}
+
+		public void setScrollAdjusting(boolean scrollAdjusting) {
+			this.scrollAdjusting = scrollAdjusting;
+		}
 	}
 }
