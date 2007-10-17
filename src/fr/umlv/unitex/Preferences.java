@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -396,17 +396,16 @@ public class Preferences {
 	}
 
 
+
 	/**
-	 * Loads user properties for current language 
+	 * Loads user properties.
 	 *
 	 */
-	private static Properties loadProperties() {
-		Properties languageProperties = new Properties(defaultProperties);
+	public static Properties loadProperties(File config,Properties defaultProperties1) {
+		Properties languageProperties = new Properties(defaultProperties1);
 		FileInputStream stream = null;
 		try {
-			File f=new File(Config
-					.getUserCurrentLanguageDir(), "Config");
-			stream = new FileInputStream(f);
+			stream = new FileInputStream(config);
 		} catch (FileNotFoundException e) {
 			return languageProperties;
 		}
@@ -421,6 +420,15 @@ public class Preferences {
 
 	/**
 	 * Loads user properties for current language 
+	 *
+	 */
+	private static Properties loadProperties() {
+		return loadProperties(new File(Config
+				.getUserCurrentLanguageDir(), "Config"),defaultProperties);
+	}
+	
+	/**
+	 * Saves user properties for current language 
 	 *
 	 */
 	private static void saveProperties(Properties prop) {

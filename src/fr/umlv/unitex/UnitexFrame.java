@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -37,6 +37,7 @@ import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.xalign.*;
 
 /**
  * This is the main frame of the Unitex system.
@@ -73,7 +74,7 @@ public class UnitexFrame extends JFrame {
 	static Dimension screenSize;
 	PrinterJob printerJob;
 	PageFormat pageFormat;
-	static boolean closing = false;
+	public static boolean closing = false;
 
 	/**
 	 * This method initializes the system by a call to the
@@ -104,7 +105,8 @@ public class UnitexFrame extends JFrame {
 	public static void addInternalFrame(JInternalFrame frame) {
 		desktop.add(frame, DOCLAYER);
 	}
-
+	
+	
 	/**
 	 * Builds the menu bar.
 	 */
@@ -119,6 +121,7 @@ public class UnitexFrame extends JFrame {
 		JMenu DELA = buildDELAMenu();
 		JMenu fsGraph = buildFsGraphMenu();
 		JMenu lexiconGrammar = buildLexiconGrammarMenu();
+		JMenu xalign = buildXAlignMenu();
 		JMenu edit = buildEditMenu();
 		JMenu windows = buildWindowsMenu();
 		JMenu info = buildInfoMenu();
@@ -127,6 +130,7 @@ public class UnitexFrame extends JFrame {
 		DELA.setMnemonic(KeyEvent.VK_D);
 		fsGraph.setMnemonic(KeyEvent.VK_G);
 		lexiconGrammar.setMnemonic(KeyEvent.VK_L);
+		xalign.setMnemonic(KeyEvent.VK_X);
 		edit.setMnemonic(KeyEvent.VK_E);
 		windows.setMnemonic(KeyEvent.VK_W);
 		info.setMnemonic(KeyEvent.VK_I);
@@ -135,6 +139,7 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(DELA);
 		menuBar.add(fsGraph);
 		menuBar.add(lexiconGrammar);
+		menuBar.add(xalign);
 		menuBar.add(edit);
 
 		FileEditionMenu fileEditionMenu = new FileEditionMenu();
@@ -734,6 +739,23 @@ public class UnitexFrame extends JFrame {
 		return lexiconGrammar;
 	}
 
+	
+	/**
+	 * Creates the XAlign menu. 
+	 */
+	private JMenu buildXAlignMenu() {
+		JMenu menu=new JMenu("XAlign");
+		JMenuItem open=new JMenuItem("Open files...");
+		open.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AlignmentParameterFrame.showFrame();
+			}});
+		menu.add(open);
+		return menu;
+	}
+
+	
+	
 	/**
 	 * Creates the "Edit" menu.
 	 * 

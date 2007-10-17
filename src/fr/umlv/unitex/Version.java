@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -65,10 +65,8 @@ public class Version {
    private static String getRevisionDate() {
 	   File f=new File(Config.getApplicationDir(),"revision.date");
 	   if (!f.exists() || f.length()==0) {
-		   System.out.println("File not found: "+f.getAbsolutePath());
 		   return getJarDate();
 	   }
-	   System.out.println("ici");
 	   FileInputStream stream;
 	try {
 		stream = new FileInputStream(f);

@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -45,6 +45,10 @@ public abstract class CommandBuilder {
    CommandBuilder(String programName) {
      list=new ArrayList<String>();
      programName(programName);
+   }
+   
+   CommandBuilder() {
+	     list=new ArrayList<String>();
    }
 
    CommandBuilder(ArrayList<String> list) {

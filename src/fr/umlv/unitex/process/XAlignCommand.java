@@ -27,37 +27,36 @@ import fr.umlv.unitex.*;
 
 /**
  * @author Sébastien Paumier
- *  
+ *
  */
-public class Fst2TxtCommand extends CommandBuilder {
+public class XAlignCommand extends CommandBuilder {
+    
+    public XAlignCommand() {
+    	element("java");
+    	element("-jar");
+    	protectElement(new File(Config.getApplicationDir(),"XAlign.jar").getAbsolutePath());
+    }
+    
+    public XAlignCommand source(File s) {
+      protectElement(s.getAbsolutePath());
+      return this;
+    }
 
-	public Fst2TxtCommand() {
-		super("Fst2Txt");
-	}
-
-	public Fst2TxtCommand text(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-    public Fst2TxtCommand fst2(File s) {
+    public XAlignCommand target(File s) {
         protectElement(s.getAbsolutePath());
         return this;
     }
 
-    public Fst2TxtCommand alphabet() {
-      protectElement(Config.getAlphabet().getAbsolutePath());
-      return this;
-  }
+    /* We use the same properties for source and target texts */
+    public XAlignCommand properties(File s) {
+        protectElement(s.getAbsolutePath());
+        protectElement(s.getAbsolutePath());
+        return this;
+    }
 
-    public Fst2TxtCommand mode(boolean merge) {
-      element(merge?"-merge":"-replace");
-      return this;
-  }
-
-    public Fst2TxtCommand charByChar() {
-      element("-char_by_char");
-      return this;
-  }
+    public XAlignCommand alignment(File s) {
+        protectElement(s.getAbsolutePath());
+        return this;
+    }
 
 }
