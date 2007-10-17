@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: Sebastien Paumier
+Main-Class: fr.loria.xsilfide.multialign.MultiAlign
+Class-Path: xercesImpl.jar xmlParserAPIs.jar
+
