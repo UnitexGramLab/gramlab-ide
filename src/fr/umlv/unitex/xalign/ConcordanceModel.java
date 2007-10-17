@@ -20,7 +20,28 @@
  */
 package fr.umlv.unitex.xalign;
 
-public interface AlignmentListener {
-	public void alignmentChanged(AlignmentEvent e);
-}
+import javax.swing.*;
 
+public interface ConcordanceModel extends ListModel {
+
+	/**
+	 * These constants are used to set the display mode:
+	 * TEXT: all sentences are shown, with plain text
+	 * MATCHES: only matched sentences are shown, with HTML
+	 * BOTH: all sentences are shown, with HTML for matched sentences
+	 */
+	public final static int TEXT=0;
+	public final static int MATCHES=1;
+	public final static int BOTH=2;
+	
+	public void addMatch(int sentence,Occurrence match);
+	public boolean isMatchedSentenceNumber(int sentence);
+	public boolean isMatchedSentenceIndex(int index);
+	public void setMode(int mode);
+	public int getMode();
+	public XMLTextModel getModel();
+	public int getSentence(int index);
+	public int getSentenceIndex(int sentence);
+	public void refresh();
+	
+}
