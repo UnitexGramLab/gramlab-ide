@@ -20,7 +20,28 @@
  */
 package fr.umlv.unitex.xalign;
 
-public interface AlignmentListener {
-	public void alignmentChanged(AlignmentEvent e);
-}
+public class Occurrence {
 
+	private int start;
+	private int end;
+	
+	public Occurrence(int start,int end) {
+		setStart(start);
+		setEnd(end);
+	}
+	
+	public int getEnd() {
+		return end;
+	}
+	public void setEnd(int end) {
+		this.end = end;
+	}
+	public int getStart() {
+		return start;
+	}
+	public void setStart(int start) {
+		this.start = start;
+	}
+	
+	
+}

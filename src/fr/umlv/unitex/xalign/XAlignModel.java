@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université de Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,15 +25,19 @@ import java.util.*;
 
 public interface XAlignModel {
 
-	
 	public ArrayList<Integer> getAlignedSrcSequences(int sentence);
 	public ArrayList<Integer> getAlignedDestSequences(int sentence);
+	public ArrayList<Integer> getAlignedSequences(int sentence,boolean fromSrc);
 	
 	public void load(File f);
-	public void align(int sentenceSrc,int sentenceDest);
+	public void align(int sentenceSrc,int sentenceDest,AlignmentEvent e);
 	public void unAlign(int sentenceSrc,int sentenceDest);
 	public void changeAlignment(int sentenceSrc,int sentenceDest);
+	public void dumpAlignments(File f) throws FileNotFoundException, IOException;
 	
 	public void addAlignmentListener(AlignmentListener l);
 	public void removeAlignmentListener(AlignmentListener l);
+	public boolean isModified();
+
+	public void reset();
 }
