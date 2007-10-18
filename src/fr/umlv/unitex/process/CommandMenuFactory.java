@@ -60,6 +60,8 @@ public class CommandMenuFactory {
             ,LocateCommand.class
             ,MergeBinCommand.class
             ,MergeTextAutomatonCommand.class
+            /* This is normal that MkdirCommand is not in this list,
+             * since it's not a Unitex command */
             ,MultiFlexCommand.class
             ,NormalizeCommand.class
             ,PolyLexCommand.class
@@ -71,6 +73,7 @@ public class CommandMenuFactory {
             ,Syl2JamoCommand.class
             ,Table2GrfCommand.class
 			,TagsetNormFst2Command.class
+			,TEI2TxtCommand.class
             ,TokenizeCommand.class
             ,Txt2Fst2Command.class
             ,Txt2Fst2KrCommand.class

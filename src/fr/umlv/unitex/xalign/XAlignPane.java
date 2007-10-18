@@ -481,11 +481,11 @@ public class XAlignPane extends JPanel {
 					boolean cellHasFocus) {
 				/* First we compute the size of the sentence number label */
 				label.setText("" + index);
-				String s = "" + (l.getModel().getSize());
+				ConcordanceModel m = (ConcordanceModel) l.getModel();
+				String s = "" + m.getNumberOfSentences();
 				int labelWidth = 5 + s.length() * 10;
 				label.setPreferredSize(new Dimension(labelWidth, 0));
 				/* Then we test the nature of the model */
-				ConcordanceModel m = (ConcordanceModel) l.getModel();
 				JTextComponent textComponent;
 				JTextComponent fooTextComponent;
 				if (m.isMatchedSentenceIndex(index) && m.getMode()!=ConcordanceModel.TEXT) {

@@ -129,6 +129,11 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand xalign() {
+		element("xalign");
+		return this;
+	}
+
 	public ConcordCommand outputModifiedTxtFile(File s) {
 		element("NULL");
 		element("0");

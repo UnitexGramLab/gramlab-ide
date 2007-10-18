@@ -40,4 +40,5 @@ public interface XAlignModel {
 	public boolean isModified();
 
 	public void reset();
+	public void clear();
 }

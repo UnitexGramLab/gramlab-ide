@@ -23,36 +23,30 @@ package fr.umlv.unitex.process;
 
 import java.io.*;
 
-import fr.umlv.unitex.*;
-
 /**
  * @author Sébastien Paumier
- *  
+ *
  */
-public class TokenizeCommand extends CommandBuilder {
-
-	public TokenizeCommand() {
-		super("Tokenize");
+public class MkdirCommand extends AbstractMethodCommand {
+    
+	File dir;
+	
+	public MkdirCommand() {
+		super("mkdir");
 	}
-
-	public TokenizeCommand text(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-    public TokenizeCommand alphabet() {
-      protectElement(Config.getAlphabet().getAbsolutePath());
+	
+    public MkdirCommand name(File s) {
+      dir=s;
+      protectElement(s.getAbsolutePath());
       return this;
-  }
-
-    public TokenizeCommand alphabet(File f) {
-        protectElement(f.getAbsolutePath());
-        return this;
     }
 
-    public TokenizeCommand tokenizeCharByChar() {
-        element("-char_by_char");
-        return this;
-    }
+	@Override
+	public boolean execute() {
+		if (dir.exists()) {
+			return true;
+		}
+		return dir.mkdir();
+	}
 
 }

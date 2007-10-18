@@ -25,6 +25,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import fr.umlv.unitex.*;
@@ -44,7 +45,7 @@ public class XAlignFrame {
 	public static File alignementFile;
 	static XMLTextModel text1,text2;
 	static XAlignModel model;
-	
+	public static ConcordanceModel concordModel1,concordModel2;
 	
 	public static JInternalFrame buildAlignFrame(final File f1,final File f2,final File align) throws IOException {
 		alignementFile=align;
@@ -57,29 +58,27 @@ public class XAlignFrame {
 		text1=new XMLTextModelImpl(buffer1);
 		XMLTextLoader loader1=new XMLTextLoader(text1,buffer1);
 		loader1.load();
-		ConcordanceModel model1=new ConcordanceModelImpl(text1);
-		ConcordanceLoader.load(new File("D:\\xalign\\concord-align.ind"),model1);
+		concordModel1=new ConcordanceModelImpl(text1);
+		//ConcordanceLoader.load(new File("D:\\xalign\\concord-align.ind"),model1);
 		/* Second text */
 		MappedByteBuffer buffer2=XMLTextLoader.buildMappedByteBuffer(f2);
 		text2=new XMLTextModelImpl(buffer2);
 		XMLTextLoader loader2=new XMLTextLoader(text2,buffer2);
 		loader2.load();
-		ConcordanceModel model2=new ConcordanceModelImpl(text2);
-		ConcordanceLoader.load(new File("D:\\xalign\\concord-align2.ind"),model2);
+		concordModel2=new ConcordanceModelImpl(text2);
+		//ConcordanceLoader.load(new File("D:\\xalign\\concord-align2.ind"),model2);
 		model=new XAlignModelImpl(text1,text2);
 		model.load(align);
 		model.addAlignmentListener(new AlignmentListener() {
 			public void alignmentChanged(AlignmentEvent e) {
 				if (AlignmentEvent.MANUAL_EDIT.equals(e)) {
-					frame.setTitle("XAlign (alignment modified)");
+					frame.setTitle(((alignementFile!=null)?(alignementFile.getAbsolutePath()+" ("):"(alignment ")+"modified)");
 				} else if (AlignmentEvent.SAVING.equals(e)) {
-					frame.setTitle("XAlign");
+					frame.setTitle((alignementFile!=null)?alignementFile.getAbsolutePath():"XAlign");
 				} 
 			}
 		});
-		frame.addInternalFrameListener(new InternalFrameListener() {
-
-			public void internalFrameOpened(InternalFrameEvent e) {/* */}
+		frame.addInternalFrameListener(new InternalFrameAdapter() {
 
 			public void internalFrameClosing(InternalFrameEvent e) {
 				if (model.isModified()) {
@@ -131,18 +130,23 @@ public class XAlignFrame {
 				frame.setVisible(false);
 				UnitexFrame.removeInternalFrame(frame);
 			}
-
-			public void internalFrameClosed(InternalFrameEvent e) {/* */} 
-			public void internalFrameIconified(InternalFrameEvent e) {/* */}
-			public void internalFrameDeiconified(InternalFrameEvent e) {/* */}
-			public void internalFrameActivated(InternalFrameEvent e) {/* */}
-			public void internalFrameDeactivated(InternalFrameEvent e) {/* */}
 		});
 		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(new XAlignPane(model1,model2,model),BorderLayout.CENTER);
+		frame.getContentPane().add(new XAlignPane(concordModel1,concordModel2,model),BorderLayout.CENTER);
 		
-		JPanel radioPanel1=createRadioPanel(model1,true);
-		JPanel radioPanel2=createRadioPanel(model2,false);
+		JPanel radioPanel1=createRadioPanel(concordModel1,true);
+		JPanel radioPanel2=createRadioPanel(concordModel2,false);
+		JButton clearButton=new JButton("Clear alignment");
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int choice=JOptionPane.showConfirmDialog(null,
+			            "Are you sure that you want to clear the current alignement ?", "Clear alignment ?", JOptionPane.YES_NO_OPTION);
+				if (choice!=JOptionPane.YES_OPTION) {
+					return;
+				}
+				model.clear();
+			}
+		});
 		JButton alignButton=new JButton("Align");
 		alignButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -179,14 +183,94 @@ public class XAlignFrame {
 		JPanel downPanel=new JPanel(new BorderLayout());
 		downPanel.add(radioPanel1,BorderLayout.WEST);
 		downPanel.add(radioPanel2,BorderLayout.EAST);
-		JPanel buttonPanel=new JPanel();
+		JButton locate1=createLocateButton(f1,concordModel1);
+		JButton locate2=createLocateButton(f2,concordModel2);
+		JPanel buttonPanel=new JPanel(null);
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+		buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.X_AXIS));
+		buttonPanel.add(locate1);
+		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.add(clearButton);
 		buttonPanel.add(alignButton);
 		buttonPanel.add(saveButton);
 		buttonPanel.add(saveAsButton);
+		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.add(locate2);
 		downPanel.add(buttonPanel,BorderLayout.SOUTH);
 		downPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		frame.getContentPane().add(downPanel,BorderLayout.SOUTH);
 		return frame;
+	}
+
+	private static JButton createLocateButton(final File file,final ConcordanceModel concordModel) {
+		JButton button=new JButton("Locate...");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String xmlName=file.getAbsolutePath();
+				String targetName;
+				if (!xmlName.endsWith(".xml")) {
+					targetName=xmlName+"_xalign";
+				} else {
+					targetName=xmlName.substring(0,xmlName.lastIndexOf("."))+"_xalign";
+				}
+				String txtName=targetName+".txt";
+				String sntName=targetName+".snt";
+				File txt=new File(txtName);
+				final File snt=new File(sntName);
+				File sntDir=new File(targetName+"_snt");
+				File alphabet=XAlignFrame.tryToFindAlphabet(file);
+				if (alphabet==null) {
+					JOptionPane.showMessageDialog(null,
+							"Cannot determine the alphabet file to use\n"+
+							"in order to process your text. You should place\n"+
+							"your file within a language directory (e.g. English).", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				final String language=alphabet.getParentFile().getName();
+				if (!snt.exists()) {
+					int choice=JOptionPane.showConfirmDialog(null,
+				            "Unitex needs a text version of your xml text in order to locate\n"+
+				            "expression. Do you agree to build and preprocess\n\n"+
+				            txtName+" ?", "", JOptionPane.YES_NO_OPTION);
+					if (choice!=JOptionPane.YES_OPTION) {
+						return;
+					}
+					MultiCommands commands=new MultiCommands();
+					TEI2TxtCommand tei2txt=new TEI2TxtCommand().input(file).output(txt);
+					commands.addCommand(tei2txt);
+					NormalizeCommand normalize=new NormalizeCommand().text(txt);
+					commands.addCommand(normalize);
+					MkdirCommand mkdir=new MkdirCommand().name(sntDir);
+					commands.addCommand(mkdir);
+					TokenizeCommand tokenize=new TokenizeCommand().text(snt)
+						.alphabet(alphabet);
+					commands.addCommand(tokenize);
+					DicoCommand dico=new DicoCommand()
+						.snt(snt).alphabet(alphabet);
+					ArrayList<File> param = PreprocessFrame.getDefaultDicList(language);
+					if (param != null && param.size() > 0) {
+						dico = dico.dictionaryList(param);
+						commands.addCommand(dico);
+					} else {
+						dico = null;
+					}
+					ToDoAbstract toDo=new ToDoAbstract() {
+						@Override
+						public void toDo() {
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									new XAlignLocateFrame(language,snt,concordModel);
+								}
+							});
+						}
+					};
+					new ProcessInfoFrame(commands,true,toDo,true);
+					return;
+				}
+				new XAlignLocateFrame(language,snt,concordModel);
+			}});
+		return button;
 	}
 
 	protected static void saveAlignment(XAlignModel model1) {
@@ -211,6 +295,8 @@ public class XAlignFrame {
 	private static void saveAlignment(File alignementFile1,XAlignModel model1) {
 		try {
 			model1.dumpAlignments(alignementFile1);
+			XAlignFrame.alignementFile=alignementFile1;
+			XAlignFrame.frame.setTitle(alignementFile1.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
