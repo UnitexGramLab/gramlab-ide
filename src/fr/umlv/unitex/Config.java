@@ -1418,14 +1418,16 @@ public class Config {
 	public static File getXAlignDirectory() {
 		File dir=new File(Config.getUserDir(),"XAlign");
 		if (!dir.exists()) {
-			if (!dir.mkdir()) {
+			File foo=new File(Config.getUnitexDir(),"XAlign");
+			if (!foo.exists()) {
 				JOptionPane
 				.showMessageDialog(
 						null,
-						"Cannot create directory "+dir.getAbsolutePath(),
+						"Cannot find directory "+foo.getAbsolutePath(),
 						"Error", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
+			copyDirRec(foo,dir);
 		}
 		return dir;
 	}
