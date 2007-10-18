@@ -357,20 +357,21 @@ public class EditionTextArea extends JTextArea {
 
 	}
 
+	
+	final static String separatorsRegexp = new String("[^\\p{javaLowerCase}\\p{javaUpperCase}]");
+	final static String lettersRegexp = new String("[\\p{javaLowerCase}\\p{javaUpperCase}]");
 /**
- * checks is a word ( "key" ) is not surround by other lettres
- * @param key the 
+ * checks is a word ( "key" ) is not surrounded by other letters
+ * @param key 
  * @param context the context of key ( keyIndex-1, key.length()+1 )
- * @return true if the word is surronder by separators else false
+ * @return true if the word is surrounded by separators; false otherwise
  */
 	private boolean isWholeWord(String key, String context) {
-
-		String separtorsRegexp = new String("[^\\d\\wחיטךכאהגןמשüûפצ]");
 		return isMatchingExpression(
 			key,
 			context,
-			separtorsRegexp,
-			separtorsRegexp);
+			separatorsRegexp,
+			separatorsRegexp);
 
 	}
 
@@ -419,13 +420,11 @@ public class EditionTextArea extends JTextArea {
  */
 	private boolean isaRadical(String key, String context) {
 
-		String leftsepartorsRegexp = new String("[\\d\\wחיטךכאהגןמשüûפצ]");
-		String rightSepartorsRegexp = new String("[\\d\\wחיטךכאהגןמשüûפצ]");
 		return isMatchingExpression(
 			key,
 			context,
-			leftsepartorsRegexp,
-			rightSepartorsRegexp);
+			separatorsRegexp,
+			separatorsRegexp);
 	}
 
 /**
@@ -436,13 +435,13 @@ public class EditionTextArea extends JTextArea {
  */
 	private boolean isaPrefixe(String key, String context) {
 
-		String leftsepartorsRegexp = new String("[^\\d\\wחיטךכאהגןמשüûפצ]");
-		String rightSepartorsRegexp = new String("[\\wחיטךכאהגןמשüûפצ]");
+		//String leftsepartorsRegexp = new String("[^\\d\\wחיטךכאהגןמשüûפצ]");
+		//String rightSepartorsRegexp = new String("[\\wחיטךכאהגןמשüûפצ]");
 		return isMatchingExpression(
 			key,
 			context,
-			leftsepartorsRegexp,
-			rightSepartorsRegexp);
+			separatorsRegexp,
+			lettersRegexp);
 	}
 
 /**
@@ -453,13 +452,13 @@ public class EditionTextArea extends JTextArea {
  */
 	private boolean isaSuffixe(String key, String context) {
 
-		String leftsepartorsRegexp = new String("[\\wחיטךכאהגןמשüûפצ]");
-		String rightSepartorsRegexp = new String("[^\\d\\wחיטךכאהגןמשüûפצ]");
+		//String leftsepartorsRegexp = new String("[\\wחיטךכאהגןמשüûפצ]");
+		//String rightSepartorsRegexp = new String("[^\\d\\wחיטךכאהגןמשüûפצ]");
 		return isMatchingExpression(
 			key,
 			context,
-			leftsepartorsRegexp,
-			rightSepartorsRegexp);
+			lettersRegexp,
+			separatorsRegexp);
 	}
 
 /**
@@ -490,7 +489,7 @@ public class EditionTextArea extends JTextArea {
 
 		
 		return isMatchingExpression(key,context,leftsepartorsRegexp,rightSepartorsRegexp) || 
-			   isMatchingExpression(key,context2,"[^\\d\\wחיטךכאהגןמשüûפצ]",",\\.");
+			   isMatchingExpression(key,context2,separatorsRegexp/*"[^\\d\\wחיטךכאהגןמשüûפצ]"*/,",\\.");
 	}
 
 /**
