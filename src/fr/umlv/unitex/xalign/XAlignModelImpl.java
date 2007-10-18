@@ -297,7 +297,8 @@ public class XAlignModelImpl implements XAlignModel {
 		for (AlignmentListener l:listeners) {
 			l.alignmentChanged(e);
 		}
-		if (AlignmentEvent.MANUAL_EDIT.equals(e)) {
+		if (AlignmentEvent.MANUAL_EDIT.equals(e) ||
+			AlignmentEvent.CLEAR.equals(e)) {
 			modified=true;
 		}
 	}
@@ -617,6 +618,11 @@ public class XAlignModelImpl implements XAlignModel {
 	public void reset() {
 		if (buffer!=null) buffer=null;
 		System.gc();
+	}
+
+	public void clear() {
+		alignments.clear();
+		fireAlignmentChanged(AlignmentEvent.CLEAR);
 	}
 
 }

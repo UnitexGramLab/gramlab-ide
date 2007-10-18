@@ -231,7 +231,7 @@ public class PreprocessFrame extends JDialog {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						File dir = Config.getCurrentSntDir();
-						if (!dir.exists()) {
+						/*if (!dir.exists()) {
 							// if the directory toto_snt does not exist, we
 							// create it
 							if (!dir.mkdir()) {
@@ -240,12 +240,15 @@ public class PreprocessFrame extends JDialog {
 												+ dir.getAbsolutePath());
 								System.exit(1);
 							}
-						}
+						}*/
 						MultiCommands commands = new MultiCommands();
 						// NORMALIZING TEXT...
 						NormalizeCommand normalizeCmd = new NormalizeCommand()
-								.text(originalTextFile);
+								.textWithDefaultNormalization(originalTextFile);
 						commands.addCommand(normalizeCmd);
+						// CREATING SNT DIR
+						MkdirCommand mkdir=new MkdirCommand().name(dir);
+						commands.addCommand(mkdir);
 						// SENTENCE GRAPH...
 						if (sentenceCheck.isSelected()) {
 							File sentence = new File(sentenceName.getText());
@@ -498,7 +501,7 @@ public class PreprocessFrame extends JDialog {
 						MultiCommands commands = new MultiCommands();
 						// NORMALIZING TEXT...
 						NormalizeCommand normalizeCmd = new NormalizeCommand()
-								.text(originalTextFile);
+								.textWithDefaultNormalization(originalTextFile);
 						commands.addCommand(normalizeCmd);
 						// TOKENIZING...
 						TokenizeCommand tokenizeCmd = new TokenizeCommand()
@@ -534,15 +537,21 @@ public class PreprocessFrame extends JDialog {
 		return buttons;
 	}
 
-	ArrayList<File> getDefaultDicList() {
+	static ArrayList<File> getDefaultDicList() {
+		return getDefaultDicList(Config.getCurrentLanguage());
+	}
+	
+	public static ArrayList<File> getDefaultDicList(String language) {
+		
 		ArrayList<File> res = new ArrayList<File>();
-		File name2 = new File(Config.getUserCurrentLanguageDir(),
+		File userLanguageDir=new File(Config.getUserDir(),language);
+		File name2 = new File(userLanguageDir,
 				"user_dic.def");
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(name2));
 			String s;
 			while ((s = br.readLine()) != null) {
-				res.add(new File(new File(Config.getUserCurrentLanguageDir(),
+				res.add(new File(new File(userLanguageDir,
 						"Dela"), s));
 			}
 			br.close();
@@ -553,13 +562,13 @@ public class PreprocessFrame extends JDialog {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		name2 = new File(Config.getUserCurrentLanguageDir(), "system_dic.def");
+		name2 = new File(userLanguageDir, "system_dic.def");
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(name2));
 			String s;
+			File systemDelaDir=new File(new File(Config.getUnitexDir(),language),"Dela");
 			while ((s = br.readLine()) != null) {
-				res.add(new File(new File(Config.getUnitexCurrentLanguageDir(),
-						"Dela"), s));
+				res.add(new File(systemDelaDir,s));
 			}
 			br.close();
 		} 

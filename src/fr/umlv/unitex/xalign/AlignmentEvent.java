@@ -6,6 +6,6 @@ package fr.umlv.unitex.xalign;
 
 public enum AlignmentEvent {
 
-	LOADING,MANUAL_EDIT,SAVING;
+	LOADING,MANUAL_EDIT,SAVING,CLEAR;
 	
 }

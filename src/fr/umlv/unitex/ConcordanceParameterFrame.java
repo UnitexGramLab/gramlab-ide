@@ -371,8 +371,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		String sntDir = Util.getFileNameWithoutExtension(snt.getAbsolutePath())
 				+ "_snt";
 		File tmp = new File(sntDir);
-		if (!tmp.exists())
-			tmp.mkdir();
+		/*if (!tmp.exists())
+			tmp.mkdir();*/
 		ModifyTextDo DO = null;
 		if (sntFile.equals(Config.getCurrentSnt())) {
 			// if the result file is the current text, we must close some things
@@ -381,8 +381,10 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		MultiCommands commands = new MultiCommands();
 		commands.addCommand(command);
-		NormalizeCommand normalizeCmd = new NormalizeCommand().text(snt);
+		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(snt);
 		commands.addCommand(normalizeCmd);
+		MkdirCommand mkdir=new MkdirCommand().name(tmp);
+		commands.addCommand(mkdir);
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(snt).alphabet();
 		if (Config.isCharByCharLanguage()) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();

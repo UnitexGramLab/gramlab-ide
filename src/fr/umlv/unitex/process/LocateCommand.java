@@ -50,6 +50,11 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 
+	public LocateCommand alphabet(File alphabet) {
+		protectElement(alphabet.getAbsolutePath());
+		return this;
+	}
+
 	public LocateCommand shortestMatches() {
 		element("s");
 		return this;
