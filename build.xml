@@ -7,6 +7,7 @@
   <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
+  <property name="lib" location="lib"/>
   <property name="appdir" location="D:\\Unitex2.0beta\\App"/>
   
   <!-- targets -->
@@ -19,7 +20,7 @@
 
   <target name="compile" depends="init" description="compile the source" >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}"/>
+    <javac srcdir="${src}" destdir="${build}" includes="${lib/*.jar}"/>
   </target>
 
 
@@ -39,7 +40,11 @@
 
     <!-- create Unitex.jar -->
     <jar jarfile="${dist}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf"
-      basedir="classes"/>
+      basedir="classes" excludes="classes/fr/loria/**"/>
+  	
+  	<!-- create XAlign.jar -->
+  	<jar jarfile="${dist}/XAlign.jar" manifest="classes/fr/loria/Manifest.mf"
+  	      basedir="classes" excludes="classes/fr/umlv/**"/>
 
   	<!-- These two targets will remain commented until their two manifest files
   	     are committed on the SVN server
@@ -53,6 +58,9 @@
 
   <target name="install" depends="dist">
     <copy file="${dist}/Unitex.jar" todir="${appdir}"/>
+    <copy file="${dist}/XAlign.jar" todir="${appdir}"/>
+   <copy file="${lib}/xercesImpl.jar" todir="${appdir}"/>
+   <copy file="${lib}/xmlParserAPIs.jar" todir="${appdir}"/>
   </target>
 
   <target name="clean" description="clean up" >

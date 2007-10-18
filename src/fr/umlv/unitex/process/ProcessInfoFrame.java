@@ -327,6 +327,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 						}// end of program command
 						
 					case CommandBuilder.METHOD: {
+						Console.addCommand(command.getCommandLine());
 						AbstractMethodCommand cmd=(AbstractMethodCommand)command;
 						if (!cmd.execute()) {
 							if (stop_if_problem) {

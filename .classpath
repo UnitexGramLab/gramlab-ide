@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="output" path="classes"/>
+	<classpathentry path="src" kind="src"/>
+	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+	<classpathentry path="resources" kind="src"/>
+	<classpathentry path="E:/workspace/Unitex-Java/lib/xmlParserAPIs.jar" kind="lib"/>
+	<classpathentry path="E:/workspace/Unitex-Java/lib/xercesImpl.jar" kind="lib"/>
+	<classpathentry path="classes" kind="output"/>
 </classpath>
