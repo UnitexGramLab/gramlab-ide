@@ -115,7 +115,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 		return chooser;
 	}
 	
-	final JTextField text1=new JTextField("D:\\My Unitex\\English\\Corpus\\80jours.xml");
+	final JTextField text1=new JTextField("D:\\My Unitex\\English\\Corpus\\ivanhoe.xml");
 	final JTextField text2=new JTextField("D:\\My Unitex\\French\\Corpus\\80jours.xml");
 	final JTextField alignment=new JTextField("");
 	
@@ -287,6 +287,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 													alignmentFile2);
 									frame1.setVisible(true);
 									UnitexFrame.addInternalFrame(frame1);
+									frame1.setSelected(true);
 								} catch (IOException e1) {
 									JOptionPane
 											.showMessageDialog(
@@ -295,13 +296,19 @@ public class AlignmentParameterFrame extends JInternalFrame {
 													"Error",
 													JOptionPane.ERROR_MESSAGE);
 									return;
+								} catch (PropertyVetoException e1) {
+									e1.printStackTrace();
 								}
 							}
 						});
 					}
 				};
 				/* And we launch the XMLizer commands, if any */
-				new ProcessInfoFrame(commands,true,toDo,true);				
+				if (commands.numberOfCommands()!=0) {
+					new ProcessInfoFrame(commands,true,toDo,true);
+				} else {
+					toDo.toDo();
+				}
 		}});
 		JButton cancel=new JButton("Cancel");
 		cancel.addActionListener(new ActionListener() {

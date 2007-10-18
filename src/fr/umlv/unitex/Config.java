@@ -1143,6 +1143,14 @@ public class Config {
 		String path;
 		path = Util.getFileNameWithoutExtension(s.getAbsolutePath());
 		currentSntDir = new File(path + "_snt");
+		if (currentSntDir.exists() && !currentSntDir.isDirectory()) {
+			JOptionPane.showMessageDialog(null,
+					currentSntDir.getAbsolutePath()+" is not a directory but a file.\n"+
+					"\nUnitex will abort.",
+					"Fatal error",
+					JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
 	}
 
 	/**
@@ -1379,6 +1387,17 @@ public class Config {
 	
 	public static boolean isCharByCharLanguage() {
 		return Preferences.pref.charByChar;
+	}
+
+	public static boolean isCharByCharLanguage(String language) {
+		File config=new File(new File(Config.getUserDir(),language),"Config");
+		if (!config.exists()) {
+			return false;
+		}
+		Properties prop=Preferences.loadProperties(config,null);
+		String s=prop.getProperty("CHAR BY CHAR");
+		if (s==null) return false;
+		return Boolean.parseBoolean(s);
 	}
 
 	public static boolean isRightToLeftLanguage() {

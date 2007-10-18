@@ -34,9 +34,14 @@ public class NormalizeCommand extends CommandBuilder {
 		super("Normalize");
 	}
 
-	public NormalizeCommand text(File s) {
+	public NormalizeCommand textWithDefaultNormalization(File s) {
 		protectElement(s.getAbsolutePath());
 		protectElement("-f="+new File(Config.getUserCurrentLanguageDir(),"Norm.txt").getAbsolutePath());
+		return this;
+	}
+	
+	public NormalizeCommand text(File s) {
+		protectElement(s.getAbsolutePath());
 		return this;
 	}
 

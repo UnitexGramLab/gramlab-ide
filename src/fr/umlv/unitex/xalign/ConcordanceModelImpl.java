@@ -61,6 +61,10 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		return matchedSentences.size();
 	}
 
+	public int getNumberOfSentences() {
+		return model.getSize();
+	}
+
 	public int getSentence(int index) {
 		if (getMode()!=MATCHES) return index;
 		return matchedSentences.get(index);
@@ -212,7 +216,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		//builder.append("<html>");
 		List<Occurrence> occurrences=(List<Occurrence>) occurrenceArray[sentence];
 		String s=model.getElementAt(sentence);
-		ArrayList<Integer> edges=createArray(s.length(),occurrences);
+		ArrayList<Integer> edges=createArray(s,occurrences);
 		int currentMode=edges.get(0);
 		int start=0;
 		for (int i=1;i<edges.size();i++) {
@@ -226,6 +230,8 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 					case '&': builder.append("&amp;"); break;
 					case '<': builder.append("&lt;"); break;
 					case '>': builder.append("&gt;"); break;
+					case 13: /* do nothing */ break;
+					case 10: builder.append("<br>"); break;
 					default: builder.append(c);
 				}
 			   start++;
@@ -239,15 +245,16 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		return builder.toString();
 	}
 
-	private ArrayList<Integer> createArray(int n,List<Occurrence> occurrences) {
+	private ArrayList<Integer> createArray(String s,List<Occurrence> occurrences) {
+		int n=s.length();
 		int[] array=new int[n];
 		for (int i=0;i<n;i++) {
 			array[i]=PLAIN;
 		}
 		for (Occurrence o:occurrences) {
-			int start=o.getStart();
+			int start=getRealOffset(s,o.getStart());
 			if (start>=n) continue;
-			int end=o.getEnd();
+			int end=getRealOffset(s,o.getEnd());
 			if (end>=n) end=n-1;
 			for (int j=start;j<=end;j++) {
 				array[j]=MATCH;
@@ -262,6 +269,23 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		}
 		edges.add(n-1);
 		return edges;
+	}
+
+
+	/**
+	 * This function takes an offset in a string and computes the
+	 * real offset, i.e. the offset+n where n is the number of '\n'
+	 * before offset. This is necessary because XAlign concord.txt
+	 * offset are based on a calculus that counts '\r\n' as a single char.
+	 */
+	private int getRealOffset(String s,int offset) {
+		int realOffset=offset;
+		for (int i=0;i<offset;i++) {
+			if (s.charAt(i)==10) {
+				realOffset++;
+			}
+		}
+		return realOffset;
 	}
 
 
@@ -329,5 +353,15 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 
 	public void refresh() {
 		fireContentChanged(this,0,getSize()-1);
+	}
+
+
+	public void clear() {
+		int size=getSize();
+		for (int i=0;i<occurrenceArray.length;i++) {
+			occurrenceArray[i]=null;
+		}
+		matchedSentences.clear();
+		fireContentChanged(this,0,size-1);
 	}
 }

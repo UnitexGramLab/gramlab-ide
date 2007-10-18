@@ -122,14 +122,17 @@ public class Text {
 
 	private static void preprocessLightSnt(File name,boolean taggedText) {
 		File dir = Config.getCurrentSntDir();
-		if (!dir.exists()) {
+		/*if (!dir.exists()) {
 			// if the directory toto_snt does not exist, we create it
 			dir.mkdir();
-		}
+		}*/
 		MultiCommands commands = new MultiCommands();
 		// NORMALIZING TEXT...
-		NormalizeCommand normalizeCmd = new NormalizeCommand().text(name);
+		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(name);
 		commands.addCommand(normalizeCmd);
+		// creating snt dir
+		MkdirCommand mkdir=new MkdirCommand().name(dir);
+		commands.addCommand(mkdir);
 		// TOKENIZING...
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
 				Config.getCurrentSnt()).alphabet();
@@ -176,7 +179,9 @@ public class Text {
 	 *  
 	 */
 	public static void removeSntFiles() {
-		Config.removeFile(new File(Config.getCurrentSntDir(),"*"));
+		if (Config.getCurrentSntDir().exists()) {
+			Config.removeFile(new File(Config.getCurrentSntDir(),"*"));
+		}
 	}
 
 	static class TextDo extends ToDoAbstract {

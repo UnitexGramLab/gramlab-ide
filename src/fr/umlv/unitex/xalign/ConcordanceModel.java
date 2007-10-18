@@ -40,8 +40,10 @@ public interface ConcordanceModel extends ListModel {
 	public void setMode(int mode);
 	public int getMode();
 	public XMLTextModel getModel();
+	public int getNumberOfSentences();
 	public int getSentence(int index);
 	public int getSentenceIndex(int sentence);
 	public void refresh();
+	public void clear();
 	
 }

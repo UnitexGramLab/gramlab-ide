@@ -23,36 +23,25 @@ package fr.umlv.unitex.process;
 
 import java.io.*;
 
-import fr.umlv.unitex.*;
-
 /**
  * @author Sébastien Paumier
  *  
  */
-public class TokenizeCommand extends CommandBuilder {
+public class TEI2TxtCommand extends CommandBuilder {
 
-	public TokenizeCommand() {
-		super("Tokenize");
+	public TEI2TxtCommand() {
+		super("TEI2Txt");
 	}
 
-	public TokenizeCommand text(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-    public TokenizeCommand alphabet() {
-      protectElement(Config.getAlphabet().getAbsolutePath());
-      return this;
-  }
-
-    public TokenizeCommand alphabet(File f) {
-        protectElement(f.getAbsolutePath());
+    public TEI2TxtCommand output(File s) {
+    	element("-o");
+    	protectElement(s.getAbsolutePath());
         return this;
     }
 
-    public TokenizeCommand tokenizeCharByChar() {
-        element("-char_by_char");
+    public TEI2TxtCommand input(File s) {
+    	protectElement(s.getAbsolutePath());
         return this;
     }
-
+    
 }

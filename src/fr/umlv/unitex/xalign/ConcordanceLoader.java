@@ -59,12 +59,17 @@ public class ConcordanceLoader {
 
 			@Override
 			protected Void doInBackground() throws Exception {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {
+						model.clear();
+					}});
 				Scanner scanner=null;
 				try {
 					scanner=new Scanner(file,"UTF8");
 					int sentence,start,end;
 					while (scanner.hasNextInt()) {
-						sentence=scanner.nextInt();
+						/* -1 because in concord.ind files, sentences are numbered from 1 */
+						sentence=scanner.nextInt()-1;
 						if (!scanner.hasNextInt()) {
 							System.err.println("Invalid line in concordance file "+file.getName());
 							return null;
@@ -74,7 +79,13 @@ public class ConcordanceLoader {
 							System.err.println("Invalid line in concordance file "+file.getName());
 							return null;
 						}
-						end=scanner.nextInt();
+						end=scanner.nextInt()-1;
+						if (!scanner.hasNextLine()) {
+							System.err.println("Invalid line in concordance file "+file.getName());
+							return null;
+						}
+						/* We skip the occurrence itself */
+						scanner.nextLine();
 						publish(new MatchedSentence(sentence,new Occurrence(start,end)));
 					}
 				} catch (FileNotFoundException e) {

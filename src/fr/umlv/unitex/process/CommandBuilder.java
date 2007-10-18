@@ -38,6 +38,7 @@ public abstract class CommandBuilder {
 	public static final int PROGRAM=0;
 	public static final int MESSAGE=1;
 	public static final int ERROR_MESSAGE=2;
+	public static final int METHOD=3;
 	
    private final ArrayList<String> list; 
    protected int type=PROGRAM;
