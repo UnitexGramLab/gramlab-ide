@@ -23,7 +23,6 @@ package fr.umlv.unitex.process;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -36,7 +35,8 @@ public class CommandMenuFactory {
     
 	public static JMenu makeCommandMenu() {
     Class[] commands={CheckDicCommand.class
-            ,CompressCommand.class
+    		,CollocCommand.class
+    		,CompressCommand.class
             ,CompressKrCommand.class
             ,ConcordCommand.class
             ,ConsultDicCommand.class
@@ -48,6 +48,7 @@ public class CommandMenuFactory {
             ,ExploseFst2Command.class
             ,ExtractCommand.class
             ,FlattenCommand.class
+            ,FreqCommand.class
             ,Fst2GrfCommand.class
             ,Fst2ListCommand.class
             ,Fst2TxtCommand.class
