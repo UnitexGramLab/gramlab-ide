@@ -810,8 +810,7 @@ public class Config {
 		File f = new File(userCurrentLanguageDir, "Corpus");
 		if (!f.exists()) {
 			f.mkdir();
-			copyFileByName(new File(new File(getUnitexCurrentLanguageDir(),
-					"Corpus"), "*"), f);
+			copyDirRec(new File(getUnitexCurrentLanguageDir(),"Corpus"),f);
 		}
 		f = new File(userCurrentLanguageDir, "Elag");
 		if (!f.exists()) {
