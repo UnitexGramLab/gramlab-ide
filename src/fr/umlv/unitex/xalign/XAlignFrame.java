@@ -58,15 +58,13 @@ public class XAlignFrame {
 		text1=new XMLTextModelImpl(buffer1);
 		XMLTextLoader loader1=new XMLTextLoader(text1,buffer1);
 		loader1.load();
-		concordModel1=new ConcordanceModelImpl(text1);
-		//ConcordanceLoader.load(new File("D:\\xalign\\concord-align.ind"),model1);
+		concordModel1=new ConcordanceModelImpl(text1,true);
 		/* Second text */
 		MappedByteBuffer buffer2=XMLTextLoader.buildMappedByteBuffer(f2);
 		text2=new XMLTextModelImpl(buffer2);
 		XMLTextLoader loader2=new XMLTextLoader(text2,buffer2);
 		loader2.load();
-		concordModel2=new ConcordanceModelImpl(text2);
-		//ConcordanceLoader.load(new File("D:\\xalign\\concord-align2.ind"),model2);
+		concordModel2=new ConcordanceModelImpl(text2,false);
 		model=new XAlignModelImpl(text1,text2);
 		model.load(align);
 		model.addAlignmentListener(new AlignmentListener() {
@@ -134,8 +132,8 @@ public class XAlignFrame {
 		frame.getContentPane().setLayout(new BorderLayout());
 		frame.getContentPane().add(new XAlignPane(concordModel1,concordModel2,model),BorderLayout.CENTER);
 		
-		JPanel radioPanel1=createRadioPanel(concordModel1,true);
-		JPanel radioPanel2=createRadioPanel(concordModel2,false);
+		JPanel radioPanel1=createRadioPanel(concordModel1,concordModel2,true);
+		JPanel radioPanel2=createRadioPanel(concordModel2,concordModel1,false);
 		JButton clearButton=new JButton("Clear alignment");
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -422,26 +420,26 @@ public class XAlignFrame {
 		return alphabet;
 	}
 
-	private static JPanel createRadioPanel(final ConcordanceModel model1,boolean left) {
-		JPanel p=new JPanel(new GridLayout(3,1));
-		String[] captions={"All sentences/Plain text","Matched sentences","All sentences/HTML"};
-		int[] modes={ConcordanceModel.TEXT,ConcordanceModel.MATCHES,ConcordanceModel.BOTH};
-		ButtonGroup g=new ButtonGroup();
+	private static JPanel createRadioPanel(final ConcordanceModel model1,final ConcordanceModel model2,boolean left) {
+		JPanel p=new JPanel(new GridLayout(4,1));
+		String[] captions={"All sentences/Plain text","Matched sentences","All sentences/HTML",left?"Aligned with target concordance":"Aligned with source concordance"};
+		DisplayMode[] modes={DisplayMode.TEXT,DisplayMode.MATCHES,DisplayMode.BOTH,DisplayMode.ALIGNED};
+		final ButtonGroup g=new ButtonGroup();
 		for (int i=0;i<captions.length;i++) {
-			final JRadioButton b=new JRadioButton(captions[i],i==0);
+			final JRadioButton button=new JRadioButton(captions[i],i==0);
 			if (!left) {
-				b.setHorizontalTextPosition(SwingConstants.LEFT);
-				b.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+				button.setHorizontalTextPosition(SwingConstants.LEFT);
+				button.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 			}
-			final int mode=modes[i];
-			b.addActionListener(new ActionListener() {
+			final DisplayMode mode=modes[i];
+			button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (b.isSelected()) {
-						model1.setMode(mode);
+					if (button.isSelected()) {
+						model1.setMode(mode,model2);							
 					}
 				}});
-			g.add(b);
-			p.add(b);
+			g.add(button);
+			p.add(button);
 		}
 		if (!left) {
 			p.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
