@@ -115,9 +115,9 @@ public class AlignmentParameterFrame extends JInternalFrame {
 		return chooser;
 	}
 	
-	final JTextField text1=new JTextField("D:\\My Unitex\\English\\Corpus\\LePetPrin.EngID.p5.xml");
-	final JTextField text2=new JTextField("D:\\My Unitex\\French\\Corpus\\LePetPrin.FraID.p5.xml");
-	final JTextField alignment=new JTextField("D:\\My Unitex\\XAlign\\foo.xml");
+	final JTextField text1=new JTextField();//"D:\\My Unitex\\English\\Corpus\\LePetPrin.EngID.p5.xml");
+	final JTextField text2=new JTextField();//"D:\\My Unitex\\French\\Corpus\\LePetPrin.FraID.p5.xml");
+	final JTextField alignment=new JTextField();//"D:\\My Unitex\\XAlign\\foo.xml");
 	
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new GridLayout(4,1));
