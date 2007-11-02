@@ -26,6 +26,7 @@ import java.awt.geom.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
@@ -86,8 +87,34 @@ public class XAlignPane extends JPanel {
 		gbc.weightx = 1;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		add(scrollPane2, gbc);
-		model.addAlignmentListener(new AlignmentListener() {
+		alignmentModel.addAlignmentListener(new AlignmentListener() {
 			public void alignmentChanged(AlignmentEvent e) {
+				refresh();
+			}
+		});
+		model1.addListDataListener(new ListDataListener() {
+			public void intervalAdded(ListDataEvent e) {
+				refresh();				
+			}
+
+			public void intervalRemoved(ListDataEvent e) {
+				refresh();				
+			}
+
+			public void contentsChanged(ListDataEvent e) {
+				refresh();
+			}
+		});
+		model2.addListDataListener(new ListDataListener() {
+			public void intervalAdded(ListDataEvent e) {
+				refresh();				
+			}
+
+			public void intervalRemoved(ListDataEvent e) {
+				refresh();				
+			}
+
+			public void contentsChanged(ListDataEvent e) {
 				refresh();
 			}
 		});
@@ -206,17 +233,20 @@ public class XAlignPane extends JPanel {
 					return;
 				try {
 					b1.setScrollAdjusting(true);
-					int val = l1.getFirstVisibleIndex();
 					if (!b2.isScrollAdjusting()) {
-
-						ArrayList<Integer> l = alignmentModel
-								.getAlignedSequences(val, fromSrc);
-						int v = getMinimum(l);
-						if (v != -1) {
-							l2
-									.ensureIndexIsVisible(l2.getModel()
-											.getSize() - 1);
-							l2.ensureIndexIsVisible(v);
+						ConcordanceModel model1=(ConcordanceModel)l1.getModel();
+						ConcordanceModel model2=(ConcordanceModel)l2.getModel();
+						int last=l1.getLastVisibleIndex();
+						for (int index=l1.getFirstVisibleIndex();index<=last;index++) {
+						   int val=model1.getSentence(index);
+						   ArrayList<Integer> l=alignmentModel.getAlignedSequences(val,fromSrc);
+						   int v=getMinimumVisibleIndex(l,model2);
+						   //System.out.println("pour phrase "+val+", plus petit="+v);
+						   if (v!=-1) {
+							  l2.ensureIndexIsVisible(l2.getModel().getSize()-1);
+  							  l2.ensureIndexIsVisible(v);
+  							  break;
+						   }
 						}
 					}
 				} finally {
@@ -228,13 +258,18 @@ public class XAlignPane extends JPanel {
 		};
 	}
 
-	int getMinimum(ArrayList<Integer> l) {
+	/**
+	 * l represents a list of sentence numbers. model will be used to know which
+	 * of those sentences are visible. Then, the function will return the minimal
+	 * visible index, or -1 if not found. 
+	 */
+	int getMinimumVisibleIndex(ArrayList<Integer> l,ConcordanceModel model) {
 		if (l == null || l.size() == 0)
 			return -1;
-		int min = l.get(0);
+		int min = model.getSentenceIndex(l.get(0));
 		for (Integer i : l) {
-			if (i < min)
-				min = i;
+			if (model.getSentenceIndex(i) < min)
+				min = model.getSentenceIndex(i);
 		}
 		return min;
 	}
@@ -488,7 +523,7 @@ public class XAlignPane extends JPanel {
 				/* Then we test the nature of the model */
 				JTextComponent textComponent;
 				JTextComponent fooTextComponent;
-				if (m.isMatchedSentenceIndex(index) && m.getMode()!=ConcordanceModel.TEXT) {
+				if (m.isMatchedSentenceIndex(index) && m.getMode()!=DisplayMode.TEXT) {
 					/*
 					 * If we have to display a sentence with matches, we must
 					 * use an HTML rendering

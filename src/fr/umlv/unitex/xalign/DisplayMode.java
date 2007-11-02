@@ -20,8 +20,16 @@
  */
 package fr.umlv.unitex.xalign;
 
-public enum AlignmentEvent {
+public enum DisplayMode {
 
-	LOADING,MANUAL_EDIT,SAVING,CLEAR;
+	/**
+	 * These constants are used to set the display mode:
+	 * TEXT: all sentences are shown, with plain text
+	 * MATCHES: only matched sentences are shown, with HTML
+	 * BOTH: all sentences are shown, with HTML for matched sentences
+	 * ALIGNED: sentences that are aligned with other text's concordance
+	 */
+	
+	TEXT,MATCHES,BOTH,ALIGNED;
 	
 }
