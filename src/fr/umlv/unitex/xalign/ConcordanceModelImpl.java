@@ -27,15 +27,30 @@ import javax.swing.event.*;
 public class ConcordanceModelImpl implements ConcordanceModel {
 
 	private XMLTextModel model;
-	private int mode=TEXT;
+	private DisplayMode mode=DisplayMode.TEXT;
+	private boolean source;
 	
+	/* This array contains the indices of matched sentences */
 	private ArrayList<Integer> matchedSentences;
+	
+	/* This array contains the indices of sentences that are aligned
+	 * with matched sentences of the other text */
+	private ArrayList<Integer> alignedWithMatchedSentences;
+	
+	/* This array contains the union of matchedSentences and
+	 * alignedWithMatchedSentences */
+	private ArrayList<Integer> alignedModeSentences;
+
+	
+	/* The real type of occurrenceArray is List<Occurrence>[], but
+	 * we can't declare such a thing. */
 	Object[] occurrenceArray;
 	
 	
 	@SuppressWarnings("unchecked")
-	public ConcordanceModelImpl(XMLTextModel model) {
+	public ConcordanceModelImpl(XMLTextModel model,boolean source) {
 		this.model=model;
+		this.source=source;
 		matchedSentences=new ArrayList<Integer>();
 		occurrenceArray=new Object[model.getSize()];
 		model.addListDataListener(new ListDataListener() {
@@ -55,7 +70,10 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	
 	
 	public int getSize() {
-		if (getMode()!=MATCHES) {
+		if (getMode()==DisplayMode.ALIGNED) {
+			return alignedModeSentences.size();
+		}
+		else if (getMode()!=DisplayMode.MATCHES) {
 			return model.getSize();
 		}
 		return matchedSentences.size();
@@ -66,7 +84,9 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	}
 
 	public int getSentence(int index) {
-		if (getMode()!=MATCHES) return index;
+		if (index==-1) return -1;
+		if (getMode()==DisplayMode.ALIGNED) return alignedModeSentences.get(index);
+		if (getMode()!=DisplayMode.MATCHES) return index;
 		return matchedSentences.get(index);
 	}
 
@@ -81,13 +101,17 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	 * index of the given sentence. -1 means that the sentence is not visible. 
 	 */
 	public int getSentenceIndex(int sentence) {
-		if (getMode()!=MATCHES) return sentence;
-		if (matchedSentences.size()==0) return -1;
+		if (getMode()!=DisplayMode.MATCHES && getMode()!=DisplayMode.ALIGNED) return sentence;
+		ArrayList<Integer> array=matchedSentences;
+		if (getMode()==DisplayMode.ALIGNED) {
+			array=alignedModeSentences;
+		}
+		if (array.size()==0) return -1;
 		int start=0;
-		int end=matchedSentences.size()-1;
+		int end=array.size()-1;
 		while (start<=end) {
 			int tmp=(start+end)/2;
-			int x=matchedSentences.get(tmp);
+			int x=array.get(tmp);
 			if (x==sentence) {
 				return tmp;
 			}
@@ -135,24 +159,25 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 			occurrenceArray[sentence]=list=new ArrayList<Occurrence>();
 		}
 		list.add(match);
-		switch(getMode()) {
-			case TEXT: /* nothing to do */ break;
-			case MATCHES: {
-				if (position_to_insert!=-1) {
-					/* If we just have inserted a new matched sentence in MATCHES
-					 * mode, it means that we have added an element */
-					fireIntervalAdded(this,position_to_insert,position_to_insert);
-					break;
-				}
-				/* Otherwise, we just have changed the content of an existing cell */
-				fireContentChanged(this,position_to_insert,position_to_insert);
-				break;
+		if (getMode()==DisplayMode.TEXT) {
+			/* nothing to do */
+		}
+		else if (getMode()==DisplayMode.MATCHES) {
+			if (position_to_insert!=-1) {
+				/* If we just have inserted a new matched sentence in MATCHES
+				 * mode, it means that we have added an element */
+				fireIntervalAdded(this,position_to_insert,position_to_insert);
 			}
-			case BOTH: {
-				/* We just have to inform the JList that the sentence must be repainted */
-				fireContentChanged(this,sentence,sentence);
-				break;
-			}
+			/* Otherwise, we just have changed the content of an existing cell */
+			fireContentChanged(this,position_to_insert,position_to_insert);
+		}
+		else if (getMode()==DisplayMode.MATCHES) {
+			/* We just have to inform the JList that the sentence must be repainted */
+			fireContentChanged(this,sentence,sentence);
+		}
+		else {
+			/* We just have to inform the JList that the sentence must be repainted */
+			fireContentChanged(this,sentence,sentence);
 		}
 	}
 
@@ -196,10 +221,10 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	 */
 	public String getElementAt(int index) {
 		int sentence=index;
-		if (getMode()==MATCHES) {
+		if (getMode()==DisplayMode.MATCHES || getMode()==DisplayMode.ALIGNED) {
 			sentence=getSentence(index);
 		}
-		if (getMode()==TEXT || !isMatchedSentenceNumber(sentence)) {
+		if (getMode()==DisplayMode.TEXT || !isMatchedSentenceNumber(sentence)) {
 			return model.getElementAt(sentence);
 		}
 		return createMatchedSentenceHTML(sentence);
@@ -299,35 +324,104 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		listeners.remove(l);
 	}
 	
-	protected void fireIntervalAdded(Object source,int start,int end) {
-		ListDataEvent event=new ListDataEvent(source,ListDataEvent.INTERVAL_ADDED,start,end);
+	protected void fireIntervalAdded(Object source1,int start,int end) {
+		ListDataEvent event=new ListDataEvent(source1,ListDataEvent.INTERVAL_ADDED,start,end);
 		for (ListDataListener l:listeners) {
 			l.intervalAdded(event);
 		}
 	}
 	
-	protected void fireIntervalRemoved(Object source,int start,int end) {
-		ListDataEvent event=new ListDataEvent(source,ListDataEvent.INTERVAL_REMOVED,start,end);
+	protected void fireIntervalRemoved(Object source1,int start,int end) {
+		ListDataEvent event=new ListDataEvent(source1,ListDataEvent.INTERVAL_REMOVED,start,end);
 		for (ListDataListener l:listeners) {
 			l.intervalRemoved(event);
 		}
 	}
 	
-	protected void fireContentChanged(Object source,int start,int end) {
-		ListDataEvent event=new ListDataEvent(source,ListDataEvent.CONTENTS_CHANGED,start,end);
+	protected void fireContentChanged(Object source1,int start,int end) {
+		ListDataEvent event=new ListDataEvent(source1,ListDataEvent.CONTENTS_CHANGED,start,end);
 		for (ListDataListener l:listeners) {
 			l.contentsChanged(event);
 		}
 	}
 
 
-	public void setMode(int mode) {
-		if (mode<0 || mode>2) {
-			throw new IllegalArgumentException();
+	/**
+	 * This method gets the list L of matched sentences in the other text.
+	 * Then, it computes the list of sentences that are aligned with elements
+	 * of L. Finally, it builds a sorted array containing -/-*-both matched sentences
+	 * and-*-/- sentences aligned with matched sentences in the other text.
+	 */
+	void computeAlignedWithMatched(ConcordanceModel otherModel1) {
+		ArrayList<Integer> otherMatchedSentences=otherModel1.getMatchedSentences();
+		if (alignedWithMatchedSentences==null) {
+			alignedWithMatchedSentences=new ArrayList<Integer>();
+		} else {
+			alignedWithMatchedSentences.clear();
 		}
+		if (alignedModeSentences==null) {
+			alignedModeSentences=new ArrayList<Integer>();
+		} else {
+			alignedModeSentences.clear();
+		}
+		XAlignModel alignmentModel=XAlignFrame.model;
+		for (Integer i:otherMatchedSentences) {
+			alignedWithMatchedSentences.addAll(alignmentModel.getAlignedSequences(i,!source));
+		}
+		/*for (Integer i:matchedSentences) {
+			alignedModeSentences.add(new Integer(i));
+		}*/
+		for (Integer i:alignedWithMatchedSentences) {
+			alignedModeSentences.add(new Integer(i));
+		}
+		Collections.sort(alignedModeSentences);
+	}
+	
+	ListDataListener alignModeDataLister;
+	
+	/**
+	 * We may need to know the model of the other text, because of
+	 * the DisplayMode.ALIGNED mode that requires to know which sentences
+	 * of the other text are matched. 
+	 */
+	public void setMode(DisplayMode mode,final ConcordanceModel otherModel) {
 		int oldSize=getSize();
+		if (mode==DisplayMode.ALIGNED) {
+			/* If we must look at the matched sentence of the other text */
+			computeAlignedWithMatched(otherModel);
+			alignModeDataLister=new ListDataListener() {
+
+				public void intervalAdded(ListDataEvent e) {
+					int oldSize1=getSize();
+					computeAlignedWithMatched(otherModel);
+					update(oldSize1,getSize());
+				}
+
+				public void intervalRemoved(ListDataEvent e) {
+					int oldSize1=getSize();
+					computeAlignedWithMatched(otherModel);
+					update(oldSize1,getSize());
+				}
+
+				public void contentsChanged(ListDataEvent e) {
+					int oldSize1=getSize();
+					computeAlignedWithMatched(otherModel);
+					update(oldSize1,getSize());
+				}};
+			if (otherModel.getMode()!=DisplayMode.ALIGNED) {
+				/* We don't want to create a listener loop */ 
+				otherModel.addListDataListener(alignModeDataLister);
+			}
+		} else {
+			if (alignModeDataLister!=null) {
+				otherModel.removeListDataListener(alignModeDataLister);
+			}
+		}
 		this.mode=mode;
-		int newSize=getSize();
+		update(oldSize,getSize());
+	}
+	
+	void update(int oldSize,int newSize) {
 		if (oldSize<newSize) {
 			/* If we have to add elements */
 			fireIntervalAdded(this,oldSize,newSize-1);
@@ -340,8 +434,12 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		fireContentChanged(this,0,newSize-1);
 	}
 
+	public void setMode(DisplayMode mode) {
+		setMode(mode,null);
+	}
 
-	public int getMode() {
+
+	public DisplayMode getMode() {
 		return mode;
 	}
 
@@ -363,5 +461,15 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		}
 		matchedSentences.clear();
 		fireContentChanged(this,0,size-1);
+	}
+
+
+	public ArrayList<Integer> getMatchedSentences() {
+		if (matchedSentences==null) return null;
+		ArrayList<Integer> copy=new ArrayList<Integer>();
+		for (Integer i:matchedSentences) {
+			copy.add(new Integer(i));
+		}
+		return copy;
 	}
 }
