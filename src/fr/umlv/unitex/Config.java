@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2008 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -344,8 +344,9 @@ public class Config {
 	}
 
 	public static JFileChooser getCorpusDialogBox() {
-		if (corpusDialogBox != null)
+		if (corpusDialogBox != null) {
 			return corpusDialogBox;
+		}
 		corpusDialogBox = new JFileChooser();
 		corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("txt",
 				"Raw Unicode Texts"));

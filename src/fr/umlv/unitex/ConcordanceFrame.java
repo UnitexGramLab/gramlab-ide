@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2007 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2008 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
 
 
 /**
@@ -76,6 +77,8 @@ public class ConcordanceFrame extends JInternalFrame {
 			}
 		});
 		JScrollPane scroll = new JScrollPane(list);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		JPanel middle = new JPanel(new BorderLayout());
 		middle.setOpaque(true);
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
