@@ -41,7 +41,7 @@ public class ConcordanceFrame extends JInternalFrame {
 
 	static ConcordanceFrame frame;
 	
-	BigConcordance list=new BigConcordance();
+	BigConcordance list;
 	private JLabel nombre_matches = new JLabel("");
 	JComponent invisible=new JComponent() {
 		@Override
@@ -64,9 +64,11 @@ public class ConcordanceFrame extends JInternalFrame {
 	
 	/**
 	 * Constructs a new empty <code>ConcordanceFrame</code>.
+	 * @param widthInChars 
 	 */
-	public ConcordanceFrame() {
+	public ConcordanceFrame(int widthInChars) {
 		super("", true, true, true, true);
+		list=new BigConcordance(widthInChars);
 		invisible.setOpaque(false);
 		invisible.setVisible(true);
 		invisible.addMouseListener(new MouseAdapter() {
@@ -132,9 +134,8 @@ public class ConcordanceFrame extends JInternalFrame {
      context lengths
 	 */
 	public static void load(File concor, int widthInChars) {
-		if (frame==null) {
-			frame = new ConcordanceFrame();
-		}
+		close();
+		frame=new ConcordanceFrame(widthInChars);
 		UnitexFrame.addInternalFrame(frame);
 		frame.setTitle("Concordance: " + concor.getAbsolutePath());
 		frame.nombre_matches.setText(Util.getHtmlPageTitle(concor));
