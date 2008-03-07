@@ -36,9 +36,9 @@ import javax.swing.*;
 public class BigConcordance extends JList {
 
 	
-	public BigConcordance(ConcordanceAsListModel m) {
+	public BigConcordance(ConcordanceAsListModel m,int widthInChars) {
 		super(m);
-		setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		setPrototypeCellValue(getStringOfGivenWidth(widthInChars));
 		setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
 		setCellRenderer(new DefaultListCellRenderer() {
 			@Override
@@ -55,8 +55,17 @@ public class BigConcordance extends JList {
 	}
 	
 
-	public BigConcordance() {
-		this(new ConcordanceAsListModel());
+	private Object getStringOfGivenWidth(int widthInChars) {
+		StringBuilder b=new StringBuilder(widthInChars);
+		for (int i=0;i<widthInChars;i++) {
+			b.append("W");
+		}
+		return b.toString();
+	}
+
+
+	public BigConcordance(int widthInChars) {
+		this(new ConcordanceAsListModel(),widthInChars);
 	}
 
 	public void load(File f) {
