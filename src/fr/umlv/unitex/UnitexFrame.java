@@ -1294,13 +1294,25 @@ public class UnitexFrame extends JFrame {
 		JFileChooser fc=Config.getGraphDialogBox(true);
 		fc.setMultiSelectionEnabled(false);
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
+		File file=null;
+		for (;;) {
 		int returnVal = fc.showSaveDialog(this);
 		fc.setMultiSelectionEnabled(true);
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			// we return if the user has clicked on CANCEL
-			return false;
+			if (returnVal != JFileChooser.APPROVE_OPTION) {
+				// we return if the user has clicked on CANCEL
+				return false;
+			}
+			file = fc.getSelectedFile();
+			if (!file.exists()) break;
+			String message=file+"\nalready exists. Do you want to replace it ?";
+			Object[] options = {"Yes", "No"};
+			int n = JOptionPane.showOptionDialog(null, message, "Error",
+					JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
+					options, options[0]);
+			if (n==0) {
+				break;
+			}
 		}
-		File file = fc.getSelectedFile();
 		String name = file.getAbsolutePath();
 		// if the user wants to save the graph as an image 
 		if (name.endsWith(".png") || name.endsWith(".PNG")) {
