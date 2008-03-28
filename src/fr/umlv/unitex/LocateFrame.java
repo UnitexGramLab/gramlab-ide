@@ -292,6 +292,9 @@ public class LocateFrame extends JInternalFrame {
 		if (Config.isCharByCharLanguage()) {
 			locateCmd = locateCmd.charByChar();
 		}
+		if (Config.morphologicalUseOfSpaceAllowed()) {
+			locateCmd = locateCmd.enableMorphologicalUseOfSpace();
+		}
 		commands.addCommand(locateCmd);
 		frame.setVisible(false);
 		savePreviousConcordance();

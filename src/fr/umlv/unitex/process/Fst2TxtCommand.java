@@ -55,8 +55,9 @@ public class Fst2TxtCommand extends CommandBuilder {
       return this;
   }
 
-    public Fst2TxtCommand charByChar() {
-      element("-char_by_char");
+    public Fst2TxtCommand charByChar(boolean morphologicalUseOfSpace) {
+      if (morphologicalUseOfSpace) element("-char_by_char_with_space");
+      else element("-char_by_char");
       return this;
   }
 

@@ -300,7 +300,7 @@ public class PreprocessFrame extends JDialog {
 										Config.getCurrentSnt()).fst2(fst2)
 										.alphabet().mode(true);
 								if (Config.isCharByCharLanguage())
-									cmd = cmd.charByChar();
+									cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
 								commands.addCommand(cmd);
 							}
 						}
@@ -349,7 +349,7 @@ public class PreprocessFrame extends JDialog {
 										Config.getCurrentSnt()).fst2(fst2)
 										.alphabet().mode(false);
 								if (Config.isCharByCharLanguage())
-									cmd = cmd.charByChar();
+									cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
 								commands.addCommand(cmd);
 							}
 						}

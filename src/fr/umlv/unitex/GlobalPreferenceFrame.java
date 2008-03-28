@@ -68,6 +68,8 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	JCheckBox charByCharCheckBox = new JCheckBox(
 			"Analyze this language char by char");
 
+	JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
+	"Enable morphological use of space");
 	
 	
 	ColorRectangle color1=new ColorRectangle();
@@ -206,6 +208,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 					pref.iconBarPosition = Preferences.ICON_BAR_DEFAULT;
 				}
 				pref.charByChar = frame.charByCharCheckBox.isSelected();
+				pref.morphologicalUseOfSpace = frame.morphologicalUseOfSpaceCheckBox.isSelected();
 				if (frame.packageDirectory.getText().equals(""))
 					pref.packagePath = null;
 				else {
@@ -383,9 +386,10 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		concordanceFont.setDisabledTextColor(Color.black);
 
 		page2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JPanel yuyu = new JPanel(new GridLayout(2, 1));
+		JPanel yuyu = new JPanel(new GridLayout(3, 1));
 
 		yuyu.add(charByCharCheckBox);
+		yuyu.add(morphologicalUseOfSpaceCheckBox);
 		yuyu.add(rightToLeftCheckBox);
 		page2.add(yuyu);
 
@@ -786,6 +790,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 			htmlViewer.setText(pref.htmlViewer.getAbsolutePath());
 		}
 		charByCharCheckBox.setSelected(pref.charByChar);
+		morphologicalUseOfSpaceCheckBox.setSelected(pref.morphologicalUseOfSpace);
 		if (pref.packagePath==null) {
 			packageDirectory.setText("");
 		}
