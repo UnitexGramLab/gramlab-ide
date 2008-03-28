@@ -160,6 +160,11 @@ public class Preferences {
 	public boolean charByChar;
 
 	/**
+	 * Indicates if the language must be processed allowing morphological use of spaces.
+	 */
+	public boolean morphologicalUseOfSpace;
+
+	/**
 	 * Indicates if the language must be read from right to left or not
 	 */
 	public boolean rightToLeft;
@@ -189,7 +194,7 @@ public class Preferences {
 
 	public String iconBarPosition;
 
-	/**
+		/**
 	 * Properties for current language
 	 */
 	private static final Properties defaultProperties = new Properties();
@@ -232,6 +237,7 @@ public class Preferences {
 		defaultProperties.setProperty("MAX TEXT FILE SIZE", "2048000");
 		defaultProperties.setProperty("ICON BAR POSITION", "West");
 		defaultProperties.setProperty("CHAR BY CHAR", "false");
+		defaultProperties.setProperty("MORPHOLOGICAL USE OF SPACE", "false");
 		defaultProperties.setProperty("PACKAGE PATH", "");
 	}
 
@@ -305,6 +311,7 @@ public class Preferences {
 		MAX_TEXT_FILE_SIZE=Integer.parseInt(prop.getProperty("MAX TEXT FILE SIZE"));
 		iconBarPosition = prop.getProperty("ICON BAR POSITION");
 		charByChar = Boolean.valueOf(prop.getProperty("CHAR BY CHAR")).booleanValue();
+		morphologicalUseOfSpace = Boolean.valueOf(prop.getProperty("MORPHOLOGICAL USE OF SPACE")).booleanValue();
 		s = prop.getProperty("PACKAGE PATH");
 		packagePath = (s == null || s.equals("")) ? null : new File(s);
 	}
@@ -355,6 +362,7 @@ public class Preferences {
 		prop.setProperty("MAX TEXT FILE SIZE", ""+MAX_TEXT_FILE_SIZE);
 		prop.setProperty("ICON BAR POSITION", iconBarPosition);
 		prop.setProperty("CHAR BY CHAR", ""+charByChar);
+		prop.setProperty("MORPHOLOGICAL USE OF SPACE", ""+morphologicalUseOfSpace);
 		prop.setProperty("PACKAGE PATH", (packagePath==null)?"":packagePath.getAbsolutePath());
 		return prop;
 	}

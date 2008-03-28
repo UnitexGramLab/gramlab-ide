@@ -1389,6 +1389,10 @@ public class Config {
 		return Preferences.pref.charByChar;
 	}
 
+	public static boolean morphologicalUseOfSpaceAllowed() {
+		return Preferences.pref.morphologicalUseOfSpace;
+	}
+
 	public static boolean isCharByCharLanguage(String language) {
 		File config=new File(new File(Config.getUserDir(),language),"Config");
 		if (!config.exists()) {
@@ -1396,6 +1400,17 @@ public class Config {
 		}
 		Properties prop=Preferences.loadProperties(config,null);
 		String s=prop.getProperty("CHAR BY CHAR");
+		if (s==null) return false;
+		return Boolean.parseBoolean(s);
+	}
+
+	public static boolean morphologicalUseOfSpaceAllowed(String language) {
+		File config=new File(new File(Config.getUserDir(),language),"Config");
+		if (!config.exists()) {
+			return false;
+		}
+		Properties prop=Preferences.loadProperties(config,null);
+		String s=prop.getProperty("MORPHOLOGICAL USE OF SPACE");
 		if (s==null) return false;
 		return Boolean.parseBoolean(s);
 	}
@@ -1450,5 +1465,6 @@ public class Config {
 		}
 		return f;
 	}
+
 
 }
