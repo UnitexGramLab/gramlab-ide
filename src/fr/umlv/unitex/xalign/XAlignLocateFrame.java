@@ -278,6 +278,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		if (Config.morphologicalUseOfSpaceAllowed(language)) {
 			locateCmd = locateCmd.enableMorphologicalUseOfSpace();
 		}
+		locateCmd=locateCmd.morphologicalDic(Config.morphologicalDic(language));
 		commands.addCommand(locateCmd);
 		String foo=Util.getFileNameWithoutExtension(snt)+"_snt";
 		File indFile=new File(foo,"concord.ind");

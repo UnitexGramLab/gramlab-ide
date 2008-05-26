@@ -23,7 +23,7 @@ package fr.umlv.unitex;
 
 import java.awt.*;
 import java.io.*;
-import java.util.Properties;
+import java.util.*;
 
 
 /**
@@ -79,9 +79,14 @@ public class Preferences {
 	public Color packageColor;
 	
 	/**
-	 * Color used to context boxes
+	 * Color used to draw context boxes
 	 */
 	public Color contextColor;
+	
+	/**
+	 * Color used to draw morphological mode boxes
+	 */
+	public Color morphologicalModeColor;
 	
 	/**
 	 * Indicates if the date must be shown on graphs 
@@ -153,6 +158,11 @@ public class Preferences {
 	 * concordances will be shown in a Unitex frame  
 	 */
 	public File htmlViewer;
+
+	/**
+	 * .bin dictionaries to be used in Locate's morphological mode
+	 */
+	public ArrayList<File> morphologicalDic;
 
 	/**
 	 * Indicates if the language must be processed char by char or not
@@ -230,10 +240,13 @@ public class Preferences {
 				+ (new Color(220, 220, 0)).getRGB());//16711680");
 		defaultProperties.setProperty("CONTEXT NODES COLOR", ""
 				+ Color.GREEN.getRGB());
+		defaultProperties.setProperty("MORPHOLOGICAL NODES COLOR", ""
+				+ new Color(0xC4,0x4F,0xD0).getRGB());
 		defaultProperties.setProperty("SELECTED NODES COLOR", ""
 				+ Color.BLUE.getRGB());//255");
 		defaultProperties.setProperty("ANTIALIASING", "false");
 		defaultProperties.setProperty("HTML VIEWER", "");
+		defaultProperties.setProperty("MORPHOLOGICAL DICTIONARY", "");
 		defaultProperties.setProperty("MAX TEXT FILE SIZE", "2048000");
 		defaultProperties.setProperty("ICON BAR POSITION", "West");
 		defaultProperties.setProperty("CHAR BY CHAR", "false");
@@ -297,6 +310,8 @@ public class Preferences {
 				.getProperty("PACKAGE NODES COLOR")));
 		contextColor = new Color(Integer.parseInt(prop
 				.getProperty("CONTEXT NODES COLOR")));
+		morphologicalModeColor = new Color(Integer.parseInt(prop
+				.getProperty("MORPHOLOGICAL NODES COLOR")));
 		date = Boolean.valueOf(prop.getProperty("DATE")).booleanValue();
 		filename = Boolean.valueOf(prop.getProperty("FILE NAME")).booleanValue();
 		pathname = Boolean.valueOf(prop.getProperty("PATH NAME")).booleanValue();
@@ -308,12 +323,23 @@ public class Preferences {
 				.getProperty("CONCORDANCE FONT HTML SIZE"));
 		String s = prop.getProperty("HTML VIEWER");
 		htmlViewer = (s == null || s.equals("")) ? null : new File(s);
+		morphologicalDic = tokenizeMorphologicalDicList(prop.getProperty("MORPHOLOGICAL DICTIONARY"));
 		MAX_TEXT_FILE_SIZE=Integer.parseInt(prop.getProperty("MAX TEXT FILE SIZE"));
 		iconBarPosition = prop.getProperty("ICON BAR POSITION");
 		charByChar = Boolean.valueOf(prop.getProperty("CHAR BY CHAR")).booleanValue();
 		morphologicalUseOfSpace = Boolean.valueOf(prop.getProperty("MORPHOLOGICAL USE OF SPACE")).booleanValue();
 		s = prop.getProperty("PACKAGE PATH");
 		packagePath = (s == null || s.equals("")) ? null : new File(s);
+	}
+
+	public static ArrayList<File> tokenizeMorphologicalDicList(String s) {
+		if (s==null || s.equals("")) return null;
+		ArrayList<File> list=new ArrayList<File>();
+		StringTokenizer tokenizer=new StringTokenizer(s,";");
+		while (tokenizer.hasMoreTokens()) {
+			list.add(new File(tokenizer.nextToken()));
+		}
+		return list;
 	}
 
 	private void setPreferences(Preferences p) {
@@ -357,8 +383,10 @@ public class Preferences {
 		prop.setProperty("SELECTED NODES COLOR", ""+selectedColor.getRGB());
 		prop.setProperty("PACKAGE NODES COLOR", ""+packageColor.getRGB());
 		prop.setProperty("CONTEXT NODES COLOR", ""+contextColor.getRGB());
+		prop.setProperty("MORPHOLOGICAL NODES COLOR", ""+morphologicalModeColor.getRGB());
 		prop.setProperty("ANTIALIASING", ""+antialiasing);
 		prop.setProperty("HTML VIEWER", (htmlViewer==null)?"":htmlViewer.getAbsolutePath());
+		prop.setProperty("MORPHOLOGICAL DICTIONARY",getMorphologicalDicListAsString(morphologicalDic));
 		prop.setProperty("MAX TEXT FILE SIZE", ""+MAX_TEXT_FILE_SIZE);
 		prop.setProperty("ICON BAR POSITION", iconBarPosition);
 		prop.setProperty("CHAR BY CHAR", ""+charByChar);
@@ -367,6 +395,17 @@ public class Preferences {
 		return prop;
 	}
 
+
+	public static String getMorphologicalDicListAsString(ArrayList<File> list) {
+		if (list==null || list.size()==0) {
+			return "";
+		}
+		String s=list.get(0).getAbsolutePath();
+		for (int i=1;i<list.size();i++) {
+			s=s+";"+list.get(i).getAbsolutePath();
+		}
+		return s;
+	}
 
 	/**
 	 *  

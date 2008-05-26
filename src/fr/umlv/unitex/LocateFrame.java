@@ -295,6 +295,7 @@ public class LocateFrame extends JInternalFrame {
 		if (Config.morphologicalUseOfSpaceAllowed()) {
 			locateCmd = locateCmd.enableMorphologicalUseOfSpace();
 		}
+		locateCmd=locateCmd.morphologicalDic(Preferences.pref.morphologicalDic);
 		commands.addCommand(locateCmd);
 		frame.setVisible(false);
 		savePreviousConcordance();

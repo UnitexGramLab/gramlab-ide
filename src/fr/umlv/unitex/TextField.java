@@ -568,7 +568,7 @@ public class TextField extends JTextField {
    public boolean isValidGraphBoxContent(String s) {
       if (s.equals(""))
          return true;
-      char ligne[]= new char[10000];
+      char ligne[];
       String tmp= "";
       int i, L;
 
@@ -612,6 +612,7 @@ public class TextField extends JTextField {
             }
          return true;
       }
+      if ("$<".equals(s) || "$>".equals(s) || "$*".equals(s)) return true;
       if (tokenize(tmp))
          return true;
       return false;
