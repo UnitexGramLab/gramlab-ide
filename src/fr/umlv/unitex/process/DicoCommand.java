@@ -46,6 +46,13 @@ public class DicoCommand extends CommandBuilder {
 		return this;
 	}
 
+	public DicoCommand morphologicalDic(ArrayList<File> dicList) {
+    	if (dicList!=null) {
+    		protectElement("-md="+Preferences.getMorphologicalDicListAsString(dicList));
+    	}
+        return this;
+    }
+
 	public DicoCommand dictionary(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;

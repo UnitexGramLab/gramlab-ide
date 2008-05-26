@@ -245,7 +245,8 @@ public class XAlignFrame {
 						.alphabet(alphabet);
 					commands.addCommand(tokenize);
 					DicoCommand dico=new DicoCommand()
-						.snt(snt).alphabet(alphabet);
+						.snt(snt).alphabet(alphabet)
+						.morphologicalDic(Config.morphologicalDic(language));
 					ArrayList<File> param = PreprocessFrame.getDefaultDicList(language);
 					if (param != null && param.size() > 0) {
 						dico = dico.dictionaryList(param);

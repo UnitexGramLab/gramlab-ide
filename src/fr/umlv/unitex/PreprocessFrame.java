@@ -375,7 +375,8 @@ public class PreprocessFrame extends JDialog {
 						if (applyDicCheck.isSelected()) {
 							dicoCmd = new DicoCommand().snt(
 									Config.getCurrentSnt()).alphabet(
-									Config.getAlphabet());
+									Config.getAlphabet())
+									.morphologicalDic(Preferences.pref.morphologicalDic);
 							ArrayList<File> param = getDefaultDicList();
 							if (param != null && param.size() > 0) {
 								dicoCmd = dicoCmd.dictionaryList(param);

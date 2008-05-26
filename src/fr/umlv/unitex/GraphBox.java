@@ -245,7 +245,7 @@ public class GraphBox extends GenericGraphBox {
 		}
 		variable = false;
 		if (content.equals("$[") || content.equals("$![")
-			|| content.equals("$]")) {
+			|| content.equals("$]") || content.equals("$*")) {
 			////////////////////////////////////////////
 			// case of context marks ($[ or $![) :
 			// ab $[ cd $]  => ab followed by cd
@@ -266,6 +266,25 @@ public class GraphBox extends GenericGraphBox {
 			return;
 		}
 		contextMark=false;
+		if (content.equals("$<") || content.equals("$>")) {
+				////////////////////////////////////////////
+				// case of morphological mode marks ($< and $>)
+				////////////////////////////////////////////
+				morphologicalModeMark = true;
+				lines.clear();
+				greyed.clear();
+				String sub=content.substring(1);
+				lines.add(sub);
+				greyed.add(new Boolean(false));
+				transduction = "";
+				n_lignes = 1;
+				Height = get_h_variable_ligne() + 3;
+				Width = maxContextMarkLineWidth(sub) + 5;
+				Y1 = Y - Height / 2;
+				X_out = x + Width + 2;
+				return;
+			}
+		morphologicalModeMark=false;
 		while ((i != L) && (test_transduction(ligne, i) == 0))
 			tmp = tmp.concat(String.valueOf(ligne[i++]));
 		transduction = "";

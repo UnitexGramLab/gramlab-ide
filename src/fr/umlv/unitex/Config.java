@@ -1415,6 +1415,17 @@ public class Config {
 		return Boolean.parseBoolean(s);
 	}
 
+	public static ArrayList<File> morphologicalDic(String language) {
+		File config=new File(new File(Config.getUserDir(),language),"Config");
+		if (!config.exists()) {
+			return null;
+		}
+		Properties prop=Preferences.loadProperties(config,null);
+		String s=prop.getProperty("MORPHOLOGICAL DICTIONARY");
+		if (s==null) return null;
+		return Preferences.tokenizeMorphologicalDicList(s);
+	}
+
 	public static boolean isRightToLeftLanguage() {
 		return Preferences.pref.rightToLeft;
 	}

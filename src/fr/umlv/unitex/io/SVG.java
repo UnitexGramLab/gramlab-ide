@@ -237,6 +237,15 @@ public class SVG {
 	}
 
 
+	private void drawMorphologicalModeMark(GenericGraphBox g) throws IOException {
+		Color color=preferences.morphologicalModeColor;
+		graphics.setFont(GenericGraphBox.variableFont);
+		drawText(g.lines.get(0),g.X1+5,
+				g.Y1-graphics.getFontMetrics().getDescent() + graphics.getFontMetrics().getHeight(),
+				color,GenericGraphBox.variableFont);
+	}
+
+
 	private void drawContextMark(GenericGraphBox g) throws IOException {
 		Color color=preferences.contextColor;
 		graphics.setFont(GenericGraphBox.variableFont);
