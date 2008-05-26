@@ -879,8 +879,10 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		p.add(p_);
 		JPanel p2=new JPanel(new BorderLayout());
 		morphoDicListModel.clear();
-		for (File f:Preferences.pref.morphologicalDic) {
-			morphoDicListModel.addElement(f);
+		if (Preferences.pref.morphologicalDic!=null) {
+			for (File f:Preferences.pref.morphologicalDic) {
+				morphoDicListModel.addElement(f);
+			}
 		}
 		final JList list=new JList(morphoDicListModel);
 		list.setCellRenderer(new DefaultListCellRenderer() {
