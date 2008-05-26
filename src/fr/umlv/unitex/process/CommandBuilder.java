@@ -70,8 +70,8 @@ public abstract class CommandBuilder {
 
     public String getCommandLine() {
       String res="";
-      for (Iterator i=list.iterator();i.hasNext();) {
-        res=res+(String)(i.next())+" "; 
+      for (Iterator<String> i=list.iterator();i.hasNext();) {
+        res=res+i.next()+" "; 
       }
       return res;
    }

@@ -210,12 +210,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param m the graph box selection
 	 */
 	public void pasteSelection(MultipleSelection m) {
-		ArrayList v = m.elem;
+		ArrayList<GraphBoxInfo> v = m.elem;
 		GenericGraphBox g;
 		GraphBoxInfo tmp;
 		unSelectAllBoxes();
 		for (int i = 0; i < v.size(); i++) {
-			tmp = (GraphBoxInfo) v.get(i);
+			tmp = v.get(i);
 			g = createBox(tmp.X + 20 * m.n, tmp.Y + 20 * m.n);
 			g.setContent(tmp.content);
 			g.selected = true;
@@ -223,11 +223,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 		for (int i = 0; i < selectedBoxes.size(); i++) {
 			g = selectedBoxes.get(i);
-			tmp = tmp = (GraphBoxInfo) v.get(i);
-			Vector vec = tmp.reachableBoxes;
+			tmp = v.get(i);
+			Vector<Integer> vec = tmp.reachableBoxes;
 			int taille = vec.size();
 			for (int j = 0; j < taille; j++) {
-				Integer n = (Integer) vec.get(j);
+				Integer n = vec.get(j);
 				g.addTransitionTo(selectedBoxes.get(n.intValue()));
 			}
 		}
@@ -433,7 +433,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	public void selectAllBoxes() {
 		unSelectAllBoxes();
-		int L = L = graphBoxes.size();
+		int L = graphBoxes.size();
 		for (int i = 0; i < L; i++) {
 			GenericGraphBox g = graphBoxes.get(i);
 			g.selected = true;

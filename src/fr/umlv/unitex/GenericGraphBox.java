@@ -1063,7 +1063,7 @@ public abstract class GenericGraphBox {
 		setContent(content);
 	}
 
-	public ArrayList getTransitions() {
+	public ArrayList<GenericGraphBox> getTransitions() {
 		return transitions;
 	}
 
@@ -1113,10 +1113,10 @@ public abstract class GenericGraphBox {
 
 	public boolean hasTransitionToItself() {
 		//	self transition checking
-		Iterator it = getTransitions().iterator();
+		Iterator<GenericGraphBox> it = getTransitions().iterator();
 		GenericGraphBox g;
 		while (it.hasNext()) {
-			g = (GenericGraphBox) it.next();
+			g = it.next();
 			if (g == this)
 				return true;
 		}

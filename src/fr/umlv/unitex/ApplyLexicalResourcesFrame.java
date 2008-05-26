@@ -216,7 +216,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	}
 
 	
-	private void setContent(JList list, Vector dics) {
+	private void setContent(JList list, Vector<String> dics) {
 		DefaultListModel model=new DefaultListModel();
 		int size=dics.size();
 		for (int i=0;i<size;i++) {
@@ -678,14 +678,14 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            the <code>Vector</code> containing a list of the file name
 	 *            to be selected.
 	 */
-	public void setDefaultSelection(JList list, Vector v) {
+	public void setDefaultSelection(JList list, Vector<String> v) {
 		int[] indices = new int[100];
 		int i = 0;
 		if (v == null)
 			return;
 		ListModel model = list.getModel();
 		while (!v.isEmpty()) {
-			String s = (String) (v.remove(0));
+			String s = v.remove(0);
 			int index = getElementIndex(model, s);
 			if (index != -1) {
 				indices[i++] = index;

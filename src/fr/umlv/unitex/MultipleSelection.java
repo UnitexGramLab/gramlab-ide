@@ -38,7 +38,7 @@ public class MultipleSelection {
     * Creates a new <code>MultipleSelection</code> from a <code>GraphBox</code> vector 
     * @param v
     */
-   public MultipleSelection(ArrayList v,boolean graphBoxes) {
+   public MultipleSelection(ArrayList<GenericGraphBox> v,boolean graphBoxes) {
       if (graphBoxes) {
         multipleSelectionGraphBoxes(v);
       } else {
@@ -47,7 +47,7 @@ public class MultipleSelection {
       }
    
    
-   public void multipleSelectionGraphBoxes(ArrayList v) {
+   public void multipleSelectionGraphBoxes(ArrayList<GenericGraphBox> v) {
       int L= v.size();
       elem= new ArrayList<GraphBoxInfo>();
       for (int i= 0; i < L; i++) {
@@ -66,7 +66,7 @@ public class MultipleSelection {
          // here we create relative transitions
          GraphBox g= (GraphBox)v.get(i);
          GraphBoxInfo gbi= elem.get(i);
-         ArrayList temp= g.transitions;
+         ArrayList<GenericGraphBox> temp= g.transitions;
          int k= temp.size();
          for (int j= 0; j < k; j++) {
             GraphBox dest= (GraphBox)temp.get(j);
@@ -88,7 +88,7 @@ public class MultipleSelection {
     * @param v just indicates that the objects are <code>FstGraphBox</code>. The value of this
     *        parameter is not taken into account 
     */
-   public void multipleSelectionFstGraphBoxes(ArrayList v) {
+   public void multipleSelectionFstGraphBoxes(ArrayList<GenericGraphBox> v) {
       int L= v.size();
       elem= new ArrayList<GraphBoxInfo>();
       for (int i= 0; i < L; i++) {
@@ -107,7 +107,7 @@ public class MultipleSelection {
          // here we create relative transitions
          FstGraphBox g= (FstGraphBox)v.get(i);
          GraphBoxInfo gbi= elem.get(i);
-         ArrayList temp= g.transitions;
+         ArrayList<GenericGraphBox> temp= g.transitions;
          int k= temp.size();
          for (int j= 0; j < k; j++) {
             FstGraphBox dest= (FstGraphBox)temp.get(j);

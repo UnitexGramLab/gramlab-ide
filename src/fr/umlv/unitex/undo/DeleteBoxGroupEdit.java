@@ -79,13 +79,13 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 	public void undo() {
 		super.undo();
 		GenericGraphBox g,g2;
-		ArrayList transitionsToBoxe;
-		ArrayList transitionsFromBoxe;
-		Set keys = selectedBoxesAndTransitionsTo.keySet();
+		ArrayList<GenericGraphBox> transitionsToBoxe;
+		ArrayList<GenericGraphBox> transitionsFromBoxe;
+		Set<GenericGraphBox> keys = selectedBoxesAndTransitionsTo.keySet();
 		
 		// for each selected boxes before delete
-		for( Iterator it = keys.iterator(); it.hasNext();){
-			g = (GenericGraphBox)it.next();
+		for(Iterator<GenericGraphBox> it = keys.iterator(); it.hasNext();){
+			g = it.next();
 			g.setTransitions(new ArrayList<GenericGraphBox>());
 			transitionsToBoxe = selectedBoxesAndTransitionsTo.get(g);
 			transitionsFromBoxe = selectedBoxesAndTransitionsFrom.get(g);
@@ -100,15 +100,15 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 			if( g.hasTransitionToItself() )
 			 g.addTransitionTo(g);
 			 
-			for (Iterator it2 = transitionsToBoxe.iterator(); it2.hasNext();) {
-			  g2 = (GenericGraphBox) it2.next();
+			for (Iterator<GenericGraphBox> it2 = transitionsToBoxe.iterator(); it2.hasNext();) {
+			  g2 = it2.next();
 			  if( !selectedBoxes.contains(g2) )
 			  g2.onlyAddTransitionTo(g);
 			}
 			
 			// add transitions from each boxe
-			for (Iterator it2 = transitionsFromBoxe.iterator(); it2.hasNext();) {
-			  g2 = (GenericGraphBox) it2.next();
+			for (Iterator<GenericGraphBox> it2 = transitionsFromBoxe.iterator(); it2.hasNext();) {
+			  g2 = it2.next();
 			  g.onlyAddTransitionTo(g2);
 			}
 			
