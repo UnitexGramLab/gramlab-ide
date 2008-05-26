@@ -66,6 +66,11 @@ public abstract class GenericGraphBox {
 	public boolean contextMark;
 
 	/**
+	 * Indicates if the box contains a morphological mode tag 
+	 */
+	public boolean morphologicalModeMark;
+
+	/**
 	 * Indicates if the box is currently selected
 	 */
 	protected boolean selected;
@@ -779,7 +784,22 @@ public abstract class GenericGraphBox {
 	private void drawContextMarkComment(Graphics2D g) {
 		drawContextMark(g);
 	}
-	
+
+	private void drawMorphologicalModeMark(Graphics2D g) {
+		g.setColor(parentGraphicalZone.pref.morphologicalModeColor);
+		g.setFont(variableFont);
+		g.drawString(lines.get(0), X1 + 5, Y1
+				- g.getFontMetrics().getDescent() + get_h_variable_ligne());
+	}
+
+	private void drawMorphologicalModeMarkSelected(Graphics2D g) {
+		drawVariableSelected(g);
+	}
+
+	private void drawMorphologicalModeMarkComment(Graphics2D g) {
+		drawMorphologicalModeMark(g);
+	}
+
 	private void drawOther(Graphics2D g) {
 		int i;
 		Boolean is_greyed;
@@ -790,6 +810,10 @@ public abstract class GenericGraphBox {
 		}
 		if (contextMark) {
 			drawContextMark(g);
+			return;
+		}
+		if (morphologicalModeMark) {
+			drawMorphologicalModeMark(g);
 			return;
 		}
 		g.setColor(parentGraphicalZone.pref.foregroundColor);
@@ -857,6 +881,10 @@ public abstract class GenericGraphBox {
 		}
 		if (contextMark) {
 			drawContextMarkSelected(g);
+			return;
+		}
+		if (morphologicalModeMark) {
+			drawMorphologicalModeMarkSelected(g);
 			return;
 		}
 		g.setColor(parentGraphicalZone.pref.foregroundColor);

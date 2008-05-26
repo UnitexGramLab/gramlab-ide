@@ -474,7 +474,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		}
 		DicoCommand cmd = new DicoCommand().snt(
 				Config.getCurrentSnt()).alphabet(
-						Config.getAlphabet());
+						Config.getAlphabet())
+						.morphologicalDic(Preferences.pref.morphologicalDic);
 		if (systemSelection != null	&& systemSelection.length != 0) {
 			for (int i = 0; i < systemSelection.length; i++) {
 				cmd = cmd.systemDictionary((String) systemSelection[i]);

@@ -51,6 +51,8 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 
 	JTextField htmlViewer = new JTextField("");
 
+	JTextField morphologicalDicViewer = new JTextField("");
+
 	JCheckBox antialiasingCheckBox = new JCheckBox(
 			"Enable antialising for rendering graphs", false);
 
@@ -96,11 +98,13 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 
 	static Preferences pref;
 
+	DefaultListModel morphoDicListModel=new DefaultListModel();
+	
 	private GlobalPreferenceFrame() {
 		super("", false, true, false, false);
 		setContentPane(constructPanel());
 		pack();
-		setBounds(200, 200, 400, 450);
+		//setBounds(200, 200, 400, 450);
 		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
@@ -161,8 +165,9 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		JPanel upPanel = new JPanel(new BorderLayout());
 		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.addTab("Directories", constructPage1());
-		tabbedPane.addTab("Text Presentation", constructPage2());
+		tabbedPane.addTab("Language & Presentation", constructPage2());
 		tabbedPane.addTab("Graph Presentation", constructPage3());
+		tabbedPane.addTab("Morphological dictionaries", constructPage4());
 		upPanel.add(tabbedPane);
 		return upPanel;
 	}
@@ -189,6 +194,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 					pref.htmlViewer = null;
 				else
 					pref.htmlViewer = new File(frame.htmlViewer.getText());
+				pref.morphologicalDic=getFileList(frame.morphoDicListModel);
 				pref.date = frame.dateCheckBox.isSelected();
 				pref.filename = frame.filenameCheckBox.isSelected();
 				pref.pathname = frame.pathnameCheckBox.isSelected();
@@ -284,6 +290,14 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	}
 
 	
+	protected ArrayList<File> getFileList(DefaultListModel model) {
+		ArrayList<File> list=new ArrayList<File>();
+		for (int i=0;i<model.size();i++) {
+			list.add((File)model.get(i));
+		}
+		return list;
+	}
+
 	private JComponent constructPage1() {
 		JPanel page1 = new JPanel(new GridBagLayout());
 		page1.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -378,7 +392,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	}
 
 	private JPanel constructPage2() {
-		JPanel page2 = new JPanel(new GridLayout(5, 1));
+		JPanel page2 = new JPanel(new GridLayout(5,1));
 
 		textFont.setEnabled(false);
 		concordanceFont.setEnabled(false);
@@ -431,10 +445,10 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		tmp_.add(tmp2_);
 		page2.add(tmp_);
 
-		JPanel tmp__ = new JPanel();
-		tmp__.setPreferredSize(new Dimension(180, 60));
-		tmp__.setLayout(new GridLayout(2, 1));
-		tmp__.add(new JLabel("Html Viewer:"));
+		JPanel htmlViewerPanel = new JPanel();
+		htmlViewerPanel.setPreferredSize(new Dimension(180, 60));
+		htmlViewerPanel.setLayout(new GridLayout(2, 1));
+		htmlViewerPanel.add(new JLabel("Html Viewer:"));
 		JPanel tmp3_ = new JPanel();
 		tmp3_.setLayout(new BorderLayout());
 		Action html = new AbstractAction("Set...") {
@@ -457,12 +471,39 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		JButton setHtmlViewer = new JButton(html);
 		tmp3_.add(htmlViewer, BorderLayout.CENTER);
 		tmp3_.add(setHtmlViewer, BorderLayout.EAST);
-		tmp__.add(tmp3_);
-		page2.add(tmp__);
-		JPanel tmp4 = new JPanel();
-		tmp4.setPreferredSize(new Dimension(180, 60));
-		tmp4.setLayout(new GridLayout(2, 1));
-		tmp4.add(new JLabel("Maximum Text File Size:"));
+		htmlViewerPanel.add(tmp3_);
+		page2.add(htmlViewerPanel);
+		
+		JPanel morphologicalDicPanel = new JPanel();
+		morphologicalDicPanel.setPreferredSize(new Dimension(180, 60));
+		morphologicalDicPanel.setLayout(new GridLayout(2, 1));
+		morphologicalDicPanel.add(new JLabel(".bin dictionary to use in Locate's morphological mode:"));
+		JPanel tmp4_ = new JPanel();
+		tmp4_.setLayout(new BorderLayout());
+		Action morphoDic = new AbstractAction("Set...") {
+
+			public void actionPerformed(ActionEvent arg0) {
+				SwingUtilities.invokeLater(new Runnable() {
+
+					public void run() {
+						JFileChooser f = new JFileChooser();
+						f.addChoosableFileFilter(new PersonalFileFilter("bin","Binary dictionary"));
+						f.setDialogTitle("Choose your morphological dictionary");
+						f.setDialogType(JFileChooser.OPEN_DIALOG);
+						if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+							return;
+						morphologicalDicViewer.setText(f.getSelectedFile()
+								.getAbsolutePath());
+					}
+				});
+			}
+		};
+		JButton setMorphologicalDicPanelViewer = new JButton(morphoDic);
+		tmp4_.add(morphologicalDicViewer, BorderLayout.CENTER);
+		tmp4_.add(setMorphologicalDicPanelViewer, BorderLayout.EAST);
+		morphologicalDicPanel.add(tmp4_);
+		page2.add(morphologicalDicPanel);
+
 		return page2;
 	}
 
@@ -828,4 +869,80 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		concordanceFontListeners.remove(listener);
 	}
 
+	private JPanel constructPage4() {
+		JPanel p=new JPanel(null);
+		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+		p.setBorder(new EmptyBorder(5,5,5,5));
+		JPanel p_=new JPanel(new GridLayout(2,1));
+		p_.add(new JLabel("Choose the .bin dictionaries to use in Locate's morphological"));
+		p_.add(new JLabel("mode:"));
+		p.add(p_);
+		JPanel p2=new JPanel(new BorderLayout());
+		morphoDicListModel.clear();
+		for (File f:Preferences.pref.morphologicalDic) {
+			morphoDicListModel.addElement(f);
+		}
+		final JList list=new JList(morphoDicListModel);
+		list.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList l, Object value, int index, boolean isSelected1, boolean cellHasFocus) {
+				File f=(File)value;
+				return super.getListCellRendererComponent(l,f.getAbsolutePath(), index, isSelected1,
+						cellHasFocus);
+			}
+		});
+		JScrollPane scroll=new JScrollPane(list,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		p2.add(scroll);
+
+		JPanel down=new JPanel(new BorderLayout());
+		JPanel tmp = new JPanel(new GridLayout(1, 2));
+		tmp.setBorder(new EmptyBorder(2, 2, 2, 2));
+		JPanel tmp1 = new JPanel();
+		JPanel tmp2 = new JPanel();
+		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
+		tmp1.setLayout(new BorderLayout());
+		tmp2.setLayout(new BorderLayout());
+		Action addAction = new AbstractAction("Add") {
+			public void actionPerformed(ActionEvent arg0) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						JFileChooser f = new JFileChooser();
+						f.setMultiSelectionEnabled(true);
+						f.addChoosableFileFilter(new PersonalFileFilter("bin","Binary dictionary"));
+						f.setDialogTitle("Choose your morphological dictionaries");
+						f.setDialogType(JFileChooser.OPEN_DIALOG);
+						if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+							return;
+						}
+						File[] files=f.getSelectedFiles();
+						if (files==null) return;
+						for (int i=0;i<files.length;i++) {
+							morphoDicListModel.addElement(files[i]);
+						}
+					}
+				});
+			}
+		};
+		Action removeAction = new AbstractAction("Remove") {
+			public void actionPerformed(ActionEvent arg0) {
+				int[] indices=list.getSelectedIndices();
+				for (int i=indices.length-1;i>=0;i--) {
+					morphoDicListModel.remove(indices[i]);
+				}
+			}
+		};
+		JButton addButton=new JButton(addAction);
+		JButton removeButton=new JButton(removeAction);
+		tmp1.add(addButton);
+		tmp2.add(removeButton);
+		tmp.add(tmp1);
+		tmp.add(tmp2);
+		down.add(tmp,BorderLayout.EAST);
+		p2.add(down,BorderLayout.SOUTH);
+		p.add(p2);
+		return p;
+	}
+	
+	
 }

@@ -22,6 +22,7 @@
 package fr.umlv.unitex.process;
 
 import java.io.*;
+import java.util.*;
 
 import fr.umlv.unitex.*;
 
@@ -110,6 +111,13 @@ public class LocateCommand extends CommandBuilder {
 
     public LocateCommand charByChar() {
         element("-thai");
+        return this;
+    }
+
+    public LocateCommand morphologicalDic(ArrayList<File> dicList) {
+    	if (dicList!=null) {
+    		protectElement("-md="+Preferences.getMorphologicalDicListAsString(dicList));
+    	}
         return this;
     }
 
