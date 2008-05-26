@@ -75,7 +75,8 @@ public class NumericTextField extends JTextField {
     * Creates and returns a  <code>Document</code> designed to accept only digits.
     * @return the document
     */
-   public Document createDefaultModel() {
+   @SuppressWarnings("synthetic-access")
+public Document createDefaultModel() {
       return new NumericTextDocument();
    }
 

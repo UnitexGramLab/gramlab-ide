@@ -97,16 +97,14 @@ public class SVG {
 					drawLine(x, y, x + 1, y,preferences.foregroundColor);
 		}
 		// we draw the transitions
-		ArrayList graphBoxes=graphicalZone.graphBoxes;
+		ArrayList<GenericGraphBox> graphBoxes=graphicalZone.graphBoxes;
 		int L = graphBoxes.size();
 		for (int i = 0; i < L; i++) {
-			GenericGraphBox g = (GenericGraphBox) graphBoxes.get(i);
-			drawTransitions(g);
+			drawTransitions(graphBoxes.get(i));
 		}
 		// then we draw the boxes
 		for (int i = 0; i < L; i++) {
-			GenericGraphBox g = (GenericGraphBox) graphBoxes.get(i);
-			drawBox(g);
+			drawBox(graphBoxes.get(i));
 		}
 
 		// finally, we close the document
@@ -280,11 +278,10 @@ public class SVG {
 
 
 	private void drawTransitions(GenericGraphBox g) throws IOException {
-		ArrayList transitions=g.getTransitions();
+		ArrayList<GenericGraphBox> transitions=g.getTransitions();
 		int L = transitions.size();
 		for (int i = 0; i < L; i++) {
-			GenericGraphBox g2 = (GenericGraphBox) transitions.get(i);
-			drawTransition(g,g2);
+			drawTransition(g,transitions.get(i));
 		}
 	}
 
