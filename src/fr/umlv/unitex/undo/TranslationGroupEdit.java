@@ -34,7 +34,7 @@ import fr.umlv.unitex.*;
 public class TranslationGroupEdit extends AbstractUndoableEdit {
 
 	/** boxes selected in the graph */
-	private ArrayList selectedBoxes;	
+	private ArrayList<GenericGraphBox> selectedBoxes;	
 	/** length of X, Y shift in pixels */
 	private int x, y;
 
@@ -43,8 +43,9 @@ public class TranslationGroupEdit extends AbstractUndoableEdit {
 	 * @param x length of X shift in pixels
 	 * @param y length of Y shift in pixels
 	 */
-	public TranslationGroupEdit(ArrayList selectedBoxes, int x, int y) {
-		this.selectedBoxes = (ArrayList) selectedBoxes.clone();
+	@SuppressWarnings("unchecked")
+	public TranslationGroupEdit(ArrayList<GenericGraphBox> selectedBoxes, int x, int y) {
+		this.selectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
 		this.x = x;
 		this.y = y;
 
@@ -55,7 +56,7 @@ public class TranslationGroupEdit extends AbstractUndoableEdit {
 		GenericGraphBox g;
 		int L = selectedBoxes.size();
 		for (int i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			g.translate(-x, -y);
 		}
 
@@ -66,7 +67,7 @@ public class TranslationGroupEdit extends AbstractUndoableEdit {
 		GenericGraphBox g;
 		int L = selectedBoxes.size();
 		for (int i = 0; i < L; i++) {
-			g = (GenericGraphBox) selectedBoxes.get(i);
+			g = selectedBoxes.get(i);
 			g.translate(x, y);
 		}
 

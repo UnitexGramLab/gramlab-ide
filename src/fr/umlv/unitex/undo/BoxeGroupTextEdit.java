@@ -69,11 +69,11 @@ public class BoxeGroupTextEdit extends AbstractUndoableEdit {
 
 	public void undo(){
 		super.undo();
-		Set keys = selectedBoxesAndOldString.keySet();
+		Set<GenericGraphBox> keys = selectedBoxesAndOldString.keySet();
 		
 		// add old text in each boxes
-		for(Iterator it = keys.iterator() ; it.hasNext() ; ){
-			GenericGraphBox g = (GenericGraphBox)it.next();
+		for(Iterator<GenericGraphBox> it = keys.iterator() ; it.hasNext() ; ){
+			GenericGraphBox g = it.next();
 			String text = selectedBoxesAndOldString.get(g);
 			g.setContent(text);
 			g.setSelected(true);
@@ -87,8 +87,8 @@ public class BoxeGroupTextEdit extends AbstractUndoableEdit {
 		super.redo();
 		
 		// add old text in all boxes
-		for( Iterator it = oldSelectedBoxes.iterator(); it.hasNext(); ){
-			GenericGraphBox g = (GenericGraphBox)it.next();
+		for(Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext(); ){
+			GenericGraphBox g = it.next();
 			g.setContent(remplacementString);
 			g.setSelected(true);
 			selectedBoxes.add(g);

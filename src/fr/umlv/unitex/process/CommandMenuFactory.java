@@ -33,6 +33,7 @@ import javax.swing.JMenuItem;
  */
 public class CommandMenuFactory {
     
+	@SuppressWarnings("unchecked")
 	public static JMenu makeCommandMenu() {
     Class[] commands={CheckDicCommand.class
     		,CollocCommand.class
@@ -88,6 +89,7 @@ public class CommandMenuFactory {
 		return menu;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static JMenuItem makeItem(final Class c) {
 		JMenuItem item = new JMenuItem(getCommandName(c));
 		item.addActionListener(new ActionListener() {
@@ -105,7 +107,8 @@ public class CommandMenuFactory {
 		return item;
 	}
     
-  private static String getCommandName(Class commandClass) {
+  @SuppressWarnings("unchecked")
+private static String getCommandName(Class commandClass) {
     String name=commandClass.getName();
     int index=name.lastIndexOf('.');
     // "Command".length()==7

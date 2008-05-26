@@ -68,9 +68,9 @@ public class DicoCommand extends CommandBuilder {
 		return this;
 	}
 
-	public DicoCommand dictionaryList(ArrayList list) {
+	public DicoCommand dictionaryList(ArrayList<File> list) {
 		for (int i = 0; i < list.size(); i++) {
-			protectElement(((File)list.get(i)).getAbsolutePath());
+			protectElement(list.get(i).getAbsolutePath());
 		}
 		return this;
 	}

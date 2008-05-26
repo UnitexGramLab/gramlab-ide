@@ -65,8 +65,8 @@ public class AddBoxeEdit extends AbstractUndoableEdit {
 			
 		transitionsToBoxe = zone.getTransitionTo(boxe);
 		
-		for( Iterator it = transitionsToBoxe.iterator(); it.hasNext() ; ){
-			g = ( GenericGraphBox )it.next();
+		for(Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it.hasNext() ; ){
+			g = it.next();
 			g.setSelected(true);
 		}
 		zone.removeTransitionTo(boxe);
@@ -83,8 +83,8 @@ public class AddBoxeEdit extends AbstractUndoableEdit {
 		GenericGraphBox g;
 		boxes.add(boxe);	
 		// add old transition to boxe
-		for( Iterator it = transitionsToBoxe.iterator(); it.hasNext() ; ){
-			g = ( GenericGraphBox )it.next();
+		for(Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it.hasNext() ; ){
+			g = it.next();
 			g.addTransitionTo(boxe);
 		}
 		
