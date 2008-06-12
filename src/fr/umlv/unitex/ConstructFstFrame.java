@@ -39,11 +39,7 @@ import fr.umlv.unitex.process.*;
  */
 public class ConstructFstFrame extends JDialog {
 
-  JCheckBox reconstrucao = new JCheckBox("Build clitic normalization grammar");
-
-  private JLabel reconstrucaoLabel = new JLabel(
-      "        (available only for Portuguese (Portugal))");
-
+  JCheckBox reconstrucao = new JCheckBox("Build clitic normalization grammar (available only for Portuguese (Portugal))");
   JCheckBox normFst = new JCheckBox(
       "Apply the Normalization grammar (Norm.fst2)");
 
@@ -75,13 +71,11 @@ public class ConstructFstFrame extends JDialog {
   }
 
   private JPanel constructNormalizationPanel() {
-    JPanel normalizationPanel = new JPanel(new GridLayout(5, 1));
+    JPanel normalizationPanel = new JPanel(new GridLayout(5,1));
     normalizationPanel.setBorder(new TitledBorder("Normalization"));
     boolean portuguese = Config.getCurrentLanguage().equals("Portuguese (Portugal)");
     reconstrucao.setEnabled(portuguese);
     reconstrucao.setSelected(portuguese);
-    reconstrucaoLabel.setEnabled(portuguese);
-    //		normFst.setSelected(true);
     cleanFst.setSelected(true);
     boolean morphemeCase = Config.isKorean();
     morphFst.setEnabled(morphemeCase);
@@ -94,7 +88,6 @@ public class ConstructFstFrame extends JDialog {
     }
 
     normalizationPanel.add(reconstrucao);
-    normalizationPanel.add(reconstrucaoLabel);
     normalizationPanel.add(normFst);
     normalizationPanel.add(cleanFst);
     normalizationPanel.add(morphFst);
@@ -104,13 +97,11 @@ public class ConstructFstFrame extends JDialog {
   }
 
   private JPanel constructDicPanel() {
-    JPanel dicPanel = new JPanel(new GridLayout(3, 1));
+    JPanel dicPanel = new JPanel(new GridLayout(2,1));
     dicPanel.setBorder(new TitledBorder(
           "Use Following Dictionaries previously constructed:"));
-    dicPanel.add(new JLabel("The program will construct the text FST"));
-    dicPanel
-      .add(new JLabel("according to the DLF and DLC files previously"));
-    dicPanel.add(new JLabel("constructed for the current text."));
+    dicPanel.add(new JLabel("The program will construct the text FST according to the DLF, DLC and tags.ind files"));
+    dicPanel.add(new JLabel("previously built by the Dico program for the current text."));
     return dicPanel;
   }
 

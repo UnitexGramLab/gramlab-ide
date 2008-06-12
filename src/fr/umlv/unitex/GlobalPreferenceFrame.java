@@ -474,36 +474,6 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		htmlViewerPanel.add(tmp3_);
 		page2.add(htmlViewerPanel);
 		
-		JPanel morphologicalDicPanel = new JPanel();
-		morphologicalDicPanel.setPreferredSize(new Dimension(180, 60));
-		morphologicalDicPanel.setLayout(new GridLayout(2, 1));
-		morphologicalDicPanel.add(new JLabel(".bin dictionary to use in Locate's morphological mode:"));
-		JPanel tmp4_ = new JPanel();
-		tmp4_.setLayout(new BorderLayout());
-		Action morphoDic = new AbstractAction("Set...") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-
-					public void run() {
-						JFileChooser f = new JFileChooser();
-						f.addChoosableFileFilter(new PersonalFileFilter("bin","Binary dictionary"));
-						f.setDialogTitle("Choose your morphological dictionary");
-						f.setDialogType(JFileChooser.OPEN_DIALOG);
-						if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-							return;
-						morphologicalDicViewer.setText(f.getSelectedFile()
-								.getAbsolutePath());
-					}
-				});
-			}
-		};
-		JButton setMorphologicalDicPanelViewer = new JButton(morphoDic);
-		tmp4_.add(morphologicalDicViewer, BorderLayout.CENTER);
-		tmp4_.add(setMorphologicalDicPanelViewer, BorderLayout.EAST);
-		morphologicalDicPanel.add(tmp4_);
-		page2.add(morphologicalDicPanel);
-
 		return page2;
 	}
 
