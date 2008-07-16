@@ -1436,8 +1436,7 @@ public class Config {
 	
 	public static boolean isAgglutinativeLanguage() {
 		String s = Config.getCurrentLanguage();
-		return s.equals("Hungarian") || s.equals("Korean")
-				|| s.equals("Malagasy");
+		return s.equals("Korean") || s.equals("Malagasy");
 	}
 
 
