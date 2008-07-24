@@ -63,8 +63,8 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		super.undo();
 
 		GenericGraphBox g;
-		for (Iterator it = oldSelectedBoxes.iterator(); it.hasNext();) {
-			g = (GenericGraphBox) it.next();
+		for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
+			g = it.next();
 			g.addTransitionTo(dst);
 
 			// select this boxe
@@ -78,8 +78,8 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	public void redo() {
 		super.redo();
 		GenericGraphBox g;
-		for (Iterator it = oldSelectedBoxes.iterator(); it.hasNext();) {
-			g = (GenericGraphBox) it.next();
+		for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
+			g = it.next();
 			g.addTransitionTo(dst);
 
 			// unselect this boxe

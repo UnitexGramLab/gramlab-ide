@@ -517,7 +517,7 @@ public class GraphIO {
                   + String.valueOf(N)
                   + " ");
             for (int j= 0; j < N; j++) {
-               GenericGraphBox tmp= (GenericGraphBox)g.getTransitions().get(j);
+               GenericGraphBox tmp= g.getTransitions().get(j);
                UnicodeIO.writeString(
                   dest,
                   String.valueOf(boxes.indexOf(tmp)) + " ");

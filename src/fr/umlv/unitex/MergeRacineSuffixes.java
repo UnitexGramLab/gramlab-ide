@@ -108,8 +108,8 @@ public class MergeRacineSuffixes extends JInternalFrame {
 	void refreshDicLists() {
 		File dirflection = new File(Config
 				.getUserCurrentLanguageDir(), "MorphemVariants");
-		Vector racList = getInfList(dirflection,".ric");
-		Vector sufList = getInfList(dirflection,".sic");
+		Vector<String> racList = getInfList(dirflection,".ric");
+		Vector<String> sufList = getInfList(dirflection,".sic");
 		racDicList.setListData(racList);
 		sufDicList.setListData(sufList);
 	}
@@ -358,14 +358,14 @@ public class MergeRacineSuffixes extends JInternalFrame {
 	 *            the <code>Vector</code> containing a list of the file name
 	 *            to be selected.
 	 */
-	public void setDefaultSelection(JList list, Vector v) {
+	public void setDefaultSelection(JList list, Vector<String> v) {
 		int[] indices = new int[1000];
 		int i = 0;
 		if (v == null)
 			return;
 		ListModel model = list.getModel();
 		while (!v.isEmpty()) {
-			String s = (String) (v.remove(0));
+			String s = v.remove(0);
 			int index = getElementIndex(model, s);
 			if (index != -1) {
 				indices[i++] = index;

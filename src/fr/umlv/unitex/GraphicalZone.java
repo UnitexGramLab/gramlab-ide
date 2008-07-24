@@ -238,7 +238,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			selecting = false;
 			if (selectedBox != -1) {
 				// if we start dragging a box
-				singleDraggedBox = (GraphBox) graphBoxes.get(selectedBox);
+				singleDraggedBox = graphBoxes.get(selectedBox);
 				initText(singleDraggedBox.content);
 				if (!singleDraggedBox.selected) {
 					dragging = true;

@@ -155,6 +155,10 @@ public class SVG {
 			drawContextMark(g);
 			return;
 		}
+		if (g.morphologicalModeMark) {
+            drawMorphologicalModeMark(g);
+            return;
+        }
 		Color color=preferences.foregroundColor;
 		// drawing the box
 		if (g.n_lignes == 0) {

@@ -394,8 +394,7 @@ public class PreprocessFrame extends JDialog {
 								dic = new File(dic, "Dela-sample.bin");
 							else if (lang.equals("Russian"))
 								dic = new File(dic, "CISLEXru_igrok.bin");
-							if (analyseUnknownWordsCheck.isSelected()
-									&& dic != null) {
+							if (analyseUnknownWordsCheck.isSelected()) {
 								PolyLexCommand polyLexCmd;
 								try {
 									polyLexCmd = new PolyLexCommand().language(
