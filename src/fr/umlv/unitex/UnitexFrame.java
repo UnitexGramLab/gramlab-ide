@@ -1577,15 +1577,15 @@ public class UnitexFrame extends JFrame {
 		}
 		File grf = currentFrame.getGraph();
 		
-		String grf_sans_ext = new String(grf.getAbsolutePath()
-				.substring(0,grf.getAbsolutePath().length() - 4));
 		if (grf == null) {
 			JOptionPane.showMessageDialog(null,
 					"Cannot compile a graph with no name", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		mainFrame.destDirectory.setText(new File(Config.getUserCurrentLanguageDir()
+		String grf_sans_ext = new String(grf.getAbsolutePath()
+                .substring(0,grf.getAbsolutePath().length() - 4));
+        mainFrame.destDirectory.setText(new File(Config.getUserCurrentLanguageDir()
 				,"MorphemVariants").getAbsolutePath());
 		mainFrame.destDirectory.setPreferredSize(new Dimension(240, 25));
 

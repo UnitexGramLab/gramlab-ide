@@ -175,7 +175,7 @@ public class FstGraphicalZone
          selecting= false;
          if (selectedBox != -1) {
             // if we start dragging a box
-            singleDraggedBox= (FstGraphBox)graphBoxes.get(selectedBox);
+            singleDraggedBox= graphBoxes.get(selectedBox);
             initText(singleDraggedBox.content);
             if (!singleDraggedBox.selected) {
                dragging= true;

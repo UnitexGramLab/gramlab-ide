@@ -570,9 +570,7 @@ public class XAlignPane extends JPanel {
 					textComponent.setBackground(Color.GREEN);
 				else
 					textComponent.setBackground(Color.WHITE);
-				if (m != null) {
-					label.setText("" + sentenceNumber);
-				}
+				label.setText("" + sentenceNumber);
 				return panel;
 			}
 
