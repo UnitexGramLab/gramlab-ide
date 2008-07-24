@@ -306,7 +306,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	private int getRealOffset(String s,int offset) {
 		int realOffset=offset;
 		for (int i=0;i<offset;i++) {
-			if (s.charAt(i)==10) {
+		    if (s.charAt(i)==10) {
 				realOffset++;
 			}
 		}
@@ -375,9 +375,25 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 			alignedModeSentences.add(new Integer(i));
 		}
 		Collections.sort(alignedModeSentences);
+		removeDuplicates(alignedModeSentences);
 	}
 	
-	ListDataListener alignModeDataLister;
+	
+	private void removeDuplicates(ArrayList<Integer> list) {
+	    int n=list.size();
+        for (int i=0,j=0;i<n-1;i++) {
+            Integer tmp=list.get(j);
+            Integer tmp2=list.get(j+1);
+            if (tmp.equals(tmp2)) {
+                list.remove(j);
+            } else {
+                j++;
+            }
+        }
+    }
+
+
+    ListDataListener alignModeDataLister;
 	
 	/**
 	 * We may need to know the model of the other text, because of

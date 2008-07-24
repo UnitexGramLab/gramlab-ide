@@ -142,8 +142,6 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 	private Vector<String> tokenizeToVector(String s) {
 		Vector<String> res = new Vector<String>();
 		StringTokenizer st = new StringTokenizer(s, "\t");
-		if (st == null)
-			return res;
 		while (st.hasMoreElements()) {
 			res.add(st.nextToken());
 		}

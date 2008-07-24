@@ -117,7 +117,8 @@ public class BigTextArea extends JPanel {
 		model.load(f);
 	}
 
-	void refresh() {
+	@SuppressWarnings("null")
+    void refresh() {
 		int value=scrollBar.getValue();
 		/* This is an awful trick: we assume that the text area won't
 		 * display more then 45 lines.

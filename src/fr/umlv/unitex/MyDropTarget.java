@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex;
 
+import java.util.List;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
@@ -128,7 +129,8 @@ public class MyDropTarget {
 			// nothing to do
 		}
 
-		public void drop(DropTargetDropEvent e) {
+		@SuppressWarnings("unchecked")
+        public void drop(DropTargetDropEvent e) {
 			Object data = null;
 			try {
 				e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
@@ -140,15 +142,16 @@ public class MyDropTarget {
 				e.dropComplete(false);
 				return;
 			}
-			if (data instanceof java.util.List) {
-				processDropList((java.util.List) data);
+			if (data instanceof List) {
+				List<?> data2 = (List<?>) data;
+                processDropList(data2);
 				e.dropComplete(true);
 			} else {
 				e.dropComplete(false);
 			}
 		}
 
-		private void processDropList(java.util.List list) {
+		private void processDropList(List<?> list) {
 			if (list.size() == 0)
 				return;
 			Object o;
@@ -318,14 +321,14 @@ public class MyDropTarget {
 				return;
 			}
 			if (data instanceof java.util.List) {
-				processDropList((java.util.List) data);
+				processDropList((List<?>) data);
 				e.dropComplete(true);
 			} else {
 				e.dropComplete(false);
 			}
 		}
 
-		private void processDropList(java.util.List list) {
+		private void processDropList(List<?> list) {
 			if (!ConversionFrame.isFrameVisible()) {
 				// this case should never happen
 				return;

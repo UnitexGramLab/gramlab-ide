@@ -796,10 +796,6 @@ public abstract class GenericGraphBox {
 		drawVariableSelected(g);
 	}
 
-	private void drawMorphologicalModeMarkComment(Graphics2D g) {
-		drawMorphologicalModeMark(g);
-	}
-
 	private void drawOther(Graphics2D g) {
 		int i;
 		Boolean is_greyed;

@@ -50,8 +50,8 @@ public class SelectEdit extends AbstractUndoableEdit {
 	
 	public void redo(){
 		super.redo();
-		for( Iterator it = oldSelectedBoxes.iterator() ; it.hasNext(); ){
-			GenericGraphBox g = (GenericGraphBox)it.next();
+		for(Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator() ; it.hasNext(); ){
+			GenericGraphBox g = it.next();
 			g.setSelected(true);
 			selectedBoxes.add(g);
 		}
@@ -59,8 +59,8 @@ public class SelectEdit extends AbstractUndoableEdit {
 	
 	public void undo(){
 		super.undo();
-		for( Iterator it = oldSelectedBoxes.iterator() ; it.hasNext(); ){
-			GenericGraphBox g = (GenericGraphBox)it.next();
+		for( Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator() ; it.hasNext(); ){
+			GenericGraphBox g = it.next();
 			g.setSelected(false);
 			selectedBoxes.remove(g);
 		}
