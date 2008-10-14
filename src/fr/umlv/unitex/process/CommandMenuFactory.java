@@ -36,7 +36,6 @@ public class CommandMenuFactory {
 	@SuppressWarnings("unchecked")
 	public static JMenu makeCommandMenu() {
     Class[] commands={CheckDicCommand.class
-    		,CollocCommand.class
     		,CompressCommand.class
             ,CompressKrCommand.class
             ,ConcordCommand.class
@@ -46,10 +45,9 @@ public class CommandMenuFactory {
             ,ElagCommand.class
             ,ElagCompCommand.class
             ,EvambCommand.class
-            ,ExploseFst2Command.class
+            ,ExplodeFst2Command.class
             ,ExtractCommand.class
             ,FlattenCommand.class
-            ,FreqCommand.class
             ,Fst2GrfCommand.class
             ,Fst2ListCommand.class
             ,Fst2TxtCommand.class
@@ -58,7 +56,6 @@ public class CommandMenuFactory {
             ,ImplodeFst2Command.class
             ,InflectKrCommand.class
             ,Jamo2SylCommand.class
-            ,LangCommand.class
             ,LocateCommand.class
             ,MergeBinCommand.class
             ,MergeTextAutomatonCommand.class
