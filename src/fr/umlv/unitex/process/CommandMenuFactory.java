@@ -39,6 +39,7 @@ public class CommandMenuFactory {
     		,CompressCommand.class
             ,CompressKrCommand.class
             ,ConcordCommand.class
+            ,ConcorDiffCommand.class
             ,ConsultDicCommand.class
             ,ConvertCommand.class
             ,DicoCommand.class
