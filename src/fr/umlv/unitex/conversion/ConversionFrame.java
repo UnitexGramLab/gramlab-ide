@@ -24,6 +24,8 @@ package fr.umlv.unitex.conversion;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -40,27 +42,11 @@ import fr.umlv.unitex.process.*;
  */
 public class ConversionFrame extends JInternalFrame {
 
-	public final static String[] srcEncodings = {"CZECH", "ENGLISH", "FRENCH",
-			"GERMAN", "GREEK", "ITALIAN", "KOREAN", "NORWEGIAN", "PORTUGUESE", "SPANISH",
-			"THAI", "LATIN", "windows-1252", "windows-1250", "windows-1257",
-			"windows-1251", "windows-1254", "windows-1258", 
-			"windows-949", "iso-8859-1",
-			"iso-8859-15", "iso-8859-2", "iso-8859-3", "iso-8859-4",
-			"iso-8859-5", "iso-8859-7", "iso-8859-9", "iso-8859-10",
-			"next-step", "LITTLE-ENDIAN", "BIG-ENDIAN"};
-
-	public final static String[] destEncodings = {"LITTLE-ENDIAN", "CZECH",
-			"ENGLISH", "FRENCH", "GERMAN", "GREEK", "ITALIAN", "KOREAN", "NORWEGIAN",
-			"PORTUGUESE", "SPANISH", "THAI", "LATIN", "windows-1252",
-			"windows-1250", "windows-1257", "windows-1251", "windows-1254",
-			"windows-1258", 
-			"windows-949", "iso-8859-1", "iso-8859-15", "iso-8859-2",
-			"iso-8859-3", "iso-8859-4", "iso-8859-5", "iso-8859-7",
-			"iso-8859-9", "iso-8859-10", "next-step", "BIG-ENDIAN", "UTF-8"};
-
+    public final static String[] encodings=getAvailableEncodings();
+    
 	static ConversionFrame frame = null;
-	JList srcEncodingList = new JList(srcEncodings);
-	JList destEncodingList = new JList(destEncodings);
+	JList srcEncodingList = new JList(encodings);
+	JList destEncodingList = new JList(encodings);
 	JRadioButton replace = new JRadioButton("Replace");
 	JRadioButton renameSourceWithPrefix = new JRadioButton(
 			"Rename source with prefix");
@@ -92,7 +78,7 @@ public class ConversionFrame extends JInternalFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
-	/**
+    /**
 	 * Initializes the frame.
 	 *  
 	 */
@@ -353,11 +339,11 @@ public class ConversionFrame extends JInternalFrame {
 	}
 
 	public static boolean validSrcEncoding(String s) {
-		return validEncoding(srcEncodings, s);
+		return validEncoding(encodings, s);
 	}
 
 	public static boolean validDestEncoding(String s) {
-		return validEncoding(destEncodings, s);
+		return validEncoding(encodings, s);
 	}
 
 	public static boolean validEncoding(String[] tab, String s) {
@@ -367,5 +353,80 @@ public class ConversionFrame extends JInternalFrame {
 		}
 		return false;
 	}
+
+
+	/**
+	 * 
+	 * @return a String array containing all the encodings supported by the
+	 * Convert program.
+	 */
+    private static String[] getAvailableEncodings() {
+        ConvertCommand cmd=new ConvertCommand().getEncodings();
+        final String[] comm = cmd.getCommandArguments();
+        final ArrayList<String> lines=new ArrayList<String>();
+        try {
+            Process p = Runtime.getRuntime().exec(comm);
+            final BufferedReader reader= new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF8"));
+            String s;
+            while ((s=myReadLine(reader)) != null) {
+                while (s.endsWith("\n") || s.endsWith("\r")) {
+                    s=s.substring(0,s.length()-1);
+                }
+                if ("".equals(s)) {
+                    continue;
+                }
+                lines.add(s.toUpperCase());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Collections.sort(lines);
+        String[] encodings=new String[lines.size()];
+        encodings=lines.toArray(encodings);
+        return encodings;
+    }
+
+    
+    static char nextChar='\0';
+    public static String myReadLine(BufferedReader reader) {
+       int c;
+       String result="";
+       if (nextChar!='\0') {
+           result=""+nextChar;
+           nextChar='\0';
+       }
+       try {
+           while ((c=reader.read())!=-1) {
+               char ch=(char)c;
+               if (ch=='\r') {
+                   //result=result+ch;
+                   if ((c=reader.read())!=-1) {
+                       ch=(char)c;
+                       if (ch=='\n') {
+                           /* If we have a \r\n sequence, we return it */
+                           return result;
+                       }
+                       /* Otherwise, we stock the character */
+                       nextChar=ch;
+                   }
+                   return result;
+               }
+               else if (ch=='\n') {
+                   /* If we have a single \n, we return it */
+                   //result=result+ch;
+                   nextChar='\0';
+                   return result;
+               } else {
+                   nextChar='\0';
+                   result=result+ch;
+               }
+           }
+           return null;
+       } catch (IOException e) {
+         e.printStackTrace();
+         return null;
+       }
+    }
+
 
 }

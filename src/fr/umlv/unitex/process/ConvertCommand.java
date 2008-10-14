@@ -103,5 +103,10 @@ public class ConvertCommand extends CommandBuilder {
     public ConvertCommand copy() {
         return new ConvertCommand(getCopyOfList());
     }
+    
+    public ConvertCommand getEncodings() {
+        protectElement("-aliases");
+        return this;
+    }
 
 }
