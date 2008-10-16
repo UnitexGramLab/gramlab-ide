@@ -58,6 +58,8 @@ public class GraphPathFrame extends JInternalFrame {
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				frame.setVisible(false);
+				frame.textArea.reset();
+		        frame.textArea.clearSelection();
 			}
 		});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -203,7 +205,7 @@ public class GraphPathFrame extends JInternalFrame {
 		limitSize.setPreferredSize(new Dimension(50, 20));
 		panel.add(limit, BorderLayout.WEST);
 		panel.add(limitSize, BorderLayout.CENTER);
-    panel.add(new JLabel("   "), BorderLayout.EAST);
+		panel.add(new JLabel("   "), BorderLayout.EAST);
 		return panel;
 	}
 
