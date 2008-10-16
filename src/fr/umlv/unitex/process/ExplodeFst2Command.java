@@ -27,18 +27,18 @@ import java.io.*;
  * @author Sébastien Paumier
  *  
  */
-public class ExploseFst2Command extends CommandBuilder {
+public class ExplodeFst2Command extends CommandBuilder {
 
-	public ExploseFst2Command() {
-		super("ExploseFst2");
+	public ExplodeFst2Command() {
+		super("ExplodeFst2");
 	}
 
-	public ExploseFst2Command automaton(File s) {
+	public ExplodeFst2Command automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
 
-    public ExploseFst2Command output(File s) {
+    public ExplodeFst2Command output(File s) {
         element("-o");
         protectElement(s.getAbsolutePath());
         return this;
