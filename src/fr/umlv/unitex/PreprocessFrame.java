@@ -55,10 +55,10 @@ public class PreprocessFrame extends JDialog {
 			true);
 
 	JCheckBox analyseUnknownWordsCheck = new JCheckBox(
-			"Analyse unknown words as free compound words", true);
+			"Analyse unknown words as free compound words (this option", true);
 
 	JLabel analyseUnknownWordsLabel = new JLabel(
-			"     (this option is available only for German, Norwegian & Russian)");
+			"     is available only for Dutch German, Norwegian & Russian)");
 
 	JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton", false);
 
@@ -94,7 +94,8 @@ public class PreprocessFrame extends JDialog {
 		this.originalTextFile = originalTextFile;
 		this.sntFile = sntFile;
 		setContentPane(constructPanel(taggedText));
-		if (!Config.getCurrentLanguage().equals("German")
+		if (!Config.getCurrentLanguage().equals("Dutch")
+		        && !Config.getCurrentLanguage().equals("German")
 				&& !Config.getCurrentLanguage().equals("Norwegian")
 				&& !Config.getCurrentLanguage().equals("Russian")) {
 			analyseUnknownWordsCheck.setSelected(false);
