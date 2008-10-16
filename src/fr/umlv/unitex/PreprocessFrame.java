@@ -58,7 +58,7 @@ public class PreprocessFrame extends JDialog {
 			"Analyse unknown words as free compound words (this option", true);
 
 	JLabel analyseUnknownWordsLabel = new JLabel(
-			"     is available only for Dutch German, Norwegian & Russian)");
+			"     is available only for Dutch, German, Norwegian & Russian)");
 
 	JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton", false);
 
