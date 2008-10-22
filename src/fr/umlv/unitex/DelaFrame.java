@@ -132,6 +132,12 @@ public class DelaFrame extends JInternalFrame {
 		}
 		frame.text.reset();
 		frame.setVisible(false);
+		/* We wait to avoid blocking the creation of fooflx.dic by MultiFlex */
+		try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 		System.gc();
 	}
 
