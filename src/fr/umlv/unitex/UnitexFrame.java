@@ -1870,6 +1870,7 @@ public class UnitexFrame extends JFrame {
 		final File dela = Config.getDelaDialogBox().getSelectedFile();
 		ToDoAbstract toDo = new ToDoAbstract() {
 			public void toDo() {
+                closeDELA();
 				Config.setCurrentDELA(dela);
 				if(Config.isAgglutinativeLanguage()){ // HUH insert
 					inflectMorph.setEnabled(true);
