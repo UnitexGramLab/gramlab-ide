@@ -57,6 +57,7 @@ public class BigTextArea extends JPanel {
 		super(new BorderLayout());
 		model=m;
 		area=new JTextPane();
+		area.setComponentOrientation(Config.isRightToLeftLanguage()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
 		document=area.getStyledDocument();
 		normal=StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
 		highlighted=document.addStyle("highlighted",normal);
