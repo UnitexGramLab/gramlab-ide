@@ -8,7 +8,7 @@
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
   <property name="lib" location="lib"/>
-  <property name="appdir" location="D:\\Unitex2.0beta\\App"/>
+  <property name="appdir" location="D:\\Unitex2.0\\App"/>
   
   <!-- targets -->
   <target name="init">
@@ -29,10 +29,10 @@
     <mkdir dir="classes"/> 
 
     <copy todir="classes">
-      <FileSet dir="resources"/>
+      <fileset dir="resources"/>
     </copy>
     <copy todir="classes">
-      <FileSet dir="${build}"/>
+      <fileset dir="${build}"/>
     </copy>
 
     <!-- Create the distribution directory -->

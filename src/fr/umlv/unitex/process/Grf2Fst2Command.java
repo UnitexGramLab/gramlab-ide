@@ -41,17 +41,17 @@ public class Grf2Fst2Command extends CommandBuilder {
 	}
 
     public Grf2Fst2Command enableLoopAndRecursionDetection(boolean b) {
-        element(b?"y":"n");
+        element(b?"-y":"-n");
         return this;
     }
     
     private Grf2Fst2Command charByCharTokenization() {
-        element("char_by_char");
+        element("--char_by_char");
         return this;
     }
 
     private Grf2Fst2Command alphabetTokenization(File f) {
-    	protectElement(f.getAbsolutePath());
+    	protectElement("--alphabet="+f.getAbsolutePath());
         return this;
     }
 
