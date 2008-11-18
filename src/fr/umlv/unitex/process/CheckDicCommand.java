@@ -39,7 +39,7 @@ public class CheckDicCommand extends CommandBuilder {
     }
 
     public CheckDicCommand delaType(boolean isDelas) {
-      element(isDelas?"DELAS":"DELAF");
+      element(isDelas?"--delas":"--delaf");
       return this;
      }
 
