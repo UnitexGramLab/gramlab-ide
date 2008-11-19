@@ -39,7 +39,7 @@ public class CompressCommand extends CommandBuilder {
     }
 
     public CompressCommand flip() {
-      element("-flip");
+      element("--flip");
       return this;
      }
 
