@@ -42,32 +42,32 @@ public class ConcordCommand extends CommandBuilder {
 	}
 
 	public ConcordCommand font(String s) {
-		protectElement(s);
+		protectElement("-f"+s);
 		return this;
 	}
 
 	public ConcordCommand fontSize(int size) {
-		element("" + size);
+		element("-s"+size);
 		return this;
 	}
 
 	public ConcordCommand left(int size) {
-		element("" + size);
+		element("-l"+size);
 		return this;
 	}
 
 	public ConcordCommand left(String size) {
-		element("" + size);
+		element("-l"+size);
 		return this;
 	}
 
 	public ConcordCommand right(int size) {
-		element("" + size);
+		element("-r"+size);
 		return this;
 	}
 
 	public ConcordCommand right(String size) {
-		element("" + size);
+		element("-r"+size);
 		return this;
 	}
 
@@ -99,7 +99,7 @@ public class ConcordCommand extends CommandBuilder {
 			default :
 				throw new InvalidConcordanceOrderException();
 		}
-		element(s);
+		element("--"+s);
 		return this;
 	}
 
@@ -108,57 +108,36 @@ public class ConcordCommand extends CommandBuilder {
 		if (s.equals("TO") || s.equals("LC") || s.equals("LR")
 				|| s.equals("CL") || s.equals("CR") || s.equals("RL")
 				|| s.equals("RC")) {
-			element(s);
+			element("--"+s);
 			return this;
 		}
 		throw new InvalidConcordanceOrderException();
 	}
 
 	public ConcordCommand html() {
-		element("html");
-		return this;
-	}
-
-	public ConcordCommand text() {
-		element("text");
-		return this;
-	}
-
-	public ConcordCommand glossanet() {
-		element("glossanet");
+		element("--html");
 		return this;
 	}
 
 	public ConcordCommand xalign() {
-		element("xalign");
+		element("--xalign");
 		return this;
 	}
 
 	public ConcordCommand outputModifiedTxtFile(File s) {
-		element("NULL");
-		element("0");
-		element("0");
-		element("0");
-		element("NULL");
-		protectElement(s.getAbsolutePath());
-    element("NULL");
+		protectElement("-m"+s.getAbsolutePath());
 		return this;
 	}
 
 	public ConcordCommand sortAlphabet() {
-		protectElement(new File(Config.getUserCurrentLanguageDir(),
+		protectElement("-a"+new File(Config.getUserCurrentLanguageDir(),
 				"Alphabet_sort.txt").getAbsolutePath());
-		return this;
-	}
-
-	public ConcordCommand noSortAlphabet() {
-		element("NULL");
 		return this;
 	}
 
 	public ConcordCommand thai(boolean thai) {
 		if (thai)
-			element("-thai");
+			element("--thai");
 		return this;
 	}
 

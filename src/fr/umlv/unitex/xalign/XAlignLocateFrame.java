@@ -286,7 +286,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		try {
 			concord = new ConcordCommand().indFile(indFile).font("NULL")
 					.fontSize(0).left(0).right(0).order(0)
-					.xalign().noSortAlphabet();
+					.xalign();
 			commands.addCommand(concord);
 		} catch (InvalidConcordanceOrderException e) {
 			e.printStackTrace();
