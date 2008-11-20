@@ -34,38 +34,33 @@ public class ElagCompCommand extends CommandBuilder {
 	}
 
 	public ElagCompCommand rules(boolean ruleList, File s) {
-		element(ruleList ? "-r" : "-g");
-		protectElement(s.getAbsolutePath());
+		protectElement((ruleList ? "-r" : "-g")+s.getAbsolutePath());
 		return this;
 	}
 
 	public ElagCompCommand lang(File s) {
-		element("-l");
-		protectElement(s.getAbsolutePath());
+		protectElement("-l"+s.getAbsolutePath());
 		return this;
 	}
 	public ElagCompCommand output(File s) {
-		element("-o");
-    // the output parameter is supposed not be an absolute path 
-		protectElement(s.getName());
+		// the output parameter is supposed not be an absolute path 
+		protectElement("-o"+s.getName());
 		return this;
 	}
 
 	public ElagCompCommand dir(File s) {
-		element("-d");
-		protectElement(s.getAbsolutePath());
+		protectElement("-d"+s.getAbsolutePath());
 		return this;
 	}
     
   public ElagCompCommand grammar(File s) {
     element("-g"); 
-    protectElement(s.getAbsolutePath());
+    protectElement("-g"+s.getAbsolutePath());
     return this;
 }
 
   public ElagCompCommand ruleList(File s) {
-    element("-r"); 
-    protectElement(s.getAbsolutePath());
+    protectElement("-r"+s.getAbsolutePath());
     return this;
 }
 
