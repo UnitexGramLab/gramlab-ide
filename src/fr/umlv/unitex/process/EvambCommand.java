@@ -33,25 +33,13 @@ public class EvambCommand extends CommandBuilder {
 		super("Evamb");
 	}
 
-	public EvambCommand implodeFirst() {
-		element("-imp");
-		return this;
-	}
-
-    public EvambCommand explodeFirst() {
-        element("-exp");
-        return this;
-    }
-
     public EvambCommand automaton(File s) {
-      element("-o");
       protectElement(s.getAbsolutePath());
       return this;
   }
 
     public EvambCommand sentenceNumber(int n) {
-      element("-n");
-      element(""+n);
+      element("-s"+n);
       return this;
   }
 
