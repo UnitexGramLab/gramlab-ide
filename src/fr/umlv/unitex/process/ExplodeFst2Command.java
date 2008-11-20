@@ -39,8 +39,7 @@ public class ExplodeFst2Command extends CommandBuilder {
 	}
 
     public ExplodeFst2Command output(File s) {
-        element("-o");
-        protectElement(s.getAbsolutePath());
+        protectElement("-o"+s.getAbsolutePath());
         return this;
     }
 
