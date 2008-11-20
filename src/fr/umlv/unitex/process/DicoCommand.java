@@ -37,18 +37,18 @@ public class DicoCommand extends CommandBuilder {
 	}
 
 	public DicoCommand snt(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-t"+s.getAbsolutePath());
 		return this;
 	}
 
 	public DicoCommand alphabet(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-a"+s.getAbsolutePath());
 		return this;
 	}
 
 	public DicoCommand morphologicalDic(ArrayList<File> dicList) {
     	if (dicList!=null) {
-    		protectElement("-md="+Preferences.getMorphologicalDicListAsString(dicList));
+    		protectElement("-m"+Preferences.getMorphologicalDicListAsString(dicList));
     	}
         return this;
     }
