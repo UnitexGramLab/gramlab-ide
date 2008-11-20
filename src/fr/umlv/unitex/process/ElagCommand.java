@@ -30,37 +30,33 @@ import java.io.*;
 public class ElagCommand extends CommandBuilder {
 
 	public ElagCommand() {
-		super("Elag");
-	}
+        super("Elag");
+    }
 
-	public ElagCommand automaton(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-    public ElagCommand lang(File s) {
-        element("-l"); 
+    public ElagCommand automaton(File s) {
         protectElement(s.getAbsolutePath());
         return this;
     }
 
+    public ElagCommand lang(File s) {
+        protectElement("-l" + s.getAbsolutePath());
+        return this;
+    }
+
     public ElagCommand rules(File s) {
-      element("-g"); 
-      // this parameter is supposed not to be an absolute path
-      protectElement(s.getName());
-      return this;
-  }
+        // this parameter is supposed not to be an absolute path
+        protectElement("-r" + s.getName());
+        return this;
+    }
 
     public ElagCommand output(File s) {
-      element("-o"); 
-      protectElement(s.getAbsolutePath());
-      return this;
-  }
+        protectElement("-o" + s.getAbsolutePath());
+        return this;
+    }
 
     public ElagCommand dir(File s) {
-      element("-d"); 
-      protectElement(s.getAbsolutePath());
-      return this;
-  }
+        protectElement("-d" + s.getAbsolutePath());
+        return this;
+    }
 
 }
