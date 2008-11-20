@@ -43,7 +43,7 @@ public class ConvertCommand extends CommandBuilder {
     
 	public ConvertCommand src(String s) throws InvalidSourceEncodingException {
 		if (ConversionFrame.validSrcEncoding(s)) {
-			element(s);
+			element("-s"+s);
 			return this;
 		}
 		throw new InvalidSourceEncodingException();
@@ -52,7 +52,7 @@ public class ConvertCommand extends CommandBuilder {
 	public ConvertCommand dest(String s)
 			throws InvalidDestinationEncodingException {
 		if (ConversionFrame.validDestEncoding(s)) {
-			element(s);
+			element("-d"+s);
 			return this;
 		}
 		throw new InvalidDestinationEncodingException();
@@ -65,32 +65,32 @@ public class ConvertCommand extends CommandBuilder {
 
 	public ConvertCommand rename(boolean addPrefix, boolean renameSource,
 			String s) {
-		String element = "-" + (addPrefix ? "p" : "s")
+		String element = "--" + (addPrefix ? "p" : "s")
 				+ (renameSource ? "s" : "d") + "=" + s;
 		protectElement(element);
 		return this;
 	}
 
 	public ConvertCommand renameSourceWithPrefix(String s) {
-		String element = "-ps=" + s;
+		String element = "--ps=" + s;
 		protectElement(element);
 		return this;
 	}
 
 	public ConvertCommand renameSourceWithSuffix(String s) {
-		String element = "-ss=" + s;
+		String element = "--ss=" + s;
 		protectElement(element);
 		return this;
 	}
 
 	public ConvertCommand renameDestWithPrefix(String s) {
-		String element = "-pd=" + s;
+		String element = "--pd=" + s;
 		protectElement(element);
 		return this;
 	}
 
 	public ConvertCommand renameDestWithSuffix(String s) {
-		String element = "-sd=" + s;
+		String element = "--sd=" + s;
 		protectElement(element);
 		return this;
 	}
@@ -105,7 +105,7 @@ public class ConvertCommand extends CommandBuilder {
     }
     
     public ConvertCommand getEncodings() {
-        protectElement("-aliases");
+        protectElement("--aliases");
         return this;
     }
 

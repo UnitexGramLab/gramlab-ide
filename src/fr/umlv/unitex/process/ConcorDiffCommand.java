@@ -44,17 +44,17 @@ public class ConcorDiffCommand extends CommandBuilder {
 	}
 
 	public ConcorDiffCommand output(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-o"+s.getAbsolutePath());
 		return this;
 	}
 
 	public ConcorDiffCommand font(String s) {
-		protectElement(s);
+		protectElement("-f"+s);
 		return this;
 	}
 
 	public ConcorDiffCommand fontSize(int size) {
-		element("" + size);
+		element("-s"+size);
 		return this;
 	}
 
