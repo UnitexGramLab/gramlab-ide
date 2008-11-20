@@ -34,7 +34,7 @@ public class ExtractCommand extends CommandBuilder {
 	}
 
 	public ExtractCommand extract(boolean matchingUnits) {
-		element(matchingUnits ? "yes" : "no");
+		element(matchingUnits ? "--yes" : "--no");
 		return this;
 	}
 
@@ -44,12 +44,12 @@ public class ExtractCommand extends CommandBuilder {
 	}
 
 	public ExtractCommand ind(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-i"+s.getAbsolutePath());
 		return this;
 	}
 
 	public ExtractCommand result(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-o"+s.getAbsolutePath());
 		return this;
 	}
 
