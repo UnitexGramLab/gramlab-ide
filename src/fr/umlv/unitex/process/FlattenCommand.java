@@ -39,18 +39,18 @@ public class FlattenCommand extends CommandBuilder {
     }
 
     public FlattenCommand resultType(boolean FST) {
-      element(FST?"FST":"RTN");
+      element(FST?"--fst":"--rtn");
       return this;
   }
 
     public FlattenCommand depth(int n) {
-      element(""+n);
+      element("-d"+n);
       return this;
   }
 
     public FlattenCommand depth(String n) {
       Integer.parseInt(n);
-      element(n);
+      element("-d"+n);
       return this;
   }
 
