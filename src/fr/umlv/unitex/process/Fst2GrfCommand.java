@@ -39,24 +39,23 @@ public class Fst2GrfCommand extends CommandBuilder {
 	}
 
 	public Fst2GrfCommand sentence(int n) {
-		element("" + n);
+		element("-s"+n);
 		return this;
 	}
 
 	public Fst2GrfCommand sentence(String n) {
 		Integer.parseInt(n);
-		element("" + n);
+		element("-s"+n);
 		return this;
 	}
 
 	public Fst2GrfCommand output(String s) {
-		protectElement(s);
+		protectElement("-o"+s);
 		return this;
 	}
 
 	public Fst2GrfCommand font(String s) {
-	    
-		element("-f=" + s);
+	    protectElement("-f"+s);
 		return this;
 	}
 
