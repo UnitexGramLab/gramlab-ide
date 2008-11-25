@@ -37,7 +37,7 @@ public class LocateCommand extends CommandBuilder {
 	}
 
 	public LocateCommand snt(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-t"+s.getAbsolutePath());
 		return this;
 	}
 
@@ -47,82 +47,82 @@ public class LocateCommand extends CommandBuilder {
 	}
 
 	public LocateCommand alphabet() {
-		protectElement(Config.getAlphabet().getAbsolutePath());
+		protectElement("-a"+Config.getAlphabet().getAbsolutePath());
 		return this;
 	}
 
 	public LocateCommand alphabet(File alphabet) {
-		protectElement(alphabet.getAbsolutePath());
+		protectElement("-a"+alphabet.getAbsolutePath());
 		return this;
 	}
 
 	public LocateCommand shortestMatches() {
-		element("s");
+		element("-S");
 		return this;
 	}
 
 	public LocateCommand longestMatches() {
-		element("l");
+		element("-L");
 		return this;
 	}
 
 	public LocateCommand allMatches() {
-		element("a");
+		element("-A");
 		return this;
 	}
 
 	public LocateCommand ignoreOutputs() {
-		element("i");
+		element("-I");
 		return this;
 	}
 
 	public LocateCommand mergeOutputs() {
-		element("m");
+		element("-M");
 		return this;
 	}
 
 	public LocateCommand replaceWithOutputs() {
-		element("r");
+		element("-R");
 		return this;
 	}
 
 	public LocateCommand noLimit() {
-		element("all");
+		element("--all");
 		return this;
 	}
 
 	public LocateCommand limit(int n) {
-		element("" + n);
+		element("-n"+n);
 		return this;
 	}
 
     public LocateCommand limit(String n) {
         Integer.parseInt(n);
-        element(n);
+        element("-n"+n);
         return this;
     }
 
     public LocateCommand dynamicSntDir(File dir) {
       // the dynamicSntDir parameter is supposed to end
       // with the file separator
-      protectElement(dir.getAbsolutePath()+File.separator);
+      protectElement("-d"+dir.getAbsolutePath()+File.separator);
       return this;
   }
 
     public LocateCommand charByChar() {
-        element("-thai");
+        element("-c");
         return this;
     }
 
     public LocateCommand morphologicalDic(ArrayList<File> dicList) {
     	if (dicList!=null) {
-    		protectElement("-md="+Preferences.getMorphologicalDicListAsString(dicList));
+    		protectElement("--morpho="+Preferences.getMorphologicalDicListAsString(dicList));
     	}
         return this;
     }
 
     public LocateCommand enableMorphologicalUseOfSpace() {
-      element("-space");
+      element("-s");
       return this;
   }
 
