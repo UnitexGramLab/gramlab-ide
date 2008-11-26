@@ -39,17 +39,17 @@ public class Table2GrfCommand extends CommandBuilder {
 	}
 
     public Table2GrfCommand parametrizedGraph(File s) {
-        protectElement(s.getAbsolutePath());
+        protectElement("-r"+s.getAbsolutePath());
         return this;
     }
 
     public Table2GrfCommand resultMainGraph(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-o"+s.getAbsolutePath());
       return this;
   }
 
     public Table2GrfCommand subgraphName(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-s"+s.getAbsolutePath());
       return this;
   }
 
