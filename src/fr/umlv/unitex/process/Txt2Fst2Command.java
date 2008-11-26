@@ -41,19 +41,19 @@ public class Txt2Fst2Command extends CommandBuilder {
 	}
 
 	public Txt2Fst2Command alphabet() {
-    protectElement(Config.getAlphabet().getAbsolutePath());
+    protectElement("-a"+Config.getAlphabet().getAbsolutePath());
     return this;
 }
 
 	public Txt2Fst2Command clean(boolean clean) {
 		if (clean) {
-			element("-clean");
+			element("--clean");
 		}
 		return this;
 	}
 
 	public Txt2Fst2Command fst2(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-n"+s.getAbsolutePath());
 		return this;
 	}
 
