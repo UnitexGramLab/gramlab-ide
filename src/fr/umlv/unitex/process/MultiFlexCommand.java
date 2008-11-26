@@ -39,17 +39,17 @@ public class MultiFlexCommand extends CommandBuilder {
     }
 
     public MultiFlexCommand result(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-o"+s.getAbsolutePath());
       return this;
   }
 
     public MultiFlexCommand alphabet(File s) {
-        protectElement(s.getAbsolutePath());
+        protectElement("-a"+s.getAbsolutePath());
         return this;
     }
 
     public MultiFlexCommand dir(File s) {
-        protectElement(s.getAbsolutePath());
+        protectElement("-d"+s.getAbsolutePath());
         return this;
     }
 

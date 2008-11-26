@@ -381,9 +381,9 @@ public class ConversionFrame extends JInternalFrame {
             e.printStackTrace();
         }
         Collections.sort(lines);
-        String[] encodings=new String[lines.size()];
-        encodings=lines.toArray(encodings);
-        return encodings;
+        String[] tmp=new String[lines.size()];
+        tmp=lines.toArray(tmp);
+        return tmp;
     }
 
     
