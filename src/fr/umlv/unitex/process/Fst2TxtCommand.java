@@ -36,7 +36,7 @@ public class Fst2TxtCommand extends CommandBuilder {
 	}
 
 	public Fst2TxtCommand text(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-t"+s.getAbsolutePath());
 		return this;
 	}
 
@@ -46,18 +46,18 @@ public class Fst2TxtCommand extends CommandBuilder {
     }
 
     public Fst2TxtCommand alphabet() {
-      protectElement(Config.getAlphabet().getAbsolutePath());
+      protectElement("-a"+Config.getAlphabet().getAbsolutePath());
       return this;
   }
 
     public Fst2TxtCommand mode(boolean merge) {
-      element(merge?"-merge":"-replace");
+      element(merge?"-M":"-R");
       return this;
   }
 
     public Fst2TxtCommand charByChar(boolean morphologicalUseOfSpace) {
-      if (morphologicalUseOfSpace) element("-char_by_char_with_space");
-      else element("-char_by_char");
+      if (morphologicalUseOfSpace) element("--start_on_space");
+      element("--char_by_char");
       return this;
   }
 
