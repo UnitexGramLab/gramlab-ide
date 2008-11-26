@@ -36,7 +36,7 @@ public class ReconstrucaoCommand extends CommandBuilder {
 	}
 
 	public ReconstrucaoCommand alphabet() {
-    protectElement(Config.getAlphabet().getAbsolutePath());
+    protectElement("-a"+Config.getAlphabet().getAbsolutePath());
     return this;
 }
 
@@ -46,27 +46,27 @@ public class ReconstrucaoCommand extends CommandBuilder {
     }
 
     public ReconstrucaoCommand rootDic(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-r"+s.getAbsolutePath());
       return this;
   }
 
     public ReconstrucaoCommand dic(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-d"+s.getAbsolutePath());
       return this;
   }
 
     public ReconstrucaoCommand fst2(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-p"+s.getAbsolutePath());
       return this;
   }
 
     public ReconstrucaoCommand nasalFst2(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-n"+s.getAbsolutePath());
       return this;
   }
 
     public ReconstrucaoCommand output(File s) {
-      protectElement(s.getAbsolutePath());
+      protectElement("-o"+s.getAbsolutePath());
       return this;
   }
 
