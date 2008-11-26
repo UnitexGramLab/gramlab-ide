@@ -39,7 +39,7 @@ public class Fst2UnambigCommand extends CommandBuilder {
     }
 
     public Fst2UnambigCommand output(File s) {
-        protectElement(s.getAbsolutePath());
+        protectElement("-o"+s.getAbsolutePath());
         return this;
       }
 
