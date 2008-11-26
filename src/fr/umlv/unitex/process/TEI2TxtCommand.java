@@ -34,8 +34,7 @@ public class TEI2TxtCommand extends CommandBuilder {
 	}
 
     public TEI2TxtCommand output(File s) {
-    	element("-o");
-    	protectElement(s.getAbsolutePath());
+    	protectElement("-o"+s.getAbsolutePath());
         return this;
     }
 
