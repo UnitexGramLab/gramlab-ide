@@ -39,27 +39,27 @@ public class PolyLexCommand extends CommandBuilder {
 	public PolyLexCommand language(String s)
 			throws InvalidPolyLexArgumentException {
 		if (s.equals("GERMAN") || s.equals("German")) {
-			element("GERMAN");
+			element("-G");
 			return this;
 		}
 		if (s.equals("NORWEGIAN") || s.equals("Norwegian")) {
-			element("NORWEGIAN");
+			element("-N");
 			return this;
 		}
 		if (s.equals("RUSSIAN") || s.equals("Russian")) {
-			element("RUSSIAN");
+			element("-R");
 			return this;
 		}
 		throw new InvalidPolyLexArgumentException();
 	}
 
 	public PolyLexCommand alphabet() {
-    protectElement(Config.getAlphabet().getAbsolutePath());
+    protectElement("-a"+Config.getAlphabet().getAbsolutePath());
     return this;
 }
 
 	public PolyLexCommand bin(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-d"+s.getAbsolutePath());
 		return this;
 	}
 
@@ -69,12 +69,12 @@ public class PolyLexCommand extends CommandBuilder {
 	}
 
 	public PolyLexCommand output(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-o"+s.getAbsolutePath());
 		return this;
 	}
 
 	public PolyLexCommand info(File s) {
-		protectElement(s.getAbsolutePath());
+		protectElement("-i"+s.getAbsolutePath());
 		return this;
 	}
 
