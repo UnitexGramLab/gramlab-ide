@@ -41,7 +41,7 @@ public class SortTxtCommand extends CommandBuilder {
 	}
 
 	public SortTxtCommand removeDuplicates(boolean remove) {
-		element(remove ? "-y" : "-n");
+		element(remove ? "-n" : "-d");
 		return this;
 	}
 
@@ -51,20 +51,18 @@ public class SortTxtCommand extends CommandBuilder {
 	}
 
 	public SortTxtCommand sortAlphabet() {
-		element("-o");
-    protectElement(new File(Config
+    protectElement("-o"+new File(Config
                 .getUserCurrentLanguageDir(),"Alphabet_sort.txt").getAbsolutePath());
 		return this;
 	}
 
     public SortTxtCommand saveNumberOfLines(File file) {
-        element("-l");
-        protectElement(file.getAbsolutePath());
+        protectElement("-l"+file.getAbsolutePath());
         return this;
     }
 
     public SortTxtCommand thai() {
-        element("-thai");
+        element("--thai");
         return this;
     }
 
