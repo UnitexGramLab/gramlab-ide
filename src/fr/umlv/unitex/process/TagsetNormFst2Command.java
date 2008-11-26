@@ -40,8 +40,7 @@ public class TagsetNormFst2Command extends CommandBuilder {
   }
 
   public TagsetNormFst2Command tagset(File s) {
-    element("-l"); 
-    protectElement(s.getAbsolutePath());
+    protectElement("-t"+s.getAbsolutePath());
     return this;
   }
 }
