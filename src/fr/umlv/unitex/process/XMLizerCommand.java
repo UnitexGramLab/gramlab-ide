@@ -35,8 +35,7 @@ public class XMLizerCommand extends CommandBuilder {
 	}
 
     public XMLizerCommand output(File s) {
-    	element("-o");
-    	protectElement(s.getAbsolutePath());
+    	protectElement("-o"+s.getAbsolutePath());
         return this;
     }
 
@@ -46,14 +45,12 @@ public class XMLizerCommand extends CommandBuilder {
     }
 
     public XMLizerCommand alphabet(File s) {
-    	element("-a");
-    	protectElement(s.getAbsolutePath());
+    	protectElement("-a"+s.getAbsolutePath());
         return this;
     }
 
     public XMLizerCommand sentence(File s) {
-    	element("-s");
-    	protectElement(s.getAbsolutePath());
+    	protectElement("-s"+s.getAbsolutePath());
         return this;
     }
 
