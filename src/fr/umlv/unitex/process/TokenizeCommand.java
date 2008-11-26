@@ -41,17 +41,17 @@ public class TokenizeCommand extends CommandBuilder {
 	}
 
     public TokenizeCommand alphabet() {
-      protectElement(Config.getAlphabet().getAbsolutePath());
+      protectElement("-a"+Config.getAlphabet().getAbsolutePath());
       return this;
   }
 
     public TokenizeCommand alphabet(File f) {
-        protectElement(f.getAbsolutePath());
+        protectElement("-a"+f.getAbsolutePath());
         return this;
     }
 
     public TokenizeCommand tokenizeCharByChar() {
-        element("-char_by_char");
+        element("--char_by_char");
         return this;
     }
 
