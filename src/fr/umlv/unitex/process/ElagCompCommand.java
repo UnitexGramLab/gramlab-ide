@@ -54,7 +54,6 @@ public class ElagCompCommand extends CommandBuilder {
 	}
     
   public ElagCompCommand grammar(File s) {
-    element("-g"); 
     protectElement("-g"+s.getAbsolutePath());
     return this;
 }
