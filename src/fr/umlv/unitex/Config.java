@@ -718,6 +718,28 @@ public class Config {
 	}
 
 	
+	
+	private static final String[] bastien=new String[] {
+	        "Greek (Ancient)",
+	        "grec momifié",
+	        "grec putréfié",
+	        "grec embaumé",
+	        "grec faisandé",
+	        "grec mort",
+	        "vieux grec tout rabougri",
+	        "grec qui sent la naphtaline",
+	        "grec périmé",
+	        "grec cadavérique",
+	        "grec de morgue",
+	        "grec tellement vieux qu'on frôle la profanation",
+	        "grec médico-légal",
+	        "grec grouillant d'insectes nécrophages",
+	        "grec en décomposition",
+	        "grec moisi (les fameux champignons à la grecque)",
+	        "grec qui ferait vomir un marchand de kébabs de rat",
+	        "grec pourri",
+	        "grec desséché"
+	};
 	/**
 	 * @return the current language to be displayed in the title bar
 	 */
@@ -731,21 +753,7 @@ public class Config {
 				|| (!getUserName().equalsIgnoreCase("bastien") && !getUserName().equalsIgnoreCase("nastasia"))) {
 			return currentLanguage;
 		}
-		switch (new Random().nextInt(12)) {
-			case 0: return "Greek (Ancient)";
-			case 1: return "grec momifié";
-			case 2: return "grec putréfié";
-			case 3: return "grec embaumé";
-			case 4: return "grec faisandé";
-			case 5: return "grec mort";
-			case 6: return "vieux grec tout rabougri";
-			case 7: return "grec qui sent la naphtaline";
-			case 8: return "grec périmé";
-			case 9: return "grec cadavérique";
-			case 10: return "grec de morgue";
-			case 11: return "grec tellement vieux qu'on frôle la profanation";
-		}
-		return null;
+		return bastien[new Random().nextInt(bastien.length)];
 	}
 	
 	
