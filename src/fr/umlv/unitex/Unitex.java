@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex;
 
+import java.awt.Image;
 import java.util.*;
 
 import javax.swing.*;
@@ -72,6 +73,10 @@ public class Unitex {
 				1500);
 		Config.initConfig(args.length==1?args[0]:null);
 		JFrame frame = new UnitexFrame();
+		Image img16x16=new ImageIcon(Unitex.class.getResource("16x16.png")).getImage();
+		Image img32x32=new ImageIcon(Unitex.class.getResource("32x32.png")).getImage();
+		Image img48x48=new ImageIcon(Unitex.class.getResource("48x48.png")).getImage();
+		frame.setIconImages(Arrays.asList(img16x16,img32x32,img48x48));
 		frame.setVisible(true);
 	}
 	
