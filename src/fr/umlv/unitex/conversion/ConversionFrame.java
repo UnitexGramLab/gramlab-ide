@@ -275,10 +275,10 @@ public class ConversionFrame extends JInternalFrame {
 							.dest(dest);
 				} catch (InvalidDestinationEncodingException e) {
 					e.printStackTrace();
-          return;
+					return;
 				} catch (InvalidSourceEncodingException e) {
 					e.printStackTrace();
-          return;
+					return;
 				}
 				if (replace.isSelected())
 					command = command.replace();
@@ -291,18 +291,16 @@ public class ConversionFrame extends JInternalFrame {
 				} else {
 					command = command.renameDestWithSuffix(preSuf);
 				}
-        final ConvertCommand cmd=command;
+				final ConvertCommand cmd=command;
 				setVisible(false);
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						int l = listModel.getSize();
-						MultiCommands commands = new MultiCommands();
 						for (int i = 0; i < l; i++) {
 							cmd.file((File)listModel.getElementAt(i));
-							commands.addCommand(cmd);
 						}
-						new ProcessInfoFrame(commands, false, null);
+						new ProcessInfoFrame(cmd, false, null);
 					}
 				});
 			}
