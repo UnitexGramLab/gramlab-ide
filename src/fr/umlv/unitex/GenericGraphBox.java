@@ -139,7 +139,7 @@ public abstract class GenericGraphBox {
 	 * Number of visible lines in the box: 0 if the box contains only the
 	 * espilon symbol, the number of lines otherwise
 	 */
-	public int n_lignes; // number of visible lines in the box
+	public int n_lines; // number of visible lines in the box
 
 	/**
 	 * X coordinate of the upper left corner of the box frame
@@ -210,7 +210,7 @@ public abstract class GenericGraphBox {
 		content = "<E>";
 		transduction = "";
 		variable = false;
-		n_lignes = 0;
+		n_lines = 0;
 		h_ligne = 15;
 		lines = new ArrayList<String>();
 		greyed = new ArrayList<Boolean>();
@@ -614,7 +614,7 @@ public abstract class GenericGraphBox {
 		else
 			g.setColor(parentGraphicalZone.pref.foregroundColor);
 		// drawing the box
-		if (n_lignes == 0) {
+		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 			if (parentGraphicalZone.pref.rightToLeft == false)
 				GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1 + Height);
@@ -640,7 +640,7 @@ public abstract class GenericGraphBox {
 	private void drawInitialSingleDrag(Graphics2D g) {
 		g.setColor(parentGraphicalZone.pref.foregroundColor);
 		// drawing the box
-		if (n_lignes == 0) {
+		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 		} else {
 			GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
@@ -682,7 +682,7 @@ public abstract class GenericGraphBox {
 		}
 		g.setColor(parentGraphicalZone.pref.commentColor);
 		// print lines if the box is empty
-		if (n_lignes == 0) {
+		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 			if (parentGraphicalZone.pref.rightToLeft == false)
 				GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1 + Height);
@@ -694,7 +694,7 @@ public abstract class GenericGraphBox {
 			g.setColor(parentGraphicalZone.pref.commentColor);
 		}
 		// prints the lines of the box
-		for (i = 0; i < n_lignes; i++) {
+		for (i = 0; i < n_lines; i++) {
 			is_greyed = greyed.get(i);
 			l = lines.get(i);
 			if (is_greyed.booleanValue()) {
@@ -814,7 +814,7 @@ public abstract class GenericGraphBox {
 		}
 		g.setColor(parentGraphicalZone.pref.foregroundColor);
 		// drawing the box
-		if (n_lignes == 0) {
+		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 			if (parentGraphicalZone.pref.rightToLeft == false)
 				GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1 + Height);
@@ -841,7 +841,7 @@ public abstract class GenericGraphBox {
 			}
 		}
 		// prints the lines of the box
-		for (i = 0; i < n_lignes; i++) {
+		for (i = 0; i < n_lines; i++) {
 			is_greyed = greyed.get(i);
 			l = lines.get(i);
 			if (is_greyed.booleanValue()) {
@@ -885,7 +885,7 @@ public abstract class GenericGraphBox {
 		}
 		g.setColor(parentGraphicalZone.pref.foregroundColor);
 		// drawing the box
-		if (n_lignes == 0) {
+		if (n_lines == 0) {
 			g.setColor(parentGraphicalZone.pref.selectedColor);
 			GraphicalToolBox.fillRect(g, X_in, Y_in - 10, 15, 20);
 			g.setColor(parentGraphicalZone.pref.backgroundColor);
@@ -909,7 +909,7 @@ public abstract class GenericGraphBox {
 		}
 		// prints the lines of the box
 		g.setColor(parentGraphicalZone.pref.backgroundColor);
-		for (i = 0; i < n_lignes; i++) {
+		for (i = 0; i < n_lines; i++) {
 			l = lines.get(i);
 			TextLayout textlayout = new TextLayout(l, parentGraphicalZone.pref.input, g.getFontRenderContext());
 			textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
@@ -1031,7 +1031,7 @@ public abstract class GenericGraphBox {
 		String s;
 		max = 0;
 		FontMetrics f = context.getFontMetrics(parentGraphicalZone.pref.input);
-		for (i = 0; i < n_lignes; i++) {
+		for (i = 0; i < n_lines; i++) {
 			s = lines.get(i);
 			if (max < f.stringWidth(s))
 				max = f.stringWidth(s);

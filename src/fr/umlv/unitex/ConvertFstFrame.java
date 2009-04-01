@@ -135,7 +135,7 @@ public class ConvertFstFrame extends JInternalFrame {
 			return;
 		}
 		Fst2UnambigCommand cmd = new Fst2UnambigCommand();
-		File fst2=new File(Config.getCurrentSntDir(),"text.fst2");
+		File fst2=new File(Config.getCurrentSntDir(),"text.tfst");
 		if (!fst2.exists()) {
 			JOptionPane.showMessageDialog(null,
 					"Cannot find text automaton", "Error",

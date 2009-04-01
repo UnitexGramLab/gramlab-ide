@@ -244,8 +244,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public void initText(String s) {
 		if (text instanceof TextField) {
 			((TextField) text).initText(s);
-		} else if (text instanceof FstTextField) {
-			((FstTextField) text).initText(s);
+		} else if (text instanceof TfstTextField) {
+			((TfstTextField) text).initText(s);
 		}
 	}
 
@@ -253,12 +253,13 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * Validates the text field content
 	 *  
 	 */
-	public void validateTextField() {
+	public boolean validateTextField() {
 		if (text instanceof TextField) {
-			((TextField) text).validateTextField();
-		} else if (text instanceof FstTextField) {
-			((FstTextField) text).validateTextField();
+			return ((TextField) text).validateTextField();
+		} else if (text instanceof TfstTextField) {
+		    return ((TfstTextField) text).validateTextField();
 		}
+		throw new AssertionError("Should not happen!");
 	}
 
 	/**
@@ -382,7 +383,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.setContent(s);
 		} else {
-			BoxeGroupTextEdit edit = new BoxeGroupTextEdit(selectedBoxes, s,
+			BoxGroupTextEdit edit = new BoxGroupTextEdit(selectedBoxes, s,
 					this);
 			postEdit(edit);
 			for (i = 0; i < L; i++) {
@@ -463,6 +464,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 				g.selected = true;
 				selectedBoxes.add(g);
 				initText(g.content);
+				if (this instanceof TfstGraphicalZone) {
+				    TfstGraphBox g2=(TfstGraphBox)g;
+				    TextAutomatonFrame.frame.bounds.setValue(g2.getBounds());
+				}
 			}
 		}
 		if (!selectedBoxes.isEmpty()) {

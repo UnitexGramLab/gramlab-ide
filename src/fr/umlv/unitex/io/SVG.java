@@ -161,7 +161,7 @@ public class SVG {
         }
 		Color color=preferences.foregroundColor;
 		// drawing the box
-		if (g.n_lignes == 0) {
+		if (g.n_lines == 0) {
 			drawLine(g.X_in, g.Y_in, g.X_in + 15, g.Y_in,color);
 			if (preferences.rightToLeft == false)
 				drawLine(g.X_in + 15, g.Y1, g.X_in + 15, g.Y1 + g.Height,color);
@@ -186,7 +186,7 @@ public class SVG {
 			}
 		}
 		// prints the lines of the box
-		for (int i = 0; i < g.n_lignes; i++) {
+		for (int i = 0; i < g.n_lines; i++) {
 			Boolean is_greyed = g.greyed.get(i);
 			String l = g.lines.get(i);
 			if (is_greyed.booleanValue()) {
@@ -213,7 +213,7 @@ public class SVG {
 		}
 		// print lines if the box is empty
 		Color color=preferences.commentColor;
-		if (g.n_lignes == 0) {
+		if (g.n_lines == 0) {
 			drawLine(g.X_in, g.Y_in, g.X_in + 15, g.Y_in,color);
 			if (preferences.rightToLeft == false)
 				drawLine(g.X_in + 15, g.Y1, g.X_in + 15, g.Y1 + g.Height,color);
@@ -223,7 +223,7 @@ public class SVG {
 			fillRect(g.X1, g.Y1, g.Width, g.Height,preferences.backgroundColor);
 		}
 		// prints the lines of the box
-		for (int i = 0; i < g.n_lignes; i++) {
+		for (int i = 0; i < g.n_lines; i++) {
 			Boolean is_greyed = g.greyed.get(i);
 			String l = g.lines.get(i);
 			if (is_greyed.booleanValue()) {

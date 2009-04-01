@@ -110,7 +110,7 @@ public class GraphBox extends GenericGraphBox {
 				if (i < L)
 					ligne[i] = '+';
 				i++;
-				n_lignes++;
+				n_lines++;
 				lines.add(tmp);
 				greyed.add(new Boolean(true));
 			} else {
@@ -184,7 +184,7 @@ public class GraphBox extends GenericGraphBox {
 				}
 				if (i < L)
 					ligne[i] = '+';
-				n_lignes++;
+				n_lines++;
 				lines.add(tmp);
 				greyed.add(new Boolean(false));
 				i++;
@@ -236,7 +236,7 @@ public class GraphBox extends GenericGraphBox {
 			lines.add(String.valueOf(ligne[L - 1]));
 			greyed.add(new Boolean(false));
 			transduction = content.substring(1, L - 1);
-			n_lignes = 1;
+			n_lines = 1;
 			Height = get_h_variable_ligne() + 3;
 			Width = maxVariableLineWidth() + 5;
 			Y1 = Y - Height / 2;
@@ -258,7 +258,7 @@ public class GraphBox extends GenericGraphBox {
 			lines.add(sub);
 			greyed.add(new Boolean(false));
 			transduction = "";
-			n_lignes = 1;
+			n_lines = 1;
 			Height = get_h_variable_ligne() + 3;
 			Width = maxContextMarkLineWidth(sub) + 5;
 			Y1 = Y - Height / 2;
@@ -277,7 +277,7 @@ public class GraphBox extends GenericGraphBox {
 				lines.add(sub);
 				greyed.add(new Boolean(false));
 				transduction = "";
-				n_lignes = 1;
+				n_lines = 1;
 				Height = get_h_variable_ligne() + 3;
 				Width = maxContextMarkLineWidth(sub) + 5;
 				Y1 = Y - Height / 2;
@@ -293,7 +293,7 @@ public class GraphBox extends GenericGraphBox {
 			while (i != L)
 				transduction = transduction.concat(String.valueOf(ligne[i++]));
 		}
-		n_lignes = 0;
+		n_lines = 0;
 		lines.clear();
 		greyed.clear();
 		try {
@@ -313,7 +313,7 @@ public class GraphBox extends GenericGraphBox {
 		if (!tmp.equals("<E>")) {
 			// dimensions of a full box
 			Width = maxLineWidth() + 10;
-			Height = n_lignes * get_h_ligne() + 6;
+			Height = n_lines * get_h_ligne() + 6;
 		} else {
 			// dimensions of an empty box
 			Height = 20;

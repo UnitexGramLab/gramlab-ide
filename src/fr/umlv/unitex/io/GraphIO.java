@@ -612,12 +612,12 @@ public class GraphIO {
          res.readBoxNumber(source);
          res.boxes= new ArrayList<GenericGraphBox>();
          // adding initial state
-         res.boxes.add(new FstGraphBox(0, 0, 0, null));
+         res.boxes.add(new TfstGraphBox(0, 0, 0, null));
          // adding final state
-         res.boxes.add(new FstGraphBox(0, 0, 1, null));
+         res.boxes.add(new TfstGraphBox(0, 0, 1, null));
          // adding other states
          for (int i= 2; i < res.nBoxes; i++)
-            res.boxes.add(new FstGraphBox(0, 0, 2, null));
+            res.boxes.add(new TfstGraphBox(0, 0, 2, null));
          for (int i= 0; i < res.nBoxes; i++)
             res.readSentenceGraphLine(source, i);
          source.close();
@@ -640,7 +640,7 @@ public class GraphIO {
    }
 
    private void readSentenceGraphLine(FileInputStream f, int n) {
-      FstGraphBox g= (FstGraphBox)boxes.get(n);
+       TfstGraphBox g= (TfstGraphBox)boxes.get(n);
       if (UnicodeIO.readChar(f) == 's') {
          // is a "s" was read, then we read the " char
          UnicodeIO.readChar(f);
@@ -697,10 +697,10 @@ public class GraphIO {
 
       if (n != 1) {
          // 1 is the final state, which content is <E>
-         g.setContent(s);
+         g.setContentWithBounds(s);
          // we will need to call g.update() to size the box according to the text
       } else {
-         g.setContent("<E>");
+         g.setContentWithBounds("<E>");
          g.setX_in(g.getX());
          g.setY_in(g.getY());
          g.setX1(g.getX());
@@ -834,11 +834,25 @@ public class GraphIO {
          nBoxes= boxes.size();
          UnicodeIO.writeString(dest, String.valueOf(nBoxes) + "\n");
          for (int i= 0; i < nBoxes; i++) {
-            FstGraphBox g= (FstGraphBox)boxes.get(i);
+             TfstGraphBox g= (TfstGraphBox)boxes.get(i);
             UnicodeIO.writeChar(dest, '"');
-            if (g.getType() != GenericGraphBox.FINAL)
-               write_content(dest, g.getContent());
-            int N= g.getTransitions().size();
+            int N=g.getTransitions().size();
+            if (g.getType() != GenericGraphBox.FINAL) {
+                String foo=g.getContent();
+                if (i==2 && foo.equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED")) {
+                    foo="<E>";
+                    N=0;
+                }
+                if (!foo.equals("<E>")) {
+                    if (g.getBounds()!=null) {
+                        foo=foo+"/"+g.getBounds();
+                    } else {
+                        /* Should not happen */
+                        throw new AssertionError("Bounds should not be null for a box content != <E>");
+                    }
+                }
+               write_content(dest,foo);
+            }
             UnicodeIO.writeString(
                dest,
                "\" "
@@ -849,7 +863,7 @@ public class GraphIO {
                   + String.valueOf(N)
                   + " ");
             for (int j= 0; j < N; j++) {
-               FstGraphBox tmp= (FstGraphBox)g.getTransitions().get(j);
+                TfstGraphBox tmp= (TfstGraphBox)g.getTransitions().get(j);
                UnicodeIO.writeString(
                   dest,
                   String.valueOf(boxes.indexOf(tmp)) + " ");
