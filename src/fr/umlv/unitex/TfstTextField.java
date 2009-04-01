@@ -34,7 +34,7 @@ import javax.swing.text.*;
  * @author Sébastien Paumier
  *
  */
-public class FstTextField extends JTextField {
+public class TfstTextField extends JTextField {
 
    protected TextAutomatonFrame parent;
    protected boolean modified= false;
@@ -49,7 +49,7 @@ public class FstTextField extends JTextField {
     * @param n number of columns
     * @param p frame that contains this component
     */
-   public FstTextField(int n, TextAutomatonFrame p) {
+   public TfstTextField(int n, TextAutomatonFrame p) {
       super(n);
       setEditable(false);
       modified= false;
@@ -197,7 +197,7 @@ public class FstTextField extends JTextField {
          } catch (IOException e2) {
             e2.printStackTrace();
          }
-         if (res == null || FstTextField.this.modified == true) {
+         if (res == null || TfstTextField.this.modified == true) {
             // if there is no boxes to copy we do a simple paste
             paste();
             return;
@@ -213,10 +213,9 @@ public class FstTextField extends JTextField {
     */
    public void initText(String s) {
       modified= false;
-      setEditable(true);
+      setEditable(s!=null && !s.equals(""));
       setText(s);
       requestFocus();
-      getCaret().setVisible(true);
       selectAll();
    }
 
@@ -230,14 +229,34 @@ public class FstTextField extends JTextField {
 
    /**
     * Validates the content of the text field as the content of selected boxes. 
-    * @return <code>true</code> if boxes have actually been modified, <code>false</code> otherwise 
+    * @return <code>true</code> if the content was valid, <code>false</code> otherwise 
     */
    public boolean validateTextField() {
-      if (!hasChangedTextField())
-         return false;
+       boolean multiboxesSelection=parent.graphicalZone.selectedBoxes.size()>1;
+       System.err.println("validateTextField: hasChangedTextField="+hasChangedTextField());
+       if (!hasChangedTextField() && TextAutomatonFrame.frame.bounds.getValue()!=null) {
+         return true;
+      }
+      System.out.println(TextAutomatonFrame.frame.bounds.boundsAreValid()+" => "+TextAutomatonFrame.frame.bounds.getValue());
+      String content=getText();
+      if (!multiboxesSelection && !TextAutomatonFrame.frame.bounds.boundsAreValid() && content!=null && !content.equals("")) {
+          /* Invalid bounds do not matter if the text is the empty string used to destroy boxes */
+          JOptionPane.showMessageDialog(
+                  null,
+                  "Invalid bounds",
+                  "Error",
+                  JOptionPane.ERROR_MESSAGE);
+               return false;
+      }
       if (isGoodText(getText())) {
          parent().graphicalZone.setTextForSelected(getText());
+         if (!multiboxesSelection) {
+             parent().graphicalZone.setBoundsForSelected(TextAutomatonFrame.frame.bounds.getValue());
+         }
          parent().graphicalZone.unSelectAllBoxes();
+         parent().graphicalZone.text.select(0,0);
+         TextAutomatonFrame.frame.bounds.setValue(null);
+         TextAutomatonFrame.frame.bounds.revalidate();
          setText("");
          parent().graphicalZone.repaint();
          setEditable(false);
@@ -247,6 +266,15 @@ public class FstTextField extends JTextField {
       return false;
    }
 
+   @Override
+public void setEditable(boolean b) {
+    Caret caret=getCaret();
+    if (caret!=null) {
+        caret.setVisible(b);
+    }
+    super.setEditable(b);
+}
+   
    class MyKeyListener extends KeyAdapter {
       
       public void keyPressed(KeyEvent e) {

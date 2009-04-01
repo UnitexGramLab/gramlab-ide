@@ -31,7 +31,7 @@ import fr.umlv.unitex.*;
  *  class uses to save the state of the graph before a boxes' text edit
  * @author Decreton Julien
  */
-public class BoxeGroupTextEdit extends AbstractUndoableEdit {
+public class BoxGroupTextEdit extends AbstractUndoableEdit {
 
 	/** boxes selected in the graph */
 	private ArrayList<GenericGraphBox> selectedBoxes;
@@ -51,7 +51,7 @@ public class BoxeGroupTextEdit extends AbstractUndoableEdit {
 	 * @param zone the zone where boxes are drawn 
 	 */
 	@SuppressWarnings("unchecked")
-	public BoxeGroupTextEdit(ArrayList<GenericGraphBox> selectedBoxes, String s, GenericGraphicalZone zone) {	
+	public BoxGroupTextEdit(ArrayList<GenericGraphBox> selectedBoxes, String s, GenericGraphicalZone zone) {	
 		this.selectedBoxes = selectedBoxes;
 		oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
 		selectedBoxesAndOldString = new HashMap<GenericGraphBox,String>();
