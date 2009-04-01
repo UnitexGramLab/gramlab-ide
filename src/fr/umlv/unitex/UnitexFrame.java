@@ -770,7 +770,7 @@ public class UnitexFrame extends JFrame {
 				final ActionEvent E = e;
 				if (TextAutomatonFrame.getFrame() != null
 						&& TextAutomatonFrame.getFrame().isSelected()) {
-					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).cut
+					((TfstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).cut
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
@@ -791,7 +791,7 @@ public class UnitexFrame extends JFrame {
 				final ActionEvent E = e;
 				if (TextAutomatonFrame.getFrame() != null
 						&& TextAutomatonFrame.getFrame().isSelected()) {
-					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).specialCopy
+					((TfstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).specialCopy
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
@@ -812,7 +812,7 @@ public class UnitexFrame extends JFrame {
 				final ActionEvent E = e;
 				if (TextAutomatonFrame.getFrame() != null
 						&& TextAutomatonFrame.getFrame().isSelected()) {
-					((FstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).specialPaste
+					((TfstTextField) TextAutomatonFrame.getFrame().graphicalZone.text).specialPaste
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {

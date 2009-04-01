@@ -72,7 +72,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			g.setContent("<E>");
 			// and the initial state
 			g2 = new GraphBox(70, 200, 0, this);
-			g2.n_lignes = 0;
+			g2.n_lines = 0;
 			g2.setContent("<E>");
 			addBox(g2);
 			addBox(g);
@@ -223,8 +223,10 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					|| (EDITING_MODE == MyCursors.KILL_BOXES)) {
 				return;
 			}
+			System.err.println("GZ: mouse pressed 1: selection empty="+selectedBoxes.isEmpty());
 			validateTextField();
-			X_start_drag = (int) (e.getX() / scaleFactor);
+			System.err.println("GZ: mouse pressed 2: selection empty="+selectedBoxes.isEmpty());
+            X_start_drag = (int) (e.getX() / scaleFactor);
 			Y_start_drag = (int) (e.getY() / scaleFactor);
 			X_end_drag = X_start_drag;
 			Y_end_drag = Y_start_drag;

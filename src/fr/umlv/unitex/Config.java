@@ -577,6 +577,7 @@ public class Config {
 				|| currentSystemName.equalsIgnoreCase("Windows 95")
 				|| currentSystemName.equalsIgnoreCase("Windows XP")
 				|| currentSystemName.equalsIgnoreCase("Windows ME")
+				|| currentSystemName.equalsIgnoreCase("Windows Server 2008")
 				|| currentSystemName.equalsIgnoreCase("Windows Vista")) {
 			currentSystem = WINDOWS_SYSTEM;
 		} else if (currentSystemName.equalsIgnoreCase("linux")) {

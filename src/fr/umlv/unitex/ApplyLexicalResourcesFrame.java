@@ -579,7 +579,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 //		getsearchResult.seqMorpF(new File(curSntDir,"seqMorphssyl.txt"));
 		Jamo2SylCommand getSylSentence = new Jamo2SylCommand()
 		    .decodage(new File(Config.getCurrentSntDir(),"sentence.fst2"));
-		Fst2GrfCommand phraseGrfcmd = new Fst2GrfCommand().automaton(
+		Tfst2GrfCommand phraseGrfcmd = new Tfst2GrfCommand().automaton(
 		        new File(Config.getCurrentSntDir(),
 		                "sentencesyl.fst2")
 				).sentence(1).font("Gulim");
