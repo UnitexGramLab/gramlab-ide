@@ -93,7 +93,7 @@ public class MultipleSelection {
       elem= new ArrayList<GraphBoxInfo>();
       for (int i= 0; i < L; i++) {
          // here we numerote the selected states
-         FstGraphBox g= (FstGraphBox)v.get(i);
+         TfstGraphBox g= (TfstGraphBox)v.get(i);
          g.identificationNumber= i;
          // and create the corresponding GraphBoxInfo
          GraphBoxInfo gbi= new GraphBoxInfo();
@@ -105,12 +105,12 @@ public class MultipleSelection {
       }
       for (int i= 0; i < L; i++) {
          // here we create relative transitions
-         FstGraphBox g= (FstGraphBox)v.get(i);
+         TfstGraphBox g= (TfstGraphBox)v.get(i);
          GraphBoxInfo gbi= elem.get(i);
          ArrayList<GenericGraphBox> temp= g.transitions;
          int k= temp.size();
          for (int j= 0; j < k; j++) {
-            FstGraphBox dest= (FstGraphBox)temp.get(j);
+            TfstGraphBox dest= (TfstGraphBox)temp.get(j);
             if (dest.identificationNumber != -1) {
                // we only consider the transitions that lead to box into the selection
                gbi.reachableBoxes.add(new Integer(dest.identificationNumber));
@@ -119,7 +119,7 @@ public class MultipleSelection {
       }
       for (int i= 0; i < L; i++) {
          // finally, we put the numero value back to -1
-         FstGraphBox g= (FstGraphBox)v.get(i);
+         TfstGraphBox g= (TfstGraphBox)v.get(i);
          g.identificationNumber= -1;
       }
    }

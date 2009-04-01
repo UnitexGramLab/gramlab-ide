@@ -143,9 +143,13 @@ public class ConstructFstFrame extends JDialog {
                     .getCurrentSntDir(),
                     "currentelagsentence.txt"));
             Config.deleteFileByName(new File(Config
-                  .getCurrentSntDir(), "text-elag.fst2"));
+                  .getCurrentSntDir(), "text-elag.tfst"));
             Config.deleteFileByName(new File(Config
-                  .getCurrentSntDir(), "text-elag.fst2.bak"));
+                  .getCurrentSntDir(), "text-elag.tfst.bak"));
+            Config.deleteFileByName(new File(Config
+                    .getCurrentSntDir(), "text-elag.tind"));
+            Config.deleteFileByName(new File(Config
+                    .getCurrentSntDir(), "text-elag.tind.bak"));
 
             File graphDir = new File(Config
                 .getUserCurrentLanguageDir(), "Graphs");
@@ -204,30 +208,20 @@ public class ConstructFstFrame extends JDialog {
               commands.addCommand(grfCommand);
                 }
 
-            Txt2Fst2Command txtCmd = new Txt2Fst2Command().text(
+            Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
                 Config.getCurrentSnt()).alphabet().clean(
                 cleanFst.isSelected());
             if (normFst.isSelected()) {
               txtCmd=txtCmd.fst2(
                   new File(normalizationDir, "Norm.fst2"));
             }
+            if (elagFst.isSelected()) {
+                txtCmd=txtCmd.tagset(new File(Config.getCurrentElagDir(),"tagset.def"));
+            }
             commands.addCommand(txtCmd);
-
-
-            /*
-               if (elagFst.isSelected()) {
-
-               TagsetNormFst2Command tagsetcmd = new TagsetNormFst2Command()
-               .tagset(new File(Config.getCurrentElagDir(), "tagset.def"))
-               .automaton(new File(Config.getCurrentSntDir(), "text.fst2"));
-
-               commands.addCommand(tagsetcmd);
-               }
-               */
-
             TextAutomatonFrame.hideFrame();
             new ProcessInfoFrame(commands, true,
-                new ConstructFstDo(elagFst.isSelected()),false);
+                new ConstructFstDo(),false);
           }
         });
         dispose();
@@ -250,19 +244,12 @@ public class ConstructFstFrame extends JDialog {
 
   class ConstructFstDo extends ToDoAbstract {
 
-    boolean normalize;
-
-    public ConstructFstDo(boolean norm) { normalize = norm; }
-
     public void toDo() {
       TextAutomatonFrame.showFrame();
       try {
-
         TextAutomatonFrame.getFrame().setIcon(false);
         TextAutomatonFrame.getFrame().setSelected(true);
-
-        if (normalize) { TextAutomatonFrame.normalizeFst(/*true*/false); }
-
+        TextAutomatonFrame.frame.loadCurrSentence();
       } catch (java.beans.PropertyVetoException e) {
     	  e.printStackTrace();
       }

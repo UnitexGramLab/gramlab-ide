@@ -469,7 +469,7 @@ public class PreprocessFrame extends JDialog {
 						norm = new File(norm, "Normalization");
 						norm = new File(norm, "Norm.fst2");
 						if (textFst2Check.isSelected()) {
-							Txt2Fst2Command txtCmd = new Txt2Fst2Command()
+							Txt2TfstCommand txtCmd = new Txt2TfstCommand()
 									.text(Config.getCurrentSnt()).alphabet()
 									.clean(true).fst2(norm);
 							commands.addCommand(txtCmd);

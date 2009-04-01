@@ -46,25 +46,23 @@ public class CommandMenuFactory {
             ,ElagCommand.class
             ,ElagCompCommand.class
             ,EvambCommand.class
-            ,ExplodeFst2Command.class
             ,ExtractCommand.class
             ,FlattenCommand.class
-            ,Fst2GrfCommand.class
             ,Fst2ListCommand.class
             ,Fst2TxtCommand.class
             ,Fst2UnambigCommand.class
             ,Grf2Fst2Command.class
-            ,ImplodeFst2Command.class
+            ,ImplodeTfstCommand.class
             ,InflectKrCommand.class
             ,Jamo2SylCommand.class
             ,LocateCommand.class
             ,MergeBinCommand.class
-            ,MergeTextAutomatonCommand.class
             /* This is normal that MkdirCommand is not in this list,
              * since it's not a Unitex command */
             ,MultiFlexCommand.class
             ,NormalizeCommand.class
             ,PolyLexCommand.class
+            ,RebuildTfstCommand.class
             ,ReconstrucaoCommand.class
             ,Reg2GrfCommand.class
             ,SortMorphCommand.class
@@ -72,11 +70,12 @@ public class CommandMenuFactory {
             ,SufForm2RacCommand.class
             ,Syl2JamoCommand.class
             ,Table2GrfCommand.class
-			,TagsetNormFst2Command.class
+			,TagsetNormTfstCommand.class
 			,TEI2TxtCommand.class
+			,Tfst2GrfCommand.class
             ,TokenizeCommand.class
-            ,Txt2Fst2Command.class
             ,Txt2Fst2KrCommand.class
+            ,Txt2TfstCommand.class
             ,XAlignCommand.class
             ,XMLizerCommand.class
             };
