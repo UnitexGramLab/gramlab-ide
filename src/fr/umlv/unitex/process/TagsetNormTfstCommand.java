@@ -28,20 +28,25 @@ import java.io.*;
  *  
  */
 
-public class TagsetNormFst2Command extends CommandBuilder {
+public class TagsetNormTfstCommand extends CommandBuilder {
 
-  public TagsetNormFst2Command() {
-    super("TagsetNormFst2");
+  public TagsetNormTfstCommand() {
+    super("TagsetNormTfst");
   }
 
-  public TagsetNormFst2Command automaton(File s) {
+  public TagsetNormTfstCommand automaton(File s) {
     protectElement(s.getAbsolutePath());
     return this;
   }
 
-  public TagsetNormFst2Command tagset(File s) {
+  public TagsetNormTfstCommand tagset(File s) {
     protectElement("-t"+s.getAbsolutePath());
     return this;
+  }
+
+  public TagsetNormTfstCommand output(File s) {
+      protectElement("-0"+s.getAbsolutePath());
+      return this;
   }
 }
 

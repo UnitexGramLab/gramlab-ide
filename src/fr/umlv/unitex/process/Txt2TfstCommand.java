@@ -29,32 +29,37 @@ import fr.umlv.unitex.*;
  * @author Sébastien Paumier
  *  
  */
-public class Txt2Fst2Command extends CommandBuilder {
+public class Txt2TfstCommand extends CommandBuilder {
 
-	public Txt2Fst2Command() {
-		super("Txt2Fst2");
+	public Txt2TfstCommand() {
+		super("Txt2Tfst");
 	}
 
-	public Txt2Fst2Command text(File s) {
+	public Txt2TfstCommand text(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
 
-	public Txt2Fst2Command alphabet() {
+	public Txt2TfstCommand alphabet() {
     protectElement("-a"+Config.getAlphabet().getAbsolutePath());
     return this;
 }
 
-	public Txt2Fst2Command clean(boolean clean) {
+	public Txt2TfstCommand clean(boolean clean) {
 		if (clean) {
 			element("--clean");
 		}
 		return this;
 	}
 
-	public Txt2Fst2Command fst2(File s) {
+	public Txt2TfstCommand fst2(File s) {
 		protectElement("-n"+s.getAbsolutePath());
 		return this;
+	}
+
+    public Txt2TfstCommand tagset(File s) {
+	     protectElement("-t"+s.getAbsolutePath());
+	     return this;
 	}
 
 }

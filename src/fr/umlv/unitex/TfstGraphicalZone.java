@@ -21,16 +21,25 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.print.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+
+import fr.umlv.unitex.tfst.Bounds;
 
 /**
  * This class describes a component on which a sentence graph can be drawn. 
  * @author Sébastien Paumier
  *
  */
-public class FstGraphicalZone
+public class TfstGraphicalZone
    extends GenericGraphicalZone
    implements Printable {
 
@@ -42,10 +51,10 @@ public class FstGraphicalZone
     * @param p frame that contains the component
     * @param listeners indicates if mouse listeners must be added to the component
     */
-   public FstGraphicalZone(
+   public TfstGraphicalZone(
       int w,
       int h,
-      FstTextField t,
+      TfstTextField t,
       TextAutomatonFrame p,
       boolean listeners) {
       super(w, h, t, p);
@@ -56,7 +65,7 @@ public class FstGraphicalZone
 
    protected void init() {
       for (int i= 0; i < graphBoxes.size(); i++) {
-         FstGraphBox g= (FstGraphBox)graphBoxes.get(i);
+         TfstGraphBox g= (TfstGraphBox)graphBoxes.get(i);
          g.context= (Graphics2D)this.getGraphics();
          g.parentGraphicalZone= this;
          g.update();
@@ -65,7 +74,7 @@ public class FstGraphicalZone
 
 
    protected GenericGraphBox createBox(int x, int y) {
-      FstGraphBox g= new FstGraphBox(x, y, 2,this);
+      TfstGraphBox g= new TfstGraphBox(x, y, 2,this);
       g.setContent("<E>");
       addBox(g);
       return g;
@@ -76,7 +85,7 @@ public class FstGraphicalZone
       int y,
       int type,
       GenericGraphicalZone p) {
-      return new FstGraphBox(x, y, type, (FstGraphicalZone)p);
+      return new TfstGraphBox(x, y, type, (TfstGraphicalZone)p);
    }
    class FstGraphMouseListener extends MouseAdapter {
 
@@ -84,8 +93,7 @@ public class FstGraphicalZone
 
       public void mouseClicked(MouseEvent e) {
          int boxSelected;
-         FstGraphBox b;
-
+         TfstGraphBox b;
          if (e.isShiftDown()) {
             // Shift+click
             // reverse transitions
@@ -95,7 +103,7 @@ public class FstGraphicalZone
                   (int) (e.getY() / scaleFactor));
             if (boxSelected != -1) {
                // if we click on a box
-               b= (FstGraphBox)graphBoxes.get(boxSelected);
+               b= (TfstGraphBox)graphBoxes.get(boxSelected);
                if (!selectedBoxes.isEmpty()) {
                   // if there are selected boxes, we rely them to the current
                   addReverseTransitionsFromSelectedBoxes(b);
@@ -105,6 +113,8 @@ public class FstGraphicalZone
             } else {
                // simple click not on a box
                initText("");
+               TextAutomatonFrame.frame.text.select(0,0);
+               TextAutomatonFrame.frame.bounds.reset();
                unSelectAllBoxes();
             }
          } else
@@ -112,7 +122,7 @@ public class FstGraphicalZone
                // Control+click
                // creation of a new box
                b=
-                  (FstGraphBox)createBox((int) (e.getX() / scaleFactor),
+                  (TfstGraphBox)createBox((int) (e.getX() / scaleFactor),
                      (int) (e.getY() / scaleFactor));
                setModified(true);
                // if some boxes are selected, we rely them to the new one
@@ -121,7 +131,8 @@ public class FstGraphicalZone
                }
                // then, the only selected box is the new one
                unSelectAllBoxes();
-               b.selected= true;
+               b.setSelected(true);
+               b.setContent("<E>");
                selectedBoxes.add(b);
                initText("<E>");
             } else {
@@ -131,7 +142,7 @@ public class FstGraphicalZone
                      (int) (e.getY() / scaleFactor));
                if (boxSelected != -1) {
                   // if we click on a box
-                  b= (FstGraphBox)graphBoxes.get(boxSelected);
+                  b= (TfstGraphBox)graphBoxes.get(boxSelected);
                   if (!selectedBoxes.isEmpty()) {
                      // if there are selected boxes, we rely them to the current
                      addTransitionsFromSelectedBoxes(b,true);
@@ -139,27 +150,32 @@ public class FstGraphicalZone
                      setModified(true);
                   } else {
                      // if not, we just select this one
-                     b.selected= true;
+                     b.setSelected(true);
                      selectedBoxes.add(b);
-                     initText(b.content);
+                     initText(b.getContent());
                   }
                } else {
                   // simple click not on a box
                   unSelectAllBoxes();
+                  TextAutomatonFrame.frame.text.select(0,0);
+                  TextAutomatonFrame.frame.bounds.reset();
                   initText("");
-                  text.setEditable(false);
+                  TextAutomatonFrame.frame.bounds.reset();
                }
             }
          repaint();
-         e.consume();
          return;
       }
 
       public void mousePressed(MouseEvent e) {
          int selectedBox;
          addMouseMotionListener(motionListener);
-         if (e.isShiftDown() || e.isAltDown() || e.isControlDown())
+         if (e.isShiftDown() || e.isAltDown() || e.isControlDown()) {
             return;
+         }
+         /*if (!validateTextField()) {
+             return;
+         }*/
          validateTextField();
          X_start_drag= (int) (e.getX() / scaleFactor);
          Y_start_drag= (int) (e.getY() / scaleFactor);
@@ -173,11 +189,12 @@ public class FstGraphicalZone
          singleDragging= false;
          dragging= false;
          selecting= false;
+         // TODO bug: les boites sélectionnées disparaissent quand on clique pour les désélectionner
          if (selectedBox != -1) {
             // if we start dragging a box
             singleDraggedBox= graphBoxes.get(selectedBox);
             initText(singleDraggedBox.content);
-            if (!singleDraggedBox.selected) {
+            if (!singleDraggedBox.isSelected()) {
                dragging= true;
                singleDragging= true;
                singleDraggedBox.singleDragging= true;
@@ -193,7 +210,6 @@ public class FstGraphicalZone
             initText("");
          }
          repaint();
-         e.consume();
       }
 
       public void mouseReleased(MouseEvent e) {
@@ -202,7 +218,7 @@ public class FstGraphicalZone
             return;
          dragging= false;
          initText("");
-         text.setEditable(false);
+         TextAutomatonFrame.frame.bounds.reset();
          if (singleDragging) {
             singleDragging= false;
             singleDraggedBox.singleDragging= false;
@@ -213,7 +229,6 @@ public class FstGraphicalZone
                selecting= false;
             }
          repaint();
-         e.consume();
       }
 
    }
@@ -238,7 +253,6 @@ public class FstGraphicalZone
             translateAllSelectedBoxes(dx, dy);
             // if we were dragging, we have nothing else to do
             repaint();
-            e.consume();
             return;
          }
 
@@ -256,9 +270,7 @@ public class FstGraphicalZone
             Y_drag= Y_end_drag;
             dragHeight= Y_start_drag - Y_end_drag;
          }
-
          repaint();
-         e.consume();
       }
 
    }
@@ -416,4 +428,42 @@ public class FstGraphicalZone
       return Printable.PAGE_EXISTS;
    }
 
-} /* end of FstGraphicalZone */
+
+
+/*
+public void startBoxEdition(GenericGraphBox box) {
+    TfstGraphBox box2=(TfstGraphBox)box;
+    ((FstTextField)text).initText(box.getContent());
+    TextAutomatonFrame.frame.bounds.setEnabled(true);
+    TextAutomatonFrame.frame.validateBoxEdition.setEnabled(true);
+    TextAutomatonFrame.frame.text.getCaret().setSelectionVisible(true);
+    TextAutomatonFrame.frame.bounds.setEditable(true);
+    if (box2.getStart()!=-1 && box2.getEnd()!=-1) {
+        TextAutomatonFrame.frame.text.select(box2.getStart(),box2.getEnd());
+    }
+    modified=false;
+}*/
+
+/*
+public void boxEditionHasEnded() {
+    text.setText("");
+    text.setEnabled(false);
+    TextAutomatonFrame.frame.bounds.setText("");
+    TextAutomatonFrame.frame.bounds.setEnabled(false);
+    TextAutomatonFrame.frame.validateBoxEdition.setEnabled(false);
+    TextAutomatonFrame.frame.text.select(0,0);
+    modified=false;
+}*/
+
+   public void setBoundsForSelected(Bounds b) {
+       int i, L;
+       TfstGraphBox g;
+       if (selectedBoxes.isEmpty()) return;
+       L = selectedBoxes.size();
+       for (i = 0; i < L; i++) {
+           g = (TfstGraphBox) selectedBoxes.get(i);
+           g.setBounds(b);
+       }
+   }
+
+} /* end of TfstGraphicalZone */
