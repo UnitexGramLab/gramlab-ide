@@ -23,17 +23,18 @@ package fr.umlv.unitex.process;
 
 import java.io.*;
 
+
 /**
  * @author Sébastien Paumier
  *  
  */
-public class MergeTextAutomatonCommand extends CommandBuilder {
+public class RebuildTfstCommand extends CommandBuilder {
 
-	public MergeTextAutomatonCommand() {
-		super("MergeTextAutomaton");
+	public RebuildTfstCommand() {
+		super("RebuildTfst");
 	}
-
-	public MergeTextAutomatonCommand automaton(File s) {
+	
+	public RebuildTfstCommand automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}

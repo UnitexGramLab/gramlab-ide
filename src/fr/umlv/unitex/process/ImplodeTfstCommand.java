@@ -27,18 +27,18 @@ import java.io.*;
  * @author Sébastien Paumier
  *  
  */
-public class ImplodeFst2Command extends CommandBuilder {
+public class ImplodeTfstCommand extends CommandBuilder {
 
-	public ImplodeFst2Command() {
-		super("ImplodeFst2");
+	public ImplodeTfstCommand() {
+		super("ImplodeTfst");
 	}
 
-	public ImplodeFst2Command automaton(File s) {
+	public ImplodeTfstCommand automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
 
-    public ImplodeFst2Command output(File s) {
+    public ImplodeTfstCommand output(File s) {
         element("-o");
         protectElement(s.getAbsolutePath());
         return this;

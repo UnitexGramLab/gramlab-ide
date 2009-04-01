@@ -27,34 +27,34 @@ import java.io.File;
  * @author Sébastien Paumier
  *  
  */
-public class Fst2GrfCommand extends CommandBuilder {
+public class Tfst2GrfCommand extends CommandBuilder {
 
-	public Fst2GrfCommand() {
-		super("Fst2Grf");
+	public Tfst2GrfCommand() {
+		super("Tfst2Grf");
 	}
 
-	public Fst2GrfCommand automaton(File s) {
+	public Tfst2GrfCommand automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
 
-	public Fst2GrfCommand sentence(int n) {
+	public Tfst2GrfCommand sentence(int n) {
 		element("-s"+n);
 		return this;
 	}
 
-	public Fst2GrfCommand sentence(String n) {
+	public Tfst2GrfCommand sentence(String n) {
 		Integer.parseInt(n);
 		element("-s"+n);
 		return this;
 	}
 
-	public Fst2GrfCommand output(String s) {
+	public Tfst2GrfCommand output(String s) {
 		protectElement("-o"+s);
 		return this;
 	}
 
-	public Fst2GrfCommand font(String s) {
+	public Tfst2GrfCommand font(String s) {
 	    protectElement("-f"+s);
 		return this;
 	}
