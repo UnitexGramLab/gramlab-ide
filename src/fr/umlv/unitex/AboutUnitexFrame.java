@@ -45,7 +45,6 @@ public class AboutUnitexFrame extends JInternalFrame {
 		JPanel top = new JPanel();
 		top.setOpaque(true);
 		top.setLayout(new BorderLayout());
-		BigTextArea licenseGPL=new BigTextArea(new File(Config.getApplicationDir(),"GPL.txt"));
 		BigTextArea licenseLGPL=new BigTextArea(new File(Config.getApplicationDir(),"LGPL.txt"));
 		BigTextArea licenseLGPLLR=new BigTextArea(new File(Config.getApplicationDir(),"LGPLLR.txt"));
 		BigTextArea apache=new BigTextArea(new File(Config.getApplicationDir(),"Apache-1.1.txt"));
@@ -67,7 +66,6 @@ public class AboutUnitexFrame extends JInternalFrame {
 		top.add(up, BorderLayout.NORTH);
 		JTabbedPane licenses = new JTabbedPane();
 		licenses.add(licenseLGPL,"LGPL");
-		licenses.add(licenseGPL,"GPL");
 		licenses.add(licenseLGPLLR,"LGPLLR");
 		licenses.add(apache,"Apache");
 		top.add(licenses, BorderLayout.CENTER);
