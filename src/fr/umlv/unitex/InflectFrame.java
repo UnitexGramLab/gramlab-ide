@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -35,17 +35,18 @@ import fr.umlv.unitex.process.*;
  * This class describes a frame that allows the user to set parameters of the
  * inflection of the current open dictionary.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class InflectFrame extends JInternalFrame {
 
 	static InflectFrame frame;
 	JTextField directory = new JTextField("");
-	JCheckBox twoPointsCheck = new JCheckBox(
-			"Add ':' before inflectional codes if necessary", true);
-	JCheckBox removeClassNumbers = new JCheckBox("Remove class numbers", true);
 
+	JRadioButton allWords=new JRadioButton("Allow both simple and compound words",true);
+	JRadioButton onlySimpleWords=new JRadioButton("Allow only simple words",false);
+	JRadioButton onlyCompoundWords=new JRadioButton("Allow only compound words",false);
+	
     
 	private InflectFrame() {
 		super("Inflection", false, true);
@@ -97,7 +98,7 @@ public class InflectFrame extends JInternalFrame {
 	}
 
 	private JPanel constructUpPanel() {
-		JPanel upPanel = new JPanel(new GridLayout(3, 1));
+		JPanel upPanel = new JPanel(new GridLayout(4, 1));
 		upPanel.setBorder(new TitledBorder(
 				"Directory where inflectional FST2 are stored: "));
 		JPanel tempPanel = new JPanel(new BorderLayout());
@@ -118,8 +119,13 @@ public class InflectFrame extends JInternalFrame {
 		JButton setDirectory = new JButton(setDirectoryAction);
 		tempPanel.add(setDirectory, BorderLayout.EAST);
 		upPanel.add(tempPanel);
-		//upPanel.add(twoPointsCheck);
-		//upPanel.add(removeClassNumbers);
+		ButtonGroup bg=new ButtonGroup();
+		bg.add(allWords);
+		bg.add(onlySimpleWords);
+		bg.add(onlyCompoundWords);
+		upPanel.add(allWords);
+		upPanel.add(onlySimpleWords);
+		upPanel.add(onlyCompoundWords);
 		return upPanel;
 	}
 
@@ -165,6 +171,11 @@ public class InflectFrame extends JInternalFrame {
         .result(new File(tmp))
         .alphabet(Config.getAlphabet())
     	.dir(new File(directory.getText()));
+    	if (onlySimpleWords.isSelected()) {
+    		command=command.onlySimpleWords();
+    	} else if (onlyCompoundWords.isSelected()) {
+    		command=command.onlyCompoundWords();
+    	}
         new ProcessInfoFrame(command, false, null);
 	}
 
