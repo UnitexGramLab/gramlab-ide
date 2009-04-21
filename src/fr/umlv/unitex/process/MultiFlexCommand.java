@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ package fr.umlv.unitex.process;
 import java.io.*;
 
 /**
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class MultiFlexCommand extends CommandBuilder {
@@ -50,6 +50,15 @@ public class MultiFlexCommand extends CommandBuilder {
 
     public MultiFlexCommand dir(File s) {
         protectElement("-d"+s.getAbsolutePath());
+        return this;
+    }
+    
+    public MultiFlexCommand onlySimpleWords() {
+        protectElement("-s");
+        return this;
+    }
+    public MultiFlexCommand onlyCompoundWords() {
+        protectElement("-c");
         return this;
     }
 
