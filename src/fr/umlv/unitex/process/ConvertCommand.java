@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import java.util.*;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.exceptions.*;
 /**
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class ConvertCommand extends CommandBuilder {
@@ -46,7 +46,7 @@ public class ConvertCommand extends CommandBuilder {
 			element("-s"+s);
 			return this;
 		}
-		throw new InvalidSourceEncodingException();
+		throw new InvalidSourceEncodingException(s);
 	}
 
 	public ConvertCommand dest(String s)

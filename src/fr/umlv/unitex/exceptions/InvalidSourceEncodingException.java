@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,5 +22,9 @@
 package fr.umlv.unitex.exceptions;
 
 public class InvalidSourceEncodingException extends Exception {
+	
+	public InvalidSourceEncodingException(String s) {
+		super(s);
+	}
 	// nothing to do
 }
