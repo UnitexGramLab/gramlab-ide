@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ import fr.umlv.unitex.process.*;
 /**
  * This class provides a file transcoding internal frame.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  */
 public class ConversionFrame extends JInternalFrame {
 
@@ -131,8 +131,8 @@ public class ConversionFrame extends JInternalFrame {
 			return "THAI";
 
 		else {
-			// by default, we chose the latin codepage
-			return "LATIN";
+			// by default, we chose the latin1 codepage
+			return "LATIN1";
 		}
 	}
 
@@ -346,7 +346,7 @@ public class ConversionFrame extends JInternalFrame {
 
 	public static boolean validEncoding(String[] tab, String s) {
 		for (int i = 0; i < tab.length; i++) {
-			if (tab[i].equals(s))
+			if (tab[i].equalsIgnoreCase(s))
 				return true;
 		}
 		return false;
