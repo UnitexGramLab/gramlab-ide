@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,12 +31,11 @@ import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
 
-
 /**
  * This class describes the locate pattern frame.
  * 
- * @author Sébastien Paumier
- *  
+ * @author Sï¿½bastien Paumier
+ * 
  */
 public class LocateFrame extends JInternalFrame {
 
@@ -49,12 +48,17 @@ public class LocateFrame extends JInternalFrame {
 	JRadioButton shortestMatches = new JRadioButton("Shortest matches", false);
 	JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
 	JRadioButton allMatches = new JRadioButton("All matches", false);
-	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",true);
+	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",
+			true);
 	JRadioButton mergeOutputs = new JRadioButton("Merge with input text", false);
-	JRadioButton replaceOutputs = new JRadioButton("Replace recognized sequences", false);
+	JRadioButton replaceOutputs = new JRadioButton(
+			"Replace recognized sequences", false);
 	JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
-	JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text", false);
+	JRadioButton indexAllMatches = new JRadioButton(
+			"Index all utterances in text", false);
 	NumericTextField nMatches = new NumericTextField("200");
+	JRadioButton locateOnSnt = new JRadioButton("text", true);
+	JRadioButton locateOnTfst = new JRadioButton("text automaton", false);
 
 	private LocateFrame() {
 		super("Locate Pattern", false, true);
@@ -70,13 +74,14 @@ public class LocateFrame extends JInternalFrame {
 		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				regExp.setFont(font);
-			}});
+			}
+		});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 	/**
 	 * Initializes the frame
-	 *  
+	 * 
 	 */
 	private static void init() {
 		frame = new LocateFrame();
@@ -85,7 +90,7 @@ public class LocateFrame extends JInternalFrame {
 
 	/**
 	 * Shows the frame
-	 *  
+	 * 
 	 */
 	public static void showFrame() {
 		if (frame == null) {
@@ -165,6 +170,16 @@ public class LocateFrame extends JInternalFrame {
 		};
 		JButton searchButton = new JButton(searchAction);
 		b.add(searchButton, BorderLayout.CENTER);
+
+		JPanel textType = new JPanel(new GridLayout(2, 1));
+		textType.setBorder(BorderFactory
+				.createTitledBorder("Perform locate on:"));
+		ButtonGroup bg = new ButtonGroup();
+		textType.add(locateOnSnt);
+		textType.add(locateOnTfst);
+		bg.add(locateOnSnt);
+		bg.add(locateOnTfst);
+		b.add(textType, BorderLayout.SOUTH);
 		downPanel.add(a, BorderLayout.CENTER);
 		downPanel.add(b, BorderLayout.SOUTH);
 		return downPanel;
@@ -233,10 +248,10 @@ public class LocateFrame extends JInternalFrame {
 			createRegExpFile(regExp.getText(), regexpFile);
 			Reg2GrfCommand reg2GrfCmd = new Reg2GrfCommand().file(regexpFile);
 			commands.addCommand(reg2GrfCmd);
-			Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(Config
-					.getUserCurrentLanguageDir(), "regexp.grf"))
-					.enableLoopAndRecursionDetection(true)
-					.tokenizationMode().library();
+			Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
+					new File(Config.getUserCurrentLanguageDir(), "regexp.grf"))
+					.enableLoopAndRecursionDetection(true).tokenizationMode()
+					.library();
 			commands.addCommand(grfCmd);
 			fst2 = new File(Config.getUserCurrentLanguageDir(), "regexp.fst2");
 		} else {
@@ -251,8 +266,9 @@ public class LocateFrame extends JInternalFrame {
 			if (grfName.substring(grfName.length() - 3, grfName.length())
 					.equalsIgnoreCase("grf")) {
 				// we must compile the grf
-				Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(
-						grfName)).enableLoopAndRecursionDetection(true)
+				Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
+						new File(grfName))
+						.enableLoopAndRecursionDetection(true)
 						.tokenizationMode().library();
 				commands.addCommand(grfCmd);
 				String fst2Name = grfName.substring(0, grfName.length() - 3);
@@ -270,47 +286,76 @@ public class LocateFrame extends JInternalFrame {
 				fst2 = new File(grfName);
 			}
 		}
-		LocateCommand locateCmd = new LocateCommand().snt(
-				Config.getCurrentSnt()).fst2(fst2).alphabet();
-		if (shortestMatches.isSelected())
-			locateCmd = locateCmd.shortestMatches();
-		else if (longuestMatches.isSelected())
-			locateCmd = locateCmd.longestMatches();
-		else
-			locateCmd = locateCmd.allMatches();
-		if (ignoreOutputs.isSelected())
-			locateCmd = locateCmd.ignoreOutputs();
-		else if (mergeOutputs.isSelected())
-			locateCmd = locateCmd.mergeOutputs();
-		else
-			locateCmd = locateCmd.replaceWithOutputs();
-		if (stopAfterNmatches.isSelected()) {
-			locateCmd = locateCmd.limit(nMatches.getText());
+		ToDoAbstract toDo;
+		if (locateOnSnt.isSelected()) {
+			/* Locate on .snt text */
+			LocateCommand locateCmd = new LocateCommand().snt(
+					Config.getCurrentSnt()).fst2(fst2).alphabet();
+			if (shortestMatches.isSelected())
+				locateCmd = locateCmd.shortestMatches();
+			else if (longuestMatches.isSelected())
+				locateCmd = locateCmd.longestMatches();
+			else
+				locateCmd = locateCmd.allMatches();
+			if (ignoreOutputs.isSelected())
+				locateCmd = locateCmd.ignoreOutputs();
+			else if (mergeOutputs.isSelected())
+				locateCmd = locateCmd.mergeOutputs();
+			else
+				locateCmd = locateCmd.replaceWithOutputs();
+			if (stopAfterNmatches.isSelected()) {
+				locateCmd = locateCmd.limit(nMatches.getText());
+			} else {
+				locateCmd = locateCmd.noLimit();
+			}
+			if (Config.isCharByCharLanguage()) {
+				locateCmd = locateCmd.charByChar();
+			}
+			if (Config.morphologicalUseOfSpaceAllowed()) {
+				locateCmd = locateCmd.enableMorphologicalUseOfSpace();
+			}
+			locateCmd = locateCmd
+					.morphologicalDic(Preferences.pref.morphologicalDic);
+			commands.addCommand(locateCmd);
+			toDo=new LocateDo();
 		} else {
-			locateCmd = locateCmd.noLimit();
+			LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(
+					new File(Config.getCurrentSntDir(),"text.tfst")).fst2(fst2).alphabet();
+			if (shortestMatches.isSelected())
+				locateCmd = locateCmd.shortestMatches();
+			else if (longuestMatches.isSelected())
+				locateCmd = locateCmd.longestMatches();
+			else
+				locateCmd = locateCmd.allMatches();
+			if (ignoreOutputs.isSelected())
+				locateCmd = locateCmd.ignoreOutputs();
+			else if (mergeOutputs.isSelected())
+				locateCmd = locateCmd.mergeOutputs();
+			else
+				locateCmd = locateCmd.replaceWithOutputs();
+			if (stopAfterNmatches.isSelected()) {
+				locateCmd = locateCmd.limit(nMatches.getText());
+			} else {
+				locateCmd = locateCmd.noLimit();
+			}
+			commands.addCommand(locateCmd);
+			toDo=new LocateTfstDo();
 		}
-		if (Config.isCharByCharLanguage()) {
-			locateCmd = locateCmd.charByChar();
-		}
-		if (Config.morphologicalUseOfSpaceAllowed()) {
-			locateCmd = locateCmd.enableMorphologicalUseOfSpace();
-		}
-		locateCmd=locateCmd.morphologicalDic(Preferences.pref.morphologicalDic);
-		commands.addCommand(locateCmd);
 		frame.setVisible(false);
 		savePreviousConcordance();
-		new ProcessInfoFrame(commands, true, new LocateDo());
+		new ProcessInfoFrame(commands,true,toDo);
 	}
 
 	/**
 	 * 
 	 */
 	private void savePreviousConcordance() {
-		File prevConcord=new File(Config.getCurrentSntDir(),"previous-concord.ind");
+		File prevConcord = new File(Config.getCurrentSntDir(),
+				"previous-concord.ind");
 		if (prevConcord.exists()) {
 			prevConcord.delete();
 		}
-		File concord=new File(Config.getCurrentSntDir(),"concord.ind");
+		File concord = new File(Config.getCurrentSntDir(), "concord.ind");
 		if (concord.exists()) {
 			concord.renameTo(prevConcord);
 		}
@@ -331,6 +376,9 @@ public class LocateFrame extends JInternalFrame {
 		}
 	}
 
+	/**
+	 * Loads the content of a 'concord.n' file.
+	 */
 	static String readInfo(File file) {
 		if (!file.exists()) {
 			return null;
@@ -356,8 +404,34 @@ public class LocateFrame extends JInternalFrame {
 		return res;
 	}
 
+	/**
+	 * Loads the content of a 'concord_tfst.n' file.
+	 */
+	static String readTfstInfo(File file) {
+		if (!file.exists()) {
+			return null;
+		}
+		if (!file.canRead()) {
+			return null;
+		}
+		String res;
+		FileInputStream source;
+		try {
+			source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
+			res = UnicodeIO.readLine(source);
+			source.close();
+		} catch (NotAUnicodeLittleEndianFileException e) {
+			return null;
+		} catch (FileNotFoundException e) {
+			return null;
+		} catch (IOException e) {
+			return null;
+		}
+		return res;
+	}
+
 	class LocateDo extends ToDoAbstract {
-		
+
 		public void toDo() {
 			String res = readInfo(new File(Config.getCurrentSntDir(),
 					"concord.n"));
@@ -365,7 +439,21 @@ public class LocateFrame extends JInternalFrame {
 					.getCurrentSntDir(), "concord.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
-			res2=res2.substring(0,res2.indexOf(' '));
+			res2 = res2.substring(0, res2.indexOf(' '));
+			ConcordanceParameterFrame.showFrame(Util.toInt(res2));
+		}
+	}
+
+	class LocateTfstDo extends ToDoAbstract {
+
+		public void toDo() {
+			String res = readTfstInfo(new File(Config.getCurrentSntDir(),
+					"concord_tfst.n"));
+			String res2 = UnicodeIO.readFirstLine(new File(Config
+					.getCurrentSntDir(), "concord_tfst.n"));
+			JOptionPane.showMessageDialog(null, res, "Result Info",
+					JOptionPane.PLAIN_MESSAGE);
+			res2 = res2.substring(0, res2.indexOf(' '));
 			ConcordanceParameterFrame.showFrame(Util.toInt(res2));
 		}
 	}

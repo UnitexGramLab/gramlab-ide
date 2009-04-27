@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import javax.swing.JMenuItem;
 
 
 /**
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class CommandMenuFactory {
@@ -56,6 +56,7 @@ public class CommandMenuFactory {
             ,InflectKrCommand.class
             ,Jamo2SylCommand.class
             ,LocateCommand.class
+            ,LocateTfstCommand.class
             ,MergeBinCommand.class
             /* This is normal that MkdirCommand is not in this list,
              * since it's not a Unitex command */
