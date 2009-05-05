@@ -278,58 +278,6 @@ public class TfstGraphicalZone
 
    /* end of events handling */
 
-   /*
-    * Painting the boxes and transitions
-    *
-    */
-   /*public void addTransitions(FstGraphBox dest) {
-      int i, L;
-      FstGraphBox g;
-      if (selectedBoxes.isEmpty())
-         return;
-      L= selectedBoxes.size();
-      for (i= 0; i < L; i++) {
-         g= (FstGraphBox)selectedBoxes.get(i);
-         g.addTransitionTo(dest);
-      }
-   }*/
-
-   /*public void addReverseTransitions(FstGraphBox from) {
-      int i, L;
-      FstGraphBox g;
-      if (selectedBoxes.isEmpty())
-         return;
-      L= selectedBoxes.size();
-      for (i= 0; i < L; i++) {
-         g= (FstGraphBox)selectedBoxes.get(i);
-         from.addTransitionTo(g);
-      }
-   }*/
-
-   /*public void drawAllTransitions(Graphics gr) {
-      int i, L;
-      FstGraphBox g;
-      if (graphBoxes.isEmpty())
-         return;
-      L= graphBoxes.size();
-      for (i= 0; i < L; i++) {
-         g= (FstGraphBox)graphBoxes.get(i);
-         g.drawTransitions(gr);
-      }
-   }*/
-
-   /*public void drawAllBoxes(Graphics gr) {
-      int i, L;
-      FstGraphBox g;
-      if (graphBoxes.isEmpty())
-         return;
-      L= graphBoxes.size();
-      for (i= 0; i < L; i++) {
-         g= (FstGraphBox)graphBoxes.get(i);
-         g.draw(gr);
-      }
-   }
-   */
 
    /**
     * Draws the graph. This method should only be called by the virtual machine.
@@ -378,16 +326,7 @@ public class TfstGraphicalZone
       }
    }
 
-   /* public void updateAllBoxes() {
-       FstGraphBox g;
-       int i;
-       for (i= 0; i < graphBoxes.size(); i++) {
-          g= (FstGraphBox)graphBoxes.get(i);
-          g.update();
-       }
-       repaint();
-    }*/
-
+   
    /**
     * Prints the graph.
     * @param g the graphical context
