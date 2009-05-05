@@ -425,6 +425,7 @@ public abstract class GenericGraphBox {
 	 *            the destination box
 	 */
 	public void drawTransition(Graphics2D g, GenericGraphBox dest) {
+	    g.setColor(parentGraphicalZone.pref.foregroundColor);
 		if (!parentGraphicalZone.pref.rightToLeft) {
 			if (dest.X_in > this.X_out) {
 				// easiest case: drawing a line
@@ -601,7 +602,6 @@ public abstract class GenericGraphBox {
 		if (transitions.isEmpty())
 			return;
 		L = transitions.size();
-		gr.setColor(parentGraphicalZone.pref.foregroundColor);
 		for (i = 0; i < L; i++) {
 			g = transitions.get(i);
 			drawTransition(gr, g);
@@ -1201,7 +1201,7 @@ public abstract class GenericGraphBox {
 		this.transitions = transitions;
 	}
 
-	private void updateWithContext(Graphics2D g) {
+	void updateWithContext(Graphics2D g) {
 		if (context != null) {
 			return;
 		}
