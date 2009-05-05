@@ -21,6 +21,9 @@
 
 package fr.umlv.unitex;
 
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -143,14 +146,18 @@ public class TfstGraphBox extends GenericGraphBox {
         Scanner scanner = new Scanner(s);
         try {
             int start_pos_in_tokens = scanner.nextInt();
-            int start_pos_in_chars = scanner.nextInt();
-            int end_pos_in_tokens = scanner.nextInt();
-            int end_pos_in_chars = scanner.nextInt();
             if (start_pos_in_tokens==-1) {
                 bounds=null;
             } else {
                 /* Nothing to do if the bounds are not computable */
-                bounds=new Bounds(start_pos_in_tokens,start_pos_in_chars,end_pos_in_tokens,end_pos_in_chars);
+                int start_pos_in_chars = scanner.nextInt();
+                int start_pos_in_letters = scanner.nextInt();
+                int end_pos_in_tokens = scanner.nextInt();
+                int end_pos_in_chars = scanner.nextInt();
+                int end_pos_in_letters = scanner.nextInt();
+                int syllab_bound_on_the_right = scanner.nextInt();
+                bounds=new Bounds(start_pos_in_tokens,start_pos_in_chars,start_pos_in_letters,
+                        end_pos_in_tokens,end_pos_in_chars,end_pos_in_letters,syllab_bound_on_the_right==1);
             }
         } catch (InputMismatchException e) {
             throw new AssertionError("Malformed token information: " + s);
@@ -229,5 +236,34 @@ public class TfstGraphBox extends GenericGraphBox {
 
     public void setBounds(Bounds b) {
         bounds=b;
+    }
+    
+    
+    BasicStroke morphologicalStroke=new BasicStroke(2,BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_BEVEL,2,new float[] {10f,10f},4f);
+    
+    /**
+     * Draws a transition to a box.
+     * Modified from GenericGraphBox in order
+     * to display bold colored transitions.
+     * 
+     * @param gr
+     *            the graphical context
+     */
+    public void drawTransition(Graphics2D g, GenericGraphBox dest) {
+        TfstGraphBox box = (TfstGraphBox) dest;
+        if (box.bounds != null) {
+            int startPosInChars = box.bounds.getStart_in_chars();
+            if (startPosInChars != 0 || box.bounds.getStart_in_letters()!=0) {
+                Stroke old = g.getStroke();
+                g.setStroke(morphologicalStroke);
+                super.drawTransition(g, dest);
+                g.setStroke(old);
+            } else {
+                super.drawTransition(g, dest);
+            }
+        } else {
+            super.drawTransition(g, dest);
+        }
     }
 }

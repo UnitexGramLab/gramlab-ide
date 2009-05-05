@@ -634,7 +634,7 @@ public class Config {
 		} else {
 			applicationDir = s;
 		}
-		setUnitexDir(s.getParentFile());
+		setUnitexDir(applicationDir.getParentFile());
 	}
 
 	/**
