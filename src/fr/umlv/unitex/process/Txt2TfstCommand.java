@@ -62,4 +62,14 @@ public class Txt2TfstCommand extends CommandBuilder {
 	     return this;
 	}
 
+    public Txt2TfstCommand jamoTable(File s) {
+        protectElement("-k"+s.getAbsolutePath());
+        return this;
+    }
+
+    public Txt2TfstCommand jamoFst2(File s) {
+        protectElement("-j"+s.getAbsolutePath());
+        return this;
+    }
+    
 }
