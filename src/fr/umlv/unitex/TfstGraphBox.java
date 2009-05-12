@@ -156,6 +156,9 @@ public class TfstGraphBox extends GenericGraphBox {
                 int end_pos_in_chars = scanner.nextInt();
                 int end_pos_in_letters = scanner.nextInt();
                 int syllab_bound_on_the_right = scanner.nextInt();
+                if (scanner.hasNext()) {
+                    throw new AssertionError("Malformed token information: " + s);
+                }
                 bounds=new Bounds(start_pos_in_tokens,start_pos_in_chars,start_pos_in_letters,
                         end_pos_in_tokens,end_pos_in_chars,end_pos_in_letters,syllab_bound_on_the_right==1);
             }
@@ -164,9 +167,6 @@ public class TfstGraphBox extends GenericGraphBox {
         } catch (NoSuchElementException e) {
             throw new AssertionError("Malformed token information: " + s);
         } catch (IllegalStateException e) {
-            throw new AssertionError("Malformed token information: " + s);
-        }
-        if (scanner.hasNext()) {
             throw new AssertionError("Malformed token information: " + s);
         }
     }

@@ -437,10 +437,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 					public void run() {
 						TextDicFrame.hideFrame();
 						MultiCommands commands;
-						if(Config.isAgglutinativeLanguage()){
-							commands = getRunCmdForAgglutinativeLanguages();
+						if(Config.isKorean()){
+							commands = getRunCmdForKorean();
 						} else {
-							commands = getRunCmdForNonAgglutinativeLanguages();
+							commands = getRunCmd();
 						}
 						if(commands.numberOfCommands() == 0) return;
 						
@@ -461,7 +461,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 * non agglutinative languages.
 	 * @return a <code>MultiCommands</code> object that contains the command lines
 	 */
-	MultiCommands getRunCmdForNonAgglutinativeLanguages()
+	MultiCommands getRunCmd()
 	{
 		MultiCommands commands = new MultiCommands();
 
@@ -529,14 +529,14 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 * @return a <code>MultiCommands</code> object that contains the command lines
 	 */
 
-	MultiCommands getRunCmdForAgglutinativeLanguages()
+	MultiCommands getRunCmdForKorean()
 	{
 		MultiCommands commands = new MultiCommands();
 		Object[] userSelection = userDicList.getSelectedValues();
 		Object[] systemSelection = systemDicList.getSelectedValues();
 		if ((userSelection == null || userSelection.length == 0)
 		&& (systemSelection == null || systemSelection.length == 0)) {
-	// if there is no dic selected, we do nothing
+		    // if there is no dic selected, we do nothing
 			return commands;
 		}
 
@@ -577,11 +577,19 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 //		getsearchResult.txtCodeF(new File(curSntDir,"text.cod"));
 //		getsearchResult.tokenF(new File(curSntDir,"tokens.txt"));
 //		getsearchResult.seqMorpF(new File(curSntDir,"seqMorphssyl.txt"));
-		Jamo2SylCommand getSylSentence = new Jamo2SylCommand()
-		    .decodage(new File(Config.getCurrentSntDir(),"sentence.fst2"));
+		
+		/* We automatically constructs the .tfst */
+		/*Jamo2SylCommand getSylSentence = new Jamo2SylCommand()
+		    .decodage(new File(Config.getCurrentSntDir(),"sentence.fst2"));*/
+		
+		File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
+		Txt2TfstCommand buildTfst=new Txt2TfstCommand().alphabet()
+		.text(Config.getCurrentSnt())
+		.jamoTable(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"))
+		.jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
+		
 		Tfst2GrfCommand phraseGrfcmd = new Tfst2GrfCommand().automaton(
-		        new File(Config.getCurrentSntDir(),
-		                "sentencesyl.fst2")
+		        new File(Config.getCurrentSntDir(),		                "text.tfst")
 				).sentence(1).font("Gulim");
 		
 //		CommandGen firstPhraseGrf = new CommandGen("fst2grfkr");
@@ -592,12 +600,11 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		commands.addCommand(consultkr);
 		commands.addCommand(getmorph);
 		commands.addCommand(getmorph1);
-		commands.addCommand(getSylSentence);
+		commands.addCommand(buildTfst);
 		commands.addCommand(phraseGrfcmd);
 		commands.addCommand(getSylSeqMorphs);
 		commands.addCommand(getSylMorpheme);
 		commands.addCommand(getsearchResult);
-		
 		
 		return(commands);
 	}
