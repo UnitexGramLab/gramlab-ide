@@ -694,7 +694,6 @@ public class GraphIO {
       g.setY_in(g.getY());
       g.setX_out(g.getX() + g.getWidth() + 5);
       g.setY_out(g.getY_in());
-
       if (n != 1) {
          // 1 is the final state, which content is <E>
          g.setContentWithBounds(s);
