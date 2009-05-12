@@ -805,6 +805,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			if(morphlist.exists()){
 				MorphemeFrame.loadMorphemes(morphlist);
 			}
+			if (Config.isKorean()) {
+			    TextAutomatonFrame.showFrame();
+			}
 		}
 	}
 

@@ -373,7 +373,11 @@ public class PreprocessFrame extends JDialog {
 						}
 						// APPLYING DEFAULT DICTIONARIES...
 						DicoCommand dicoCmd;
-						if (applyDicCheck.isSelected()) {
+						if (applyDicCheck.isSelected()) 
+						    if (Config.isKorean()) {
+						        MessageCommand cc=new MessageCommand("Application of Dico skipped for Korean: use \"Apply lexical resources\"",true);
+						        commands.addCommand(cc);
+						    } else {
 							dicoCmd = new DicoCommand().snt(
 									Config.getCurrentSnt()).alphabet(
 									Config.getAlphabet())
