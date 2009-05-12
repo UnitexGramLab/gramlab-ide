@@ -372,10 +372,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 
   public static void showFrame() {
 
-	if(Config.isAgglutinativeLanguage()){
+	/*if(Config.isAgglutinativeLanguage()){
 		text_tfst = new File(Config.getCurrentSntDir(),"phrase.cod");
 		
-	} else {
+	} else*/ {
 		text_tfst = new File(Config.getCurrentSntDir(),"text.tfst");
 	}
 
@@ -396,7 +396,7 @@ public class TextAutomatonFrame extends JInternalFrame {
       init();
     }
 
-    if(Config.isAgglutinativeLanguage()){
+    /*if(Config.isAgglutinativeLanguage()){
 		int b[] = {0,0,0,0};
 		try {
 			FileInputStream raf = new FileInputStream(text_tfst);
@@ -414,7 +414,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		catch (IOException e){
 			e.printStackTrace();
 		}
-	} else {
+	} else */{
 		sentence_count = readSentenceCount(text_tfst);
 	}
 
@@ -558,12 +558,12 @@ public class TextAutomatonFrame extends JInternalFrame {
             }
             frame.graphicalZone.repaint();
             frame.text.setText("");
-            if(Config.isAgglutinativeLanguage()){
+            /*if(Config.isKorean()){
 				cmdkr = new Txt2Fst2KrCommand();
 				cmdkr.getsentence(z,text_tfst);
 				Console.addCommand(cmdkr.getCommandLine());
 
-			} else {
+			} else*/ {
 				cmd = new Tfst2GrfCommand().automaton(
 						text_tfst).sentence(z);
 				Console.addCommand(cmd.getCommandLine());
@@ -572,10 +572,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 
             try {
 
-			 if(Config.isAgglutinativeLanguage()){
+			 /*if(Config.isAgglutinativeLanguage()){
 					p= Runtime.getRuntime().exec(
 						cmdkr.getCommandArguments());
-			 } else {
+			 } else */{
 				p= Runtime.getRuntime().exec(
 						cmd.getCommandArguments());
  			 }
@@ -599,7 +599,7 @@ public class TextAutomatonFrame extends JInternalFrame {
               isAcurrentLoadingThread = false;
               return;
             }
-			if(Config.isKorean()){
+			/*if(Config.isKorean()) {
 				// in Korean, we must apply a conversion Jamo -> Syllabic
 				Process p0,p1;
 				Jamo2SylCommand getSylSentence = new Jamo2SylCommand()
@@ -618,7 +618,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 					(new EatStreamThread(in)).start();
 					(new EatStreamThread(err)).start();
 
-					/* waitFor Fst2Grf to terminate */
+					// waitFor Fst2Grf to terminate 
 
 					p0.waitFor();
 					
@@ -653,7 +653,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 					(new EatStreamThread(in)).start();
 					(new EatStreamThread(err)).start();
 
-					/* waitFor Fst2Grf to terminate */
+					// waitFor Fst2Grf to terminate
 
 					p1.waitFor();
 					
@@ -665,7 +665,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 					isAcurrentLoadingThread = false;
 					return;
 				}
-			}
+			}*/
 
             readSentenceText();
             try {
