@@ -56,7 +56,9 @@ public class Bounds {
             int end_in_tokens,int end_in_chars,int end_in_letters,
             boolean syllab_bound_on_the_right) {
         if (start_in_tokens<0 || start_in_chars<0 || start_in_letters<0 ||  
-                end_in_tokens<0 || end_in_chars<0 || end_in_letters<0) {
+                end_in_tokens<0 || end_in_chars<0 /*|| end_in_letters<0*/) {
+            /* We don't test end_in_letters<0, because end_in_letters==-1 is 
+             * the sign that the tag has an empty surface form like {<E>,.JO} */
             throw new IllegalArgumentException("Invalid negative bounds: "+start_in_tokens+" "+start_in_chars+" "+end_in_tokens+" "+end_in_chars);
         }
         this.start_in_tokens=start_in_tokens;
@@ -102,6 +104,8 @@ public class Bounds {
         }*/
     }
 
+
+
     private void relative_to_global() {
         global_start_in_chars=0;
         for (int i=0;i<start_in_tokens;i++) {
@@ -116,7 +120,7 @@ public class Bounds {
         /*if (end_in_chars==-1) {
             last++;
         }*/
-        for (int i=0;i<=last;i++) {
+        for (int i=0;i<last;i++) {
             global_end_in_chars=global_end_in_chars+TokensInfo.getTokenLength(i);
         }
         global_end_in_chars=global_end_in_chars+end_in_chars;
@@ -126,7 +130,13 @@ public class Bounds {
             // We want to set the ending position on the last char, not after it
             global_end_in_chars--;
         }*/
+        System.out.println(start_in_tokens+"."+start_in_chars+"."+start_in_letters+" "
+                +end_in_tokens+"."+end_in_chars+"."+end_in_letters+"  =>  "+global_start_in_chars+"-"+global_end_in_chars);
+        
     }
+    
+    
+
 
     public int getGlobal_start_in_chars() {
         return global_start_in_chars;
