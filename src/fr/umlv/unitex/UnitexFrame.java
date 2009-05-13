@@ -1417,7 +1417,7 @@ public class UnitexFrame extends JFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if(Config.isKorean()) {
+		/*if(Config.isKorean()) {
 			MultiCommands commands = new MultiCommands();
 			File grf = new File(currentFrame.getGraph().getAbsolutePath());
 			String name_fst_sans_ex= grf.getAbsolutePath().substring(0,
@@ -1439,7 +1439,7 @@ public class UnitexFrame extends JFrame {
 
 			new ProcessInfoFrame(commands, false);
 
-		} else {
+		} else*/ {
 			Grf2Fst2Command command = new Grf2Fst2Command().grf(currentFrame.getGraph()).enableLoopAndRecursionDetection(true).tokenizationMode().library();
 			new ProcessInfoFrame(command, false);
 			
@@ -1512,7 +1512,7 @@ public class UnitexFrame extends JFrame {
 			commands.addCommand(new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library());
 			commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
 					.resultType(!rtn.isSelected()).depth(depth.getText()));
-			if(Config.isKorean()) {
+			/*if(Config.isKorean()) {
 				File map_encoder = new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt");
 				if(map_encoder.exists()){
 					Syl2JamoCommand sy2jamoConv = new Syl2JamoCommand()
@@ -1524,7 +1524,7 @@ public class UnitexFrame extends JFrame {
 					commands.addCommand(sy2jamoConv);
 			
 				}
-			}
+			}*/
 
 			new ProcessInfoFrame(commands, false);
 		}
