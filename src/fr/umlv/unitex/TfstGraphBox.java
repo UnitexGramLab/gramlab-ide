@@ -254,7 +254,8 @@ public class TfstGraphBox extends GenericGraphBox {
         TfstGraphBox box = (TfstGraphBox) dest;
         if (box.bounds != null) {
             int startPosInChars = box.bounds.getStart_in_chars();
-            if (startPosInChars != 0 || box.bounds.getStart_in_letters()!=0) {
+            if (startPosInChars != 0 || box.bounds.getStart_in_letters()!=0
+                    || box.content.startsWith("{<E>,")) {
                 Stroke old = g.getStroke();
                 g.setStroke(morphologicalStroke);
                 super.drawTransition(g, dest);
