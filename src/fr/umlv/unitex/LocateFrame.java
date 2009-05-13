@@ -338,6 +338,9 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}
+			if (Config.isKorean()) {
+			    locateCmd=locateCmd.jamo(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"));
+			}
 			commands.addCommand(locateCmd);
 			toDo=new LocateTfstDo();
 		}
