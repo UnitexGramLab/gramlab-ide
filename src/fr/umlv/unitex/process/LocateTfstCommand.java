@@ -55,6 +55,11 @@ public class LocateTfstCommand extends CommandBuilder {
 		protectElement("-a"+alphabet.getAbsolutePath());
 		return this;
 	}
+	
+	public LocateTfstCommand jamo(File jamo) {
+        protectElement("-j"+jamo.getAbsolutePath());
+        return this;
+    }
 
 	public LocateTfstCommand shortestMatches() {
 		element("-S");
