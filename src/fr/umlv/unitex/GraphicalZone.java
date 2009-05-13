@@ -223,9 +223,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					|| (EDITING_MODE == MyCursors.KILL_BOXES)) {
 				return;
 			}
-			System.err.println("GZ: mouse pressed 1: selection empty="+selectedBoxes.isEmpty());
+			//System.err.println("GZ: mouse pressed 1: selection empty="+selectedBoxes.isEmpty());
 			validateTextField();
-			System.err.println("GZ: mouse pressed 2: selection empty="+selectedBoxes.isEmpty());
+			//System.err.println("GZ: mouse pressed 2: selection empty="+selectedBoxes.isEmpty());
             X_start_drag = (int) (e.getX() / scaleFactor);
 			Y_start_drag = (int) (e.getY() / scaleFactor);
 			X_end_drag = X_start_drag;
