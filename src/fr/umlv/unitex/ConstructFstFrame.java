@@ -218,6 +218,12 @@ public class ConstructFstFrame extends JDialog {
             if (elagFst.isSelected()) {
                 txtCmd=txtCmd.tagset(new File(Config.getCurrentElagDir(),"tagset.def"));
             }
+            
+            if (Config.isKorean()) {
+                File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
+                txtCmd=txtCmd.jamoTable(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"))
+                .jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
+            }
             commands.addCommand(txtCmd);
             TextAutomatonFrame.hideFrame();
             new ProcessInfoFrame(commands, true,
