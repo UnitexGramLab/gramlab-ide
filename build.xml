@@ -8,7 +8,7 @@
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
   <property name="lib" location="lib"/>
-  <property name="appdir" location="D:\\Unitex2.0\\App"/>
+  <property name="appdir" location="D:\\Unitex2.1\\App"/>
   
   <!-- targets -->
   <target name="init">
