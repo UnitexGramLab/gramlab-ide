@@ -156,12 +156,11 @@ public class TfstGraphBox extends GenericGraphBox {
                 int end_pos_in_tokens = scanner.nextInt();
                 int end_pos_in_chars = scanner.nextInt();
                 int end_pos_in_letters = scanner.nextInt();
-                int syllab_bound_on_the_right = scanner.nextInt();
                 if (scanner.hasNext()) {
                     throw new AssertionError("Malformed token information: " + s);
                 }
                 bounds=new Bounds(start_pos_in_tokens,start_pos_in_chars,start_pos_in_letters,
-                        end_pos_in_tokens,end_pos_in_chars,end_pos_in_letters,syllab_bound_on_the_right==1);
+                        end_pos_in_tokens,end_pos_in_chars,end_pos_in_letters);
             }
         } catch (InputMismatchException e) {
             throw new AssertionError("Malformed token information: " + s);
