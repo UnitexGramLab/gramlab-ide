@@ -42,7 +42,6 @@ public class Bounds {
     /* Special information for Korean */
     private int start_in_letters;
     private int end_in_letters;
-    private boolean syllab_bound_on_the_right;
     
     
     public Bounds(int global_start_in_chars,int global_end_in_chars) {
@@ -53,8 +52,7 @@ public class Bounds {
     }
     
     public Bounds(int start_in_tokens,int start_in_chars,int start_in_letters,
-            int end_in_tokens,int end_in_chars,int end_in_letters,
-            boolean syllab_bound_on_the_right) {
+            int end_in_tokens,int end_in_chars,int end_in_letters) {
         if (start_in_tokens<0 || start_in_chars<0 || start_in_letters<0 ||  
                 end_in_tokens<0 || end_in_chars<0 /*|| end_in_letters<0*/) {
             /* We don't test end_in_letters<0, because end_in_letters==-1 is 
@@ -67,7 +65,6 @@ public class Bounds {
         this.end_in_tokens=end_in_tokens;
         this.end_in_chars=end_in_chars;
         this.end_in_letters=end_in_letters;
-        this.syllab_bound_on_the_right=syllab_bound_on_the_right;
         relative_to_global();
         //System.out.println("2e constructeur: "+global_start_in_chars+" -> "+global_end_in_chars);
     }
@@ -77,7 +74,6 @@ public class Bounds {
          * in the future if we allow real edition for Korean sentence graphs */
         start_in_letters=0;
         end_in_letters=0;
-        syllab_bound_on_the_right=true;
         
         start_in_tokens=0;
         int current_length=0;
@@ -170,16 +166,10 @@ public class Bounds {
         return end_in_letters;
     }
     
-    public boolean getSyllab_bound_on_the_right() {
-        return syllab_bound_on_the_right;
-    }
-    
-
     @Override
     public String toString() {
         return start_in_tokens+" "+start_in_chars+" "+start_in_letters
-        +" "+end_in_tokens+" "+end_in_chars+" "+end_in_letters
-        +(syllab_bound_on_the_right?" 1":" 0");
+        +" "+end_in_tokens+" "+end_in_chars+" "+end_in_letters;
     }
     
 }
