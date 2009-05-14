@@ -608,7 +608,7 @@ public abstract class GenericGraphBox {
 		}
 	}
 
-	private void drawOtherSingleDrag(Graphics2D g) {
+	void drawOtherSingleDrag(Graphics2D g) {
 		if (comment)
 			g.setColor(parentGraphicalZone.pref.commentColor);
 		else
@@ -668,7 +668,7 @@ public abstract class GenericGraphBox {
 		drawFinal(g);
 	}
 
-	private void drawOtherComment(Graphics2D g) {
+	void drawOtherComment(Graphics2D g) {
 		int i;
 		Boolean is_greyed;
 		String l;
@@ -796,7 +796,7 @@ public abstract class GenericGraphBox {
 		drawVariableSelected(g);
 	}
 
-	private void drawOther(Graphics2D g) {
+	void drawOther(Graphics2D g) {
 		int i;
 		Boolean is_greyed;
 		String l;
@@ -868,7 +868,7 @@ public abstract class GenericGraphBox {
 		}
 	}
 
-	private void drawOtherSelected(Graphics2D g) {
+	void drawOtherSelected(Graphics2D g) {
 		int i;
 		String l;
 		if (variable) {

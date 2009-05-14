@@ -22,6 +22,7 @@
 package fr.umlv.unitex;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.InputMismatchException;
@@ -266,5 +267,22 @@ public class TfstGraphBox extends GenericGraphBox {
         } else {
             super.drawTransition(g, dest);
         }
+    }
+    
+    
+    private static final Color koreanUntaggedTokenColor=new Color(222,240,219);
+    
+    @Override
+    void drawOther(Graphics2D g) {
+        Color old=parentGraphicalZone.pref.backgroundColor;
+        if (Config.isKorean() && isKoreanUntaggedToken(content)) {
+            parentGraphicalZone.pref.backgroundColor=koreanUntaggedTokenColor;
+        }
+        super.drawOther(g);
+        parentGraphicalZone.pref.backgroundColor=old;
+    }
+
+    private boolean isKoreanUntaggedToken(String s) {
+        return !s.equals("<E>") && s.charAt(0)!='{';
     }
 }
