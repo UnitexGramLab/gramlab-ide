@@ -57,8 +57,8 @@ public class LocateFrame extends JInternalFrame {
 	JRadioButton indexAllMatches = new JRadioButton(
 			"Index all utterances in text", false);
 	NumericTextField nMatches = new NumericTextField("200");
-	JRadioButton locateOnSnt = new JRadioButton("text", true);
-	JRadioButton locateOnTfst = new JRadioButton("text automaton", false);
+	JRadioButton locateOnSnt = new JRadioButton("Paumier 2003, working on text (quicker)", true);
+	JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)", false);
 
 	private LocateFrame() {
 		super("Locate Pattern", false, true);
@@ -173,10 +173,13 @@ public class LocateFrame extends JInternalFrame {
 
 		JPanel textType = new JPanel(new GridLayout(2, 1));
 		textType.setBorder(BorderFactory
-				.createTitledBorder("Perform locate on:"));
+				.createTitledBorder("Search algorithm:"));
 		ButtonGroup bg = new ButtonGroup();
 		textType.add(locateOnSnt);
 		textType.add(locateOnTfst);
+		locateOnTfst.setToolTipText("Currently, LocateTfst does not support outputs nor contexts. "
+		                           +"It will never handle morphological mode, but morphological "
+		                           +"filters can be used. It works fine on Korean data.");
 		bg.add(locateOnSnt);
 		bg.add(locateOnTfst);
 		b.add(textType, BorderLayout.SOUTH);
@@ -319,8 +322,18 @@ public class LocateFrame extends JInternalFrame {
 			commands.addCommand(locateCmd);
 			toDo=new LocateDo();
 		} else {
-			LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(
-					new File(Config.getCurrentSntDir(),"text.tfst")).fst2(fst2).alphabet();
+		    /* If we want to work on the text automaton */
+		    File tfst=new File(Config.getCurrentSntDir(),"text.tfst");
+		    if (!tfst.exists()) {
+		        JOptionPane.showMessageDialog(null,
+                        "Text automaton does not exist. You must construct it\n"
+		                +"before launching locate operation.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+		        locateOnSnt.setSelected(true);
+		        return;
+		    }
+			LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(tfst)
+					.fst2(fst2).alphabet();
 			if (shortestMatches.isSelected())
 				locateCmd = locateCmd.shortestMatches();
 			else if (longuestMatches.isSelected())
