@@ -582,7 +582,8 @@ public class Config {
 			currentSystem = WINDOWS_SYSTEM;
 		} else if (currentSystemName.equalsIgnoreCase("linux")) {
 			currentSystem = LINUX_SYSTEM;
-		} else if (currentSystemName.equalsIgnoreCase("mac os x")) {
+		} else if (currentSystemName.equalsIgnoreCase("mac os x") ||
+		           currentSystemName.equalsIgnoreCase("Darwin")) {
 			currentSystem = MAC_OS_X_SYSTEM;
 		} else if (currentSystemName.equalsIgnoreCase("sunos")) {
 			currentSystem = SUN_OS_SYSTEM;
