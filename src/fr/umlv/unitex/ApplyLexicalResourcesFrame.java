@@ -444,6 +444,11 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						}
 						if(commands.numberOfCommands() == 0) return;
 						
+						if (Config.isKorean()) {
+						    /* As we construct the text automaton for Korean, we
+						     * must close the text automaton frame, if any */
+						    TextAutomatonFrame.hideFrame();
+						}
 						new ProcessInfoFrame(commands, true,
 								new ApplyLexicalResourcesDo());
 					}
@@ -557,9 +562,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		Txt2Fst2KrCommand getmorph = new Txt2Fst2KrCommand();
 		getmorph.creation(new File(Config.getCurrentSntDir(),"tokens.txt"));
 		
-		Txt2Fst2KrCommand getmorph1 = new Txt2Fst2KrCommand();
+		/*Txt2Fst2KrCommand getmorph1 = new Txt2Fst2KrCommand();
 		getmorph1.getsentence(1,new File(Config.getCurrentSntDir(),"tokens.txt"));
-		
+		*/
 		Jamo2SylCommand getSylSeqMorphs = new Jamo2SylCommand()
 		.decodage(new File(Config.getCurrentSntDir(),"seqMorphs.txt"));
 		Jamo2SylCommand getSylMorpheme = new Jamo2SylCommand()
@@ -599,7 +604,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	
 		commands.addCommand(consultkr);
 		commands.addCommand(getmorph);
-		commands.addCommand(getmorph1);
+		//commands.addCommand(getmorph1);
 		commands.addCommand(buildTfst);
 		commands.addCommand(phraseGrfcmd);
 		commands.addCommand(getSylSeqMorphs);
