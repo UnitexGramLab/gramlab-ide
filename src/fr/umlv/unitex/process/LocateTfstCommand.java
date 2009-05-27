@@ -22,7 +22,6 @@
 package fr.umlv.unitex.process;
 
 import java.io.*;
-import java.util.*;
 
 import fr.umlv.unitex.*;
 
