@@ -77,6 +77,7 @@ public class CommandMenuFactory {
             ,TokenizeCommand.class
             ,Txt2Fst2KrCommand.class
             ,Txt2TfstCommand.class
+            ,UncompressCommand.class
             ,XAlignCommand.class
             ,XMLizerCommand.class
             };
