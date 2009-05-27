@@ -48,8 +48,7 @@ public class LocateFrame extends JInternalFrame {
 	JRadioButton shortestMatches = new JRadioButton("Shortest matches", false);
 	JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
 	JRadioButton allMatches = new JRadioButton("All matches", false);
-	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",
-			true);
+	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",true);
 	JRadioButton mergeOutputs = new JRadioButton("Merge with input text", false);
 	JRadioButton replaceOutputs = new JRadioButton(
 			"Replace recognized sequences", false);
@@ -60,11 +59,18 @@ public class LocateFrame extends JInternalFrame {
 	JRadioButton locateOnSnt = new JRadioButton("Paumier 2003, working on text (quicker)", true);
 	JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)", false);
 
+	JRadioButton allowAmbiguousOutputs = new JRadioButton("Allow ambiguous outputs", true);
+    JRadioButton forbidAmbiguousOutputs = new JRadioButton("Forbid ambiguous outputs", false);
+    
+    JRadioButton ignoreVariableErrors = new JRadioButton("Ignore variable errors", true);
+    JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error", false);
+    JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error", false);
+
 	private LocateFrame() {
-		super("Locate Pattern", false, true);
+		super("Locate Pattern",/* false*/true, true);
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
+		//setResizable(false);
 		setVisible(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -106,15 +112,51 @@ public class LocateFrame extends JInternalFrame {
 		}
 	}
 
-	private JPanel constructPanel() {
+	private JTabbedPane constructPanel() {
+	    JTabbedPane tabbedPane=new JTabbedPane();
+	    
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(true);
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
-		return panel;
+		tabbedPane.addTab("Locate configuration",panel);
+		tabbedPane.addTab("Advanced options",constructAdvancedOptionPanel());
+		return tabbedPane;
 	}
 
-	private JPanel constructPatternPanel() {
+	private Component constructAdvancedOptionPanel() {
+	    JPanel box=new JPanel(null);
+	    box.setLayout(new BoxLayout(box,BoxLayout.Y_AXIS));
+        JPanel panel1=new JPanel(new GridLayout(2,1));
+        panel1.setBorder(BorderFactory.createTitledBorder("Ambiguous output policy:"));
+        ButtonGroup b1=new ButtonGroup();
+        b1.add(allowAmbiguousOutputs);
+        b1.add(forbidAmbiguousOutputs);
+        panel1.add(allowAmbiguousOutputs);
+        panel1.add(forbidAmbiguousOutputs);
+        allowAmbiguousOutputs.setToolTipText("Displays all the outputs for every match");
+        forbidAmbiguousOutputs.setToolTipText("Displays only one output per match (arbitrarily chosen)");
+        box.add(panel1);
+        
+        JPanel panel2=new JPanel(new GridLayout(4,1));
+        panel2.setBorder(BorderFactory.createTitledBorder("Variable error policy:"));
+        ButtonGroup b2=new ButtonGroup();
+        b2.add(ignoreVariableErrors);
+        b2.add(exitOnVariableErrors);
+        b2.add(backtrackOnVariableErrors);
+        panel2.add(new JLabel("Note: these options have no effect if outputs are ignored."));
+        panel2.add(ignoreVariableErrors);
+        panel2.add(exitOnVariableErrors);
+        panel2.add(backtrackOnVariableErrors);
+        ignoreVariableErrors.setToolTipText("Acts as if the variable is empty");
+        exitOnVariableErrors.setToolTipText("Kills the program");
+        backtrackOnVariableErrors.setToolTipText("Stop exploring the current path of the grammar");
+        box.add(panel2);
+        box.add(new JPanel(new BorderLayout()));
+        return box;
+    }
+
+    private JPanel constructPatternPanel() {
 		JPanel patternPanel = new JPanel(new BorderLayout());
 		patternPanel.setBorder(new TitledBorder(
 				"Locate pattern in the form of:"));
@@ -319,6 +361,18 @@ public class LocateFrame extends JInternalFrame {
 			}
 			locateCmd = locateCmd
 					.morphologicalDic(Preferences.pref.morphologicalDic);
+			if (allowAmbiguousOutputs.isSelected()) {
+			    locateCmd = locateCmd.allowAmbiguousOutputs();
+			} else {
+			    locateCmd = locateCmd.forbidAmbiguousOutputs();
+			}
+			if (ignoreVariableErrors.isSelected()) {
+			    locateCmd = locateCmd.ignoreVariableErrors();
+			} else if (exitOnVariableErrors.isSelected()) {
+                locateCmd = locateCmd.exitOnVariableErrors();
+            } else {
+                locateCmd = locateCmd.backtrackOnVariableErrors();
+            }
 			commands.addCommand(locateCmd);
 			toDo=new LocateDo();
 		} else {
@@ -352,8 +406,20 @@ public class LocateFrame extends JInternalFrame {
 				locateCmd = locateCmd.noLimit();
 			}
 			if (Config.isKorean()) {
-			    locateCmd=locateCmd.jamo(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"));
-			}
+                locateCmd = locateCmd.jamo(new File(Config.getUserCurrentLanguageDir(), "jamoTable.txt"));
+            }
+            if (allowAmbiguousOutputs.isSelected()) {
+                locateCmd = locateCmd.allowAmbiguousOutputs();
+            } else {
+                locateCmd = locateCmd.forbidAmbiguousOutputs();
+            }
+            if (ignoreVariableErrors.isSelected()) {
+                locateCmd = locateCmd.ignoreVariableErrors();
+            } else if (exitOnVariableErrors.isSelected()) {
+                locateCmd = locateCmd.exitOnVariableErrors();
+            } else {
+                locateCmd = locateCmd.backtrackOnVariableErrors();
+            }
 			commands.addCommand(locateCmd);
 			toDo=new LocateTfstDo();
 		}

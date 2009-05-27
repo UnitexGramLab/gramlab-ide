@@ -107,4 +107,29 @@ public class LocateTfstCommand extends CommandBuilder {
         return this;
     }
 
+    public LocateTfstCommand allowAmbiguousOutputs() {
+        element("-b");
+        return this;
+    }
+
+    public LocateTfstCommand forbidAmbiguousOutputs() {
+        element("-z");
+        return this;
+    }
+
+    public LocateTfstCommand exitOnVariableErrors() {
+        element("-X");
+        return this;
+    }
+
+    public LocateTfstCommand ignoreVariableErrors() {
+        element("-Y");
+        return this;
+    }
+
+    public LocateTfstCommand backtrackOnVariableErrors() {
+        element("-Z");
+        return this;
+    }
+
 }
