@@ -911,8 +911,12 @@ public class UnitexFrame extends JFrame {
 		aboutUnitex.setEnabled(true);
 		JMenuItem references = new JMenuItem("References");
 		references.setEnabled(false);
-		JMenu helpOnCommands = new JMenu("Help on commands");
-		helpOnCommands = CommandMenuFactory.makeCommandMenu();
+		JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
+		helpOnCommands.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        HelpOnCommandFrame.showFrame();
+		    }
+		});
 		helpOnCommands.setEnabled(true);
 		JMenuItem preferences = new JMenuItem("Preferences...");
 		preferences.setEnabled(true);

@@ -48,7 +48,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 
 	static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
 
-	static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
+	public static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
 
 		@Override
 		public Component getListCellRendererComponent(JList l, Object value,
