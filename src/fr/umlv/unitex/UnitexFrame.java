@@ -102,9 +102,18 @@ public class UnitexFrame extends JFrame {
 				+ Config.getCurrentLanguageForTitleBar());
 	}
 
-	public static void addInternalFrame(JInternalFrame frame) {
-		desktop.add(frame, DOCLAYER);
-	}
+	public static void addInternalFrame(JInternalFrame frame, boolean requestFocus) {
+        desktop.add(frame, DOCLAYER);
+        if (requestFocus) {
+            try {
+                frame.setVisible(true);
+                frame.setSelected(true);
+                frame.setIcon(false);
+            } catch (java.beans.PropertyVetoException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
 	
 	
 	/**
@@ -1266,14 +1275,7 @@ public class UnitexFrame extends JFrame {
 		doc.setGraph(grf);
 		//doc.setTitle(grf.getAbsolutePath());
 		doc.setTitle(grf.getName()+" ("+grf.getParent()+")");
-		UnitexFrame.addInternalFrame(doc);
-		try {
-			doc.setVisible(true);
-			doc.setSelected(true);
-			doc.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
+		UnitexFrame.addInternalFrame(doc,true);
 	}
 
 	/**

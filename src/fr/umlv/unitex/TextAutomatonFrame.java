@@ -70,12 +70,10 @@ import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.ElagCommand;
 import fr.umlv.unitex.process.ImplodeTfstCommand;
-import fr.umlv.unitex.process.Jamo2SylCommand;
-import fr.umlv.unitex.process.RebuildTfstCommand;
 import fr.umlv.unitex.process.ProcessInfoFrame;
+import fr.umlv.unitex.process.RebuildTfstCommand;
 import fr.umlv.unitex.process.TagsetNormTfstCommand;
 import fr.umlv.unitex.process.Tfst2GrfCommand;
-import fr.umlv.unitex.process.Txt2Fst2KrCommand;
 import fr.umlv.unitex.tfst.Bounds;
 import fr.umlv.unitex.tfst.BoundsEditor;
 import fr.umlv.unitex.tfst.TokensInfo;
@@ -354,7 +352,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
   public static void init() {
     frame = new TextAutomatonFrame();
-    UnitexFrame.addInternalFrame(frame);
+    UnitexFrame.addInternalFrame(frame,false);
   }
 
   /**
@@ -549,7 +547,6 @@ public class TextAutomatonFrame extends JInternalFrame {
       public void run() {
         new Thread() {
 		  Tfst2GrfCommand cmd;
-		  Txt2Fst2KrCommand cmdkr;
           public void run() {
             isAcurrentLoadingThread = true;
             frame.graphicalZone.is_initialised = false;

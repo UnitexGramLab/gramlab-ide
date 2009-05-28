@@ -67,7 +67,7 @@ public class MergeRacineSuffixes extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new MergeRacineSuffixes();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

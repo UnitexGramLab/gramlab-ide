@@ -64,7 +64,7 @@ public class LexiconGrammarFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new LexiconGrammarFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

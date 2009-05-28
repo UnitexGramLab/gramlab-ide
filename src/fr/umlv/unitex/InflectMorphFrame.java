@@ -58,7 +58,7 @@ public class InflectMorphFrame extends JInternalFrame{
 		frame.derivation_directory.setText(
 				new File(Config.getUserCurrentLanguageDir()
 						,"Derivation").getAbsolutePath());
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 

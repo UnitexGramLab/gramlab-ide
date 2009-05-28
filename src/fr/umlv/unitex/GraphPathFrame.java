@@ -71,7 +71,7 @@ public class GraphPathFrame extends JInternalFrame {
 
 	private static void init() {
 		frame = new GraphPathFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

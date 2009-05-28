@@ -163,14 +163,8 @@ public class ProcessInfoFrame extends JInternalFrame {
 		setContentPane(top);
 		pack();
 		setBounds(100, 100, 600, 400);
-		UnitexFrame.addInternalFrame(this);
+		UnitexFrame.addInternalFrame(this,true);
 		setVisible(true);
-		try {
-			setSelected(true);
-			setIcon(false);
-		} catch (java.beans.PropertyVetoException e) {
-			e.printStackTrace();
-		}
 		launchBuilderCommands();
 	}
 

@@ -69,7 +69,7 @@ public class CheckResultFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new CheckResultFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

@@ -76,13 +76,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 			}
 		});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		UnitexFrame.addInternalFrame(this);
-		setVisible(true);
-		try {
-			setSelected(true);
-		} catch (PropertyVetoException e1) {
-			e1.printStackTrace();
-		}
+		UnitexFrame.addInternalFrame(this,true);
 	}
 
 

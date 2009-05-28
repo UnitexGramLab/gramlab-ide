@@ -77,7 +77,7 @@ public class DelaFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new DelaFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

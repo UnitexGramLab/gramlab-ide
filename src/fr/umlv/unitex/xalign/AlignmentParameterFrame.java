@@ -62,7 +62,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new AlignmentParameterFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**
@@ -286,7 +286,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 											.buildAlignFrame(xmlSourceFile,xmlTargetFile,
 													alignmentFile2);
 									frame1.setVisible(true);
-									UnitexFrame.addInternalFrame(frame1);
+									UnitexFrame.addInternalFrame(frame1,true);
 									frame1.setSelected(true);
 								} catch (IOException e1) {
 									JOptionPane

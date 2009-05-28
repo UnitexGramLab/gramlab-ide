@@ -78,7 +78,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new ApplyLexicalResourcesFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

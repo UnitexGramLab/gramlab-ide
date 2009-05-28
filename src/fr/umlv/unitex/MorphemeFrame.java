@@ -131,7 +131,7 @@ public class MorphemeFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new MorphemeFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**
