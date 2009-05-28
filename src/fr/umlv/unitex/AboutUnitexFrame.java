@@ -83,7 +83,7 @@ public class AboutUnitexFrame extends JInternalFrame {
 
 	private static void init() {
 		frame = new AboutUnitexFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

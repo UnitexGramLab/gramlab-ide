@@ -679,7 +679,7 @@ public class ElagCompFrame extends JInternalFrame {
    */
   private static void init() {
     frame = new ElagCompFrame();
-    UnitexFrame.addInternalFrame(frame);
+    UnitexFrame.addInternalFrame(frame,false);
   }
 
   /**

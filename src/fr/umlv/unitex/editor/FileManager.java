@@ -249,7 +249,7 @@ public class FileManager {
     **/
    public void newFile() {
       fileEditionTextFrame= new FileEditionTextFrame();
-      UnitexFrame.addInternalFrame(fileEditionTextFrame);
+      UnitexFrame.addInternalFrame(fileEditionTextFrame,false);
 
       try {
          fileEditionTextFrame.setSelected(true);

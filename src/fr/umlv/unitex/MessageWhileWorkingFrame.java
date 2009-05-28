@@ -62,7 +62,7 @@ public class MessageWhileWorkingFrame extends JInternalFrame {
 	 */
 	public static void init() {
 		frame = new MessageWhileWorkingFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

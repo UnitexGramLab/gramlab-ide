@@ -55,16 +55,25 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	String nombre_matches = null;
 	boolean useWebBrowser;
 	private JButton diffButton;
+	
+	JRadioButton mode0=new JRadioButton("left + match + right count",true);
+	JRadioButton mode1=new JRadioButton("collocate count",false);
+	JRadioButton mode2=new JRadioButton("collocate count with z-score",false);
+	NumericTextField leftContextForStats=new NumericTextField("1");
+	NumericTextField rightContextForStats=new NumericTextField("1");
+	JRadioButton caseSensitive=new JRadioButton("case sensitive",true);
+    JRadioButton caseInsensitive=new JRadioButton("case insensitive",false);
+    
 	/**
 	 * Constructs a new <code>ConcordanceParameterFrame</code>.
 	 *  
 	 */
 	public ConcordanceParameterFrame() {
-		super("Display indexed sequences...", false, true);
+		super("Display indexed sequences...", /*false*/true, true);
 		setContentPane(constructPanel());
 		pack();
 		useWebBrowser=(Preferences.getCloneOfPreferences().htmlViewer!=null);
-		setResizable(false);
+		//setResizable(false);
 		setVisible(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -80,7 +89,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new ConcordanceParameterFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**
@@ -131,7 +140,102 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		showFrame();
 	}
 
-	private JPanel constructPanel() {
+    private JTabbedPane constructPanel() {
+        JTabbedPane tabbedPane=new JTabbedPane();
+        tabbedPane.addTab("Concordance",constructConcordancePanel());
+        tabbedPane.addTab("Statistics",constructStatisticsPanel());
+        return tabbedPane;
+    }
+
+	private Component constructStatisticsPanel() {
+        JPanel box=new JPanel(new GridBagLayout());
+        GridBagConstraints g=new GridBagConstraints();
+        g.gridwidth=GridBagConstraints.REMAINDER;
+        g.weightx=1;
+        g.fill=GridBagConstraints.HORIZONTAL;
+        
+        JPanel panel1=new JPanel(new GridLayout(3,1));
+        panel1.setBorder(BorderFactory.createTitledBorder("Mode:"));
+        ButtonGroup b1=new ButtonGroup();
+        b1.add(mode0);
+        b1.add(mode1);
+        b1.add(mode2);
+        panel1.add(mode0);
+        panel1.add(mode1);
+        panel1.add(mode2);
+        box.add(panel1,g);
+        
+        JPanel panel2=new JPanel(new GridBagLayout());
+        panel2.setBorder(BorderFactory.createTitledBorder("Sizes of contexts in non space tokens:"));
+        GridBagConstraints gbc=new GridBagConstraints();
+        gbc.fill=GridBagConstraints.HORIZONTAL;
+        panel2.add(new JLabel(" Left: "),gbc);
+        gbc.weightx=1;
+        panel2.add(leftContextForStats,gbc);
+        gbc.weightx=0;
+        panel2.add(new JLabel("  Right: "),gbc);
+        gbc.weightx=1;
+        gbc.gridwidth=GridBagConstraints.REMAINDER;
+        panel2.add(rightContextForStats,gbc);
+        box.add(panel2,g);
+
+        JPanel panel3=new JPanel(new GridLayout(2,1));
+        panel3.setBorder(BorderFactory.createTitledBorder("Case sensitivity:"));
+        ButtonGroup b2=new ButtonGroup();
+        b2.add(caseSensitive);
+        b2.add(caseInsensitive);
+        panel3.add(caseSensitive);
+        panel3.add(caseInsensitive);
+        box.add(panel3,g);
+
+        /* A kind of glue */
+        g.weighty=1;
+        box.add(new JPanel(new BorderLayout()),g);
+        
+        g.weighty=0;
+        JButton button=new JButton("Compute statistics");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
+                if (!indFile.exists()) {
+                    JOptionPane.showMessageDialog(null, "Cannot find "
+                            + indFile.getAbsolutePath(), "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                File output=new File(indFile.getParentFile(),"statistics.txt");
+                StatsCommand cmd=new StatsCommand();
+                cmd=cmd.concord(indFile)
+                    .alphabet().left(Integer.parseInt(leftContextForStats.getText()))
+                    .right(Integer.parseInt(rightContextForStats.getText()))
+                    .output(output).caseSensitive(caseSensitive.isSelected());
+                int mode;
+                if (mode0.isSelected()) mode=0;
+                else if (mode1.isSelected()) mode=1;
+                else mode=2;
+                cmd=cmd.mode(mode);
+                MultiCommands commands=new MultiCommands();
+                commands.addCommand(cmd);
+                setVisible(false);
+                new ProcessInfoFrame(commands, true, new LoadStatisticsDo(output,mode));
+            }
+        });
+        Box b=new Box(BoxLayout.X_AXIS);
+        b.add(Box.createHorizontalGlue());
+        b.add(button);
+        b.add(Box.createHorizontalStrut(10));
+        box.add(b,g);
+        
+        box.add(new JPanel() {
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(10,10);
+            }
+        },g);
+        return box;
+    }
+
+    private JPanel constructConcordancePanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel up = new JPanel(new BorderLayout());
 		up.add(constructUpPanel(), BorderLayout.NORTH);
@@ -552,4 +656,23 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 	}
 
+	static class LoadStatisticsDo extends ToDoAbstract {
+	    
+	    File f;
+	    int mode;
+	    
+	    public LoadStatisticsDo(File f,int mode) {
+	        this.f=f;
+	        this.mode=mode;
+	    }
+	    
+        @Override
+        public void toDo() {
+            if (StatisticsFrame.frame!=null) {
+                StatisticsFrame.frame.doDefaultCloseAction();
+            }
+            new StatisticsFrame(f,mode);
+        }
+	    
+	}
 }

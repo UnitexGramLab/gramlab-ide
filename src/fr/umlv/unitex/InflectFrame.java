@@ -68,7 +68,7 @@ public class InflectFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new InflectFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 

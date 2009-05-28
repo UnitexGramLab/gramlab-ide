@@ -61,7 +61,7 @@ public class ConvertFstFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new ConvertFstFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

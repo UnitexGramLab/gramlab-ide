@@ -67,10 +67,10 @@ public class LocateFrame extends JInternalFrame {
     JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error", false);
 
 	private LocateFrame() {
-		super("Locate Pattern",/* false*/true, true);
+		super("Locate Pattern",true, true);
 		setContentPane(constructPanel());
 		pack();
-		//setResizable(false);
+		setResizable(false);
 		setVisible(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -91,7 +91,7 @@ public class LocateFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new LocateFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**
@@ -114,7 +114,6 @@ public class LocateFrame extends JInternalFrame {
 
 	private JTabbedPane constructPanel() {
 	    JTabbedPane tabbedPane=new JTabbedPane();
-	    
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(true);
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
