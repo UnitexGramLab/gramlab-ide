@@ -38,11 +38,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-/**
- * This class is used to display a lexicon-grammar table
- * 
- * @author Sébastien Paumier
- */
 public class StatisticsFrame extends JInternalFrame {
 
 	static StatisticsFrame frame;
