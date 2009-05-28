@@ -80,7 +80,7 @@ public class Console extends JInternalFrame {
     */
    private static void init() {
       console= new Console();
-      UnitexFrame.addInternalFrame(console);
+      UnitexFrame.addInternalFrame(console,false);
    }
    
    

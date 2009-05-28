@@ -121,7 +121,7 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new GlobalPreferenceFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

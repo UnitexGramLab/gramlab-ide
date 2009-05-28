@@ -68,6 +68,7 @@ public class CommandMenuFactory {
             ,Reg2GrfCommand.class
             ,SortMorphCommand.class
             ,SortTxtCommand.class
+            ,StatsCommand.class
             ,SufForm2RacCommand.class
             ,Syl2JamoCommand.class
             ,Table2GrfCommand.class

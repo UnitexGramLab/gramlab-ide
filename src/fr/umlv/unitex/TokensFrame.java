@@ -114,7 +114,7 @@ public class TokensFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new TokensFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 	/**

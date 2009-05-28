@@ -84,7 +84,7 @@ public class ConversionFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new ConversionFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 

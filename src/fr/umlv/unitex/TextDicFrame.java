@@ -139,7 +139,7 @@ public class TextDicFrame extends JInternalFrame {
     */
    private static void init() {
       frame= new TextDicFrame();
-      UnitexFrame.addInternalFrame(frame);
+      UnitexFrame.addInternalFrame(frame,false);
    }
 
    /**

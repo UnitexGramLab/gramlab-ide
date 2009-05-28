@@ -72,7 +72,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		setBounds(100, 100, 800, 600);
 		setVisible(true);
 		frame = this;
-		UnitexFrame.addInternalFrame(this);
+		UnitexFrame.addInternalFrame(this,false);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				UnitexFrame.mainFrame.compileLexiconGrammar.setEnabled(false);

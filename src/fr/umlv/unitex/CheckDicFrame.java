@@ -66,7 +66,7 @@ public class CheckDicFrame extends JInternalFrame {
 	 */
 	private static void init() {
 		frame = new CheckDicFrame();
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 

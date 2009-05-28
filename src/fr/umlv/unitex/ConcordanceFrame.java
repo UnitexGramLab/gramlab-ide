@@ -136,7 +136,7 @@ public class ConcordanceFrame extends JInternalFrame {
 	public static void load(File concor, int widthInChars) {
 		close();
 		frame=new ConcordanceFrame(widthInChars);
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 		frame.setTitle("Concordance: " + concor.getAbsolutePath());
 		frame.nombre_matches.setText(Util.getHtmlPageTitle(concor));
 		try {

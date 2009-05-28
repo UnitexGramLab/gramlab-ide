@@ -78,7 +78,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		if (frame==null) {
 			frame = new ConcordanceDiffFrame();
 		}
-		UnitexFrame.addInternalFrame(frame);
+		UnitexFrame.addInternalFrame(frame,false);
 		frame.setTitle("Concordance Diff");
 		try {
 			frame.setSelected(true);
