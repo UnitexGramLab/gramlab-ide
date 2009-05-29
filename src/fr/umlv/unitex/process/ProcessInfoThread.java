@@ -36,6 +36,7 @@ public class ProcessInfoThread extends Thread {
    BufferedReader stream;
    boolean close_on_finish;
    ProcessInfoFrame parent_frame;
+   boolean scrollDown;
 
    /**
     * Creates a new <code>ProcessInfoThread</code> 
@@ -48,11 +49,13 @@ public class ProcessInfoThread extends Thread {
       JList list,
       InputStream s,
       boolean close,
-      ProcessInfoFrame f) {
+      ProcessInfoFrame f,
+      boolean scrollDown) {
       super();
       this.list=list;
       close_on_finish= close;
       parent_frame= f;
+      this.scrollDown=scrollDown;
       try {
 		stream= new BufferedReader(new InputStreamReader(s,"UTF8"));
 	} catch (UnsupportedEncodingException e) {
@@ -136,7 +139,9 @@ public class ProcessInfoThread extends Thread {
 	        	  } else {
 	        		  model.replaceLast(new Couple(s2,false));
 	        	  }
-	        	  list.ensureIndexIsVisible(model.getSize()-1);
+	        	  if (scrollDown) {
+	        	      list.ensureIndexIsVisible(model.getSize()-1);
+	        	  }
 	          }
 	       });
 	    }

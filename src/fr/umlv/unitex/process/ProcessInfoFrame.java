@@ -259,10 +259,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 								p = Runtime.getRuntime().exec(comm);
 								new ProcessInfoThread(stdoutList, p
 										.getInputStream(), false,
-										ProcessInfoFrame.this).start();
+										ProcessInfoFrame.this,true).start();
 								new ProcessInfoThread(stderrList, p
 										.getErrorStream(), false,
-										ProcessInfoFrame.this).start();
+										ProcessInfoFrame.this,true).start();
 								try {
 									p.waitFor();
 								} catch (java.lang.InterruptedException e) {
