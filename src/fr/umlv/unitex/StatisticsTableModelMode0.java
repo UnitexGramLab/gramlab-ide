@@ -57,12 +57,23 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
             scanner.useDelimiter("\r\n|\t");
             while (scanner.hasNext()) {
                 Mode0Data d=new Mode0Data();
+                d.left=scanner.next();
+                if (!scanner.hasNext()) {
+                    throw new IOException();
+                }
                 d.match=scanner.next();
+                if (!scanner.hasNext()) {
+                    throw new IOException();
+                }
+                d.right=scanner.next();
                 if (!scanner.hasNextInt()) {
                     throw new IOException();
                 }
-                /* TODO when contexts are handled, remember to swap them if the language
-                 * is a right to left one */
+                if (Config.isRightToLeftLanguage()) {
+                    String tmp=d.left;
+                    d.left=d.right;
+                    d.right=tmp;
+                }
                 d.n=scanner.nextInt();
                 data.add(d);
             }

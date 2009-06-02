@@ -122,7 +122,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
                     final String[] comm = command.getCommandArguments();
                     Process p = Runtime.getRuntime().exec(comm);
                     new ProcessInfoThread(stdoutList, p
-                            .getInputStream(), false,null,false).start();
+                            .getInputStream(), false,null,false,null).start();
                     try {
                         p.waitFor();
                     } catch (java.lang.InterruptedException e1) {

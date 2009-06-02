@@ -25,6 +25,8 @@ import java.io.*;
 
 import javax.swing.*;
 
+import fr.umlv.unitex.console.ConsoleEntry;
+
 /**
  * This class is used to monitor stdout and stderr messages of external processes.
  * @author Sébastien Paumier
@@ -37,6 +39,7 @@ public class ProcessInfoThread extends Thread {
    boolean close_on_finish;
    ProcessInfoFrame parent_frame;
    boolean scrollDown;
+   ConsoleEntry entry;
 
    /**
     * Creates a new <code>ProcessInfoThread</code> 
@@ -50,12 +53,14 @@ public class ProcessInfoThread extends Thread {
       InputStream s,
       boolean close,
       ProcessInfoFrame f,
-      boolean scrollDown) {
+      boolean scrollDown,
+      ConsoleEntry entry) {
       super();
       this.list=list;
       close_on_finish= close;
       parent_frame= f;
       this.scrollDown=scrollDown;
+      this.entry=entry;
       try {
 		stream= new BufferedReader(new InputStreamReader(s,"UTF8"));
 	} catch (UnsupportedEncodingException e) {
@@ -138,6 +143,9 @@ public class ProcessInfoThread extends Thread {
 	        		  model.addElement(new Couple(s2,false));
 	        	  } else {
 	        		  model.replaceLast(new Couple(s2,false));
+	        	  }
+	        	  if (entry!=null) {
+	        	      entry.addErrorMessage(s2);
 	        	  }
 	        	  if (scrollDown) {
 	        	      list.ensureIndexIsVisible(model.getSize()-1);
