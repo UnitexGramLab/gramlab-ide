@@ -27,6 +27,8 @@ import java.lang.reflect.*;
 
 import javax.swing.*;
 import fr.umlv.unitex.*;
+import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.console.ConsoleEntry;
 
 /**
  * This class describes a frame used to execute shell commands and display
@@ -253,16 +255,16 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.PROGRAM: {
-							Console.addCommand(command.getCommandLine());
+							ConsoleEntry entry=Console.addCommand(command.getCommandLine());
 							final String[] comm = command.getCommandArguments();
 							try {
 								p = Runtime.getRuntime().exec(comm);
 								new ProcessInfoThread(stdoutList, p
 										.getInputStream(), false,
-										ProcessInfoFrame.this,true).start();
+										ProcessInfoFrame.this,true,null).start();
 								new ProcessInfoThread(stderrList, p
 										.getErrorStream(), false,
-										ProcessInfoFrame.this,true).start();
+										ProcessInfoFrame.this,true,entry).start();
 								try {
 									p.waitFor();
 								} catch (java.lang.InterruptedException e) {

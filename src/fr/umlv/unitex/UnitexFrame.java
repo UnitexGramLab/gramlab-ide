@@ -32,6 +32,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
