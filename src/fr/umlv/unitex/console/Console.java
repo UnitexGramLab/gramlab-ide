@@ -27,6 +27,7 @@ import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -34,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
@@ -85,7 +87,7 @@ public class Console extends JInternalFrame {
           }
       });
       table.setDefaultRenderer(ConsoleEntry.class,new DefaultTableCellRenderer() {
-          JLabel command=new JLabel();
+          JTextArea command=new JTextArea();
           JTextArea error=new JTextArea(); 
           {
               error.setLineWrap(true);
@@ -123,6 +125,7 @@ public class Console extends JInternalFrame {
           }
       });
       table.setDefaultEditor(Integer.class,new ConsoleTableCellEditor(model));
+      table.setDefaultEditor(ConsoleEntry.class,new DefaultCellEditor(new JTextField()));
 
       JScrollPane scroll= new JScrollPane(table);
       JPanel middle= new JPanel();

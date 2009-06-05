@@ -40,4 +40,9 @@ public class ConsoleEntry {
     public String getErrorMessage() {
         return error;
     }
+    
+    @Override
+    public String toString() {
+        return getContent();
+    }
 }
