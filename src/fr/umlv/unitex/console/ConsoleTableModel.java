@@ -54,7 +54,7 @@ public class ConsoleTableModel extends AbstractTableModel {
     
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex==0;
+        return true;
     }
 
     public ConsoleEntry getConsoleEntry(int index) {
@@ -65,6 +65,5 @@ public class ConsoleTableModel extends AbstractTableModel {
         data.remove(index);
         fireTableRowsDeleted(index,index);        
     }
-    
     
 }
