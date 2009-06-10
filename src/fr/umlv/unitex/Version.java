@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -27,14 +27,14 @@ import java.util.*;
 /**
  * This class only contains a <code>String</code> that indicates version information.
  * The content of this string appears in the caption of the main frame.  
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *
  */
 public class Version {
    /**
     * The string that contains the version number, and the date of the release.
     */
-   public final static String version= "Unitex 2.1beta "+getRevisionDate();
+   public final static String version= "Unitex 2.1";//beta "+getRevisionDate();
 
    
    /**

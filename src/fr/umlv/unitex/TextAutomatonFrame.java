@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -83,7 +83,7 @@ import fr.umlv.unitex.tfst.TokensInfo;
 /**
  * This class describes a frame used to display sentence automata.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 
@@ -564,6 +564,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 			} else*/ {
 				cmd = new Tfst2GrfCommand().automaton(
 						text_tfst).sentence(z);
+				if (Config.isKorean()) {
+					cmd=cmd.font("Gulim").fontsize(12);
+				}
 				Console.addCommand(cmd.getCommandLine());
 			}
 			Process p;
@@ -801,7 +804,9 @@ public class TextAutomatonFrame extends JInternalFrame {
     }
     frame.graphicalZone.is_initialised = false;
     frame.textfield.setFont(frame.graphicalZone.pref.input);
-    frame.graphicalZone.pref = Preferences.getCloneOfPreferences().getClone();
+    //frame.graphicalZone.pref = Preferences.getCloneOfPreferences().getClone();
+    frame.graphicalZone.pref = g.pref.getClone();
+    
     frame.graphicalZone.Width = g.width;
     frame.graphicalZone.Height = g.height;
     frame.graphicalZone.graphBoxes = g.boxes;

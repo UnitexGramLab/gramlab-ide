@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,7 +47,7 @@ import fr.umlv.unitex.process.*;
  * made by calling the <code>Dico</code> program through the creation of a
  * <code>ProcessInfoFrame</code> object.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  */
 public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
@@ -595,7 +595,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		
 		Tfst2GrfCommand phraseGrfcmd = new Tfst2GrfCommand().automaton(
 		        new File(Config.getCurrentSntDir(),		                "text.tfst")
-				).sentence(1).font("Gulim");
+				).sentence(1).font("Gulim").fontsize(12);
 		
 //		CommandGen firstPhraseGrf = new CommandGen("fst2grfkr");
 //		firstPhraseGrf.dirs(new File(Config.getCurrentSntDir(),"sentencesyl.fst2"));
