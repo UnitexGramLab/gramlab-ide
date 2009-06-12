@@ -23,6 +23,8 @@ package fr.umlv.unitex.process;
 
 import java.io.*;
 
+import fr.umlv.unitex.Config;
+
 /**
  * @author S�bastien Paumier
  *  
@@ -61,5 +63,19 @@ public class MultiFlexCommand extends CommandBuilder {
         protectElement("-c");
         return this;
     }
+    
+	public MultiFlexCommand korean() {
+		element("-j");
+		File curlangdir  = Config.getUserCurrentLanguageDir();
+		File encodage = new File(curlangdir,"jamoTable.txt");
+		protectElement(encodage.getAbsolutePath());
+
+		element("-f");
+		File decodage = new File(new File(curlangdir,"Decoding"),"uneSyl.fst2");
+		protectElement(decodage.getAbsolutePath() );
+
+        return this;
+    }
+
 
 }

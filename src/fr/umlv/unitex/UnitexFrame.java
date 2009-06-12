@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ import fr.umlv.unitex.xalign.*;
 /**
  * This is the main frame of the Unitex system.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  */
 public class UnitexFrame extends JFrame {
 
@@ -1881,12 +1881,11 @@ public class UnitexFrame extends JFrame {
 				Config.setCurrentDELA(dela);
 				if(Config.isAgglutinativeLanguage()){ // HUH insert
 					inflectMorph.setEnabled(true);
-				} else {				
-				    checkDelaFormat.setEnabled(true);
-				    sortDictionary.setEnabled(true);
-				    inflect.setEnabled(true);
-				    compressIntoFST.setEnabled(true);
 				}
+				checkDelaFormat.setEnabled(true);
+				sortDictionary.setEnabled(true);
+				inflect.setEnabled(true);
+				compressIntoFST.setEnabled(true);
 				closeDela.setEnabled(true);
 				DelaFrame.loadDela(Config.getCurrentDELA());
 			}
