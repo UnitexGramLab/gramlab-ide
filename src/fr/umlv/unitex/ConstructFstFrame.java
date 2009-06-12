@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ import fr.umlv.unitex.process.*;
  * This class describes the "Construct Text FST" frame that offers to the user
  * to build the text automaton.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class ConstructFstFrame extends JDialog {
@@ -186,6 +186,9 @@ public class ConstructFstFrame extends JDialog {
                   Config.getCurrentSnt()).fst2(vProSuf)
                 .alphabet().longestMatches().mergeOutputs()
                 .noLimit();
+              if (Config.isKorean()) {
+            	  locateCmd=locateCmd.korean();
+      		}
               commands.addCommand(locateCmd);
               ReconstrucaoCommand reconstrucaoCmd = new ReconstrucaoCommand()
                 .alphabet()

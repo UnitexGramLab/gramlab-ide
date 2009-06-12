@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ import fr.umlv.unitex.process.*;
 /**
  * This class describes the XAlign locate pattern frame.
  * 
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *  
  */
 public class XAlignLocateFrame extends JInternalFrame {
@@ -261,6 +261,9 @@ public class XAlignLocateFrame extends JInternalFrame {
 		else
 			locateCmd = locateCmd.allMatches();
 		locateCmd = locateCmd.ignoreOutputs();
+		if (Config.isKorean()) {
+			locateCmd=locateCmd.korean();
+		}
 		if (stopAfterNmatches.isSelected()) {
 			locateCmd = locateCmd.limit(nMatches.getText());
 		} else {
