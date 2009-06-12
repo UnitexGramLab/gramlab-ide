@@ -352,6 +352,9 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}
+			if (Config.isKorean()) {
+				locateCmd=locateCmd.korean();
+			}
 			if (Config.isCharByCharLanguage()) {
 				locateCmd = locateCmd.charByChar();
 			}
