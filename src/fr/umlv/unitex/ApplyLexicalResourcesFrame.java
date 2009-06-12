@@ -481,6 +481,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				Config.getCurrentSnt()).alphabet(
 						Config.getAlphabet())
 						.morphologicalDic(Preferences.pref.morphologicalDic);
+		if (Config.isKorean()) {
+			cmd=cmd.korean();
+		}
 		if (systemSelection != null	&& systemSelection.length != 0) {
 			for (int i = 0; i < systemSelection.length; i++) {
 				cmd = cmd.systemDictionary((String) systemSelection[i]);

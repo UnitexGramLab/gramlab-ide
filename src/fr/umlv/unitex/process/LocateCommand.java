@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2009 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2009 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import java.util.*;
 import fr.umlv.unitex.*;
 
 /**
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  * 
  */
 public class LocateCommand extends CommandBuilder {
@@ -150,4 +150,13 @@ public class LocateCommand extends CommandBuilder {
         element("-Z");
         return this;
     }
+    
+	public LocateCommand korean() {
+		element("-j");
+		File curlangdir  = Config.getUserCurrentLanguageDir();
+		File encodage = new File(curlangdir,"jamoTable.txt");
+		protectElement(encodage.getAbsolutePath());
+        return this;
+    }
+
 }
