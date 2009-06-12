@@ -176,6 +176,9 @@ public class InflectFrame extends JInternalFrame {
     	} else if (onlyCompoundWords.isSelected()) {
     		command=command.onlyCompoundWords();
     	}
+    	if (Config.isKorean()) {
+    		command=command.korean();
+    	}
         new ProcessInfoFrame(command, false, null);
 	}
 
