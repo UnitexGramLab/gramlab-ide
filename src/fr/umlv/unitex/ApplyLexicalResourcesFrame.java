@@ -444,7 +444,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						}
 						if(commands.numberOfCommands() == 0) return;
 						
-						if (Config.isKorean()) {
+						if (Config.isKorean() || Config.isKoreanJeeSun()) {
 						    /* As we construct the text automaton for Korean, we
 						     * must close the text automaton frame, if any */
 						    TextAutomatonFrame.hideFrame();
@@ -481,7 +481,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				Config.getCurrentSnt()).alphabet(
 						Config.getAlphabet())
 						.morphologicalDic(Preferences.pref.morphologicalDic);
-		if (Config.isKorean()) {
+		if (Config.isKoreanJeeSun()) {
 			cmd=cmd.korean();
 		}
 		if (systemSelection != null	&& systemSelection.length != 0) {
@@ -813,7 +813,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			if(morphlist.exists()){
 				MorphemeFrame.loadMorphemes(morphlist);
 			}
-			if (Config.isKorean()) {
+			if (Config.isKorean() || Config.isKoreanJeeSun()) {
 			    TextAutomatonFrame.showFrame();
 			}
 		}

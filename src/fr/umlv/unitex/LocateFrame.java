@@ -352,7 +352,7 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}
-			if (Config.isKorean()) {
+			if (Config.isKorean() || Config.isKoreanJeeSun()) {
 				locateCmd=locateCmd.korean();
 			}
 			if (Config.isCharByCharLanguage()) {
@@ -407,7 +407,7 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}
-			if (Config.isKorean()) {
+			if (Config.isKorean() || Config.isKoreanJeeSun()) {
                 locateCmd = locateCmd.jamo(new File(Config.getUserCurrentLanguageDir(), "jamoTable.txt"));
             }
             if (allowAmbiguousOutputs.isSelected()) {

@@ -564,7 +564,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			} else*/ {
 				cmd = new Tfst2GrfCommand().automaton(
 						text_tfst).sentence(z);
-				if (Config.isKorean()) {
+				if (Config.isKorean() || Config.isKoreanJeeSun()) {
 					cmd=cmd.font("Gulim").fontsize(12);
 				}
 				Console.addCommand(cmd.getCommandLine());

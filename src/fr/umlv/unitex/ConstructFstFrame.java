@@ -186,7 +186,7 @@ public class ConstructFstFrame extends JDialog {
                   Config.getCurrentSnt()).fst2(vProSuf)
                 .alphabet().longestMatches().mergeOutputs()
                 .noLimit();
-              if (Config.isKorean()) {
+              if (Config.isKorean() || Config.isKoreanJeeSun()) {
             	  locateCmd=locateCmd.korean();
       		}
               commands.addCommand(locateCmd);
@@ -222,7 +222,7 @@ public class ConstructFstFrame extends JDialog {
                 txtCmd=txtCmd.tagset(new File(Config.getCurrentElagDir(),"tagset.def"));
             }
             
-            if (Config.isKorean()) {
+            if (Config.isKorean() || Config.isKoreanJeeSun()) {
                 File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
                 txtCmd=txtCmd.jamoTable(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"))
                 .jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
