@@ -70,7 +70,7 @@ public class BigTextList extends JList {
 						comma=string.indexOf(',',pos);
 						if (comma==-1) return string;
 						pos=comma+1;
-					} while (string.charAt(comma-1)=='\\');
+					} while (comma>0 && string.charAt(comma-1)=='\\');
 					builder.append("<font color=\"blue\">");
 					builder.append(string.substring(0,comma));
 					builder.append("</font>");

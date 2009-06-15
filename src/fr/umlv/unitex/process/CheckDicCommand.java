@@ -38,6 +38,11 @@ public class CheckDicCommand extends CommandBuilder {
       return this;
     }
 
+    public CheckDicCommand alphabet(File s) {
+        protectElement("-a"+s.getAbsolutePath());
+        return this;
+      }
+
     public CheckDicCommand delaType(boolean isDelas) {
       element(isDelas?"--delas":"--delaf");
       return this;
