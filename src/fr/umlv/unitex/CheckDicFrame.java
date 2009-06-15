@@ -146,7 +146,9 @@ public class CheckDicFrame extends JInternalFrame {
 	 *  
 	 */
 	 void checkDELA() {
-		CheckDicCommand command=new CheckDicCommand().name(Config.getCurrentDELA()).delaType(DELAS.isSelected());
+		CheckDicCommand command=new CheckDicCommand().name(Config.getCurrentDELA())
+		.delaType(DELAS.isSelected()).alphabet(Config.getAlphabet());
+		
 		File tmp = new File(Config.getCurrentDELA().getParentFile(),"CHECK_DIC.TXT");
 		CheckResultFrame.close();
 		new ProcessInfoFrame(command.getBuilder(), true, new CheckDicDo(tmp));
