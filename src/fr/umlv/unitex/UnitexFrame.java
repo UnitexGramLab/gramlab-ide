@@ -1931,11 +1931,11 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void compressDELA() {
-		if ( Config.isAgglutinativeLanguage()) {
+		/*if ( Config.isAgglutinativeLanguage()) {
 			CompressKrCommand commandKr = new CompressKrCommand().name(Config
 					.getCurrentDELA());
 			new ProcessInfoFrame(commandKr, false, null);
-		} else {
+		} else*/ {
 			CompressCommand command = new CompressCommand().name(Config
 					.getCurrentDELA());
 			new ProcessInfoFrame(command, false, null);
