@@ -742,6 +742,14 @@ public class Config {
 	        "grec pourri",
 	        "grec desséché"
 	};
+	private static final String[] jeesun=new String[] {
+	    "\uC9C0\uC21C\uC744 \uC704\uD55C \uD55C\uAD6D\uC5B4",
+	    "2000\uB144 \uB3D9\uC548\uC758 \uD55C\uAD6D\uC5B4",
+	    "\uC0C8\uBCBD 4\uC2DC\uC758 \uD55C\uAD6D\uC5B4",
+	    "\uAC74\uBC30\uB77C\uB294 \uB2E8\uC5B4\uB9CC\uC744 \uD560 \uC904 \uC544\uB294 \uC0AC\uB78C\uC758 \uD55C\uAD6D\uC5B4",
+	    "\uD55C\uAD6D\uC5B4\uC640 \uC220",
+	    "coréen rien que pour toi toute seule"
+	};
 	/**
 	 * @return the current language to be displayed in the title bar
 	 */
@@ -751,11 +759,15 @@ public class Config {
 			return null;
 		}
 		/* The following is a private joke */
-		if (!currentLanguage.equals("Greek (Ancient)") 
-				|| (!getUserName().equalsIgnoreCase("bastien") && !getUserName().equalsIgnoreCase("nastasia"))) {
-			return currentLanguage;
+		if (currentLanguage.equals("Greek (Ancient)") 
+				&& (getUserName().equalsIgnoreCase("bastien") || getUserName().equalsIgnoreCase("nastasia"))) {
+			return bastien[new Random().nextInt(bastien.length)];
 		}
-		return bastien[new Random().nextInt(bastien.length)];
+		/* This one too */
+		  if (currentLanguage.equals("KoreanJeeSun")) {
+		      return jeesun[new Random().nextInt(jeesun.length)];
+		  }
+		return currentLanguage;
 	}
 	
 	
@@ -1443,6 +1455,10 @@ public class Config {
 	public static boolean isKorean() {
 		return Config.getCurrentLanguage().equals("Korean");
 	}
+	
+	public static boolean isKoreanJeeSun() {
+        return Config.getCurrentLanguage().equals("KoreanJeeSun");
+    }
 	
 	public static boolean isAgglutinativeLanguage() {
 		String s = Config.getCurrentLanguage();

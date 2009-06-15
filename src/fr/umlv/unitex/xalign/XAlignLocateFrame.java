@@ -261,7 +261,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		else
 			locateCmd = locateCmd.allMatches();
 		locateCmd = locateCmd.ignoreOutputs();
-		if (Config.isKorean()) {
+		if (Config.isKorean() || Config.isKoreanJeeSun()) {
 			locateCmd=locateCmd.korean();
 		}
 		if (stopAfterNmatches.isSelected()) {
