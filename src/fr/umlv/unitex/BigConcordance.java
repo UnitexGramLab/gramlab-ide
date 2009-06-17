@@ -46,8 +46,9 @@ public class BigConcordance extends JList {
 				super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
 				StringBuilder builder=new StringBuilder();
 				builder.append("<html><body>");
-				builder.append((String)value);
-				builder.append("</body></html>");
+				String s=(String)value;
+				builder.append(s);
+                builder.append("</body></html>");
 				setText(builder.toString());
 				return this;
 			}
