@@ -134,7 +134,7 @@ public class ConvertFstFrame extends JInternalFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Fst2UnambigCommand cmd = new Fst2UnambigCommand();
+		Tfst2UnambigCommand cmd = new Tfst2UnambigCommand();
 		File fst2=new File(Config.getCurrentSntDir(),"text.tfst");
 		if (!fst2.exists()) {
 			JOptionPane.showMessageDialog(null,
