@@ -27,18 +27,18 @@ import java.io.*;
  * @author Sébastien Paumier
  *
  */
-public class Fst2UnambigCommand extends CommandBuilder {
+public class Tfst2UnambigCommand extends CommandBuilder {
     
-    public Fst2UnambigCommand() {
-    	super("Fst2Unambig");
+    public Tfst2UnambigCommand() {
+    	super("Tfst2Unambig");
     }
     
-    public Fst2UnambigCommand fst2(File s) {
+    public Tfst2UnambigCommand fst2(File s) {
       protectElement(s.getAbsolutePath());
       return this;
     }
 
-    public Fst2UnambigCommand output(File s) {
+    public Tfst2UnambigCommand output(File s) {
         protectElement("-o"+s.getAbsolutePath());
         return this;
       }
