@@ -56,7 +56,6 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,FlattenCommand.class
             ,Fst2ListCommand.class
             ,Fst2TxtCommand.class
-            ,Tfst2UnambigCommand.class
             ,Grf2Fst2Command.class
             ,ImplodeTfstCommand.class
             ,InflectKrCommand.class
@@ -81,6 +80,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,TagsetNormTfstCommand.class
             ,TEI2TxtCommand.class
             ,Tfst2GrfCommand.class
+            ,Tfst2UnambigCommand.class
             ,TokenizeCommand.class
             ,Txt2Fst2KrCommand.class
             ,Txt2TfstCommand.class
