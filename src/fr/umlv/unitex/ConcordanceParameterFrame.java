@@ -568,6 +568,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		setVisible(false);
 		int width = Integer.parseInt(leftChars.getText())
 				+ Integer.parseInt(rightChars.getText());
+		if (width<40) {
+		    width=40;
+		}
 		ConcordanceFrame.close();
 		new ProcessInfoFrame(command, true, new ConcordanceDo(false,new File(Config
 				.getCurrentSntDir(), "concord.html"), checkBox.isSelected(),
