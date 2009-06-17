@@ -63,12 +63,12 @@ public class Txt2TfstCommand extends CommandBuilder {
 	}
 
     public Txt2TfstCommand jamoTable(File s) {
-        protectElement("-k"+s.getAbsolutePath());
+        protectElement("-j"+s.getAbsolutePath());
         return this;
     }
 
     public Txt2TfstCommand jamoFst2(File s) {
-        protectElement("-j"+s.getAbsolutePath());
+        protectElement("-f"+s.getAbsolutePath());
         return this;
     }
     
