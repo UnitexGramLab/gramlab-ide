@@ -36,7 +36,11 @@ public class NormalizeCommand extends CommandBuilder {
 
 	public NormalizeCommand textWithDefaultNormalization(File s) {
 		protectElement(s.getAbsolutePath());
-		protectElement("-r"+new File(Config.getUserCurrentLanguageDir(),"Norm.txt").getAbsolutePath());
+		
+		File norm=new File(Config.getUserCurrentLanguageDir(),"Norm.txt");
+		if (norm.exists()) {
+		    protectElement("-r"+norm.getAbsolutePath());
+		}
 		return this;
 	}
 	
