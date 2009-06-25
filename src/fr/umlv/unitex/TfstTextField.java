@@ -233,11 +233,11 @@ public class TfstTextField extends JTextField {
     */
    public boolean validateTextField() {
        boolean multiboxesSelection=parent.graphicalZone.selectedBoxes.size()>1;
-       System.err.println("validateTextField: hasChangedTextField="+hasChangedTextField());
+       //System.err.println("validateTextField: hasChangedTextField="+hasChangedTextField());
        if (!hasChangedTextField() && TextAutomatonFrame.frame.bounds.getValue()!=null) {
          return true;
       }
-      System.out.println(TextAutomatonFrame.frame.bounds.boundsAreValid()+" => "+TextAutomatonFrame.frame.bounds.getValue());
+      //System.out.println(TextAutomatonFrame.frame.bounds.boundsAreValid()+" => "+TextAutomatonFrame.frame.bounds.getValue());
       String content=getText();
       if (!multiboxesSelection && !TextAutomatonFrame.frame.bounds.boundsAreValid() && content!=null && !content.equals("")) {
           /* Invalid bounds do not matter if the text is the empty string used to destroy boxes */
