@@ -45,7 +45,8 @@ public abstract class CommandBuilder {
     
    CommandBuilder(String programName) {
      list=new ArrayList<String>();
-     programName(programName);
+     programName("UnitexTool");
+     element(programName);
    }
    
    CommandBuilder() {
