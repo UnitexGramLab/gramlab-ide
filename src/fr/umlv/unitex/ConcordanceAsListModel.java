@@ -32,7 +32,7 @@ import javax.swing.*;
 /**
  * This is a model for representing an HTML concordance file as the
  * list of its paragraphs. Paragraphs are delimited by new lines. It uses
- * a mapped file to avoid to store large data in memory.
+ * a mapped file to avoid to store large data in memory. 
  * 
  * @author Sébastien Paumier
  */
