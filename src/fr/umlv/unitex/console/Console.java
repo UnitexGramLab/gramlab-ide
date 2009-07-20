@@ -65,6 +65,8 @@ public class Console extends JInternalFrame {
       super("Console", true, true);
       model=new ConsoleTableModel();
       table=new JTable(model);
+      table.setTransferHandler(new ConsoleTransferHandler(model));
+      table.setDragEnabled(true);
       table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
       table.getColumnModel().getColumn(0).setPreferredWidth(20);
       table.getColumnModel().getColumn(1).setMinWidth(longestCommandWidth);
