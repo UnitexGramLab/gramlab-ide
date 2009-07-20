@@ -115,7 +115,7 @@ public class LocateCommand extends CommandBuilder {
     }
 
     public LocateCommand morphologicalDic(ArrayList<File> dicList) {
-        if (dicList != null) {
+        if (dicList!=null && !dicList.isEmpty()) {
             protectElement("--morpho=" + Preferences.getMorphologicalDicListAsString(dicList));
         }
         return this;
