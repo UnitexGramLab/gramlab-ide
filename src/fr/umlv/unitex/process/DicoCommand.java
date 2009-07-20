@@ -47,7 +47,7 @@ public class DicoCommand extends CommandBuilder {
 	}
 
 	public DicoCommand morphologicalDic(ArrayList<File> dicList) {
-    	if (dicList!=null) {
+    	if (dicList!=null && !dicList.isEmpty()) {
     		protectElement("-m"+Preferences.getMorphologicalDicListAsString(dicList));
     	}
         return this;
