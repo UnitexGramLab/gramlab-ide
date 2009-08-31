@@ -57,10 +57,10 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	boolean useWebBrowser;
 	private JButton diffButton;
 	
-	JRadioButton mode0=new JRadioButton("left + match + right count",true);
-	JRadioButton mode1=new JRadioButton("collocate count",false);
-	JRadioButton mode2=new JRadioButton("collocate count with z-score",false);
-	NumericTextField leftContextForStats=new NumericTextField("1");
+	JRadioButton mode0=new JRadioButton("collocates by z-score",true);
+    JRadioButton mode1=new JRadioButton("collocates by frequency",false);
+	JRadioButton mode2=new JRadioButton("contexts by frequency",false);
+    NumericTextField leftContextForStats=new NumericTextField("1");
 	NumericTextField rightContextForStats=new NumericTextField("1");
 	JRadioButton caseSensitive=new JRadioButton("case sensitive",true);
     JRadioButton caseInsensitive=new JRadioButton("case insensitive",false);
@@ -70,7 +70,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	 *  
 	 */
 	public ConcordanceParameterFrame() {
-		super("Display indexed sequences...", /*false*/true, true);
+		super("Located sequences...", /*false*/true, true);
 		setContentPane(constructPanel());
 		pack();
 		useWebBrowser=(Preferences.getCloneOfPreferences().htmlViewer!=null);
@@ -158,9 +158,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         JPanel panel1=new JPanel(new GridLayout(3,1));
         panel1.setBorder(BorderFactory.createTitledBorder("Mode:"));
         ButtonGroup b1=new ButtonGroup();
-        b1.add(mode0);
-        b1.add(mode1);
         b1.add(mode2);
+        b1.add(mode1);
+        b1.add(mode0);
         panel1.add(mode0);
         panel1.add(mode1);
         panel1.add(mode2);
@@ -211,7 +211,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                     .right(Integer.parseInt(rightContextForStats.getText()))
                     .output(output).caseSensitive(caseSensitive.isSelected());
                 int mode;
-                if (mode0.isSelected()) mode=0;
+                if (mode2.isSelected()) mode=0;
                 else if (mode1.isSelected()) mode=1;
                 else mode=2;
                 cmd=cmd.mode(mode);
