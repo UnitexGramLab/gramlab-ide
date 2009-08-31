@@ -243,7 +243,7 @@ public class UnitexFrame extends JFrame {
 		text.add(loc);
 		//-------------------------------------------------------------------
 		displayLocatedSequences = new AbstractAction(
-				"Display Located Sequences...") {
+				"Located Sequences...") {
 			public void actionPerformed(ActionEvent e) {
 				ConcordanceParameterFrame.showFrame();
 			}
