@@ -21,6 +21,11 @@
 
 package fr.umlv.unitex.editor;
 
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.regex.*;
 
 import javax.swing.*;
@@ -36,6 +41,7 @@ public class EditionTextArea extends JTextArea {
 
 	Timer currentTimer = null;
 	int searchIndex = 0;
+	boolean modified=false;
 
 	/**
 	 * Default Constructor
@@ -43,8 +49,33 @@ public class EditionTextArea extends JTextArea {
 	public EditionTextArea() {
 		super();
 		setLineWrap(true);
+		addKeyListener(new KeyAdapter() {
+            
+            public void keyPressed(KeyEvent e) {
+                setModified();
+            }
+        });
+	}
+	
+	@Override
+	public void paste() {
+	    setModified();
+	    super.paste();
 	}
 
+	void setModified() {
+	    modified=true;
+	}
+	
+	public void setUnmodified() {
+        modified=false;
+    }
+	
+	public boolean isModified() {
+	    return modified;
+	}
+	
+	
 	public EditionTextArea( Document doc ) {
 			super(doc);
 			setLineWrap(true);

@@ -124,15 +124,63 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 		setBounds(100, 100, 800, 600);
 
 		setVisible(true);
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);        
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);        
 		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent arg0) {
-                FileEditionTextFrame.this.setVisible(false);
-				UnitexFrame.removeInternalFrame(FileEditionTextFrame.this);
-			}
+			
+		    
+	        public void internalFrameClosing(InternalFrameEvent e) {
+	            if (text.isModified()) {
+	                Object[] options_on_exit = { "Save", "Don't save" };
+	                Object[] normal_options = { "Save", "Don't save", "Cancel" };
+	                int n;
+	                if (UnitexFrame.closing) {
+	                    n = JOptionPane
+	                            .showOptionDialog(
+	                                    FileEditionTextFrame.this,
+	                                    "Text has been modified. Do you want to save it ?",
+	                                    "", JOptionPane.YES_NO_CANCEL_OPTION,
+	                                    JOptionPane.QUESTION_MESSAGE, null,
+	                                    options_on_exit, options_on_exit[0]);
+	                } else {
+	                    n = JOptionPane
+	                            .showOptionDialog(
+	                                    FileEditionTextFrame.this,
+	                                    "Text has been modified. Do you want to save it ?",
+	                                    "", JOptionPane.YES_NO_CANCEL_OPTION,
+	                                    JOptionPane.QUESTION_MESSAGE, null,
+	                                    normal_options, normal_options[0]);
+	                }
+	                if (n == JOptionPane.CLOSED_OPTION)
+	                    return;
+	                if (n == 0) {
+	                    saveFile(file);
+	                    FileEditionTextFrame.this.setVisible(false);
+                        FileEditionTextFrame.this.dispose();
+                        return;
+	                }
+	                if (n != 2) {
+	                    FileEditionTextFrame.this.setVisible(false);
+	                    FileEditionTextFrame.this.dispose();
+	                    return;
+	                }
+	                FileEditionTextFrame.this.setVisible(true);
+	                try {
+	                    FileEditionTextFrame.this.setSelected(true);
+	                    FileEditionTextFrame.this.setIcon(false);
+	                } catch (java.beans.PropertyVetoException e2) {
+	                    e2.printStackTrace();
+	                }
+	                return;
+	            }
+	            FileEditionTextFrame.this.setVisible(false);
+	            UnitexFrame.removeInternalFrame(FileEditionTextFrame.this);
+	        }
+		    
 		});
 	}
 
+	
+	
 	private JMenuBar initMenuBar() {
 		JMenuBar jb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -250,7 +298,7 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 			}
 			f = chooser.getSelectedFile();
 		}
-    this.file=f;
+		this.file=f;
 		setTitle(f.getAbsolutePath());
 		fileManager.save(f.getAbsolutePath());
 	}
