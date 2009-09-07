@@ -150,7 +150,7 @@ public class FileManager {
          }
          osr.flush();
          osr.close();
-
+         t.setUnmodified();
       } catch (IOException e) {
          JOptionPane.showMessageDialog(
             null,
