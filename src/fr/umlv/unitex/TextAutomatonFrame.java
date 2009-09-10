@@ -145,7 +145,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             if (s==null || s.equals("")) {
                 bounds.setValue(null);
             } else {
-                System.out.println("la selection va de "+text.getSelectionStart()+" a "+text.getSelectionEnd());
+                //System.out.println("la selection va de "+text.getSelectionStart()+" a "+text.getSelectionEnd());
                 bounds.setValue(new Bounds(text.getSelectionStart(),text.getSelectionEnd()-1));
             }
         }
@@ -426,8 +426,12 @@ public class TextAutomatonFrame extends JInternalFrame {
     frame.sentence_count_label.setText(s);
     spinnerModel.setMaximum(new Integer(sentence_count));
     spinnerModel.setValue(new Integer(1));
-    /* Comment because spinnerModel.setValue does the job */ 
-    //loadSentence(1);
+    if (sentence_count==1) {
+        /* The sentence_count!=1, spinnerModel.setValue does the job.
+         * Otherwise, setValue(1) is ignored because the current value is
+         * already 1 */ 
+        loadSentence(1);
+    }
     frame.setVisible(true);
 
     try {
@@ -525,6 +529,7 @@ public class TextAutomatonFrame extends JInternalFrame {
   }
 
   public boolean loadCurrSentence() {
+      System.err.println("loadCurrSentence");
     return loadSentence(spinnerModel.getNumber().intValue());
   }
 
@@ -538,7 +543,6 @@ public class TextAutomatonFrame extends JInternalFrame {
    */
 
   public static boolean loadSentence(int n) {
-
     if (n < 1 || n > sentence_count)
       return false;
     final int z = n;
@@ -566,6 +570,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 						text_tfst).sentence(z);
 				if (Config.isKorean() || Config.isKoreanJeeSun()) {
 					cmd=cmd.font("Gulim").fontsize(12);
+				} else {
+				    cmd=cmd.font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
 				}
 				Console.addCommand(cmd.getCommandLine());
 			}
@@ -725,7 +731,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         }
         Tfst2GrfCommand cmd=new Tfst2GrfCommand().automaton(elag_tfst)
       .sentence(z)
-      .output("currelagsentence");
+      .output("currelagsentence")
+      .font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
 
     /*String command = '"' + Config.getApplicationDir() + "Fst2Grf"
       + '"' + ' ' + '"' + elag_fst.getAbsolutePath() + '"'
