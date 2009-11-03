@@ -53,7 +53,7 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
         try {
             FileInputStream stream=new FileInputStream(file);
             
-            Scanner scanner=new Scanner(stream,"UTF-16LE");
+            Scanner scanner=new Scanner(stream,"UTF-16");
             scanner.useDelimiter("\r\n|\t");
             while (scanner.hasNext()) {
                 Mode0Data d=new Mode0Data();
