@@ -27,6 +27,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -52,30 +54,25 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
         }
         try {
             FileInputStream stream=new FileInputStream(file);
-            
             Scanner scanner=new Scanner(stream,"UTF-16");
-            scanner.useDelimiter("\r\n|\t");
-            while (scanner.hasNext()) {
+            Pattern pattern=Pattern.compile("(.*)\t(.+)\t(.*)\t([0-9])+");
+            while (scanner.hasNextLine()) {
+                String line=scanner.nextLine();
+                Matcher matcher=pattern.matcher(line);
+                if (!matcher.matches()) {
+                    throw new IOException("Invalid line in statistics file:\n"+line+"\n");
+                }
                 Mode0Data d=new Mode0Data();
-                d.left=scanner.next();
-                if (!scanner.hasNext()) {
-                    throw new IOException();
-                }
-                d.match=scanner.next();
-                if (!scanner.hasNext()) {
-                    throw new IOException();
-                }
-                d.right=scanner.next();
-                if (!scanner.hasNextInt()) {
-                    throw new IOException();
-                }
-                if (Config.isRightToLeftLanguage()) {
-                    String tmp=d.left;
-                    d.left=d.right;
-                    d.right=tmp;
-                }
-                d.n=scanner.nextInt();
                 data.add(d);
+                if (Config.isRightToLeftLanguage()) {
+                    d.left=matcher.group(3);
+                    d.right=matcher.group(1);
+                } else {
+                    d.left=matcher.group(1);
+                    d.right=matcher.group(3);
+                }
+                d.match=matcher.group(2);
+                d.n=Integer.parseInt(matcher.group(4));
             }
             scanner.close();
             stream.close();
