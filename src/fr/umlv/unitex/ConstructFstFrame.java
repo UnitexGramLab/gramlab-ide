@@ -41,14 +41,15 @@ public class ConstructFstFrame extends JDialog {
 
   JCheckBox reconstrucao = new JCheckBox("Build clitic normalization grammar (available only for Portuguese (Portugal))");
   JCheckBox normFst = new JCheckBox(
-      "Apply the Normalization grammar (Norm.fst2)");
+      "Apply the Normalization grammar");
 
   JCheckBox cleanFst = new JCheckBox("Clean Text FST");
   JCheckBox morphFst = new JCheckBox(
       "Use morpheme structures: available for Korean");
 
   JCheckBox elagFst = new JCheckBox("Normalize according to Elag tagset.def");
-
+  JTextField normGrf = new JTextField(Config.getCurrentNormGraph().getAbsolutePath());
+  
   /**
    * Creates and shows a new <code>ConstructFstFrame</code>.
    *  
@@ -71,7 +72,7 @@ public class ConstructFstFrame extends JDialog {
   }
 
   private JPanel constructNormalizationPanel() {
-    JPanel normalizationPanel = new JPanel(new GridLayout(5,1));
+    JPanel normalizationPanel = new JPanel(new GridLayout(6,1));
     normalizationPanel.setBorder(new TitledBorder("Normalization"));
     boolean portuguese = Config.getCurrentLanguage().equals("Portuguese (Portugal)");
     reconstrucao.setEnabled(portuguese);
@@ -88,7 +89,27 @@ public class ConstructFstFrame extends JDialog {
     }
 
     normalizationPanel.add(reconstrucao);
+    
     normalizationPanel.add(normFst);
+    JPanel norm=new JPanel(new BorderLayout());
+    JCheckBox foo=new JCheckBox("");
+    norm.setBorder(BorderFactory.createEmptyBorder(0,foo.getPreferredSize().width,0,0));
+    norm.add(normGrf,BorderLayout.CENTER);
+    Action setAction = new AbstractAction("Set...") {
+        public void actionPerformed(ActionEvent arg0) {
+            JFileChooser chooser = Config.getNormDialogBox();
+            int returnVal = chooser.showOpenDialog(null);
+            if (returnVal != JFileChooser.APPROVE_OPTION) {
+                // we return if the user has clicked on CANCEL
+                return;
+            }
+            normGrf.setText(chooser.getSelectedFile().getAbsolutePath());
+        }
+    };
+    JButton setNorm = new JButton(setAction);
+    norm.add(setNorm,BorderLayout.EAST);
+    normalizationPanel.add(norm);
+    
     normalizationPanel.add(cleanFst);
     normalizationPanel.add(morphFst);
     normalizationPanel.add(elagFst);
@@ -214,9 +235,29 @@ public class ConstructFstFrame extends JDialog {
             Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
                 Config.getCurrentSnt()).alphabet().clean(
                 cleanFst.isSelected());
+            File normFile=null;
+            File normGrfFile=null;
             if (normFst.isSelected()) {
-              txtCmd=txtCmd.fst2(
-                  new File(normalizationDir, "Norm.fst2"));
+                String grfName = normGrf.getText();
+                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                    // we must compile the grf
+                    normGrfFile=new File(grfName);
+                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(normGrfFile).enableLoopAndRecursionDetection(true).tokenizationMode();
+                    commands.addCommand(grfCmd);
+                    String fst2Name = grfName.substring(0, grfName.length() - 3);
+                    fst2Name = fst2Name + "fst2";
+                    normFile = new File(fst2Name);
+                } else {
+                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                        // if the extension is nor GRF neither
+                        // FST2
+                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    normFile=normGrfFile=new File(grfName);
+                }
+                txtCmd=txtCmd.fst2(normFile);
+                Config.setCurrentNormGraph(normGrfFile);
             }
             if (elagFst.isSelected()) {
                 txtCmd=txtCmd.tagset(new File(Config.getCurrentElagDir(),"tagset.def"));
