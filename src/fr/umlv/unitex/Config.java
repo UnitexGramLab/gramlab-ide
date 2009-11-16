@@ -119,17 +119,23 @@ public class Config {
 
 	/**
 	 * Path of the user's current sentence delimitation graph
-	 * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Sentence/Sentence.fst2</code>
+	 * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Sentence/grf</code>
 	 */
 	private static File currentSentenceGraph;
 
 	/**
 	 * Path of the user's current replace graph
-	 * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Replace/Replace.fst2</code>
+	 * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Replace/Replace.grf</code>
 	 */
 	private static File currentReplaceGraph;
 
-	/**
+    /**
+     * Path of the user's current normalization graph
+     * <code>.../(user dir)/(current language)/Graphs/Normalisation/Norm.grf</code>
+     */
+    private static File currentNormGraph;
+
+    /**
 	 * Constant indicating under which system Unitex is running
 	 */
 	private static int currentSystem = WINDOWS_SYSTEM;
@@ -182,7 +188,12 @@ public class Config {
 	 */
 	private static JFileChooser replaceDialogBox;
 
-	/**
+    /**
+     * Dialog box used to choose the 'norm' graph 
+     */
+    private static JFileChooser normDialogBox;
+
+    /**
 	 * Dialog box used to open ".txt" or ".snt" text files
 	 */
 	private static JFileChooser corpusDialogBox;
@@ -330,7 +341,22 @@ public class Config {
 		return replaceDialogBox;
 	}
 
-	public static JFileChooser getDelaDialogBox() {
+    public static JFileChooser getNormDialogBox() {
+        if (normDialogBox != null)
+            return normDialogBox;
+        normDialogBox = new JFileChooser();
+        normDialogBox.addChoosableFileFilter(new PersonalFileFilter(
+                "fst2", "Unicode Compiled Graphs"));
+        normDialogBox.addChoosableFileFilter(new PersonalFileFilter(
+                "grf", "Unicode Graphs"));
+        normDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+        File f=new File(Config.getCurrentGraphDir(),"Normalization");
+        normDialogBox.setCurrentDirectory(f);
+        normDialogBox.setMultiSelectionEnabled(false);
+        return normDialogBox;
+    }
+
+    public static JFileChooser getDelaDialogBox() {
 		if (delaDialogBox != null)
 			return delaDialogBox;
 		delaDialogBox = new JFileChooser();
@@ -1212,6 +1238,24 @@ public class Config {
 		currentReplaceGraph = s;
 	}
 
+    /**
+     * 
+     * @return current sentence normalization graph
+     */
+    public static File getCurrentNormGraph() {
+        return currentNormGraph;
+    }
+
+    /**
+     * Sets current sentence normalization graph
+     * 
+     * @param s
+     *            graph's name
+     */
+    public static void setCurrentNormGraph(File s) {
+        currentNormGraph = s;
+    }
+
 	/**
 	 * Sets sentence delimitation and replace graphs
 	 *  
@@ -1232,6 +1276,10 @@ public class Config {
 		replace = new File(replace, "Replace.grf");
 		setCurrentSentenceGraph(sentence);
 		setCurrentReplaceGraph(replace);
+		File z=new File(getUserCurrentLanguageDir(),"Graphs");
+		z=new File(z,"Normalization");
+		z=new File(z,"Norm.grf");
+        setCurrentNormGraph(z);
 	}
 
 	/**
