@@ -316,6 +316,9 @@ public class PreprocessFrame extends JDialog {
                                 commands.addCommand(cc);
                             } else {
                                 dicoCmd = new DicoCommand().snt(Config.getCurrentSnt()).alphabet(Config.getAlphabet()).morphologicalDic(Preferences.pref.morphologicalDic);
+                                if (Config.isKoreanJeeSun()) {
+                                    dicoCmd=dicoCmd.korean();
+                                }
                                 ArrayList<File> param = getDefaultDicList();
                                 if (param != null && param.size() > 0) {
                                     dicoCmd = dicoCmd.dictionaryList(param);
