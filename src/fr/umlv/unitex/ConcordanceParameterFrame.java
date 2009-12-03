@@ -339,6 +339,24 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
+				File snt=Config.getCurrentSnt();
+				String txt=snt.getAbsolutePath();
+				if (!txt.endsWith(".snt")) {
+				    txt=null;
+				} else {
+				    txt=txt.substring(0,txt.lastIndexOf('.')+1);
+				    txt=txt+"txt";
+				}
+				if (chooser.getSelectedFile().equals(snt)) {
+		            JOptionPane.showMessageDialog(null, "You are about to replace your existing .snt file: "
+		                    + snt.getAbsolutePath(), "Warning",
+		                    JOptionPane.WARNING_MESSAGE);
+				}
+				if (chooser.getSelectedFile().getAbsolutePath().equals(txt)) {
+				    JOptionPane.showMessageDialog(null, "You are about to replace your existing .txt file: "
+                     + txt, "Warning",
+                     JOptionPane.WARNING_MESSAGE);
+				}
 				sntFile.setText(chooser.getSelectedFile().getAbsolutePath());
 			}
 		};
