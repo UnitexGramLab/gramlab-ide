@@ -916,7 +916,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 
     ElagCommand elagcmd = new ElagCommand()
       .lang(new File(Config.getCurrentElagDir(),"tagset.def"))
-      .dir(elagrules.getParentFile())
       .rules(elagrules)
       .output(elag_tfst)
       .automaton(text_tfst);

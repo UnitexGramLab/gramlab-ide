@@ -554,7 +554,7 @@ public class ElagCompFrame extends JInternalFrame {
             commands.addCommand(elagCompCmd);
               }
         }
-        ElagCompCommand elagCompCmd = new ElagCompCommand().lang(tagset).dir(currdir).output(outputfile).ruleList(lstfile);
+        ElagCompCommand elagCompCmd = new ElagCompCommand().lang(tagset).output(outputfile).ruleList(lstfile);
         /*
          * command = '"' + Config.getApplicationDir() + "ElagComp" + '"' + "
          * -l " + '"' + tagset.getAbsolutePath() + '"' + " -d " + '"' +
