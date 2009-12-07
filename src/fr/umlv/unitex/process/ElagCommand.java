@@ -44,18 +44,12 @@ public class ElagCommand extends CommandBuilder {
     }
 
     public ElagCommand rules(File s) {
-        // this parameter is supposed not to be an absolute path
-        protectElement("-r" + s.getName());
+        protectElement("-r" + s.getAbsolutePath());
         return this;
     }
 
     public ElagCommand output(File s) {
         protectElement("-o" + s.getAbsolutePath());
-        return this;
-    }
-
-    public ElagCommand dir(File s) {
-        protectElement("-d" + s.getAbsolutePath());
         return this;
     }
 
