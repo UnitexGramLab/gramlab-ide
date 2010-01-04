@@ -23,6 +23,8 @@ package fr.umlv.unitex.process;
 
 import java.io.*;
 
+import fr.umlv.unitex.Config;
+
 /**
  * @author Sébastien Paumier
  *
@@ -31,6 +33,10 @@ public class CheckDicCommand extends CommandBuilder {
     
     public CheckDicCommand() {
     	super("CheckDic");
+    	if (Config.getCurrentLanguage().equals("Chinese") ||
+    	        Config.getCurrentLanguage().equals("Mandarin")) {
+    	    element("-n");
+    	}
     }
     
     public CheckDicCommand name(File s) {
