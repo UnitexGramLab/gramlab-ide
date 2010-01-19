@@ -542,7 +542,7 @@ public class TextAutomatonFrame extends JInternalFrame {
    *         <code>true</code> otherwise
    */
 
-  public static boolean loadSentence(int n) {
+    public static boolean loadSentence(int n) {
     if (n < 1 || n > sentence_count)
       return false;
     final int z = n;
@@ -688,15 +688,15 @@ public class TextAutomatonFrame extends JInternalFrame {
               loadSentenceGraph(new File(sentence_modified.getAbsolutePath()
                     + String.valueOf(z) + ".grf"));
               frame.setModified(modified);
-            } else
+            } else {
               loadSentenceGraph(sentence_grf);
+            }
             isAcurrentLoadingThread = false;
+            loadElagSentence(z);
           }
         }.start();
       }
     });
-
-    loadElagSentence(n);
 
     return true;
   }
