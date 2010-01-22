@@ -265,8 +265,7 @@ public class ConstructFstFrame extends JDialog {
             
             if (Config.isKorean() || Config.isKoreanJeeSun()) {
                 File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
-                txtCmd=txtCmd.jamoTable(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"))
-                .jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
+                txtCmd=txtCmd.korean().jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
             }
             commands.addCommand(txtCmd);
             TextAutomatonFrame.hideFrame();
