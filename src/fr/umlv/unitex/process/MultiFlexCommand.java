@@ -65,11 +65,9 @@ public class MultiFlexCommand extends CommandBuilder {
     }
     
 	public MultiFlexCommand korean() {
-		element("-j");
-		File curlangdir  = Config.getUserCurrentLanguageDir();
-		File encodage = new File(curlangdir,"jamoTable.txt");
-		protectElement(encodage.getAbsolutePath());
+		element("-K");
 
+		File curlangdir  = Config.getUserCurrentLanguageDir();
 		element("-f");
 		File decodage = new File(new File(curlangdir,"Decoding"),"uneSyl.fst2");
 		protectElement(decodage.getAbsolutePath() );

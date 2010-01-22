@@ -62,8 +62,8 @@ public class Txt2TfstCommand extends CommandBuilder {
 	     return this;
 	}
 
-    public Txt2TfstCommand jamoTable(File s) {
-        protectElement("-j"+s.getAbsolutePath());
+    public Txt2TfstCommand korean() {
+        element("-K");
         return this;
     }
 
