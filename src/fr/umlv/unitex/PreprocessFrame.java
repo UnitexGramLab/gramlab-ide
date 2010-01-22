@@ -399,8 +399,7 @@ public class PreprocessFrame extends JDialog {
                             Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt()).alphabet().clean(true);
                             if (Config.isKoreanJeeSun()) {
                                 File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
-                                txtCmd=txtCmd.jamoTable(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"))
-                                    .jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
+                                txtCmd=txtCmd.korean().jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
                             }
                             if (norm != null) {
                                 txtCmd = txtCmd.fst2(norm);

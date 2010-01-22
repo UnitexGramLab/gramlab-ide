@@ -408,7 +408,7 @@ public class LocateFrame extends JInternalFrame {
 				locateCmd = locateCmd.noLimit();
 			}
 			if (Config.isKorean() || Config.isKoreanJeeSun()) {
-                locateCmd = locateCmd.jamo(new File(Config.getUserCurrentLanguageDir(), "jamoTable.txt"));
+                locateCmd = locateCmd.korean();
             }
             if (allowAmbiguousOutputs.isSelected()) {
                 locateCmd = locateCmd.allowAmbiguousOutputs();

@@ -55,8 +55,8 @@ public class LocateTfstCommand extends CommandBuilder {
 		return this;
 	}
 	
-	public LocateTfstCommand jamo(File jamo) {
-        protectElement("-j"+jamo.getAbsolutePath());
+	public LocateTfstCommand korean() {
+	    element("-K");
         return this;
     }
 

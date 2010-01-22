@@ -593,7 +593,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
 		Txt2TfstCommand buildTfst=new Txt2TfstCommand().alphabet()
 		.text(Config.getCurrentSnt())
-		.jamoTable(new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt"))
+		.korean()
 		.jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
 		
 		Tfst2GrfCommand phraseGrfcmd = new Tfst2GrfCommand().automaton(
