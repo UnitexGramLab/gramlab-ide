@@ -93,6 +93,7 @@ public class ConcordanceFrame extends JInternalFrame {
 		up.setOpaque(true);
 		up.setBorder(new EmptyBorder(2, 2, 2, 2));
 		up.add(nombre_matches, BorderLayout.CENTER);
+		top.add(up,BorderLayout.NORTH);
 		setContentPane(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
