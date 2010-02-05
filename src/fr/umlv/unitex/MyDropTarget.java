@@ -320,7 +320,7 @@ public class MyDropTarget {
 				e.dropComplete(false);
 				return;
 			}
-			if (data instanceof java.util.List) {
+			if (data instanceof java.util.List<?>) {
 				processDropList((List<?>) data);
 				e.dropComplete(true);
 			} else {

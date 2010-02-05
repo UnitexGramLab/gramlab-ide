@@ -269,7 +269,6 @@ public class XAlignModelImpl implements XAlignModel {
 				return null;
 			}
 			
-			@SuppressWarnings("synthetic-access")
 			@Override
 			protected void process(java.util.List<PublishInfo> chunks) {
 				for (PublishInfo c:chunks) {

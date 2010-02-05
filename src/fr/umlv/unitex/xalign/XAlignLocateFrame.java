@@ -23,7 +23,6 @@ package fr.umlv.unitex.xalign;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
 import java.io.*;
 
 import javax.swing.*;

@@ -44,8 +44,6 @@ public class ConstructFstFrame extends JDialog {
       "Apply the Normalization grammar");
 
   JCheckBox cleanFst = new JCheckBox("Clean Text FST");
-  JCheckBox morphFst = new JCheckBox(
-      "Use morpheme structures: available for Korean");
 
   JCheckBox elagFst = new JCheckBox("Normalize according to Elag tagset.def");
   JTextField normGrf = new JTextField(Config.getCurrentNormGraph().getAbsolutePath());
@@ -79,8 +77,6 @@ public class ConstructFstFrame extends JDialog {
     reconstrucao.setSelected(portuguese);
     cleanFst.setSelected(true);
     boolean morphemeCase = Config.isKorean();
-    morphFst.setEnabled(morphemeCase);
-    morphFst.setSelected(morphemeCase);
     elagFst.setSelected(false);
     if(!morphemeCase){
       normFst.setSelected(true);
@@ -111,7 +107,6 @@ public class ConstructFstFrame extends JDialog {
     normalizationPanel.add(norm);
     
     normalizationPanel.add(cleanFst);
-    normalizationPanel.add(morphFst);
     normalizationPanel.add(elagFst);
 
     return normalizationPanel;
@@ -207,7 +202,7 @@ public class ConstructFstFrame extends JDialog {
                   Config.getCurrentSnt()).fst2(vProSuf)
                 .alphabet().longestMatches().mergeOutputs()
                 .noLimit();
-              if (Config.isKorean() || Config.isKoreanJeeSun()) {
+              if (Config.isKorean()) {
             	  locateCmd=locateCmd.korean();
       		}
               commands.addCommand(locateCmd);
@@ -263,10 +258,6 @@ public class ConstructFstFrame extends JDialog {
                 txtCmd=txtCmd.tagset(new File(Config.getCurrentElagDir(),"tagset.def"));
             }
             
-            if (Config.isKorean() || Config.isKoreanJeeSun()) {
-                File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
-                txtCmd=txtCmd.korean().jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
-            }
             commands.addCommand(txtCmd);
             TextAutomatonFrame.hideFrame();
             new ProcessInfoFrame(commands, true,

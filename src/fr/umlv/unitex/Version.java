@@ -62,7 +62,8 @@ public class Version {
 	   return date+calendar.get(Calendar.DAY_OF_MONTH)+", "+calendar.get(Calendar.YEAR)+")";
    }
    
-   private static String getRevisionDate() {
+   @SuppressWarnings("unused")
+private static String getRevisionDate() {
 	   File f=new File(Config.getApplicationDir(),"revision.date");
 	   if (!f.exists() || f.length()==0) {
 		   return getJarDate();
