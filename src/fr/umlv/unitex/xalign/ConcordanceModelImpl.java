@@ -47,7 +47,6 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	Object[] occurrenceArray;
 	
 	
-	@SuppressWarnings("unchecked")
 	public ConcordanceModelImpl(XMLTextModel model,boolean source) {
 		this.model=model;
 		this.source=source;

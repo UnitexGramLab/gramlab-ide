@@ -300,23 +300,11 @@ public class PreprocessFrame extends JDialog {
                             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
                         }
                         commands.addCommand(tokenizeCmd);
-                        if (Config.isKorean()) {
-                            File GetTokenFile = new File(Config.getCurrentSntDir(), "tokens.txt");
-                            Syl2JamoCommand sylCmdTmp = new Syl2JamoCommand();
-                            sylCmdTmp.optionForMapJamo(new File(Config.getUserCurrentLanguageDir(), "jamoTable.txt"));
-                            sylCmdTmp.optionForHanja(new File(Config.getUserCurrentLanguageDir(), "hanja.txt"));
-                            sylCmdTmp.src(GetTokenFile);
-                            commands.addCommand(sylCmdTmp);
-                        }
                         // APPLYING DEFAULT DICTIONARIES...
                         DicoCommand dicoCmd;
-                        if (applyDicCheck.isSelected())
-                            if (Config.isKorean()) {
-                                MessageCommand cc = new MessageCommand("Application of Dico skipped for Korean: use \"Apply lexical resources\"", true);
-                                commands.addCommand(cc);
-                            } else {
+                        if (applyDicCheck.isSelected()) {
                                 dicoCmd = new DicoCommand().snt(Config.getCurrentSnt()).alphabet(Config.getAlphabet()).morphologicalDic(Preferences.pref.morphologicalDic);
-                                if (Config.isKoreanJeeSun()) {
+                                if (Config.isKorean()) {
                                     dicoCmd=dicoCmd.korean();
                                 }
                                 ArrayList<File> param = getDefaultDicList();
@@ -397,9 +385,8 @@ public class PreprocessFrame extends JDialog {
                                 }
                             }
                             Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt()).alphabet().clean(true);
-                            if (Config.isKoreanJeeSun()) {
-                                File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
-                                txtCmd=txtCmd.korean().jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
+                            if (Config.isKorean()) {
+                                txtCmd=txtCmd.korean();
                             }
                             if (norm != null) {
                                 txtCmd = txtCmd.fst2(norm);

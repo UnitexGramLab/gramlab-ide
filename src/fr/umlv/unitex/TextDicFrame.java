@@ -151,9 +151,9 @@ public class TextDicFrame extends JInternalFrame {
          init();
       }
       /********* Loading DLF file *********/
-      File FILE = new File(dir,(Config.isAgglutinativeLanguage())? "mdlf":"dlf");
+      File FILE = new File(dir,"dlf");
       frame.dlf.setFont(Config.getCurrentTextFont());
-      String n= UnicodeIO.readFirstLine(new File(dir,(Config.isAgglutinativeLanguage())? "mdlf.n":"dlf.n"));
+      String n= UnicodeIO.readFirstLine(new File(dir,"dlf.n"));
       String message= "DLF";
       if (n != null) {
          message= message + ": " + n + " simple-word lexical entr";
@@ -170,10 +170,9 @@ public class TextDicFrame extends JInternalFrame {
           frame.dlfLabel.setText(message);
       }
       /********* Loading DLC file *********/
-      FILE=new File(dir,(Config.isAgglutinativeLanguage())? "mdlc":"dlc");
+      FILE=new File(dir,"dlc");
       frame.dlc.setFont(Config.getCurrentTextFont());
-      n= UnicodeIO.readFirstLine(new File(dir,
-         		(Config.isAgglutinativeLanguage())? "mdlc.n":"dlc.n"));
+      n= UnicodeIO.readFirstLine(new File(dir,"dlc.n"));
       message= "DLC";
       if (n != null) {
          message= message + ": " + n + " compound lexical entr";

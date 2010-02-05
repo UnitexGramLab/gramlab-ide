@@ -352,7 +352,7 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}
-			if (Config.isKorean() || Config.isKoreanJeeSun()) {
+			if (Config.isKorean()) {
 				locateCmd=locateCmd.korean();
 			}
 			if (Config.isCharByCharLanguage()) {
@@ -407,7 +407,7 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}
-			if (Config.isKorean() || Config.isKoreanJeeSun()) {
+			if (Config.isKorean()) {
                 locateCmd = locateCmd.korean();
             }
             if (allowAmbiguousOutputs.isSelected()) {
