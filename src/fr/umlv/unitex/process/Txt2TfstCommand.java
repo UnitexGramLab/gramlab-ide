@@ -66,10 +66,4 @@ public class Txt2TfstCommand extends CommandBuilder {
         element("-K");
         return this;
     }
-
-    public Txt2TfstCommand jamoFst2(File s) {
-        protectElement("-f"+s.getAbsolutePath());
-        return this;
-    }
-    
 }

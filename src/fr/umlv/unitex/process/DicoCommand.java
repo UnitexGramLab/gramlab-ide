@@ -77,12 +77,6 @@ public class DicoCommand extends CommandBuilder {
 	
 	public DicoCommand korean() {
 		element("-K");
-
-		File curlangdir  = Config.getUserCurrentLanguageDir();
-		element("-f");
-	    File decodage = new File(new File(curlangdir,"Decoding"),"uneSyl.fst2");
-	    protectElement(decodage.getAbsolutePath() );
-
         return this;
     }
 

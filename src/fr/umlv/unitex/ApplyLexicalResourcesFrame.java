@@ -437,14 +437,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 					public void run() {
 						TextDicFrame.hideFrame();
 						MultiCommands commands;
-						if(Config.isKorean()){
-							commands = getRunCmdForKorean();
-						} else {
-							commands = getRunCmd();
-						}
+						commands = getRunCmd();
 						if(commands.numberOfCommands() == 0) return;
 						
-						if (Config.isKorean() || Config.isKoreanJeeSun()) {
+						if (Config.isKorean()) {
 						    /* As we construct the text automaton for Korean, we
 						     * must close the text automaton frame, if any */
 						    TextAutomatonFrame.hideFrame();
@@ -531,91 +527,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	}
 	
 	
-	/**
-	 * Builds the command lines for applying dictionaries for
-	 * agglutinative languages.
-	 * @return a <code>MultiCommands</code> object that contains the command lines
-	 */
 
-	MultiCommands getRunCmdForKorean()
-	{
-		MultiCommands commands = new MultiCommands();
-		Object[] userSelection = userDicList.getSelectedValues();
-		Object[] systemSelection = systemDicList.getSelectedValues();
-		if ((userSelection == null || userSelection.length == 0)
-		&& (systemSelection == null || systemSelection.length == 0)) {
-		    // if there is no dic selected, we do nothing
-			return commands;
-		}
-
-		File usrlistDicFiles = new File(
-				new File(Config
-						.getUserCurrentLanguageDir(), "Dela"),"usrlist.lst");
-		File syslistDicFiles = new File(
-				new File(Config
-						.getUnitexCurrentLanguageDir(), "Dela"),"syslist.lst");
-		frame.saveSelectionToFile(frame.userDicList,usrlistDicFiles);
-		frame.saveSelectionToFile(frame.systemDicList,syslistDicFiles);
-		
-		ConsultDicCommand consultkr = new ConsultDicCommand()
-		.listFile(syslistDicFiles)
-		.listFile(usrlistDicFiles)
-		.sequencesMorph(new File(Config.getCurrentSntDir(),"tokensjm.txt"));
-
-		Txt2Fst2KrCommand getmorph = new Txt2Fst2KrCommand();
-		getmorph.creation(new File(Config.getCurrentSntDir(),"tokens.txt"));
-		
-		/*Txt2Fst2KrCommand getmorph1 = new Txt2Fst2KrCommand();
-		getmorph1.getsentence(1,new File(Config.getCurrentSntDir(),"tokens.txt"));
-		*/
-		Jamo2SylCommand getSylSeqMorphs = new Jamo2SylCommand()
-		.decodage(new File(Config.getCurrentSntDir(),"seqMorphs.txt"));
-		Jamo2SylCommand getSylMorpheme = new Jamo2SylCommand()
-		.decodage(new File(Config.getCurrentSntDir(),"Morphemes.txt"));
-		File curSntDir  = Config.getCurrentSntDir();		
-
-		
-		SortMorphCommand getsearchResult = new SortMorphCommand()
-			.tokenF(new File(curSntDir,"tokens.txt"))
-			.seqMorpF(new File(curSntDir,"seqMorphssyl.txt"))
-			.txtCodeF(new File(curSntDir,"Morphemessyl.txt"))
-		;
-		
-//		CommandGen getsearchResult = new CommandGen("sortmorph");
-//		getsearchResult.txtCodeF(new File(curSntDir,"text.cod"));
-//		getsearchResult.tokenF(new File(curSntDir,"tokens.txt"));
-//		getsearchResult.seqMorpF(new File(curSntDir,"seqMorphssyl.txt"));
-		
-		/* We automatically constructs the .tfst */
-		/*Jamo2SylCommand getSylSentence = new Jamo2SylCommand()
-		    .decodage(new File(Config.getCurrentSntDir(),"sentence.fst2"));*/
-		
-		File DecodingDir=new File(Config.getUserCurrentLanguageDir(),"Decoding");
-		Txt2TfstCommand buildTfst=new Txt2TfstCommand().alphabet()
-		.text(Config.getCurrentSnt())
-		.korean()
-		.jamoFst2(new File(DecodingDir,"uneSyl.fst2"));
-		
-		Tfst2GrfCommand phraseGrfcmd = new Tfst2GrfCommand().automaton(
-		        new File(Config.getCurrentSntDir(),		                "text.tfst")
-				).sentence(1).font("Gulim").fontsize(12);
-		
-//		CommandGen firstPhraseGrf = new CommandGen("fst2grfkr");
-//		firstPhraseGrf.dirs(new File(Config.getCurrentSntDir(),"sentencesyl.fst2"));
-//		firstPhraseGrf.element();
-		// set mode to morphem
 	
-		commands.addCommand(consultkr);
-		commands.addCommand(getmorph);
-		//commands.addCommand(getmorph1);
-		commands.addCommand(buildTfst);
-		commands.addCommand(phraseGrfcmd);
-		commands.addCommand(getSylSeqMorphs);
-		commands.addCommand(getSylMorpheme);
-		commands.addCommand(getsearchResult);
-		
-		return(commands);
-	}
 	/**
 	 * Gets a list of all ".bin" and ".fst2" files found in a directory.
 	 * 
@@ -626,30 +539,17 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	public Vector<String> getDicList(File dir) {
 	
 		Vector<String> v = new Vector<String>();
-		if (!dir.exists())
+		if (!dir.exists()) {
 			return v;
+		}
 		File files_list[] = dir.listFiles();
-		if(Config.isAgglutinativeLanguage()){
-			for (int i = 0; i < files_list.length; i++) {
-				String name = files_list[i].getAbsolutePath();
-				
-				if (!files_list[i].isDirectory()
-						&& (name.endsWith(".mtb") || name.endsWith(".MTB"))) {
-					v.add(files_list[i].getName());
-				}
+		for (int i = 0; i < files_list.length; i++) {
+			String name = files_list[i].getAbsolutePath();
+			if (!files_list[i].isDirectory()
+					&& (name.endsWith(".bin") || name.endsWith(".BIN")
+						|| name.endsWith(".fst2")  || name.endsWith(".FST2"))) {
+				v.add(files_list[i].getName());
 			}
-			
-		} else {
-			for (int i = 0; i < files_list.length; i++) {
-				String name = files_list[i].getAbsolutePath();
-				
-				if (!files_list[i].isDirectory()
-						&& (name.endsWith(".bin") || name.endsWith(".BIN")
-							|| name.endsWith(".fst2")  || name.endsWith(".FST2"))) {
-					v.add(files_list[i].getName());
-				}
-			}
-
 		}
 		return v;
 	}
@@ -809,11 +709,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	class ApplyLexicalResourcesDo extends ToDoAbstract {
 		public void toDo() {
 			TextDicFrame.loadTextDic(Config.getCurrentSntDir(),false);
-			File morphlist = new File(Config.getCurrentSntDir(),"morph_by_freq.txt");
-			if(morphlist.exists()){
-				MorphemeFrame.loadMorphemes(morphlist);
-			}
-			if (Config.isKorean() || Config.isKoreanJeeSun()) {
+			if (Config.isKorean()) {
 			    TextAutomatonFrame.showFrame();
 			}
 		}

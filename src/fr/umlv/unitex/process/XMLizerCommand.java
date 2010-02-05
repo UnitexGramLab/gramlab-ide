@@ -31,7 +31,6 @@ public class XMLizerCommand extends CommandBuilder {
 
 	public XMLizerCommand() {
 		super("XMLizer");
-		this.element("-t");
 	}
 
     public XMLizerCommand output(File s) {

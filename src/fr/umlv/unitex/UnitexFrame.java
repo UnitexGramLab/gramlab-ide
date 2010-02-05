@@ -27,7 +27,6 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.print.*;
 import java.io.*;
-import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -371,25 +370,6 @@ public class UnitexFrame extends JFrame {
 		};
 		closeDela.setEnabled(false);
 		DELA.add(new JMenuItem(closeDela));
-		//-------------------------------------------------------------------
-		DELA.addSeparator();
-    	//-------------------------------------------------------------------
-		inflectMorph = new AbstractAction("Morph Var & Der...") {
-		public void actionPerformed(ActionEvent e) {
-			InflectMorphFrame.showFrame();
-		}
-	};
-		inflectMorph.setEnabled(false);
-		DELA.add(new JMenuItem(inflectMorph));
-		//-------------------------------------------------------------------
-		mergeData = new AbstractAction("Append Suffixes to Stems...") {
-		    public void actionPerformed(ActionEvent e) {
-		        MergeRacineSuffixes.showFrame();
-		    }
-		};
-		mergeData.setEnabled(true);
-		DELA.add(new JMenuItem(mergeData));
-
     	return DELA;
 	}
 
@@ -507,14 +487,6 @@ public class UnitexFrame extends JFrame {
 		tools.add(flatten);
 		tools.addSeparator();
 		tools.add(graphCollection);
-		JMenuItem CompileGraphe = new JMenuItem("Compile Morpheme graph...");
-		CompileGraphe.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				compileGraphMorpheme();
-			}
-		});
-		tools.add(CompileGraphe);
-
 		
 		JMenu format = new JMenu("Format");
 		JMenuItem alignment = new JMenuItem("Alignment...");
@@ -1303,14 +1275,14 @@ public class UnitexFrame extends JFrame {
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
 		File file=null;
 		for (;;) {
-		int returnVal = fc.showSaveDialog(this);
-		fc.setMultiSelectionEnabled(true);
+		    int returnVal = fc.showSaveDialog(this);
+		    fc.setMultiSelectionEnabled(true);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				// we return if the user has clicked on CANCEL
 				return false;
 			}
 			file = fc.getSelectedFile();
-			if (!file.exists()) break;
+			if (file==null || !file.exists()) break;
 			String message=file+"\nalready exists. Do you want to replace it ?";
 			Object[] options = {"Yes", "No"};
 			int n = JOptionPane.showOptionDialog(null, message, "Error",
@@ -1319,6 +1291,9 @@ public class UnitexFrame extends JFrame {
 			if (n==0) {
 				break;
 			}
+		}
+		if (file==null) {
+		    return false;
 		}
 		String name = file.getAbsolutePath();
 		// if the user wants to save the graph as an image 
@@ -1572,295 +1547,12 @@ public class UnitexFrame extends JFrame {
 		}
 		return slf;
 	}
-	public void compileGraphMorpheme() {
-		GraphFrame currentFrame = getCurrentFocusedGraphFrame();
-		if (currentFrame == null)
-			return;
-		if (currentFrame.modified == true) {
-			JOptionPane.showMessageDialog(null,
-					"Save graph before compiling it", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		File grf = currentFrame.getGraph();
-		
-		if (grf == null) {
-			JOptionPane.showMessageDialog(null,
-					"Cannot compile a graph with no name", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		String grf_sans_ext = new String(grf.getAbsolutePath()
-                .substring(0,grf.getAbsolutePath().length() - 4));
-        mainFrame.destDirectory.setText(new File(Config.getUserCurrentLanguageDir()
-				,"MorphemVariants").getAbsolutePath());
-		mainFrame.destDirectory.setPreferredSize(new Dimension(240, 25));
-
-		JPanel mainpane = new JPanel();
-		JPanel upPanel = new JPanel();
-		JPanel midPanel = new JPanel();		
-		JPanel downPanel = new JPanel();
-		
-		mainpane.setLayout(new BorderLayout());
-		upPanel.setLayout(new GridLayout(2, 1));
-		midPanel.setLayout(new BorderLayout());
-		downPanel.setLayout(new BorderLayout());
 	
-		upPanel.setBorder(new TitledBorder("Compile morpheme graphs: "));
-		midPanel.setBorder(new TitledBorder("Break cycles of call to subgraphs:"));
-		downPanel.setBorder(new TitledBorder("Save result in: "));		
-		
-		JPanel paneButtonSufStem = new JPanel();
-		paneButtonSufStem.setBorder(new TitledBorder("Graph content:"));
-		paneButtonSufStem.setLayout(new GridLayout(1, 3));		
-		JRadioButton suf = new JRadioButton("suffixes");
-		JRadioButton rac = new JRadioButton("stems");
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(suf);
-		bg.add(rac);
-		suf.setSelected(true);		
-		
-		paneButtonSufStem.add(suf);
-		paneButtonSufStem.add(rac);
-		
-		JPanel subpane = new JPanel();
-		subpane.setBorder(new TitledBorder("Detect Cycles:"));
-		subpane.setLayout(new FlowLayout(SwingConstants.HORIZONTAL));
-		subpane.add(new JLabel("Stop after: "));
-		NumericTextField depth = new NumericTextField(4, String.valueOf(10000));
-		subpane.add(depth);
-		
-		upPanel.add(paneButtonSufStem);
-		upPanel.add(subpane);
-
-		downPanel.add(mainFrame.destDirectory, BorderLayout.CENTER);
-		Action setDirectoryAction = new AbstractAction("Set...") {
-			public void actionPerformed(ActionEvent arg0) {
-				int returnVal = Config.getInflectDialogBox().showOpenDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					// we return if the user has clicked on CANCEL
-					return;
-				}
-				mainFrame.destDirectory.setText(
-						Config.getInflectDialogBox().getSelectedFile()
-						.getAbsolutePath());
-			}
-		};
-		JButton setDirectory = new JButton(setDirectoryAction);
-		downPanel.add(setDirectory, BorderLayout.EAST);
-		
-		
-		JPanel BreakCyclePanel = new JPanel();
-		BreakCyclePanel.setBorder(new TitledBorder("Set break subgraphs:"));
-		BreakCyclePanel.setLayout(new GridLayout(2,3));
-		
-		final String[] rowData = new String[] {""};
-		rowData[0] = new String(grf.getName().substring(0,grf.getName().length() - 4));
-		
-		final JComboBox breaksubgraphListBox = new JComboBox(rowData);
-//		breaksubgraphListBox.setPreferredSize(new Dimension(240, 25));
-		
-		breaksubgraphListBox.setEditable(true);
-		Action AddComboListAction = new AbstractAction("Add...") {
-			public void actionPerformed(ActionEvent arg0) {
-				String getfi= JOptionPane.showInputDialog("");
-				if(!getfi.equals(""))
-					breaksubgraphListBox.addItem(getfi);
-//JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,""
-	//			+breaksubgraphListBox.getModel().getSize());
-			}
-		};
-		JButton addListItemButton = new JButton(AddComboListAction);
-		addListItemButton.setPreferredSize(new Dimension(100, 25));
-		Action RemoveComboListAction = new AbstractAction("Delete...") {
-			public void actionPerformed(ActionEvent arg0) {
-				if(breaksubgraphListBox.getModel().getSize() == 1) return;
-				String getfi= JOptionPane.showInputDialog("");
-				if(!getfi.equals(""))
-					breaksubgraphListBox.removeItem(getfi);
-				
-			}
-		};
-		JButton removeListItemButton = new JButton(RemoveComboListAction);
-		removeListItemButton.setPreferredSize(new Dimension(100, 25));
-		
-		JLabel saveListFileLabel = new JLabel("save :");	
-		final JTextField saveListFileName = new JTextField("                  ");
-		saveListFileName.setPreferredSize(new Dimension(100, 25));
-		final JFileChooser breakListSaveDir = new JFileChooser();
-		breakListSaveDir.addChoosableFileFilter(new PersonalFileFilter("txt",
-				"*.*"));
-		breakListSaveDir.setDialogType(JFileChooser.SAVE_DIALOG);
-		breakListSaveDir.setCurrentDirectory(new File(Config
-				.getUserCurrentLanguageDir(), "MorphemVariants"));
-		breakListSaveDir.setMultiSelectionEnabled(false);
-		
-		Action setSaveListAction = new AbstractAction("Save at...") {
-			public void actionPerformed(ActionEvent arg0) {
-				int returnVal = breakListSaveDir.showOpenDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					// we return if the user has clicked on CANCEL
-					return;
-				}
-				File saveExact = new File(breakListSaveDir.getSelectedFile()
-						.getAbsolutePath());
-				
-				try {
-					if (!saveExact.exists()) {
-						saveExact.createNewFile();
-					}
-					BufferedWriter bw = new BufferedWriter(new FileWriter(saveExact));
-					for (int i = 0; i < breaksubgraphListBox.getModel().getSize(); i++) {
-						String s = (String) (breaksubgraphListBox.getModel().getElementAt(i)) + "\n";
-						bw.write(s, 0, s.length());
-					}
-					bw.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-			}
-		};
-		JButton setSaveListButton = new JButton(setSaveListAction);
-				
-		BreakCyclePanel.add(breaksubgraphListBox);
-		BreakCyclePanel.add(addListItemButton);
-		BreakCyclePanel.add(removeListItemButton);
-		BreakCyclePanel.add(saveListFileLabel);
-		BreakCyclePanel.add(saveListFileName);
-		BreakCyclePanel.add(setSaveListButton);
-//		BreakCyclePanel.add(saveListFilePanel);
-		
-		JPanel existListFilePanel = new JPanel();
-		existListFilePanel.setBorder(
-				new TitledBorder("Lookup list of break subgraphs"));
-		
-		JLabel existListFileLabel = new JLabel("Name of list file :");	
-		final JTextField existListFileName = new JTextField("");
-		existListFileName.setPreferredSize(new Dimension(240, 25));
-		final JFileChooser existListFile = new JFileChooser();
-		existListFile.addChoosableFileFilter(new PersonalFileFilter("txt",
-				"Morphems subgraphs list"));
-		existListFile.setDialogType(JFileChooser.OPEN_DIALOG);
-		existListFile.setCurrentDirectory(new File(Config
-				.getUserCurrentLanguageDir(), "Inflection"));
-		existListFile.setMultiSelectionEnabled(false);
-		
-		Action getSavedListAction = new AbstractAction("Load from...") {
-			public void actionPerformed(ActionEvent arg0) {
-				int returnVal = existListFile.showOpenDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					// we return if the user has clicked on CANCEL
-					return;
-				}
-				existListFileName.setText(
-						existListFile.getSelectedFile()
-						.getAbsolutePath());
-			}
-		};
-		JButton getSavedListButton = new JButton(getSavedListAction);
-		
-		existListFilePanel.add(existListFileLabel,BorderLayout.WEST);
-		existListFilePanel.add(existListFileName,BorderLayout.CENTER);
-		existListFilePanel.add(getSavedListButton,BorderLayout.EAST);
-		
-		midPanel.add(BreakCyclePanel,BorderLayout.CENTER);
-		midPanel.add(existListFilePanel,BorderLayout.SOUTH);
-		
-		
-		mainpane.add(upPanel,BorderLayout.NORTH);
-		mainpane.add(midPanel,BorderLayout.CENTER);
-		mainpane.add(downPanel,BorderLayout.SOUTH);
-
-		Object[] options = {"OK", "Cancel"};
-		if (0 == JOptionPane.showOptionDialog(null, mainpane,
-				"Compile morpheme graph", JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, options, options[0])) {
-			if (depth.getText().equals("") || depth.getText().equals("0")) {
-				JOptionPane.showMessageDialog(null, "Invalid depth value",
-						"Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			String name_fst2 = new String(grf_sans_ext + ".fst2");
-			String name_fst3 = new String(grf_sans_ext +  "jm.fst2");
-			String name_fst4 =  new String(grf_sans_ext+ ".txt");
-
-			MultiCommands commands = new MultiCommands();
-			commands.addCommand(new Grf2Fst2Command()
-					.grf(grf)// a Korean morpheme graph must be
-					         // compiled with the default tokenization rules
-					.enableLoopAndRecursionDetection(true)
-					.library()
-					);
-			File map_encoder = new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt");
-			if(map_encoder.exists()){
-				Syl2JamoCommand sy2jamoConv = new Syl2JamoCommand()
-				.optionForIncludeJamo()
-				.optionForMapJamo(map_encoder)
-				.src(new File(name_fst2));
-				commands.addCommand(sy2jamoConv);
-			}
-			Fst2ListCommand fst2l = new Fst2ListCommand();
-			
-			if(suf.isSelected()){
-				fst2l.modeOfInital("m");
-			} else {
-				fst2l.modeOfInital("s");
-				
-			}
-//			fst2l.element("-l");
-			fst2l.limit(depth.getText());
-			
-			String optionfixed = new String("-c SS=0x318d -m -v -f a  -s0 \",,,\" -s \";\" -rl \"\\,,:\" -ss \"#\" ");
-			StringTokenizer st = new StringTokenizer(optionfixed," ");
-			while(st.hasMoreTokens())
-				fst2l.uneOption(st.nextToken());
-			
-			if(breaksubgraphListBox.getModel().getSize() > 1){
-			for (int i = 0; 
-			i < breaksubgraphListBox.getModel().getSize(); i++) {
-				fst2l.uneOption("-i");
-				fst2l.uneOption((String)breaksubgraphListBox.getModel()
-						.getElementAt(i));
-			}
-			}
-
-			File rf = new File(name_fst4);
-			File desFile = new File(mainFrame.destDirectory.getText(),rf.getName());
-			
-			fst2l.setOFile(desFile);
-			//
-			//	get default suffix list from the save dirctory
-			//
-			
-			fst2l.ignoreListFile( getSufList(	new File(mainFrame.destDirectory.getText()),".sic"));
-			if(!existListFileName.getText().equals("")){
-				fst2l.ignoreListFile(new File(existListFileName.getText()) );
-			}
-			fst2l.fst2(new File(name_fst3));
-			commands.addCommand(fst2l);
-			
-			SufForm2RacCommand formchange = new SufForm2RacCommand();
-			File dirhanja = new File(Config.
-					getUserCurrentLanguageDir(),"hanjajm.txt");
-			if(dirhanja.exists())
-				formchange.convTableList(dirhanja);
-
-			String list_filen = desFile.getAbsolutePath().substring(0,
-					desFile.getAbsolutePath().length() - 4);
-			formchange.dest(new String(list_filen + 
-					(suf.isSelected() ? ".sic":".ric")));
-			
-			if(suf.isSelected()){
-				formchange.inputFilesList(new String(list_filen + "lst.txt"));	
-			} else {
-				formchange.inputFile(desFile);
-			}
-			commands.addCommand(formchange);
-			
-			new ProcessInfoFrame(commands, false);
-		}
-	}
+	
+	
+	
+	
+	
 
 	/**
 	 * Shows a dialog box to select a dictionary. If a dictionary is selected,
@@ -1879,9 +1571,6 @@ public class UnitexFrame extends JFrame {
 			public void toDo() {
                 closeDELA();
 				Config.setCurrentDELA(dela);
-				if(Config.isAgglutinativeLanguage()){ // HUH insert
-					inflectMorph.setEnabled(true);
-				}
 				checkDelaFormat.setEnabled(true);
 				sortDictionary.setEnabled(true);
 				inflect.setEnabled(true);
@@ -1973,9 +1662,6 @@ public class UnitexFrame extends JFrame {
 		closeText.setEnabled(false);
 		Text.closeText();
 		TokensFrame.hideFrame();
-		if(Config.isAgglutinativeLanguage()){
-			MorphemeFrame.hideFrame();			
-		}
 		closeAllConcordanceFrames();
 		TextDicFrame.hideFrame();
 		TextAutomatonFrame.hideFrame();
@@ -2015,16 +1701,13 @@ public class UnitexFrame extends JFrame {
 			return;
 		Dimension bounds = getContentPane().getSize();
 		if (openFrameCount == 1) {
-			for (int i = 0; i < f.length; i++) {
-				try {
-					JInternalFrame F = f[i];
-					if (F.isVisible() && !F.isIcon()) {
-						F.setBounds(0, 0, bounds.width, bounds.height);
-					}
-				} catch (ClassCastException e) {
-					// nothing to do
+			try {
+				JInternalFrame F = f[0];
+				if (F.isVisible() && !F.isIcon()) {
+					F.setBounds(0, 0, bounds.width, bounds.height);
 				}
-				return;
+			} catch (ClassCastException e) {
+				// nothing to do
 			}
 		}
 		if (openFrameCount == 2) {

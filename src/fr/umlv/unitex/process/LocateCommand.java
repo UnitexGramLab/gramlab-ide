@@ -153,12 +153,6 @@ public class LocateCommand extends CommandBuilder {
     
 	public LocateCommand korean() {
 		element("-K");
-
-		File curlangdir  = Config.getUserCurrentLanguageDir();
-	    element("-f");
-	    File decodage = new File(new File(curlangdir,"Decoding"),"uneSyl.fst2");
-	    protectElement(decodage.getAbsolutePath() );
-
         return this;
     }
 

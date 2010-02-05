@@ -43,10 +43,8 @@ public class HelpOnCommandFrame extends JInternalFrame {
     @SuppressWarnings("unchecked")
     Class[] commands={CheckDicCommand.class
             ,CompressCommand.class
-            ,CompressKrCommand.class
             ,ConcordCommand.class
             ,ConcorDiffCommand.class
-            ,ConsultDicCommand.class
             ,ConvertCommand.class
             ,DicoCommand.class
             ,ElagCommand.class
@@ -58,11 +56,8 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,Fst2TxtCommand.class
             ,Grf2Fst2Command.class
             ,ImplodeTfstCommand.class
-            ,InflectKrCommand.class
-            ,Jamo2SylCommand.class
             ,LocateCommand.class
             ,LocateTfstCommand.class
-            ,MergeBinCommand.class
             /* This is normal that MkdirCommand is not in this list,
              * since it's not a Unitex command */
             ,MultiFlexCommand.class
@@ -71,18 +66,14 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,RebuildTfstCommand.class
             ,ReconstrucaoCommand.class
             ,Reg2GrfCommand.class
-            ,SortMorphCommand.class
             ,SortTxtCommand.class
             ,StatsCommand.class
-            ,SufForm2RacCommand.class
-            ,Syl2JamoCommand.class
             ,Table2GrfCommand.class
             ,TagsetNormTfstCommand.class
             ,TEI2TxtCommand.class
             ,Tfst2GrfCommand.class
             ,Tfst2UnambigCommand.class
             ,TokenizeCommand.class
-            ,Txt2Fst2KrCommand.class
             ,Txt2TfstCommand.class
             ,UncompressCommand.class
             ,XAlignCommand.class

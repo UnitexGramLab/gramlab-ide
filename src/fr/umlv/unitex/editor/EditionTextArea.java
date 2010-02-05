@@ -21,17 +21,18 @@
 
 package fr.umlv.unitex.editor;
 
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.regex.*;
+import java.util.regex.Pattern;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.Timer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
-import fr.umlv.unitex.editor.ui.*;
+import fr.umlv.unitex.editor.ui.KeyErrorException;
+import fr.umlv.unitex.editor.ui.TextAreaSeparatorException;
 
 /**
  * This class describes a JTextArea that can correctly load unicode text

@@ -227,11 +227,6 @@ public class Config {
 	private static JFileChooser fileEditionDialogBox;
 	
 	/**
-	 * Dialog box used to select for morpheme and variation result directory
-	 */
-	private static JFileChooser morphemVariantsDiaglogBox;
-	
-	/**
 	 * Dialog box used to select for derivation directory
 	 */
 	private static JFileChooser variationDialogBox;
@@ -490,18 +485,6 @@ public class Config {
 		if (inflectDialogBox != null)
 			inflectDialogBox.setCurrentDirectory(new File(Config
 					.getUserCurrentLanguageDir(), "Inflection"));
-		if(Config.isAgglutinativeLanguage()){
-			if (morphemVariantsDiaglogBox != null)
-				morphemVariantsDiaglogBox.setCurrentDirectory(new File(Config
-						.getUserCurrentLanguageDir(), "MorphemVariants"));
-			if (variationDialogBox != null)
-				variationDialogBox.setCurrentDirectory(new File(Config
-					.getUserCurrentLanguageDir(), "Variation"));
-			if (derivationDialogBox != null)
-				derivationDialogBox.setCurrentDirectory(new File(Config
-					.getUserCurrentLanguageDir(), "Derivation"));
-			
-		}
 		if (tableDialogBox != null)
 			tableDialogBox.setCurrentDirectory(Config
 					.getUserCurrentLanguageDir());
@@ -878,30 +861,6 @@ public class Config {
 		f = new File(userCurrentLanguageDir, "Graphs");
 		if (!f.exists()) {
 			copyDirRec(new File(getUnitexCurrentLanguageDir(), "Graphs"), f);
-		}
-		if(Config.isAgglutinativeLanguage()){
-			f = new File(userCurrentLanguageDir, "MorphemVariants");
-			f.mkdir();
-			copyFileByName(new File(new File(getUnitexCurrentLanguageDir(),
-					"MorphemVariants"), "*"), f);
-			
-			f = new File(userCurrentLanguageDir, "Variation");
-			f.mkdir();
-			copyFileByName(new File(new File(getUnitexCurrentLanguageDir(),
-					"Variation"), "*"), f);
-			f = new File(userCurrentLanguageDir, "Derivation");
-			f.mkdir();
-			copyFileByName(new File(new File(getUnitexCurrentLanguageDir(),
-					"Derivation"), "*"), f);
-			f = new File(userCurrentLanguageDir, "Suffixes");
-			if (!f.exists()) {
-				copyDirRec(new File(getUnitexCurrentLanguageDir(), "Suffixes"), f);
-			}
-			f = new File(userCurrentLanguageDir, "Decoding");
-			if (!f.exists()) {
-				copyDirRec(new File(getUnitexCurrentLanguageDir(), "Decoding"), f);
-			}
-
 		}
 
 	}
@@ -1502,19 +1461,14 @@ public class Config {
 	}
 
 	public static boolean isKorean() {
-		return Config.getCurrentLanguage().equals("Korean");
+		return Config.getCurrentLanguage().equals("Korean") 
+		    || isKoreanJeeSun();
 	}
 	
 	public static boolean isKoreanJeeSun() {
         return Config.getCurrentLanguage().equals("KoreanJeeSun");
     }
 	
-	public static boolean isAgglutinativeLanguage() {
-		String s = Config.getCurrentLanguage();
-		return s.equals("Korean") || s.equals("Malagasy");
-	}
-
-
 	public static File getXAlignDirectory() {
 		File dir=new File(Config.getUserDir(),"XAlign");
 		if (!dir.exists()) {
