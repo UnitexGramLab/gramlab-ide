@@ -83,6 +83,8 @@ public class HelpOnCommandFrame extends JInternalFrame {
     
 	static HelpOnCommandFrame frame;
 
+	static boolean refreshLock=false; 
+	
 	public HelpOnCommandFrame() {
 		super("Help on commands", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
@@ -104,10 +106,13 @@ public class HelpOnCommandFrame extends JInternalFrame {
         
 		list.addListSelectionListener(new ListSelectionListener() {
 		    public void valueChanged(ListSelectionEvent e) {
-		        @SuppressWarnings("unchecked")
-                Class c=(Class)list.getSelectedValue();
-		        if (c==null) return;
-		        try {
+		        if (refreshLock==true || e.getValueIsAdjusting()) {
+		            return;
+		        }
+		        refreshLock=true;
+                try {
+                    Class<?> c=(Class<?>)list.getSelectedValue();
+                    if (c==null) return;
                     CommandBuilder command=(CommandBuilder) c.newInstance();
                     stdout.removeAllElements();
                     final String[] comm = command.getCommandArguments();
@@ -125,6 +130,9 @@ public class HelpOnCommandFrame extends JInternalFrame {
                     e1.printStackTrace();
                 } catch (IOException e1) {
                     e1.printStackTrace();
+                }
+                finally {
+                    refreshLock=false;
                 }
 		    }
 		});
