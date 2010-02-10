@@ -184,7 +184,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	/**
 	 * This method computes the position in matchedSentences where
 	 * to insert sentence, so that the array remains sorted. -1
-	 * means that the value is allready in the array.
+	 * means that the value is already in the array.
 	 */
 	private int findPositionToInsert(int sentence) {
 		int n=matchedSentences.size();
@@ -203,7 +203,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		for (int position_to_insert=1;position_to_insert<n;position_to_insert++) {
 			nextValue=matchedSentences.get(position_to_insert);
 			if (nextValue==sentence) {
-				/* If the sentence is allready there */ 
+				/* If the sentence is already there */ 
 				return -1;
 			}
 			if (sentence<nextValue) return position_to_insert;
