@@ -187,8 +187,11 @@ public class AlignmentParameterFrame extends JInternalFrame {
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
+					NormalizeCommand norm=new NormalizeCommand().textWithDefaultNormalization(source);
+	                commands.addCommand(norm);
+	                String snt=Util.getFileNameWithoutExtension(source)+".snt";
 					XMLizerCommand cmd=new XMLizerCommand().output(xmlSource)
-					    .alphabet(alphabet).sentence(sentence).input(source);
+					    .alphabet(alphabet).sentence(sentence).input(new File(snt));
 					commands.addCommand(cmd);
 				} else {
 					xmlSourceFile=source;
@@ -244,8 +247,11 @@ public class AlignmentParameterFrame extends JInternalFrame {
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
+					NormalizeCommand norm=new NormalizeCommand().textWithDefaultNormalization(dest);
+					commands.addCommand(norm);
+					String snt=Util.getFileNameWithoutExtension(dest)+".snt";
 					XMLizerCommand cmd=new XMLizerCommand().output(xmlTarget)
-					    .alphabet(alphabet).sentence(sentence).input(dest);
+					    .alphabet(alphabet).sentence(sentence).input(new File(snt));
 					commands.addCommand(cmd);
 				} else {
 					xmlTargetFile=dest;
