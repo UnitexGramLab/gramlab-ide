@@ -301,10 +301,8 @@ public class UnitexFrame extends JFrame {
 	AbstractAction checkDelaFormat;
 	AbstractAction sortDictionary;
 	AbstractAction inflect;
-	AbstractAction inflectMorph;
 	AbstractAction compressIntoFST;
 	AbstractAction closeDela;
-	AbstractAction mergeData;	// reunification of suffixs et roots
 
 
 	/**
@@ -1643,7 +1641,6 @@ public class UnitexFrame extends JFrame {
 		sortDictionary.setEnabled(false);
 		inflect.setEnabled(false);
 		compressIntoFST.setEnabled(false);
-		inflectMorph.setEnabled(false);
 		closeDela.setEnabled(false);
 	}
 
