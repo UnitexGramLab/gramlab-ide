@@ -46,8 +46,41 @@ public class BigTextList extends JList {
 		super(m);
 		/* Set maximal length of a line:
 		 * This value must big enough holding even the longest dlc entries,
-		 * or strange effects (lines cut up somewhere in the middle) will occure! */
+		 * or strange effects (lines cut up somewhere in the middle) will occur! */
 		setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
+                setText(getTabbedString((String)value));
+                return this;
+            }
+            
+            
+            /**
+             * The default renderer of a JList is a JLabel. As JLabels don't
+             * know how to deal with tabs, we do it here, considering that
+             * a tab should be at most 8 space large.
+             */
+            StringBuilder builder=new StringBuilder();
+            private String getTabbedString(String s) {
+                int tab_size=8;
+                builder.setLength(0);
+                int l=s.length();
+                for (int i=0;i<l;i++) {
+                    char c=s.charAt(i);
+                    if (c=='\t') {
+                        int z=tab_size-i%tab_size;
+                        for (int j=0;j<z;j++) {
+                            builder.append(' ');
+                        }
+                    } else {
+                        builder.append(c);
+                    }
+                }
+                return builder.toString();
+            }
+		});
 		if (isDelaf) {
 			setCellRenderer(new DefaultListCellRenderer() {
 				@Override
