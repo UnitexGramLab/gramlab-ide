@@ -39,14 +39,14 @@ public class TokensFrame extends JInternalFrame {
 
 	static TokensFrame frame;
 
-	BigTextArea text = new BigTextArea();
+	BigTextList text = new BigTextList(false);
 
 	private TokensFrame() {
 		super("Token list", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(true);
 		top.add(constructButtonsPanel(), BorderLayout.NORTH);
-		top.add(text, BorderLayout.CENTER);
+		top.add(new JScrollPane(text), BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
 		setBounds(50, 200, 300, 450);
