@@ -194,6 +194,12 @@ public class Config {
     private static JFileChooser normDialogBox;
 
     /**
+     * Dialog box used to choose the dictionary to be used with the
+     * Tagger program 
+     */
+    private static JFileChooser taggerDataDialogBox;
+
+    /**
 	 * Dialog box used to open ".txt" or ".snt" text files
 	 */
 	private static JFileChooser corpusDialogBox;
@@ -351,6 +357,20 @@ public class Config {
         return normDialogBox;
     }
 
+    public static JFileChooser getTaggerDataDialogBox() {
+        if (taggerDataDialogBox != null)
+            return taggerDataDialogBox;
+        taggerDataDialogBox = new JFileChooser();
+        taggerDataDialogBox.addChoosableFileFilter(new PersonalFileFilter(
+                "fst2", "Unicode Compiled Graphs"));
+        taggerDataDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+        taggerDataDialogBox.setCurrentDirectory(new File(Config
+                .getUserCurrentLanguageDir(), "Dela"));
+        taggerDataDialogBox.setMultiSelectionEnabled(false);
+        return taggerDataDialogBox;
+    }
+    
+    
     public static JFileChooser getDelaDialogBox() {
 		if (delaDialogBox != null)
 			return delaDialogBox;
@@ -497,6 +517,10 @@ public class Config {
 		if (fst2UnambigDialogBox != null)
 			fst2UnambigDialogBox.setCurrentDirectory(Config
 					.getCurrentCorpusDir());
+	      if (taggerDataDialogBox != null)
+	          taggerDataDialogBox.setCurrentDirectory(new File(Config
+	                    .getUserCurrentLanguageDir(), "Dela"));
+
 	}
 
 	/**

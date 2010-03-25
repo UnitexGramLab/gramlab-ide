@@ -649,7 +649,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 						String[] s = new String[2];
 						s[0] = Preferences.getCloneOfPreferences().htmlViewer.getAbsolutePath();
 						s[1] = htmlFile.getAbsolutePath();
-						Console.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"");
+						Console.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"",false);
 						try {
 							Runtime.getRuntime().exec(s);
 						} catch (IOException e) {
