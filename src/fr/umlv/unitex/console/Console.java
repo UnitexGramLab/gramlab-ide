@@ -44,6 +44,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.process.ProcessInfoFrame;
 
 /**
  * This class describes a frame that shows all the command lines that have been launched. 
@@ -100,6 +101,11 @@ public class Console extends JInternalFrame {
           @Override
           public Component getTableCellRendererComponent(JTable t, Object value, boolean ss, boolean hasFocus, int row, int column) {
               ConsoleEntry e=(ConsoleEntry)value;
+              if (e.isSystemMsg()) {
+                  command.setBackground(ProcessInfoFrame.systemColor);
+              } else {
+                  command.setBackground(Color.WHITE);
+              }
               switch(e.getStatus()) {
               case 0: 
               case 1: 
@@ -155,11 +161,11 @@ public class Console extends JInternalFrame {
     * Adds a <code>String</code> to the the command lines 
     * @param command the command line to be added
     */
-   public static ConsoleEntry addCommand(String command,boolean isRealCommand,int pos) {
+   public static ConsoleEntry addCommand(String command,boolean isRealCommand,int pos,boolean systemMsg) {
       if (console==null) {
          init();
       }
-      ConsoleEntry e=new ConsoleEntry(command,isRealCommand);
+      ConsoleEntry e=new ConsoleEntry(command,isRealCommand,systemMsg);
       int n=(pos!=-1)?pos:model.getRowCount();
       model.addConsoleEntry(n,e);
       /* Now, we update the width of the last column */
@@ -174,8 +180,8 @@ public class Console extends JInternalFrame {
    }
    
    
-   public static ConsoleEntry addCommand(String command) {
-       return addCommand(command,true,-1);
+   public static ConsoleEntry addCommand(String command,boolean systemMsg) {
+       return addCommand(command,true,-1,systemMsg);
    }
            
            

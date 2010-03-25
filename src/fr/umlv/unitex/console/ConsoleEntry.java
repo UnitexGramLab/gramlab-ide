@@ -8,15 +8,22 @@ public class ConsoleEntry {
     /* 0=no error button, 1=error down button, 2=error up button, 3=nothing */ 
     int status;
     
-    public ConsoleEntry(String command,boolean isRealCommand) {
+    boolean systemMsg;
+    
+    public ConsoleEntry(String command,boolean isRealCommand,boolean systemMsg) {
         this.content=command;
         this.status=isRealCommand?0:3;
+        this.systemMsg=systemMsg;
     }
     
     public String getContent() {
         return content;
     }
-    
+
+    public boolean isSystemMsg() {
+        return systemMsg;
+    }
+
     public int getStatus() {
         return status;
     }
