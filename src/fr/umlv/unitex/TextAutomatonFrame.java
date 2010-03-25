@@ -529,7 +529,6 @@ public class TextAutomatonFrame extends JInternalFrame {
   }
 
   public boolean loadCurrSentence() {
-      System.err.println("loadCurrSentence");
     return loadSentence(spinnerModel.getNumber().intValue());
   }
 
@@ -573,7 +572,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 				} else {
 				    cmd=cmd.font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
 				}
-				Console.addCommand(cmd.getCommandLine());
+				Console.addCommand(cmd.getCommandLine(),false);
 			}
 			Process p;
 
@@ -738,7 +737,7 @@ public class TextAutomatonFrame extends JInternalFrame {
       + '"' + ' ' + '"' + elag_fst.getAbsolutePath() + '"'
       + ' ' + z + " currelagsentence";*/
 
-    Console.addCommand(cmd.getCommandLine());
+    Console.addCommand(cmd.getCommandLine(),false);
 
     /*String[] cmd = new String[4];
       cmd[0] = Config.getApplicationDir() + "Fst2Grf";

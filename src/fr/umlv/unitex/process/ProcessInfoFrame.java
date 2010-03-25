@@ -48,7 +48,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 
 	JList stderrList = new JList(stderrModel);
 
-	static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
+	public static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
 
 	public static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
 
@@ -239,13 +239,14 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.ERROR_MESSAGE: {
+                            final ConsoleEntry entry=Console.addCommand("Error message emitted by the graphical interface",true);
 							try {
 								final CommandBuilder c=command;
 								SwingUtilities.invokeAndWait(new Runnable() {
 									public void run() {
-										stderrModel.addElement(new Couple(
-												((MessageCommand) c).getMessage(),
-												true));
+									    String message=((MessageCommand) c).getMessage();
+										stderrModel.addElement(new Couple(message,true));
+										entry.addErrorMessage(message);
 									}});
 							} catch (InterruptedException e1) {
 								e1.printStackTrace();
@@ -255,7 +256,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.PROGRAM: {
-							ConsoleEntry entry=Console.addCommand(command.getCommandLine());
+							ConsoleEntry entry=Console.addCommand(command.getCommandLine(),false);
 							final String[] comm = command.getCommandArguments();
 							try {
 								p = Runtime.getRuntime().exec(comm);
@@ -323,7 +324,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 						}// end of program command
 						
 					case CommandBuilder.METHOD: {
-						Console.addCommand(command.getCommandLine());
+						Console.addCommand(command.getCommandLine(),false);
 						AbstractMethodCommand cmd=(AbstractMethodCommand)command;
 						if (!cmd.execute()) {
 							if (stop_if_problem) {

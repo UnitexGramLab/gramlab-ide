@@ -69,6 +69,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,SortTxtCommand.class
             ,StatsCommand.class
             ,Table2GrfCommand.class
+            ,TaggerCommand.class
             ,TagsetNormTfstCommand.class
             ,TEI2TxtCommand.class
             ,Tfst2GrfCommand.class

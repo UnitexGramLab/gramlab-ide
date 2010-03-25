@@ -47,7 +47,11 @@ public class ConstructFstFrame extends JDialog {
 
   JCheckBox elagFst = new JCheckBox("Normalize according to Elag tagset.def");
   JTextField normGrf = new JTextField(Config.getCurrentNormGraph().getAbsolutePath());
-  
+
+  JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
+  JTextField tagger_data = new JTextField(new File(new File(Config.getUserCurrentLanguageDir(),"Dela")
+                          ,"tagger_data_simple.bin").getAbsolutePath());
+
   /**
    * Creates and shows a new <code>ConstructFstFrame</code>.
    *  
@@ -70,7 +74,7 @@ public class ConstructFstFrame extends JDialog {
   }
 
   private JPanel constructNormalizationPanel() {
-    JPanel normalizationPanel = new JPanel(new GridLayout(6,1));
+    JPanel normalizationPanel = new JPanel(new GridLayout(8,1));
     normalizationPanel.setBorder(new TitledBorder("Normalization"));
     boolean portuguese = Config.getCurrentLanguage().equals("Portuguese (Portugal)");
     reconstrucao.setEnabled(portuguese);
@@ -85,10 +89,9 @@ public class ConstructFstFrame extends JDialog {
     }
 
     normalizationPanel.add(reconstrucao);
-    
     normalizationPanel.add(normFst);
-    JPanel norm=new JPanel(new BorderLayout());
     JCheckBox foo=new JCheckBox("");
+    JPanel norm=new JPanel(new BorderLayout());
     norm.setBorder(BorderFactory.createEmptyBorder(0,foo.getPreferredSize().width,0,0));
     norm.add(normGrf,BorderLayout.CENTER);
     Action setAction = new AbstractAction("Set...") {
@@ -108,6 +111,25 @@ public class ConstructFstFrame extends JDialog {
     
     normalizationPanel.add(cleanFst);
     normalizationPanel.add(elagFst);
+
+    normalizationPanel.add(tagger);
+    JPanel tag=new JPanel(new BorderLayout());
+    tag.setBorder(BorderFactory.createEmptyBorder(0,foo.getPreferredSize().width,0,0));
+    tag.add(tagger_data,BorderLayout.CENTER);
+    Action setTaggerDataAction = new AbstractAction("Set...") {
+        public void actionPerformed(ActionEvent arg0) {
+            JFileChooser chooser = Config.getTaggerDataDialogBox();
+            int returnVal = chooser.showOpenDialog(null);
+            if (returnVal != JFileChooser.APPROVE_OPTION) {
+                // we return if the user has clicked on CANCEL
+                return;
+            }
+            tagger_data.setText(chooser.getSelectedFile().getAbsolutePath());
+        }
+    };
+    JButton setTaggerData = new JButton(setTaggerDataAction);
+    tag.add(setTaggerData,BorderLayout.EAST);
+    normalizationPanel.add(tag);
 
     return normalizationPanel;
   }
@@ -134,9 +156,7 @@ public class ConstructFstFrame extends JDialog {
           public void run() {
             File dir = Config.getCurrentSntDir();
             if (!dir.exists()) {
-              // if the directory toto_snt does not exist, we
-              // create
-              // it
+              // if the directory toto_snt does not exist, we create it
               dir.mkdir();
             }
             //File graph = new File(Config
@@ -203,8 +223,11 @@ public class ConstructFstFrame extends JDialog {
                 .alphabet().longestMatches().mergeOutputs()
                 .noLimit();
               if (Config.isKorean()) {
+                  /* Reconstrucao should not be used for Korean, but one never
+                   * knows...
+                   */
             	  locateCmd=locateCmd.korean();
-      		}
+      		    }
               commands.addCommand(locateCmd);
               ReconstrucaoCommand reconstrucaoCmd = new ReconstrucaoCommand()
                 .alphabet()
@@ -230,6 +253,9 @@ public class ConstructFstFrame extends JDialog {
             Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
                 Config.getCurrentSnt()).alphabet().clean(
                 cleanFst.isSelected());
+            if (Config.isKorean()) {
+                txtCmd=txtCmd.korean();
+            }
             File normFile=null;
             File normGrfFile=null;
             if (normFst.isSelected()) {
@@ -254,11 +280,23 @@ public class ConstructFstFrame extends JDialog {
                 txtCmd=txtCmd.fst2(normFile);
                 Config.setCurrentNormGraph(normGrfFile);
             }
+            File elag_tagset=new File(Config.getCurrentElagDir(),"tagset.def");
             if (elagFst.isSelected()) {
-                txtCmd=txtCmd.tagset(new File(Config.getCurrentElagDir(),"tagset.def"));
+                txtCmd=txtCmd.tagset(elag_tagset);
             }
-            
             commands.addCommand(txtCmd);
+            
+            if (tagger.isSelected()) {
+                File data=new File(tagger_data.getText());
+                if (!data.exists()) {
+                    commands.addCommand(new MessageCommand("*** WARNING: tagging skipped because tagger data file was not found ***\n", true));
+                } else {
+                    File tfst=new File(Config.getCurrentSntDir(),"text.tfst");
+                    TaggerCommand taggerCmd=new TaggerCommand().tfst(tfst).dic(data)
+                                            .tagset(elag_tagset).alphabet(Config.getAlphabet());
+                    commands.addCommand(taggerCmd);
+                }
+            }
             TextAutomatonFrame.hideFrame();
             new ProcessInfoFrame(commands, true,
                 new ConstructFstDo(),false);
