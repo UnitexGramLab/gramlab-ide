@@ -63,6 +63,10 @@ public class AboutUnitexFrame extends JInternalFrame {
 		info.setLayout(new BorderLayout());
 		disclaimer.setPreferredSize(new Dimension(400,image.getHeight()));
 		info.add(disclaimer, BorderLayout.CENTER);
+		JLabel revision=new JLabel("  Revision: "+Version.getRevisionNumberForJava()+" (Java), "
+		        +Version.getRevisionNumberForC()+" (C/C++) "
+		        +", revision date: "+Version.getRevisionDate());
+		up.add(revision,BorderLayout.NORTH);
 		up.add(info, BorderLayout.CENTER);
 		top.add(up, BorderLayout.NORTH);
 		JTabbedPane licenses = new JTabbedPane();
