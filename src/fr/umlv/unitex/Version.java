@@ -62,8 +62,7 @@ public class Version {
 	   return date+calendar.get(Calendar.DAY_OF_MONTH)+", "+calendar.get(Calendar.YEAR)+")";
    }
    
-   @SuppressWarnings("unused")
-private static String getRevisionDate() {
+   public static String getRevisionDate() {
 	   File f=new File(Config.getApplicationDir(),"revision.date");
 	   if (!f.exists() || f.length()==0) {
 		   return getJarDate();
@@ -90,5 +89,52 @@ private static String getRevisionDate() {
 		return getJarDate();
 	}
    }
+
+public static String getRevisionNumberForJava() {
+    File f=new File(Config.getUnitexDir(),"Src");
+    f=new File(f,"log_svn_Java.txt");
+    Scanner s=null;
+    try {
+        s=new Scanner(f,"UTF8");
+        if (!s.hasNextLine()) {
+            return null;
+        }
+        s.nextLine();
+        if (!s.hasNext()) {
+            return null;
+        }
+        return s.next();
+    } catch (FileNotFoundException e) {
+        return null;
+    } finally {
+       if (s!=null) {
+           s.close();
+       }
+    }
+}
+
+
+public static String getRevisionNumberForC() {
+    File f=new File(Config.getUnitexDir(),"Src");
+    f=new File(f,"log_svn_C++.txt");
+    Scanner s=null;
+    try {
+        s=new Scanner(f,"UTF8");
+        if (!s.hasNextLine()) {
+            return null;
+        }
+        s.nextLine();
+        if (!s.hasNext()) {
+            return null;
+        }
+        return s.next();
+    } catch (FileNotFoundException e) {
+        return null;
+    } finally {
+       if (s!=null) {
+           s.close();
+       }
+    }
+}
 
 }
