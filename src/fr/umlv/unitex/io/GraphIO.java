@@ -1,7 +1,7 @@
  /*
   * Unitex
   *
-  * Copyright (C) 2001-2010 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+  * Copyright (C) 2001-2010 Universitï¿½ Paris-Est Marne-la-Vallï¿½e <unitex@univ-mlv.fr>
   *
   * This library is free software; you can redistribute it and/or
   * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ import fr.umlv.unitex.exceptions.*;
 
 /**
  * This class provides methods for loading and saving graphs.
- * @author Sébastien Paumier
+ * @author Sï¿½bastien Paumier
  *
  */
 public class GraphIO {
@@ -683,6 +683,7 @@ public class GraphIO {
          y= y * 10 + (c - '0');
       Preferences globPref=Preferences.getCloneOfPreferences();
       if (globPref.rightToLeft==true || pref.rightToLeft==true) {
+    	  pref.rightToLeft=true;
           g.setX(width-x);
       } else {
           g.setX(x);
