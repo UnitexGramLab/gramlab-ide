@@ -547,45 +547,31 @@ public class TextAutomatonFrame extends JInternalFrame {
     final int z = n;
     if (isAcurrentLoadingThread)
       return false;
+    isAcurrentLoadingThread = true;
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         new Thread() {
 		  Tfst2GrfCommand cmd;
           public void run() {
-            isAcurrentLoadingThread = true;
             frame.graphicalZone.is_initialised = false;
             if (frame.graphicalZone.graphBoxes != null) {
               frame.graphicalZone.graphBoxes.clear();
             }
             frame.graphicalZone.repaint();
             frame.text.setText("");
-            /*if(Config.isKorean()){
-				cmdkr = new Txt2Fst2KrCommand();
-				cmdkr.getsentence(z,text_tfst);
-				Console.addCommand(cmdkr.getCommandLine());
-
-			} else*/ {
-				cmd = new Tfst2GrfCommand().automaton(
-						text_tfst).sentence(z);
-				if (Config.isKorean() || Config.isKoreanJeeSun()) {
-					cmd=cmd.font("Gulim").fontsize(12);
-				} else {
-				    cmd=cmd.font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
-				}
-				Console.addCommand(cmd.getCommandLine(),false);
+			cmd = new Tfst2GrfCommand().automaton(
+					text_tfst).sentence(z);
+			if (Config.isKorean() || Config.isKoreanJeeSun()) {
+				cmd=cmd.font("Gulim").fontsize(12);
+			} else {
+			    cmd=cmd.font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
 			}
+			Console.addCommand(cmd.getCommandLine(),false);
 			Process p;
 
             try {
-
-			 /*if(Config.isAgglutinativeLanguage()){
-					p= Runtime.getRuntime().exec(
-						cmdkr.getCommandArguments());
-			 } else */{
 				p= Runtime.getRuntime().exec(
 						cmd.getCommandArguments());
- 			 }
-
               BufferedInputStream in = new BufferedInputStream(p
                 .getInputStream());
               BufferedInputStream err = new BufferedInputStream(p
@@ -605,74 +591,6 @@ public class TextAutomatonFrame extends JInternalFrame {
               isAcurrentLoadingThread = false;
               return;
             }
-			/*if(Config.isKorean()) {
-				// in Korean, we must apply a conversion Jamo -> Syllabic
-				Process p0,p1;
-				Jamo2SylCommand getSylSentence = new Jamo2SylCommand()
-				.decodage(new File(Config.getCurrentSntDir(),"sentence.fst2"));
-										
-				Console.addCommand(getSylSentence.getCommandLine());
-				try {
-					p0= Runtime.getRuntime().exec(
-							getSylSentence.getCommandArguments());
-					
-					BufferedInputStream in = new BufferedInputStream(p0
-							.getInputStream());
-					BufferedInputStream err = new BufferedInputStream(p0
-							.getErrorStream());
-
-					(new EatStreamThread(in)).start();
-					(new EatStreamThread(err)).start();
-
-					// waitFor Fst2Grf to terminate 
-
-					p0.waitFor();
-					
-
-				} catch (Exception e) {
-
-					System.err.println("Exception: " + e);
-					e.printStackTrace();
-					isAcurrentLoadingThread = false;
-					return;
-				}
-				
-				Tfst2GrfCommand cmdGetUnGraphe = 
-			        new Tfst2GrfCommand().automaton(
-				        new File(Config.getCurrentSntDir(),
-				                "sentencesyl.fst2")
-						).sentence(1).font("Gulim");
-//				CommandGen cmdfst2grf = new CommandGen("fst2grfkr");
-//				cmdfst2grf.dirs(new File(Config.getCurrentSntDir(),"sentencesyl.fst2"));
-//				String numofsentence = "1";
-//				cmdfst2grf.element(numofsentence);								
-				Console.addCommand(cmdGetUnGraphe.getCommandLine());
-				try {
-					p1= Runtime.getRuntime().exec(
-					        cmdGetUnGraphe.getCommandArguments());
-					
-					BufferedInputStream in = new BufferedInputStream(p1
-							.getInputStream());
-					BufferedInputStream err = new BufferedInputStream(p1
-							.getErrorStream());
-
-					(new EatStreamThread(in)).start();
-					(new EatStreamThread(err)).start();
-
-					// waitFor Fst2Grf to terminate
-
-					p1.waitFor();
-					
-
-				} catch (Exception e) {
-
-					System.err.println("Exception: " + e);
-					e.printStackTrace();
-					isAcurrentLoadingThread = false;
-					return;
-				}
-			}*/
-
             readSentenceText();
             try {
                 TokensInfo.loadTokensInfo(sentence_tok);
