@@ -425,7 +425,7 @@ public abstract class GenericGraphBox {
 	 *            the destination box
 	 */
 	public void drawTransition(Graphics2D g, GenericGraphBox dest) {
-	    g.setColor(parentGraphicalZone.pref.foregroundColor);
+		g.setColor(parentGraphicalZone.pref.foregroundColor);
 		if (!parentGraphicalZone.pref.rightToLeft) {
 			if (dest.X_in > this.X_out) {
 				// easiest case: drawing a line
