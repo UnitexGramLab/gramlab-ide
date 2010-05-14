@@ -29,6 +29,7 @@ import javax.swing.*;
 import fr.umlv.unitex.*;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
+import fr.umlv.unitex.console.Couple;
 
 /**
  * This class describes a frame used to execute shell commands and display
@@ -56,9 +57,9 @@ public class ProcessInfoFrame extends JInternalFrame {
 		public Component getListCellRendererComponent(JList l, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			Couple c = (Couple) value;
-			setBackground(c.isSystemMessage ? systemColor : Color.WHITE);
+			setBackground(c.isSystemMessage() ? systemColor : Color.WHITE);
 			setForeground(l.getForeground());
-			setText(c.s);
+			setText(c.getString());
 			return this;
 		}
 	};
