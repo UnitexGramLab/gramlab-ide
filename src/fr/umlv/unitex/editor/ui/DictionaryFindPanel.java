@@ -29,7 +29,7 @@ import javax.swing.text.*;
 import fr.umlv.unitex.editor.*;
 
 
-public class DictionnaryFindPanel extends AbstractFindpanel {
+public class DictionaryFindPanel extends AbstractFindpanel {
 
 	ButtonModel modelCano,
 		modelUp,
@@ -39,7 +39,7 @@ public class DictionnaryFindPanel extends AbstractFindpanel {
 		modelFlCode,
 		modelBegin;
 
-	public DictionnaryFindPanel(final EditionTextArea text) {
+	public DictionaryFindPanel(final EditionTextArea text) {
 		super(text);
 
 		// search options	
