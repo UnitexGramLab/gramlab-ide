@@ -29,7 +29,7 @@ import fr.umlv.unitex.*;
  * class uses to save the state of the graph before a boxe text edit
  * @author Decreton Julien
  */
-public class BoxeTextEdit extends AbstractUndoableEdit {
+public class BoxTextEdit extends AbstractUndoableEdit {
 
 	/** text before editing */
 	String oldText,
@@ -46,7 +46,7 @@ public class BoxeTextEdit extends AbstractUndoableEdit {
 	 * @param text the text to add in the boxe
 	 * @param zone the zone where boxes are drawn
 	 */
-	public BoxeTextEdit( GenericGraphBox boxe, String text, GenericGraphicalZone zone ){
+	public BoxTextEdit( GenericGraphBox boxe, String text, GenericGraphicalZone zone ){
 		this.boxe = boxe;
 		this.newText = text;
 		this.zone = zone;
