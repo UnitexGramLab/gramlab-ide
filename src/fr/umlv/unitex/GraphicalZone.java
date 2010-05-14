@@ -29,6 +29,7 @@ import java.util.*;
 
 import javax.swing.undo.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.undo.*;
 
 /**
@@ -65,7 +66,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	}
 
 	protected void init() {
-		if (!((GraphFrame) parentFrame).nonEmptyGraph) {
+		if (!((GraphFrame) parentFrame).isNonEmptyGraph()) {
 			GraphBox g, g2;
 			// creating the final state
 			g = new GraphBox(300, 200, 1, this);

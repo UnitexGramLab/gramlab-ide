@@ -27,6 +27,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
+
 /**
  * This class describes a dialog box that allows the user to align the current
  * selected boxes in the the current graph. The user can also define if a grid

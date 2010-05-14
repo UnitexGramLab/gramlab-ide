@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.undo.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.undo.*;
 
 /**

@@ -28,6 +28,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
+
 /**
  * This class describes a dialog box that allows the user to adjust the current
  * graph's size.

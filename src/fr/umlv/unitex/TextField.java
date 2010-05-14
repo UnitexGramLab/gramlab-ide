@@ -29,6 +29,8 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
+
 /**
  * This class describes the text field used to get the box text in a graph.
  * @author Sébastien Paumier
@@ -39,7 +41,7 @@ public class TextField extends JTextField {
    /**
     * Frame that contains this component 
     */
-   public GraphFrame parent;
+   GraphFrame parent;
 
    /**
     * Indicates if the text field content has been modified 
@@ -59,12 +61,12 @@ public class TextField extends JTextField {
    /**
     * <code>TextAction</code> that defines what to do for a "paste" operation 
     */
-   public SpecialPaste specialPaste;
+   private SpecialPaste specialPaste;
 
    /**
     * <code>TextAction</code> that defines what to do for a "copy" operation 
     */
-   public SpecialCopy specialCopy;
+   private SpecialCopy specialCopy;
 
    /**
     * <code>TextAction</code> that defines what to do for a "select all" operation 
@@ -74,7 +76,7 @@ public class TextField extends JTextField {
    /**
     * <code>TextAction</code> that defines what to do for a "cut" operation 
     */
-   public Cut cut;
+   private Cut cut;
 
    /**
     * <code>TextAction</code> that shows the graph presentation frame
@@ -190,18 +192,14 @@ public class TextField extends JTextField {
       addKeyListener(new MyKeyListener());
    }
 
-   GraphFrame parent() {
-      return UnitexFrame.getCurrentFocusedGraphFrame();
-   }
-
-   class SpecialCopy extends TextAction implements ClipboardOwner {
+   public class SpecialCopy extends TextAction implements ClipboardOwner {
       public SpecialCopy(String s) {
          super(s);
       }
 
       public void actionPerformed(ActionEvent e) {
-         if (parent().graphicalZone.selectedBoxes.isEmpty()
-            || parent().graphicalZone.selectedBoxes.size() < 2) {
+         if (parent.graphicalZone.selectedBoxes.isEmpty()
+            || parent.graphicalZone.selectedBoxes.size() < 2) {
             // is there is no or one box selected, we copy normally
             copy();
             UnitexFrame.clip.setContents(null, this);
@@ -209,7 +207,7 @@ public class TextField extends JTextField {
          }
          UnitexFrame.clip.setContents(
             new MultipleBoxesSelection(
-               new MultipleSelection(parent().graphicalZone.selectedBoxes,true)),
+               new MultipleSelection(parent.graphicalZone.selectedBoxes,true)),
             this);
       }
 
@@ -224,11 +222,11 @@ public class TextField extends JTextField {
       }
 
       public void actionPerformed(ActionEvent e) {
-         if (!parent().graphicalZone.selectedBoxes.isEmpty()
-            && parent().graphicalZone.selectedBoxes.size() == 1)
+    	 if (!parent.graphicalZone.selectedBoxes.isEmpty()
+            && parent.graphicalZone.selectedBoxes.size() == 1)
             selectAll();
          else
-            parent().graphicalZone.selectAllBoxes();
+            parent.graphicalZone.selectAllBoxes();
       }
 
       public void lostOwnership(Clipboard c, Transferable d) {
@@ -236,21 +234,21 @@ public class TextField extends JTextField {
       }
    }
 
-   class Cut extends TextAction implements ClipboardOwner {
+   public class Cut extends TextAction implements ClipboardOwner {
       public Cut(String s) {
          super(s);
       }
 
       public void actionPerformed(ActionEvent e) {
-         if (!parent().graphicalZone.selectedBoxes.isEmpty()
-            && parent().graphicalZone.selectedBoxes.size() == 1) {
+         if (!parent.graphicalZone.selectedBoxes.isEmpty()
+            && parent.graphicalZone.selectedBoxes.size() == 1) {
             cut();
          } else {
             UnitexFrame.clip.setContents(
                new MultipleBoxesSelection(
-                  new MultipleSelection(parent().graphicalZone.selectedBoxes,true)),
+                  new MultipleSelection(parent.graphicalZone.selectedBoxes,true)),
                this);
-            parent().graphicalZone.removeSelected();
+            parent.graphicalZone.removeSelected();
             setText("");
          }
       }
@@ -260,7 +258,7 @@ public class TextField extends JTextField {
       }
    }
 
-   class SpecialPaste extends TextAction {
+   public class SpecialPaste extends TextAction {
       public SpecialPaste(String s) {
          super(s);
       }
@@ -285,7 +283,7 @@ public class TextField extends JTextField {
             return;
          }
          res.n++;
-         parent().graphicalZone.pasteSelection(res);
+         parent.graphicalZone.pasteSelection(res);
       }
    }
 
@@ -315,10 +313,7 @@ public class TextField extends JTextField {
       }
 
       public void actionPerformed(ActionEvent e) {
-         GraphFrame f=UnitexFrame.getCurrentFocusedGraphFrame();
-         if (f!=null) {
-            UnitexFrame.mainFrame.saveGraph(f);
-         }
+         UnitexFrame.mainFrame.saveGraph(parent);
       }
    }
 
@@ -351,11 +346,11 @@ public class TextField extends JTextField {
       if (!hasChangedTextField())
          return false;
       if (isValidGraphBoxContent(getText())) {
-         parent().setModified(true);
-         parent().graphicalZone.setTextForSelected(getText());
-         parent().graphicalZone.unSelectAllBoxes();
+    	 parent.setModified(true);
+         parent.graphicalZone.setTextForSelected(getText());
+         parent.graphicalZone.unSelectAllBoxes();
          setText("");
-         parent().repaint();
+         parent.repaint();
          setEditable(false);
          return true;
       }
@@ -616,6 +611,19 @@ public class TextField extends JTextField {
       if (tokenize(tmp))
          return true;
       return false;
+   }
+
+   
+   public SpecialPaste getSpecialPaste() {
+	   return specialPaste; 
+   }
+
+   public SpecialCopy getSpecialCopy() {
+	   return specialCopy; 
+   }
+
+   public Cut getCut() {
+	   return cut; 
    }
 
 }

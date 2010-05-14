@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -33,6 +33,14 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.undo.*;
 
+import fr.umlv.unitex.GraphBox;
+import fr.umlv.unitex.GraphPresentationMenu;
+import fr.umlv.unitex.GraphicalZone;
+import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.TextField;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.io.*;
 
 /**
@@ -76,9 +84,13 @@ public class GraphFrame extends JInternalFrame {
 	/** undo button */
 	private JButton undoButton;
 
-	JScrollPane scroll;
+	private JScrollPane scroll;
 
-	boolean nonEmptyGraph = false;
+	private boolean nonEmptyGraph = false;
+
+	public boolean isNonEmptyGraph() {
+		return nonEmptyGraph;
+	}
 
 	/**
 	 * Component used to listen frame changes. It is used to adapt the zoom
@@ -260,7 +272,7 @@ public class GraphFrame extends JInternalFrame {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						((TextField) graphicalZone.text).specialCopy
+						((TextField) graphicalZone.text).getSpecialCopy()
 								.actionPerformed(E);
 						repaint();
 					}
@@ -272,7 +284,7 @@ public class GraphFrame extends JInternalFrame {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						((TextField) graphicalZone.text).cut
+						((TextField) graphicalZone.text).getCut()
 								.actionPerformed(E);
 						repaint();
 					}
@@ -284,7 +296,7 @@ public class GraphFrame extends JInternalFrame {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						((TextField) graphicalZone.text).specialPaste
+						((TextField) graphicalZone.text).getSpecialPaste()
 								.actionPerformed(E);
 						repaint();
 					}
@@ -630,6 +642,10 @@ public class GraphFrame extends JInternalFrame {
 			e.printStackTrace();
 		}
 	      
+	}
+
+	public JScrollPane getScroll() {
+		return scroll;
 	}
 
 	
