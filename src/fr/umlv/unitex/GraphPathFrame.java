@@ -80,7 +80,7 @@ public class GraphPathFrame extends JInternalFrame {
 	 *  
 	 */
 	public static void showFrame() {
-		GraphFrame gf = UnitexFrame.getCurrentFocusedGraphFrame();
+		GraphFrame gf = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 		if (gf == null)
 			return;
 		if (frame == null) {

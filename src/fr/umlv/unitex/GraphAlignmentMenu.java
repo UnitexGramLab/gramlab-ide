@@ -83,7 +83,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action topAction = new AbstractAction("Top") {
 			public void actionPerformed(ActionEvent arg0) {
 				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				f.graphicalZone.HTopAlign();
@@ -94,7 +94,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action centerHAction = new AbstractAction("Center") {
 			public void actionPerformed(ActionEvent arg0) {
 				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				f.graphicalZone.HCenterAlign();
@@ -105,7 +105,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action bottomAction = new AbstractAction("Bottom") {
 			public void actionPerformed(ActionEvent arg0) {
 				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				f.graphicalZone.HBottomAlign();
@@ -116,7 +116,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action leftAction = new AbstractAction("Left") {
 			public void actionPerformed(ActionEvent arg0) {
 				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				f.graphicalZone.VLeftAlign();
@@ -127,7 +127,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action centerVAction = new AbstractAction("Center") {
 			public void actionPerformed(ActionEvent arg0) {
 				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				f.graphicalZone.VCenterAlign();
@@ -138,7 +138,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action rightAction = new AbstractAction("Right") {
 			public void actionPerformed(ActionEvent arg0) {
 				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				f.graphicalZone.VRightAlign();
@@ -151,7 +151,7 @@ public class GraphAlignmentMenu extends JDialog {
 		Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
 				int n;
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				JCheckBox c = GraphAlignmentMenu.pref.checkBox;

@@ -109,10 +109,9 @@ public class GraphFrame extends JInternalFrame {
 	 * @param nonEmpty
 	 *            indicates if the graph is non empty
 	 */
-	public GraphFrame(boolean nonEmpty) {
+	GraphFrame() {
 		super("", true, true, true, true);
 		MyDropTarget.newDropTarget(this);
-		nonEmptyGraph = nonEmpty;
 		openFrameCount++;
 		setTitle("Graph");
 		JPanel mainPanel = new JPanel();
@@ -253,7 +252,7 @@ public class GraphFrame extends JInternalFrame {
 
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f != null)
 					UnitexFrame.mainFrame.saveGraph(f);
 			}
@@ -587,7 +586,8 @@ public class GraphFrame extends JInternalFrame {
 
 	public void setGraph(File grf) {
 		this.grf = grf;
-		this.setTitle(grf.getName());
+		this.nonEmptyGraph=true;
+		this.setTitle(grf.getName()+" ("+grf.getParent()+")");
 	}
 
 	public void saveGraphAsAnImage(File output) {

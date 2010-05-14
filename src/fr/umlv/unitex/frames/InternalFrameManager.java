@@ -21,7 +21,13 @@
 
 package fr.umlv.unitex.frames;
 
+import java.beans.PropertyVetoException;
+import java.io.File;
+
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  * This class is responsible for managing all internal frames in Unitex
@@ -31,11 +37,65 @@ import javax.swing.JDesktopPane;
  */
 public class InternalFrameManager {
 
-	private JDesktopPane desktop;
+	JDesktopPane desktop;
+	private GraphFrameFactory graphFrameFactory=new GraphFrameFactory();
 	
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop=desktop;
 	}
 	
+	/**
+	 * Creates and returns a GraphFrame for the given .grf file.
+	 * If a frame for 'grf' already exists, then it is made visible.
+	 * If the .grf is not loadable, the function does nothing and
+	 * returns null.
+	 * 
+	 * @param grf
+	 * @return
+	 */
+	public GraphFrame newGraphFrame(File grf) {
+		GraphFrame g=graphFrameFactory.getGraphFrame(grf);
+		if (g==null) return null;
+		addToDesktopIfNecessary(g);
+		g.setVisible(true);
+		try {
+			g.setSelected(true);
+			g.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return g;
+	}
+
+	private void addToDesktopIfNecessary(final JInternalFrame f) {
+		for (JInternalFrame frame:desktop.getAllFrames()) {
+			if (frame.equals(f)) {
+				return;
+			}
+		}
+		f.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				desktop.remove(f);
+			}
+		});
+		desktop.add(f);
+	}
+
 	
+	public void closeAllGraphFrames() {
+		graphFrameFactory.closeAllGraphFrames();
+	}
+
+
+	public GraphFrame getCurrentFocusedGraphFrame() {
+		JInternalFrame frame = desktop.getSelectedFrame();
+		if (frame instanceof GraphFrame)
+			return (GraphFrame) frame;
+		return null;
+	}
+
+	public GraphFrame[] getGraphFrames() {
+		return graphFrameFactory.getGraphFrames();
+	}
 }
