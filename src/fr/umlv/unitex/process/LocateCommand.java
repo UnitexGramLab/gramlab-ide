@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2010 Universit� Paris-Est Marne-la-Vall�e <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2010 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import java.util.*;
 import fr.umlv.unitex.*;
 
 /**
- * @author S�bastien Paumier
+ * @author Sébastien Paumier
  * 
  */
 public class LocateCommand extends CommandBuilder {
