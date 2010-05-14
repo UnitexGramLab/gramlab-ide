@@ -33,29 +33,18 @@ import javax.swing.*;
  */
 public class ColorRectangle extends JComponent {
 
-	private Color color;
-	
-	
-	public ColorRectangle() {
-		this(Color.WHITE);
-	}
-
-
-	public ColorRectangle(Color c) {
-		color=c;
-		setMinimumSize(new Dimension(70,22));
-		setSize(new Dimension(70,22));
-		setPreferredSize(new Dimension(70,22));
+	private ColorRectangle() {
+		/* Just to prevent people from using this constructor
+		 * instead of the factory method below
+		 */
 	}
 	
-	public void paintComponent(Graphics g) {
-		g.setColor(color);
-		g.fillRect(0, 0, getWidth(), getHeight());
+	public static JPanel getColorRectangle() {
+		JPanel p=new JPanel(null);
+		p.setMinimumSize(new Dimension(70,22));
+		p.setSize(new Dimension(70,22));
+		p.setPreferredSize(new Dimension(70,22));
+		return p;
 	}
-
-	public void setBackground(Color c) {
-		color=c;
-		repaint();
-	}
-
+	
 }
