@@ -839,9 +839,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 
     if (imploseCheckBox.isSelected()) {
-      new ProcessInfoFrame(elagcmd, false, new ImploseDO(elag_tfst));
+      new ProcessInfoFrame(elagcmd, false, new ImploseDo(elag_tfst));
     } else {
-      new ProcessInfoFrame(elagcmd, false, new loadSentenceDO());
+      new ProcessInfoFrame(elagcmd, false, new loadSentenceDo());
     }
   }
 
@@ -893,7 +893,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     TagsetNormTfstCommand tagsetcmd=new TagsetNormTfstCommand()
     	.tagset(new File(Config.getCurrentElagDir(), "tagset.def"))
     	.automaton(f);
-    new ProcessInfoFrame(tagsetcmd,true,new loadSentenceDO());
+    new ProcessInfoFrame(tagsetcmd,true,new loadSentenceDo());
   }
 
   static void implodeTextAutomaton(File f) {
@@ -901,7 +901,7 @@ public class TextAutomatonFrame extends JInternalFrame {
       return;
     }
     ImplodeTfstCommand imploseCmd = new ImplodeTfstCommand().automaton(f);
-    new ProcessInfoFrame(imploseCmd,true,new loadSentenceDO());
+    new ProcessInfoFrame(imploseCmd,true,new loadSentenceDo());
   }
 
 
@@ -916,13 +916,13 @@ public class TextAutomatonFrame extends JInternalFrame {
       .automaton(text_tfst);
 
     if (implode) {
-      new ProcessInfoFrame(tagsetcmd, false, new ImploseDO(text_tfst));
+      new ProcessInfoFrame(tagsetcmd, false, new ImploseDo(text_tfst));
     } else {
-      new ProcessInfoFrame(tagsetcmd, false, new loadSentenceDO());
+      new ProcessInfoFrame(tagsetcmd, false, new loadSentenceDo());
     }
   }
 
-  class RebuildTextAutomatonDo extends ToDoAbstract {
+  class RebuildTextAutomatonDo implements ToDo {
 
     public void toDo() {
       Config
@@ -955,18 +955,18 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 }
 
-class loadSentenceDO extends ToDoAbstract {
+class loadSentenceDo implements ToDo {
 
   public void toDo() {
     TextAutomatonFrame.frame.loadCurrSentence();
   }
 }
 
-class ImploseDO extends ToDoAbstract {
+class ImploseDo implements ToDo {
   
   File fst;
   
-  public ImploseDO(File f) { fst = f; }
+  public ImploseDo(File f) { fst = f; }
   
   public void toDo() { TextAutomatonFrame.implodeTextAutomaton(fst); }
 }

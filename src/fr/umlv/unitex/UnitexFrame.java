@@ -1179,7 +1179,7 @@ public class UnitexFrame extends JFrame {
 		return null;
 	}
 
-	class LoadGraphDo extends ToDoAbstract {
+	class LoadGraphDo implements ToDo {
 		File file;
 
 		LoadGraphDo(File s) {
@@ -1565,7 +1565,7 @@ public class UnitexFrame extends JFrame {
 			return;
 		}
 		final File dela = Config.getDelaDialogBox().getSelectedFile();
-		ToDoAbstract toDo = new ToDoAbstract() {
+		ToDo toDo = new ToDo() {
 			public void toDo() {
                 closeDELA();
 				Config.setCurrentDELA(dela);
@@ -1840,7 +1840,7 @@ public class UnitexFrame extends JFrame {
 		}
 	}
 
-	class DelaDo extends ToDoAbstract {
+	class DelaDo implements ToDo {
 		File dela;
 
 		public DelaDo(File s) {

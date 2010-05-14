@@ -320,7 +320,7 @@ public class ConstructFstFrame extends JDialog {
     return buttons;
   }
 
-  class ConstructFstDo extends ToDoAbstract {
+  class ConstructFstDo implements ToDo {
 
     public void toDo() {
       TextAutomatonFrame.showFrame();

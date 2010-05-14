@@ -70,7 +70,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 
 	MultiCommands commands = null;
 
-	ToDoAbstract DO;
+	ToDo DO;
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -84,7 +84,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	 *            object describing actions to do after the completion of all
 	 *            commands
 	 */
-	public ProcessInfoFrame(MultiCommands c, boolean close, ToDoAbstract myDo) {
+	public ProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo) {
 		this(c, close, myDo, true);
 	}
 
@@ -102,7 +102,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	 * @param stopIfProblem
 	 *            indicates if the failure of a command must stop all commands
 	 */
-	public ProcessInfoFrame(MultiCommands c, boolean close, ToDoAbstract myDo,
+	public ProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo,
 			boolean stopIfProblem) {
 		super("Working...", true, false, false);
 		commands = c;
@@ -209,7 +209,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	 *            object describing actions to do after the completion of all
 	 *            commands
 	 */
-	public ProcessInfoFrame(CommandBuilder c, boolean close, ToDoAbstract DO) {
+	public ProcessInfoFrame(CommandBuilder c, boolean close, ToDo DO) {
 		this(new MultiCommands(c), close, DO);
 	}
 

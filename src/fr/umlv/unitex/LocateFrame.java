@@ -330,7 +330,7 @@ public class LocateFrame extends JInternalFrame {
 				fst2 = new File(grfName);
 			}
 		}
-		ToDoAbstract toDo;
+		ToDo toDo;
 		if (locateOnSnt.isSelected()) {
 			/* Locate on .snt text */
 			LocateCommand locateCmd = new LocateCommand().snt(
@@ -514,7 +514,7 @@ public class LocateFrame extends JInternalFrame {
 		return res;
 	}
 
-	class LocateDo extends ToDoAbstract {
+	class LocateDo implements ToDo {
 
 		public void toDo() {
 			String res = readInfo(new File(Config.getCurrentSntDir(),
@@ -528,7 +528,7 @@ public class LocateFrame extends JInternalFrame {
 		}
 	}
 
-	class LocateTfstDo extends ToDoAbstract {
+	class LocateTfstDo implements ToDo {
 
 		public void toDo() {
 			String res = readTfstInfo(new File(Config.getCurrentSntDir(),

@@ -282,8 +282,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 					XAlignFrame.frame = null;
 					System.gc();
 				}
-				ToDoAbstract toDo = new ToDoAbstract() {
-					@Override
+				ToDo toDo = new ToDo() {
 					public void toDo() {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {

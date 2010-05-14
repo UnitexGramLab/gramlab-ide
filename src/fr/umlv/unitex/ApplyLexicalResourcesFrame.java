@@ -706,7 +706,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	}
 	
 
-	class ApplyLexicalResourcesDo extends ToDoAbstract {
+	class ApplyLexicalResourcesDo implements ToDo {
 		public void toDo() {
 			TextDicFrame.loadTextDic(Config.getCurrentSntDir(),false);
 			if (Config.isKorean()) {

@@ -490,7 +490,7 @@ public class PreprocessFrame extends JDialog {
         return res;
     }
 
-    class PreprocessDo extends ToDoAbstract {
+    class PreprocessDo implements ToDo {
         File SNT;
         boolean b;
 

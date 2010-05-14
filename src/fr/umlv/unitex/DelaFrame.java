@@ -141,7 +141,7 @@ public class DelaFrame extends JInternalFrame {
 		System.gc();
 	}
 
-	static class LoadDelaDo extends ToDoAbstract {
+	static class LoadDelaDo implements ToDo {
 		File dela;
 
 		LoadDelaDo(File s) {
