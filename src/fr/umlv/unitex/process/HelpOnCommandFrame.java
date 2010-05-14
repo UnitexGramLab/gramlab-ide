@@ -52,6 +52,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,EvambCommand.class
             ,ExtractCommand.class
             ,FlattenCommand.class
+            ,Fst2CheckCommand.class
             ,Fst2ListCommand.class
             ,Fst2TxtCommand.class
             ,Grf2Fst2Command.class
