@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2010 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2010 UniversitÃ© Paris-Est Marne-la-VallÃ©e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ import javax.swing.event.*;
  * This class defines a frame that contains the Unitex logo, the body of the
  * license and some informations about Unitex.
  * 
- * @author Sébastien Paumier
+ * @author SÃ©bastien Paumier
  *  
  */
 public class AboutUnitexFrame extends JInternalFrame {
