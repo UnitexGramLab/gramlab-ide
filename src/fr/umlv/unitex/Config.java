@@ -1073,7 +1073,8 @@ public class Config {
 				return file.isDirectory() && !name.equals("App")
 						&& !name.equals("Src") 
 						&& !name.equals("Users")
-						&& !name.equals("XAlign");
+						&& !name.equals("XAlign")
+						&& !name.startsWith(".");
 			}
 		});
 		for (int i = 0; i < fileList.length; i++) {
