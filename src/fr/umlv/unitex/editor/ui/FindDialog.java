@@ -50,7 +50,7 @@ public class FindDialog extends JDialog {
 		FindPanel p1 = new FindPanel( owner.getText());
 		p1.addCloseAction(closeAction);
 		FindSentencePanel p2 = new FindSentencePanel(owner.getText());		
-		DictionnaryFindPanel p3 = new DictionnaryFindPanel(owner.getText());
+		DictionaryFindPanel p3 = new DictionaryFindPanel(owner.getText());
 		
 		p1.addCloseAction(closeAction);
 		p2.addCloseAction(closeAction);
