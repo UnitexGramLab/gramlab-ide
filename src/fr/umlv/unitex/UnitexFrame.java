@@ -36,7 +36,9 @@ import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.io.*;
+import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.*;
 import fr.umlv.unitex.xalign.*;
 
@@ -57,6 +59,7 @@ public class UnitexFrame extends JFrame {
 	 * The desktop of the frame.
 	 */
 	public static JDesktopPane desktop;
+	public InternalFrameManager frameManager;
 
 	/**
 	 * Layer used to display document internal frames
@@ -396,7 +399,7 @@ public class UnitexFrame extends JFrame {
 		save.setAccelerator(KeyStroke.getKeyStroke('S', Event.CTRL_MASK));
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null)
 					saveGraph(f);
 			}
@@ -404,7 +407,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem saveAs = new JMenuItem("Save as...");
 		saveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null)
 					saveAsGraph(f);
 			}
@@ -425,9 +428,9 @@ public class UnitexFrame extends JFrame {
 		print.setAccelerator(KeyStroke.getKeyStroke('P', Event.CTRL_MASK));
 		print.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					printFrame(f);
+					PrintManager.printOneGraph(f);
 				} else {
 					if (TextAutomatonFrame.getFrame() != null
 							&& TextAutomatonFrame.getFrame().isSelected()) {
@@ -446,7 +449,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
 		sortNodeLabel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.sortNodeLabel();
 				}
@@ -455,7 +458,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem explorePaths = new JMenuItem("Explore graph paths");
 		explorePaths.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					GraphPathFrame.showFrame();
 				}
@@ -492,7 +495,7 @@ public class UnitexFrame extends JFrame {
 		alignment.setAccelerator(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
 		alignment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					new GraphAlignmentMenu(f.graphicalZone.isGrid,
 							f.graphicalZone.nPixels);
@@ -502,7 +505,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem antialiasing = new JMenuItem("Antialiasing...");
 		antialiasing.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.changeAntialiasingValue();
 				} else {
@@ -518,7 +521,7 @@ public class UnitexFrame extends JFrame {
 				.getKeyStroke('R', Event.CTRL_MASK));
 		presentation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					new GraphPresentationMenu();
 				}
@@ -527,7 +530,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem graphSize = new JMenuItem("Graph Size...");
 		graphSize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					new GraphSizeMenu();
 				}
@@ -559,7 +562,7 @@ public class UnitexFrame extends JFrame {
 		groupe.add(fit140);
 		fitInScreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					double scale_x = (double) screenSize.width
@@ -575,7 +578,7 @@ public class UnitexFrame extends JFrame {
 		});
 		fitInWindow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					Dimension d = f.getScroll().getSize();
 					double scale_x = (double) (d.width - 3)
@@ -605,7 +608,7 @@ public class UnitexFrame extends JFrame {
 		});
 		fit60.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					f.setScaleFactor(0.6);
@@ -614,7 +617,7 @@ public class UnitexFrame extends JFrame {
 		});
 		fit80.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					f.setScaleFactor(0.8);
@@ -623,7 +626,7 @@ public class UnitexFrame extends JFrame {
 		});
 		fit100.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					f.setScaleFactor(1.0);
@@ -632,7 +635,7 @@ public class UnitexFrame extends JFrame {
 		});
 		fit120.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					f.setScaleFactor(1.2);
@@ -641,7 +644,7 @@ public class UnitexFrame extends JFrame {
 		});
 		fit140.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					f.setScaleFactor(1.4);
@@ -755,7 +758,7 @@ public class UnitexFrame extends JFrame {
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
-					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+					GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 					if (f != null) {
 						((TextField) (f.graphicalZone.text)).getCut()
 								.actionPerformed(E);
@@ -776,7 +779,7 @@ public class UnitexFrame extends JFrame {
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
-					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+					GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 					if (f != null) {
 						((TextField) (f.graphicalZone.text)).getSpecialCopy()
 								.actionPerformed(E);
@@ -797,7 +800,7 @@ public class UnitexFrame extends JFrame {
 							.actionPerformed(E);
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
-					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+					GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 					if (f != null) {
 						((TextField) (f.graphicalZone.text)).getSpecialPaste()
 								.actionPerformed(E);
@@ -817,7 +820,7 @@ public class UnitexFrame extends JFrame {
 							.selectAllBoxes();
 					TextAutomatonFrame.getFrame().graphicalZone.repaint();
 				} else {
-					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+					GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 					if (f != null) {
 						f.graphicalZone.selectAllBoxes();
 						f.graphicalZone.repaint();
@@ -915,6 +918,7 @@ public class UnitexFrame extends JFrame {
 	void buildContent() {
 		desktop = new JDesktopPane();
 		setContentPane(desktop);
+		frameManager=new InternalFrameManager(desktop);
 	}
 
 	/**
@@ -940,15 +944,7 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void createNewGraphFrame() {
-		GraphFrame doc = new GraphFrame(false);
-		desktop.add(doc, DOCLAYER);
-		try {
-			doc.setVisible(true);
-			doc.setSelected(true);
-			doc.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
+		frameManager.newGraphFrame(null);
 	}
 
 	/**
@@ -965,31 +961,7 @@ public class UnitexFrame extends JFrame {
 		pageFormat = printerJob.pageDialog(pageFormat);
 	}
 
-	/**
-	 * Prints a <code>GraphFrame</code>.
-	 * 
-	 * @param g
-	 *            the <code>GraphFrame</code> to be printed.
-	 */
-	public void printFrame(GraphFrame g) {
-		if (printerJob == null) {
-			printerJob = PrinterJob.getPrinterJob();
-		}
-		if (pageFormat == null) {
-			pageFormat = printerJob.defaultPage();
-		}
-		printerJob.setPrintable(g.graphicalZone, pageFormat);
-		if (printerJob.printDialog()) {
-			try {
-				printerJob.print();
-			} catch (PrinterException e) {
-				JOptionPane.showMessageDialog(null,
-						"Error while printing graph", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
+	
 	/**
 	 * Prints a <code>TextAutomatonFrame</code>.
 	 * 
@@ -1019,30 +991,7 @@ public class UnitexFrame extends JFrame {
 	 * Prints all the <code>GraphFrame</code> s that are on the desktop.
 	 */
 	public void printAllFrames() {
-		JInternalFrame[] frames = desktop.getAllFrames();
-		if (frames.length == 0)
-			return;
-		if (printerJob == null) {
-			printerJob = PrinterJob.getPrinterJob();
-		}
-		if (pageFormat == null) {
-			pageFormat = printerJob.defaultPage();
-		}
-		if (!printerJob.printDialog())
-			return;
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i] instanceof GraphFrame) {
-				printerJob.setPrintable(((GraphFrame) frames[i]).graphicalZone,
-						pageFormat);
-				try {
-					printerJob.print();
-				} catch (PrinterException e) {
-					JOptionPane.showMessageDialog(null,
-							"Error while printing graph", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
+		PrintManager.printAllGraphs(frameManager.getGraphFrames());
 	}
 
 	/**
@@ -1100,7 +1049,6 @@ public class UnitexFrame extends JFrame {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		ConvertOneFileFrame.reset();
 		File[] graphs = fc.getSelectedFiles();
 		for (int i = 0; i < graphs.length; i++) {
 			String s = graphs[i].getAbsolutePath();
@@ -1159,43 +1107,6 @@ public class UnitexFrame extends JFrame {
 		new LexiconGrammarTableFrame(f);
 	}
 
-	/**
-	 * Tests if a graph is allready open on the desktop.
-	 * 
-	 * @param grf
-	 *            the name of the graph
-	 * @return the <code>GraphFrame</code> if the graph is allready open, or
-	 *         <code>null</code> otherwise
-	 */
-	public GraphFrame graphIsAllreadyOpen(File grf) {
-		JInternalFrame[] frames = desktop.getAllFrames();
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i] instanceof GraphFrame) {
-				GraphFrame f = (GraphFrame) frames[i];
-				if (grf.equals(f.getGraph())) {
-					return f;
-				}
-			}
-		}
-		return null;
-	}
-
-	class LoadGraphDo implements ToDo {
-		File file;
-
-		LoadGraphDo(File s) {
-			file = s;
-		}
-
-		public void toDo() {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					UnitexFrame.mainFrame.loadGraph(file);
-				}
-			});
-		}
-
-	}
 
 	/**
 	 * loads a graph. If the graph is allready open, its <code>GraphFrame</code>
@@ -1206,52 +1117,7 @@ public class UnitexFrame extends JFrame {
 	 *            the complete name of the graph: path and file name
 	 */
 	public void loadGraph(File grf) {
-		GraphFrame doc;
-		if ((doc = graphIsAllreadyOpen(grf)) != null) {
-			// we verify if the graph is allready opened
-			// in this case, we bring it back to front
-			try {
-				doc.setVisible(true);
-				doc.setSelected(true);
-				doc.setIcon(false);
-			} catch (java.beans.PropertyVetoException e2) {
-				e2.printStackTrace();
-			}
-			return;
-		}
-		try {
-			if (!UnicodeIO.isAUnicodeLittleEndianFile(grf)) {
-				ConvertCommand res = ConvertOneFileFrame
-						.getCommandLineForConversion(grf);
-				if (res == null) {
-					return;
-				}
-				new ProcessInfoFrame(res, true, new LoadGraphDo(grf));
-				return;
-			}
-		} catch (FileNotFoundException e) {
-			JOptionPane
-					.showMessageDialog(null, "Cannot open "
-							+ grf.getAbsolutePath(), "Error",
-							JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		GraphIO g = GraphIO.loadGraph(grf);
-		if (g == null)
-			return;
-		doc = new GraphFrame(true);
-		doc.graphicalZone.pref = g.pref;
-		doc.graphicalZone.pref.antialiasing = Preferences.getCloneOfPreferences().antialiasing;
-		doc.texte.setFont(doc.graphicalZone.pref.input);
-		doc.graphicalZone.Width = g.width;
-		doc.graphicalZone.Height = g.height;
-		doc.graphicalZone.graphBoxes = g.boxes;
-		doc.getScroll().setPreferredSize(new Dimension(g.width, g.height));
-		doc.graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
-		doc.setGraph(grf);
-		//doc.setTitle(grf.getAbsolutePath());
-		doc.setTitle(grf.getName()+" ("+grf.getParent()+")");
-		UnitexFrame.addInternalFrame(doc,true);
+		frameManager.newGraphFrame(grf);
 	}
 
 	/**
@@ -1367,12 +1233,7 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void closeAll() {
-		JInternalFrame[] frames = desktop.getAllFrames();
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i] instanceof GraphFrame) {
-				((GraphFrame) frames[i]).doDefaultCloseAction();
-			}
-		}
+		frameManager.closeAllGraphFrames();
 	}
 
 	/**
@@ -1383,7 +1244,7 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void compileGraph() {
-		GraphFrame currentFrame = getCurrentFocusedGraphFrame();
+		GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
 		if (currentFrame == null)
 			return;
 		if (currentFrame.modified == true) {
@@ -1398,34 +1259,8 @@ public class UnitexFrame extends JFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		/*if(Config.isKorean()) {
-			MultiCommands commands = new MultiCommands();
-			File grf = new File(currentFrame.getGraph().getAbsolutePath());
-			String name_fst_sans_ex= grf.getAbsolutePath().substring(0,
-					grf.getAbsolutePath().length() - 4);
-			
-			Grf2Fst2Command command = new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library();
-			commands.addCommand(command);
-
-			File map_encoder = new File(Config.getUserCurrentLanguageDir()
-					,"jamoTable.txt");
-			if(map_encoder.exists()){
-				Syl2JamoCommand sy2jamoConv = new Syl2JamoCommand()
-				.optionForIncludeJamo()
-				.optionForMapJamo(map_encoder)
-				.optionRemplace()
-				.src(new File(name_fst_sans_ex + ".fst2"));
-				commands.addCommand(sy2jamoConv);
-			}
-
-			new ProcessInfoFrame(commands, false);
-
-		} else*/ {
 			Grf2Fst2Command command = new Grf2Fst2Command().grf(currentFrame.getGraph()).enableLoopAndRecursionDetection(true).tokenizationMode().library();
 			new ProcessInfoFrame(command, false);
-			
-		}
-
 	}
 
 
@@ -1436,7 +1271,7 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void compileAndFlattenGraph() {
-		GraphFrame currentFrame = getCurrentFocusedGraphFrame();
+		GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
 		if (currentFrame == null)
 			return;
 		if (currentFrame.modified == true) {
@@ -1858,13 +1693,6 @@ public class UnitexFrame extends JFrame {
 
 	public static JInternalFrame getCurrentFocusedFrame() {
 		return desktop.getSelectedFrame();
-	}
-
-	public static GraphFrame getCurrentFocusedGraphFrame() {
-		JInternalFrame frame = getCurrentFocusedFrame();
-		if (frame instanceof GraphFrame)
-			return (GraphFrame) frame;
-		return null;
 	}
 
 	public static void removeInternalFrame(JInternalFrame f) {

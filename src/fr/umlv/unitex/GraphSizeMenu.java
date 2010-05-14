@@ -60,7 +60,7 @@ public class GraphSizeMenu extends JDialog {
 	public GraphSizeMenu() {
 		super(UnitexFrame.mainFrame, "Graph Size", true);
 		pref = this;
-		GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+		GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 		if (f == null) {
 			return;
 		}
@@ -238,7 +238,7 @@ public class GraphSizeMenu extends JDialog {
                 X = (float) ((x * resolutionDPI) / 2.4);
                 Y = (float) ((y * resolutionDPI) / 2.4);
             }
-            GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+            GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
             f.reSizeGraphicalZone((int) X, (int) Y);
             f.setModified(true);
             GraphSizeMenu.pref.setVisible(false);

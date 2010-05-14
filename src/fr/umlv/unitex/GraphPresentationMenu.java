@@ -60,7 +60,7 @@ public class GraphPresentationMenu extends JDialog {
 	 */
 	public GraphPresentationMenu() {
 		super(UnitexFrame.mainFrame, "Presentation", true);
-		preferences = UnitexFrame.getCurrentFocusedGraphFrame().graphicalZone.getPreferences()
+		preferences = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame().graphicalZone.getPreferences()
 				.getClone();
 		setContentPane(constructPanel());
 		pack();
@@ -361,7 +361,7 @@ public class GraphPresentationMenu extends JDialog {
 		buttonPanel.setBorder(new EmptyBorder(5, 5, 0, 0));
 		Action defaultAction = new AbstractAction("Default") {
 			public void actionPerformed(ActionEvent arg0) {
-				if (UnitexFrame.getCurrentFocusedGraphFrame() == null)
+				if (UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame() == null)
 					return;
 				preferences = Preferences.getCloneOfPreferences();
 				GraphPresentationMenu.pref.refresh();
@@ -370,7 +370,7 @@ public class GraphPresentationMenu extends JDialog {
 		JButton DEFAULT = new JButton(defaultAction);
 		Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
 				if (f == null)
 					return;
 				Dimension d = f.getSize(null);
