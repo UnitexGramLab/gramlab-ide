@@ -26,13 +26,22 @@
  * 
  * @author Sébastien Paumier
  */
-package fr.umlv.unitex.process;
+package fr.umlv.unitex.console;
 
 public class Couple {
 	
-	String s;
-	boolean isSystemMessage;
+	private String s;
 	
+	private boolean isSystemMessage;
+	
+	public String getString() {
+		return s;
+	}
+
+	public boolean isSystemMessage() {
+		return isSystemMessage;
+	}
+
 	public Couple(String s,boolean isSystemMessage) {
 		this.s=s;
 		this.isSystemMessage=isSystemMessage;
