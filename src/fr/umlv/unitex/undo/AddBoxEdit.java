@@ -27,57 +27,68 @@ import javax.swing.undo.*;
 
 import fr.umlv.unitex.*;
 
-/**
- * class uses to save the state of the graph before remove a boxe 
- * @author Decreton Julien
- *
- */
-public class RemoveBoxeEdit extends AbstractUndoableEdit {
 
-	/** List of transition to a boxe */
-	private ArrayList<GenericGraphBox> transitionsToBoxe;
+/**
+ * class uses to save the state of the graph before add a boxe
+ * @author Decreton Julien
+ */
+public class AddBoxEdit extends AbstractUndoableEdit {
+	
 	/** boxes of the graph */
 	private ArrayList<GenericGraphBox> boxes;
-	/** boxe to remove */
+	/** boxe  to add to the graph */
 	private GenericGraphBox boxe;
-	/** zone where the graph is drawn */
-	private GenericGraphicalZone zone;
-	/** if the boxe to remove have a selftransition or not */	
-	private boolean itSelfTransition = false;
-
+	/** area where the graph is drawn */	
+	private  GenericGraphicalZone zone;
+	/** list of transition to the boxe */
+	private ArrayList<GenericGraphBox> transitionsToBoxe;
+	
 	/**
- 	* 
- 	* @param boxe the boxe to remove
- 	* @param boxes the boxes of the graph
- 	* @param zone the zone where remove the boxe
- 	*/
-	public RemoveBoxeEdit(
-		GenericGraphBox boxe,
-		ArrayList<GenericGraphBox> boxes,
-		GenericGraphicalZone zone) {
+	 * contruct an edit to redo and undo an add boxe action 
+	 * @param boxe  the boxe to save for the do undo process
+	 * @param boxes the unit boxes of a graph
+	 * @param zone the zone where boxes are drawn
+	 */
+	public AddBoxEdit(GenericGraphBox boxe, ArrayList<GenericGraphBox> boxes, GenericGraphicalZone zone ) {
 		this.boxes = boxes;
 		this.boxe = boxe;
 		this.zone = zone;
-		transitionsToBoxe = zone.getTransitionTo(boxe);		
-		itSelfTransition = boxe.hasTransitionToItself();
-		
 	}
-
+	
+	/**
+	 * undo action
+	 */	
 	public void undo() {
 		super.undo();
-		boxes.add(boxe);
-		// add thes transition which pointed on this boxe
-		for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
-			GenericGraphBox g = transitionsToBoxe.get(i);
-			g.addTransitionTo(boxe);
+		GenericGraphBox g;
+		boxes.remove(boxe);	
+			
+		transitionsToBoxe = zone.getTransitionTo(boxe);
+		
+		for(Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it.hasNext() ; ){
+			g = it.next();
+			g.setSelected(true);
 		}
-		if( itSelfTransition ) boxe.addTransitionTo(boxe);
+		zone.removeTransitionTo(boxe);
+		
+		
+		
 	}
-
+	
+	/**
+	 * redo action
+	 */	
 	public void redo() {
 		super.redo();
-		boxes.remove(boxe);
-		zone.removeTransitionTo(boxe);		
-	}
+		GenericGraphBox g;
+		boxes.add(boxe);	
+		// add old transition to boxe
+		for(Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it.hasNext() ; ){
+			g = it.next();
+			g.addTransitionTo(boxe);
+		}
+		
+			
+	}	
 
 }

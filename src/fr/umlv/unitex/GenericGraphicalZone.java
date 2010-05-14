@@ -192,7 +192,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public void addBox(GenericGraphBox g) {
 		// intital an terminal state must not edit
 		if (graphBoxes.size() >= 2) {
-			UndoableEdit edit = new AddBoxeEdit(g, graphBoxes, this);
+			UndoableEdit edit = new AddBoxEdit(g, graphBoxes, this);
 			postEdit(edit);
 		}
 		graphBoxes.add(g);
@@ -379,7 +379,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		L = selectedBoxes.size();
 		if (L == 1) {
 			g = selectedBoxes.get(0);
-			AbstractUndoableEdit edit = new BoxeTextEdit(g, s, this);
+			AbstractUndoableEdit edit = new BoxTextEdit(g, s, this);
 			postEdit(edit);
 			g.setContent(s);
 		} else {
