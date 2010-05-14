@@ -184,7 +184,7 @@ public class Text {
 		}
 	}
 
-	static class TextDo extends ToDoAbstract {
+	static class TextDo implements ToDo {
 		File SNT;
 		boolean b;
 
@@ -197,7 +197,7 @@ public class Text {
 		}
 	}
 
-	static class TextConversionDo extends ToDoAbstract {
+	static class TextConversionDo implements ToDo {
 		File file;
 		boolean b;
 

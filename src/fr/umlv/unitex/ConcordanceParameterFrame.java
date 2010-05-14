@@ -623,7 +623,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	
 	
 	
-	class ConcordanceDo extends ToDoAbstract {
+	class ConcordanceDo implements ToDo {
 		File htmlFile;
 		final boolean browser;
 		int widthInChars;
@@ -667,7 +667,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 	}
 
-	static class ModifyTextDo extends ToDoAbstract {
+	static class ModifyTextDo implements ToDo {
 		File SNT;
 
 		public ModifyTextDo(File s) {
@@ -678,7 +678,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 	}
 
-	static class LoadStatisticsDo extends ToDoAbstract {
+	static class LoadStatisticsDo implements ToDo {
 	    
 	    File f;
 	    int mode;
@@ -688,7 +688,6 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	        this.mode=mode;
 	    }
 	    
-        @Override
         public void toDo() {
             if (StatisticsFrame.frame!=null) {
                 StatisticsFrame.frame.doDefaultCloseAction();

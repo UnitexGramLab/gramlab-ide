@@ -222,7 +222,7 @@ public class MyDropTarget {
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						ToDoAbstract toDo = new ToDoAbstract() {
+						ToDo toDo = new ToDo() {
 							public void toDo() {
 								Config.setCurrentDELA(dela);
 								UnitexFrame.mainFrame.checkDelaFormat

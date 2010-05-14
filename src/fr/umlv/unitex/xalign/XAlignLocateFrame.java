@@ -334,7 +334,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		return res;
 	}
 
-	class XAlignLocateDo extends ToDoAbstract {
+	class XAlignLocateDo implements ToDo {
 		
 		File file;
 		ConcordanceModel concordModel1;
