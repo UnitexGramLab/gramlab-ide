@@ -29,6 +29,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.process.*;
 
 /**

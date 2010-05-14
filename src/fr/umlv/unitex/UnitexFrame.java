@@ -35,6 +35,7 @@ import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
 import fr.umlv.unitex.xalign.*;
@@ -576,7 +577,7 @@ public class UnitexFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					Dimension d = f.scroll.getSize();
+					Dimension d = f.getScroll().getSize();
 					double scale_x = (double) (d.width - 3)
 							/ (double) f.graphicalZone.Width;
 					double scale_y = (double) (d.height - 3)
@@ -587,7 +588,7 @@ public class UnitexFrame extends JFrame {
 						f.setScaleFactor(scale_y);
 					f.compListener = new ComponentAdapter() {
 						public void componentResized(ComponentEvent e2) {
-							Dimension d2 = f.scroll.getSize();
+							Dimension d2 = f.getScroll().getSize();
 							double scale_x2 = (double) (d2.width - 3)
 									/ (double) f.graphicalZone.Width;
 							double scale_y2 = (double) (d2.height - 3)
@@ -756,7 +757,7 @@ public class UnitexFrame extends JFrame {
 				} else {
 					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 					if (f != null) {
-						((TextField) (f.graphicalZone.text)).cut
+						((TextField) (f.graphicalZone.text)).getCut()
 								.actionPerformed(E);
 						f.graphicalZone.repaint();
 					}
@@ -777,7 +778,7 @@ public class UnitexFrame extends JFrame {
 				} else {
 					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 					if (f != null) {
-						((TextField) (f.graphicalZone.text)).specialCopy
+						((TextField) (f.graphicalZone.text)).getSpecialCopy()
 								.actionPerformed(E);
 						f.graphicalZone.repaint();
 					}
@@ -798,7 +799,7 @@ public class UnitexFrame extends JFrame {
 				} else {
 					GraphFrame f = UnitexFrame.getCurrentFocusedGraphFrame();
 					if (f != null) {
-						((TextField) (f.graphicalZone.text)).specialPaste
+						((TextField) (f.graphicalZone.text)).getSpecialPaste()
 								.actionPerformed(E);
 						f.graphicalZone.repaint();
 					}
@@ -1245,7 +1246,7 @@ public class UnitexFrame extends JFrame {
 		doc.graphicalZone.Width = g.width;
 		doc.graphicalZone.Height = g.height;
 		doc.graphicalZone.graphBoxes = g.boxes;
-		doc.scroll.setPreferredSize(new Dimension(g.width, g.height));
+		doc.getScroll().setPreferredSize(new Dimension(g.width, g.height));
 		doc.graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
 		doc.setGraph(grf);
 		//doc.setTitle(grf.getAbsolutePath());

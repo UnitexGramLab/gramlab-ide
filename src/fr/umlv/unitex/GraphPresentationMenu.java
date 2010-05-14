@@ -27,6 +27,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
+
 /**
  * This class describes the graph presentation dialog box, that allows the user
  * to set current graph's options, colors and fonts.

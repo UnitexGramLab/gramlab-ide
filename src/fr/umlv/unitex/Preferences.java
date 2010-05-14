@@ -190,17 +190,17 @@ public class Preferences {
 	 */
 	public int MAX_TEXT_FILE_SIZE = 2 * 1024 * 1024;
 
-	static String ICON_BAR_WEST = BorderLayout.WEST;
+	public static String ICON_BAR_WEST = BorderLayout.WEST;
 
-	static String ICON_BAR_EAST = BorderLayout.EAST;
+	public static String ICON_BAR_EAST = BorderLayout.EAST;
 
-	static String ICON_BAR_NORTH = BorderLayout.NORTH;
+	public static String ICON_BAR_NORTH = BorderLayout.NORTH;
 
-	static String ICON_BAR_SOUTH = BorderLayout.SOUTH;
+	public static String ICON_BAR_SOUTH = BorderLayout.SOUTH;
 
-	static String NO_ICON_BAR = "NONE";
+	public static String NO_ICON_BAR = "NONE";
 
-	static String ICON_BAR_DEFAULT = ICON_BAR_WEST;
+	public static String ICON_BAR_DEFAULT = ICON_BAR_WEST;
 
 	public String iconBarPosition;
 
