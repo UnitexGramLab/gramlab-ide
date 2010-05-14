@@ -28,6 +28,8 @@ import java.awt.font.TextLayout;
 
 import javax.swing.*;
 
+import fr.umlv.unitex.frames.GraphFrame;
+
 /**
  * This class describes a box of a graph or a sentence graph.
  * 

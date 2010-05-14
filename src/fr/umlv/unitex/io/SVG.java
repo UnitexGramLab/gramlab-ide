@@ -26,6 +26,7 @@ import java.io.*;
 import java.util.*;
 
 import fr.umlv.unitex.*;
+import fr.umlv.unitex.frames.GraphFrame;
 
 /**
  * This class provides static method for saving graphs as SVG files. 
