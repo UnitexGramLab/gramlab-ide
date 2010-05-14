@@ -22,7 +22,7 @@
 package fr.umlv.unitex;
 
 /**
- * This abstract class is used to define a method named <code>DO()</code>. It is used to
+ * This interface is used to define a method named <code>toDo()</code>. It is used to
  * define what must be done after a sequence of command lines in the 
  * <code>ProcessInfoFrame.launchCommand()</code> method: after all processes have been completed, 
  * a <code>toDo()</code> method is called to execute some actions.
@@ -33,6 +33,6 @@ package fr.umlv.unitex;
  * @author Sébastien Paumier
  *
  */
-public abstract class ToDoAbstract {
-   public abstract void toDo();
+public interface ToDo {
+   public void toDo();
 }

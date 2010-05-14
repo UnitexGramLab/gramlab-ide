@@ -154,7 +154,7 @@ public class CheckDicFrame extends JInternalFrame {
 		new ProcessInfoFrame(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
 
-	class CheckDicDo extends ToDoAbstract {
+	class CheckDicDo implements ToDo {
 		File results;
 		public CheckDicDo(File s) {
 			results = s;

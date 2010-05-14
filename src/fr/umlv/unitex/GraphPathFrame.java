@@ -182,7 +182,7 @@ public class GraphPathFrame extends JInternalFrame {
 				commands.addCommand(grfCmd);
 				commands.addCommand(cmd);
 				frame.textArea.reset();
-				new ProcessInfoFrame(commands, true, new ShowPathsDO(list));
+				new ProcessInfoFrame(commands, true, new ShowPathsDo(list));
 			}
 		};
 		JButton GO = new JButton(goAction);
@@ -216,10 +216,10 @@ public class GraphPathFrame extends JInternalFrame {
 		return panel;
 	}
 
-	class ShowPathsDO extends ToDoAbstract {
+	class ShowPathsDo implements ToDo {
 		private File name;
 
-		ShowPathsDO(File name) {
+		ShowPathsDo(File name) {
 			this.name = name;
 		}
 

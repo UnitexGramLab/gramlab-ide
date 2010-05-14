@@ -255,8 +255,7 @@ public class XAlignFrame {
 					} else {
 						dico = null;
 					}
-					ToDoAbstract toDo=new ToDoAbstract() {
-						@Override
+					ToDo toDo=new ToDo() {
 						public void toDo() {
 							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
@@ -450,7 +449,7 @@ public class XAlignFrame {
 	}
 	
 	
-	static class XAlignDo extends ToDoAbstract {
+	static class XAlignDo implements ToDo {
 		
 		XAlignModel model1;
 		File f;
