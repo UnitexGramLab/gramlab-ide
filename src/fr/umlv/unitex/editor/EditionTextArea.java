@@ -1,23 +1,23 @@
- /*
-  * Unitex
-  *
-  * Copyright (C) 2001-2010 Universitй Paris-Est Marne-la-Vallйe <unitex@univ-mlv.fr>
-  *
-  * This library is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU Lesser General Public
-  * License as published by the Free Software Foundation; either
-  * version 2.1 of the License, or (at your option) any later version.
-  *
-  * This library is distributed in the hope that it will be useful,
-  * but WITHOUT ANY WARRANTY; without even the implied warranty of
-  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  * Lesser General Public License for more details.
-  * 
-  * You should have received a copy of the GNU Lesser General Public
-  * License along with this library; if not, write to the Free Software
-  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
-  *
-  */
+/*
+ * Unitex
+ *
+ * Copyright (C) 2001-2010 UniversitГ© Paris-Est Marne-la-VallГ©e <unitex@univ-mlv.fr>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ *
+ */
 
 package fr.umlv.unitex.editor;
 
@@ -36,7 +36,7 @@ import fr.umlv.unitex.editor.ui.TextAreaSeparatorException;
 
 /**
  * This class describes a JTextArea that can correctly load unicode text
- * an seach on it
+ * an search in it
  */
 public class EditionTextArea extends JTextArea {
 
@@ -467,8 +467,8 @@ public class EditionTextArea extends JTextArea {
  */
 	private boolean isaPrefixe(String key, String context) {
 
-		//String leftsepartorsRegexp = new String("[^\\d\\wзйикладвпощьыфц]");
-		//String rightSepartorsRegexp = new String("[\\wзйикладвпощьыфц]");
+		//String leftsepartorsRegexp = new String("[^\\d\\wпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]");
+		//String rightSepartorsRegexp = new String("[\\wпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]");
 		return isMatchingExpression(
 			key,
 			context,
@@ -484,8 +484,8 @@ public class EditionTextArea extends JTextArea {
  */
 	private boolean isaSuffixe(String key, String context) {
 
-		//String leftsepartorsRegexp = new String("[\\wзйикладвпощьыфц]");
-		//String rightSepartorsRegexp = new String("[^\\d\\wзйикладвпощьыфц]");
+		//String leftsepartorsRegexp = new String("[\\wпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]");
+		//String rightSepartorsRegexp = new String("[^\\d\\wпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]");
 		return isMatchingExpression(
 			key,
 			context,
@@ -521,7 +521,7 @@ public class EditionTextArea extends JTextArea {
 
 		
 		return isMatchingExpression(key,context,leftsepartorsRegexp,rightSepartorsRegexp) || 
-			   isMatchingExpression(key,context2,separatorsRegexp/*"[^\\d\\wзйикладвпощьыфц]"*/,",\\.");
+			   isMatchingExpression(key,context2,separatorsRegexp/*"[^\\d\\wпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]"*/,",\\.");
 	}
 
 /**

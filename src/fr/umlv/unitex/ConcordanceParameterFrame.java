@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2010 Universit� Paris-Est Marne-la-Vall�e <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2010 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ import fr.umlv.unitex.process.*;
  * This class describes a frame in which the user can select how to use the
  * results of a pattern matching.
  * 
- * @author S�bastien Paumier
+ * @author Sébastien Paumier
  *  
  */
 public class ConcordanceParameterFrame extends JInternalFrame {

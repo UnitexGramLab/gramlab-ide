@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2010 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2010 UniversitÃ© Paris-Est Marne-la-VallÃ©e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,7 +31,7 @@ import javax.swing.event.*;
 /**
  * This class describes a frame that can show an HTML condordance diff file.
  * 
- * @author Sébastien Paumier
+ * @author S&bastien Paumier
  */
 public class ConcordanceDiffFrame extends JInternalFrame {
 

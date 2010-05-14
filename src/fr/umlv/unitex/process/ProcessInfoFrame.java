@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2010 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2010 UniversitÃ© Paris-Est Marne-la-VallÃ©e <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ import fr.umlv.unitex.console.ConsoleEntry;
  * This class describes a frame used to execute shell commands and display
  * stdout and stderr messages produced by these processes.
  * 
- * @author Sébastien Paumier
+ * @author SÃ©bastien Paumier
  * 
  */
 public class ProcessInfoFrame extends JInternalFrame {
