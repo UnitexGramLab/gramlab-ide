@@ -27,6 +27,7 @@ import java.awt.print.PrinterJob;
 
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.TextAutomatonFrame;
 import fr.umlv.unitex.frames.GraphFrame;
 
 public class PrintManager {
@@ -45,7 +46,7 @@ public class PrintManager {
 	
 	private static PageFormat getPageFormat() {
 		if (pageFormat==null) {
-			pageFormat=printerJob.defaultPage();
+			pageFormat=getPrinterJob().defaultPage();
 		}
 		return pageFormat;
 	}
@@ -81,6 +82,38 @@ public class PrintManager {
 						"Error while printing graph", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
+		}
+	}
+
+
+	/**
+	 * Launch the page setup for printing.
+	 *  
+	 */
+	public static void pageSetup() {
+		PrinterJob job=getPrinterJob();
+		PageFormat format=getPageFormat();
+		format=job.pageDialog(format);
+	}
+
+	
+	/**
+	 * Prints a <code>TextAutomatonFrame</code>.
+	 * 
+	 * @param g
+	 *            the <code>TextAutomatonFrame</code> to be printed.
+	 */
+	public static void printTextAutomatonFrame(TextAutomatonFrame g) {
+		PrinterJob job=getPrinterJob();
+		PageFormat format=getPageFormat();
+		if (!job.printDialog()) return;
+		try {
+			job.setPrintable(g.getGraphicalZone(),format);
+			job.print();
+		} catch (PrinterException e) {
+				JOptionPane.showMessageDialog(null,
+						"Error while printing sentence graph", "Error",
+						JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

@@ -101,7 +101,11 @@ public class TextAutomatonFrame extends JInternalFrame {
   File elagrules;
   JLabel ruleslabel;
   TfstGraphicalZone graphicalZone;
-  TfstTextField textfield = new TfstTextField(25, this);
+  public TfstGraphicalZone getGraphicalZone() {
+	return graphicalZone;
+}
+
+TfstTextField textfield = new TfstTextField(25, this);
   boolean modified = false;
   static int sentence_count = 0;
   static File sentence_text;
