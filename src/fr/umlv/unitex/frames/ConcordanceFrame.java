@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,7 +29,12 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-import fr.umlv.unitex.frames.TextFrame;
+import fr.umlv.unitex.BigConcordance;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.Util;
 
 
 
@@ -41,10 +46,8 @@ import fr.umlv.unitex.frames.TextFrame;
  */
 public class ConcordanceFrame extends JInternalFrame {
 
-	static ConcordanceFrame frame;
-	
 	BigConcordance list;
-	private JLabel nombre_matches = new JLabel("");
+	private JLabel numberOfMatches = new JLabel("");
 	JComponent invisible=new JComponent() {
 		@Override
 		protected void paintComponent(Graphics g) {
@@ -65,10 +68,9 @@ public class ConcordanceFrame extends JInternalFrame {
 	};
 	
 	/**
-	 * Constructs a new empty <code>ConcordanceFrame</code>.
-	 * @param widthInChars 
+	 * Constructs a new <code>ConcordanceFrame</code>.
 	 */
-	public ConcordanceFrame(int widthInChars) {
+	ConcordanceFrame(File f,int widthInChars) {
 		super("", true, true, true, true);
 		list=new BigConcordance(widthInChars);
 		invisible.setOpaque(false);
@@ -94,14 +96,14 @@ public class ConcordanceFrame extends JInternalFrame {
 		JPanel up = new JPanel(new BorderLayout());
 		up.setOpaque(true);
 		up.setBorder(new EmptyBorder(2, 2, 2, 2));
-		up.add(nombre_matches, BorderLayout.CENTER);
+		up.add(numberOfMatches, BorderLayout.CENTER);
 		top.add(up,BorderLayout.NORTH);
 		setContentPane(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				close();
-				dispose();
+				list.reset();
+				list.clearSelection();
 			}
 			
 			@Override
@@ -123,7 +125,8 @@ public class ConcordanceFrame extends JInternalFrame {
 				repaint();
 			}
 		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setBounds(150, 50, 850, 550);
+		load(f,widthInChars);
 	}
 
 	/**
@@ -136,34 +139,25 @@ public class ConcordanceFrame extends JInternalFrame {
      @param widthInChars width of a line in chars. Equals to the sum of left and right 
      context lengths
 	 */
-	public static void load(File concor, int widthInChars) {
-		close();
-		frame=new ConcordanceFrame(widthInChars);
-		UnitexFrame.addInternalFrame(frame,false);
-		frame.setTitle("Concordance: " + concor.getAbsolutePath());
-		frame.nombre_matches.setText(Util.getHtmlPageTitle(concor));
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-		Dimension d = frame.getSize();
+	private void load(File concor, int widthInChars) {
+		setTitle("Concordance: " + concor.getAbsolutePath());
+		numberOfMatches.setText(Util.getHtmlPageTitle(concor));
+		Dimension d = getSize();
 		int g = widthInChars * 8;
 		d.setSize((g < 800) ? g : 800, d.height);
-		frame.setSize(d);
+		setSize(d);
 		Util.getHtmlPageTitle(concor);
 		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
 			public void fontChanged(Font font) {
-				frame.list.setFont(font);
+				list.setFont(font);
 			}
 		});
-		frame.list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
-		frame.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		frame.list.addListSelectionListener(new ListSelectionListener() {
+		list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				TextFrame f=UnitexFrame.getFrameManager().getTextFrame();
-				String s=(String) frame.list.getSelectedValue();
+				String s=(String) list.getSelectedValue();
 				if (s==null || e.getValueIsAdjusting() || f.isIcon()) return;
 				int start=s.indexOf("<a href=\"")+9;
 				int end=s.indexOf(' ',start);
@@ -183,21 +177,7 @@ public class ConcordanceFrame extends JInternalFrame {
 			}
 			UnitexFrame.getFrameManager().getTextAutomatonFrame().loadSentenceFromConcordance(sentenceNumber);
 			}});
-		frame.list.load(concor);
-		frame.setBounds(150, 50, 850, 550);
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Closes the frame.
-	 *  
-	 */
-	public static void close() {
-		if (frame==null) return;
-		frame.setVisible(false);
-		frame.list.reset();
-		frame.list.clearSelection();
-		UnitexFrame.removeInternalFrame(frame);
+		list.load(concor);
 	}
 
 }
