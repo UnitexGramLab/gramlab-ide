@@ -46,6 +46,7 @@ public class InternalFrameManager {
 	private TokensFrameFactory tokensFrameFactory=new TokensFrameFactory();
 	private TextDicFrameFactory textDicFrameFactory=new TextDicFrameFactory();
 	private TextAutomatonFrameFactory textAutomatonFrameFactory=new TextAutomatonFrameFactory();
+	private AboutUnitexFrameFactory aboutUnitexFrameFactory=new AboutUnitexFrameFactory();
 
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -301,8 +302,22 @@ public class InternalFrameManager {
 		textAutomatonFrameFactory.closeTextAutomatonFrame();
 	}
 
+
 	public TextAutomatonFrame getTextAutomatonFrame() {
 		return textAutomatonFrameFactory.getTextAutomatonFrame();
+	}
+
+	public boolean newAboutUnitexFrame() {
+		AboutUnitexFrame f=aboutUnitexFrameFactory.newAboutUnitexFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 }

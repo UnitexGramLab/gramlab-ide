@@ -926,7 +926,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem aboutUnitex = new JMenuItem("About Unitex...");
 		aboutUnitex.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AboutUnitexFrame.showFrame();
+				frameManager.newAboutUnitexFrame();
 			}
 		});
 		aboutUnitex.setEnabled(true);

@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 
 import java.awt.*;
@@ -28,6 +28,10 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigTextArea;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Version;
 
 /**
  * This class defines a frame that contains the Unitex logo, the body of the
@@ -38,9 +42,7 @@ import javax.swing.event.*;
  */
 public class AboutUnitexFrame extends JInternalFrame {
 
-	protected static AboutUnitexFrame frame;
-
-	private AboutUnitexFrame() {
+	AboutUnitexFrame() {
 		super("About Unitex", true, true);
 		JPanel top = new JPanel();
 		top.setOpaque(true);
@@ -56,7 +58,7 @@ public class AboutUnitexFrame extends JInternalFrame {
 		JPanel image = new JPanel();
 		image.setBorder(new EmptyBorder(4, 3, 1, 1));
 		image.setLayout(new BorderLayout());
-		image.add(new JLabel(new ImageIcon(AboutUnitexFrame.class.getResource("Unitex.jpg"))));
+		image.add(new JLabel(new ImageIcon(AboutUnitexFrame.class.getResource("../Unitex.jpg"))));
 		up.add(image, BorderLayout.WEST);
 		JPanel info = new JPanel();
 		info.setBorder(new TitledBorder("Unitex"));
@@ -79,34 +81,12 @@ public class AboutUnitexFrame extends JInternalFrame {
 		setVisible(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
-				frame.setVisible(false);
+				setVisible(false);
 			}
 		});
 		licenses.setPreferredSize(new Dimension(500,300));
 		pack();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-	}
-
-	private static void init() {
-		frame = new AboutUnitexFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame, creating it if necessary.
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e) {
-			// do nothing
-		}
-		frame.setVisible(true);
 	}
 
 }
