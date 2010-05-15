@@ -132,6 +132,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.closeTextDicFrame();
 				frameManager.closeTextAutomatonFrame();
 				frameManager.closeApplyLexicalResourcesFrame();
+				frameManager.closeConcordanceDiffFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {

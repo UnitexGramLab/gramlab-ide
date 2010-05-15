@@ -50,6 +50,7 @@ public class InternalFrameManager {
 	private ApplyLexicalResourcesFrameFactory applyLexicalResourcesFrameFactory=new ApplyLexicalResourcesFrameFactory();
 	private CheckDicFrameFactory checkDicFrameFactory=new CheckDicFrameFactory();
 	private CheckResultFrameFactory checkResultFrameFactory=new CheckResultFrameFactory();
+	private ConcordanceDiffFrameFactory concordanceDiffFrameFactory=new ConcordanceDiffFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -374,4 +375,22 @@ public class InternalFrameManager {
 	public void closeCheckResultFrame() {
 		checkResultFrameFactory.closeCheckResultFrame();
 	}
+
+	public boolean newConcordanceDiffFrame(File file,int widthInChars) {
+		ConcordanceDiffFrame f=concordanceDiffFrameFactory.newConcordanceDiffFrame(file,widthInChars);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeConcordanceDiffFrame() {
+		concordanceDiffFrameFactory.closeConcordanceDiffFrame();
+	}
+
 }
