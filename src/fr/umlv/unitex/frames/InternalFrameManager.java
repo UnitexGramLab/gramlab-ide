@@ -47,6 +47,7 @@ public class InternalFrameManager {
 	private TextDicFrameFactory textDicFrameFactory=new TextDicFrameFactory();
 	private TextAutomatonFrameFactory textAutomatonFrameFactory=new TextAutomatonFrameFactory();
 	private AboutUnitexFrameFactory aboutUnitexFrameFactory=new AboutUnitexFrameFactory();
+	private ApplyLexicalResourcesFrameFactory applyLexicalResourcesFrameFactory=new ApplyLexicalResourcesFrameFactory();
 
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -318,6 +319,24 @@ public class InternalFrameManager {
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+
+	public boolean newApplyLexicalResourcesFrame() {
+		ApplyLexicalResourcesFrame f=applyLexicalResourcesFrameFactory.newApplyLexicalResourcesFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeApplyLexicalResourcesFrame() {
+		applyLexicalResourcesFrameFactory.closeApplyLexicalResourcesFrame();
 	}
 
 }
