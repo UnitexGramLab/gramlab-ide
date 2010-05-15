@@ -19,13 +19,19 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigTextList;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
@@ -38,12 +44,10 @@ import fr.umlv.unitex.process.*;
  */
 public class DelaFrame extends JInternalFrame {
 
-	static DelaFrame frame;
-
 	JPanel middle;
 	BigTextList text=new BigTextList(true);
 
-	private DelaFrame() {
+	DelaFrame() {
 		super("", true, true, true, true);
 		JPanel top = new JPanel();
 		top.setOpaque(true);
@@ -62,7 +66,16 @@ public class DelaFrame extends JInternalFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
-				UnitexFrame.mainFrame.closeDELA();
+				Config.setCurrentDELA(null);
+				text.reset();
+				setVisible(false);
+				/* We wait to avoid blocking the creation of fooflx.dic by MultiFlex */
+				try {
+		            Thread.sleep(10);
+		        } catch (InterruptedException e2) {
+		            e2.printStackTrace();
+		        }
+				System.gc();
 			}
 		});
 		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
@@ -72,21 +85,12 @@ public class DelaFrame extends JInternalFrame {
 	}
 
 	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new DelaFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
 	 * Loads a dictionary.
 	 * 
 	 * @param dela
 	 *            the dictionary to be loaded
 	 */
-	public static void loadDela(File dela) {
+	public void loadDela(File dela) {
 		LoadDelaDo toDo = new LoadDelaDo(dela);
 		try {
 			if (!UnicodeIO.isAUnicodeLittleEndianFile(dela)) {
@@ -106,42 +110,22 @@ public class DelaFrame extends JInternalFrame {
 		}
 	}
 
-	static void loadUnicodeDela(File dela) {
-		if (frame == null) {
-			init();
-		}
-		frame.text.load(dela);
-		frame.text.setFont(Config.getCurrentTextFont());
-		frame.setTitle(dela.getAbsolutePath());
-		frame.setVisible(true);
+	void loadUnicodeDela(File dela) {
+		text.load(dela);
+		Config.setCurrentDELA(dela);
+		text.setFont(Config.getCurrentTextFont());
+		setTitle(dela.getAbsolutePath());
+		setVisible(true);
 		try {
-			frame.setIcon(false);
-			frame.setSelected(true);
+			setIcon(false);
+			setSelected(true);
 		} catch (java.beans.PropertyVetoException e2) {
 			e2.printStackTrace();
 		}
 	}
 
-	/**
-	 * Closes the frame.
-	 *  
-	 */
-	public static void closeDela() {
-		if (frame == null) {
-			return;
-		}
-		frame.text.reset();
-		frame.setVisible(false);
-		/* We wait to avoid blocking the creation of fooflx.dic by MultiFlex */
-		try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-		System.gc();
-	}
 
-	static class LoadDelaDo implements ToDo {
+	class LoadDelaDo implements ToDo {
 		File dela;
 
 		LoadDelaDo(File s) {

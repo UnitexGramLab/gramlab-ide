@@ -21,42 +21,9 @@
 
 package fr.umlv.unitex.frames;
 
-import java.io.File;
+public interface DelaFrameListener {
 
-public class TextFrameFactory {
-
-	private TextFrame frame;
-
-	/**
-	 * We try to load the given .snt file, closing first the previous
-	 * text frame, if any.
-	 * 
-	 * @param text
-	 * @param taggedText
-	 * @return
-	 */
-	TextFrame newTextFrame(File text) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-			frame=null;
-		}
-		frame=new TextFrame();
-		frame.loadText(text);
-		return frame;
-	}
-
-	
-	void closeTextFrame() {
-		if (frame==null) {
-			throw new IllegalStateException("Should not try to close a non existing TextFrame");
-		}
-		frame.doDefaultCloseAction();
-		frame=null;
-	}
-	
-	
-	TextFrame getTextFrame() {
-		return frame;
-	}
+	public void delaFrameOpened();
+	public void delaFrameClosed();
 
 }

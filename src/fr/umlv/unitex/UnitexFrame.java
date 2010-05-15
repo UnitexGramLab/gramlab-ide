@@ -34,6 +34,7 @@ import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.frames.DelaFrameListener;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.TextFrameListener;
@@ -122,6 +123,25 @@ public class UnitexFrame extends JFrame {
 				constructFst.setEnabled(false);
 				convertFst.setEnabled(false);
 				closeText.setEnabled(false);
+			}
+		});
+		frameManager.addDelaFrameListener(new DelaFrameListener() {
+			
+			public void delaFrameOpened() {
+                checkDelaFormat.setEnabled(true);
+				sortDictionary.setEnabled(true);
+				inflect.setEnabled(true);
+				compressIntoFST.setEnabled(true);
+				closeDela.setEnabled(true);
+			}
+			
+			public void delaFrameClosed() {
+				CheckResultFrame.close();
+				checkDelaFormat.setEnabled(false);
+				sortDictionary.setEnabled(false);
+				inflect.setEnabled(false);
+				compressIntoFST.setEnabled(false);
+				closeDela.setEnabled(false);
 			}
 		});
 	}
@@ -387,7 +407,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		closeDela = new AbstractAction("Close") {
 			public void actionPerformed(ActionEvent e) {
-				closeDELA();
+				frameManager.closeDelaFrame();
 			}
 		};
 		closeDela.setEnabled(false);
@@ -1379,14 +1399,7 @@ public class UnitexFrame extends JFrame {
 		final File dela = Config.getDelaDialogBox().getSelectedFile();
 		ToDo toDo = new ToDo() {
 			public void toDo() {
-                closeDELA();
-				Config.setCurrentDELA(dela);
-				checkDelaFormat.setEnabled(true);
-				sortDictionary.setEnabled(true);
-				inflect.setEnabled(true);
-				compressIntoFST.setEnabled(true);
-				closeDela.setEnabled(true);
-				DelaFrame.loadDela(Config.getCurrentDELA());
+				frameManager.newDelaFrame(dela);
 			}
 		};
 		try {
@@ -1420,7 +1433,7 @@ public class UnitexFrame extends JFrame {
 		} else {
 			command = command.sortAlphabet();
 		}
-		DelaFrame.closeDela();
+		frameManager.closeDelaFrame();
 		new ProcessInfoFrame(command, true, new DelaDo(Config.getCurrentDELA()));
 	}
 
@@ -1430,36 +1443,16 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void compressDELA() {
-		/*if ( Config.isAgglutinativeLanguage()) {
-			CompressKrCommand commandKr = new CompressKrCommand().name(Config
-					.getCurrentDELA());
-			new ProcessInfoFrame(commandKr, false, null);
-		} else*/ {
-			CompressCommand command = new CompressCommand().name(Config
-					.getCurrentDELA());
-			new ProcessInfoFrame(command, false, null);
-		}
-	}
-
-	/**
-	 * Closes the current dictionary.
-	 *  
-	 */
-	public void closeDELA() {
-		DelaFrame.closeDela();
-		CheckResultFrame.close();
-		Config.setCurrentDELA(null);
-		checkDelaFormat.setEnabled(false);
-		sortDictionary.setEnabled(false);
-		inflect.setEnabled(false);
-		compressIntoFST.setEnabled(false);
-		closeDela.setEnabled(false);
+		CompressCommand command = new CompressCommand().name(Config
+				.getCurrentDELA());
+		new ProcessInfoFrame(command, false, null);
 	}
 
 	/**
 	 * Closes the current corpus. All the associated frames (text tokens, text
 	 * dictionaries, text automaton, etc) are closed.
-	 *  
+	 * 
+	 * TODO à virer 
 	 */
 	public void closeText() {
 		frameManager.closeTextFrame();
@@ -1652,7 +1645,7 @@ public class UnitexFrame extends JFrame {
 			dela = s;
 		}
 		public void toDo() {
-			DelaFrame.loadDela(dela);
+			frameManager.newDelaFrame(dela);
 		}
 	}
 
