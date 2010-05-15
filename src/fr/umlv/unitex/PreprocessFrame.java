@@ -93,20 +93,12 @@ public class PreprocessFrame extends JDialog {
             analyseUnknownWordsCheck.setEnabled(false);
             analyseUnknownWordsLabel.setEnabled(false);
         }
-        /*
-         * code by hyun-gue commented by S. Paumier if
-         * (Config.getCurrentLanguage().equals("Korean")) {
-         * applyDicCheck.setSelected(false); applyDicCheck.setEnabled(false);
-         * applyDicCheck.setEnabled(false); }
-         */
-
         pack();
         setResizable(false);
         setLocationRelativeTo(UnitexFrame.mainFrame);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 setVisible(false);
-                UnitexFrame.mainFrame.closeText();
             }
         });
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -393,7 +385,7 @@ public class PreprocessFrame extends JDialog {
                             }
                             commands.addCommand(txtCmd);
                         }
-                        UnitexFrame.mainFrame.closeText();
+                        UnitexFrame.getFrameManager().closeTextFrame();
                         Text.removeSntFiles();
                         new ProcessInfoFrame(commands, true, new PreprocessDo(sntFile, taggedText));
                     }
@@ -426,7 +418,7 @@ public class PreprocessFrame extends JDialog {
                             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
                         }
                         commands.addCommand(tokenizeCmd);
-                        UnitexFrame.mainFrame.closeText();
+                        UnitexFrame.getFrameManager().closeTextFrame();
                         Text.removeSntFiles();
                         new ProcessInfoFrame(commands, true, new PreprocessDo(sntFile, taggedText));
                     }
@@ -439,8 +431,7 @@ public class PreprocessFrame extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
                 // if the user has clicked on CANCEL, we do nothing
                 setVisible(false);
-                UnitexFrame.mainFrame.closeText();
-                dispose();
+                UnitexFrame.getFrameManager().closeTextFrame();
             }
         };
         JButton CANCEL = new JButton(cancelAction);

@@ -48,7 +48,7 @@ public class TextFrameFactory {
 	
 	void closeTextFrame() {
 		if (frame==null) {
-			throw new IllegalStateException("Should not try to close a non existing TextFrame");
+			return;
 		}
 		frame.doDefaultCloseAction();
 		frame=null;

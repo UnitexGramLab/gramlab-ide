@@ -51,7 +51,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	private JComboBox sortBox;
 	JCheckBox checkBox = new JCheckBox(
 			"Use a web browser to view the concordance");
-	JTextField sntFile = new JTextField("");
+	JTextField modifiedTxtFile = new JTextField("");
 	JTextField extractFile = new JTextField("");
 	String nombre_matches = null;
 	boolean useWebBrowser;
@@ -323,8 +323,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		upPanel.setBorder(new TitledBorder("Modify text"));
 		JPanel a = new JPanel();
 		a.setLayout(new BorderLayout());
-		a.add(new JLabel(" Resulting .snt file: "), BorderLayout.WEST);
-		a.add(sntFile, BorderLayout.CENTER);
+		a.add(new JLabel(" Resulting .txt file: "), BorderLayout.WEST);
+		a.add(modifiedTxtFile, BorderLayout.CENTER);
 		JPanel b = new JPanel();
 		b.setLayout(new GridLayout(1, 2));
 		Action setAction = new AbstractAction("Set File") {
@@ -347,21 +347,16 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				    txt=txt.substring(0,txt.lastIndexOf('.')+1);
 				    txt=txt+"txt";
 				}
-				if (chooser.getSelectedFile().equals(snt)) {
-		            JOptionPane.showMessageDialog(null, "You are about to replace your existing .snt file: "
-		                    + snt.getAbsolutePath(), "Warning",
-		                    JOptionPane.WARNING_MESSAGE);
-				}
 				if (chooser.getSelectedFile().getAbsolutePath().equals(txt)) {
 				    JOptionPane.showMessageDialog(null, "You are about to replace your existing .txt file: "
                      + txt, "Warning",
                      JOptionPane.WARNING_MESSAGE);
 				}
-				sntFile.setText(chooser.getSelectedFile().getAbsolutePath());
+				modifiedTxtFile.setText(chooser.getSelectedFile().getAbsolutePath());
 			}
 		};
-		JButton setSntFile = new JButton(setAction);
-		b.add(setSntFile);
+		JButton setModifiedTextFile = new JButton(setAction);
+		b.add(setModifiedTextFile);
 		Action goAction = new AbstractAction("GO") {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
@@ -468,21 +463,21 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	void modifyText() {
-		if (sntFile.getText().equals("")) {
+		if (modifiedTxtFile.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "You must specify a text file",
 					"Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		File snt;
-		if (-1 == sntFile.getText().indexOf(File.separatorChar)) {
+		File txt;
+		if (-1 == modifiedTxtFile.getText().indexOf(File.separatorChar)) {
 			// if the text field contains a file name without path,
 			// we append the corpus path
-			snt = new File(Config.getCurrentCorpusDir(),sntFile.getText());
+			txt = new File(Config.getCurrentCorpusDir(),modifiedTxtFile.getText());
 		}
 		else {
-			snt = new File(sntFile.getText());
+			txt = new File(modifiedTxtFile.getText());
 		}
-		ConcordCommand command = new ConcordCommand();
+		ConcordCommand modifyCommand = new ConcordCommand();
 		File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
 		if (!indFile.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find "
@@ -490,25 +485,23 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		command = command.indFile(indFile).outputModifiedTxtFile(snt);
-		String sntDir = Util.getFileNameWithoutExtension(snt.getAbsolutePath())
+		modifyCommand = modifyCommand.indFile(indFile).outputModifiedTxtFile(txt);
+		String sntDir = Util.getFileNameWithoutExtension(txt.getAbsolutePath())
 				+ "_snt";
 		File tmp = new File(sntDir);
-		/*if (!tmp.exists())
-			tmp.mkdir();*/
 		ModifyTextDo DO = null;
-		if (sntFile.equals(Config.getCurrentSnt())) {
-			// if the result file is the current text, we must close some things
-			UnitexFrame.mainFrame.closeText();
-			DO = new ModifyTextDo(new File(sntFile.getText()));
+		String sntName=Util.getFileNameWithoutExtension(txt)+".snt";
+		if (new File(sntName).equals(Config.getCurrentSnt())) {
+			UnitexFrame.getFrameManager().closeTextFrame();
+			DO = new ModifyTextDo(new File(sntName));
 		}
 		MultiCommands commands = new MultiCommands();
-		commands.addCommand(command);
-		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(snt);
+		commands.addCommand(modifyCommand);
+		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(txt);
 		commands.addCommand(normalizeCmd);
 		MkdirCommand mkdir=new MkdirCommand().name(tmp);
 		commands.addCommand(mkdir);
-		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(snt).alphabet();
+		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(txt).alphabet();
 		if (Config.isCharByCharLanguage()) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
 		}
@@ -668,13 +661,14 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	static class ModifyTextDo implements ToDo {
-		File SNT;
+		File snt;
 
 		public ModifyTextDo(File s) {
-			SNT = s;
+			snt = s;
 		}
+		
 		public void toDo() {
-			Text.loadCorpus(SNT);
+			UnitexFrame.getFrameManager().newTextFrame(snt,false);
 		}
 	}
 
