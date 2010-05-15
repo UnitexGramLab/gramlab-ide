@@ -27,8 +27,8 @@ import java.awt.print.PrinterJob;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.TextAutomatonFrame;
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 
 public class PrintManager {
 

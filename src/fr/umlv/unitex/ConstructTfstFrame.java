@@ -23,6 +23,7 @@ package fr.umlv.unitex;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import java.io.*;
 
 import javax.swing.*;
@@ -37,7 +38,7 @@ import fr.umlv.unitex.process.*;
  * @author Sébastien Paumier
  *  
  */
-public class ConstructFstFrame extends JDialog {
+public class ConstructTfstFrame extends JDialog {
 
   JCheckBox reconstrucao = new JCheckBox("Build clitic normalization grammar (available only for Portuguese (Portugal))");
   JCheckBox normFst = new JCheckBox(
@@ -56,7 +57,7 @@ public class ConstructFstFrame extends JDialog {
    * Creates and shows a new <code>ConstructFstFrame</code>.
    *  
    */
-  public ConstructFstFrame() {
+  public ConstructTfstFrame() {
     super(UnitexFrame.mainFrame, "Construct the Text FST", true);
     setContentPane(constructPanel());
     pack();
@@ -297,9 +298,9 @@ public class ConstructFstFrame extends JDialog {
                     commands.addCommand(taggerCmd);
                 }
             }
-            TextAutomatonFrame.hideFrame();
+            UnitexFrame.getFrameManager().closeTextAutomatonFrame();
             new ProcessInfoFrame(commands, true,
-                new ConstructFstDo(),false);
+                new ConstructTfstDo(),false);
           }
         });
         dispose();
@@ -320,18 +321,18 @@ public class ConstructFstFrame extends JDialog {
     return buttons;
   }
 
-  class ConstructFstDo implements ToDo {
+	class ConstructTfstDo implements ToDo {
 
-    public void toDo() {
-      TextAutomatonFrame.showFrame();
-      try {
-        TextAutomatonFrame.getFrame().setIcon(false);
-        TextAutomatonFrame.getFrame().setSelected(true);
-        TextAutomatonFrame.frame.loadCurrSentence();
-      } catch (java.beans.PropertyVetoException e) {
-    	  e.printStackTrace();
-      }
-    }
-  }
+		public void toDo() {
+			if (!UnitexFrame.getFrameManager().newTextAutomatonFrame()) return;
+			try {
+				UnitexFrame.getFrameManager().getTextAutomatonFrame().setIcon(false);
+				UnitexFrame.getFrameManager().getTextAutomatonFrame().setSelected(true);
+			} catch (PropertyVetoException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
 
 }

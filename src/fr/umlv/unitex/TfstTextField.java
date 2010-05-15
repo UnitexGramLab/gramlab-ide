@@ -29,6 +29,8 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
+import fr.umlv.unitex.frames.TextAutomatonFrame;
+
 /**
  * This class describes the text field used to get the box text in a sentence graph.
  * @author Sébastien Paumier
@@ -104,18 +106,14 @@ public class TfstTextField extends JTextField {
       addKeyListener(new MyKeyListener());
    }
 
-   protected TextAutomatonFrame parent() {
-      return TextAutomatonFrame.frame;
-   }
-
    class SpecialCopy extends TextAction implements ClipboardOwner {
       public SpecialCopy(String s) {
          super(s);
       }
 
       public void actionPerformed(ActionEvent e) {
-         if (parent().graphicalZone.selectedBoxes.isEmpty()
-            || parent().graphicalZone.selectedBoxes.size() < 2) {
+         if (parent.getGraphicalZone().selectedBoxes.isEmpty()
+            || parent.getGraphicalZone().selectedBoxes.size() < 2) {
             // is there is no or one box selected, we copy normally
             copy();
             UnitexFrame.clip.setContents(null, this);
@@ -124,7 +122,7 @@ public class TfstTextField extends JTextField {
          UnitexFrame.clip.setContents(
             new MultipleBoxesSelection(
                new MultipleSelection(
-                  parent().graphicalZone.selectedBoxes,
+                  parent.getGraphicalZone().selectedBoxes,
                   true)),
             this);
       }
@@ -140,11 +138,11 @@ public class TfstTextField extends JTextField {
       }
 
       public void actionPerformed(ActionEvent e) {
-         if (!parent().graphicalZone.selectedBoxes.isEmpty()
-            && parent().graphicalZone.selectedBoxes.size() == 1)
+         if (!parent.getGraphicalZone().selectedBoxes.isEmpty()
+            && parent.getGraphicalZone().selectedBoxes.size() == 1)
             selectAll();
          else
-            parent().graphicalZone.selectAllBoxes();
+            parent.getGraphicalZone().selectAllBoxes();
       }
 
       public void lostOwnership(Clipboard c, Transferable d) {
@@ -158,17 +156,17 @@ public class TfstTextField extends JTextField {
       }
 
       public void actionPerformed(ActionEvent e) {
-         if (!parent().graphicalZone.selectedBoxes.isEmpty()
-            && parent().graphicalZone.selectedBoxes.size() == 1) {
+         if (!parent.getGraphicalZone().selectedBoxes.isEmpty()
+            && parent.getGraphicalZone().selectedBoxes.size() == 1) {
             cut();
          } else {
             UnitexFrame.clip.setContents(
                new MultipleBoxesSelection(
                   new MultipleSelection(
-                     parent().graphicalZone.selectedBoxes,
+                     parent.getGraphicalZone().selectedBoxes,
                      true)),
                this);
-            parent().graphicalZone.removeSelected();
+            parent.getGraphicalZone().removeSelected();
             setText("");
          }
       }
@@ -203,7 +201,7 @@ public class TfstTextField extends JTextField {
             return;
          }
          res.n++;
-         parent().graphicalZone.pasteSelection(res);
+         parent.getGraphicalZone().pasteSelection(res);
       }
    }
 
@@ -232,14 +230,14 @@ public class TfstTextField extends JTextField {
     * @return <code>true</code> if the content was valid, <code>false</code> otherwise 
     */
    public boolean validateTextField() {
-       boolean multiboxesSelection=parent.graphicalZone.selectedBoxes.size()>1;
+       boolean multiboxesSelection=parent.getGraphicalZone().selectedBoxes.size()>1;
        //System.err.println("validateTextField: hasChangedTextField="+hasChangedTextField());
-       if (!hasChangedTextField() && TextAutomatonFrame.frame.bounds.getValue()!=null) {
+       if (!hasChangedTextField() && parent.bounds.getValue()!=null) {
          return true;
       }
       //System.out.println(TextAutomatonFrame.frame.bounds.boundsAreValid()+" => "+TextAutomatonFrame.frame.bounds.getValue());
       String content=getText();
-      if (!multiboxesSelection && !TextAutomatonFrame.frame.bounds.boundsAreValid() && content!=null && !content.equals("")) {
+      if (!multiboxesSelection && !parent.bounds.boundsAreValid() && content!=null && !content.equals("")) {
           /* Invalid bounds do not matter if the text is the empty string used to destroy boxes */
           JOptionPane.showMessageDialog(
                   null,
@@ -249,18 +247,18 @@ public class TfstTextField extends JTextField {
                return false;
       }
       if (isGoodText(getText())) {
-         parent().graphicalZone.setTextForSelected(getText());
+         parent.getGraphicalZone().setTextForSelected(getText());
          if (!multiboxesSelection) {
-             parent().graphicalZone.setBoundsForSelected(TextAutomatonFrame.frame.bounds.getValue());
+             parent.getGraphicalZone().setBoundsForSelected(parent.bounds.getValue());
          }
-         parent().graphicalZone.unSelectAllBoxes();
-         parent().graphicalZone.text.select(0,0);
-         TextAutomatonFrame.frame.bounds.setValue(null);
-         TextAutomatonFrame.frame.bounds.revalidate();
+         parent.getGraphicalZone().unSelectAllBoxes();
+         parent.getGraphicalZone().sentenceTextArea.select(0,0);
+         parent.bounds.setValue(null);
+         parent.bounds.revalidate();
          setText("");
-         parent().graphicalZone.repaint();
+         parent.getGraphicalZone().repaint();
          setEditable(false);
-         parent().setModified(true);
+         parent.setModified(true);
          return true;
       }
       return false;

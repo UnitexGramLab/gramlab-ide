@@ -21,25 +21,39 @@
 
 package fr.umlv.unitex.frames;
 
-import java.io.File;
+public class TextAutomatonFrameFactory {
 
-public class TextDicFrameFactory {
-
-	private TextDicFrame frame;
+	private TextAutomatonFrame frame;
+	private boolean existsButNotTfstIsLoaded=false;
 	
-	TextDicFrame newTextDicFrame(File sntDir) {
+	TextAutomatonFrame newTextAutomatonFrame() {
 		if (frame==null) {
-			frame=new TextDicFrame();
+			frame=new TextAutomatonFrame();
 		} else {
 			frame.hideFrame();
 		}
-		frame.loadTextDic(sntDir);
+		if (!frame.loadTfst()) {
+			existsButNotTfstIsLoaded=true;
+			return null;
+		}
+		existsButNotTfstIsLoaded=false;
+		frame.loadSentence(1);
 		return frame;
 	}
 
 	
-	void closeTextDicFrame() {
+	void closeTextAutomatonFrame() {
 		if (frame==null) return;
 		frame.hideFrame();
+	}
+
+
+	TextAutomatonFrame getTextAutomatonFrame() {
+		if (frame!=null && existsButNotTfstIsLoaded) {
+			/* We don't want to act as if the frame really exists if
+			 * the .tfst has not been loaded */
+			return null;
+		}
+		return frame;
 	}
 }

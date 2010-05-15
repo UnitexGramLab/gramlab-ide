@@ -32,7 +32,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 
+import javax.swing.JTextArea;
+
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.tfst.Bounds;
+import fr.umlv.unitex.tfst.BoundsEditor;
 
 /**
  * This class describes a component on which a sentence graph can be drawn. 
@@ -43,6 +47,9 @@ public class TfstGraphicalZone
    extends GenericGraphicalZone
    implements Printable {
 
+	JTextArea sentenceTextArea;
+	BoundsEditor boundsEditor;
+	
    /**
     * Constructs a new <code>FstGraphicalZone</code>. 
     * @param w width of the drawing area
@@ -61,6 +68,8 @@ public class TfstGraphicalZone
       if (listeners) {
          addMouseListener(new FstGraphMouseListener());
       }
+      sentenceTextArea=p.getSentenceTextArea();
+      boundsEditor=p.bounds;
    }
 
    protected void init() {
@@ -113,8 +122,8 @@ public class TfstGraphicalZone
             } else {
                // simple click not on a box
                initText("");
-               TextAutomatonFrame.frame.text.select(0,0);
-               TextAutomatonFrame.frame.bounds.reset();
+               sentenceTextArea.select(0,0);
+               boundsEditor.reset();
                unSelectAllBoxes();
             }
          } else
@@ -157,10 +166,10 @@ public class TfstGraphicalZone
                } else {
                   // simple click not on a box
                   unSelectAllBoxes();
-                  TextAutomatonFrame.frame.text.select(0,0);
-                  TextAutomatonFrame.frame.bounds.reset();
+                  sentenceTextArea.select(0,0);
+                  boundsEditor.reset();
                   initText("");
-                  TextAutomatonFrame.frame.bounds.reset();
+                  boundsEditor.reset();
                }
             }
          repaint();
@@ -218,7 +227,7 @@ public class TfstGraphicalZone
             return;
          dragging= false;
          initText("");
-         TextAutomatonFrame.frame.bounds.reset();
+         boundsEditor.reset();
          if (singleDragging) {
             singleDragging= false;
             singleDraggedBox.singleDragging= false;
@@ -305,9 +314,10 @@ public class TfstGraphicalZone
       if (graphBoxes.size() == 0 || graphBoxes.isEmpty()) {
          return;
       }
-      if (!is_initialised) {
-         this.init();
-         is_initialised= true;
+      if (!isInitialized()) {
+    	  /* TODO à modifier */
+         init();
+         setInitialized(true);
       }
       f.setColor(new Color(205, 205, 205));
       f.fillRect(0, 0, getWidth(), getHeight());

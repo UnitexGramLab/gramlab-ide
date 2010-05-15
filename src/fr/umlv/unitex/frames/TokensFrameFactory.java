@@ -36,9 +36,8 @@ public class TokensFrameFactory {
 		frame.loadTokens(tokens);
 		return frame;
 	}
-
 	
-	public void closeTokensFrame() {
+	void closeTokensFrame() {
 		if (frame==null) return;
 		frame.hideFrame();
 	}

@@ -29,6 +29,7 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.tfst.Bounds;
 
 
@@ -41,7 +42,7 @@ import fr.umlv.unitex.tfst.Bounds;
 public class TfstGraphBox extends GenericGraphBox {
 
     private Bounds bounds;
-    
+    private TextAutomatonFrame parent;
 
     /**
      * Constructs a new box
@@ -57,6 +58,7 @@ public class TfstGraphBox extends GenericGraphBox {
      */
     public TfstGraphBox(int x, int y, int type, TfstGraphicalZone p) {
         super(x, y, type, p);
+        parent=(TextAutomatonFrame) p.getParentFrame();
     }
 
     /**
@@ -134,12 +136,12 @@ public class TfstGraphBox extends GenericGraphBox {
     public void setSelected(boolean b) {
         super.setSelected(b);
         if (b && bounds!=null) {
-            TextAutomatonFrame.frame.text.getCaret().setSelectionVisible(true);
-            System.out.println("on selectionne de "+bounds.getGlobal_start_in_chars()+" a "+(bounds.getGlobal_end_in_chars()+1));
-            TextAutomatonFrame.frame.text.select(bounds.getGlobal_start_in_chars(),
+            parent.getSentenceTextArea().getCaret().setSelectionVisible(true);
+            //System.out.println("on selectionne de "+bounds.getGlobal_start_in_chars()+" a "+(bounds.getGlobal_end_in_chars()+1));
+            parent.getSentenceTextArea().select(bounds.getGlobal_start_in_chars(),
                                                  bounds.getGlobal_end_in_chars()+1);
         } else {
-            TextAutomatonFrame.frame.text.select(0,0);
+            parent.getSentenceTextArea().select(0,0);
         }
     }
 
