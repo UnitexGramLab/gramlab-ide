@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -65,6 +65,17 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.EatStreamThread;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.TfstGraphicalZone;
+import fr.umlv.unitex.TfstTextField;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
@@ -90,47 +101,47 @@ import fr.umlv.unitex.tfst.TokensInfo;
 public class TextAutomatonFrame extends JInternalFrame {
 
 
-
-  public static TextAutomatonFrame frame = null;
-  JTextArea text = new JTextArea();
+  JTextArea sentenceTextArea = new JTextArea();
   JLabel sentence_count_label = new JLabel(" 0 sentence");
   boolean elagON;
   private JSpinner spinner;
-  static SpinnerNumberModel spinnerModel;
+  SpinnerNumberModel spinnerModel;
   TfstGraphicalZone elaggraph;
   File elagrules;
   JLabel ruleslabel;
   TfstGraphicalZone graphicalZone;
-  public TfstGraphicalZone getGraphicalZone() {
-	return graphicalZone;
-}
 
-TfstTextField textfield = new TfstTextField(25, this);
+	public TfstGraphicalZone getGraphicalZone() {
+		return graphicalZone;
+	}
+
+  TfstTextField textfield = new TfstTextField(25, this);
   boolean modified = false;
-  static int sentence_count = 0;
-  static File sentence_text;
-  static File sentence_grf;
-  static File sentence_tok;
-  static File sentence_modified;
-  static File text_tfst;
-  static File elag_tfst;
-  static File elagsentence_grf;
-  static boolean isAcurrentLoadingThread = false;
-  static boolean isAcurrentElagLoadingThread = false;
-  static Process currentElagLoadingProcess = null;
+  int sentence_count = 0;
+  File sentence_text;
+  File sentence_grf;
+  File sentence_tok;
+  File sentence_modified;
+  File text_tfst;
+  File elag_tfst;
+  File elagsentence_grf;
+  boolean isAcurrentLoadingThread = false;
+  boolean isAcurrentElagLoadingThread = false;
+  Process currentElagLoadingProcess = null;
   private JScrollPane scroll;
   private JSplitPane superpanel;
   private JButton RESET_SENTENCE_GRAPH;
   public BoundsEditor bounds=new BoundsEditor();
   
 
-  private TextAutomatonFrame() {
+  TextAutomatonFrame() {
     super("FST-Text", true, true, true, true);
     MyDropTarget.newDropTarget(this);
     setContentPane(constructPanel());
     pack();
     setBounds(150, 150, 850, 650);
     setVisible(false);
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addInternalFrameListener(new InternalFrameAdapter() {
       public void internalFrameClosing(InternalFrameEvent e) {
         try {
@@ -141,31 +152,30 @@ TfstTextField textfield = new TfstTextField(25, this);
       }
     });
     textfield.setEditable(false);
-    text.getCaret().setSelectionVisible(true);
-    text.setSelectionColor(Color.GREEN);
-    text.addCaretListener(new CaretListener() {
+    sentenceTextArea.getCaret().setSelectionVisible(true);
+    sentenceTextArea.setSelectionColor(Color.GREEN);
+    sentenceTextArea.addCaretListener(new CaretListener() {
         public void caretUpdate(CaretEvent e) {
-            String s=text.getSelectedText();
+            String s=sentenceTextArea.getSelectedText();
             if (s==null || s.equals("")) {
                 bounds.setValue(null);
             } else {
                 //System.out.println("la selection va de "+text.getSelectionStart()+" a "+text.getSelectionEnd());
-                bounds.setValue(new Bounds(text.getSelectionStart(),text.getSelectionEnd()-1));
+                bounds.setValue(new Bounds(sentenceTextArea.getSelectionStart(),sentenceTextArea.getSelectionEnd()-1));
             }
         }
     });
-    text.addFocusListener(new FocusAdapter() {
+    sentenceTextArea.addFocusListener(new FocusAdapter() {
         @Override
         public void focusLost(FocusEvent e) {
             /* The default behavior is to hide the selection when focus is lost */
-            text.getCaret().setSelectionVisible(true);
+            sentenceTextArea.getCaret().setSelectionVisible(true);
         }
     });
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     closeElagFrame();
     GlobalPreferenceFrame.addTextFontListener(new FontListener() {
 		public void fontChanged(Font font) {
-			text.setFont(font);
+			sentenceTextArea.setFont(font);
 		}});
   }
   
@@ -249,7 +259,7 @@ TfstTextField textfield = new TfstTextField(25, this);
     button = new JButton("Implode");
     button.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        imploseElagFst();
+        implodeElagFst();
       }
     });
     p.add(button);
@@ -271,12 +281,12 @@ TfstTextField textfield = new TfstTextField(25, this);
 
   private JPanel constructUpPanel() {
     JPanel upPanel = new JPanel(new BorderLayout());
-    text.setFont(Preferences.getCloneOfPreferences().textFont);
-    text.setEditable(false);
-    text.setText("");
-    text.setLineWrap(true);
-    text.setWrapStyleWord(true);
-    JScrollPane textScroll = new JScrollPane(text);
+    sentenceTextArea.setFont(Preferences.getCloneOfPreferences().textFont);
+    sentenceTextArea.setEditable(false);
+    sentenceTextArea.setText("");
+    sentenceTextArea.setLineWrap(true);
+    sentenceTextArea.setWrapStyleWord(true);
+    JScrollPane textScroll = new JScrollPane(sentenceTextArea);
     textScroll.setOpaque(true);
     textScroll.setPreferredSize(new Dimension(600, 100));
     textScroll
@@ -321,10 +331,10 @@ TfstTextField textfield = new TfstTextField(25, this);
     cornerPanel.add(RESET_SENTENCE_GRAPH);
     Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
       public void actionPerformed(ActionEvent arg0) {
-        // post pone code
+        // TODO vérifier les post pone codes
         SwingUtilities.invokeLater(new Runnable() {
           public void run() {
-            TextAutomatonFrame.hideFrame();
+            UnitexFrame.getFrameManager().closeTextAutomatonFrame();
             RebuildTfstCommand command = new RebuildTfstCommand()
           .automaton(new File(Config.getCurrentSntDir(),"text.tfst"));
         new ProcessInfoFrame(command, true,
@@ -350,76 +360,23 @@ TfstTextField textfield = new TfstTextField(25, this);
     return cornerPanel;
   }
 
-  /**
-   * Initializes the frame
-   *  
-   */
-
-  public static void init() {
-    frame = new TextAutomatonFrame();
-    UnitexFrame.addInternalFrame(frame,false);
-  }
-
-  /**
-   * 
-   * @return the frame
-   */
-  public static TextAutomatonFrame getFrame() {
-    return frame;
-  }
 
   /**
    * Shows the frame
    *  
    */
-
-  public static void showFrame() {
-
-	/*if(Config.isAgglutinativeLanguage()){
-		text_tfst = new File(Config.getCurrentSntDir(),"phrase.cod");
-		
-	} else*/ {
-		text_tfst = new File(Config.getCurrentSntDir(),"text.tfst");
-	}
-
-    if (!text_tfst.exists()) { // if there is no text FST, we do nothing
-        return;
+  boolean loadTfst() {
+	text_tfst = new File(Config.getCurrentSntDir(),"text.tfst");
+	if (!text_tfst.exists()) {
+        return false;
     }
-
-    
     sentence_text = new File(Config.getCurrentSntDir(),"cursentence.txt");
     sentence_grf = new File(Config.getCurrentSntDir(),"cursentence.grf");
     sentence_tok = new File(Config.getCurrentSntDir(),"cursentence.tok");
     sentence_modified = new File(Config.getCurrentSntDir(),"sentence");
-
     elag_tfst = new File(Config.getCurrentSntDir(),"text-elag.tfst");
     elagsentence_grf = new File(Config.getCurrentSntDir(),"currelagsentence.grf");
-
-    if (frame == null) {
-      init();
-    }
-
-    /*if(Config.isAgglutinativeLanguage()){
-		int b[] = {0,0,0,0};
-		try {
-			FileInputStream raf = new FileInputStream(text_tfst);
-			for(int i = 0;i<4 ;i++){
-				// we ignore the 4 first bytes
-				raf.read();
-			}
-			sentence_count = 0;
-			for(int i = 0;i<4;i++){
-				b[i] = raf.read();
-			}
-			sentence_count = b[0]+256*b[1]+b[2]*256*256 +b[3]*256*256*256;
-			raf.close();
-		}
-		catch (IOException e){
-			e.printStackTrace();
-		}
-	} else */{
-		sentence_count = readSentenceCount(text_tfst);
-	}
+	sentence_count = readSentenceCount(text_tfst);
 
     String s = " " + sentence_count;
     s = s + " sentence";
@@ -427,7 +384,7 @@ TfstTextField textfield = new TfstTextField(25, this);
     if (sentence_count > 1)
       s = s + "s";
 
-    frame.sentence_count_label.setText(s);
+    sentence_count_label.setText(s);
     spinnerModel.setMaximum(new Integer(sentence_count));
     spinnerModel.setValue(new Integer(1));
     if (sentence_count==1) {
@@ -436,34 +393,21 @@ TfstTextField textfield = new TfstTextField(25, this);
          * already 1 */ 
         loadSentence(1);
     }
-    frame.setVisible(true);
-
-    try {
-      frame.setIcon(true);
-    } catch (java.beans.PropertyVetoException e2) {
-    	e2.printStackTrace();
-    }
+    return true;
   }
+
 
   /**
    * Hides the frame
    *  
    */
-
-  public static void hideFrame() {
-    if (frame == null)
-      return;
-    frame.setVisible(false);
-    frame.graphicalZone.is_initialised = false;
-    frame.graphicalZone.graphBoxes.clear();
-    frame.graphicalZone.repaint();
-    frame.text.setText("");
+  void hideFrame() {
+    setVisible(false);
+    graphicalZone.setInitialized(false);
+    graphicalZone.graphBoxes.clear();
+    graphicalZone.repaint();
+    sentenceTextArea.setText("");
     spinnerModel.setValue(new Integer(0));
-    try {
-      frame.setIcon(false);
-    } catch (java.beans.PropertyVetoException e2) {
-    	e2.printStackTrace();
-    }
     System.gc();
   }
 
@@ -494,10 +438,10 @@ TfstTextField textfield = new TfstTextField(25, this);
     if (b) {
       // we save each modification
       GraphIO g = new GraphIO();
-      g.boxes = frame.graphicalZone.graphBoxes;
-      g.pref = frame.graphicalZone.pref;
-      g.width = frame.graphicalZone.Width;
-      g.height = frame.graphicalZone.Height;
+      g.boxes = graphicalZone.graphBoxes;
+      g.pref = graphicalZone.pref;
+      g.width = graphicalZone.Width;
+      g.height = graphicalZone.Height;
       g.saveSentenceGraph(new File(sentence_modified.getAbsolutePath()
             + spinnerModel.getNumber().intValue() + ".grf"));
     }
@@ -518,24 +462,26 @@ TfstTextField textfield = new TfstTextField(25, this);
     } catch (IOException e) {
     	e.printStackTrace();
     }
-
     return new Integer(s).intValue();
   }
 
-  static void loadSentenceFromConcordance(int n) {
-    if (frame == null || frame.isVisible() == false
-        || frame.isIcon() == true)
+  
+  public void loadSentenceFromConcordance(int n) {
+    if (!isVisible() || isIcon()) {
       return;
+    }
     if (n < 1 || n > sentence_count)
       return;
     if (loadSentence(n))
       spinnerModel.setValue(new Integer(n));
   }
 
+  
   public boolean loadCurrSentence() {
     return loadSentence(spinnerModel.getNumber().intValue());
   }
 
+  
   /**
    * Loads a sentence automaton
    * 
@@ -544,157 +490,138 @@ TfstTextField textfield = new TfstTextField(25, this);
    * @return <code>false</code> if a sentence is allready being loaded,
    *         <code>true</code> otherwise
    */
+	public boolean loadSentence(int n) {
+		if (n < 1 || n > sentence_count)
+			return false;
+		final int z = n;
+		if (isAcurrentLoadingThread)
+			return false;
+		isAcurrentLoadingThread = true;
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				new Thread() {
+					Tfst2GrfCommand cmd;
 
-    public static boolean loadSentence(int n) {
-    if (n < 1 || n > sentence_count)
-      return false;
-    final int z = n;
-    if (isAcurrentLoadingThread)
-      return false;
-    isAcurrentLoadingThread = true;
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        new Thread() {
-		  Tfst2GrfCommand cmd;
-          public void run() {
-            frame.graphicalZone.is_initialised = false;
-            if (frame.graphicalZone.graphBoxes != null) {
-              frame.graphicalZone.graphBoxes.clear();
-            }
-            frame.graphicalZone.repaint();
-            frame.text.setText("");
-			cmd = new Tfst2GrfCommand().automaton(
-					text_tfst).sentence(z);
-			if (Config.isKorean() || Config.isKoreanJeeSun()) {
-				cmd=cmd.font("Gulim").fontsize(12);
-			} else {
-			    cmd=cmd.font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
+					public void run() {
+						graphicalZone.setInitialized(false);
+						if (graphicalZone.graphBoxes != null) {
+							graphicalZone.graphBoxes.clear();
+						}
+						graphicalZone.repaint();
+						sentenceTextArea.setText("");
+						cmd = new Tfst2GrfCommand().automaton(text_tfst)
+								.sentence(z);
+						if (Config.isKorean() || Config.isKoreanJeeSun()) {
+							cmd = cmd.font("Gulim").fontsize(12);
+						} else {
+							cmd = cmd.font(Preferences.pref.input.getName())
+									.fontsize(Preferences.pref.inputSize);
+						}
+						Console.addCommand(cmd.getCommandLine(), false);
+						Process p;
+
+						try {
+							p = Runtime.getRuntime().exec(
+									cmd.getCommandArguments());
+							BufferedInputStream in = new BufferedInputStream(p
+									.getInputStream());
+							BufferedInputStream err = new BufferedInputStream(p
+									.getErrorStream());
+
+							new EatStreamThread(in).start();
+							new EatStreamThread(err).start();
+
+							/* waitFor Fst2Grf to terminate */
+							p.waitFor();
+						} catch (Exception e) {
+							System.err.println("Exception: " + e);
+							e.printStackTrace();
+							isAcurrentLoadingThread = false;
+							return;
+						}
+						readSentenceText();
+						try {
+							TokensInfo.loadTokensInfo(sentence_tok);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						}
+						File f = new File(sentence_modified + String.valueOf(z)
+								+ ".grf");
+						boolean isSentenceModified = f.exists();
+						if (isSentenceModified) {
+							loadSentenceGraph(new File(sentence_modified
+									.getAbsolutePath()
+									+ String.valueOf(z) + ".grf"));
+							setModified(isSentenceModified);
+						} else {
+							loadSentenceGraph(sentence_grf);
+						}
+						isAcurrentLoadingThread = false;
+						loadElagSentence(z);
+					}
+				}.start();
 			}
-			Console.addCommand(cmd.getCommandLine(),false);
-			Process p;
+		});
+		return true;
+	}
 
-            try {
-				p= Runtime.getRuntime().exec(
-						cmd.getCommandArguments());
-              BufferedInputStream in = new BufferedInputStream(p
-                .getInputStream());
-              BufferedInputStream err = new BufferedInputStream(p
-                .getErrorStream());
 
-              (new EatStreamThread(in)).start();
-              (new EatStreamThread(err)).start();
+	public boolean loadElagSentence(int n) {
+		if (n < 1 || n > sentence_count) {
+			System.err.println("loadElagSentence: n = " + n + " out of bounds");
+			return false;
+		}
+		final int z = n;
+		if (isAcurrentElagLoadingThread) {
+			System.err
+					.println("loadElagSentence: isAcurrentElagLoading Thread=true");
+			return false;
+		}
 
-              /* waitFor Fst2Grf to terminate */
+		SwingUtilities.invokeLater(new Thread() {
+			public void run() {
+				isAcurrentElagLoadingThread = true;
+				elaggraph.setInitialized(false);
+				elaggraph.graphBoxes.clear();
+				elaggraph.repaint();
+				if (!elag_tfst.exists()) { // if fst file does not exist exit
+					isAcurrentElagLoadingThread = false;
+					return;
+				}
+				Tfst2GrfCommand cmd = new Tfst2GrfCommand()
+						.automaton(elag_tfst).sentence(z).output(
+								"currelagsentence").font(
+								Preferences.pref.input.getName()).fontsize(
+								Preferences.pref.inputSize);
+				Console.addCommand(cmd.getCommandLine(), false);
+				try {
+					Process p = Runtime.getRuntime().exec(
+							cmd.getCommandArguments());
+					BufferedInputStream in = new BufferedInputStream(p
+							.getInputStream());
+					BufferedInputStream err = new BufferedInputStream(p
+							.getErrorStream());
+					new EatStreamThread(in).start();
+					new EatStreamThread(err).start();
+					p.waitFor();
+				} catch (Exception e) {
+					System.err.println("Exception: " + e);
+					e.printStackTrace();
+					isAcurrentElagLoadingThread = false;
+					return;
+				}
 
-              p.waitFor();
+				try {
+					loadElagSentenceGraph(elagsentence_grf);
+				} finally {
+					isAcurrentElagLoadingThread = false;
+				}
+			}
+		});
+		return true;
+	}
 
-            } catch (Exception e) {
-
-              System.err.println("Exception: " + e);
-              e.printStackTrace();
-              isAcurrentLoadingThread = false;
-              return;
-            }
-            readSentenceText();
-            try {
-                TokensInfo.loadTokensInfo(sentence_tok);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            File f = new File(sentence_modified + String.valueOf(z)
-                + ".grf");
-            boolean modified = f.exists();
-
-            if (modified) {
-              loadSentenceGraph(new File(sentence_modified.getAbsolutePath()
-                    + String.valueOf(z) + ".grf"));
-              frame.setModified(modified);
-            } else {
-              loadSentenceGraph(sentence_grf);
-            }
-            isAcurrentLoadingThread = false;
-            loadElagSentence(z);
-          }
-        }.start();
-      }
-    });
-
-    return true;
-  }
-
-  public static boolean loadElagSentence(int n) {
-
-    if (n < 1 || n > sentence_count) {
-      System.err.println("loadElagSentence: n = " + n + " out of bounds");
-      return false;
-    }
-
-    final int z = n;
-
-    if (isAcurrentElagLoadingThread) {
-      System.err
-        .println("loadElagSentence: isAcurrentElagLoading Thread=true");
-      return false;
-    }
-
-    SwingUtilities.invokeLater(new Thread() {
-      public void run() {
-
-        isAcurrentElagLoadingThread = true;
-
-        frame.elaggraph.is_initialised = false;
-        frame.elaggraph.graphBoxes.clear();
-        frame.elaggraph.repaint();
-
-        if (!elag_tfst.exists()) { // if fst file does not exist exit
-          isAcurrentElagLoadingThread = false;
-          return;
-        }
-        Tfst2GrfCommand cmd=new Tfst2GrfCommand().automaton(elag_tfst)
-      .sentence(z)
-      .output("currelagsentence")
-      .font(Preferences.pref.input.getName()).fontsize(Preferences.pref.inputSize);
-
-    /*String command = '"' + Config.getApplicationDir() + "Fst2Grf"
-      + '"' + ' ' + '"' + elag_fst.getAbsolutePath() + '"'
-      + ' ' + z + " currelagsentence";*/
-
-    Console.addCommand(cmd.getCommandLine(),false);
-
-    /*String[] cmd = new String[4];
-      cmd[0] = Config.getApplicationDir() + "Fst2Grf";
-      cmd[1] = elag_fst.getAbsolutePath();
-      cmd[2] = String.valueOf(z);
-      cmd[3] = "currelagsentence";
-      */
-    try {
-      Process p = Runtime.getRuntime().exec(cmd.getCommandArguments());
-      BufferedInputStream in = new BufferedInputStream(p.getInputStream());
-      BufferedInputStream err = new BufferedInputStream(p.getErrorStream());
-      (new EatStreamThread(in)).start();
-      (new EatStreamThread(err)).start();
-
-      p.waitFor();
-
-    } catch (Exception e) {
-
-      System.err.println("Exception: " + e);
-      e.printStackTrace();
-      isAcurrentElagLoadingThread = false;
-      return;
-    }
-
-    try {
-        loadElagSentenceGraph(elagsentence_grf);
-    } finally {
-        isAcurrentElagLoadingThread = false;
-    }
-    }
-    });
-
-    return true;
-  }
-
+	
   /**
    * Inverts the antialiasing flag
    *  
@@ -704,7 +631,8 @@ TfstTextField textfield = new TfstTextField(25, this);
     graphicalZone.repaint();
   }
 
-  static void readSentenceText() {
+  
+  void readSentenceText() {
     String s = "";
     try {
       FileInputStream br = UnicodeIO
@@ -713,8 +641,8 @@ TfstTextField textfield = new TfstTextField(25, this);
       if (s == null || s.equals("")) {
         return;
       }
-      frame.text.setFont(Config.getCurrentTextFont());
-      frame.text.setText(s);
+      sentenceTextArea.setFont(Config.getCurrentTextFont());
+      sentenceTextArea.setText(s);
       br.close();
     } catch (NotAUnicodeLittleEndianFileException e) {
     	e.printStackTrace();
@@ -723,210 +651,198 @@ TfstTextField textfield = new TfstTextField(25, this);
     }
   }
 
-  static void loadSentenceGraph(File file) {
-    frame.setModified(false);
-    GraphIO g = GraphIO.loadSentenceGraph(file);
-    if (g == null) {
-      //System.err.println("Cannot load " + file.getAbsolutePath());
-      return;
-    }
-    frame.graphicalZone.is_initialised = false;
-    frame.textfield.setFont(frame.graphicalZone.pref.input);
-    //frame.graphicalZone.pref = Preferences.getCloneOfPreferences().getClone();
-    frame.graphicalZone.pref = g.pref.getClone();
-    
-    frame.graphicalZone.Width = g.width;
-    frame.graphicalZone.Height = g.height;
-    frame.graphicalZone.graphBoxes = g.boxes;
-    frame.scroll.setPreferredSize(new Dimension(g.width, g.height));
-    frame.graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
-    frame.graphicalZone.revalidate();
-    frame.graphicalZone.repaint();
-  }
-
-  static void loadElagSentenceGraph(File file) {
-    frame.setModified(false);
-    GraphIO g = GraphIO.loadSentenceGraph(file);
-    if (g == null)
-      return;
-    frame.elaggraph.is_initialised = false;
-    frame.elaggraph.pref = Preferences.getCloneOfPreferences();
-    frame.elaggraph.Width = g.width;
-    frame.elaggraph.Height = g.height;
-    frame.elaggraph.graphBoxes = g.boxes;
-    frame.elaggraph.setPreferredSize(new Dimension(g.width, g.height));
-    frame.elaggraph.revalidate();
-    frame.elaggraph.repaint();
-  }
-
-  void openElagFrame() {
-    superpanel.setDividerLocation(0.5);
-    superpanel.setResizeWeight(0.5);
-    elagON = true;
-  }
-
-  void closeElagFrame() {
-    superpanel.setDividerLocation(1000);
-    superpanel.setResizeWeight(1.0);
-    elagON = false;
-  }
-
-  void toggleElagFrame() {
-    if (elagON) {
-      closeElagFrame();
-    } else {
-      openElagFrame();
-    }
-  }
-
-  void elagDialog() {
-
-    JLabel titlelabel = new JLabel();
-    titlelabel.setText("Elag Rule:");
-
-    elagrules = new File(Config.getCurrentElagDir(),"elag.rul");
-
-    ruleslabel = new JLabel(elagrules.getName());
-    ruleslabel.setBorder(new LineBorder(Color.black, 1, true));
-
-    JButton button = new JButton("browse");
-
-    button.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-
-        JFileChooser fc = new JFileChooser();
-
-        fc.setCurrentDirectory(elagrules.getParentFile());
-
-        fc.setFileFilter(new PersonalFileFilter("rul", "Elag rules file ( .rul)"));
-        fc.setAcceptAllFileFilterUsed(false);
-
-        fc.setDialogTitle("Choose Elag Rule File");
-        fc.setDialogType(JFileChooser.OPEN_DIALOG);
-
-        if ((fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) || (fc.getSelectedFile() == null)) {
-          return;
-        }
-
-        elagrules = fc.getSelectedFile();
-        ruleslabel.setText(elagrules.getName());
-      }
-    });
-
-    JCheckBox imploseCheckBox = new JCheckBox("Implose resulting text automaton", true);
   
-    BorderLayout layout = new BorderLayout();
-    layout.setVgap(10);
-    layout.setHgap(10);
+	boolean loadSentenceGraph(File file) {
+		setModified(false);
+		GraphIO g = GraphIO.loadSentenceGraph(file,graphicalZone);
+		if (g == null) {
+			return false;
+		}
+		graphicalZone.setInitialized(false);
+		textfield.setFont(graphicalZone.pref.input);
+		graphicalZone.pref = g.pref.getClone();
+		graphicalZone.Width = g.width;
+		graphicalZone.Height = g.height;
+		graphicalZone.graphBoxes = g.boxes;
+		scroll.setPreferredSize(new Dimension(g.width, g.height));
+		graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
+		graphicalZone.revalidate();
+		graphicalZone.repaint();
+		return true;
+	}
 
-    JPanel p = new JPanel();
-    p.setLayout(layout);
-
-
-    p.add(titlelabel, BorderLayout.WEST);
-    p.add(ruleslabel, BorderLayout.CENTER);
-    p.add(button, BorderLayout.EAST);
-
-    p.add(imploseCheckBox, BorderLayout.SOUTH);
-
-    if (JOptionPane.showInternalConfirmDialog(UnitexFrame.desktop, p,
-          "Apply Elag Rule", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
-      return;
-    }
-
-    ElagCommand elagcmd = new ElagCommand()
-      .lang(new File(Config.getCurrentElagDir(),"tagset.def"))
-      .rules(elagrules)
-      .output(elag_tfst)
-      .automaton(text_tfst);
-
-
-    if (imploseCheckBox.isSelected()) {
-      new ProcessInfoFrame(elagcmd, false, new ImploseDo(elag_tfst));
-    } else {
-      new ProcessInfoFrame(elagcmd, false, new loadSentenceDo());
-    }
-  }
-
-  void replaceElagFst() {
-    if (!elag_tfst.exists()) {
-      JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-          "replaceElagFst: file '" + elag_tfst + "' doesn't exists");
-      return;
-    }
-    /* cleanup files */
-    File dir = Config.getCurrentSntDir();
-    Config.deleteFileByName(new File(Config.getCurrentSntDir(),"sentence*.grf"));
-    File f = new File(dir, "currelagsentence.grf");
-    if (f.exists() && !f.delete()) {
-      JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-          "failed to delete " + f);
-    }
-    f = new File(dir, "currelagsentence.txt");
-    if (f.exists() && !f.delete()) {
-      JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-          "failed to delete " + f);
-    }
-    if (text_tfst.exists() && !text_tfst.delete()) {
-      JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-          "failed to delete " + text_tfst);
-    }
-    if (!elag_tfst.renameTo(text_tfst)) {
-      System.err.println("unable to replace: " + elag_tfst + " -> "
-          + text_tfst);
-      JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-          "failed to replace " + text_tfst + " with " + elag_tfst);
-    }
-    loadCurrSentence();
-  }
-
-  void exploseElagFst() {
-    explodeTextAutomaton(elag_tfst);
-  }
-
-  void imploseElagFst() {
-    implodeTextAutomaton(elag_tfst);
-  }
-
-  static void explodeTextAutomaton(File f) {
-
-    if (!f.exists()) {
-      return;
-    }
-    TagsetNormTfstCommand tagsetcmd=new TagsetNormTfstCommand()
-    	.tagset(new File(Config.getCurrentElagDir(), "tagset.def"))
-    	.automaton(f);
-    new ProcessInfoFrame(tagsetcmd,true,new loadSentenceDo());
-  }
-
-  static void implodeTextAutomaton(File f) {
-    if (!f.exists()) {
-      return;
-    }
-    ImplodeTfstCommand imploseCmd = new ImplodeTfstCommand().automaton(f);
-    new ProcessInfoFrame(imploseCmd,true,new loadSentenceDo());
-  }
+	
+	boolean loadElagSentenceGraph(File file) {
+		setModified(false);
+		GraphIO g = GraphIO.loadSentenceGraph(file,elaggraph);
+		if (g == null)
+			return false;
+		elaggraph.setInitialized(false);
+		elaggraph.pref = Preferences.getCloneOfPreferences();
+		elaggraph.Width = g.width;
+		elaggraph.Height = g.height;
+		elaggraph.graphBoxes = g.boxes;
+		elaggraph.setPreferredSize(new Dimension(g.width, g.height));
+		elaggraph.revalidate();
+		elaggraph.repaint();
+		return true;
+	}
 
 
-  /* Normalize the main text automaton according to tagset description in tagset.def
-   * if implode is true, then implode the resulting automaton
-   */
-  
-  static void normalizeFst(boolean implode) {
+	void openElagFrame() {
+		superpanel.setDividerLocation(0.5);
+		superpanel.setResizeWeight(0.5);
+		elagON = true;
+	}
 
-    TagsetNormTfstCommand tagsetcmd = new TagsetNormTfstCommand()
-      .tagset(new File(Config.getCurrentElagDir(), "tagset.def"))
-      .automaton(text_tfst);
+	void closeElagFrame() {
+		superpanel.setDividerLocation(1000);
+		superpanel.setResizeWeight(1.0);
+		elagON = false;
+	}
 
-    if (implode) {
-      new ProcessInfoFrame(tagsetcmd, false, new ImploseDo(text_tfst));
-    } else {
-      new ProcessInfoFrame(tagsetcmd, false, new loadSentenceDo());
-    }
-  }
+	void toggleElagFrame() {
+		if (elagON) {
+			closeElagFrame();
+		} else {
+			openElagFrame();
+		}
+	}
 
-  class RebuildTextAutomatonDo implements ToDo {
+
+	void elagDialog() {
+		JLabel titlelabel = new JLabel();
+		titlelabel.setText("Elag Rule:");
+		elagrules = new File(Config.getCurrentElagDir(), "elag.rul");
+		ruleslabel = new JLabel(elagrules.getName());
+		ruleslabel.setBorder(new LineBorder(Color.black, 1, true));
+		JButton button = new JButton("browse");
+		button.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				fc.setCurrentDirectory(elagrules.getParentFile());
+				fc.setFileFilter(new PersonalFileFilter("rul",
+						"Elag rules file ( .rul)"));
+				fc.setAcceptAllFileFilterUsed(false);
+				fc.setDialogTitle("Choose Elag Rule File");
+				fc.setDialogType(JFileChooser.OPEN_DIALOG);
+				if ((fc.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+						|| (fc.getSelectedFile() == null)) {
+					return;
+				}
+				elagrules = fc.getSelectedFile();
+				ruleslabel.setText(elagrules.getName());
+			}
+		});
+		JCheckBox implodeCheckBox = new JCheckBox(
+				"Implode resulting text automaton", true);
+		BorderLayout layout = new BorderLayout();
+		layout.setVgap(10);
+		layout.setHgap(10);
+		JPanel p = new JPanel();
+		p.setLayout(layout);
+		p.add(titlelabel, BorderLayout.WEST);
+		p.add(ruleslabel, BorderLayout.CENTER);
+		p.add(button, BorderLayout.EAST);
+		p.add(implodeCheckBox, BorderLayout.SOUTH);
+		if (JOptionPane.showInternalConfirmDialog(UnitexFrame.desktop, p,
+				"Apply Elag Rule", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
+			return;
+		}
+		ElagCommand elagcmd = new ElagCommand().lang(
+				new File(Config.getCurrentElagDir(), "tagset.def")).rules(
+				elagrules).output(elag_tfst).automaton(text_tfst);
+
+		if (implodeCheckBox.isSelected()) {
+			new ProcessInfoFrame(elagcmd, false, new ImploseDo(elag_tfst));
+		} else {
+			new ProcessInfoFrame(elagcmd, false, new loadSentenceDo());
+		}
+	}
+
+
+	void replaceElagFst() {
+		if (!elag_tfst.exists()) {
+			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					"replaceElagFst: file '" + elag_tfst + "' doesn't exists");
+			return;
+		}
+		/* cleanup files */
+		File dir = Config.getCurrentSntDir();
+		Config.deleteFileByName(new File(Config.getCurrentSntDir(),
+				"sentence*.grf"));
+		File f = new File(dir, "currelagsentence.grf");
+		if (f.exists() && !f.delete()) {
+			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					"failed to delete " + f);
+		}
+		f = new File(dir, "currelagsentence.txt");
+		if (f.exists() && !f.delete()) {
+			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					"failed to delete " + f);
+		}
+		if (text_tfst.exists() && !text_tfst.delete()) {
+			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					"failed to delete " + text_tfst);
+		}
+		if (!elag_tfst.renameTo(text_tfst)) {
+			System.err.println("unable to replace: " + elag_tfst + " -> "
+					+ text_tfst);
+			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					"failed to replace " + text_tfst + " with " + elag_tfst);
+		}
+		loadCurrSentence();
+	}
+
+	void exploseElagFst() {
+		explodeTextAutomaton(elag_tfst);
+	}
+
+	void implodeElagFst() {
+		implodeTextAutomaton(elag_tfst);
+	}
+
+
+	boolean explodeTextAutomaton(File f) {
+		if (!f.exists()) {
+			return false;
+		}
+		TagsetNormTfstCommand tagsetcmd = new TagsetNormTfstCommand().tagset(
+				new File(Config.getCurrentElagDir(), "tagset.def"))
+				.automaton(f);
+		new ProcessInfoFrame(tagsetcmd, true, new loadSentenceDo());
+		return true;
+	}
+
+
+	boolean implodeTextAutomaton(File f) {
+		if (!f.exists()) {
+			return false;
+		}
+		ImplodeTfstCommand imploseCmd = new ImplodeTfstCommand().automaton(f);
+		new ProcessInfoFrame(imploseCmd, true, new loadSentenceDo());
+		return true;
+	}
+
+
+	/**
+	 * Normalize the main text automaton according to tagset description in
+	 * tagset.def if implode is true, then implode the resulting automaton
+	 */
+	void normalizeFst(boolean implode) {
+		TagsetNormTfstCommand tagsetcmd = new TagsetNormTfstCommand().tagset(
+				new File(Config.getCurrentElagDir(), "tagset.def")).automaton(
+				text_tfst);
+		if (implode) {
+			new ProcessInfoFrame(tagsetcmd, false, new ImploseDo(text_tfst));
+		} else {
+			new ProcessInfoFrame(tagsetcmd, false, new loadSentenceDo());
+		}
+	}
+
+
+	class RebuildTextAutomatonDo implements ToDo {
 
     public void toDo() {
       Config
@@ -947,30 +863,36 @@ TfstTextField textfield = new TfstTextField(25, this);
         JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
             "unable to delete " + f);
       }
-      TextAutomatonFrame.showFrame();
-      try {
-        TextAutomatonFrame.getFrame().setIcon(false);
-        TextAutomatonFrame.getFrame().setSelected(true);
-      } catch (java.beans.PropertyVetoException e) {
-    	  e.printStackTrace();
-      }
+      UnitexFrame.getFrameManager().newTextAutomatonFrame();
     }
   }
+
+	public JTextArea getSentenceTextArea() {
+		return sentenceTextArea;
+	}
 
 }
 
 class loadSentenceDo implements ToDo {
 
-  public void toDo() {
-    TextAutomatonFrame.frame.loadCurrSentence();
-  }
+	public void toDo() {
+		UnitexFrame.getFrameManager().getTextAutomatonFrame()
+				.loadCurrSentence();
+	}
 }
 
+
 class ImploseDo implements ToDo {
-  
-  File fst;
-  
-  public ImploseDo(File f) { fst = f; }
-  
-  public void toDo() { TextAutomatonFrame.implodeTextAutomaton(fst); }
+
+	File fst;
+
+	public ImploseDo(File f) {
+		fst = f;
+	}
+
+	public void toDo() {
+		UnitexFrame.getFrameManager().getTextAutomatonFrame()
+				.implodeTextAutomaton(fst);
+	}
+
 }

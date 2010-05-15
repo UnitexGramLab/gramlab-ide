@@ -65,6 +65,10 @@ public class GraphFrame extends JInternalFrame {
 	 */
 	public GraphicalZone graphicalZone;
 
+	public GraphicalZone getGraphicalZone() {
+		return graphicalZone;
+	}
+
 	/**
 	 * The graph file
 	 */

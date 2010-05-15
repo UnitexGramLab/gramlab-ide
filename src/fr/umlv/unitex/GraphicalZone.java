@@ -378,9 +378,10 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		setClipZone(f_old.getClipBounds());
 		Graphics2D f = (Graphics2D) f_old;
 		f.scale(scaleFactor, scaleFactor);
-		if (!is_initialised) {
-			this.init();
-			is_initialised = true;
+		if (!isInitialized()) {
+			/* TODO à modifier */
+			init();
+			setInitialized(true);
 		}
 		if (pref.antialiasing) {
 			f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

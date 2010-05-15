@@ -33,12 +33,12 @@ public class EatStreamThread extends Thread {
    InputStream in;
    OutputStream out;
 
-   EatStreamThread(InputStream _in) {
+   public EatStreamThread(InputStream _in) {
       in= _in;
       out= new NullOutputStream();
    }
 
-   EatStreamThread(InputStream _in, OutputStream _out) {
+   public EatStreamThread(InputStream _in, OutputStream _out) {
       in= _in;
       out= _out;
    }

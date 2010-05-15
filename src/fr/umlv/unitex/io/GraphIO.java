@@ -561,7 +561,7 @@ public class GraphIO {
     * @param file sentence graph file
     * @return a <code>GraphIO</code> object describing the sentence graph
     */
-   public static GraphIO loadSentenceGraph(File file) {
+   public static GraphIO loadSentenceGraph(File file,TfstGraphicalZone tfstGraphicalZone) {
       GraphIO res= new GraphIO();
       FileInputStream source;
       if (!file.exists()) {
@@ -612,12 +612,12 @@ public class GraphIO {
          res.readBoxNumber(source);
          res.boxes= new ArrayList<GenericGraphBox>();
          // adding initial state
-         res.boxes.add(new TfstGraphBox(0, 0, 0, null));
+         res.boxes.add(new TfstGraphBox(0, 0, 0, tfstGraphicalZone));
          // adding final state
-         res.boxes.add(new TfstGraphBox(0, 0, 1, null));
+         res.boxes.add(new TfstGraphBox(0, 0, 1, tfstGraphicalZone));
          // adding other states
          for (int i= 2; i < res.nBoxes; i++)
-            res.boxes.add(new TfstGraphBox(0, 0, 2, null));
+            res.boxes.add(new TfstGraphBox(0, 0, 2, tfstGraphicalZone));
          for (int i= 0; i < res.nBoxes; i++)
             res.readSentenceGraphLine(source, i);
          source.close();
