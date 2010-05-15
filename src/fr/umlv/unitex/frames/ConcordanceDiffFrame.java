@@ -19,13 +19,19 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigConcordanceDiff;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.Util;
 
 
 /**
@@ -35,15 +41,13 @@ import javax.swing.event.*;
  */
 public class ConcordanceDiffFrame extends JInternalFrame {
 
-	static ConcordanceDiffFrame frame;
-	
 	BigConcordanceDiff list=new BigConcordanceDiff();
 		
 	/**
 	 * Constructs a new empty <code>ConcordanceDiffFrame</code>.
 	 */
-	public ConcordanceDiffFrame() {
-		super("", true, true, true, true);
+	ConcordanceDiffFrame() {
+		super("Concordance Diff", true, true, true, true);
 		JScrollPane scroll = new JScrollPane(list);
 		JPanel middle = new JPanel(new BorderLayout());
 		middle.setOpaque(true);
@@ -56,14 +60,22 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		top.add(new JLabel("<html><body><font color=\"#00FF00\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
 		middle.add(top,BorderLayout.NORTH);
 		setContentPane(middle);
+		list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
+		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
+			public void fontChanged(Font font) {
+				list.setFont(font);
+			}
+		});
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				close();
-				dispose();
-			}
+				setVisible(false);
+				list.reset();
+				list.clearSelection();
+							}
 		});
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setBounds(150, 50, 850, 550);
 	}
 
 	/**
@@ -74,44 +86,14 @@ public class ConcordanceDiffFrame extends JInternalFrame {
      * @param widthInChars width of a line in chars. Equals to the sum of left and right 
       *       context lengths
 	 */
-	public static void load(File concor, int widthInChars) {
-		if (frame==null) {
-			frame = new ConcordanceDiffFrame();
-		}
-		UnitexFrame.addInternalFrame(frame,false);
-		frame.setTitle("Concordance Diff");
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-		Dimension d = frame.getSize();
+	void load(File concor, int widthInChars) {
+		Dimension d = getSize();
 		int g = widthInChars * 8;
 		d.setSize((g < 800) ? g : 800, d.height);
-		frame.setSize(d);
+		/*setSize(d);*/
 		Util.getHtmlPageTitle(concor);
-		frame.list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
-		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
-			public void fontChanged(Font font) {
-				frame.list.setFont(font);
-			}
-		});
-		frame.list.load(concor);
-		frame.setBounds(150, 50, 850, 550);
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Closes the frame.
-	 *  
-	 */
-	public static void close() {
-		if (frame==null) return;
-		frame.setVisible(false);
-		frame.list.reset();
-		frame.list.clearSelection();
-		UnitexFrame.removeInternalFrame(frame);
+		list.load(concor);
+		setVisible(true);
 	}
 
 }

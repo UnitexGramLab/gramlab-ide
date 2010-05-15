@@ -654,7 +654,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				if (!diff) {
 					ConcordanceFrame.load(htmlFile, widthInChars);
 				} else {
-					ConcordanceDiffFrame.load(htmlFile, widthInChars);
+					UnitexFrame.getFrameManager().newConcordanceDiffFrame(htmlFile, widthInChars);
 				}
 			}
 		}
