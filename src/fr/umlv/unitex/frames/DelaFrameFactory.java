@@ -23,40 +23,29 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class TextFrameFactory {
+import fr.umlv.unitex.Config;
 
-	private TextFrame frame;
+public class DelaFrameFactory {
 
-	/**
-	 * We try to load the given .snt file, closing first the previous
-	 * text frame, if any.
-	 * 
-	 * @param text
-	 * @param taggedText
-	 * @return
-	 */
-	TextFrame newTextFrame(File text) {
+	private DelaFrame frame;
+	
+	DelaFrame newDelaFrame(File dela) {
 		if (frame!=null) {
 			frame.doDefaultCloseAction();
-			frame=null;
+		} else {
+			frame=new DelaFrame();
 		}
-		frame=new TextFrame();
-		frame.loadText(text);
+		frame.loadDela(dela);
 		return frame;
 	}
-
 	
-	void closeTextFrame() {
+	
+	void closeDelaFrame() {
 		if (frame==null) {
-			throw new IllegalStateException("Should not try to close a non existing TextFrame");
+			throw new IllegalStateException("Should not try to close a non existing DelaFrame");
 		}
 		frame.doDefaultCloseAction();
-		frame=null;
+		Config.setCurrentDELA(null);
 	}
 	
-	
-	TextFrame getTextFrame() {
-		return frame;
-	}
-
 }
