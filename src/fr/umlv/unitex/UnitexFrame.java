@@ -36,6 +36,7 @@ import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.TextFrameListener;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.*;
@@ -101,6 +102,28 @@ public class UnitexFrame extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle(Version.version + " - current language is "
 				+ Config.getCurrentLanguageForTitleBar());
+		frameManager.addTextFrameListener(new TextFrameListener() {
+			
+			public void textFrameOpened(boolean taggedText) {
+				preprocessText.setEnabled(!taggedText);
+				applyLexicalResources.setEnabled(true);
+				locatePattern.setEnabled(true);
+				displayLocatedSequences.setEnabled(true);
+				constructFst.setEnabled(true);
+				convertFst.setEnabled(true);
+				closeText.setEnabled(true);
+			}
+			
+			public void textFrameClosed() {
+				preprocessText.setEnabled(false);
+				applyLexicalResources.setEnabled(false);
+				locatePattern.setEnabled(false);
+				displayLocatedSequences.setEnabled(false);
+				constructFst.setEnabled(false);
+				convertFst.setEnabled(false);
+				closeText.setEnabled(false);
+			}
+		});
 	}
 
 	public static void addInternalFrame(JInternalFrame frame, boolean requestFocus) {
@@ -965,13 +988,6 @@ public class UnitexFrame extends JFrame {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		preprocessText.setEnabled(true);
-		applyLexicalResources.setEnabled(true);
-		locatePattern.setEnabled(true);
-		displayLocatedSequences.setEnabled(true);
-		constructFst.setEnabled(true);
-		convertFst.setEnabled(true);
-		closeText.setEnabled(true);
 		Text.loadCorpus(Config.getCorpusDialogBox().getSelectedFile());
 	}
 
@@ -1446,14 +1462,7 @@ public class UnitexFrame extends JFrame {
 	 *  
 	 */
 	public void closeText() {
-		preprocessText.setEnabled(false);
-		applyLexicalResources.setEnabled(false);
-		locatePattern.setEnabled(false);
-		displayLocatedSequences.setEnabled(false);
-		constructFst.setEnabled(false);
-		convertFst.setEnabled(false);
-		closeText.setEnabled(false);
-		Text.closeText();
+		frameManager.closeTextFrame();
 		TokensFrame.hideFrame();
 		closeAllConcordanceFrames();
 		TextDicFrame.hideFrame();
@@ -1657,6 +1666,10 @@ public class UnitexFrame extends JFrame {
 
 	public static void removeInternalFrame(JInternalFrame f) {
 		desktop.remove(f);
+	}
+
+	public static InternalFrameManager getFrameManager() {
+		return mainFrame.frameManager;
 	}
 
 }

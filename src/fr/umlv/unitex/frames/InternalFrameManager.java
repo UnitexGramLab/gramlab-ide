@@ -23,6 +23,7 @@ package fr.umlv.unitex.frames;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
@@ -38,24 +39,26 @@ import javax.swing.event.InternalFrameEvent;
 public class InternalFrameManager {
 
 	JDesktopPane desktop;
+	private final static Integer LAYER=Integer.valueOf(1);
 	private GraphFrameFactory graphFrameFactory=new GraphFrameFactory();
+	private TextFrameFactory textFrameFactory=new TextFrameFactory();
 	
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop=desktop;
 	}
 	
 	/**
-	 * Creates and returns a GraphFrame for the given .grf file.
+	 * Creates a GraphFrame for the given .grf file.
 	 * If a frame for 'grf' already exists, then it is made visible.
 	 * If the .grf is not loadable, the function does nothing and
-	 * returns null.
+	 * returns false.
 	 * 
 	 * @param grf
 	 * @return
 	 */
-	public GraphFrame newGraphFrame(File grf) {
+	public boolean newGraphFrame(File grf) {
 		GraphFrame g=graphFrameFactory.getGraphFrame(grf);
-		if (g==null) return null;
+		if (g==null) return false;
 		addToDesktopIfNecessary(g);
 		g.setVisible(true);
 		try {
@@ -64,7 +67,7 @@ public class InternalFrameManager {
 		} catch (PropertyVetoException e) {
 			e.printStackTrace();
 		}
-		return g;
+		return true;
 	}
 
 	private void addToDesktopIfNecessary(final JInternalFrame f) {
@@ -79,7 +82,7 @@ public class InternalFrameManager {
 				desktop.remove(f);
 			}
 		});
-		desktop.add(f);
+		desktop.add(f,LAYER);
 	}
 
 	
@@ -98,4 +101,79 @@ public class InternalFrameManager {
 	public GraphFrame[] getGraphFrames() {
 		return graphFrameFactory.getGraphFrames();
 	}
+
+
+	/**
+	 * Creates a TextFrame for the given text file.
+	 * If the text is not loadable, the function does nothing and
+	 * returns false.
+	 * 
+	 * @param grf
+	 * @return
+	 */
+	public boolean newTextFrame(File text,boolean taggedText) {
+		TextFrame t=textFrameFactory.newTextFrame(text);
+		if (t==null) return false;
+		addToDesktopIfNecessary(t);
+		t.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				fireTextFrameClosed();
+			}
+		});
+		t.setVisible(true);
+		try {
+			t.setSelected(true);
+			t.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		fireTextFrameOpened(taggedText);
+		return true;
+	}
+	
+	public void closeTextFrame() {
+		textFrameFactory.closeTextFrame();
+	}
+
+	public TextFrame getTextFrame() {
+		return textFrameFactory.getTextFrame();
+	}
+
+	private ArrayList<TextFrameListener> textFrameListeners=new ArrayList<TextFrameListener>();
+	protected boolean firingTextFrame=false;
+	
+	public void addTextFrameListener(TextFrameListener l) {
+		textFrameListeners.add(l);
+	}
+	
+	public void removeTextFrameListener(TextFrameListener l) {
+		if (firingTextFrame) {
+			throw new IllegalStateException("Cannot remove a listener while firing");
+		}
+		textFrameListeners.remove(l);
+	}
+	
+	protected void fireTextFrameOpened(boolean taggedText) {
+		firingTextFrame=true;
+		try {
+			for (TextFrameListener l:textFrameListeners) {
+				l.textFrameOpened(taggedText);
+			}
+		} finally {
+			firingTextFrame=false;
+		}
+	}
+
+	protected void fireTextFrameClosed() {
+		firingTextFrame=true;
+		try {
+			for (TextFrameListener l:textFrameListeners) {
+				l.textFrameClosed();
+			}
+		} finally {
+			firingTextFrame=false;
+		}
+	}
+
 }
