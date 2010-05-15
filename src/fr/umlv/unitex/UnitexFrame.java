@@ -131,6 +131,7 @@ public class UnitexFrame extends JFrame {
 				closeAllConcordanceFrames();
 				frameManager.closeTextDicFrame();
 				frameManager.closeTextAutomatonFrame();
+				frameManager.closeApplyLexicalResourcesFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {
@@ -274,7 +275,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		applyLexicalResources = new AbstractAction("Apply Lexical Resources...") {
 			public void actionPerformed(ActionEvent e) {
-				ApplyLexicalResourcesFrame.showFrame();
+				frameManager.newApplyLexicalResourcesFrame();
 			}
 		};
 		applyLexicalResources.setEnabled(false);

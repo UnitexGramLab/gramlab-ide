@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,6 +30,14 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import fr.umlv.unitex.BigTextArea;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -51,7 +59,6 @@ import fr.umlv.unitex.process.*;
  */
 public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
-	static ApplyLexicalResourcesFrame frame;
 	JList userDicList;
 	JList systemDicList;
 	BigTextArea credits; 
@@ -59,48 +66,17 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
     String noCreditMessage="No available description for the dictionary \"";
 
 	
-	private ApplyLexicalResourcesFrame() {
+	ApplyLexicalResourcesFrame() {
 		super("Lexical Resources", true, true);
 		setContentPane(constructMainPanel());
 		pack();
 		setVisible(false);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				setVisible(false);
 			}
 		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-	}
-
-	/**
-	 * Initializes the frame.
-	 *  
-	 */
-	private static void init() {
-		frame = new ApplyLexicalResourcesFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame.
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		if (frame.isVisible()) {
-			return;
-		}
-		frame.refreshDicLists();
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-
 	}
 
 	private JPanel constructMainPanel() {
@@ -402,22 +378,22 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		JPanel buttons = new JPanel(new GridLayout(1, 4));
 		Action clearAction = new AbstractAction("Clear") {
 			public void actionPerformed(ActionEvent e) {
-				frame.userDicList.clearSelection();
-				frame.systemDicList.clearSelection();
+				userDicList.clearSelection();
+				systemDicList.clearSelection();
 				credits.setText("");
 			}
 		};
 		JButton clearButton = new JButton(clearAction);
 		Action defaultAction = new AbstractAction("Default") {
 			public void actionPerformed(ActionEvent e) {
-				frame.refreshDicLists();
+				refreshDicLists();
 				credits.setText("");
 			}
 		};
 		JButton defaultButton = new JButton(defaultAction);
 		Action setDefaultAction = new AbstractAction("Set Default") {
 			public void actionPerformed(ActionEvent e) {
-				frame.saveDefaultDicLists();
+				saveDefaultDicLists();
 			}
 		};
 		JButton setDefaultButton = new JButton(setDefaultAction);
@@ -431,7 +407,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	private JButton constructGoButton() {
 		Action goAction = new AbstractAction("Apply") {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
+				setVisible(false);
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
