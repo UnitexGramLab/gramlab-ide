@@ -42,6 +42,7 @@ public class InternalFrameManager {
 	private final static Integer LAYER=Integer.valueOf(1);
 	private GraphFrameFactory graphFrameFactory=new GraphFrameFactory();
 	private TextFrameFactory textFrameFactory=new TextFrameFactory();
+	private DelaFrameFactory delaFrameFactory=new DelaFrameFactory();
 	
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop=desktop;
@@ -59,7 +60,7 @@ public class InternalFrameManager {
 	public boolean newGraphFrame(File grf) {
 		GraphFrame g=graphFrameFactory.getGraphFrame(grf);
 		if (g==null) return false;
-		addToDesktopIfNecessary(g);
+		addToDesktopIfNecessary(g,true);
 		g.setVisible(true);
 		try {
 			g.setSelected(true);
@@ -70,18 +71,20 @@ public class InternalFrameManager {
 		return true;
 	}
 
-	private void addToDesktopIfNecessary(final JInternalFrame f) {
+	private void addToDesktopIfNecessary(final JInternalFrame f,boolean removeOnClose) {
 		for (JInternalFrame frame:desktop.getAllFrames()) {
 			if (frame.equals(f)) {
 				return;
 			}
 		}
-		f.addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {
-				desktop.remove(f);
-			}
-		});
+		if (removeOnClose) {
+			f.addInternalFrameListener(new InternalFrameAdapter() {
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					desktop.remove(f);
+				}
+			});
+		}
 		desktop.add(f,LAYER);
 	}
 
@@ -114,13 +117,13 @@ public class InternalFrameManager {
 	public boolean newTextFrame(File text,boolean taggedText) {
 		TextFrame t=textFrameFactory.newTextFrame(text);
 		if (t==null) return false;
-		addToDesktopIfNecessary(t);
 		t.addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosed(InternalFrameEvent e) {
 				fireTextFrameClosed();
 			}
 		});
+		addToDesktopIfNecessary(t,true);
 		t.setVisible(true);
 		try {
 			t.setSelected(true);
@@ -173,6 +176,68 @@ public class InternalFrameManager {
 			}
 		} finally {
 			firingTextFrame=false;
+		}
+	}
+
+	
+	public boolean newDelaFrame(File dela) {
+		DelaFrame f=delaFrameFactory.newDelaFrame(dela);
+		if (f==null) return false;
+		f.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				fireDelaFrameClosed();
+			}
+		});
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		fireDelaFrameOpened();
+		return true;
+	}
+	
+	public void closeDelaFrame() {
+		delaFrameFactory.closeDelaFrame();
+	}
+
+	private ArrayList<DelaFrameListener> delaFrameListeners=new ArrayList<DelaFrameListener>();
+	protected boolean firingDelaFrame=false;
+	
+	public void addDelaFrameListener(DelaFrameListener l) {
+		delaFrameListeners.add(l);
+	}
+	
+	public void removeDelaFrameListener(DelaFrameListener l) {
+		if (firingDelaFrame) {
+			throw new IllegalStateException("Cannot remove a listener while firing");
+		}
+		delaFrameListeners.remove(l);
+	}
+	
+	protected void fireDelaFrameOpened() {
+		firingDelaFrame=true;
+		try {
+			for (DelaFrameListener l:delaFrameListeners) {
+				l.delaFrameOpened();
+			}
+		} finally {
+			firingDelaFrame=false;
+		}
+	}
+
+	protected void fireDelaFrameClosed() {
+		firingDelaFrame=true;
+		try {
+			for (DelaFrameListener l:delaFrameListeners) {
+				l.delaFrameClosed();
+			}
+		} finally {
+			firingDelaFrame=false;
 		}
 	}
 

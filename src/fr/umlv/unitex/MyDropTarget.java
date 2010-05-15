@@ -206,13 +206,7 @@ public class MyDropTarget {
 							e.printStackTrace();
 							return;
 						}
-						Config.setCurrentDELA(dela);
-						UnitexFrame.mainFrame.checkDelaFormat.setEnabled(true);
-						UnitexFrame.mainFrame.sortDictionary.setEnabled(true);
-						UnitexFrame.mainFrame.inflect.setEnabled(true);
-						UnitexFrame.mainFrame.compressIntoFST.setEnabled(true);
-						UnitexFrame.mainFrame.closeDela.setEnabled(true);
-						DelaFrame.loadDela(Config.getCurrentDELA());
+						UnitexFrame.getFrameManager().newDelaFrame(dela);
 					}
 				});
 				return;
@@ -224,17 +218,7 @@ public class MyDropTarget {
 					public void run() {
 						ToDo toDo = new ToDo() {
 							public void toDo() {
-								Config.setCurrentDELA(dela);
-								UnitexFrame.mainFrame.checkDelaFormat
-										.setEnabled(true);
-								UnitexFrame.mainFrame.sortDictionary
-										.setEnabled(true);
-								UnitexFrame.mainFrame.inflect.setEnabled(true);
-								UnitexFrame.mainFrame.compressIntoFST
-										.setEnabled(true);
-								UnitexFrame.mainFrame.closeDela
-										.setEnabled(true);
-								DelaFrame.loadDela(dela);
+								UnitexFrame.getFrameManager().newDelaFrame(dela);
 							}
 						};
 						try {
