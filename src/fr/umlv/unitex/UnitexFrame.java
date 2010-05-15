@@ -128,7 +128,7 @@ public class UnitexFrame extends JFrame {
 				convertFst.setEnabled(false);
 				closeText.setEnabled(false);
 				frameManager.closeTokensFrame();
-				closeAllConcordanceFrames();
+				frameManager.closeConcordanceFrame();
 				frameManager.closeTextDicFrame();
 				frameManager.closeTextAutomatonFrame();
 				frameManager.closeApplyLexicalResourcesFrame();
@@ -1457,23 +1457,6 @@ public class UnitexFrame extends JFrame {
 		new ProcessInfoFrame(command, false, null);
 	}
 
-
-	/**
-	 * Closes all the <code>ConcordanceFrame</code> that are on the desktop.
-	 *  
-	 */
-	public void closeAllConcordanceFrames() {
-		ConcordanceFrame.close();
-		/*Component[] f = desktop.getComponents();
-		for (int i = 0; i < f.length; i++) {
-			try {
-				ConcordanceFrame F = (ConcordanceFrame) f[i];
-				F.close();
-			} catch (ClassCastException e) {
-				// nothing to do
-			}
-		}*/
-	}
 
 	/**
 	 * Tiles all the frames that are on the desktop and that are not iconified.
