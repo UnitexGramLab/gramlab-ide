@@ -114,6 +114,7 @@ public class UnitexFrame extends JFrame {
 				convertFst.setEnabled(true);
 				closeText.setEnabled(true);
 				frameManager.newTokensFrame(new File(Config.getCurrentSntDir(),"tok_by_freq.txt"));
+				frameManager.newTextDicFrame(Config.getCurrentSntDir(),true);
 			}
 			
 			public void textFrameClosed() {
@@ -126,7 +127,7 @@ public class UnitexFrame extends JFrame {
 				closeText.setEnabled(false);
 				frameManager.closeTokensFrame();
 				closeAllConcordanceFrames();
-				TextDicFrame.hideFrame();
+				frameManager.closeTextDicFrame();
 				TextAutomatonFrame.hideFrame();
 			}
 		});

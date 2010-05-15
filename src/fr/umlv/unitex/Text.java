@@ -155,7 +155,6 @@ public class Text {
 	static void loadSnt(File snt,boolean taggedText) {
 		InternalFrameManager manager=UnitexFrame.getFrameManager();
 		manager.newTextFrame(snt,taggedText);
-		TextDicFrame.loadTextDic(Config.getCurrentSntDir(),true);
 		TextAutomatonFrame.showFrame();
 		try {
 			manager.getTextFrame().setSelected(true);
