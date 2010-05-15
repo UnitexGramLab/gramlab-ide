@@ -49,6 +49,7 @@ public class InternalFrameManager {
 	private AboutUnitexFrameFactory aboutUnitexFrameFactory=new AboutUnitexFrameFactory();
 	private ApplyLexicalResourcesFrameFactory applyLexicalResourcesFrameFactory=new ApplyLexicalResourcesFrameFactory();
 	private CheckDicFrameFactory checkDicFrameFactory=new CheckDicFrameFactory();
+	private CheckResultFrameFactory checkResultFrameFactory=new CheckResultFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -357,4 +358,20 @@ public class InternalFrameManager {
 		checkDicFrameFactory.closeCheckDicFrame();
 	}
 
+	public boolean newCheckResultFrame(File file) {
+		CheckResultFrame f=checkResultFrameFactory.newCheckResultFrame(file);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeCheckResultFrame() {
+		checkResultFrameFactory.closeCheckResultFrame();
+	}
 }

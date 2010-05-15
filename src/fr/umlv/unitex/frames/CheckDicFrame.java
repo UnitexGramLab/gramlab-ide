@@ -29,9 +29,9 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
-import fr.umlv.unitex.CheckResultFrame;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -124,7 +124,7 @@ public class CheckDicFrame extends JInternalFrame {
 		.delaType(DELAS.isSelected()).alphabet(Config.getAlphabet());
 		
 		File tmp = new File(Config.getCurrentDELA().getParentFile(),"CHECK_DIC.TXT");
-		CheckResultFrame.close();
+		UnitexFrame.getFrameManager().closeCheckResultFrame();
 		new ProcessInfoFrame(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
 
@@ -135,7 +135,7 @@ public class CheckDicFrame extends JInternalFrame {
 		}
 
 		public void toDo() {
-			CheckResultFrame.load(results);
+			UnitexFrame.getFrameManager().newCheckResultFrame(results);
 		}
 	}
 
