@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -27,6 +27,11 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigTextList;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
 
 
 /**
@@ -37,11 +42,9 @@ import javax.swing.event.*;
  */
 public class TokensFrame extends JInternalFrame {
 
-	static TokensFrame frame;
-
 	BigTextList text = new BigTextList(false);
 
-	private TokensFrame() {
+	TokensFrame() {
 		super("Token list", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(true);
@@ -74,8 +77,8 @@ public class TokensFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				loadTokens(new File(Config.getCurrentSntDir(),"tok_by_freq.txt"));
 				try {
-					frame.setIcon(false);
-					frame.setSelected(true);
+					setIcon(false);
+					setSelected(true);
 				} catch (java.beans.PropertyVetoException e2) {
 					e2.printStackTrace();
 				}
@@ -86,8 +89,8 @@ public class TokensFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
                 loadTokens(new File(Config.getCurrentSntDir(),"tok_by_alph.txt"));
                 try {
-                    frame.setIcon(false);
-                    frame.setSelected(true);
+                    setIcon(false);
+                    setSelected(true);
                 } catch (java.beans.PropertyVetoException e2) {
                 	e2.printStackTrace();
                 }
@@ -109,36 +112,17 @@ public class TokensFrame extends JInternalFrame {
 	}
 
 	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new TokensFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
 	 * Loads a token list
 	 * 
 	 * @param file
 	 *            name of the token list file
 	 */
-	public static void loadTokens(File file) {
-		if (frame == null) {
-			init();
-		}
-		frame.text.setFont(Config.getCurrentTextFont());
+	void loadTokens(File file) {
+		text.setFont(Config.getCurrentTextFont());
 		if (file.length() <= 2) {
-			frame.text.setText(Config.EMPTY_FILE_MESSAGE);
+			text.setText(Config.EMPTY_FILE_MESSAGE);
 		} else {
-			frame.text.load(file);
-		}
-		frame.setVisible(true);
-		try {
-			frame.setIcon(true);
-			frame.setSelected(true);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
+			text.load(file);
 		}
 	}
 
@@ -146,17 +130,9 @@ public class TokensFrame extends JInternalFrame {
 	 * Hides the frame
 	 *  
 	 */
-	public static void hideFrame() {
-		if (frame == null) {
-			return;
-		}
-		frame.text.reset();
-		frame.setVisible(false);
-		try {
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
+	void hideFrame() {
+		text.reset();
+		setVisible(false);
 		System.gc();
 	}
 
