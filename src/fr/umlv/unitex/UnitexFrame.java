@@ -25,7 +25,6 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.print.*;
 import java.io.*;
 
 import javax.swing.*;
@@ -76,8 +75,6 @@ public class UnitexFrame extends JFrame {
 	 */
 	public static UnitexFrame mainFrame;
 	static Dimension screenSize;
-	PrinterJob printerJob;
-	PageFormat pageFormat;
 	public static boolean closing = false;
 
 	/**
@@ -421,7 +418,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem setup = new JMenuItem("Page Setup");
 		setup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pageSetup();
+				PrintManager.pageSetup();
 			}
 		});
 		JMenuItem print = new JMenuItem("Print...");
@@ -434,7 +431,7 @@ public class UnitexFrame extends JFrame {
 				} else {
 					if (TextAutomatonFrame.getFrame() != null
 							&& TextAutomatonFrame.getFrame().isSelected()) {
-						printTextAutomatonFrame(TextAutomatonFrame.getFrame());
+						PrintManager.printTextAutomatonFrame(TextAutomatonFrame.getFrame());
 					}
 				}
 			}
@@ -947,45 +944,8 @@ public class UnitexFrame extends JFrame {
 		frameManager.newGraphFrame(null);
 	}
 
-	/**
-	 * Launch the page setup for printing.
-	 *  
-	 */
-	public void pageSetup() {
-		if (printerJob == null) {
-			printerJob = PrinterJob.getPrinterJob();
-		}
-		if (pageFormat == null) {
-			pageFormat = printerJob.defaultPage();
-		}
-		pageFormat = printerJob.pageDialog(pageFormat);
-	}
 
 	
-	/**
-	 * Prints a <code>TextAutomatonFrame</code>.
-	 * 
-	 * @param g
-	 *            the <code>TextAutomatonFrame</code> to be printed.
-	 */
-	public void printTextAutomatonFrame(TextAutomatonFrame g) {
-		if (printerJob == null) {
-			printerJob = PrinterJob.getPrinterJob();
-		}
-		if (pageFormat == null) {
-			pageFormat = printerJob.defaultPage();
-		}
-		if (printerJob.printDialog()) {
-			try {
-				printerJob.setPrintable(g.graphicalZone, pageFormat);
-				printerJob.print();
-			} catch (PrinterException e) {
-				JOptionPane.showMessageDialog(null,
-						"Error while printing sentence graph", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
 
 	/**
 	 * Prints all the <code>GraphFrame</code> s that are on the desktop.
