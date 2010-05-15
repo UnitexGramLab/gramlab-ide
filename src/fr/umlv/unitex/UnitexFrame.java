@@ -145,7 +145,8 @@ public class UnitexFrame extends JFrame {
 			}
 			
 			public void delaFrameClosed() {
-				CheckResultFrame.close();
+				frameManager.closeCheckDicFrame();
+				frameManager.closeCheckResultFrame();
 				checkDelaFormat.setEnabled(false);
 				sortDictionary.setEnabled(false);
 				inflect.setEnabled(false);
@@ -378,7 +379,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		checkDelaFormat = new AbstractAction("Check Format...") {
 			public void actionPerformed(ActionEvent e) {
-				CheckDicFrame.showFrame();
+				frameManager.newCheckDicFrame();
 			}
 		};
 		checkDelaFormat.setEnabled(false);

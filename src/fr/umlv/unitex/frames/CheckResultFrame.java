@@ -19,13 +19,16 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigTextList;
+import fr.umlv.unitex.Config;
 
 
 /**
@@ -37,12 +40,11 @@ import javax.swing.event.*;
  */
 public class CheckResultFrame extends JInternalFrame {
 
-  static CheckResultFrame frame;
-	private BigTextList text;
+	BigTextList text;
 
     
-	private CheckResultFrame() {
-		super("", true, true, true, true);
+	CheckResultFrame() {
+		super("Check Results", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(true);
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -58,53 +60,23 @@ public class CheckResultFrame extends JInternalFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
-				close();
+				text.reset();
+				setVisible(false);
+				System.gc();
 			}
 		});
 	}
 
-	/**
-	 * Initializes the frame.
-	 *  
-	 */
-	private static void init() {
-		frame = new CheckResultFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
 
 	/**
 	 * Loads a text file.
 	 * 
-	 * @param dela
+	 * @param f
 	 *            the name of the text file
 	 */
-	public static void load(File dela) {
-		if (frame == null) {
-			init();
-		}
-		frame.text.load(dela);
-		frame.text.setFont(Config.getCurrentTextFont());
-		frame.setTitle("Check Results");
-		frame.setVisible(true);
-		try {
-			frame.setIcon(false);
-			frame.setSelected(true);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
-
-	/**
-	 * Closes the frame.
-	 *  
-	 */
-	public static void close() {
-		if (frame == null) {
-			return;
-		}
-		if (frame.text!=null) frame.text.reset();
-		frame.setVisible(false);
-		System.gc();
+	void load(File f) {
+		text.load(f);
+		text.setFont(Config.getCurrentTextFont());
 	}
 
 }
