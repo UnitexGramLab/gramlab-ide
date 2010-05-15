@@ -29,6 +29,8 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import fr.umlv.unitex.frames.TextFrame;
+
 
 
 /**
@@ -160,8 +162,9 @@ public class ConcordanceFrame extends JInternalFrame {
 		frame.list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		frame.list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
+				TextFrame f=UnitexFrame.getFrameManager().getTextFrame();
 				String s=(String) frame.list.getSelectedValue();
-				if (s==null || e.getValueIsAdjusting() || TextFrame.getFrame().isSelected()) return;
+				if (s==null || e.getValueIsAdjusting() || f.isIcon()) return;
 				int start=s.indexOf("<a href=\"")+9;
 				int end=s.indexOf(' ',start);
 				int selectionStart=Integer.valueOf((String) s.subSequence(start,end));
@@ -172,10 +175,9 @@ public class ConcordanceFrame extends JInternalFrame {
 				end=s.indexOf('\"',start);
 				int sentenceNumber=Integer.valueOf((String) s.subSequence(start,end));
 				try {
-					TextFrame.getFrame().setIcon(false);
-					TextFrame.getFrame().text.setSelection(selectionStart,selectionEnd-1);
-					TextFrame.getFrame().text.scrollToSelection();
-					TextFrame.getFrame().setSelected(true);
+					f.getText().setSelection(selectionStart,selectionEnd-1);
+					f.getText().scrollToSelection();
+					f.setSelected(true);
 			} catch (PropertyVetoException e2) {
 				e2.printStackTrace();
 			}
