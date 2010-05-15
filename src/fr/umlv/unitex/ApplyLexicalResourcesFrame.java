@@ -435,7 +435,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						TextDicFrame.hideFrame();
+						UnitexFrame.getFrameManager().closeTextDicFrame();
 						MultiCommands commands;
 						commands = getRunCmd();
 						if(commands.numberOfCommands() == 0) return;
@@ -708,7 +708,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 	class ApplyLexicalResourcesDo implements ToDo {
 		public void toDo() {
-			TextDicFrame.loadTextDic(Config.getCurrentSntDir(),false);
+			UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(),false);
 			if (Config.isKorean()) {
 			    TextAutomatonFrame.showFrame();
 			}

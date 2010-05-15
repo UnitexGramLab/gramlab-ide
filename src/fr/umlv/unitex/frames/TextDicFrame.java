@@ -19,13 +19,18 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigTextList;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.io.*;
 
 /**
@@ -48,10 +53,8 @@ public class TextDicFrame extends JInternalFrame {
    JLabel dlcLabel= new JLabel("");
    JLabel errLabel= new JLabel("");
 
-   static TextDicFrame frame;
-   
-   
-   private TextDicFrame() {
+
+   TextDicFrame() {
       super("", true, true, true, true);
       constructPanel();
       setContentPane(panel);
@@ -133,26 +136,15 @@ public class TextDicFrame extends JInternalFrame {
       errPanel.add(tmp, BorderLayout.CENTER);
    }
 
-   /**
-    * Initializes the frame 
-    *
-    */
-   private static void init() {
-      frame= new TextDicFrame();
-      UnitexFrame.addInternalFrame(frame,false);
-   }
 
    /**
     * Loads "dlf", "dlc" and "err" files contained in a directory, and shows the frame
     * @param dir directory to look in
     */
-   public static void loadTextDic(File dir,boolean iconify) {
-      if (frame==null) {
-         init();
-      }
+   void loadTextDic(File dir) {
       /********* Loading DLF file *********/
       File FILE = new File(dir,"dlf");
-      frame.dlf.setFont(Config.getCurrentTextFont());
+      dlf.setFont(Config.getCurrentTextFont());
       String n= UnicodeIO.readFirstLine(new File(dir,"dlf.n"));
       String message= "DLF";
       if (n != null) {
@@ -163,15 +155,15 @@ public class TextDicFrame extends JInternalFrame {
             message= message + "ies";
       }
       if (!FILE.exists() || FILE.length() <= 2) {
-         frame.dlf.setText(Config.EMPTY_FILE_MESSAGE);
-         frame.dlfLabel.setText("DLF: simple-word lexical entries");
+         dlf.setText(Config.EMPTY_FILE_MESSAGE);
+         dlfLabel.setText("DLF: simple-word lexical entries");
       } else  {
-    	  frame.dlf.load(FILE);
-          frame.dlfLabel.setText(message);
+    	  dlf.load(FILE);
+          dlfLabel.setText(message);
       }
       /********* Loading DLC file *********/
       FILE=new File(dir,"dlc");
-      frame.dlc.setFont(Config.getCurrentTextFont());
+      dlc.setFont(Config.getCurrentTextFont());
       n= UnicodeIO.readFirstLine(new File(dir,"dlc.n"));
       message= "DLC";
       if (n != null) {
@@ -182,15 +174,15 @@ public class TextDicFrame extends JInternalFrame {
             message= message + "ies";
       }
       if (!FILE.exists() || FILE.length() <= 2) {
-         frame.dlc.setText(Config.EMPTY_FILE_MESSAGE);
-         frame.dlcLabel.setText("DLC: compound lexical entries");
+         dlc.setText(Config.EMPTY_FILE_MESSAGE);
+         dlcLabel.setText("DLC: compound lexical entries");
       } else {
-    	  frame.dlc.load(FILE);
-          frame.dlcLabel.setText(message);
+    	  dlc.load(FILE);
+          dlcLabel.setText(message);
       }
       /********* Loading ERR file *********/
       FILE=new File(dir,"err");
-      frame.err.setFont(Config.getCurrentTextFont());
+      err.setFont(Config.getCurrentTextFont());
       n= UnicodeIO.readFirstLine(new File(dir,"err.n"));
       message= "ERR";
       if (n != null) {
@@ -199,40 +191,24 @@ public class TextDicFrame extends JInternalFrame {
             message= message + "s";
       }
       if (!FILE.exists() || FILE.length() <= 2) {
-         frame.err.setText(Config.EMPTY_FILE_MESSAGE);
-         frame.errLabel.setText("ERR: unknown simple words");
+         err.setText(Config.EMPTY_FILE_MESSAGE);
+         errLabel.setText("ERR: unknown simple words");
       } else {
-    	  frame.err.load(FILE);
-          frame.errLabel.setText(message);
+    	  err.load(FILE);
+          errLabel.setText(message);
       }
-      
-      frame.setTitle("Word Lists in " + dir);
-      frame.setVisible(true);
-      try {
-         frame.setIcon(iconify);
-         frame.setSelected(true);
-      } catch (java.beans.PropertyVetoException e2) {
-    	  e2.printStackTrace();
-      }
+      setTitle("Word Lists in " + dir);
    }
 
    /**
     * Hides the frame 
     *
     */
-   public static void hideFrame() {
-      if (frame==null) {
-         return;
-      }
-      frame.dlf.reset();
-      frame.dlc.reset();
-      frame.err.reset();
-      frame.setVisible(false);
-      try {
-         frame.setIcon(false);
-      } catch (java.beans.PropertyVetoException e2) {
-    	  e2.printStackTrace();
-      }
+   void hideFrame() {
+      dlf.reset();
+      dlc.reset();
+      err.reset();
+      setVisible(false);
       System.gc();
    }
 

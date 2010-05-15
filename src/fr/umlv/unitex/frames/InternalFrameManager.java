@@ -44,6 +44,7 @@ public class InternalFrameManager {
 	private TextFrameFactory textFrameFactory=new TextFrameFactory();
 	private DelaFrameFactory delaFrameFactory=new DelaFrameFactory();
 	private TokensFrameFactory tokensFrameFactory=new TokensFrameFactory();
+	private TextDicFrameFactory textDicFrameFactory=new TextDicFrameFactory();
 
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -261,4 +262,23 @@ public class InternalFrameManager {
 	public void closeTokensFrame() {
 		tokensFrameFactory.closeTokensFrame();
 	}
+
+	public boolean newTextDicFrame(File sntDir,boolean iconify) {
+		TextDicFrame f=textDicFrameFactory.newTextDicFrame(sntDir);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(iconify);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public void closeTextDicFrame() {
+		textDicFrameFactory.closeTextDicFrame();
+	}
+
 }
