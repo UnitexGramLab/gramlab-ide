@@ -582,7 +582,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		if (width<40) {
 		    width=40;
 		}
-		ConcordanceFrame.close();
+		UnitexFrame.getFrameManager().closeConcordanceFrame();
 		new ProcessInfoFrame(command, true, new ConcordanceDo(false,new File(Config
 				.getCurrentSntDir(), "concord.html"), checkBox.isSelected(),
 				width));
@@ -652,7 +652,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				}.start();
 			} else {
 				if (!diff) {
-					ConcordanceFrame.load(htmlFile, widthInChars);
+					UnitexFrame.getFrameManager().newConcordanceFrame(htmlFile, widthInChars);
 				} else {
 					UnitexFrame.getFrameManager().newConcordanceDiffFrame(htmlFile, widthInChars);
 				}
