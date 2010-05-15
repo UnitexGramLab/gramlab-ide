@@ -83,7 +83,6 @@ public class GraphFrameFactory {
 			f.doDefaultCloseAction();
 		}
 	}
-
 	
 	GraphFrame[] getGraphFrames() {
 		GraphFrame[] f=new GraphFrame[frames.size()];

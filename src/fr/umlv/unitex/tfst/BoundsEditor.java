@@ -28,7 +28,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import fr.umlv.unitex.TextAutomatonFrame;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 
 public class BoundsEditor extends JFormattedTextField {
 
@@ -74,7 +75,8 @@ public class BoundsEditor extends JFormattedTextField {
     @Override
     public void setValue(Object value) {
         super.setValue(value);
-        TextAutomatonFrame.frame.revalidate();
-        TextAutomatonFrame.frame.repaint();
+        TextAutomatonFrame f=UnitexFrame.getFrameManager().getTextAutomatonFrame();
+        f.revalidate();
+        f.repaint();
     }
 }

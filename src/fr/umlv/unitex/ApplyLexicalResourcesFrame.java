@@ -443,7 +443,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						if (Config.isKorean()) {
 						    /* As we construct the text automaton for Korean, we
 						     * must close the text automaton frame, if any */
-						    TextAutomatonFrame.hideFrame();
+						    UnitexFrame.getFrameManager().closeTextAutomatonFrame();
 						}
 						new ProcessInfoFrame(commands, true,
 								new ApplyLexicalResourcesDo());
@@ -710,7 +710,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		public void toDo() {
 			UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(),false);
 			if (Config.isKorean()) {
-			    TextAutomatonFrame.showFrame();
+			    UnitexFrame.getFrameManager().newTextAutomatonFrame();
 			}
 		}
 	}

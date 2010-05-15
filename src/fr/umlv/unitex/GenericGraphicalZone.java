@@ -29,6 +29,7 @@ import javax.swing.event.*;
 import javax.swing.undo.*;
 
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.undo.*;
 
 /**
@@ -69,7 +70,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	public ArrayList<GenericGraphBox> graphBoxes;
 
-	protected boolean is_initialised = false;
+	protected boolean initialized = false;
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
 
 	/**
 	 * Indicates if a grid be drawn in backend
@@ -89,7 +94,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * <code>JInternalFrame</code> that contains this component
 	 */
-	public JInternalFrame parentFrame;
+	protected JInternalFrame parentFrame;
+
+	public JInternalFrame getParentFrame() {
+		return parentFrame;
+	}
 
 	/**
 	 * Undo/redo Manager
@@ -467,7 +476,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 				initText(g.content);
 				if (this instanceof TfstGraphicalZone) {
 				    TfstGraphBox g2=(TfstGraphBox)g;
-				    TextAutomatonFrame.frame.bounds.setValue(g2.getBounds());
+				    UnitexFrame.getFrameManager().getTextAutomatonFrame().bounds.setValue(g2.getBounds());
 				}
 			}
 		}
@@ -544,6 +553,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			src.addTransitionTo(g);
 		}
+	}
+
+	public boolean isInitialized() {
+		return initialized;
 	}
 
 	/**
