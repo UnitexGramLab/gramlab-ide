@@ -1128,13 +1128,7 @@ public class Config {
 			UnitexFrame.mainFrame.setTitle(Version.version
 					+ " - current language is " + getCurrentLanguageForTitleBar());
 			if (!old.equals(getCurrentLanguage())) {
-				// if the language has really changed
-				// post pone code
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						UnitexFrame.mainFrame.closeText();
-					}
-				});
+				UnitexFrame.getFrameManager().closeTextFrame();
 			}
 		}
 	}
