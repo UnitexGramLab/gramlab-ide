@@ -42,7 +42,7 @@ public class DelaFrameFactory {
 	
 	void closeDelaFrame() {
 		if (frame==null) {
-			throw new IllegalStateException("Should not try to close a non existing DelaFrame");
+			return;
 		}
 		frame.doDefaultCloseAction();
 		Config.setCurrentDELA(null);

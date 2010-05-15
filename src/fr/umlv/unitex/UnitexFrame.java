@@ -65,9 +65,9 @@ public class UnitexFrame extends JFrame {
 	/**
 	 * Layer used to display document internal frames
 	 */
-	public static final Integer DOCLAYER = new Integer(5);
-	static final Integer TOOLLAYER = new Integer(6);
-	static final Integer HELPLAYER = new Integer(7);
+	public static final Integer DOCLAYER = new Integer(1);
+	static final Integer TOOLLAYER = new Integer(1);
+	static final Integer HELPLAYER = new Integer(1);
 	/**
 	 * The clipboard used to copy and paste text and graph box selections.
 	 */
@@ -123,6 +123,10 @@ public class UnitexFrame extends JFrame {
 				constructFst.setEnabled(false);
 				convertFst.setEnabled(false);
 				closeText.setEnabled(false);
+				TokensFrame.hideFrame();
+				closeAllConcordanceFrames();
+				TextDicFrame.hideFrame();
+				TextAutomatonFrame.hideFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {
@@ -274,7 +278,6 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		text.addSeparator();
 		//-------------------------------------------------------------------
-		// TODO use listeners to know when actions must be selected or not
 		locatePattern = new AbstractAction("Locate Pattern...") {
 			public void actionPerformed(ActionEvent e) {
 				LocateFrame.showFrame();
@@ -326,7 +329,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		closeText = new AbstractAction("Close Text...") {
 			public void actionPerformed(ActionEvent e) {
-				closeText();
+				frameManager.closeTextFrame();
 			}
 		};
 		closeText.setEnabled(false);
@@ -1448,20 +1451,6 @@ public class UnitexFrame extends JFrame {
 		new ProcessInfoFrame(command, false, null);
 	}
 
-	/**
-	 * Closes the current corpus. All the associated frames (text tokens, text
-	 * dictionaries, text automaton, etc) are closed.
-	 * 
-	 * TODO à virer 
-	 */
-	public void closeText() {
-		frameManager.closeTextFrame();
-		TokensFrame.hideFrame();
-		closeAllConcordanceFrames();
-		TextDicFrame.hideFrame();
-		TextAutomatonFrame.hideFrame();
-		repaint();
-	}
 
 	/**
 	 * Closes all the <code>ConcordanceFrame</code> that are on the desktop.

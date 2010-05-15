@@ -138,7 +138,9 @@ public class Text {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
 		}
 		commands.addCommand(tokenizeCmd);
-		UnitexFrame.mainFrame.closeText();
+		/* We have to close the text frame there, because if not, we will have
+		 * problem when trying to close the .snt file that is mapped */
+		UnitexFrame.getFrameManager().closeTextFrame();
 		Text.removeSntFiles();
 		new ProcessInfoFrame(commands, true, new TextDo(Config.getCurrentSnt(),taggedText));
 	}
