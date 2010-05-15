@@ -27,6 +27,7 @@ import javax.swing.*;
 
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
 
@@ -122,10 +123,6 @@ public class Text {
 
 	private static void preprocessLightSnt(File name,boolean taggedText) {
 		File dir = Config.getCurrentSntDir();
-		/*if (!dir.exists()) {
-			// if the directory toto_snt does not exist, we create it
-			dir.mkdir();
-		}*/
 		MultiCommands commands = new MultiCommands();
 		// NORMALIZING TEXT...
 		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(name);
@@ -154,24 +151,16 @@ public class Text {
 	 *            file name
 	 */
 	static void loadSnt(File snt,boolean taggedText) {
-		UnitexFrame.mainFrame.closeText();
-		TextFrame.loadText(snt,taggedText);
+		InternalFrameManager manager=UnitexFrame.getFrameManager();
+		manager.newTextFrame(snt,taggedText);
 		TokensFrame.loadTokens(new File(Config.getCurrentSntDir(),"tok_by_freq.txt"));
 		TextDicFrame.loadTextDic(Config.getCurrentSntDir(),true);
 		TextAutomatonFrame.showFrame();
 		try {
-			TextFrame.getFrame().setSelected(true);
+			manager.getTextFrame().setSelected(true);
 		} catch (java.beans.PropertyVetoException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Closes the text frame
-	 *  
-	 */
-	public static void closeText() {
-		TextFrame.hideFrame();
 	}
 
 	/**

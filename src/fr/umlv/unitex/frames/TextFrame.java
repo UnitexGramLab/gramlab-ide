@@ -19,13 +19,19 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.BigTextArea;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 
@@ -37,13 +43,11 @@ import fr.umlv.unitex.io.*;
  */
 public class TextFrame extends JInternalFrame {
 
-   static TextFrame frame;
-
    protected BigTextArea text= new BigTextArea();
    protected JLabel ligne1= new JLabel("");
    protected JLabel ligne2= new JLabel("");
 
-   private TextFrame() {
+   TextFrame() {
       super("", true, true, true, true);
       MyDropTarget.newDropTarget(this);
       JPanel top= new JPanel(new BorderLayout());
@@ -67,45 +71,23 @@ public class TextFrame extends JInternalFrame {
       setContentPane(top);
       pack();
       setBounds(100, 100, 800, 600);
-      setVisible(false);
-      setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
       addInternalFrameListener(new InternalFrameAdapter() {
-        public void internalFrameClosing(InternalFrameEvent e) {
-          try {
-             setIcon(true);
-          } catch (java.beans.PropertyVetoException e2) {
-        	  e2.printStackTrace();
-          }
-       }
-        });
-   }
-
-   /**
-    * Initializes the frame 
-    *
-    */
-   private static void init() {
-      frame= new TextFrame();
-      UnitexFrame.addInternalFrame(frame,false);
+			public void internalFrameClosed(InternalFrameEvent e) {
+				text.reset();
+				System.gc();
+			}
+		});
    }
 
 
-   public static TextFrame getFrame() {
-      return frame;
-   }
-
-
-   private static void loadStatistics() {
-      if (frame==null) {
-         init();
-      }
-      frame.ligne1.setText("");
-      frame.ligne2.setText("");
+   private void loadStatistics() {
+      ligne1.setText("");
+      ligne2.setText("");
       FileInputStream source;
       String s;
       s= UnicodeIO.readFirstLine(new File(Config.getCurrentSntDir(),"stats.n"));
       if (s != null)
-         frame.ligne1.setText(" " + s);
+         ligne1.setText(" " + s);
       s= UnicodeIO.readFirstLine(new File(Config.getCurrentSntDir(),"dlf.n"));
       if (s == null)
          return;
@@ -155,59 +137,29 @@ public class TextFrame extends JInternalFrame {
       s= s + String.valueOf(err_entries) + " ERR lines) unknown word";
       if (err_entries > 1)
          s= s + "s";
-      frame.ligne2.setText(s);
+      ligne2.setText(s);
    }
 
+   
    /**
     * Loads a corpus
     * @param sntFile name of the corpus file
     */
-   public static void loadText(File sntFile,boolean taggedText) {
-   	  // The frame is initialized at each text load, because
-   	  // the text orientation is reseted when the Document of MyTextArea
-   	  // changes.
-      init();
-      UnitexFrame.mainFrame.preprocessText.setEnabled(!taggedText);
-      UnitexFrame.mainFrame.applyLexicalResources.setEnabled(true);
-      UnitexFrame.mainFrame.locatePattern.setEnabled(true);
-      UnitexFrame.mainFrame.displayLocatedSequences.setEnabled(true);
-      UnitexFrame.mainFrame.constructFst.setEnabled(true);
-      UnitexFrame.mainFrame.convertFst.setEnabled(true);
-      UnitexFrame.mainFrame.closeText.setEnabled(true);
+   void loadText(File sntFile) {
       loadStatistics();
-      frame.text.setFont(Config.getCurrentTextFont());
-      frame.text.setComponentOrientation(Config.isRightToLeftLanguage()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
+      text.setFont(Config.getCurrentTextFont());
+      text.setComponentOrientation(Config.isRightToLeftLanguage()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
       if (sntFile.length() <= 2) {
-         frame.text.setText(Config.EMPTY_FILE_MESSAGE);
+         text.setText(Config.EMPTY_FILE_MESSAGE);
       } else {
-    	  frame.text.load(sntFile);
+    	  text.load(sntFile);
       }
-      frame.setTitle(sntFile.getAbsolutePath());
-      frame.setVisible(true);
-      try {
-         frame.setSelected(true);
-         frame.setIcon(false);
-      } catch (java.beans.PropertyVetoException e2) {
-    	  e2.printStackTrace();
-      }
+      setTitle(sntFile.getAbsolutePath());
    }
 
-   /**
-    * Hides the frame 
-    *
-    */
-   public static void hideFrame() {
-      if (frame==null) {
-         return;
-      }
-      frame.setVisible(false);
-      try {
-         frame.setIcon(false);
-      } catch (java.beans.PropertyVetoException e2) {
-    	  e2.printStackTrace();
-      }
-      frame.text.reset();
-      System.gc();
-   }
+
+	public BigTextArea getText() {
+		return text;
+	}
 
 }
