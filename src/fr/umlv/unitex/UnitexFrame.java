@@ -133,6 +133,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.closeTextAutomatonFrame();
 				frameManager.closeApplyLexicalResourcesFrame();
 				frameManager.closeConcordanceDiffFrame();
+				frameManager.closeConcordanceParameterFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {
@@ -298,7 +299,7 @@ public class UnitexFrame extends JFrame {
 		displayLocatedSequences = new AbstractAction(
 				"Located Sequences...") {
 			public void actionPerformed(ActionEvent e) {
-				ConcordanceParameterFrame.showFrame();
+				frameManager.newConcordanceParameterFrame();
 			}
 		};
 		displayLocatedSequences.setEnabled(false);
