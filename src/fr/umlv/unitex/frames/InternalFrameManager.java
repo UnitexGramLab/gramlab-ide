@@ -55,6 +55,7 @@ public class InternalFrameManager {
 	private ConcordanceParameterFrameFactory concordanceParameterFrameFactory=new ConcordanceParameterFrameFactory();
 	private ConstructTfstFrameFactory constructTfstFrameFactory=new ConstructTfstFrameFactory();
 	private ConvertTfstToTextFrameFactory convertTfstToTextFrameFactory=new ConvertTfstToTextFrameFactory();
+	private ElagCompFrameFactory elagCompFrameFactory=new ElagCompFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -473,4 +474,22 @@ public class InternalFrameManager {
 		convertTfstToTextFrameFactory.closeConvertTfstToTextFrame();
 	}
 
+
+
+	public boolean newElagCompFrame() {
+		ElagCompFrame f=elagCompFrameFactory.newElagCompFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeElagCompFrame() {
+		elagCompFrameFactory.closeElagCompFrame();
+	}
 }
