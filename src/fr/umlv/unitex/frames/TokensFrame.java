@@ -31,7 +31,7 @@ import javax.swing.event.*;
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
+import fr.umlv.unitex.UnitexFrame;
 
 
 /**
@@ -64,7 +64,8 @@ public class TokensFrame extends JInternalFrame {
 				}
 			}
 		});
-		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		/* TODO nettoyer les preferences */
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				text.setFont(font);
 			}});

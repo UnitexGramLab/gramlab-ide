@@ -132,7 +132,7 @@ public class TextFontMenu extends JDialog {
 			pref.textFont = new Font(fontName, fontStyle,(int) (fontSize / 0.72));
 			pref.textFontSize = fontSize;
 			pref.textFontStyle = fontStyle;
-			GlobalPreferenceFrame.getFrame().textFont.setText(""
+			UnitexFrame.getFrameManager().getGlobalPreferencesFrame().textFont.setText(""
 					+ pref.textFont.getFontName() + "  "
 					+ pref.textFontSize + "");
 		   break;
@@ -140,7 +140,7 @@ public class TextFontMenu extends JDialog {
 		case CONCORDANCE_FONT: {
 			pref.htmlFontName = fontName;
 			pref.htmlFontSize = fontSize;
-			GlobalPreferenceFrame.getFrame().concordanceFont.setText(""
+			UnitexFrame.getFrameManager().getGlobalPreferencesFrame().concordanceFont.setText(""
 					+ pref.htmlFontName + "  "
 					+ pref.htmlFontSize + "");
 		   break;
@@ -149,7 +149,7 @@ public class TextFontMenu extends JDialog {
 			pref.input = new Font(fontName, fontStyle,(int) (fontSize / 0.72));
 			pref.inputSize = fontSize;
 			pref.inputFontStyle = fontStyle;
-			GlobalPreferenceFrame.getFrame().inputLabel.setText(""
+			UnitexFrame.getFrameManager().getGlobalPreferencesFrame().inputLabel.setText(""
 					+ pref.input.getFontName() + "  "
 					+ pref.inputSize + "");
 		   break;
@@ -158,7 +158,7 @@ public class TextFontMenu extends JDialog {
 			pref.output = new Font(fontName, fontStyle,(int) (fontSize / 0.72));
 			pref.outputSize = fontSize;
 			pref.outputFontStyle = fontStyle;
-			GlobalPreferenceFrame.getFrame().outputLabel.setText(""
+			UnitexFrame.getFrameManager().getGlobalPreferencesFrame().outputLabel.setText(""
 					+ pref.output.getFontName() + "  "
 					+ pref.outputSize + "");
 

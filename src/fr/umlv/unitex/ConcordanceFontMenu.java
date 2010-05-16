@@ -182,7 +182,7 @@ public class ConcordanceFontMenu extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
             	pref.htmlFontName = fontName;
             	pref.htmlFontSize = fontSize;
-                GlobalPreferenceFrame.getFrame().concordanceFont.setText(""
+            	UnitexFrame.getFrameManager().getGlobalPreferencesFrame().concordanceFont.setText(""
                         + pref.htmlFontName + "  "
                         + pref.htmlFontSize + "");
                 setVisible(false);

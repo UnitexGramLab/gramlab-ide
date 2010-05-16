@@ -30,8 +30,8 @@ import javax.swing.event.*;
 import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 
@@ -62,7 +62,7 @@ public class TextFrame extends JInternalFrame {
 				text.setFont(font);
 			}
 		};
-		GlobalPreferenceFrame.addTextFontListener(fontListener);
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(fontListener);
       JPanel up= new JPanel(new GridLayout(2, 1));
       up.setOpaque(true);
       up.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -75,7 +75,7 @@ public class TextFrame extends JInternalFrame {
       setBounds(100, 100, 800, 600);
       addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosed(InternalFrameEvent e) {
-				GlobalPreferenceFrame.removeTextFontListener(fontListener);
+				UnitexFrame.getFrameManager().getGlobalPreferencesFrame().removeTextFontListener(fontListener);
 				text.reset();
 				System.gc();
 			}

@@ -949,7 +949,7 @@ public class UnitexFrame extends JFrame {
 		preferences.setEnabled(true);
 		preferences.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GlobalPreferenceFrame.showFrame();
+				frameManager.newGlobalPreferencesFrame();
 			}
 		});
 		JMenuItem console = new JMenuItem("Console");
