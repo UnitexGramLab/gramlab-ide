@@ -36,12 +36,12 @@ import fr.umlv.unitex.process.*;
  * @author Sébastien Paumier
  *  
  */
-public class ConvertFstFrame extends JInternalFrame {
+public class ConvertTfstToTextFrame extends JInternalFrame {
 
-	static ConvertFstFrame frame;
+	static ConvertTfstToTextFrame frame;
 	JTextField textName = new JTextField();
 
-	private ConvertFstFrame() {
+	private ConvertTfstToTextFrame() {
 		super("Convert Text Automaton to Text", false, true);
 		setContentPane(constructPanel());
 		pack();
@@ -60,7 +60,7 @@ public class ConvertFstFrame extends JInternalFrame {
 	 *  
 	 */
 	private static void init() {
-		frame = new ConvertFstFrame();
+		frame = new ConvertTfstToTextFrame();
 		UnitexFrame.addInternalFrame(frame,false);
 	}
 
