@@ -135,6 +135,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.closeConcordanceDiffFrame();
 				frameManager.closeConcordanceParameterFrame();
 				frameManager.closeConstructTfstFrame();
+				frameManager.closeConvertTfstToTextFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {
@@ -328,7 +329,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		convertFst = new AbstractAction("Convert FST-Text to Text...") {
 			public void actionPerformed(ActionEvent e) {
-				ConvertTfstToTextFrame.showFrame();
+				UnitexFrame.getFrameManager().newConvertTfstToTextFrame();
 			}
 		};
 		convertFst.setEnabled(false);
