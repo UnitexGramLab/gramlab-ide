@@ -134,6 +134,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.closeApplyLexicalResourcesFrame();
 				frameManager.closeConcordanceDiffFrame();
 				frameManager.closeConcordanceParameterFrame();
+				frameManager.closeConstructTfstFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {
@@ -319,7 +320,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		constructFst = new AbstractAction("Construct FST-Text...") {
 			public void actionPerformed(ActionEvent e) {
-				new ConstructTfstFrame();
+				frameManager.newConstructTfstFrame();
 			}
 		};
 		constructFst.setEnabled(false);
