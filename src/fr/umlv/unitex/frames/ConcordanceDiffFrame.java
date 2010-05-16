@@ -29,8 +29,8 @@ import javax.swing.event.*;
 
 import fr.umlv.unitex.BigConcordanceDiff;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.Util;
 
 
@@ -61,7 +61,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		middle.add(top,BorderLayout.NORTH);
 		setContentPane(middle);
 		list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
-		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addConcordanceFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				list.setFont(font);
 			}

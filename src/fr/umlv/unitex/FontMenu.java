@@ -215,14 +215,14 @@ public class FontMenu extends JDialog {
 					preferences.input = new Font(fontName, fontStyle,
 							(int) (fontSize / 0.72));
 					preferences.inputSize = fontSize;
-					if (globalConfiguration) {GlobalPreferenceFrame.getFrame().inputLabel.setText(""
+					if (globalConfiguration) {UnitexFrame.getFrameManager().getGlobalPreferencesFrame().inputLabel.setText(""
 							+ preferences.input.getFontName() + "  "
 							+ preferences.inputSize + "");}
 				} else {
 					preferences.output = new Font(fontName, fontStyle,
 							(int) (fontSize / 0.72));
 					preferences.outputSize = fontSize;
-					if (globalConfiguration) {GlobalPreferenceFrame.getFrame().inputLabel.setText(""
+					if (globalConfiguration) {UnitexFrame.getFrameManager().getGlobalPreferencesFrame().inputLabel.setText(""
 							+ preferences.output.getFontName() + "  "
 							+ preferences.outputSize + "");}
 				}

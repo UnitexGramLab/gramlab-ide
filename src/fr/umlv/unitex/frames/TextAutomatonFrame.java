@@ -68,7 +68,6 @@ import javax.swing.text.PlainDocument;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.EatStreamThread;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
@@ -173,7 +172,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         }
     });
     closeElagFrame();
-    GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+    UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 		public void fontChanged(Font font) {
 			sentenceTextArea.setFont(font);
 		}});

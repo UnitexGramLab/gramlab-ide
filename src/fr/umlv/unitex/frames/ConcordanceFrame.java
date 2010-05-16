@@ -31,7 +31,6 @@ import javax.swing.event.*;
 
 import fr.umlv.unitex.BigConcordance;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.Util;
@@ -147,7 +146,7 @@ public class ConcordanceFrame extends JInternalFrame {
 		d.setSize((g < 800) ? g : 800, d.height);
 		setSize(d);
 		Util.getHtmlPageTitle(concor);
-		GlobalPreferenceFrame.addConcordanceFontListener(new FontListener() {
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addConcordanceFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				list.setFont(font);
 			}
