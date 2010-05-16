@@ -57,6 +57,7 @@ public class InternalFrameManager {
 	private ConvertTfstToTextFrameFactory convertTfstToTextFrameFactory=new ConvertTfstToTextFrameFactory();
 	private ElagCompFrameFactory elagCompFrameFactory=new ElagCompFrameFactory();
 	private GlobalPreferencesFrameFactory globalPreferencesFrameFactory=new GlobalPreferencesFrameFactory();
+	private GraphPathFrameFactory graphPathFrameFactory=new GraphPathFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -514,4 +515,30 @@ public class InternalFrameManager {
 	public GlobalPreferencesFrame getGlobalPreferencesFrame() {
 		return globalPreferencesFrameFactory.getGlobalPreferencesFrame();
 	}
+
+
+	public boolean newGraphPathFrame() {
+		GraphFrame gf = getCurrentFocusedGraphFrame();
+		if (gf == null) {
+			return false;
+		}
+		GraphPathFrame f=graphPathFrameFactory.newGraphPathFrame();
+		if (f==null) return false;
+		f.graphName.setText(gf.getGraph().getAbsolutePath());
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeGraphPathFrame() {
+		/* TODO à faire quand il ne reste plus aucun graphe ouvert,
+		 * ou rendre cette fenêtre modale */
+		graphPathFrameFactory.closeGraphPathFrame();
+	}
+
 }

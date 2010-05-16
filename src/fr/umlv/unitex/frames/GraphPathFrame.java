@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,7 +29,13 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.BigTextList;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.NumericTextField;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -40,7 +46,6 @@ import fr.umlv.unitex.process.*;
  */
 public class GraphPathFrame extends JInternalFrame {
 
-	static GraphPathFrame frame;
 	BigTextList textArea = new BigTextList();
 	JTextField graphName = new JTextField();
 	JCheckBox limit;
@@ -51,50 +56,27 @@ public class GraphPathFrame extends JInternalFrame {
 	JRadioButton bySousGraph;
 	JRadioButton bySansGraph;
 
-	private GraphPathFrame() {
+	GraphPathFrame() {
 		super("Explore graph paths", true, true);
 		setContentPane(constructPanel());
 		setBounds(100, 100, 420, 400);
 		setVisible(true);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
-				frame.setVisible(false);
-				frame.textArea.reset();
-		        frame.textArea.clearSelection();
+				setVisible(false);
+				textArea.reset();
+				textArea.clearSelection();
 			}
 		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
-			public void fontChanged(Font font) {
-				textArea.setFont(font);
-			}});
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame()
+				.addTextFontListener(new FontListener() {
+					public void fontChanged(Font font) {
+						textArea.setFont(font);
+					}
+				});
 	}
 
-	private static void init() {
-		frame = new GraphPathFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame, creating it if necessary.
-	 *  
-	 */
-	public static void showFrame() {
-		GraphFrame gf = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-		if (gf == null)
-			return;
-		if (frame == null) {
-			init();
-		}
-		frame.graphName.setText(gf.getGraph().getAbsolutePath());
-		frame.textArea.setFont(Config.getCurrentTextFont());
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -140,41 +122,32 @@ public class GraphPathFrame extends JInternalFrame {
 				Grf2Fst2Command grfCmd = new Grf2Fst2Command();
 				File fst2;
 				File list; //output file name
-				if (frame.limit.isSelected()) {
-					if (frame.limitSize.getText().equals("")) {
+				if (limit.isSelected()) {
+					if (limitSize.getText().equals("")) {
 						JOptionPane.showMessageDialog(null,
 								"You must specify a limit", "Error",
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					cmd = cmd.limit(frame.limitSize.getText());
+					cmd = cmd.limit(limitSize.getText());
 				} else {
 					cmd = cmd.noLimit();
 				}
-				if (frame.ignoreOutputs.isSelected()) {
+				if (ignoreOutputs.isSelected()) {
 					cmd = cmd.ignoreOutputs();
 				} else {
-					cmd = cmd.separateOutputs(frame.separateOutputs
+					cmd = cmd.separateOutputs(separateOutputs
 							.isSelected());
 				}
-//				Grf2Fst2Command grfCmd = new Grf2Fst2Command()
-//					.grf(new File(frame.graphName.getText()))
-//				.enableLoopAndRecursionDetection(true)
-//						.tokenizationMode();
-//				File fst2 = new File(Util.getFileNameWithoutExtension(frame.graphName
-//						.getText()) + ".fst2");
-//				File list = new File(Config.getUserCurrentLanguageDir(),"list.txt");
-//				cmd = cmd.output(list);
-//				cmd = cmd.fst2(fst2);
-				grfCmd.grf(new File(frame.graphName.getText())).enableLoopAndRecursionDetection(true).library();
-				fst2 = new File(Util.getFileNameWithoutExtension(frame.graphName
+				grfCmd.grf(new File(graphName.getText())).enableLoopAndRecursionDetection(true).library();
+				fst2 = new File(Util.getFileNameWithoutExtension(graphName
 						.getText()) + ".fst2");			
-				if(frame.bySansGraph.isSelected()){
+				if(bySansGraph.isSelected()){
 					list = new File(Config.getUserCurrentLanguageDir(),"list.txt");
 					
 					cmd = cmd.listOfPaths(fst2,list);
 				} else {
-					list = new File(Util.getFileNameWithoutExtension(frame.graphName
+					list = new File(Util.getFileNameWithoutExtension(graphName
 							.getText()) + "autolst.txt");
 					cmd = cmd.listsOfSubgraph(fst2);					
 				}
@@ -182,7 +155,7 @@ public class GraphPathFrame extends JInternalFrame {
 				MultiCommands commands = new MultiCommands();
 				commands.addCommand(grfCmd);
 				commands.addCommand(cmd);
-				frame.textArea.reset();
+				textArea.reset();
 				new ProcessInfoFrame(commands, true, new ShowPathsDo(list));
 			}
 		};
@@ -190,7 +163,11 @@ public class GraphPathFrame extends JInternalFrame {
 		buttons.add(GO);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
+				/*setVisible(false);*/
+				/* TODO remplacer les setVisible(false) des cancel par des
+				 * doDefaultCloseAction()
+				 */
+				doDefaultCloseAction();
 			}
 		};
 		JButton CANCEL = new JButton(cancelAction);
@@ -226,8 +203,8 @@ public class GraphPathFrame extends JInternalFrame {
 
 		public void toDo() {
 			try {
-				frame.textArea.load(name);
-				frame.setSelected(true);
+				textArea.load(name);
+				setSelected(true);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (PropertyVetoException e) {
