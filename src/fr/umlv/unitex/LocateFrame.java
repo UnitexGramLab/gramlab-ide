@@ -524,7 +524,7 @@ public class LocateFrame extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			res2 = res2.substring(0, res2.indexOf(' '));
-			ConcordanceParameterFrame.showFrame(Util.toInt(res2));
+			UnitexFrame.getFrameManager().newConcordanceParameterFrame(Util.toInt(res2));
 		}
 	}
 
@@ -538,7 +538,7 @@ public class LocateFrame extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			res2 = res2.substring(0, res2.indexOf(' '));
-			ConcordanceParameterFrame.showFrame(Util.toInt(res2));
+			UnitexFrame.getFrameManager().newConcordanceParameterFrame(Util.toInt(res2));
 		}
 	}
 

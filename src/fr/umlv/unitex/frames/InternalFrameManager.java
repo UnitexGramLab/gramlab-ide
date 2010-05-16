@@ -52,6 +52,7 @@ public class InternalFrameManager {
 	private CheckResultFrameFactory checkResultFrameFactory=new CheckResultFrameFactory();
 	private ConcordanceDiffFrameFactory concordanceDiffFrameFactory=new ConcordanceDiffFrameFactory();
 	private ConcordanceFrameFactory concordanceFrameFactory=new ConcordanceFrameFactory();
+	private ConcordanceParameterFrameFactory concordanceParameterFrameFactory=new ConcordanceParameterFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -410,6 +411,28 @@ public class InternalFrameManager {
 
 	public void closeConcordanceFrame() {
 		concordanceFrameFactory.closeConcordanceFrame();
+	}
+
+
+	public boolean newConcordanceParameterFrame() {
+		return newConcordanceParameterFrame(-1);
+	}
+	
+	public boolean newConcordanceParameterFrame(int matches) {
+		ConcordanceParameterFrame f=concordanceParameterFrameFactory.newConcordanceParameterFrame(matches);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeConcordanceParameterFrame() {
+		concordanceParameterFrameFactory.closeConcordanceParameterFrame();
 	}
 
 }

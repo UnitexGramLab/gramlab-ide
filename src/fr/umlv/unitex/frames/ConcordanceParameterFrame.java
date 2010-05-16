@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +29,14 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.NumericTextField;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.StatisticsFrame;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.process.*;
@@ -43,7 +51,6 @@ import fr.umlv.unitex.process.*;
  */
 public class ConcordanceParameterFrame extends JInternalFrame {
 
-	static ConcordanceParameterFrame frame;
 	private NumericTextField leftChars = new NumericTextField("40");
 	private NumericTextField rightChars = new NumericTextField("55");
 	JCheckBox leftCtxStopAtEOS  = new JCheckBox("", false);
@@ -53,7 +60,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			"Use a web browser to view the concordance");
 	JTextField modifiedTxtFile = new JTextField("");
 	JTextField extractFile = new JTextField("");
-	String nombre_matches = null;
+	String numberOfMatches = null;
 	boolean useWebBrowser;
 	private JButton diffButton;
 	
@@ -69,8 +76,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	 * Constructs a new <code>ConcordanceParameterFrame</code>.
 	 *  
 	 */
-	public ConcordanceParameterFrame() {
-		super("Located sequences...", /*false*/true, true);
+	ConcordanceParameterFrame() {
+		super("Located sequences...", true, true);
 		setContentPane(constructPanel());
 		pack();
 		useWebBrowser=(Preferences.getCloneOfPreferences().htmlViewer!=null);
@@ -84,61 +91,13 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame.
-	 *  
-	 */
-	private static void init() {
-		frame = new ConcordanceParameterFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame.
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.nombre_matches = null;
-		frame.setVisible(true);
-		frame.updateDiffButton();
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	/**
 	 * 
 	 */
-	private void updateDiffButton() {
+	void updateDiffButton() {
 		File f=new File(Config.getCurrentSntDir(),"previous-concord.ind");
 		diffButton.setEnabled(f.exists());
-	}
-
-	/**
-	 * Shows the frame. If the number of matches is bigger than a certain limit,
-	 * an option is automatically selected to show the concordance with a web
-	 * navigator.
-	 * 
-	 * @param matches
-	 *            the number of matches
-	 */
-	public static void showFrame(int matches) {
-		if (frame == null) {
-			init();
-		}
-		if (matches >= Config.MAXIMUM_UTTERANCE_NUMBER_TO_DISPLAY_WITH_JAVA) {
-			frame.checkBox.setSelected(true);
-		}
-		else {
-			frame.checkBox.setSelected(frame.useWebBrowser);
-		}
-		showFrame();
 	}
 
     private JTabbedPane constructPanel() {
@@ -278,7 +237,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						frame.extractUnits(true);
+						extractUnits(true);
 					}
 				});
 			}
@@ -288,7 +247,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						frame.extractUnits(false);
+						extractUnits(false);
 					}
 				});
 			}
@@ -308,7 +267,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						frame.buildDiffConcordance();
+						buildDiffConcordance();
 					}
 				});
 			}
@@ -361,7 +320,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						frame.modifyText();
+						modifyText();
 					}
 				});
 			}
@@ -380,7 +339,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		checkBox.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				useWebBrowser=checkBox.isSelected();
-				frame.setTitle(""+useWebBrowser);
+				setTitle(""+useWebBrowser);
 			}});
 		middlePanel.add(checkBox, BorderLayout.CENTER);
 		middlePanel.add(new JLabel(
@@ -448,7 +407,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						frame.buildConcordance();
+						buildConcordance();
 					}
 				});
 			}

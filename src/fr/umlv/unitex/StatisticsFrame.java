@@ -40,7 +40,7 @@ import javax.swing.table.TableRowSorter;
 
 public class StatisticsFrame extends JInternalFrame {
 
-	static StatisticsFrame frame;
+	public static StatisticsFrame frame;
 
 	public StatisticsFrame(File file,int mode) {
 		super("Statistics", true, true, true, true);
