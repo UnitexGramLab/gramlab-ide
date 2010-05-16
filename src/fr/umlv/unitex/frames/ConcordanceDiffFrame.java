@@ -73,7 +73,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 				setVisible(false);
 				list.reset();
 				list.clearSelection();
-							}
+			}
 		});
 		setBounds(150, 50, 850, 550);
 	}
