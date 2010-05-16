@@ -81,7 +81,6 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		setContentPane(constructPanel());
 		pack();
 		useWebBrowser=(Preferences.getCloneOfPreferences().htmlViewer!=null);
-		//setResizable(false);
 		setVisible(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
