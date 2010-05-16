@@ -39,12 +39,12 @@ import fr.umlv.unitex.process.*;
  */
 public class LocateFrame extends JInternalFrame {
 
-	static LocateFrame frame;
+	public static LocateFrame frame;
 	JRadioButton regularExpression = new JRadioButton("Regular expression:",
 			false);
-	JRadioButton graph = new JRadioButton("Graph:", true);
+	public JRadioButton graph = new JRadioButton("Graph:", true);
 	JTextField regExp = new JTextField();
-	JTextField graphName = new JTextField();
+	public JTextField graphName = new JTextField();
 	JRadioButton shortestMatches = new JRadioButton("Shortest matches", false);
 	JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
 	JRadioButton allMatches = new JRadioButton("All matches", false);

@@ -311,7 +311,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		elagComp = new AbstractAction("Compile Elag Grammars") {
 			public void actionPerformed(ActionEvent e) {
-				ElagCompFrame.showFrame();
+				UnitexFrame.getFrameManager().newElagCompFrame();
 			}
 		};
 		elagComp.setEnabled(true);

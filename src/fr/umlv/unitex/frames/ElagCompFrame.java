@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +29,11 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.LocateFrame;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -75,9 +80,8 @@ public class ElagCompFrame extends JInternalFrame {
   JLabel outlabel;
   JLabel pathlabel;
 
-  static ElagCompFrame frame;
 
-  public ElagCompFrame() {
+  ElagCompFrame() {
     super("Elag Grammar Compilation", true, true, true, true);
     elagDir = new File(Config.getUserCurrentLanguageDir(), "Elag");
     currdir = elagDir;
@@ -670,32 +674,6 @@ public class ElagCompFrame extends JInternalFrame {
       rules.add(idx, s);
       list.ensureIndexIsVisible(idx);
       list.setSelectedIndex(idx);
-    }
-  }
-
-  /**
-   * Initializes the frame
-   *  
-   */
-  private static void init() {
-    frame = new ElagCompFrame();
-    UnitexFrame.addInternalFrame(frame,false);
-  }
-
-  /**
-   * Shows the frame
-   *  
-   */
-  public static void showFrame() {
-    if (frame == null) {
-      init();
-    }
-    frame.setVisible(true);
-    try {
-      frame.setSelected(true);
-      frame.setIcon(false);
-    } catch (java.beans.PropertyVetoException e2) {
-    	e2.printStackTrace();
     }
   }
 
