@@ -64,7 +64,7 @@ public class GraphPathFrame extends JInternalFrame {
 			}
 		});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				textArea.setFont(font);
 			}});

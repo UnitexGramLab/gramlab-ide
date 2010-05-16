@@ -77,7 +77,7 @@ public class LocateFrame extends JInternalFrame {
 				setVisible(false);
 			}
 		});
-		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				regExp.setFont(font);
 			}

@@ -33,7 +33,6 @@ import javax.swing.event.*;
 import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.UnitexFrame;
@@ -177,7 +176,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		JPanel p=new JPanel(new BorderLayout());
 		p.add(new JLabel("Right-click a dictionary to get information about it :"),BorderLayout.NORTH);
 		credits=new BigTextArea();
-		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				credits.setFont(font);
 			}});

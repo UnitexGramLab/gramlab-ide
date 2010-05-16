@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,7 +28,16 @@ import java.util.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
+
+import fr.umlv.unitex.ColorRectangle;
+import fr.umlv.unitex.ConcordanceFontMenu;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.FontMenu;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.TextFontMenu;
+import fr.umlv.unitex.UnitexFrame;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.
@@ -36,18 +45,16 @@ import javax.swing.event.*;
  * @author Sébastien Paumier
  *  
  */
-public class GlobalPreferenceFrame extends JInternalFrame {
+public class GlobalPreferencesFrame extends JInternalFrame {
 
-	static ArrayList<FontListener> textFontListeners=new ArrayList<FontListener>(); 
-	static ArrayList<FontListener> concordanceFontListeners=new ArrayList<FontListener>(); 
+	private ArrayList<FontListener> textFontListeners=new ArrayList<FontListener>(); 
+	private ArrayList<FontListener> concordanceFontListeners=new ArrayList<FontListener>(); 
 	
-	static GlobalPreferenceFrame frame;
-
 	JTextField privateDirectory = new JTextField("");
 
-	protected JTextField textFont = new JTextField("");
+	public JTextField textFont = new JTextField("");
 
-	JTextField concordanceFont = new JTextField("");
+	public JTextField concordanceFont = new JTextField("");
 
 	JTextField htmlViewer = new JTextField("");
 
@@ -80,9 +87,9 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 	JPanel color4=ColorRectangle.getColorRectangle();
 	JPanel color5=ColorRectangle.getColorRectangle();
 	
-	JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
+	public JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
 
-	JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
+	public JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
 
 	JRadioButton westRadioBox = new JRadioButton("West", false);
 
@@ -96,62 +103,21 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 
 	JTextField packageDirectory = new JTextField("");
 
-	static Preferences pref;
+	Preferences pref;
 
 	DefaultListModel morphoDicListModel=new DefaultListModel();
 	
-	private GlobalPreferenceFrame() {
+	GlobalPreferencesFrame() {
 		super("", false, true, false, false);
 		setContentPane(constructPanel());
 		pack();
-		//setBounds(200, 200, 400, 450);
-		setVisible(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-
-			public void internalFrameClosing(InternalFrameEvent arg0) {
-				setVisible(false);
-			}
-		});
+		/* TODO enlever les setVisible false dans les constructeurs */
+		/* TODO changer les DO_NOTHING_ON_CLOSE qui le doivent par des 
+		 * HIDE_ON_CLOSE
+		 */
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new GlobalPreferenceFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * @return the frame
-	 */
-	public static GlobalPreferenceFrame getFrame() {
-		return frame;
-	}
-
-	/**
-	 * Shows the frame
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		pref = Preferences.getCloneOfPreferences();
-		System.out.println();
-		frame.setTitle("Preferences for " + Config.getCurrentLanguage());
-		frame.privateDirectory.setText(Config.getUserDir().getAbsolutePath());
-
-		frame.refresh();
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -189,36 +155,36 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				fireTextFontChanged(pref.textFont);
 				fireConcordanceFontChanged(new Font(pref.htmlFontName,0,pref.htmlFontSize));
-				pref.antialiasing = frame.antialiasingCheckBox.isSelected();
-				if (frame.htmlViewer.getText().equals(""))
+				pref.antialiasing = antialiasingCheckBox.isSelected();
+				if (htmlViewer.getText().equals(""))
 					pref.htmlViewer = null;
 				else
-					pref.htmlViewer = new File(frame.htmlViewer.getText());
-				pref.morphologicalDic=getFileList(frame.morphoDicListModel);
-				pref.date = frame.dateCheckBox.isSelected();
-				pref.filename = frame.filenameCheckBox.isSelected();
-				pref.pathname = frame.pathnameCheckBox.isSelected();
-				pref.frame = frame.frameCheckBox.isSelected();
-				pref.rightToLeft = frame.rightToLeftCheckBox.isSelected();
-				if (frame.westRadioBox.isSelected()) {
+					pref.htmlViewer = new File(htmlViewer.getText());
+				pref.morphologicalDic=getFileList(morphoDicListModel);
+				pref.date = dateCheckBox.isSelected();
+				pref.filename = filenameCheckBox.isSelected();
+				pref.pathname = pathnameCheckBox.isSelected();
+				pref.frame = frameCheckBox.isSelected();
+				pref.rightToLeft = rightToLeftCheckBox.isSelected();
+				if (westRadioBox.isSelected()) {
 					pref.iconBarPosition = Preferences.ICON_BAR_WEST;
-				} else if (frame.eastRadioBox.isSelected()) {
+				} else if (eastRadioBox.isSelected()) {
 					pref.iconBarPosition = Preferences.ICON_BAR_EAST;
-				} else if (frame.northRadioBox.isSelected()) {
+				} else if (northRadioBox.isSelected()) {
 					pref.iconBarPosition = Preferences.ICON_BAR_NORTH;
-				} else if (frame.southRadioBox.isSelected()) {
+				} else if (southRadioBox.isSelected()) {
 					pref.iconBarPosition = Preferences.ICON_BAR_SOUTH;
-				} else if (frame.noneRadioBox.isSelected()) {
+				} else if (noneRadioBox.isSelected()) {
 					pref.iconBarPosition = Preferences.NO_ICON_BAR;
 				} else {
 					pref.iconBarPosition = Preferences.ICON_BAR_DEFAULT;
 				}
-				pref.charByChar = frame.charByCharCheckBox.isSelected();
-				pref.morphologicalUseOfSpace = frame.morphologicalUseOfSpaceCheckBox.isSelected();
-				if (frame.packageDirectory.getText().equals(""))
+				pref.charByChar = charByCharCheckBox.isSelected();
+				pref.morphologicalUseOfSpace = morphologicalUseOfSpaceCheckBox.isSelected();
+				if (packageDirectory.getText().equals(""))
 					pref.packagePath = null;
 				else {
-					File f=new File(frame.packageDirectory.getText());
+					File f=new File(packageDirectory.getText());
 					if (!f.exists()) {
 						JOptionPane
 						.showMessageDialog(
@@ -417,7 +383,6 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		Action textFontAction = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO avoid setVisible in constructor
 				new TextFontMenu(pref, TextFontMenu.TEXT_FONT);
 			}
 		};
@@ -811,34 +776,52 @@ public class GlobalPreferenceFrame extends JInternalFrame {
 		repaint();
 	}
 	
-	protected static void fireTextFontChanged(Font font) {
-		for (FontListener listener:textFontListeners) {
-			listener.fontChanged(font);
-		}
-	}
-	
-	public static void addTextFontListener(FontListener listener) {
+	public void addTextFontListener(FontListener listener) {
 		textFontListeners.add(listener);
 	}
 
-	public static void removeTextFontListener(FontListener listener) {
+	protected boolean firingTextFont=false;
+	public void removeTextFontListener(FontListener listener) {
+		if (firingTextFont) {
+			throw new IllegalStateException("Should not try to remove a listener while firing");
+		}
 		textFontListeners.remove(listener);
 	}
 
-	protected static void fireConcordanceFontChanged(Font font) {
-		for (FontListener listener:concordanceFontListeners) {
-			listener.fontChanged(font);
+	protected void fireTextFontChanged(Font font) {
+		firingTextFont = true;
+		try {
+			for (FontListener listener : textFontListeners) {
+				listener.fontChanged(font);
+			}
+		} finally {
+			firingTextFont = false;
 		}
 	}
 	
-	public static void addConcordanceFontListener(FontListener listener) {
+	public void addConcordanceFontListener(FontListener listener) {
 		concordanceFontListeners.add(listener);
 	}
 
-	public static void removeConcordanceFontListener(FontListener listener) {
+	protected boolean firingConcordanceFont=false;
+	public void removeConcordanceFontListener(FontListener listener) {
+		if (firingConcordanceFont) {
+			throw new IllegalStateException("Should not try to remove a listener while firing");
+		}
 		concordanceFontListeners.remove(listener);
 	}
 
+	protected void fireConcordanceFontChanged(Font font) {
+		firingConcordanceFont = true;
+		try {
+			for (FontListener listener : concordanceFontListeners) {
+				listener.fontChanged(font);
+			}
+		} finally {
+			firingConcordanceFont = false;
+		}
+	}
+	
 	private JPanel constructPage4() {
 		JPanel p=new JPanel(null);
 		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));

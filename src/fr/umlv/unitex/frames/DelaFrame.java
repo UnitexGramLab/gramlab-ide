@@ -30,8 +30,8 @@ import javax.swing.event.*;
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GlobalPreferenceFrame;
 import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
@@ -78,7 +78,7 @@ public class DelaFrame extends JInternalFrame {
 				System.gc();
 			}
 		});
-		GlobalPreferenceFrame.addTextFontListener(new FontListener() {
+		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				text.setFont(font);
 			}});

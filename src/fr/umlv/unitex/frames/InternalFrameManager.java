@@ -56,6 +56,7 @@ public class InternalFrameManager {
 	private ConstructTfstFrameFactory constructTfstFrameFactory=new ConstructTfstFrameFactory();
 	private ConvertTfstToTextFrameFactory convertTfstToTextFrameFactory=new ConvertTfstToTextFrameFactory();
 	private ElagCompFrameFactory elagCompFrameFactory=new ElagCompFrameFactory();
+	private GlobalPreferencesFrameFactory globalPreferencesFrameFactory=new GlobalPreferencesFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -475,7 +476,6 @@ public class InternalFrameManager {
 	}
 
 
-
 	public boolean newElagCompFrame() {
 		ElagCompFrame f=elagCompFrameFactory.newElagCompFrame();
 		if (f==null) return false;
@@ -491,5 +491,27 @@ public class InternalFrameManager {
 
 	public void closeElagCompFrame() {
 		elagCompFrameFactory.closeElagCompFrame();
+	}
+
+
+	public boolean newGlobalPreferencesFrame() {
+		GlobalPreferencesFrame f=globalPreferencesFrameFactory.newGlobalPreferencesFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeGlobalPreferencesFrame() {
+		globalPreferencesFrameFactory.closeGlobalPreferencesFrame();
+	}
+
+	public GlobalPreferencesFrame getGlobalPreferencesFrame() {
+		return globalPreferencesFrameFactory.getGlobalPreferencesFrame();
 	}
 }
