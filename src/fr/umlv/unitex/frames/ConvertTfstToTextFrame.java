@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -38,48 +39,22 @@ import fr.umlv.unitex.process.*;
  */
 public class ConvertTfstToTextFrame extends JInternalFrame {
 
-	static ConvertTfstToTextFrame frame;
 	JTextField textName = new JTextField();
 
-	private ConvertTfstToTextFrame() {
+	ConvertTfstToTextFrame() {
 		super("Convert Text Automaton to Text", false, true);
 		setContentPane(constructPanel());
 		pack();
 		setResizable(false);
 		setVisible(false);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				setVisible(false);
 			}
 		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new ConvertTfstToTextFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -112,7 +87,7 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		JButton CANCEL=new JButton("Cancel");
 		CANCEL.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frame.setVisible(false);
+				setVisible(false);
 			}
 		});
 		buttonPanel.add(CANCEL);
@@ -146,7 +121,7 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		File txt=new File(textName.getText());
 		cmd.output(txt);		
 		commands.addCommand(cmd);
-		frame.setVisible(false);
+		setVisible(false);
 		new ProcessInfoFrame(commands, true, null,true);
 	}
 
