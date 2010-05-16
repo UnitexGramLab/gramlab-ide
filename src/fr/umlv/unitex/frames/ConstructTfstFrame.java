@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,7 +28,12 @@ import java.io.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -38,7 +43,7 @@ import fr.umlv.unitex.process.*;
  * @author Sébastien Paumier
  *  
  */
-public class ConstructTfstFrame extends JDialog {
+public class ConstructTfstFrame extends JInternalFrame {
 
   JCheckBox reconstrucao = new JCheckBox("Build clitic normalization grammar (available only for Portuguese (Portugal))");
   JCheckBox normFst = new JCheckBox(
@@ -57,15 +62,19 @@ public class ConstructTfstFrame extends JDialog {
    * Creates and shows a new <code>ConstructFstFrame</code>.
    *  
    */
-  public ConstructTfstFrame() {
-    super(UnitexFrame.mainFrame, "Construct the Text FST", true);
+  ConstructTfstFrame() {
+    super("Construct the Text FST", false);
     setContentPane(constructPanel());
     pack();
-    setResizable(false);
-    setLocationRelativeTo(UnitexFrame.mainFrame);
-    this.setVisible(true);
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	addInternalFrameListener(new InternalFrameAdapter() {
+		public void internalFrameClosing(InternalFrameEvent e) {
+			setVisible(false);
+		}
+	});
   }
 
+  
   private JPanel constructPanel() {
     JPanel panel = new JPanel(new BorderLayout());
     panel.add(constructNormalizationPanel(), BorderLayout.NORTH);
@@ -160,10 +169,6 @@ public class ConstructTfstFrame extends JDialog {
               // if the directory toto_snt does not exist, we create it
               dir.mkdir();
             }
-            //File graph = new File(Config
-            //		.getUserCurrentLanguageDir(), "Graphs");
-            //graph = new File(graph, "Normalization");
-            // we clean the text automaton files
             Config.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "sentence*.grf"));
             Config.deleteFileByName(new File(Config
@@ -213,7 +218,7 @@ public class ConstructTfstFrame extends JDialog {
                 && futuroCondicionalBin.exists()
                 && raizInf.exists()
                 && futuroCondicionalInf.exists()) {
-              // if the user has choosen both to build the clitic
+              // if the user has chosen both to build the clitic
               // normalization grammar
               // and to apply this grammar, and if the necessary
               // files for the
@@ -303,14 +308,12 @@ public class ConstructTfstFrame extends JDialog {
                 new ConstructTfstDo(),false);
           }
         });
-        dispose();
       }
     };
 
     Action cancelAction = new AbstractAction("Cancel") {
       public void actionPerformed(ActionEvent arg0) {
         setVisible(false);
-        dispose();
       }
     };
 
