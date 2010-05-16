@@ -328,7 +328,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		convertFst = new AbstractAction("Convert FST-Text to Text...") {
 			public void actionPerformed(ActionEvent e) {
-				ConvertFstFrame.showFrame();
+				ConvertTfstToTextFrame.showFrame();
 			}
 		};
 		convertFst.setEnabled(false);
