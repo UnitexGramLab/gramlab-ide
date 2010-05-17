@@ -21,11 +21,13 @@
 
 package fr.umlv.unitex.undo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import javax.swing.undo.*;
+import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.*;
+import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.GenericGraphicalZone;
 
 
 /**

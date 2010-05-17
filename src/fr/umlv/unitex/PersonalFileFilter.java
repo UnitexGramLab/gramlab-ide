@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * This class provides a file filter definition.

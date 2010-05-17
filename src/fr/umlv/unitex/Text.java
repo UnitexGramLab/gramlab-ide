@@ -21,15 +21,17 @@
 
 package fr.umlv.unitex;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.conversion.*;
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.*;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;

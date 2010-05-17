@@ -21,9 +21,14 @@
 
 package fr.umlv.unitex.process;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;

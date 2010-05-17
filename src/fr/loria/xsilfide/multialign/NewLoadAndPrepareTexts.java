@@ -33,11 +33,18 @@
 
 package fr.loria.xsilfide.multialign;
 
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import java.util.Vector;
 import java.util.Properties;
-import fr.loria.nguyen.mytools.*;
+import java.util.Vector;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+import fr.loria.nguyen.mytools.FileIO;
+import fr.loria.nguyen.mytools.XMLTools;
 
 
 public class NewLoadAndPrepareTexts {

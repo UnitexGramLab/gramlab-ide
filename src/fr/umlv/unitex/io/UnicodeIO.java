@@ -21,9 +21,13 @@
 
 package fr.umlv.unitex.io;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 
 /**
  * This class provides methods for loading and saving UTF-16LE texts.

@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.exceptions;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * This class defines an <code>Exception</code> that is thrown when a file is not a Unicode Little Endian one, whereas it

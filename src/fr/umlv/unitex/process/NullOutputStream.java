@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.process;
 
-import java.io.*;
+import java.io.OutputStream;
 
 /**
  * 

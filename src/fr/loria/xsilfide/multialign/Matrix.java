@@ -34,7 +34,9 @@
 
 package fr.loria.xsilfide.multialign;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Matrix
 {

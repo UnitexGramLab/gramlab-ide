@@ -21,19 +21,25 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.conversion.*;
-import fr.umlv.unitex.io.*;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 

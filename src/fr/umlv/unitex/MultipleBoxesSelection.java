@@ -21,7 +21,8 @@
 
 package fr.umlv.unitex;
 
-import java.awt.datatransfer.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 
 /**
  * This class describes the clipboard content description for copy/paste on multiple boxes.

@@ -21,15 +21,35 @@
 
 package fr.umlv.unitex.xalign;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import fr.umlv.unitex.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;

@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.util.*;
+import java.util.ArrayList;
 
 
 /**

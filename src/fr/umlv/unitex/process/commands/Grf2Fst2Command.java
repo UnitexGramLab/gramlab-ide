@@ -21,9 +21,10 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.*;
+import java.io.File;
 
-import fr.umlv.unitex.*;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
 
 /**
  * @author Sébastien Paumier

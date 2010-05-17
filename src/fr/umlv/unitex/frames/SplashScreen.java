@@ -21,9 +21,11 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
 
 /**
  * This class describes a splash screen window.

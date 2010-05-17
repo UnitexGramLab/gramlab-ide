@@ -21,13 +21,26 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.text.Caret;
+import javax.swing.text.Document;
+import javax.swing.text.Keymap;
+import javax.swing.text.TextAction;
 
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.frames.UnitexFrame;

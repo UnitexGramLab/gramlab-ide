@@ -21,12 +21,15 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.font.TextLayout;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.frames.GraphFrame;
 

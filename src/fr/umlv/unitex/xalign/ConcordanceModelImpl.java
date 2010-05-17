@@ -21,9 +21,13 @@
 
 package fr.umlv.unitex.xalign;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import javax.swing.event.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 public class ConcordanceModelImpl implements ConcordanceModel {
 
