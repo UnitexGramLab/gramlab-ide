@@ -21,24 +21,16 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
 
+public class GraphPathDialogFactory {
 
-public class GraphPathFrameFactory {
-
-	private GraphPathFrame frame;
+	private GraphPathDialog dialog;
 	
-	GraphPathFrame newGraphPathFrame() {
-		if (frame==null) {
-			frame=new GraphPathFrame();
+	GraphPathDialog newGraphPathFrame() {
+		if (dialog==null) {
+			dialog=new GraphPathDialog();
 		}
-		frame.textArea.setFont(Config.getCurrentTextFont());
-		return frame;
+		return dialog;
 	}
 
-	
-	void closeGraphPathFrame() {
-		if (frame==null) return;
-		frame.doDefaultCloseAction();
-	}
 }

@@ -23,11 +23,9 @@ package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.*;
 import java.io.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
@@ -44,7 +42,7 @@ import fr.umlv.unitex.process.*;
  * @author Sébastien Paumier
  * 11.11.2005 modified HyunGue HUH 
  */
-public class GraphPathFrame extends JInternalFrame {
+public class GraphPathDialog extends JDialog {
 
 	BigTextList textArea = new BigTextList();
 	JTextField graphName = new JTextField();
@@ -56,19 +54,18 @@ public class GraphPathFrame extends JInternalFrame {
 	JRadioButton bySousGraph;
 	JRadioButton bySansGraph;
 
-	GraphPathFrame() {
-		super("Explore graph paths", true, true);
+	GraphPathDialog() {
+		super((Dialog)null,"Explore graph paths", true);
 		setContentPane(constructPanel());
 		setBounds(100, 100, 420, 400);
-		setVisible(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-				textArea.reset();
-				textArea.clearSelection();
+		addWindowListener(new WindowAdapter() {
+			
+			public void windowClosing(WindowEvent e) {
+				close();
 			}
 		});
+		textArea.setFont(Config.getCurrentTextFont());
 		UnitexFrame.getFrameManager().getGlobalPreferencesFrame()
 				.addTextFontListener(new FontListener() {
 					public void fontChanged(Font font) {
@@ -163,11 +160,10 @@ public class GraphPathFrame extends JInternalFrame {
 		buttons.add(GO);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				/*setVisible(false);*/
 				/* TODO remplacer les setVisible(false) des cancel par des
 				 * doDefaultCloseAction()
 				 */
-				doDefaultCloseAction();
+				close();
 			}
 		};
 		JButton CANCEL = new JButton(cancelAction);
@@ -175,6 +171,13 @@ public class GraphPathFrame extends JInternalFrame {
 		panel.add(buttons, BorderLayout.EAST);
 		return panel;
 	}
+
+	protected void close() {
+		setVisible(false);
+		textArea.reset();
+		textArea.clearSelection();
+	}
+
 
 	private JPanel constructLimitPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -202,14 +205,7 @@ public class GraphPathFrame extends JInternalFrame {
 		}
 
 		public void toDo() {
-			try {
-				textArea.load(name);
-				setSelected(true);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (PropertyVetoException e) {
-				e.printStackTrace();
-			}
+			textArea.load(name);
 		}
 	}
 
