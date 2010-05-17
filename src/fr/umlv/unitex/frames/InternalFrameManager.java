@@ -62,6 +62,7 @@ public class InternalFrameManager {
 	private ConvertLexiconGrammarFrameFactory convertLexiconGrammarFrameFactory=new ConvertLexiconGrammarFrameFactory();
 	private LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory=new LexiconGrammarTableFrameFactory();
 	private LocateFrameFactory locateFrameFactory=new LocateFrameFactory();
+	private MessageWhileWorkingFrameFactory messageWhileWorkingFrameFactory=new MessageWhileWorkingFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	
@@ -662,5 +663,27 @@ public class InternalFrameManager {
 
 	public void closeLocateFrame() {
 		locateFrameFactory.closeLocateFrame();
+	}
+
+
+	public boolean newMessageWhileWorkingFrame(String title) {
+		MessageWhileWorkingFrame f=messageWhileWorkingFrameFactory.newMessageWhileWorkingFrame(title);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeMessageWhileWorkingFrame() {
+		messageWhileWorkingFrameFactory.closeMessageWhileWorkingFrame();
+	}
+
+	public MessageWhileWorkingFrame getMessageWhileWorkingFrame() {
+		return messageWhileWorkingFrameFactory.getMessageWhileWorkingFrame();
 	}
 }
