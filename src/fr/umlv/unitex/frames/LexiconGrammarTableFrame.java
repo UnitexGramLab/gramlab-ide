@@ -19,15 +19,15 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
+import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 
@@ -38,7 +38,6 @@ import fr.umlv.unitex.io.*;
  */
 public class LexiconGrammarTableFrame extends JInternalFrame {
 
-	static LexiconGrammarTableFrame frame;
 	private Vector<Vector<String>> rowData;
 	private Vector<String> columnNames;
 	private static String tableName;
@@ -50,7 +49,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 	 * @param file
 	 *            the lexicon-grammar table file
 	 */
-	public LexiconGrammarTableFrame(File file) {
+	LexiconGrammarTableFrame(File file) {
 		super(file.getAbsolutePath(), true, true, true, true);
 		setTableName(file.getAbsolutePath());
 		buildVectors(file);
@@ -70,34 +69,9 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		setContentPane(top);
 		pack();
 		setBounds(100, 100, 800, 600);
-		setVisible(true);
-		frame = this;
-		UnitexFrame.addInternalFrame(this,false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				UnitexFrame.mainFrame.compileLexiconGrammar.setEnabled(false);
-				UnitexFrame.mainFrame.closeLexiconGrammar.setEnabled(false);
-				setVisible(false);
-				UnitexFrame.removeInternalFrame(frame);
-				frame = null;
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 
-	/**
-	 * Closes the frame
-	 *  
-	 */
-	public static void closeFrame() {
-		if (frame != null) {
-			UnitexFrame.mainFrame.compileLexiconGrammar.setEnabled(false);
-			UnitexFrame.mainFrame.closeLexiconGrammar.setEnabled(false);
-			frame.setVisible(false);
-			UnitexFrame.removeInternalFrame(frame);
-			frame = null;
-		}
-	}
 
 	private void buildVectors(File f) {
 		if (!f.exists()) {

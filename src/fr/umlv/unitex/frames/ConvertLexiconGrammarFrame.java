@@ -29,7 +29,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.LexiconGrammarTableFrame;
 import fr.umlv.unitex.process.*;
 
 /**
