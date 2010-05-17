@@ -118,7 +118,7 @@ public class Text {
 	}
 
 	private static void preprocessSnt(File name, File snt,boolean taggedText) {
-		new PreprocessFrame(name,snt,taggedText);
+		UnitexFrame.getFrameManager().newPreprocessDialog(name,snt,taggedText);
 	}
 
 	private static void preprocessLightSnt(File name,boolean taggedText) {

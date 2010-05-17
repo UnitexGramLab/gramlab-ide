@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +29,11 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.Text;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.process.*;
 
@@ -39,7 +44,7 @@ import fr.umlv.unitex.process.*;
  * @author Sébastien Paumier
  * 
  */
-public class PreprocessFrame extends JDialog {
+public class PreprocessDialog extends JDialog {
 
     JCheckBox sentenceCheck = new JCheckBox("Apply graph in MERGE mode:", true);
 
@@ -68,22 +73,10 @@ public class PreprocessFrame extends JDialog {
      *            original text file
      * @param sntFile
      *            snt text file
-     */
-    public PreprocessFrame(File originalTextFile, File sntFile) {
-        this(originalTextFile, sntFile, false);
-    }
-
-    /**
-     * Creates and shows a new <code>PreprocessFrame</code>
-     * 
-     * @param originalTextFile
-     *            original text file
-     * @param sntFile
-     *            snt text file
      * @param taggedText
      *            true if the text is a tagged one
      */
-    public PreprocessFrame(File originalTextFile, File sntFile, boolean taggedText) {
+    PreprocessDialog(File originalTextFile, File sntFile, boolean taggedText) {
         super(UnitexFrame.mainFrame, "Preprocessing & Lexical parsing", true);
         this.originalTextFile = originalTextFile;
         this.sntFile = sntFile;
@@ -96,15 +89,11 @@ public class PreprocessFrame extends JDialog {
         pack();
         setResizable(false);
         setLocationRelativeTo(UnitexFrame.mainFrame);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                setVisible(false);
-            }
-        });
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        setVisible(true);
+        /* TODO rendre ce dialog persistant */
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
+    
     private JPanel constructPanel(boolean taggedText) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(constructProcessingPanel(taggedText), BorderLayout.NORTH);
