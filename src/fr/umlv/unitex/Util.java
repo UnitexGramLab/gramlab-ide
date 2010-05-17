@@ -21,8 +21,12 @@
 
 package fr.umlv.unitex;
 
-import java.io.*;
-import java.util.regex.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides methods to get information about files, like path, file

@@ -21,12 +21,21 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.text.BadLocationException;
 
-import fr.umlv.unitex.editor.*;
+import fr.umlv.unitex.editor.EditionTextArea;
+import fr.umlv.unitex.editor.ReplacementTargetException;
+import fr.umlv.unitex.editor.TargetException;
 
 
 public class DictionaryFindPanel extends AbstractFindpanel {

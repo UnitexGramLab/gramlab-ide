@@ -21,8 +21,9 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.*;
-import fr.umlv.unitex.*;
+import java.io.File;
+
+import fr.umlv.unitex.Config;
 
 /**
  * @author Sébastien Paumier

@@ -42,8 +42,8 @@
 
 
 package fr.loria.xsilfide.multialign;
-import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Vector;
 
 // les coûts forcés sont une table qui à i et j associent un coût
 // Soit le cout est 0, soit c'est Integer.MAX_VALUE. Il faudrait donc mieux

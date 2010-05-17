@@ -21,12 +21,14 @@
 
 package fr.umlv.unitex.xalign;
 
-import java.io.*;
-import java.nio.*;
-import java.nio.channels.*;
-import java.util.concurrent.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.util.concurrent.ExecutionException;
 
-import javax.swing.*;
+import javax.swing.SwingWorker;
 
 
 /**

@@ -30,10 +30,15 @@
  */
 package fr.loria.nguyen.mytools;
 
-import java.io.*;
-import org.apache.xerces.dom.*;
-import org.apache.xml.serialize.*;
-import org.w3c.dom.*;
+import java.io.FileOutputStream;
+
+import org.apache.xerces.dom.DocumentImpl;
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 public class XMLTools {
 

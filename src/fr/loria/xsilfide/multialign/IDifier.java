@@ -35,17 +35,32 @@
 
 package fr.loria.xsilfide.multialign;
 
-import org.w3c.dom.*;
-import org.apache.xerces.dom.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import org.apache.xml.serialize.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.Writer;
+import java.util.Hashtable;
+import java.util.Properties;
 
-import fr.loria.nguyen.mytools.*;
+import org.apache.xerces.dom.DocumentImpl;
+import org.apache.xerces.dom.ElementImpl;
+import org.apache.xerces.dom.NodeImpl;
+import org.apache.xerces.dom.TextImpl;
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.util.*;
-import java.io.*;
-//import java.net.*;
+import fr.loria.nguyen.mytools.FileIO;
+import fr.loria.nguyen.mytools.XMLTools;
 
 //import javax.swing.*;
 

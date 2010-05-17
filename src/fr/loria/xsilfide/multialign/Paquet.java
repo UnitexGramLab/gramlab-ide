@@ -33,10 +33,10 @@
 
 package fr.loria.xsilfide.multialign;
 
-import java.util.TreeSet;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 class Paquet{
     private String id;

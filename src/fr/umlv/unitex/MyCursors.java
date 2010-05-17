@@ -21,9 +21,11 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Toolkit;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
 
 /**
  * This class defines personal mouse cursors and icons.

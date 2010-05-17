@@ -21,17 +21,23 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.print.*;
-import java.io.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.io.File;
+import java.util.Date;
 
-import javax.swing.undo.*;
+import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.undo.*;
+import fr.umlv.unitex.undo.TranslationGroupEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.

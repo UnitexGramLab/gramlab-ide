@@ -21,10 +21,12 @@
 
 package fr.umlv.unitex;
 
-import java.util.*;
+import java.util.StringTokenizer;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JOptionPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 /*
  * This class catches text and turns it into a list if it contains \n

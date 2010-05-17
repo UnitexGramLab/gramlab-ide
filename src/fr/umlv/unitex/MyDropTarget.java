@@ -21,19 +21,27 @@
 
 package fr.umlv.unitex;
 
+import java.awt.Component;
+import java.awt.HeadlessException;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
-import java.io.*;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.*;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 

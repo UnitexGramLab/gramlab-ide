@@ -21,8 +21,13 @@
 
 package fr.umlv.unitex;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.Scanner;
 
 /**
  * This class only contains a <code>String</code> that indicates version information.

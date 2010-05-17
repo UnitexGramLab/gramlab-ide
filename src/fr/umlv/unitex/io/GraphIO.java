@@ -21,14 +21,23 @@
 
 package fr.umlv.unitex.io;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.*;
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.GraphBox;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.TfstGraphBox;
+import fr.umlv.unitex.TfstGraphicalZone;
+import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 
 /**
  * This class provides methods for loading and saving graphs.

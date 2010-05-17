@@ -21,10 +21,12 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Component;
+import java.awt.Font;
+import java.io.File;
 
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
 
 
 /**
