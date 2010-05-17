@@ -513,7 +513,7 @@ public class UnitexFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					frameManager.newGraphPathFrame();
+					frameManager.newGraphPathDialog();
 				}
 			}
 		});
@@ -1242,7 +1242,6 @@ public class UnitexFrame extends JFrame {
 	 */
 	public void closeAll() {
 		frameManager.closeAllGraphFrames();
-		frameManager.closeGraphPathFrame();
 	}
 
 	/**
