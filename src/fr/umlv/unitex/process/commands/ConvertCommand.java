@@ -21,11 +21,12 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
 
-import fr.umlv.unitex.conversion.*;
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.conversion.Transcoder;
+import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
+import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 /**
  * @author Sébastien Paumier
  *  
@@ -42,7 +43,7 @@ public class ConvertCommand extends CommandBuilder {
 
     
 	public ConvertCommand src(String s) throws InvalidSourceEncodingException {
-		if (ConversionFrame.validSrcEncoding(s)) {
+		if (Transcoder.isValidEncoding(s)) {
 			element("-s"+s);
 			return this;
 		}
@@ -51,7 +52,7 @@ public class ConvertCommand extends CommandBuilder {
 
 	public ConvertCommand dest(String s)
 			throws InvalidDestinationEncodingException {
-		if (ConversionFrame.validDestEncoding(s)) {
+		if (Transcoder.isValidEncoding(s)) {
 			element("-d"+s);
 			return this;
 		}
