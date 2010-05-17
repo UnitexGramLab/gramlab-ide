@@ -57,7 +57,9 @@ public class InternalFrameManager {
 	private ConvertTfstToTextFrameFactory convertTfstToTextFrameFactory=new ConvertTfstToTextFrameFactory();
 	private ElagCompFrameFactory elagCompFrameFactory=new ElagCompFrameFactory();
 	private GlobalPreferencesFrameFactory globalPreferencesFrameFactory=new GlobalPreferencesFrameFactory();
+
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
+	private GraphCollectionFrameFactory graphCollectionFrameFactory=new GraphCollectionFrameFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -522,10 +524,24 @@ public class InternalFrameManager {
 		if (gf == null) {
 			return false;
 		}
-		GraphPathDialog d=graphPathDialogFactory.newGraphPathFrame();
+		GraphPathDialog d=graphPathDialogFactory.newGraphPathDialog();
 		if (d==null) return false;
 		d.graphName.setText(gf.getGraph().getAbsolutePath());
 		d.setVisible(true);
+		return true;
+	}
+
+
+	public boolean newGraphCollectionFrame() {
+		GraphCollectionFrame f=graphCollectionFrameFactory.newGraphCollectionFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
 		return true;
 	}
 

@@ -55,7 +55,7 @@ public class GraphPathDialog extends JDialog {
 	JRadioButton bySansGraph;
 
 	GraphPathDialog() {
-		super((Dialog)null,"Explore graph paths", true);
+		super(UnitexFrame.mainFrame,"Explore graph paths", true);
 		setContentPane(constructPanel());
 		setBounds(100, 100, 420, 400);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -72,6 +72,7 @@ public class GraphPathDialog extends JDialog {
 						textArea.setFont(font);
 					}
 				});
+		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}
 
 
