@@ -33,11 +33,10 @@ import javax.swing.*;
 public class SplashScreen extends JWindow {
    
    /**
-    * Creates and shows a new <code>SplashScreen</code>
+    * Creates a new <code>SplashScreen</code>
     * @param icon the image to show
-    * @param milliseconds the splashscreen lifetime in milliseconds
     */
-   public SplashScreen(ImageIcon icon, int milliseconds) {
+   public SplashScreen(ImageIcon icon) {
       super();
       JLabel splash= new JLabel(icon);
       getContentPane().add(splash);
@@ -46,21 +45,5 @@ public class SplashScreen extends JWindow {
       setLocation(
          screenRect.x + screenRect.width / 2 - getSize().width / 2,
          screenRect.y + screenRect.height / 2 - getSize().height / 2);
-      setVisible(true);
-      try {
-         Thread.sleep(milliseconds);
-      } catch (InterruptedException e) {
-    	  e.printStackTrace();
-      }
-      dispose();
-      /*
-       // JDK1.5 use setAlwaysOnTop()
-      Timer timer=new Timer(milliseconds,new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          dispose();
-        }
-      });
-      timer.setRepeats(false);
-      timer.start();*/
    }
 }
