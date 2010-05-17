@@ -33,7 +33,6 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.process.*;
 
 /**

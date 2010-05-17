@@ -28,6 +28,7 @@ import javax.swing.*;
 import fr.umlv.unitex.*;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.editor.ui.*;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * Menu to handle file edition

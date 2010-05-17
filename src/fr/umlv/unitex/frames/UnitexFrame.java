@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
@@ -30,16 +30,21 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.GraphAlignmentMenu;
+import fr.umlv.unitex.GraphPresentationMenu;
+import fr.umlv.unitex.GraphSizeMenu;
+import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.NumericTextField;
+import fr.umlv.unitex.Text;
+import fr.umlv.unitex.TextField;
+import fr.umlv.unitex.TfstTextField;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.Version;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.editor.*;
 import fr.umlv.unitex.exceptions.*;
-import fr.umlv.unitex.frames.DelaFrameListener;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.LexiconGrammarTableFrameListener;
-import fr.umlv.unitex.frames.TextAutomatonFrame;
-import fr.umlv.unitex.frames.TextFrameListener;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.*;
@@ -240,11 +245,11 @@ public class UnitexFrame extends JFrame {
 
 	Action openText;
 	Action openTaggedText;
-	Action preprocessText;
+	public Action preprocessText;
 	Action changeLang;
-	Action applyLexicalResources;
-	Action locatePattern;
-	AbstractAction displayLocatedSequences;
+	public Action applyLexicalResources;
+	public Action locatePattern;
+	public AbstractAction displayLocatedSequences;
 	AbstractAction elagComp;
 	AbstractAction constructFst;
 	AbstractAction convertFst;

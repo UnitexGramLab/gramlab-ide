@@ -29,6 +29,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.frames.UnitexFrame;
+
 /**
  * This class describes the graph's font selection dialog box.
  * 

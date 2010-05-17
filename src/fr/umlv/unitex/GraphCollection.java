@@ -25,6 +25,7 @@ import java.io.*;
 
 import javax.swing.*;
 
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.*;
 
 /**

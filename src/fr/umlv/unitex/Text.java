@@ -28,6 +28,7 @@ import javax.swing.*;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
 
@@ -153,13 +154,7 @@ public class Text {
 	 *            file name
 	 */
 	static void loadSnt(File snt,boolean taggedText) {
-		InternalFrameManager manager=UnitexFrame.getFrameManager();
-		manager.newTextFrame(snt,taggedText);
-		try {
-			manager.getTextFrame().setSelected(true);
-		} catch (java.beans.PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		UnitexFrame.getFrameManager().newTextFrame(snt,taggedText);
 	}
 
 	/**

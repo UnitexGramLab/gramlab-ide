@@ -33,7 +33,6 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Text;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.process.*;
 

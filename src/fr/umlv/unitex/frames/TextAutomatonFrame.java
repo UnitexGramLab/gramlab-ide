@@ -74,7 +74,6 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.TfstGraphicalZone;
 import fr.umlv.unitex.TfstTextField;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
