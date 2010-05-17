@@ -30,6 +30,7 @@ import java.io.*;
 import javax.swing.*;
 
 import fr.umlv.unitex.conversion.*;
+import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
@@ -303,19 +304,15 @@ public class MyDropTarget {
 		}
 
 		private void processDropList(List<?> list) {
-			if (!ConversionFrame.isFrameVisible()) {
-				// this case should never happen
-				return;
-			}
+			TranscodingFrame frame=UnitexFrame.getFrameManager().newTranscodingFrame();
 			Object o;
-			File f;
 			for (int i = 0; i < list.size(); i++) {
 				o = list.get(i);
 				if (!(o instanceof File)) {
 					return;
 				}
-				f = (File) o;
-				DefaultListModel model = ConversionFrame.getListModel();
+				File f = (File) o;
+				DefaultListModel model = frame.getListModel();
 				if (!model.contains(f)) {
 					model.addElement(f);
 				}

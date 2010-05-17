@@ -69,6 +69,7 @@ public class InternalFrameManager {
 	private StatisticsFrameFactory statisticsFrameFactory=new StatisticsFrameFactory();
 	private HelpOnCommandFrameFactory helpOnCommandFrameFactory=new HelpOnCommandFrameFactory();
 	private ProcessInfoFrameFactory processInfoFrameFactory=new ProcessInfoFrameFactory();
+	private TranscodingFrameFactory transcodingFrameFactory=new TranscodingFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -756,5 +757,20 @@ public class InternalFrameManager {
 		}
 		f.launchBuilderCommands();
 		return true;
+		/* TODO retourner les frame */
 	}
+
+	public TranscodingFrame newTranscodingFrame() {
+		TranscodingFrame f=transcodingFrameFactory.newTranscodingFrame();
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
 }
