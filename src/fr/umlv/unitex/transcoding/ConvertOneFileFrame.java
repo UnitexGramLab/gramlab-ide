@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.conversion;
+package fr.umlv.unitex.transcoding;
 
 import java.awt.GridLayout;
 import java.io.File;

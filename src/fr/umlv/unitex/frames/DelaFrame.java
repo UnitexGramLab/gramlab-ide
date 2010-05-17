@@ -35,6 +35,7 @@ import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
 import fr.umlv.unitex.process.commands.ConvertCommand;
+import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 
 /**
  * This class describes a frame used to display a dictionary.
