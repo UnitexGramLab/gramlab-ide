@@ -55,6 +55,7 @@ public class GraphCollection {
          destGraph,
          copy,
          UnitexFrame.getFrameManager().getMessageWhileWorkingFrame().getLabel());
+      UnitexFrame.getFrameManager().closeMessageWhileWorkingFrame();
    }
 
    /**
