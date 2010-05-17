@@ -35,6 +35,18 @@ import fr.umlv.unitex.Text;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.DicoCommand;
+import fr.umlv.unitex.process.commands.FlattenCommand;
+import fr.umlv.unitex.process.commands.Fst2TxtCommand;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.MessageCommand;
+import fr.umlv.unitex.process.commands.MkdirCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.PolyLexCommand;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 
 /**
  * This class describes a dialog box that allows the user to parameter the

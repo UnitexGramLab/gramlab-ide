@@ -37,6 +37,9 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.DicoCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
 
 /**
  * This class defines the "Apply Lexical Resources" frame, accessible from the

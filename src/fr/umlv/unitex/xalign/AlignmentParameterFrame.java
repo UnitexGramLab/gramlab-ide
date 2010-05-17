@@ -30,6 +30,9 @@ import javax.swing.event.*;
 import fr.umlv.unitex.*;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.XMLizerCommand;
 
 
 /**

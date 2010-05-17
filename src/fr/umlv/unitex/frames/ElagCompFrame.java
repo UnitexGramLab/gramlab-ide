@@ -33,6 +33,10 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ElagCompCommand;
+import fr.umlv.unitex.process.commands.FlattenCommand;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.MultiCommands;
 
 /**
  * 

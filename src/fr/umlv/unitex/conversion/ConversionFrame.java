@@ -35,6 +35,7 @@ import fr.umlv.unitex.*;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ConvertCommand;
 
 /**
  * This class provides a file transcoding internal frame.

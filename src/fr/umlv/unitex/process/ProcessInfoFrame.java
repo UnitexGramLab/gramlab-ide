@@ -31,6 +31,10 @@ import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.process.commands.AbstractMethodCommand;
+import fr.umlv.unitex.process.commands.CommandBuilder;
+import fr.umlv.unitex.process.commands.MessageCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
 
 /**
  * This class describes a frame used to execute shell commands and display
