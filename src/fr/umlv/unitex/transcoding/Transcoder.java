@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.conversion;
+package fr.umlv.unitex.transcoding;
 
 import java.io.BufferedReader;
 import java.io.IOException;
