@@ -30,6 +30,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import fr.umlv.unitex.*;
+import fr.umlv.unitex.frames.PreprocessDialog;
 import fr.umlv.unitex.process.*;
 
 public class XAlignFrame {
@@ -248,7 +249,7 @@ public class XAlignFrame {
 					DicoCommand dico=new DicoCommand()
 						.snt(snt).alphabet(alphabet)
 						.morphologicalDic(Config.morphologicalDic(language));
-					ArrayList<File> param = PreprocessFrame.getDefaultDicList(language);
+					ArrayList<File> param = PreprocessDialog.getDefaultDicList(language);
 					if (param != null && param.size() > 0) {
 						dico = dico.dictionaryList(param);
 						commands.addCommand(dico);

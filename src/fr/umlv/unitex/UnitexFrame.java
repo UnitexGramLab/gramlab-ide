@@ -279,7 +279,7 @@ public class UnitexFrame extends JFrame {
 				String txt = Config.getCurrentSnt().getAbsolutePath();
 				txt = txt.substring(0, txt.length() - 3);
 				txt = txt + "txt";
-				new PreprocessFrame(new File(txt), Config.getCurrentSnt());
+				frameManager.newPreprocessDialog(new File(txt), Config.getCurrentSnt());
 			}
 		};
 		preprocessText.setEnabled(false);

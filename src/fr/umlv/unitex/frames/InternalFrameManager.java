@@ -65,6 +65,7 @@ public class InternalFrameManager {
 	private MessageWhileWorkingFrameFactory messageWhileWorkingFrameFactory=new MessageWhileWorkingFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
+	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -686,4 +687,17 @@ public class InternalFrameManager {
 	public MessageWhileWorkingFrame getMessageWhileWorkingFrame() {
 		return messageWhileWorkingFrameFactory.getMessageWhileWorkingFrame();
 	}
+
+
+	public boolean newPreprocessDialog(File text, File sntFile) {
+		return newPreprocessDialog(text, sntFile, false);
+	}
+	
+	public boolean newPreprocessDialog(File text, File sntFile, boolean taggedText) {
+		PreprocessDialog d=preprocessDialogFactory.newPreprocessDialog(text,sntFile,taggedText);
+		if (d==null) return false;
+		d.setVisible(true);
+		return true;
+	}
+
 }
