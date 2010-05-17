@@ -138,6 +138,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.closeConstructTfstFrame();
 				frameManager.closeConvertTfstToTextFrame();
 				frameManager.closeLocateFrame();
+				frameManager.closeStatisticsFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {

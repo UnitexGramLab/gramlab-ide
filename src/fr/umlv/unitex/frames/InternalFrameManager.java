@@ -63,6 +63,7 @@ public class InternalFrameManager {
 	private LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory=new LexiconGrammarTableFrameFactory();
 	private LocateFrameFactory locateFrameFactory=new LocateFrameFactory();
 	private MessageWhileWorkingFrameFactory messageWhileWorkingFrameFactory=new MessageWhileWorkingFrameFactory();
+	private StatisticsFrameFactory statisticsFrameFactory=new StatisticsFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -698,6 +699,24 @@ public class InternalFrameManager {
 		if (d==null) return false;
 		d.setVisible(true);
 		return true;
+	}
+
+
+	public boolean newStatisticsFrame(File file,int mode) {
+		StatisticsFrame f=statisticsFrameFactory.newStatisticsFrame(file,mode);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,true);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeStatisticsFrame() {
+		statisticsFrameFactory.closeStatisticsFrame();
 	}
 
 }
