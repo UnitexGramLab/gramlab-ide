@@ -32,6 +32,7 @@ import javax.swing.event.*;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.CheckDicCommand;
 
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"

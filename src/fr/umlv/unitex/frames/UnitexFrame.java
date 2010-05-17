@@ -48,6 +48,12 @@ import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.CompressCommand;
+import fr.umlv.unitex.process.commands.ConvertCommand;
+import fr.umlv.unitex.process.commands.FlattenCommand;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.xalign.*;
 
 /**

@@ -29,6 +29,7 @@ import javax.swing.*;
 import fr.umlv.unitex.*;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ConvertCommand;
 
 /**
  * @author Sébastien Paumier

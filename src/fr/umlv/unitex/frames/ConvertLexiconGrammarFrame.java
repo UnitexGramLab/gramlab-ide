@@ -30,6 +30,7 @@ import javax.swing.border.*;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.Table2GrfCommand;
 
 /**
  * This class describes the lexicon-grammar conversion frame.

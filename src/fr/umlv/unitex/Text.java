@@ -27,10 +27,14 @@ import javax.swing.*;
 
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.exceptions.*;
-import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ConvertCommand;
+import fr.umlv.unitex.process.commands.MkdirCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.TokenizeCommand;
 
 /**
  * This class provides methods for loading corpora.

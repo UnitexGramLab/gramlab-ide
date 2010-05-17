@@ -34,6 +34,13 @@ import javax.swing.event.InternalFrameEvent;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.LocateCommand;
+import fr.umlv.unitex.process.commands.MessageCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
+import fr.umlv.unitex.process.commands.TaggerCommand;
+import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user
