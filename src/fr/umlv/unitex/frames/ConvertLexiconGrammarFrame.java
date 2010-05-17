@@ -161,7 +161,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 							command = command.subgraphName(new File(subgraphName.getText()));
 						}
 						setVisible(false);
-						new ProcessInfoFrame(command, true, null);
+						Launcher.exec(command, true, null);
 					}
 				});
 			}

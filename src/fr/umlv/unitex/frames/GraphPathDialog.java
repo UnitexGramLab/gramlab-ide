@@ -156,7 +156,7 @@ public class GraphPathDialog extends JDialog {
 				commands.addCommand(grfCmd);
 				commands.addCommand(cmd);
 				textArea.reset();
-				new ProcessInfoFrame(commands, true, new ShowPathsDo(list));
+				Launcher.exec(commands, true, new ShowPathsDo(list));
 			}
 		};
 		JButton GO = new JButton(goAction);

@@ -125,7 +125,7 @@ public class CheckDicFrame extends JInternalFrame {
 		
 		File tmp = new File(Config.getCurrentDELA().getParentFile(),"CHECK_DIC.TXT");
 		UnitexFrame.getFrameManager().closeCheckResultFrame();
-		new ProcessInfoFrame(command.getBuilder(), true, new CheckDicDo(tmp));
+		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
 
 	class CheckDicDo implements ToDo {

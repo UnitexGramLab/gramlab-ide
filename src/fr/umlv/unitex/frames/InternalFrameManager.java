@@ -30,6 +30,9 @@ import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.process.commands.MultiCommands;
+
 /**
  * This class is responsible for managing all internal frames in Unitex
  * main frame.
@@ -65,6 +68,7 @@ public class InternalFrameManager {
 	private MessageWhileWorkingFrameFactory messageWhileWorkingFrameFactory=new MessageWhileWorkingFrameFactory();
 	private StatisticsFrameFactory statisticsFrameFactory=new StatisticsFrameFactory();
 	private HelpOnCommandFrameFactory helpOnCommandFrameFactory=new HelpOnCommandFrameFactory();
+	private ProcessInfoFrameFactory processInfoFrameFactory=new ProcessInfoFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -737,5 +741,20 @@ public class InternalFrameManager {
 	public void closeHelpOnCommandFrame() {
 		helpOnCommandFrameFactory.closeHelpOnCommandFrame();
 	}
+	
 
+	public boolean newProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo,
+			boolean stopIfProblem) {
+		ProcessInfoFrame f=processInfoFrameFactory.newProcessInfoFrame(c,close,myDo,stopIfProblem);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,true);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		f.launchBuilderCommands();
+		return true;
+	}
 }

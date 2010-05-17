@@ -97,10 +97,7 @@ public class DelaFrame extends JInternalFrame {
 				ConvertOneFileFrame.reset();
 				ConvertCommand res = ConvertOneFileFrame
 						.getCommandLineForConversion(dela);
-				if (res == null) {
-					return;
-				}
-				new ProcessInfoFrame(res, true, toDo);
+				Launcher.exec(res, true, toDo);
 			} else {
 				toDo.toDo();
 			}

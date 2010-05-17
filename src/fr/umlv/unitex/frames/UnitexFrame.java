@@ -1296,7 +1296,7 @@ public class UnitexFrame extends JFrame {
 			return;
 		}
 			Grf2Fst2Command command = new Grf2Fst2Command().grf(currentFrame.getGraph()).enableLoopAndRecursionDetection(true).tokenizationMode().library();
-			new ProcessInfoFrame(command, false);
+			Launcher.exec(command, false);
 	}
 
 
@@ -1364,21 +1364,7 @@ public class UnitexFrame extends JFrame {
 			commands.addCommand(new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library());
 			commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
 					.resultType(!rtn.isSelected()).depth(depth.getText()));
-			/*if(Config.isKorean()) {
-				File map_encoder = new File(Config.getUserCurrentLanguageDir(),"jamoTable.txt");
-				if(map_encoder.exists()){
-					Syl2JamoCommand sy2jamoConv = new Syl2JamoCommand()
-					.optionForIncludeJamo()
-					.optionForMapJamo(map_encoder)
-					.optionRemplace()
-					.src(new File(name_fst2));
-					
-					commands.addCommand(sy2jamoConv);
-			
-				}
-			}*/
-
-			new ProcessInfoFrame(commands, false);
+			Launcher.exec(commands, false);
 		}
 	}
 	/**
@@ -1389,40 +1375,6 @@ public class UnitexFrame extends JFrame {
 	 */
 	JTextField destDirectory = new JTextField("");
 	JLabel compileGrapheMorphemeOption = new JLabel("-c SS=0x318D");
-	/**
-	 * Gets a list of all ".bin" files found in a directory.
-	 * 
-	 * @param dir
-	 *            the directory to be scanned
-	 * @return a <code>Vector</code> containing file names.
-	 */
-	File getSufList(File dir,String extFilter) {
-		File slf = new File(dir,"SufList.txt");
-//		if (!dir.exists())			return slf;
-		File files_list[] = dir.listFiles();
-		try {
-			slf.createNewFile();
-			BufferedWriter bw = new BufferedWriter(new FileWriter(slf));
-			for (int i = 0; i < files_list.length; i++) {
-				String s = files_list[i].getName();
-				if (!files_list[i].isDirectory()
-						&& s.endsWith(extFilter)) {
-					s = s + "\r\n";
-					bw.write(s, 0, s.length());					
-				}
-			}
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return slf;
-	}
-	
-	
-	
-	
-	
-	
 
 	/**
 	 * Shows a dialog box to select a dictionary. If a dictionary is selected,
@@ -1447,10 +1399,7 @@ public class UnitexFrame extends JFrame {
 				ConvertOneFileFrame.reset();
 				ConvertCommand res = ConvertOneFileFrame
 						.getCommandLineForConversion(dela);
-				if (res == null) {
-					return;
-				}
-				new ProcessInfoFrame(res, true, toDo);
+				Launcher.exec(res, true, toDo);
 			} else {
 				toDo.toDo();
 			}
@@ -1474,7 +1423,7 @@ public class UnitexFrame extends JFrame {
 			command = command.sortAlphabet();
 		}
 		frameManager.closeDelaFrame();
-		new ProcessInfoFrame(command, true, new DelaDo(Config.getCurrentDELA()));
+		Launcher.exec(command, true, new DelaDo(Config.getCurrentDELA()));
 	}
 
 	/**
@@ -1485,7 +1434,7 @@ public class UnitexFrame extends JFrame {
 	public void compressDELA() {
 		CompressCommand command = new CompressCommand().name(Config
 				.getCurrentDELA());
-		new ProcessInfoFrame(command, false, null);
+		Launcher.exec(command, false, null);
 	}
 
 

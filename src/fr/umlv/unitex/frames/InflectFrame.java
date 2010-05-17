@@ -147,7 +147,7 @@ public class InflectFrame extends JInternalFrame {
     	if (Config.isKorean()) {
     		command=command.korean();
     	}
-        new ProcessInfoFrame(command, false, null);
+    	Launcher.exec(command, false, null);
 	}
 
 }

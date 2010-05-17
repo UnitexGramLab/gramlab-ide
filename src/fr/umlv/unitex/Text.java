@@ -61,10 +61,7 @@ public class Text {
         ConvertOneFileFrame.reset();
 				ConvertCommand res = ConvertOneFileFrame
 						.getCommandLineForConversion(name);
-				if (res == null) {
-					return;
-				}
-				new ProcessInfoFrame(res, true, toDo);
+				Launcher.exec(res, true, toDo);
 			} else {
 				toDo.toDo();
 			}
@@ -147,7 +144,7 @@ public class Text {
 		 * problem when trying to close the .snt file that is mapped */
 		UnitexFrame.getFrameManager().closeTextFrame();
 		Text.removeSntFiles();
-		new ProcessInfoFrame(commands, true, new TextDo(Config.getCurrentSnt(),taggedText));
+		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),taggedText));
 	}
 
 	/**
