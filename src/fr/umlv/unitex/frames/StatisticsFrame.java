@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -31,18 +31,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.StatisticsTableModelMode0;
+import fr.umlv.unitex.StatisticsTableModelMode1;
+import fr.umlv.unitex.StatisticsTableModelMode2;
+
+
 public class StatisticsFrame extends JInternalFrame {
 
-	public static StatisticsFrame frame;
-
-	public StatisticsFrame(File file,int mode) {
+	StatisticsFrame(File file,int mode) {
 		super("Statistics", true, true, true, true);
 		JPanel top = new JPanel();
 		top.setOpaque(true);
@@ -57,17 +59,6 @@ public class StatisticsFrame extends JInternalFrame {
 		top.add(scroll, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
-		setVisible(true);
-		frame = this;
-		UnitexFrame.addInternalFrame(this,true);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-				UnitexFrame.removeInternalFrame(frame);
-				frame = null;
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
 	
@@ -128,17 +119,4 @@ public class StatisticsFrame extends JInternalFrame {
         }
     }
     
-
-    /**
-	 * Closes the frame
-	 *  
-	 */
-	public static void closeFrame() {
-		if (frame != null) {
-			frame.setVisible(false);
-			UnitexFrame.removeInternalFrame(frame);
-			frame = null;
-		}
-	}
-
 }

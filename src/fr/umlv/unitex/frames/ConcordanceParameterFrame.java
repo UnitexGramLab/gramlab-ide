@@ -33,7 +33,6 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.StatisticsFrame;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.Util;
@@ -641,10 +640,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	    }
 	    
         public void toDo() {
-            if (StatisticsFrame.frame!=null) {
-                StatisticsFrame.frame.doDefaultCloseAction();
-            }
-            new StatisticsFrame(f,mode);
+            UnitexFrame.getFrameManager().newStatisticsFrame(f,mode);
         }
 	    
 	}
