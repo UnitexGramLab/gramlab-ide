@@ -63,7 +63,7 @@ public class TextFrame extends JInternalFrame {
 		};
 		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(fontListener);
       JPanel up= new JPanel(new GridLayout(2, 1));
-      up.setOpaque(true);
+      /* TODO enlever les JPanel.setOpaque(true) inutiles */
       up.setBorder(new EmptyBorder(2, 2, 2, 2));
       up.add(ligne1);
       up.add(ligne2);

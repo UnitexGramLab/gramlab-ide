@@ -21,12 +21,27 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.lang.reflect.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.*;
-import fr.umlv.unitex.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
+
+import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
@@ -296,8 +311,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 								setTitle("");
 							}
 							if (!PB && CL) {
-								ProcessInfoFrame.this.setVisible(false);
-								UnitexFrame.removeInternalFrame(ProcessInfoFrame.this);
+								dispose();
 							}
 						}});
 				} catch (InterruptedException e) {
