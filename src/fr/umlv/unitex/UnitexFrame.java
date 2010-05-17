@@ -532,7 +532,8 @@ public class UnitexFrame extends JFrame {
 		JMenuItem graphCollection = new JMenuItem("Build Graph Collection");
 		graphCollection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new GraphCollectionDialog();
+				/* TODO ajouter un changeLanguageListener */
+				frameManager.newGraphCollectionFrame();
 			}
 		});
 		tools.add(sortNodeLabel);

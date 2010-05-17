@@ -22,15 +22,22 @@
 package fr.umlv.unitex.frames;
 
 
-public class GraphPathDialogFactory {
+public class GraphCollectionFrameFactory {
 
-	private GraphPathDialog dialog;
+	private GraphCollectionFrame frame;
 	
-	GraphPathDialog newGraphPathDialog() {
-		if (dialog==null) {
-			dialog=new GraphPathDialog();
+	GraphCollectionFrame newGraphCollectionFrame() {
+		if (frame==null) {
+			frame=new GraphCollectionFrame();
 		}
-		return dialog;
+		return frame;
+	}
+	
+	void closeGraphCollectionFrame() {
+		if (frame==null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
 	}
 
 }
