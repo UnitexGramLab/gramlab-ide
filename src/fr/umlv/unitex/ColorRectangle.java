@@ -22,8 +22,10 @@
 package fr.umlv.unitex;
 
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  * This class defines a color rectangle.

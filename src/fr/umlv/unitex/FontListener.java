@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
+import java.awt.Font;
 
 public interface FontListener {
 

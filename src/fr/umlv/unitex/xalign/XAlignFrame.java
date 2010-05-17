@@ -21,18 +21,43 @@
 
 package fr.umlv.unitex.xalign;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.nio.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.util.ArrayList;
+import java.util.Properties;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import fr.umlv.unitex.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.frames.PreprocessDialog;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;

@@ -21,14 +21,46 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphAlignmentMenu;
@@ -42,12 +74,12 @@ import fr.umlv.unitex.TfstTextField;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.conversion.*;
-import fr.umlv.unitex.editor.*;
-import fr.umlv.unitex.exceptions.*;
-import fr.umlv.unitex.io.*;
+import fr.umlv.unitex.editor.FileEditionMenu;
+import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.print.PrintManager;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.CompressCommand;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
@@ -55,7 +87,7 @@ import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
-import fr.umlv.unitex.xalign.*;
+import fr.umlv.unitex.xalign.AlignmentParameterFrame;
 
 /**
  * This is the main frame of the Unitex system.

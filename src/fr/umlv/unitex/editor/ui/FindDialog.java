@@ -21,10 +21,12 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JTabbedPane;
 
 import fr.umlv.unitex.frames.UnitexFrame;
 

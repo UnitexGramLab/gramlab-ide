@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.process;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 
 /**
  * This class provides a list model with a method to replace the last element.

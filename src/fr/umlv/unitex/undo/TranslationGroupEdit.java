@@ -21,11 +21,11 @@
 
 package fr.umlv.unitex.undo;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import javax.swing.undo.*;
+import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.*;
+import fr.umlv.unitex.GenericGraphBox;
 
 /**
  * Class used to save the state of the graph before translate boxes

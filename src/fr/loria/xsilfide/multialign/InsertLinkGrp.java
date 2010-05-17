@@ -34,11 +34,19 @@
 
 package fr.loria.xsilfide.multialign;
 
-import org.apache.xerces.dom.*;
-import org.w3c.dom.*;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
+
+import org.apache.xerces.dom.DocumentImpl;
+import org.apache.xerces.dom.ElementImpl;
+import org.apache.xerces.dom.TextImpl;
 import org.apache.xerces.parsers.DOMParser;
-import fr.loria.nguyen.mytools.*;
-import java.util.*;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import fr.loria.nguyen.mytools.XMLTools;
 
 class InsertLinkGrp
 {
@@ -54,7 +62,7 @@ class InsertLinkGrp
     // [x1, d1p1s1, 47]
     // et ecrit dans le document :
     // <xptr from="ID (idDanstarget)" id="x1"> 
-    // Le pb est que on a changé la forme du résultat !
+    // Le pb est que on a changï¿½ la forme du rï¿½sultat !
     
   public ElementImpl CreateXptr(DocumentImpl xdoc,Vector xp)
   {
@@ -130,10 +138,10 @@ class InsertLinkGrp
     // and true if we build a result into a pre-existing file
     // (new way of doing things in xalign)
 
-    // idem in french : Bertrand.Gaiffe@atilf.fr   7 décembre 2006
-    // Ajout d'un booléen addingMode qui vaut faux si on 
-    // fabrique un résultat à partir de rien (ancien comportement)
-    // et vrai si on ajoute dans un fichier pré-existant.
+    // idem in french : Bertrand.Gaiffe@atilf.fr   7 dï¿½cembre 2006
+    // Ajout d'un boolï¿½en addingMode qui vaut faux si on 
+    // fabrique un rï¿½sultat ï¿½ partir de rien (ancien comportement)
+    // et vrai si on ajoute dans un fichier prï¿½-existant.
 
   public InsertLinkGrp(String fileName,
 		       String sLang, String tLang,
@@ -150,7 +158,7 @@ class InsertLinkGrp
     DocumentImpl xdoc = null;
     Node whereToInsert = null;
 
-    // On ne veut plus forcément partir d'un document vide...
+    // On ne veut plus forcï¿½ment partir d'un document vide...
 
     if (addingMode){
 	// il faut qu'on lise fileName. Qu'on regarde dedans s'il contient
@@ -160,10 +168,10 @@ class InsertLinkGrp
 	try{
 	    parser.parse(fileName);
 	    xdoc = (DocumentImpl)(parser.getDocument());
-	    // On cherche maintenant où insérer...
+	    // On cherche maintenant oï¿½ insï¿½rer...
 	    whereToInsert = xdoc.getDocumentElement();
 	    // il faut qu'on aille dans le body
-	    // je ne veux pas trop préjuger de la forme du document...
+	    // je ne veux pas trop prï¿½juger de la forme du document...
 	    whereToInsert = findBody(whereToInsert);
 	    if (whereToInsert == null){
 		System.err.println("No body element found in "+fileName+"\nBye.\n");
@@ -178,7 +186,7 @@ class InsertLinkGrp
     }
     else{ // Ancienne forme d'appel...
 	xdoc = new DocumentImpl();
-	// On ajoute quand même un peu de sauce autour pour en faire un document TEI
+	// On ajoute quand mï¿½me un peu de sauce autour pour en faire un document TEI
 	Element nouveauxNoeuds, teiNode, fileDescNode, sourceDescNode;
 
 	// Got to change this once more !
@@ -252,7 +260,7 @@ class InsertLinkGrp
 	nnn.setAttribute("type", "alignmentDomain");
 	nouveauxNoeuds.appendChild(nnn); */
 
-	// On ajoute aussi un linkGrp de type cognate pour désigner
+	// On ajoute aussi un linkGrp de type cognate pour dï¿½signer
 	// les fichiers mis en correspondance.
 
     }

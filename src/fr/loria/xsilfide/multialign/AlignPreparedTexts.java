@@ -31,8 +31,9 @@
 
 package fr.loria.xsilfide.multialign;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.Vector;
 
 /**
  * Align 2 texts that have been prepared and save the result

@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex;
 
-import java.util.*;
+import java.util.Vector;
 
 /**
  * This class is used to store information on a box. It is used for doing 

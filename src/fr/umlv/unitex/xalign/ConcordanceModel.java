@@ -21,9 +21,9 @@
 
 package fr.umlv.unitex.xalign;
 
-import java.util.*;
+import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.ListModel;
 
 public interface ConcordanceModel extends ListModel {
 

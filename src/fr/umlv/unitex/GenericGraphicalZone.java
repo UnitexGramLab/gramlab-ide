@@ -21,17 +21,34 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.undo.*;
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.UndoableEdit;
+import javax.swing.undo.UndoableEditSupport;
 
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.undo.*;
+import fr.umlv.unitex.undo.AddBoxEdit;
+import fr.umlv.unitex.undo.BoxGroupTextEdit;
+import fr.umlv.unitex.undo.BoxTextEdit;
+import fr.umlv.unitex.undo.DeleteBoxGroupEdit;
+import fr.umlv.unitex.undo.SelectEdit;
+import fr.umlv.unitex.undo.TransitionEdit;
+import fr.umlv.unitex.undo.TransitionGroupEdit;
+import fr.umlv.unitex.undo.TranslationEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.

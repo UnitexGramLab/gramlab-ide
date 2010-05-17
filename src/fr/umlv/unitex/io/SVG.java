@@ -21,11 +21,17 @@
 
 package fr.umlv.unitex.io;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Date;
 
-import fr.umlv.unitex.*;
+import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.GraphicalZone;
+import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**

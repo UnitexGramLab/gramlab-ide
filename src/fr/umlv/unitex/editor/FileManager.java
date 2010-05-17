@@ -21,17 +21,32 @@
 
 package fr.umlv.unitex.editor;
 
-import java.awt.event.*;
-import java.awt.image.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.channels.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
 
-import javax.swing.*;
-import javax.swing.text.*;
+import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.StringContent;
 
-import fr.umlv.unitex.*;
-import fr.umlv.unitex.editor.ui.*;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.Util;
+import fr.umlv.unitex.editor.ui.FileEditionTextFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
