@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.process;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +30,8 @@ import fr.umlv.unitex.*;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.process.ProcessInfoThread;
+import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.commands.AbstractMethodCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MessageCommand;
@@ -44,19 +45,16 @@ import fr.umlv.unitex.process.commands.MultiCommands;
  * 
  */
 public class ProcessInfoFrame extends JInternalFrame {
+
 	Process p;
-
 	ProcessOutputListModel stdoutModel = new ProcessOutputListModel();
-
 	ProcessOutputListModel stderrModel = new ProcessOutputListModel();
-
 	JList stdoutList = new JList(stdoutModel);
-
 	JList stderrList = new JList(stderrModel);
 
-	public static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
+	public final static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
 
-	public static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
+	final static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
 
 		@Override
 		public Component getListCellRendererComponent(JList l, Object value,
@@ -70,28 +68,9 @@ public class ProcessInfoFrame extends JInternalFrame {
 	};
 
 	boolean close_on_finish;
-
 	boolean stop_if_problem;
-
 	MultiCommands commands = null;
-
 	ToDo DO;
-
-	/**
-	 * Creates a new <code>ProcessInfoFrame</code>
-	 * 
-	 * @param c
-	 *            array containing the shell commands to run
-	 * @param close
-	 *            indicates if the frame must be closed after the completion of
-	 *            all commands
-	 * @param myDo
-	 *            object describing actions to do after the completion of all
-	 *            commands
-	 */
-	public ProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo) {
-		this(c, close, myDo, true);
-	}
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -107,7 +86,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	 * @param stopIfProblem
 	 *            indicates if the failure of a command must stop all commands
 	 */
-	public ProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo,
+	ProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo,
 			boolean stopIfProblem) {
 		super("Working...", true, false, false);
 		commands = c;
@@ -115,7 +94,6 @@ public class ProcessInfoFrame extends JInternalFrame {
 		stop_if_problem = stopIfProblem;
 		DO = myDo;
 		JPanel top = new JPanel();
-		top.setOpaque(true);
 		top.setLayout(new BorderLayout());
 		stdoutList.setCellRenderer(myRenderer);
 		stderrList.setCellRenderer(myRenderer);
@@ -123,12 +101,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 		stderrList.setForeground(Color.RED);
 		JScrollPane errorScroll = new JScrollPane(stderrList);
 		JPanel tmp = new JPanel();
-		tmp.setOpaque(true);
 		tmp.setLayout(new BorderLayout());
 		tmp.setBorder(BorderFactory.createLoweredBevelBorder());
 		tmp.add(scroll, BorderLayout.CENTER);
 		JPanel tmp2 = new JPanel();
-		tmp2.setOpaque(true);
 		tmp2.setLayout(new BorderLayout());
 		tmp2.setBorder(BorderFactory.createLoweredBevelBorder());
 		tmp2.add(errorScroll, BorderLayout.CENTER);
@@ -144,22 +120,20 @@ public class ProcessInfoFrame extends JInternalFrame {
 						return;
 					}
 				}
-				setVisible(false);
-				UnitexFrame.removeInternalFrame(ProcessInfoFrame.this);
+				dispose();
 			}
 		};
 		JButton ok = new JButton(okAction);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				if (p != null)
+				if (p != null) {
 					p.destroy();
-				setVisible(false);
-				UnitexFrame.removeInternalFrame(ProcessInfoFrame.this);
+				}
+				dispose();
 			}
 		};
 		JButton cancel = new JButton(cancelAction);
 		JPanel buttons = new JPanel(new GridLayout(1, 2));
-		buttons.setOpaque(true);
 		buttons.add(ok);
 		buttons.add(cancel);
 		top.add(buttons, BorderLayout.SOUTH);
@@ -171,54 +145,11 @@ public class ProcessInfoFrame extends JInternalFrame {
 		setContentPane(top);
 		pack();
 		setBounds(100, 100, 600, 400);
-		UnitexFrame.addInternalFrame(this,true);
-		setVisible(true);
-		launchBuilderCommands();
 	}
 
-	/**
-	 * Creates a new <code>ProcessInfoFrame</code>
-	 * 
-	 * @param c
-	 *            array containing the shell commands to run
-	 * @param close
-	 *            indicates if the frame must be closed after the completion of
-	 *            all commands
-	 */
-	public ProcessInfoFrame(MultiCommands c, boolean close) {
-		this(c, close, null);
-	}
 
-	/**
-	 * Creates a new <code>ProcessInfoFrame</code>
-	 * 
-	 * @param c
-	 *            the shell command to run
-	 * @param close
-	 *            indicates if the frame must be closed after the completion of
-	 *            all commands
-	 */
-	public ProcessInfoFrame(CommandBuilder c, boolean close) {
-		this(new MultiCommands(c), close, null);
-	}
 
-	/**
-	 * Creates a new <code>ProcessInfoFrame</code>
-	 * 
-	 * @param c
-	 *            the shell commands to run
-	 * @param close
-	 *            indicates if the frame must be closed after the completion of
-	 *            all commands
-	 * @param DO
-	 *            object describing actions to do after the completion of all
-	 *            commands
-	 */
-	public ProcessInfoFrame(CommandBuilder c, boolean close, ToDo DO) {
-		this(new MultiCommands(c), close, DO);
-	}
-
-	private void launchBuilderCommands() {
+	void launchBuilderCommands() {
 		if (commands == null)
 			return;
 		new Thread() {

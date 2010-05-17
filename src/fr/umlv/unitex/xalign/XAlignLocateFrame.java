@@ -21,19 +21,45 @@
 
 package fr.umlv.unitex.xalign;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.*;
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.NumericTextField;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.Util;
+import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
+import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.*;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConcordCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
@@ -296,7 +322,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		setVisible(false);
 		UnitexFrame.removeInternalFrame(this);
 		foo=Util.getFileNameWithoutExtension(indFile)+".txt";
-		new ProcessInfoFrame(commands,true,new XAlignLocateDo(new File(foo),concordModel),false);
+		Launcher.exec(commands,true,new XAlignLocateDo(new File(foo),concordModel),false);
 	}
 
 

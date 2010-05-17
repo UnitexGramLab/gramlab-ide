@@ -405,7 +405,7 @@ public class LocateFrame extends JInternalFrame {
 		}
 		setVisible(false);
 		savePreviousConcordance();
-		new ProcessInfoFrame(commands,true,toDo);
+		Launcher.exec(commands,true,toDo);
 	}
 
 	/**

@@ -169,7 +169,7 @@ public class XAlignFrame {
 						XAlignCommand cmd=new XAlignCommand();
 						cmd=cmd.source(f1).target(f2).properties(alignmentProperties)
 							.alignment(alignementFile);
-						new ProcessInfoFrame(cmd,true,new XAlignDo(model,alignementFile));
+						Launcher.exec(cmd,true,new XAlignDo(model,alignementFile));
 					}});
 			}});
 		JButton saveButton=new JButton("Save alignment");
@@ -273,7 +273,7 @@ public class XAlignFrame {
 							});
 						}
 					};
-					new ProcessInfoFrame(commands,true,toDo,true);
+					Launcher.exec(commands,true,toDo,true);
 					return;
 				}
 				new XAlignLocateFrame(language,snt,concordModel);

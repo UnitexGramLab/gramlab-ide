@@ -29,7 +29,6 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.process.*;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
 

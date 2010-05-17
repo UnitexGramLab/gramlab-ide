@@ -78,7 +78,7 @@ import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.EatStreamThread;
-import fr.umlv.unitex.process.ProcessInfoFrame;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ElagCommand;
 import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
 import fr.umlv.unitex.process.commands.RebuildTfstCommand;
@@ -335,8 +335,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             UnitexFrame.getFrameManager().closeTextAutomatonFrame();
             RebuildTfstCommand command = new RebuildTfstCommand()
           .automaton(new File(Config.getCurrentSntDir(),"text.tfst"));
-        new ProcessInfoFrame(command, true,
-          new RebuildTextAutomatonDo());
+            Launcher.exec(command, true, new RebuildTextAutomatonDo());
           }
         });
       }
@@ -753,9 +752,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 				elagrules).output(elag_tfst).automaton(text_tfst);
 
 		if (implodeCheckBox.isSelected()) {
-			new ProcessInfoFrame(elagcmd, false, new ImploseDo(elag_tfst));
+			Launcher.exec(elagcmd, false, new ImploseDo(elag_tfst));
 		} else {
-			new ProcessInfoFrame(elagcmd, false, new loadSentenceDo());
+			Launcher.exec(elagcmd, false, new loadSentenceDo());
 		}
 	}
 
@@ -809,7 +808,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		TagsetNormTfstCommand tagsetcmd = new TagsetNormTfstCommand().tagset(
 				new File(Config.getCurrentElagDir(), "tagset.def"))
 				.automaton(f);
-		new ProcessInfoFrame(tagsetcmd, true, new loadSentenceDo());
+		Launcher.exec(tagsetcmd, true, new loadSentenceDo());
 		return true;
 	}
 
@@ -819,7 +818,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			return false;
 		}
 		ImplodeTfstCommand imploseCmd = new ImplodeTfstCommand().automaton(f);
-		new ProcessInfoFrame(imploseCmd, true, new loadSentenceDo());
+		Launcher.exec(imploseCmd, true, new loadSentenceDo());
 		return true;
 	}
 
@@ -833,9 +832,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 				new File(Config.getCurrentElagDir(), "tagset.def")).automaton(
 				text_tfst);
 		if (implode) {
-			new ProcessInfoFrame(tagsetcmd, false, new ImploseDo(text_tfst));
+			Launcher.exec(tagsetcmd, false, new ImploseDo(text_tfst));
 		} else {
-			new ProcessInfoFrame(tagsetcmd, false, new loadSentenceDo());
+			Launcher.exec(tagsetcmd, false, new loadSentenceDo());
 		}
 	}
 
