@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -27,8 +27,9 @@ import java.io.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.LexiconGrammarTableFrame;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -37,52 +38,20 @@ import fr.umlv.unitex.process.*;
  * @author Sébastien Paumier
  *  
  */
-public class LexiconGrammarFrame extends JInternalFrame {
+public class ConvertLexiconGrammarFrame extends JInternalFrame {
 
-	static LexiconGrammarFrame frame;
 	JTextField grfName = new JTextField();
 	JTextField resultName = new JTextField();
 	JTextField subgraphName = new JTextField();
 
-	private LexiconGrammarFrame() {
+	ConvertLexiconGrammarFrame() {
 		super("Compile Lexicon-Grammar to GRF", false, true);
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
-		setVisible(false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		/* TODO virer les setResizable(false) inutiles */
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new LexiconGrammarFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -120,10 +89,7 @@ public class LexiconGrammarFrame extends JInternalFrame {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				System.out.println(dialogBox.getSelectedFile());
-				System.out.println(dialogBox.getSelectedFile()
-						.getAbsolutePath());
-				frame.grfName.setText(dialogBox.getSelectedFile()
+				grfName.setText(dialogBox.getSelectedFile()
 						.getAbsolutePath());
 			}
 		};
@@ -141,7 +107,7 @@ public class LexiconGrammarFrame extends JInternalFrame {
 						.getAbsolutePath();
 				if (!s.endsWith(".grf"))
 					s = s + ".grf";
-				frame.resultName.setText(s);
+				resultName.setText(s);
 			}
 		};
 		JButton setResultName = new JButton(setResultAction);
@@ -158,7 +124,7 @@ public class LexiconGrammarFrame extends JInternalFrame {
 						.getAbsolutePath();
 				if (!s.endsWith(".grf"))
 					s = s + ".grf";
-				frame.subgraphName.setText(s);
+				subgraphName.setText(s);
 			}
 		};
 		JButton setSubgraphName = new JButton(setSubgraphAction);
@@ -179,7 +145,7 @@ public class LexiconGrammarFrame extends JInternalFrame {
 		downPanel.setOpaque(true);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
+				doDefaultCloseAction();
 			}
 		};
 		JButton CANCEL = new JButton(cancelAction);
@@ -189,12 +155,12 @@ public class LexiconGrammarFrame extends JInternalFrame {
 					public void run() {
 						Table2GrfCommand command = new Table2GrfCommand()
 								.table(new File(LexiconGrammarTableFrame.getTableName()))
-								.parametrizedGraph(new File(frame.grfName.getText()))
-								.resultMainGraph(new File(frame.resultName.getText()));
-						if (!frame.resultName.getText().equals("")) {
-							command = command.subgraphName(new File(frame.subgraphName.getText()));
+								.parametrizedGraph(new File(grfName.getText()))
+								.resultMainGraph(new File(resultName.getText()));
+						if (!resultName.getText().equals("")) {
+							command = command.subgraphName(new File(subgraphName.getText()));
 						}
-						frame.setVisible(false);
+						setVisible(false);
 						new ProcessInfoFrame(command, true, null);
 					}
 				});
