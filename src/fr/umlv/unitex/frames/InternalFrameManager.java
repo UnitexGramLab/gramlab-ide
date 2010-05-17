@@ -60,6 +60,7 @@ public class InternalFrameManager {
 	private GraphCollectionFrameFactory graphCollectionFrameFactory=new GraphCollectionFrameFactory();
 	private InflectFrameFactory inflectFrameFactory=new InflectFrameFactory();
 	private ConvertLexiconGrammarFrameFactory convertLexiconGrammarFrameFactory=new ConvertLexiconGrammarFrameFactory();
+	private LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory=new LexiconGrammarTableFrameFactory();
 
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	
@@ -569,7 +570,6 @@ public class InternalFrameManager {
 		inflectFrameFactory.closeInflectFrame();
 	}
 
-
 	public boolean newConvertLexiconGrammarFrame() {
 		ConvertLexiconGrammarFrame f=convertLexiconGrammarFrameFactory.newConvertLexiconGrammarFrame();
 		if (f==null) return false;
@@ -586,4 +586,60 @@ public class InternalFrameManager {
 	public void closeConvertLexiconGrammarFrame() {
 		convertLexiconGrammarFrameFactory.closeConvertLexiconGrammarFrame();
 	}
+
+
+
+	private ArrayList<LexiconGrammarTableFrameListener> lgFrameListeners=new ArrayList<LexiconGrammarTableFrameListener>();
+	protected boolean firingLGFrame=false;
+	
+	public void addLexiconGrammarTableFrameListener(LexiconGrammarTableFrameListener l) {
+		lgFrameListeners.add(l);
+	}
+	
+	public void removeLexiconGrammarTableFrameListener(LexiconGrammarTableFrameListener l) {
+		if (firingLGFrame) {
+			throw new IllegalStateException("Cannot remove a listener while firing");
+		}
+		lgFrameListeners.remove(l);
+	}
+	
+	protected void fireLexiconGrammarTableFrameOpened() {
+		firingLGFrame=true;
+		try {
+			for (LexiconGrammarTableFrameListener l:lgFrameListeners) {
+				l.lexiconGrammarTableFrameOpened();
+			}
+		} finally {
+			firingLGFrame=false;
+		}
+	}
+
+	protected void fireLexiconGrammarTableFrameClosed() {
+		firingLGFrame=true;
+		try {
+			for (LexiconGrammarTableFrameListener l:lgFrameListeners) {
+				l.lexiconGrammarTableFrameClosed();
+			}
+		} finally {
+			firingLGFrame=false;
+		}
+	}
+
+	public boolean newLexiconGrammarTableFrame(File file) {
+		LexiconGrammarTableFrame f=lexiconGrammarTableFrameFactory.newLexiconGrammarTableFrame(file);
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,true);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeLexiconGrammarTableFrame() {
+		lexiconGrammarTableFrameFactory.closeLexiconGrammarTableFrame();
+	}
+
 }
