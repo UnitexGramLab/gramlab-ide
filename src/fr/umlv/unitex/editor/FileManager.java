@@ -32,6 +32,7 @@ import javax.swing.text.*;
 
 import fr.umlv.unitex.*;
 import fr.umlv.unitex.editor.ui.*;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class provides methods for loading corpora 

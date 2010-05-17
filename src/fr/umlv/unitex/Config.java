@@ -28,6 +28,8 @@ import java.util.regex.*;
 
 import javax.swing.*;
 
+import fr.umlv.unitex.frames.UnitexFrame;
+
 /**
  * This class contains general configuration information. It contains constants
  * used by many other classes.

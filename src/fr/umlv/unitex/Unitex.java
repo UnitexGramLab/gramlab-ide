@@ -33,6 +33,9 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.*;
 
+import fr.umlv.unitex.frames.SplashScreen;
+import fr.umlv.unitex.frames.UnitexFrame;
+
 /**
  * This is the main class of the Unitex system.
  * 

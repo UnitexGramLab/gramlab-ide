@@ -26,7 +26,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import fr.umlv.unitex.*;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 
 public class FindDialog extends JDialog {

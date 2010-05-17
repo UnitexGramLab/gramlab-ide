@@ -30,6 +30,7 @@ import java.io.*;
 import javax.swing.*;
 
 import fr.umlv.unitex.conversion.*;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
 
@@ -168,15 +169,6 @@ public class MyDropTarget {
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						UnitexFrame.mainFrame.preprocessText.setEnabled(true);
-						UnitexFrame.mainFrame.applyLexicalResources
-								.setEnabled(true);
-						UnitexFrame.mainFrame.locatePattern.setEnabled(true);
-						UnitexFrame.mainFrame.displayLocatedSequences
-								.setEnabled(true);
-						UnitexFrame.mainFrame.constructFst.setEnabled(true);
-						UnitexFrame.mainFrame.convertFst.setEnabled(true);
-						UnitexFrame.mainFrame.closeText.setEnabled(true);
 						Text.loadCorpus(F);
 					}
 				});

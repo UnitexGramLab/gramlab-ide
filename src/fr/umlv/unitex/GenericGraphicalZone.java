@@ -30,6 +30,7 @@ import javax.swing.undo.*;
 
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.undo.*;
 
 /**

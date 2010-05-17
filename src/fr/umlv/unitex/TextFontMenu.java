@@ -28,6 +28,8 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.frames.UnitexFrame;
+
 /**
  * This class describes a dialog box that allows the user to selection the text
  * font. This font will be used to render corpora, dictionaries, token lists,

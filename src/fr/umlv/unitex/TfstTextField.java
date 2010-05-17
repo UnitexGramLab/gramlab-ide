@@ -30,6 +30,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class describes the text field used to get the box text in a sentence graph.
@@ -40,10 +41,10 @@ public class TfstTextField extends JTextField {
 
    protected TextAutomatonFrame parent;
    protected boolean modified= false;
-   protected SpecialPaste specialPaste;
-   protected SpecialCopy specialCopy;
+   public SpecialPaste specialPaste;
+   public SpecialCopy specialCopy;
    protected SelectAll selectAll;
-   protected Cut cut;
+   public Cut cut;
    protected Clipboard clip;
 
    /**
@@ -106,7 +107,7 @@ public class TfstTextField extends JTextField {
       addKeyListener(new MyKeyListener());
    }
 
-   class SpecialCopy extends TextAction implements ClipboardOwner {
+   public class SpecialCopy extends TextAction implements ClipboardOwner {
       public SpecialCopy(String s) {
          super(s);
       }
@@ -132,7 +133,7 @@ public class TfstTextField extends JTextField {
       }
    }
 
-   class SelectAll extends TextAction implements ClipboardOwner {
+   public class SelectAll extends TextAction implements ClipboardOwner {
       public SelectAll(String s) {
          super(s);
       }
@@ -150,7 +151,7 @@ public class TfstTextField extends JTextField {
       }
    }
 
-   class Cut extends TextAction implements ClipboardOwner {
+   public class Cut extends TextAction implements ClipboardOwner {
       public Cut(String s) {
          super(s);
       }
@@ -176,7 +177,7 @@ public class TfstTextField extends JTextField {
       }
    }
 
-   class SpecialPaste extends TextAction {
+   public class SpecialPaste extends TextAction {
       public SpecialPaste(String s) {
          super(s);
       }
