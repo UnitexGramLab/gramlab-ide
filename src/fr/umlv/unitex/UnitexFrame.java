@@ -37,6 +37,7 @@ import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.DelaFrameListener;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.frames.TextFrameListener;
 import fr.umlv.unitex.io.*;
@@ -157,6 +158,22 @@ public class UnitexFrame extends JFrame {
 				inflect.setEnabled(false);
 				compressIntoFST.setEnabled(false);
 				closeDela.setEnabled(false);
+			}
+		});
+		/* TODO ajouter des listeners pour désactiver les options des graphes quand aucun 
+		 * graphe n'est ouvert
+		 */
+		frameManager.addLexiconGrammarTableFrameListener(new LexiconGrammarTableFrameListener() {
+			
+			public void lexiconGrammarTableFrameOpened() {
+				compileLexiconGrammar.setEnabled(true);
+				closeLexiconGrammar.setEnabled(true);
+				
+			}
+			
+			public void lexiconGrammarTableFrameClosed() {
+				compileLexiconGrammar.setEnabled(false);
+				closeLexiconGrammar.setEnabled(false);
 			}
 		});
 	}
@@ -768,8 +785,7 @@ public class UnitexFrame extends JFrame {
     //-------------------------------------------------------------------
 		closeLexiconGrammar = new AbstractAction("Close") {
 			public void actionPerformed(ActionEvent e) {
-				compileLexiconGrammar.setEnabled(false);
-				LexiconGrammarTableFrame.closeFrame();
+				frameManager.closeLexiconGrammarTableFrame();
 			}
 		};
 		closeLexiconGrammar.setEnabled(false);
@@ -1111,10 +1127,7 @@ public class UnitexFrame extends JFrame {
 		} catch (IOException e) {
 			return;
 		}
-		LexiconGrammarTableFrame.closeFrame();
-		compileLexiconGrammar.setEnabled(true);
-		closeLexiconGrammar.setEnabled(true);
-		new LexiconGrammarTableFrame(f);
+		frameManager.newLexiconGrammarTableFrame(f);
 	}
 
 
