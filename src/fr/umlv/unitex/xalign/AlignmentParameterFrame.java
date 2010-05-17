@@ -314,7 +314,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 				};
 				/* And we launch the XMLizer commands, if any */
 				if (commands.numberOfCommands()!=0) {
-					new ProcessInfoFrame(commands,true,toDo,true);
+					Launcher.exec(commands,true,toDo,true);
 				} else {
 					toDo.toDo();
 				}

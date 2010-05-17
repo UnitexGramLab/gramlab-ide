@@ -404,7 +404,7 @@ public class PreprocessDialog extends JDialog {
                         }
                         UnitexFrame.getFrameManager().closeTextFrame();
                         Text.removeSntFiles();
-                        new ProcessInfoFrame(commands, true, new PreprocessDo(sntFile, taggedText));
+                        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
                     }
                 });
             }
@@ -436,7 +436,7 @@ public class PreprocessDialog extends JDialog {
                         commands.addCommand(tokenizeCmd);
                         UnitexFrame.getFrameManager().closeTextFrame();
                         Text.removeSntFiles();
-                        new ProcessInfoFrame(commands, true, new PreprocessDo(sntFile, taggedText));
+                        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
                     }
                 });
             }

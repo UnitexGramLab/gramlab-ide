@@ -33,7 +33,6 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.process.*;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
 import fr.umlv.unitex.process.commands.MessageCommand;

@@ -422,7 +422,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						     * must close the text automaton frame, if any */
 						    UnitexFrame.getFrameManager().closeTextAutomatonFrame();
 						}
-						new ProcessInfoFrame(commands, true,
+						Launcher.exec(commands, true,
 								new ApplyLexicalResourcesDo());
 					}
 				});

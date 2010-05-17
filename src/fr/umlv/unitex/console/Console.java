@@ -43,8 +43,8 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import fr.umlv.unitex.frames.ProcessInfoFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.process.ProcessInfoFrame;
 
 /**
  * This class describes a frame that shows all the command lines that have been launched. 

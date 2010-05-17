@@ -182,7 +182,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 MultiCommands commands=new MultiCommands();
                 commands.addCommand(cmd);
                 setVisible(false);
-                new ProcessInfoFrame(commands, true, new LoadStatisticsDo(output,mode));
+                Launcher.exec(commands, true, new LoadStatisticsDo(output,mode));
             }
         });
         Box b=new Box(BoxLayout.X_AXIS);
@@ -471,7 +471,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		commands.addCommand(tokenizeCmd);
 		setVisible(false);
-		new ProcessInfoFrame(commands, true, DO);
+		Launcher.exec(commands, true, DO);
 	}
 
 	void extractUnits(boolean matching) {
@@ -498,7 +498,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		if (!tmp.exists())
 			tmp.mkdir();
 		setVisible(false);
-		new ProcessInfoFrame(command, true, null);
+		Launcher.exec(command, true, null);
 	}
 
 	void buildConcordance() {
@@ -547,7 +547,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		    width=40;
 		}
 		UnitexFrame.getFrameManager().closeConcordanceFrame();
-		new ProcessInfoFrame(command, true, new ConcordanceDo(false,new File(Config
+		Launcher.exec(command, true, new ConcordanceDo(false,new File(Config
 				.getCurrentSntDir(), "concord.html"), checkBox.isSelected(),
 				width));
 	}
@@ -573,7 +573,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 						  .fontSize(Preferences.getConcordanceFontSize());
 			setVisible(false);
 			int width = 160;
-	    new ProcessInfoFrame(command, true, new ConcordanceDo(true,outputHtmlFile, checkBox.isSelected(),
+			Launcher.exec(command, true, new ConcordanceDo(true,outputHtmlFile, checkBox.isSelected(),
 					width));
 		}
 

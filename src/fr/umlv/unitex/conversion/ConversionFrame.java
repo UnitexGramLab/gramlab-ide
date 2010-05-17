@@ -302,7 +302,7 @@ public class ConversionFrame extends JInternalFrame {
 						for (int i = 0; i < l; i++) {
 							cmd.file((File)listModel.getElementAt(i));
 						}
-						new ProcessInfoFrame(cmd, false, null);
+						Launcher.exec(cmd, false, null);
 					}
 				});
 			}

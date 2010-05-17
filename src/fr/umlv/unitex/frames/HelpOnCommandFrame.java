@@ -34,7 +34,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.process.ProcessInfoFrame;
 import fr.umlv.unitex.process.ProcessInfoThread;
 import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.commands.CheckDicCommand;

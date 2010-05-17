@@ -27,6 +27,7 @@ import javax.swing.*;
 
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
+import fr.umlv.unitex.frames.ProcessInfoFrame;
 
 /**
  * This class is used to monitor stdout and stderr messages of external processes.
