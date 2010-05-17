@@ -30,7 +30,6 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.LocateFrame;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.Util;
@@ -409,13 +408,11 @@ public class ElagCompFrame extends JInternalFrame {
           JOptionPane
             .showInternalMessageDialog(
                 UnitexFrame.desktop,
-                "You should Compile your Elag grammar before using the Locate Pattern feature",
+                "You should compile your Elag grammar before using the Locate Pattern feature",
                 "ERROR", JOptionPane.ERROR_MESSAGE);
           return;
         }
-        LocateFrame.showFrame();
-        LocateFrame.frame.graphName.setText(conc.getAbsolutePath());
-        LocateFrame.frame.graph.setSelected(true);
+        UnitexFrame.getFrameManager().newLocateFrame(conc);
       }
     });
 

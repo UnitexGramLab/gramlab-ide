@@ -19,14 +19,21 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.NumericTextField;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
@@ -39,7 +46,6 @@ import fr.umlv.unitex.process.*;
  */
 public class LocateFrame extends JInternalFrame {
 
-	public static LocateFrame frame;
 	JRadioButton regularExpression = new JRadioButton("Regular expression:",
 			false);
 	public JRadioButton graph = new JRadioButton("Graph:", true);
@@ -66,51 +72,18 @@ public class LocateFrame extends JInternalFrame {
     JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error", false);
     JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error", false);
 
-	private LocateFrame() {
-		super("Locate Pattern",true, true);
+	LocateFrame() {
+		super("Locate Pattern",false, true);
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
-		setVisible(false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				regExp.setFont(font);
 			}
 		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame
-	 * 
-	 */
-	private static void init() {
-		frame = new LocateFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame
-	 * 
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.regExp.setFont(Preferences.pref.textFont);
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	private JTabbedPane constructPanel() {
 	    JTabbedPane tabbedPane=new JTabbedPane();
@@ -188,6 +161,7 @@ public class LocateFrame extends JInternalFrame {
 		bg.add(graph);
 		patternPanel.add(regularExpression, BorderLayout.NORTH);
 		regExp.setPreferredSize(new Dimension(300, 30));
+		regExp.setFont(Preferences.pref.textFont);
 		patternPanel.add(regExp, BorderLayout.CENTER);
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(graph, BorderLayout.WEST);
@@ -206,7 +180,7 @@ public class LocateFrame extends JInternalFrame {
 		b.add(constructSearchLimitationPanel(), BorderLayout.WEST);
 		Action searchAction = new AbstractAction("SEARCH") {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.launchLocate();
+				launchLocate();
 			}
 		};
 		JButton searchButton = new JButton(searchAction);
@@ -425,7 +399,7 @@ public class LocateFrame extends JInternalFrame {
 			commands.addCommand(locateCmd);
 			toDo=new LocateTfstDo();
 		}
-		frame.setVisible(false);
+		setVisible(false);
 		savePreviousConcordance();
 		new ProcessInfoFrame(commands,true,toDo);
 	}

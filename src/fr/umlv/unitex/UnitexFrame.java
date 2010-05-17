@@ -137,6 +137,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.closeConcordanceParameterFrame();
 				frameManager.closeConstructTfstFrame();
 				frameManager.closeConvertTfstToTextFrame();
+				frameManager.closeLocateFrame();
 			}
 		});
 		frameManager.addDelaFrameListener(new DelaFrameListener() {
@@ -308,7 +309,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		locatePattern = new AbstractAction("Locate Pattern...") {
 			public void actionPerformed(ActionEvent e) {
-				LocateFrame.showFrame();
+				frameManager.newLocateFrame();
 			}
 		};
 		JMenuItem loc = new JMenuItem(locatePattern);
