@@ -49,13 +49,12 @@ public class GraphCollection {
     */
    public static void build(File srcDir, File destGraph, boolean copy) {
       stop= false;
-      MessageWhileWorkingFrame.showFrame("Building graph collection");
+      UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
       buildGraphCollection(
          srcDir,
          destGraph,
          copy,
-         MessageWhileWorkingFrame.getLabel());
-      MessageWhileWorkingFrame.close();
+         UnitexFrame.getFrameManager().getMessageWhileWorkingFrame().getLabel());
    }
 
    /**
