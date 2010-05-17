@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.process;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -31,12 +31,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.process.ProcessInfoFrame;
+import fr.umlv.unitex.process.ProcessInfoThread;
+import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.commands.CheckDicCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.CompressCommand;
@@ -120,12 +120,9 @@ public class HelpOnCommandFrame extends JInternalFrame {
             ,XMLizerCommand.class
             };
 
-    
-	static HelpOnCommandFrame frame;
-
-	static boolean refreshLock=false; 
+	boolean refreshLock=false; 
 	
-	public HelpOnCommandFrame() {
+	HelpOnCommandFrame() {
 		super("Help on commands", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
 		final JList list=new JList(commands);
@@ -177,25 +174,9 @@ public class HelpOnCommandFrame extends JInternalFrame {
 		    }
 		});
 		top.add(new JScrollPane(list),BorderLayout.WEST);
-		
 		setContentPane(top);
 		setSize(600,400);
-		setVisible(true);
-		frame = this;
-		UnitexFrame.addInternalFrame(this,true);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-	}
-
-	public static void showFrame() {
-	    if (frame==null) {
-	        frame=new HelpOnCommandFrame();
-	    }
-	    frame.setVisible(true);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 	
 }

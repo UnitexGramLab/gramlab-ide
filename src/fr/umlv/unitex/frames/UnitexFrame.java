@@ -972,7 +972,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
 		helpOnCommands.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        HelpOnCommandFrame.showFrame();
+		        frameManager.newHelpOnCommandFrame();
 		    }
 		});
 		helpOnCommands.setEnabled(true);

@@ -64,6 +64,7 @@ public class InternalFrameManager {
 	private LocateFrameFactory locateFrameFactory=new LocateFrameFactory();
 	private MessageWhileWorkingFrameFactory messageWhileWorkingFrameFactory=new MessageWhileWorkingFrameFactory();
 	private StatisticsFrameFactory statisticsFrameFactory=new StatisticsFrameFactory();
+	private HelpOnCommandFrameFactory helpOnCommandFrameFactory=new HelpOnCommandFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -717,6 +718,24 @@ public class InternalFrameManager {
 
 	public void closeStatisticsFrame() {
 		statisticsFrameFactory.closeStatisticsFrame();
+	}
+
+
+	public boolean newHelpOnCommandFrame() {
+		HelpOnCommandFrame f=helpOnCommandFrameFactory.newHelpOnCommandFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeHelpOnCommandFrame() {
+		helpOnCommandFrameFactory.closeHelpOnCommandFrame();
 	}
 
 }
