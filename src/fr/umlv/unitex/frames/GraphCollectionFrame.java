@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,14 +28,17 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.GraphCollection;
+
 /**
- * This class provides a dialog box that allows the user to select a source
+ * This class provides a frame that allows the user to select a source
  * directory and a destination graph name, for building a graph collection.
  * 
  * @author Sébastien Paumier
  *  
  */
-public class GraphCollectionDialog extends JDialog {
+public class GraphCollectionFrame extends JInternalFrame {
 
 	JTextField srcDir = new JTextField();
 	JTextField resultGrf = new JTextField();
@@ -43,22 +46,13 @@ public class GraphCollectionDialog extends JDialog {
 	/**
 	 * Constructs a new <code>GraphCollectionDialog</code>.
 	 */
-	public GraphCollectionDialog() {
-		super(UnitexFrame.mainFrame, "Building Graph Collection", true);
+	GraphCollectionFrame() {
+		super("Building Graph Collection", false, true, false);
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
-		showPreferences();
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	/**
-	 * Shows the dialog box
-	 *  
-	 */
-	public void showPreferences() {
-		setLocationRelativeTo(UnitexFrame.mainFrame);
-		setVisible(true);
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
