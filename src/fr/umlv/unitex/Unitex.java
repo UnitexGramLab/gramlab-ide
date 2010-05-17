@@ -109,7 +109,15 @@ public class Unitex {
             e.printStackTrace();
             System.exit(0);
         }
-        new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")), 1500);
+        SplashScreen splash=new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")));
+        splash.setVisible(true);
+        try {
+           Thread.sleep(1500);
+        } catch (InterruptedException e) {
+      	  e.printStackTrace();
+        }
+        splash.dispose();
+
         Config.initConfig(args.length == 1 ? args[0] : null);
         JFrame frame = new UnitexFrame();
         Image img16x16 = new ImageIcon(Unitex.class.getResource("16x16.png")).getImage();
