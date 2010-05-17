@@ -30,8 +30,9 @@ public class PreprocessDialogFactory {
 	
 	PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText) {
 		if (dialog==null) {
-			dialog=new PreprocessDialog(text,sntFile,taggedText);
+			dialog=new PreprocessDialog();
 		}
+		dialog.setFiles(text,sntFile,taggedText);
 		return dialog;
 	}
 

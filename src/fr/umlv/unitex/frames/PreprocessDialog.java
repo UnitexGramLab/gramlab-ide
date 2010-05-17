@@ -47,25 +47,22 @@ import fr.umlv.unitex.process.*;
 public class PreprocessDialog extends JDialog {
 
     JCheckBox sentenceCheck = new JCheckBox("Apply graph in MERGE mode:", true);
-
     JCheckBox replaceCheck = new JCheckBox("Apply graph in REPLACE mode:", true);
-
-    JTextField sentenceName = new JTextField(Config.getCurrentSentenceGraph().getAbsolutePath());
-
-    JTextField replaceName = new JTextField(Config.getCurrentReplaceGraph().getAbsolutePath());
-
+    JTextField sentenceName = new JTextField();
+    JTextField replaceName = new JTextField();
     JCheckBox applyDicCheck = new JCheckBox("Apply All default Dictionaries", true);
-
     JCheckBox analyseUnknownWordsCheck = new JCheckBox("Analyse unknown words as free compound words (this option", true);
-
     JLabel analyseUnknownWordsLabel = new JLabel("     is available only for Dutch, German, Norwegian & Russian)");
-
     JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton", false);
-
     File originalTextFile;
-
     File sntFile;
-
+    JPanel preprocessingParent;
+    JPanel preprocessingCurrent;
+    JPanel preprocessingTaggedText;
+    JPanel preprocessingUntaggedText;
+    boolean taggedText=false;
+    
+    
     /**
      * Creates and shows a new <code>PreprocessFrame</code>
      * 
@@ -76,50 +73,77 @@ public class PreprocessDialog extends JDialog {
      * @param taggedText
      *            true if the text is a tagged one
      */
-    PreprocessDialog(File originalTextFile, File sntFile, boolean taggedText) {
+    PreprocessDialog() {
         super(UnitexFrame.mainFrame, "Preprocessing & Lexical parsing", true);
-        this.originalTextFile = originalTextFile;
-        this.sntFile = sntFile;
-        setContentPane(constructPanel(taggedText));
-        if (!Config.getCurrentLanguage().equals("Dutch") && !Config.getCurrentLanguage().equals("German") && !Config.getCurrentLanguage().equals("Norwegian") && !Config.getCurrentLanguage().equals("Russian")) {
+        setContentPane(preprocessingParent=constructPanel());
+        refreshOnLanguageChange();
+        pack();
+        setResizable(false);
+        setLocationRelativeTo(UnitexFrame.mainFrame);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+    }
+
+
+    void refreshOnLanguageChange() {
+    	if (Config.getCurrentLanguage().equals("Dutch") 
+    			|| Config.getCurrentLanguage().equals("German") 
+    			|| Config.getCurrentLanguage().equals("Norwegian") 
+    			|| Config.getCurrentLanguage().equals("Russian")) {
+            analyseUnknownWordsCheck.setSelected(true);
+            analyseUnknownWordsCheck.setEnabled(true);
+            analyseUnknownWordsLabel.setEnabled(true);
+        } else {
             analyseUnknownWordsCheck.setSelected(false);
             analyseUnknownWordsCheck.setEnabled(false);
             analyseUnknownWordsLabel.setEnabled(false);
         }
-        pack();
-        setResizable(false);
-        setLocationRelativeTo(UnitexFrame.mainFrame);
-        /* TODO rendre ce dialog persistant */
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        sentenceName.setText(Config.getCurrentSentenceGraph().getAbsolutePath());
+        replaceName.setText(Config.getCurrentReplaceGraph().getAbsolutePath());
+        applyDicCheck.setSelected(true);
+        textFst2Check.setSelected(false);
+    }
+    
+    
+    void setFiles(File originalTextFile, File sntFile, boolean taggedText) {
+    	this.originalTextFile=originalTextFile;
+    	this.sntFile=sntFile;
+    	this.taggedText=taggedText;
+		preprocessingParent.remove(preprocessingCurrent);
+    	if (taggedText) {
+    		preprocessingCurrent=preprocessingTaggedText;
+    	} else {
+    		preprocessingCurrent=preprocessingUntaggedText;
+    	}
+    	preprocessingParent.add(preprocessingCurrent,BorderLayout.NORTH);
+    	preprocessingParent.revalidate();
+    	repaint();	
     }
 
     
-    private JPanel constructPanel(boolean taggedText) {
+    private JPanel constructPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(constructProcessingPanel(taggedText), BorderLayout.NORTH);
+        panel.add(constructProcessingPanel(), BorderLayout.NORTH);
         panel.add(constructTokenizingPanel(), BorderLayout.CENTER);
         JPanel down = new JPanel(new BorderLayout());
         down.add(constructLexicalParsingPanel(), BorderLayout.WEST);
-        down.add(constructButtonsPanel(taggedText), BorderLayout.CENTER);
+        down.add(constructButtonsPanel(), BorderLayout.CENTER);
         panel.add(down, BorderLayout.SOUTH);
         return panel;
     }
 
-    private JPanel constructProcessingPanel(boolean taggedText) {
-        if (taggedText) {
-            JPanel processing = new JPanel(new BorderLayout());
-            processing.setBorder(new TitledBorder("Preprocessing"));
-            processing.add(new JLabel("Sentence and Replace graphs should not be applied on tagged texts."));
-            sentenceCheck.setSelected(false);
-            replaceCheck.setSelected(false);
-            return processing;
-        }
-        JPanel processing = new JPanel(new GridLayout(2, 1));
-        processing.setBorder(new TitledBorder("Preprocessing"));
-        processing.add(constructSentencePanel());
-        processing.add(constructReplacePanel());
-        return processing;
-    }
+	private JPanel constructProcessingPanel() {
+		/* Building the panels for both tagged and untagged texts */
+		preprocessingTaggedText = new JPanel(new BorderLayout());
+		preprocessingTaggedText.setBorder(new TitledBorder("Preprocessing"));
+		preprocessingTaggedText
+				.add(new JLabel(
+						"Sentence and Replace graphs should not be applied on tagged texts."));
+		preprocessingUntaggedText = new JPanel(new GridLayout(2, 1));
+		preprocessingUntaggedText.setBorder(new TitledBorder("Preprocessing"));
+		preprocessingUntaggedText.add(constructSentencePanel());
+		preprocessingUntaggedText.add(constructReplacePanel());
+		return preprocessingCurrent=preprocessingUntaggedText;
+	}
 
     private JPanel constructSentencePanel() {
         JPanel sentence = new JPanel(new BorderLayout());
@@ -187,7 +211,7 @@ public class PreprocessDialog extends JDialog {
         return lexicalParsing;
     }
 
-    private JPanel constructButtonsPanel(final boolean taggedText) {
+    private JPanel constructButtonsPanel() {
         JPanel buttons = new JPanel(new GridLayout(3, 1));
         buttons.setBorder(new EmptyBorder(8, 8, 2, 2));
         Action goAction = new AbstractAction("GO!") {
@@ -197,13 +221,6 @@ public class PreprocessDialog extends JDialog {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         File dir = Config.getCurrentSntDir();
-                        /*
-                         * if (!dir.exists()) { // if the directory toto_snt
-                         * does not exist, we // create it if (!dir.mkdir()) {
-                         * System.err
-                         * .println("ERROR: cannot create the directory " +
-                         * dir.getAbsolutePath()); System.exit(1); } }
-                         */
                         MultiCommands commands = new MultiCommands();
                         // NORMALIZING TEXT...
                         NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
@@ -379,7 +396,6 @@ public class PreprocessDialog extends JDialog {
                         new ProcessInfoFrame(commands, true, new PreprocessDo(sntFile, taggedText));
                     }
                 });
-                dispose();
             }
         };
         JButton OK = new JButton(goAction);
@@ -412,7 +428,6 @@ public class PreprocessDialog extends JDialog {
                         new ProcessInfoFrame(commands, true, new PreprocessDo(sntFile, taggedText));
                     }
                 });
-                dispose();
             }
         };
         JButton CANCELbutIndex = new JButton(cancelButIndexAction);
