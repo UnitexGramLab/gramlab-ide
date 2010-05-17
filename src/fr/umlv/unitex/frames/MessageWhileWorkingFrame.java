@@ -19,13 +19,16 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
+
+import fr.umlv.unitex.GraphCollection;
+
 
 /**
  * This class is used to display a frame that just contains a
@@ -36,72 +39,30 @@ import javax.swing.event.*;
  */
 public class MessageWhileWorkingFrame extends JInternalFrame {
 
-	static MessageWhileWorkingFrame frame;
 	private static JLabel label = new JLabel();
 
-	private MessageWhileWorkingFrame() {
+	MessageWhileWorkingFrame() {
 		super("", true, true);
 		JPanel top = new JPanel(new BorderLayout());
-		top.setOpaque(true);
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
 		top.add(label);
 		setContentPane(top);
 		setBounds(100, 100, 450, 80);
-		setVisible(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				GraphCollection.stop();
 			}
 		});
 	}
-
-	/**
-	 * Initializes the frame
-	 *  
-	 */
-	public static void init() {
-		frame = new MessageWhileWorkingFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
+	
+	
 	/**
 	 * 
 	 * @return the message label
 	 */
-	public static JLabel getLabel() {
+	public JLabel getLabel() {
 		return label;
-	}
-
-	/**
-	 * Shows the frame.
-	 *  
-	 */
-	public static void showFrame() {
-		showFrame("");
-	}
-
-	/**
-	 * Shows the frame.
-	 * 
-	 * @param title
-	 *            title of the frame
-	 */
-	public static void showFrame(String title) {
-		if (frame == null) {
-			init();
-		}
-		label.setText("");
-		frame.setTitle(title);
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Closes the frame.
-	 *  
-	 */
-	public static void close() {
-		frame.setVisible(false);
 	}
 
 }
