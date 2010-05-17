@@ -54,6 +54,7 @@ import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 import fr.umlv.unitex.xalign.*;
 
 /**
