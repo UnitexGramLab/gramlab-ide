@@ -760,7 +760,7 @@ public class UnitexFrame extends JFrame {
     //-------------------------------------------------------------------
 		compileLexiconGrammar = new AbstractAction("Compile to GRF...") {
 			public void actionPerformed(ActionEvent e) {
-				LexiconGrammarFrame.showFrame();
+				frameManager.newConvertLexiconGrammarFrame();
 			}
 		};
 		compileLexiconGrammar.setEnabled(false);

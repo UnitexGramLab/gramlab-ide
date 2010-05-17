@@ -59,6 +59,7 @@ public class InternalFrameManager {
 	private GlobalPreferencesFrameFactory globalPreferencesFrameFactory=new GlobalPreferencesFrameFactory();
 	private GraphCollectionFrameFactory graphCollectionFrameFactory=new GraphCollectionFrameFactory();
 	private InflectFrameFactory inflectFrameFactory=new InflectFrameFactory();
+	private ConvertLexiconGrammarFrameFactory convertLexiconGrammarFrameFactory=new ConvertLexiconGrammarFrameFactory();
 
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	
@@ -568,4 +569,21 @@ public class InternalFrameManager {
 		inflectFrameFactory.closeInflectFrame();
 	}
 
+
+	public boolean newConvertLexiconGrammarFrame() {
+		ConvertLexiconGrammarFrame f=convertLexiconGrammarFrameFactory.newConvertLexiconGrammarFrame();
+		if (f==null) return false;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public void closeConvertLexiconGrammarFrame() {
+		convertLexiconGrammarFrameFactory.closeConvertLexiconGrammarFrame();
+	}
 }
