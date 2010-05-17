@@ -30,6 +30,7 @@ import javax.swing.*;
 import javax.swing.text.*;
 
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class describes the text field used to get the box text in a graph.

@@ -31,6 +31,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import fr.umlv.unitex.*;
 import fr.umlv.unitex.frames.PreprocessDialog;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.*;
 
 public class XAlignFrame {

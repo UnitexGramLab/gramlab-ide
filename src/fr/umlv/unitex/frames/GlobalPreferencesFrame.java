@@ -37,7 +37,6 @@ import fr.umlv.unitex.FontMenu;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.TextFontMenu;
-import fr.umlv.unitex.UnitexFrame;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.

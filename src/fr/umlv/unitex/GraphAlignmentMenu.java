@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class describes a dialog box that allows the user to align the current

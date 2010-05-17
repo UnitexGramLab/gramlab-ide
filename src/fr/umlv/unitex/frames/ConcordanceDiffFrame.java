@@ -30,7 +30,6 @@ import javax.swing.event.*;
 import fr.umlv.unitex.BigConcordanceDiff;
 import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.Util;
 
 

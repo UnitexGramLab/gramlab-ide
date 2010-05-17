@@ -30,6 +30,7 @@ import fr.umlv.unitex.*;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class describes a frame used to execute shell commands and display

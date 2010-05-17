@@ -31,7 +31,6 @@ import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 

@@ -28,8 +28,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 public class BoundsEditor extends JFormattedTextField {
 

@@ -32,7 +32,6 @@ import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;

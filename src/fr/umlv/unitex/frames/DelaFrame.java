@@ -31,7 +31,6 @@ import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;

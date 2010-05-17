@@ -40,7 +40,6 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.TextField;
-import fr.umlv.unitex.UnitexFrame;
 import fr.umlv.unitex.io.*;
 
 /**

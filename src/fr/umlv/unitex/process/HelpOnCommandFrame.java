@@ -36,7 +36,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.UnitexFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 public class HelpOnCommandFrame extends JInternalFrame {
 
