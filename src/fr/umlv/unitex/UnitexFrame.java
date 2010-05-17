@@ -151,6 +151,7 @@ public class UnitexFrame extends JFrame {
 			public void delaFrameClosed() {
 				frameManager.closeCheckDicFrame();
 				frameManager.closeCheckResultFrame();
+				frameManager.closeInflectFrame();
 				checkDelaFormat.setEnabled(false);
 				sortDictionary.setEnabled(false);
 				inflect.setEnabled(false);
@@ -401,7 +402,7 @@ public class UnitexFrame extends JFrame {
 		//-------------------------------------------------------------------
 		inflect = new AbstractAction("Inflect...") {
 			public void actionPerformed(ActionEvent e) {
-				InflectFrame.showFrame();
+				frameManager.newInflectFrame();
 			}
 		};
 		inflect.setEnabled(false);

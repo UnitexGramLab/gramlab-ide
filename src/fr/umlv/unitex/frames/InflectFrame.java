@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -27,8 +27,8 @@ import java.io.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.*;
 
 /**
@@ -40,7 +40,6 @@ import fr.umlv.unitex.process.*;
  */
 public class InflectFrame extends JInternalFrame {
 
-	static InflectFrame frame;
 	JTextField directory = new JTextField("");
 
 	JRadioButton allWords=new JRadioButton("Allow both simple and compound words",true);
@@ -48,46 +47,14 @@ public class InflectFrame extends JInternalFrame {
 	JRadioButton onlyCompoundWords=new JRadioButton("Allow only compound words",false);
 	
     
-	private InflectFrame() {
+	InflectFrame() {
 		super("Inflection", false, true);
 		setContentPane(constructPanel());
 		pack();
 		setResizable(false);
-		setVisible(false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new InflectFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-
-	/**
-	 * Shows the frame
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
