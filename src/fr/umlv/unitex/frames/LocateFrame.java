@@ -36,6 +36,11 @@ import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.LocateCommand;
+import fr.umlv.unitex.process.commands.LocateTfstCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.Reg2GrfCommand;
 
 /**
  * This class describes the locate pattern frame.

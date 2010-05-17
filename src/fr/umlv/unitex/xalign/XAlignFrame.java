@@ -33,6 +33,13 @@ import fr.umlv.unitex.*;
 import fr.umlv.unitex.frames.PreprocessDialog;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.DicoCommand;
+import fr.umlv.unitex.process.commands.MkdirCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.TEI2TxtCommand;
+import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.process.commands.XAlignCommand;
 
 public class XAlignFrame {
 

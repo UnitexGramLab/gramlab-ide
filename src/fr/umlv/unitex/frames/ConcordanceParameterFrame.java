@@ -38,6 +38,14 @@ import fr.umlv.unitex.Util;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ConcorDiffCommand;
+import fr.umlv.unitex.process.commands.ConcordCommand;
+import fr.umlv.unitex.process.commands.ExtractCommand;
+import fr.umlv.unitex.process.commands.MkdirCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.StatsCommand;
+import fr.umlv.unitex.process.commands.TokenizeCommand;
 
 
 /**

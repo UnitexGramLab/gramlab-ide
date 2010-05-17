@@ -30,6 +30,7 @@ import javax.swing.border.*;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.MultiFlexCommand;
 
 /**
  * This class describes a frame that allows the user to set parameters of the

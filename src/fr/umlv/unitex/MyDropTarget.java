@@ -33,6 +33,7 @@ import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ConvertCommand;
 
 /**
  * This class is used to listen drag and drop events. Files that can be dragged

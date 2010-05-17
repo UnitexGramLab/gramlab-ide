@@ -34,6 +34,9 @@ import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.Fst2ListCommand;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.MultiCommands;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.

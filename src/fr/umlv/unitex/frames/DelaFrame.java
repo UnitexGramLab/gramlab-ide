@@ -34,6 +34,7 @@ import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.conversion.*;
 import fr.umlv.unitex.io.*;
 import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.process.commands.ConvertCommand;
 
 /**
  * This class describes a frame used to display a dictionary.
