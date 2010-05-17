@@ -21,13 +21,17 @@
 
 package fr.umlv.unitex.editor;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
-import fr.umlv.unitex.*;
-import fr.umlv.unitex.conversion.*;
-import fr.umlv.unitex.editor.ui.*;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.editor.ui.FileEditionTextFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
@@ -69,7 +73,7 @@ public class FileEditionMenu extends JMenu {
 		convert.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				ConversionFrame.showFrame();
+				UnitexFrame.getFrameManager().newTranscodingFrame();
 			}
 		});
 
@@ -80,7 +84,7 @@ public class FileEditionMenu extends JMenu {
 				JInternalFrame[] iFrames = desktop.getAllFrames();
 				for (int i = 0; i < iFrames.length; ++i) {
 					if (iFrames[i] instanceof FileEditionTextFrame) {
-            iFrames[i].doDefaultCloseAction();
+						iFrames[i].doDefaultCloseAction();
 					}
 				}
 			}

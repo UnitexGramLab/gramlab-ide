@@ -19,22 +19,40 @@
  *
  */
 
-package fr.umlv.unitex.conversion;
+package fr.umlv.unitex.frames;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.*;
-import fr.umlv.unitex.exceptions.*;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.process.*;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.conversion.Transcoder;
+import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
+import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 
 /**
@@ -42,13 +60,10 @@ import fr.umlv.unitex.process.commands.ConvertCommand;
  * 
  * @author Sébastien Paumier
  */
-public class ConversionFrame extends JInternalFrame {
+public class TranscodingFrame extends JInternalFrame {
 
-    public final static String[] encodings=getAvailableEncodings();
-    
-	static ConversionFrame frame = null;
-	JList srcEncodingList = new JList(encodings);
-	JList destEncodingList = new JList(encodings);
+    JList srcEncodingList = new JList(Transcoder.getAvailableEncodings());
+	JList destEncodingList = new JList(Transcoder.getAvailableEncodings());
 	JRadioButton replace = new JRadioButton("Replace");
 	JRadioButton renameSourceWithPrefix = new JRadioButton(
 			"Rename source with prefix");
@@ -66,98 +81,25 @@ public class ConversionFrame extends JInternalFrame {
 	private JButton transcode = new JButton("Transcode");
 	private JButton cancel = new JButton("Cancel");
 
-	public ConversionFrame() {
-		super("Transcode Files", false, true);
+	
+	TranscodingFrame() {
+		super("Transcode Files", true, true);
 		setContentPane(constructPanel());
 		setBounds(100, 100, 500, 500);
-		setResizable(true);
-		setVisible(false);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		srcEncodingList.setSelectedValue(Transcoder.getEncodingForLanguage(Config
+				.getCurrentLanguage()), true);
+		destEncodingList.setSelectedValue("LITTLE-ENDIAN", true);
+		/* TODO mettre un ChangeLanguageListener ici */
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
+				listModel.removeAllElements();
 			}
 		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-	}
-
-    /**
-	 * Initializes the frame.
-	 *  
-	 */
-	private static void init() {
-		frame = new ConversionFrame();
-		UnitexFrame.addInternalFrame(frame,false);
 	}
 
 
-	/**
-	 * Gives an encoding value that can be used as a parameter for the
-	 * <code>Convert</code> program.
-	 * 
-	 * Example: "Russian" => "windows-1251"
-	 * 
-	 * @param language
-	 * @return a <code>String</code> that represents the encoding value for
-	 *         the given language
-	 */
-	public static String getEncodingForLanguage(String language) {
-		if (language.equals("Portuguese (Brazil)")
-				|| language.equals("Portuguese (Portugal)"))
-			return "PORTUGUESE";
-
-		else if (language.equals("English"))
-			return "ENGLISH";
-
-		else if (language.equals("Finnish"))
-			return "iso-8859-1";
-
-		else if (language.equals("French"))
-			return "FRENCH";
-
-		else if (language.equals("Greek (Modern)"))
-			return "GREEK";
-
-		else if (language.equals("Italian"))
-			return "ITALIAN";
-
-		else if (language.equals("Norwegian"))
-			return "NORWEGIAN";
-
-		else if (language.equals("Russian"))
-			return "windows-1251";
-
-		else if (language.equals("Spanish"))
-			return "SPANISH";
-
-		else if (language.equals("Thai"))
-			return "THAI";
-
-		else {
-			// by default, we chose the latin1 codepage
-			return "LATIN1";
-		}
-	}
-
-	/**
-	 * Shows the frame
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.srcEncodingList.setSelectedValue(getEncodingForLanguage(Config
-				.getCurrentLanguage()), true);
-		frame.destEncodingList.setSelectedValue("LITTLE-ENDIAN", true);
-		frame.listModel.removeAllElements();
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -225,9 +167,10 @@ public class ConversionFrame extends JInternalFrame {
 	}
 
 	private JPanel constructButtonPanel() {
+		final TranscodingFrame zis=this;
 		addFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int returnVal = Config.getTranscodeDialogBox().showOpenDialog(frame);
+				int returnVal = Config.getTranscodeDialogBox().showOpenDialog(zis);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
@@ -309,7 +252,7 @@ public class ConversionFrame extends JInternalFrame {
 		});
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
+				doDefaultCloseAction();
 			}
 		});
 		JPanel buttonPanel = new JPanel(new BorderLayout());
@@ -323,110 +266,13 @@ public class ConversionFrame extends JInternalFrame {
 		return buttonPanel;
 	}
 
-	/**
-	 * @return <code>true</code> if the conversion frame is visible;
-	 *         <code>false</code> otherwise
-	 */
-	public static boolean isFrameVisible() {
-		return frame.isVisible();
-	}
 
 	/**
 	 * @return the list model of the conversion frame
 	 */
-	public static DefaultListModel getListModel() {
-		return frame.listModel;
+	public DefaultListModel getListModel() {
+		return listModel;
 	}
-
-	public static boolean validSrcEncoding(String s) {
-		return validEncoding(encodings, s);
-	}
-
-	public static boolean validDestEncoding(String s) {
-		return validEncoding(encodings, s);
-	}
-
-	public static boolean validEncoding(String[] tab, String s) {
-		for (int i = 0; i < tab.length; i++) {
-			if (tab[i].equalsIgnoreCase(s))
-				return true;
-		}
-		return false;
-	}
-
-
-	/**
-	 * 
-	 * @return a String array containing all the encodings supported by the
-	 * Convert program.
-	 */
-    private static String[] getAvailableEncodings() {
-        ConvertCommand cmd=new ConvertCommand().getEncodings();
-        final String[] comm = cmd.getCommandArguments();
-        final ArrayList<String> lines=new ArrayList<String>();
-        try {
-            Process p = Runtime.getRuntime().exec(comm);
-            final BufferedReader reader= new BufferedReader(new InputStreamReader(p.getInputStream(),"UTF8"));
-            String s;
-            while ((s=myReadLine(reader)) != null) {
-                while (s.endsWith("\n") || s.endsWith("\r")) {
-                    s=s.substring(0,s.length()-1);
-                }
-                if ("".equals(s)) {
-                    continue;
-                }
-                lines.add(s.toUpperCase());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Collections.sort(lines);
-        String[] tmp=new String[lines.size()];
-        tmp=lines.toArray(tmp);
-        return tmp;
-    }
-
-    
-    static char nextChar='\0';
-    public static String myReadLine(BufferedReader reader) {
-       int c;
-       String result="";
-       if (nextChar!='\0') {
-           result=""+nextChar;
-           nextChar='\0';
-       }
-       try {
-           while ((c=reader.read())!=-1) {
-               char ch=(char)c;
-               if (ch=='\r') {
-                   //result=result+ch;
-                   if ((c=reader.read())!=-1) {
-                       ch=(char)c;
-                       if (ch=='\n') {
-                           /* If we have a \r\n sequence, we return it */
-                           return result;
-                       }
-                       /* Otherwise, we stock the character */
-                       nextChar=ch;
-                   }
-                   return result;
-               }
-               else if (ch=='\n') {
-                   /* If we have a single \n, we return it */
-                   //result=result+ch;
-                   nextChar='\0';
-                   return result;
-               } else {
-                   nextChar='\0';
-                   result=result+ch;
-               }
-           }
-           return null;
-       } catch (IOException e) {
-         e.printStackTrace();
-         return null;
-       }
-    }
 
 
 }

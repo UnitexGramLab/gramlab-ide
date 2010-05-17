@@ -21,13 +21,18 @@
 
 package fr.umlv.unitex.conversion;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.GridLayout;
+import java.io.File;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
-import fr.umlv.unitex.*;
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
+import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 
 /**
@@ -81,7 +86,7 @@ public class ConvertOneFileFrame {
       }
       ConvertCommand cmd= new ConvertCommand();
 	try {
-		cmd=cmd.src(ConversionFrame.getEncodingForLanguage(Config.getCurrentLanguage()))
+		cmd=cmd.src(Transcoder.getEncodingForLanguage(Config.getCurrentLanguage()))
 		        .dest("LITTLE-ENDIAN");
 	} catch (InvalidDestinationEncodingException e) {
 		e.printStackTrace();
@@ -132,7 +137,7 @@ public class ConvertOneFileFrame {
    public static void reset() {
       transcodeAll= false;
       ignoreAll= false;
-      line2.setText("to transcode it from "+ConversionFrame.getEncodingForLanguage(Config.getCurrentLanguage())+
+      line2.setText("to transcode it from "+Transcoder.getEncodingForLanguage(Config.getCurrentLanguage())+
       " to Unicode Little-Endian ?");
    }
 
