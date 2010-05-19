@@ -24,7 +24,6 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.AbstractAction;
@@ -46,6 +45,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
 import fr.umlv.unitex.process.commands.MessageCommand;
@@ -322,8 +322,7 @@ public class ConstructTfstFrame extends JInternalFrame {
                 }
             }
             UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-            new ProcessInfoFrame(commands, true,
-                new ConstructTfstDo(),false);
+            Launcher.exec(commands, true, new ConstructTfstDo(),false);
           }
         });
       }
@@ -345,14 +344,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 	class ConstructTfstDo implements ToDo {
 
 		public void toDo() {
-			if (!UnitexFrame.getFrameManager().newTextAutomatonFrame()) return;
-			try {
-				UnitexFrame.getFrameManager().getTextAutomatonFrame().setIcon(false);
-				UnitexFrame.getFrameManager().getTextAutomatonFrame().setSelected(true);
-			} catch (PropertyVetoException e) {
-				e.printStackTrace();
-			}
-			
+			UnitexFrame.getFrameManager().newTextAutomatonFrame();
 		}
 	}
 

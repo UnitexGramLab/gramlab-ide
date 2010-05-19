@@ -83,7 +83,7 @@ public class TextField extends JTextField {
    /**
     * <code>TextAction</code> that defines what to do for a "select all" operation 
     */
-   public SelectAll selectAll;
+   private SelectAll selectAll;
 
    /**
     * <code>TextAction</code> that defines what to do for a "cut" operation 

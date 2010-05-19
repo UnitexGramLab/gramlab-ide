@@ -40,7 +40,6 @@ import javax.swing.undo.UndoableEditSupport;
 
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxGroupTextEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
@@ -494,7 +493,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 				initText(g.content);
 				if (this instanceof TfstGraphicalZone) {
 				    TfstGraphBox g2=(TfstGraphBox)g;
-				    UnitexFrame.getFrameManager().getTextAutomatonFrame().bounds.setValue(g2.getBounds());
+				    ((TextAutomatonFrame)parentFrame).boundsEditor.setValue(g2.getBounds());
 				}
 			}
 		}

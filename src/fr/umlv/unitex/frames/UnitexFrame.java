@@ -542,15 +542,7 @@ public class UnitexFrame extends JFrame {
 		print.setAccelerator(KeyStroke.getKeyStroke('P', Event.CTRL_MASK));
 		print.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
-				if (f != null) {
-					PrintManager.printOneGraph(f);
-				} else {
-					TextAutomatonFrame f2=frameManager.getTextAutomatonFrame();
-					if (f2!=null && f2.isSelected()) {
-						PrintManager.printTextAutomatonFrame(f2);
-					}
-				}
+				PrintManager.print(frameManager.getSelectedFrame());
 			}
 		});
 		JMenuItem printAll = new JMenuItem("Print All...");
@@ -620,14 +612,17 @@ public class UnitexFrame extends JFrame {
 		JMenuItem antialiasing = new JMenuItem("Antialiasing...");
 		antialiasing.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
-				if (f != null) {
-					f.changeAntialiasingValue();
-				} else {
-					TextAutomatonFrame f2=frameManager.getTextAutomatonFrame();
-					if (f2!=null && f2.isSelected()) {
-						f2.changeAntialiasingValue();
-					}
+				JInternalFrame f=frameManager.getSelectedFrame();
+				if (f==null) return;
+				if (f instanceof GraphFrame) {
+					GraphFrame f2=(GraphFrame)f;
+					f2.changeAntialiasingValue();
+					return;
+				}
+				if (f instanceof TextAutomatonFrame) {
+					TextAutomatonFrame f2=(TextAutomatonFrame)f;
+					f2.changeAntialiasingValue();
+					return;
 				}
 			}
 		});
@@ -866,18 +861,21 @@ public class UnitexFrame extends JFrame {
 		cut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final ActionEvent E = e;
-				TextAutomatonFrame f=frameManager.getTextAutomatonFrame();
-				if (f!=null && f.isSelected()) {
-					((TfstTextField) f.getGraphicalZone().text).cut
+				JInternalFrame f=frameManager.getSelectedFrame();
+				if (f==null) return;
+				if (f instanceof GraphFrame) {
+					GraphFrame f2=(GraphFrame)f;
+					((TextField) (f2.getGraphicalZone().text)).getCut()
+					.actionPerformed(E);
+					f2.getGraphicalZone().repaint();
+					return;
+				}
+				if (f instanceof TextAutomatonFrame) {
+					TextAutomatonFrame f2=(TextAutomatonFrame)f;
+					((TfstTextField) f2.getGraphicalZone().text).getCut()
 							.actionPerformed(E);
-					f.getGraphicalZone().repaint();
-				} else {
-					GraphFrame f2 = frameManager.getCurrentFocusedGraphFrame();
-					if (f2 != null) {
-						((TextField) (f2.getGraphicalZone().text)).getCut()
-								.actionPerformed(E);
-						f2.getGraphicalZone().repaint();
-					}
+					f2.getGraphicalZone().repaint();
+					return;
 				}
 			}
 		});
@@ -887,18 +885,21 @@ public class UnitexFrame extends JFrame {
 		copy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final ActionEvent E = e;
-				TextAutomatonFrame f=frameManager.getTextAutomatonFrame();
-				if (f!=null && f.isSelected()) {
-					((TfstTextField) f.getGraphicalZone().text).specialCopy
+				JInternalFrame f=frameManager.getSelectedFrame();
+				if (f==null) return;
+				if (f instanceof GraphFrame) {
+					GraphFrame f2=(GraphFrame)f;
+					((TextField) (f2.getGraphicalZone().text)).getSpecialCopy()
+					.actionPerformed(E);
+					f2.getGraphicalZone().repaint();
+					return;
+				}
+				if (f instanceof TextAutomatonFrame) {
+					TextAutomatonFrame f2=(TextAutomatonFrame)f;
+					((TfstTextField) f2.getGraphicalZone().text).getSpecialCopy()
 							.actionPerformed(E);
-					f.getGraphicalZone().repaint();
-				} else {
-					GraphFrame f2 = frameManager.getCurrentFocusedGraphFrame();
-					if (f2 != null) {
-						((TextField) (f2.getGraphicalZone().text)).getSpecialCopy()
-								.actionPerformed(E);
-						f2.getGraphicalZone().repaint();
-					}
+					f2.getGraphicalZone().repaint();
+					return;
 				}
 			}
 		});
@@ -908,18 +909,21 @@ public class UnitexFrame extends JFrame {
 		paste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final ActionEvent E = e;
-				TextAutomatonFrame f=frameManager.getTextAutomatonFrame();
-				if (f!=null && f.isSelected()) {
-					((TfstTextField) f.getGraphicalZone().text).specialPaste
+				JInternalFrame f=frameManager.getSelectedFrame();
+				if (f==null) return;
+				if (f instanceof GraphFrame) {
+					GraphFrame f2=(GraphFrame)f;
+					((TextField) (f2.getGraphicalZone().text)).getSpecialPaste()
+					.actionPerformed(E);
+					f2.getGraphicalZone().repaint();
+					return;
+				}
+				if (f instanceof TextAutomatonFrame) {
+					TextAutomatonFrame f2=(TextAutomatonFrame)f;
+					((TfstTextField) f2.getGraphicalZone().text).getSpecialPaste()
 							.actionPerformed(E);
-					f.getGraphicalZone().repaint();
-				} else {
-					GraphFrame f2 = frameManager.getCurrentFocusedGraphFrame();
-					if (f2 != null) {
-						((TextField) (f2.getGraphicalZone().text)).getSpecialPaste()
-								.actionPerformed(E);
-						f2.getGraphicalZone().repaint();
-					}
+					f2.getGraphicalZone().repaint();
+					return;
 				}
 			}
 		});
@@ -928,16 +932,19 @@ public class UnitexFrame extends JFrame {
 		selectAll.setAccelerator(KeyStroke.getKeyStroke('A', Event.CTRL_MASK));
 		selectAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TextAutomatonFrame f=frameManager.getTextAutomatonFrame();
-				if (f!=null && f.isSelected()) {
-					f.getGraphicalZone().selectAllBoxes();
-					f.getGraphicalZone().repaint();
-				} else {
-					GraphFrame f2 = frameManager.getCurrentFocusedGraphFrame();
-					if (f2 != null) {
-						f2.graphicalZone.selectAllBoxes();
-						f2.getGraphicalZone().repaint();
-					}
+				JInternalFrame f=frameManager.getSelectedFrame();
+				if (f==null) return;
+				if (f instanceof GraphFrame) {
+					GraphFrame f2=(GraphFrame)f;
+					f2.getGraphicalZone().selectAllBoxes();
+					f2.getGraphicalZone().repaint();
+					return;
+				}
+				if (f instanceof TextAutomatonFrame) {
+					TextAutomatonFrame f2=(TextAutomatonFrame)f;
+					f2.getGraphicalZone().selectAllBoxes();
+					f2.getGraphicalZone().repaint();
+					return;
 				}
 			}
 		});
