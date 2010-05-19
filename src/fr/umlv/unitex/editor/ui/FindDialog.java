@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
 
+import fr.umlv.unitex.frames.FileEditionTextFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 

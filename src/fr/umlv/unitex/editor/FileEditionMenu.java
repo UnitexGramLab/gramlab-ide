@@ -24,14 +24,11 @@ package fr.umlv.unitex.editor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.editor.ui.FileEditionTextFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
@@ -80,13 +77,7 @@ public class FileEditionMenu extends JMenu {
 		JMenuItem closeAll = new JMenuItem("Close All");
 		closeAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JDesktopPane desktop = UnitexFrame.desktop;
-				JInternalFrame[] iFrames = desktop.getAllFrames();
-				for (int i = 0; i < iFrames.length; ++i) {
-					if (iFrames[i] instanceof FileEditionTextFrame) {
-						iFrames[i].doDefaultCloseAction();
-					}
-				}
+				UnitexFrame.getFrameManager().closeAllFileEditionTextFrames();
 			}
 		});
 		add(newFile);
