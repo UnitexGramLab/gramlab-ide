@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.xalign;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -41,18 +41,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
-import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
+import fr.umlv.unitex.xalign.XAlignFrame;
 
 
 /**
@@ -61,53 +59,17 @@ import fr.umlv.unitex.process.commands.XMLizerCommand;
  * @author Sébastien Paumier
  *  
  */
-public class AlignmentParameterFrame extends JInternalFrame {
+public class XAlignConfigFrame extends JInternalFrame {
 
-	static AlignmentParameterFrame frame;
-	
-	private AlignmentParameterFrame() {
+	XAlignConfigFrame() {
 		super("XAlign", false, true);
 		setContentPane(constructPanel());
 		pack();
 		setLocation(250,200);
-		setResizable(false);
-		setVisible(false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	/**
-	 * Initializes the frame
-	 *  
-	 */
-	private static void init() {
-		frame = new AlignmentParameterFrame();
-		UnitexFrame.addInternalFrame(frame,false);
-	}
-
-	/**
-	 * Shows the frame
-	 *  
-	 */
-	public static void showFrame() {
-		if (frame == null) {
-			init();
-		}
-		frame.setVisible(true);
-		try {
-			frame.setSelected(true);
-			frame.setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-	}
-
-	
-	private static JFileChooser textChooser() {
+	private JFileChooser textChooser() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new PersonalFileFilter(
 				"xml", "TEI text"));
@@ -129,7 +91,7 @@ public class AlignmentParameterFrame extends JInternalFrame {
 		return chooser;
 	}
 	
-	public static JFileChooser saveXMLChooser() {
+	public JFileChooser saveXMLChooser() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new PersonalFileFilter(
 				"xml", "TEI text"));
