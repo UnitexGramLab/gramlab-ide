@@ -55,7 +55,7 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements TableC
                 if (button.getIcon()==ConsoleFrame.statusErrorDown) {
                     /* If we want to show an error message */
                     ConsoleEntry entry=model.getConsoleEntry(currentRow);
-                    Console__.addCommand(entry.getErrorMessage(),false,currentRow+1,false);
+                    Console.addCommand(entry.getErrorMessage(),false,currentRow+1,false);
                     entry.setStatus(2);
                 } else {
                     ConsoleEntry entry=model.getConsoleEntry(currentRow);
