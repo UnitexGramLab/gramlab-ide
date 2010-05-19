@@ -41,6 +41,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.ConsoleTableCellEditor;
 import fr.umlv.unitex.console.ConsoleTableModel;
@@ -57,9 +58,9 @@ public class ConsoleFrame extends JInternalFrame {
    JTable table; 
    int longestCommandWidth=80;
    
-   static final ImageIcon statusOK=new ImageIcon(ConsoleFrame.class.getResource("../OK.png"));
-   public static final ImageIcon statusErrorDown=new ImageIcon(ConsoleFrame.class.getResource("../error1.png"));
-   public static final ImageIcon statusErrorUp=new ImageIcon(ConsoleFrame.class.getResource("../error2.png"));
+   static final ImageIcon statusOK=new ImageIcon(Console.class.getResource("OK.png"));
+   public static final ImageIcon statusErrorDown=new ImageIcon(Console.class.getResource("error1.png"));
+   public static final ImageIcon statusErrorUp=new ImageIcon(Console.class.getResource("error2.png"));
    
 	ConsoleFrame() {
 		super("Console", true, true);
