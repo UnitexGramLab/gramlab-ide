@@ -36,6 +36,7 @@ package fr.loria.xsilfide.multialign;
 
 import java.util.Vector;
 
+@SuppressWarnings("unchecked") 
 public class Path
 {
   protected int cur;        // index of current point

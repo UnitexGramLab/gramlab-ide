@@ -33,6 +33,7 @@
 package fr.loria.xsilfide.multialign;
 
 
+@SuppressWarnings("unchecked")
 class Alignement implements Comparable{
 
     private XmlId pSource, pCible;

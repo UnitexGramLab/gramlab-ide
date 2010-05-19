@@ -36,6 +36,7 @@ package fr.loria.xsilfide.multialign;
 import java.util.Vector;
 
 
+@SuppressWarnings("unchecked") 
 public class Paragraphes
 {
   
@@ -191,7 +192,7 @@ public class Paragraphes
 	  
 	  if(csSrc<sMax)
 	    while (((Vector)srcSentences.elementAt(csSrc)).elementAt(0).toString().startsWith(id)) {
-	      Src.addElement((Vector)srcSentences.elementAt(csSrc));
+	      Src.addElement(srcSentences.elementAt(csSrc));
 	      csSrc++;
 	      if(csSrc==sMax) break;
 	    }
@@ -215,7 +216,7 @@ public class Paragraphes
 	  }
 	  if(csTar<tMax)
 	    while (((Vector)tarSentences.elementAt(csTar)).elementAt(1).toString().startsWith(id)) {
-	      Tar.addElement((Vector)tarSentences.elementAt(csTar));
+	      Tar.addElement(tarSentences.elementAt(csTar));
 	      csTar++;
 	      if(csTar==tMax) break;
 	    }
@@ -224,7 +225,7 @@ public class Paragraphes
       } // enfor target
       
       // align Src and Tar
-      Sentences stc = new Sentences(Src,Tar, cogn, lpt);
+      new Sentences(Src,Tar, cogn, lpt);
       
       // System.out.println(stc.Links.toString());
       // System.out.println(stc.Linking.toString());
