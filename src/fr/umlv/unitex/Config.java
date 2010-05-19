@@ -780,24 +780,24 @@ public class Config {
 	
 	private static final String[] bastien=new String[] {
 	        "Greek (Ancient)",
-	        "grec momifi�",
-	        "grec putr�fi�",
-	        "grec embaum�",
-	        "grec faisand�",
+	        "grec momifié",
+	        "grec putréfié",
+	        "grec embaumé",
+	        "grec faisandé",
 	        "grec mort",
 	        "vieux grec tout rabougri",
 	        "grec qui sent la naphtaline",
-	        "grec p�rim�",
-	        "grec cadav�rique",
+	        "grec périmé",
+	        "grec cadavérique",
 	        "grec de morgue",
-	        "grec tellement vieux qu'on fr�le la profanation",
-	        "grec m�dico-l�gal",
-	        "grec grouillant d'insectes n�crophages",
-	        "grec en d�composition",
-	        "grec moisi (les fameux champignons � la grecque)",
-	        "grec qui ferait vomir un marchand de k�babs de rat",
+	        "grec tellement vieux qu'on frôle la profanation",
+	        "grec médico-légal",
+	        "grec grouillant d'insectes nécrophages",
+	        "grec en décomposition",
+	        "grec moisi (les fameux champignons à la grecque)",
+	        "grec qui ferait vomir un marchand de kébabs de rat",
 	        "grec pourri",
-	        "grec dess�ch�"
+	        "grec desséché"
 	};
 	private static final String[] jeesun=new String[] {
 	    "\uC9C0\uC21C\uC744 \uC704\uD55C \uD55C\uAD6D\uC5B4",
@@ -805,7 +805,7 @@ public class Config {
 	    "\uC0C8\uBCBD 4\uC2DC\uC758 \uD55C\uAD6D\uC5B4",
 	    "\uAC74\uBC30\uB77C\uB294 \uB2E8\uC5B4\uB9CC\uC744 \uD560 \uC904 \uC544\uB294 \uC0AC\uB78C\uC758 \uD55C\uAD6D\uC5B4",
 	    "\uD55C\uAD6D\uC5B4\uC640 \uC220",
-	    "cor�en rien que pour toi toute seule"
+	    "coréen rien que pour toi toute seule"
 	};
 	/**
 	 * @return the current language to be displayed in the title bar
@@ -823,6 +823,9 @@ public class Config {
 		/* This one too */
 		  if (currentLanguage.equals("KoreanJeeSun")) {
 		      return jeesun[new Random().nextInt(jeesun.length)];
+		  }
+		  if (getUserName().hashCode()==549477927) {
+			  return "\u2665\u2665\u2665 "+currentLanguage+" \u2665\u2665\u2665";
 		  }
 		return currentLanguage;
 	}
