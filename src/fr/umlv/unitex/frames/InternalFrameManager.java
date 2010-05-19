@@ -72,6 +72,7 @@ public class InternalFrameManager {
 	private TranscodingFrameFactory transcodingFrameFactory=new TranscodingFrameFactory();
 	private ConsoleFrameFactory consoleFrameFactory=new ConsoleFrameFactory();
 	private FileEditionTextFrameFactory fileEditionTextFrameFactory=new FileEditionTextFrameFactory();
+	private XAlignConfigFrameFactory xAlignConfigFrameFactory=new XAlignConfigFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -837,4 +838,18 @@ public class InternalFrameManager {
 		return d;
 	}
 
+
+	public XAlignConfigFrame newXAlignConfigFrame() {
+		XAlignConfigFrame f=xAlignConfigFrameFactory.newXAlignConfigFrame();
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,true);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
 }
