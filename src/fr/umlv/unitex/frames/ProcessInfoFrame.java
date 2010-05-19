@@ -45,6 +45,7 @@ import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Console__;
 import fr.umlv.unitex.console.Couple;
+import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.process.ProcessInfoThread;
 import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.commands.AbstractMethodCommand;
@@ -167,7 +168,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	void launchBuilderCommands() {
 		if (commands == null)
 			return;
-		new Thread() {
+		Thread thread=new Thread() {
 			public void run() {
 				boolean problem = false;
 				CommandBuilder command;
@@ -323,7 +324,9 @@ public class ProcessInfoFrame extends JInternalFrame {
 					DO.toDo();
 				}
 			}
-		}.start();
+		};
+		thread.setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
+		thread.start();
 	}
 
 }
