@@ -21,26 +21,18 @@
 
 package fr.umlv.unitex;
 
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.io.IOException;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Locale;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
+import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
 
@@ -66,36 +58,7 @@ public class Unitex {
      * 
      */
     public static void launchUnitex(final String[] args) {
-        Thread.currentThread().setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-
-            public void uncaughtException(Thread t, Throwable e) {
-                Box b = new Box(BoxLayout.Y_AXIS);
-                b.add(new JLabel(e.toString()));
-                String s=e.toString()+"\n";
-                for (StackTraceElement elem : e.getStackTrace()) {
-                    b.add(new JLabel("at "+elem.toString()));
-                    s=s+"at "+elem.toString()+"\n";
-                }
-                b.add(new JLabel(" "));
-                b.add(new JLabel("Do you want to report this problem to Unitex developers ?"));
-                if (JOptionPane.showConfirmDialog(null, b, "Java Exception",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE)==0) {
-                    try {
-                        Desktop.getDesktop().mail(new URI("mailto","unitex@univ-mlv.fr?subject=Java Exception"
-                                +"&body="
-                                +"Revision date: "+Version.getRevisionDate()+"\n"
-                                +"Java revision Number: "+Version.getRevisionNumberForJava()+"\n"
-                                +"C/C++ revision Number: "+Version.getRevisionNumberForC()+"\n"
-                                +"System: "+Config.getCurrentSystemName()+"\n"
-                                +"\n"
-                                +s,null));
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    } catch (URISyntaxException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
+        Thread.currentThread().setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
         Locale.setDefault(Locale.ENGLISH);
         try {
             javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme(new OceanTheme());
