@@ -173,6 +173,15 @@ public class MyDropTarget {
 			extension = Util.getFileNameExtension(f);
 			if ((extension.compareToIgnoreCase("snt") == 0)
 					|| (extension.compareToIgnoreCase("txt") == 0)) {
+				if (list.size()>1) {
+					JOptionPane
+					.showMessageDialog(
+							UnitexFrame.mainFrame,
+							"You should not try to drop more than one text file at once",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				final File F = f;
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
@@ -184,6 +193,15 @@ public class MyDropTarget {
 			}
 			if ((f.getName().compareToIgnoreCase("dlf") == 0)
 					|| (f.getName().compareToIgnoreCase("dlc") == 0)) {
+				if (list.size()>1) {
+					JOptionPane
+					.showMessageDialog(
+							UnitexFrame.mainFrame,
+							"You should not try to drop more than one dictionary at once",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				final File dela = f;
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
@@ -212,6 +230,15 @@ public class MyDropTarget {
 				return;
 			}
 			if (extension.compareToIgnoreCase("dic") == 0) {
+				if (list.size()>1) {
+					JOptionPane
+					.showMessageDialog(
+							UnitexFrame.mainFrame,
+							"You should not try to drop more than one dictionary at once",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 				final File dela = f;
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
