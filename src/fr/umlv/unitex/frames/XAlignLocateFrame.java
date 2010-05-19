@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.xalign;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -47,8 +47,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.NumericTextField;
@@ -57,7 +55,6 @@ import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
-import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConcordCommand;
@@ -65,6 +62,8 @@ import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.Reg2GrfCommand;
+import fr.umlv.unitex.xalign.ConcordanceLoader;
+import fr.umlv.unitex.xalign.ConcordanceModel;
 
 
 /**
@@ -91,29 +90,22 @@ public class XAlignLocateFrame extends JInternalFrame {
 	ConcordanceModel concordModel;
 	
 	
-	public XAlignLocateFrame(String language,File snt,ConcordanceModel concordModel) {
+	XAlignLocateFrame() {
 		super("XAlign Locate Pattern", false, true);
-		this.language=language;
-		this.snt=snt;
-		this.concordModel=concordModel;
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
-		final XAlignLocateFrame f=this;
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-				UnitexFrame.removeInternalFrame(f);
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		UnitexFrame.addInternalFrame(this,true);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
+	
+	void configure(String language1,File snt1,ConcordanceModel concordModel1) {
+		this.language=language1;
+		this.snt=snt1;
+		this.concordModel=concordModel1;		
+	}
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setOpaque(true);
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		return panel;

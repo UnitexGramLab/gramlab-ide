@@ -67,7 +67,6 @@ import fr.umlv.unitex.xalign.AlignmentListener;
 import fr.umlv.unitex.xalign.ConcordanceModel;
 import fr.umlv.unitex.xalign.ConcordanceModelImpl;
 import fr.umlv.unitex.xalign.DisplayMode;
-import fr.umlv.unitex.xalign.XAlignLocateFrame;
 import fr.umlv.unitex.xalign.XAlignModel;
 import fr.umlv.unitex.xalign.XAlignModelImpl;
 import fr.umlv.unitex.xalign.XAlignPane;
@@ -288,17 +287,13 @@ public class XAlignFrame extends JInternalFrame {
 					}
 					ToDo toDo=new ToDo() {
 						public void toDo() {
-							SwingUtilities.invokeLater(new Runnable() {
-								public void run() {
-									new XAlignLocateFrame(language,snt,concordModel);
-								}
-							});
+							UnitexFrame.getFrameManager().newXAlignLocateFrame(language,snt,concordModel);
 						}
 					};
 					Launcher.exec(commands,true,toDo,true);
 					return;
 				}
-				new XAlignLocateFrame(language,snt,concordModel);
+				UnitexFrame.getFrameManager().newXAlignLocateFrame(language,snt,concordModel);
 			}});
 		return button;
 	}
