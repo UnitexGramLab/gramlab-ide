@@ -72,6 +72,7 @@ import fr.loria.nguyen.mytools.XMLTools;
 
 
 
+@SuppressWarnings("unchecked") 
 public class LoadAndPrepareTexts {
     // Element Properties : 
     static final short EMPTY  = 0;

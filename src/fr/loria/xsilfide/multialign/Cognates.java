@@ -41,6 +41,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 
+@SuppressWarnings("unchecked")
 public class Cognates{
     private ArrayList<Paquet> paquetsSource;
     private ArrayList<Paquet> paquetsCible;
@@ -131,7 +132,7 @@ public class Cognates{
 	paquetsCible.add(p);
     }
 
-    public void addPaquet(String paquet, String paquetId, LoadAndPrepareTexts lpt){
+	public void addPaquet(String paquet, String paquetId, LoadAndPrepareTexts lpt){
 	String uri = "";
 	String sCour;
 	//Vector tmp;
@@ -183,7 +184,7 @@ public class Cognates{
 	alignements.add(a);
     }
 
-    public void addAlignment(String lnks, LoadAndPrepareTexts lpt){
+	public void addAlignment(String lnks, LoadAndPrepareTexts lpt){
 	Vector linkVect;
 	Alignement a;
 
@@ -333,7 +334,6 @@ public class Cognates{
     */
 
   
-    @SuppressWarnings("unchecked")
 	public void saturerCognates(LoadAndPrepareTexts lpt){
 	Alignement cour;
 	String idSource, idTarget;
