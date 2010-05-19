@@ -80,12 +80,10 @@ import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.CompressCommand;
-import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 import fr.umlv.unitex.xalign.AlignmentParameterFrame;
 
 /**
@@ -1428,10 +1426,7 @@ public class UnitexFrame extends JFrame {
 		};
 		try {
 			if (!UnicodeIO.isAUnicodeLittleEndianFile(dela)) {
-				ConvertOneFileFrame.reset();
-				ConvertCommand res = ConvertOneFileFrame
-						.getCommandLineForConversion(dela);
-				Launcher.exec(res, true, toDo);
+				UnitexFrame.getFrameManager().newTranscodeOneFileDialog(dela,toDo);
 			} else {
 				toDo.toDo();
 			}

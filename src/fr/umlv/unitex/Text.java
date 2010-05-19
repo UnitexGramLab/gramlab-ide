@@ -32,12 +32,10 @@ import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
-import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 
 /**
  * This class provides methods for loading corpora.
@@ -61,10 +59,7 @@ public class Text {
 		TextConversionDo toDo = new TextConversionDo(name,taggedText);
 		try {
 			if (!UnicodeIO.isAUnicodeLittleEndianFile(name)) {
-        ConvertOneFileFrame.reset();
-				ConvertCommand res = ConvertOneFileFrame
-						.getCommandLineForConversion(name);
-				Launcher.exec(res, true, toDo);
+				UnitexFrame.getFrameManager().newTranscodeOneFileDialog(name,toDo);
 			} else {
 				toDo.toDo();
 			}

@@ -41,9 +41,6 @@ import javax.swing.SwingUtilities;
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.ConvertCommand;
-import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
 
 /**
  * This class is used to listen drag and drop events. Files that can be dragged
@@ -226,10 +223,7 @@ public class MyDropTarget {
 						};
 						try {
 							if (!UnicodeIO.isAUnicodeLittleEndianFile(dela)) {
-								ConvertOneFileFrame.reset();
-								ConvertCommand res = ConvertOneFileFrame
-										.getCommandLineForConversion(dela);
-								Launcher.exec(res, true, toDo);
+								UnitexFrame.getFrameManager().newTranscodeOneFileDialog(dela,toDo);
 							} else {
 								toDo.toDo();
 							}
@@ -242,7 +236,6 @@ public class MyDropTarget {
 				return;
 			}
 			if (extension.compareToIgnoreCase("grf") == 0) {
-				ConvertOneFileFrame.reset();
 				for (int i = 0; i < list.size(); i++) {
 					if (Util.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
 						final File file = (File)list.get(i);
