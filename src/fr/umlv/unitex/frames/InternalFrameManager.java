@@ -71,6 +71,7 @@ public class InternalFrameManager {
 	private ProcessInfoFrameFactory processInfoFrameFactory=new ProcessInfoFrameFactory();
 	private TranscodingFrameFactory transcodingFrameFactory=new TranscodingFrameFactory();
 	private ConsoleFrameFactory consoleFrameFactory=new ConsoleFrameFactory();
+	private FileEditionTextFrameFactory fileEditionTextFrameFactory=new FileEditionTextFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -79,6 +80,24 @@ public class InternalFrameManager {
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop=desktop;
 	}
+	
+	private void addToDesktopIfNecessary(final JInternalFrame f,boolean removeOnClose) {
+		for (JInternalFrame frame:desktop.getAllFrames()) {
+			if (frame.equals(f)) {
+				return;
+			}
+		}
+		if (removeOnClose) {
+			f.addInternalFrameListener(new InternalFrameAdapter() {
+				@Override
+				public void internalFrameClosed(InternalFrameEvent e) {
+					desktop.remove(f);
+				}
+			});
+		}
+		desktop.add(f,LAYER);
+	}
+
 	
 	/**
 	 * Creates a GraphFrame for the given .grf file.
@@ -103,24 +122,6 @@ public class InternalFrameManager {
 		return true;
 	}
 
-	private void addToDesktopIfNecessary(final JInternalFrame f,boolean removeOnClose) {
-		for (JInternalFrame frame:desktop.getAllFrames()) {
-			if (frame.equals(f)) {
-				return;
-			}
-		}
-		if (removeOnClose) {
-			f.addInternalFrameListener(new InternalFrameAdapter() {
-				@Override
-				public void internalFrameClosed(InternalFrameEvent e) {
-					desktop.remove(f);
-				}
-			});
-		}
-		desktop.add(f,LAYER);
-	}
-
-	
 	public void closeAllGraphFrames() {
 		graphFrameFactory.closeAllGraphFrames();
 	}
@@ -798,5 +799,31 @@ public class InternalFrameManager {
 			e.printStackTrace();
 		}
 	}
+
+
+	public FileEditionTextFrame newFileEditionTextFrame(File file) {
+		FileEditionTextFrame f=fileEditionTextFrameFactory.getFileEditionTextFrame(file);
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,true);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
+	public void closeAllFileEditionTextFrames() {
+		fileEditionTextFrameFactory.closeAllFileEditionTextFrames();
+	}
+
+	public FileEditionTextFrame getSelectedFileEditionTextFrame() {
+		JInternalFrame f=desktop.getSelectedFrame();
+		if (f==null || !(f instanceof FileEditionTextFrame)) return null;
+		return (FileEditionTextFrame)f;
+	}
+
 
 }

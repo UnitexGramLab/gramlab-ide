@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.editor.ui;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -56,7 +56,7 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.editor.FileManager;
-import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.editor.ui.FindDialog;
 
 /*
  * This class is used to display the text
@@ -101,20 +101,18 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
         }
 };
     
-	public FileEditionTextFrame(EditionTextArea text, File file) {
+	FileEditionTextFrame(File file) {
 		super("", true, true, true, true);
-		this.text = text;
+		text = new EditionTextArea();
 		this.file=file;
-		this.setTitle(file.getAbsolutePath());
+		if (file==null) {
+			this.setTitle("New File");
+		} else {
+			this.setTitle(file.getAbsolutePath());
+		}
 		init();
 	}
 
-	public FileEditionTextFrame() {
-		super("", true, true, true, true);
-		text = new EditionTextArea();
-		this.setTitle("New File");
-		init();
-	}
 
 	private void init() {
 		fileManager = new FileManager();
@@ -349,4 +347,7 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 		return text;
 	}
 
+	File getFile() {
+		return file;
+	}
 }
