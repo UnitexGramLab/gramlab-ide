@@ -761,7 +761,11 @@ public class InternalFrameManager {
 	}
 
 	public TranscodingFrame newTranscodingFrame() {
-		TranscodingFrame f=transcodingFrameFactory.newTranscodingFrame();
+		return newTranscodingFrame(null,null);
+	}
+	
+	public TranscodingFrame newTranscodingFrame(File file,ToDo toDo) {
+		TranscodingFrame f=transcodingFrameFactory.newTranscodingFrame(file,toDo);
 		if (f==null) return null;
 		addToDesktopIfNecessary(f,false);
 		f.setVisible(true);
@@ -771,6 +775,10 @@ public class InternalFrameManager {
 			e.printStackTrace();
 		}
 		return f;
+	}
+
+	public ConsoleFrame getConsoleFrame() {
+		return null;
 	}
 
 }

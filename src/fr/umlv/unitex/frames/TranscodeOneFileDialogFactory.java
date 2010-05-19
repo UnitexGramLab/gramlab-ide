@@ -26,16 +26,16 @@ import java.io.File;
 import fr.umlv.unitex.ToDo;
 
 
-public class TranscodingFrameFactory {
+public class TranscodeOneFileDialogFactory {
 
-	private TranscodingFrame frame;
+	private TranscodeOneFileDialog dialog;
 	
-	TranscodingFrame newTranscodingFrame(File file, ToDo toDo) {
-		if (frame==null) {
-			frame=new TranscodingFrame();
+	TranscodeOneFileDialog newTranscodeOneFileDialog(File f,ToDo toDo) {
+		if (dialog==null) {
+			dialog=new TranscodeOneFileDialog();
 		}
-		frame.configure(file,toDo);
-		return frame;
+		dialog.configure(f,toDo);
+		return dialog;
 	}
 
 }

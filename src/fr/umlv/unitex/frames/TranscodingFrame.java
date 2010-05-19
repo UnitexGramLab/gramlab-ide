@@ -49,6 +49,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.process.Launcher;
@@ -80,6 +81,7 @@ public class TranscodingFrame extends JInternalFrame {
 	private JButton removeFiles = new JButton("Remove Files");
 	private JButton transcode = new JButton("Transcode");
 	private JButton cancel = new JButton("Cancel");
+	ToDo toDo;
 
 	
 	TranscodingFrame() {
@@ -95,6 +97,7 @@ public class TranscodingFrame extends JInternalFrame {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				listModel.removeAllElements();
+				toDo=null;
 			}
 		});
 	}
@@ -237,6 +240,8 @@ public class TranscodingFrame extends JInternalFrame {
 					command = command.renameDestWithSuffix(preSuf);
 				}
 				final ConvertCommand cmd=command;
+				final ToDo d=toDo;
+				toDo=null;
 				setVisible(false);
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
@@ -245,7 +250,7 @@ public class TranscodingFrame extends JInternalFrame {
 						for (int i = 0; i < l; i++) {
 							cmd.file((File)listModel.getElementAt(i));
 						}
-						Launcher.exec(cmd, false, null);
+						Launcher.exec(cmd,false,d);
 					}
 				});
 			}
@@ -272,6 +277,21 @@ public class TranscodingFrame extends JInternalFrame {
 	 */
 	public DefaultListModel getListModel() {
 		return listModel;
+	}
+
+
+
+	void configure(File file, ToDo toDo1) {
+		listModel.removeAllElements();
+		this.toDo=toDo1;
+		if (toDo1!=null) {
+			listModel.addElement(file);
+			addFiles.setEnabled(false);
+			removeFiles.setEnabled(false);
+		} else {
+			addFiles.setEnabled(true);
+			removeFiles.setEnabled(true);
+		}
 	}
 
 
