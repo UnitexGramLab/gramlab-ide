@@ -32,6 +32,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.xalign.ConcordanceModel;
 
 /**
  * This class is responsible for managing all internal frames in Unitex
@@ -74,6 +75,7 @@ public class InternalFrameManager {
 	private FileEditionTextFrameFactory fileEditionTextFrameFactory=new FileEditionTextFrameFactory();
 	private XAlignConfigFrameFactory xAlignConfigFrameFactory=new XAlignConfigFrameFactory();
 	private XAlignFrameFactory xAlignFrameFactory=new XAlignFrameFactory();
+	private XAlignLocateFrameFactory xAlignLocateFrameFactory=new XAlignLocateFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -872,6 +874,26 @@ public class InternalFrameManager {
 
 	public void closeXAlignFrame() {
 		xAlignFrameFactory.closeXAlignFrame();
+	}
+
+
+	public XAlignLocateFrame newXAlignLocateFrame(String language,File snt,ConcordanceModel model) {
+		XAlignLocateFrame f=xAlignLocateFrameFactory.newXAlignLocateFrame(language,snt,model);
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,false);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
+	public void closeXAlignLocateFrame() {
+		/* TODO mettre un listener pour fermer le XAlignLocateFrame quand on ferme le XAlignFrame */
+		xAlignLocateFrameFactory.closeXAlignLocateFrame();
 	}
 
 }
