@@ -63,8 +63,8 @@ public class UnitexUncaughtExceptionHandler implements UncaughtExceptionHandler 
             s=s+"at "+elem.toString()+"\n";
         }
         if (e.getCause()!=null) {
-        	b.add(new JLabel("Caused by: "));
-            s=s+"Caused by: "+e.getCause().getStackTrace();
+        	b.add(new JLabel("Caused by: "+e.getCause()));
+            s=s+"Caused by: "+e.getCause()+"\n";
         	for (StackTraceElement elem : e.getCause().getStackTrace()) {
                 b.add(new JLabel("at "+elem.toString()));
                 s=s+"at "+elem.toString()+"\n";
