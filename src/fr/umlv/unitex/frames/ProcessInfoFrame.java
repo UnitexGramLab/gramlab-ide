@@ -43,7 +43,7 @@ import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.console.Console__;
+import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.process.ProcessInfoThread;
@@ -192,7 +192,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.ERROR_MESSAGE: {
-                            final ConsoleEntry entry=Console__.addCommand("Error message emitted by the graphical interface",true);
+                            final ConsoleEntry entry=Console.addCommand("Error message emitted by the graphical interface",true);
 							try {
 								final CommandBuilder c=command;
 								SwingUtilities.invokeAndWait(new Runnable() {
@@ -209,7 +209,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.PROGRAM: {
-							ConsoleEntry entry=Console__.addCommand(command.getCommandLine(),false);
+							ConsoleEntry entry=Console.addCommand(command.getCommandLine(),false);
 							final String[] comm = command.getCommandArguments();
 							try {
 								p = Runtime.getRuntime().exec(comm);
@@ -277,7 +277,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 						}// end of program command
 						
 					case CommandBuilder.METHOD: {
-						Console__.addCommand(command.getCommandLine(),false);
+						Console.addCommand(command.getCommandLine(),false);
 						AbstractMethodCommand cmd=(AbstractMethodCommand)command;
 						if (!cmd.execute()) {
 							if (stop_if_problem) {

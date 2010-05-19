@@ -57,9 +57,9 @@ public class ConsoleFrame extends JInternalFrame {
    JTable table; 
    int longestCommandWidth=80;
    
-   static final ImageIcon statusOK=new ImageIcon(ConsoleFrame.class.getResource("OK.png"));
-   public static final ImageIcon statusErrorDown=new ImageIcon(ConsoleFrame.class.getResource("error1.png"));
-   public static final ImageIcon statusErrorUp=new ImageIcon(ConsoleFrame.class.getResource("error2.png"));
+   static final ImageIcon statusOK=new ImageIcon(ConsoleFrame.class.getResource("../OK.png"));
+   public static final ImageIcon statusErrorDown=new ImageIcon(ConsoleFrame.class.getResource("../error1.png"));
+   public static final ImageIcon statusErrorUp=new ImageIcon(ConsoleFrame.class.getResource("../error2.png"));
    
 	ConsoleFrame() {
 		super("Console", true, true);

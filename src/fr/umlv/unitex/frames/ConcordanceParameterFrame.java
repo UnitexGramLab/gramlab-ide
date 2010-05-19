@@ -60,7 +60,7 @@ import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
-import fr.umlv.unitex.console.Console__;
+import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ConcorDiffCommand;
@@ -631,7 +631,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 						String[] s = new String[2];
 						s[0] = Preferences.getCloneOfPreferences().htmlViewer.getAbsolutePath();
 						s[1] = htmlFile.getAbsolutePath();
-						Console__.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"",false);
+						Console.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"",false);
 						try {
 							Runtime.getRuntime().exec(s);
 						} catch (IOException e) {
