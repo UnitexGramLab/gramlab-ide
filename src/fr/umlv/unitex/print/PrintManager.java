@@ -25,6 +25,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.frames.GraphFrame;
@@ -114,6 +115,19 @@ public class PrintManager {
 				JOptionPane.showMessageDialog(null,
 						"Error while printing sentence graph", "Error",
 						JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+
+	public static void print(JInternalFrame f) {
+		if (f==null) return;
+		if (f instanceof GraphFrame) {
+			printOneGraph((GraphFrame)f);
+			return;
+		}
+		if (f instanceof TextAutomatonFrame) {
+			printTextAutomatonFrame((TextAutomatonFrame)f);
+			return;
 		}
 	}
 

@@ -24,20 +24,17 @@ package fr.umlv.unitex.frames;
 public class TextAutomatonFrameFactory {
 
 	private TextAutomatonFrame frame;
-	private boolean existsButNotTfstIsLoaded=false;
 	
-	TextAutomatonFrame newTextAutomatonFrame() {
+	TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
 		if (frame==null) {
 			frame=new TextAutomatonFrame();
 		} else {
 			frame.hideFrame();
 		}
 		if (!frame.loadTfst()) {
-			existsButNotTfstIsLoaded=true;
 			return null;
 		}
-		existsButNotTfstIsLoaded=false;
-		frame.loadSentence(1);
+		frame.loadSentence(sentenceNumber);
 		return frame;
 	}
 
@@ -48,12 +45,8 @@ public class TextAutomatonFrameFactory {
 	}
 
 
-	TextAutomatonFrame getTextAutomatonFrame() {
-		if (frame!=null && existsButNotTfstIsLoaded) {
-			/* We don't want to act as if the frame really exists if
-			 * the .tfst has not been loaded */
-			return null;
-		}
-		return frame;
+	public boolean existsFrame() {
+		return frame!=null;
 	}
+
 }
