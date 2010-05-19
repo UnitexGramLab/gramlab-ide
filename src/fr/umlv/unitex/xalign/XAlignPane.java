@@ -69,33 +69,26 @@ import javax.swing.text.html.HTMLEditorKit;
 public class XAlignPane extends JPanel {
 
 	JList list1;
-
 	JList list2;
-
 	MyBean bean1;
-
 	MyBean bean2;
-
 	JComponent middle;
-
 	JScrollPane scrollPane1;
-
 	JScrollPane scrollPane2;
-
 	XAlignModel alignmentModel;
 
 	public XAlignPane(final ConcordanceModel model1, final ConcordanceModel model2,
-			XAlignModel model) {
+			XAlignModel model,Font sourceFont,Font targetFont) {
 		super(new GridBagLayout());
 		this.alignmentModel = model;
 		middle = createMiddleComponent();
 		bean1 = new MyBean();
-		list1 = createList(model1,bean1,true,XAlignFrame.sourceFont);
+		list1 = createList(model1,bean1,true,sourceFont);
 		list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane1 = new JScrollPane(list1);
 		scrollPane1.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		bean2 = new MyBean();
-		list2 = createList(model2,bean2,false,XAlignFrame.targetFont);
+		list2 = createList(model2,bean2,false,targetFont);
 		list2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane2 = new JScrollPane(list2);
 		scrollPane1.getVerticalScrollBar().addAdjustmentListener(

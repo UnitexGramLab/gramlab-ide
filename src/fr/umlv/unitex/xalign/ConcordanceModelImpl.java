@@ -50,10 +50,12 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	/* The real type of occurrenceArray is List<Occurrence>[], but
 	 * we can't declare such a thing. */
 	Object[] occurrenceArray;
+	private XAlignModel xAlignModel;
 	
 	
-	public ConcordanceModelImpl(XMLTextModel model,boolean source) {
+	public ConcordanceModelImpl(XMLTextModel model,boolean source, XAlignModel xAlignModel) {
 		this.model=model;
+		this.xAlignModel=xAlignModel;
 		this.source=source;
 		matchedSentences=new ArrayList<Integer>();
 		occurrenceArray=new Object[model.getSize()];
@@ -368,9 +370,8 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		} else {
 			alignedModeSentences.clear();
 		}
-		XAlignModel alignmentModel=XAlignFrame.model;
 		for (Integer i:otherMatchedSentences) {
-			alignedWithMatchedSentences.addAll(alignmentModel.getAlignedSequences(i,!source));
+			alignedWithMatchedSentences.addAll(xAlignModel.getAlignedSequences(i,!source));
 		}
 		/*for (Integer i:matchedSentences) {
 			alignedModeSentences.add(new Integer(i));

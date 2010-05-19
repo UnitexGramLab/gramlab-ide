@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex.xalign;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -48,16 +48,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.frames.PreprocessDialog;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.frames.XAlignConfigFrame;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
@@ -66,53 +62,64 @@ import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.TEI2TxtCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 import fr.umlv.unitex.process.commands.XAlignCommand;
+import fr.umlv.unitex.xalign.AlignmentEvent;
+import fr.umlv.unitex.xalign.AlignmentListener;
+import fr.umlv.unitex.xalign.ConcordanceModel;
+import fr.umlv.unitex.xalign.ConcordanceModelImpl;
+import fr.umlv.unitex.xalign.DisplayMode;
+import fr.umlv.unitex.xalign.XAlignLocateFrame;
+import fr.umlv.unitex.xalign.XAlignModel;
+import fr.umlv.unitex.xalign.XAlignModelImpl;
+import fr.umlv.unitex.xalign.XAlignPane;
+import fr.umlv.unitex.xalign.XMLTextLoader;
+import fr.umlv.unitex.xalign.XMLTextModel;
+import fr.umlv.unitex.xalign.XMLTextModelImpl;
 
-public class XAlignFrame {
+public class XAlignFrame extends JInternalFrame {
 
-	static Font sourceFont;
-	static Font targetFont;
-	static {
-		JTextPane foo=new JTextPane();
-		sourceFont=foo.getFont();
-		targetFont=foo.getFont();
-	}
+	Font sourceFont;
+	Font targetFont;
+	File alignementFile;
+	XMLTextModel text1,text2;
+	XAlignModel model;
+	ConcordanceModel concordModel1,concordModel2;
 	
-	public static JInternalFrame frame;
-	public static File alignementFile;
-	static XMLTextModel text1,text2;
-	static XAlignModel model;
-	public static ConcordanceModel concordModel1,concordModel2;
-	
-	public static JInternalFrame buildAlignFrame(final File f1,final File f2,final File align) throws IOException {
+	XAlignFrame(final File f1,final File f2,final File align) throws IOException {
+		super("XAlign",true,true);
+		{
+			JTextPane foo=new JTextPane();
+			sourceFont=foo.getFont();
+			targetFont=foo.getFont();
+		}
 		alignementFile=align;
 		tryToFindFonts(f1,f2);
-		frame=new JInternalFrame("XAlign",true,true);
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		frame.setSize(800,600);
+		setSize(800,600);
 		/* First text */
 		MappedByteBuffer buffer1=XMLTextLoader.buildMappedByteBuffer(f1);
+		MappedByteBuffer buffer2=XMLTextLoader.buildMappedByteBuffer(f2);
 		text1=new XMLTextModelImpl(buffer1);
+		text2=new XMLTextModelImpl(buffer2);
 		XMLTextLoader loader1=new XMLTextLoader(text1,buffer1);
 		loader1.load();
-		concordModel1=new ConcordanceModelImpl(text1,true);
-		/* Second text */
-		MappedByteBuffer buffer2=XMLTextLoader.buildMappedByteBuffer(f2);
-		text2=new XMLTextModelImpl(buffer2);
 		XMLTextLoader loader2=new XMLTextLoader(text2,buffer2);
 		loader2.load();
-		concordModel2=new ConcordanceModelImpl(text2,false);
 		model=new XAlignModelImpl(text1,text2);
+		concordModel1=new ConcordanceModelImpl(text1,true,model);
+		concordModel2=new ConcordanceModelImpl(text2,false,model);
 		model.load(align);
 		model.addAlignmentListener(new AlignmentListener() {
 			public void alignmentChanged(AlignmentEvent e) {
 				if (AlignmentEvent.MANUAL_EDIT.equals(e)) {
-					frame.setTitle(((alignementFile!=null)?(alignementFile.getAbsolutePath()+" ("):"(alignment ")+"modified)");
+					setTitle(((alignementFile!=null)?(alignementFile.getAbsolutePath()+" ("):"(alignment ")+"modified)");
 				} else if (AlignmentEvent.SAVING.equals(e)) {
-					frame.setTitle((alignementFile!=null)?alignementFile.getAbsolutePath():"XAlign");
+					setTitle((alignementFile!=null)?alignementFile.getAbsolutePath():"XAlign");
 				} 
 			}
 		});
-		frame.addInternalFrameListener(new InternalFrameAdapter() {
+		
+		final JInternalFrame frame=this;
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addInternalFrameListener(new InternalFrameAdapter() {
 
 			public void internalFrameClosing(InternalFrameEvent e) {
 				if (model.isModified()) {
@@ -139,35 +146,25 @@ public class XAlignFrame {
 					if (n == JOptionPane.CLOSED_OPTION)
 						return;
 					if (n == 0) {
-						XAlignFrame.saveAlignment(model);
+						saveAlignment(model);
 					}
 					if (n != 2) {
-						frame.setVisible(false);
-						frame.dispose();
 						text1.reset();
 						text2.reset();
 						model.reset();
+						frame.dispose();
 						return;
-					}
-					frame.setVisible(true);
-					try {
-						frame.setSelected(true);
-						frame.setIcon(false);
-					} catch (java.beans.PropertyVetoException e2) {
-						e2.printStackTrace();
 					}
 					return;
 				}
 				text1.reset();
 				text2.reset();
 				model.reset();
-				frame.setVisible(false);
-				UnitexFrame.removeInternalFrame(frame);
+				frame.dispose();
 			}
 		});
-		frame.getContentPane().setLayout(new BorderLayout());
-		frame.getContentPane().add(new XAlignPane(concordModel1,concordModel2,model),BorderLayout.CENTER);
-		
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(new XAlignPane(concordModel1,concordModel2,model,sourceFont,targetFont),BorderLayout.CENTER);
 		JPanel radioPanel1=createRadioPanel(concordModel1,concordModel2,true);
 		JPanel radioPanel2=createRadioPanel(concordModel2,concordModel1,false);
 		JButton clearButton=new JButton("Clear alignment");
@@ -186,7 +183,7 @@ public class XAlignFrame {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						XAlignFrame.saveAlignment(model);
+						saveAlignment(model);
 						if (alignementFile==null || model.isModified()) {
 							/* If the user hasn't saved the alignment */
 							return;
@@ -203,7 +200,7 @@ public class XAlignFrame {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						XAlignFrame.saveAlignment(model);
+						saveAlignment(model);
 					}});
 			}});
 		JButton saveAsButton=new JButton("Save alignment as...");
@@ -211,7 +208,7 @@ public class XAlignFrame {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						XAlignFrame.saveAlignmentAs(model);
+						saveAlignmentAs(model);
 					}});
 			}});
 		JPanel downPanel=new JPanel(new BorderLayout());
@@ -232,11 +229,10 @@ public class XAlignFrame {
 		buttonPanel.add(locate2);
 		downPanel.add(buttonPanel,BorderLayout.SOUTH);
 		downPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		frame.getContentPane().add(downPanel,BorderLayout.SOUTH);
-		return frame;
+		getContentPane().add(downPanel,BorderLayout.SOUTH);
 	}
 
-	private static JButton createLocateButton(final File file,final ConcordanceModel concordModel) {
+	private JButton createLocateButton(final File file,final ConcordanceModel concordModel) {
 		JButton button=new JButton("Locate...");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -307,7 +303,7 @@ public class XAlignFrame {
 		return button;
 	}
 
-	protected static void saveAlignment(XAlignModel model1) {
+	protected void saveAlignment(XAlignModel model1) {
 		if (alignementFile!=null) {
 			saveAlignment(alignementFile,model1);
 		} else {
@@ -315,10 +311,10 @@ public class XAlignFrame {
 		}
 	}
 
-	static void saveAlignmentAs(XAlignModel model1) {
+	void saveAlignmentAs(XAlignModel model1) {
 		JFileChooser chooser=XAlignConfigFrame.alignmentChooser();
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		int returnVal = chooser.showSaveDialog(frame);
+		int returnVal = chooser.showSaveDialog(this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return;
 		}
@@ -326,11 +322,11 @@ public class XAlignFrame {
 		saveAlignment(alignementFile,model1);
 	}
 
-	private static void saveAlignment(File alignementFile1,XAlignModel model1) {
+	private void saveAlignment(File alignementFile1,XAlignModel model1) {
 		try {
 			model1.dumpAlignments(alignementFile1);
-			XAlignFrame.alignementFile=alignementFile1;
-			XAlignFrame.frame.setTitle(alignementFile1.getAbsolutePath());
+			alignementFile=alignementFile1;
+			setTitle(alignementFile1.getAbsolutePath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -338,7 +334,7 @@ public class XAlignFrame {
 		}
 	}
 
-	private static void tryToFindFonts(File f1, File f2) {
+	private void tryToFindFonts(File f1, File f2) {
 		Font f=tryToFindFont(f1);
 		if (f!=null) {
 			sourceFont=f;
@@ -495,7 +491,11 @@ public class XAlignFrame {
 		}
 		
 		public void toDo() {
-			model1.load(f);
+			try {
+				model1.load(f);
+			} catch (IOException e) {
+				UnitexFrame.getFrameManager().closeXAlignFrame();
+			}
 		}
 	}
 }
