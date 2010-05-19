@@ -57,6 +57,7 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.frames.PreprocessDialog;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.frames.XAlignConfigFrame;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
@@ -315,7 +316,7 @@ public class XAlignFrame {
 	}
 
 	static void saveAlignmentAs(XAlignModel model1) {
-		JFileChooser chooser=AlignmentParameterFrame.alignmentChooser();
+		JFileChooser chooser=XAlignConfigFrame.alignmentChooser();
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		int returnVal = chooser.showSaveDialog(frame);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {

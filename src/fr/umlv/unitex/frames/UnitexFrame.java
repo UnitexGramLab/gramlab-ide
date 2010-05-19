@@ -84,7 +84,6 @@ import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.xalign.AlignmentParameterFrame;
 
 /**
  * This is the main frame of the Unitex system.
@@ -841,7 +840,7 @@ public class UnitexFrame extends JFrame {
 		JMenuItem open=new JMenuItem("Open files...");
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AlignmentParameterFrame.showFrame();
+				frameManager.newXAlignConfigFrame();
 			}});
 		menu.add(open);
 		return menu;
