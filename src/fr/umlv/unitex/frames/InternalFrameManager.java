@@ -789,9 +789,14 @@ public class InternalFrameManager {
 		return f;
 	}
 
-	public void changeConsoleFrameVisibility() {
+	public void showConsoleFrame() {
 		ConsoleFrame f=getConsoleFrame();
-		f.setVisible(!f.isVisible());
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

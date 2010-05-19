@@ -1019,7 +1019,7 @@ public class UnitexFrame extends JFrame {
 		console.setEnabled(true);
 		console.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				frameManager.changeConsoleFrameVisibility();
+				frameManager.showConsoleFrame();
 			}
 		});
 		info.add(aboutUnitex);
