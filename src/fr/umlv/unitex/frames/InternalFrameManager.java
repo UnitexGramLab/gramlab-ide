@@ -75,6 +75,7 @@ public class InternalFrameManager {
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
+	private TranscodeOneFileDialogFactory transcodeOneFileDialogFactory=new TranscodeOneFileDialogFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -825,5 +826,12 @@ public class InternalFrameManager {
 		return (FileEditionTextFrame)f;
 	}
 
+
+	public boolean newTranscodeOneFileDialog(File text,ToDo toDo) {
+		TranscodeOneFileDialog d=transcodeOneFileDialogFactory.newTranscodeOneFileDialog(text,toDo);
+		if (d==null) return false;
+		d.setVisible(true);
+		return true;
+	}
 
 }

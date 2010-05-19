@@ -39,9 +39,7 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.ConvertCommand;
-import fr.umlv.unitex.transcoding.ConvertOneFileFrame;
+
 
 /**
  * This class describes a frame used to display a dictionary.
@@ -101,10 +99,7 @@ public class DelaFrame extends JInternalFrame {
 		LoadDelaDo toDo = new LoadDelaDo(dela);
 		try {
 			if (!UnicodeIO.isAUnicodeLittleEndianFile(dela)) {
-				ConvertOneFileFrame.reset();
-				ConvertCommand res = ConvertOneFileFrame
-						.getCommandLineForConversion(dela);
-				Launcher.exec(res, true, toDo);
+				UnitexFrame.getFrameManager().newTranscodeOneFileDialog(dela,toDo);
 			} else {
 				toDo.toDo();
 			}
