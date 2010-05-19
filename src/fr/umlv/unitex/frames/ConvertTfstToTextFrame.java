@@ -41,6 +41,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
+import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
 
@@ -135,7 +136,7 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		cmd.output(txt);		
 		commands.addCommand(cmd);
 		setVisible(false);
-		new ProcessInfoFrame(commands, true, null,true);
+		Launcher.exec(commands, true, null,true);
 	}
 
 }

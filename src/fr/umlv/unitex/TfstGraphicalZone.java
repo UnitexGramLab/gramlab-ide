@@ -69,7 +69,7 @@ public class TfstGraphicalZone
          addMouseListener(new FstGraphMouseListener());
       }
       sentenceTextArea=p.getSentenceTextArea();
-      boundsEditor=p.bounds;
+      boundsEditor=p.boundsEditor;
    }
 
    protected void init() {
