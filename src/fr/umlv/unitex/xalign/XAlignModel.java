@@ -32,7 +32,7 @@ public interface XAlignModel {
 	public ArrayList<Integer> getAlignedDestSequences(int sentence);
 	public ArrayList<Integer> getAlignedSequences(int sentence,boolean fromSrc);
 	
-	public void load(File f);
+	public void load(File f) throws IOException;
 	public void align(int sentenceSrc,int sentenceDest,AlignmentEvent e);
 	public void unAlign(int sentenceSrc,int sentenceDest);
 	public void changeAlignment(int sentenceSrc,int sentenceDest);

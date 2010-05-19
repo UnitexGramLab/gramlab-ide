@@ -27,9 +27,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyVetoException;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -50,7 +48,6 @@ import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
-import fr.umlv.unitex.xalign.XAlignFrame;
 
 
 /**
@@ -256,40 +253,13 @@ public class XAlignConfigFrame extends JInternalFrame {
 				final File alignmentFile2=alignmentFile;
 				/* We close the parameter frame */
 				setVisible(false);
-				/* We close the XAlign frame */
-				if (XAlignFrame.frame != null) {
-					try {
-						XAlignFrame.frame.setClosed(true);
-					} catch (PropertyVetoException e1) {
-						e1.printStackTrace();
-					}
-					UnitexFrame
-							.removeInternalFrame(XAlignFrame.frame);
-					XAlignFrame.frame = null;
-					System.gc();
-				}
+				UnitexFrame.getFrameManager().closeXAlignFrame();
 				ToDo toDo = new ToDo() {
 					public void toDo() {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
-								try {
-									JInternalFrame frame1 = XAlignFrame
-											.buildAlignFrame(xmlSourceFile,xmlTargetFile,
+								UnitexFrame.getFrameManager().newXAlignFrame(xmlSourceFile,xmlTargetFile,
 													alignmentFile2);
-									frame1.setVisible(true);
-									UnitexFrame.addInternalFrame(frame1,true);
-									frame1.setSelected(true);
-								} catch (IOException e1) {
-									JOptionPane
-											.showMessageDialog(
-													null,
-													"I/O error while loading alignment files",
-													"Error",
-													JOptionPane.ERROR_MESSAGE);
-									return;
-								} catch (PropertyVetoException e1) {
-									e1.printStackTrace();
-								}
 							}
 						});
 					}
