@@ -21,21 +21,23 @@
 
 package fr.umlv.unitex.frames;
 
-import java.io.File;
 
-import fr.umlv.unitex.ToDo;
+public class ConsoleFrameFactory {
 
-
-public class TranscodingFrameFactory {
-
-	private TranscodingFrame frame;
+	private ConsoleFrame frame;
 	
-	TranscodingFrame newTranscodingFrame(File file, ToDo toDo) {
+	ConsoleFrame newConsoleFrame() {
 		if (frame==null) {
-			frame=new TranscodingFrame();
+			frame=new ConsoleFrame();
 		}
-		frame.configure(file,toDo);
 		return frame;
+	}
+	
+	void closeConsoleFrame() {
+		if (frame==null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
 	}
 
 }
