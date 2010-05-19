@@ -70,6 +70,7 @@ public class InternalFrameManager {
 	private HelpOnCommandFrameFactory helpOnCommandFrameFactory=new HelpOnCommandFrameFactory();
 	private ProcessInfoFrameFactory processInfoFrameFactory=new ProcessInfoFrameFactory();
 	private TranscodingFrameFactory transcodingFrameFactory=new TranscodingFrameFactory();
+	private ConsoleFrameFactory consoleFrameFactory=new ConsoleFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -778,7 +779,19 @@ public class InternalFrameManager {
 	}
 
 	public ConsoleFrame getConsoleFrame() {
-		return null;
+		return newConsoleFrame();
+	}
+
+	private ConsoleFrame newConsoleFrame() {
+		ConsoleFrame f=consoleFrameFactory.newConsoleFrame();
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,false);
+		return f;
+	}
+
+	public void changeConsoleFrameVisibility() {
+		ConsoleFrame f=getConsoleFrame();
+		f.setVisible(!f.isVisible());
 	}
 
 }
