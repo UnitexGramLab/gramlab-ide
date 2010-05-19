@@ -73,7 +73,6 @@ import fr.umlv.unitex.TextField;
 import fr.umlv.unitex.TfstTextField;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Version;
-import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
@@ -1020,7 +1019,7 @@ public class UnitexFrame extends JFrame {
 		console.setEnabled(true);
 		console.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Console.changeFrameVisibility();
+				frameManager.changeConsoleFrameVisibility();
 			}
 		});
 		info.add(aboutUnitex);

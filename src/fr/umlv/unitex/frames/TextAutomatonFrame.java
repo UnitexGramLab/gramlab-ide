@@ -73,7 +73,7 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.TfstGraphicalZone;
 import fr.umlv.unitex.TfstTextField;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.console.Console__;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -514,7 +514,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 							cmd = cmd.font(Preferences.pref.input.getName())
 									.fontsize(Preferences.pref.inputSize);
 						}
-						Console.addCommand(cmd.getCommandLine(), false);
+						Console__.addCommand(cmd.getCommandLine(), false);
 						Process p;
 
 						try {
@@ -590,7 +590,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 								"currelagsentence").font(
 								Preferences.pref.input.getName()).fontsize(
 								Preferences.pref.inputSize);
-				Console.addCommand(cmd.getCommandLine(), false);
+				Console__.addCommand(cmd.getCommandLine(), false);
 				try {
 					Process p = Runtime.getRuntime().exec(
 							cmd.getCommandArguments());

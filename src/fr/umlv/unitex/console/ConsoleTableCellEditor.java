@@ -31,6 +31,8 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellEditor;
 
+import fr.umlv.unitex.frames.ConsoleFrame;
+
 @SuppressWarnings("serial")
 public class ConsoleTableCellEditor extends AbstractCellEditor implements TableCellEditor {
 
@@ -50,10 +52,10 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements TableC
         button.addActionListener(new ActionListener() {
             @SuppressWarnings("synthetic-access")
             public void actionPerformed(ActionEvent e) {
-                if (button.getIcon()==Console.statusErrorDown) {
+                if (button.getIcon()==ConsoleFrame.statusErrorDown) {
                     /* If we want to show an error message */
                     ConsoleEntry entry=model.getConsoleEntry(currentRow);
-                    Console.addCommand(entry.getErrorMessage(),false,currentRow+1,false);
+                    Console__.addCommand(entry.getErrorMessage(),false,currentRow+1,false);
                     entry.setStatus(2);
                 } else {
                     ConsoleEntry entry=model.getConsoleEntry(currentRow);
@@ -72,10 +74,10 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements TableC
             return null;
         }
         if (i==1) {
-            button.setIcon(Console.statusErrorDown);
+            button.setIcon(ConsoleFrame.statusErrorDown);
         }
         if (i==2) {
-            button.setIcon(Console.statusErrorUp);
+            button.setIcon(ConsoleFrame.statusErrorUp);
         }
         currentRow=row;
         return button;
