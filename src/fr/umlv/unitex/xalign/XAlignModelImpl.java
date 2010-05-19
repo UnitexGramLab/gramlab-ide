@@ -23,7 +23,6 @@ package fr.umlv.unitex.xalign;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -91,26 +90,16 @@ public class XAlignModelImpl implements XAlignModel {
 	File file;
 	Charset utf8=Charset.forName("UTF-8");
 	
-	public void load(File f) {
+	public void load(File f) throws IOException {
 		this.file=f;
 		if (f==null) {
 			return;
 		}
 		dataLength=(int)file.length();
 		group=new HashMap<String,ArrayList<String>>();
-		try {
-			stream = new FileInputStream(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
+		stream = new FileInputStream(file);
 		channel=stream.getChannel();
-		try {
-			buffer=channel.map(FileChannel.MapMode.READ_ONLY,0,dataLength);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
+		buffer=channel.map(FileChannel.MapMode.READ_ONLY,0,dataLength);
 		worker=new SwingWorker<Void,PublishInfo>() {
 
 			@Override

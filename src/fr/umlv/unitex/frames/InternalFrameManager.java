@@ -73,6 +73,7 @@ public class InternalFrameManager {
 	private ConsoleFrameFactory consoleFrameFactory=new ConsoleFrameFactory();
 	private FileEditionTextFrameFactory fileEditionTextFrameFactory=new FileEditionTextFrameFactory();
 	private XAlignConfigFrameFactory xAlignConfigFrameFactory=new XAlignConfigFrameFactory();
+	private XAlignFrameFactory xAlignFrameFactory=new XAlignFrameFactory();
 	
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
@@ -842,7 +843,7 @@ public class InternalFrameManager {
 	public XAlignConfigFrame newXAlignConfigFrame() {
 		XAlignConfigFrame f=xAlignConfigFrameFactory.newXAlignConfigFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
+		addToDesktopIfNecessary(f,false);
 		f.setVisible(true);
 		try {
 			f.setSelected(true);
@@ -852,4 +853,25 @@ public class InternalFrameManager {
 		}
 		return f;
 	}
+
+
+	public XAlignFrame newXAlignFrame(File src,File dst,File alignment) {
+		XAlignFrame f=xAlignFrameFactory.newXAlignFrame(src,dst,alignment);
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,true);
+		/* TODO vérifier que les constructeurs des frame ne sont utilisés que dans les factory */
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(false);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
+	public void closeXAlignFrame() {
+		xAlignFrameFactory.closeXAlignFrame();
+	}
+
 }
