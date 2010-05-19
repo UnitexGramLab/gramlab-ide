@@ -23,7 +23,7 @@ package fr.umlv.unitex.console;
 
 import fr.umlv.unitex.frames.UnitexFrame;
 
-public class Console__ {
+public class Console {
 
 	/**
 	 * Adds a <code>String</code> to the the command lines
