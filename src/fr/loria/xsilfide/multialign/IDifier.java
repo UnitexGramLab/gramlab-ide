@@ -68,6 +68,7 @@ import fr.loria.nguyen.mytools.XMLTools;
 // when aligning a document which has no ID's on its PHRASE elements.
 // IDifier will not destroy ID's which already exist.
 
+@SuppressWarnings("unchecked")
 public class IDifier extends org.xml.sax.helpers.DefaultHandler {
     
     XMLReader parser;

@@ -47,6 +47,7 @@ import fr.loria.nguyen.mytools.FileIO;
 import fr.loria.nguyen.mytools.XMLTools;
 
 
+@SuppressWarnings("unchecked") 
 public class NewLoadAndPrepareTexts {
     String sourceName;
     String targetName;
@@ -220,30 +221,6 @@ public class NewLoadAndPrepareTexts {
 	return cogn;
     }
 
-    private Vector segmentOnWhiteSpaces(String s){
-	Vector result = new Vector();
-	int finMot;
-	int debutMot;
-	char c;
-	
-	debutMot = 0;
-	finMot = 0;
-	while (finMot < s.length()){
-	    c = s.charAt(finMot);
-	    if (Character.isWhitespace(c)){
-		result.addElement(s.substring(debutMot, finMot));
-		while (Character.isWhitespace(c)){
-		    c = s.charAt(finMot);
-		    finMot++;
-		}
-		debutMot = finMot-1;
-	    }
-	    finMot++;
-	}
-	result.addElement(s.substring(debutMot, finMot));
-	return result;
-    }
-
     Vector segmentOnChar(String s, char cs){
 	Vector result = new Vector();
 	int finMot;
@@ -261,7 +238,7 @@ public class NewLoadAndPrepareTexts {
 		    finMot++;
 		}
 		debutMot = finMot-1;
-	    };
+	    }
 	    finMot++;
 	}
 	result.addElement(s.substring(debutMot, finMot));
@@ -290,7 +267,9 @@ public class NewLoadAndPrepareTexts {
 	    inFuzzy = false;
 	}
 	
-	public void endDocument(){}
+	public void endDocument(){
+		/* nothing to do */
+	}
 	
 	public void startElement(String uri, String name, String qname,
 				 Attributes attrs){

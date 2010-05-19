@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+@SuppressWarnings("unchecked") 
 class Paquet{
     private String id;
     private TreeSet<XmlId> contenu; 
@@ -62,7 +63,7 @@ class Paquet{
 	}
 	return res;
     }
-    @SuppressWarnings("unchecked")
+
 	private void setContent(Collection<XmlId> cont){
 	contenu = new TreeSet(cont);
     }

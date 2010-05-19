@@ -87,7 +87,7 @@ class ContraintesPoint{
     }
 }
 
-
+@SuppressWarnings("unchecked")
 public class ContraintesChemin{
     private int coutsForces[][];
     private Vector[][] cheminsForces; // c'est un ou logique entre ces chemins...

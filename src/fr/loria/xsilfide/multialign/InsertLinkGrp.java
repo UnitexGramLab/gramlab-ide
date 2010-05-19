@@ -48,6 +48,7 @@ import org.w3c.dom.NodeList;
 
 import fr.loria.nguyen.mytools.XMLTools;
 
+@SuppressWarnings("unchecked")
 class InsertLinkGrp
 {
 
@@ -143,7 +144,8 @@ class InsertLinkGrp
     // fabrique un r�sultat � partir de rien (ancien comportement)
     // et vrai si on ajoute dans un fichier pr�-existant.
 
-  public InsertLinkGrp(String fileName,
+ @SuppressWarnings("unused") 
+ public InsertLinkGrp(String fileName,
 		       String sLang, String tLang,
 		       String srcName,String tarName,
 		       Vector stcTar, Vector Linking, Vector Links,

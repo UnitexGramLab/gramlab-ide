@@ -35,6 +35,7 @@ package fr.loria.xsilfide.multialign;
 
 import java.util.Vector;
 
+@SuppressWarnings("unchecked")
 public class Div
 {
   
@@ -313,7 +314,7 @@ public class Div
 
       while(cpSrc<spMax) {
 	if(!((Vector)parSrc.elementAt(cpSrc)).elementAt(0).toString().startsWith(idSrc)){
-	  paraSrc.addElement((Vector)parSrc.elementAt(cpSrc));
+	  paraSrc.addElement(parSrc.elementAt(cpSrc));
 	  cpSrc++;
 	}
 	else 
@@ -324,7 +325,7 @@ public class Div
 
       while(cpSrc<spMax) {
         if(((Vector)parSrc.elementAt(cpSrc)).elementAt(0).toString().startsWith(idSrc)){
-	  paraSrc.addElement((Vector)parSrc.elementAt(cpSrc));
+	  paraSrc.addElement(parSrc.elementAt(cpSrc));
 	  cpSrc++;
 	}
 	else
@@ -341,7 +342,7 @@ public class Div
 
       while(cpTar<tpMax) {
 	if(!((Vector)parTar.elementAt(cpTar)).elementAt(0).toString().startsWith(idTar)){
-	  paraTar.addElement((Vector)parTar.elementAt(cpTar));
+	  paraTar.addElement(parTar.elementAt(cpTar));
 	  cpTar++;
 	}
 	else 
@@ -353,7 +354,7 @@ public class Div
 
       while(cpTar<tpMax) {
 	if(((Vector)parTar.elementAt(cpTar)).elementAt(0).toString().startsWith(idTar)){
-	  paraTar.addElement((Vector)parTar.elementAt(cpTar));
+	  paraTar.addElement(parTar.elementAt(cpTar));
 	  cpTar++;
 	}
 	else
@@ -369,7 +370,7 @@ public class Div
       for(int i=0;i<pSource.size();i++) {
 	paraSrc = (Vector)pSource.elementAt(i);
 	paraTar = (Vector)pTarget.elementAt(i);
-	Paragraphes prgph = new Paragraphes(paraSrc,paraTar,stcSrc,stcTar,ssMax,tsMax, cogn, lpt); 
+	new Paragraphes(paraSrc,paraTar,stcSrc,stcTar,ssMax,tsMax, cogn, lpt); 
 	//MultiAlign.debug.println("Links: " + prgph.Links.toString());
 	
 	// get links of prgph
@@ -394,7 +395,7 @@ public class Div
 	}
       }
       
-      Paragraphes prgph = new Paragraphes(paraSrc,paraTar,stcSrc,stcTar,ssMax,tsMax, cogn, lpt); 
+      new Paragraphes(paraSrc,paraTar,stcSrc,stcTar,ssMax,tsMax, cogn, lpt); 
       //MultiAlign.debug.println("Links: " + prgph.Links.toString());
       
       // get links of prgph
