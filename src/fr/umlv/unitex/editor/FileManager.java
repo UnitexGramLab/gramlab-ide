@@ -35,7 +35,6 @@ import java.nio.ByteOrder;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 
-import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
@@ -46,7 +45,7 @@ import javax.swing.text.StringContent;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
-import fr.umlv.unitex.editor.ui.FileEditionTextFrame;
+import fr.umlv.unitex.frames.FileEditionTextFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
@@ -101,8 +100,8 @@ public class FileManager {
     * @param file file path 
     **/
    private void load(File file) {
-      EditionTextArea text= new EditionTextArea();
-      fileEditionTextFrame= new FileEditionTextFrame(text,file);
+      fileEditionTextFrame= UnitexFrame.getFrameManager().newFileEditionTextFrame(file);
+      EditionTextArea text=fileEditionTextFrame.getText();
       if (file.length() <= 2) {
          FILE_TOO_LARGE= true;
          text.setDocument(new PlainDocument());
@@ -122,15 +121,6 @@ public class FileManager {
             text.setDocument(new PlainDocument());
             text.setText(Config.FILE_TOO_LARGE_MESSAGE);
          }
-
-      UnitexFrame.desktop.add(fileEditionTextFrame, UnitexFrame.DOCLAYER);
-
-      try {
-         fileEditionTextFrame.setSelected(true);
-      } catch (java.beans.PropertyVetoException e) {
-    	  e.printStackTrace();
-      }
-
    }
 
    public void killTimer() {
@@ -147,9 +137,8 @@ public class FileManager {
    public void save(String absolutePath) {
 
       try {
-
-         JDesktopPane jd= UnitexFrame.desktop;
-         FileEditionTextFrame fetf= (FileEditionTextFrame)jd.getSelectedFrame();
+         FileEditionTextFrame fetf= UnitexFrame.getFrameManager().getSelectedFileEditionTextFrame();
+         if (fetf==null) return;
          EditionTextArea t= fetf.getText();
 
          //save in unicode little indian UTF-16LE
@@ -264,19 +253,7 @@ public class FileManager {
     * load an empty text
     **/
    public void newFile() {
-      fileEditionTextFrame= new FileEditionTextFrame();
-      UnitexFrame.addInternalFrame(fileEditionTextFrame,false);
-
-      try {
-         fileEditionTextFrame.setSelected(true);
-      } catch (java.beans.PropertyVetoException e) {
-    	  e.printStackTrace();
-      }
-
-   }
-
-   public void closeText() {
-      fileEditionTextFrame.closeText();
+      UnitexFrame.getFrameManager().newFileEditionTextFrame(null);
    }
 
 
