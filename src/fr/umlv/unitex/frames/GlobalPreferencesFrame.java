@@ -64,13 +64,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.ColorRectangle;
-import fr.umlv.unitex.ConcordanceFontMenu;
 import fr.umlv.unitex.Config;
+import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.FontMenu;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.TextFontMenu;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.
@@ -84,35 +82,22 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	private ArrayList<FontListener> concordanceFontListeners=new ArrayList<FontListener>(); 
 	
 	JTextField privateDirectory = new JTextField("");
-
 	public JTextField textFont = new JTextField("");
-
 	public JTextField concordanceFont = new JTextField("");
-
 	JTextField htmlViewer = new JTextField("");
-
 	JTextField morphologicalDicViewer = new JTextField("");
-
 	JCheckBox antialiasingCheckBox = new JCheckBox(
 			"Enable antialising for rendering graphs", false);
-
 	JCheckBox dateCheckBox = new JCheckBox();
-
 	JCheckBox filenameCheckBox = new JCheckBox();
-
 	JCheckBox pathnameCheckBox = new JCheckBox();
-
 	JCheckBox frameCheckBox = new JCheckBox();
-
 	JCheckBox rightToLeftCheckBox = new JCheckBox(
 			"Right to left rendering for corpus and graphs");
-
 	JCheckBox charByCharCheckBox = new JCheckBox(
 			"Analyze this language char by char");
-
 	JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
 	"Enable morphological use of space");
-	
 	
 	JPanel color1=ColorRectangle.getColorRectangle();
 	JPanel color2=ColorRectangle.getColorRectangle();
@@ -121,25 +106,18 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	JPanel color5=ColorRectangle.getColorRectangle();
 	
 	public JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
-
 	public JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
-
 	JRadioButton westRadioBox = new JRadioButton("West", false);
-
 	JRadioButton eastRadioBox = new JRadioButton("East", false);
-
 	JRadioButton northRadioBox = new JRadioButton("North", false);
-
 	JRadioButton southRadioBox = new JRadioButton("South", false);
-
 	JRadioButton noneRadioBox = new JRadioButton("None", false);
-
 	JTextField packageDirectory = new JTextField("");
-
 	Preferences pref;
 
 	DefaultListModel morphoDicListModel=new DefaultListModel();
 	
+
 	GlobalPreferencesFrame() {
 		super("", false, true, false, false);
 		setContentPane(constructPanel());
@@ -154,7 +132,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setOpaque(true);
 		panel.add(constructUpPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		return panel;
@@ -416,7 +393,14 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		Action textFontAction = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				new TextFontMenu(pref, TextFontMenu.TEXT_FONT);
+				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(pref.textFont,pref.textFontSize);
+				if (info!=null) {
+					pref.textFont=info.font;
+					pref.textFontStyle=info.font.getStyle();
+					pref.textFontSize=info.size;
+					textFont.setText(" "+info.font.getFontName()+"  "+info.size);
+					/* TODO faire que les textfield s'affichent dans la fonte sélectionnée */
+				}
 			}
 		};
 		JButton setTextFont = new JButton(textFontAction);
@@ -435,7 +419,13 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		Action concord = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				new ConcordanceFontMenu(pref);
+				Font f=new Font(pref.htmlFontName,Font.PLAIN,(int)(pref.htmlFontSize*0.72));
+				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(f,pref.htmlFontSize);
+				if (info!=null) {
+					pref.htmlFontName=info.font.getFontName();
+					pref.htmlFontSize=info.size;
+					concordanceFont.setText(" "+info.font.getFontName()+"  "+info.size);
+				}
 			}
 		};
 		JButton setConcordanceFont = new JButton(concord);
@@ -706,15 +696,26 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		Action inputAction = new AbstractAction("Input") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				new FontMenu(true, true, pref);
+				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(pref.input,pref.inputSize);
+				if (info!=null) {
+					pref.input=info.font;
+					pref.inputFontStyle=info.font.getStyle();
+					pref.inputSize=info.size;
+					inputLabel.setText(" "+info.font.getFontName()+"  "+pref.inputSize);
+				}
 			}
 		};
 		JButton input = new JButton(inputAction);
 		Action outputAction = new AbstractAction("Output") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				new FontMenu(false, true, pref);
-				refresh();
+				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(pref.output,pref.outputSize);
+				if (info!=null) {
+					pref.output=info.font;
+					pref.outputFontStyle=info.font.getStyle();
+					pref.outputSize=info.size;
+					outputLabel.setText(" "+info.font.getFontName()+"  "+pref.outputSize);
+				}
 			}
 		};
 		JButton output = new JButton(outputAction);

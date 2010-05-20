@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex.frames;
 
+import java.awt.Font;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.xalign.ConcordanceModel;
@@ -80,6 +82,7 @@ public class InternalFrameManager {
 	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
 	private TranscodeOneFileDialogFactory transcodeOneFileDialogFactory=new TranscodeOneFileDialogFactory();
+	private FontDialogFactory fontDialogFactory=new FontDialogFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -896,4 +899,11 @@ public class InternalFrameManager {
 		xAlignLocateFrameFactory.closeXAlignLocateFrame();
 	}
 
+	
+	public FontInfo newFontDialog(Font font,int size) {
+		FontDialog d=fontDialogFactory.newFontDialog(font,size);
+		if (d==null) return null;
+		d.setVisible(true);
+		return d.getFontInfo();
+	}
 }
