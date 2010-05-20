@@ -330,15 +330,25 @@ public class GraphPresentationMenu extends JDialog {
 		GridBagConstraints c = new GridBagConstraints();
 		Action inputAction = new AbstractAction("Input") {
 			public void actionPerformed(ActionEvent arg0) {
-				new FontMenu(true,false,preferences);
-				GraphPresentationMenu.pref.refresh();
+				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(preferences.input,preferences.inputSize);
+				if (info!=null) {
+					preferences.input=info.font;
+					preferences.inputFontStyle=info.font.getStyle();
+					preferences.inputSize=info.size;
+					GraphPresentationMenu.pref.refresh();
+				}
 			}
 		};
 		JButton input = new JButton(inputAction);
 		Action outputAction = new AbstractAction("Output") {
 			public void actionPerformed(ActionEvent arg0) {
-				new FontMenu(false,false,preferences);
-				GraphPresentationMenu.pref.refresh();
+				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(preferences.output,preferences.outputSize);
+				if (info!=null) {
+					preferences.output=info.font;
+					preferences.outputFontStyle=info.font.getStyle();
+					preferences.outputSize=info.size;
+					GraphPresentationMenu.pref.refresh();
+				}
 			}
 		};
 		JButton output = new JButton(outputAction);
