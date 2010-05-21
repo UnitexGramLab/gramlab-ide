@@ -21,18 +21,18 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.Font;
+import fr.umlv.unitex.FontInfo;
 
 
 public class FontDialogFactory {
 
 	private FontDialog dialog;
 	
-	FontDialog newFontDialog(Font f,int size) {
+	FontDialog newFontDialog(FontInfo info) {
 		if (dialog==null) {
-			dialog=new FontDialog(f,size);
+			dialog=new FontDialog(info);
 		} else {
-			dialog.configureFont(f,size);
+			dialog.configureFont(info);
 		}
 		return dialog;
 	}

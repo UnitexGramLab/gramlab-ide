@@ -66,7 +66,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		top.setOpaque(true);
 		top.setLayout(new BorderLayout());
 		JTable table = new JTable(rowData, columnNames);
-		table.setFont(Preferences.getCloneOfPreferences().textFont);
+		table.setFont(Preferences.getCloneOfPreferences().textFont.font);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		JScrollPane scroll = new JScrollPane(table);

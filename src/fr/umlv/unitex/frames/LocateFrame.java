@@ -191,7 +191,7 @@ public class LocateFrame extends JInternalFrame {
 		bg.add(graph);
 		patternPanel.add(regularExpression, BorderLayout.NORTH);
 		regExp.setPreferredSize(new Dimension(300, 30));
-		regExp.setFont(Preferences.pref.textFont);
+		regExp.setFont(Preferences.pref.textFont.font);
 		patternPanel.add(regExp, BorderLayout.CENTER);
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(graph, BorderLayout.WEST);

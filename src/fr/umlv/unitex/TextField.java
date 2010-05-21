@@ -305,7 +305,12 @@ public class TextField extends JTextField {
       }
 
       public void actionPerformed(ActionEvent e) {
-         new GraphPresentationMenu();
+    	  GraphFrame f=UnitexFrame.getFrameManager().getCurrentFocusedGraphFrame();
+    	  if (f==null) return;
+    	  GraphPresentationInfo info=UnitexFrame.getFrameManager().newGraphPresentationDialog(f.getGraphPresentationInfo(),true);
+    	  if (info!=null) {
+    		  f.setGraphPresentationInfo(info);
+    	  }
       }
    }
 

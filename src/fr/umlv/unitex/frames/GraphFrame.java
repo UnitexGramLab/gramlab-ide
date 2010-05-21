@@ -56,7 +56,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 import fr.umlv.unitex.GraphBox;
-import fr.umlv.unitex.GraphPresentationMenu;
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.GraphicalZone;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
@@ -79,7 +79,7 @@ public class GraphFrame extends JInternalFrame {
 	/**
 	 * Text field used to edit box content
 	 */
-	public TextField texte;
+	public TextField boxContentEditor;
 
 	/**
 	 * Drawing area
@@ -116,6 +116,8 @@ public class GraphFrame extends JInternalFrame {
 	public boolean isNonEmptyGraph() {
 		return nonEmptyGraph;
 	}
+	
+	private JPanel mainPanel;
 
 	/**
 	 * Component used to listen frame changes. It is used to adapt the zoom
@@ -139,14 +141,12 @@ public class GraphFrame extends JInternalFrame {
 		MyDropTarget.newDropTarget(this);
 		openFrameCount++;
 		setTitle("Graph");
-		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout());
+		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		JPanel top = new JPanel();
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
-		graphicalZone = new GraphicalZone(1188, 840, texte, this);
+		graphicalZone = new GraphicalZone(1188, 840, boxContentEditor, this);
 		graphicalZone.setPreferredSize(new Dimension(
 				(int) (1188 * graphicalZone.scaleFactor),
 				(int) (840 * graphicalZone.scaleFactor)));
@@ -155,19 +155,17 @@ public class GraphFrame extends JInternalFrame {
 		manager.setLimit(30);
 
 		graphicalZone.addUndoableEditListener(manager);
-
-		createToolBar();
-
+		GraphPresentationInfo info=getGraphPresentationInfo();
 		scroll = new JScrollPane(graphicalZone);
-		scroll.setOpaque(true);
 		scroll.getHorizontalScrollBar().setUnitIncrement(20);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		scroll.setPreferredSize(new Dimension(1188, 840));
 		top.add(scroll, BorderLayout.CENTER);
-		texte.setFont(graphicalZone.pref.input);
-		if (!(graphicalZone.pref.iconBarPosition
+		boxContentEditor.setFont(info.input.font);
+		createToolBar(info.iconBarPosition);
+		if (!(info.iconBarPosition
 				.equals(Preferences.NO_ICON_BAR))) {
-			mainPanel.add(myToolBar, graphicalZone.pref.iconBarPosition);
+			mainPanel.add(myToolBar, info.iconBarPosition);
 		}
 		mainPanel.add(top, BorderLayout.CENTER);
 		setContentPane(mainPanel);
@@ -178,11 +176,11 @@ public class GraphFrame extends JInternalFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 
-	private void createToolBar() {
+	private void createToolBar(String iconBarPosition) {
 		myToolBar = new JToolBar("Tools");
-		if (Preferences.getCloneOfPreferences().iconBarPosition
+		if (iconBarPosition
 				.equals(Preferences.ICON_BAR_WEST)
-				|| Preferences.getCloneOfPreferences().iconBarPosition
+				|| iconBarPosition
 						.equals(Preferences.ICON_BAR_EAST)) {
 			myToolBar.setOrientation(SwingConstants.VERTICAL);
 		} else {
@@ -346,7 +344,7 @@ public class GraphFrame extends JInternalFrame {
 				graphicalZone.setCursor(MyCursors.killBoxesCursor);
 				graphicalZone.EDITING_MODE = MyCursors.KILL_BOXES;
 				graphicalZone.unSelectAllBoxes();
-				texte.validateTextField();
+				boxContentEditor.validateTextField();
 			}
 		});
 		link.addActionListener(new ActionListener() {
@@ -367,14 +365,17 @@ public class GraphFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.openSubgraphCursor);
 				graphicalZone.EDITING_MODE = MyCursors.OPEN_SUBGRAPH;
-				texte.validateTextField();
+				boxContentEditor.validateTextField();
 			}
 		});
 		configuration.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						new GraphPresentationMenu();
+				    	  GraphPresentationInfo info=UnitexFrame.getFrameManager().newGraphPresentationDialog(getGraphPresentationInfo(),true);
+				    	  if (info!=null) {
+				    		  setGraphPresentationInfo(info);
+				    	  }
 					}
 				});
 			}
@@ -419,17 +420,17 @@ public class GraphFrame extends JInternalFrame {
 
 	private JPanel buildTextPanel() {
 		JPanel p = new JPanel(new BorderLayout());
-		texte = new TextField(25, this);
-		texte.setComponentOrientation(Preferences.pref.rightToLeft?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
-		p.add(texte);
+		boxContentEditor = new TextField(25, this);
+		boxContentEditor.setComponentOrientation(Preferences.pref.rightToLeft?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
+		p.add(boxContentEditor);
 		return p;
 	}
 
 	class MyInternalFrameListener extends InternalFrameAdapter {
 
 		public void internalFrameActivated(InternalFrameEvent e) {
-			texte.requestFocus();
-			texte.getCaret().setVisible(true);
+			boxContentEditor.requestFocus();
+			boxContentEditor.getCaret().setVisible(true);
 		}
 
 		public void internalFrameClosing(InternalFrameEvent e) {
@@ -542,7 +543,7 @@ public class GraphFrame extends JInternalFrame {
 			g.sortNodeLabel();
 		}
 		graphicalZone.unSelectAllBoxes();
-		texte.initText("");
+		boxContentEditor.initText("");
 		graphicalZone.repaint();
 	}
 
@@ -551,7 +552,8 @@ public class GraphFrame extends JInternalFrame {
 	 *  
 	 */
 	public void changeAntialiasingValue() {
-		graphicalZone.pref.antialiasing = !graphicalZone.pref.antialiasing;
+		GraphPresentationInfo info=getGraphPresentationInfo();
+		info.antialiasing = !info.antialiasing;
 		graphicalZone.repaint();
 	}
 
@@ -673,5 +675,32 @@ public class GraphFrame extends JInternalFrame {
 		return scroll;
 	}
 
+	public GraphPresentationInfo getGraphPresentationInfo() {
+		return graphicalZone.getGraphPresentationInfo();
+	}
+
+	public void setGraphPresentationInfo(GraphPresentationInfo info) {
+		updateToolBar(info.iconBarPosition);
+		graphicalZone.setGraphPresentationInfo(info);
+		setModified(true);
+	}
+
+	private void updateToolBar(String iconBarPosition) {
+		mainPanel.remove(myToolBar);
+		if (!(iconBarPosition
+				.equals(Preferences.NO_ICON_BAR))) {
+			if (iconBarPosition
+					.equals(Preferences.ICON_BAR_WEST)
+					|| iconBarPosition
+							.equals(Preferences.ICON_BAR_EAST)) {
+				myToolBar.setOrientation(SwingConstants.VERTICAL);
+			} else {
+				myToolBar.setOrientation(SwingConstants.HORIZONTAL);
+			}
+			mainPanel.add(myToolBar, iconBarPosition);
+		}
+		mainPanel.revalidate();
+		mainPanel.repaint();
+	}
 	
 } /* end of GraphFrame */

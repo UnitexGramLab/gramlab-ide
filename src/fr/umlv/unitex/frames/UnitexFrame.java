@@ -64,7 +64,7 @@ import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphAlignmentMenu;
-import fr.umlv.unitex.GraphPresentationMenu;
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.GraphSizeMenu;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.NumericTextField;
@@ -632,7 +632,10 @@ public class UnitexFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					new GraphPresentationMenu();
+					GraphPresentationInfo info=frameManager.newGraphPresentationDialog(f.getGraphPresentationInfo(),true);
+					if (info!=null) {
+						f.setGraphPresentationInfo(info);
+					}
 				}
 			}
 		});
@@ -1204,7 +1207,6 @@ public class UnitexFrame extends JFrame {
 			return false;
 		GraphIO g = new GraphIO();
 		g.boxes = f.graphicalZone.graphBoxes;
-		g.pref = f.graphicalZone.pref;
 		g.width = f.graphicalZone.Width;
 		g.height = f.graphicalZone.Height;
 		JFileChooser fc=Config.getGraphDialogBox(true);
@@ -1253,7 +1255,7 @@ public class UnitexFrame extends JFrame {
 			file = new File(name + ".grf");
 		}
 		f.modified = false;
-		g.saveGraph(file);
+		g.saveGraph(file,f.getGraphPresentationInfo());
 		f.setGraph(file);
 		//f.setTitle(file.getAbsolutePath());
 		f.setTitle(file.getName()+" ("+file.getParent()+")");
@@ -1277,12 +1279,10 @@ public class UnitexFrame extends JFrame {
 		}
 		GraphIO g = new GraphIO();
 		g.boxes = f.graphicalZone.graphBoxes;
-		g.pref = f.graphicalZone.pref;
 		g.width = f.graphicalZone.Width;
 		g.height = f.graphicalZone.Height;
 		f.modified = false;
-		g.saveGraph(file);
-		//f.setTitle(file.getAbsolutePath());
+		g.saveGraph(file,f.getGraphPresentationInfo());
 		f.setTitle(file.getName()+" ("+file.getParent()+")");
 		return true;
 	}

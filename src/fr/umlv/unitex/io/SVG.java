@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.GraphicalZone;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**
@@ -44,9 +44,7 @@ public class SVG {
 	private GraphFrame frame;
 	private GraphicalZone graphicalZone;
 	private Graphics2D graphics;
-	private Preferences preferences;
-	private Font input;
-	private Font output;
+	private GraphPresentationInfo info;
 	private int h_ligne;
 	private int descent;
 	
@@ -55,9 +53,7 @@ public class SVG {
 		this.frame=frame;
 		this.graphicalZone=frame.graphicalZone;
 		this.graphics=(Graphics2D)graphicalZone.getGraphics();
-		this.preferences=graphicalZone.pref;
-		this.input=preferences.input;
-		this.output=preferences.output;
+		this.info=graphicalZone.getGraphPresentationInfo();
 	}
 
 
@@ -75,33 +71,33 @@ public class SVG {
 		// we write the SVG header
 		header();
 		// then we paint the zone with the background color
-		fillRect(0,0,frame.graphicalZone.Width,frame.graphicalZone.Height,preferences.backgroundColor);
+		fillRect(0,0,frame.graphicalZone.Width,frame.graphicalZone.Height,info.backgroundColor);
 		// if necessary, we draw the frame
-		if (preferences.frame) {
-			drawRect(10,10,frame.graphicalZone.Width-20,frame.graphicalZone.Height-20,preferences.foregroundColor,2);
+		if (info.frame) {
+			drawRect(10,10,frame.graphicalZone.Width-20,frame.graphicalZone.Height-20,info.foregroundColor,2);
 		}
 		// if necessary, we print the file name
 		Font defaultFont=graphicalZone.getFont();
-		if (preferences.filename) {
-			if (preferences.pathname)
+		if (info.filename) {
+			if (info.pathname)
 				drawText((frame.getGraph() != null) ? frame.getGraph().getAbsolutePath() : "", 
-						20, graphicalZone.Height - 45,preferences.foregroundColor,
+						20, graphicalZone.Height - 45,info.foregroundColor,
 						defaultFont);
 			else
 				drawText((frame.getGraph() != null) ? frame.getGraph().getName() : "", 
-						20, graphicalZone.Height - 45,preferences.foregroundColor,
+						20, graphicalZone.Height - 45,info.foregroundColor,
 						defaultFont);
 		}
 		// if necessary, we print the date of the day
-		if (preferences.date) {
+		if (info.date) {
 			drawText(new Date().toString(), 20, graphicalZone.Height - 25,
-					preferences.foregroundColor,defaultFont);
+					info.foregroundColor,defaultFont);
 		}
 		// if necessary, we draw the grid
 		if (graphicalZone.isGrid) {
 			for (int x = 10; x < graphicalZone.Width - 20; x = x + graphicalZone.nPixels)
 				for (int y = 10; y < graphicalZone.Height - 20; y = y + graphicalZone.nPixels)
-					drawLine(x, y, x + 1, y,preferences.foregroundColor);
+					drawLine(x, y, x + 1, y,info.foregroundColor);
 		}
 		// we draw the transitions
 		ArrayList<GenericGraphBox> graphBoxes=graphicalZone.graphBoxes;
@@ -121,7 +117,7 @@ public class SVG {
 	
 	
 	private void drawBox(GenericGraphBox g) throws IOException {
-		graphics.setFont(input);
+		graphics.setFont(info.input.font);
 		h_ligne = graphics.getFontMetrics().getHeight();
 		descent = graphics.getFontMetrics().getDescent();
 		if (g.comment == true) {
@@ -146,10 +142,10 @@ public class SVG {
 
 	private void drawInitial(GenericGraphBox g) throws IOException {
 		drawOther(g);
-		if (preferences.rightToLeft == false)
-			drawLine(g.X_in, g.Y_in, g.X_in - 10, g.Y_in,preferences.foregroundColor);
+		if (info.rightToLeft == false)
+			drawLine(g.X_in, g.Y_in, g.X_in - 10, g.Y_in,info.foregroundColor);
 		else
-			drawLine(g.X_out - 5, g.Y_out, g.X_out + 5, g.Y_out,preferences.foregroundColor);
+			drawLine(g.X_out - 5, g.Y_out, g.X_out + 5, g.Y_out,info.foregroundColor);
 	}
 
 
@@ -166,21 +162,21 @@ public class SVG {
             drawMorphologicalModeMark(g);
             return;
         }
-		Color color=preferences.foregroundColor;
+		Color color=info.foregroundColor;
 		// drawing the box
 		if (g.n_lines == 0) {
 			drawLine(g.X_in, g.Y_in, g.X_in + 15, g.Y_in,color);
-			if (preferences.rightToLeft == false)
+			if (info.rightToLeft == false)
 				drawLine(g.X_in + 15, g.Y1, g.X_in + 15, g.Y1 + g.Height,color);
 			else
 				drawLine(g.X_in, g.Y1, g.X_in, g.Y1 + g.Height,color);
 		} else {
-			fillRect(g.X1, g.Y1, g.Width, g.Height,preferences.backgroundColor);
+			fillRect(g.X1, g.Y1, g.Width, g.Height,info.backgroundColor);
 			drawRect(g.X1, g.Y1, g.Width, g.Height,color,1);
 		}
 		// and the triangle if necessary
 		if (g.hasOutgoingTransitions || g.type == GenericGraphBox.INITIAL) {
-			if (preferences.rightToLeft == false) {
+			if (info.rightToLeft == false) {
 				int a = g.X1 + g.Width;
 				int b = g.Y1 + g.Height;
 				drawLine(g.X_out,g.Y_out, a, g.Y1,color);
@@ -197,14 +193,15 @@ public class SVG {
 			Boolean is_greyed = g.greyed.get(i);
 			String l = g.lines.get(i);
 			if (is_greyed.booleanValue()) {
-				fillRect(g.X1 + 2, g.Y1 + 4 + i * h_ligne, g.Width - 4, h_ligne,(l.startsWith(":")?preferences.packageColor:preferences.subgraphColor));
+				fillRect(g.X1 + 2, g.Y1 + 4 + i * h_ligne, g.Width - 4, h_ligne,
+						(l.startsWith(":")?info.packageColor:info.subgraphColor));
 			}
-			drawText(l,g.X1 + 5, g.Y1 - descent + 3 + (i + 1) * h_ligne,color,input);
+			drawText(l,g.X1 + 5, g.Y1 - descent + 3 + (i + 1) * h_ligne,color,info.input.font);
 		}
 		// prints the transduction, if exists
 		if (!g.transduction.equals("")) {
 			drawText(g.transduction, g.X1 + 5, g.Y1 + g.Height
-					+ graphics.getFontMetrics().getHeight(),preferences.foregroundColor,output);
+					+ graphics.getFontMetrics().getHeight(),info.foregroundColor,info.output.font);
 		}
 	}
 
@@ -219,35 +216,41 @@ public class SVG {
 			return;
 		}
 		// print lines if the box is empty
-		Color color=preferences.commentColor;
+		Color color=info.commentColor;
 		if (g.n_lines == 0) {
 			drawLine(g.X_in, g.Y_in, g.X_in + 15, g.Y_in,color);
-			if (preferences.rightToLeft == false)
+			if (info.rightToLeft == false)
 				drawLine(g.X_in + 15, g.Y1, g.X_in + 15, g.Y1 + g.Height,color);
 			else
 				drawLine(g.X_in, g.Y1, g.X_in, g.Y1 + g.Height,color);
 		} else {
-			fillRect(g.X1, g.Y1, g.Width, g.Height,preferences.backgroundColor);
+			fillRect(g.X1, g.Y1, g.Width, g.Height,info.backgroundColor);
 		}
 		// prints the lines of the box
 		for (int i = 0; i < g.n_lines; i++) {
 			Boolean is_greyed = g.greyed.get(i);
 			String l = g.lines.get(i);
 			if (is_greyed.booleanValue()) {
-				fillRect(g.X1 + 2, g.Y1 + 3 + i * h_ligne, g.Width - 4, h_ligne,(l.startsWith(":")?preferences.packageColor:preferences.subgraphColor));
+				fillRect(g.X1 + 2, g.Y1 + 3 + i * h_ligne, g.Width - 4, h_ligne,
+						(l.startsWith(":")?info.packageColor:info.subgraphColor));
 			}
-			drawText(l,g.X1 + 5, g.Y1 - descent + 3 + (i + 1) * h_ligne,color,input);
+			drawText(l,g.X1 + 5, g.Y1 - descent + 3 + (i + 1) * h_ligne,color,info.input.font);
 		}
 		// prints the transduction, if exists
 		if (!g.transduction.equals("")) {
+			/* TODO faire hériter ceci ainsi que generic graphical zone d'une
+			 * interface, afin d'être sûr de ne pas oublier de méthodes
+			 * quand on change le rendu des graphes, par exemple pour 
+			 * ajouter le mode morphologique
+			 */
 			drawText(g.transduction, g.X1 + 5, g.Y1 + g.Height
-					+ graphics.getFontMetrics().getHeight(),preferences.foregroundColor,output);
+					+ graphics.getFontMetrics().getHeight(),info.foregroundColor,info.output.font);
 		}
 	}
 
 
 	private void drawMorphologicalModeMark(GenericGraphBox g) throws IOException {
-		Color color=preferences.morphologicalModeColor;
+		Color color=info.morphologicalModeColor;
 		graphics.setFont(GenericGraphBox.variableFont);
 		drawText(g.lines.get(0),g.X1+5,
 				g.Y1-graphics.getFontMetrics().getDescent() + graphics.getFontMetrics().getHeight(),
@@ -256,7 +259,7 @@ public class SVG {
 
 
 	private void drawContextMark(GenericGraphBox g) throws IOException {
-		Color color=preferences.contextColor;
+		Color color=info.contextColor;
 		graphics.setFont(GenericGraphBox.variableFont);
 		drawText(g.lines.get(0),g.X1+5,
 				g.Y1-graphics.getFontMetrics().getDescent() + graphics.getFontMetrics().getHeight(),
@@ -265,21 +268,21 @@ public class SVG {
 
 
 	private void drawVariable(GenericGraphBox g) throws IOException {
-		Color color=preferences.commentColor;
+		Color color=info.commentColor;
 		graphics.setFont(GenericGraphBox.variableFont);
 		drawText(g.lines.get(0),g.X1+5,
 				g.Y1-graphics.getFontMetrics().getDescent() + graphics.getFontMetrics().getHeight(),
 				color,GenericGraphBox.variableFont);
-		graphics.setFont(output);
+		graphics.setFont(info.output.font);
 		drawText(g.transduction,g.X1+10,
 				g.Y1+g.Height+ graphics.getFontMetrics().getHeight(),
-				color,output);
+				color,info.output.font);
 	}
 
 
 	private void drawFinal(GenericGraphBox g) throws IOException {
-		drawCircle(g.x+10,g.Y,10,preferences.foregroundColor,preferences.backgroundColor);
-		drawRect(g.x+5,g.Y-5,10,10,preferences.foregroundColor,1);
+		drawCircle(g.x+10,g.Y,10,info.foregroundColor,info.backgroundColor);
+		drawRect(g.x+5,g.Y-5,10,10,info.foregroundColor,1);
 	}
 
 
@@ -298,8 +301,8 @@ public class SVG {
 
 
 	private void drawTransition(GenericGraphBox src, GenericGraphBox dest) throws IOException {
-		Color color=preferences.foregroundColor;
-		if (!preferences.rightToLeft) {
+		Color color=info.foregroundColor;
+		if (!info.rightToLeft) {
 			if (dest.X_in > src.X_out) {
 				// easiest case: drawing a line
 				drawLine(src.X_out, src.Y_out, dest.X_in, dest.Y_in,color);

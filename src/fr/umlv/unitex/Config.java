@@ -1454,7 +1454,7 @@ public class Config {
 	 * @return current font used to display texts
 	 */
 	public static Font getCurrentTextFont() {
-		return Preferences.getCloneOfPreferences().textFont;
+		return Preferences.getCloneOfPreferences().textFont.font;
 	}
 	
 	

@@ -19,26 +19,23 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
-import java.awt.Font;
+import fr.umlv.unitex.GraphPresentationInfo;
 
-public class FontInfo {
 
-	public Font font;
-	public int size;
+public class GraphPresentationDialogFactory {
+
+	private GraphPresentationDialog dialog;
 	
-	/**
-	 * We have to store the size that will be displayed to the user,
-	 * because font.getSize() returns a point size that is not the same
-	 * because of the $*!# .72 factor !
-	 */
-	public FontInfo(Font font,int size) {
-		this.font=font;
-		this.size=size;
+	GraphPresentationDialog newGraphPresentationDialog(GraphPresentationInfo info,
+			boolean showRightToLeftCheckBox) {
+		if (dialog==null) {
+			dialog=new GraphPresentationDialog(info,showRightToLeftCheckBox);
+		} else {
+			dialog.configure(info,showRightToLeftCheckBox);
+		}
+		return dialog;
 	}
-	
-	public FontInfo clone() {
-		return new FontInfo(font,size);
-	}
+
 }
