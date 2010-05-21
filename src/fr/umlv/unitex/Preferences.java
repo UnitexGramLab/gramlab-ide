@@ -80,7 +80,7 @@ public class Preferences {
 	 * Maximum size in bytes of text files. If a file is bigger than this 
 	 * limit, it won't be loaded. 
 	 */
-	public int MAX_TEXT_FILE_SIZE = 2 * 1024 * 1024;
+	public static final int MAX_TEXT_FILE_SIZE = 2 * 1024 * 1024;
 
 	public static String ICON_BAR_WEST = BorderLayout.WEST;
 	public static String ICON_BAR_EAST = BorderLayout.EAST;
@@ -144,7 +144,7 @@ public class Preferences {
 	/**
 	 * General preferences 
 	 */
-	public static Preferences pref = new Preferences();
+	private static Preferences pref = new Preferences();
 
 
 	/**
@@ -220,7 +220,6 @@ public class Preferences {
 		String s = prop.getProperty("HTML VIEWER");
 		htmlViewer = (s == null || s.equals("")) ? null : new File(s);
 		morphologicalDic = tokenizeMorphologicalDicList(prop.getProperty("MORPHOLOGICAL DICTIONARY"));
-		MAX_TEXT_FILE_SIZE=Integer.parseInt(prop.getProperty("MAX TEXT FILE SIZE"));
 		charByChar = Boolean.valueOf(prop.getProperty("CHAR BY CHAR")).booleanValue();
 		morphologicalUseOfSpace = Boolean.valueOf(prop.getProperty("MORPHOLOGICAL USE OF SPACE")).booleanValue();
 		s = prop.getProperty("PACKAGE PATH");
@@ -306,7 +305,7 @@ public class Preferences {
 	 *  
 	 * @return a copy of the preferences
 	 */
-	public Preferences getClone() {
+	public Preferences getPreferences() {
 		Properties prop=setPropertiesFromPreferences(); 
 		Preferences p = new Preferences();
 		p.setPreferencesFromProperties(prop);
@@ -318,7 +317,7 @@ public class Preferences {
 	 * @return a copy of global preferences
 	 */
 	public static Preferences getCloneOfPreferences() {
-		return pref.getClone();
+		return pref.getPreferences();
 	}
 	
 	/**
@@ -402,6 +401,38 @@ public class Preferences {
 	
 	public static GraphPresentationInfo getGraphPresentationPreferences() {
 		return pref.info.clone();
+	}
+
+	public static boolean charByChar() {
+		return pref.charByChar;
+	}
+
+	public static boolean morphologicalUseOfSpace() {
+		return pref.morphologicalUseOfSpace;
+	}
+
+	public static boolean rightToLeft() {
+		return pref.rightToLeft;
+	}
+
+	public static ArrayList<File> morphologicalDic() {
+		return pref.morphologicalDic;
+	}
+
+	public static File packagePath() {
+		return pref.packagePath;
+	}
+
+	public static Font textFont() {
+		return pref.textFont.font;
+	}
+
+	public static Font inputFont() {
+		return pref.info.input.font;
+	}
+
+	public static int inputFontSize() {
+		return pref.info.input.size;
 	}
 
 

@@ -1461,11 +1461,11 @@ public class Config {
 	
 	
 	public static boolean isCharByCharLanguage() {
-		return Preferences.pref.charByChar;
+		return Preferences.charByChar();
 	}
 
 	public static boolean morphologicalUseOfSpaceAllowed() {
-		return Preferences.pref.morphologicalUseOfSpace;
+		return Preferences.morphologicalUseOfSpace();
 	}
 
 	public static boolean isCharByCharLanguage(String language) {
@@ -1502,7 +1502,7 @@ public class Config {
 	}
 
 	public static boolean isRightToLeftLanguage() {
-		return Preferences.pref.rightToLeft;
+		return Preferences.rightToLeft();
 	}
 
 	public static boolean isKorean() {

@@ -70,8 +70,8 @@ public class Grf2Fst2Command extends CommandBuilder {
     }
     
     public Grf2Fst2Command library() {
-    	if (Preferences.pref.packagePath!=null) {
-    		return library(Preferences.pref.packagePath);
+    	if (Preferences.packagePath()!=null) {
+    		return library(Preferences.packagePath());
     	}
     	return this;
     }
