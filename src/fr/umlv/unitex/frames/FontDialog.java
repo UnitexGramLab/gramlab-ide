@@ -87,10 +87,10 @@ public class FontDialog extends JDialog {
 	 * @param in
 	 *            indicates if we select an input or an output font for graphs.
 	 */
-	public FontDialog(Font f,int size) {
+	public FontDialog(FontInfo i) {
 		super(UnitexFrame.mainFrame, "Font", true);
 		init();
-		configureFont(f,size);
+		configureFont(i);
 		setContentPane(constructPanel());
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -103,14 +103,14 @@ public class FontDialog extends JDialog {
 		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}
 
-	void configureFont(Font f,int s) {
-		if (f==null) {
-			throw new IllegalArgumentException("Cannot configure a null font");
+	void configureFont(FontInfo i) {
+		if (i==null) {
+			throw new IllegalArgumentException("Cannot configure a null font info");
 		}
-		info=new FontInfo(f,s);
-		name.setText(f.getName());
-		style.setText(""+f.getStyle());
-		size.setText(""+info.size);
+		info=i.clone();
+		name.setText(i.font.getName());
+		style.setText(""+i.font.getStyle());
+		size.setText(""+i.size);
 		fontList.clearSelection();
 		styleList.clearSelection();
 		sizeList.clearSelection();

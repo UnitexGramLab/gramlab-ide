@@ -67,6 +67,7 @@ import javax.swing.text.PlainDocument;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
@@ -233,7 +234,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		scroll.setPreferredSize(new Dimension(1188, 840));
 
-		textfield.setFont(Preferences.getCloneOfPreferences().input);
+		textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
 
 		downPanel.add(textfield, BorderLayout.NORTH);
 		boundsEditor = new BoundsEditor(this);
@@ -280,7 +281,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	private JPanel constructUpPanel() {
 		JPanel upPanel = new JPanel(new BorderLayout());
-		sentenceTextArea.setFont(Preferences.getCloneOfPreferences().textFont);
+		sentenceTextArea.setFont(Preferences.getCloneOfPreferences().textFont.font);
 		sentenceTextArea.setEditable(false);
 		sentenceTextArea.setText("");
 		sentenceTextArea.setLineWrap(true);
@@ -441,11 +442,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 			// we save each modification
 			GraphIO g = new GraphIO();
 			g.boxes = graphicalZone.graphBoxes;
-			g.pref = graphicalZone.pref;
 			g.width = graphicalZone.Width;
 			g.height = graphicalZone.Height;
 			g.saveSentenceGraph(new File(sentence_modified.getAbsolutePath()
-					+ spinnerModel.getNumber().intValue() + ".grf"));
+					+ spinnerModel.getNumber().intValue() + ".grf"),graphicalZone.getGraphPresentationInfo());
 		}
 	}
 
@@ -513,8 +513,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 						if (Config.isKorean() || Config.isKoreanJeeSun()) {
 							cmd = cmd.font("Gulim").fontsize(12);
 						} else {
-							cmd = cmd.font(Preferences.pref.input.getName())
-									.fontsize(Preferences.pref.inputSize);
+							cmd = cmd.font(Preferences.pref.info.input.font.getName())
+									.fontsize(Preferences.pref.info.input.size);
 						}
 						Console.addCommand(cmd.getCommandLine(), false);
 						Process p;
@@ -589,8 +589,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 				Tfst2GrfCommand cmd = new Tfst2GrfCommand()
 						.automaton(elag_tfst).sentence(z).output(
 								"currelagsentence").font(
-								Preferences.pref.input.getName()).fontsize(
-								Preferences.pref.inputSize);
+								Preferences.pref.info.input.font.getName()).fontsize(
+								Preferences.pref.info.input.size);
 				Console.addCommand(cmd.getCommandLine(), false);
 				try {
 					Process p = Runtime.getRuntime().exec(
@@ -624,7 +624,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 	 * 
 	 */
 	public void changeAntialiasingValue() {
-		graphicalZone.pref.antialiasing = !graphicalZone.pref.antialiasing;
+		GraphPresentationInfo info=graphicalZone.getGraphPresentationInfo();
+		info.antialiasing = !info.antialiasing;
+		/* TODO remplacer ce genre de choses par des setters qui font les repaint() */
 		graphicalZone.repaint();
 	}
 
@@ -654,8 +656,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			return false;
 		}
 		graphicalZone.setInitialized(false);
-		textfield.setFont(graphicalZone.pref.input);
-		graphicalZone.pref = g.pref.getClone();
+		textfield.setFont(g.info.input.font);
 		graphicalZone.Width = g.width;
 		graphicalZone.Height = g.height;
 		graphicalZone.graphBoxes = g.boxes;
@@ -672,7 +673,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (g == null)
 			return false;
 		elaggraph.setInitialized(false);
-		elaggraph.pref = Preferences.getCloneOfPreferences();
+		elaggraph.setGraphPresentationInfo(g.info);
 		elaggraph.Width = g.width;
 		elaggraph.Height = g.height;
 		elaggraph.graphBoxes = g.boxes;
