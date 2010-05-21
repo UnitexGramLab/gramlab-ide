@@ -106,7 +106,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Graph's rendering properties
 	 */
-	public Preferences pref = new Preferences();
+    protected GraphPresentationInfo info;
+
 
 	/**
 	 * <code>JInternalFrame</code> that contains this component
@@ -172,7 +173,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
 		text.setEditable(false);
-		pref = Preferences.getCloneOfPreferences();
+		info=Preferences.getGraphPresentationPreferences();
 	}
 
 	/**
@@ -199,7 +200,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		setBackground(Color.white);
 		setLayout(new BorderLayout());
 		text.setEditable(false);
-		pref = Preferences.getCloneOfPreferences();
+		info=Preferences.getGraphPresentationPreferences();
 	}
 
 	protected abstract void init();
@@ -654,7 +655,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		if (!isGrid)
 			return;
 		int x, y;
-		f.setColor(pref.foregroundColor);
+		f.setColor(info.foregroundColor);
 		for (x = 10; x < Width - 20; x = x + nPixels)
 			for (y = 10; y < Height - 20; y = y + nPixels)
 				f.drawLine(x, y, x + 1, y);
@@ -870,7 +871,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 *          left, <code>false</code> otherwise
 	 */
 	public void setRightToLeft(boolean b) {
-		pref.rightToLeft = b;
+		info.rightToLeft = b;
 	}
 
 	public void addUndoableEditListener(UndoableEditListener listener) {
@@ -900,5 +901,18 @@ public abstract class GenericGraphicalZone extends JComponent {
    public void setClipZone(Rectangle r) {
     clipZone=r;
    }
+
+	
+	public GraphPresentationInfo getGraphPresentationInfo() {
+		return info;
+	}
+
+	public void setGraphPresentationInfo(GraphPresentationInfo i) {
+		if (i==null) {
+			throw new IllegalArgumentException("Cannot set null graph presentation info");
+		}
+		this.info=i;
+		updateAllBoxes();
+	}
 
 }

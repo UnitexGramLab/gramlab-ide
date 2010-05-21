@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 
 
@@ -49,9 +49,9 @@ public class GraphFrameFactory {
 			GraphIO g=GraphIO.loadGraph(grf);
 			if (g==null) return null;
 			f=new GraphFrame();
-			f.graphicalZone.pref = g.pref;
-			f.graphicalZone.pref.antialiasing = Preferences.getCloneOfPreferences().antialiasing;
-			f.texte.setFont(f.graphicalZone.pref.input);
+			GraphPresentationInfo info=g.getGraphPresentationInfo();
+			f.setGraphPresentationInfo(info);
+			f.boxContentEditor.setFont(info.input.font);
 			f.graphicalZone.Width = g.width;
 			f.graphicalZone.Height = g.height;
 			f.graphicalZone.graphBoxes = g.boxes;

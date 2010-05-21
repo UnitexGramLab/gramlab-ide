@@ -41,125 +41,9 @@ import java.util.StringTokenizer;
  */
 public class Preferences {
 
-	/**
-	 * Box input font 
-	 */
-	public Font input;
+	public FontInfo textFont;
+	public FontInfo concordanceFont;
 
-	/**
-	 * Box output font 
-	 */
-	public Font output;
-
-	/**
-	 * Text font used in edition text field  
-	 */
-	public Font textFont;
-
-	/**
-	 * Background color 
-	 */
-	public Color backgroundColor;
-
-	/**
-	 * Foreground color, used to draw text, boxes and transitions  
-	 */
-	public Color foregroundColor;
-
-	/**
-	 * Color used to draw box lines that refer to sub-graphs 
-	 */
-	public Color subgraphColor;
-
-	/**
-	 * Color used to draw selected boxes 
-	 */
-	public Color selectedColor;
-
-	/**
-	 * Color used to draw comment boxes, i.e. boxes with no input or output transition
-	 */
-	public Color commentColor;
-
-	/**
-	 * Color used to draw boxes lines that refers to subgraphs within packages
-	 */
-	public Color packageColor;
-	
-	/**
-	 * Color used to draw context boxes
-	 */
-	public Color contextColor;
-	
-	/**
-	 * Color used to draw morphological mode boxes
-	 */
-	public Color morphologicalModeColor;
-	
-	/**
-	 * Indicates if the date must be shown on graphs 
-	 */
-	public boolean date;
-
-	/**
-	 * Indicates if file names must be shown on graphs 
-	 */
-	public boolean filename;
-
-	/**
-	 * Indicates if path name must be shown on graphs 
-	 */
-	public boolean pathname;
-
-	/**
-	 * Indicates if a frame must be drawn around the graph 
-	 */
-	public boolean frame;
-
-	/**
-	 * Size of input font
-	 */
-	public int inputSize;
-
-	/**
-	 * Size of output font
-	 */
-	public int outputSize;
-
-	/**
-	 * Size of edition text field font
-	 */
-	public int textFontSize;
-
-	/**
-	 * Style of input font
-	 */
-	public int inputFontStyle;
-
-	/**
-	 * Style of output font
-	 */
-	public int outputFontStyle;
-
-	/**
-	 * Style of edition text field font
-	 */
-	public int textFontStyle;
-
-	/**
-	 * Name of the font used to render HTML concordances 
-	 */
-	public String htmlFontName;
-
-	/**
-	 * HTML size of the font used to render HTML concordances (1 to 7) 
-	 */
-	public int htmlFontSize;
-
-	/**
-	 * Indicates if the graph must be rendered with an antialiasing effect or not 
-	 */
-	public boolean antialiasing;
 
 	/**
 	 * Name of the external program to use to view HTML concordances. If <code>null</code>,
@@ -199,18 +83,13 @@ public class Preferences {
 	public int MAX_TEXT_FILE_SIZE = 2 * 1024 * 1024;
 
 	public static String ICON_BAR_WEST = BorderLayout.WEST;
-
 	public static String ICON_BAR_EAST = BorderLayout.EAST;
-
 	public static String ICON_BAR_NORTH = BorderLayout.NORTH;
-
 	public static String ICON_BAR_SOUTH = BorderLayout.SOUTH;
-
 	public static String NO_ICON_BAR = "NONE";
-
 	public static String ICON_BAR_DEFAULT = ICON_BAR_WEST;
 
-	public String iconBarPosition;
+	public GraphPresentationInfo info;
 
 		/**
 	 * Properties for current language
@@ -291,49 +170,57 @@ public class Preferences {
 	 * @param prop
 	 */
 	private void setPreferencesFromProperties(Properties prop) {
-		textFontSize = Integer.parseInt(prop.getProperty("TEXT FONT SIZE"));
-		textFontStyle = Integer.parseInt(prop.getProperty("TEXT FONT STYLE"));
-		textFont = new Font(prop.getProperty("TEXT FONT NAME"), textFontStyle,
-				(int) (textFontSize / 0.72));
-		inputSize = Integer.parseInt(prop.getProperty("INPUT FONT SIZE"));
-		inputFontStyle = Integer.parseInt(prop.getProperty("INPUT FONT STYLE"));
-		input = new Font(prop.getProperty("INPUT FONT NAME"), inputFontStyle,
-				(int) (inputSize / 0.72));
-		outputSize = Integer.parseInt(prop.getProperty("OUTPUT FONT SIZE"));
-		outputFontStyle = Integer.parseInt(prop
-				.getProperty("OUTPUT FONT STYLE"));
-		output = new Font(prop.getProperty("OUTPUT FONT NAME"),
-				outputFontStyle, (int) (outputSize / 0.72));
-		backgroundColor = new Color(Integer.parseInt(prop
-				.getProperty("BACKGROUND COLOR")));
-		foregroundColor = new Color(Integer.parseInt(prop
-				.getProperty("FOREGROUND COLOR")));
-		subgraphColor = new Color(Integer.parseInt(prop
-				.getProperty("AUXILIARY NODES COLOR")));
-		selectedColor = new Color(Integer.parseInt(prop
-				.getProperty("SELECTED NODES COLOR")));
-		commentColor = new Color(Integer.parseInt(prop
-				.getProperty("COMMENT NODES COLOR")));
-		packageColor = new Color(Integer.parseInt(prop
-				.getProperty("PACKAGE NODES COLOR")));
-		contextColor = new Color(Integer.parseInt(prop
-				.getProperty("CONTEXT NODES COLOR")));
-		morphologicalModeColor = new Color(Integer.parseInt(prop
-				.getProperty("MORPHOLOGICAL NODES COLOR")));
-		date = Boolean.valueOf(prop.getProperty("DATE")).booleanValue();
-		filename = Boolean.valueOf(prop.getProperty("FILE NAME")).booleanValue();
-		pathname = Boolean.valueOf(prop.getProperty("PATH NAME")).booleanValue();
-		frame = Boolean.valueOf(prop.getProperty("FRAME")).booleanValue();
-		rightToLeft = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT")).booleanValue();
-		antialiasing = Boolean.valueOf(prop.getProperty("ANTIALIASING")).booleanValue();
-		htmlFontName = prop.getProperty("CONCORDANCE FONT NAME");
-		htmlFontSize = Integer.parseInt(prop
+		int size = Integer.parseInt(prop.getProperty("TEXT FONT SIZE"));
+		int style = Integer.parseInt(prop.getProperty("TEXT FONT STYLE"));
+		Font font = new Font(prop.getProperty("TEXT FONT NAME"), style,
+				(int) (size / 0.72));
+		textFont=new FontInfo(font,size);
+		size = Integer.parseInt(prop
 				.getProperty("CONCORDANCE FONT HTML SIZE"));
+		font=new Font(prop.getProperty("CONCORDANCE FONT NAME"),Font.PLAIN,
+				(int) (size / 0.72));
+		concordanceFont=new FontInfo(font,size);
+		size = Integer.parseInt(prop.getProperty("INPUT FONT SIZE"));
+		style = Integer.parseInt(prop.getProperty("INPUT FONT STYLE"));
+		font = new Font(prop.getProperty("INPUT FONT NAME"),style,
+				(int) (size / 0.72));
+		FontInfo input=new FontInfo(font,size);
+		size = Integer.parseInt(prop.getProperty("OUTPUT FONT SIZE"));
+		style = Integer.parseInt(prop
+				.getProperty("OUTPUT FONT STYLE"));
+		font = new Font(prop.getProperty("OUTPUT FONT NAME"),
+				style, (int) (size / 0.72));
+		FontInfo output=new FontInfo(font,size);
+		Color backgroundColor = new Color(Integer.parseInt(prop
+				.getProperty("BACKGROUND COLOR")));
+		Color foregroundColor = new Color(Integer.parseInt(prop
+				.getProperty("FOREGROUND COLOR")));
+		Color subgraphColor = new Color(Integer.parseInt(prop
+				.getProperty("AUXILIARY NODES COLOR")));
+		Color selectedColor = new Color(Integer.parseInt(prop
+				.getProperty("SELECTED NODES COLOR")));
+		Color commentColor = new Color(Integer.parseInt(prop
+				.getProperty("COMMENT NODES COLOR")));
+		Color packageColor = new Color(Integer.parseInt(prop
+				.getProperty("PACKAGE NODES COLOR")));
+		Color contextColor = new Color(Integer.parseInt(prop
+				.getProperty("CONTEXT NODES COLOR")));
+		Color morphologicalModeColor = new Color(Integer.parseInt(prop
+				.getProperty("MORPHOLOGICAL NODES COLOR")));
+		boolean date = Boolean.valueOf(prop.getProperty("DATE")).booleanValue();
+		boolean filename = Boolean.valueOf(prop.getProperty("FILE NAME")).booleanValue();
+		boolean pathname = Boolean.valueOf(prop.getProperty("PATH NAME")).booleanValue();
+		boolean frame = Boolean.valueOf(prop.getProperty("FRAME")).booleanValue();
+		boolean antialiasing = Boolean.valueOf(prop.getProperty("ANTIALIASING")).booleanValue();
+		String iconBarPosition = prop.getProperty("ICON BAR POSITION");
+		info=new GraphPresentationInfo(backgroundColor, foregroundColor, subgraphColor, selectedColor, 
+				commentColor, packageColor, contextColor, morphologicalModeColor, input, output, 
+				date, filename, pathname, frame, frame, antialiasing, iconBarPosition);
+		rightToLeft = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT")).booleanValue();
 		String s = prop.getProperty("HTML VIEWER");
 		htmlViewer = (s == null || s.equals("")) ? null : new File(s);
 		morphologicalDic = tokenizeMorphologicalDicList(prop.getProperty("MORPHOLOGICAL DICTIONARY"));
 		MAX_TEXT_FILE_SIZE=Integer.parseInt(prop.getProperty("MAX TEXT FILE SIZE"));
-		iconBarPosition = prop.getProperty("ICON BAR POSITION");
 		charByChar = Boolean.valueOf(prop.getProperty("CHAR BY CHAR")).booleanValue();
 		morphologicalUseOfSpace = Boolean.valueOf(prop.getProperty("MORPHOLOGICAL USE OF SPACE")).booleanValue();
 		s = prop.getProperty("PACKAGE PATH");
@@ -367,36 +254,36 @@ public class Preferences {
 
 	private Properties setPropertiesFromPreferences() {
 		Properties prop = new Properties(defaultProperties);
-		prop.setProperty("TEXT FONT NAME", textFont.getName());
-		prop.setProperty("TEXT FONT STYLE", ""+textFontStyle);
-		prop.setProperty("TEXT FONT SIZE", ""+textFontSize);
-		prop.setProperty("CONCORDANCE FONT NAME", htmlFontName);
-		prop.setProperty("CONCORDANCE FONT HTML SIZE", ""+htmlFontSize);
-		prop.setProperty("INPUT FONT NAME", input.getName());
-		prop.setProperty("INPUT FONT STYLE", ""+inputFontStyle);
-		prop.setProperty("INPUT FONT SIZE", ""+inputSize);
-		prop.setProperty("OUTPUT FONT NAME", output.getName());
-		prop.setProperty("OUTPUT FONT STYLE", ""+outputFontStyle);
-		prop.setProperty("OUTPUT FONT SIZE", ""+outputSize);
-		prop.setProperty("DATE", ""+date);
-		prop.setProperty("FILE NAME", ""+filename);
-		prop.setProperty("PATH NAME", ""+pathname);
-		prop.setProperty("FRAME", ""+frame);
+		prop.setProperty("TEXT FONT NAME", textFont.font.getName());
+		prop.setProperty("TEXT FONT STYLE", ""+textFont.font.getStyle());
+		prop.setProperty("TEXT FONT SIZE", ""+textFont.size);
+		prop.setProperty("CONCORDANCE FONT NAME", concordanceFont.font.getName());
+		prop.setProperty("CONCORDANCE FONT HTML SIZE", ""+concordanceFont.size);
+		prop.setProperty("INPUT FONT NAME", info.input.font.getName());
+		prop.setProperty("INPUT FONT STYLE", ""+info.input.font.getStyle());
+		prop.setProperty("INPUT FONT SIZE", ""+info.input.size);
+		prop.setProperty("OUTPUT FONT NAME", info.output.font.getName());
+		prop.setProperty("OUTPUT FONT STYLE", ""+info.output.font.getStyle());
+		prop.setProperty("OUTPUT FONT SIZE", ""+info.output.size);
+		prop.setProperty("DATE", ""+info.date);
+		prop.setProperty("FILE NAME", ""+info.filename);
+		prop.setProperty("PATH NAME", ""+info.pathname);
+		prop.setProperty("FRAME", ""+info.frame);
 		prop.setProperty("RIGHT TO LEFT", ""+rightToLeft);
-		prop.setProperty("BACKGROUND COLOR", ""+backgroundColor.getRGB());
-		prop.setProperty("FOREGROUND COLOR", ""+foregroundColor.getRGB());
+		prop.setProperty("BACKGROUND COLOR", ""+info.backgroundColor.getRGB());
+		prop.setProperty("FOREGROUND COLOR", ""+info.foregroundColor.getRGB());
 		prop.setProperty("AUXILIARY NODES COLOR", ""
-				+subgraphColor.getRGB());
-		prop.setProperty("COMMENT NODES COLOR", ""+commentColor.getRGB());
-		prop.setProperty("SELECTED NODES COLOR", ""+selectedColor.getRGB());
-		prop.setProperty("PACKAGE NODES COLOR", ""+packageColor.getRGB());
-		prop.setProperty("CONTEXT NODES COLOR", ""+contextColor.getRGB());
-		prop.setProperty("MORPHOLOGICAL NODES COLOR", ""+morphologicalModeColor.getRGB());
-		prop.setProperty("ANTIALIASING", ""+antialiasing);
+				+info.subgraphColor.getRGB());
+		prop.setProperty("COMMENT NODES COLOR", ""+info.commentColor.getRGB());
+		prop.setProperty("SELECTED NODES COLOR", ""+info.selectedColor.getRGB());
+		prop.setProperty("PACKAGE NODES COLOR", ""+info.packageColor.getRGB());
+		prop.setProperty("CONTEXT NODES COLOR", ""+info.contextColor.getRGB());
+		prop.setProperty("MORPHOLOGICAL NODES COLOR", ""+info.morphologicalModeColor.getRGB());
+		prop.setProperty("ANTIALIASING", ""+info.antialiasing);
 		prop.setProperty("HTML VIEWER", (htmlViewer==null)?"":htmlViewer.getAbsolutePath());
 		prop.setProperty("MORPHOLOGICAL DICTIONARY",getMorphologicalDicListAsString(morphologicalDic));
 		prop.setProperty("MAX TEXT FILE SIZE", ""+MAX_TEXT_FILE_SIZE);
-		prop.setProperty("ICON BAR POSITION", iconBarPosition);
+		prop.setProperty("ICON BAR POSITION", info.iconBarPosition);
 		prop.setProperty("CHAR BY CHAR", ""+charByChar);
 		prop.setProperty("MORPHOLOGICAL USE OF SPACE", ""+morphologicalUseOfSpace);
 		prop.setProperty("PACKAGE PATH", (packagePath==null)?"":packagePath.getAbsolutePath());
@@ -439,7 +326,7 @@ public class Preferences {
 	 * @return the name of the HTML concordance font
 	 */
 	public static String getConcordanceFontName() {
-		return pref.htmlFontName;
+		return pref.concordanceFont.font.getName();
 	}
 
 	/**
@@ -447,7 +334,7 @@ public class Preferences {
 	 * @return the size of the HTML concordance font
 	 */
 	public static int getConcordanceFontSize() {
-		return pref.htmlFontSize;
+		return pref.concordanceFont.size;
 	}
 
 
@@ -510,6 +397,11 @@ public class Preferences {
 			e2.printStackTrace();
 			return;
 		}
+	}
+
+	
+	public static GraphPresentationInfo getGraphPresentationPreferences() {
+		return pref.info.clone();
 	}
 
 

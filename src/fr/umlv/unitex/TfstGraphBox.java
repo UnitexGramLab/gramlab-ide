@@ -275,12 +275,12 @@ public class TfstGraphBox extends GenericGraphBox {
     
     @Override
     void drawOther(Graphics2D g) {
-        Color old=parentGraphicalZone.pref.backgroundColor;
+        Color old=parentGraphicalZone.info.backgroundColor;
         if ((Config.isKorean() || Config.isKoreanJeeSun()) && isKoreanUntaggedToken(content)) {
-            parentGraphicalZone.pref.backgroundColor=koreanUntaggedTokenColor;
+            parentGraphicalZone.info.backgroundColor=koreanUntaggedTokenColor;
         }
         super.drawOther(g);
-        parentGraphicalZone.pref.backgroundColor=old;
+        parentGraphicalZone.info.backgroundColor=old;
     }
 
     private boolean isKoreanUntaggedToken(String s) {

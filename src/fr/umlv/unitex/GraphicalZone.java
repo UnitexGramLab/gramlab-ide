@@ -390,7 +390,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			init();
 			setInitialized(true);
 		}
-		if (pref.antialiasing) {
+		if (info.antialiasing) {
 			f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 		} else {
@@ -399,24 +399,24 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(pref.backgroundColor);
+		f.setColor(info.backgroundColor);
 		f.fillRect(0, 0, Width, Height);
-		if (pref.frame) {
-			f.setColor(pref.foregroundColor);
+		if (info.frame) {
+			f.setColor(info.foregroundColor);
 			f.drawRect(10, 10, Width - 20, Height - 20);
 			f.drawRect(9, 9, Width - 18, Height - 18);
 		}
-		f.setColor(pref.foregroundColor);
+		f.setColor(info.foregroundColor);
 		File file = ((GraphFrame) parentFrame).getGraph();
-		if (pref.filename) {
-			if (pref.pathname)
+		if (info.filename) {
+			if (info.pathname)
 				f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
 						Height - 45);
 			else
 				f.drawString((file != null) ? file.getName() : "", 20,
 						Height - 45);
 		}
-		if (pref.date)
+		if (info.date)
 			f.drawString(new Date().toString(), 20, Height - 25);
 		drawGrid(f);
 		if (mouseInGraphicalZone && !selectedBoxes.isEmpty()) {
@@ -430,7 +430,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		drawAllBoxes(f);
 		if (selecting) {
 			// here we draw the selection rectangle
-			f.setColor(pref.foregroundColor);
+			f.setColor(info.foregroundColor);
 			f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);
 		}
 	}
@@ -445,6 +445,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * @param pageIndex
 	 *            the page index
 	 */
+	/* TODO à virer? */
 	public int print(Graphics g, PageFormat p, int pageIndex) {
 		if (pageIndex != 0)
 			return Printable.NO_SUCH_PAGE;
@@ -461,24 +462,24 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-		f.setColor(pref.backgroundColor);
+		f.setColor(info.backgroundColor);
 		f.fillRect(0, 0, Width, Height);
-		if (pref.frame) {
-			f.setColor(pref.foregroundColor);
+		if (info.frame) {
+			f.setColor(info.foregroundColor);
 			f.drawRect(10, 10, Width - 20, Height - 20);
 			f.drawRect(9, 9, Width - 18, Height - 18);
 		}
-		f.setColor(pref.foregroundColor);
+		f.setColor(info.foregroundColor);
 		File file = ((GraphFrame) parentFrame).getGraph();
-		if (pref.filename) {
-			if (pref.pathname)
+		if (info.filename) {
+			if (info.pathname)
 				f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
 						Height - 45);
 			else
 				f.drawString((file != null) ? file.getName() : "", 20,
 						Height - 45);
 		}
-		if (pref.date)
+		if (info.date)
 			f.drawString(new Date().toString(), 20, Height - 25);
 		drawGrid(f);
 		drawAllTransitions(f);
@@ -490,11 +491,5 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return Printable.PAGE_EXISTS;
 	}
 
-	/**
-	 * @return the preferences for this graphical zone
-	 */
-	public Preferences getPreferences() {
-		return pref;
-	}
 
 }

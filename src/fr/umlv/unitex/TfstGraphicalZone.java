@@ -294,23 +294,17 @@ public class TfstGraphicalZone
     */
    public void paintComponent(Graphics f_old) {
       Graphics2D f= (Graphics2D)f_old;
-      if (pref.antialiasing) {
-         f.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON);
-      } else {
-         f.setRenderingHint(
-            RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_OFF);
-      }
+      f.setRenderingHint(
+              RenderingHints.KEY_ANTIALIASING,
+              info.antialiasing?RenderingHints.VALUE_ANTIALIAS_ON:RenderingHints.VALUE_ANTIALIAS_OFF);
       f.setColor(new Color(205, 205, 205));
       f.fillRect(0, 0, getWidth(), getHeight());
-      f.setColor(pref.backgroundColor);
+      f.setColor(info.backgroundColor);
       f.fillRect(0, 0, Width, Height);
-      f.setColor(pref.foregroundColor);
+      f.setColor(info.foregroundColor);
       f.drawRect(10, 10, Width - 20, Height - 20);
       f.drawRect(9, 9, Width - 18, Height - 18);
-      f.setColor(pref.foregroundColor);
+      f.setColor(info.foregroundColor);
       if (graphBoxes.size() == 0 || graphBoxes.isEmpty()) {
          return;
       }
@@ -321,17 +315,17 @@ public class TfstGraphicalZone
       }
       f.setColor(new Color(205, 205, 205));
       f.fillRect(0, 0, getWidth(), getHeight());
-      f.setColor(pref.backgroundColor);
+      f.setColor(info.backgroundColor);
       f.fillRect(0, 0, Width, Height);
-      f.setColor(pref.foregroundColor);
+      f.setColor(info.foregroundColor);
       f.drawRect(10, 10, Width - 20, Height - 20);
       f.drawRect(9, 9, Width - 18, Height - 18);
-      f.setColor(pref.foregroundColor);
+      f.setColor(info.foregroundColor);
       drawAllTransitions(f);
       drawAllBoxes(f);
       if (selecting) {
          // here we draw the selection rectangle
-         f.setColor(pref.foregroundColor);
+         f.setColor(info.foregroundColor);
          f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);
       }
    }
@@ -343,6 +337,7 @@ public class TfstGraphicalZone
     * @param p the page format
     * @param pageIndex the page index 
     */
+   /* TODO à virer ? */
    public int print(Graphics g, PageFormat p, int pageIndex) {
       if (pageIndex != 0)
          return Printable.NO_SUCH_PAGE;
@@ -362,12 +357,12 @@ public class TfstGraphicalZone
          f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
       else
          f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-      f.setColor(pref.backgroundColor);
+      f.setColor(info.backgroundColor);
       f.fillRect(0, 0, Width, Height);
-      f.setColor(pref.foregroundColor);
+      f.setColor(info.foregroundColor);
       f.drawRect(10, 10, Width - 20, Height - 20);
       f.drawRect(9, 9, Width - 18, Height - 18);
-      f.setColor(pref.foregroundColor);
+      f.setColor(info.foregroundColor);
       drawAllTransitions(f);
       drawAllBoxes(f);
       if (selecting) {

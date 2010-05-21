@@ -25,12 +25,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -40,12 +42,10 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
@@ -53,7 +53,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -61,12 +60,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.ColorRectangle;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
 
@@ -86,12 +84,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	public JTextField concordanceFont = new JTextField("");
 	JTextField htmlViewer = new JTextField("");
 	JTextField morphologicalDicViewer = new JTextField("");
-	JCheckBox antialiasingCheckBox = new JCheckBox(
-			"Enable antialising for rendering graphs", false);
-	JCheckBox dateCheckBox = new JCheckBox();
-	JCheckBox filenameCheckBox = new JCheckBox();
-	JCheckBox pathnameCheckBox = new JCheckBox();
-	JCheckBox frameCheckBox = new JCheckBox();
 	JCheckBox rightToLeftCheckBox = new JCheckBox(
 			"Right to left rendering for corpus and graphs");
 	JCheckBox charByCharCheckBox = new JCheckBox(
@@ -99,24 +91,11 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
 	"Enable morphological use of space");
 	
-	JPanel color1=ColorRectangle.getColorRectangle();
-	JPanel color2=ColorRectangle.getColorRectangle();
-	JPanel color3=ColorRectangle.getColorRectangle();
-	JPanel color4=ColorRectangle.getColorRectangle();
-	JPanel color5=ColorRectangle.getColorRectangle();
-	
-	public JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
-	public JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
-	JRadioButton westRadioBox = new JRadioButton("West", false);
-	JRadioButton eastRadioBox = new JRadioButton("East", false);
-	JRadioButton northRadioBox = new JRadioButton("North", false);
-	JRadioButton southRadioBox = new JRadioButton("South", false);
-	JRadioButton noneRadioBox = new JRadioButton("None", false);
 	JTextField packageDirectory = new JTextField("");
-	Preferences pref;
 
 	DefaultListModel morphoDicListModel=new DefaultListModel();
-	
+
+	Preferences pref;
 
 	GlobalPreferencesFrame() {
 		super("", false, true, false, false);
@@ -142,7 +121,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.addTab("Directories", constructPage1());
 		tabbedPane.addTab("Language & Presentation", constructPage2());
-		tabbedPane.addTab("Graph Presentation", constructPage3());
 		tabbedPane.addTab("Morphological dictionaries", constructPage4());
 		upPanel.add(tabbedPane);
 		return upPanel;
@@ -163,32 +141,15 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		Action okAction = new AbstractAction("OK") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				fireTextFontChanged(pref.textFont);
-				fireConcordanceFontChanged(new Font(pref.htmlFontName,0,pref.htmlFontSize));
-				pref.antialiasing = antialiasingCheckBox.isSelected();
+				fireTextFontChanged(pref.textFont.font);
+				fireConcordanceFontChanged(pref.concordanceFont.font);
+				pref.rightToLeft = rightToLeftCheckBox.isSelected();
+				pref.info.rightToLeft=pref.rightToLeft;
 				if (htmlViewer.getText().equals(""))
 					pref.htmlViewer = null;
 				else
 					pref.htmlViewer = new File(htmlViewer.getText());
 				pref.morphologicalDic=getFileList(morphoDicListModel);
-				pref.date = dateCheckBox.isSelected();
-				pref.filename = filenameCheckBox.isSelected();
-				pref.pathname = pathnameCheckBox.isSelected();
-				pref.frame = frameCheckBox.isSelected();
-				pref.rightToLeft = rightToLeftCheckBox.isSelected();
-				if (westRadioBox.isSelected()) {
-					pref.iconBarPosition = Preferences.ICON_BAR_WEST;
-				} else if (eastRadioBox.isSelected()) {
-					pref.iconBarPosition = Preferences.ICON_BAR_EAST;
-				} else if (northRadioBox.isSelected()) {
-					pref.iconBarPosition = Preferences.ICON_BAR_NORTH;
-				} else if (southRadioBox.isSelected()) {
-					pref.iconBarPosition = Preferences.ICON_BAR_SOUTH;
-				} else if (noneRadioBox.isSelected()) {
-					pref.iconBarPosition = Preferences.NO_ICON_BAR;
-				} else {
-					pref.iconBarPosition = Preferences.ICON_BAR_DEFAULT;
-				}
 				pref.charByChar = charByCharCheckBox.isSelected();
 				pref.morphologicalUseOfSpace = morphologicalUseOfSpaceCheckBox.isSelected();
 				if (packageDirectory.getText().equals(""))
@@ -368,8 +329,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	}
 
 	private JPanel constructPage2() {
-		JPanel page2 = new JPanel(new GridLayout(5,1));
+		JPanel page2 = new JPanel(new GridLayout(6,1));
 
+		/* TODO ajouter ici le bouton de configuration des graphes */
 		textFont.setEnabled(false);
 		concordanceFont.setEnabled(false);
 		textFont.setDisabledTextColor(Color.black);
@@ -383,48 +345,38 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		yuyu.add(rightToLeftCheckBox);
 		page2.add(yuyu);
 
-		JPanel tmp = new JPanel();
+		JPanel tmp = new JPanel(new GridLayout(2, 1));
 		tmp.setPreferredSize(new Dimension(180, 60));
-		tmp.setLayout(new GridLayout(2, 1));
 		tmp.add(new JLabel("Text Font:"));
-		JPanel tmp2 = new JPanel();
-		tmp2.setLayout(new BorderLayout());
+		JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp2.add(textFont, BorderLayout.CENTER);
 		Action textFontAction = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(pref.textFont,pref.textFontSize);
-				if (info!=null) {
-					pref.textFont=info.font;
-					pref.textFontStyle=info.font.getStyle();
-					pref.textFontSize=info.size;
-					textFont.setText(" "+info.font.getFontName()+"  "+info.size);
-					/* TODO faire que les textfield s'affichent dans la fonte sélectionnée */
+				FontInfo i=UnitexFrame.getFrameManager().newFontDialog(pref.textFont);
+				if (i!=null) {
+					pref.textFont=i;
+					textFont.setText(" "+i.font.getFontName()+"  "+i.size);
 				}
 			}
 		};
 		JButton setTextFont = new JButton(textFontAction);
 		tmp2.add(setTextFont, BorderLayout.EAST);
 		tmp.add(tmp2);
-		//page2.add(new JLabel(""));
 		page2.add(tmp);
 
-		JPanel tmp_ = new JPanel();
+		JPanel tmp_ = new JPanel(new GridLayout(2, 1));
 		tmp_.setPreferredSize(new Dimension(180, 60));
-		tmp_.setLayout(new GridLayout(2, 1));
 		tmp_.add(new JLabel("Concordance Font:"));
-		JPanel tmp2_ = new JPanel();
-		tmp2_.setLayout(new BorderLayout());
+		JPanel tmp2_ = new JPanel(new BorderLayout());
 		tmp2_.add(concordanceFont, BorderLayout.CENTER);
 		Action concord = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				Font f=new Font(pref.htmlFontName,Font.PLAIN,(int)(pref.htmlFontSize*0.72));
-				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(f,pref.htmlFontSize);
-				if (info!=null) {
-					pref.htmlFontName=info.font.getFontName();
-					pref.htmlFontSize=info.size;
-					concordanceFont.setText(" "+info.font.getFontName()+"  "+info.size);
+				FontInfo i=UnitexFrame.getFrameManager().newFontDialog(pref.concordanceFont);
+				if (i!=null) {
+					pref.concordanceFont=i;
+					concordanceFont.setText(" "+i.font.getFontName()+"  "+i.size);
 				}
 			}
 		};
@@ -433,12 +385,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp_.add(tmp2_);
 		page2.add(tmp_);
 
-		JPanel htmlViewerPanel = new JPanel();
+		JPanel htmlViewerPanel = new JPanel(new GridLayout(2, 1));
 		htmlViewerPanel.setPreferredSize(new Dimension(180, 60));
-		htmlViewerPanel.setLayout(new GridLayout(2, 1));
 		htmlViewerPanel.add(new JLabel("Html Viewer:"));
-		JPanel tmp3_ = new JPanel();
-		tmp3_.setLayout(new BorderLayout());
+		JPanel tmp3_ = new JPanel(new BorderLayout());
 		Action html = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
@@ -461,300 +411,22 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp3_.add(setHtmlViewer, BorderLayout.EAST);
 		htmlViewerPanel.add(tmp3_);
 		page2.add(htmlViewerPanel);
-		
+		JPanel graph=new JPanel();
+		FlowLayout l=(FlowLayout)(graph.getLayout());
+		l.setAlignment(FlowLayout.LEFT);
+		JButton graphConfig=new JButton("Graph configuration");
+		graphConfig.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				GraphPresentationInfo i=UnitexFrame.getFrameManager().newGraphPresentationDialog(pref.info,false);
+				if (i!=null) {
+					pref.info=i;
+				}
+			}
+		});
+		graph.add(graphConfig);
+		page2.add(graph);
 		return page2;
-	}
-
-	private JPanel constructPage3() {
-		GridBagLayout g = new GridBagLayout();
-		JPanel page3 = new JPanel(g);
-		page3.setBorder(new EmptyBorder(5, 5, 5, 5));
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridwidth = GridBagConstraints.REMAINDER;
-		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.NORTH;
-		JPanel upPanel_ = constructUpPanel_();
-		g.setConstraints(upPanel_, c);
-		page3.add(upPanel_);
-		c.fill = GridBagConstraints.BOTH;
-		JPanel downPanel_ = constructDownPanel_();
-		g.setConstraints(downPanel_, c);
-		page3.add(downPanel_);
-		return page3;
-	}
-
-	private JPanel constructUpPanel_() {
-		JPanel upPanel_ = new JPanel(new BorderLayout());
-		upPanel_.setBorder(new EmptyBorder(0, 0, 0, 0));
-		upPanel_.add(constructDisplayPanel(), BorderLayout.WEST);
-		upPanel_.add(constructColorPanel(), BorderLayout.CENTER);
-		return upPanel_;
-	}
-
-	private JPanel constructDownPanel_() {
-		JPanel downPanel_ = new JPanel(new BorderLayout());
-		downPanel_.setBorder(new EmptyBorder(0, 0, 0, 0));
-		downPanel_.add(constructAntialiasingPanel(), BorderLayout.NORTH);
-		downPanel_.add(constructFontPanel(), BorderLayout.CENTER);
-		downPanel_.add(constructButtonPanel(), BorderLayout.EAST);
-		return downPanel_;
-	}
-
-	private JPanel constructDisplayPanel() {
-		JPanel displayPanel = new JPanel(new GridLayout(5, 1));
-		displayPanel.setBorder(new TitledBorder("Display"));
-		JPanel display1 = new JPanel(new BorderLayout());
-		JPanel display2 = new JPanel(new BorderLayout());
-		JPanel display3 = new JPanel(new BorderLayout());
-		JPanel display4 = new JPanel(new BorderLayout());
-		JPanel display5 = new JPanel(new BorderLayout());
-		display1.add(dateCheckBox, BorderLayout.WEST);
-		display1.add(new JLabel("Date  "), BorderLayout.CENTER);
-		display2.add(filenameCheckBox, BorderLayout.WEST);
-		display2.add(new JLabel("File Name  "), BorderLayout.CENTER);
-		display3.add(pathnameCheckBox, BorderLayout.WEST);
-		display3.add(new JLabel("Pathname  "), BorderLayout.CENTER);
-		display4.add(frameCheckBox, BorderLayout.WEST);
-		display4.add(new JLabel("Frame  "), BorderLayout.CENTER);
-		//display5.add(rightToLeftCheckBox, BorderLayout.WEST);
-		//display5.add(new JLabel("Right to Left  "), BorderLayout.CENTER);
-		displayPanel.add(display1);
-		displayPanel.add(display2);
-		displayPanel.add(display3);
-		displayPanel.add(display4);
-		displayPanel.add(display5);
-		return displayPanel;
-	}
-
-	private void build(GridBagConstraints c, int gx, int gy, int gw, int gh,
-			int wx, int wy) {
-		c.gridx = gx;
-		c.gridy = gy;
-		c.gridwidth = gw;
-		c.gridheight = gh;
-		c.weightx = wx;
-		c.weighty = wy;
-	}
-
-	private JPanel constructColorPanel() {
-		GridBagLayout g = new GridBagLayout();
-		JPanel colorPanel = new JPanel(g);
-		colorPanel.setBorder(new TitledBorder("Colors"));
-		Action backgroundAction = new AbstractAction("Set...") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				pref.backgroundColor = JColorChooser.showDialog(
-						UnitexFrame.mainFrame, "Background Color",
-						pref.backgroundColor);
-				refresh();
-			}
-		};
-		JButton background = new JButton(backgroundAction);
-		Action foregroundAction = new AbstractAction("Set...") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				pref.foregroundColor = JColorChooser.showDialog(
-						UnitexFrame.mainFrame, "Foreground Color",
-						pref.foregroundColor);
-				refresh();
-			}
-		};
-		JButton foreground = new JButton(foregroundAction);
-		Action subgraphAction = new AbstractAction("Set...") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				pref.subgraphColor = JColorChooser.showDialog(
-						UnitexFrame.mainFrame, "Auxiliary Nodes Color",
-						pref.subgraphColor);
-				refresh();
-			}
-		};
-		JButton subgraph = new JButton(subgraphAction);
-		Action selectedAction = new AbstractAction("Set...") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				pref.selectedColor = JColorChooser.showDialog(
-						UnitexFrame.mainFrame, "Selected Nodes Color",
-						pref.selectedColor);
-				refresh();
-			}
-		};
-		JButton selected = new JButton(selectedAction);
-		Action commentAction = new AbstractAction("Set...") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				pref.commentColor = JColorChooser.showDialog(
-						UnitexFrame.mainFrame, "Comment Nodes Color",
-						pref.commentColor);
-				refresh();
-			}
-		};
-		JButton comment = new JButton(commentAction);
-		GridBagConstraints c = new GridBagConstraints();
-		build(c, 0, 0, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.EAST;
-		JLabel label1 = new JLabel("  Background:  ", SwingConstants.LEFT);
-		JLabel label2 = new JLabel("  Foreground:  ", SwingConstants.LEFT);
-		JLabel label3 = new JLabel("  Auxiliary Nodes:  ", SwingConstants.LEFT);
-		JLabel label4 = new JLabel("  Selected Nodes:  ", SwingConstants.LEFT);
-		JLabel label5 = new JLabel("  Comment Nodes:  ", SwingConstants.LEFT);
-
-		g.setConstraints(label1, c);
-		colorPanel.add(label1);
-		build(c, 1, 0, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.BOTH;
-		g.setConstraints(color1, c);
-		colorPanel.add(color1);
-		build(c, 2, 0, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		g.setConstraints(background, c);
-		colorPanel.add(background);
-		build(c, 0, 1, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.EAST;
-		g.setConstraints(label2, c);
-		colorPanel.add(label2);
-		build(c, 1, 1, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.BOTH;
-		g.setConstraints(color2, c);
-		colorPanel.add(color2);
-		build(c, 2, 1, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		g.setConstraints(foreground, c);
-		colorPanel.add(foreground);
-		build(c, 0, 2, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.EAST;
-		g.setConstraints(label3, c);
-		colorPanel.add(label3);
-		build(c, 1, 2, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.BOTH;
-		g.setConstraints(color3, c);
-		colorPanel.add(color3);
-		build(c, 2, 2, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		g.setConstraints(subgraph, c);
-		colorPanel.add(subgraph);
-		build(c, 0, 3, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.EAST;
-		g.setConstraints(label4, c);
-		colorPanel.add(label4);
-		build(c, 1, 3, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.BOTH;
-		g.setConstraints(color4, c);
-		colorPanel.add(color4);
-		build(c, 2, 3, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		g.setConstraints(selected, c);
-		colorPanel.add(selected);
-		build(c, 0, 4, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.NONE;
-		c.anchor = GridBagConstraints.EAST;
-		g.setConstraints(label5, c);
-		colorPanel.add(label5);
-		build(c, 1, 4, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.BOTH;
-		g.setConstraints(color5, c);
-		colorPanel.add(color5);
-		build(c, 2, 4, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		g.setConstraints(comment, c);
-		colorPanel.add(comment);
-		return colorPanel;
-	}
-
-	private JPanel constructAntialiasingPanel() {
-		JPanel antialiasingPanel = new JPanel(new GridLayout(2, 1));
-		JPanel temp = new JPanel(new BorderLayout());
-		temp.setBorder(new TitledBorder("Antialiasing"));
-		temp.add(antialiasingCheckBox, BorderLayout.CENTER);
-		JPanel temp2 = new JPanel(new GridLayout(1, 5));
-		ButtonGroup g = new ButtonGroup();
-		g.add(westRadioBox);
-		g.add(eastRadioBox);
-		g.add(northRadioBox);
-		g.add(southRadioBox);
-		g.add(noneRadioBox);
-		temp2.setBorder(new TitledBorder("Icon Bar Position"));
-		temp2.add(westRadioBox);
-		temp2.add(northRadioBox);
-		temp2.add(eastRadioBox);
-		temp2.add(southRadioBox);
-		temp2.add(noneRadioBox);
-		antialiasingPanel.add(temp);
-		antialiasingPanel.add(temp2);
-		return antialiasingPanel;
-	}
-
-	private JPanel constructFontPanel() {
-		GridBagLayout g = new GridBagLayout();
-		JPanel fontPanel = new JPanel(g);
-		fontPanel.setBorder(new TitledBorder("Fonts"));
-		GridBagConstraints c = new GridBagConstraints();
-		Action inputAction = new AbstractAction("Input") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(pref.input,pref.inputSize);
-				if (info!=null) {
-					pref.input=info.font;
-					pref.inputFontStyle=info.font.getStyle();
-					pref.inputSize=info.size;
-					inputLabel.setText(" "+info.font.getFontName()+"  "+pref.inputSize);
-				}
-			}
-		};
-		JButton input = new JButton(inputAction);
-		Action outputAction = new AbstractAction("Output") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				FontInfo info=UnitexFrame.getFrameManager().newFontDialog(pref.output,pref.outputSize);
-				if (info!=null) {
-					pref.output=info.font;
-					pref.outputFontStyle=info.font.getStyle();
-					pref.outputSize=info.size;
-					outputLabel.setText(" "+info.font.getFontName()+"  "+pref.outputSize);
-				}
-			}
-		};
-		JButton output = new JButton(outputAction);
-		build(c, 0, 0, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(input, c);
-		fontPanel.add(input);
-		build(c, 1, 0, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(inputLabel, c);
-		fontPanel.add(inputLabel);
-		build(c, 0, 1, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(output, c);
-		fontPanel.add(output);
-		build(c, 1, 1, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(outputLabel, c);
-		fontPanel.add(outputLabel);
-		return fontPanel;
-	}
-
-	private JPanel constructButtonPanel() {
-		JPanel buttonPanel = new JPanel(new BorderLayout());
-		buttonPanel.setBorder(new EmptyBorder(8, 5, 1, 1));
-		Action resetAction = new AbstractAction("Reset to Default") {
-
-			public void actionPerformed(ActionEvent arg0) {
-				pref = Preferences.getCloneOfPreferences();
-				refresh();
-			}
-		};
-		JButton RESET_TO_DEFAULT = new JButton(resetAction);
-		buttonPanel.add(RESET_TO_DEFAULT, BorderLayout.CENTER);
-		return buttonPanel;
 	}
 
 	/**
@@ -762,38 +434,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 *  
 	 */
 	public void refresh() {
-		textFont.setText("" + pref.textFont.getFontName() + "  "
-				+ pref.textFontSize + "");
-		concordanceFont.setText("" + pref.htmlFontName + "  "
-				+ pref.htmlFontSize + "");
-		inputLabel.setText("  " + pref.input.getFontName() + "  "
-				+ pref.inputSize + "  ");
-		outputLabel.setText("  " + pref.output.getFontName() + "  "
-				+ pref.outputSize + "  ");
-		color1.setBackground(pref.backgroundColor);
-		color2.setBackground(pref.foregroundColor);
-		color3.setBackground(pref.subgraphColor);
-		color4.setBackground(pref.selectedColor);
-		color5.setBackground(pref.commentColor);
-		dateCheckBox.setSelected(pref.date);
-		filenameCheckBox.setSelected(pref.filename);
-		pathnameCheckBox.setSelected(pref.pathname);
-		frameCheckBox.setSelected(pref.frame);
-		rightToLeftCheckBox.setSelected(pref.rightToLeft);
-		antialiasingCheckBox.setSelected(pref.antialiasing);
-		if (pref.iconBarPosition.equals(Preferences.ICON_BAR_WEST)) {
-			westRadioBox.setSelected(true);
-		} else if (pref.iconBarPosition.equals(Preferences.ICON_BAR_EAST)) {
-			eastRadioBox.setSelected(true);
-		} else if (pref.iconBarPosition.equals(Preferences.ICON_BAR_NORTH)) {
-			northRadioBox.setSelected(true);
-		} else if (pref.iconBarPosition.equals(Preferences.ICON_BAR_SOUTH)) {
-			southRadioBox.setSelected(true);
-		} else if (pref.iconBarPosition.equals(Preferences.NO_ICON_BAR)) {
-			noneRadioBox.setSelected(true);
-		} else {
-			westRadioBox.setSelected(true);
-		}
+		textFont.setText("" + pref.textFont.font.getFontName() + "  "
+				+ pref.textFont.size + "");
+		concordanceFont.setText("" + pref.concordanceFont.font.getName()+ "  "
+				+ pref.concordanceFont.size + "");
 		if (pref.htmlViewer == null) {
 			htmlViewer.setText("");
 		} else {

@@ -50,7 +50,7 @@ public class StatisticsFrame extends JInternalFrame {
 		top.setOpaque(true);
 		top.setLayout(new BorderLayout());
 		JTable table = createTable(file,mode);
-		table.setFont(Preferences.getCloneOfPreferences().textFont);
+		table.setFont(Preferences.getCloneOfPreferences().textFont.font);
 		JScrollPane scroll = new JScrollPane(table);
 		scroll
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
