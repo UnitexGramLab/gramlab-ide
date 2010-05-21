@@ -513,8 +513,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 						if (Config.isKorean() || Config.isKoreanJeeSun()) {
 							cmd = cmd.font("Gulim").fontsize(12);
 						} else {
-							cmd = cmd.font(Preferences.pref.info.input.font.getName())
-									.fontsize(Preferences.pref.info.input.size);
+							cmd = cmd.font(Preferences.inputFont().getName())
+									.fontsize(Preferences.inputFontSize());
 						}
 						Console.addCommand(cmd.getCommandLine(), false);
 						Process p;
@@ -589,8 +589,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 				Tfst2GrfCommand cmd = new Tfst2GrfCommand()
 						.automaton(elag_tfst).sentence(z).output(
 								"currelagsentence").font(
-								Preferences.pref.info.input.font.getName()).fontsize(
-								Preferences.pref.info.input.size);
+								Preferences.inputFont().getName()).fontsize(
+								Preferences.inputFontSize());
 				Console.addCommand(cmd.getCommandLine(), false);
 				try {
 					Process p = Runtime.getRuntime().exec(

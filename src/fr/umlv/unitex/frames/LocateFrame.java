@@ -191,7 +191,7 @@ public class LocateFrame extends JInternalFrame {
 		bg.add(graph);
 		patternPanel.add(regularExpression, BorderLayout.NORTH);
 		regExp.setPreferredSize(new Dimension(300, 30));
-		regExp.setFont(Preferences.pref.textFont.font);
+		regExp.setFont(Preferences.textFont());
 		patternPanel.add(regExp, BorderLayout.CENTER);
 		JPanel p = new JPanel(new BorderLayout());
 		p.add(graph, BorderLayout.WEST);
@@ -366,7 +366,7 @@ public class LocateFrame extends JInternalFrame {
 				locateCmd = locateCmd.enableMorphologicalUseOfSpace();
 			}
 			locateCmd = locateCmd
-					.morphologicalDic(Preferences.pref.morphologicalDic);
+					.morphologicalDic(Preferences.morphologicalDic());
 			if (allowAmbiguousOutputs.isSelected()) {
 			    locateCmd = locateCmd.allowAmbiguousOutputs();
 			} else {

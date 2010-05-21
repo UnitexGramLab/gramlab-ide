@@ -107,7 +107,7 @@ public class FileManager {
          text.setDocument(new PlainDocument());
          text.setText(Config.EMPTY_FILE_MESSAGE);
       } else
-         if (file.length() < Preferences.pref.MAX_TEXT_FILE_SIZE) {
+         if (file.length() < Preferences.MAX_TEXT_FILE_SIZE) {
             try {
                load(file, text);
             } catch (IOException E) {

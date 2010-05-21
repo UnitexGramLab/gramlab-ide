@@ -485,7 +485,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		DicoCommand cmd = new DicoCommand().snt(
 				Config.getCurrentSnt()).alphabet(
 						Config.getAlphabet())
-						.morphologicalDic(Preferences.pref.morphologicalDic);
+						.morphologicalDic(Preferences.morphologicalDic());
 		if (Config.isKoreanJeeSun()) {
 			cmd=cmd.korean();
 		}

@@ -141,8 +141,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		Action okAction = new AbstractAction("OK") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				fireTextFontChanged(pref.textFont.font);
-				fireConcordanceFontChanged(pref.concordanceFont.font);
 				pref.rightToLeft = rightToLeftCheckBox.isSelected();
 				pref.info.rightToLeft=pref.rightToLeft;
 				if (htmlViewer.getText().equals(""))
@@ -174,6 +172,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 					}
 					pref.packagePath = f;
 				}
+				fireTextFontChanged(pref.textFont.font);
+				fireConcordanceFontChanged(pref.concordanceFont.font);
 				Preferences.savePreferences(pref);
 				if (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM) {
 					// if we are under Windows, we must save the user dir
@@ -510,8 +510,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		p.add(p_);
 		JPanel p2=new JPanel(new BorderLayout());
 		morphoDicListModel.clear();
-		if (Preferences.pref.morphologicalDic!=null) {
-			for (File f:Preferences.pref.morphologicalDic) {
+		if (Preferences.morphologicalDic()!=null) {
+			for (File f:Preferences.morphologicalDic()) {
 				morphoDicListModel.addElement(f);
 			}
 		}

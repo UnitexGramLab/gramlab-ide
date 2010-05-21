@@ -269,7 +269,7 @@ public abstract class GenericGraphBox {
 			if (s.startsWith(":")) {
 				// if the graph is located in the package repository
 				s  = s.replace(':', File.separatorChar);
-				return new File(Preferences.pref.packagePath,s.substring(1));
+				return new File(Preferences.packagePath(),s.substring(1));
 			}
 			// otherwise
 		    File f = new File(s);
