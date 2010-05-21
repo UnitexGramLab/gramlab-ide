@@ -329,7 +329,9 @@ public class PreprocessDialog extends JDialog {
                         // APPLYING DEFAULT DICTIONARIES...
                         DicoCommand dicoCmd;
                         if (applyDicCheck.isSelected()) {
-                                dicoCmd = new DicoCommand().snt(Config.getCurrentSnt()).alphabet(Config.getAlphabet()).morphologicalDic(Preferences.pref.morphologicalDic);
+                                dicoCmd = new DicoCommand().snt(Config.getCurrentSnt())
+                                		.alphabet(Config.getAlphabet())
+                                		.morphologicalDic(Preferences.morphologicalDic());
                                 if (Config.isKorean()) {
                                     dicoCmd=dicoCmd.korean();
                                 }
