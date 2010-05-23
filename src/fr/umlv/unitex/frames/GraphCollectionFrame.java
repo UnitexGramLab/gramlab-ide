@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -35,21 +34,19 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphCollection;
 
 /**
- * This class provides a frame that allows the user to select a source
- * directory and a destination graph name, for building a graph collection.
+ * This class provides a frame that allows the user to select a source directory
+ * and a destination graph name, for building a graph collection.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class GraphCollectionFrame extends JInternalFrame {
-
 	JTextField srcDir = new JTextField();
 	JTextField resultGrf = new JTextField();
 
@@ -63,10 +60,8 @@ public class GraphCollectionFrame extends JInternalFrame {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setOpaque(true);
 		panel.add(constructUpPanel(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
 		return panel;
@@ -75,10 +70,8 @@ public class GraphCollectionFrame extends JInternalFrame {
 	private JPanel createPanel(JLabel label, JTextField textField,
 			JButton button) {
 		JPanel p = new JPanel(new GridLayout(2, 1));
-		p.setOpaque(true);
 		p.add(label);
 		JPanel tmp = new JPanel(new BorderLayout());
-		tmp.setOpaque(true);
 		tmp.add(textField, BorderLayout.CENTER);
 		tmp.add(button, BorderLayout.EAST);
 		p.add(tmp);
@@ -92,25 +85,21 @@ public class GraphCollectionFrame extends JInternalFrame {
 		resultGrf.setPreferredSize(new Dimension(280, 20));
 		Action setSrcAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						JFileChooser f = new JFileChooser();
-						f.setDialogTitle("Choose source directory");
-						f.setCurrentDirectory(Config.getGraphDialogBox(false)
-								.getCurrentDirectory());
-						f.setDialogType(JFileChooser.OPEN_DIALOG);
-						f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-						if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-							return;
-						srcDir.setText(f.getSelectedFile().getAbsolutePath());
-					}
-				});
+				JFileChooser f = new JFileChooser();
+				f.setDialogTitle("Choose source directory");
+				f.setCurrentDirectory(Config.getGraphDialogBox(false)
+						.getCurrentDirectory());
+				f.setDialogType(JFileChooser.OPEN_DIALOG);
+				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+					return;
+				srcDir.setText(f.getSelectedFile().getAbsolutePath());
 			}
 		};
 		JButton setSrcDir = new JButton(setSrcAction);
 		Action setResultAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser dialogBox=Config.getGraphDialogBox(false);
+				JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
 				int returnVal = dialogBox.showSaveDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -118,10 +107,10 @@ public class GraphCollectionFrame extends JInternalFrame {
 					return;
 				}
 				File file = dialogBox.getSelectedFile();
-        if (file==null) {
-            return;
-        }
-				String s=file.getAbsolutePath();
+				if (file == null) {
+					return;
+				}
+				String s = file.getAbsolutePath();
 				if (!s.endsWith(".grf"))
 					s = s + ".grf";
 				resultGrf.setText(s);
@@ -139,20 +128,11 @@ public class GraphCollectionFrame extends JInternalFrame {
 
 	private JPanel constructDownPanel() {
 		JPanel downPanel = new JPanel(new GridLayout(1, 2));
-		downPanel.setOpaque(true);
 		Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						new Thread() {
-							public void run() {
-								setVisible(false);
-								GraphCollection.build(new File(srcDir.getText()),
-										new File(resultGrf.getText()), true);
-							}
-						}.start();
-					}
-				});
+				setVisible(false);
+				GraphCollection.build(new File(srcDir.getText()),
+						new File(resultGrf.getText()), true);
 			}
 		};
 		JButton OK = new JButton(okAction);
@@ -162,13 +142,11 @@ public class GraphCollectionFrame extends JInternalFrame {
 			}
 		};
 		JButton CANCEL = new JButton(cancelAction);
-		JPanel left = new JPanel();
+		JPanel left = new JPanel(new BorderLayout());
 		left.setBorder(new EmptyBorder(10, 50, 10, 20));
-		left.setLayout(new BorderLayout());
 		left.add(CANCEL, BorderLayout.CENTER);
-		JPanel right = new JPanel();
+		JPanel right = new JPanel(new BorderLayout());
 		right.setBorder(new EmptyBorder(10, 20, 10, 50));
-		right.setLayout(new BorderLayout());
 		right.add(OK, BorderLayout.CENTER);
 		downPanel.add(left);
 		downPanel.add(right);
