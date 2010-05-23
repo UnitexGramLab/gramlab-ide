@@ -33,8 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
@@ -51,25 +49,19 @@ public class AboutUnitexFrame extends JInternalFrame {
 
 	AboutUnitexFrame() {
 		super("About Unitex", true, true);
-		JPanel top = new JPanel();
-		top.setOpaque(true);
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		BigTextArea licenseLGPL=new BigTextArea(new File(Config.getApplicationDir(),"LGPL.txt"));
 		BigTextArea licenseLGPLLR=new BigTextArea(new File(Config.getApplicationDir(),"LGPLLR.txt"));
 		BigTextArea apache=new BigTextArea(new File(Config.getApplicationDir(),"Apache-1.1.txt"));
         BigTextArea bsd=new BigTextArea(new File(Config.getApplicationDir(),"BSD_tre.txt"));
 		BigTextArea disclaimer=new BigTextArea(new File(Config.getApplicationDir(),"Disclaimer.txt"));
-		JPanel up = new JPanel();
-		up.setOpaque(true);
-		up.setLayout(new BorderLayout());
-		JPanel image = new JPanel();
+		JPanel up = new JPanel(new BorderLayout());
+		JPanel image = new JPanel(new BorderLayout());
 		image.setBorder(new EmptyBorder(4, 3, 1, 1));
-		image.setLayout(new BorderLayout());
 		image.add(new JLabel(new ImageIcon(AboutUnitexFrame.class.getResource("../Unitex.jpg"))));
 		up.add(image, BorderLayout.WEST);
-		JPanel info = new JPanel();
+		JPanel info = new JPanel(new BorderLayout());
 		info.setBorder(new TitledBorder("Unitex"));
-		info.setLayout(new BorderLayout());
 		disclaimer.setPreferredSize(new Dimension(400,image.getHeight()));
 		info.add(disclaimer, BorderLayout.CENTER);
 		JLabel revision=new JLabel("  Revision: "+Version.getRevisionNumberForJava()+" (Java), "
@@ -85,15 +77,9 @@ public class AboutUnitexFrame extends JInternalFrame {
 		licenses.add(bsd,"TRE's BSD");
 		top.add(licenses, BorderLayout.CENTER);
 		setContentPane(top);
-		setVisible(false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
 		licenses.setPreferredSize(new Dimension(500,300));
 		pack();
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
 }
