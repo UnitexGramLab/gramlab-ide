@@ -33,11 +33,8 @@ import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.ToDo;
@@ -49,12 +46,12 @@ import fr.umlv.unitex.process.commands.CheckDicCommand;
  * menu of Unitex. The user can select the kind of dictionary he wants to check.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class CheckDicFrame extends JInternalFrame {
 
 	private JRadioButton DELAS = new JRadioButton("DELAS/DELAC");
-	private JRadioButton DELAF = new JRadioButton("DELAF/DELACF",true);
+	private JRadioButton DELAF = new JRadioButton("DELAF/DELACF", true);
 
 	CheckDicFrame() {
 		super("Check Dictionary Format", false, true);
@@ -62,31 +59,19 @@ public class CheckDicFrame extends JInternalFrame {
 		setContentPane(constructPanel());
 		setBounds(100, 100, 200, 100);
 		pack();
-		setResizable(false);
-		setVisible(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
 	}
 
 	private JPanel constructPanel() {
-    JPanel panel=new JPanel();
-		panel.setOpaque(true);
-		panel.setLayout(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructLeftPanel(), BorderLayout.WEST);
 		panel.add(constructRightPanel(), BorderLayout.CENTER);
-    return panel;
+		return panel;
 	}
 
 	private JPanel constructLeftPanel() {
-    JPanel leftPanel = new JPanel();
-		JPanel tmp = new JPanel();
-		leftPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+		JPanel leftPanel = new JPanel();
+		JPanel tmp = new JPanel(new GridLayout(2, 1));
 		tmp.setBorder(new TitledBorder("Dictionary Type:"));
-		tmp.setLayout(new GridLayout(2, 1));
 		DELAS.setSelected(false);
 		DELAF.setSelected(true);
 		ButtonGroup bg = new ButtonGroup();
@@ -95,51 +80,49 @@ public class CheckDicFrame extends JInternalFrame {
 		tmp.add(DELAS);
 		tmp.add(DELAF);
 		leftPanel.add(tmp);
-    return leftPanel;
+		return leftPanel;
 	}
 
 	private JPanel constructRightPanel() {
-    JPanel rightPanel=new JPanel(new GridLayout(2, 1));
+		JPanel rightPanel = new JPanel(new GridLayout(2, 1));
 		rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
 		Action goAction = new AbstractAction("Check Dictionary") {
 			public void actionPerformed(ActionEvent arg0) {
-			    setVisible(false);
-			    // post pone code
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						checkDELA();
-					}
-				});
+				setVisible(false);
+				checkDELA();
 			}
 		};
 		JButton GO = new JButton(goAction);
 		Action cancelAction = new AbstractAction("Cancel") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-            }
-        };
-    JButton CANCEL = new JButton(cancelAction);
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		};
+		JButton CANCEL = new JButton(cancelAction);
 		rightPanel.add(GO);
 		rightPanel.add(CANCEL);
-    return rightPanel;
+		return rightPanel;
 	}
 
 	/**
 	 * Launches the <code>CheckDic</code> verification program, through the
 	 * creation of a <code>ProcessInfoFrame</code> object.
-	 *  
+	 * 
 	 */
-	 void checkDELA() {
-		CheckDicCommand command=new CheckDicCommand().name(Config.getCurrentDELA())
-		.delaType(DELAS.isSelected()).alphabet(Config.getAlphabet());
-		
-		File tmp = new File(Config.getCurrentDELA().getParentFile(),"CHECK_DIC.TXT");
+	void checkDELA() {
+		CheckDicCommand command = new CheckDicCommand().name(
+				Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
+				Config.getAlphabet());
+
+		File tmp = new File(Config.getCurrentDELA().getParentFile(),
+				"CHECK_DIC.TXT");
 		UnitexFrame.getFrameManager().closeCheckResultFrame();
 		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
 
 	class CheckDicDo implements ToDo {
 		File results;
+
 		public CheckDicDo(File s) {
 			results = s;
 		}
