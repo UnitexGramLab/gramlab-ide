@@ -23,8 +23,6 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
  *  
@@ -39,11 +37,6 @@ public class TokenizeCommand extends CommandBuilder {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
-
-    public TokenizeCommand alphabet() {
-      protectElement("-a"+Config.getAlphabet().getAbsolutePath());
-      return this;
-  }
 
     public TokenizeCommand alphabet(File f) {
         protectElement("-a"+f.getAbsolutePath());

@@ -284,7 +284,8 @@ public class PreprocessDialog extends JDialog {
                                     }
                                     fst2 = new File(grfName);
                                 }
-                                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2).alphabet().mode(true);
+                                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
+                                	.alphabet(Config.getAlphabet()).mode(true);
                                 if (Config.isCharByCharLanguage())
                                     cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
                                 commands.addCommand(cmd);
@@ -314,14 +315,16 @@ public class PreprocessDialog extends JDialog {
                                     }
                                     fst2 = new File(grfName);
                                 }
-                                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2).alphabet().mode(false);
+                                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
+                                	.alphabet(Config.getAlphabet()).mode(false);
                                 if (Config.isCharByCharLanguage())
                                     cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
                                 commands.addCommand(cmd);
                             }
                         }
                         // TOKENIZING...
-                        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt()).alphabet();
+                        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
+                        	.alphabet(Config.getAlphabet());
                         if (Config.isCharByCharLanguage()) {
                             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
                         }
@@ -354,20 +357,26 @@ public class PreprocessDialog extends JDialog {
                                 if (analyseUnknownWordsCheck.isSelected()) {
                                     PolyLexCommand polyLexCmd;
                                     try {
-                                        polyLexCmd = new PolyLexCommand().language(lang).alphabet().bin(dic).wordList(new File(Config.getCurrentSntDir(), "err")).output(new File(Config.getCurrentSntDir(), "dlf")).info(new File(Config.getCurrentSntDir(), "decomp.txt"));
+                                        polyLexCmd = new PolyLexCommand().language(lang)
+                                        .alphabet(Config.getAlphabet()).bin(dic)
+                                        .wordList(new File(Config.getCurrentSntDir(), "err"))
+                                        .output(new File(Config.getCurrentSntDir(), "dlf"))
+                                        .info(new File(Config.getCurrentSntDir(), "decomp.txt"));
                                         commands.addCommand(polyLexCmd);
                                     } catch (InvalidPolyLexArgumentException e) {
                                         e.printStackTrace();
                                     }
                                 }
                                 // SORTING TEXT DICTIONARIES
+                        		File alph=new File(Config
+                                        .getUserCurrentLanguageDir(),"Alphabet_sort.txt");
                                 if (dicoCmd != null) {
                                     // sorting DLF
                                     SortTxtCommand sortCmd = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlf")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlf.n"));
                                     if (Config.getCurrentLanguage().equals("Thai")) {
                                         sortCmd = sortCmd.thai();
                                     } else {
-                                        sortCmd = sortCmd.sortAlphabet();
+                                        sortCmd = sortCmd.sortAlphabet(alph);
                                     }
                                     commands.addCommand(sortCmd);
                                     // sorting DLC
@@ -375,7 +384,7 @@ public class PreprocessDialog extends JDialog {
                                     if (Config.getCurrentLanguage().equals("Thai")) {
                                         sortCmd2 = sortCmd2.thai();
                                     } else {
-                                        sortCmd2 = sortCmd2.sortAlphabet();
+                                        sortCmd2 = sortCmd2.sortAlphabet(alph);
                                     }
                                     commands.addCommand(sortCmd2);
                                     // sorting ERR
@@ -383,7 +392,7 @@ public class PreprocessDialog extends JDialog {
                                     if (Config.getCurrentLanguage().equals("Thai")) {
                                         sortCmd3 = sortCmd3.thai();
                                     } else {
-                                        sortCmd3 = sortCmd3.sortAlphabet();
+                                        sortCmd3 = sortCmd3.sortAlphabet(alph);
                                     }
                                     commands.addCommand(sortCmd3);
                                 }
@@ -412,7 +421,8 @@ public class PreprocessDialog extends JDialog {
                                     }
                                 }
                             }
-                            Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt()).alphabet().clean(true);
+                            Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
+                            .alphabet(Config.getAlphabet()).clean(true);
                             if (Config.isKorean()) {
                                 txtCmd=txtCmd.korean();
                             }
@@ -448,7 +458,8 @@ public class PreprocessDialog extends JDialog {
                         NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
                         commands.addCommand(normalizeCmd);
                         // TOKENIZING...
-                        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt()).alphabet();
+                        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
+                        	.alphabet(Config.getAlphabet());
                         if (Config.getCurrentLanguage().equals("Thai") || Config.getCurrentLanguage().equals("Chinese")) {
                             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
                         }

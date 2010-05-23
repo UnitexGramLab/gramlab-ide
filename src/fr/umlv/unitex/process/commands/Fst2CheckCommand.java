@@ -23,10 +23,9 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class Fst2CheckCommand extends CommandBuilder {
 
@@ -43,10 +42,10 @@ public class Fst2CheckCommand extends CommandBuilder {
 		return this;
 	}
 
-    public Fst2CheckCommand fst2(File s) {
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	public Fst2CheckCommand fst2(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
 	public Fst2CheckCommand tfstCheck() {
 		element("-t");
@@ -64,9 +63,10 @@ public class Fst2CheckCommand extends CommandBuilder {
 	}
 
 	public Fst2CheckCommand output(File out) {
-      protectElement("-o"+out.getAbsolutePath());
-      return this;
-  }
+		protectElement("-o" + out.getAbsolutePath());
+		return this;
+	}
+
 	public Fst2CheckCommand appendMode() {
 		element("-a");
 		return this;

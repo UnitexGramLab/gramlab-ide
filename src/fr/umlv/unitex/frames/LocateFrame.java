@@ -342,7 +342,7 @@ public class LocateFrame extends JInternalFrame {
 		if (locateOnSnt.isSelected()) {
 			/* Locate on .snt text */
 			LocateCommand locateCmd = new LocateCommand().snt(
-					Config.getCurrentSnt()).fst2(fst2).alphabet();
+					Config.getCurrentSnt()).fst2(fst2).alphabet(Config.getAlphabet());
 			if (shortestMatches.isSelected())
 				locateCmd = locateCmd.shortestMatches();
 			else if (longuestMatches.isSelected())
@@ -397,7 +397,7 @@ public class LocateFrame extends JInternalFrame {
 		        return;
 		    }
 			LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(tfst)
-					.fst2(fst2).alphabet();
+					.fst2(fst2).alphabet(Config.getAlphabet());
 			if (shortestMatches.isSelected())
 				locateCmd = locateCmd.shortestMatches();
 			else if (longuestMatches.isSelected())
@@ -411,7 +411,7 @@ public class LocateFrame extends JInternalFrame {
 			else
 				locateCmd = locateCmd.replaceWithOutputs();
 			if (stopAfterNmatches.isSelected()) {
-				locateCmd = locateCmd.limit(nMatches.getText());
+				locateCmd = locateCmd.limit(n);
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}

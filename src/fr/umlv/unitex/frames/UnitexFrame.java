@@ -1455,7 +1455,8 @@ public class UnitexFrame extends JFrame {
 		if (Config.getCurrentLanguage().equals("Thai")){
 			command = command.thai();
 		} else {
-			command = command.sortAlphabet();
+			command = command.sortAlphabet(new File(Config
+	                .getUserCurrentLanguageDir(),"Alphabet_sort.txt"));
 		}
 		frameManager.closeDelaFrame();
 		Launcher.exec(command, true, new DelaDo(Config.getCurrentDELA()));

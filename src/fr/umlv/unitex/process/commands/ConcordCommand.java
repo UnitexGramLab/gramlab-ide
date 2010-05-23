@@ -51,23 +51,13 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
-	public ConcordCommand left(int size) {
-		element("-l"+size);
+	public ConcordCommand left(int size,boolean s) {
+		element("-l"+size+(s?"s":""));
 		return this;
 	}
 
-	public ConcordCommand left(String size) {
-		element("-l"+size);
-		return this;
-	}
-
-	public ConcordCommand right(int size) {
-		element("-r"+size);
-		return this;
-	}
-
-	public ConcordCommand right(String size) {
-		element("-r"+size);
+	public ConcordCommand right(int size,boolean s) {
+		element("-r"+size+(s?"s":""));
 		return this;
 	}
 
@@ -101,17 +91,6 @@ public class ConcordCommand extends CommandBuilder {
 		}
 		element("--"+s);
 		return this;
-	}
-
-	public ConcordCommand order(String s)
-			throws InvalidConcordanceOrderException {
-		if (s.equals("TO") || s.equals("LC") || s.equals("LR")
-				|| s.equals("CL") || s.equals("CR") || s.equals("RL")
-				|| s.equals("RC")) {
-			element("--"+s);
-			return this;
-		}
-		throw new InvalidConcordanceOrderException();
 	}
 
 	public ConcordCommand html() {

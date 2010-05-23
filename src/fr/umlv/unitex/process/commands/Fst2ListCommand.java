@@ -23,88 +23,80 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *
+ * 
  */
 public class Fst2ListCommand extends CommandBuilder {
-    
-    public Fst2ListCommand() {
-    	super("Fst2List");
-    }
-    
-    public Fst2ListCommand fst2(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-    }
 
-    public Fst2ListCommand limit(int n) {
-      element("-l");
-      element(""+n);
-      return this;
-     }
+	public Fst2ListCommand() {
+		super("Fst2List");
+	}
 
-    public Fst2ListCommand noLimit() {
-      return this;
-     }
-    public Fst2ListCommand modeOfInital(String s) { // multi or single
-        element("-t");
-        element(s);
-        return this;
-       }
-    public Fst2ListCommand setOFile(File f) { // output file
-        element("-o");
-        protectElement(f.getAbsolutePath());
-        return this;
-       }
-    public Fst2ListCommand ignoreListFile(File f) { // 
-        element("-I");
-        protectElement(f.getAbsolutePath());
-        return this;
-       }
-    public Fst2ListCommand ignoreOutputs() {
-      element("-a");
-      element("s");
-      return this;
-     }
-    
+	public Fst2ListCommand fst2(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    
-    public Fst2ListCommand separateOutputs(boolean separate) {
-      element("-t");
-      element("s");
-      element("-f");
-      element(separate?"s":"a");
-      element("-s0");
-      protectElement("/");
-      return this;
-     }
+	public Fst2ListCommand limit(int n) {
+		element("-l");
+		element("" + n);
+		return this;
+	}
 
-    public Fst2ListCommand output(File file) {
-      element("-o");
-      protectElement(file.getAbsolutePath());
-      return this;
-     }
-    public Fst2ListCommand listsOfSubgraph(File file) {
-        element("-p");
-        element("s");
-        protectElement(file.getAbsolutePath());
-        return this;
-    }
-    public Fst2ListCommand listOfPaths(File ifile,File ofile) {
-    	element("-s");
-		element("\""+", "+"\"");
+	public Fst2ListCommand noLimit() {
+		return this;
+	}
+
+	public Fst2ListCommand mode(String s) { // multi or single
+		element("-t");
+		element(s);
+		return this;
+	}
+
+	public Fst2ListCommand ignoreListFile(File f) {
+		element("-I");
+		protectElement(f.getAbsolutePath());
+		return this;
+	}
+
+	public Fst2ListCommand ignoreOutputs() {
+		element("-a");
+		element("s");
+		return this;
+	}
+
+	public Fst2ListCommand separateOutputs(boolean separate) {
+		element("-t");
+		element("s");
+		element("-f");
+		element(separate ? "s" : "a");
+		element("-s0");
+		protectElement("/");
+		return this;
+	}
+
+	public Fst2ListCommand output(File file) {
 		element("-o");
-	    protectElement(ofile.getAbsolutePath());
-        protectElement(ifile.getAbsolutePath());
-        
-        return this;
-    }
-    public Fst2ListCommand uneOption(String s) {
-        element(s);
-        return this;
-    }
-    
-    
+		protectElement(file.getAbsolutePath());
+		return this;
+	}
+
+	public Fst2ListCommand listsOfSubgraph(File file) {
+		element("-p");
+		element("s");
+		protectElement(file.getAbsolutePath());
+		return this;
+	}
+
+	public Fst2ListCommand listOfPaths(File ifile, File ofile) {
+		element("-s");
+		element("\"" + ", " + "\"");
+		element("-o");
+		protectElement(ofile.getAbsolutePath());
+		protectElement(ifile.getAbsolutePath());
+
+		return this;
+	}
+
 }
