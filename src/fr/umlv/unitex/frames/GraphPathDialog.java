@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -58,11 +57,9 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 /**
  * This class defines a frame that allows the user to show paths of a graph.
  * 
- * @author Sébastien Paumier
- * 11.11.2005 modified HyunGue HUH 
+ * @author Sébastien Paumier 11.11.2005 modified HyunGue HUH
  */
 public class GraphPathDialog extends JDialog {
-
 	BigTextList textArea = new BigTextList();
 	JTextField graphName = new JTextField();
 	JCheckBox limit;
@@ -70,29 +67,27 @@ public class GraphPathDialog extends JDialog {
 	JRadioButton ignoreOutputs;
 	JRadioButton separateOutputs;
 	JRadioButton mergeOutputs;
-	JRadioButton bySousGraph;
-	JRadioButton bySansGraph;
+	JRadioButton exploreRecursively;
+	JRadioButton onlyPaths;
 
 	GraphPathDialog() {
-		super(UnitexFrame.mainFrame,"Explore graph paths", true);
+		super(UnitexFrame.mainFrame, "Explore graph paths", true);
 		setContentPane(constructPanel());
 		setBounds(100, 100, 420, 400);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
-			
 			public void windowClosing(WindowEvent e) {
 				close();
 			}
 		});
 		textArea.setFont(Config.getCurrentTextFont());
 		Preferences.addTextFontListener(new FontListener() {
-					public void fontChanged(Font font) {
-						textArea.setFont(font);
-					}
-				});
+			public void fontChanged(Font font) {
+				textArea.setFont(font);
+			}
+		});
 		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}
-
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -115,15 +110,14 @@ public class GraphPathDialog extends JDialog {
 		top.add(separateOutputs);
 		top.add(mergeOutputs);
 		top.add(constructDownPanel());
-		
 		JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		ButtonGroup pathWithSubGraph = new ButtonGroup();
-		bySansGraph = new JRadioButton("Only paths", true);
-		bySousGraph = new JRadioButton("Do not explore subgraphs recursively");
-		pathWithSubGraph.add(bySansGraph);
-		pathWithSubGraph.add(bySousGraph);
-		top1.add(bySansGraph);
-		top1.add(bySousGraph);		
+		onlyPaths = new JRadioButton("Only paths", true);
+		exploreRecursively = new JRadioButton("Do not explore subgraphs recursively");
+		pathWithSubGraph.add(onlyPaths);
+		pathWithSubGraph.add(exploreRecursively);
+		top1.add(onlyPaths);
+		top1.add(exploreRecursively);
 		top.add(top1);
 		return top;
 	}
@@ -137,11 +131,11 @@ public class GraphPathDialog extends JDialog {
 				Fst2ListCommand cmd = new Fst2ListCommand();
 				Grf2Fst2Command grfCmd = new Grf2Fst2Command();
 				File fst2;
-				File list; //output file name
+				File list; /* output file name */
 				int n;
 				if (limit.isSelected()) {
 					try {
-						n=Integer.parseInt(limitSize.getText());
+						n = Integer.parseInt(limitSize.getText());
 					} catch (NumberFormatException e) {
 						JOptionPane.showMessageDialog(null,
 								"You must specify a valid limit", "Error",
@@ -155,22 +149,23 @@ public class GraphPathDialog extends JDialog {
 				if (ignoreOutputs.isSelected()) {
 					cmd = cmd.ignoreOutputs();
 				} else {
-					cmd = cmd.separateOutputs(separateOutputs
-							.isSelected());
+					cmd = cmd.separateOutputs(separateOutputs.isSelected());
 				}
-				grfCmd.grf(new File(graphName.getText())).enableLoopAndRecursionDetection(true).library();
+				grfCmd.grf(new File(graphName.getText()))
+						.enableLoopAndRecursionDetection(true).library();
 				fst2 = new File(Util.getFileNameWithoutExtension(graphName
-						.getText()) + ".fst2");			
-				if(bySansGraph.isSelected()){
-					list = new File(Config.getUserCurrentLanguageDir(),"list.txt");
-					
-					cmd = cmd.listOfPaths(fst2,list);
+						.getText())
+						+ ".fst2");
+				if (onlyPaths.isSelected()) {
+					list = new File(Config.getUserCurrentLanguageDir(),
+							"list.txt");
+					cmd = cmd.listOfPaths(fst2, list);
 				} else {
 					list = new File(Util.getFileNameWithoutExtension(graphName
-							.getText()) + "autolst.txt");
-					cmd = cmd.listsOfSubgraph(fst2);					
+							.getText())
+							+ "autolst.txt");
+					cmd = cmd.listsOfSubgraph(fst2);
 				}
-				
 				MultiCommands commands = new MultiCommands();
 				commands.addCommand(grfCmd);
 				commands.addCommand(cmd);
@@ -182,9 +177,6 @@ public class GraphPathDialog extends JDialog {
 		buttons.add(GO);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				/* TODO remplacer les setVisible(false) des cancel par des
-				 * doDefaultCloseAction()
-				 */
 				close();
 			}
 		};
@@ -199,7 +191,6 @@ public class GraphPathDialog extends JDialog {
 		textArea.reset();
 		textArea.clearSelection();
 	}
-
 
 	private JPanel constructLimitPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -230,5 +221,4 @@ public class GraphPathDialog extends JDialog {
 			textArea.load(name);
 		}
 	}
-
 }
