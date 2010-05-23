@@ -51,6 +51,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 
 	BigConcordanceDiff list=new BigConcordanceDiff();
 		
+	
 	/**
 	 * Constructs a new empty <code>ConcordanceDiffFrame</code>.
 	 */
@@ -58,7 +59,6 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		super("Concordance Diff", true, true, true, true);
 		JScrollPane scroll = new JScrollPane(list);
 		JPanel middle = new JPanel(new BorderLayout());
-		middle.setOpaque(true);
 		middle.add(scroll, BorderLayout.CENTER);
 		JPanel top=new JPanel(new GridLayout(3,1));
 		top.setBackground(Color.WHITE);
@@ -98,10 +98,8 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		Dimension d = getSize();
 		int g = widthInChars * 8;
 		d.setSize((g < 800) ? g : 800, d.height);
-		/*setSize(d);*/
 		Util.getHtmlPageTitle(concor);
 		list.load(concor);
-		setVisible(true);
 	}
 
 }
