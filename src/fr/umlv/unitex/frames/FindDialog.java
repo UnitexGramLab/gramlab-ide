@@ -59,5 +59,6 @@ public class FindDialog extends JDialog {
 		getContentPane().add(tab, BorderLayout.CENTER);
 		pack();
 		setResizable(false);
+		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}
 }

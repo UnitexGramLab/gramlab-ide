@@ -241,7 +241,7 @@ public class FontDialog extends JDialog {
 		};
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				/* After cancelling, a call to getFont should
+				/* After cancelling, a call to getFontInfo()
 				 * return null 
 				 */
 				info=null;
@@ -256,7 +256,6 @@ public class FontDialog extends JDialog {
 	}
 
 	private void init() {
-		// setting the components form
 		name.setDisabledTextColor(Color.white);
 		name.setBackground(Color.white);
 		name.setText("");
@@ -273,7 +272,6 @@ public class FontDialog extends JDialog {
 		script.setBackground(Color.white);
 		script.setText("");
 		script.setEditable(false);
-		// setting the components content
 		styles = new Hashtable<String,Integer>();
 		styles.put("Plain", new Integer(Font.PLAIN));
 		styles.put("Bold", new Integer(Font.BOLD));
