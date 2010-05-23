@@ -371,10 +371,9 @@ public class GraphPresentationDialog extends JDialog {
 	}
 
 	private JPanel constructFontPanel() {
-		GridBagLayout g = new GridBagLayout();
-		JPanel fontPanel = new JPanel(g);
+		JPanel fontPanel = new JPanel(new GridBagLayout());
 		fontPanel.setBorder(new TitledBorder("Fonts"));
-		GridBagConstraints c = new GridBagConstraints();
+		GridBagConstraints gbc = new GridBagConstraints();
 		Action inputAction = new AbstractAction("Input") {
 			public void actionPerformed(ActionEvent arg0) {
 				FontInfo i=UnitexFrame.getFrameManager().newFontDialog(info.input);
@@ -395,26 +394,22 @@ public class GraphPresentationDialog extends JDialog {
 			}
 		};
 		JButton output = new JButton(outputAction);
-		build(c, 0, 0, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(input, c);
-		fontPanel.add(input);
-		build(c, 1, 0, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(inputLabel, c);
-		fontPanel.add(inputLabel);
-		build(c, 0, 1, 1, 1, 60, 15);
-		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(output, c);
-		fontPanel.add(output);
-		build(c, 1, 1, 1, 1, 20, 0);
-		c.fill = GridBagConstraints.VERTICAL;
-		c.anchor = GridBagConstraints.WEST;
-		g.setConstraints(outputLabel, c);
-		fontPanel.add(outputLabel);
+		build(gbc, 0, 0, 1, 1, 60, 15);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.WEST;
+		fontPanel.add(input,gbc);
+		build(gbc, 1, 0, 1, 1, 20, 0);
+		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.anchor = GridBagConstraints.WEST;
+		fontPanel.add(inputLabel,gbc);
+		build(gbc, 0, 1, 1, 1, 60, 15);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.WEST;
+		fontPanel.add(output,gbc);
+		build(gbc, 1, 1, 1, 1, 20, 0);
+		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.anchor = GridBagConstraints.WEST;
+		fontPanel.add(outputLabel,gbc);
 		return fontPanel;
 	}
 
