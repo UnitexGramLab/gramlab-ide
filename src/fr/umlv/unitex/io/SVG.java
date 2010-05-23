@@ -51,7 +51,7 @@ public class SVG {
 	public SVG(OutputStreamWriter writer, GraphFrame frame) {
 		this.writer=writer;
 		this.frame=frame;
-		this.graphicalZone=frame.graphicalZone;
+		this.graphicalZone=frame.getGraphicalZone();
 		this.graphics=(Graphics2D)graphicalZone.getGraphics();
 		this.info=graphicalZone.getGraphPresentationInfo();
 	}
@@ -71,10 +71,10 @@ public class SVG {
 		// we write the SVG header
 		header();
 		// then we paint the zone with the background color
-		fillRect(0,0,frame.graphicalZone.Width,frame.graphicalZone.Height,info.backgroundColor);
+		fillRect(0,0,graphicalZone.Width,graphicalZone.Height,info.backgroundColor);
 		// if necessary, we draw the frame
 		if (info.frame) {
-			drawRect(10,10,frame.graphicalZone.Width-20,frame.graphicalZone.Height-20,info.foregroundColor,2);
+			drawRect(10,10,graphicalZone.Width-20,graphicalZone.Height-20,info.foregroundColor,2);
 		}
 		// if necessary, we print the file name
 		Font defaultFont=graphicalZone.getFont();
