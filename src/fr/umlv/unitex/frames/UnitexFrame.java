@@ -64,7 +64,6 @@ import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.GraphSizeMenu;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.Text;
@@ -642,7 +641,7 @@ public class UnitexFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					new GraphSizeMenu();
+					frameManager.newGraphSizeDialog(f);
 				}
 			}
 		});

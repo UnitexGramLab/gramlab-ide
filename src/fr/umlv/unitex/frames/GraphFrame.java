@@ -492,6 +492,7 @@ public class GraphFrame extends JInternalFrame {
 		graphicalZone.setPreferredSize(new Dimension(x, y));
 		graphicalZone.revalidate();
 		graphicalZone.repaint();
+		setModified(true);
 	}
 
 	/**
