@@ -55,7 +55,6 @@ import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
@@ -91,7 +90,7 @@ public class LocateFrame extends JInternalFrame {
 	JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
 	JRadioButton indexAllMatches = new JRadioButton(
 			"Index all utterances in text", false);
-	NumericTextField nMatches = new NumericTextField("200");
+	JTextField nMatches = new JTextField("200");
 	JRadioButton locateOnSnt = new JRadioButton("Paumier 2003, working on text (quicker)", true);
 	JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)", false);
 
@@ -277,11 +276,16 @@ public class LocateFrame extends JInternalFrame {
 	void launchLocate() {
 		MultiCommands commands = new MultiCommands();
 		File fst2;
-		if (stopAfterNmatches.isSelected() && nMatches.getText().equals("")) {
-			JOptionPane.showMessageDialog(null,
-					"Empty search limitation field !", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
+		int n=-1;
+		if (stopAfterNmatches.isSelected()) {
+			try {
+				n=Integer.parseInt(nMatches.getText());
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Invalid empty search limitation value !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 		if (regularExpression.isSelected()) {
 			// we need to process a regular expression
@@ -352,7 +356,7 @@ public class LocateFrame extends JInternalFrame {
 			else
 				locateCmd = locateCmd.replaceWithOutputs();
 			if (stopAfterNmatches.isSelected()) {
-				locateCmd = locateCmd.limit(nMatches.getText());
+				locateCmd = locateCmd.limit(n);
 			} else {
 				locateCmd = locateCmd.noLimit();
 			}

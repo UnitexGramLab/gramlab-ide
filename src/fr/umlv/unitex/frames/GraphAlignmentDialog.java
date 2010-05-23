@@ -36,10 +36,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
-import fr.umlv.unitex.NumericTextField;
 
 /**
  * This class describes a dialog box that allows the user to align the current
@@ -55,7 +54,7 @@ public class GraphAlignmentDialog extends JDialog {
 	GridBagLayout vertGridBag = new GridBagLayout();
 	GridBagConstraints vertConstraints = new GridBagConstraints();
 	JCheckBox showGrid = new JCheckBox();
-	NumericTextField nPixels = new NumericTextField(3,"");
+	JTextField nPixels = new JTextField("30");
 
 	int nPix = 30;
 
@@ -138,7 +137,7 @@ public class GraphAlignmentDialog extends JDialog {
 				}
 				int n;
 				try {
-					n=Integer.valueOf(nPixels.getText()).intValue();
+					n=Integer.parseInt(nPixels.getText());
 				} catch (NumberFormatException e) {
 					return;
 				}

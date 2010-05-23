@@ -55,7 +55,6 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
@@ -82,8 +81,8 @@ import fr.umlv.unitex.process.commands.TokenizeCommand;
  */
 public class ConcordanceParameterFrame extends JInternalFrame {
 
-	private NumericTextField leftChars = new NumericTextField("40");
-	private NumericTextField rightChars = new NumericTextField("55");
+	private JTextField leftChars = new JTextField("40");
+	private JTextField rightChars = new JTextField("55");
 	JCheckBox leftCtxStopAtEOS  = new JCheckBox("", false);
 	JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
 	private JComboBox sortBox;
@@ -98,8 +97,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	JRadioButton mode0=new JRadioButton("collocates by z-score",true);
     JRadioButton mode1=new JRadioButton("collocates by frequency",false);
 	JRadioButton mode2=new JRadioButton("contexts by frequency",false);
-    NumericTextField leftContextForStats=new NumericTextField("1");
-	NumericTextField rightContextForStats=new NumericTextField("1");
+    JTextField leftContextForStats=new JTextField("1");
+	JTextField rightContextForStats=new JTextField("1");
 	JRadioButton caseSensitive=new JRadioButton("case sensitive",true);
     JRadioButton caseInsensitive=new JRadioButton("case insensitive",false);
     
@@ -193,11 +192,29 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                int leftContext;
+                int rightContext;
+                try {
+                	leftContext=Integer.parseInt(leftContextForStats.getText());
+                } catch (NumberFormatException e1) {
+        			JOptionPane.showMessageDialog(null,
+        					"You must specify a valid left context length", "Error",
+        					JOptionPane.ERROR_MESSAGE);
+        			return;
+                }
+                try {
+                	rightContext=Integer.parseInt(rightContextForStats.getText());
+                } catch (NumberFormatException e1) {
+        			JOptionPane.showMessageDialog(null,
+        					"You must specify a valid right context length", "Error",
+        					JOptionPane.ERROR_MESSAGE);
+        			return;
+                }
                 File output=new File(indFile.getParentFile(),"statistics.txt");
                 StatsCommand cmd=new StatsCommand();
                 cmd=cmd.concord(indFile)
-                    .alphabet().left(Integer.parseInt(leftContextForStats.getText()))
-                    .right(Integer.parseInt(rightContextForStats.getText()))
+                    .alphabet().left(leftContext)
+                    .right(rightContext)
                     .output(output).caseSensitive(caseSensitive.isSelected());
                 int mode;
                 if (mode2.isSelected()) mode=0;
@@ -527,15 +544,21 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	void buildConcordance() {
-        if (leftChars.getText().equals("")) {
+		int leftContext;
+		int rightContext;
+		try {
+			leftContext=Integer.parseInt(leftChars.getText());
+		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
-					"You must specify the left context length", "Error",
+					"You must specify a valid left context length", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (rightChars.getText().equals("")) {
+		try {
+			rightContext=Integer.parseInt(rightChars.getText());
+		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
-					"You must specify the right context length", "Error",
+					"You must specify a valid right context length", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -553,9 +576,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                                 .indFile(indFile)
                                 .font(Preferences.getConcordanceFontName())
                                 .fontSize(Preferences.getConcordanceFontSize())
-                                .left(Integer.parseInt(leftChars.getText())
+                                .left(leftContext
                                       + (leftCtxStopAtEOS.isSelected() ? "s" : ""))
-                                .right(Integer.parseInt(rightChars.getText())
+                                .right(rightContext
                                       + (rightCtxStopAtEOS.isSelected() ? "s" : ""))
                                 .order(sortBox.getSelectedIndex())
                                 .html()
@@ -566,8 +589,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			return;
 		}
 		setVisible(false);
-		int width = Integer.parseInt(leftChars.getText())
-				+ Integer.parseInt(rightChars.getText());
+		int width = leftContext+rightContext;
 		if (width<40) {
 		    width=40;
 		}

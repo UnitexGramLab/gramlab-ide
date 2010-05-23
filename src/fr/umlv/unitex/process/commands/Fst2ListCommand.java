@@ -39,13 +39,6 @@ public class Fst2ListCommand extends CommandBuilder {
       return this;
     }
 
-    public Fst2ListCommand limit(String n) {
-      Integer.parseInt(n);
-      element("-l");
-      element(n);
-      return this;
-     }
-
     public Fst2ListCommand limit(int n) {
       element("-l");
       element(""+n);
