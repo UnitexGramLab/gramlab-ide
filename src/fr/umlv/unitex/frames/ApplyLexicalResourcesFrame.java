@@ -54,11 +54,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -103,18 +100,11 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		super("Lexical Resources", true, true);
 		setContentPane(constructMainPanel());
 		pack();
-		setVisible(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
 	private JPanel constructMainPanel() {
 		JPanel main = new JPanel(new BorderLayout());
-		main.setOpaque(true);
 		main.add(constructInfoPanel(),BorderLayout.NORTH);
 		main.add(constructDicPanel(), BorderLayout.CENTER);
 		main.add(constructButtonsPanel(), BorderLayout.SOUTH);
@@ -237,7 +227,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 	private JPanel constructDicListPanel() {
 		JPanel dicListPanel = new JPanel(new GridLayout(1, 2));
-		
 		JPanel userButtonsPanel=new JPanel(null);
 		userButtonsPanel.setLayout(new BoxLayout(userButtonsPanel,BoxLayout.Y_AXIS));
 		final JButton userUpButton=new JButton("\u25B2");
@@ -246,8 +235,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index=userDicList.getSelectedIndex();
 				if (index<=0) {
-					// this case should not happen
-					return;
+					throw new IllegalStateException("Should not happen !");
 				}
 				DefaultListModel model=(DefaultListModel)userDicList.getModel();
 				Object o=model.remove(index);
@@ -263,8 +251,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index=userDicList.getSelectedIndex();
 				if (index==-1 || index==userDicList.getModel().getSize()-1) {
-					// this case should not happen
-					return;
+					throw new IllegalStateException("Should not happen !");
 				}
 				DefaultListModel model=(DefaultListModel)userDicList.getModel();
 				Object o=model.remove(index);
@@ -274,10 +261,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 						.getUserCurrentLanguageDir(), "user_dic_list.txt"));
 			}
 		});
-		
 		userButtonsPanel.add(userUpButton);
 		userButtonsPanel.add(userDownButton);
-		
 		userDicList = new JList();
 		userDicList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -310,7 +295,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			}
 		};
 		userDicList.addMouseListener(userDicListener);
-
 		JPanel systemButtonsPanel=new JPanel(null);
 		systemButtonsPanel.setLayout(new BoxLayout(systemButtonsPanel,BoxLayout.Y_AXIS));
 		final JButton systemUpButton=new JButton("\u25B2");
@@ -319,8 +303,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index=systemDicList.getSelectedIndex();
 				if (index<=0) {
-					// this case should not happen
-					return;
+					throw new IllegalStateException("Should not happen !");
 				}
 				DefaultListModel model=(DefaultListModel)systemDicList.getModel();
 				Object o=model.remove(index);
@@ -336,8 +319,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index=systemDicList.getSelectedIndex();
 				if (index==-1 || index==systemDicList.getModel().getSize()-1) {
-					// this case should not happen
-					return;
+					throw new IllegalStateException("Should not happen !");
 				}
 				DefaultListModel model=(DefaultListModel)systemDicList.getModel();
 				Object o=model.remove(index);
@@ -346,11 +328,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				saveListToFile(systemDicList,new File(Config
 						.getUserCurrentLanguageDir(), "system_dic_list.txt"));
 			}
-		});
-		
+		});		
 		systemButtonsPanel.add(systemUpButton);
 		systemButtonsPanel.add(systemDownButton);
-		
 		systemDicList = new JList(new DefaultListModel());
 		systemDicList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -442,23 +422,18 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		Action goAction = new AbstractAction("Apply") {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				// post pone code
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						UnitexFrame.getFrameManager().closeTextDicFrame();
-						MultiCommands commands;
-						commands = getRunCmd();
-						if(commands.numberOfCommands() == 0) return;
-						
-						if (Config.isKorean()) {
-						    /* As we construct the text automaton for Korean, we
-						     * must close the text automaton frame, if any */
-						    UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-						}
-						Launcher.exec(commands, true,
-								new ApplyLexicalResourcesDo());
-					}
-				});
+				UnitexFrame.getFrameManager().closeTextDicFrame();
+				MultiCommands commands;
+				commands = getRunCmd();
+				if(commands.numberOfCommands() == 0) return;
+				
+				if (Config.isKorean()) {
+				    /* As we construct the text automaton for Korean, we
+				     * must close the text automaton frame, if any */
+				    UnitexFrame.getFrameManager().closeTextAutomatonFrame();
+				}
+				Launcher.exec(commands, true,
+						new ApplyLexicalResourcesDo());
 			}
 		};
 		return new JButton(goAction);
@@ -472,15 +447,13 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 * non agglutinative languages.
 	 * @return a <code>MultiCommands</code> object that contains the command lines
 	 */
-	MultiCommands getRunCmd()
-	{
+	MultiCommands getRunCmd() {
 		MultiCommands commands = new MultiCommands();
-
 		Object[] userSelection = userDicList.getSelectedValues();
 		Object[] systemSelection = systemDicList.getSelectedValues();
 		if ((userSelection == null || userSelection.length == 0)
 				&& (systemSelection == null || systemSelection.length == 0)) {
-			// if there is no dic selected, we do nothing
+			/* If there is no dictionary selected, we do nothing */
 			return commands;
 		}
 		DicoCommand cmd = new DicoCommand().snt(
@@ -501,7 +474,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			}
 		}
 		commands.addCommand(cmd);
-		// sorting DLF
+		/* Sorting dictionaries dlf, dlc and err */
 		File alph=new File(Config
                 .getUserCurrentLanguageDir(),"Alphabet_sort.txt");
 		SortTxtCommand sortCmd = new SortTxtCommand().file(
@@ -513,7 +486,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			sortCmd = sortCmd.sortAlphabet(alph);
 		}
 		commands.addCommand(sortCmd);
-		// sorting DLC
 		SortTxtCommand sortCmd2 = new SortTxtCommand().file(
 				new File(Config.getCurrentSntDir(), "dlc"))
 				.saveNumberOfLines(new File(
@@ -524,7 +496,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			sortCmd2 = sortCmd2.sortAlphabet(alph);
 		}
 		commands.addCommand(sortCmd2);
-		// sorting ERR
 		SortTxtCommand sortCmd3 = new SortTxtCommand().file(
 				new File(Config.getCurrentSntDir(), "err"))
 				.saveNumberOfLines(new File(
@@ -539,8 +510,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	}
 	
 	
-
-	
 	/**
 	 * Gets a list of all ".bin" and ".fst2" files found in a directory.
 	 * 
@@ -548,8 +517,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            the directory to be scanned
 	 * @return a <code>Vector</code> containing file names.
 	 */
-	public Vector<String> getDicList(File dir) {
-	
+	public Vector<String> getDicList(File dir) {	
 		Vector<String> v = new Vector<String>();
 		if (!dir.exists()) {
 			return v;
@@ -606,7 +574,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            to be selected.
 	 */
 	public void setDefaultSelection(JList list, Vector<String> v) {
-		int[] indices = new int[100];
+		int[] indices = new int[256];
 		int i = 0;
 		if (v == null)
 			return;
