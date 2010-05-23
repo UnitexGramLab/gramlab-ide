@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -35,6 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -55,9 +55,11 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import fr.umlv.unitex.GenericGraphBox;
 import fr.umlv.unitex.GraphBox;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.GraphicalZone;
+import fr.umlv.unitex.MultipleSelection;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
@@ -68,23 +70,13 @@ import fr.umlv.unitex.io.SVG;
  * This class describes a frame used to display and edit a graph.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class GraphFrame extends JInternalFrame {
-
 	static int openFrameCount = 0;
-
 	static final int offset = 30;
-
-	/**
-	 * Text field used to edit box content
-	 */
-	public TextField boxContentEditor;
-
-	/**
-	 * Drawing area
-	 */
-	public GraphicalZone graphicalZone;
+	TextField boxContentEditor;
+	GraphicalZone graphicalZone;
 
 	public GraphicalZone getGraphicalZone() {
 		return graphicalZone;
@@ -94,37 +86,26 @@ public class GraphFrame extends JInternalFrame {
 	 * The graph file
 	 */
 	private File grf;
-
 	/**
 	 * Indicates if the graph must be saved
 	 */
-	public boolean modified = false;
-
-	/** undo redo manager */
+	boolean modified = false;
 	UndoManager manager;
-
-	/** redo button */
 	private JButton redoButton;
-
-	/** undo button */
 	private JButton undoButton;
-
 	private JScrollPane scroll;
-
 	private boolean nonEmptyGraph = false;
 
 	public boolean isNonEmptyGraph() {
 		return nonEmptyGraph;
 	}
-	
-	private JPanel mainPanel;
 
+	private JPanel mainPanel;
 	/**
 	 * Component used to listen frame changes. It is used to adapt the zoom
 	 * factor to the frame's dimensions when the zoom mode is "Fit in Windows"
 	 */
 	public ComponentListener compListener = null;
-
 	/**
 	 * The frame's tool bar that contains icons
 	 */
@@ -143,19 +124,16 @@ public class GraphFrame extends JInternalFrame {
 		setTitle("Graph");
 		mainPanel = new JPanel(new BorderLayout());
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
 		JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
 		graphicalZone = new GraphicalZone(1188, 840, boxContentEditor, this);
 		graphicalZone.setPreferredSize(new Dimension(
 				(int) (1188 * graphicalZone.scaleFactor),
 				(int) (840 * graphicalZone.scaleFactor)));
-
 		manager = new UndoManager();
 		manager.setLimit(30);
-
 		graphicalZone.addUndoableEditListener(manager);
-		GraphPresentationInfo info=getGraphPresentationInfo();
+		GraphPresentationInfo info = getGraphPresentationInfo();
 		scroll = new JScrollPane(graphicalZone);
 		scroll.getHorizontalScrollBar().setUnitIncrement(20);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
@@ -163,8 +141,7 @@ public class GraphFrame extends JInternalFrame {
 		top.add(scroll, BorderLayout.CENTER);
 		boxContentEditor.setFont(info.input.font);
 		createToolBar(info.iconBarPosition);
-		if (!(info.iconBarPosition
-				.equals(Preferences.NO_ICON_BAR))) {
+		if (!(info.iconBarPosition.equals(Preferences.NO_ICON_BAR))) {
 			mainPanel.add(myToolBar, info.iconBarPosition);
 		}
 		mainPanel.add(top, BorderLayout.CENTER);
@@ -178,10 +155,8 @@ public class GraphFrame extends JInternalFrame {
 
 	private void createToolBar(String iconBarPosition) {
 		myToolBar = new JToolBar("Tools");
-		if (iconBarPosition
-				.equals(Preferences.ICON_BAR_WEST)
-				|| iconBarPosition
-						.equals(Preferences.ICON_BAR_EAST)) {
+		if (iconBarPosition.equals(Preferences.ICON_BAR_WEST)
+				|| iconBarPosition.equals(Preferences.ICON_BAR_EAST)) {
 			myToolBar.setOrientation(SwingConstants.VERTICAL);
 		} else {
 			myToolBar.setOrientation(SwingConstants.HORIZONTAL);
@@ -195,7 +170,6 @@ public class GraphFrame extends JInternalFrame {
 		compile.setMaximumSize(new Dimension(36, 36));
 		compile.setMinimumSize(new Dimension(36, 36));
 		compile.setPreferredSize(new Dimension(36, 36));
-
 		JButton copy = new JButton(MyCursors.copyIcon);
 		JButton cut = new JButton(MyCursors.cutIcon);
 		JButton paste = new JButton(MyCursors.pasteIcon);
@@ -208,27 +182,22 @@ public class GraphFrame extends JInternalFrame {
 		copy.setPreferredSize(new Dimension(36, 36));
 		cut.setPreferredSize(new Dimension(36, 36));
 		paste.setPreferredSize(new Dimension(36, 36));
-
 		redoButton = new JButton(MyCursors.redoIcon);
 		undoButton = new JButton(MyCursors.undoIcon);
 		redoButton.setToolTipText("Redo");
 		undoButton.setToolTipText("Undo");
-
 		redoButton.addActionListener(new RedoIt());
 		redoButton.setMaximumSize(new Dimension(36, 36));
 		redoButton.setMinimumSize(new Dimension(36, 36));
 		redoButton.setPreferredSize(new Dimension(36, 36));
-
 		undoButton.addActionListener(new UndoIt());
 		undoButton.setMaximumSize(new Dimension(36, 36));
 		undoButton.setMinimumSize(new Dimension(36, 36));
 		undoButton.setPreferredSize(new Dimension(36, 36));
-
 		JToggleButton normal = new JToggleButton(MyCursors.arrowIcon);
 		normal.setMaximumSize(new Dimension(36, 36));
 		normal.setMinimumSize(new Dimension(36, 36));
 		normal.setPreferredSize(new Dimension(36, 36));
-
 		JToggleButton create = new JToggleButton(MyCursors.createBoxesIcon);
 		create.setMaximumSize(new Dimension(36, 36));
 		create.setMinimumSize(new Dimension(36, 36));
@@ -251,31 +220,26 @@ public class GraphFrame extends JInternalFrame {
 		openSubgraph.setMaximumSize(new Dimension(36, 36));
 		openSubgraph.setMinimumSize(new Dimension(36, 36));
 		openSubgraph.setPreferredSize(new Dimension(36, 36));
-
 		JButton configuration = new JButton(MyCursors.configurationIcon);
 		configuration.setMaximumSize(new Dimension(36, 36));
 		configuration.setMinimumSize(new Dimension(36, 36));
 		configuration.setPreferredSize(new Dimension(36, 36));
-
 		save.setToolTipText("Save graph");
 		compile.setToolTipText("Compile graph");
-
 		copy.setToolTipText("Copy");
 		cut.setToolTipText("Cut");
 		paste.setToolTipText("Paste");
-
 		normal.setToolTipText("Normal editing mode");
 		create.setToolTipText("Create a new box");
 		kill.setToolTipText("Remove a box");
 		link.setToolTipText("Link boxes");
 		reverseLink.setToolTipText("Reversed link between boxes");
 		openSubgraph.setToolTipText("Open a sub-graph");
-
 		configuration.setToolTipText("Graph configuration");
-
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
+				GraphFrame f = UnitexFrame.mainFrame.frameManager
+						.getCurrentFocusedGraphFrame();
 				if (f != null)
 					UnitexFrame.mainFrame.saveGraph(f);
 			}
@@ -372,15 +336,16 @@ public class GraphFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-				    	  GraphPresentationInfo info=UnitexFrame.getFrameManager().newGraphPresentationDialog(getGraphPresentationInfo(),true);
-				    	  if (info!=null) {
-				    		  setGraphPresentationInfo(info);
-				    	  }
+						GraphPresentationInfo info = UnitexFrame
+								.getFrameManager().newGraphPresentationDialog(
+										getGraphPresentationInfo(), true);
+						if (info != null) {
+							setGraphPresentationInfo(info);
+						}
 					}
 				});
 			}
 		});
-
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(normal);
 		bg.add(create);
@@ -388,46 +353,40 @@ public class GraphFrame extends JInternalFrame {
 		bg.add(link);
 		bg.add(reverseLink);
 		bg.add(openSubgraph);
-
 		normal.setSelected(true);
 		myToolBar.add(save);
 		myToolBar.add(compile);
-
 		myToolBar.addSeparator();
 		myToolBar.addSeparator();
-
 		myToolBar.add(copy);
 		myToolBar.add(cut);
 		myToolBar.add(paste);
 		myToolBar.add(redoButton);
 		myToolBar.add(undoButton);
-
 		myToolBar.addSeparator();
 		myToolBar.addSeparator();
-
 		myToolBar.add(normal);
 		myToolBar.add(create);
 		myToolBar.add(kill);
 		myToolBar.add(link);
 		myToolBar.add(reverseLink);
 		myToolBar.add(openSubgraph);
-
 		myToolBar.addSeparator();
 		myToolBar.addSeparator();
-
 		myToolBar.add(configuration);
 	}
 
 	private JPanel buildTextPanel() {
 		JPanel p = new JPanel(new BorderLayout());
 		boxContentEditor = new TextField(25, this);
-		boxContentEditor.setComponentOrientation(Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
+		boxContentEditor
+				.setComponentOrientation(Preferences.rightToLeft() ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
 		p.add(boxContentEditor);
 		return p;
 	}
 
 	class MyInternalFrameListener extends InternalFrameAdapter {
-
 		public void internalFrameActivated(InternalFrameEvent e) {
 			boxContentEditor.requestFocus();
 			boxContentEditor.getCaret().setVisible(true);
@@ -525,7 +484,7 @@ public class GraphFrame extends JInternalFrame {
 
 	/**
 	 * Sorts lines of all selected boxes
-	 *  
+	 * 
 	 */
 	public void sortNodeLabel() {
 		if (graphicalZone.selectedBoxes.isEmpty())
@@ -541,10 +500,10 @@ public class GraphFrame extends JInternalFrame {
 
 	/**
 	 * Inverts the antialiasing flag
-	 *  
+	 * 
 	 */
 	public void changeAntialiasingValue() {
-		GraphPresentationInfo info=getGraphPresentationInfo();
+		GraphPresentationInfo info = getGraphPresentationInfo();
 		info.antialiasing = !info.antialiasing;
 		graphicalZone.repaint();
 	}
@@ -553,12 +512,10 @@ public class GraphFrame extends JInternalFrame {
 	 *  
 	 */
 	private void updateDoUndoButtons() {
-
 		if (undoButton != null && redoButton != null) {
 			undoButton.setEnabled(manager.canUndo());
 			redoButton.setEnabled(manager.canRedo());
 		}
-
 	}
 
 	class UndoIt implements ActionListener {
@@ -571,7 +528,6 @@ public class GraphFrame extends JInternalFrame {
 				repaint();
 			}
 		}
-
 	}
 
 	class RedoIt implements ActionListener {
@@ -605,53 +561,55 @@ public class GraphFrame extends JInternalFrame {
 
 	public void setGraph(File grf) {
 		this.grf = grf;
-		this.nonEmptyGraph=true;
-		this.setTitle(grf.getName()+" ("+grf.getParent()+")");
+		this.nonEmptyGraph = true;
+		this.setTitle(grf.getName() + " (" + grf.getParent() + ")");
 	}
 
 	public void saveGraphAsAnImage(File output) {
-		BufferedImage image=new BufferedImage(graphicalZone.Width,graphicalZone.Height,BufferedImage.TYPE_INT_RGB);
-		Graphics g=image.getGraphics();
-		graphicalZone.paintAll(g);
+		BufferedImage image = new BufferedImage(graphicalZone.Width,
+				graphicalZone.Height, BufferedImage.TYPE_INT_RGB);
+		Graphics g = image.getGraphics();
 		try {
-			ImageOutputStream stream=ImageIO.createImageOutputStream(output);
-			ImageIO.write(image,"png",stream);
-			stream.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+			graphicalZone.paintAll(g);
+			try {
+				ImageOutputStream stream = ImageIO
+						.createImageOutputStream(output);
+				ImageIO.write(image, "png", stream);
+				stream.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			g.dispose();
 		}
-		g.dispose();
 	}
 
 	/**
 	 * This function saves the current graph frame as a SVG file.
+	 * 
 	 * @param file
 	 */
 	public void saveGraphAsAnSVG(File file) {
-	      FileOutputStream stream;
-	      try {
-	         if (!file.exists())
-	            file.createNewFile();
-	      } catch (IOException e) {
-	         JOptionPane.showMessageDialog(
-	            null,
-	            "Cannot write " + file.getAbsolutePath(),
-	            "Error",
-	            JOptionPane.ERROR_MESSAGE);
-	         return;
-	      }
-	      if (!file.canWrite()) {
-	         JOptionPane.showMessageDialog(
-	            null,
-	            "Cannot write " + file.getAbsolutePath(),
-	            "Error",
-	            JOptionPane.ERROR_MESSAGE);
-	         return;
-	      }
-	      try {
-			stream=new FileOutputStream(file);
-			OutputStreamWriter writer=new OutputStreamWriter(stream,"UTF-8");
-			SVG svg=new SVG(writer,this);
+		FileOutputStream stream;
+		try {
+			if (!file.exists())
+				file.createNewFile();
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Cannot write "
+					+ file.getAbsolutePath(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (!file.canWrite()) {
+			JOptionPane.showMessageDialog(null, "Cannot write "
+					+ file.getAbsolutePath(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		try {
+			stream = new FileOutputStream(file);
+			OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
+			SVG svg = new SVG(writer, this);
 			svg.save();
 			writer.close();
 			stream.close();
@@ -660,7 +618,6 @@ public class GraphFrame extends JInternalFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	      
 	}
 
 	public JScrollPane getScroll() {
@@ -679,12 +636,9 @@ public class GraphFrame extends JInternalFrame {
 
 	private void updateToolBar(String iconBarPosition) {
 		mainPanel.remove(myToolBar);
-		if (!(iconBarPosition
-				.equals(Preferences.NO_ICON_BAR))) {
-			if (iconBarPosition
-					.equals(Preferences.ICON_BAR_WEST)
-					|| iconBarPosition
-							.equals(Preferences.ICON_BAR_EAST)) {
+		if (!(iconBarPosition.equals(Preferences.NO_ICON_BAR))) {
+			if (iconBarPosition.equals(Preferences.ICON_BAR_WEST)
+					|| iconBarPosition.equals(Preferences.ICON_BAR_EAST)) {
 				myToolBar.setOrientation(SwingConstants.VERTICAL);
 			} else {
 				myToolBar.setOrientation(SwingConstants.HORIZONTAL);
@@ -704,7 +658,7 @@ public class GraphFrame extends JInternalFrame {
 		graphicalZone.HCenterAlign();
 		setModified(true);
 	}
-	
+
 	public void HBottomAlign() {
 		graphicalZone.HBottomAlign();
 		setModified(true);
@@ -725,9 +679,34 @@ public class GraphFrame extends JInternalFrame {
 		setModified(true);
 	}
 
-	public void setGrid(boolean b,int n) {
-		graphicalZone.setGrid(b,n);
+	public void setGrid(boolean b, int n) {
+		graphicalZone.setGrid(b, n);
 		setModified(true);
 	}
 
-} /* end of GraphFrame */
+	public ArrayList<GenericGraphBox> getSelectedBoxes() {
+		return graphicalZone.selectedBoxes;
+	}
+
+	public void selectAllBoxes() {
+		graphicalZone.selectAllBoxes();
+	}
+
+	public void removeSelected() {
+		graphicalZone.removeSelected();
+	}
+
+	public void pasteSelection(MultipleSelection m) {
+		graphicalZone.pasteSelection(m);
+	}
+
+	public void setTextForSelected(String text) {
+		graphicalZone.setTextForSelected(text);
+		setModified(true);
+	}
+
+	public void unSelectAllBoxes() {
+		graphicalZone.unSelectAllBoxes();
+	}
+
+}
