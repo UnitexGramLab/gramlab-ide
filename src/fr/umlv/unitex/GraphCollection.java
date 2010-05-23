@@ -53,15 +53,20 @@ public class GraphCollection {
     * @param destGraph the destination graph
     * @param copy indicates if subgraphs must be copied or not
     */
-   public static void build(File srcDir, File destGraph, boolean copy) {
-      stop= false;
-      MessageWhileWorkingFrame f=UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
-      buildGraphCollection(
-         srcDir,
-         destGraph,
-         copy,
-         f.getLabel());
-      UnitexFrame.getFrameManager().closeMessageWhileWorkingFrame();
+   public static void build(final File srcDir,final File destGraph,final boolean copy) {
+      stop=false;
+      new Thread() {
+    	  @Override
+    	public void run() {
+    	      MessageWhileWorkingFrame f=UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
+    	      buildGraphCollection(
+    	         srcDir,
+    	         destGraph,
+    	         copy,
+    	         f.getLabel());
+    	      UnitexFrame.getFrameManager().closeMessageWhileWorkingFrame();
+    	}
+      }.start();
    }
 
    /**
