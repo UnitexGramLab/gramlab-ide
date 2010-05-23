@@ -36,7 +36,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
@@ -53,7 +52,6 @@ import fr.umlv.unitex.process.commands.MultiFlexCommand;
 public class InflectFrame extends JInternalFrame {
 
 	JTextField directory = new JTextField("");
-
 	JRadioButton allWords=new JRadioButton("Allow both simple and compound words",true);
 	JRadioButton onlySimpleWords=new JRadioButton("Allow only simple words",false);
 	JRadioButton onlyCompoundWords=new JRadioButton("Allow only compound words",false);
@@ -63,14 +61,12 @@ public class InflectFrame extends JInternalFrame {
 		super("Inflection", false, true);
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setOpaque(true);
 		panel.add(constructUpPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		return panel;
@@ -118,11 +114,8 @@ public class InflectFrame extends JInternalFrame {
 		JButton CANCEL = new JButton(cancelAction);
 		Action goAction = new AbstractAction("Inflect Dictionary") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						inflectDELA();
-					}
-				});
+				setVisible(false);
+				inflectDELA();
 			}
 		};
 		JButton GO = new JButton(goAction);
@@ -137,7 +130,6 @@ public class InflectFrame extends JInternalFrame {
 	 *  
 	 */
 	void inflectDELA() {
-		setVisible(false);
         File f = Config.getCurrentDELA();
         String tmp=f.getAbsolutePath();
         int point = tmp.lastIndexOf('.');
