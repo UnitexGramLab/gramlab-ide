@@ -49,7 +49,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 
 	private Vector<Vector<String>> rowData;
 	private Vector<String> columnNames;
-	private static String tableName;
+	private File tableFile;
 
 	/**
 	 * Constructs a new <code>LexiconGrammarTableFrame</code>, loads a
@@ -60,11 +60,9 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 	 */
 	LexiconGrammarTableFrame(File file) {
 		super(file.getAbsolutePath(), true, true, true, true);
-		setTableName(file.getAbsolutePath());
+		this.tableFile=file;
 		buildVectors(file);
-		JPanel top = new JPanel();
-		top.setOpaque(true);
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		JTable table = new JTable(rowData, columnNames);
 		table.setFont(Preferences.getCloneOfPreferences().textFont.font);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -114,7 +112,6 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 					+ " is not a Unicode Little-Endian table file", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
-
 		} catch (FileNotFoundException e) {
 			return;
 		} catch (IOException e) {
@@ -131,16 +128,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		return res;
 	}
 
-	private static void setTableName(String name) {
-		tableName = name;
+	public File getTable() {
+		return tableFile;
 	}
-
-	/**
-	 * 
-	 * @return the name of the table
-	 */
-	public static String getTableName() {
-		return tableName;
-	}
-
 }
