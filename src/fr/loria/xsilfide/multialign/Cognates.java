@@ -532,7 +532,8 @@ public class Cognates{
     /* traduction des cognates en contraintes de chemin
        sachant qu'on s'intéresse à l'alignement de segsSource
        avec segsTarget. */
-    public ContraintesChemin cognates2Chemins(Vector segsSource,
+    @SuppressWarnings("null")
+	public ContraintesChemin cognates2Chemins(Vector segsSource,
 					      Vector segsTarget){
 	int i = 0;
 	int j = 0;

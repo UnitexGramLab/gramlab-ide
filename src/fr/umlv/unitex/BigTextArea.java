@@ -156,15 +156,13 @@ public class BigTextArea extends JPanel {
 			return;
 		}
 		int start=x.getStart();
-		Interval element=null;
 		for (int i=value;i<=limit;i++) {
-			element=model.getInterval(i);
 			builder.append(model.getElementAt(i));
 			builder.append('\r');
 			builder.append('\n');
 		}
 		String content=builder.toString();
-		int end=element.getEnd();
+		int end=model.getInterval(limit).getEnd();
 		try {
 			int result=compareIntervals(selection,start,end);
 			switch (result) {
