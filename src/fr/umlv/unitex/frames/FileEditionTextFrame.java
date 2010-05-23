@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -49,63 +48,59 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.text.PlainDocument;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.editor.FileManager;
-import fr.umlv.unitex.editor.ui.FindDialog;
 
 /*
  * This class is used to display the text
  *  
  */
 public class FileEditionTextFrame extends JInternalFrame {
-
 	/** Area where the text is stored and can be edited */
 	EditionTextArea text;
 	FileManager fileManager;
 	File file;
-    
-	Action saveAction = new AbstractAction("", MyCursors.saveIcon) {
+	Action saveAction = new AbstractAction("Save", MyCursors.saveIcon) {
 		public void actionPerformed(ActionEvent e) {
 			saveFile(file);
 		}
 	};
-	Action saveAsAction = new AbstractAction("") {
+	Action saveAsAction = new AbstractAction("Save as...") {
 		public void actionPerformed(ActionEvent e) {
 			saveFile(null);
 		}
 	};
-	Action cutAction = new AbstractAction("", MyCursors.cutIcon) {
+	Action cutAction = new AbstractAction("Cut", MyCursors.cutIcon) {
 		public void actionPerformed(ActionEvent e) {
 			text.cut();
 		}
 	};
-	Action copyAction = new AbstractAction("", MyCursors.copyIcon) {
+	Action copyAction = new AbstractAction("Copy", MyCursors.copyIcon) {
 		public void actionPerformed(ActionEvent e) {
 			text.copy();
 		}
 	};
- Action pasteAction = new AbstractAction("", MyCursors.pasteIcon) {
-        public void actionPerformed(ActionEvent e) {
-            text.paste();
-        }
-    };
-Action findAction = new AbstractAction("", MyCursors.findIcon) {
-        public void actionPerformed(ActionEvent e) {
-            FindDialog findDialog = new FindDialog(FileEditionTextFrame.this);
-            findDialog.setVisible(true);
-        }
-};
-    
+	Action pasteAction = new AbstractAction("Paste", MyCursors.pasteIcon) {
+		public void actionPerformed(ActionEvent e) {
+			text.paste();
+		}
+	};
+	Action findAction = new AbstractAction("Find", MyCursors.findIcon) {
+		public void actionPerformed(ActionEvent e) {
+			UnitexFrame.getFrameManager().newFindDialog(
+					FileEditionTextFrame.this);
+		}
+	};
+
 	FileEditionTextFrame(File file) {
 		super("", true, true, true, true);
 		text = new EditionTextArea();
-		this.file=file;
-		if (file==null) {
+		this.file = file;
+		if (file == null) {
 			this.setTitle("New File");
 		} else {
 			this.setTitle(file.getAbsolutePath());
@@ -113,97 +108,65 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 		init();
 	}
 
-
 	private void init() {
 		fileManager = new FileManager();
-		// main panel
-		JPanel top = new JPanel();
-		top.setOpaque(true);
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
-
-		// vertical scrooling initialisaton
 		JScrollPane scroll = new JScrollPane(text);
 		scroll
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-		// texte panel initialisation
-		JPanel middle = new JPanel();
-		middle.setOpaque(true);
-		middle.setLayout(new BorderLayout());
+		JPanel middle = new JPanel(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(scroll);
-
-		// jmenuBar initialisation
 		setJMenuBar(initMenuBar());
 		top.add(middle, BorderLayout.CENTER);
-
-		// toolbar initialisation
 		JToolBar toolBar = initToolBar();
 		top.add(toolBar, BorderLayout.NORTH);
-
 		setContentPane(top);
 		pack();
 		setBounds(100, 100, 800, 600);
-
-		setVisible(true);
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);        
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
-			
-		    
-	        public void internalFrameClosing(InternalFrameEvent e) {
-	            if (text.isModified()) {
-	                Object[] options_on_exit = { "Save", "Don't save" };
-	                Object[] normal_options = { "Save", "Don't save", "Cancel" };
-	                int n;
-	                if (UnitexFrame.closing) {
-	                    n = JOptionPane
-	                            .showOptionDialog(
-	                                    FileEditionTextFrame.this,
-	                                    "Text has been modified. Do you want to save it ?",
-	                                    "", JOptionPane.YES_NO_CANCEL_OPTION,
-	                                    JOptionPane.QUESTION_MESSAGE, null,
-	                                    options_on_exit, options_on_exit[0]);
-	                } else {
-	                    n = JOptionPane
-	                            .showOptionDialog(
-	                                    FileEditionTextFrame.this,
-	                                    "Text has been modified. Do you want to save it ?",
-	                                    "", JOptionPane.YES_NO_CANCEL_OPTION,
-	                                    JOptionPane.QUESTION_MESSAGE, null,
-	                                    normal_options, normal_options[0]);
-	                }
-	                if (n == JOptionPane.CLOSED_OPTION)
-	                    return;
-	                if (n == 0) {
-	                    saveFile(file);
-	                    FileEditionTextFrame.this.setVisible(false);
-                        FileEditionTextFrame.this.dispose();
-                        return;
-	                }
-	                if (n != 2) {
-	                    FileEditionTextFrame.this.setVisible(false);
-	                    FileEditionTextFrame.this.dispose();
-	                    return;
-	                }
-	                FileEditionTextFrame.this.setVisible(true);
-	                try {
-	                    FileEditionTextFrame.this.setSelected(true);
-	                    FileEditionTextFrame.this.setIcon(false);
-	                } catch (java.beans.PropertyVetoException e2) {
-	                    e2.printStackTrace();
-	                }
-	                return;
-	            }
-	            FileEditionTextFrame.this.setVisible(false);
-	            UnitexFrame.removeInternalFrame(FileEditionTextFrame.this);
-	        }
-		    
+			public void internalFrameClosing(InternalFrameEvent e) {
+				if (text.isModified()) {
+					Object[] options_on_exit = { "Save", "Don't save" };
+					Object[] normal_options = { "Save", "Don't save", "Cancel" };
+					int n;
+					if (UnitexFrame.closing) {
+						n = JOptionPane
+								.showOptionDialog(
+										FileEditionTextFrame.this,
+										"Text has been modified. Do you want to save it ?",
+										"", JOptionPane.YES_NO_CANCEL_OPTION,
+										JOptionPane.QUESTION_MESSAGE, null,
+										options_on_exit, options_on_exit[0]);
+					} else {
+						n = JOptionPane
+								.showOptionDialog(
+										FileEditionTextFrame.this,
+										"Text has been modified. Do you want to save it ?",
+										"", JOptionPane.YES_NO_CANCEL_OPTION,
+										JOptionPane.QUESTION_MESSAGE, null,
+										normal_options, normal_options[0]);
+					}
+					if (n == JOptionPane.CLOSED_OPTION)
+						return;
+					if (n == 0) {
+						saveFile(file);
+						dispose();
+						return;
+					}
+					if (n != 2) {
+						dispose();
+						return;
+					}
+					return;
+				}
+				dispose();
+			}
 		});
 	}
 
-	
-	
 	private JMenuBar initMenuBar() {
 		JMenuBar jb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -266,8 +229,9 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 		jb.add(edit);
 		return jb;
 	}
+
 	/**
-	 * Initialisation of the tool bar
+	 * Initialization of the tool bar
 	 */
 	private JToolBar initToolBar() {
 		JToolBar myToolBar = new JToolBar("file Edition tool bar");
@@ -282,7 +246,6 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 		initToolBarIcone(paste);
 		JButton find = new JButton(findAction);
 		initToolBarIcone(find);
-		// tooltips
 		save.setToolTipText("Save text");
 		copy.setToolTipText("Copy");
 		cut.setToolTipText("Cut");
@@ -313,7 +276,6 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 			chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
 			chooser.setMultiSelectionEnabled(false);
 			chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-
 			int returnVal = chooser.showSaveDialog(this);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				// we return if the user has clicked on CANCEL
@@ -321,21 +283,9 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 			}
 			f = chooser.getSelectedFile();
 		}
-		this.file=f;
+		this.file = f;
 		setTitle(f.getAbsolutePath());
 		fileManager.save(f.getAbsolutePath());
-	}
-
-	public void closeText() {
-		fileManager.killTimer();
-		setVisible(false);
-		try {
-			setIcon(false);
-		} catch (java.beans.PropertyVetoException e2) {
-			e2.printStackTrace();
-		}
-		text.setDocument(new PlainDocument());
-		System.gc();
 	}
 
 	/**
@@ -350,4 +300,5 @@ Action findAction = new AbstractAction("", MyCursors.findIcon) {
 	File getFile() {
 		return file;
 	}
+
 }

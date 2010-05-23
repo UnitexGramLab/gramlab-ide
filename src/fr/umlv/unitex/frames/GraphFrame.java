@@ -462,21 +462,12 @@ public class GraphFrame extends JInternalFrame {
 						return;
 				}
 				if (n != 2) {
-					GraphFrame.this.setVisible(false);
-					GraphFrame.this.dispose();
+					dispose();
 					return;
-				}
-				GraphFrame.this.setVisible(true);
-				try {
-					GraphFrame.this.setSelected(true);
-					GraphFrame.this.setIcon(false);
-				} catch (java.beans.PropertyVetoException e2) {
-					e2.printStackTrace();
 				}
 				return;
 			}
-			GraphFrame.this.setVisible(false);
-			UnitexFrame.removeInternalFrame(GraphFrame.this);
+			dispose();
 		}
 	}
 
