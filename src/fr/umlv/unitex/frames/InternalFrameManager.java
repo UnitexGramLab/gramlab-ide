@@ -84,6 +84,7 @@ public class InternalFrameManager {
 	private TranscodeOneFileDialogFactory transcodeOneFileDialogFactory=new TranscodeOneFileDialogFactory();
 	private FontDialogFactory fontDialogFactory=new FontDialogFactory();
 	private GraphPresentationDialogFactory graphPresentationDialogFactory=new GraphPresentationDialogFactory();
+	private GraphAlignmentDialogFactory graphAlignmentDialogFactory=new GraphAlignmentDialogFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -908,6 +909,7 @@ public class InternalFrameManager {
 		return d.getFontInfo();
 	}
 
+
 	public GraphPresentationInfo newGraphPresentationDialog(GraphPresentationInfo info,
 			boolean showRightToLeftCheckBox) {
 		GraphPresentationDialog d=graphPresentationDialogFactory.newGraphPresentationDialog(info,showRightToLeftCheckBox);
@@ -915,4 +917,13 @@ public class InternalFrameManager {
 		d.setVisible(true);
 		return d.getGraphPresentationInfo();
 	}
+
+
+	public GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
+		GraphAlignmentDialog d=graphAlignmentDialogFactory.newGraphAlignmentDialog(f);
+		if (d==null) return null;
+		d.setVisible(true);
+		return d;
+	}
+
 }
