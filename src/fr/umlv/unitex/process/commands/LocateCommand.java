@@ -97,12 +97,6 @@ public class LocateCommand extends CommandBuilder {
         return this;
     }
 
-    public LocateCommand limit(String n) {
-        Integer.parseInt(n);
-        element("-n" + n);
-        return this;
-    }
-
     public LocateCommand dynamicSntDir(File dir) {
         // the dynamicSntDir parameter is supposed to end
         // with the file separator

@@ -49,7 +49,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
@@ -83,7 +82,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 	JRadioButton allMatches = new JRadioButton("All matches", false);
 	JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
 	JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text", false);
-	NumericTextField nMatches = new NumericTextField("200");
+	JTextField nMatches = new JTextField("200");
 
 	String language;
 	File snt;
@@ -220,11 +219,16 @@ public class XAlignLocateFrame extends JInternalFrame {
 	void launchLocate() {
 		MultiCommands commands = new MultiCommands();
 		File fst2;
-		if (stopAfterNmatches.isSelected() && nMatches.getText().equals("")) {
-			JOptionPane.showMessageDialog(null,
-					"Empty search limitation field !", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
+		int n=-1;
+		if (stopAfterNmatches.isSelected()) {
+			try {
+				n=Integer.parseInt(nMatches.getText());
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Invalid empty search limitation value !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 		if (regularExpression.isSelected()) {
 			// we need to process a regular expression
@@ -288,7 +292,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 			locateCmd=locateCmd.korean();
 		}
 		if (stopAfterNmatches.isSelected()) {
-			locateCmd = locateCmd.limit(nMatches.getText());
+			locateCmd = locateCmd.limit(n);
 		} else {
 			locateCmd = locateCmd.noLimit();
 		}

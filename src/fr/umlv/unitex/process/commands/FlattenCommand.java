@@ -49,10 +49,4 @@ public class FlattenCommand extends CommandBuilder {
       return this;
   }
 
-    public FlattenCommand depth(String n) {
-      Integer.parseInt(n);
-      element("-d"+n);
-      return this;
-  }
-
 }

@@ -46,7 +46,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.NumericTextField;
 
 /**
  * This class describes a font selection dialog box.
@@ -58,7 +57,7 @@ public class FontDialog extends JDialog {
 
 	JTextField name = new JTextField(10);
 	JTextField style = new JTextField(10);
-	NumericTextField size = new NumericTextField(3, "");
+	JTextField size = new JTextField("  ");
 	JTextField script = new JTextField(10);
 	JTextField example = new JTextField(6);
 	JList fontList;
@@ -134,7 +133,7 @@ public class FontDialog extends JDialog {
 		}/* size */
 		Integer j=(Integer)(sizeList.getSelectedValue());
 		if (j!=null) {
-			size.setText(j);
+			size.setText(j+"");
 			info.size = j.intValue();
 		}
 		/* updating font */
