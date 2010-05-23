@@ -37,8 +37,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.Launcher;
@@ -59,21 +57,14 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		super("Convert Text Automaton to Text", false, true);
 		setContentPane(constructPanel());
 		pack();
-		setResizable(false);
-		setVisible(false);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new TitledBorder(
-		"Output text file:"));
+			"Output text file:"));
 		Action setTextAction = new AbstractAction("Set") {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = Config.getFst2UnambigDialogBox();
@@ -90,7 +81,6 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		textName.setPreferredSize(new Dimension(300,20));
 		panel.add(textName, BorderLayout.CENTER);
 		panel.add(setTextButton, BorderLayout.EAST);
-		
 		JPanel buttonPanel=new JPanel(new GridLayout(1,2));
 		JButton OK=new JButton("OK");
 		OK.addActionListener(new ActionListener() {
@@ -107,12 +97,8 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		buttonPanel.add(CANCEL);
 		buttonPanel.add(OK);
 		panel.add(buttonPanel,BorderLayout.SOUTH);
-		panel.setOpaque(true);
 		return panel;
 	}
-
-
-
 
 
 	void launchFst2Unambig() {
