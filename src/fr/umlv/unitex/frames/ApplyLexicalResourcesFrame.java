@@ -210,6 +210,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		JPanel p=new JPanel(new BorderLayout());
 		p.add(new JLabel("Right-click a dictionary to get information about it :"),BorderLayout.NORTH);
 		credits=new BigTextArea();
+		/* TODO mettre les listener dans Pref */
 		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				credits.setFont(font);

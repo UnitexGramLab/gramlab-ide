@@ -58,6 +58,10 @@ public class GraphFrameFactory {
 			f.getScroll().setPreferredSize(new Dimension(g.width, g.height));
 			f.graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
 			f.setGraph(grf);
+			/* Some loading operations may have set the modified flag, so we
+			 * reset it
+			 */
+			f.setModified(false);
 		} else {
 			f=new GraphFrame();
 		}
