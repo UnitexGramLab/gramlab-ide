@@ -144,7 +144,7 @@ class InsertLinkGrp
     // fabrique un r�sultat � partir de rien (ancien comportement)
     // et vrai si on ajoute dans un fichier pr�-existant.
 
- @SuppressWarnings("unused") 
+ @SuppressWarnings({ "unused", "null" }) 
  public InsertLinkGrp(String fileName,
 		       String sLang, String tLang,
 		       String srcName,String tarName,

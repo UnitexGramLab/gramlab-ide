@@ -99,7 +99,7 @@ public class LoadAndPrepareTexts {
     class MyVectorSrc extends Vector{
 	
 
-	public String toString(){
+	public synchronized String toString(){
 	    String res="[";
 	    Object cour;
 	    String sRes;
@@ -136,7 +136,7 @@ public class LoadAndPrepareTexts {
     class MyVectorTar extends Vector{
 	
 
-	public String toString(){
+	public synchronized String toString(){
 	    String res="[";
 	    Object cour;
 	    String sRes;
@@ -251,7 +251,8 @@ public class LoadAndPrepareTexts {
     /* idEnglobant : si "" on ne change rien à l'ancien comportement, 
        si != "" on ne lit que ce qui est sous le champ de cet id */
 
-    private final ArrayList<String> loadAndPrepareAText(String fileName, 
+    @SuppressWarnings("null")
+	private final ArrayList<String> loadAndPrepareAText(String fileName, 
 							Vector sentences, 
 							Vector paragraphs,
 							Vector divisions, 

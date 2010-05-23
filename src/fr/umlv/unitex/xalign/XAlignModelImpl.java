@@ -63,6 +63,11 @@ public class XAlignModelImpl implements XAlignModel {
 			}
 			return false;
 		}
+
+		@Override
+		public int hashCode() {
+			return srcSentence<<16+destSentence;
+		}
 	}
 	
 	class PublishInfo {
