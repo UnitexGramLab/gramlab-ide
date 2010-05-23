@@ -69,7 +69,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		middle.add(top,BorderLayout.NORTH);
 		setContentPane(middle);
 		list.setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addConcordanceFontListener(new FontListener() {
+		Preferences.addConcordanceFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				list.setFont(font);
 			}

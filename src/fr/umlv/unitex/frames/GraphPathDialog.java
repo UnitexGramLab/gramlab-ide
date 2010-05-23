@@ -47,6 +47,7 @@ import javax.swing.JTextField;
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.Launcher;
@@ -84,8 +85,7 @@ public class GraphPathDialog extends JDialog {
 			}
 		});
 		textArea.setFont(Config.getCurrentTextFont());
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame()
-				.addTextFontListener(new FontListener() {
+		Preferences.addTextFontListener(new FontListener() {
 					public void fontChanged(Font font) {
 						textArea.setFont(font);
 					}
