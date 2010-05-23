@@ -145,19 +145,14 @@ public class ConsoleFrame extends JInternalFrame {
 						}
 					}
 				});
-		table
-				.setDefaultEditor(Integer.class, new ConsoleTableCellEditor(
-						model));
+		table.setDefaultEditor(Integer.class, new ConsoleTableCellEditor(model));
 		table.setDefaultEditor(ConsoleEntry.class, new DefaultCellEditor(
 				new JTextField()));
-
 		JScrollPane scroll = new JScrollPane(table);
-		JPanel middle = new JPanel();
-		middle.setLayout(new BorderLayout());
+		JPanel middle = new JPanel(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(scroll, BorderLayout.CENTER);
-		JPanel top = new JPanel();
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
