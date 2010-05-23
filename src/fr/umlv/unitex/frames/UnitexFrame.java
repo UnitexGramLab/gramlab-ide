@@ -217,19 +217,6 @@ public class UnitexFrame extends JFrame {
 		});
 	}
 
-	public static void addInternalFrame(JInternalFrame frame, boolean requestFocus) {
-        desktop.add(frame, DOCLAYER);
-        if (requestFocus) {
-            try {
-                frame.setVisible(true);
-                frame.setSelected(true);
-                frame.setIcon(false);
-            } catch (java.beans.PropertyVetoException e2) {
-                e2.printStackTrace();
-            }
-        }
-    }
-	
 	
 	/**
 	 * Builds the menu bar.
@@ -1643,16 +1630,8 @@ public class UnitexFrame extends JFrame {
 		}
 	}
 
-	public static JDesktopPane getDesktop() {
-		return desktop;
-	}
-
 	public static JInternalFrame getCurrentFocusedFrame() {
 		return desktop.getSelectedFrame();
-	}
-
-	public static void removeInternalFrame(JInternalFrame f) {
-		desktop.remove(f);
 	}
 
 	public static InternalFrameManager getFrameManager() {

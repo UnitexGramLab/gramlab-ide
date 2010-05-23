@@ -698,4 +698,10 @@ public class InternalFrameManager {
 		return d;
 	}
 
+	public FindDialog newFindDialog(FileEditionTextFrame f) {
+		FindDialog d=new FindDialog(f);
+		d.setVisible(true);
+		return d;
+	}
+
 }
