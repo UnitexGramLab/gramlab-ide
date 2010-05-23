@@ -23,8 +23,6 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
  *  
@@ -42,11 +40,6 @@ public class LocateTfstCommand extends CommandBuilder {
 
 	public LocateTfstCommand fst2(File s) {
 		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-	public LocateTfstCommand alphabet() {
-		protectElement("-a"+Config.getAlphabet().getAbsolutePath());
 		return this;
 	}
 
@@ -99,12 +92,6 @@ public class LocateTfstCommand extends CommandBuilder {
 		element("-n"+n);
 		return this;
 	}
-
-    public LocateTfstCommand limit(String n) {
-        Integer.parseInt(n);
-        element("-n"+n);
-        return this;
-    }
 
     public LocateTfstCommand allowAmbiguousOutputs() {
         element("-b");

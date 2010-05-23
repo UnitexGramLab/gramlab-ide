@@ -501,13 +501,15 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		}
 		commands.addCommand(cmd);
 		// sorting DLF
+		File alph=new File(Config
+                .getUserCurrentLanguageDir(),"Alphabet_sort.txt");
 		SortTxtCommand sortCmd = new SortTxtCommand().file(
 				new File(Config.getCurrentSntDir(), "dlf"))
 				.saveNumberOfLines(new File(Config.getCurrentSntDir(),"dlf.n"));
 		if (Config.getCurrentLanguage().equals("Thai")) {
 			sortCmd = sortCmd.thai();
 		} else {
-			sortCmd = sortCmd.sortAlphabet();
+			sortCmd = sortCmd.sortAlphabet(alph);
 		}
 		commands.addCommand(sortCmd);
 		// sorting DLC
@@ -518,7 +520,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		if (Config.getCurrentLanguage().equals("Thai")) {
 			sortCmd2 = sortCmd2.thai();
 		} else {
-			sortCmd2 = sortCmd2.sortAlphabet();
+			sortCmd2 = sortCmd2.sortAlphabet(alph);
 		}
 		commands.addCommand(sortCmd2);
 		// sorting ERR
@@ -529,7 +531,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		if (Config.getCurrentLanguage().equals("Thai")) {
 			sortCmd3 = sortCmd3.thai();
 		} else {
-			sortCmd3 = sortCmd3.sortAlphabet();
+			sortCmd3 = sortCmd3.sortAlphabet(alph);
 		}
 		commands.addCommand(sortCmd3);
 		return (commands);

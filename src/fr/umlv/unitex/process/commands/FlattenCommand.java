@@ -39,8 +39,8 @@ public class FlattenCommand extends CommandBuilder {
         return this;
     }
 
-    public FlattenCommand resultType(boolean FST) {
-      element(FST?"--fst":"--rtn");
+    public FlattenCommand resultType(boolean fst) {
+      element(fst?"--fst":"--rtn");
       return this;
   }
 

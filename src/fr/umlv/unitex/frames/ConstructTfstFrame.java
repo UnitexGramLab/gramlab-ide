@@ -244,7 +244,7 @@ public class ConstructTfstFrame extends JInternalFrame {
               // construction of this grammar
               LocateCommand locateCmd = new LocateCommand().snt(
                   Config.getCurrentSnt()).fst2(vProSuf)
-                .alphabet().longestMatches().mergeOutputs()
+                .alphabet(Config.getAlphabet()).longestMatches().mergeOutputs()
                 .noLimit();
               if (Config.isKorean()) {
                   /* Reconstrucao should not be used for Korean, but one never
@@ -254,7 +254,7 @@ public class ConstructTfstFrame extends JInternalFrame {
       		    }
               commands.addCommand(locateCmd);
               ReconstrucaoCommand reconstrucaoCmd = new ReconstrucaoCommand()
-                .alphabet()
+                .alphabet(Config.getAlphabet())
                 .ind(
                     new File(Config.getCurrentSntDir(),
                       "concord.ind"))
@@ -275,8 +275,8 @@ public class ConstructTfstFrame extends JInternalFrame {
                 }
 
             Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
-                Config.getCurrentSnt()).alphabet().clean(
-                cleanFst.isSelected());
+                Config.getCurrentSnt()).alphabet(Config.getAlphabet())
+                .clean(cleanFst.isSelected());
             if (Config.isKorean()) {
                 txtCmd=txtCmd.korean();
             }

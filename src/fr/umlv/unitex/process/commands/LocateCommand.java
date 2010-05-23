@@ -24,7 +24,6 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
 /**
@@ -44,11 +43,6 @@ public class LocateCommand extends CommandBuilder {
 
     public LocateCommand fst2(File s) {
         protectElement(s.getAbsolutePath());
-        return this;
-    }
-
-    public LocateCommand alphabet() {
-        protectElement("-a" + Config.getAlphabet().getAbsolutePath());
         return this;
     }
 

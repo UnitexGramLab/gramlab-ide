@@ -132,7 +132,7 @@ public class Text {
 		commands.addCommand(mkdir);
 		// TOKENIZING...
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
-				Config.getCurrentSnt()).alphabet();
+				Config.getCurrentSnt()).alphabet(Config.getAlphabet());
 		if (Config.getCurrentLanguage().equals("Thai")
 				|| Config.getCurrentLanguage().equals("Chinese")) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();

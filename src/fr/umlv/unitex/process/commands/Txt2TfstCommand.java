@@ -23,11 +23,9 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class Txt2TfstCommand extends CommandBuilder {
 
@@ -40,10 +38,10 @@ public class Txt2TfstCommand extends CommandBuilder {
 		return this;
 	}
 
-	public Txt2TfstCommand alphabet() {
-    protectElement("-a"+Config.getAlphabet().getAbsolutePath());
-    return this;
-}
+	public Txt2TfstCommand alphabet(File alphabet) {
+		protectElement("-a" + alphabet.getAbsolutePath());
+		return this;
+	}
 
 	public Txt2TfstCommand clean(boolean clean) {
 		if (clean) {
@@ -53,17 +51,17 @@ public class Txt2TfstCommand extends CommandBuilder {
 	}
 
 	public Txt2TfstCommand fst2(File s) {
-		protectElement("-n"+s.getAbsolutePath());
+		protectElement("-n" + s.getAbsolutePath());
 		return this;
 	}
 
-    public Txt2TfstCommand tagset(File s) {
-	     protectElement("-t"+s.getAbsolutePath());
-	     return this;
+	public Txt2TfstCommand tagset(File s) {
+		protectElement("-t" + s.getAbsolutePath());
+		return this;
 	}
 
-    public Txt2TfstCommand korean() {
-        element("-K");
-        return this;
-    }
+	public Txt2TfstCommand korean() {
+		element("-K");
+		return this;
+	}
 }
