@@ -100,15 +100,12 @@ public class ConcordanceFrame extends JInternalFrame {
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		JPanel middle = new JPanel(new BorderLayout());
-		middle.setOpaque(true);
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(scroll, BorderLayout.CENTER);
 		JPanel top = new JPanel(new BorderLayout());
-		top.setOpaque(true);
 		top.add(middle, BorderLayout.CENTER);
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
 		JPanel up = new JPanel(new BorderLayout());
-		up.setOpaque(true);
 		up.setBorder(new EmptyBorder(2, 2, 2, 2));
 		up.add(numberOfMatches, BorderLayout.CENTER);
 		top.add(up,BorderLayout.NORTH);
