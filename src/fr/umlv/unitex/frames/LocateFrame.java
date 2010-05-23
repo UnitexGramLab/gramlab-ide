@@ -57,7 +57,6 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
@@ -528,12 +527,9 @@ public class LocateFrame extends JInternalFrame {
 		public void toDo() {
 			String res = readInfo(new File(Config.getCurrentSntDir(),
 					"concord.n"));
-			String res2 = UnicodeIO.readFirstLine(new File(Config
-					.getCurrentSntDir(), "concord.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
-			res2 = res2.substring(0, res2.indexOf(' '));
-			UnitexFrame.getFrameManager().newConcordanceParameterFrame(Util.toInt(res2));
+			UnitexFrame.getFrameManager().newConcordanceParameterFrame();
 		}
 	}
 
@@ -542,12 +538,9 @@ public class LocateFrame extends JInternalFrame {
 		public void toDo() {
 			String res = readTfstInfo(new File(Config.getCurrentSntDir(),
 					"concord_tfst.n"));
-			String res2 = UnicodeIO.readFirstLine(new File(Config
-					.getCurrentSntDir(), "concord_tfst.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
-			res2 = res2.substring(0, res2.indexOf(' '));
-			UnitexFrame.getFrameManager().newConcordanceParameterFrame(Util.toInt(res2));
+			UnitexFrame.getFrameManager().newConcordanceParameterFrame();
 		}
 	}
 
