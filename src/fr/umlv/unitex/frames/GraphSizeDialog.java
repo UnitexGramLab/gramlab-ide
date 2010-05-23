@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -39,31 +38,29 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-
 /**
  * This class describes a dialog box that allows the user to adjust the current
  * graph's size.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class GraphSizeDialog extends JDialog {
-
 	JTextField Width = new JTextField();
 	JTextField Height = new JTextField();
-	final static int resolutionDPI = Toolkit.getDefaultToolkit().getScreenResolution();
-
+	final static int resolutionDPI = Toolkit.getDefaultToolkit()
+			.getScreenResolution();
 	float X;
 	float Y;
 	static final int PIXELS = 0;
 	static final int INCHES = 1;
 	static final int CM = 2;
 	static int unit = PIXELS;
-
 	GraphFrame f;
+
 	/**
 	 * Constructs a new <code>GraphSizeMenu</code>
-	 *  
+	 * 
 	 */
 	GraphSizeDialog(GraphFrame f) {
 		super(UnitexFrame.mainFrame, "Graph Size", true);
@@ -75,9 +72,8 @@ public class GraphSizeDialog extends JDialog {
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	
 	void configure(GraphFrame frame) {
-		this.f=frame;
+		this.f = frame;
 		X = f.graphicalZone.Width;
 		Y = f.graphicalZone.Height;
 		Width.setText(stringValueOfX());
@@ -105,16 +101,16 @@ public class GraphSizeDialog extends JDialog {
 	String stringValueOfX() {
 		if (unit == PIXELS)
 			return String.valueOf((int) getValueOfX());
-		/* TODO vérifier cette conversion curieuse */
+		/* This strange conversion is used to get 2 decimals */
 		return String.valueOf((float) ((int) (getValueOfX() * 100)) / 100);
 	}
 
 	String stringValueOfY() {
 		if (unit == PIXELS)
 			return String.valueOf((int) getValueOfY());
+		/* This strange conversion is used to get 2 decimals */
 		return String.valueOf((float) ((int) (getValueOfY() * 100)) / 100);
 	}
-
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -125,13 +121,13 @@ public class GraphSizeDialog extends JDialog {
 	}
 
 	private JPanel constructPanel1() {
-		JPanel panel1 = new JPanel(new GridLayout(1,4));
+		JPanel panel1 = new JPanel(new GridLayout(1, 4));
 		panel1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		JLabel l1=new JLabel("Width : ");
+		JLabel l1 = new JLabel("Width : ");
 		l1.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel1.add(l1);
 		panel1.add(Width);
-		JLabel l2=new JLabel(" x Height : ");
+		JLabel l2 = new JLabel(" x Height : ");
 		l2.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel1.add(l2);
 		panel1.add(Height);
@@ -149,47 +145,50 @@ public class GraphSizeDialog extends JDialog {
 		JPanel panel2 = new JPanel(new GridLayout(3, 1));
 		panel2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panel2.add(new JLabel("Unit :"));
-		final JComboBox unitList = new JComboBox(new String[] {"Pixels", "Inches", "Cm"});
+		final JComboBox unitList = new JComboBox(new String[] { "Pixels",
+				"Inches", "Cm" });
 		unitList.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int newUnit = unitList.getSelectedIndex();
-                if (newUnit==-1) return;
-                /* We perform a conversion into the new unit */ 
-                float x, y;
-                try {
-                    x = (new Float(Width.getText())).floatValue();
-                    y = (new Float(Height.getText())).floatValue();
-                } catch (NumberFormatException z) {
-                    JOptionPane.showMessageDialog(null, "Invalid value", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if (unit == PIXELS) {
-                    X = x;
-                    Y = y;
-                } else if (unit == INCHES) {
-                    X = (x * resolutionDPI);
-                    Y = (y * resolutionDPI);
-                } else {
-                    X = (float) ((x * resolutionDPI) / 2.4);
-                    Y = (float) ((y * resolutionDPI) / 2.4);
-                }
-                unit=newUnit;
-                Width.setText(stringValueOfX());
-                Height.setText(stringValueOfY());
-                pack();
-            }
-        });
+			public void actionPerformed(ActionEvent e) {
+				int newUnit = unitList.getSelectedIndex();
+				if (newUnit == -1)
+					return;
+				/* We perform a conversion into the new unit */
+				float x, y;
+				try {
+					x = (new Float(Width.getText())).floatValue();
+					y = (new Float(Height.getText())).floatValue();
+				} catch (NumberFormatException z) {
+					JOptionPane.showMessageDialog(null, "Invalid value",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (unit == PIXELS) {
+					X = x;
+					Y = y;
+				} else if (unit == INCHES) {
+					X = (x * resolutionDPI);
+					Y = (y * resolutionDPI);
+				} else {
+					X = (float) ((x * resolutionDPI) / 2.4);
+					Y = (float) ((y * resolutionDPI) / 2.4);
+				}
+				unit = newUnit;
+				Width.setText(stringValueOfX());
+				Height.setText(stringValueOfY());
+				pack();
+			}
+		});
 		unitList.setSelectedIndex(0);
 		panel2.add(unitList);
-    Action a4Action=new AbstractAction("Set to A4") {
-		public void actionPerformed(ActionEvent arg0) {
-            X = (float) ((29.7 * resolutionDPI) / 2.4);
-            Y = (float) ((21 * resolutionDPI) / 2.4);
-            Width.setText(stringValueOfX());
-            Height.setText(stringValueOfY());
-		}};
-    JButton A4 = new JButton(a4Action);
+		Action a4Action = new AbstractAction("Set to A4") {
+			public void actionPerformed(ActionEvent arg0) {
+				X = (float) ((29.7 * resolutionDPI) / 2.4);
+				Y = (float) ((21 * resolutionDPI) / 2.4);
+				Width.setText(stringValueOfX());
+				Height.setText(stringValueOfY());
+			}
+		};
+		JButton A4 = new JButton(a4Action);
 		panel2.add(A4);
 		return panel2;
 	}
@@ -199,56 +198,59 @@ public class GraphSizeDialog extends JDialog {
 		panel3.setBorder(new EmptyBorder(5, 5, 5, 5));
 		constructButtonPanel();
 		panel3.add(new JLabel("Orientation :"));
-    Action orientationAction=new AbstractAction("Portrait/Landscape") {
-		public void actionPerformed(ActionEvent arg0) {
-            float tmp;
-            tmp = X;
-            X = Y;
-            Y = tmp;
-            Width.setText(stringValueOfX());
-            Height.setText(stringValueOfY());
-		}};
-    JButton orientation = new JButton(orientationAction);
-    panel3.add(orientation);
+		Action orientationAction = new AbstractAction("Portrait/Landscape") {
+			public void actionPerformed(ActionEvent arg0) {
+				float tmp;
+				tmp = X;
+				X = Y;
+				Y = tmp;
+				Width.setText(stringValueOfX());
+				Height.setText(stringValueOfY());
+			}
+		};
+		JButton orientation = new JButton(orientationAction);
+		panel3.add(orientation);
 		panel3.add(constructButtonPanel());
 		return panel3;
 	}
 
 	private JPanel constructButtonPanel() {
-		JPanel buttonPanel=new JPanel(new GridLayout(1, 2));
-    Action okAction=new AbstractAction("OK") {
-		public void actionPerformed(ActionEvent arg0) {
-            float x, y;
-            try {
-                x = (new Float(Width.getText())).floatValue();
-                y = (new Float(Height.getText())).floatValue();
-            } catch (NumberFormatException z) {
-                JOptionPane.showMessageDialog(null, "Invalid value", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (unit == PIXELS) {
-                X = x;
-                Y = y;
-            } else if (unit == INCHES) {
-                X = (x * resolutionDPI);
-                Y = (y * resolutionDPI);
-            } else {
-                X = (float) ((x * resolutionDPI) / 2.4);
-                Y = (float) ((y * resolutionDPI) / 2.4);
-            }
-            setVisible(false);
-            f.reSizeGraphicalZone((int) X, (int) Y);
-		}};
-    JButton OK=new JButton(okAction);
-    Action cancelAction=new AbstractAction("Cancel") {
-		public void actionPerformed(ActionEvent arg0) {
-            setVisible(false);
-		}};
-    JButton CANCEL=new JButton(cancelAction);
-    buttonPanel.add(OK);
+		JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+		Action okAction = new AbstractAction("OK") {
+			public void actionPerformed(ActionEvent arg0) {
+				float x, y;
+				try {
+					x = (new Float(Width.getText())).floatValue();
+					y = (new Float(Height.getText())).floatValue();
+				} catch (NumberFormatException z) {
+					JOptionPane.showMessageDialog(null, "Invalid value",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (unit == PIXELS) {
+					X = x;
+					Y = y;
+				} else if (unit == INCHES) {
+					X = (x * resolutionDPI);
+					Y = (y * resolutionDPI);
+				} else {
+					X = (float) ((x * resolutionDPI) / 2.4);
+					Y = (float) ((y * resolutionDPI) / 2.4);
+				}
+				setVisible(false);
+				f.reSizeGraphicalZone((int) X, (int) Y);
+			}
+		};
+		JButton OK = new JButton(okAction);
+		Action cancelAction = new AbstractAction("Cancel") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		};
+		JButton CANCEL = new JButton(cancelAction);
+		buttonPanel.add(OK);
 		buttonPanel.add(CANCEL);
-    return buttonPanel;
+		return buttonPanel;
 	}
 
 }
