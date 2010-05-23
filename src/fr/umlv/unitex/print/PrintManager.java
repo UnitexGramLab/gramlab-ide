@@ -58,7 +58,7 @@ public class PrintManager {
 		}
 		PrinterJob job=getPrinterJob();
 		if (!job.printDialog()) return;
-		job.setPrintable(g.graphicalZone,getPageFormat());
+		job.setPrintable(g.getGraphicalZone(),getPageFormat());
 		try {
 			job.print();
 		} catch (PrinterException e) {
@@ -75,7 +75,7 @@ public class PrintManager {
 		if (!job.printDialog())
 			return;
 		for (GraphFrame g : frames) {
-			job.setPrintable(g.graphicalZone, getPageFormat());
+			job.setPrintable(g.getGraphicalZone(), getPageFormat());
 			try {
 				job.print();
 			} catch (PrinterException e) {
