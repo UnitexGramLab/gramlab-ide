@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -58,12 +57,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
@@ -76,12 +73,9 @@ import fr.umlv.unitex.Preferences;
  */
 public class GlobalPreferencesFrame extends JInternalFrame {
 
-	private ArrayList<FontListener> textFontListeners=new ArrayList<FontListener>(); 
-	private ArrayList<FontListener> concordanceFontListeners=new ArrayList<FontListener>(); 
-	
 	JTextField privateDirectory = new JTextField("");
-	public JTextField textFont = new JTextField("");
-	public JTextField concordanceFont = new JTextField("");
+	JTextField textFont = new JTextField("");
+	JTextField concordanceFont = new JTextField("");
 	JTextField htmlViewer = new JTextField("");
 	JTextField morphologicalDicViewer = new JTextField("");
 	JCheckBox rightToLeftCheckBox = new JCheckBox(
@@ -90,9 +84,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			"Analyze this language char by char");
 	JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
 	"Enable morphological use of space");
-	
 	JTextField packageDirectory = new JTextField("");
-
 	DefaultListModel morphoDicListModel=new DefaultListModel();
 
 	Preferences pref;
@@ -101,13 +93,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		super("", false, true, false, false);
 		setContentPane(constructPanel());
 		pack();
-		/* TODO enlever les setVisible false dans les constructeurs */
-		/* TODO changer les DO_NOTHING_ON_CLOSE qui le doivent par des 
-		 * HIDE_ON_CLOSE
-		 */
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
-
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -128,16 +115,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 
 	private JPanel constructDownPanel() {
 		JPanel downPanel = new JPanel(new BorderLayout());
-		JPanel tmp = new JPanel();
+		JPanel tmp = new JPanel(new GridLayout(1, 2));
 		tmp.setBorder(new EmptyBorder(2, 2, 2, 2));
-		tmp.setLayout(new GridLayout(1, 2));
-		JPanel tmp1 = new JPanel();
-		JPanel tmp2 = new JPanel();
+		JPanel tmp1 = new JPanel(new BorderLayout());
+		JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tmp1.setLayout(new BorderLayout());
-		tmp2.setLayout(new BorderLayout());
-
 		Action okAction = new AbstractAction("OK") {
 
 			public void actionPerformed(ActionEvent arg0) {
@@ -172,8 +155,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 					}
 					pref.packagePath = f;
 				}
-				fireTextFontChanged(pref.textFont.font);
-				fireConcordanceFontChanged(pref.concordanceFont.font);
 				Preferences.savePreferences(pref);
 				if (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM) {
 					// if we are under Windows, we must save the user dir
@@ -208,10 +189,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 				}
 				setVisible(false);
 			}
-
 		};
 		Action cancelAction = new AbstractAction("Cancel") {
-
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
@@ -238,10 +217,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	private JComponent constructPage1() {
 		JPanel page1 = new JPanel(new GridBagLayout());
 		page1.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		JLabel label = new JLabel(
 				"Private Unitex directory (where all user's data is to be stored):");
-
 		privateDirectory.setEditable(false);
 		privateDirectory.setBackground(Color.WHITE);
 		Action privateDirAction = new AbstractAction("Set...") {
@@ -268,27 +245,20 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			setPrivateDirectory.setEnabled(false);
 		}
 		GridBagConstraints gbc = new GridBagConstraints();
-
 		gbc.insets = new Insets(2, 2, 2, 2);
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.NONE;
 		page1.add(label, gbc);
-
 		gbc.gridwidth = 1;
 		gbc.weightx = 1;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		page1.add(privateDirectory, gbc);
-
 		gbc.weightx = 0;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		page1.add(setPrivateDirectory, gbc);
-
-		//--------------------------------------------------------
-
 		JLabel label2 = new JLabel("Graph repository:");
-
 		packageDirectory.setBackground(Color.WHITE);
 		Action packageDirAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
@@ -303,55 +273,43 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			}
 		};
 		JButton setPackageDirectory = new JButton(packageDirAction);
-
 		gbc.insets = new Insets(20, 2, 2, 2);
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.NONE;
 		page1.add(label2, gbc);
-
 		gbc.insets = new Insets(2, 2, 2, 2);
 		gbc.gridwidth = 1;
 		gbc.weightx = 1;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		page1.add(packageDirectory, gbc);
-
 		gbc.weightx = 0;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		page1.add(setPackageDirectory, gbc);
-
 		gbc.weighty = 1;
-		page1.add(new JComponent() {/**/
-		}, gbc);
-
+		page1.add(new JPanel(null), gbc);
 		return page1;
 	}
 
 	private JPanel constructPage2() {
 		JPanel page2 = new JPanel(new GridLayout(6,1));
-
-		/* TODO ajouter ici le bouton de configuration des graphes */
 		textFont.setEnabled(false);
 		concordanceFont.setEnabled(false);
 		textFont.setDisabledTextColor(Color.black);
 		concordanceFont.setDisabledTextColor(Color.black);
-
 		page2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JPanel yuyu = new JPanel(new GridLayout(3, 1));
-
 		yuyu.add(charByCharCheckBox);
 		yuyu.add(morphologicalUseOfSpaceCheckBox);
 		yuyu.add(rightToLeftCheckBox);
 		page2.add(yuyu);
-
 		JPanel tmp = new JPanel(new GridLayout(2, 1));
 		tmp.setPreferredSize(new Dimension(180, 60));
 		tmp.add(new JLabel("Text Font:"));
 		JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp2.add(textFont, BorderLayout.CENTER);
 		Action textFontAction = new AbstractAction("Set...") {
-
 			public void actionPerformed(ActionEvent arg0) {
 				FontInfo i=UnitexFrame.getFrameManager().newFontDialog(pref.textFont);
 				if (i!=null) {
@@ -364,14 +322,13 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp2.add(setTextFont, BorderLayout.EAST);
 		tmp.add(tmp2);
 		page2.add(tmp);
-
 		JPanel tmp_ = new JPanel(new GridLayout(2, 1));
 		tmp_.setPreferredSize(new Dimension(180, 60));
 		tmp_.add(new JLabel("Concordance Font:"));
 		JPanel tmp2_ = new JPanel(new BorderLayout());
 		tmp2_.add(concordanceFont, BorderLayout.CENTER);
 		Action concord = new AbstractAction("Set...") {
-
+			
 			public void actionPerformed(ActionEvent arg0) {
 				FontInfo i=UnitexFrame.getFrameManager().newFontDialog(pref.concordanceFont);
 				if (i!=null) {
@@ -384,7 +341,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp2_.add(setConcordanceFont, BorderLayout.EAST);
 		tmp_.add(tmp2_);
 		page2.add(tmp_);
-
 		JPanel htmlViewerPanel = new JPanel(new GridLayout(2, 1));
 		htmlViewerPanel.setPreferredSize(new Dimension(180, 60));
 		htmlViewerPanel.add(new JLabel("Html Viewer:"));
@@ -392,18 +348,13 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		Action html = new AbstractAction("Set...") {
 
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-
-					public void run() {
-						JFileChooser f = new JFileChooser();
-						f.setDialogTitle("Choose your html viewer");
-						f.setDialogType(JFileChooser.OPEN_DIALOG);
-						if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-							return;
-						htmlViewer.setText(f.getSelectedFile()
-								.getAbsolutePath());
-					}
-				});
+				JFileChooser f = new JFileChooser();
+				f.setDialogTitle("Choose your html viewer");
+				f.setDialogType(JFileChooser.OPEN_DIALOG);
+				if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+					return;
+				htmlViewer.setText(f.getSelectedFile()
+						.getAbsolutePath());
 			}
 		};
 		JButton setHtmlViewer = new JButton(html);
@@ -453,52 +404,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		}
 	}
 	
-	public void addTextFontListener(FontListener listener) {
-		textFontListeners.add(listener);
-	}
-
-	protected boolean firingTextFont=false;
-	public void removeTextFontListener(FontListener listener) {
-		if (firingTextFont) {
-			throw new IllegalStateException("Should not try to remove a listener while firing");
-		}
-		textFontListeners.remove(listener);
-	}
-
-	protected void fireTextFontChanged(Font font) {
-		firingTextFont = true;
-		try {
-			for (FontListener listener : textFontListeners) {
-				listener.fontChanged(font);
-			}
-		} finally {
-			firingTextFont = false;
-		}
-	}
-	
-	public void addConcordanceFontListener(FontListener listener) {
-		concordanceFontListeners.add(listener);
-	}
-
-	protected boolean firingConcordanceFont=false;
-	public void removeConcordanceFontListener(FontListener listener) {
-		if (firingConcordanceFont) {
-			throw new IllegalStateException("Should not try to remove a listener while firing");
-		}
-		concordanceFontListeners.remove(listener);
-	}
-
-	protected void fireConcordanceFontChanged(Font font) {
-		firingConcordanceFont = true;
-		try {
-			for (FontListener listener : concordanceFontListeners) {
-				listener.fontChanged(font);
-			}
-		} finally {
-			firingConcordanceFont = false;
-		}
-	}
-	
 	private JPanel constructPage4() {
 		JPanel p=new JPanel(null);
 		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
@@ -525,35 +430,28 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		});
 		JScrollPane scroll=new JScrollPane(list,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		p2.add(scroll);
-
 		JPanel down=new JPanel(new BorderLayout());
 		JPanel tmp = new JPanel(new GridLayout(1, 2));
 		tmp.setBorder(new EmptyBorder(2, 2, 2, 2));
-		JPanel tmp1 = new JPanel();
-		JPanel tmp2 = new JPanel();
+		JPanel tmp1 = new JPanel(new BorderLayout());
+		JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tmp1.setLayout(new BorderLayout());
-		tmp2.setLayout(new BorderLayout());
 		Action addAction = new AbstractAction("Add") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						JFileChooser f = new JFileChooser();
-						f.setMultiSelectionEnabled(true);
-						f.addChoosableFileFilter(new PersonalFileFilter("bin","Binary dictionary"));
-						f.setDialogTitle("Choose your morphological dictionaries");
-						f.setDialogType(JFileChooser.OPEN_DIALOG);
-						if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
-							return;
-						}
-						File[] files=f.getSelectedFiles();
-						if (files==null) return;
-						for (int i=0;i<files.length;i++) {
-							morphoDicListModel.addElement(files[i]);
-						}
-					}
-				});
+				JFileChooser f = new JFileChooser();
+				f.setMultiSelectionEnabled(true);
+				f.addChoosableFileFilter(new PersonalFileFilter("bin","Binary dictionary"));
+				f.setDialogTitle("Choose your morphological dictionaries");
+				f.setDialogType(JFileChooser.OPEN_DIALOG);
+				if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				File[] files=f.getSelectedFiles();
+				if (files==null) return;
+				for (int i=0;i<files.length;i++) {
+					morphoDicListModel.addElement(files[i]);
+				}
 			}
 		};
 		Action removeAction = new AbstractAction("Remove") {

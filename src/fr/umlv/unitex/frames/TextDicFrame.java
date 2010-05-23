@@ -39,6 +39,7 @@ import javax.swing.event.InternalFrameEvent;
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
+import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.io.UnicodeIO;
 
 /**
@@ -79,7 +80,7 @@ public class TextDicFrame extends JInternalFrame {
     		  }
     	  }
       });
-      UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
+      Preferences.addTextFontListener(new FontListener() {
 
 		public void fontChanged(Font font) {
 			dlf.setFont(font);

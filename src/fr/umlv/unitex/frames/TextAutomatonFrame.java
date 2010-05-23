@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -95,9 +94,7 @@ import fr.umlv.unitex.tfst.TokensInfo;
  * @author Sébastien Paumier
  * 
  */
-
 public class TextAutomatonFrame extends JInternalFrame {
-
 	JTextArea sentenceTextArea = new JTextArea();
 	JLabel sentence_count_label = new JLabel(" 0 sentence");
 	boolean elagON;
@@ -130,7 +127,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 	private JButton RESET_SENTENCE_GRAPH;
 	public BoundsEditor boundsEditor;
 
-	
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
 		MyDropTarget.newDropTarget(this);
@@ -175,12 +171,11 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		closeElagFrame();
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame()
-				.addTextFontListener(new FontListener() {
-					public void fontChanged(Font font) {
-						sentenceTextArea.setFont(font);
-					}
-				});
+		Preferences.addTextFontListener(new FontListener() {
+			public void fontChanged(Font font) {
+				sentenceTextArea.setFont(font);
+			}
+		});
 	}
 
 	private JPanel constructPanel() {
@@ -205,7 +200,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		p.add(button);
-
 		button = new JButton("Implode");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -213,7 +207,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		p.add(button);
-
 		button = new JButton("Apply Elag Rule");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -221,22 +214,16 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		p.add(button);
-
 		textframe.add(p, BorderLayout.WEST);
-
 		JPanel downPanel = new JPanel(new BorderLayout());
-
 		graphicalZone = new TfstGraphicalZone(1188, 840, textfield, this, true);
 		graphicalZone.setPreferredSize(new Dimension(1188, 840));
-
 		scroll = new JScrollPane(graphicalZone);
 		scroll.setOpaque(true);
 		scroll.getHorizontalScrollBar().setUnitIncrement(20);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		scroll.setPreferredSize(new Dimension(1188, 840));
-
 		textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
-
 		downPanel.add(textfield, BorderLayout.NORTH);
 		boundsEditor = new BoundsEditor(this);
 		downPanel.add(boundsEditor, BorderLayout.EAST);
@@ -256,7 +243,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		p.add(button);
-
 		button = new JButton("Implode");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -264,7 +250,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		p.add(button);
-
 		button = new JButton("Replace");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -272,7 +257,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		p.add(button);
-
 		elagframe.add(p, BorderLayout.WEST);
 		elaggraph = new TfstGraphicalZone(1188, 840, textfield, this, false);
 		elaggraph.setPreferredSize(new Dimension(1188, 840));
@@ -282,7 +266,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	private JPanel constructUpPanel() {
 		JPanel upPanel = new JPanel(new BorderLayout());
-		sentenceTextArea.setFont(Preferences.getCloneOfPreferences().textFont.font);
+		sentenceTextArea
+				.setFont(Preferences.getCloneOfPreferences().textFont.font);
 		sentenceTextArea.setEditable(false);
 		sentenceTextArea.setText("");
 		sentenceTextArea.setLineWrap(true);
@@ -380,13 +365,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 		elagsentence_grf = new File(Config.getCurrentSntDir(),
 				"currelagsentence.grf");
 		sentence_count = readSentenceCount(text_tfst);
-
 		String s = " " + sentence_count;
 		s = s + " sentence";
-
 		if (sentence_count > 1)
 			s = s + "s";
-
 		sentence_count_label.setText(s);
 		spinnerModel.setMaximum(new Integer(sentence_count));
 		spinnerModel.setValue(new Integer(1));
@@ -446,7 +428,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 			g.width = graphicalZone.Width;
 			g.height = graphicalZone.Height;
 			g.saveSentenceGraph(new File(sentence_modified.getAbsolutePath()
-					+ spinnerModel.getNumber().intValue() + ".grf"),graphicalZone.getGraphPresentationInfo());
+					+ spinnerModel.getNumber().intValue() + ".grf"),
+					graphicalZone.getGraphPresentationInfo());
 		}
 	}
 
@@ -519,7 +502,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 						}
 						Console.addCommand(cmd.getCommandLine(), false);
 						Process p;
-
 						try {
 							p = Runtime.getRuntime().exec(
 									cmd.getCommandArguments());
@@ -527,10 +509,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 									.getInputStream());
 							BufferedInputStream err = new BufferedInputStream(p
 									.getErrorStream());
-
 							new EatStreamThread(in).start();
 							new EatStreamThread(err).start();
-
 							/* waitFor Fst2Grf to terminate */
 							p.waitFor();
 						} catch (Exception e) {
@@ -576,7 +556,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 					.println("loadElagSentence: isAcurrentElagLoading Thread=true");
 			return false;
 		}
-
 		SwingUtilities.invokeLater(new Thread() {
 			public void run() {
 				isAcurrentElagLoadingThread = true;
@@ -609,7 +588,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 					isAcurrentElagLoadingThread = false;
 					return;
 				}
-
 				try {
 					loadElagSentenceGraph(elagsentence_grf);
 				} finally {
@@ -625,9 +603,12 @@ public class TextAutomatonFrame extends JInternalFrame {
 	 * 
 	 */
 	public void changeAntialiasingValue() {
-		GraphPresentationInfo info=graphicalZone.getGraphPresentationInfo();
+		GraphPresentationInfo info = graphicalZone.getGraphPresentationInfo();
 		info.antialiasing = !info.antialiasing;
-		/* TODO remplacer ce genre de choses par des setters qui font les repaint() */
+		/*
+		 * TODO remplacer ce genre de choses par des setters qui font les
+		 * repaint()
+		 */
 		graphicalZone.repaint();
 	}
 
@@ -712,7 +693,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 		ruleslabel.setBorder(new LineBorder(Color.black, 1, true));
 		JButton button = new JButton("browse");
 		button.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser();
 				fc.setCurrentDirectory(elagrules.getParentFile());
@@ -747,7 +727,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 		ElagCommand elagcmd = new ElagCommand().lang(
 				new File(Config.getCurrentElagDir(), "tagset.def")).rules(
 				elagrules).output(elag_tfst).automaton(text_tfst);
-
 		if (implodeCheckBox.isSelected()) {
 			Launcher.exec(elagcmd, false, new ImploseDo(this, elag_tfst));
 		} else {
@@ -832,7 +811,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 	}
 
 	class RebuildTextAutomatonDo implements ToDo {
-
 		public void toDo() {
 			Config.deleteFileByName(new File(Config.getCurrentSntDir(),
 					"sentence*.grf"));
@@ -859,11 +837,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 	public JTextArea getSentenceTextArea() {
 		return sentenceTextArea;
 	}
-
 }
 
 class loadSentenceDo implements ToDo {
-
 	TextAutomatonFrame frame;
 
 	loadSentenceDo(TextAutomatonFrame f) {
@@ -876,7 +852,6 @@ class loadSentenceDo implements ToDo {
 }
 
 class ImploseDo implements ToDo {
-
 	File fst;
 	TextAutomatonFrame fr;
 
@@ -888,5 +863,4 @@ class ImploseDo implements ToDo {
 	public void toDo() {
 		fr.implodeTextAutomaton(fst);
 	}
-
 }
