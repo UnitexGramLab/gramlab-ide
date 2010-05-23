@@ -23,7 +23,6 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 
 /**
@@ -53,8 +52,8 @@ public class PolyLexCommand extends CommandBuilder {
 		throw new InvalidPolyLexArgumentException();
 	}
 
-	public PolyLexCommand alphabet() {
-    protectElement("-a"+Config.getAlphabet().getAbsolutePath());
+	public PolyLexCommand alphabet(File alphabet) {
+    protectElement("-a"+alphabet.getAbsolutePath());
     return this;
 }
 

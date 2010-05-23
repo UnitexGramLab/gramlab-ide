@@ -23,8 +23,6 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
  *  
@@ -45,8 +43,8 @@ public class Fst2TxtCommand extends CommandBuilder {
         return this;
     }
 
-    public Fst2TxtCommand alphabet() {
-      protectElement("-a"+Config.getAlphabet().getAbsolutePath());
+    public Fst2TxtCommand alphabet(File alphabet) {
+      protectElement("-a"+alphabet.getAbsolutePath());
       return this;
   }
 

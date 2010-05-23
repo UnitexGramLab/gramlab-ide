@@ -23,8 +23,6 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
  *  
@@ -50,9 +48,8 @@ public class SortTxtCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SortTxtCommand sortAlphabet() {
-    protectElement("-o"+new File(Config
-                .getUserCurrentLanguageDir(),"Alphabet_sort.txt").getAbsolutePath());
+	public SortTxtCommand sortAlphabet(File alphabet) {
+    protectElement("-o"+alphabet.getAbsolutePath());
 		return this;
 	}
 

@@ -60,7 +60,7 @@ public class Tfst2GrfCommand extends CommandBuilder {
 		return this;
 	}
 
-	public Tfst2GrfCommand fontsize(int n) {
+	public Tfst2GrfCommand fontSize(int n) {
 	    protectElement("-z"+n);
 		return this;
 	}

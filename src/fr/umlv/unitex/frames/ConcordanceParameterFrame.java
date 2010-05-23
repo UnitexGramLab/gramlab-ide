@@ -213,7 +213,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 File output=new File(indFile.getParentFile(),"statistics.txt");
                 StatsCommand cmd=new StatsCommand();
                 cmd=cmd.concord(indFile)
-                    .alphabet().left(leftContext)
+                    .alphabet(Config.getAlphabet()).left(leftContext)
                     .right(rightContext)
                     .output(output).caseSensitive(caseSensitive.isSelected());
                 int mode;
@@ -507,7 +507,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		commands.addCommand(normalizeCmd);
 		MkdirCommand mkdir=new MkdirCommand().name(tmp);
 		commands.addCommand(mkdir);
-		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(txt).alphabet();
+		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(txt).alphabet(Config.getAlphabet());
 		if (Config.isCharByCharLanguage()) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
 		}
@@ -576,10 +576,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                                 .indFile(indFile)
                                 .font(Preferences.getConcordanceFontName())
                                 .fontSize(Preferences.getConcordanceFontSize())
-                                .left(leftContext
-                                      + (leftCtxStopAtEOS.isSelected() ? "s" : ""))
-                                .right(rightContext
-                                      + (rightCtxStopAtEOS.isSelected() ? "s" : ""))
+                                .left(leftContext,leftCtxStopAtEOS.isSelected())
+                                .right(rightContext,rightCtxStopAtEOS.isSelected())
                                 .order(sortBox.getSelectedIndex())
                                 .html()
                                 .sortAlphabet()
