@@ -51,7 +51,6 @@ public class CheckResultFrame extends JInternalFrame {
 	CheckResultFrame() {
 		super("Check Results", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
-		top.setOpaque(true);
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
 		text=new BigTextList();
 		JPanel middle = new JPanel(new BorderLayout());
@@ -59,9 +58,7 @@ public class CheckResultFrame extends JInternalFrame {
 		middle.add(new JScrollPane(text), BorderLayout.CENTER);
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
-		pack();
-		setBounds(100, 100, 600, 600);
-		setVisible(false);
+		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
