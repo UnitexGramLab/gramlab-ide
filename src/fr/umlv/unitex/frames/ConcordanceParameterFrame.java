@@ -49,10 +49,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
@@ -71,178 +68,178 @@ import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.StatsCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 
-
 /**
  * This class describes a frame in which the user can select how to use the
  * results of a pattern matching.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class ConcordanceParameterFrame extends JInternalFrame {
 
-	private JTextField leftChars = new JTextField("40");
-	private JTextField rightChars = new JTextField("55");
-	JCheckBox leftCtxStopAtEOS  = new JCheckBox("", false);
+	JTextField leftChars = new JTextField("40");
+	JTextField rightChars = new JTextField("55");
+	JCheckBox leftCtxStopAtEOS = new JCheckBox("", false);
 	JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
-	private JComboBox sortBox;
+	JComboBox sortBox;
 	JCheckBox openWithBrowser = new JCheckBox(
 			"Use a web browser to view the concordance");
 	JTextField modifiedTxtFile = new JTextField("");
 	JTextField extractFile = new JTextField("");
 	String numberOfMatches = null;
 	boolean useWebBrowser;
-	private JButton diffButton;
-	
-	JRadioButton mode0=new JRadioButton("collocates by z-score",true);
-    JRadioButton mode1=new JRadioButton("collocates by frequency",false);
-	JRadioButton mode2=new JRadioButton("contexts by frequency",false);
-    JTextField leftContextForStats=new JTextField("1");
-	JTextField rightContextForStats=new JTextField("1");
-	JRadioButton caseSensitive=new JRadioButton("case sensitive",true);
-    JRadioButton caseInsensitive=new JRadioButton("case insensitive",false);
-    
+	JButton diffButton;
+
+	JRadioButton mode0 = new JRadioButton("collocates by z-score", true);
+	JRadioButton mode1 = new JRadioButton("collocates by frequency", false);
+	JRadioButton mode2 = new JRadioButton("contexts by frequency", false);
+	JTextField leftContextForStats = new JTextField("1");
+	JTextField rightContextForStats = new JTextField("1");
+	JRadioButton caseSensitive = new JRadioButton("case sensitive", true);
+	JRadioButton caseInsensitive = new JRadioButton("case insensitive", false);
+
 	/**
 	 * Constructs a new <code>ConcordanceParameterFrame</code>.
-	 *  
+	 * 
 	 */
 	ConcordanceParameterFrame() {
 		super("Located sequences...", true, true);
 		setContentPane(constructPanel());
 		pack();
-		useWebBrowser=(Preferences.getCloneOfPreferences().htmlViewer!=null);
-		setVisible(false);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			public void internalFrameClosing(InternalFrameEvent e) {
-				setVisible(false);
-			}
-		});
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		useWebBrowser = (Preferences.getCloneOfPreferences().htmlViewer != null);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
-
 
 	/**
 	 * 
 	 */
 	void updateDiffButton() {
-		File f=new File(Config.getCurrentSntDir(),"previous-concord.ind");
+		File f = new File(Config.getCurrentSntDir(), "previous-concord.ind");
 		diffButton.setEnabled(f.exists());
 	}
 
-    private JTabbedPane constructPanel() {
-        JTabbedPane tabbedPane=new JTabbedPane();
-        tabbedPane.addTab("Concordance",constructConcordancePanel());
-        tabbedPane.addTab("Statistics",constructStatisticsPanel());
-        return tabbedPane;
-    }
+	private JTabbedPane constructPanel() {
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.addTab("Concordance", constructConcordancePanel());
+		tabbedPane.addTab("Statistics", constructStatisticsPanel());
+		return tabbedPane;
+	}
 
 	private Component constructStatisticsPanel() {
-        JPanel box=new JPanel(new GridBagLayout());
-        GridBagConstraints g=new GridBagConstraints();
-        g.gridwidth=GridBagConstraints.REMAINDER;
-        g.weightx=1;
-        g.fill=GridBagConstraints.HORIZONTAL;
-        
-        JPanel panel1=new JPanel(new GridLayout(3,1));
-        panel1.setBorder(BorderFactory.createTitledBorder("Mode:"));
-        ButtonGroup b1=new ButtonGroup();
-        b1.add(mode2);
-        b1.add(mode1);
-        b1.add(mode0);
-        panel1.add(mode0);
-        panel1.add(mode1);
-        panel1.add(mode2);
-        box.add(panel1,g);
-        
-        JPanel panel2=new JPanel(new GridBagLayout());
-        panel2.setBorder(BorderFactory.createTitledBorder("Sizes of contexts in non space tokens:"));
-        GridBagConstraints gbc=new GridBagConstraints();
-        gbc.fill=GridBagConstraints.HORIZONTAL;
-        panel2.add(new JLabel(" Left: "),gbc);
-        gbc.weightx=1;
-        panel2.add(leftContextForStats,gbc);
-        gbc.weightx=0;
-        panel2.add(new JLabel("  Right: "),gbc);
-        gbc.weightx=1;
-        gbc.gridwidth=GridBagConstraints.REMAINDER;
-        panel2.add(rightContextForStats,gbc);
-        box.add(panel2,g);
+		JPanel box = new JPanel(new GridBagLayout());
+		GridBagConstraints g = new GridBagConstraints();
+		g.gridwidth = GridBagConstraints.REMAINDER;
+		g.weightx = 1;
+		g.fill = GridBagConstraints.HORIZONTAL;
 
-        JPanel panel3=new JPanel(new GridLayout(2,1));
-        panel3.setBorder(BorderFactory.createTitledBorder("Case sensitivity:"));
-        ButtonGroup b2=new ButtonGroup();
-        b2.add(caseSensitive);
-        b2.add(caseInsensitive);
-        panel3.add(caseSensitive);
-        panel3.add(caseInsensitive);
-        box.add(panel3,g);
+		JPanel panel1 = new JPanel(new GridLayout(3, 1));
+		panel1.setBorder(BorderFactory.createTitledBorder("Mode:"));
+		ButtonGroup b1 = new ButtonGroup();
+		b1.add(mode2);
+		b1.add(mode1);
+		b1.add(mode0);
+		panel1.add(mode0);
+		panel1.add(mode1);
+		panel1.add(mode2);
+		box.add(panel1, g);
 
-        /* A kind of glue */
-        g.weighty=1;
-        box.add(new JPanel(new BorderLayout()),g);
-        
-        g.weighty=0;
-        JButton button=new JButton("Compute statistics");
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
-                if (!indFile.exists()) {
-                    JOptionPane.showMessageDialog(null, "Cannot find "
-                            + indFile.getAbsolutePath(), "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                int leftContext;
-                int rightContext;
-                try {
-                	leftContext=Integer.parseInt(leftContextForStats.getText());
-                } catch (NumberFormatException e1) {
-        			JOptionPane.showMessageDialog(null,
-        					"You must specify a valid left context length", "Error",
-        					JOptionPane.ERROR_MESSAGE);
-        			return;
-                }
-                try {
-                	rightContext=Integer.parseInt(rightContextForStats.getText());
-                } catch (NumberFormatException e1) {
-        			JOptionPane.showMessageDialog(null,
-        					"You must specify a valid right context length", "Error",
-        					JOptionPane.ERROR_MESSAGE);
-        			return;
-                }
-                File output=new File(indFile.getParentFile(),"statistics.txt");
-                StatsCommand cmd=new StatsCommand();
-                cmd=cmd.concord(indFile)
-                    .alphabet(Config.getAlphabet()).left(leftContext)
-                    .right(rightContext)
-                    .output(output).caseSensitive(caseSensitive.isSelected());
-                int mode;
-                if (mode2.isSelected()) mode=0;
-                else if (mode1.isSelected()) mode=1;
-                else mode=2;
-                cmd=cmd.mode(mode);
-                MultiCommands commands=new MultiCommands();
-                commands.addCommand(cmd);
-                setVisible(false);
-                Launcher.exec(commands, true, new LoadStatisticsDo(output,mode));
-            }
-        });
-        Box b=new Box(BoxLayout.X_AXIS);
-        b.add(Box.createHorizontalGlue());
-        b.add(button);
-        b.add(Box.createHorizontalStrut(10));
-        box.add(b,g);
-        
-        box.add(new JPanel() {
-            @Override
-            public Dimension getPreferredSize() {
-                return new Dimension(10,10);
-            }
-        },g);
-        return box;
-    }
+		JPanel panel2 = new JPanel(new GridBagLayout());
+		panel2.setBorder(BorderFactory
+				.createTitledBorder("Sizes of contexts in non space tokens:"));
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel2.add(new JLabel(" Left: "), gbc);
+		gbc.weightx = 1;
+		panel2.add(leftContextForStats, gbc);
+		gbc.weightx = 0;
+		panel2.add(new JLabel("  Right: "), gbc);
+		gbc.weightx = 1;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		panel2.add(rightContextForStats, gbc);
+		box.add(panel2, g);
 
-    private JPanel constructConcordancePanel() {
+		JPanel panel3 = new JPanel(new GridLayout(2, 1));
+		panel3.setBorder(BorderFactory.createTitledBorder("Case sensitivity:"));
+		ButtonGroup b2 = new ButtonGroup();
+		b2.add(caseSensitive);
+		b2.add(caseInsensitive);
+		panel3.add(caseSensitive);
+		panel3.add(caseInsensitive);
+		box.add(panel3, g);
+
+		/* A kind of glue */
+		g.weighty = 1;
+		box.add(new JPanel(new BorderLayout()), g);
+
+		g.weighty = 0;
+		JButton button = new JButton("Compute statistics");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				File indFile = new File(Config.getCurrentSntDir(),
+						"concord.ind");
+				if (!indFile.exists()) {
+					JOptionPane.showMessageDialog(null, "Cannot find "
+							+ indFile.getAbsolutePath(), "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				int leftContext;
+				int rightContext;
+				try {
+					leftContext = Integer.parseInt(leftContextForStats
+							.getText());
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null,
+							"You must specify a valid left context length",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				try {
+					rightContext = Integer.parseInt(rightContextForStats
+							.getText());
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null,
+							"You must specify a valid right context length",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				File output = new File(indFile.getParentFile(),
+						"statistics.txt");
+				StatsCommand cmd = new StatsCommand();
+				cmd = cmd.concord(indFile).alphabet(Config.getAlphabet()).left(
+						leftContext).right(rightContext).output(output)
+						.caseSensitive(caseSensitive.isSelected());
+				int mode;
+				if (mode2.isSelected())
+					mode = 0;
+				else if (mode1.isSelected())
+					mode = 1;
+				else
+					mode = 2;
+				cmd = cmd.mode(mode);
+				MultiCommands commands = new MultiCommands();
+				commands.addCommand(cmd);
+				setVisible(false);
+				Launcher.exec(commands, true,
+						new LoadStatisticsDo(output, mode));
+			}
+		});
+		Box b = new Box(BoxLayout.X_AXIS);
+		b.add(Box.createHorizontalGlue());
+		b.add(button);
+		b.add(Box.createHorizontalStrut(10));
+		box.add(b, g);
+
+		box.add(new JPanel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(10, 10);
+			}
+		}, g);
+		return box;
+	}
+
+	private JPanel constructConcordancePanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel up = new JPanel(new BorderLayout());
 		up.add(constructUpPanel(), BorderLayout.NORTH);
@@ -257,11 +254,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	private JPanel constructExtractPanel() {
 		JPanel extract = new JPanel(new GridLayout(2, 1));
 		extract.setBorder(new TitledBorder("Extract units"));
-		JPanel a = new JPanel();
-		a.setLayout(new BorderLayout());
+		JPanel a = new JPanel(new BorderLayout());
 		a.add(extractFile, BorderLayout.CENTER);
-		JPanel b = new JPanel();
-		b.setLayout(new GridLayout(1, 2));
+		JPanel b = new JPanel(new GridLayout(1, 2));
 		Action setAction = new AbstractAction("Set File: ") {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
@@ -282,21 +277,13 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		a.add(setSntFile, BorderLayout.WEST);
 		Action matchingAction = new AbstractAction("Extract matching units") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						extractUnits(true);
-					}
-				});
+				extractUnits(true);
 			}
 		};
 		JButton matching = new JButton(matchingAction);
 		Action unmatchingAction = new AbstractAction("Extract unmatching units") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						extractUnits(false);
-					}
-				});
+				extractUnits(false);
 			}
 		};
 		JButton unmatching = new JButton(unmatchingAction);
@@ -310,29 +297,24 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	private JPanel constructDiffPanel() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(""));
-		Action diffAction = new AbstractAction("Show differences with previous concordance") {
+		Action diffAction = new AbstractAction(
+				"Show differences with previous concordance") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						buildDiffConcordance();
-					}
-				});
+				buildDiffConcordance();
 			}
 		};
 		diffButton = new JButton(diffAction);
-		panel.add(diffButton,BorderLayout.CENTER);
+		panel.add(diffButton);
 		return panel;
 	}
 
 	private JPanel constructUpPanel() {
 		JPanel upPanel = new JPanel(new GridLayout(2, 1));
 		upPanel.setBorder(new TitledBorder("Modify text"));
-		JPanel a = new JPanel();
-		a.setLayout(new BorderLayout());
+		JPanel a = new JPanel(new BorderLayout());
 		a.add(new JLabel(" Resulting .txt file: "), BorderLayout.WEST);
 		a.add(modifiedTxtFile, BorderLayout.CENTER);
-		JPanel b = new JPanel();
-		b.setLayout(new GridLayout(1, 2));
+		JPanel b = new JPanel(new GridLayout(1, 2));
 		Action setAction = new AbstractAction("Set File") {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
@@ -345,31 +327,29 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				File snt=Config.getCurrentSnt();
-				String txt=snt.getAbsolutePath();
+				File snt = Config.getCurrentSnt();
+				String txt = snt.getAbsolutePath();
 				if (!txt.endsWith(".snt")) {
-				    txt=null;
+					txt = null;
 				} else {
-				    txt=txt.substring(0,txt.lastIndexOf('.')+1);
-				    txt=txt+"txt";
+					txt = txt.substring(0, txt.lastIndexOf('.') + 1);
+					txt = txt + "txt";
 				}
 				if (chooser.getSelectedFile().getAbsolutePath().equals(txt)) {
-				    JOptionPane.showMessageDialog(null, "You are about to replace your existing .txt file: "
-                     + txt, "Warning",
-                     JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"You are about to replace your existing .txt file: "
+									+ txt, "Warning",
+							JOptionPane.WARNING_MESSAGE);
 				}
-				modifiedTxtFile.setText(chooser.getSelectedFile().getAbsolutePath());
+				modifiedTxtFile.setText(chooser.getSelectedFile()
+						.getAbsolutePath());
 			}
 		};
 		JButton setModifiedTextFile = new JButton(setAction);
 		b.add(setModifiedTextFile);
 		Action goAction = new AbstractAction("GO") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						modifyText();
-					}
-				});
+				modifyText();
 			}
 		};
 		JButton GO = new JButton(goAction);
@@ -380,18 +360,15 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	private JPanel constructMiddlePanel() {
-		JPanel middlePanel = new JPanel();
+		JPanel middlePanel = new JPanel(new BorderLayout());
 		middlePanel.setBorder(new TitledBorder("Concordance presentation"));
-		middlePanel.setLayout(new BorderLayout());
-		openWithBrowser.addActionListener(new ActionListener(){
+		openWithBrowser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				useWebBrowser=openWithBrowser.isSelected();
-				setTitle(""+useWebBrowser);
-			}});
+				useWebBrowser = openWithBrowser.isSelected();
+				setTitle("" + useWebBrowser);
+			}
+		});
 		middlePanel.add(openWithBrowser, BorderLayout.CENTER);
-		middlePanel.add(new JLabel(
-				"        (better for more than 2000 matches)"),
-				BorderLayout.SOUTH);
 		return middlePanel;
 	}
 
@@ -399,9 +376,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		JPanel downPanel = new JPanel(new GridLayout(1, 2));
 		downPanel.setBorder(new TitledBorder(
 				"Show matching sequences in context"));
-
-                JPanel CtxLengthCol = new JPanel(new BorderLayout());
-                CtxLengthCol.add(new JLabel("Context length:"), BorderLayout.NORTH);
+		JPanel ctxLengthCol = new JPanel(new BorderLayout());
+		ctxLengthCol.add(new JLabel("Context length:"), BorderLayout.NORTH);
 		JPanel a = new JPanel(new GridLayout(2, 1));
 		a.add(new JLabel("Left "));
 		a.add(new JLabel("Right "));
@@ -413,28 +389,25 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		JPanel c = new JPanel(new GridLayout(2, 1));
 		c.add(new JLabel(" chars "));
 		c.add(new JLabel(" chars "));
-                CtxLengthCol.add(a, BorderLayout.WEST);
-                CtxLengthCol.add(b, BorderLayout.CENTER);
-                CtxLengthCol.add(c, BorderLayout.EAST);
-
-                JPanel StopAtEosCol = new JPanel(new BorderLayout());
-                StopAtEosCol.add(new JLabel("Stop at:"), BorderLayout.NORTH);
-                JPanel s = new JPanel(new GridLayout(2, 2));
+		ctxLengthCol.add(a, BorderLayout.WEST);
+		ctxLengthCol.add(b, BorderLayout.CENTER);
+		ctxLengthCol.add(c, BorderLayout.EAST);
+		JPanel stopAtEosCol = new JPanel(new BorderLayout());
+		stopAtEosCol.add(new JLabel("Stop at:"), BorderLayout.NORTH);
+		JPanel s = new JPanel(new GridLayout(2, 2));
 		s.add(leftCtxStopAtEOS);
-                s.add(new JLabel("{S}"));
- 		s.add(rightCtxStopAtEOS);
-                s.add(new JLabel("{S}"));
-                StopAtEosCol.add(s, BorderLayout.CENTER);
-
+		s.add(new JLabel("{S}"));
+		s.add(rightCtxStopAtEOS);
+		s.add(new JLabel("{S}"));
+		stopAtEosCol.add(s, BorderLayout.CENTER);
 		JPanel tmp_left = new JPanel();
-                tmp_left.add(CtxLengthCol, BorderLayout.WEST);
-                tmp_left.add(StopAtEosCol, BorderLayout.CENTER);
-		JPanel dummy = new JPanel();
-                tmp_left.add(dummy, BorderLayout.EAST);
-                downPanel.add(tmp_left,     BorderLayout.WEST);
+		tmp_left.add(ctxLengthCol);
+		tmp_left.add(stopAtEosCol);
+		tmp_left.add(new JPanel());
+		downPanel.add(tmp_left, BorderLayout.WEST);
 
-                JPanel SortAccTo = new JPanel(new GridLayout(2, 1));
-                SortAccTo.add(new JLabel("Sort according to:"));
+		JPanel sortAccTo = new JPanel(new GridLayout(2, 1));
+		sortAccTo.add(new JLabel("Sort according to:"));
 		String[] items = new String[7];
 		items[0] = "Text Order";
 		items[1] = "Left, Center";
@@ -445,26 +418,17 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		items[6] = "Right, Center";
 		sortBox = new JComboBox(items);
 		sortBox.setSelectedIndex(3);
-		SortAccTo.add(sortBox);
-
+		sortAccTo.add(sortBox);
 		JPanel tmp_right = new JPanel(new GridLayout(2, 1, 0, 5));
-                tmp_right.add(SortAccTo); 
-
+		tmp_right.add(sortAccTo);
 		Action buildAction = new AbstractAction("Build concordance") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						buildConcordance();
-					}
-				});
+				buildConcordance();
 			}
 		};
 		JButton buildConcordance = new JButton(buildAction);
-
 		tmp_right.add(buildConcordance);
-
-                downPanel.add(tmp_right,    BorderLayout.EAST);
-
+		downPanel.add(tmp_right, BorderLayout.EAST);
 		return downPanel;
 	}
 
@@ -476,11 +440,13 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		File txt;
 		if (-1 == modifiedTxtFile.getText().indexOf(File.separatorChar)) {
-			// if the text field contains a file name without path,
-			// we append the corpus path
-			txt = new File(Config.getCurrentCorpusDir(),modifiedTxtFile.getText());
-		}
-		else {
+			/*
+			 * If the text field contains a file name without path, we append
+			 * the corpus path
+			 */
+			txt = new File(Config.getCurrentCorpusDir(), modifiedTxtFile
+					.getText());
+		} else {
 			txt = new File(modifiedTxtFile.getText());
 		}
 		ConcordCommand modifyCommand = new ConcordCommand();
@@ -491,29 +457,32 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		modifyCommand = modifyCommand.indFile(indFile).outputModifiedTxtFile(txt);
+		modifyCommand = modifyCommand.indFile(indFile).outputModifiedTxtFile(
+				txt);
 		String sntDir = Util.getFileNameWithoutExtension(txt.getAbsolutePath())
 				+ "_snt";
 		File tmp = new File(sntDir);
-		ModifyTextDo DO = null;
-		String sntName=Util.getFileNameWithoutExtension(txt)+".snt";
+		ModifyTextDo toDo = null;
+		String sntName = Util.getFileNameWithoutExtension(txt) + ".snt";
 		if (new File(sntName).equals(Config.getCurrentSnt())) {
 			UnitexFrame.getFrameManager().closeTextFrame();
-			DO = new ModifyTextDo(new File(sntName));
+			toDo = new ModifyTextDo(new File(sntName));
 		}
 		MultiCommands commands = new MultiCommands();
 		commands.addCommand(modifyCommand);
-		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(txt);
+		NormalizeCommand normalizeCmd = new NormalizeCommand()
+				.textWithDefaultNormalization(txt);
 		commands.addCommand(normalizeCmd);
-		MkdirCommand mkdir=new MkdirCommand().name(tmp);
+		MkdirCommand mkdir = new MkdirCommand().name(tmp);
 		commands.addCommand(mkdir);
-		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(txt).alphabet(Config.getAlphabet());
+		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(txt).alphabet(
+				Config.getAlphabet());
 		if (Config.isCharByCharLanguage()) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
 		}
 		commands.addCommand(tokenizeCmd);
 		setVisible(false);
-		Launcher.exec(commands, true, DO);
+		Launcher.exec(commands, true, toDo);
 	}
 
 	void extractUnits(boolean matching) {
@@ -547,7 +516,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		int leftContext;
 		int rightContext;
 		try {
-			leftContext=Integer.parseInt(leftChars.getText());
+			leftContext = Integer.parseInt(leftChars.getText());
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
 					"You must specify a valid left context length", "Error",
@@ -555,7 +524,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			return;
 		}
 		try {
-			rightContext=Integer.parseInt(rightChars.getText());
+			rightContext = Integer.parseInt(rightChars.getText());
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null,
 					"You must specify a valid right context length", "Error",
@@ -571,60 +540,50 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		ConcordCommand command;
 		try {
-			command =
-                          new ConcordCommand()
-                                .indFile(indFile)
-                                .font(Preferences.getConcordanceFontName())
-                                .fontSize(Preferences.getConcordanceFontSize())
-                                .left(leftContext,leftCtxStopAtEOS.isSelected())
-                                .right(rightContext,rightCtxStopAtEOS.isSelected())
-                                .order(sortBox.getSelectedIndex())
-                                .html()
-                                .sortAlphabet()
-                                .thai(Config.getCurrentLanguage().equals("Thai"));
+			command = new ConcordCommand().indFile(indFile).font(
+					Preferences.getConcordanceFontName()).fontSize(
+					Preferences.getConcordanceFontSize()).left(leftContext,
+					leftCtxStopAtEOS.isSelected()).right(rightContext,
+					rightCtxStopAtEOS.isSelected()).order(
+					sortBox.getSelectedIndex()).html().sortAlphabet().thai(
+					Config.getCurrentLanguage().equals("Thai"));
 		} catch (InvalidConcordanceOrderException e) {
 			e.printStackTrace();
 			return;
 		}
 		setVisible(false);
-		int width = leftContext+rightContext;
-		if (width<40) {
-		    width=40;
+		int width = leftContext + rightContext;
+		if (width < 40) {
+			width = 40;
 		}
 		UnitexFrame.getFrameManager().closeConcordanceFrame();
-		Launcher.exec(command, true, new ConcordanceDo(false,new File(Config
-				.getCurrentSntDir(), "concord.html"), openWithBrowser.isSelected(),
-				width));
+		Launcher.exec(command, true, new ConcordanceDo(false, new File(Config
+				.getCurrentSntDir(), "concord.html"), openWithBrowser
+				.isSelected(), width));
 	}
 
-
 	void buildDiffConcordance() {
-		    File prevIndFile = new File(Config.getCurrentSntDir(), "previous-concord.ind");
-			File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
-			if (!indFile.exists()) {
-				JOptionPane.showMessageDialog(null, "Cannot find "
-						+ indFile.getAbsolutePath(), "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			ConcorDiffCommand command;
-			File outputHtmlFile=new File(Config
-					.getCurrentSntDir(), "diff.html");
-			command = new ConcorDiffCommand()
-				          .firstIndFile(prevIndFile)
-						  .secondIndFile(indFile)
-						  .output(outputHtmlFile)
-						  .font(Preferences.getConcordanceFontName())
-						  .fontSize(Preferences.getConcordanceFontSize());
-			setVisible(false);
-			int width = 160;
-			Launcher.exec(command, true, new ConcordanceDo(true,outputHtmlFile, openWithBrowser.isSelected(),
-					width));
+		File prevIndFile = new File(Config.getCurrentSntDir(),
+				"previous-concord.ind");
+		File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
+		if (!indFile.exists()) {
+			JOptionPane.showMessageDialog(null, "Cannot find "
+					+ indFile.getAbsolutePath(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
 		}
+		ConcorDiffCommand command;
+		File outputHtmlFile = new File(Config.getCurrentSntDir(), "diff.html");
+		command = new ConcorDiffCommand().firstIndFile(prevIndFile)
+				.secondIndFile(indFile).output(outputHtmlFile).font(
+						Preferences.getConcordanceFontName()).fontSize(
+						Preferences.getConcordanceFontSize());
+		setVisible(false);
+		int width = 160;
+		Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
+				openWithBrowser.isSelected(), width));
+	}
 
-	
-	
-	
 	class ConcordanceDo implements ToDo {
 		File htmlFile;
 		final boolean browser;
@@ -635,35 +594,37 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			htmlFile = page;
 			browser = false;
 			widthInChars = 95;
-			diff=false;
+			diff = false;
 		}
-		public ConcordanceDo(boolean diff,File page, boolean br, int width) {
+
+		public ConcordanceDo(boolean diff, File page, boolean br, int width) {
 			htmlFile = page;
 			browser = br;
 			widthInChars = width;
-			this.diff=diff;
-			
+			this.diff = diff;
+
 		}
+
 		public void toDo() {
-			if (browser && Preferences.getCloneOfPreferences().htmlViewer != null) {
-				new Thread() {
-					public void run() {
-						String[] s = new String[2];
-						s[0] = Preferences.getCloneOfPreferences().htmlViewer.getAbsolutePath();
-						s[1] = htmlFile.getAbsolutePath();
-						Console.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"",false);
-						try {
-							Runtime.getRuntime().exec(s);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}.start();
+			if (browser
+					&& Preferences.getCloneOfPreferences().htmlViewer != null) {
+				String[] s = new String[2];
+				s[0] = Preferences.getCloneOfPreferences().htmlViewer
+						.getAbsolutePath();
+				s[1] = htmlFile.getAbsolutePath();
+				Console.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"", false);
+				try {
+					Runtime.getRuntime().exec(s);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			} else {
 				if (!diff) {
-					UnitexFrame.getFrameManager().newConcordanceFrame(htmlFile, widthInChars);
+					UnitexFrame.getFrameManager().newConcordanceFrame(htmlFile,
+							widthInChars);
 				} else {
-					UnitexFrame.getFrameManager().newConcordanceDiffFrame(htmlFile, widthInChars);
+					UnitexFrame.getFrameManager().newConcordanceDiffFrame(
+							htmlFile, widthInChars);
 				}
 			}
 		}
@@ -675,37 +636,30 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		public ModifyTextDo(File s) {
 			snt = s;
 		}
-		
+
 		public void toDo() {
-			UnitexFrame.getFrameManager().newTextFrame(snt,false);
+			UnitexFrame.getFrameManager().newTextFrame(snt, false);
 		}
 	}
 
 	static class LoadStatisticsDo implements ToDo {
-	    
-	    File f;
-	    int mode;
-	    
-	    public LoadStatisticsDo(File f,int mode) {
-	        this.f=f;
-	        this.mode=mode;
-	    }
-	    
-        public void toDo() {
-            UnitexFrame.getFrameManager().newStatisticsFrame(f,mode);
-        }
-	    
+
+		File f;
+		int mode;
+
+		public LoadStatisticsDo(File f, int mode) {
+			this.f = f;
+			this.mode = mode;
+		}
+
+		public void toDo() {
+			UnitexFrame.getFrameManager().newStatisticsFrame(f, mode);
+		}
+
 	}
 
-	void reset(int matches) {
+	void reset() {
 		numberOfMatches = null;
 		updateDiffButton();
-		/* TODO vérifier la limite sur les matches */
-		if (matches >= Config.MAXIMUM_UTTERANCE_NUMBER_TO_DISPLAY_WITH_JAVA) {
-			openWithBrowser.setSelected(true);
-		}
-		else {
-			openWithBrowser.setSelected(useWebBrowser);
-		}
 	}
 }
