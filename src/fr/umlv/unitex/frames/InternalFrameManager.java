@@ -85,6 +85,7 @@ public class InternalFrameManager {
 	private FontDialogFactory fontDialogFactory=new FontDialogFactory();
 	private GraphPresentationDialogFactory graphPresentationDialogFactory=new GraphPresentationDialogFactory();
 	private GraphAlignmentDialogFactory graphAlignmentDialogFactory=new GraphAlignmentDialogFactory();
+	private GraphSizeDialogFactory graphSizeDialogFactory=new GraphSizeDialogFactory();
 	
 	
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -921,6 +922,14 @@ public class InternalFrameManager {
 
 	public GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
 		GraphAlignmentDialog d=graphAlignmentDialogFactory.newGraphAlignmentDialog(f);
+		if (d==null) return null;
+		d.setVisible(true);
+		return d;
+	}
+
+
+	public GraphSizeDialog newGraphSizeDialog(GraphFrame f) {
+		GraphSizeDialog d=graphSizeDialogFactory.newGraphSizeDialog(f);
 		if (d==null) return null;
 		d.setVisible(true);
 		return d;
