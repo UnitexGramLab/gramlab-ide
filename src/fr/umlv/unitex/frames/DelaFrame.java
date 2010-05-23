@@ -54,20 +54,15 @@ public class DelaFrame extends JInternalFrame {
 
 	DelaFrame() {
 		super("", true, true, true, true);
-		JPanel top = new JPanel();
-		top.setOpaque(true);
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
-		middle = new JPanel();
-		middle.setOpaque(true);
-		middle.setLayout(new BorderLayout());
+		middle = new JPanel(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(new JScrollPane(text));
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
-		setBounds(100, 100, 600, 600);
-		setVisible(false);
+		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
