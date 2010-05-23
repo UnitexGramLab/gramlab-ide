@@ -35,7 +35,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.Config;
@@ -46,7 +45,7 @@ import fr.umlv.unitex.process.commands.Table2GrfCommand;
  * This class describes the lexicon-grammar conversion frame.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class ConvertLexiconGrammarFrame extends JInternalFrame {
 
@@ -58,14 +57,11 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		super("Compile Lexicon-Grammar to GRF", false, true);
 		setContentPane(constructPanel());
 		pack();
-		/* TODO virer les setResizable(false) inutiles */
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setOpaque(true);
 		panel.add(constructUpPanel(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
 		return panel;
@@ -74,10 +70,8 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 	private JPanel createPanel(JLabel label, JTextField textField,
 			JButton button) {
 		JPanel p = new JPanel(new GridLayout(2, 1));
-		p.setOpaque(true);
 		p.add(label);
 		JPanel tmp = new JPanel(new BorderLayout());
-		tmp.setOpaque(true);
 		tmp.add(textField, BorderLayout.CENTER);
 		tmp.add(button, BorderLayout.EAST);
 		p.add(tmp);
@@ -92,29 +86,27 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		subgraphName.setPreferredSize(new Dimension(280, 20));
 		Action setGrfAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser dialogBox=Config.getGraphDialogBox(false);
+				JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
 				int returnVal = dialogBox.showOpenDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				grfName.setText(dialogBox.getSelectedFile()
-						.getAbsolutePath());
+				grfName.setText(dialogBox.getSelectedFile().getAbsolutePath());
 			}
 		};
 		JButton setGrfName = new JButton(setGrfAction);
 		Action setResultAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser dialogBox=Config.getGraphDialogBox(false);
+				JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
 				int returnVal = dialogBox.showSaveDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				String s = dialogBox.getSelectedFile()
-						.getAbsolutePath();
+				String s = dialogBox.getSelectedFile().getAbsolutePath();
 				if (!s.endsWith(".grf"))
 					s = s + ".grf";
 				resultName.setText(s);
@@ -123,15 +115,14 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		JButton setResultName = new JButton(setResultAction);
 		Action setSubgraphAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser dialogBox=Config.getGraphDialogBox(false);
+				JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
 				int returnVal = dialogBox.showSaveDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				String s = dialogBox.getSelectedFile()
-						.getAbsolutePath();
+				String s = dialogBox.getSelectedFile().getAbsolutePath();
 				if (!s.endsWith(".grf"))
 					s = s + ".grf";
 				subgraphName.setText(s);
@@ -152,7 +143,6 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 
 	private JPanel constructDownPanel() {
 		JPanel downPanel = new JPanel(new GridLayout(1, 2));
-		downPanel.setOpaque(true);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
 				doDefaultCloseAction();
@@ -161,33 +151,31 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		JButton CANCEL = new JButton(cancelAction);
 		Action okAction = new AbstractAction("Compile") {
 			public void actionPerformed(ActionEvent arg0) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						Table2GrfCommand command = new Table2GrfCommand()
-								.table(new File(LexiconGrammarTableFrame.getTableName()))
-								.parametrizedGraph(new File(grfName.getText()))
-								.resultMainGraph(new File(resultName.getText()));
-						if (!resultName.getText().equals("")) {
-							command = command.subgraphName(new File(subgraphName.getText()));
-						}
-						setVisible(false);
-						Launcher.exec(command, true, null);
-					}
-				});
+				compileLGTable();
 			}
 		};
 		JButton OK = new JButton(okAction);
-		JPanel left = new JPanel();
+		JPanel left = new JPanel(new BorderLayout());
 		left.setBorder(new EmptyBorder(10, 50, 10, 20));
-		left.setLayout(new BorderLayout());
 		left.add(CANCEL, BorderLayout.CENTER);
-		JPanel right = new JPanel();
+		JPanel right = new JPanel(new BorderLayout());
 		right.setBorder(new EmptyBorder(10, 20, 10, 50));
-		right.setLayout(new BorderLayout());
 		right.add(OK, BorderLayout.CENTER);
 		downPanel.add(left);
 		downPanel.add(right);
 		return downPanel;
+	}
+
+	protected void compileLGTable() {
+		Table2GrfCommand command = new Table2GrfCommand().table(
+				new File(LexiconGrammarTableFrame.getTableName()))
+				.parametrizedGraph(new File(grfName.getText()))
+				.resultMainGraph(new File(resultName.getText()));
+		if (!resultName.getText().equals("")) {
+			command = command.subgraphName(new File(subgraphName.getText()));
+		}
+		setVisible(false);
+		Launcher.exec(command, true, null);
 	}
 
 }
