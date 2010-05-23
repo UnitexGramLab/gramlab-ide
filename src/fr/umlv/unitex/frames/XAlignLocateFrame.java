@@ -316,7 +316,6 @@ public class XAlignLocateFrame extends JInternalFrame {
 			e.printStackTrace();
 		}
 		setVisible(false);
-		UnitexFrame.removeInternalFrame(this);
 		foo=Util.getFileNameWithoutExtension(indFile)+".txt";
 		Launcher.exec(commands,true,new XAlignLocateDo(new File(foo),concordModel),false);
 	}

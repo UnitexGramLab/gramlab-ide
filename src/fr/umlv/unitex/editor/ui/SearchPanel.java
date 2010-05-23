@@ -64,7 +64,7 @@ abstract class SearchPanel extends JPanel {
 		 * Add an action to the close button
 		 * @param action action to add to the pnel's close button
 		 */
-	protected void addCloseAction(ActionListener action) {
+	public void addCloseAction(ActionListener action) {
 		btClose.addActionListener(action);
 	}
 
