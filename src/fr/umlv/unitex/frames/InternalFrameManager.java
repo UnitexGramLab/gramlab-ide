@@ -383,13 +383,9 @@ public class InternalFrameManager {
 	}
 
 	public ConcordanceParameterFrame newConcordanceParameterFrame() {
-		return newConcordanceParameterFrame(-1);
-	}
-	
-	public ConcordanceParameterFrame newConcordanceParameterFrame(int matches) {
 		ConcordanceParameterFrame f=(ConcordanceParameterFrame) concordanceParameterFrameFactory.newFrame();
 		if (f==null) return null;
-		f.reset(matches);
+		f.reset();
 		setup(f);
 		return f;
 	}
