@@ -800,7 +800,11 @@ public class UnitexFrame extends JFrame {
     //-------------------------------------------------------------------
 		compileLexiconGrammar = new AbstractAction("Compile to GRF...") {
 			public void actionPerformed(ActionEvent e) {
-				frameManager.newConvertLexiconGrammarFrame();
+				LexiconGrammarTableFrame f=frameManager.getLexiconGrammarTableFrame();
+				if (f==null) {
+					throw new IllegalStateException("Should not happen !");
+				}
+				frameManager.newConvertLexiconGrammarFrame(f.getTable());
 			}
 		};
 		compileLexiconGrammar.setEnabled(false);

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -48,10 +47,10 @@ import fr.umlv.unitex.process.commands.Table2GrfCommand;
  * 
  */
 public class ConvertLexiconGrammarFrame extends JInternalFrame {
-
 	JTextField grfName = new JTextField();
 	JTextField resultName = new JTextField();
 	JTextField subgraphName = new JTextField();
+	private File table;
 
 	ConvertLexiconGrammarFrame() {
 		super("Compile Lexicon-Grammar to GRF", false, true);
@@ -167,8 +166,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 	}
 
 	protected void compileLGTable() {
-		Table2GrfCommand command = new Table2GrfCommand().table(
-				new File(LexiconGrammarTableFrame.getTableName()))
+		Table2GrfCommand command = new Table2GrfCommand().table(table)
 				.parametrizedGraph(new File(grfName.getText()))
 				.resultMainGraph(new File(resultName.getText()));
 		if (!resultName.getText().equals("")) {
@@ -178,4 +176,11 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		Launcher.exec(command, true, null);
 	}
 
+	public void setupTable(File t) {
+		if (table == null) {
+			throw new IllegalArgumentException(
+					"Cannot work on a null table file");
+		}
+		this.table = t;
+	}
 }

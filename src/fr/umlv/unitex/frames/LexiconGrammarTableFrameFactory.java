@@ -43,4 +43,8 @@ public class LexiconGrammarTableFrameFactory {
 		frame.doDefaultCloseAction();
 	}
 
+	public LexiconGrammarTableFrame getFrame() {
+		return frame;
+	}
+
 }

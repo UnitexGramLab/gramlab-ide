@@ -460,8 +460,12 @@ public class InternalFrameManager {
 		inflectFrameFactory.closeFrame();
 	}
 
-	public ConvertLexiconGrammarFrame newConvertLexiconGrammarFrame() {
-		return (ConvertLexiconGrammarFrame) setup(convertLexiconGrammarFrameFactory.newFrame());
+	public ConvertLexiconGrammarFrame newConvertLexiconGrammarFrame(File table) {
+		ConvertLexiconGrammarFrame f=(ConvertLexiconGrammarFrame) convertLexiconGrammarFrameFactory.newFrame();
+		if (f==null) return null;
+		f.setupTable(table);
+		setup(f);
+		return f;
 	}
 
 	public void closeConvertLexiconGrammarFrame() {
@@ -512,6 +516,10 @@ public class InternalFrameManager {
 
 	public void closeLexiconGrammarTableFrame() {
 		lexiconGrammarTableFrameFactory.closeLexiconGrammarTableFrame();
+	}
+
+	public LexiconGrammarTableFrame getLexiconGrammarTableFrame() {
+		return lexiconGrammarTableFrameFactory.getFrame();
 	}
 
 	public LocateFrame newLocateFrame() {
