@@ -21,24 +21,30 @@
 
 package fr.umlv.unitex.frames;
 
-public class ApplyLexicalResourcesFrameFactory {
+import javax.swing.JDialog;
 
-	private ApplyLexicalResourcesFrame frame;
+
+public class DialogFactory {
+
+	private JDialog dialog;
 	
-	ApplyLexicalResourcesFrame newApplyLexicalResourcesFrame() {
-		if (frame==null) {
-			frame=new ApplyLexicalResourcesFrame();
-		}
-		frame.refreshDicLists();
-		return frame;
+	private Class<?> clazz;
+	
+	DialogFactory(Class<?> clazz) {
+		this.clazz=clazz;
 	}
-	
-	
-	void closeApplyLexicalResourcesFrame() {
-		if (frame==null) {
-			return;
+
+	JDialog newDialog() {
+		if (dialog==null) {
+			try {
+				dialog=(JDialog) clazz.newInstance();
+			} catch (InstantiationException e) {
+				return null;
+			} catch (IllegalAccessException e) {
+				return null;
+			}
 		}
-		frame.doDefaultCloseAction();
+		return dialog;
 	}
-	
+
 }

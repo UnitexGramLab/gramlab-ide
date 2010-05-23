@@ -86,7 +86,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	JCheckBox leftCtxStopAtEOS  = new JCheckBox("", false);
 	JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
 	private JComboBox sortBox;
-	JCheckBox checkBox = new JCheckBox(
+	JCheckBox openWithBrowser = new JCheckBox(
 			"Use a web browser to view the concordance");
 	JTextField modifiedTxtFile = new JTextField("");
 	JTextField extractFile = new JTextField("");
@@ -383,12 +383,12 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		JPanel middlePanel = new JPanel();
 		middlePanel.setBorder(new TitledBorder("Concordance presentation"));
 		middlePanel.setLayout(new BorderLayout());
-		checkBox.addActionListener(new ActionListener(){
+		openWithBrowser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				useWebBrowser=checkBox.isSelected();
+				useWebBrowser=openWithBrowser.isSelected();
 				setTitle(""+useWebBrowser);
 			}});
-		middlePanel.add(checkBox, BorderLayout.CENTER);
+		middlePanel.add(openWithBrowser, BorderLayout.CENTER);
 		middlePanel.add(new JLabel(
 				"        (better for more than 2000 matches)"),
 				BorderLayout.SOUTH);
@@ -593,7 +593,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		UnitexFrame.getFrameManager().closeConcordanceFrame();
 		Launcher.exec(command, true, new ConcordanceDo(false,new File(Config
-				.getCurrentSntDir(), "concord.html"), checkBox.isSelected(),
+				.getCurrentSntDir(), "concord.html"), openWithBrowser.isSelected(),
 				width));
 	}
 
@@ -618,7 +618,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 						  .fontSize(Preferences.getConcordanceFontSize());
 			setVisible(false);
 			int width = 160;
-			Launcher.exec(command, true, new ConcordanceDo(true,outputHtmlFile, checkBox.isSelected(),
+			Launcher.exec(command, true, new ConcordanceDo(true,outputHtmlFile, openWithBrowser.isSelected(),
 					width));
 		}
 
@@ -695,5 +695,17 @@ public class ConcordanceParameterFrame extends JInternalFrame {
             UnitexFrame.getFrameManager().newStatisticsFrame(f,mode);
         }
 	    
+	}
+
+	void reset(int matches) {
+		numberOfMatches = null;
+		updateDiffButton();
+		/* TODO vérifier la limite sur les matches */
+		if (matches >= Config.MAXIMUM_UTTERANCE_NUMBER_TO_DISPLAY_WITH_JAVA) {
+			openWithBrowser.setSelected(true);
+		}
+		else {
+			openWithBrowser.setSelected(useWebBrowser);
+		}
 	}
 }

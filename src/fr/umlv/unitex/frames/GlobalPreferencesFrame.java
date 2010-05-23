@@ -451,7 +451,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		else {
 			packageDirectory.setText(pref.packagePath.getAbsolutePath());
 		}
-		repaint();
 	}
 	
 	public void addTextFontListener(FontListener listener) {
@@ -575,6 +574,14 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		p2.add(down,BorderLayout.SOUTH);
 		p.add(p2);
 		return p;
+	}
+
+
+	void reset() {
+		pref = Preferences.getCloneOfPreferences();
+		setTitle("Preferences for " + Config.getCurrentLanguage());
+		privateDirectory.setText(Config.getUserDir().getAbsolutePath());
+		refresh();
 	}
 	
 	
