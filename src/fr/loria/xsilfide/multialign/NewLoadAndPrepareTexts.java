@@ -58,7 +58,8 @@ public class NewLoadAndPrepareTexts {
     Cognates cogn;
     Properties prop = new Properties();
 
-    public NewLoadAndPrepareTexts(String fileName){
+    @SuppressWarnings("null")
+	public NewLoadAndPrepareTexts(String fileName){
 	XMLReader parser = null;
 
 	
