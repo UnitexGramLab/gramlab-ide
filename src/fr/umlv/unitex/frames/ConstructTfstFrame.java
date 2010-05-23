@@ -66,12 +66,9 @@ public class ConstructTfstFrame extends JInternalFrame {
   JCheckBox reconstrucao = new JCheckBox("Build clitic normalization grammar (available only for Portuguese (Portugal))");
   JCheckBox normFst = new JCheckBox(
       "Apply the Normalization grammar");
-
   JCheckBox cleanFst = new JCheckBox("Clean Text FST");
-
   JCheckBox elagFst = new JCheckBox("Normalize according to Elag tagset.def");
   JTextField normGrf = new JTextField(Config.getCurrentNormGraph().getAbsolutePath());
-
   JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
   JTextField tagger_data = new JTextField(new File(new File(Config.getUserCurrentLanguageDir(),"Dela")
                           ,"tagger_data_simple.bin").getAbsolutePath());
