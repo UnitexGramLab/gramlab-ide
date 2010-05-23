@@ -74,31 +74,26 @@ import fr.umlv.unitex.process.commands.Reg2GrfCommand;
  */
 public class LocateFrame extends JInternalFrame {
 
-	JRadioButton regularExpression = new JRadioButton("Regular expression:",
-			false);
-	public JRadioButton graph = new JRadioButton("Graph:", true);
+	JRadioButton regularExpression = new JRadioButton("Regular expression:");
+	JRadioButton graph = new JRadioButton("Graph:", true);
 	JTextField regExp = new JTextField();
-	public JTextField graphName = new JTextField();
-	JRadioButton shortestMatches = new JRadioButton("Shortest matches", false);
+	JTextField graphName = new JTextField();
+	JRadioButton shortestMatches = new JRadioButton("Shortest matches");
 	JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
-	JRadioButton allMatches = new JRadioButton("All matches", false);
+	JRadioButton allMatches = new JRadioButton("All matches");
 	JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account",true);
-	JRadioButton mergeOutputs = new JRadioButton("Merge with input text", false);
-	JRadioButton replaceOutputs = new JRadioButton(
-			"Replace recognized sequences", false);
+	JRadioButton mergeOutputs = new JRadioButton("Merge with input text");
+	JRadioButton replaceOutputs = new JRadioButton("Replace recognized sequences");
 	JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
-	JRadioButton indexAllMatches = new JRadioButton(
-			"Index all utterances in text", false);
+	JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text");
 	JTextField nMatches = new JTextField("200");
 	JRadioButton locateOnSnt = new JRadioButton("Paumier 2003, working on text (quicker)", true);
-	JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)", false);
-
+	JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)");
 	JRadioButton allowAmbiguousOutputs = new JRadioButton("Allow ambiguous outputs", true);
-    JRadioButton forbidAmbiguousOutputs = new JRadioButton("Forbid ambiguous outputs", false);
-    
+    JRadioButton forbidAmbiguousOutputs = new JRadioButton("Forbid ambiguous outputs");
     JRadioButton ignoreVariableErrors = new JRadioButton("Ignore variable errors", true);
-    JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error", false);
-    JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error", false);
+    JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error");
+    JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error");
 
     
 	LocateFrame() {
@@ -117,7 +112,6 @@ public class LocateFrame extends JInternalFrame {
 	private JTabbedPane constructPanel() {
 	    JTabbedPane tabbedPane=new JTabbedPane();
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setOpaque(true);
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		tabbedPane.addTab("Locate configuration",panel);
@@ -137,8 +131,7 @@ public class LocateFrame extends JInternalFrame {
         panel1.add(forbidAmbiguousOutputs);
         allowAmbiguousOutputs.setToolTipText("Displays all the outputs for every match");
         forbidAmbiguousOutputs.setToolTipText("Displays only one output per match (arbitrarily chosen)");
-        box.add(panel1);
-        
+        box.add(panel1);        
         JPanel panel2=new JPanel(new GridLayout(4,1));
         panel2.setBorder(BorderFactory.createTitledBorder("Variable error policy:"));
         ButtonGroup b2=new ButtonGroup();
@@ -153,6 +146,7 @@ public class LocateFrame extends JInternalFrame {
         exitOnVariableErrors.setToolTipText("Kills the program");
         backtrackOnVariableErrors.setToolTipText("Stop exploring the current path of the grammar");
         box.add(panel2);
+        /* This BorderLayout is important because it acts as a glue */
         box.add(new JPanel(new BorderLayout()));
         return box;
     }
@@ -214,7 +208,6 @@ public class LocateFrame extends JInternalFrame {
 		};
 		JButton searchButton = new JButton(searchAction);
 		b.add(searchButton, BorderLayout.CENTER);
-
 		JPanel textType = new JPanel(new GridLayout(2, 1));
 		textType.setBorder(BorderFactory
 				.createTitledBorder("Search algorithm:"));
@@ -288,7 +281,6 @@ public class LocateFrame extends JInternalFrame {
 			}
 		}
 		if (regularExpression.isSelected()) {
-			// we need to process a regular expression
 			if (regExp.getText().equals("")) {
 				JOptionPane.showMessageDialog(null,
 						"Empty regular expression !", "Error",
@@ -307,7 +299,7 @@ public class LocateFrame extends JInternalFrame {
 			commands.addCommand(grfCmd);
 			fst2 = new File(Config.getUserCurrentLanguageDir(), "regexp.fst2");
 		} else {
-			// we need to process a graph
+			/* If we need to process a graph */
 			if (graphName.getText().equals("")) {
 				JOptionPane.showMessageDialog(null,
 						"You must specify a graph name", "Error",
@@ -317,7 +309,6 @@ public class LocateFrame extends JInternalFrame {
 			String grfName = graphName.getText();
 			if (grfName.substring(grfName.length() - 3, grfName.length())
 					.equalsIgnoreCase("grf")) {
-				// we must compile the grf
 				Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
 						new File(grfName))
 						.enableLoopAndRecursionDetection(true)
@@ -329,7 +320,6 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				if (!(grfName.substring(grfName.length() - 4, grfName.length())
 						.equalsIgnoreCase("fst2"))) {
-					// if the extension is nor GRF neither FST2
 					JOptionPane.showMessageDialog(null,
 							"Invalid graph name extension !", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -499,7 +489,7 @@ public class LocateFrame extends JInternalFrame {
 	/**
 	 * Loads the content of a 'concord_tfst.n' file.
 	 */
-	static String readTfstInfo(File file) {
+	String readTfstInfo(File file) {
 		if (!file.exists()) {
 			return null;
 		}
