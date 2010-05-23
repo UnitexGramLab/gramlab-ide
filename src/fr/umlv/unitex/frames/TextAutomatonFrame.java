@@ -130,6 +130,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	private JButton RESET_SENTENCE_GRAPH;
 	public BoundsEditor boundsEditor;
 
+	
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
 		MyDropTarget.newDropTarget(this);

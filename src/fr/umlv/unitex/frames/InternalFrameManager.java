@@ -653,7 +653,6 @@ public class InternalFrameManager {
 	}
 
 	public XAlignFrame newXAlignFrame(File src,File dst,File alignment) {
-		/* TODO vérifier que les constructeurs des frame ne sont utilisés que dans les factory */
 		return (XAlignFrame) setup(xAlignFrameFactory.newXAlignFrame(src,dst,alignment),true);
 	}
 

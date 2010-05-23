@@ -101,6 +101,7 @@ public class LocateFrame extends JInternalFrame {
     JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error", false);
     JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error", false);
 
+    
 	LocateFrame() {
 		super("Locate Pattern",false, true);
 		setContentPane(constructPanel());
