@@ -63,7 +63,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.GraphAlignmentMenu;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.GraphSizeMenu;
 import fr.umlv.unitex.MyDropTarget;
@@ -603,8 +602,7 @@ public class UnitexFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					new GraphAlignmentMenu(f.graphicalZone.isGrid,
-							f.graphicalZone.nPixels);
+					frameManager.newGraphAlignmentDialog(f);
 				}
 			}
 		});

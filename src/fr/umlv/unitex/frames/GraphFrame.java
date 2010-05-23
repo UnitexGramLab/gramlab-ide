@@ -702,5 +702,40 @@ public class GraphFrame extends JInternalFrame {
 		mainPanel.revalidate();
 		mainPanel.repaint();
 	}
+
+	public void HTopAlign() {
+		graphicalZone.HTopAlign();
+		setModified(true);
+	}
+
+	public void HCenterAlign() {
+		graphicalZone.HCenterAlign();
+		setModified(true);
+	}
 	
+	public void HBottomAlign() {
+		graphicalZone.HBottomAlign();
+		setModified(true);
+	}
+
+	public void VLeftAlign() {
+		graphicalZone.VLeftAlign();
+		setModified(true);
+	}
+
+	public void VCenterAlign() {
+		graphicalZone.VCenterAlign();
+		setModified(true);
+	}
+
+	public void VRightAlign() {
+		graphicalZone.VRightAlign();
+		setModified(true);
+	}
+
+	public void setGrid(boolean b,int n) {
+		graphicalZone.setGrid(b,n);
+		setModified(true);
+	}
+
 } /* end of GraphFrame */
