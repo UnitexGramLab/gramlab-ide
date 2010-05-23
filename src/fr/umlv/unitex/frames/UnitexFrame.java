@@ -65,7 +65,6 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.Text;
 import fr.umlv.unitex.TextField;
 import fr.umlv.unitex.TfstTextField;
@@ -1373,7 +1372,7 @@ public class UnitexFrame extends JFrame {
 		subpane.setBorder(new TitledBorder("Flattening depth:"));
 		subpane.setLayout(new FlowLayout(SwingConstants.HORIZONTAL));
 		subpane.add(new JLabel("Maximum flattening depth: "));
-		NumericTextField depth = new NumericTextField(4, String.valueOf(10));
+		JTextField depth = new JTextField("10");
 		subpane.add(depth);
 		pane.add(rtn);
 		pane.add(fst);
@@ -1384,7 +1383,13 @@ public class UnitexFrame extends JFrame {
 		if (0 == JOptionPane.showOptionDialog(null, mainpane,
 				"Compile & Flatten", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0])) {
-			if (depth.getText().equals("") || depth.getText().equals("0")) {
+			int depthValue;
+			try {
+				depthValue=Integer.parseInt(depth.getText());
+			} catch (NumberFormatException e) {
+				depthValue=-1;
+			}
+			if (depthValue<1) {
 				JOptionPane.showMessageDialog(null, "Invalid depth value",
 						"Error", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -1396,7 +1401,7 @@ public class UnitexFrame extends JFrame {
 			MultiCommands commands = new MultiCommands();
 			commands.addCommand(new Grf2Fst2Command().grf(grf).enableLoopAndRecursionDetection(true).tokenizationMode().library());
 			commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
-					.resultType(!rtn.isSelected()).depth(depth.getText()));
+					.resultType(!rtn.isSelected()).depth(depthValue));
 			Launcher.exec(commands, false);
 		}
 	}

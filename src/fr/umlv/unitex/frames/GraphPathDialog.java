@@ -47,7 +47,6 @@ import javax.swing.JTextField;
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.NumericTextField;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.Launcher;
@@ -66,7 +65,7 @@ public class GraphPathDialog extends JDialog {
 	BigTextList textArea = new BigTextList();
 	JTextField graphName = new JTextField();
 	JCheckBox limit;
-	NumericTextField limitSize;
+	JTextField limitSize;
 	JRadioButton ignoreOutputs;
 	JRadioButton separateOutputs;
 	JRadioButton mergeOutputs;
@@ -139,14 +138,17 @@ public class GraphPathDialog extends JDialog {
 				Grf2Fst2Command grfCmd = new Grf2Fst2Command();
 				File fst2;
 				File list; //output file name
+				int n;
 				if (limit.isSelected()) {
-					if (limitSize.getText().equals("")) {
+					try {
+						n=Integer.parseInt(limitSize.getText());
+					} catch (NumberFormatException e) {
 						JOptionPane.showMessageDialog(null,
-								"You must specify a limit", "Error",
+								"You must specify a valid limit", "Error",
 								JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					cmd = cmd.limit(limitSize.getText());
+					cmd = cmd.limit(n);
 				} else {
 					cmd = cmd.noLimit();
 				}
@@ -202,7 +204,7 @@ public class GraphPathDialog extends JDialog {
 	private JPanel constructLimitPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		limit = new JCheckBox("Maximum number of sequences: ", true);
-		limitSize = new NumericTextField("100");
+		limitSize = new JTextField("100");
 		limitSize.setPreferredSize(new Dimension(50, 20));
 		panel.add(limit, BorderLayout.WEST);
 		panel.add(limitSize, BorderLayout.CENTER);
