@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -36,12 +36,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.NumericTextField;
 
 /**
  * This class describes a dialog box that allows the user to align the current
@@ -51,112 +49,81 @@ import fr.umlv.unitex.frames.UnitexFrame;
  * @author Sébastien Paumier
  *  
  */
-public class GraphAlignmentMenu extends JDialog {
+public class GraphAlignmentDialog extends JDialog {
 
 	GridBagLayout horizGridBag = new GridBagLayout();
 	GridBagLayout vertGridBag = new GridBagLayout();
-	//GridBagConstraints horizConstraints= new GridBagConstraints();
 	GridBagConstraints vertConstraints = new GridBagConstraints();
-	JCheckBox checkBox = new JCheckBox();
-	NumericTextField nPixels = new NumericTextField(3, String.valueOf(nPix));
+	JCheckBox showGrid = new JCheckBox();
+	NumericTextField nPixels = new NumericTextField(3,"");
 
-	static GraphAlignmentMenu pref;
+	int nPix = 30;
 
-	static int nPix = 30;
-
+	GraphFrame f;
+	
 	/**
 	 * Constructs a new <code>GraphAlignmentMenu</code>.
 	 * 
 	 * @param isGrid
-	 *            indicates if there is a grid in backend
+	 *            indicates if there is a grid in background
 	 * @param nPix
 	 *            size of the grid's cells
 	 */
-	public GraphAlignmentMenu(boolean isGrid, int nPix) {
+	GraphAlignmentDialog(GraphFrame f) {
 		super(UnitexFrame.mainFrame, "Alignment", true);
+		configure(f);
 		setContentPane(constructPanel());
 		pack();
 		setResizable(false);
-		pref = this;
-		nPixels.setEditable(isGrid);
-		nPixels.setText(new Integer(nPix).toString());
-		checkBox.setSelected(isGrid);
-		showPreferences();
+		nPixels.setEditable(f.graphicalZone.isGrid);
+		nPix=f.graphicalZone.nPixels;
+		nPixels.setText(nPix+"");
+		showGrid.setSelected(f.graphicalZone.isGrid);
+		setLocationRelativeTo(UnitexFrame.mainFrame);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
 
-	/**
-	 * Shows the dialog box
-	 *  
-	 */
-	public void showPreferences() {
-		setLocationRelativeTo(UnitexFrame.mainFrame);
-		this.setVisible(true);
-	}
 
 	private JPanel constructPanel() {
 		Action topAction = new AbstractAction("Top") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				f.graphicalZone.HTopAlign();
-				f.setModified(true);
+				setVisible(false);
+				f.HTopAlign();
 			}
 		};
 		JButton top = new JButton(topAction);
 		Action centerHAction = new AbstractAction("Center") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				f.graphicalZone.HCenterAlign();
-				f.setModified(true);
+				setVisible(false);
+				f.HCenterAlign();
 			}
 		};
 		JButton centerH = new JButton(centerHAction);
 		Action bottomAction = new AbstractAction("Bottom") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				f.graphicalZone.HBottomAlign();
-				f.setModified(true);
+				setVisible(false);
+				f.HBottomAlign();
 			}
 		};
 		JButton bottom = new JButton(bottomAction);
 		Action leftAction = new AbstractAction("Left") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				f.graphicalZone.VLeftAlign();
-				f.setModified(true);
+				setVisible(false);
+				f.VLeftAlign();
 			}
 		};
 		JButton left = new JButton(leftAction);
 		Action centerVAction = new AbstractAction("Center") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				f.graphicalZone.VCenterAlign();
-				f.setModified(true);
+				setVisible(false);
+				f.VCenterAlign();
 			}
 		};
 		JButton centerV = new JButton(centerVAction);
 		Action rightAction = new AbstractAction("Right") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				f.graphicalZone.VRightAlign();
-				f.setModified(true);
+				setVisible(false);
+				f.VRightAlign();
 			}
 		};
 		JButton right = new JButton(rightAction);
@@ -164,36 +131,28 @@ public class GraphAlignmentMenu extends JDialog {
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
+				if (!showGrid.isSelected()) {
+					setVisible(false);
+					f.setGrid(false,-1);
+					return;
+				}
 				int n;
-				GraphFrame f = UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame();
-				if (f == null)
-					return;
-				JCheckBox c = GraphAlignmentMenu.pref.checkBox;
-				if (!c.isSelected()) {
-					f.setModified(true);
-					f.graphicalZone.setGrid(false);
-					GraphAlignmentMenu.pref.setVisible(false);
+				try {
+					n=Integer.valueOf(nPixels.getText()).intValue();
+				} catch (NumberFormatException e) {
 					return;
 				}
-				if (GraphAlignmentMenu.pref.nPixels.getText().equals("")) {
-					return;
+				if (n<10) {
+					n=10;
 				}
-				n = Util.toInt(GraphAlignmentMenu.pref.nPixels.getText());
-				if (n < 10) {
-					GraphAlignmentMenu.pref.nPixels.setText("10");
-					GraphAlignmentMenu.nPix = 10;
-					return;
-				}
-				GraphAlignmentMenu.nPix = n;
-				f.graphicalZone.setGrid(true, n);
-				f.setModified(true);
-				GraphAlignmentMenu.pref.setVisible(false);
+				setVisible(false);
+				f.setGrid(true,n);
 			}
 		};
 		JButton OK = new JButton(okAction);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				GraphAlignmentMenu.pref.setVisible(false);
+				setVisible(false);
 			}
 		};
 		JButton CANCEL = new JButton(cancelAction);
@@ -221,15 +180,12 @@ public class GraphAlignmentMenu extends JDialog {
 		centerPanel.add(horizontal);
 		centerPanel.add(vertical);
 		JPanel southPanel = new JPanel();
-		checkBox.addItemListener(new ItemListener() {
+		showGrid.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                JTextField t = GraphAlignmentMenu.pref.nPixels;
-                if (GraphAlignmentMenu.pref.checkBox.isSelected())
-                    t.setEditable(true);
-                else
-                    t.setEditable(false);
-            }});
-		southPanel.add(checkBox);
+            	nPixels.setEditable(showGrid.isSelected());
+            }
+        });
+		southPanel.add(showGrid);
 		southPanel.add(new JLabel("Use Grid, every"));
 		southPanel.add(nPixels);
 		southPanel.add(new JLabel("pixels"));
@@ -242,4 +198,15 @@ public class GraphAlignmentMenu extends JDialog {
 		return panel;
 	}
 
+	
+	void configure(GraphFrame frame) {
+		this.f=frame;
+		showGrid.setSelected(f.graphicalZone.isGrid);
+		nPixels.setEnabled(f.graphicalZone.isGrid);
+		int n=f.graphicalZone.nPixels;
+		if (n<10) {
+			n=10;
+		}
+		nPixels.setText(n+"");
+	}
 }
