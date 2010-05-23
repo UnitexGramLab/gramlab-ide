@@ -106,7 +106,7 @@ public class LocateFrame extends JInternalFrame {
 		setContentPane(constructPanel());
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
+		Preferences.addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				regExp.setFont(font);
 			}

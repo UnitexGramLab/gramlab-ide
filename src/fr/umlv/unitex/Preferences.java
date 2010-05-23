@@ -238,6 +238,8 @@ public class Preferences {
 
 	private void setPreferences(Preferences p) {
 		pref = p;
+		fireTextFontChanged(pref.textFont.font);
+		fireConcordanceFontChanged(pref.concordanceFont.font);
 	}
 
 	/**
@@ -435,6 +437,56 @@ public class Preferences {
 		return pref.info.input.size;
 	}
 
+	
+	private ArrayList<FontListener> textFontListeners=new ArrayList<FontListener>(); 
+	private ArrayList<FontListener> concordanceFontListeners=new ArrayList<FontListener>(); 
+	
+	public static void addTextFontListener(FontListener listener) {
+		pref.textFontListeners.add(listener);
+	}
+
+	protected boolean firingTextFont=false;
+	public static void removeTextFontListener(FontListener listener) {
+		if (pref.firingTextFont) {
+			throw new IllegalStateException("Should not try to remove a listener while firing");
+		}
+		pref.textFontListeners.remove(listener);
+	}
+
+	protected void fireTextFontChanged(Font font) {
+		firingTextFont = true;
+		try {
+			for (FontListener listener : textFontListeners) {
+				listener.fontChanged(font);
+			}
+		} finally {
+			firingTextFont = false;
+		}
+	}
+	
+	public static void addConcordanceFontListener(FontListener listener) {
+		pref.concordanceFontListeners.add(listener);
+	}
+
+	protected boolean firingConcordanceFont=false;
+	public static void removeConcordanceFontListener(FontListener listener) {
+		if (pref.firingConcordanceFont) {
+			throw new IllegalStateException("Should not try to remove a listener while firing");
+		}
+		pref.concordanceFontListeners.remove(listener);
+	}
+
+	protected void fireConcordanceFontChanged(Font font) {
+		firingConcordanceFont = true;
+		try {
+			for (FontListener listener : concordanceFontListeners) {
+				listener.fontChanged(font);
+			}
+		} finally {
+			firingConcordanceFont = false;
+		}
+	}
+	
 
 
 }

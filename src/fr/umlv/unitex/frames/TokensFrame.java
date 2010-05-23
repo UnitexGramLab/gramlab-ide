@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -40,16 +39,15 @@ import javax.swing.event.InternalFrameEvent;
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-
+import fr.umlv.unitex.Preferences;
 
 /**
  * This class describes a frame used to display current corpus's token lists.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class TokensFrame extends JInternalFrame {
-
 	BigTextList text = new BigTextList(false);
 
 	TokensFrame() {
@@ -72,11 +70,11 @@ public class TokensFrame extends JInternalFrame {
 				}
 			}
 		});
-		/* TODO nettoyer les preferences */
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addTextFontListener(new FontListener() {
+		Preferences.addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				text.setFont(font);
-			}});
+			}
+		});
 	}
 
 	private JPanel constructButtonsPanel() {
@@ -84,7 +82,8 @@ public class TokensFrame extends JInternalFrame {
 		buttonsPanel.setOpaque(true);
 		Action frequenceAction = new AbstractAction("By Frequence") {
 			public void actionPerformed(ActionEvent arg0) {
-				loadTokens(new File(Config.getCurrentSntDir(),"tok_by_freq.txt"));
+				loadTokens(new File(Config.getCurrentSntDir(),
+						"tok_by_freq.txt"));
 				try {
 					setIcon(false);
 					setSelected(true);
@@ -96,17 +95,17 @@ public class TokensFrame extends JInternalFrame {
 		JButton byFrequence = new JButton(frequenceAction);
 		Action orderAction = new AbstractAction("By Char Order") {
 			public void actionPerformed(ActionEvent arg0) {
-                loadTokens(new File(Config.getCurrentSntDir(),"tok_by_alph.txt"));
-                try {
-                    setIcon(false);
-                    setSelected(true);
-                } catch (java.beans.PropertyVetoException e2) {
-                	e2.printStackTrace();
-                }
+				loadTokens(new File(Config.getCurrentSntDir(),
+						"tok_by_alph.txt"));
+				try {
+					setIcon(false);
+					setSelected(true);
+				} catch (java.beans.PropertyVetoException e2) {
+					e2.printStackTrace();
+				}
 			}
 		};
 		JButton byCharOrder = new JButton(orderAction);
-
 		JPanel tmp1 = new JPanel(new BorderLayout());
 		tmp1.setOpaque(true);
 		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -137,12 +136,11 @@ public class TokensFrame extends JInternalFrame {
 
 	/**
 	 * Hides the frame
-	 *  
+	 * 
 	 */
 	void hideFrame() {
 		text.reset();
 		setVisible(false);
 		System.gc();
 	}
-
 }

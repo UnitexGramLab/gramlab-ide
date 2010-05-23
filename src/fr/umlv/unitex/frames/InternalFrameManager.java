@@ -431,11 +431,6 @@ public class InternalFrameManager {
 		globalPreferencesFrameFactory.closeFrame();
 	}
 
-	public GlobalPreferencesFrame getGlobalPreferencesFrame() {
-		/* TODO à virer quand le TextFontListener sera dans Pref */
-		return (GlobalPreferencesFrame) globalPreferencesFrameFactory.newFrame();
-	}
-
 	public GraphPathDialog newGraphPathDialog() {
 		GraphFrame gf = getCurrentFocusedGraphFrame();
 		if (gf == null) {

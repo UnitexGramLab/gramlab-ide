@@ -158,7 +158,7 @@ public class ConcordanceFrame extends JInternalFrame {
 		d.setSize((g < 800) ? g : 800, d.height);
 		setSize(d);
 		Util.getHtmlPageTitle(concor);
-		UnitexFrame.getFrameManager().getGlobalPreferencesFrame().addConcordanceFontListener(new FontListener() {
+		Preferences.addConcordanceFontListener(new FontListener() {
 			public void fontChanged(Font font) {
 				list.setFont(font);
 			}
