@@ -213,10 +213,10 @@ public class Preferences {
 		boolean frame = Boolean.valueOf(prop.getProperty("FRAME")).booleanValue();
 		boolean antialiasing = Boolean.valueOf(prop.getProperty("ANTIALIASING")).booleanValue();
 		String iconBarPosition = prop.getProperty("ICON BAR POSITION");
+		rightToLeft = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT")).booleanValue();
 		info=new GraphPresentationInfo(backgroundColor, foregroundColor, subgraphColor, selectedColor, 
 				commentColor, packageColor, contextColor, morphologicalModeColor, input, output, 
-				date, filename, pathname, frame, frame, antialiasing, iconBarPosition);
-		rightToLeft = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT")).booleanValue();
+				date, filename, pathname, frame, rightToLeft, antialiasing, iconBarPosition);
 		String s = prop.getProperty("HTML VIEWER");
 		htmlViewer = (s == null || s.equals("")) ? null : new File(s);
 		morphologicalDic = tokenizeMorphologicalDicList(prop.getProperty("MORPHOLOGICAL DICTIONARY"));
