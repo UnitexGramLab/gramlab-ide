@@ -29,6 +29,7 @@ import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
 
@@ -54,12 +55,12 @@ public class GraphCollection {
     */
    public static void build(File srcDir, File destGraph, boolean copy) {
       stop= false;
-      UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
+      MessageWhileWorkingFrame f=UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
       buildGraphCollection(
          srcDir,
          destGraph,
          copy,
-         UnitexFrame.getFrameManager().getMessageWhileWorkingFrame().getLabel());
+         f.getLabel());
       UnitexFrame.getFrameManager().closeMessageWhileWorkingFrame();
    }
 

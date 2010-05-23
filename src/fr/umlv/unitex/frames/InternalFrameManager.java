@@ -29,6 +29,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
@@ -46,42 +47,43 @@ public class InternalFrameManager {
 
 	JDesktopPane desktop;
 	private final static Integer LAYER=Integer.valueOf(1);
+	private FrameFactory delaFrameFactory=new FrameFactory(DelaFrame.class);
+	private FrameFactory aboutUnitexFrameFactory=new FrameFactory(AboutUnitexFrame.class);
+	private FrameFactory applyLexicalResourcesFrameFactory=new FrameFactory(ApplyLexicalResourcesFrame.class);
+	private FrameFactory checkDicFrameFactory=new FrameFactory(CheckDicFrame.class);
+	private FrameFactory checkResultFrameFactory=new FrameFactory(CheckResultFrame.class);
+	private FrameFactory concordanceDiffFrameFactory=new FrameFactory(ConcordanceDiffFrame.class);
+	private FrameFactory concordanceParameterFrameFactory=new FrameFactory(ConcordanceParameterFrame.class);
+	private FrameFactory constructTfstFrameFactory=new FrameFactory(ConstructTfstFrame.class);
+	private FrameFactory convertTfstToTextFrameFactory=new FrameFactory(ConvertTfstToTextFrame.class);
+	private FrameFactory elagCompFrameFactory=new FrameFactory(ElagCompFrame.class);
+	private FrameFactory globalPreferencesFrameFactory=new FrameFactory(GlobalPreferencesFrame.class);
+	private FrameFactory graphCollectionFrameFactory=new FrameFactory(GraphCollectionFrame.class);
+	private FrameFactory inflectFrameFactory=new FrameFactory(InflectFrame.class);
+	private FrameFactory convertLexiconGrammarFrameFactory=new FrameFactory(ConvertLexiconGrammarFrame.class);
+	private FrameFactory locateFrameFactory=new FrameFactory(LocateFrame.class);
+	private FrameFactory messageWhileWorkingFrameFactory=new FrameFactory(MessageWhileWorkingFrame.class);
+	private FrameFactory helpOnCommandFrameFactory=new FrameFactory(HelpOnCommandFrame.class);
+	private FrameFactory transcodingFrameFactory=new FrameFactory(TranscodingFrame.class);
+	private FrameFactory consoleFrameFactory=new FrameFactory(ConsoleFrame.class);
+	private FrameFactory xAlignLocateFrameFactory=new FrameFactory(XAlignLocateFrame.class);
+
+	private FileEditionTextFrameFactory fileEditionTextFrameFactory=new FileEditionTextFrameFactory();
+	private FrameFactory xAlignConfigFrameFactory=new FrameFactory(XAlignConfigFrame.class);
 	private GraphFrameFactory graphFrameFactory=new GraphFrameFactory();
 	private TextFrameFactory textFrameFactory=new TextFrameFactory();
-	private DelaFrameFactory delaFrameFactory=new DelaFrameFactory();
 	private TokensFrameFactory tokensFrameFactory=new TokensFrameFactory();
 	private TextDicFrameFactory textDicFrameFactory=new TextDicFrameFactory();
 	private TextAutomatonFrameFactory textAutomatonFrameFactory=new TextAutomatonFrameFactory();
-	private AboutUnitexFrameFactory aboutUnitexFrameFactory=new AboutUnitexFrameFactory();
-	private ApplyLexicalResourcesFrameFactory applyLexicalResourcesFrameFactory=new ApplyLexicalResourcesFrameFactory();
-	private CheckDicFrameFactory checkDicFrameFactory=new CheckDicFrameFactory();
-	private CheckResultFrameFactory checkResultFrameFactory=new CheckResultFrameFactory();
-	private ConcordanceDiffFrameFactory concordanceDiffFrameFactory=new ConcordanceDiffFrameFactory();
 	private ConcordanceFrameFactory concordanceFrameFactory=new ConcordanceFrameFactory();
-	private ConcordanceParameterFrameFactory concordanceParameterFrameFactory=new ConcordanceParameterFrameFactory();
-	private ConstructTfstFrameFactory constructTfstFrameFactory=new ConstructTfstFrameFactory();
-	private ConvertTfstToTextFrameFactory convertTfstToTextFrameFactory=new ConvertTfstToTextFrameFactory();
-	private ElagCompFrameFactory elagCompFrameFactory=new ElagCompFrameFactory();
-	private GlobalPreferencesFrameFactory globalPreferencesFrameFactory=new GlobalPreferencesFrameFactory();
-	private GraphCollectionFrameFactory graphCollectionFrameFactory=new GraphCollectionFrameFactory();
-	private InflectFrameFactory inflectFrameFactory=new InflectFrameFactory();
-	private ConvertLexiconGrammarFrameFactory convertLexiconGrammarFrameFactory=new ConvertLexiconGrammarFrameFactory();
 	private LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory=new LexiconGrammarTableFrameFactory();
-	private LocateFrameFactory locateFrameFactory=new LocateFrameFactory();
-	private MessageWhileWorkingFrameFactory messageWhileWorkingFrameFactory=new MessageWhileWorkingFrameFactory();
 	private StatisticsFrameFactory statisticsFrameFactory=new StatisticsFrameFactory();
-	private HelpOnCommandFrameFactory helpOnCommandFrameFactory=new HelpOnCommandFrameFactory();
-	private ProcessInfoFrameFactory processInfoFrameFactory=new ProcessInfoFrameFactory();
-	private TranscodingFrameFactory transcodingFrameFactory=new TranscodingFrameFactory();
-	private ConsoleFrameFactory consoleFrameFactory=new ConsoleFrameFactory();
-	private FileEditionTextFrameFactory fileEditionTextFrameFactory=new FileEditionTextFrameFactory();
-	private XAlignConfigFrameFactory xAlignConfigFrameFactory=new XAlignConfigFrameFactory();
 	private XAlignFrameFactory xAlignFrameFactory=new XAlignFrameFactory();
-	private XAlignLocateFrameFactory xAlignLocateFrameFactory=new XAlignLocateFrameFactory();
 	
-	private GraphPathDialogFactory graphPathDialogFactory=new GraphPathDialogFactory();
+	private DialogFactory graphPathDialogFactory=new DialogFactory(GraphPathDialog.class);
+	private DialogFactory transcodeOneFileDialogFactory=new DialogFactory(TranscodeOneFileDialog.class);
+	
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
-	private TranscodeOneFileDialogFactory transcodeOneFileDialogFactory=new TranscodeOneFileDialogFactory();
 	private FontDialogFactory fontDialogFactory=new FontDialogFactory();
 	private GraphPresentationDialogFactory graphPresentationDialogFactory=new GraphPresentationDialogFactory();
 	private GraphAlignmentDialogFactory graphAlignmentDialogFactory=new GraphAlignmentDialogFactory();
@@ -110,6 +112,28 @@ public class InternalFrameManager {
 	}
 
 	
+	public JInternalFrame setup(JInternalFrame f) {
+		return setup(f,false,false);
+	}
+	
+	public JInternalFrame setup(JInternalFrame f,boolean removeOnClose) {
+		return setup(f,removeOnClose,false);
+	}
+	
+	public JInternalFrame setup(JInternalFrame f,boolean removeOnClose,boolean iconify) {
+		if (f==null) return null;
+		addToDesktopIfNecessary(f,removeOnClose);
+		f.setVisible(true);
+		try {
+			f.setSelected(true);
+			f.setIcon(iconify);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
+	
 	/**
 	 * Creates a GraphFrame for the given .grf file.
 	 * If a frame for 'grf' already exists, then it is made visible.
@@ -120,17 +144,7 @@ public class InternalFrameManager {
 	 * @return
 	 */
 	public GraphFrame newGraphFrame(File grf) {
-		GraphFrame g=graphFrameFactory.getGraphFrame(grf);
-		if (g==null) return null;
-		addToDesktopIfNecessary(g,true);
-		g.setVisible(true);
-		try {
-			g.setSelected(true);
-			g.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return g;
+		return (GraphFrame) setup(graphFrameFactory.getGraphFrame(grf),true);
 	}
 
 	public void closeAllGraphFrames() {
@@ -171,14 +185,7 @@ public class InternalFrameManager {
 				fireTextFrameClosed();
 			}
 		});
-		addToDesktopIfNecessary(t,true);
-		t.setVisible(true);
-		try {
-			t.setSelected(true);
-			t.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		setup(t,true);
 		fireTextFrameOpened(taggedText);
 		return t;
 	}
@@ -228,29 +235,28 @@ public class InternalFrameManager {
 	}
 
 	
-	public DelaFrame newDelaFrame(File dela) {
-		DelaFrame f=delaFrameFactory.newDelaFrame(dela);
-		if (f==null) return null;
-		f.addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameClosing(InternalFrameEvent e) {
-				fireDelaFrameClosed();
-			}
-		});
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
+	private InternalFrameListener delaFrameListener=new InternalFrameAdapter() {
+		@Override
+		public void internalFrameClosing(InternalFrameEvent e) {
+			fireDelaFrameClosed();
 		}
+	};
+
+	public DelaFrame newDelaFrame(File dela) {
+		DelaFrame f=(DelaFrame) delaFrameFactory.newFrame();
+		if (f==null) return null;
+		f.loadDela(dela);
+		/* We don't want to add the same listener twice, so we remove it
+		 * and then add it */
+		f.removeInternalFrameListener(delaFrameListener);
+		f.addInternalFrameListener(delaFrameListener);
+		setup(f);
 		fireDelaFrameOpened();
 		return f;
 	}
 	
 	public void closeDelaFrame() {
-		delaFrameFactory.closeDelaFrame();
+		delaFrameFactory.closeFrame();
 	}
 
 	private ArrayList<DelaFrameListener> delaFrameListeners=new ArrayList<DelaFrameListener>();
@@ -291,17 +297,7 @@ public class InternalFrameManager {
 
 	
 	public TokensFrame newTokensFrame(File tokens) {
-		TokensFrame f=tokensFrameFactory.newTokensFrame(tokens);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (TokensFrame) setup(tokensFrameFactory.newTokensFrame(tokens),false,true);
 	}
 	
 	public void closeTokensFrame() {
@@ -309,17 +305,7 @@ public class InternalFrameManager {
 	}
 
 	public TextDicFrame newTextDicFrame(File sntDir,boolean iconify) {
-		TextDicFrame f=textDicFrameFactory.newTextDicFrame(sntDir);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(iconify);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (TextDicFrame) setup(textDicFrameFactory.newTextDicFrame(sntDir),false,iconify);
 	}
 	
 	public void closeTextDicFrame() {
@@ -332,17 +318,7 @@ public class InternalFrameManager {
 	}
 	
 	public TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
-		TextAutomatonFrame f=textAutomatonFrameFactory.newTextAutomatonFrame(sentenceNumber);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (TextAutomatonFrame) setup(textAutomatonFrameFactory.newTextAutomatonFrame(sentenceNumber),false,true);
 	}
 	
 	public void closeTextAutomatonFrame() {
@@ -350,211 +326,126 @@ public class InternalFrameManager {
 	}
 
 	public AboutUnitexFrame newAboutUnitexFrame() {
-		AboutUnitexFrame f=aboutUnitexFrameFactory.newAboutUnitexFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (AboutUnitexFrame) setup(aboutUnitexFrameFactory.newFrame());
 	}
 
 
 	public ApplyLexicalResourcesFrame newApplyLexicalResourcesFrame() {
-		ApplyLexicalResourcesFrame f=applyLexicalResourcesFrameFactory.newApplyLexicalResourcesFrame();
+		ApplyLexicalResourcesFrame f=(ApplyLexicalResourcesFrame) applyLexicalResourcesFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.refreshDicLists();
+		setup(f);
 		return f;
 	}
 
 	public void closeApplyLexicalResourcesFrame() {
-		applyLexicalResourcesFrameFactory.closeApplyLexicalResourcesFrame();
+		applyLexicalResourcesFrameFactory.closeFrame();
 	}
 
 	public CheckDicFrame newCheckDicFrame() {
-		CheckDicFrame f=checkDicFrameFactory.newCheckDicFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (CheckDicFrame) setup(checkDicFrameFactory.newFrame());
 	}
 
 	public void closeCheckDicFrame() {
-		checkDicFrameFactory.closeCheckDicFrame();
+		checkDicFrameFactory.closeFrame();
 	}
 
 	public CheckResultFrame newCheckResultFrame(File file) {
-		CheckResultFrame f=checkResultFrameFactory.newCheckResultFrame(file);
+		CheckResultFrame f=(CheckResultFrame)checkResultFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.load(file);
+		setup(f);
 		return f;
 	}
 
 	public void closeCheckResultFrame() {
-		checkResultFrameFactory.closeCheckResultFrame();
+		checkResultFrameFactory.closeFrame();
 	}
 
 	public ConcordanceDiffFrame newConcordanceDiffFrame(File file,int widthInChars) {
-		ConcordanceDiffFrame f=concordanceDiffFrameFactory.newConcordanceDiffFrame(file,widthInChars);
+		ConcordanceDiffFrame f=(ConcordanceDiffFrame) concordanceDiffFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.load(file,widthInChars);
+		setup(f);
 		return f;
 	}
 
 	public void closeConcordanceDiffFrame() {
-		concordanceDiffFrameFactory.closeConcordanceDiffFrame();
+		concordanceDiffFrameFactory.closeFrame();
 	}
 
-
 	public ConcordanceFrame newConcordanceFrame(File file,int widthInChars) {
-		ConcordanceFrame f=concordanceFrameFactory.newConcordanceFrame(file,widthInChars);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (ConcordanceFrame) setup(concordanceFrameFactory.newConcordanceFrame(file,widthInChars),true);
 	}
 
 	public void closeConcordanceFrame() {
 		concordanceFrameFactory.closeConcordanceFrame();
 	}
 
-
 	public ConcordanceParameterFrame newConcordanceParameterFrame() {
 		return newConcordanceParameterFrame(-1);
 	}
 	
 	public ConcordanceParameterFrame newConcordanceParameterFrame(int matches) {
-		ConcordanceParameterFrame f=concordanceParameterFrameFactory.newConcordanceParameterFrame(matches);
+		ConcordanceParameterFrame f=(ConcordanceParameterFrame) concordanceParameterFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.reset(matches);
+		setup(f);
 		return f;
 	}
 
 	public void closeConcordanceParameterFrame() {
-		concordanceParameterFrameFactory.closeConcordanceParameterFrame();
+		concordanceParameterFrameFactory.closeFrame();
 	}
 
-
 	public ConstructTfstFrame newConstructTfstFrame() {
-		ConstructTfstFrame f=constructTfstFrameFactory.newConstructTfstFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (ConstructTfstFrame) setup(constructTfstFrameFactory.newFrame());
 	}
 
 	public void closeConstructTfstFrame() {
-		constructTfstFrameFactory.closeConstructTfstFrame();
+		constructTfstFrameFactory.closeFrame();
 	}
 
-
 	public ConvertTfstToTextFrame newConvertTfstToTextFrame() {
-		ConvertTfstToTextFrame f=convertTfstToTextFrameFactory.newConvertTfstToTextFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (ConvertTfstToTextFrame) setup(convertTfstToTextFrameFactory.newFrame());
 	}
 
 	public void closeConvertTfstToTextFrame() {
-		convertTfstToTextFrameFactory.closeConvertTfstToTextFrame();
+		convertTfstToTextFrameFactory.closeFrame();
 	}
 
-
 	public ElagCompFrame newElagCompFrame() {
-		ElagCompFrame f=elagCompFrameFactory.newElagCompFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return (ElagCompFrame) setup(elagCompFrameFactory.newFrame());
 	}
 
 	public void closeElagCompFrame() {
-		elagCompFrameFactory.closeElagCompFrame();
+		elagCompFrameFactory.closeFrame();
 	}
 
 
 	public GlobalPreferencesFrame newGlobalPreferencesFrame() {
-		GlobalPreferencesFrame f=globalPreferencesFrameFactory.newGlobalPreferencesFrame();
+		GlobalPreferencesFrame f=(GlobalPreferencesFrame) globalPreferencesFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		/* TODO factoriser le code des factory identiques */
+		f.reset();
+		setup(f);
 		return f;
 	}
 
 	public void closeGlobalPreferencesFrame() {
-		globalPreferencesFrameFactory.closeGlobalPreferencesFrame();
+		globalPreferencesFrameFactory.closeFrame();
 	}
 
 	public GlobalPreferencesFrame getGlobalPreferencesFrame() {
-		return globalPreferencesFrameFactory.getGlobalPreferencesFrame();
+		/* TODO à virer quand le TextFontListener sera dans Pref */
+		return (GlobalPreferencesFrame) globalPreferencesFrameFactory.newFrame();
 	}
-
 
 	public GraphPathDialog newGraphPathDialog() {
 		GraphFrame gf = getCurrentFocusedGraphFrame();
 		if (gf == null) {
 			return null;
 		}
-		GraphPathDialog d=graphPathDialogFactory.newGraphPathDialog();
+		GraphPathDialog d=(GraphPathDialog) graphPathDialogFactory.newDialog();
 		if (d==null) return null;
 		d.graphName.setText(gf.getGraph().getAbsolutePath());
 		d.setVisible(true);
@@ -563,55 +454,27 @@ public class InternalFrameManager {
 
 
 	public GraphCollectionFrame newGraphCollectionFrame() {
-		GraphCollectionFrame f=graphCollectionFrameFactory.newGraphCollectionFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (GraphCollectionFrame) setup(graphCollectionFrameFactory.newFrame());
 	}
 
 	public void closeGraphCollectionFrame() {
-		graphCollectionFrameFactory.closeGraphCollectionFrame();
+		graphCollectionFrameFactory.closeFrame();
 	}
 
-
 	public InflectFrame newInflectFrame() {
-		InflectFrame f=inflectFrameFactory.newInflectFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (InflectFrame) setup(inflectFrameFactory.newFrame());
 	}
 
 	public void closeInflectFrame() {
-		inflectFrameFactory.closeInflectFrame();
+		inflectFrameFactory.closeFrame();
 	}
 
 	public ConvertLexiconGrammarFrame newConvertLexiconGrammarFrame() {
-		ConvertLexiconGrammarFrame f=convertLexiconGrammarFrameFactory.newConvertLexiconGrammarFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (ConvertLexiconGrammarFrame) setup(convertLexiconGrammarFrameFactory.newFrame());
 	}
 
 	public void closeConvertLexiconGrammarFrame() {
-		convertLexiconGrammarFrameFactory.closeConvertLexiconGrammarFrame();
+		convertLexiconGrammarFrameFactory.closeFrame();
 	}
 
 
@@ -653,16 +516,7 @@ public class InternalFrameManager {
 	}
 
 	public LexiconGrammarTableFrame newLexiconGrammarTableFrame(File file) {
-		LexiconGrammarTableFrame f=lexiconGrammarTableFrameFactory.newLexiconGrammarTableFrame(file);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (LexiconGrammarTableFrame) setup(lexiconGrammarTableFrameFactory.newLexiconGrammarTableFrame(file),true);
 	}
 
 	public void closeLexiconGrammarTableFrame() {
@@ -674,44 +528,32 @@ public class InternalFrameManager {
 	}
 	
 	public LocateFrame newLocateFrame(File grf) {
-		LocateFrame f=locateFrameFactory.newLocateFrame(grf);
+		LocateFrame f=(LocateFrame) locateFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
+		if (grf!=null) {
+	        f.graphName.setText(grf.getAbsolutePath());
+	        f.graph.setSelected(true);
 		}
+		setup(f);
 		return f;
 	}
 
 	public void closeLocateFrame() {
-		locateFrameFactory.closeLocateFrame();
+		locateFrameFactory.closeFrame();
 	}
 
-
 	public MessageWhileWorkingFrame newMessageWhileWorkingFrame(String title) {
-		MessageWhileWorkingFrame f=messageWhileWorkingFrameFactory.newMessageWhileWorkingFrame(title);
+		MessageWhileWorkingFrame f=(MessageWhileWorkingFrame) messageWhileWorkingFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.setTitle(title);
+		f.getLabel().setText("");
+		setup(f);
 		return f;
 	}
 
 	public void closeMessageWhileWorkingFrame() {
-		messageWhileWorkingFrameFactory.closeMessageWhileWorkingFrame();
+		messageWhileWorkingFrameFactory.closeFrame();
 	}
-
-	public MessageWhileWorkingFrame getMessageWhileWorkingFrame() {
-		return messageWhileWorkingFrameFactory.getMessageWhileWorkingFrame();
-	}
-
 
 	public PreprocessDialog newPreprocessDialog(File text, File sntFile) {
 		return newPreprocessDialog(text, sntFile, false);
@@ -726,52 +568,25 @@ public class InternalFrameManager {
 
 
 	public StatisticsFrame newStatisticsFrame(File file,int mode) {
-		StatisticsFrame f=statisticsFrameFactory.newStatisticsFrame(file,mode);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (StatisticsFrame) setup(statisticsFrameFactory.newStatisticsFrame(file,mode),true);
 	}
 
 	public void closeStatisticsFrame() {
 		statisticsFrameFactory.closeStatisticsFrame();
 	}
 
-
 	public HelpOnCommandFrame newHelpOnCommandFrame() {
-		HelpOnCommandFrame f=helpOnCommandFrameFactory.newHelpOnCommandFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (HelpOnCommandFrame) setup(helpOnCommandFrameFactory.newFrame());
 	}
 
 	public void closeHelpOnCommandFrame() {
-		helpOnCommandFrameFactory.closeHelpOnCommandFrame();
+		helpOnCommandFrameFactory.closeFrame();
 	}
-	
 
 	public ProcessInfoFrame newProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo,
 			boolean stopIfProblem) {
-		ProcessInfoFrame f=processInfoFrameFactory.newProcessInfoFrame(c,close,myDo,stopIfProblem);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		ProcessInfoFrame f=new ProcessInfoFrame(c,close,myDo,stopIfProblem);
+		setup(f,true);
 		f.launchBuilderCommands();
 		return f;
 	}
@@ -781,15 +596,10 @@ public class InternalFrameManager {
 	}
 	
 	public TranscodingFrame newTranscodingFrame(File file,ToDo toDo) {
-		TranscodingFrame f=transcodingFrameFactory.newTranscodingFrame(file,toDo);
+		TranscodingFrame f=(TranscodingFrame) transcodingFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.configure(file,toDo);
+		setup(f);
 		return f;
 	}
 
@@ -798,7 +608,7 @@ public class InternalFrameManager {
 	}
 
 	private ConsoleFrame newConsoleFrame() {
-		ConsoleFrame f=consoleFrameFactory.newConsoleFrame();
+		ConsoleFrame f=(ConsoleFrame) consoleFrameFactory.newFrame();
 		if (f==null) return null;
 		addToDesktopIfNecessary(f,false);
 		return f;
@@ -816,17 +626,7 @@ public class InternalFrameManager {
 
 
 	public FileEditionTextFrame newFileEditionTextFrame(File file) {
-		FileEditionTextFrame f=fileEditionTextFrameFactory.getFileEditionTextFrame(file);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (FileEditionTextFrame) setup(fileEditionTextFrameFactory.getFileEditionTextFrame(file),true);
 	}
 
 	public void closeAllFileEditionTextFrames() {
@@ -841,75 +641,45 @@ public class InternalFrameManager {
 
 
 	public TranscodeOneFileDialog newTranscodeOneFileDialog(File text,ToDo toDo) {
-		TranscodeOneFileDialog d=transcodeOneFileDialogFactory.newTranscodeOneFileDialog(text,toDo);
+		TranscodeOneFileDialog d=(TranscodeOneFileDialog) transcodeOneFileDialogFactory.newDialog();
 		if (d==null) return null;
+		d.configure(text,toDo);
 		d.setVisible(true);
 		return d;
 	}
 
-
 	public XAlignConfigFrame newXAlignConfigFrame() {
-		XAlignConfigFrame f=xAlignConfigFrameFactory.newXAlignConfigFrame();
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (XAlignConfigFrame) setup(xAlignConfigFrameFactory.newFrame());
 	}
 
-
 	public XAlignFrame newXAlignFrame(File src,File dst,File alignment) {
-		XAlignFrame f=xAlignFrameFactory.newXAlignFrame(src,dst,alignment);
-		if (f==null) return null;
-		addToDesktopIfNecessary(f,true);
 		/* TODO vérifier que les constructeurs des frame ne sont utilisés que dans les factory */
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
+		return (XAlignFrame) setup(xAlignFrameFactory.newXAlignFrame(src,dst,alignment),true);
 	}
 
 	public void closeXAlignFrame() {
 		xAlignFrameFactory.closeXAlignFrame();
 	}
 
-
 	public XAlignLocateFrame newXAlignLocateFrame(String language,File snt,ConcordanceModel model) {
-		XAlignLocateFrame f=xAlignLocateFrameFactory.newXAlignLocateFrame(language,snt,model);
+		XAlignLocateFrame f=(XAlignLocateFrame) xAlignLocateFrameFactory.newFrame();
 		if (f==null) return null;
-		addToDesktopIfNecessary(f,false);
-		f.setVisible(true);
-		try {
-			f.setSelected(true);
-			f.setIcon(false);
-		} catch (PropertyVetoException e) {
-			e.printStackTrace();
-		}
+		f.configure(language,snt,model);
+		setup(f);
 		return f;
 	}
 
 	public void closeXAlignLocateFrame() {
 		/* TODO mettre un listener pour fermer le XAlignLocateFrame quand on ferme le XAlignFrame */
-		xAlignLocateFrameFactory.closeXAlignLocateFrame();
+		xAlignLocateFrameFactory.closeFrame();
 	}
 
-	
 	public FontInfo newFontDialog(FontInfo info) {
 		FontDialog d=fontDialogFactory.newFontDialog(info);
 		if (d==null) return null;
 		d.setVisible(true);
 		return d.getFontInfo();
 	}
-
 
 	public GraphPresentationInfo newGraphPresentationDialog(GraphPresentationInfo info,
 			boolean showRightToLeftCheckBox) {
@@ -919,14 +689,12 @@ public class InternalFrameManager {
 		return d.getGraphPresentationInfo();
 	}
 
-
 	public GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
 		GraphAlignmentDialog d=graphAlignmentDialogFactory.newGraphAlignmentDialog(f);
 		if (d==null) return null;
 		d.setVisible(true);
 		return d;
 	}
-
 
 	public GraphSizeDialog newGraphSizeDialog(GraphFrame f) {
 		GraphSizeDialog d=graphSizeDialogFactory.newGraphSizeDialog(f);

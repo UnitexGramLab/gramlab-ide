@@ -21,35 +21,37 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import javax.swing.JInternalFrame;
 
-public class GlobalPreferencesFrameFactory {
+public class FrameFactory {
 
-	private GlobalPreferencesFrame frame;
+	private JInternalFrame frame;
+	private Class<?> clazz;
 	
-	GlobalPreferencesFrame newGlobalPreferencesFrame() {
+	FrameFactory(Class<?> clazz) {
+		this.clazz=clazz;
+	}
+	
+	JInternalFrame newFrame() {
 		if (frame==null) {
-			frame=new GlobalPreferencesFrame();
+			try {
+				frame=(JInternalFrame) clazz.newInstance();
+			} catch (InstantiationException e) {
+				return null;
+			} catch (IllegalAccessException e) {
+				return null;
+			}
 		}
-		frame.pref = Preferences.getCloneOfPreferences();
-		frame.setTitle("Preferences for " + Config.getCurrentLanguage());
-		frame.privateDirectory.setText(Config.getUserDir().getAbsolutePath());
-		frame.refresh();
+		frame.doDefaultCloseAction();
 		return frame;
 	}
 	
 	
-	void closeGlobalPreferencesFrame() {
+	void closeFrame() {
 		if (frame==null) {
 			return;
 		}
 		frame.doDefaultCloseAction();
 	}
-
-
-	GlobalPreferencesFrame getGlobalPreferencesFrame() {
-		return newGlobalPreferencesFrame();
-	}
-
+	
 }
