@@ -330,7 +330,17 @@ public class ProcessInfoFrame extends JInternalFrame {
 					e.printStackTrace();
 				}
 				if (!problem && DO != null) {
-					DO.toDo();
+					try {
+						SwingUtilities.invokeAndWait(new Runnable() {
+							public void run() {
+								DO.toDo();
+							}
+						});
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
 				}
 				ok.setEnabled(true);
 				cancel.setEnabled(false);
