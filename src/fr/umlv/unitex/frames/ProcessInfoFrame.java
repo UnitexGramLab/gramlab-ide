@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -61,17 +60,13 @@ import fr.umlv.unitex.process.commands.MultiCommands;
  * 
  */
 public class ProcessInfoFrame extends JInternalFrame {
-
 	Process p;
 	ProcessOutputListModel stdoutModel = new ProcessOutputListModel();
 	ProcessOutputListModel stderrModel = new ProcessOutputListModel();
 	JList stdoutList = new JList(stdoutModel);
 	JList stderrList = new JList(stderrModel);
-
 	public final static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
-
 	final static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
-
 		@Override
 		public Component getListCellRendererComponent(JList l, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
@@ -82,11 +77,12 @@ public class ProcessInfoFrame extends JInternalFrame {
 			return this;
 		}
 	};
-
 	boolean close_on_finish;
 	boolean stop_if_problem;
 	MultiCommands commands = null;
 	ToDo DO;
+	JButton ok;
+	JButton cancel;
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -109,19 +105,16 @@ public class ProcessInfoFrame extends JInternalFrame {
 		close_on_finish = close;
 		stop_if_problem = stopIfProblem;
 		DO = myDo;
-		JPanel top = new JPanel();
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		stdoutList.setCellRenderer(myRenderer);
 		stderrList.setCellRenderer(myRenderer);
 		JScrollPane scroll = new JScrollPane(stdoutList);
 		stderrList.setForeground(Color.RED);
 		JScrollPane errorScroll = new JScrollPane(stderrList);
-		JPanel tmp = new JPanel();
-		tmp.setLayout(new BorderLayout());
+		JPanel tmp = new JPanel(new BorderLayout());
 		tmp.setBorder(BorderFactory.createLoweredBevelBorder());
 		tmp.add(scroll, BorderLayout.CENTER);
-		JPanel tmp2 = new JPanel();
-		tmp2.setLayout(new BorderLayout());
+		JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp2.setBorder(BorderFactory.createLoweredBevelBorder());
 		tmp2.add(errorScroll, BorderLayout.CENTER);
 		JSplitPane middle = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tmp, tmp2);
@@ -139,7 +132,8 @@ public class ProcessInfoFrame extends JInternalFrame {
 				dispose();
 			}
 		};
-		JButton ok = new JButton(okAction);
+		ok = new JButton(okAction);
+		ok.setEnabled(false);
 		Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
 				if (p != null) {
@@ -148,7 +142,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 				dispose();
 			}
 		};
-		JButton cancel = new JButton(cancelAction);
+		cancel = new JButton(cancelAction);
 		JPanel buttons = new JPanel(new GridLayout(1, 2));
 		buttons.add(ok);
 		buttons.add(cancel);
@@ -163,12 +157,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 		setBounds(100, 100, 600, 400);
 	}
 
-
-
 	void launchBuilderCommands() {
 		if (commands == null)
 			return;
-		Thread thread=new Thread() {
+		Thread thread = new Thread() {
 			public void run() {
 				boolean problem = false;
 				CommandBuilder command;
@@ -177,13 +169,14 @@ public class ProcessInfoFrame extends JInternalFrame {
 						switch (command.getType()) {
 						case CommandBuilder.MESSAGE: {
 							try {
-								final CommandBuilder c=command;
+								final CommandBuilder c = command;
 								SwingUtilities.invokeAndWait(new Runnable() {
 									public void run() {
 										stdoutModel.addElement(new Couple(
-												((MessageCommand) c).getMessage(),
-												true));
-									}});
+												((MessageCommand) c)
+														.getMessage(), true));
+									}
+								});
 							} catch (InterruptedException e1) {
 								e1.printStackTrace();
 							} catch (InvocationTargetException e1) {
@@ -192,15 +185,21 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.ERROR_MESSAGE: {
-                            final ConsoleEntry entry=Console.addCommand("Error message emitted by the graphical interface",true);
+							final ConsoleEntry entry = Console
+									.addCommand(
+											"Error message emitted by the graphical interface",
+											true);
 							try {
-								final CommandBuilder c=command;
+								final CommandBuilder c = command;
 								SwingUtilities.invokeAndWait(new Runnable() {
 									public void run() {
-									    String message=((MessageCommand) c).getMessage();
-										stderrModel.addElement(new Couple(message,true));
+										String message = ((MessageCommand) c)
+												.getMessage();
+										stderrModel.addElement(new Couple(
+												message, true));
 										entry.addErrorMessage(message);
-									}});
+									}
+								});
 							} catch (InterruptedException e1) {
 								e1.printStackTrace();
 							} catch (InvocationTargetException e1) {
@@ -209,32 +208,38 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}
 						case CommandBuilder.PROGRAM: {
-							ConsoleEntry entry=Console.addCommand(command.getCommandLine(),false);
+							ConsoleEntry entry = Console.addCommand(command
+									.getCommandLine(), false);
 							final String[] comm = command.getCommandArguments();
 							try {
 								p = Runtime.getRuntime().exec(comm);
 								new ProcessInfoThread(stdoutList, p
 										.getInputStream(), false,
-										ProcessInfoFrame.this,true,null).start();
+										ProcessInfoFrame.this, true, null)
+										.start();
 								new ProcessInfoThread(stderrList, p
 										.getErrorStream(), false,
-										ProcessInfoFrame.this,true,entry).start();
+										ProcessInfoFrame.this, true, entry)
+										.start();
 								try {
 									p.waitFor();
 								} catch (java.lang.InterruptedException e) {
 									if (stop_if_problem) {
 										try {
-											SwingUtilities.invokeAndWait(new Runnable() {
-												public void run() {
-													stderrModel
-													.addElement(new Couple(
-															"The program "
-																	+ comm[0]
-																	+ " has been interrupted\n",
-															true));
-													stderrList.ensureIndexIsVisible(stderrModel
-												.	getSize() - 1);
-												}});
+											SwingUtilities
+													.invokeAndWait(new Runnable() {
+														public void run() {
+															stderrModel
+																	.addElement(new Couple(
+																			"The program "
+																					+ comm[0]
+																					+ " has been interrupted\n",
+																			true));
+															stderrList
+																	.ensureIndexIsVisible(stderrModel
+																			.getSize() - 1);
+														}
+													});
 										} catch (InterruptedException e1) {
 											e1.printStackTrace();
 										} catch (InvocationTargetException e1) {
@@ -275,34 +280,37 @@ public class ProcessInfoFrame extends JInternalFrame {
 							}
 							break;
 						}// end of program command
-						
-					case CommandBuilder.METHOD: {
-						Console.addCommand(command.getCommandLine(),false);
-						AbstractMethodCommand cmd=(AbstractMethodCommand)command;
-						if (!cmd.execute()) {
-							if (stop_if_problem) {
-								try {
-									final CommandBuilder c=command;
-									SwingUtilities.invokeAndWait(new Runnable() {
-										public void run() {
-											stderrModel.addElement(new Couple(
-													"Command failed: "+c.getCommandLine(),
-													true));
-										}});
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								} catch (InvocationTargetException e1) {
-									e1.printStackTrace();
+						case CommandBuilder.METHOD: {
+							Console.addCommand(command.getCommandLine(), false);
+							AbstractMethodCommand cmd = (AbstractMethodCommand) command;
+							if (!cmd.execute()) {
+								if (stop_if_problem) {
+									try {
+										final CommandBuilder c = command;
+										SwingUtilities
+												.invokeAndWait(new Runnable() {
+													public void run() {
+														stderrModel
+																.addElement(new Couple(
+																		"Command failed: "
+																				+ c
+																						.getCommandLine(),
+																		true));
+													}
+												});
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									} catch (InvocationTargetException e1) {
+										e1.printStackTrace();
+									}
+									problem = true;
 								}
-								problem = true;
 							}
-						}
-						break;
-					}// end of method command
-
+							break;
+						}// end of method command
 						} // end of switch
 					} // end of if ((command = commands.getCommand(i)) != null)
-				final boolean PB=problem,CL=close_on_finish;
+				final boolean PB = problem, CL = close_on_finish;
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
 						public void run() {
@@ -314,7 +322,8 @@ public class ProcessInfoFrame extends JInternalFrame {
 							if (!PB && CL) {
 								dispose();
 							}
-						}});
+						}
+					});
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (InvocationTargetException e) {
@@ -323,10 +332,12 @@ public class ProcessInfoFrame extends JInternalFrame {
 				if (!problem && DO != null) {
 					DO.toDo();
 				}
+				ok.setEnabled(true);
+				cancel.setEnabled(false);
 			}
 		};
-		thread.setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
+		thread.setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler
+				.getHandler());
 		thread.start();
 	}
-
 }
