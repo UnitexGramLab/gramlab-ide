@@ -228,7 +228,7 @@ public class ElagCompFrame extends JInternalFrame {
 				}
 				File grf = new File((String) rules.elementAt(idx));
 				if (!grf.getName().endsWith(".grf")) {
-					JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 							grf.getName() + " doesn't seem like a GRF file",
 							"ERROR", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -237,12 +237,12 @@ public class ElagCompFrame extends JInternalFrame {
 					grf = new File(elagDir, (String) rules.elementAt(idx));
 				}
 				if (!grf.exists()) {
-					JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 							grf.getName() + " doesn't seem to exist", "ERROR",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				UnitexFrame.mainFrame.loadGraph(grf);
+				UnitexFrame.getFrameManager().newGraphFrame(grf);
 			}
 		});
 		c.gridx = 4;
@@ -261,7 +261,7 @@ public class ElagCompFrame extends JInternalFrame {
 				}
 				String fname = (String) rules.elementAt(idx);
 				if (!fname.endsWith(".grf")) {
-					JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 							fname + " doesn't seem like a GRF file", "ERROR",
 							JOptionPane.ERROR_MESSAGE);
 					return;
@@ -274,7 +274,7 @@ public class ElagCompFrame extends JInternalFrame {
 				if (!conc.exists()) {
 					JOptionPane
 							.showInternalMessageDialog(
-									UnitexFrame.desktop,
+									UnitexFrame.mainFrame,
 									"You should compile your Elag grammar before using the Locate Pattern feature",
 									"ERROR", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -320,7 +320,7 @@ public class ElagCompFrame extends JInternalFrame {
 				saveLstFile();
 				File tagset = new File(elagDir, "tagset.def");
 				if (!tagset.exists()) {
-					JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+					JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 							"File " + tagset.getAbsolutePath()
 									+ " doesn't exist.\n", "ERROR",
 							JOptionPane.ERROR_MESSAGE);
@@ -335,14 +335,14 @@ public class ElagCompFrame extends JInternalFrame {
 					}
 					if (!grf.getName().endsWith(".grf")) {
 						JOptionPane.showInternalMessageDialog(
-								UnitexFrame.desktop, grf.getName()
+								UnitexFrame.mainFrame, grf.getName()
 										+ " doesn't spell like a .grf file",
 								"ERROR", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					if (!grf.exists()) {
 						JOptionPane.showInternalMessageDialog(
-								UnitexFrame.desktop, "Grammar "
+								UnitexFrame.mainFrame, "Grammar "
 										+ grf.getAbsolutePath()
 										+ " doesn't seem to exist", "ERROR",
 								JOptionPane.ERROR_MESSAGE);

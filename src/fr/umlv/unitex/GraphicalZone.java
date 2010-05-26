@@ -170,7 +170,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					b = (GraphBox) graphBoxes.get(boxSelected);
 					File file = b.getGraphClicked(y_tmp);
 					if (file != null) {
-						UnitexFrame.mainFrame.loadGraph(file);
+						UnitexFrame.getFrameManager().newGraphFrame(file);
 					}
 				}
 			} else if (EDITING_MODE == MyCursors.KILL_BOXES) {

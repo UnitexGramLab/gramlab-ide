@@ -650,7 +650,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(ruleslabel, BorderLayout.CENTER);
 		p.add(button, BorderLayout.EAST);
 		p.add(implodeCheckBox, BorderLayout.SOUTH);
-		if (JOptionPane.showInternalConfirmDialog(UnitexFrame.desktop, p,
+		if (JOptionPane.showInternalConfirmDialog(UnitexFrame.mainFrame, p,
 				"Apply Elag Rule", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
 			return;
 		}
@@ -666,7 +666,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	void replaceElagFst() {
 		if (!elag_tfst.exists()) {
-			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+			JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 					"replaceElagFst: file '" + elag_tfst + "' doesn't exists");
 			return;
 		}
@@ -676,20 +676,21 @@ public class TextAutomatonFrame extends JInternalFrame {
 				"sentence*.grf"));
 		File f = new File(dir, "currelagsentence.grf");
 		if (f.exists() && !f.delete()) {
-			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+			JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 					"Failed to delete " + f);
 		}
 		f = new File(dir, "currelagsentence.txt");
 		if (f.exists() && !f.delete()) {
-			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+			JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 					"Failed to delete " + f);
 		}
 		if (text_tfst.exists() && !text_tfst.delete()) {
-			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+			JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 					"Failed to delete " + text_tfst);
 		}
 		if (!elag_tfst.renameTo(text_tfst)) {
-			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+			JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame
+					,
 					"Failed to replace " + text_tfst + " with " + elag_tfst);
 		}
 		loadCurrSentence();
@@ -745,17 +746,17 @@ public class TextAutomatonFrame extends JInternalFrame {
 			File dir = Config.getCurrentSntDir();
 			File f = new File(dir, "currelagsentence.grf");
 			if (f.exists() && !f.delete()) {
-				JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+				JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 						"Failed to delete " + f);
 			}
 			f = new File(dir, "currelagsentence.txt");
 			if (f.exists() && !f.delete()) {
-				JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+				JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 						"Failed to delete " + f);
 			}
 			f = new File(dir, "text-elag.tfst");
 			if (f.exists() && !f.delete()) {
-				JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
+				JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 						"unable to delete " + f);
 			}
 			UnitexFrame.getFrameManager().newTextAutomatonFrame(false);

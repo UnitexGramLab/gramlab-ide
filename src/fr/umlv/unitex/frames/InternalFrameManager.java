@@ -715,4 +715,10 @@ public class InternalFrameManager {
 		return d;
 	}
 
+	
+	public void closeAllFrames() {
+		for (JInternalFrame f:desktop.getAllFrames()) {
+			f.doDefaultCloseAction();
+		}
+	}
 }

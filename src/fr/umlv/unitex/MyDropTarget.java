@@ -266,7 +266,7 @@ public class MyDropTarget {
 				for (int i = 0; i < list.size(); i++) {
 					if (Util.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
 						final File file = (File)list.get(i);
-						UnitexFrame.mainFrame.loadGraph(file);
+						UnitexFrame.getFrameManager().newGraphFrame(file);
 					}
 				}
 				return;
