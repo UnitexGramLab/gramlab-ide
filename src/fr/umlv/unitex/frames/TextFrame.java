@@ -80,7 +80,7 @@ public class TextFrame extends JInternalFrame {
 		top.add(middle, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
-		setBounds(100, 100, 800, 600);
+		setBounds(50, 50, 800, 500);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosed(InternalFrameEvent e) {
 				Preferences.removeTextFontListener(fontListener);

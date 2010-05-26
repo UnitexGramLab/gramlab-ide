@@ -51,7 +51,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.CaretEvent;
@@ -60,13 +59,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontListener;
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
@@ -98,7 +93,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	JTextArea sentenceTextArea = new JTextArea();
 	JLabel sentence_count_label = new JLabel(" 0 sentence");
 	boolean elagON;
-	private JSpinner spinner;
+	JSpinner spinner;
 	SpinnerNumberModel spinnerModel;
 	TfstGraphicalZone elaggraph;
 	File elagrules;
@@ -124,7 +119,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	Process currentElagLoadingProcess = null;
 	private JScrollPane scroll;
 	private JSplitPane superpanel;
-	private JButton RESET_SENTENCE_GRAPH;
+	private JButton resetSentenceGraph;
 	public BoundsEditor boundsEditor;
 
 	TextAutomatonFrame() {
@@ -132,8 +127,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		MyDropTarget.newDropTarget(this);
 		setContentPane(constructPanel());
 		pack();
-		setBounds(150, 150, 850, 650);
-		setVisible(false);
+		setBounds(30, 30, 850, 450);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -153,7 +147,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 				if (s == null || s.equals("")) {
 					boundsEditor.setValue(null);
 				} else {
-					// System.out.println("la selection va de "+text.getSelectionStart()+" a "+text.getSelectionEnd());
 					boundsEditor.setValue(new Bounds(sentenceTextArea
 							.getSelectionStart(), sentenceTextArea
 							.getSelectionEnd() - 1));
@@ -219,7 +212,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 		graphicalZone = new TfstGraphicalZone(1188, 840, textfield, this, true);
 		graphicalZone.setPreferredSize(new Dimension(1188, 840));
 		scroll = new JScrollPane(graphicalZone);
-		scroll.setOpaque(true);
 		scroll.getHorizontalScrollBar().setUnitIncrement(20);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		scroll.setPreferredSize(new Dimension(1188, 840));
@@ -273,12 +265,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 		sentenceTextArea.setLineWrap(true);
 		sentenceTextArea.setWrapStyleWord(true);
 		JScrollPane textScroll = new JScrollPane(sentenceTextArea);
-		textScroll.setOpaque(true);
 		textScroll.setPreferredSize(new Dimension(600, 100));
 		textScroll
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		JPanel tmp = new JPanel(new BorderLayout());
-		tmp.setOpaque(true);
 		tmp.setBorder(new EmptyBorder(2, 2, 2, 2));
 		tmp.add(textScroll, BorderLayout.CENTER);
 		upPanel.add(tmp, BorderLayout.CENTER);
@@ -306,39 +296,34 @@ public class TextAutomatonFrame extends JInternalFrame {
 		cornerPanel.add(middle);
 		Action resetSentenceAction = new AbstractAction("Reset Sentence Graph") {
 			public void actionPerformed(ActionEvent arg0) {
-				File f2 = new File(sentence_modified.getAbsolutePath()
-						+ spinnerModel.getNumber().intValue() + ".grf");
+				int n = spinnerModel.getNumber().intValue();
+				File f2 = new File(sentence_modified.getAbsolutePath() + n
+						+ ".grf");
 				if (f2.exists())
 					f2.delete();
-				loadSentence(spinnerModel.getNumber().intValue());
+				loadSentence(n);
 			}
 		};
-		RESET_SENTENCE_GRAPH = new JButton(resetSentenceAction);
-		RESET_SENTENCE_GRAPH.setVisible(false);
-		cornerPanel.add(RESET_SENTENCE_GRAPH);
+		resetSentenceGraph = new JButton(resetSentenceAction);
+		resetSentenceGraph.setVisible(false);
+		cornerPanel.add(resetSentenceGraph);
 		Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO vérifier les post pone codes
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-						RebuildTfstCommand command = new RebuildTfstCommand()
-								.automaton(new File(Config.getCurrentSntDir(),
-										"text.tfst"));
-						Launcher.exec(command, true,
-								new RebuildTextAutomatonDo());
-					}
-				});
+				UnitexFrame.getFrameManager().closeTextAutomatonFrame();
+				RebuildTfstCommand command = new RebuildTfstCommand()
+						.automaton(new File(Config.getCurrentSntDir(),
+								"text.tfst"));
+				Launcher.exec(command, true, new RebuildTextAutomatonDo());
 			}
 		};
-		JButton REBUILD_TEXT_AUTOMATON = new JButton(rebuildAction);
-		cornerPanel.add(REBUILD_TEXT_AUTOMATON);
+		JButton rebuildTfstButton = new JButton(rebuildAction);
+		cornerPanel.add(rebuildTfstButton);
 		final JButton elagButton = new JButton("Elag Frame");
 		elagButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				toggleElagFrame();
 				if (elagON) {
-					elagButton.setText("Close elag frame");
+					elagButton.setText("Close Elag Frame");
 				} else {
 					elagButton.setText("Open  Elag Frame");
 				}
@@ -397,21 +382,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 		System.gc();
 	}
 
-	class SpecialNumericTextDocument extends PlainDocument {
-		public void insertString(int offs, String s, AttributeSet a)
-				throws BadLocationException {
-			int i;
-			if (s == null)
-				return;
-			char c[] = s.toCharArray();
-			for (i = 0; i < c.length; i++) {
-				if ((c[i] != 10) && (c[i] < '0' || c[i] > '9'))
-					return;
-			}
-			super.insertString(offs, s, a);
-		}
-	}
-
 	/**
 	 * Indicates if the graph has been modified
 	 * 
@@ -420,7 +390,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	 *            <code>false</code> otherwise
 	 */
 	public void setModified(boolean b) {
-		RESET_SENTENCE_GRAPH.setVisible(b);
+		resetSentenceGraph.setVisible(b);
 		if (b) {
 			// we save each modification
 			GraphIO g = new GraphIO();
@@ -433,7 +403,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		}
 	}
 
-	private static int readSentenceCount(File f) {
+	private int readSentenceCount(File f) {
 		String s = "0";
 		try {
 			FileInputStream br = UnicodeIO
@@ -480,68 +450,52 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (isAcurrentLoadingThread)
 			return false;
 		isAcurrentLoadingThread = true;
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new Thread() {
-					Tfst2GrfCommand cmd;
-
-					public void run() {
-						graphicalZone.setInitialized(false);
-						if (graphicalZone.graphBoxes != null) {
-							graphicalZone.graphBoxes.clear();
-						}
-						graphicalZone.repaint();
-						sentenceTextArea.setText("");
-						cmd = new Tfst2GrfCommand().automaton(text_tfst)
-								.sentence(z);
-						if (Config.isKorean() || Config.isKoreanJeeSun()) {
-							cmd = cmd.font("Gulim").fontSize(12);
-						} else {
-							cmd = cmd.font(Preferences.inputFont().getName())
-									.fontSize(Preferences.inputFontSize());
-						}
-						Console.addCommand(cmd.getCommandLine(), false);
-						Process p;
-						try {
-							p = Runtime.getRuntime().exec(
-									cmd.getCommandArguments());
-							BufferedInputStream in = new BufferedInputStream(p
-									.getInputStream());
-							BufferedInputStream err = new BufferedInputStream(p
-									.getErrorStream());
-							new EatStreamThread(in).start();
-							new EatStreamThread(err).start();
-							/* waitFor Fst2Grf to terminate */
-							p.waitFor();
-						} catch (Exception e) {
-							System.err.println("Exception: " + e);
-							e.printStackTrace();
-							isAcurrentLoadingThread = false;
-							return;
-						}
-						readSentenceText();
-						try {
-							TokensInfo.loadTokensInfo(sentence_tok);
-						} catch (FileNotFoundException e) {
-							e.printStackTrace();
-						}
-						File f = new File(sentence_modified + String.valueOf(z)
-								+ ".grf");
-						boolean isSentenceModified = f.exists();
-						if (isSentenceModified) {
-							loadSentenceGraph(new File(sentence_modified
-									.getAbsolutePath()
-									+ String.valueOf(z) + ".grf"));
-							setModified(isSentenceModified);
-						} else {
-							loadSentenceGraph(sentence_grf);
-						}
-						isAcurrentLoadingThread = false;
-						loadElagSentence(z);
-					}
-				}.start();
-			}
-		});
+		graphicalZone.setInitialized(false);
+		if (graphicalZone.graphBoxes != null) {
+			graphicalZone.graphBoxes.clear();
+		}
+		graphicalZone.repaint();
+		sentenceTextArea.setText("");
+		Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(text_tfst)
+				.sentence(z);
+		if (Config.isKorean() || Config.isKoreanJeeSun()) {
+			cmd = cmd.font("Gulim").fontSize(12);
+		} else {
+			cmd = cmd.font(Preferences.inputFont().getName()).fontSize(
+					Preferences.inputFontSize());
+		}
+		Console.addCommand(cmd.getCommandLine(), false);
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec(cmd.getCommandArguments());
+			BufferedInputStream in = new BufferedInputStream(p.getInputStream());
+			BufferedInputStream err = new BufferedInputStream(p
+					.getErrorStream());
+			new EatStreamThread(in).start();
+			new EatStreamThread(err).start();
+			p.waitFor();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		readSentenceText();
+		try {
+			TokensInfo.loadTokensInfo(sentence_tok);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		File f = new File(sentence_modified + String.valueOf(z) + ".grf");
+		boolean isSentenceModified = f.exists();
+		if (isSentenceModified) {
+			loadSentenceGraph(new File(sentence_modified.getAbsolutePath()
+					+ String.valueOf(z) + ".grf"));
+			setModified(isSentenceModified);
+		} else {
+			loadSentenceGraph(sentence_grf);
+		}
+		isAcurrentLoadingThread = false;
+		loadElagSentence(z);
 		return true;
 	}
 
@@ -552,64 +506,42 @@ public class TextAutomatonFrame extends JInternalFrame {
 		}
 		final int z = n;
 		if (isAcurrentElagLoadingThread) {
-			System.err
-					.println("loadElagSentence: isAcurrentElagLoading Thread=true");
 			return false;
 		}
-		SwingUtilities.invokeLater(new Thread() {
-			public void run() {
-				isAcurrentElagLoadingThread = true;
-				elaggraph.setInitialized(false);
-				elaggraph.graphBoxes.clear();
-				elaggraph.repaint();
-				if (!elag_tfst.exists()) { // if fst file does not exist exit
-					isAcurrentElagLoadingThread = false;
-					return;
-				}
-				Tfst2GrfCommand cmd = new Tfst2GrfCommand()
-						.automaton(elag_tfst).sentence(z).output(
-								"currelagsentence").font(
-								Preferences.inputFont().getName()).fontSize(
-								Preferences.inputFontSize());
-				Console.addCommand(cmd.getCommandLine(), false);
-				try {
-					Process p = Runtime.getRuntime().exec(
-							cmd.getCommandArguments());
-					BufferedInputStream in = new BufferedInputStream(p
-							.getInputStream());
-					BufferedInputStream err = new BufferedInputStream(p
-							.getErrorStream());
-					new EatStreamThread(in).start();
-					new EatStreamThread(err).start();
-					p.waitFor();
-				} catch (Exception e) {
-					System.err.println("Exception: " + e);
-					e.printStackTrace();
-					isAcurrentElagLoadingThread = false;
-					return;
-				}
-				try {
-					loadElagSentenceGraph(elagsentence_grf);
-				} finally {
-					isAcurrentElagLoadingThread = false;
-				}
-			}
-		});
+		isAcurrentElagLoadingThread = true;
+		elaggraph.setInitialized(false);
+		elaggraph.graphBoxes.clear();
+		elaggraph.repaint();
+		if (!elag_tfst.exists()) { // if fst file does not exist exit
+			isAcurrentElagLoadingThread = false;
+			return false;
+		}
+		Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(elag_tfst)
+				.sentence(z).output("currelagsentence").font(
+						Preferences.inputFont().getName()).fontSize(
+						Preferences.inputFontSize());
+		Console.addCommand(cmd.getCommandLine(), false);
+		try {
+			Process p = Runtime.getRuntime().exec(cmd.getCommandArguments());
+			BufferedInputStream in = new BufferedInputStream(p.getInputStream());
+			BufferedInputStream err = new BufferedInputStream(p
+					.getErrorStream());
+			new EatStreamThread(in).start();
+			new EatStreamThread(err).start();
+			p.waitFor();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		loadElagSentenceGraph(elagsentence_grf);
+		isAcurrentElagLoadingThread = false;
 		return true;
 	}
 
-	/**
-	 * Inverts the antialiasing flag
-	 * 
-	 */
 	public void changeAntialiasingValue() {
-		GraphPresentationInfo info = graphicalZone.getGraphPresentationInfo();
-		info.antialiasing = !info.antialiasing;
-		/*
-		 * TODO remplacer ce genre de choses par des setters qui font les
-		 * repaint()
-		 */
-		graphicalZone.repaint();
+		boolean a = graphicalZone.getAntialiasing();
+		graphicalZone.setAntialiasing(!a);
 	}
 
 	void readSentenceText() {
@@ -686,12 +618,11 @@ public class TextAutomatonFrame extends JInternalFrame {
 	}
 
 	void elagDialog() {
-		JLabel titlelabel = new JLabel();
-		titlelabel.setText("Elag Rule:");
+		JLabel titlelabel = new JLabel("Elag Rule:");
 		elagrules = new File(Config.getCurrentElagDir(), "elag.rul");
 		ruleslabel = new JLabel(elagrules.getName());
 		ruleslabel.setBorder(new LineBorder(Color.black, 1, true));
-		JButton button = new JButton("browse");
+		JButton button = new JButton("Browse");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser();
@@ -714,8 +645,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		BorderLayout layout = new BorderLayout();
 		layout.setVgap(10);
 		layout.setHgap(10);
-		JPanel p = new JPanel();
-		p.setLayout(layout);
+		JPanel p = new JPanel(layout);
 		p.add(titlelabel, BorderLayout.WEST);
 		p.add(ruleslabel, BorderLayout.CENTER);
 		p.add(button, BorderLayout.EAST);
@@ -747,22 +677,20 @@ public class TextAutomatonFrame extends JInternalFrame {
 		File f = new File(dir, "currelagsentence.grf");
 		if (f.exists() && !f.delete()) {
 			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-					"failed to delete " + f);
+					"Failed to delete " + f);
 		}
 		f = new File(dir, "currelagsentence.txt");
 		if (f.exists() && !f.delete()) {
 			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-					"failed to delete " + f);
+					"Failed to delete " + f);
 		}
 		if (text_tfst.exists() && !text_tfst.delete()) {
 			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-					"failed to delete " + text_tfst);
+					"Failed to delete " + text_tfst);
 		}
 		if (!elag_tfst.renameTo(text_tfst)) {
-			System.err.println("unable to replace: " + elag_tfst + " -> "
-					+ text_tfst);
 			JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-					"failed to replace " + text_tfst + " with " + elag_tfst);
+					"Failed to replace " + text_tfst + " with " + elag_tfst);
 		}
 		loadCurrSentence();
 	}
@@ -818,19 +746,19 @@ public class TextAutomatonFrame extends JInternalFrame {
 			File f = new File(dir, "currelagsentence.grf");
 			if (f.exists() && !f.delete()) {
 				JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-						"unable to delete " + f);
+						"Failed to delete " + f);
 			}
 			f = new File(dir, "currelagsentence.txt");
 			if (f.exists() && !f.delete()) {
 				JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
-						"unable to delete " + f);
+						"Failed to delete " + f);
 			}
-			f = new File(dir, "text-elag.fst2");
+			f = new File(dir, "text-elag.tfst");
 			if (f.exists() && !f.delete()) {
 				JOptionPane.showInternalMessageDialog(UnitexFrame.desktop,
 						"unable to delete " + f);
 			}
-			UnitexFrame.getFrameManager().newTextAutomatonFrame();
+			UnitexFrame.getFrameManager().newTextAutomatonFrame(false);
 		}
 	}
 
