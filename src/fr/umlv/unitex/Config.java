@@ -1550,5 +1550,44 @@ public class Config {
 		return f;
 	}
 
+	public static ArrayList<File> getDefaultDicList() {
+        return getDefaultDicList(Config.getCurrentLanguage());
+    }
+
+    public static ArrayList<File> getDefaultDicList(String language) {
+
+        ArrayList<File> res = new ArrayList<File>();
+        File userLanguageDir = new File(Config.getUserDir(), language);
+        File name2 = new File(userLanguageDir, "user_dic.def");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(name2));
+            String s;
+            while ((s = br.readLine()) != null) {
+                res.add(new File(new File(userLanguageDir, "Dela"), s));
+            }
+            br.close();
+        } catch (FileNotFoundException ee) {
+            // nothing to do
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        name2 = new File(userLanguageDir, "system_dic.def");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(name2));
+            String s;
+            File systemDelaDir = new File(new File(Config.getUnitexDir(), language), "Dela");
+            while ((s = br.readLine()) != null) {
+                res.add(new File(systemDelaDir, s));
+            }
+            br.close();
+        } catch (FileNotFoundException ee) {
+            // nothing to do
+        }
+
+        catch (IOException e) {
+            // e.printStackTrace();
+        }
+        return res;
+    }
 
 }

@@ -25,11 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
@@ -42,7 +38,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -81,7 +76,7 @@ public class PreprocessDialog extends JDialog {
     JCheckBox applyDicCheck = new JCheckBox("Apply All default Dictionaries", true);
     JCheckBox analyseUnknownWordsCheck = new JCheckBox("Analyse unknown words as free compound words (this option", true);
     JLabel analyseUnknownWordsLabel = new JLabel("     is available only for Dutch, German, Norwegian & Russian)");
-    JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton", false);
+    JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton");
     File originalTextFile;
     File sntFile;
     JPanel preprocessingParent;
@@ -245,197 +240,7 @@ public class PreprocessDialog extends JDialog {
         Action goAction = new AbstractAction("GO!") {
             public void actionPerformed(ActionEvent arg0) {
                 setVisible(false);
-                // post pone code
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        File dir = Config.getCurrentSntDir();
-                        MultiCommands commands = new MultiCommands();
-                        // NORMALIZING TEXT...
-                        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
-                        commands.addCommand(normalizeCmd);
-                        // CREATING SNT DIR
-                        MkdirCommand mkdir = new MkdirCommand().name(dir);
-                        commands.addCommand(mkdir);
-                        // SENTENCE GRAPH...
-                        if (sentenceCheck.isSelected()) {
-                            File sentence = new File(sentenceName.getText());
-                            if (!sentence.exists()) {
-                                commands.addCommand(new MessageCommand("*** WARNING: sentence delimitation skipped because the graph was not found ***\n", true));
-                            } else {
-                                String grfName = sentenceName.getText();
-                                File fst2;
-                                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
-                                    // we must compile the grf
-                                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().library();
-                                    commands.addCommand(grfCmd);
-                                    String fst2Name = grfName.substring(0, grfName.length() - 3);
-                                    fst2Name = fst2Name + "fst2";
-                                    fst2 = new File(fst2Name);
-                                    // and flatten it for better performance
-                                    // (Fst2Txt is slow with complex graphs)
-                                    FlattenCommand flattenCmd = new FlattenCommand().fst2(fst2).resultType(false).depth(5);
-                                    commands.addCommand(flattenCmd);
-                                } else {
-                                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
-                                        // if the extension is nor GRF neither
-                                        // FST2
-                                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-                                        return;
-                                    }
-                                    fst2 = new File(grfName);
-                                }
-                                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
-                                	.alphabet(Config.getAlphabet()).mode(true);
-                                if (Config.isCharByCharLanguage())
-                                    cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
-                                commands.addCommand(cmd);
-                            }
-                        }
-                        // REPLACE GRAPH...
-                        if (replaceCheck.isSelected()) {
-                            File f = new File(replaceName.getText());
-                            if (!f.exists()) {
-                                commands.addCommand(new MessageCommand("*** WARNING: Replace step skipped because the graph was not found ***\n", true));
-                            } else {
-                                String grfName = replaceName.getText();
-                                File fst2;
-                                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
-                                    // we must compile the grf
-                                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
-                                    commands.addCommand(grfCmd);
-                                    String fst2Name = grfName.substring(0, grfName.length() - 3);
-                                    fst2Name = fst2Name + "fst2";
-                                    fst2 = new File(fst2Name);
-                                } else {
-                                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
-                                        // if the extension is nor GRF neither
-                                        // FST2
-                                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-                                        return;
-                                    }
-                                    fst2 = new File(grfName);
-                                }
-                                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
-                                	.alphabet(Config.getAlphabet()).mode(false);
-                                if (Config.isCharByCharLanguage())
-                                    cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
-                                commands.addCommand(cmd);
-                            }
-                        }
-                        // TOKENIZING...
-                        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
-                        	.alphabet(Config.getAlphabet());
-                        if (Config.isCharByCharLanguage()) {
-                            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
-                        }
-                        commands.addCommand(tokenizeCmd);
-                        // APPLYING DEFAULT DICTIONARIES...
-                        DicoCommand dicoCmd;
-                        if (applyDicCheck.isSelected()) {
-                                dicoCmd = new DicoCommand().snt(Config.getCurrentSnt())
-                                		.alphabet(Config.getAlphabet())
-                                		.morphologicalDic(Preferences.morphologicalDic());
-                                if (Config.isKorean()) {
-                                    dicoCmd=dicoCmd.korean();
-                                }
-                                ArrayList<File> param = getDefaultDicList();
-                                if (param != null && param.size() > 0) {
-                                    dicoCmd = dicoCmd.dictionaryList(param);
-                                    commands.addCommand(dicoCmd);
-                                } else {
-                                    dicoCmd = null;
-                                }
-                                // ANALYSING UNKNOWN WORDS
-                                String lang = Config.getCurrentLanguage();
-                                File dic = new File(Config.getUnitexCurrentLanguageDir(), "Dela");
-                                if (lang.equals("German"))
-                                    dic = new File(dic, "dela.bin");
-                                else if (lang.equals("Norwegian"))
-                                    dic = new File(dic, "Dela-sample.bin");
-                                else if (lang.equals("Russian"))
-                                    dic = new File(dic, "CISLEXru_igrok.bin");
-                                if (analyseUnknownWordsCheck.isSelected()) {
-                                    PolyLexCommand polyLexCmd;
-                                    try {
-                                        polyLexCmd = new PolyLexCommand().language(lang)
-                                        .alphabet(Config.getAlphabet()).bin(dic)
-                                        .wordList(new File(Config.getCurrentSntDir(), "err"))
-                                        .output(new File(Config.getCurrentSntDir(), "dlf"))
-                                        .info(new File(Config.getCurrentSntDir(), "decomp.txt"));
-                                        commands.addCommand(polyLexCmd);
-                                    } catch (InvalidPolyLexArgumentException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                // SORTING TEXT DICTIONARIES
-                        		File alph=new File(Config
-                                        .getUserCurrentLanguageDir(),"Alphabet_sort.txt");
-                                if (dicoCmd != null) {
-                                    // sorting DLF
-                                    SortTxtCommand sortCmd = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlf")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlf.n"));
-                                    if (Config.getCurrentLanguage().equals("Thai")) {
-                                        sortCmd = sortCmd.thai();
-                                    } else {
-                                        sortCmd = sortCmd.sortAlphabet(alph);
-                                    }
-                                    commands.addCommand(sortCmd);
-                                    // sorting DLC
-                                    SortTxtCommand sortCmd2 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlc")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlc.n"));
-                                    if (Config.getCurrentLanguage().equals("Thai")) {
-                                        sortCmd2 = sortCmd2.thai();
-                                    } else {
-                                        sortCmd2 = sortCmd2.sortAlphabet(alph);
-                                    }
-                                    commands.addCommand(sortCmd2);
-                                    // sorting ERR
-                                    SortTxtCommand sortCmd3 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "err")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "err.n"));
-                                    if (Config.getCurrentLanguage().equals("Thai")) {
-                                        sortCmd3 = sortCmd3.thai();
-                                    } else {
-                                        sortCmd3 = sortCmd3.sortAlphabet(alph);
-                                    }
-                                    commands.addCommand(sortCmd3);
-                                }
-                            }
-                        // CONSTRUCTING TEXT AUTOMATON
-                        if (textFst2Check.isSelected()) {
-                            File norm = Config.getCurrentNormGraph();
-                            if (!norm.exists()) {
-                                commands.addCommand(new MessageCommand("*** WARNING: normalization graph was not found ***\n", true));
-                                norm = null;
-                            } else {
-                                String grfName = norm.getAbsolutePath();
-                                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
-                                    // we must compile the grf
-                                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
-                                    commands.addCommand(grfCmd);
-                                    String fst2Name = grfName.substring(0, grfName.length() - 3);
-                                    fst2Name = fst2Name + "fst2";
-                                    norm = new File(fst2Name);
-                                } else {
-                                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
-                                        // if the extension is nor GRF neither
-                                        // FST2
-                                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-                                        return;
-                                    }
-                                }
-                            }
-                            Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
-                            .alphabet(Config.getAlphabet()).clean(true);
-                            if (Config.isKorean()) {
-                                txtCmd=txtCmd.korean();
-                            }
-                            if (norm != null) {
-                                txtCmd = txtCmd.fst2(norm);
-                            }
-                            commands.addCommand(txtCmd);
-                        }
-                        UnitexFrame.getFrameManager().closeTextFrame();
-                        Text.removeSntFiles();
-                        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
-                    }
-                });
+                preprocess();
             }
         };
         JButton OK = new JButton(goAction);
@@ -444,31 +249,7 @@ public class PreprocessDialog extends JDialog {
                 // if the user has clicked on CANCEL but tokenize, we must
                 // tokenize anyway
                 setVisible(false);
-                // post pone code
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        File dir = Config.getCurrentSntDir();
-                        if (!dir.exists()) {
-                            // if the directory toto_snt does not exist, we
-                            // create it
-                            dir.mkdir();
-                        }
-                        MultiCommands commands = new MultiCommands();
-                        // NORMALIZING TEXT...
-                        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
-                        commands.addCommand(normalizeCmd);
-                        // TOKENIZING...
-                        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
-                        	.alphabet(Config.getAlphabet());
-                        if (Config.getCurrentLanguage().equals("Thai") || Config.getCurrentLanguage().equals("Chinese")) {
-                            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
-                        }
-                        commands.addCommand(tokenizeCmd);
-                        UnitexFrame.getFrameManager().closeTextFrame();
-                        Text.removeSntFiles();
-                        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
-                    }
-                });
+                tokenize();
             }
         };
         JButton CANCELbutIndex = new JButton(cancelButIndexAction);
@@ -486,58 +267,234 @@ public class PreprocessDialog extends JDialog {
         return buttons;
     }
 
-    static ArrayList<File> getDefaultDicList() {
-        return getDefaultDicList(Config.getCurrentLanguage());
-    }
-
-    public static ArrayList<File> getDefaultDicList(String language) {
-
-        ArrayList<File> res = new ArrayList<File>();
-        File userLanguageDir = new File(Config.getUserDir(), language);
-        File name2 = new File(userLanguageDir, "user_dic.def");
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(name2));
-            String s;
-            while ((s = br.readLine()) != null) {
-                res.add(new File(new File(userLanguageDir, "Dela"), s));
-            }
-            br.close();
-        } catch (FileNotFoundException ee) {
-            // nothing to do
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        name2 = new File(userLanguageDir, "system_dic.def");
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(name2));
-            String s;
-            File systemDelaDir = new File(new File(Config.getUnitexDir(), language), "Dela");
-            while ((s = br.readLine()) != null) {
-                res.add(new File(systemDelaDir, s));
-            }
-            br.close();
-        } catch (FileNotFoundException ee) {
-            // nothing to do
-        }
-
-        catch (IOException e) {
-            // e.printStackTrace();
-        }
-        return res;
-    }
 
     class PreprocessDo implements ToDo {
-        File SNT;
+        File snt;
         boolean b;
 
         public PreprocessDo(File s, boolean taggedText) {
-            SNT = s;
+            snt = s;
             b = taggedText;
         }
 
         public void toDo() {
-            Text.loadCorpus(SNT, b);
+            Text.loadCorpus(snt, b);
         }
+    }
+
+    void tokenize() {
+        MultiCommands commands = new MultiCommands();
+        File dir = Config.getCurrentSntDir();
+        if (!dir.exists()) {
+            // if the directory toto_snt does not exist, we
+            // create it
+            MkdirCommand mkdir = new MkdirCommand().name(dir);
+            commands.addCommand(mkdir);
+        }
+        // NORMALIZING TEXT...
+        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
+        commands.addCommand(normalizeCmd);
+        // TOKENIZING...
+        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
+        	.alphabet(Config.getAlphabet());
+        if (Config.getCurrentLanguage().equals("Thai") || Config.getCurrentLanguage().equals("Chinese")) {
+            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
+        }
+        commands.addCommand(tokenizeCmd);
+        UnitexFrame.getFrameManager().closeTextFrame();
+        Text.removeSntFiles();
+        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
+	}
+
+    void preprocess() {
+        File dir = Config.getCurrentSntDir();
+        MultiCommands commands = new MultiCommands();
+        // NORMALIZING TEXT...
+        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
+        commands.addCommand(normalizeCmd);
+        // CREATING SNT DIR
+        if (!dir.exists()) {
+        	MkdirCommand mkdir = new MkdirCommand().name(dir);
+        	commands.addCommand(mkdir);
+        }
+        // SENTENCE GRAPH...
+        if (sentenceCheck.isSelected()) {
+            File sentence = new File(sentenceName.getText());
+            if (!sentence.exists()) {
+                commands.addCommand(new MessageCommand("*** WARNING: sentence delimitation skipped because the graph was not found ***\n", true));
+            } else {
+                String grfName = sentenceName.getText();
+                File fst2;
+                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                    // we must compile the grf
+                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().library();
+                    commands.addCommand(grfCmd);
+                    String fst2Name = grfName.substring(0, grfName.length() - 3);
+                    fst2Name = fst2Name + "fst2";
+                    fst2 = new File(fst2Name);
+                    // and flatten it for better performance
+                    // (Fst2Txt is slow with complex graphs)
+                    FlattenCommand flattenCmd = new FlattenCommand().fst2(fst2).resultType(false).depth(5);
+                    commands.addCommand(flattenCmd);
+                } else {
+                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                        // if the extension is nor GRF neither
+                        // FST2
+                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    fst2 = new File(grfName);
+                }
+                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
+                	.alphabet(Config.getAlphabet()).mode(true);
+                if (Config.isCharByCharLanguage())
+                    cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
+                commands.addCommand(cmd);
+            }
+        }
+        // REPLACE GRAPH...
+        if (replaceCheck.isSelected()) {
+            File f = new File(replaceName.getText());
+            if (!f.exists()) {
+                commands.addCommand(new MessageCommand("*** WARNING: Replace step skipped because the graph was not found ***\n", true));
+            } else {
+                String grfName = replaceName.getText();
+                File fst2;
+                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                    // we must compile the grf
+                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
+                    commands.addCommand(grfCmd);
+                    String fst2Name = grfName.substring(0, grfName.length() - 3);
+                    fst2Name = fst2Name + "fst2";
+                    fst2 = new File(fst2Name);
+                } else {
+                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                        // if the extension is nor GRF neither
+                        // FST2
+                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    fst2 = new File(grfName);
+                }
+                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
+                	.alphabet(Config.getAlphabet()).mode(false);
+                if (Config.isCharByCharLanguage())
+                    cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
+                commands.addCommand(cmd);
+            }
+        }
+        // TOKENIZING...
+        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
+        	.alphabet(Config.getAlphabet());
+        if (Config.isCharByCharLanguage()) {
+            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
+        }
+        commands.addCommand(tokenizeCmd);
+        // APPLYING DEFAULT DICTIONARIES...
+        DicoCommand dicoCmd;
+        if (applyDicCheck.isSelected()) {
+                dicoCmd = new DicoCommand().snt(Config.getCurrentSnt())
+                		.alphabet(Config.getAlphabet())
+                		.morphologicalDic(Preferences.morphologicalDic());
+                if (Config.isKorean()) {
+                    dicoCmd=dicoCmd.korean();
+                }
+                ArrayList<File> param = Config.getDefaultDicList();
+                if (param != null && param.size() > 0) {
+                    dicoCmd = dicoCmd.dictionaryList(param);
+                    commands.addCommand(dicoCmd);
+                } else {
+                    dicoCmd = null;
+                }
+                // ANALYSING UNKNOWN WORDS
+                String lang = Config.getCurrentLanguage();
+                File dic = new File(Config.getUnitexCurrentLanguageDir(), "Dela");
+                if (lang.equals("German"))
+                    dic = new File(dic, "dela.bin");
+                else if (lang.equals("Norwegian"))
+                    dic = new File(dic, "Dela-sample.bin");
+                else if (lang.equals("Russian"))
+                    dic = new File(dic, "CISLEXru_igrok.bin");
+                if (analyseUnknownWordsCheck.isSelected()) {
+                    PolyLexCommand polyLexCmd;
+                    try {
+                        polyLexCmd = new PolyLexCommand().language(lang)
+                        .alphabet(Config.getAlphabet()).bin(dic)
+                        .wordList(new File(Config.getCurrentSntDir(), "err"))
+                        .output(new File(Config.getCurrentSntDir(), "dlf"))
+                        .info(new File(Config.getCurrentSntDir(), "decomp.txt"));
+                        commands.addCommand(polyLexCmd);
+                    } catch (InvalidPolyLexArgumentException e) {
+                        e.printStackTrace();
+                    }
+                }
+                // SORTING TEXT DICTIONARIES
+        		File alph=new File(Config
+                        .getUserCurrentLanguageDir(),"Alphabet_sort.txt");
+                if (dicoCmd != null) {
+                    // sorting DLF
+                    SortTxtCommand sortCmd = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlf")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlf.n"));
+                    if (Config.getCurrentLanguage().equals("Thai")) {
+                        sortCmd = sortCmd.thai();
+                    } else {
+                        sortCmd = sortCmd.sortAlphabet(alph);
+                    }
+                    commands.addCommand(sortCmd);
+                    // sorting DLC
+                    SortTxtCommand sortCmd2 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlc")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlc.n"));
+                    if (Config.getCurrentLanguage().equals("Thai")) {
+                        sortCmd2 = sortCmd2.thai();
+                    } else {
+                        sortCmd2 = sortCmd2.sortAlphabet(alph);
+                    }
+                    commands.addCommand(sortCmd2);
+                    // sorting ERR
+                    SortTxtCommand sortCmd3 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "err")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "err.n"));
+                    if (Config.getCurrentLanguage().equals("Thai")) {
+                        sortCmd3 = sortCmd3.thai();
+                    } else {
+                        sortCmd3 = sortCmd3.sortAlphabet(alph);
+                    }
+                    commands.addCommand(sortCmd3);
+                }
+            }
+        // CONSTRUCTING TEXT AUTOMATON
+        if (textFst2Check.isSelected()) {
+            File norm = Config.getCurrentNormGraph();
+            if (!norm.exists()) {
+                commands.addCommand(new MessageCommand("*** WARNING: normalization graph was not found ***\n", true));
+                norm = null;
+            } else {
+                String grfName = norm.getAbsolutePath();
+                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                    // we must compile the grf
+                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
+                    commands.addCommand(grfCmd);
+                    String fst2Name = grfName.substring(0, grfName.length() - 3);
+                    fst2Name = fst2Name + "fst2";
+                    norm = new File(fst2Name);
+                } else {
+                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                        // if the extension is nor GRF neither
+                        // FST2
+                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+            Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
+            .alphabet(Config.getAlphabet()).clean(true);
+            if (Config.isKorean()) {
+                txtCmd=txtCmd.korean();
+            }
+            if (norm != null) {
+                txtCmd = txtCmd.fst2(norm);
+            }
+            commands.addCommand(txtCmd);
+        }
+        UnitexFrame.getFrameManager().closeTextFrame();
+        Text.removeSntFiles();
+        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
     }
 
 }

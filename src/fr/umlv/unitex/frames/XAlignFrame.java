@@ -278,7 +278,7 @@ public class XAlignFrame extends JInternalFrame {
 					DicoCommand dico=new DicoCommand()
 						.snt(snt).alphabet(alphabet)
 						.morphologicalDic(Config.morphologicalDic(language));
-					ArrayList<File> param = PreprocessDialog.getDefaultDicList(language);
+					ArrayList<File> param = Config.getDefaultDicList(language);
 					if (param != null && param.size() > 0) {
 						dico = dico.dictionaryList(param);
 						commands.addCommand(dico);
