@@ -26,6 +26,12 @@ import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
+/**
+ * Note: if any, the ToDo instructions are executed in the Swing Thread
+ * 
+ * @author paumier
+ *
+ */
 public class Launcher {
 
 	public static void exec(CommandBuilder b,boolean close) {
