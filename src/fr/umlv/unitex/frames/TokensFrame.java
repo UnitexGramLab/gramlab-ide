@@ -53,13 +53,11 @@ public class TokensFrame extends JInternalFrame {
 	TokensFrame() {
 		super("Token list", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
-		top.setOpaque(true);
 		top.add(constructButtonsPanel(), BorderLayout.NORTH);
 		top.add(new JScrollPane(text), BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
 		setBounds(50, 200, 300, 450);
-		setVisible(false);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -79,7 +77,6 @@ public class TokensFrame extends JInternalFrame {
 
 	private JPanel constructButtonsPanel() {
 		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
-		buttonsPanel.setOpaque(true);
 		Action frequenceAction = new AbstractAction("By Frequence") {
 			public void actionPerformed(ActionEvent arg0) {
 				loadTokens(new File(Config.getCurrentSntDir(),
@@ -107,11 +104,9 @@ public class TokensFrame extends JInternalFrame {
 		};
 		JButton byCharOrder = new JButton(orderAction);
 		JPanel tmp1 = new JPanel(new BorderLayout());
-		tmp1.setOpaque(true);
 		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tmp1.add(byFrequence, BorderLayout.CENTER);
 		JPanel tmp2 = new JPanel(new BorderLayout());
-		tmp2.setOpaque(true);
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tmp2.add(byCharOrder, BorderLayout.CENTER);
 		buttonsPanel.add(tmp1);
