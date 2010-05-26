@@ -73,15 +73,15 @@ import fr.umlv.unitex.xalign.ConcordanceModel;
  */
 public class XAlignLocateFrame extends JInternalFrame {
 
-	JRadioButton regularExpression = new JRadioButton("Regular expression:",false);
+	JRadioButton regularExpression = new JRadioButton("Regular expression:");
 	JRadioButton graph = new JRadioButton("Graph:", true);
 	JTextField regExp = new JTextField();
 	JTextField graphName = new JTextField();
-	JRadioButton shortestMatches = new JRadioButton("Shortest matches", false);
+	JRadioButton shortestMatches = new JRadioButton("Shortest matches");
 	JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
-	JRadioButton allMatches = new JRadioButton("All matches", false);
+	JRadioButton allMatches = new JRadioButton("All matches");
 	JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
-	JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text", false);
+	JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text");
 	JTextField nMatches = new JTextField("200");
 
 	String language;
