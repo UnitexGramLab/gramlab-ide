@@ -46,11 +46,9 @@ public class StatisticsFrame extends JInternalFrame {
 
 	StatisticsFrame(File file,int mode) {
 		super("Statistics", true, true, true, true);
-		JPanel top = new JPanel();
-		top.setOpaque(true);
-		top.setLayout(new BorderLayout());
+		JPanel top = new JPanel(new BorderLayout());
 		JTable table = createTable(file,mode);
-		table.setFont(Preferences.getCloneOfPreferences().textFont.font);
+		table.setFont(Preferences.textFont());
 		JScrollPane scroll = new JScrollPane(table);
 		scroll
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
