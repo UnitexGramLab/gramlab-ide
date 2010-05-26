@@ -47,7 +47,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -180,35 +179,26 @@ public class XAlignFrame extends JInternalFrame {
 		JButton alignButton=new JButton("Align");
 		alignButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						saveAlignment(model);
-						if (alignementFile==null || model.isModified()) {
-							/* If the user hasn't saved the alignment */
-							return;
-						}
-						File alignmentProperties=Config.getAlignmentProperties();
-						XAlignCommand cmd=new XAlignCommand();
-						cmd=cmd.source(f1).target(f2).properties(alignmentProperties)
-							.alignment(alignementFile);
-						Launcher.exec(cmd,true,new XAlignDo(model,alignementFile));
-					}});
+				saveAlignment(model);
+				if (alignementFile==null || model.isModified()) {
+					/* If the user hasn't saved the alignment */
+					return;
+				}
+				File alignmentProperties=Config.getAlignmentProperties();
+				XAlignCommand cmd=new XAlignCommand();
+				cmd=cmd.source(f1).target(f2).properties(alignmentProperties)
+					.alignment(alignementFile);
+				Launcher.exec(cmd,true,new XAlignDo(model,alignementFile));
 			}});
 		JButton saveButton=new JButton("Save alignment");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						saveAlignment(model);
-					}});
+				saveAlignment(model);
 			}});
 		JButton saveAsButton=new JButton("Save alignment as...");
 		saveAsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						saveAlignmentAs(model);
-					}});
+				saveAlignmentAs(model);
 			}});
 		JPanel downPanel=new JPanel(new BorderLayout());
 		downPanel.add(radioPanel1,BorderLayout.WEST);
@@ -216,8 +206,8 @@ public class XAlignFrame extends JInternalFrame {
 		JButton locate1=createLocateButton(f1,concordModel1);
 		JButton locate2=createLocateButton(f2,concordModel2);
 		JPanel buttonPanel=new JPanel(null);
-		buttonPanel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 		buttonPanel.setLayout(new BoxLayout(buttonPanel,BoxLayout.X_AXIS));
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
 		buttonPanel.add(locate1);
 		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(clearButton);
@@ -235,67 +225,71 @@ public class XAlignFrame extends JInternalFrame {
 		JButton button=new JButton("Locate...");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String xmlName=file.getAbsolutePath();
-				String targetName;
-				if (!xmlName.endsWith(".xml")) {
-					targetName=xmlName+"_xalign";
-				} else {
-					targetName=xmlName.substring(0,xmlName.lastIndexOf("."))+"_xalign";
-				}
-				String txtName=targetName+".txt";
-				String sntName=targetName+".snt";
-				File txt=new File(txtName);
-				final File snt=new File(sntName);
-				File sntDir=new File(targetName+"_snt");
-				File alphabet=XAlignFrame.tryToFindAlphabet(file);
-				if (alphabet==null) {
-					JOptionPane.showMessageDialog(null,
-							"Cannot determine the alphabet file to use\n"+
-							"in order to process your text. You should place\n"+
-							"your file within a language directory (e.g. English).", "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				final String language=alphabet.getParentFile().getName();
-				if (!snt.exists()) {
-					int choice=JOptionPane.showConfirmDialog(null,
-				            "Unitex needs a text version of your xml text in order to locate\n"+
-				            "expression. Do you agree to build and preprocess\n\n"+
-				            txtName+" ?", "", JOptionPane.YES_NO_OPTION);
-					if (choice!=JOptionPane.YES_OPTION) {
-						return;
-					}
-					MultiCommands commands=new MultiCommands();
-					TEI2TxtCommand tei2txt=new TEI2TxtCommand().input(file).output(txt);
-					commands.addCommand(tei2txt);
-					NormalizeCommand normalize=new NormalizeCommand().text(txt);
-					commands.addCommand(normalize);
-					MkdirCommand mkdir=new MkdirCommand().name(sntDir);
-					commands.addCommand(mkdir);
-					TokenizeCommand tokenize=new TokenizeCommand().text(snt)
-						.alphabet(alphabet);
-					commands.addCommand(tokenize);
-					DicoCommand dico=new DicoCommand()
-						.snt(snt).alphabet(alphabet)
-						.morphologicalDic(Config.morphologicalDic(language));
-					ArrayList<File> param = Config.getDefaultDicList(language);
-					if (param != null && param.size() > 0) {
-						dico = dico.dictionaryList(param);
-						commands.addCommand(dico);
-					} else {
-						dico = null;
-					}
-					ToDo toDo=new ToDo() {
-						public void toDo() {
-							UnitexFrame.getFrameManager().newXAlignLocateFrame(language,snt,concordModel);
-						}
-					};
-					Launcher.exec(commands,true,toDo,true);
-					return;
-				}
-				UnitexFrame.getFrameManager().newXAlignLocateFrame(language,snt,concordModel);
+				launchLocate(file,concordModel);
 			}});
 		return button;
+	}
+
+	protected void launchLocate(File file, final ConcordanceModel concordModel) {
+		String xmlName=file.getAbsolutePath();
+		String targetName;
+		if (!xmlName.endsWith(".xml")) {
+			targetName=xmlName+"_xalign";
+		} else {
+			targetName=xmlName.substring(0,xmlName.lastIndexOf("."))+"_xalign";
+		}
+		String txtName=targetName+".txt";
+		String sntName=targetName+".snt";
+		File txt=new File(txtName);
+		final File snt=new File(sntName);
+		File sntDir=new File(targetName+"_snt");
+		File alphabet=tryToFindAlphabet(file);
+		if (alphabet==null) {
+			JOptionPane.showMessageDialog(null,
+					"Cannot determine the alphabet file to use\n"+
+					"in order to process your text. You should place\n"+
+					"your file within a language directory (e.g. English).", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		final String language=alphabet.getParentFile().getName();
+		if (!snt.exists()) {
+			int choice=JOptionPane.showConfirmDialog(null,
+		            "Unitex needs a text version of your xml text in order to locate\n"+
+		            "expression. Do you agree to build and preprocess\n\n"+
+		            txtName+" ?", "", JOptionPane.YES_NO_OPTION);
+			if (choice!=JOptionPane.YES_OPTION) {
+				return;
+			}
+			MultiCommands commands=new MultiCommands();
+			TEI2TxtCommand tei2txt=new TEI2TxtCommand().input(file).output(txt);
+			commands.addCommand(tei2txt);
+			NormalizeCommand normalize=new NormalizeCommand().text(txt);
+			commands.addCommand(normalize);
+			MkdirCommand mkdir=new MkdirCommand().name(sntDir);
+			commands.addCommand(mkdir);
+			TokenizeCommand tokenize=new TokenizeCommand().text(snt)
+				.alphabet(alphabet);
+			commands.addCommand(tokenize);
+			DicoCommand dico=new DicoCommand()
+				.snt(snt).alphabet(alphabet)
+				.morphologicalDic(Config.morphologicalDic(language));
+			ArrayList<File> param = Config.getDefaultDicList(language);
+			if (param != null && param.size() > 0) {
+				dico = dico.dictionaryList(param);
+				commands.addCommand(dico);
+			} else {
+				dico = null;
+			}
+			ToDo toDo=new ToDo() {
+				public void toDo() {
+					UnitexFrame.getFrameManager().newXAlignLocateFrame(language,snt,concordModel);
+				}
+			};
+			Launcher.exec(commands,true,toDo,true);
+			return;
+		}
+		UnitexFrame.getFrameManager().newXAlignLocateFrame(language,snt,concordModel);
 	}
 
 	protected void saveAlignment(XAlignModel model1) {
@@ -347,40 +341,9 @@ public class XAlignFrame extends JInternalFrame {
 	 * ..../Unitex/Thai/...../foo.xml => Thai
 	 * ..../my unitex/French/...../foo.xml => French
 	 */
-	private static Font tryToFindFont(File f) {
-		Font font=tryToFindFont(f.getParentFile(),Config.getUnitexDir());
-		if (font==null) {
-			font=tryToFindFont(f.getParentFile(),Config.getUserDir());
-		}
-		return font;
-	}
-
-	/**
-	 * f is the directory containing the XML file.
-	 */
-	private static Font tryToFindFont(File f,File dir) {
-		if (f==null) {
-			return null;
-		}
-		if (f.equals(dir)) {
-			/* If we are at the root of the directory, we can't
-			 * say anything about the language.
-			 */
-			return null;
-		}
-		while (f.getParentFile()!=null && !f.getParentFile().equals(dir)) {
-			f=f.getParentFile();
-		}
-		if (f.getParentFile()==null) {
-			/* We were not in the directory */
-			return null;
-		}
-		/* Here, we have found a language directory */
-		String name=f.getName();
-		if (name.equals("Users") || name.equals("App") ||
-				name.equals("Src") || name.equals("XAlign")) {
-			return null;
-		}
+	private Font tryToFindFont(File f) {
+		File languageDir=Config.getLanguageDirForFile(f);
+		if (languageDir==null) return null;
 		/* Now, we will look into the config file which is the preferred font
 		 * for this language */
 		File config=new File(f,"Config");
@@ -397,6 +360,7 @@ public class XAlignFrame extends JInternalFrame {
 		return font;
 	}
 
+
 	/**
 	 * This method tries to determine the language of the given file, on
 	 * the basis of its path:
@@ -405,39 +369,8 @@ public class XAlignFrame extends JInternalFrame {
 	 * ..../my unitex/French/...../foo.xml => French
 	 */
 	public static File tryToFindAlphabet(File f) {
-		File file=tryToFindAlphabet(f.getParentFile(),Config.getUnitexDir());
-		if (file==null) {
-			file=tryToFindAlphabet(f.getParentFile(),Config.getUserDir());
-		}
-		return file;
-	}
-
-	/**
-	 * f is the directory containing the XML file.
-	 */
-	private static File tryToFindAlphabet(File f,File dir) {
-		if (f==null) {
-			return null;
-		}
-		if (f.equals(dir)) {
-			/* If we are at the root of the directory, we can't
-			 * say anything about the language.
-			 */
-			return null;
-		}
-		while (f.getParentFile()!=null && !f.getParentFile().equals(dir)) {
-			f=f.getParentFile();
-		}
-		if (f.getParentFile()==null) {
-			/* We were not in the directory */
-			return null;
-		}
-		/* Here, we have found a language directory */
-		String name=f.getName();
-		if (name.equals("Users") || name.equals("App") ||
-				name.equals("Src") || name.equals("XAlign")) {
-			return null;
-		}
+		File languageDir=Config.getLanguageDirForFile(f);
+		if (languageDir==null) return null;
 		/* Now, we will look into the config file which is the preferred font
 		 * for this language */
 		File alphabet=new File(f,"Alphabet.txt");
@@ -447,7 +380,8 @@ public class XAlignFrame extends JInternalFrame {
 		return alphabet;
 	}
 
-	private static JPanel createRadioPanel(final ConcordanceModel model1,final ConcordanceModel model2,boolean left) {
+
+	private JPanel createRadioPanel(final ConcordanceModel model1,final ConcordanceModel model2,boolean left) {
 		JPanel p=new JPanel(new GridLayout(4,1));
 		String[] captions={"All sentences/Plain text","Matched sentences","All sentences/HTML",left?"Aligned with target concordance":"Aligned with source concordance"};
 		DisplayMode[] modes={DisplayMode.TEXT,DisplayMode.MATCHES,DisplayMode.BOTH,DisplayMode.ALIGNED};
@@ -475,7 +409,7 @@ public class XAlignFrame extends JInternalFrame {
 	}
 	
 	
-	static class XAlignDo implements ToDo {
+	class XAlignDo implements ToDo {
 		
 		XAlignModel model1;
 		File f;
