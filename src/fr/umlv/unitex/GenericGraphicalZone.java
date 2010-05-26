@@ -915,4 +915,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 		updateAllBoxes();
 	}
 
+	public void setAntialiasing(boolean a) {
+		info.antialiasing=a;
+		repaint();
+	}
+
+	public boolean getAntialiasing() {
+		return info.antialiasing;
+	}
 }
