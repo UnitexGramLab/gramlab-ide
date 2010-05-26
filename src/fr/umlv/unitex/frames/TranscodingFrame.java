@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -41,7 +40,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
@@ -62,8 +60,7 @@ import fr.umlv.unitex.transcoding.Transcoder;
  * @author Sébastien Paumier
  */
 public class TranscodingFrame extends JInternalFrame {
-
-    JList srcEncodingList = new JList(Transcoder.getAvailableEncodings());
+	JList srcEncodingList = new JList(Transcoder.getAvailableEncodings());
 	JList destEncodingList = new JList(Transcoder.getAvailableEncodings());
 	JRadioButton replace = new JRadioButton("Replace");
 	JRadioButton renameSourceWithPrefix = new JRadioButton(
@@ -75,34 +72,31 @@ public class TranscodingFrame extends JInternalFrame {
 	JRadioButton nameDestWithSuffix = new JRadioButton(
 			"Name destination with suffix");
 	JTextField prefixSuffix = new JTextField("");
-	public DefaultListModel listModel = new DefaultListModel();
+	DefaultListModel listModel = new DefaultListModel();
 	JList fileList = new JList(listModel);
-	private JButton addFiles = new JButton("Add Files");
-	private JButton removeFiles = new JButton("Remove Files");
-	private JButton transcode = new JButton("Transcode");
-	private JButton cancel = new JButton("Cancel");
+	JButton addFiles = new JButton("Add Files");
+	JButton removeFiles = new JButton("Remove Files");
+	JButton transcode = new JButton("Transcode");
+	JButton cancel = new JButton("Cancel");
 	ToDo toDo;
 
-	
 	TranscodingFrame() {
 		super("Transcode Files", true, true);
 		setContentPane(constructPanel());
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		srcEncodingList.setSelectedValue(Transcoder.getEncodingForLanguage(Config
-				.getCurrentLanguage()), true);
+		srcEncodingList.setSelectedValue(Transcoder
+				.getEncodingForLanguage(Config.getCurrentLanguage()), true);
 		destEncodingList.setSelectedValue("LITTLE-ENDIAN", true);
 		/* TODO mettre un ChangeLanguageListener ici */
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				listModel.removeAllElements();
-				toDo=null;
+				toDo = null;
 			}
 		});
 	}
-
-
 
 	private JPanel constructPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
@@ -170,15 +164,17 @@ public class TranscodingFrame extends JInternalFrame {
 	}
 
 	private JPanel constructButtonPanel() {
-		final TranscodingFrame zis=this;
+		final TranscodingFrame zis = this;
 		addFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int returnVal = Config.getTranscodeDialogBox().showOpenDialog(zis);
+				int returnVal = Config.getTranscodeDialogBox().showOpenDialog(
+						zis);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				File[] graphs = Config.getTranscodeDialogBox().getSelectedFiles();
+				File[] graphs = Config.getTranscodeDialogBox()
+						.getSelectedFiles();
 				for (int i = 0; i < graphs.length; i++) {
 					if (!listModel.contains(graphs[i])) {
 						listModel.addElement(graphs[i]);
@@ -219,8 +215,7 @@ public class TranscodingFrame extends JInternalFrame {
 				}
 				ConvertCommand command;
 				try {
-					command = new ConvertCommand().src(src)
-							.dest(dest);
+					command = new ConvertCommand().src(src).dest(dest);
 				} catch (InvalidDestinationEncodingException e) {
 					e.printStackTrace();
 					return;
@@ -239,20 +234,15 @@ public class TranscodingFrame extends JInternalFrame {
 				} else {
 					command = command.renameDestWithSuffix(preSuf);
 				}
-				final ConvertCommand cmd=command;
-				final ToDo d=toDo;
-				toDo=null;
+				final ConvertCommand cmd = command;
+				final ToDo d = toDo;
+				toDo = null;
 				setVisible(false);
-				// post pone code
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						int l = listModel.getSize();
-						for (int i = 0; i < l; i++) {
-							cmd.file((File)listModel.getElementAt(i));
-						}
-						Launcher.exec(cmd,false,d);
-					}
-				});
+				int l = listModel.getSize();
+				for (int i = 0; i < l; i++) {
+					cmd.file((File) listModel.getElementAt(i));
+				}
+				Launcher.exec(cmd, false, d);
 			}
 		});
 		cancel.addActionListener(new ActionListener() {
@@ -271,7 +261,6 @@ public class TranscodingFrame extends JInternalFrame {
 		return buttonPanel;
 	}
 
-
 	/**
 	 * @return the list model of the conversion frame
 	 */
@@ -279,12 +268,10 @@ public class TranscodingFrame extends JInternalFrame {
 		return listModel;
 	}
 
-
-
 	void configure(File file, ToDo toDo1) {
 		listModel.removeAllElements();
-		this.toDo=toDo1;
-		if (toDo1!=null) {
+		this.toDo = toDo1;
+		if (toDo1 != null) {
 			listModel.addElement(file);
 			addFiles.setEnabled(false);
 			removeFiles.setEnabled(false);
@@ -293,6 +280,4 @@ public class TranscodingFrame extends JInternalFrame {
 			removeFiles.setEnabled(true);
 		}
 	}
-
-
 }
