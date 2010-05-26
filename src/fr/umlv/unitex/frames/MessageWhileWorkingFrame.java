@@ -42,7 +42,7 @@ import fr.umlv.unitex.GraphCollection;
  */
 public class MessageWhileWorkingFrame extends JInternalFrame {
 
-	private static JLabel label = new JLabel();
+	private JLabel label = new JLabel();
 
 	MessageWhileWorkingFrame() {
 		super("", true, true);
