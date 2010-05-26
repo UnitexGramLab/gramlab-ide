@@ -1095,12 +1095,7 @@ public class Config {
 	private static void collectLanguage(File directory, Set<String> languages) {
 		File[] fileList = directory.listFiles(new FileFilter() {
 			public boolean accept(File file) {
-				String name = file.getName();
-				return file.isDirectory() && !name.equals("App")
-						&& !name.equals("Src") 
-						&& !name.equals("Users")
-						&& !name.equals("XAlign")
-						&& !name.startsWith(".");
+				return file.isDirectory() && isValidLanguageName(file.getName());
 			}
 		});
 		for (int i = 0; i < fileList.length; i++) {
@@ -1590,4 +1585,31 @@ public class Config {
         return res;
     }
 
+    /**
+     * Tries to find the language directory corresponding to the given file.
+     * @param f
+     * @return the language directory, or null if no language directory was
+     * found in the path of f
+     */
+    public static File getLanguageDirForFile(File f) {
+    	if (f==null) return null;
+    	File parent=f.getParentFile();
+    	while (true) {
+    		if (parent==null) return null;
+    		if (parent.equals(Config.getUserDir()) ||
+    				parent.equals(Config.getUnitexDir())) break;
+    		f=parent;
+    		parent=parent.getParentFile();
+    	}
+    	if (!isValidLanguageName(f.getName())) return null;
+    	return f;
+    }
+
+
+	static boolean isValidLanguageName(String name) {
+    	if (name.equals("App") || name.equals("Users")
+    			|| name.equals("Src") || name.equals("XAlign")
+    			|| name.startsWith(".")) return false;
+		return true;
+	}
 }
