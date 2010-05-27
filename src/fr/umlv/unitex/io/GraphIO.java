@@ -38,7 +38,6 @@ import fr.umlv.unitex.GraphBox;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.TfstGraphBox;
-import fr.umlv.unitex.TfstGraphicalZone;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 
 /**
@@ -554,9 +553,9 @@ public class GraphIO {
 	 *            sentence graph file
 	 * @return a <code>GraphIO</code> object describing the sentence graph
 	 */
-	public static GraphIO loadSentenceGraph(File file,
-			TfstGraphicalZone tfstGraphicalZone) {
+	public static GraphIO loadSentenceGraph(File file) {
 		GraphIO res = new GraphIO();
+		res.grf=file;
 		FileInputStream source;
 		if (!file.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find "
@@ -599,12 +598,12 @@ public class GraphIO {
 			res.readBoxNumber(source);
 			res.boxes = new ArrayList<GenericGraphBox>();
 			// adding initial state
-			res.boxes.add(new TfstGraphBox(0, 0, 0, tfstGraphicalZone));
+			res.boxes.add(new TfstGraphBox(0, 0, 0, null));
 			// adding final state
-			res.boxes.add(new TfstGraphBox(0, 0, 1, tfstGraphicalZone));
+			res.boxes.add(new TfstGraphBox(0, 0, 1, null));
 			// adding other states
 			for (int i = 2; i < res.nBoxes; i++)
-				res.boxes.add(new TfstGraphBox(0, 0, 2, tfstGraphicalZone));
+				res.boxes.add(new TfstGraphBox(0, 0, 2, null));
 			for (int i = 0; i < res.nBoxes; i++)
 				res.readSentenceGraphLine(source, i);
 			source.close();

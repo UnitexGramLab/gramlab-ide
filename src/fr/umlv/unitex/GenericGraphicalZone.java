@@ -20,7 +20,6 @@
  */
 package fr.umlv.unitex;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -91,13 +90,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 		return parentFrame;
 	}
 
-	/**
-	 * Undo/redo Manager
-	 */
 	protected UndoableEditSupport support = new UndoableEditSupport();
-	/**
-	 * Zoom factor
-	 */
+
 	public double scaleFactor = 1.0;
 	protected int Xmouse, Ymouse;
 	protected boolean mouseInGraphicalZone = false;
@@ -139,41 +133,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 	}
 
 	/**
-	 * Constructs a new <code>GenericGraphicalZone</code>.
-	 * 
-	 * @param w
-	 *            width of the drawing area
-	 * @param h
-	 *            height of the drawing area
-	 * @param t
-	 *            text field to edit box contents
-	 * @param p
-	 *            frame that contains the component
-	 */
-	public GenericGraphicalZone(int w, int h, JTextField t,
-			final TextAutomatonFrame p) {
-		super();
-		text = t;
-		parentFrame = p;
-		selectedBoxes = new ArrayList<GenericGraphBox>();
-		graphBoxes = new ArrayList<GenericGraphBox>();
-		setBackground(Color.white);
-		setLayout(new BorderLayout());
-		text.setEditable(false);
-		info = Preferences.getGraphPresentationPreferences();
-	}
-
-	/*
-	 * Methods for adding and creating boxes
-	 */
-	/**
 	 * Adds a graph box to the graph
 	 * 
 	 * @param g
 	 *            the graph box
 	 */
 	public void addBox(GenericGraphBox g) {
-		// intital an terminal state must not edit
 		if (graphBoxes.size() >= 2) {
 			UndoableEdit edit = new AddBoxEdit(g, graphBoxes, this);
 			postEdit(edit);
@@ -216,35 +181,13 @@ public abstract class GenericGraphicalZone extends JComponent {
 			}
 		}
 		initText("");
-		fireGraphChanged();
+		fireGraphChanged(true);
 	}
 
-	/**
-	 * Sets the text field content
-	 * 
-	 * @param s
-	 *            the new content
-	 */
-	public void initText(String s) {
-		if (text instanceof TextField) {
-			((TextField) text).initText(s);
-		} else if (text instanceof TfstTextField) {
-			((TfstTextField) text).initText(s);
-		}
-	}
+	public abstract void initText(String s);
+	public abstract boolean validateTextField();
 
-	/**
-	 * Validates the text field content
-	 * 
-	 */
-	public boolean validateTextField() {
-		if (text instanceof TextField) {
-			return ((TextField) text).validateTextField();
-		} else if (text instanceof TfstTextField) {
-			return ((TfstTextField) text).validateTextField();
-		}
-		throw new AssertionError("Should not happen!");
-	}
+
 
 
 	/**
@@ -454,6 +397,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			UndoableEdit edit = new SelectEdit(selectedBoxes);
 			postEdit(edit);
 		}
+		fireGraphChanged(false);
 	}
 
 	/**
@@ -474,6 +418,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = selectedBoxes.get(i);
 			g.translate(dx, dy);
 		}
+		fireGraphChanged(true);
 	}
 
 	protected int X_start_drag, Y_start_drag;
@@ -647,7 +592,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.translate(0, dy);
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
 	/**
@@ -675,7 +620,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.translate(0, dy);
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
 	/**
@@ -701,7 +646,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.translate(0, dy);
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
 	/**
@@ -727,7 +672,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.translate(dx, 0);
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
 	/**
@@ -754,7 +699,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.translate(dx, 0);
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
 	/**
@@ -780,34 +725,17 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 			g.translate(dx, 0);
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
-	/**
-	 * Sets the <code>isGrid</code> field
-	 * 
-	 * @param b
-	 *            <code>true</code> if the graph must be marked as modified,
-	 *            <code>false</code> otherwise
-	 */
 	public void setGrid(boolean b) {
-		isGrid = b;
-		repaint();
+		setGrid(b,10);
 	}
 
-	/**
-	 * Sets the <code>isGrid</code> field
-	 * 
-	 * @param b
-	 *            <code>true</code> if the graph must be marked as modified,
-	 *            <code>false</code> otherwise
-	 * @param n
-	 *            size of grid's cells
-	 */
 	public void setGrid(boolean b, int n) {
 		isGrid = b;
 		nPixels = n;
-		repaint();
+		fireGraphChanged(false);
 	}
 
 	/**
@@ -821,19 +749,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = graphBoxes.get(i);
 			g.update();
 		}
-		repaint();
+		fireGraphChanged(true);
 	}
 
-	/**
-	 * Indicates if the graph must be drawn from right to left or not.
-	 * 
-	 * @param b
-	 *            <code>true</code> if the graph must be drawn from right to
-	 *            left, <code>false</code> otherwise
-	 */
-	public void setRightToLeft(boolean b) {
-		info.rightToLeft = b;
-	}
+
 
 	public void addUndoableEditListener(UndoableEditListener listener) {
 		support.addUndoableEditListener(listener);
@@ -845,7 +764,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	public void postEdit(UndoableEdit e) { // le fireUndoableEditUpdate....
 		support.postEdit(e);
-		parentFrame.repaint();
 	}
 
 	/**
@@ -878,7 +796,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	public void setAntialiasing(boolean a) {
 		info.antialiasing = a;
-		repaint();
+		fireGraphChanged(false);
 	}
 
 	public boolean getAntialiasing() {
@@ -900,11 +818,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 		listeners.remove(l);
 	}
 
-	protected void fireGraphChanged() {
+	protected void fireGraphChanged(boolean modified) {
 		firing=true;
 		try {
 			for (GraphListener l:listeners) {
-				l.graphChanged();
+				l.graphChanged(modified);
 			}
 		} finally {
 			firing=false;
@@ -914,7 +832,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	
 	public void empty() {
 		graphBoxes.clear();
-		repaint();
+		fireGraphChanged(true);
 	}
 	
 	public ArrayList<GenericGraphBox> getBoxes() {
