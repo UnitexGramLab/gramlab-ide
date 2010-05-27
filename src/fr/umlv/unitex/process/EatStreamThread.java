@@ -18,45 +18,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
 /**
  * 
  * @author Olivier Blanc
- *
+ * 
  */
 public class EatStreamThread extends Thread {
+	InputStream in;
+	OutputStream out;
 
-   InputStream in;
-   OutputStream out;
+	public EatStreamThread(InputStream _in) {
+		in = _in;
+		out = new NullOutputStream();
+	}
 
-   public EatStreamThread(InputStream _in) {
-      in= _in;
-      out= new NullOutputStream();
-   }
+	public EatStreamThread(InputStream _in, OutputStream _out) {
+		in = _in;
+		out = _out;
+	}
 
-   public EatStreamThread(InputStream _in, OutputStream _out) {
-      in= _in;
-      out= _out;
-   }
-
-   public void run() {
-
-      try {
-
-         int c;
-         while ((c= in.read()) != -1) {
-            out.write(c);
-         }
-         out.close();
-      } catch (IOException e) {
-    	  e.printStackTrace();
-      }
-   }
+	@Override
+	public void run() {
+		try {
+			int c;
+			while ((c = in.read()) != -1) {
+				out.write(c);
+			}
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

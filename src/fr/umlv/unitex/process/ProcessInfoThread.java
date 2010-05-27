@@ -123,7 +123,8 @@ public class ProcessInfoThread extends Thread {
    /**
     * Runs the monitoring thread 
     */
-   public void run() {
+   @Override
+	public void run() {
       String s;
       boolean fullReturn;
       final ProcessOutputListModel model=(ProcessOutputListModel) list.getModel();

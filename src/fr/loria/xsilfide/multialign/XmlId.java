@@ -59,7 +59,8 @@ class XmlId implements Comparable {
     public String getLocalName(){
 	return localName;
     }
-    public String toString(){
+    @Override
+	public String toString(){
 	return uri+"#"+localName;
     }
     public void setLocalName(String ln){

@@ -66,6 +66,7 @@ public class DelaFrame extends JInternalFrame {
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				Config.setCurrentDELA(null);
 				text.reset();

@@ -49,6 +49,7 @@ public class SelectEdit extends AbstractUndoableEdit {
 		this.selectedBoxes = selectedBoxes;
 	}
 	
+	@Override
 	public void redo(){
 		super.redo();
 		for(Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator() ; it.hasNext(); ){
@@ -58,6 +59,7 @@ public class SelectEdit extends AbstractUndoableEdit {
 		}
 	}
 	
+	@Override
 	public void undo(){
 		super.undo();
 		for( Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator() ; it.hasNext(); ){

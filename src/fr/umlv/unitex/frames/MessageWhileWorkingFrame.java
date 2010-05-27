@@ -53,6 +53,7 @@ public class MessageWhileWorkingFrame extends JInternalFrame {
 		setBounds(100, 100, 450, 80);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				GraphCollection.stop();
 			}

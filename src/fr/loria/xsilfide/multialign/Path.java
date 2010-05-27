@@ -78,7 +78,8 @@ public class Path
       return((Point)path.elementAt(at));
     }
   
-  public String toString ()
+  @Override
+public String toString ()
     {
       String s = new String ();
       

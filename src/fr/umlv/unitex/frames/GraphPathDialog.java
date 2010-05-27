@@ -76,6 +76,7 @@ public class GraphPathDialog extends JDialog {
 		setBounds(100, 100, 420, 400);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				close();
 			}

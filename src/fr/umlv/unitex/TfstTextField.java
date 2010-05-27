@@ -233,6 +233,7 @@ public class TfstTextField extends JTextField {
 	 * 
 	 * @return the <code>ListDocument</code>
 	 */
+	@Override
 	public Document createDefaultModel() {
 		return new ListDocument();
 	}
@@ -292,6 +293,7 @@ public class TfstTextField extends JTextField {
 
 	class MyKeyListener extends KeyAdapter {
 
+		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.isControlDown() || e.isAltDown()) {
 				// if the control key or alt key is pressed, we do nothing: the

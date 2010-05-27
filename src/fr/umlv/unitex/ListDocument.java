@@ -50,7 +50,8 @@ public class ListDocument extends PlainDocument {
     * @param s string to be inserted
     * @param a attribute set
     */
-   public void insertString(int offs, String s, AttributeSet a)
+   @Override
+public void insertString(int offs, String s, AttributeSet a)
       throws BadLocationException {
       if (s == null) {
          // exits if there is nothing to do

@@ -119,6 +119,7 @@ public class DialogLayout implements LayoutManager {
 		return divider;
 	}
 
+	@Override
 	public String toString() {
 		return getClass().getName() + "[hgap=" + m_hGap + ",vgap=" 
 			+ m_vGap + ",divider=" + m_divider + "]";

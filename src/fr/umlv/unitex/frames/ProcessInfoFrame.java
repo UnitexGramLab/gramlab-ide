@@ -161,6 +161,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 		if (commands == null)
 			return;
 		Thread thread = new Thread() {
+			@Override
 			public void run() {
 				boolean problem = false;
 				CommandBuilder command;

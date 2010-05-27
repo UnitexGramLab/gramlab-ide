@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.undo;
 
 import javax.swing.undo.AbstractUndoableEdit;
@@ -27,10 +26,10 @@ import fr.umlv.unitex.GenericGraphBox;
 
 /**
  * class uses to save the state of the graph before add a transition
- * @author Decreton Julien 
+ * 
+ * @author Decreton Julien
  */
 public class TransitionEdit extends AbstractUndoableEdit {
-
 	/** boxe from transition starts */
 	private GenericGraphBox srcBoxe,
 	/** boxe where tanstion go */
@@ -38,27 +37,26 @@ public class TransitionEdit extends AbstractUndoableEdit {
 
 	/**
 	 * constuct a Transition Edit
-	 * @param srcBoxe boxe from transition starts
-	 * @param dstBoxe boxe where tanstion go
+	 * 
+	 * @param srcBoxe
+	 *            boxe from transition starts
+	 * @param dstBoxe
+	 *            boxe where tanstion go
 	 */
 	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
 		this.srcBoxe = srcBoxe;
 		this.dstBoxe = dstBoxe;
-
 	}
 
+	@Override
 	public void undo() {
-
 		super.undo();
 		srcBoxe.addTransitionTo(dstBoxe);
-
 	}
 
+	@Override
 	public void redo() {
-
 		super.redo();
 		srcBoxe.addTransitionTo(dstBoxe);
-
 	}
-
 }

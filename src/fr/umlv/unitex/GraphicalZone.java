@@ -72,11 +72,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		addMouseMotionListener(new MyMouseMotionListener());
 	}
 
+	@Override
 	protected GenericGraphBox newBox(int x, int y, int type, GenericGraphicalZone p) {
 		return new GraphBox(x, y, type, (GraphicalZone) p);
 	}
 
-	
+	@Override
 	protected void initializeEmptyGraph() {
 		GraphBox g, g2;
 		// creating the final state
@@ -132,6 +133,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 	}
 
+	@Override
 	protected GenericGraphBox createBox(int x, int y) {
 		GraphBox g = new GraphBox(x, y, 2, this);
 		g.setContent("<E>");
@@ -414,6 +416,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * @param f_old
 	 *            the graphical context
 	 */
+	@Override
 	public void paintComponent(Graphics f_old) {
 		setClipZone(f_old.getClipBounds());
 		Graphics2D f = (Graphics2D) f_old;
@@ -518,10 +521,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return Printable.PAGE_EXISTS;
 	}
 
+	@Override
 	public void initText(String s) {
 		((TextField)text).initText(s);
 	}
 	
+	@Override
 	public boolean validateTextField() {
 		return ((TextField) text).validateTextField();
 	}

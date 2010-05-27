@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process;
 
 import java.io.OutputStream;
@@ -26,24 +25,31 @@ import java.io.OutputStream;
 /**
  * 
  * @author Olivier Blanc
- *
+ * 
  */
 public class NullOutputStream extends OutputStream {
+	@Override
+	public void close() {
+		// nothing to do
+	}
 
-   public void close() {
-	   // nothing to do
-   }
+	@Override
+	public void flush() {
+		// nothing to do
+	}
 
-   public void flush() {
-	   // nothing to do
-   }
-   public void write(byte[] b) {
-	   // nothing to do
-   }
-   public void write(byte[] b, int off, int len) {
-	   // nothing to do
-   }
-   public void write(int b) {
-	   // nothing to do
-   }
+	@Override
+	public void write(byte[] b) {
+		// nothing to do
+	}
+
+	@Override
+	public void write(byte[] b, int off, int len) {
+		// nothing to do
+	}
+
+	@Override
+	public void write(int b) {
+		// nothing to do
+	}
 }

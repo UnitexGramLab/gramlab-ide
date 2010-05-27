@@ -64,6 +64,7 @@ public class RemoveBoxEdit extends AbstractUndoableEdit {
 		
 	}
 
+	@Override
 	public void undo() {
 		super.undo();
 		boxes.add(boxe);
@@ -75,6 +76,7 @@ public class RemoveBoxEdit extends AbstractUndoableEdit {
 		if( itSelfTransition ) boxe.addTransitionTo(boxe);
 	}
 
+	@Override
 	public void redo() {
 		super.redo();
 		boxes.remove(boxe);

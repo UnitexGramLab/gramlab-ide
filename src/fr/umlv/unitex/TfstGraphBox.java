@@ -249,7 +249,8 @@ public class TfstGraphBox extends GenericGraphBox {
      * @param gr
      *            the graphical context
      */
-    public void drawTransition(Graphics2D g, GenericGraphBox dest) {
+    @Override
+	public void drawTransition(Graphics2D g, GenericGraphBox dest) {
         TfstGraphBox box = (TfstGraphBox) dest;
         if (box.bounds != null) {
             int startPosInChars = box.bounds.getStart_in_chars();

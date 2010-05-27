@@ -88,7 +88,8 @@ class Alignement implements Comparable{
     public void setIdCible(String newId){
 	pCible.setLocalName(newId);
     }
-    public String toString(){
+    @Override
+	public String toString(){
 	return "("+pSource+"<->"+pCible+")";
 	/* String res = "("+pSource+"<->"+pCible+")";
 	   if (getGeneratedFrom() == null){

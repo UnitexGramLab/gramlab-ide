@@ -137,6 +137,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		setBounds(30, 30, 850, 450);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				try {
 					setIcon(true);

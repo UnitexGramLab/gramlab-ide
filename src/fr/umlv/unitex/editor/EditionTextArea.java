@@ -52,7 +52,8 @@ public class EditionTextArea extends JTextArea {
 		setLineWrap(true);
 		addKeyListener(new KeyAdapter() {
             
-            public void keyPressed(KeyEvent e) {
+            @Override
+			public void keyPressed(KeyEvent e) {
                 setModified();
             }
         });
