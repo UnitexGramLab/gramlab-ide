@@ -148,7 +148,7 @@ public class UnitexFrame extends JFrame {
 				frameManager.newTokensFrame(new File(Config.getCurrentSntDir(),
 						"tok_by_freq.txt"));
 				frameManager.newTextDicFrame(Config.getCurrentSntDir(), true);
-				frameManager.newTextAutomatonFrame();
+				frameManager.newTextAutomatonFrame(1,true);
 			}
 
 			public void textFrameClosed() {
@@ -603,9 +603,9 @@ public class UnitexFrame extends JFrame {
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
 					double scale_x = (double) screenSize.width
-							/ (double) f.graphicalZone.Width;
+							/ (double) f.graphicalZone.getWidth();
 					double scale_y = (double) screenSize.height
-							/ (double) f.graphicalZone.Height;
+							/ (double) f.graphicalZone.getHeight();
 					if (scale_x < scale_y)
 						f.setScaleFactor(scale_x);
 					else
@@ -619,9 +619,9 @@ public class UnitexFrame extends JFrame {
 				if (f != null) {
 					Dimension d = f.getScroll().getSize();
 					double scale_x = (double) (d.width - 3)
-							/ (double) f.graphicalZone.Width;
+							/ (double) f.graphicalZone.getWidth();
 					double scale_y = (double) (d.height - 3)
-							/ (double) f.graphicalZone.Height;
+							/ (double) f.graphicalZone.getHeight();
 					if (scale_x < scale_y)
 						f.setScaleFactor(scale_x);
 					else
@@ -630,9 +630,9 @@ public class UnitexFrame extends JFrame {
 						public void componentResized(ComponentEvent e2) {
 							Dimension d2 = f.getScroll().getSize();
 							double scale_x2 = (double) (d2.width - 3)
-									/ (double) f.graphicalZone.Width;
+									/ (double) f.graphicalZone.getWidth();
 							double scale_y2 = (double) (d2.height - 3)
-									/ (double) f.graphicalZone.Height;
+									/ (double) f.graphicalZone.getHeight();
 							if (scale_x2 < scale_y2)
 								f.setScaleFactor(scale_x2);
 							else
@@ -1055,10 +1055,7 @@ public class UnitexFrame extends JFrame {
 	public boolean saveAsGraph(GraphFrame f) {
 		if (f == null)
 			return false;
-		GraphIO g = new GraphIO();
-		g.boxes = f.graphicalZone.graphBoxes;
-		g.width = f.graphicalZone.Width;
-		g.height = f.graphicalZone.Height;
+		GraphIO g = new GraphIO(f.graphicalZone);
 		JFileChooser fc = Config.getGraphDialogBox(true);
 		fc.setMultiSelectionEnabled(false);
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -1105,7 +1102,7 @@ public class UnitexFrame extends JFrame {
 			file = new File(name + ".grf");
 		}
 		f.modified = false;
-		g.saveGraph(file, f.getGraphPresentationInfo());
+		g.saveGraph(file);
 		f.setGraph(file);
 		f.setTitle(file.getName() + " (" + file.getParent() + ")");
 		return true;
@@ -1126,12 +1123,9 @@ public class UnitexFrame extends JFrame {
 		if (file == null) {
 			return saveAsGraph(f);
 		}
-		GraphIO g = new GraphIO();
-		g.boxes = f.graphicalZone.graphBoxes;
-		g.width = f.graphicalZone.Width;
-		g.height = f.graphicalZone.Height;
+		GraphIO g = new GraphIO(f.graphicalZone);
 		f.modified = false;
-		g.saveGraph(file, f.getGraphPresentationInfo());
+		g.saveGraph(file);
 		f.setTitle(file.getName() + " (" + file.getParent() + ")");
 		return true;
 	}

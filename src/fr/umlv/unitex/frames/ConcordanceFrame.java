@@ -186,7 +186,7 @@ public class ConcordanceFrame extends JInternalFrame {
 			} catch (PropertyVetoException e2) {
 				e2.printStackTrace();
 			}
-			UnitexFrame.getFrameManager().newTextAutomatonFrame(sentenceNumber);
+			UnitexFrame.getFrameManager().newTextAutomatonFrame(sentenceNumber,true);
 			}});
 		list.load(concor);
 	}

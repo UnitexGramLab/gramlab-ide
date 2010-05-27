@@ -74,8 +74,8 @@ public class GraphSizeDialog extends JDialog {
 
 	void configure(GraphFrame frame) {
 		this.f = frame;
-		X = f.graphicalZone.Width;
-		Y = f.graphicalZone.Height;
+		X = f.graphicalZone.getWidth();
+		Y = f.graphicalZone.getHeight();
 		Width.setText(stringValueOfX());
 		Height.setText(stringValueOfY());
 	}

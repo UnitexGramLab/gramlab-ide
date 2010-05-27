@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.GenericGraphicalZone;
 import fr.umlv.unitex.GraphBox;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.Preferences;
@@ -71,14 +72,21 @@ public class GraphIO {
 	/**
 	 * Number of boxes of a graph
 	 */
-	public int nBoxes;
+	private int nBoxes;
 
-	
+
+	public File grf;
 	
 	public GraphIO() {
 		info=Preferences.getGraphPresentationPreferences();
 	}
 	
+	public GraphIO(GenericGraphicalZone zone) {
+		info=zone.getGraphPresentationInfo();
+		width=zone.getWidth();
+		height=zone.getHeight();
+		boxes=zone.getBoxes();
+	}
 	
 	/**
 	 * This method loads a graph.
@@ -89,6 +97,7 @@ public class GraphIO {
 	 */
 	public static GraphIO loadGraph(File grfFile) {
 		GraphIO res = new GraphIO();
+		res.grf=grfFile;
 		FileInputStream source;
 		if (!grfFile.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find "
@@ -404,7 +413,10 @@ public class GraphIO {
 	 * @param grfFile
 	 *            graph file
 	 */
-	public void saveGraph(File grfFile,GraphPresentationInfo inf) {
+	public void saveGraph(File grfFile) {
+		if (info==null) {
+			throw new IllegalStateException("Should not save a graph with null graph information");
+		}
 		FileOutputStream dest;
 		try {
 			if (!grfFile.exists())
@@ -427,55 +439,55 @@ public class GraphIO {
 			UnicodeIO.writeString(dest, "#Unigraph\n");
 			UnicodeIO.writeString(dest, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(dest, "FONT " + inf.input.font.getName() + ":");
-			switch(inf.input.font.getStyle()) {
+			UnicodeIO.writeString(dest, "FONT " + info.input.font.getName() + ":");
+			switch(info.input.font.getStyle()) {
 				case Font.PLAIN: UnicodeIO.writeString(dest, "  "); break;
 				case Font.BOLD: UnicodeIO.writeString(dest, "B "); break;
 				case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
 				default: UnicodeIO.writeString(dest, "BI"); break;
 			}
-			UnicodeIO.writeString(dest, String.valueOf(inf.input.size) + "\n");
-			UnicodeIO.writeString(dest, "OFONT " + inf.output.font.getName() + ":");
-			switch(inf.output.font.getStyle()) {
+			UnicodeIO.writeString(dest, String.valueOf(info.input.size) + "\n");
+			UnicodeIO.writeString(dest, "OFONT " + info.output.font.getName() + ":");
+			switch(info.output.font.getStyle()) {
 				case Font.PLAIN: UnicodeIO.writeString(dest, "  "); break;
 				case Font.BOLD: UnicodeIO.writeString(dest, "B "); break;
 				case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
 				default: UnicodeIO.writeString(dest, "BI"); break;
 			}
-			UnicodeIO.writeString(dest, String.valueOf(inf.output.size) + "\n");
+			UnicodeIO.writeString(dest, String.valueOf(info.output.size) + "\n");
 			UnicodeIO.writeString(dest, "BCOLOR "
-					+ String.valueOf(16777216 + inf.backgroundColor.getRGB())
+					+ String.valueOf(16777216 + info.backgroundColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(dest, "FCOLOR "
-					+ String.valueOf(16777216 + inf.foregroundColor.getRGB())
+					+ String.valueOf(16777216 + info.foregroundColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(dest, "ACOLOR "
-					+ String.valueOf(16777216 + inf.subgraphColor.getRGB())
+					+ String.valueOf(16777216 + info.subgraphColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(dest, "SCOLOR "
-					+ String.valueOf(16777216 + inf.commentColor.getRGB())
+					+ String.valueOf(16777216 + info.commentColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(dest, "CCOLOR "
-					+ String.valueOf(16777216 + inf.selectedColor.getRGB())
+					+ String.valueOf(16777216 + info.selectedColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(dest, "DBOXES y\n");
-			if (inf.frame)
+			if (info.frame)
 				UnicodeIO.writeString(dest, "DFRAME y\n");
 			else
 				UnicodeIO.writeString(dest, "DFRAME n\n");
-			if (inf.date)
+			if (info.date)
 				UnicodeIO.writeString(dest, "DDATE y\n");
 			else
 				UnicodeIO.writeString(dest, "DDATE n\n");
-			if (inf.filename)
+			if (info.filename)
 				UnicodeIO.writeString(dest, "DFILE y\n");
 			else
 				UnicodeIO.writeString(dest, "DFILE n\n");
-			if (inf.pathname)
+			if (info.pathname)
 				UnicodeIO.writeString(dest, "DDIR y\n");
 			else
 				UnicodeIO.writeString(dest, "DDIR n\n");
-			if (inf.rightToLeft)
+			if (info.rightToLeft)
 				UnicodeIO.writeString(dest, "DRIG y\n");
 			else
 				UnicodeIO.writeString(dest, "DRIG n\n");

@@ -22,6 +22,7 @@ package fr.umlv.unitex;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -30,15 +31,13 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoableEditSupport;
 
-import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxGroupTextEdit;
@@ -56,18 +55,8 @@ import fr.umlv.unitex.undo.TranslationEdit;
  * 
  */
 public abstract class GenericGraphicalZone extends JComponent {
-	/**
-	 * Indicates if the graph contains unsaved modifications.
-	 */
-	public boolean modified = false;
-	/**
-	 * Width of the drawing area.
-	 */
-	public int Width;
-	/**
-	 * Height of the drawing area.
-	 */
-	public int Height;
+
+
 	/**
 	 * Text field in which the content of boxes can be edited.
 	 */
@@ -79,12 +68,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * ArrayList containing all the graph's boxes
 	 */
-	public ArrayList<GenericGraphBox> graphBoxes;
-	protected boolean initialized = false;
-
-	public void setInitialized(boolean initialized) {
-		this.initialized = initialized;
-	}
+	protected ArrayList<GenericGraphBox> graphBoxes;
 
 	/**
 	 * Indicates if a grid must be drawn in background
@@ -123,44 +107,35 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	public int EDITING_MODE = MyCursors.NORMAL;
 
-	/**
-	 * Constructs a new <code>GenericGraphicalZone</code>.
-	 * 
-	 * @param w
-	 *            width of the drawing area
-	 * @param h
-	 *            heig ht of the drawing area
-	 * @param t
-	 *            text field to edit box contents
-	 * @param p
-	 *            frame that contains the component
-	 */
-	public GenericGraphicalZone(int w, int h, JTextField t,
+
+	protected abstract void initializeEmptyGraph();
+
+
+	public GenericGraphicalZone(GraphIO g, JTextField t,
 			final JInternalFrame p) {
 		super();
-		Width = w;
-		Height = h;
 		text = t;
-		text.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent arg0) {
-				// nothing to do
-			}
-
-			public void insertUpdate(DocumentEvent arg0) {
-				((GraphFrame) p).setRedoEnabled(false);
-				((GraphFrame) p).setUndoEnabled(false);
-			}
-
-			public void removeUpdate(DocumentEvent arg0) {
-				// nothing to do
-			}
-		});
 		parentFrame = p;
 		selectedBoxes = new ArrayList<GenericGraphBox>();
-		graphBoxes = new ArrayList<GenericGraphBox>();
 		setBackground(Color.white);
 		text.setEditable(false);
-		info = Preferences.getGraphPresentationPreferences();
+		if (g!=null) {
+			info=g.info;
+			Dimension d=new Dimension(g.width,g.height);
+			setSize(d);
+			setPreferredSize(new Dimension(d));
+			graphBoxes = g.boxes;
+		} else {
+			/* Default graphical zone */
+			graphBoxes = new ArrayList<GenericGraphBox>();
+			info = Preferences.getGraphPresentationPreferences();
+			initializeEmptyGraph();
+		}
+		for (GenericGraphBox b:graphBoxes) {
+			b.context = (Graphics2D) this.getGraphics();
+			b.parentGraphicalZone = this;
+			b.update();
+		}
 	}
 
 	/**
@@ -178,8 +153,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public GenericGraphicalZone(int w, int h, JTextField t,
 			final TextAutomatonFrame p) {
 		super();
-		Width = w;
-		Height = h;
 		text = t;
 		parentFrame = p;
 		selectedBoxes = new ArrayList<GenericGraphBox>();
@@ -189,8 +162,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 		text.setEditable(false);
 		info = Preferences.getGraphPresentationPreferences();
 	}
-
-	protected abstract void init();
 
 	/*
 	 * Methods for adding and creating boxes
@@ -244,9 +215,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 				g.addTransitionTo(selectedBoxes.get(n.intValue()));
 			}
 		}
-		setModified(true);
 		initText("");
-		repaint();
+		fireGraphChanged();
 	}
 
 	/**
@@ -276,20 +246,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 		throw new AssertionError("Should not happen!");
 	}
 
-	/**
-	 * Indicates if the graph must be marked as modified are not
-	 * 
-	 * @param b
-	 *            <code>true</code> if the graph must be marked as modified,
-	 *            <code>false</code> otherwise
-	 */
-	public void setModified(boolean b) {
-		if (parentFrame instanceof GraphFrame) {
-			((GraphFrame) parentFrame).setModified(b);
-		} else if (parentFrame instanceof TextAutomatonFrame) {
-			((TextAutomatonFrame) parentFrame).setModified(b);
-		}
-	}
 
 	/**
 	 * Removes all transitions that go to a specified graph box
@@ -574,10 +530,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 	}
 
-	public boolean isInitialized() {
-		return initialized;
-	}
-
 	/**
 	 * Draws all graph's transitions
 	 * 
@@ -662,8 +614,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		int x, y;
 		f.setColor(info.foregroundColor);
-		for (x = 10; x < Width - 20; x = x + nPixels)
-			for (y = 10; y < Height - 20; y = y + nPixels)
+		int W=getWidth();
+		int H=getHeight();
+		for (x = 10; x < W - 20; x = x + nPixels)
+			for (y = 10; y < H - 20; y = y + nPixels)
 				f.drawLine(x, y, x + 1, y);
 	}
 
@@ -955,5 +909,15 @@ public abstract class GenericGraphicalZone extends JComponent {
 		} finally {
 			firing=false;
 		}
+	}
+	
+	
+	public void empty() {
+		graphBoxes.clear();
+		repaint();
+	}
+	
+	public ArrayList<GenericGraphBox> getBoxes() {
+		return graphBoxes;
 	}
 }
