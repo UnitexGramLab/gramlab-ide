@@ -80,6 +80,7 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 		 
 	}
 
+	@Override
 	public void undo() {
 		super.undo();
 		GenericGraphBox g,g2;
@@ -121,7 +122,7 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 	}
 	
 	
-
+	@Override
 	public void redo() {
 		super.redo();
 		

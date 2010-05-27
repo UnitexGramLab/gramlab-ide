@@ -454,6 +454,7 @@ class ElagGrfFileFilter extends FileFilter {
 		super();
 	}
 
+	@Override
 	public boolean accept(File f) {
 		if (f.isDirectory()) {
 			return true;
@@ -462,6 +463,7 @@ class ElagGrfFileFilter extends FileFilter {
 		return (s.endsWith(".grf"));
 	}
 
+	@Override
 	public String getDescription() {
 		return "Elag Grammar (.grf)";
 	}

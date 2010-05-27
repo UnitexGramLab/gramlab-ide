@@ -219,6 +219,7 @@ public class GraphBox extends GenericGraphBox {
 	 * @param s
 	 *            the content
 	 */
+	@Override
 	public void setContent(String s) {
 		if (type == 1)
 			return; // nothing to do if we consider the final state

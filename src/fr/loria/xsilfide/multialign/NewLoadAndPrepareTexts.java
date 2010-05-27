@@ -268,10 +268,12 @@ public class NewLoadAndPrepareTexts {
 	    inFuzzy = false;
 	}
 	
+	@Override
 	public void endDocument(){
 		/* nothing to do */
 	}
 	
+	@Override
 	public void startElement(String uri, String name, String qname,
 				 Attributes attrs){
 	    
@@ -400,6 +402,7 @@ public class NewLoadAndPrepareTexts {
 		System.out.println(curElem+" = "+thePropVal);
 	    }
 	}
+	@Override
 	public void endElement(String uri, String name, String qName){
 	    if (name.equals("div") && inCognates){
 		inCognates = false;
@@ -443,6 +446,7 @@ public class NewLoadAndPrepareTexts {
 	    }
 	}
 
+	@Override
 	public void characters(char[] content, int start, int length){
 	    if (inNote){
 		fileNameStatus=new String(content, start, length);

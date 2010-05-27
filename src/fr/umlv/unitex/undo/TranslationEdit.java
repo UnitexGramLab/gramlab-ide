@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.undo;
 
 import javax.swing.undo.AbstractUndoableEdit;
@@ -27,38 +26,39 @@ import fr.umlv.unitex.GenericGraphBox;
 
 /**
  * Class used to save the state of the graph before translate a box
+ * 
  * @author Decreton Julien
  */
 public class TranslationEdit extends AbstractUndoableEdit {
-	
 	/** box to translate */
 	GenericGraphBox boxe;
 	/** length of X, Y shift in pixels */
-	int x,y;
-	
+	int x, y;
+
 	/**
 	 * 
-	 * @param boxe the boxe to translate
-	 * @param x length of X shift in pixels
-	 * @param y length of Y shift in pixels
+	 * @param boxe
+	 *            the boxe to translate
+	 * @param x
+	 *            length of X shift in pixels
+	 * @param y
+	 *            length of Y shift in pixels
 	 */
-	public TranslationEdit( GenericGraphBox boxe, int x, int y ){
+	public TranslationEdit(GenericGraphBox boxe, int x, int y) {
 		this.boxe = boxe;
 		this.x = x;
 		this.y = y;
-		
 	}
 
+	@Override
 	public void undo() {
 		super.undo();
-		boxe.translate(-x,-y);
-		
-	}
-	
-	public void redo(){
-		super.redo();
-		boxe.translate(x,y);
-		
+		boxe.translate(-x, -y);
 	}
 
+	@Override
+	public void redo() {
+		super.redo();
+		boxe.translate(x, y);
+	}
 }

@@ -127,7 +127,8 @@ public class Matrix
    * Returns a string representing this matrix. Each row is separated by a
    * newline character ("\n").
    */
-  public String toString ()
+  @Override
+public String toString ()
   {
     String s = new String ();
     

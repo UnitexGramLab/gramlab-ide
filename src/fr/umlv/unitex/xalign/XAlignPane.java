@@ -670,6 +670,7 @@ public class XAlignPane extends JPanel {
 			}
 		});
 		list.addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentResized(ComponentEvent e) {
 				ListModel m = list.getModel();
 				if (m instanceof ConcordanceModel) {

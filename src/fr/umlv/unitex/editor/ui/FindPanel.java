@@ -163,6 +163,7 @@ public class FindPanel extends AbstractFindpanel {
 		// find next when enter is pressed
 		txtFind.addKeyListener( new KeyAdapter(){
 
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if( e.getKeyCode() == KeyEvent.VK_ENTER  )
 				findAction.actionPerformed(null);	

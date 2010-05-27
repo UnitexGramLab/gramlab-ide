@@ -71,6 +71,7 @@ public class BoxGroupTextEdit extends AbstractUndoableEdit {
 		
 	}
 
+	@Override
 	public void undo(){
 		super.undo();
 		Set<GenericGraphBox> keys = selectedBoxesAndOldString.keySet();
@@ -87,6 +88,7 @@ public class BoxGroupTextEdit extends AbstractUndoableEdit {
 		
 	}
 	
+	@Override
 	public void redo(){
 		super.redo();
 		

@@ -119,6 +119,7 @@ public class XAlignFrame extends JInternalFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				if (model.isModified()) {
 					Object[] options_on_exit = { "Save", "Don't save" };

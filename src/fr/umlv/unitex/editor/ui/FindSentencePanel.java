@@ -96,7 +96,8 @@ public class FindSentencePanel extends SearchPanel {
 		// find next when enter is pressed
 		sentenceNumber.addKeyListener( new KeyAdapter(){
 
-				 public void keyPressed(KeyEvent e) {
+				 @Override
+				public void keyPressed(KeyEvent e) {
 					 if( e.getKeyCode() == KeyEvent.VK_ENTER  )
 					 findSentenceAction.actionPerformed(null);	
 				

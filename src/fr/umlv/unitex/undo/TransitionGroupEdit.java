@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.undo;
 
 import java.util.ArrayList;
@@ -31,13 +30,13 @@ import fr.umlv.unitex.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph before add transitions to a boxe
- * @author Decreton Julien 
+ * 
+ * @author Decreton Julien
  */
 public class TransitionGroupEdit extends AbstractUndoableEdit {
-
 	/** boxes selected in the graph */
 	private ArrayList<GenericGraphBox> selectedBoxes;
-	/** boxes selected in the graph before adding a transition */ 
+	/** boxes selected in the graph before adding a transition */
 	private ArrayList<GenericGraphBox> oldSelectedBoxes;
 	/** transition destination boxe */
 	private GenericGraphBox dst;
@@ -45,50 +44,48 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	private GenericGraphicalZone zone;
 
 	/**
-		* @param selectedBoxes selected boxes in the graph
-		* @param dst destination boxe
-		* @param zone the zone where remove the boxe
-		*/
+	 * @param selectedBoxes
+	 *            selected boxes in the graph
+	 * @param dst
+	 *            destination boxe
+	 * @param zone
+	 *            the zone where remove the boxe
+	 */
 	@SuppressWarnings("unchecked")
-	public TransitionGroupEdit(
-            ArrayList<GenericGraphBox> selectedBoxes,
-		GenericGraphBox dst,
-		GenericGraphicalZone zone) {
+	public TransitionGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
+			GenericGraphBox dst, GenericGraphicalZone zone) {
 		this.selectedBoxes = selectedBoxes;
 		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
 		this.dst = dst;
 		this.zone = zone;
-
 	}
 
+	@Override
 	public void undo() {
 		super.undo();
-
 		GenericGraphBox g;
-		for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
+		for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it
+				.hasNext();) {
 			g = it.next();
 			g.addTransitionTo(dst);
-
 			// select this boxe
 			g.setSelected(true);
 			selectedBoxes.add(g);
 			zone.initText(g.getContent());
 		}
-
 	}
 
+	@Override
 	public void redo() {
 		super.redo();
 		GenericGraphBox g;
-		for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
+		for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it
+				.hasNext();) {
 			g = it.next();
 			g.addTransitionTo(dst);
-
 			// unselect this boxe
 			g.setSelected(false);
 			selectedBoxes.remove(g);
-
 		}
 	}
-
 }

@@ -171,11 +171,13 @@ public class LocateFrame extends JInternalFrame {
 		JButton setGraphButton = new JButton(setGraphAction);
 		ButtonGroup bg = new ButtonGroup();
 		graphName.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(FocusEvent arg0) {
 				graph.setSelected(true);
 			}
 		});
 		regExp.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(FocusEvent arg0) {
 				regularExpression.setSelected(true);
 			}

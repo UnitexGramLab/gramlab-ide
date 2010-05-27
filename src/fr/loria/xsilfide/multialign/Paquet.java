@@ -125,7 +125,8 @@ class Paquet{
 	}
 	return res;
     }
-    public String toString(){
+    @Override
+	public String toString(){
 	return getId()+" : "+getContent();
     }
 }

@@ -99,6 +99,7 @@ public class LoadAndPrepareTexts {
     class MyVectorSrc extends Vector{
 	
 
+	@Override
 	public synchronized String toString(){
 	    String res="[";
 	    Object cour;
@@ -136,6 +137,7 @@ public class LoadAndPrepareTexts {
     class MyVectorTar extends Vector{
 	
 
+	@Override
 	public synchronized String toString(){
 	    String res="[";
 	    Object cour;
@@ -452,8 +454,10 @@ public class LoadAndPrepareTexts {
 	    curdiv = "";
 	}
 
+	@Override
 	public void endDocument() {/* */}
 
+	@Override
 	public void startElement(String uri, String name, String qName, Attributes attrs) {
 	    if ("".equals (uri))
 		name = qName;
@@ -562,6 +566,7 @@ public class LoadAndPrepareTexts {
 	    }
 	}
 	
+	@Override
 	public void endElement(String uri, String name, String qName)	{
 	    if ("".equals (uri))
 		name = qName;
@@ -659,6 +664,7 @@ public class LoadAndPrepareTexts {
 	
 	// characters est appelée quand on tombe sur des caractères...
 	// pas sûr que ça soit seulement ceux qu'on veut....
+	@Override
 	public void characters(char[] ch, int start, int length) {
 	    if(body){
 		divLength+=length; 

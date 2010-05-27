@@ -169,7 +169,8 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
      */
     
 
-    public void startDocument() {
+    @Override
+	public void startDocument() {
 	n = 0;
 	doc = new DocumentImpl();
 	curNode = doc;
@@ -177,7 +178,8 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 	System.setOut(System.err);
     }
     
-    public void endDocument() {
+    @Override
+	public void endDocument() {
 	try {
 	    Writer fw = new OutputStreamWriter(out,"UTF-8");
 	    //fw.write(XMLTools.STD_HEADER);
@@ -201,7 +203,8 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 	System.setOut(sysout);
     }
 
-    public void startElement(String uri, String name, String qName, Attributes attrs) 
+    @Override
+	public void startElement(String uri, String name, String qName, Attributes attrs) 
 	throws SAXException  {	
 	if ("".equals (uri))
 	    name = qName;
@@ -223,18 +226,21 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 	}
     }
     
-    public void endElement(String uri, String name, String qName) throws SAXException {	
+    @Override
+	public void endElement(String uri, String name, String qName) throws SAXException {	
 	if ("".equals (uri))
 	    name = qName;
 	// XXX: I assume we have a legal document, i.e. all elements are nested.
 	curNode = (NodeImpl)curNode.getParentNode();
     }
     
-    public void characters(char [] buf, int start, int len) {
+    @Override
+	public void characters(char [] buf, int start, int len) {
 	curNode.appendChild(new TextImpl(doc, new String(buf, start, len)));
     }
     
-    public void ignorableWhitespace(char[] buf, int start, int len) {
+    @Override
+	public void ignorableWhitespace(char[] buf, int start, int len) {
 	curNode.appendChild(new TextImpl(doc, new String(buf, start, len)));
     }
 

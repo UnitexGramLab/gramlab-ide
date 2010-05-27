@@ -61,6 +61,7 @@ public class CheckResultFrame extends JInternalFrame {
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				text.reset();
 				setVisible(false);

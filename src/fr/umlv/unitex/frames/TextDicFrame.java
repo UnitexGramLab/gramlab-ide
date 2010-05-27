@@ -64,6 +64,7 @@ public class TextDicFrame extends JInternalFrame {
 		setBounds(250, 300, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				try {
 					setIcon(true);
