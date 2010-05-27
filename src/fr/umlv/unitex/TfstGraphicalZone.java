@@ -80,8 +80,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	}
 
 	@Override
-	protected GenericGraphBox newBox(int x, int y, int type,
-			GenericGraphicalZone p) {
+	protected GenericGraphBox newBox(int x, int y, int type, GenericGraphicalZone p) {
 		return new TfstGraphBox(x, y, type, (TfstGraphicalZone) p);
 	}
 

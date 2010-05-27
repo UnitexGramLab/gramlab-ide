@@ -147,7 +147,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 	}
 
 	protected abstract GenericGraphBox createBox(int x, int y);
-
 	protected abstract GenericGraphBox newBox(int x, int y, int type,
 			GenericGraphicalZone p);
 

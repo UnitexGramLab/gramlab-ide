@@ -39,7 +39,7 @@ import fr.umlv.unitex.frames.GraphFrame;
  * @author Sébastien Paumier
  *  
  */
-public abstract class GenericGraphBox {
+public class GenericGraphBox {
 
 	/**
 	 * Box X coordinate
@@ -1047,7 +1047,9 @@ public abstract class GenericGraphBox {
 	 * @param s
 	 *            the content
 	 */
-	public abstract void setContent(String s);
+	public void setContent(String s) {
+		throw new UnsupportedOperationException("setContent should have been overriden!");
+	}
 
 	/**
 	 * Updates the box by calling the <code>setContent</code> method with the

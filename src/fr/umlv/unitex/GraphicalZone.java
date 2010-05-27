@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex;
 
 import java.awt.Color;
@@ -47,10 +46,9 @@ import fr.umlv.unitex.undo.TranslationGroupEdit;
  * This class describes a component on which a graph can be drawn.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class GraphicalZone extends GenericGraphicalZone implements Printable {
-
 	boolean dragBegin = true;
 	int dX, dY;
 
@@ -70,11 +68,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		super(gio, t, p);
 		addMouseListener(new MyMouseListener());
 		addMouseMotionListener(new MyMouseMotionListener());
-	}
-
-	@Override
-	protected GenericGraphBox newBox(int x, int y, int type, GenericGraphicalZone p) {
-		return new GraphBox(x, y, type, (GraphicalZone) p);
 	}
 
 	@Override
@@ -103,34 +96,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// nothing to do
 			}
 		});
-		Dimension d=new Dimension(1188,840);
+		Dimension d = new Dimension(1188, 840);
 		setSize(d);
 		setPreferredSize(new Dimension(d));
-	}
-
-	
-	protected void init() {
-		if (!((GraphFrame) parentFrame).isNonEmptyGraph()) {
-			GraphBox g, g2;
-			// creating the final state
-			g = new GraphBox(300, 200, 1, this);
-			g.setContent("<E>");
-			// and the initial state
-			g2 = new GraphBox(70, 200, 0, this);
-			g2.n_lines = 0;
-			g2.setContent("<E>");
-			addBox(g2);
-			addBox(g);
-			initText("");
-			text.setEditable(false);
-		} else {
-			for (int i = 0; i < graphBoxes.size(); i++) {
-				GraphBox g = (GraphBox) graphBoxes.get(i);
-				g.context = (Graphics2D) this.getGraphics();
-				g.parentGraphicalZone = this;
-				g.update();
-			}
-		}
 	}
 
 	@Override
@@ -141,15 +109,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return g;
 	}
 
+	@Override
+	protected GenericGraphBox newBox(int x, int y, int type, GenericGraphicalZone p) {
+		return new GraphBox(x, y, type, (GraphicalZone) p);
+	}
+
 	class MyMouseListener implements MouseListener {
 		public void mouseClicked(MouseEvent e) {
 			int boxSelected;
 			GraphBox b;
 			int x_tmp, y_tmp;
-
 			if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES
 					|| (EDITING_MODE == MyCursors.NORMAL && e.isShiftDown())) {
-
 				// Shift+click
 				// reverse transitions
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
@@ -177,8 +148,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					// simple click not on a box
 					initText("");
 					unSelectAllBoxes();
-					//					parentFrame.paintImmediately();
-					paintImmediately();
+					fireGraphChanged(false);
 				}
 			} else if (EDITING_MODE == MyCursors.CREATE_BOXES
 					|| (EDITING_MODE == MyCursors.NORMAL && e.isControlDown())) {
@@ -257,8 +227,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					text.setEditable(false);
 				}
 			}
-			paintImmediately();
-			return;
+			fireGraphChanged(false);
 		}
 
 		public void mousePressed(MouseEvent e) {
@@ -269,10 +238,10 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					|| (EDITING_MODE == MyCursors.KILL_BOXES)) {
 				return;
 			}
-			//System.err.println("GZ: mouse pressed 1: selection empty="+selectedBoxes.isEmpty());
+			// System.err.println("GZ: mouse pressed 1: selection empty="+selectedBoxes.isEmpty());
 			validateTextField();
-			//System.err.println("GZ: mouse pressed 2: selection empty="+selectedBoxes.isEmpty());
-            X_start_drag = (int) (e.getX() / scaleFactor);
+			// System.err.println("GZ: mouse pressed 2: selection empty="+selectedBoxes.isEmpty());
+			X_start_drag = (int) (e.getX() / scaleFactor);
 			Y_start_drag = (int) (e.getY() / scaleFactor);
 			X_end_drag = X_start_drag;
 			Y_end_drag = Y_start_drag;
@@ -292,10 +261,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					dragging = true;
 					singleDragging = true;
 					singleDraggedBox.singleDragging = true;
+					fireGraphChanged(true);
 				}
 			}
 			if (!selectedBoxes.isEmpty()) {
 				dragging = true;
+				fireGraphChanged(true);
 			}
 			if ((selectedBox == -1) && selectedBoxes.isEmpty()) {
 				// being drawing a selection rectangle
@@ -303,9 +274,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				selecting = true;
 				initText("");
 			}
-			//parentFrame.repaint();
-			paintImmediately();
-			e.consume();
+			fireGraphChanged(false);
 		}
 
 		public void mouseReleased(MouseEvent e) {
@@ -342,17 +311,17 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				text.setEditable(true);
 				selecting = false;
 			}
-			paintImmediately();
+			fireGraphChanged(false);
 		}
 
 		public void mouseEntered(MouseEvent e) {
 			mouseInGraphicalZone = true;
-			paintImmediately();
+			fireGraphChanged(false);
 		}
 
 		public void mouseExited(MouseEvent e) {
 			mouseInGraphicalZone = false;
-			paintImmediately();
+			fireGraphChanged(false);
 		}
 	}
 
@@ -392,7 +361,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				Y_drag = Y_end_drag;
 				dragHeight = Y_start_drag - Y_end_drag;
 			}
-			paintImmediately();
+			fireGraphChanged(false);
 		}
 
 		public void mouseMoved(MouseEvent e) {
@@ -400,13 +369,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			Ymouse = (int) (e.getY() / scaleFactor);
 			if ((EDITING_MODE == MyCursors.REVERSE_LINK_BOXES || EDITING_MODE == MyCursors.LINK_BOXES)
 					&& !selectedBoxes.isEmpty()) {
-				paintImmediately();
+				fireGraphChanged(false);
 			}
 		}
-	}
-
-	void paintImmediately() {
-		paintImmediately(0, 0, getWidth(), getHeight());
 	}
 
 	/**
@@ -523,12 +488,11 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 	@Override
 	public void initText(String s) {
-		((TextField)text).initText(s);
+		((TextField) text).initText(s);
 	}
-	
+
 	@Override
 	public boolean validateTextField() {
 		return ((TextField) text).validateTextField();
 	}
-
 }
