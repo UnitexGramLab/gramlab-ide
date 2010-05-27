@@ -149,7 +149,7 @@ public class GraphFrame extends JInternalFrame {
 		pack();
 		addInternalFrameListener(new MyInternalFrameListener());
 		setBounds(offset * (openFrameCount % 6), offset * (openFrameCount % 6),
-				800 + 40, 600 + 80);
+				850, 550);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 

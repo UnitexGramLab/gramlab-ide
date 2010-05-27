@@ -61,7 +61,6 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
@@ -72,6 +71,7 @@ import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ElagCommand;
@@ -574,7 +574,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 		graphicalZone.Width = g.width;
 		graphicalZone.Height = g.height;
 		graphicalZone.graphBoxes = g.boxes;
-		scroll.setPreferredSize(new Dimension(g.width, g.height));
 		graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
 		graphicalZone.revalidate();
 		graphicalZone.repaint();

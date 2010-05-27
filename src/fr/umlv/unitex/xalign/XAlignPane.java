@@ -66,6 +66,8 @@ import javax.swing.event.ListDataListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 
+import fr.umlv.unitex.listeners.AlignmentListener;
+
 public class XAlignPane extends JPanel {
 
 	JList list1;

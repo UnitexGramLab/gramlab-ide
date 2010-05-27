@@ -19,7 +19,9 @@
  *
  */
 
-package fr.umlv.unitex.xalign;
+package fr.umlv.unitex.listeners;
+
+import fr.umlv.unitex.xalign.AlignmentEvent;
 
 public interface AlignmentListener {
 	public void alignmentChanged(AlignmentEvent e);

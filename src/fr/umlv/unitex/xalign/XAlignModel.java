@@ -26,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import fr.umlv.unitex.listeners.AlignmentListener;
+
 public interface XAlignModel {
 
 	public ArrayList<Integer> getAlignedSrcSequences(int sentence);
