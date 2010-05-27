@@ -64,7 +64,9 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.TextField;
+import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.SVG;
+import fr.umlv.unitex.listeners.GraphListener;
 
 /**
  * This class describes a frame used to display and edit a graph.
@@ -117,7 +119,7 @@ public class GraphFrame extends JInternalFrame {
 	 * @param nonEmpty
 	 *            indicates if the graph is non empty
 	 */
-	GraphFrame() {
+	GraphFrame(GraphIO g) {
 		super("", true, true, true, true);
 		MyDropTarget.newDropTarget(this);
 		openFrameCount++;
@@ -126,10 +128,13 @@ public class GraphFrame extends JInternalFrame {
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
-		graphicalZone = new GraphicalZone(1188, 840, boxContentEditor, this);
-		graphicalZone.setPreferredSize(new Dimension(
-				(int) (1188 * graphicalZone.scaleFactor),
-				(int) (840 * graphicalZone.scaleFactor)));
+		graphicalZone = new GraphicalZone(g, boxContentEditor, this);
+		graphicalZone.addGraphListener(new GraphListener() {
+			public void graphChanged() {
+				repaint();
+				setModified(true);
+			}
+		});
 		manager = new UndoManager();
 		manager.setLimit(30);
 		graphicalZone.addUndoableEditListener(manager);
@@ -151,6 +156,13 @@ public class GraphFrame extends JInternalFrame {
 		setBounds(offset * (openFrameCount % 6), offset * (openFrameCount % 6),
 				850, 550);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		boxContentEditor.setFont(info.input.font);
+		if (g!=null) {
+			setGraph(g.grf);
+		}/* Some loading operations may have set the modified flag, so we
+		 * reset it
+		 */
+		setModified(false);
 	}
 
 	private void createToolBar(String iconBarPosition) {
@@ -437,8 +449,7 @@ public class GraphFrame extends JInternalFrame {
 	 * @param y
 	 */
 	public void reSizeGraphicalZone(int x, int y) {
-		graphicalZone.Width = x;
-		graphicalZone.Height = y;
+		graphicalZone.setSize(new Dimension(x, y));
 		graphicalZone.setPreferredSize(new Dimension(x, y));
 		graphicalZone.revalidate();
 		graphicalZone.repaint();
@@ -476,8 +487,8 @@ public class GraphFrame extends JInternalFrame {
 	public void setScaleFactor(double d) {
 		graphicalZone.scaleFactor = d;
 		graphicalZone.setPreferredSize(new Dimension(
-				(int) (graphicalZone.Width * graphicalZone.scaleFactor),
-				(int) (graphicalZone.Height * graphicalZone.scaleFactor)));
+				(int) (graphicalZone.getWidth() * graphicalZone.scaleFactor),
+				(int) (graphicalZone.getHeight() * graphicalZone.scaleFactor)));
 		graphicalZone.revalidate();
 		graphicalZone.repaint();
 	}
@@ -566,8 +577,8 @@ public class GraphFrame extends JInternalFrame {
 	}
 
 	public void saveGraphAsAnImage(File output) {
-		BufferedImage image = new BufferedImage(graphicalZone.Width,
-				graphicalZone.Height, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(graphicalZone.getWidth(),
+				graphicalZone.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics g = image.getGraphics();
 		try {
 			graphicalZone.paintAll(g);

@@ -857,15 +857,11 @@ public abstract class GenericGraphBox {
 				}
 				GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
 				g.setColor(parentGraphicalZone.info.foregroundColor);
-				TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
-				textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
-			} else {
-				/* TODO à factoriser avec au-dessus */
-				TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
-				textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
 			}
+			TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
+			textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
 		}
-		// prints the transduction, if exists
+		// prints the output, if any
 		g.setColor(parentGraphicalZone.info.foregroundColor);
 		if (!transduction.equals("")) {
 			g.setFont(parentGraphicalZone.info.output.font);

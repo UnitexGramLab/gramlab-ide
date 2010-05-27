@@ -349,7 +349,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 	class ConstructTfstDo implements ToDo {
 
 		public void toDo() {
-			UnitexFrame.getFrameManager().newTextAutomatonFrame();
+			UnitexFrame.getFrameManager().newTextAutomatonFrame(1,false);
 		}
 	}
 

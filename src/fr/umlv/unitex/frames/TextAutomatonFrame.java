@@ -72,6 +72,7 @@ import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
+import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ElagCommand;
@@ -100,6 +101,12 @@ public class TextAutomatonFrame extends JInternalFrame {
 	JLabel ruleslabel;
 	TfstGraphicalZone graphicalZone;
 
+	GraphListener listener=new GraphListener() {
+		public void graphChanged() {
+			setModified(true);
+		}
+	};
+	
 	public TfstGraphicalZone getGraphicalZone() {
 		return graphicalZone;
 	}
@@ -209,7 +216,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(button);
 		textframe.add(p, BorderLayout.WEST);
 		JPanel downPanel = new JPanel(new BorderLayout());
-		graphicalZone = new TfstGraphicalZone(1188, 840, textfield, this, true);
+		graphicalZone = new TfstGraphicalZone(null, textfield, this, true);
+		graphicalZone.addGraphListener(listener);
 		graphicalZone.setPreferredSize(new Dimension(1188, 840));
 		scroll = new JScrollPane(graphicalZone);
 		scroll.getHorizontalScrollBar().setUnitIncrement(20);
@@ -250,7 +258,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		});
 		p.add(button);
 		elagframe.add(p, BorderLayout.WEST);
-		elaggraph = new TfstGraphicalZone(1188, 840, textfield, this, false);
+		elaggraph = new TfstGraphicalZone(null, textfield, this, false);
 		elaggraph.setPreferredSize(new Dimension(1188, 840));
 		elagframe.add(new JScrollPane(elaggraph), BorderLayout.CENTER);
 		return elagframe;
@@ -374,9 +382,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	 */
 	void hideFrame() {
 		setVisible(false);
-		graphicalZone.setInitialized(false);
-		graphicalZone.graphBoxes.clear();
-		graphicalZone.repaint();
+		graphicalZone.empty();
 		sentenceTextArea.setText("");
 		spinnerModel.setValue(new Integer(0));
 		System.gc();
@@ -390,13 +396,11 @@ public class TextAutomatonFrame extends JInternalFrame {
 	 *            <code>false</code> otherwise
 	 */
 	public void setModified(boolean b) {
+		repaint();
 		resetSentenceGraph.setVisible(b);
 		if (b) {
 			// we save each modification
-			GraphIO g = new GraphIO();
-			g.boxes = graphicalZone.graphBoxes;
-			g.width = graphicalZone.Width;
-			g.height = graphicalZone.Height;
+			GraphIO g = new GraphIO(graphicalZone);
 			g.saveSentenceGraph(new File(sentence_modified.getAbsolutePath()
 					+ spinnerModel.getNumber().intValue() + ".grf"),
 					graphicalZone.getGraphPresentationInfo());
@@ -450,11 +454,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (isAcurrentLoadingThread)
 			return false;
 		isAcurrentLoadingThread = true;
-		graphicalZone.setInitialized(false);
-		if (graphicalZone.graphBoxes != null) {
-			graphicalZone.graphBoxes.clear();
-		}
-		graphicalZone.repaint();
+		graphicalZone.empty();
 		sentenceTextArea.setText("");
 		Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(text_tfst)
 				.sentence(z);
@@ -509,9 +509,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			return false;
 		}
 		isAcurrentElagLoadingThread = true;
-		elaggraph.setInitialized(false);
-		elaggraph.graphBoxes.clear();
-		elaggraph.repaint();
+		elaggraph.empty();
 		if (!elag_tfst.exists()) { // if fst file does not exist exit
 			isAcurrentElagLoadingThread = false;
 			return false;
@@ -569,14 +567,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (g == null) {
 			return false;
 		}
-		graphicalZone.setInitialized(false);
 		textfield.setFont(g.info.input.font);
-		graphicalZone.Width = g.width;
-		graphicalZone.Height = g.height;
-		graphicalZone.graphBoxes = g.boxes;
-		graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
-		graphicalZone.revalidate();
-		graphicalZone.repaint();
+		graphicalZone.setup(g);
 		return true;
 	}
 
@@ -585,14 +577,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		GraphIO g = GraphIO.loadSentenceGraph(file, elaggraph);
 		if (g == null)
 			return false;
-		elaggraph.setInitialized(false);
-		elaggraph.setGraphPresentationInfo(g.info);
-		elaggraph.Width = g.width;
-		elaggraph.Height = g.height;
-		elaggraph.graphBoxes = g.boxes;
-		elaggraph.setPreferredSize(new Dimension(g.width, g.height));
-		elaggraph.revalidate();
-		elaggraph.repaint();
+		elaggraph.setup(g);
 		return true;
 	}
 
@@ -758,7 +743,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 				JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 						"unable to delete " + f);
 			}
-			UnitexFrame.getFrameManager().newTextAutomatonFrame(false);
+			UnitexFrame.getFrameManager().newTextAutomatonFrame(1,false);
 		}
 	}
 
