@@ -42,8 +42,6 @@ import fr.umlv.unitex.tfst.Bounds;
 public class TfstGraphBox extends GenericGraphBox {
 
     private Bounds bounds;
-    private TextAutomatonFrame parent;
-
     /**
      * Constructs a new box
      * 
@@ -58,7 +56,6 @@ public class TfstGraphBox extends GenericGraphBox {
      */
     public TfstGraphBox(int x, int y, int type, TfstGraphicalZone p) {
         super(x, y, type, p);
-        parent=(TextAutomatonFrame) p.getParentFrame();
     }
 
     /**
@@ -136,12 +133,12 @@ public class TfstGraphBox extends GenericGraphBox {
     public void setSelected(boolean b) {
         super.setSelected(b);
         if (b && bounds!=null) {
-            parent.getSentenceTextArea().getCaret().setSelectionVisible(true);
+            ((TextAutomatonFrame)parentGraphicalZone.getParentFrame()).getSentenceTextArea().getCaret().setSelectionVisible(true);
             //System.out.println("on selectionne de "+bounds.getGlobal_start_in_chars()+" a "+(bounds.getGlobal_end_in_chars()+1));
-            parent.getSentenceTextArea().select(bounds.getGlobal_start_in_chars(),
+            ((TextAutomatonFrame)parentGraphicalZone.getParentFrame()).getSentenceTextArea().select(bounds.getGlobal_start_in_chars(),
                                                  bounds.getGlobal_end_in_chars()+1);
         } else {
-            parent.getSentenceTextArea().select(0,0);
+        	((TextAutomatonFrame)parentGraphicalZone.getParentFrame()).getSentenceTextArea().select(0,0);
         }
     }
 

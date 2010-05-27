@@ -47,6 +47,7 @@ import fr.umlv.unitex.tfst.BoundsEditor;
  */
 public class TfstGraphicalZone extends GenericGraphicalZone implements
 		Printable {
+
 	JTextArea sentenceTextArea;
 	BoundsEditor boundsEditor;
 
@@ -68,10 +69,6 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		}
 		sentenceTextArea = p.getSentenceTextArea();
 		boundsEditor = p.boundsEditor;
-	}
-
-	protected void init() {
-		/* Nothing to do */
 	}
 
 	protected GenericGraphBox createBox(int x, int y) {
@@ -105,7 +102,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 						// current
 						addReverseTransitionsFromSelectedBoxes(b);
 						unSelectAllBoxes();
-						fireGraphChanged();
+						fireGraphChanged(true);
 					}
 				} else {
 					// simple click not on a box
@@ -129,7 +126,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 				b.setContent("<E>");
 				selectedBoxes.add(b);
 				initText("<E>");
-				fireGraphChanged();
+				fireGraphChanged(true);
 			} else {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
 						(int) (e.getY() / scaleFactor));
@@ -141,7 +138,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 						// current
 						addTransitionsFromSelectedBoxes(b, true);
 						unSelectAllBoxes();
-						fireGraphChanged();
+						fireGraphChanged(true);
 					} else {
 						// if not, we just select this one
 						b.setSelected(true);
@@ -237,13 +234,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			if (singleDragging) {
 				// translates the single dragged box
 				singleDraggedBox.translate(dx, dy);
-				fireGraphChanged();
+				fireGraphChanged(true);
 			}
 			if (dragging) {
 				// translates all the selected boxes
 				translateAllSelectedBoxes(dx, dy);
 				// if we were dragging, we have nothing else to do
-				fireGraphChanged();
 				return;
 			}
 			if (X_start_drag < X_end_drag) {
@@ -388,5 +384,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		repaint();
 	}
 
+	public void initText(String s) {
+		((TfstTextField)text).initText(s);
+	}
+
+	public boolean validateTextField() {
+		return ((TfstTextField) text).validateTextField();
+	}
 
 }
