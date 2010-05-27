@@ -160,7 +160,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						// current
 						addReverseTransitionsFromSelectedBoxes(b);
 						unSelectAllBoxes();
-						fireGraphChanged();
+						fireGraphChanged(true);
 					} else {
 						if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES) {
 							// if we click on a box while there is no box
@@ -193,7 +193,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				b.selected = true;
 				selectedBoxes.add(b);
 				initText("<E>");
-				fireGraphChanged();
+				fireGraphChanged(true);
 			} else if (EDITING_MODE == MyCursors.OPEN_SUBGRAPH
 					|| (EDITING_MODE == MyCursors.NORMAL && e.isAltDown())) {
 				// Alt+click
@@ -237,7 +237,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						// current one
 						addTransitionsFromSelectedBoxes(b, true);
 						unSelectAllBoxes();
-						fireGraphChanged();
+						fireGraphChanged(true);
 					} else {
 						if (!((EDITING_MODE == MyCursors.LINK_BOXES) && (b.type == 1))) {
 							// if not, we just select this one, but only if we
@@ -319,7 +319,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				postEdit(edit);
 				selectedBoxes.remove(singleDraggedBox);
 				dragging = false;
-				fireGraphChanged();
+				fireGraphChanged(true);
 			}
 			if (dragging && EDITING_MODE == MyCursors.NORMAL) {
 				// save the position of all the translated boxes
@@ -367,14 +367,13 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (singleDragging) {
 				// translates the single dragged box
 				singleDraggedBox.translate(dx, dy);
-				fireGraphChanged();
+				fireGraphChanged(true);
 				return;
 			}
 			if (dragging && EDITING_MODE == MyCursors.NORMAL) {
 				// translates all the selected boxes
 				translateAllSelectedBoxes(dx, dy);
 				// if we were dragging, we have nothing else to do
-				fireGraphChanged();
 				return;
 			}
 			if (X_start_drag < X_end_drag) {
@@ -519,5 +518,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return Printable.PAGE_EXISTS;
 	}
 
+	public void initText(String s) {
+		((TextField)text).initText(s);
+	}
+	
+	public boolean validateTextField() {
+		return ((TextField) text).validateTextField();
+	}
 
 }

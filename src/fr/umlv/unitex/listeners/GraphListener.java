@@ -23,6 +23,9 @@ package fr.umlv.unitex.listeners;
 
 public interface GraphListener {
 
-	public void graphChanged();
+	/* If modified is true, then the graph should be saved again.
+	 * Otherwise, it only needs to be repaint.
+	 */
+	public void graphChanged(boolean modified);
 
 }

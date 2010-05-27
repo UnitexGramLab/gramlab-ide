@@ -130,9 +130,9 @@ public class GraphFrame extends JInternalFrame {
 		top.add(buildTextPanel(), BorderLayout.NORTH);
 		graphicalZone = new GraphicalZone(g, boxContentEditor, this);
 		graphicalZone.addGraphListener(new GraphListener() {
-			public void graphChanged() {
+			public void graphChanged(boolean m) {
 				repaint();
-				setModified(true);
+				if (m) setModified(true);
 			}
 		});
 		manager = new UndoManager();

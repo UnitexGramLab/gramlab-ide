@@ -102,8 +102,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 	TfstGraphicalZone graphicalZone;
 
 	GraphListener listener=new GraphListener() {
-		public void graphChanged() {
-			setModified(true);
+		public void graphChanged(boolean m) {
+			if (m) setModified(true);
 		}
 	};
 	
@@ -398,8 +398,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 	public void setModified(boolean b) {
 		repaint();
 		resetSentenceGraph.setVisible(b);
-		if (b) {
-			// we save each modification
+		if (b && !isAcurrentLoadingThread) {
+			/* We save each modification, but only
+			 * if the sentence graph loading is terminated
+			 */
 			GraphIO g = new GraphIO(graphicalZone);
 			g.saveSentenceGraph(new File(sentence_modified.getAbsolutePath()
 					+ spinnerModel.getNumber().intValue() + ".grf"),
@@ -563,7 +565,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	boolean loadSentenceGraph(File file) {
 		setModified(false);
-		GraphIO g = GraphIO.loadSentenceGraph(file, graphicalZone);
+		GraphIO g = GraphIO.loadSentenceGraph(file);
 		if (g == null) {
 			return false;
 		}
@@ -574,7 +576,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	boolean loadElagSentenceGraph(File file) {
 		setModified(false);
-		GraphIO g = GraphIO.loadSentenceGraph(file, elaggraph);
+		GraphIO g = GraphIO.loadSentenceGraph(file);
 		if (g == null)
 			return false;
 		elaggraph.setup(g);
