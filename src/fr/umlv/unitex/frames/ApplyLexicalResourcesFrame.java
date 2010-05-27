@@ -61,10 +61,10 @@ import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;

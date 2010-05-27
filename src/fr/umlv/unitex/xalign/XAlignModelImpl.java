@@ -37,6 +37,8 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import fr.umlv.unitex.listeners.AlignmentListener;
+
 public class XAlignModelImpl implements XAlignModel {
 
 	XMLTextModel src,dest;

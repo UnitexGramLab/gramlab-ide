@@ -37,9 +37,9 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.listeners.FontListener;
 
 /**
  * This class describes a frame used to display current corpus's DLF, DLC and

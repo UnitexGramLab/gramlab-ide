@@ -34,6 +34,9 @@ import javax.swing.event.InternalFrameListener;
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.ToDo;
+import fr.umlv.unitex.listeners.DelaFrameListener;
+import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
+import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.xalign.ConcordanceModel;
 

@@ -19,11 +19,10 @@
  *
  */
 
-package fr.umlv.unitex.frames;
+package fr.umlv.unitex.listeners;
 
-public interface TextFrameListener {
+public interface GraphListener {
 
-	public void textFrameOpened(boolean taggedText);
-	public void textFrameClosed();
+	public void graphChanged();
 
 }

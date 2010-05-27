@@ -19,11 +19,11 @@
  *
  */
 
-package fr.umlv.unitex.frames;
+package fr.umlv.unitex.listeners;
 
-public interface LexiconGrammarTableFrameListener {
+public interface TextFrameListener {
 
-	public void lexiconGrammarTableFrameOpened();
-	public void lexiconGrammarTableFrameClosed();
+	public void textFrameOpened(boolean taggedText);
+	public void textFrameClosed();
 
 }

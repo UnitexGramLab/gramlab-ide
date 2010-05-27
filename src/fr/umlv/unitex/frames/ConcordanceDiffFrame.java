@@ -37,9 +37,9 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.BigConcordanceDiff;
-import fr.umlv.unitex.FontListener;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.listeners.FontListener;
 
 
 /**
