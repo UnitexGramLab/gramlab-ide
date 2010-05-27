@@ -22,6 +22,7 @@
 package fr.umlv.unitex;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -33,10 +34,13 @@ import java.awt.print.Printable;
 import java.io.File;
 import java.util.Date;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.undo.TranslationGroupEdit;
 
 /**
@@ -62,8 +66,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * @param p
 	 *            frame that contains the component
 	 */
-	public GraphicalZone(int w, int h, TextField t, GraphFrame p) {
-		super(w, h, t, p);
+	public GraphicalZone(GraphIO gio, TextField t, GraphFrame p) {
+		super(gio, t, p);
 		addMouseListener(new MyMouseListener());
 		addMouseMotionListener(new MyMouseMotionListener());
 	}
@@ -72,6 +76,38 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return new GraphBox(x, y, type, (GraphicalZone) p);
 	}
 
+	
+	protected void initializeEmptyGraph() {
+		GraphBox g, g2;
+		// creating the final state
+		g = new GraphBox(300, 200, 1, this);
+		g.setContent("<E>");
+		// and the initial state
+		g2 = new GraphBox(70, 200, 0, this);
+		g2.n_lines = 0;
+		g2.setContent("<E>");
+		addBox(g2);
+		addBox(g);
+		text.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent arg0) {
+				// nothing to do
+			}
+
+			public void insertUpdate(DocumentEvent arg0) {
+				((GraphFrame) parentFrame).setRedoEnabled(false);
+				((GraphFrame) parentFrame).setUndoEnabled(false);
+			}
+
+			public void removeUpdate(DocumentEvent arg0) {
+				// nothing to do
+			}
+		});
+		Dimension d=new Dimension(1188,840);
+		setSize(d);
+		setPreferredSize(new Dimension(d));
+	}
+
+	
 	protected void init() {
 		if (!((GraphFrame) parentFrame).isNonEmptyGraph()) {
 			GraphBox g, g2;
@@ -124,7 +160,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						// current
 						addReverseTransitionsFromSelectedBoxes(b);
 						unSelectAllBoxes();
-						setModified(true);
+						fireGraphChanged();
 					} else {
 						if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES) {
 							// if we click on a box while there is no box
@@ -148,7 +184,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// creation of a new box
 				b = (GraphBox) createBox((int) (e.getX() / scaleFactor),
 						(int) (e.getY() / scaleFactor));
-				setModified(true);
 				// if some boxes are selected, we rely them to the new one
 				if (!selectedBoxes.isEmpty()) {
 					addTransitionsFromSelectedBoxes(b, false);
@@ -158,6 +193,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				b.selected = true;
 				selectedBoxes.add(b);
 				initText("<E>");
+				fireGraphChanged();
 			} else if (EDITING_MODE == MyCursors.OPEN_SUBGRAPH
 					|| (EDITING_MODE == MyCursors.NORMAL && e.isAltDown())) {
 				// Alt+click
@@ -201,7 +237,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						// current one
 						addTransitionsFromSelectedBoxes(b, true);
 						unSelectAllBoxes();
-						setModified(true);
+						fireGraphChanged();
 					} else {
 						if (!((EDITING_MODE == MyCursors.LINK_BOXES) && (b.type == 1))) {
 							// if not, we just select this one, but only if we
@@ -283,7 +319,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				postEdit(edit);
 				selectedBoxes.remove(singleDraggedBox);
 				dragging = false;
-				setModified(true);
+				fireGraphChanged();
 			}
 			if (dragging && EDITING_MODE == MyCursors.NORMAL) {
 				// save the position of all the translated boxes
@@ -331,16 +367,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (singleDragging) {
 				// translates the single dragged box
 				singleDraggedBox.translate(dx, dy);
-				setModified(true);
-				paintImmediately();
+				fireGraphChanged();
 				return;
 			}
 			if (dragging && EDITING_MODE == MyCursors.NORMAL) {
 				// translates all the selected boxes
-				setModified(true);
 				translateAllSelectedBoxes(dx, dy);
 				// if we were dragging, we have nothing else to do
-				paintImmediately();
+				fireGraphChanged();
 				return;
 			}
 			if (X_start_drag < X_end_drag) {
@@ -385,11 +419,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		setClipZone(f_old.getClipBounds());
 		Graphics2D f = (Graphics2D) f_old;
 		f.scale(scaleFactor, scaleFactor);
-		if (!isInitialized()) {
-			/* TODO à modifier */
-			init();
-			setInitialized(true);
-		}
 		if (info.antialiasing) {
 			f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
@@ -400,24 +429,24 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
 		f.setColor(info.backgroundColor);
-		f.fillRect(0, 0, Width, Height);
+		f.fillRect(0, 0, getWidth(), getHeight());
 		if (info.frame) {
 			f.setColor(info.foregroundColor);
-			f.drawRect(10, 10, Width - 20, Height - 20);
-			f.drawRect(9, 9, Width - 18, Height - 18);
+			f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
+			f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
 		}
 		f.setColor(info.foregroundColor);
 		File file = ((GraphFrame) parentFrame).getGraph();
 		if (info.filename) {
 			if (info.pathname)
 				f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
-						Height - 45);
+						getHeight() - 45);
 			else
 				f.drawString((file != null) ? file.getName() : "", 20,
-						Height - 45);
+						getHeight() - 45);
 		}
 		if (info.date)
-			f.drawString(new Date().toString(), 20, Height - 25);
+			f.drawString(new Date().toString(), 20, getHeight() - 25);
 		drawGrid(f);
 		if (mouseInGraphicalZone && !selectedBoxes.isEmpty()) {
 			if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES) {
@@ -445,16 +474,15 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * @param pageIndex
 	 *            the page index
 	 */
-	/* TODO à virer? */
 	public int print(Graphics g, PageFormat p, int pageIndex) {
 		if (pageIndex != 0)
 			return Printable.NO_SUCH_PAGE;
 		Graphics2D f = (Graphics2D) g;
 		double DPI = 96.0;
 		double WidthInInches = p.getImageableWidth() / 72;
-		double realWidthInInches = (Width / DPI);
+		double realWidthInInches = (getWidth() / DPI);
 		double HeightInInches = p.getImageableHeight() / 72;
-		double realHeightInInches = (Height / DPI);
+		double realHeightInInches = (getHeight() / DPI);
 		double scale_x = WidthInInches / realWidthInInches;
 		double scale_y = HeightInInches / realHeightInInches;
 		f.translate(p.getImageableX(), p.getImageableY());
@@ -463,24 +491,24 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
 		f.setColor(info.backgroundColor);
-		f.fillRect(0, 0, Width, Height);
+		f.fillRect(0, 0, getWidth(), getHeight());
 		if (info.frame) {
 			f.setColor(info.foregroundColor);
-			f.drawRect(10, 10, Width - 20, Height - 20);
-			f.drawRect(9, 9, Width - 18, Height - 18);
+			f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
+			f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
 		}
 		f.setColor(info.foregroundColor);
 		File file = ((GraphFrame) parentFrame).getGraph();
 		if (info.filename) {
 			if (info.pathname)
 				f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
-						Height - 45);
+						getHeight() - 45);
 			else
 				f.drawString((file != null) ? file.getName() : "", 20,
-						Height - 45);
+						getHeight() - 45);
 		}
 		if (info.date)
-			f.drawString(new Date().toString(), 20, Height - 25);
+			f.drawString(new Date().toString(), 20, getHeight() - 25);
 		drawGrid(f);
 		drawAllTransitions(f);
 		drawAllBoxes(f);

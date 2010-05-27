@@ -60,7 +60,7 @@ public class SVG {
 	private void header() throws IOException {
 		writer.write("<?xml version=\"1.0\" standalone=\"yes\"?>\n");
 		writer.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
-		writer.write("<svg width=\""+graphicalZone.Width+"\" height=\""+graphicalZone.Height+"\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n");
+		writer.write("<svg width=\""+graphicalZone.getWidth()+"\" height=\""+graphicalZone.getHeight()+"\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n");
 		writer.write("<desc>\n\tThis SVG file was created by Unitex (http://igm.univ-mlv.fr/~unitex).\n");
 		writer.write("\tIt represents the graph named: "+frame.getGraph().getAbsolutePath()+"\n</desc>\n");
 		
@@ -71,36 +71,36 @@ public class SVG {
 		// we write the SVG header
 		header();
 		// then we paint the zone with the background color
-		fillRect(0,0,graphicalZone.Width,graphicalZone.Height,info.backgroundColor);
+		fillRect(0,0,graphicalZone.getWidth(),graphicalZone.getHeight(),info.backgroundColor);
 		// if necessary, we draw the frame
 		if (info.frame) {
-			drawRect(10,10,graphicalZone.Width-20,graphicalZone.Height-20,info.foregroundColor,2);
+			drawRect(10,10,graphicalZone.getWidth()-20,graphicalZone.getHeight()-20,info.foregroundColor,2);
 		}
 		// if necessary, we print the file name
 		Font defaultFont=graphicalZone.getFont();
 		if (info.filename) {
 			if (info.pathname)
 				drawText((frame.getGraph() != null) ? frame.getGraph().getAbsolutePath() : "", 
-						20, graphicalZone.Height - 45,info.foregroundColor,
+						20, graphicalZone.getHeight() - 45,info.foregroundColor,
 						defaultFont);
 			else
 				drawText((frame.getGraph() != null) ? frame.getGraph().getName() : "", 
-						20, graphicalZone.Height - 45,info.foregroundColor,
+						20, graphicalZone.getHeight() - 45,info.foregroundColor,
 						defaultFont);
 		}
 		// if necessary, we print the date of the day
 		if (info.date) {
-			drawText(new Date().toString(), 20, graphicalZone.Height - 25,
+			drawText(new Date().toString(), 20, graphicalZone.getHeight() - 25,
 					info.foregroundColor,defaultFont);
 		}
 		// if necessary, we draw the grid
 		if (graphicalZone.isGrid) {
-			for (int x = 10; x < graphicalZone.Width - 20; x = x + graphicalZone.nPixels)
-				for (int y = 10; y < graphicalZone.Height - 20; y = y + graphicalZone.nPixels)
+			for (int x = 10; x < graphicalZone.getWidth() - 20; x = x + graphicalZone.nPixels)
+				for (int y = 10; y < graphicalZone.getHeight() - 20; y = y + graphicalZone.nPixels)
 					drawLine(x, y, x + 1, y,info.foregroundColor);
 		}
 		// we draw the transitions
-		ArrayList<GenericGraphBox> graphBoxes=graphicalZone.graphBoxes;
+		ArrayList<GenericGraphBox> graphBoxes=graphicalZone.getBoxes();
 		int L = graphBoxes.size();
 		for (int i = 0; i < L; i++) {
 			drawTransitions(graphBoxes.get(i));

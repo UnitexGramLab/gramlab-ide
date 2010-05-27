@@ -315,19 +315,6 @@ public class InternalFrameManager {
 		textDicFrameFactory.closeTextDicFrame();
 	}
 
-
-	public TextAutomatonFrame newTextAutomatonFrame(boolean iconify) {
-		return newTextAutomatonFrame(1,iconify);
-	}
-	
-	public TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
-		return newTextAutomatonFrame(sentenceNumber,true);
-	}
-	
-	public TextAutomatonFrame newTextAutomatonFrame() {
-		return newTextAutomatonFrame(1,true);
-	}
-	
 	public TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber,boolean iconify) {
 		return (TextAutomatonFrame) setup(textAutomatonFrameFactory.newTextAutomatonFrame(sentenceNumber),false,iconify);
 	}

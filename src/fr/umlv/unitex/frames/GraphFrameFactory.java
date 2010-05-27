@@ -21,14 +21,12 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 
 
@@ -48,21 +46,9 @@ public class GraphFrameFactory {
 		if (grf!=null) {
 			GraphIO g=GraphIO.loadGraph(grf);
 			if (g==null) return null;
-			f=new GraphFrame();
-			GraphPresentationInfo info=g.getGraphPresentationInfo();
-			f.setGraphPresentationInfo(info);
-			f.boxContentEditor.setFont(info.input.font);
-			f.graphicalZone.Width = g.width;
-			f.graphicalZone.Height = g.height;
-			f.graphicalZone.graphBoxes = g.boxes;
-			f.graphicalZone.setPreferredSize(new Dimension(g.width, g.height));
-			f.setGraph(grf);
-			/* Some loading operations may have set the modified flag, so we
-			 * reset it
-			 */
-			f.setModified(false);
+			f=new GraphFrame(g);
 		} else {
-			f=new GraphFrame();
+			f=new GraphFrame(null);
 		}
 		frames.add(f);
 		f.addInternalFrameListener(new InternalFrameAdapter() {

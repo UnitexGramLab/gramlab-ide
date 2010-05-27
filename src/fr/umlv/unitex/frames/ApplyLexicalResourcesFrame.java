@@ -689,7 +689,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		public void toDo() {
 			UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(),false);
 			if (Config.isKorean()) {
-			    UnitexFrame.getFrameManager().newTextAutomatonFrame();
+			    UnitexFrame.getFrameManager().newTextAutomatonFrame(1,false);
 			}
 		}
 	}
