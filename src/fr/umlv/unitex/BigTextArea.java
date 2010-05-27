@@ -205,6 +205,7 @@ public class BigTextArea extends JPanel {
 	}
 	
 	
+	@Override
 	public void setFont(Font font) {
 		if (area!=null)	{
 			area.setFont(font);

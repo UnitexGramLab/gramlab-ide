@@ -139,6 +139,7 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 		// find next when enter is pressed		
 		txtFind.addKeyListener(new KeyAdapter() {
 
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if( e.getKeyCode() == KeyEvent.VK_ENTER  )
 				findAction.actionPerformed(null);
@@ -271,6 +272,7 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 	* Generate message dialogue box 
 	* @param message
 	**/
+	@Override
 	protected void warning(String message) {
 		JOptionPane.showMessageDialog(
 			text,

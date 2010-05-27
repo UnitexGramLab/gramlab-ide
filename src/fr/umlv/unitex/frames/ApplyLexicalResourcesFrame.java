@@ -275,6 +275,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			}
 		});
 		MouseListener userDicListener=new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton()!=MouseEvent.BUTTON1) {
 					int index = userDicList.locationToIndex(e.getPoint());
@@ -343,6 +344,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			}
 		});
 		MouseListener systemDicListener=new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getButton()!=MouseEvent.BUTTON1) {
 					int index = systemDicList.locationToIndex(e.getPoint());

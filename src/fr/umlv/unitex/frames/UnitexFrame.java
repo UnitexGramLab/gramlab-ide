@@ -129,6 +129,7 @@ public class UnitexFrame extends JFrame {
 		buildMenus();
 		mainFrame = this;
 		this.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				quit();
 			}
@@ -627,6 +628,7 @@ public class UnitexFrame extends JFrame {
 					else
 						f.setScaleFactor(scale_y);
 					f.compListener = new ComponentAdapter() {
+						@Override
 						public void componentResized(ComponentEvent e2) {
 							Dimension d2 = f.getScroll().getSize();
 							double scale_x2 = (double) (d2.width - 3)

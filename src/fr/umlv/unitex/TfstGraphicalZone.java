@@ -71,6 +71,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		boundsEditor = p.boundsEditor;
 	}
 
+	@Override
 	protected GenericGraphBox createBox(int x, int y) {
 		TfstGraphBox g = new TfstGraphBox(x, y, 2, this);
 		g.setContent("<E>");
@@ -78,6 +79,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		return g;
 	}
 
+	@Override
 	protected GenericGraphBox newBox(int x, int y, int type,
 			GenericGraphicalZone p) {
 		return new TfstGraphBox(x, y, type, (TfstGraphicalZone) p);
@@ -86,6 +88,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	class FstGraphMouseListener extends MouseAdapter {
 		MouseMotionListener motionListener = new FstGraphMouseMotionListener();
 
+		@Override
 		public void mouseClicked(MouseEvent e) {
 			int boxSelected;
 			TfstGraphBox b;
@@ -158,6 +161,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			return;
 		}
 
+		@Override
 		public void mousePressed(MouseEvent e) {
 			int selectedBox;
 			addMouseMotionListener(motionListener);
@@ -204,6 +208,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			repaint();
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			removeMouseMotionListener(motionListener);
 			if (e.isShiftDown() || e.isAltDown() || e.isControlDown())
@@ -224,6 +229,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	}
 
 	class FstGraphMouseMotionListener extends MouseMotionAdapter {
+		@Override
 		public void mouseDragged(MouseEvent e) {
 			int Xtmp = X_end_drag;
 			int Ytmp = Y_end_drag;
@@ -268,6 +274,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	 * @param f_old
 	 *            the graphical context
 	 */
+	@Override
 	public void paintComponent(Graphics f_old) {
 		Graphics2D f = (Graphics2D) f_old;
 		f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -384,10 +391,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		repaint();
 	}
 
+	@Override
 	public void initText(String s) {
 		((TfstTextField)text).initText(s);
 	}
 
+	@Override
 	public boolean validateTextField() {
 		return ((TfstTextField) text).validateTextField();
 	}

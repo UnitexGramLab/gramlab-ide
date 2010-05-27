@@ -90,6 +90,7 @@ public class ConcordanceFrame extends JInternalFrame {
 		invisible.setOpaque(false);
 		invisible.setVisible(true);
 		invisible.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				getLayeredPane().remove(invisible);
 				revalidate();

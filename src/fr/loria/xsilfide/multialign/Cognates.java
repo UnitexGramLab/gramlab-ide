@@ -253,7 +253,8 @@ public class Cognates{
 	System.out.println("\nuriCible :"+uriCible);	
     }
 
-    public String toString(){
+    @Override
+	public String toString(){
 	return "\npaquetsSource :"+paquetsSource+"\npaquetsCible : "+paquetsCible+
 	    "\nalignements :"+alignements+"\nnoCorrespSource :"+noCorrespSource+
 	    "\nnoCorrespCible : "+noCorrespCible+
@@ -743,6 +744,7 @@ public class Cognates{
 	public void set4(int y){
 	    b.setY(y);
 	}
+	@Override
 	public String toString(){
 	    return "(("+a.getX()+", "+a.getY()+"), ("+b.getX()+", "+b.getY()+"))";
 	}

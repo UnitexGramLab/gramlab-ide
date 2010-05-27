@@ -54,6 +54,7 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		oldText = boxe.getContent();				
 	}
 
+	@Override
 	public void undo(){
 		super.undo();
 		boxe.setContent(oldText);
@@ -63,6 +64,7 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		
 	}
 
+	@Override
 	public void redo(){
 		super.redo();
 		boxe.setContent(newText);

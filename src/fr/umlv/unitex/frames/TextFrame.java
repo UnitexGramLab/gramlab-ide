@@ -82,6 +82,7 @@ public class TextFrame extends JInternalFrame {
 		pack();
 		setBounds(50, 50, 800, 500);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosed(InternalFrameEvent e) {
 				Preferences.removeTextFontListener(fontListener);
 				text.reset();

@@ -69,7 +69,8 @@ public class BoundsEditor extends JFormattedTextField {
         return validBounds;
     }
     
-    public Bounds getValue() {
+    @Override
+	public Bounds getValue() {
         return (Bounds)super.getValue();
     }
     

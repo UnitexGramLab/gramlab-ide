@@ -51,7 +51,8 @@ public class PersonalFileFilter extends javax.swing.filechooser.FileFilter {
     * Tests if a file is accepted by the filter
     * @return <code>true</code> if the file is accepted, <code>false</code> otherwise 
     */
-   public boolean accept(File f) {
+   @Override
+public boolean accept(File f) {
       if (f.isDirectory()) {
          return true;
       }
@@ -69,7 +70,8 @@ public class PersonalFileFilter extends javax.swing.filechooser.FileFilter {
    /**
     * @return a short description of accepted files 
     */
-   public String getDescription() {
+   @Override
+public String getDescription() {
       return description;
    }
 

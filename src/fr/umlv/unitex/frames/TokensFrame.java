@@ -60,6 +60,7 @@ public class TokensFrame extends JInternalFrame {
 		setBounds(50, 200, 300, 450);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				try {
 					setIcon(true);

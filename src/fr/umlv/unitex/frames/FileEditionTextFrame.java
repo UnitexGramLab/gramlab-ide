@@ -127,6 +127,7 @@ public class FileEditionTextFrame extends JInternalFrame {
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				if (text.isModified()) {
 					Object[] options_on_exit = { "Save", "Don't save" };

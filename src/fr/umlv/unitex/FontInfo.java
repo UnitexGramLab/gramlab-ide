@@ -38,6 +38,7 @@ public class FontInfo {
 		this.size=size;
 	}
 	
+	@Override
 	public FontInfo clone() {
 		return new FontInfo(font,size);
 	}

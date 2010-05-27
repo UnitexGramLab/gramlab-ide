@@ -399,11 +399,13 @@ public class GraphFrame extends JInternalFrame {
 	}
 
 	class MyInternalFrameListener extends InternalFrameAdapter {
+		@Override
 		public void internalFrameActivated(InternalFrameEvent e) {
 			boxContentEditor.requestFocus();
 			boxContentEditor.getCaret().setVisible(true);
 		}
 
+		@Override
 		public void internalFrameClosing(InternalFrameEvent e) {
 			if (modified) {
 				Object[] options_on_exit = { "Save", "Don't save" };
@@ -553,6 +555,7 @@ public class GraphFrame extends JInternalFrame {
 		}
 	}
 
+	@Override
 	public void repaint() {
 		super.repaint();
 		updateDoUndoButtons();
