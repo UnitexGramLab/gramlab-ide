@@ -33,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import fr.umlv.unitex.listeners.FontListener;
+
 
 /**
  * This class describes graph presentation preferences.
