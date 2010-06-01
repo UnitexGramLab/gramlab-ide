@@ -666,7 +666,6 @@ public class InternalFrameManager {
 	}
 
 	public void closeXAlignLocateFrame() {
-		/* TODO mettre un listener pour fermer le XAlignLocateFrame quand on ferme le XAlignFrame */
 		xAlignLocateFrameFactory.closeFrame();
 	}
 

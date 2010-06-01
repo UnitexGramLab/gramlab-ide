@@ -750,7 +750,6 @@ public class GraphIO {
 			case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
 			default: UnicodeIO.writeString(dest, "BI"); break;
 			}
-			/* TODO factoriser tout ça avec le code de sauvegarde des grf normaux */
 			UnicodeIO.writeString(dest, String.valueOf(inf.output.size) + "\n");
 			UnicodeIO.writeString(dest, "BCOLOR "
 					+ String.valueOf(16777216 + inf.backgroundColor.getRGB())

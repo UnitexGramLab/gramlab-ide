@@ -88,7 +88,6 @@ public class TranscodingFrame extends JInternalFrame {
 		srcEncodingList.setSelectedValue(Transcoder
 				.getEncodingForLanguage(Config.getCurrentLanguage()), true);
 		destEncodingList.setSelectedValue("LITTLE-ENDIAN", true);
-		/* TODO mettre un ChangeLanguageListener ici */
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
