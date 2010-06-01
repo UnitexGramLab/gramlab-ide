@@ -55,6 +55,9 @@ public class Transcoder {
 		else if (language.equals("French"))
 			return "FRENCH";
 
+		else if (language.equals("German"))
+			return "GERMAN";
+
 		else if (language.equals("Greek (Modern)"))
 			return "GREEK";
 
