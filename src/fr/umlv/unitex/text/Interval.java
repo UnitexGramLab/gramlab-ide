@@ -19,20 +19,22 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.text;
 
-/**
- * This interface is used to define a method named <code>toDo()</code>. It is used to
- * define what must be done after a sequence of command lines in the 
- * <code>ProcessInfoFrame.launchCommand()</code> method: after all processes have been completed, 
- * a <code>toDo()</code> method is called to execute some actions.
- * 
- * All classes or methods that create <code>ProcessInfoFrame</code> objects should create
- * their own object, extending the <code>DoAbstract</code> class. 
- *  
- * @author Sébastien Paumier
- *
- */
-public interface ToDo {
-   public void toDo();
+public class Interval {
+	private final int start;
+	private final int end;
+	
+	public Interval(int s,int e) {
+		start=s;
+		end=e;
+	}
+
+	public int getEnd() {
+		return end;
+	}
+
+	public int getStart() {
+		return start;
+	}
 }

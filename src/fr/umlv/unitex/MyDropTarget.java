@@ -41,6 +41,8 @@ import javax.swing.SwingUtilities;
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.text.Text;
 
 /**
  * This class is used to listen drag and drop events. Files that can be dragged

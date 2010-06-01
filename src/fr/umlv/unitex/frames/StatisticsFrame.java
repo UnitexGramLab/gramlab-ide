@@ -37,9 +37,9 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.StatisticsTableModelMode0;
-import fr.umlv.unitex.StatisticsTableModelMode1;
-import fr.umlv.unitex.StatisticsTableModelMode2;
+import fr.umlv.unitex.stats.StatisticsTableModelMode0;
+import fr.umlv.unitex.stats.StatisticsTableModelMode1;
+import fr.umlv.unitex.stats.StatisticsTableModelMode2;
 
 
 public class StatisticsFrame extends JInternalFrame {

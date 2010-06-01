@@ -28,8 +28,8 @@ import java.util.Set;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.GenericGraphBox;
-import fr.umlv.unitex.GenericGraphicalZone;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph delete a group of boxes 

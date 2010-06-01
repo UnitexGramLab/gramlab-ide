@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * Class used to save the state of the graph before translate boxes

@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.concord;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +32,8 @@ import java.util.Arrays;
 
 import javax.swing.AbstractListModel;
 import javax.swing.SwingWorker;
+
+import fr.umlv.unitex.text.Interval;
 
 
 /**

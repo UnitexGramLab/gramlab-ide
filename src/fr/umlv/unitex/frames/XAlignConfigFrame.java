@@ -41,9 +41,9 @@ import javax.swing.JTextField;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;

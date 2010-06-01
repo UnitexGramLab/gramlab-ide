@@ -45,9 +45,9 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.BigConcordance;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.concord.BigConcordance;
 import fr.umlv.unitex.listeners.FontListener;
 
 

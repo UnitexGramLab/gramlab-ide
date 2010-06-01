@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.concord;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -34,6 +34,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+
+import fr.umlv.unitex.Preferences;
 
 
 /**

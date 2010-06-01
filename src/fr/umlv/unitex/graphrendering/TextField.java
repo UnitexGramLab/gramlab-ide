@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex;
+package fr.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.Event;
@@ -39,6 +39,7 @@ import javax.swing.text.Document;
 import javax.swing.text.Keymap;
 import javax.swing.text.TextAction;
 
+import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 
