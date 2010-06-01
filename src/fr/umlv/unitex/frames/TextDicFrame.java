@@ -57,7 +57,6 @@ public class TextDicFrame extends JInternalFrame {
 	JLabel errLabel = new JLabel("");
 
 	TextDicFrame() {
-		/* TODO enlever des champs les composants qui n'ont pas à y être */
 		super("", true, true, true, true);
 		setContentPane(constructPanel());
 		pack();

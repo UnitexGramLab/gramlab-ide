@@ -193,10 +193,6 @@ public class UnitexFrame extends JFrame {
 				closeDela.setEnabled(false);
 			}
 		});
-		/*
-		 * TODO ajouter des listeners pour désactiver les options des graphes
-		 * quand aucun graphe n'est ouvert
-		 */
 		frameManager
 				.addLexiconGrammarTableFrameListener(new LexiconGrammarTableFrameListener() {
 					public void lexiconGrammarTableFrameOpened() {
@@ -508,7 +504,6 @@ public class UnitexFrame extends JFrame {
 		JMenuItem graphCollection = new JMenuItem("Build Graph Collection");
 		graphCollection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/* TODO ajouter un changeLanguageListener */
 				frameManager.newGraphCollectionFrame();
 			}
 		});

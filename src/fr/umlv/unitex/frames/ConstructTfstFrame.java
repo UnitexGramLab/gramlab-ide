@@ -192,8 +192,6 @@ public class ConstructTfstFrame extends JInternalFrame {
 		if (!dir.exists()) {
 			/* If the directory toto_snt does not exist, we create it */
 			commands.addCommand(new MkdirCommand().name(dir));
-			/* TODO rechercher tous les dir.mkdir() pour les remplacer
-			 * par des MkdirCommand */
 		}
 		/* Cleaning files */
 		Config.deleteFileByName(new File(Config
