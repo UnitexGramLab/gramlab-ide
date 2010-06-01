@@ -65,8 +65,6 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Text;
-import fr.umlv.unitex.TextField;
-import fr.umlv.unitex.TfstTextField;
 import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.editor.FileEditionMenu;
@@ -217,7 +215,6 @@ public class UnitexFrame extends JFrame {
 		JMenu fsGraph = buildFsGraphMenu();
 		JMenu lexiconGrammar = buildLexiconGrammarMenu();
 		JMenu xalign = buildXAlignMenu();
-		JMenu edit = buildEditMenu();
 		FileEditionMenu fileEditionMenu = new FileEditionMenu();
 		JMenu windows = buildWindowsMenu();
 		JMenu info = buildInfoMenu();
@@ -226,7 +223,6 @@ public class UnitexFrame extends JFrame {
 		fsGraph.setMnemonic(KeyEvent.VK_G);
 		lexiconGrammar.setMnemonic(KeyEvent.VK_L);
 		xalign.setMnemonic(KeyEvent.VK_X);
-		edit.setMnemonic(KeyEvent.VK_E);
 		fileEditionMenu.setMnemonic(KeyEvent.VK_F);
 		windows.setMnemonic(KeyEvent.VK_W);
 		info.setMnemonic(KeyEvent.VK_I);
@@ -235,7 +231,6 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(fsGraph);
 		menuBar.add(lexiconGrammar);
 		menuBar.add(xalign);
-		menuBar.add(edit);
 		menuBar.add(fileEditionMenu);
 		menuBar.add(windows);
 		menuBar.add(info);
@@ -757,108 +752,6 @@ public class UnitexFrame extends JFrame {
 		return menu;
 	}
 
-
-	public JMenu buildEditMenu() {
-		JMenu edit = new JMenu("Edit");
-		JMenuItem cut = new JMenuItem("Cut");
-		cut.setAccelerator(KeyStroke.getKeyStroke('X', Event.CTRL_MASK));
-		cut.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				final ActionEvent E = e;
-				JInternalFrame f = frameManager.getSelectedFrame();
-				if (f == null)
-					return;
-				if (f instanceof GraphFrame) {
-					GraphFrame f2 = (GraphFrame) f;
-					((TextField) (f2.getGraphicalZone().text)).getCut()
-							.actionPerformed(E);
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-				if (f instanceof TextAutomatonFrame) {
-					TextAutomatonFrame f2 = (TextAutomatonFrame) f;
-					((TfstTextField) f2.getGraphicalZone().text).getCut()
-							.actionPerformed(E);
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-			}
-		});
-		JMenuItem copy = new JMenuItem("Copy");
-		copy.setAccelerator(KeyStroke.getKeyStroke('C', Event.CTRL_MASK));
-		copy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				final ActionEvent E = e;
-				JInternalFrame f = frameManager.getSelectedFrame();
-				if (f == null)
-					return;
-				if (f instanceof GraphFrame) {
-					GraphFrame f2 = (GraphFrame) f;
-					((TextField) (f2.getGraphicalZone().text)).getSpecialCopy()
-							.actionPerformed(E);
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-				if (f instanceof TextAutomatonFrame) {
-					TextAutomatonFrame f2 = (TextAutomatonFrame) f;
-					((TfstTextField) f2.getGraphicalZone().text)
-							.getSpecialCopy().actionPerformed(E);
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-			}
-		});
-		JMenuItem paste = new JMenuItem("Paste");
-		paste.setAccelerator(KeyStroke.getKeyStroke('V', Event.CTRL_MASK));
-		paste.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				final ActionEvent E = e;
-				JInternalFrame f = frameManager.getSelectedFrame();
-				if (f == null)
-					return;
-				if (f instanceof GraphFrame) {
-					GraphFrame f2 = (GraphFrame) f;
-					((TextField) (f2.getGraphicalZone().text))
-							.getSpecialPaste().actionPerformed(E);
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-				if (f instanceof TextAutomatonFrame) {
-					TextAutomatonFrame f2 = (TextAutomatonFrame) f;
-					((TfstTextField) f2.getGraphicalZone().text)
-							.getSpecialPaste().actionPerformed(E);
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-			}
-		});
-		JMenuItem selectAll = new JMenuItem("Select All");
-		selectAll.setAccelerator(KeyStroke.getKeyStroke('A', Event.CTRL_MASK));
-		selectAll.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JInternalFrame f = frameManager.getSelectedFrame();
-				if (f == null)
-					return;
-				if (f instanceof GraphFrame) {
-					GraphFrame f2 = (GraphFrame) f;
-					f2.getGraphicalZone().selectAllBoxes();
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-				if (f instanceof TextAutomatonFrame) {
-					TextAutomatonFrame f2 = (TextAutomatonFrame) f;
-					f2.getGraphicalZone().selectAllBoxes();
-					f2.getGraphicalZone().repaint();
-					return;
-				}
-			}
-		});
-		edit.add(cut);
-		edit.add(copy);
-		edit.add(paste);
-		edit.add(selectAll);
-		return edit;
-	}
 
 
 	public JMenu buildWindowsMenu() {

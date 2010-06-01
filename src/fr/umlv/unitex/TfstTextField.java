@@ -22,28 +22,17 @@
 package fr.umlv.unitex;
 
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.text.Caret;
 import javax.swing.text.Document;
-import javax.swing.text.Keymap;
-import javax.swing.text.TextAction;
 
 import fr.umlv.unitex.frames.TextAutomatonFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class describes the text field used to get the box text in a sentence
@@ -56,10 +45,6 @@ public class TfstTextField extends JTextField {
 
 	protected TextAutomatonFrame parent;
 	protected boolean modified = false;
-	private SpecialPaste specialPaste;
-	private SpecialCopy specialCopy;
-	private SelectAll selectAll;
-	private Cut cut;
 	protected Clipboard clip;
 
 	/**
@@ -78,141 +63,9 @@ public class TfstTextField extends JTextField {
 		clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 		setDisabledTextColor(Color.white);
 		setBackground(Color.white);
-		Keymap k = getKeymap();
-		k = addKeymap("fsttextfield-keymap", k);
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('v', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('V', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('c', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('C', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('x', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('X', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('a', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('A', Event.CTRL_MASK));
-
-		selectAll = new SelectAll("select all");
-		cut = new Cut("cut");
-		specialPaste = new SpecialPaste("special-paste");
-		specialCopy = new SpecialCopy("special-copy");
-
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('v', Event.CTRL_MASK),
-				specialPaste);
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('V', Event.CTRL_MASK),
-				specialPaste);
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('c', Event.CTRL_MASK),
-				specialCopy);
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('C', Event.CTRL_MASK),
-				specialCopy);
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('m', Event.CTRL_MASK));
-		k.removeKeyStrokeBinding(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('a', Event.CTRL_MASK),
-				selectAll);
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('A', Event.CTRL_MASK),
-				selectAll);
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('x', Event.CTRL_MASK),
-				cut);
-		k.addActionForKeyStroke(KeyStroke.getKeyStroke('X', Event.CTRL_MASK),
-				cut);
-		this.setKeymap(k);
-
 		addKeyListener(new MyKeyListener());
 	}
 
-	public class SpecialCopy extends TextAction implements ClipboardOwner {
-		public SpecialCopy(String s) {
-			super(s);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			if (parent.getGraphicalZone().selectedBoxes.isEmpty()
-					|| parent.getGraphicalZone().selectedBoxes.size() < 2) {
-				// is there is no or one box selected, we copy normally
-				copy();
-				UnitexFrame.clip.setContents(null, this);
-				return;
-			}
-			UnitexFrame.clip.setContents(new MultipleBoxesSelection(
-					new MultipleSelection(
-							parent.getGraphicalZone().selectedBoxes, true)),
-					this);
-		}
-
-		public void lostOwnership(Clipboard c, Transferable d) {
-			// nothing to do
-		}
-	}
-
-	public class SelectAll extends TextAction implements ClipboardOwner {
-		public SelectAll(String s) {
-			super(s);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			if (!parent.getGraphicalZone().selectedBoxes.isEmpty()
-					&& parent.getGraphicalZone().selectedBoxes.size() == 1)
-				selectAll();
-			else
-				parent.getGraphicalZone().selectAllBoxes();
-		}
-
-		public void lostOwnership(Clipboard c, Transferable d) {
-			// nothing to do
-		}
-	}
-
-	public class Cut extends TextAction implements ClipboardOwner {
-		public Cut(String s) {
-			super(s);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			if (!parent.getGraphicalZone().selectedBoxes.isEmpty()
-					&& parent.getGraphicalZone().selectedBoxes.size() == 1) {
-				cut();
-			} else {
-				UnitexFrame.clip
-						.setContents(
-								new MultipleBoxesSelection(
-										new MultipleSelection(
-												parent.getGraphicalZone().selectedBoxes,
-												true)), this);
-				parent.getGraphicalZone().removeSelected();
-				setText("");
-			}
-		}
-
-		public void lostOwnership(Clipboard c, Transferable d) {
-			// nothing to do
-		}
-	}
-
-	public class SpecialPaste extends TextAction {
-		public SpecialPaste(String s) {
-			super(s);
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			Transferable data;
-			MultipleSelection res = null;
-			data = UnitexFrame.clip.getContents(this);
-			try {
-				if (data != null)
-					res = (MultipleSelection) data
-							.getTransferData(new DataFlavor("unitex/boxes",
-									"Unitex dataflavor"));
-			} catch (UnsupportedFlavorException e2) {
-				e2.printStackTrace();
-			} catch (IOException e2) {
-				e2.printStackTrace();
-			}
-			if (res == null || TfstTextField.this.modified == true) {
-				// if there is no boxes to copy we do a simple paste
-				paste();
-				return;
-			}
-			res.n++;
-			parent.getGraphicalZone().pasteSelection(res);
-		}
-	}
 
 	/**
 	 * Sets the content of the text field
@@ -386,22 +239,6 @@ public class TfstTextField extends JTextField {
 			return false;
 		}
 		return true;
-	}
-
-	public SpecialCopy getSpecialCopy() {
-		return specialCopy;
-	}
-
-	public SpecialPaste getSpecialPaste() {
-		return specialPaste;
-	}
-
-	public SelectAll getSelectAll() {
-		return selectAll;
-	}
-
-	public Cut getCut() {
-		return cut;
 	}
 
 }
