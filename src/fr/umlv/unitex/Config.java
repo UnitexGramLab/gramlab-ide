@@ -49,7 +49,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.listeners.LanguageListener;
 
 /**
  * This class contains general configuration information. It contains constants
@@ -774,6 +774,7 @@ public class Config {
 		setDefaultPreprocessingGraphs();
 		updateOpenSaveDialogBoxes();
 		Preferences.reset();
+		fireLanguageChanged();
 	}
 
 	
@@ -1145,11 +1146,9 @@ public class Config {
 		if (0 == JOptionPane.showOptionDialog(null, langList,
 				"Choose a language", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0])) {
-			setCurrentLanguage((String) (langList.getSelectedItem()));
-			UnitexFrame.mainFrame.setTitle(Version.version
-					+ " - current language is " + getCurrentLanguageForTitleBar());
-			if (!old.equals(getCurrentLanguage())) {
-				UnitexFrame.getFrameManager().closeTextFrame();
+			String newLanguage=(String) (langList.getSelectedItem());
+			if (!old.equals(newLanguage)) {
+				setCurrentLanguage(newLanguage);
 			}
 		}
 	}
@@ -1611,5 +1610,32 @@ public class Config {
     			|| name.equals("Src") || name.equals("XAlign")
     			|| name.startsWith(".")) return false;
 		return true;
+	}
+
+
+	private static ArrayList<LanguageListener> listeners=new ArrayList<LanguageListener>();
+	
+	protected static boolean firing=false;
+	
+	public static void addLanguageListener(LanguageListener l) {
+		listeners.add(l);
+	}
+
+	public static void removeLanguageListener(LanguageListener l) {
+		if (firing) {
+			throw new IllegalStateException("Should not remove a listener while firing");
+		}
+		listeners.remove(l);
+	}
+	
+	protected static void fireLanguageChanged() {
+		firing=true;
+		try {
+			for (LanguageListener l:listeners) {
+				l.languageChanged();
+			}
+		} finally {
+			firing=false;
+		}
 	}
 }
