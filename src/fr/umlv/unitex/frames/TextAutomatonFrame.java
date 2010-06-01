@@ -524,7 +524,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	boolean loadSentenceGraph(File file) {
 		setModified(false);
-		GraphIO g = GraphIO.loadSentenceGraph(file);
+		GraphIO g = GraphIO.loadGraph(file,true);
 		if (g == null) {
 			return false;
 		}
@@ -535,7 +535,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	boolean loadElagSentenceGraph(File file) {
 		setModified(false);
-		GraphIO g = GraphIO.loadSentenceGraph(file);
+		GraphIO g = GraphIO.loadGraph(file,true);
 		if (g == null)
 			return false;
 		elaggraph.setup(g);

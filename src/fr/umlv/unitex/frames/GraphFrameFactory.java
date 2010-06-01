@@ -44,7 +44,7 @@ public class GraphFrameFactory {
 		}
 		final GraphFrame f;
 		if (grf!=null) {
-			GraphIO g=GraphIO.loadGraph(grf);
+			GraphIO g=GraphIO.loadGraph(grf,false);
 			if (g==null) return null;
 			f=new GraphFrame(g);
 		} else {
