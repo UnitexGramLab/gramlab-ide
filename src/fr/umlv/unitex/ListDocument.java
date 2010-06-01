@@ -23,10 +23,11 @@ package fr.umlv.unitex;
 
 import java.util.StringTokenizer;
 
-import javax.swing.JOptionPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
+
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /*
  * This class catches text and turns it into a list if it contains \n
@@ -71,21 +72,17 @@ public void insertString(int offs, String s, AttributeSet a)
          return;
       }
 
-      // here we show the dialog box to choose contexts
-      JOptionPane.showMessageDialog(
-         null,
-         new ListCopyDialog(TextField.leftContext, TextField.rightContext));
-
+      ContextsInfo info=UnitexFrame.getFrameManager().newListCopyDialog();
       // tokenizes the text
       StringTokenizer st= new StringTokenizer(s, "\n");
-      String res= TextField.leftContext;
+      String res= info.left;
       res= res.concat(st.nextToken());
-      res= res.concat(TextField.rightContext);
+      res= res.concat(info.right);
       while (st.hasMoreTokens()) {
          res= res.concat("+");
-         res= res.concat(TextField.leftContext);
+         res= res.concat(info.left);
          res= res.concat(st.nextToken());
-         res= res.concat(TextField.rightContext);
+         res= res.concat(info.right);
       }
       super.insertString(offs, res, a);
    }
