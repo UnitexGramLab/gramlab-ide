@@ -29,7 +29,6 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.tfst.Bounds;
 
 
@@ -132,14 +131,6 @@ public class TfstGraphBox extends GenericGraphBox {
     @Override
     public void setSelected(boolean b) {
         super.setSelected(b);
-        if (b && bounds!=null) {
-            ((TextAutomatonFrame)parentGraphicalZone.getParentFrame()).getSentenceTextArea().getCaret().setSelectionVisible(true);
-            //System.out.println("on selectionne de "+bounds.getGlobal_start_in_chars()+" a "+(bounds.getGlobal_end_in_chars()+1));
-            ((TextAutomatonFrame)parentGraphicalZone.getParentFrame()).getSentenceTextArea().select(bounds.getGlobal_start_in_chars(),
-                                                 bounds.getGlobal_end_in_chars()+1);
-        } else {
-        	((TextAutomatonFrame)parentGraphicalZone.getParentFrame()).getSentenceTextArea().select(0,0);
-        }
     }
 
     private void readTokenInfos(String s) {

@@ -221,10 +221,17 @@ public class TfstTextField extends JTextField {
 	 *            the new content
 	 */
 	public void initText(String s) {
-		modified = false;
-		setEditable(s != null && !s.equals(""));
+		modified=false;
+		if (s==null) {
+			/* We want to make the text field non editable */
+			setEditable(false);
+			setText("");
+			return;
+		}
+		setEditable(true);
 		setText(s);
 		requestFocus();
+		getCaret().setVisible(true);
 		selectAll();
 	}
 
@@ -245,34 +252,12 @@ public class TfstTextField extends JTextField {
 	 *         otherwise
 	 */
 	public boolean validateTextField() {
-		boolean multiboxesSelection = parent.getGraphicalZone().selectedBoxes
-				.size() > 1;
-		// System.err.println("validateTextField: hasChangedTextField="+hasChangedTextField());
-		if (!hasChangedTextField() && parent.boundsEditor.getValue() != null) {
+		if (!hasChangedTextField()) {
 			return true;
-		}
-		// System.out.println(TextAutomatonFrame.frame.bounds.boundsAreValid()+" => "+TextAutomatonFrame.frame.bounds.getValue());
-		String content = getText();
-		if (!multiboxesSelection && !parent.boundsEditor.boundsAreValid()
-				&& content != null && !content.equals("")) {
-			/*
-			 * Invalid bounds do not matter if the text is the empty string used
-			 * to destroy boxes
-			 */
-			JOptionPane.showMessageDialog(null, "Invalid bounds", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return false;
 		}
 		if (isGoodText(getText())) {
 			parent.getGraphicalZone().setTextForSelected(getText());
-			if (!multiboxesSelection) {
-				parent.getGraphicalZone().setBoundsForSelected(
-						parent.boundsEditor.getValue());
-			}
 			parent.getGraphicalZone().unSelectAllBoxes();
-			parent.getGraphicalZone().sentenceTextArea.select(0, 0);
-			parent.boundsEditor.setValue(null);
-			parent.boundsEditor.revalidate();
 			setText("");
 			parent.getGraphicalZone().repaint();
 			setEditable(false);
