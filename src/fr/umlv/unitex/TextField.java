@@ -315,7 +315,13 @@ public class TextField extends JTextField {
 	 *            the new text content
 	 */
 	public void initText(String s) {
-		modified = false;
+		modified=false;
+		if (s==null) {
+			/* We want to make the text field non editable */
+			setEditable(false);
+			setText("");
+			return;
+		}
 		setEditable(true);
 		setText(s);
 		requestFocus();
@@ -345,9 +351,6 @@ public class TextField extends JTextField {
 		if (isValidGraphBoxContent(getText())) {
 			parent.setTextForSelected(getText());
 			parent.unSelectAllBoxes();
-			setText("");
-			parent.repaint();
-			setEditable(false);
 			return true;
 		}
 		return false;
