@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.text;
 
 import java.io.File;
 import java.io.FileInputStream;

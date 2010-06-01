@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,10 +28,13 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;

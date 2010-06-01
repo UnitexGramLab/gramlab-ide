@@ -34,9 +34,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Version;
+import fr.umlv.unitex.text.BigTextArea;
 
 /**
  * This class defines a frame that contains the Unitex logo, the body of the

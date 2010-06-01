@@ -64,8 +64,6 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.Text;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
@@ -76,11 +74,13 @@ import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CompressCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.text.Text;
 
 /**
  * This is the main frame of the Unitex system.

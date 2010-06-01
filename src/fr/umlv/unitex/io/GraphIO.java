@@ -31,13 +31,13 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.GenericGraphBox;
-import fr.umlv.unitex.GenericGraphicalZone;
-import fr.umlv.unitex.GraphBox;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.TfstGraphBox;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
+import fr.umlv.unitex.graphrendering.GraphBox;
+import fr.umlv.unitex.graphrendering.TfstGraphBox;
 
 /**
  * This class provides methods for loading and saving graphs.

@@ -40,13 +40,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.process.ProcessInfoThread;
 import fr.umlv.unitex.process.ProcessOutputListModel;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.AbstractMethodCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MessageCommand;

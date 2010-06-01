@@ -19,9 +19,11 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.concord;
 
 import java.awt.Color;
+
+import fr.umlv.unitex.text.Interval;
 
 
 /**

@@ -19,10 +19,11 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.graphrendering;
 
 import java.util.ArrayList;
 import java.util.Vector;
+
 
 /**
  * This class is used to create a clipboard content from a vector of selected boxes.

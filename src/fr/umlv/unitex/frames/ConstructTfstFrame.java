@@ -41,8 +41,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
 import fr.umlv.unitex.process.commands.MessageCommand;

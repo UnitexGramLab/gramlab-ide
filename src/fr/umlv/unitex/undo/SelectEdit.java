@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * class uses to save the state of the graph before a selection

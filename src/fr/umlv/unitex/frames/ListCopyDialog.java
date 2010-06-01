@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import fr.umlv.unitex.ContextsInfo;
+import fr.umlv.unitex.graphrendering.ContextsInfo;
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set left

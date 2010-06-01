@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.graphrendering;
 
 import java.awt.FontMetrics;
 import java.util.ArrayList;

@@ -21,7 +21,6 @@
 
 package fr.umlv.unitex.process;
 
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;

@@ -43,10 +43,9 @@ import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.Text;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2TxtCommand;
@@ -59,6 +58,7 @@ import fr.umlv.unitex.process.commands.PolyLexCommand;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import fr.umlv.unitex.text.Text;
 
 /**
  * This class describes a dialog box that allows the user to parameter the
