@@ -320,7 +320,7 @@ public class GraphFrame extends JInternalFrame {
 				graphicalZone.setCursor(MyCursors.killBoxesCursor);
 				graphicalZone.EDITING_MODE = MyCursors.KILL_BOXES;
 				graphicalZone.unSelectAllBoxes();
-				boxContentEditor.validateTextField();
+				graphicalZone.validateContent();
 			}
 		});
 		link.addActionListener(new ActionListener() {
@@ -341,7 +341,7 @@ public class GraphFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.openSubgraphCursor);
 				graphicalZone.EDITING_MODE = MyCursors.OPEN_SUBGRAPH;
-				boxContentEditor.validateTextField();
+				graphicalZone.validateContent();
 			}
 		});
 		configuration.addActionListener(new ActionListener() {
@@ -507,7 +507,7 @@ public class GraphFrame extends JInternalFrame {
 			g.sortNodeLabel();
 		}
 		graphicalZone.unSelectAllBoxes();
-		boxContentEditor.initText("");
+		boxContentEditor.setContent("");
 		graphicalZone.repaint();
 	}
 

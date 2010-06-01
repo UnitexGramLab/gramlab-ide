@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
-import javax.swing.JTextField;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
@@ -60,7 +59,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Text field in which the content of boxes can be edited.
 	 */
-	public JTextField text;
+	public GraphTextField text;
 	/**
 	 * ArrayList containing the current selected boxes
 	 */
@@ -106,7 +105,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	protected abstract void initializeEmptyGraph();
 
 
-	public GenericGraphicalZone(GraphIO g, JTextField t,
+	public GenericGraphicalZone(GraphIO g, GraphTextField t,
 			final JInternalFrame p) {
 		super();
 		text = t;
@@ -189,8 +188,13 @@ public abstract class GenericGraphicalZone extends JComponent {
 		fireGraphChanged(true);
 	}
 
-	public abstract void initText(String s);
-	public abstract boolean validateTextField();
+	public void initText(String s) {
+		text.setContent(s);
+	}
+	
+	public boolean validateContent() {
+		return text.validateContent();
+	}
 
 
 
