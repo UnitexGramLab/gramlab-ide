@@ -161,6 +161,11 @@ public class XAlignFrame extends JInternalFrame {
 				model.reset();
 				frame.dispose();
 			}
+
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				UnitexFrame.getFrameManager().closeXAlignLocateFrame();
+			}
 		});
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(new XAlignPane(concordModel1,concordModel2,model,sourceFont,targetFont),BorderLayout.CENTER);
