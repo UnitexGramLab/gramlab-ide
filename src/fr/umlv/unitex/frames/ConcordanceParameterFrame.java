@@ -502,14 +502,18 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		File result = new File(extractFile.getText());
 		command = command.snt(Config.getCurrentSnt()).ind(indFile).result(
 				result);
+		MultiCommands builder=new MultiCommands();
 		String sntDir = Util.getFileNameWithoutExtension(result
 				.getAbsolutePath())
 				+ "_snt";
 		File tmp = new File(sntDir);
-		if (!tmp.exists())
-			tmp.mkdir();
+		if (!tmp.exists()) {
+			MkdirCommand c=new MkdirCommand().name(tmp);
+			builder.addCommand(c);
+		}
 		setVisible(false);
-		Launcher.exec(command, true, null);
+		builder.addCommand(command);
+		Launcher.exec(builder, true, null);
 	}
 
 	void buildConcordance() {
