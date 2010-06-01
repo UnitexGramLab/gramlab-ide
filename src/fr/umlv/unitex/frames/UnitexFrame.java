@@ -70,6 +70,7 @@ import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
+import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.print.PrintManager;
@@ -203,6 +204,13 @@ public class UnitexFrame extends JFrame {
 						closeLexiconGrammar.setEnabled(false);
 					}
 				});
+		Config.addLanguageListener(new LanguageListener() {
+			public void languageChanged() {
+				setTitle(Version.version
+						+ " - current language is " + Config.getCurrentLanguageForTitleBar());
+				frameManager.closeTextFrame();
+			}
+		});
 	}
 
 	/**
