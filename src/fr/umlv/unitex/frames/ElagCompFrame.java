@@ -448,7 +448,6 @@ public class ElagCompFrame extends JInternalFrame {
 	}
 }
 
-/* TODO nettoyer les file filters */
 class ElagGrfFileFilter extends FileFilter {
 	ElagGrfFileFilter() {
 		super();
