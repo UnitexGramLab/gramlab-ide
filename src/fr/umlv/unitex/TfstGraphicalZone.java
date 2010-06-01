@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -240,9 +241,10 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		f.setColor(info.backgroundColor);
 		f.fillRect(0, 0, getWidth(), getHeight());
 		f.setColor(info.foregroundColor);
-		/* TODO utiliser un Stroke */
+		Stroke oldStroke=f.getStroke();
+		f.setStroke(GraphicalToolBox.frameStroke);
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
-		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
+		f.setStroke(oldStroke);
 		f.setColor(info.foregroundColor);
 		drawAllTransitions(f);
 		drawAllBoxes(f);

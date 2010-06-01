@@ -21,8 +21,10 @@
 
 package fr.umlv.unitex;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -39,6 +41,7 @@ public class GraphicalToolBox {
 	private static Rectangle rectangle = new Rectangle();
 	private static QuadCurve2D.Double curve = new QuadCurve2D.Double();
 	private static Arc2D.Double arc = new Arc2D.Double();
+	public static Stroke frameStroke=new BasicStroke(2);
 
 	public static void drawLine(Graphics2D g, int x1, int y1, int x2, int y2) {
 		line.setLine(x1, y1, x2, y2);
