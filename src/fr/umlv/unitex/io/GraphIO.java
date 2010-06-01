@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.io;
 
 import java.awt.Color;
@@ -47,46 +46,39 @@ import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
  * 
  */
 public class GraphIO {
-
 	/**
 	 * Boxes of a graph
 	 */
 	public ArrayList<GenericGraphBox> boxes;
-
 	/**
 	 * Rendering properties of a graph
 	 */
 	public GraphPresentationInfo info;
-
 	/**
 	 * Width of a graph
 	 */
 	public int width;
-
 	/**
 	 * Height of a graph
 	 */
 	public int height;
-
 	/**
 	 * Number of boxes of a graph
 	 */
 	private int nBoxes;
-
-
 	public File grf;
-	
+
 	public GraphIO() {
-		info=Preferences.getGraphPresentationPreferences();
+		info = Preferences.getGraphPresentationPreferences();
 	}
-	
+
 	public GraphIO(GenericGraphicalZone zone) {
-		info=zone.getGraphPresentationInfo();
-		width=zone.getWidth();
-		height=zone.getHeight();
-		boxes=zone.getBoxes();
+		info = zone.getGraphPresentationInfo();
+		width = zone.getWidth();
+		height = zone.getHeight();
+		boxes = zone.getBoxes();
 	}
-	
+
 	/**
 	 * This method loads a graph.
 	 * 
@@ -94,9 +86,9 @@ public class GraphIO {
 	 *            name of the graph
 	 * @return a <code>GraphIO</code> object describing the graph
 	 */
-	public static GraphIO loadGraph(File grfFile) {
+	public static GraphIO loadGraph(File grfFile, boolean isSentenceGraph) {
 		GraphIO res = new GraphIO();
-		res.grf=grfFile;
+		res.grf = grfFile;
 		FileInputStream source;
 		if (!grfFile.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find "
@@ -138,15 +130,27 @@ public class GraphIO {
 			UnicodeIO.skipLine(source); // ignoring #
 			res.readBoxNumber(source);
 			res.boxes = new ArrayList<GenericGraphBox>();
-			// adding initial state
-			res.boxes.add(new GraphBox(0, 0, 0, null));
-			// adding final state
-			res.boxes.add(new GraphBox(0, 0, 1, null));
-			// adding other states
-			for (int i = 2; i < res.nBoxes; i++)
-				res.boxes.add(new GraphBox(0, 0, 2, null));
-			for (int i = 0; i < res.nBoxes; i++)
-				res.readGraphLine(source, i);
+			if (isSentenceGraph) {
+				// adding initial state
+				res.boxes.add(new TfstGraphBox(0, 0, 0, null));
+				// adding final state
+				res.boxes.add(new TfstGraphBox(0, 0, 1, null));
+				// adding other states
+				for (int i = 2; i < res.nBoxes; i++)
+					res.boxes.add(new TfstGraphBox(0, 0, 2, null));
+				for (int i = 0; i < res.nBoxes; i++)
+					res.readSentenceGraphLine(source, i);
+			} else {
+				// adding initial state
+				res.boxes.add(new GraphBox(0, 0, 0, null));
+				// adding final state
+				res.boxes.add(new GraphBox(0, 0, 1, null));
+				// adding other states
+				for (int i = 2; i < res.nBoxes; i++)
+					res.boxes.add(new GraphBox(0, 0, 2, null));
+				for (int i = 0; i < res.nBoxes; i++)
+					res.readGraphLine(source, i);
+			}
 			source.close();
 		} catch (NotAUnicodeLittleEndianFileException e) {
 			JOptionPane.showMessageDialog(null, grfFile.getAbsolutePath()
@@ -413,8 +417,9 @@ public class GraphIO {
 	 *            graph file
 	 */
 	public void saveGraph(File grfFile) {
-		if (info==null) {
-			throw new IllegalStateException("Should not save a graph with null graph information");
+		if (info == null) {
+			throw new IllegalStateException(
+					"Should not save a graph with null graph information");
 		}
 		FileOutputStream dest;
 		try {
@@ -438,22 +443,41 @@ public class GraphIO {
 			UnicodeIO.writeString(dest, "#Unigraph\n");
 			UnicodeIO.writeString(dest, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(dest, "FONT " + info.input.font.getName() + ":");
-			switch(info.input.font.getStyle()) {
-				case Font.PLAIN: UnicodeIO.writeString(dest, "  "); break;
-				case Font.BOLD: UnicodeIO.writeString(dest, "B "); break;
-				case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
-				default: UnicodeIO.writeString(dest, "BI"); break;
+			UnicodeIO.writeString(dest, "FONT " + info.input.font.getName()
+					+ ":");
+			switch (info.input.font.getStyle()) {
+			case Font.PLAIN:
+				UnicodeIO.writeString(dest, "  ");
+				break;
+			case Font.BOLD:
+				UnicodeIO.writeString(dest, "B ");
+				break;
+			case Font.ITALIC:
+				UnicodeIO.writeString(dest, " I");
+				break;
+			default:
+				UnicodeIO.writeString(dest, "BI");
+				break;
 			}
 			UnicodeIO.writeString(dest, String.valueOf(info.input.size) + "\n");
-			UnicodeIO.writeString(dest, "OFONT " + info.output.font.getName() + ":");
-			switch(info.output.font.getStyle()) {
-				case Font.PLAIN: UnicodeIO.writeString(dest, "  "); break;
-				case Font.BOLD: UnicodeIO.writeString(dest, "B "); break;
-				case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
-				default: UnicodeIO.writeString(dest, "BI"); break;
+			UnicodeIO.writeString(dest, "OFONT " + info.output.font.getName()
+					+ ":");
+			switch (info.output.font.getStyle()) {
+			case Font.PLAIN:
+				UnicodeIO.writeString(dest, "  ");
+				break;
+			case Font.BOLD:
+				UnicodeIO.writeString(dest, "B ");
+				break;
+			case Font.ITALIC:
+				UnicodeIO.writeString(dest, " I");
+				break;
+			default:
+				UnicodeIO.writeString(dest, "BI");
+				break;
 			}
-			UnicodeIO.writeString(dest, String.valueOf(info.output.size) + "\n");
+			UnicodeIO
+					.writeString(dest, String.valueOf(info.output.size) + "\n");
 			UnicodeIO.writeString(dest, "BCOLOR "
 					+ String.valueOf(16777216 + info.backgroundColor.getRGB())
 					+ "\n");
@@ -546,82 +570,6 @@ public class GraphIO {
 		}
 	}
 
-	/**
-	 * This method loads a sentence graph.
-	 * 
-	 * @param file
-	 *            sentence graph file
-	 * @return a <code>GraphIO</code> object describing the sentence graph
-	 */
-	public static GraphIO loadSentenceGraph(File file) {
-		GraphIO res = new GraphIO();
-		res.grf=file;
-		FileInputStream source;
-		if (!file.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ file.getAbsolutePath(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
-		if (!file.canRead()) {
-			JOptionPane.showMessageDialog(null, "Cannot read "
-					+ file.getAbsolutePath(), "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
-		if (file.length() <= 2) {
-			JOptionPane.showMessageDialog(null, file.getAbsolutePath()
-					+ " is empty", "Error", JOptionPane.ERROR_MESSAGE);
-			return null;
-		}
-		try {
-			source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
-			UnicodeIO.skipLine(source); // ignoring #...
-			res.readSize(source);
-			res.readInputFont(source);
-			res.readOutputFont(source);
-			res.readBackgroundColor(source);
-			res.readForegroundColor(source);
-			res.readSubgraphColor(source);
-			res.readCommentColor(source);
-			res.readSelectedColor(source);
-			UnicodeIO.skipLine(source); // ignoring DBOXES
-			res.readDrawFrame(source);
-			res.readDate(source);
-			res.readFile(source);
-			res.readDirectory(source);
-			res.readRightToLeft(source);
-			UnicodeIO.skipLine(source); // ignoring DRST
-			UnicodeIO.skipLine(source); // ignoring FITS
-			UnicodeIO.skipLine(source); // ignoring PORIENT
-			UnicodeIO.skipLine(source); // ignoring #
-			res.readBoxNumber(source);
-			res.boxes = new ArrayList<GenericGraphBox>();
-			// adding initial state
-			res.boxes.add(new TfstGraphBox(0, 0, 0, null));
-			// adding final state
-			res.boxes.add(new TfstGraphBox(0, 0, 1, null));
-			// adding other states
-			for (int i = 2; i < res.nBoxes; i++)
-				res.boxes.add(new TfstGraphBox(0, 0, 2, null));
-			for (int i = 0; i < res.nBoxes; i++)
-				res.readSentenceGraphLine(source, i);
-			source.close();
-		} catch (NotAUnicodeLittleEndianFileException e) {
-			JOptionPane.showMessageDialog(null, file.getAbsolutePath()
-					+ " is not a Unicode Little-Endian graph", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return null;
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-		return res;
-	}
 
 	private void readSentenceGraphLine(FileInputStream f, int n) {
 		TfstGraphBox g = (TfstGraphBox) boxes.get(n);
@@ -665,7 +613,8 @@ public class GraphIO {
 		int y = 0;
 		while (UnicodeIO.isDigit((c = (char) UnicodeIO.readChar(f))))
 			y = y * 10 + (c - '0');
-		if (Preferences.getGraphPresentationPreferences().rightToLeft == true || info.rightToLeft == true) {
+		if (Preferences.getGraphPresentationPreferences().rightToLeft == true
+				|| info.rightToLeft == true) {
 			info.rightToLeft = true;
 			g.setX(width - x);
 		} else {
@@ -712,7 +661,7 @@ public class GraphIO {
 	 * @param file
 	 *            sentence graph file
 	 */
-	public void saveSentenceGraph(File file,GraphPresentationInfo inf) {
+	public void saveSentenceGraph(File file, GraphPresentationInfo inf) {
 		FileOutputStream dest;
 		try {
 			if (!file.exists())
@@ -735,20 +684,38 @@ public class GraphIO {
 			UnicodeIO.writeString(dest, "#Unigraph\n");
 			UnicodeIO.writeString(dest, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(dest, "FONT " + inf.input.font.getName() + ":");
+			UnicodeIO.writeString(dest, "FONT " + inf.input.font.getName()
+					+ ":");
 			switch (inf.input.font.getStyle()) {
-			case Font.PLAIN: UnicodeIO.writeString(dest, "  "); break;
-			case Font.BOLD: UnicodeIO.writeString(dest, "B "); break;
-			case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
-			default: UnicodeIO.writeString(dest, "BI"); break;
+			case Font.PLAIN:
+				UnicodeIO.writeString(dest, "  ");
+				break;
+			case Font.BOLD:
+				UnicodeIO.writeString(dest, "B ");
+				break;
+			case Font.ITALIC:
+				UnicodeIO.writeString(dest, " I");
+				break;
+			default:
+				UnicodeIO.writeString(dest, "BI");
+				break;
 			}
 			UnicodeIO.writeString(dest, String.valueOf(inf.input.size) + "\n");
-			UnicodeIO.writeString(dest, "OFONT " + inf.output.font.getName() + ":");
+			UnicodeIO.writeString(dest, "OFONT " + inf.output.font.getName()
+					+ ":");
 			switch (inf.output.font.getStyle()) {
-			case Font.PLAIN: UnicodeIO.writeString(dest, "  "); break;
-			case Font.BOLD: UnicodeIO.writeString(dest, "B "); break;
-			case Font.ITALIC: UnicodeIO.writeString(dest, " I"); break;
-			default: UnicodeIO.writeString(dest, "BI"); break;
+			case Font.PLAIN:
+				UnicodeIO.writeString(dest, "  ");
+				break;
+			case Font.BOLD:
+				UnicodeIO.writeString(dest, "B ");
+				break;
+			case Font.ITALIC:
+				UnicodeIO.writeString(dest, " I");
+				break;
+			default:
+				UnicodeIO.writeString(dest, "BI");
+				break;
 			}
 			UnicodeIO.writeString(dest, String.valueOf(inf.output.size) + "\n");
 			UnicodeIO.writeString(dest, "BCOLOR "
@@ -838,5 +805,4 @@ public class GraphIO {
 	public GraphPresentationInfo getGraphPresentationInfo() {
 		return info;
 	}
-
 }
