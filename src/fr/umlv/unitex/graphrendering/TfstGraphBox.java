@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.graphrendering;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -29,6 +29,7 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.tfst.Bounds;
 
 

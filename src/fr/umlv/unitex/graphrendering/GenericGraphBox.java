@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.graphrendering;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -31,6 +31,8 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**

@@ -59,16 +59,16 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.BigTextArea;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.text.BigTextArea;
 
 /**
  * This class defines the "Apply Lexical Resources" frame, accessible from the

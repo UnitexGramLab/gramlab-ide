@@ -29,10 +29,10 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fr.umlv.unitex.GenericGraphBox;
 import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.GraphicalZone;
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GraphicalZone;
 
 /**
  * This class provides static method for saving graphs as SVG files. 

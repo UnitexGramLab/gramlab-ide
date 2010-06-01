@@ -36,10 +36,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.transcoding.Transcoder;
 

@@ -32,8 +32,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
+import fr.umlv.unitex.text.BigTextList;
 
 
 /**

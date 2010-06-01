@@ -43,16 +43,16 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import fr.umlv.unitex.BigTextList;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.text.BigTextList;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.

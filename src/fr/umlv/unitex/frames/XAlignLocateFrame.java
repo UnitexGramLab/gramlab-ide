@@ -50,12 +50,12 @@ import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.ToDo;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConcordCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;

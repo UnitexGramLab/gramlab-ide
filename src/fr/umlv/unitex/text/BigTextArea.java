@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.text;
 
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
@@ -40,6 +40,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
+
+import fr.umlv.unitex.Config;
 
 /**
  * This class provides a text component that can display in read-only
