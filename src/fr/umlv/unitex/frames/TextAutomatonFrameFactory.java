@@ -28,10 +28,7 @@ public class TextAutomatonFrameFactory {
 	TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
 		if (frame==null) {
 			frame=new TextAutomatonFrame();
-		} else {
-			frame.hideFrame();
-		}
-		if (!frame.loadTfst()) {
+		}if (!frame.loadTfst()) {
 			return null;
 		}
 		frame.loadSentence(sentenceNumber);
@@ -41,7 +38,7 @@ public class TextAutomatonFrameFactory {
 	
 	void closeTextAutomatonFrame() {
 		if (frame==null) return;
-		frame.hideFrame();
+		frame.setVisible(false);
 	}
 
 
