@@ -27,8 +27,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,8 +51,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
@@ -80,8 +76,6 @@ import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
 import fr.umlv.unitex.process.commands.RebuildTfstCommand;
 import fr.umlv.unitex.process.commands.TagsetNormTfstCommand;
 import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
-import fr.umlv.unitex.tfst.Bounds;
-import fr.umlv.unitex.tfst.BoundsEditor;
 import fr.umlv.unitex.tfst.TokensInfo;
 
 /**
@@ -91,6 +85,7 @@ import fr.umlv.unitex.tfst.TokensInfo;
  * 
  */
 public class TextAutomatonFrame extends JInternalFrame {
+	
 	JTextArea sentenceTextArea = new JTextArea();
 	JLabel sentence_count_label = new JLabel(" 0 sentence");
 	boolean elagON;
@@ -104,6 +99,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	GraphListener listener=new GraphListener() {
 		public void graphChanged(boolean m) {
 			if (m) setModified(true);
+			repaint();
 		}
 	};
 	
@@ -127,7 +123,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 	private JScrollPane scroll;
 	private JSplitPane superpanel;
 	private JButton resetSentenceGraph;
-	public BoundsEditor boundsEditor;
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -147,30 +142,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		});
 		textfield.setEditable(false);
-		sentenceTextArea.getCaret().setSelectionVisible(true);
-		sentenceTextArea.setSelectionColor(Color.GREEN);
-		sentenceTextArea.addCaretListener(new CaretListener() {
-			public void caretUpdate(CaretEvent e) {
-				String s = sentenceTextArea.getSelectedText();
-				if (s == null || s.equals("")) {
-					boundsEditor.setValue(null);
-				} else {
-					boundsEditor.setValue(new Bounds(sentenceTextArea
-							.getSelectionStart(), sentenceTextArea
-							.getSelectionEnd() - 1));
-				}
-			}
-		});
-		sentenceTextArea.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				/*
-				 * The default behavior is to hide the selection when focus is
-				 * lost
-				 */
-				sentenceTextArea.getCaret().setSelectionVisible(true);
-			}
-		});
 		closeElagFrame();
 		Preferences.addTextFontListener(new FontListener() {
 			public void fontChanged(Font font) {
@@ -226,8 +197,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 		scroll.setPreferredSize(new Dimension(1188, 840));
 		textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
 		downPanel.add(textfield, BorderLayout.NORTH);
-		boundsEditor = new BoundsEditor(this);
-		downPanel.add(boundsEditor, BorderLayout.EAST);
 		downPanel.add(scroll, BorderLayout.CENTER);
 		textframe.add(downPanel, BorderLayout.CENTER);
 		return textframe;
@@ -750,10 +719,8 @@ public class TextAutomatonFrame extends JInternalFrame {
 		}
 	}
 
-	public JTextArea getSentenceTextArea() {
-		return sentenceTextArea;
-	}
 }
+
 
 class loadSentenceDo implements ToDo {
 	TextAutomatonFrame frame;
@@ -766,6 +733,7 @@ class loadSentenceDo implements ToDo {
 		frame.loadCurrSentence();
 	}
 }
+
 
 class ImploseDo implements ToDo {
 	File fst;

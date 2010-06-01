@@ -33,8 +33,6 @@ import java.awt.print.Printable;
 import java.io.File;
 import java.util.Date;
 
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.frames.GraphFrame;
@@ -82,20 +80,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		g2.setContent("<E>");
 		addBox(g2);
 		addBox(g);
-		text.getDocument().addDocumentListener(new DocumentListener() {
-			public void changedUpdate(DocumentEvent arg0) {
-				// nothing to do
-			}
-
-			public void insertUpdate(DocumentEvent arg0) {
-				((GraphFrame) parentFrame).setRedoEnabled(false);
-				((GraphFrame) parentFrame).setUndoEnabled(false);
-			}
-
-			public void removeUpdate(DocumentEvent arg0) {
-				// nothing to do
-			}
-		});
 		Dimension d = new Dimension(1188, 840);
 		setSize(d);
 		setPreferredSize(new Dimension(d));
@@ -115,6 +99,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	}
 
 	class MyMouseListener implements MouseListener {
+
 		public void mouseClicked(MouseEvent e) {
 			int boxSelected;
 			GraphBox b;
@@ -133,7 +118,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						// current
 						addReverseTransitionsFromSelectedBoxes(b);
 						unSelectAllBoxes();
-						fireGraphChanged(true);
 					} else {
 						if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES) {
 							// if we click on a box while there is no box
@@ -141,14 +125,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							// we select it
 							b.selected = true;
 							selectedBoxes.add(b);
-							initText(b.content);
+							fireGraphTextChanged(b.content);
 						}
 					}
 				} else {
 					// simple click not on a box
-					initText("");
 					unSelectAllBoxes();
-					fireGraphChanged(false);
 				}
 			} else if (EDITING_MODE == MyCursors.CREATE_BOXES
 					|| (EDITING_MODE == MyCursors.NORMAL && e.isControlDown())) {
@@ -164,7 +146,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				unSelectAllBoxes();
 				b.selected = true;
 				selectedBoxes.add(b);
-				initText("<E>");
+				fireGraphTextChanged(b.content); /* Should be "<E>" */
 				fireGraphChanged(true);
 			} else if (EDITING_MODE == MyCursors.OPEN_SUBGRAPH
 					|| (EDITING_MODE == MyCursors.NORMAL && e.isAltDown())) {
@@ -209,7 +191,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						// current one
 						addTransitionsFromSelectedBoxes(b, true);
 						unSelectAllBoxes();
-						fireGraphChanged(true);
 					} else {
 						if (!((EDITING_MODE == MyCursors.LINK_BOXES) && (b.type == 1))) {
 							// if not, we just select this one, but only if we
@@ -217,14 +198,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							// on final state in LINK_BOXES mode
 							b.selected = true;
 							selectedBoxes.add(b);
-							initText(b.content);
+							fireGraphTextChanged(b.content);
 						}
 					}
 				} else {
 					// simple click not on a box
 					unSelectAllBoxes();
-					initText("");
-					text.setEditable(false);
 				}
 			}
 			fireGraphChanged(false);
@@ -238,9 +217,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					|| (EDITING_MODE == MyCursors.KILL_BOXES)) {
 				return;
 			}
-			// System.err.println("GZ: mouse pressed 1: selection empty="+selectedBoxes.isEmpty());
 			validateTextField();
-			// System.err.println("GZ: mouse pressed 2: selection empty="+selectedBoxes.isEmpty());
 			X_start_drag = (int) (e.getX() / scaleFactor);
 			Y_start_drag = (int) (e.getY() / scaleFactor);
 			X_end_drag = X_start_drag;
@@ -256,25 +233,28 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (selectedBox != -1) {
 				// if we start dragging a box
 				singleDraggedBox = graphBoxes.get(selectedBox);
-				initText(singleDraggedBox.content);
+				fireGraphTextChanged(singleDraggedBox.content);
 				if (!singleDraggedBox.selected) {
+					/* Dragging a selected box is handled below with
+					 * the general multiple box draggind case */
 					dragging = true;
 					singleDragging = true;
 					singleDraggedBox.singleDragging = true;
 					fireGraphChanged(true);
 				}
+				return;
 			}
 			if (!selectedBoxes.isEmpty()) {
 				dragging = true;
 				fireGraphChanged(true);
+				return;
 			}
 			if ((selectedBox == -1) && selectedBoxes.isEmpty()) {
 				// being drawing a selection rectangle
 				dragging = false;
 				selecting = true;
-				initText("");
+				fireGraphChanged(false);
 			}
-			fireGraphChanged(false);
 		}
 
 		public void mouseReleased(MouseEvent e) {
@@ -282,7 +262,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				return;
 			int dx = X_end_drag - X_start_drag;
 			int dy = Y_end_drag - Y_start_drag;
-			if (singleDragging && dx != 0 && dy != 0) {
+			if (singleDragging) {
 				// save position after the dragging
 				selectedBoxes.add(singleDraggedBox);
 				UndoableEdit edit = new TranslationGroupEdit(selectedBoxes, dx,
@@ -290,25 +270,21 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				postEdit(edit);
 				selectedBoxes.remove(singleDraggedBox);
 				dragging = false;
+				singleDragging = false;
+				singleDraggedBox.singleDragging = false;
 				fireGraphChanged(true);
+				return;
 			}
 			if (dragging && EDITING_MODE == MyCursors.NORMAL) {
 				// save the position of all the translated boxes
-				if (dx != 0 && dy != 0) {
-					UndoableEdit edit = new TranslationGroupEdit(selectedBoxes,
+				UndoableEdit edit = new TranslationGroupEdit(selectedBoxes,
 							dx, dy);
-					postEdit(edit);
-				}
+				postEdit(edit);
+				fireGraphChanged(true);
 			}
 			dragging = false;
-			initText("");
-			text.setEditable(false);
-			if (singleDragging) {
-				singleDragging = false;
-				singleDraggedBox.singleDragging = false;
-			} else if (selecting == true) {
+			if (selecting == true) {
 				selectByRectangle(X_drag, Y_drag, dragWidth, dragHeight);
-				text.setEditable(true);
 				selecting = false;
 			}
 			fireGraphChanged(false);
@@ -347,6 +323,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// if we were dragging, we have nothing else to do
 				return;
 			}
+			/* If the user is setting the selection rectangle */
 			if (X_start_drag < X_end_drag) {
 				X_drag = X_start_drag;
 				dragWidth = X_end_drag - X_start_drag;
@@ -488,6 +465,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 	@Override
 	public void initText(String s) {
+		/* TODO unifier les deux sortes de TextField */
 		((TextField) text).initText(s);
 	}
 

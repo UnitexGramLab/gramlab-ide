@@ -35,9 +35,10 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoableEditSupport;
 
-import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
+import fr.umlv.unitex.listeners.GraphTextEvent;
+import fr.umlv.unitex.listeners.GraphTextListener;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxGroupTextEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
@@ -109,10 +110,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 			final JInternalFrame p) {
 		super();
 		text = t;
+		text.setEditable(false);
 		parentFrame = p;
 		selectedBoxes = new ArrayList<GenericGraphBox>();
 		setBackground(Color.white);
-		text.setEditable(false);
 		if (g!=null) {
 			info=g.info;
 			Dimension d=new Dimension(g.width,g.height);
@@ -130,6 +131,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 			b.parentGraphicalZone = this;
 			b.update();
 		}
+		addGraphTextListener(new GraphTextListener() {
+			public void graphTextChanged(GraphTextEvent e) {
+				initText(e.getContent());
+			}
+		});
 	}
 
 	/**
@@ -342,7 +348,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g.selected = false;
 			selectedBoxes.remove(0);
 		}
-		text.setEditable(false);
+		fireGraphTextChanged(null);
+		fireGraphChanged(true);
 	}
 
 	/**
@@ -356,9 +363,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 			GenericGraphBox g = graphBoxes.get(i);
 			g.selected = true;
 			selectedBoxes.add(g);
-			initText(g.content);
 		}
-		text.setEditable(false);
+		fireGraphTextChanged("");
 		repaint();
 	}
 
@@ -379,16 +385,17 @@ public abstract class GenericGraphicalZone extends JComponent {
 		int i, L;
 		GenericGraphBox g;
 		L = graphBoxes.size();
+		String s=null;
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
 			if (g.isSelectedByRectangle(x, y, w, h)) {
 				g.selected = true;
 				selectedBoxes.add(g);
-				initText(g.content);
-				if (this instanceof TfstGraphicalZone) {
-					TfstGraphBox g2 = (TfstGraphBox) g;
-					((TextAutomatonFrame) parentFrame).boundsEditor.setValue(g2
-							.getBounds());
+				if (s==null) {
+					s=g.content;
+				} else {
+					/* We don't want to set a text for multiple box selection */
+					s="";
 				}
 			}
 		}
@@ -396,6 +403,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			UndoableEdit edit = new SelectEdit(selectedBoxes);
 			postEdit(edit);
 		}
+		fireGraphTextChanged(s);
 		fireGraphChanged(false);
 	}
 
@@ -761,7 +769,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		support.removeUndoableEditListener(listener);
 	}
 
-	public void postEdit(UndoableEdit e) { // le fireUndoableEditUpdate....
+	public void postEdit(UndoableEdit e) {
 		support.postEdit(e);
 	}
 
@@ -803,28 +811,28 @@ public abstract class GenericGraphicalZone extends JComponent {
 	}
 	
 	
-	private ArrayList<GraphListener> listeners=new ArrayList<GraphListener>();
-	protected boolean firing=false;
+	private ArrayList<GraphListener> graphListeners=new ArrayList<GraphListener>();
+	protected boolean firingGraph=false;
 	
 	public void addGraphListener(GraphListener l) {
-		listeners.add(l);
+		graphListeners.add(l);
 	}
 
 	public void removeGraphListener(GraphListener l) {
-		if (firing) {
+		if (firingGraph) {
 			throw new IllegalStateException("Should not try to remove a listener while firing");
 		}
-		listeners.remove(l);
+		graphListeners.remove(l);
 	}
 
 	protected void fireGraphChanged(boolean modified) {
-		firing=true;
+		firingGraph=true;
 		try {
-			for (GraphListener l:listeners) {
+			for (GraphListener l:graphListeners) {
 				l.graphChanged(modified);
 			}
 		} finally {
-			firing=false;
+			firingGraph=false;
 		}
 	}
 	
@@ -837,4 +845,33 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public ArrayList<GenericGraphBox> getBoxes() {
 		return graphBoxes;
 	}
+
+
+
+	private ArrayList<GraphTextListener> textListeners=new ArrayList<GraphTextListener>();
+	protected boolean firingGraphText=false;
+	
+	public void addGraphTextListener(GraphTextListener l) {
+		textListeners.add(l);
+	}
+
+	public void removeGraphTextListener(GraphTextListener l) {
+		if (firingGraphText) {
+			throw new IllegalStateException("Should not try to remove a listener while firing");
+		}
+		textListeners.remove(l);
+	}
+
+	protected void fireGraphTextChanged(String content) {
+		firingGraphText=true;
+		GraphTextEvent e=new GraphTextEvent(this,content);
+		try {
+			for (GraphTextListener l:textListeners) {
+				l.graphTextChanged(e);
+			}
+		} finally {
+			firingGraphText=false;
+		}
+	}
+	
 }
