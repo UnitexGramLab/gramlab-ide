@@ -31,6 +31,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
+import fr.umlv.unitex.ContextsInfo;
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.ToDo;
@@ -85,6 +86,7 @@ public class InternalFrameManager {
 	
 	private DialogFactory graphPathDialogFactory=new DialogFactory(GraphPathDialog.class);
 	private DialogFactory transcodeOneFileDialogFactory=new DialogFactory(TranscodeOneFileDialog.class);
+	private DialogFactory listCopyDialogFactory=new DialogFactory(ListCopyDialog.class);
 	
 	private PreprocessDialogFactory preprocessDialogFactory=new PreprocessDialogFactory();
 	private FontDialogFactory fontDialogFactory=new FontDialogFactory();
@@ -709,5 +711,12 @@ public class InternalFrameManager {
 		for (JInternalFrame f:desktop.getAllFrames()) {
 			f.doDefaultCloseAction();
 		}
+	}
+
+	public ContextsInfo newListCopyDialog() {
+		ListCopyDialog d=(ListCopyDialog)listCopyDialogFactory.newDialog();
+		if (d==null) return null;
+		d.setVisible(true);
+		return d.getContextsInfo();
 	}
 }

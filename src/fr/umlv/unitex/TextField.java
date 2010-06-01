@@ -58,14 +58,7 @@ public class TextField extends JTextField {
 	 * Indicates if the text field content has been modified
 	 */
 	public boolean modified = false;
-	/**
-	 * Left context for multiple word copy
-	 */
-	public static String leftContext;
-	/**
-	 * Right context for multiple word copy
-	 */
-	public static String rightContext;
+
 	/**
 	 * <code>TextAction</code> that defines what to do for a "paste" operation
 	 */
@@ -109,8 +102,6 @@ public class TextField extends JTextField {
 		setEditable(false);
 		modified = false;
 		parent = p;
-		leftContext = "";
-		rightContext = "";
 		setDisabledTextColor(Color.white);
 		setBackground(Color.white);
 		Keymap k = getKeymap();
