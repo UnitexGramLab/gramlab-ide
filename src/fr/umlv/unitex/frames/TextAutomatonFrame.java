@@ -347,18 +347,6 @@ public class TextAutomatonFrame extends JInternalFrame {
 	}
 
 	/**
-	 * Hides the frame
-	 * 
-	 */
-	void hideFrame() {
-		setVisible(false);
-		graphicalZone.empty();
-		sentenceTextArea.setText("");
-		spinnerModel.setValue(new Integer(0));
-		System.gc();
-	}
-
-	/**
 	 * Indicates if the graph has been modified
 	 * 
 	 * @param b
@@ -368,13 +356,14 @@ public class TextAutomatonFrame extends JInternalFrame {
 	public void setModified(boolean b) {
 		repaint();
 		resetSentenceGraph.setVisible(b);
-		if (b && !isAcurrentLoadingThread) {
+		int n=spinnerModel.getNumber().intValue();
+		if (b && !isAcurrentLoadingThread && n!=0) {
 			/* We save each modification, but only
 			 * if the sentence graph loading is terminated
 			 */
 			GraphIO g = new GraphIO(graphicalZone);
 			g.saveSentenceGraph(new File(sentence_modified.getAbsolutePath()
-					+ spinnerModel.getNumber().intValue() + ".grf"),
+					+ n + ".grf"),
 					graphicalZone.getGraphPresentationInfo());
 		}
 	}
@@ -416,7 +405,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	 * 
 	 * @param n
 	 *            sentence number
-	 * @return <code>false</code> if a sentence is allready being loaded,
+	 * @return <code>false</code> if a sentence is already being loaded,
 	 *         <code>true</code> otherwise
 	 */
 	public boolean loadSentence(int n) {
