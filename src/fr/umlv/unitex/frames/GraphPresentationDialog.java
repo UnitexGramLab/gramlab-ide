@@ -23,6 +23,7 @@ package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -45,7 +46,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.ColorRectangle;
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.Preferences;
@@ -67,11 +67,11 @@ public class GraphPresentationDialog extends JDialog {
 	JCheckBox rightToLeftCheckBox = new JCheckBox();
 	JCheckBox antialiasingCheckBox=new JCheckBox(
 			"Enable antialising for rendering graphs");
-	JPanel color1 = ColorRectangle.getColorRectangle();
-	JPanel color2 = ColorRectangle.getColorRectangle();
-	JPanel color3 = ColorRectangle.getColorRectangle();
-	JPanel color4 = ColorRectangle.getColorRectangle();
-	JPanel color5 = ColorRectangle.getColorRectangle();
+	JPanel color1 = getColorRectangle();
+	JPanel color2 = getColorRectangle();
+	JPanel color3 = getColorRectangle();
+	JPanel color4 = getColorRectangle();
+	JPanel color5 = getColorRectangle();
 	JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
 	JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
 	JRadioButton westRadioBox = new JRadioButton("West");
@@ -79,8 +79,6 @@ public class GraphPresentationDialog extends JDialog {
 	JRadioButton northRadioBox = new JRadioButton("North");
 	JRadioButton southRadioBox = new JRadioButton("South");
 	JRadioButton noneRadioBox = new JRadioButton("None");
-	/* TODO enlever les false inutiles dans les constructeurs de JRadioButton et JCheckBox */
-
 	GraphPresentationInfo info;
 
 	/**
@@ -483,6 +481,14 @@ public class GraphPresentationDialog extends JDialog {
 
 	GraphPresentationInfo getGraphPresentationInfo() {
 		return info;
+	}
+
+	JPanel getColorRectangle() {
+		JPanel p=new JPanel(null);
+		p.setMinimumSize(new Dimension(70,22));
+		p.setSize(new Dimension(70,22));
+		p.setPreferredSize(new Dimension(70,22));
+		return p;
 	}
 
 }
