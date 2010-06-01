@@ -22,15 +22,10 @@
 package fr.umlv.unitex;
 
 import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.text.Caret;
-import javax.swing.text.Document;
 
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 
@@ -41,11 +36,10 @@ import fr.umlv.unitex.frames.TextAutomatonFrame;
  * @author Sébastien Paumier
  * 
  */
-public class TfstTextField extends JTextField {
+public class TfstTextField extends GraphTextField {
 
 	protected TextAutomatonFrame parent;
 	protected boolean modified = false;
-	protected Clipboard clip;
 
 	/**
 	 * Constructs a new empty <code>FstTextField</code>.
@@ -60,7 +54,6 @@ public class TfstTextField extends JTextField {
 		setEditable(false);
 		modified = false;
 		parent = p;
-		clip = Toolkit.getDefaultToolkit().getSystemClipboard();
 		setDisabledTextColor(Color.white);
 		setBackground(Color.white);
 		addKeyListener(new MyKeyListener());
@@ -73,7 +66,8 @@ public class TfstTextField extends JTextField {
 	 * @param s
 	 *            the new content
 	 */
-	public void initText(String s) {
+	@Override
+	public void setContent(String s) {
 		modified=false;
 		if (s==null) {
 			/* We want to make the text field non editable */
@@ -89,62 +83,36 @@ public class TfstTextField extends JTextField {
 	}
 
 	/**
-	 * Returns a new <code>ListDocument</code> object.
-	 * 
-	 * @return the <code>ListDocument</code>
-	 */
-	@Override
-	public Document createDefaultModel() {
-		return new ListDocument();
-	}
-
-	/**
 	 * Validates the content of the text field as the content of selected boxes.
 	 * 
 	 * @return <code>true</code> if the content was valid, <code>false</code>
 	 *         otherwise
 	 */
-	public boolean validateTextField() {
+	@Override
+	public boolean validateContent() {
 		if (!hasChangedTextField()) {
 			return true;
 		}
 		if (isGoodText(getText())) {
 			parent.getGraphicalZone().setTextForSelected(getText());
 			parent.getGraphicalZone().unSelectAllBoxes();
-			setText("");
-			parent.getGraphicalZone().repaint();
-			setEditable(false);
-			parent.setModified(true);
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void setEditable(boolean b) {
-		Caret caret = getCaret();
-		if (caret != null) {
-			caret.setVisible(b);
-		}
-		super.setEditable(b);
 	}
 
 	class MyKeyListener extends KeyAdapter {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if (e.isControlDown() || e.isAltDown()) {
-				// if the control key or alt key is pressed, we do nothing: the
-				// event we be caught by the ActionListeners
-				return;
-			}
 			if (e.getKeyCode() == 10)
-				validateTextField();
+				validateContent();
 			modified = true;
 		}
 
 	}
 
+	
 	/**
 	 * Tests if the content of the text field has changed.
 	 * 

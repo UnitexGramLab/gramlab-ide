@@ -218,7 +218,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					|| (EDITING_MODE == MyCursors.KILL_BOXES)) {
 				return;
 			}
-			validateTextField();
+			validateContent();
 			X_start_drag = (int) (e.getX() / scaleFactor);
 			Y_start_drag = (int) (e.getY() / scaleFactor);
 			X_end_drag = X_start_drag;
@@ -466,14 +466,4 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return Printable.PAGE_EXISTS;
 	}
 
-	@Override
-	public void initText(String s) {
-		/* TODO unifier les deux sortes de TextField */
-		((TextField) text).initText(s);
-	}
-
-	@Override
-	public boolean validateTextField() {
-		return ((TextField) text).validateTextField();
-	}
 }
