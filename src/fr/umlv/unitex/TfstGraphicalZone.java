@@ -142,7 +142,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			if (e.isShiftDown() || e.isAltDown() || e.isControlDown()) {
 				return;
 			}
-			validateTextField();
+			validateContent();
 			X_start_drag = (int) (e.getX() / scaleFactor);
 			Y_start_drag = (int) (e.getY() / scaleFactor);
 			X_end_drag = X_start_drag;
@@ -320,21 +320,6 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		setGraphPresentationInfo(g.info);
 		revalidate();
 		repaint();
-	}
-
-	@Override
-	public void initText(String s) {
-		((TfstTextField) text).initText(s);
-	}
-
-	@Override
-	public boolean validateTextField() {
-		return ((TfstTextField) text).validateTextField();
-	}
-
-	@Override
-	public void unSelectAllBoxes() {
-		super.unSelectAllBoxes();
 	}
 
 }

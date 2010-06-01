@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.Document;
 import javax.swing.text.Keymap;
@@ -49,7 +48,7 @@ import fr.umlv.unitex.frames.UnitexFrame;
  * @author Sébastien Paumier
  * 
  */
-public class TextField extends JTextField {
+public class TextField extends GraphTextField {
 	/**
 	 * Frame that contains this component
 	 */
@@ -299,13 +298,9 @@ public class TextField extends JTextField {
 		}
 	}
 
-	/**
-	 * Initializes the text field with a string
-	 * 
-	 * @param s
-	 *            the new text content
-	 */
-	public void initText(String s) {
+
+	@Override
+	public void setContent(String s) {
 		modified=false;
 		if (s==null) {
 			/* We want to make the text field non editable */
@@ -330,13 +325,8 @@ public class TextField extends JTextField {
 		return new ListDocument();
 	}
 
-	/**
-	 * Validates the content of the text field as the content of selected boxes.
-	 * 
-	 * @return <code>true</code> if boxes have actually been modified,
-	 *         <code>false</code> otherwise
-	 */
-	public boolean validateTextField() {
+	@Override
+	public boolean validateContent() {
 		if (!hasChangedTextField())
 			return false;
 		if (isValidGraphBoxContent(getText())) {
@@ -356,7 +346,7 @@ public class TextField extends JTextField {
 				return;
 			}
 			if (e.getKeyCode() == 10)
-				validateTextField();
+				validateContent();
 			modified = true;
 		}
 	}
