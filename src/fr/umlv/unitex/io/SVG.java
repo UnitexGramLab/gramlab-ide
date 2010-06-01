@@ -238,11 +238,6 @@ public class SVG {
 		}
 		// prints the transduction, if exists
 		if (!g.transduction.equals("")) {
-			/* TODO faire hériter ceci ainsi que generic graphical zone d'une
-			 * interface, afin d'être sûr de ne pas oublier de méthodes
-			 * quand on change le rendu des graphes, par exemple pour 
-			 * ajouter le mode morphologique
-			 */
 			drawText(g.transduction, g.X1 + 5, g.Y1 + g.Height
 					+ graphics.getFontMetrics().getHeight(),info.foregroundColor,info.output.font);
 		}
