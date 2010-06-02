@@ -209,6 +209,7 @@ public class UnitexFrame extends JFrame {
 				setTitle(Version.version
 						+ " - current language is " + Config.getCurrentLanguageForTitleBar());
 				frameManager.closeTextFrame();
+				frameManager.closeGlobalPreferencesFrame();
 			}
 		});
 	}

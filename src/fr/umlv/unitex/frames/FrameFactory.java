@@ -31,8 +31,12 @@ public class FrameFactory {
 	FrameFactory(Class<?> clazz) {
 		this.clazz=clazz;
 	}
-	
+
 	JInternalFrame newFrame() {
+		return newFrame(true);
+	}
+
+	JInternalFrame newFrame(boolean closeBeforeGet) {
 		if (frame==null) {
 			try {
 				frame=(JInternalFrame) clazz.newInstance();
@@ -42,7 +46,7 @@ public class FrameFactory {
 				return null;
 			}
 		}
-		frame.doDefaultCloseAction();
+		if (closeBeforeGet) frame.doDefaultCloseAction();
 		return frame;
 	}
 	

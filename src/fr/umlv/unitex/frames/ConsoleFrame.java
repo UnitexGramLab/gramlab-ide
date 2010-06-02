@@ -57,6 +57,7 @@ public class ConsoleFrame extends JInternalFrame {
    ConsoleTableModel model;
    JTable table; 
    int longestCommandWidth=80;
+   int longestIDWidth=50;
    
    static final ImageIcon statusOK=new ImageIcon(Console.class.getResource("OK.png"));
    public static final ImageIcon statusErrorDown=new ImageIcon(Console.class.getResource("error1.png"));
@@ -70,7 +71,8 @@ public class ConsoleFrame extends JInternalFrame {
 		table.setDragEnabled(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.getColumnModel().getColumn(0).setPreferredWidth(20);
-		table.getColumnModel().getColumn(1).setMinWidth(longestCommandWidth);
+		table.getColumnModel().getColumn(1).setPreferredWidth(longestIDWidth);
+		table.getColumnModel().getColumn(2).setMinWidth(longestCommandWidth);
 		table.setDefaultRenderer(Integer.class, new DefaultTableCellRenderer() {
 			JLabel errorDown = new JLabel(statusErrorDown,
 					SwingConstants.CENTER);
@@ -164,24 +166,33 @@ public class ConsoleFrame extends JInternalFrame {
     * Adds a <code>String</code> to the the command lines 
     * @param command the command line to be added
     */
-   public ConsoleEntry addCommand(String command,boolean isRealCommand,int pos,boolean systemMsg) {
-      ConsoleEntry e=new ConsoleEntry(command,isRealCommand,systemMsg);
+   public ConsoleEntry addCommand(String command,boolean isRealCommand,int pos,boolean systemMsg,
+		   String logID) {
+      ConsoleEntry e=new ConsoleEntry(command,isRealCommand,systemMsg,logID);
       int n=(pos!=-1)?pos:model.getRowCount();
       model.addConsoleEntry(n,e);
-      /* Now, we update the width of the last column */
+      /* Now, we update the width of the last two columns */
       TableCellRenderer renderer=table.getCellRenderer(n,1);
-      Component c=renderer.getTableCellRendererComponent(table,e,false,
+      Component c=renderer.getTableCellRendererComponent(table,e.getlogID(),false,
               false,n,1);
+      if (c.getPreferredSize().width>longestIDWidth) {
+          longestIDWidth=c.getPreferredSize().width+50;
+          table.getColumnModel().getColumn(1).setMinWidth(longestIDWidth);
+      }
+      renderer=table.getCellRenderer(n,2);
+      c=renderer.getTableCellRendererComponent(table,e,false,
+              false,n,2);
       if (c.getPreferredSize().width>longestCommandWidth) {
           longestCommandWidth=c.getPreferredSize().width+50;
-          table.getColumnModel().getColumn(1).setMinWidth(longestCommandWidth);
+          table.getColumnModel().getColumn(2).setMinWidth(longestCommandWidth);
       }
+      repaint();
       return e;
    }
    
    
-   public ConsoleEntry addCommand(String command,boolean systemMsg) {
-       return addCommand(command,true,-1,systemMsg);
+   public ConsoleEntry addCommand(String command,boolean systemMsg,String logID) {
+       return addCommand(command,true,-1,systemMsg,logID);
    }
    
 }
