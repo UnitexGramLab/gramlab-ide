@@ -32,14 +32,14 @@ public class Console {
 	 *            the command line to be added
 	 */
 	public static ConsoleEntry addCommand(String command,
-			boolean isRealCommand, int pos, boolean systemMsg) {
+			boolean isRealCommand, int pos, boolean systemMsg,String logID) {
 		return UnitexFrame.getFrameManager().getConsoleFrame().addCommand(
-				command, isRealCommand, pos, systemMsg);
+				command, isRealCommand, pos, systemMsg,logID);
 	}
 
-	public static ConsoleEntry addCommand(String command, boolean systemMsg) {
+	public static ConsoleEntry addCommand(String command, boolean systemMsg,String logID) {
 		return UnitexFrame.getFrameManager().getConsoleFrame().addCommand(
-				command, true, -1, systemMsg);
+				command, true, -1, systemMsg,logID);
 	}
 
 }

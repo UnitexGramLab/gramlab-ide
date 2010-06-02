@@ -30,11 +30,18 @@ public class ConsoleEntry {
     int status;
     
     boolean systemMsg;
+
+    /* The log ID associated to the command, or null if the command wasn't logged */ 
+    String logID; 
     
-    public ConsoleEntry(String command,boolean isRealCommand,boolean systemMsg) {
+    public ConsoleEntry(String command,boolean isRealCommand,boolean systemMsg,String logID) {
         this.content=command;
         this.status=isRealCommand?0:3;
         this.systemMsg=systemMsg;
+        this.logID=logID;
+        if (logID!=null && !isRealCommand) {
+        	throw new IllegalArgumentException("Should not have a log ID for a non Unitex command");
+        }
     }
     
     public String getContent() {
@@ -51,6 +58,10 @@ public class ConsoleEntry {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+    
+    public String getlogID() {
+    	return logID;
     }
 
     public void addErrorMessage(String s) {

@@ -40,10 +40,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ProcessInfoThread;
 import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.ToDo;
@@ -189,7 +190,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 							final ConsoleEntry entry = Console
 									.addCommand(
 											"Error message emitted by the graphical interface",
-											true);
+											true,null);
 							try {
 								final CommandBuilder c = command;
 								SwingUtilities.invokeAndWait(new Runnable() {
@@ -210,7 +211,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 						}
 						case CommandBuilder.PROGRAM: {
 							ConsoleEntry entry = Console.addCommand(command
-									.getCommandLine(), false);
+									.getCommandLine(), false, Log.getCurrentLogID());
 							final String[] comm = command.getCommandArguments();
 							try {
 								p = Runtime.getRuntime().exec(comm);
@@ -282,7 +283,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 							break;
 						}// end of program command
 						case CommandBuilder.METHOD: {
-							Console.addCommand(command.getCommandLine(), false);
+							Console.addCommand(command.getCommandLine(), false,null);
 							AbstractMethodCommand cmd = (AbstractMethodCommand) command;
 							if (!cmd.execute()) {
 								if (stop_if_problem) {

@@ -84,7 +84,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	JTextField packageDirectory = new JTextField("");
 	DefaultListModel morphoDicListModel = new DefaultListModel();
 	Preferences pref;
-
+	JCheckBox mustLogCheckBox = new JCheckBox(
+	"Produce log information in directory:");
+	JTextField loggingDirectory = new JTextField("");
+	
 	GlobalPreferencesFrame() {
 		super("", false, true, false, false);
 		setContentPane(constructPanel());
@@ -149,6 +152,30 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 					}
 					pref.packagePath = f;
 				}
+				if (loggingDirectory.getText().equals("") && mustLogCheckBox.isSelected()) {
+					JOptionPane
+					.showMessageDialog(
+							null,
+							"Cannot log in an empty directory path.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				String logDir=loggingDirectory.getText();
+				File f=new File(logDir);
+				if (f.exists() && !f.isDirectory()) {
+					JOptionPane
+					.showMessageDialog(
+							null,
+							"The path given for the graph repository\n is not a directory path.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (!f.exists()) {
+					f.mkdir();
+				}
+				pref.mustLog=mustLogCheckBox.isSelected();
+				pref.loggingDir=f;
+				
 				Preferences.savePreferences(pref);
 				/* We save the user directory */
 				if (!privateDirectory.getText().equals("")) {
@@ -276,6 +303,51 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		page1.add(setPackageDirectory, gbc);
+		
+		loggingDirectory.setEditable(false);
+		loggingDirectory.setBackground(Color.WHITE);
+		Action loggingDirAction = new AbstractAction("Set...") {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser f = new JFileChooser();
+				f.setDialogTitle("Choose your logging directory");
+				f.setDialogType(JFileChooser.OPEN_DIALOG);
+				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+					return;
+				loggingDirectory.setText(f.getSelectedFile().getAbsolutePath());
+			}
+		};
+		JButton setLoggingDirectory = new JButton(loggingDirAction);
+		gbc.insets = new Insets(20, 2, 2, 2);
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.NONE;
+		page1.add(mustLogCheckBox, gbc);
+		gbc.insets = new Insets(2, 2, 2, 2);
+		gbc.gridwidth = 1;
+		gbc.weightx = 1;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		page1.add(loggingDirectory, gbc);
+		gbc.weightx = 0;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		page1.add(setLoggingDirectory, gbc);
+		JButton clearLogs=new JButton("Clear all logs");
+		clearLogs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (loggingDirectory.getText().equals("")) {
+					return;
+				}
+				int n=JOptionPane.showConfirmDialog(UnitexFrame.mainFrame,
+						"Are you sure you want to clear logs ?","",JOptionPane.YES_NO_OPTION);
+				if (n==JOptionPane.YES_OPTION) {
+					File dir=new File(loggingDirectory.getText());
+					Config.removeFile(new File(dir,"*.ulp"));
+					Config.removeFile(new File(dir,"unitex_logging_parameters_count.txt"));
+				}
+			}
+		});
+		page1.add(clearLogs, gbc);
 		gbc.weighty = 1;
 		page1.add(new JPanel(null), gbc);
 		return page1;
@@ -391,6 +463,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			packageDirectory.setText("");
 		} else {
 			packageDirectory.setText(pref.packagePath.getAbsolutePath());
+		}
+		mustLogCheckBox.setSelected(pref.mustLog);
+		if (pref.loggingDir==null) {
+			loggingDirectory.setText("");
+		} else {
+			loggingDirectory.setText(pref.loggingDir.getAbsolutePath());
 		}
 	}
 
