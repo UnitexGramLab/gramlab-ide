@@ -39,6 +39,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -171,9 +172,8 @@ public class Config {
 	
 
 	/**
-	 * Message shown chen a text file is too large to be loaded.
+	 * Message shown when a text file is too large to be loaded.
 	 */
-	public static final String CORPUS_TOO_LARGE_MESSAGE = "This corpus is ready to be manipulated with Unitex, but it is too large to be displayed.\nUse a wordprocessor to view it.";
 
 	public static final String FILE_TOO_LARGE_MESSAGE = "This file is too large to be displayed. Use a wordprocessor to view it.";
 
@@ -274,7 +274,7 @@ public class Config {
 
 	/**
 	 * Initializes the system. This method finds which system is running, which
-	 * user is working. Then, it initalizes dialog boxes and ask the user to
+	 * user is working. Then, it initializes dialog boxes and ask the user to
 	 * choose the initial language he wants to work on. if appPath is not
 	 * null, it is supposed to represent the directory in which the
 	 * external programs are located.   
@@ -605,7 +605,25 @@ public class Config {
 		if ((currentSystem == LINUX_SYSTEM)
 				|| (currentSystem == MAC_OS_X_SYSTEM)
 				|| (currentSystem == SUN_OS_SYSTEM)) {
+			/* The default user directory is /home/user/unitex */
 			File rep = new File(System.getProperty("user.home"), "unitex");
+			File config = new File(System.getProperty("user.home"), ".unitex.cfg");
+			if (config.exists()) {
+				FileInputStream s;
+				try {
+					s = new FileInputStream(config);
+					Scanner scanner=new Scanner(s,"UTF8");
+					if (scanner.hasNextLine()) {
+						rep=new File(scanner.nextLine());
+					}
+					scanner.close();
+					s.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			if (!rep.exists()) {
 				// if the directory does not exist, we inform the user
 				String message = "Welcome " + getUserName() + "!\n\n";
@@ -616,7 +634,9 @@ public class Config {
 						JOptionPane.PLAIN_MESSAGE);
 			}
 			setUserDir(rep);
+			return;
 		}
+		throw new IllegalStateException("Unitex is not configured for this system!");
 	}
 
 	/**
