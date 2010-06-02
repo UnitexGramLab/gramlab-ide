@@ -70,6 +70,7 @@ import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ElagCommand;
 import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
@@ -425,7 +426,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			cmd = cmd.font(Preferences.inputFont().getName()).fontSize(
 					Preferences.inputFontSize());
 		}
-		Console.addCommand(cmd.getCommandLine(), false);
+		Console.addCommand(cmd.getCommandLine(), false,Log.getCurrentLogID());
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec(cmd.getCommandArguments());
@@ -479,7 +480,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 				.sentence(z).output("currelagsentence").font(
 						Preferences.inputFont().getName()).fontSize(
 						Preferences.inputFontSize());
-		Console.addCommand(cmd.getCommandLine(), false);
+		Console.addCommand(cmd.getCommandLine(), false,Log.getCurrentLogID());
 		try {
 			Process p = Runtime.getRuntime().exec(cmd.getCommandArguments());
 			BufferedInputStream in = new BufferedInputStream(p.getInputStream());

@@ -79,6 +79,12 @@ public class Preferences {
 	public File packagePath;
 
 	/**
+	 * Path of the logging directory
+	 */
+	public File loggingDir;
+	public boolean mustLog=false;
+	
+	/**
 	 * Maximum size in bytes of text files. If a file is bigger than this 
 	 * limit, it won't be loaded. 
 	 */
@@ -141,6 +147,8 @@ public class Preferences {
 		defaultProperties.setProperty("CHAR BY CHAR", "false");
 		defaultProperties.setProperty("MORPHOLOGICAL USE OF SPACE", "false");
 		defaultProperties.setProperty("PACKAGE PATH", "");
+		defaultProperties.setProperty("LOGGING DIR", "");
+		defaultProperties.setProperty("MUST LOG", "false");
 	}
 
 	/**
@@ -226,6 +234,13 @@ public class Preferences {
 		morphologicalUseOfSpace = Boolean.valueOf(prop.getProperty("MORPHOLOGICAL USE OF SPACE")).booleanValue();
 		s = prop.getProperty("PACKAGE PATH");
 		packagePath = (s == null || s.equals("")) ? null : new File(s);
+		s = prop.getProperty("LOGGING DIR");
+		loggingDir = (s == null || s.equals("")) ? null : new File(s);
+		mustLog = Boolean.valueOf(prop.getProperty("MUST LOG")).booleanValue();
+		if (mustLog && loggingDir==null) {
+			/* Should not happen */
+			mustLog=false;
+		}
 	}
 
 	public static ArrayList<File> tokenizeMorphologicalDicList(String s) {
@@ -290,6 +305,8 @@ public class Preferences {
 		prop.setProperty("CHAR BY CHAR", ""+charByChar);
 		prop.setProperty("MORPHOLOGICAL USE OF SPACE", ""+morphologicalUseOfSpace);
 		prop.setProperty("PACKAGE PATH", (packagePath==null)?"":packagePath.getAbsolutePath());
+		prop.setProperty("LOGGING DIR", (loggingDir==null)?"":loggingDir.getAbsolutePath());
+		prop.setProperty("MUST LOG", ""+mustLog);
 		return prop;
 	}
 
@@ -425,6 +442,14 @@ public class Preferences {
 
 	public static File packagePath() {
 		return pref.packagePath;
+	}
+
+	public static File loggingDir() {
+		return pref.loggingDir;
+	}
+
+	public static boolean mustLog() {
+		return pref.mustLog;
 	}
 
 	public static Font textFont() {

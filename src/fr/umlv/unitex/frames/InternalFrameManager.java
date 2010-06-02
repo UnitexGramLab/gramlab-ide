@@ -607,7 +607,7 @@ public class InternalFrameManager {
 	}
 
 	private ConsoleFrame newConsoleFrame() {
-		ConsoleFrame f=(ConsoleFrame) consoleFrameFactory.newFrame();
+		ConsoleFrame f=(ConsoleFrame) consoleFrameFactory.newFrame(false);
 		if (f==null) return null;
 		addToDesktopIfNecessary(f,false);
 		return f;

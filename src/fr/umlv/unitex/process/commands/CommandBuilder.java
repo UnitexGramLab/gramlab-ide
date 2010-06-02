@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
 
 /**
  * This class provides facilities for build process command lines.
@@ -45,7 +46,15 @@ public abstract class CommandBuilder {
     
    CommandBuilder(String programName) {
      list=new ArrayList<String>();
-     programName("UnitexTool");
+	 programName("UnitexToolLogger");
+     if (Preferences.mustLog()) {
+    	 element("{");
+    	 element("CreateLog");
+    	 element("-d");
+    	 protectElement(Preferences.loggingDir().getAbsolutePath());
+    	 element("-u");
+    	 element("}");
+     }
      element(programName);
    }
    
