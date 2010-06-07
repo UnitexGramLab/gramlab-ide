@@ -521,7 +521,9 @@ public class LocateFrame extends JInternalFrame {
 					"concord.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
-			UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+			if (!res.startsWith("0")) {
+				UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+			}
 		}
 	}
 
@@ -532,7 +534,9 @@ public class LocateFrame extends JInternalFrame {
 					"concord_tfst.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
-			UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+			if (!res.startsWith("0")) {
+				UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+			}
 		}
 	}
 
