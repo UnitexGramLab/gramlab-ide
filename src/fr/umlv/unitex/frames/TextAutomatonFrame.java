@@ -596,7 +596,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(ruleslabel, BorderLayout.CENTER);
 		p.add(button, BorderLayout.EAST);
 		p.add(implodeCheckBox, BorderLayout.SOUTH);
-		if (JOptionPane.showInternalConfirmDialog(UnitexFrame.mainFrame, p,
+		if (JOptionPane.showInternalConfirmDialog(this, p,
 				"Apply Elag Rule", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
 			return;
 		}
