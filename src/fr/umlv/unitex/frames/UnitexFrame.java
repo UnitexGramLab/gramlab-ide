@@ -266,6 +266,7 @@ public class UnitexFrame extends JFrame {
 				openText();
 			}
 		};
+		openText.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
 		textMenu.add(new JMenuItem(openText));
 		openTaggedText = new AbstractAction("Open Tagged Text...") {
 			public void actionPerformed(ActionEvent e) {
@@ -282,6 +283,7 @@ public class UnitexFrame extends JFrame {
 						.getCurrentSnt());
 			}
 		};
+		preprocessText.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
 		preprocessText.setEnabled(false);
 		textMenu.add(new JMenuItem(preprocessText));
 		textMenu.addSeparator();
@@ -297,6 +299,8 @@ public class UnitexFrame extends JFrame {
 				frameManager.newApplyLexicalResourcesFrame();
 			}
 		};
+		applyLexicalResources.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK));
+
 		applyLexicalResources.setEnabled(false);
 		textMenu.add(new JMenuItem(applyLexicalResources));
 		textMenu.addSeparator();
