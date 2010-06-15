@@ -172,4 +172,25 @@ public class Bounds {
         +" "+end_in_tokens+" "+end_in_chars+" "+end_in_letters;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+    	try {
+    		Bounds b=(Bounds)obj;
+    		if (b==null) return false;
+    		return start_in_tokens==b.start_in_tokens
+    		&& start_in_chars==b.start_in_chars
+    		&& start_in_letters==b.start_in_letters
+    		&& end_in_tokens==b.end_in_tokens
+    		&& end_in_chars==b.end_in_chars
+    		&& end_in_letters==b.end_in_letters;
+    	} catch (ClassCastException e) {
+			return false;
+		}
+    }
+    
+    @Override
+    public int hashCode() {
+    	return (start_in_tokens*17+start_in_chars*5+start_in_letters)*23
+    	+(end_in_tokens*23+end_in_chars*11+end_in_letters);
+    }
 }
