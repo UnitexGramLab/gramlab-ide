@@ -23,6 +23,8 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
+import fr.umlv.unitex.Preferences;
+
 
 /**
  * @author Sébastien Paumier
@@ -68,5 +70,17 @@ public class MultiFlexCommand extends CommandBuilder {
         return this;
     }
 
+    public MultiFlexCommand library(File f) {
+    	element("-p");
+    	protectElement(f.getAbsolutePath());
+    	return this;
+    }
+    
+    public MultiFlexCommand library() {
+    	if (Preferences.packagePath()!=null) {
+    		return library(Preferences.packagePath());
+    	}
+    	return this;
+    }
 
 }
