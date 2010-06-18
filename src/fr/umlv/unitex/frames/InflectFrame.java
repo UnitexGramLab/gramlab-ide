@@ -141,6 +141,7 @@ public class InflectFrame extends JInternalFrame {
     	MultiFlexCommand command=new MultiFlexCommand().delas(f)
         .result(new File(tmp))
         .alphabet(Config.getAlphabet())
+        .library()
     	.dir(new File(directory.getText()));
     	if (onlySimpleWords.isSelected()) {
     		command=command.onlySimpleWords();
