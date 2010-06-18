@@ -399,6 +399,9 @@ public class PreprocessDialog extends JDialog {
                 if (Config.isKorean()) {
                     dicoCmd=dicoCmd.korean();
                 }
+        		if (Config.isArabic()) {
+        			dicoCmd=dicoCmd.arabic(new File(Config.getUserCurrentLanguageDir(),"arabic_typo_rules.txt"));
+        		}
                 ArrayList<File> param = Config.getDefaultDicList();
                 if (param != null && param.size() > 0) {
                     dicoCmd = dicoCmd.dictionaryList(param);

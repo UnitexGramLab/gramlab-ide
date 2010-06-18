@@ -81,5 +81,11 @@ public class DicoCommand extends CommandBuilder {
         return this;
     }
 
+	public DicoCommand arabic(File s) {
+		element("-u");
+        protectElement(s.getAbsolutePath());
+		return this;
+	}
+
 
 }
