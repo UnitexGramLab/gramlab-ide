@@ -464,6 +464,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		if (Config.isKoreanJeeSun()) {
 			cmd=cmd.korean();
 		}
+		if (Config.isArabic()) {
+			cmd=cmd.arabic(new File(Config.getUserCurrentLanguageDir(),"arabic_typo_rules.txt"));
+		}
 		if (systemSelection != null	&& systemSelection.length != 0) {
 			for (int i = 0; i < systemSelection.length; i++) {
 				cmd = cmd.systemDictionary((String) systemSelection[i]);

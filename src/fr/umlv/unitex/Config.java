@@ -1528,6 +1528,10 @@ public class Config {
         return Config.getCurrentLanguage().equals("KoreanJeeSun");
     }
 	
+	public static boolean isArabic() {
+        return Config.getCurrentLanguage().equals("Arabic");
+    }
+	
 	public static File getXAlignDirectory() {
 		File dir=new File(Config.getUserDir(),"XAlign");
 		if (!dir.exists()) {

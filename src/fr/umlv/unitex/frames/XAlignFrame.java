@@ -280,6 +280,9 @@ public class XAlignFrame extends JInternalFrame {
 			DicoCommand dico=new DicoCommand()
 				.snt(snt).alphabet(alphabet)
 				.morphologicalDic(Config.morphologicalDic(language));
+			if (Config.isArabic()) {
+				dico=dico.arabic(new File(Config.getUserCurrentLanguageDir(),"arabic_typo_rules.txt"));
+			}
 			ArrayList<File> param = Config.getDefaultDicList(language);
 			if (param != null && param.size() > 0) {
 				dico = dico.dictionaryList(param);
