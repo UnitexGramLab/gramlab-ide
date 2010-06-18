@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -21,84 +21,53 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.DicoCommand;
-import fr.umlv.unitex.process.commands.FlattenCommand;
-import fr.umlv.unitex.process.commands.Fst2TxtCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.MessageCommand;
-import fr.umlv.unitex.process.commands.MkdirCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.NormalizeCommand;
-import fr.umlv.unitex.process.commands.PolyLexCommand;
-import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.process.commands.TokenizeCommand;
-import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import fr.umlv.unitex.process.commands.*;
 import fr.umlv.unitex.text.Text;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class describes a dialog box that allows the user to parameter the
  * preprocessing of a text.
- * 
+ *
  * @author Sébastien Paumier
- * 
  */
 public class PreprocessDialog extends JDialog {
 
-    JCheckBox sentenceCheck = new JCheckBox("Apply graph in MERGE mode:", true);
-    JCheckBox replaceCheck = new JCheckBox("Apply graph in REPLACE mode:", true);
-    JTextField sentenceName = new JTextField();
-    JTextField replaceName = new JTextField();
-    JCheckBox applyDicCheck = new JCheckBox("Apply All default Dictionaries", true);
-    JCheckBox analyseUnknownWordsCheck = new JCheckBox("Analyse unknown words as free compound words (this option", true);
-    JLabel analyseUnknownWordsLabel = new JLabel("     is available only for Dutch, German, Norwegian & Russian)");
-    JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton");
-    File originalTextFile;
-    File sntFile;
-    JPanel preprocessingParent;
-    JPanel preprocessingCurrent;
-    JPanel preprocessingTaggedText;
-    JPanel preprocessingUntaggedText;
-    boolean taggedText=false;
-    
-    
+    private final JCheckBox sentenceCheck = new JCheckBox("Apply graph in MERGE mode:", true);
+    private final JCheckBox replaceCheck = new JCheckBox("Apply graph in REPLACE mode:", true);
+    private final JTextField sentenceName = new JTextField();
+    private final JTextField replaceName = new JTextField();
+    private final JCheckBox applyDicCheck = new JCheckBox("Apply All default Dictionaries", true);
+    private final JCheckBox analyseUnknownWordsCheck = new JCheckBox("Analyse unknown words as free compound words (this option", true);
+    private final JLabel analyseUnknownWordsLabel = new JLabel("     is available only for Dutch, German, Norwegian & Russian)");
+    private final JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton");
+    private File originalTextFile;
+    private File sntFile;
+    private JPanel preprocessingParent;
+    private JPanel preprocessingCurrent;
+    private JPanel preprocessingTaggedText;
+    private JPanel preprocessingUntaggedText;
+    private boolean taggedText = false;
+
+
     /**
      * Creates and shows a new <code>PreprocessFrame</code>
-     * 
-     * @param originalTextFile
-     *            original text file
-     * @param sntFile
-     *            snt text file
-     * @param taggedText
-     *            true if the text is a tagged one
      */
     PreprocessDialog() {
         super(UnitexFrame.mainFrame, "Preprocessing & Lexical parsing", true);
-        setContentPane(preprocessingParent=constructPanel());
+        setContentPane(preprocessingParent = constructPanel());
         refreshOnLanguageChange();
         pack();
         setResizable(false);
@@ -108,10 +77,10 @@ public class PreprocessDialog extends JDialog {
 
 
     void refreshOnLanguageChange() {
-    	if (Config.getCurrentLanguage().equals("Dutch") 
-    			|| Config.getCurrentLanguage().equals("German") 
-    			|| Config.getCurrentLanguage().equals("Norwegian") 
-    			|| Config.getCurrentLanguage().equals("Russian")) {
+        if (Config.getCurrentLanguage().equals("Dutch")
+                || Config.getCurrentLanguage().equals("German")
+                || Config.getCurrentLanguage().equals("Norwegian")
+                || Config.getCurrentLanguage().equals("Russian")) {
             analyseUnknownWordsCheck.setSelected(true);
             analyseUnknownWordsCheck.setEnabled(true);
             analyseUnknownWordsLabel.setEnabled(true);
@@ -125,24 +94,24 @@ public class PreprocessDialog extends JDialog {
         applyDicCheck.setSelected(true);
         textFst2Check.setSelected(false);
     }
-    
-    
+
+
     void setFiles(File originalTextFile, File sntFile, boolean taggedText) {
-    	this.originalTextFile=originalTextFile;
-    	this.sntFile=sntFile;
-    	this.taggedText=taggedText;
-		preprocessingParent.remove(preprocessingCurrent);
-    	if (taggedText) {
-    		preprocessingCurrent=preprocessingTaggedText;
-    	} else {
-    		preprocessingCurrent=preprocessingUntaggedText;
-    	}
-    	preprocessingParent.add(preprocessingCurrent,BorderLayout.NORTH);
-    	preprocessingParent.revalidate();
-    	repaint();	
+        this.originalTextFile = originalTextFile;
+        this.sntFile = sntFile;
+        this.taggedText = taggedText;
+        preprocessingParent.remove(preprocessingCurrent);
+        if (taggedText) {
+            preprocessingCurrent = preprocessingTaggedText;
+        } else {
+            preprocessingCurrent = preprocessingUntaggedText;
+        }
+        preprocessingParent.add(preprocessingCurrent, BorderLayout.NORTH);
+        preprocessingParent.revalidate();
+        repaint();
     }
 
-    
+
     private JPanel constructPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(constructProcessingPanel(), BorderLayout.NORTH);
@@ -154,66 +123,42 @@ public class PreprocessDialog extends JDialog {
         return panel;
     }
 
-	private JPanel constructProcessingPanel() {
-		/* Building the panels for both tagged and untagged texts */
-		preprocessingTaggedText = new JPanel(new BorderLayout());
-		preprocessingTaggedText.setBorder(new TitledBorder("Preprocessing"));
-		preprocessingTaggedText
-				.add(new JLabel(
-						"Sentence and Replace graphs should not be applied on tagged texts."));
-		preprocessingUntaggedText = new JPanel(new GridLayout(2, 1));
-		preprocessingUntaggedText.setBorder(new TitledBorder("Preprocessing"));
-		preprocessingUntaggedText.add(constructSentencePanel());
-		preprocessingUntaggedText.add(constructReplacePanel());
-		return preprocessingCurrent=preprocessingUntaggedText;
-	}
-
-    private JPanel constructSentencePanel() {
-        JPanel sentence = new JPanel(new BorderLayout());
-        Dimension d = sentenceCheck.getPreferredSize();
-        sentenceCheck.setPreferredSize(new Dimension(190, d.height));
-        sentence.add(sentenceCheck, BorderLayout.WEST);
-        d = sentenceName.getPreferredSize();
-        sentenceName.setPreferredSize(new Dimension(150, d.height));
-        sentence.add(sentenceName, BorderLayout.CENTER);
-        Action setAction = new AbstractAction("Set...") {
-            public void actionPerformed(ActionEvent arg0) {
-                JFileChooser chooser = Config.getSentenceDialogBox();
-                int returnVal = chooser.showOpenDialog(null);
-                if (returnVal != JFileChooser.APPROVE_OPTION) {
-                    // we return if the user has clicked on CANCEL
-                    return;
-                }
-                sentenceName.setText(chooser.getSelectedFile().getAbsolutePath());
-            }
-        };
-        JButton setSentence = new JButton(setAction);
-        sentence.add(setSentence, BorderLayout.EAST);
-        return sentence;
+    private JPanel constructProcessingPanel() {
+        /* Building the panels for both tagged and untagged texts */
+        preprocessingTaggedText = new JPanel(new BorderLayout());
+        preprocessingTaggedText.setBorder(new TitledBorder("Preprocessing"));
+        preprocessingTaggedText
+                .add(new JLabel(
+                        "Sentence and Replace graphs should not be applied on tagged texts."));
+        preprocessingUntaggedText = new JPanel(new GridLayout(2, 1));
+        preprocessingUntaggedText.setBorder(new TitledBorder("Preprocessing"));
+        preprocessingUntaggedText.add(constructGenericPanel(sentenceCheck, sentenceName));
+        preprocessingUntaggedText.add(constructGenericPanel(replaceCheck, replaceName));
+        return preprocessingCurrent = preprocessingUntaggedText;
     }
 
-    private JPanel constructReplacePanel() {
-        JPanel replace = new JPanel(new BorderLayout());
-        Dimension d = replaceCheck.getPreferredSize();
-        replaceCheck.setPreferredSize(new Dimension(190, d.height));
-        replace.add(replaceCheck, BorderLayout.WEST);
-        d = replaceName.getPreferredSize();
-        replaceName.setPreferredSize(new Dimension(150, d.height));
-        replace.add(replaceName, BorderLayout.CENTER);
-        Action setAction = new AbstractAction("Set...") {
+    private JPanel constructGenericPanel(final JCheckBox checkBox, final JTextField textField) {
+        final JPanel panel = new JPanel(new BorderLayout());
+        Dimension dimension = checkBox.getPreferredSize();
+        checkBox.setPreferredSize(new Dimension(190, dimension.height));
+        panel.add(checkBox, BorderLayout.WEST);
+        dimension = textField.getPreferredSize();
+        textField.setPreferredSize(new Dimension(150, dimension.height));
+        panel.add(textField, BorderLayout.CENTER);
+        final Action setAction = new AbstractAction("Set...") {
             public void actionPerformed(ActionEvent arg0) {
                 JFileChooser chooser = Config.getReplaceDialogBox();
-                int returnVal = chooser.showOpenDialog(null);
+                final int returnVal = chooser.showOpenDialog(null);
                 if (returnVal != JFileChooser.APPROVE_OPTION) {
                     // we return if the user has clicked on CANCEL
                     return;
                 }
-                replaceName.setText(chooser.getSelectedFile().getAbsolutePath());
+                textField.setText(chooser.getSelectedFile().getAbsolutePath());
             }
         };
-        JButton setReplace = new JButton(setAction);
-        replace.add(setReplace, BorderLayout.EAST);
-        return replace;
+        final JButton setReplace = new JButton(setAction);
+        panel.add(setReplace, BorderLayout.EAST);
+        return panel;
     }
 
     private JPanel constructTokenizingPanel() {
@@ -282,6 +227,12 @@ public class PreprocessDialog extends JDialog {
         }
     }
 
+    private MultiCommands normalizingText(final MultiCommands commands) {
+        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
+        commands.addCommand(normalizeCmd);
+        return commands;
+    }
+
     void tokenize() {
         MultiCommands commands = new MultiCommands();
         File dir = Config.getCurrentSntDir();
@@ -291,12 +242,10 @@ public class PreprocessDialog extends JDialog {
             MkdirCommand mkdir = new MkdirCommand().name(dir);
             commands.addCommand(mkdir);
         }
-        // NORMALIZING TEXT...
-        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
-        commands.addCommand(normalizeCmd);
+        commands = normalizingText(commands);
         // TOKENIZING...
         TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
-        	.alphabet(Config.getAlphabet());
+                .alphabet(Config.getAlphabet());
         if (Config.getCurrentLanguage().equals("Thai") || Config.getCurrentLanguage().equals("Chinese")) {
             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
         }
@@ -304,196 +253,220 @@ public class PreprocessDialog extends JDialog {
         UnitexFrame.getFrameManager().closeTextFrame();
         Text.removeSntFiles();
         Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
-	}
+    }
 
-    void preprocess() {
-        File dir = Config.getCurrentSntDir();
-        MultiCommands commands = new MultiCommands();
-        // NORMALIZING TEXT...
-        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
-        commands.addCommand(normalizeCmd);
-        // CREATING SNT DIR
-        if (!dir.exists()) {
-        	MkdirCommand mkdir = new MkdirCommand().name(dir);
-        	commands.addCommand(mkdir);
-        }
-        // SENTENCE GRAPH...
-        if (sentenceCheck.isSelected()) {
-            File sentence = new File(sentenceName.getText());
-            if (!sentence.exists()) {
-                commands.addCommand(new MessageCommand("*** WARNING: sentence delimitation skipped because the graph was not found ***\n", true));
-            } else {
-                String grfName = sentenceName.getText();
-                File fst2;
-                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
-                    // we must compile the grf
-                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().library();
-                    commands.addCommand(grfCmd);
-                    String fst2Name = grfName.substring(0, grfName.length() - 3);
-                    fst2Name = fst2Name + "fst2";
-                    fst2 = new File(fst2Name);
-                    // and flatten it for better performance
-                    // (Fst2Txt is slow with complex graphs)
-                    FlattenCommand flattenCmd = new FlattenCommand().fst2(fst2).resultType(false).depth(5);
-                    commands.addCommand(flattenCmd);
-                } else {
-                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
-                        // if the extension is nor GRF neither
-                        // FST2
-                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    fst2 = new File(grfName);
-                }
-                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
-                	.alphabet(Config.getAlphabet()).mode(true);
-                if (Config.isCharByCharLanguage())
-                    cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
-                commands.addCommand(cmd);
-            }
-        }
-        // REPLACE GRAPH...
-        if (replaceCheck.isSelected()) {
-            File f = new File(replaceName.getText());
-            if (!f.exists()) {
-                commands.addCommand(new MessageCommand("*** WARNING: Replace step skipped because the graph was not found ***\n", true));
-            } else {
-                String grfName = replaceName.getText();
-                File fst2;
-                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
-                    // we must compile the grf
-                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
-                    commands.addCommand(grfCmd);
-                    String fst2Name = grfName.substring(0, grfName.length() - 3);
-                    fst2Name = fst2Name + "fst2";
-                    fst2 = new File(fst2Name);
-                } else {
-                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
-                        // if the extension is nor GRF neither
-                        // FST2
-                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    fst2 = new File(grfName);
-                }
-                Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
-                	.alphabet(Config.getAlphabet()).mode(false);
-                if (Config.isCharByCharLanguage())
-                    cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
-                commands.addCommand(cmd);
-            }
-        }
-        // TOKENIZING...
-        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
-        	.alphabet(Config.getAlphabet());
-        if (Config.isCharByCharLanguage()) {
-            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
-        }
-        commands.addCommand(tokenizeCmd);
-        // APPLYING DEFAULT DICTIONARIES...
+    private MultiCommands applyDefaultDictionaries(final MultiCommands commands) {
         DicoCommand dicoCmd;
-        if (applyDicCheck.isSelected()) {
-                dicoCmd = new DicoCommand().snt(Config.getCurrentSnt())
-                		.alphabet(Config.getAlphabet())
-                		.morphologicalDic(Preferences.morphologicalDic());
-                if (Config.isKorean()) {
-                    dicoCmd=dicoCmd.korean();
-                }
-        		if (Config.isArabic()) {
-        			dicoCmd=dicoCmd.arabic(new File(Config.getUserCurrentLanguageDir(),"arabic_typo_rules.txt"));
-        		}
-                ArrayList<File> param = Config.getDefaultDicList();
-                if (param != null && param.size() > 0) {
-                    dicoCmd = dicoCmd.dictionaryList(param);
-                    commands.addCommand(dicoCmd);
-                } else {
-                    dicoCmd = null;
-                }
-                // ANALYSING UNKNOWN WORDS
-                String lang = Config.getCurrentLanguage();
-                File dic = new File(Config.getUnitexCurrentLanguageDir(), "Dela");
-                if (lang.equals("German"))
-                    dic = new File(dic, "dela.bin");
-                else if (lang.equals("Norwegian"))
-                    dic = new File(dic, "Dela-sample.bin");
-                else if (lang.equals("Russian"))
-                    dic = new File(dic, "CISLEXru_igrok.bin");
-                if (analyseUnknownWordsCheck.isSelected()) {
-                    PolyLexCommand polyLexCmd;
-                    try {
-                        polyLexCmd = new PolyLexCommand().language(lang)
+        dicoCmd = new DicoCommand().snt(Config.getCurrentSnt())
+                .alphabet(Config.getAlphabet())
+                .morphologicalDic(Preferences.morphologicalDic());
+        if (Config.isKorean()) {
+            dicoCmd = dicoCmd.korean();
+        }
+        if (Config.isArabic()) {
+            dicoCmd = dicoCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+        }
+        ArrayList<File> param = Config.getDefaultDicList();
+        if (param != null && param.size() > 0) {
+            dicoCmd = dicoCmd.dictionaryList(param);
+            commands.addCommand(dicoCmd);
+        } else {
+            dicoCmd = null;
+        }
+        // ANALYSING UNKNOWN WORDS
+        String lang = Config.getCurrentLanguage();
+        File dic = new File(Config.getUnitexCurrentLanguageDir(), "Dela");
+        if (lang.equals("German"))
+            dic = new File(dic, "dela.bin");
+        else if (lang.equals("Norwegian"))
+            dic = new File(dic, "Dela-sample.bin");
+        else if (lang.equals("Russian"))
+            dic = new File(dic, "CISLEXru_igrok.bin");
+        if (analyseUnknownWordsCheck.isSelected()) {
+            PolyLexCommand polyLexCmd;
+            try {
+                polyLexCmd = new PolyLexCommand().language(lang)
                         .alphabet(Config.getAlphabet()).bin(dic)
                         .wordList(new File(Config.getCurrentSntDir(), "err"))
                         .output(new File(Config.getCurrentSntDir(), "dlf"))
                         .info(new File(Config.getCurrentSntDir(), "decomp.txt"));
-                        commands.addCommand(polyLexCmd);
-                    } catch (InvalidPolyLexArgumentException e) {
-                        e.printStackTrace();
-                    }
-                }
-                // SORTING TEXT DICTIONARIES
-        		File alph=new File(Config
-                        .getUserCurrentLanguageDir(),"Alphabet_sort.txt");
-                if (dicoCmd != null) {
-                    // sorting DLF
-                    SortTxtCommand sortCmd = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlf")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlf.n"));
-                    if (Config.getCurrentLanguage().equals("Thai")) {
-                        sortCmd = sortCmd.thai();
-                    } else {
-                        sortCmd = sortCmd.sortAlphabet(alph);
-                    }
-                    commands.addCommand(sortCmd);
-                    // sorting DLC
-                    SortTxtCommand sortCmd2 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlc")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlc.n"));
-                    if (Config.getCurrentLanguage().equals("Thai")) {
-                        sortCmd2 = sortCmd2.thai();
-                    } else {
-                        sortCmd2 = sortCmd2.sortAlphabet(alph);
-                    }
-                    commands.addCommand(sortCmd2);
-                    // sorting ERR
-                    SortTxtCommand sortCmd3 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "err")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "err.n"));
-                    if (Config.getCurrentLanguage().equals("Thai")) {
-                        sortCmd3 = sortCmd3.thai();
-                    } else {
-                        sortCmd3 = sortCmd3.sortAlphabet(alph);
-                    }
-                    commands.addCommand(sortCmd3);
-                }
+                commands.addCommand(polyLexCmd);
+            } catch (InvalidPolyLexArgumentException e) {
+                e.printStackTrace();
             }
-        // CONSTRUCTING TEXT AUTOMATON
-        if (textFst2Check.isSelected()) {
-            File norm = Config.getCurrentNormGraph();
-            if (!norm.exists()) {
-                commands.addCommand(new MessageCommand("*** WARNING: normalization graph was not found ***\n", true));
-                norm = null;
+        }
+        // SORTING TEXT DICTIONARIES
+        File alph = new File(Config
+                .getUserCurrentLanguageDir(), "Alphabet_sort.txt");
+        if (dicoCmd != null) {
+            // sorting DLF
+            SortTxtCommand sortCmd = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlf")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlf.n"));
+            if (Config.getCurrentLanguage().equals("Thai")) {
+                sortCmd = sortCmd.thai();
             } else {
-                String grfName = norm.getAbsolutePath();
-                if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
-                    // we must compile the grf
-                    Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
-                    commands.addCommand(grfCmd);
-                    String fst2Name = grfName.substring(0, grfName.length() - 3);
-                    fst2Name = fst2Name + "fst2";
-                    norm = new File(fst2Name);
-                } else {
-                    if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
-                        // if the extension is nor GRF neither
-                        // FST2
-                        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                sortCmd = sortCmd.sortAlphabet(alph);
+            }
+            commands.addCommand(sortCmd);
+            // sorting DLC
+            SortTxtCommand sortCmd2 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "dlc")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "dlc.n"));
+            if (Config.getCurrentLanguage().equals("Thai")) {
+                sortCmd2 = sortCmd2.thai();
+            } else {
+                sortCmd2 = sortCmd2.sortAlphabet(alph);
+            }
+            commands.addCommand(sortCmd2);
+            // sorting ERR
+            SortTxtCommand sortCmd3 = new SortTxtCommand().file(new File(Config.getCurrentSntDir(), "err")).saveNumberOfLines(new File(Config.getCurrentSntDir(), "err.n"));
+            if (Config.getCurrentLanguage().equals("Thai")) {
+                sortCmd3 = sortCmd3.thai();
+            } else {
+                sortCmd3 = sortCmd3.sortAlphabet(alph);
+            }
+            commands.addCommand(sortCmd3);
+        }
+
+        return commands;
+    }
+
+    private void showMsgDialog() {
+        // if the extension is nor GRF neither
+        // FST2
+        JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    private MultiCommands constructTextAutomaton(final MultiCommands commands) {
+        File norm = Config.getCurrentNormGraph();
+        if (!norm.exists()) {
+            commands.addCommand(new MessageCommand("*** WARNING: normalization graph was not found ***\n", true));
+            norm = null;
+        } else {
+            String grfName = norm.getAbsolutePath();
+            if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                // we must compile the grf
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
+                commands.addCommand(grfCmd);
+                String fst2Name = grfName.substring(0, grfName.length() - 3);
+                fst2Name = fst2Name + "fst2";
+                norm = new File(fst2Name);
+            } else {
+                if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                    showMsgDialog();
                 }
             }
-            Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
-            .alphabet(Config.getAlphabet()).clean(true);
-            if (Config.isKorean()) {
-                txtCmd=txtCmd.korean();
+        }
+        Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
+                .alphabet(Config.getAlphabet()).clean(true);
+        if (Config.isKorean()) {
+            txtCmd = txtCmd.korean();
+        }
+        if (norm != null) {
+            txtCmd = txtCmd.fst2(norm);
+        }
+        commands.addCommand(txtCmd);
+
+        return commands;
+    }
+
+    private MultiCommands replaceGraph(final MultiCommands commands) {
+        File f = new File(replaceName.getText());
+        if (!f.exists()) {
+            commands.addCommand(new MessageCommand("*** WARNING: Replace step skipped because the graph was not found ***\n", true));
+        } else {
+            String grfName = replaceName.getText();
+            File fst2;
+            if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                // we must compile the grf
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
+                commands.addCommand(grfCmd);
+                String fst2Name = grfName.substring(0, grfName.length() - 3);
+                fst2Name = fst2Name + "fst2";
+                fst2 = new File(fst2Name);
+            } else {
+                if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                    showMsgDialog();
+                }
+                fst2 = new File(grfName);
             }
-            if (norm != null) {
-                txtCmd = txtCmd.fst2(norm);
+            Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
+                    .alphabet(Config.getAlphabet()).mode(false);
+            if (Config.isCharByCharLanguage())
+                cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
+            commands.addCommand(cmd);
+        }
+        return commands;
+    }
+
+    private MultiCommands sentenceGraph(final MultiCommands commands) {
+        File sentence = new File(sentenceName.getText());
+        if (!sentence.exists()) {
+            commands.addCommand(new MessageCommand("*** WARNING: sentence delimitation skipped because the graph was not found ***\n", true));
+        } else {
+            String grfName = sentenceName.getText();
+            File fst2;
+            if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
+                // we must compile the grf
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().library();
+                commands.addCommand(grfCmd);
+                String fst2Name = grfName.substring(0, grfName.length() - 3);
+                fst2Name = fst2Name + "fst2";
+                fst2 = new File(fst2Name);
+                // and flatten it for better performance
+                // (Fst2Txt is slow with complex graphs)
+                FlattenCommand flattenCmd = new FlattenCommand().fst2(fst2).resultType(false).depth(5);
+                commands.addCommand(flattenCmd);
+            } else {
+                if (!(grfName.substring(grfName.length() - 4, grfName.length()).equalsIgnoreCase("fst2"))) {
+                    showMsgDialog();
+                }
+                fst2 = new File(grfName);
             }
-            commands.addCommand(txtCmd);
+            Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
+                    .alphabet(Config.getAlphabet()).mode(true);
+            if (Config.isCharByCharLanguage())
+                cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
+            commands.addCommand(cmd);
+        }
+        return commands;
+    }
+
+    private MultiCommands createSndDir(final MultiCommands commands) {
+        final File dir = Config.getCurrentSntDir();
+        if (!dir.exists()) {
+            MkdirCommand mkdir = new MkdirCommand().name(dir);
+            commands.addCommand(mkdir);
+        }
+        return commands;
+    }
+
+    private MultiCommands tokenization(final MultiCommands commands) {
+        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
+                .alphabet(Config.getAlphabet());
+        if (Config.isCharByCharLanguage()) {
+            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
+        }
+        commands.addCommand(tokenizeCmd);
+        return commands;
+    }
+
+    void preprocess() {
+        // build & execute a command chain
+        MultiCommands commands = new MultiCommands();
+        commands = normalizingText(commands);
+        commands = createSndDir(commands);
+        if (sentenceCheck.isSelected()) {
+            commands = sentenceGraph(commands);
+        }
+        if (replaceCheck.isSelected()) {
+            commands = replaceGraph(commands);
+        }
+        commands = tokenization(commands);
+        if (applyDicCheck.isSelected()) {
+            commands = applyDefaultDictionaries(commands);
+        }
+
+        if (textFst2Check.isSelected()) {
+            commands = constructTextAutomaton(commands);
         }
         UnitexFrame.getFrameManager().closeTextFrame();
         Text.removeSntFiles();
