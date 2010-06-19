@@ -21,20 +21,6 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
@@ -43,97 +29,102 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.transcoding.Transcoder;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
 /**
  * @author Sébastien Paumier
- * 
  */
 public class TranscodeOneFileDialog extends JDialog {
 
-	JRadioButton replace = new JRadioButton("Replace",true);
-	private JRadioButton renameSource = new JRadioButton(
-			"Rename source with suffix '.old'");
-	private JLabel line1 = new JLabel();
-	private JLabel line2 = new JLabel();
+    JRadioButton replace = new JRadioButton("Replace", true);
+    private JLabel line1 = new JLabel();
+    private JLabel line2 = new JLabel();
 
-	File file;
-	ToDo toDo;
-	
-	TranscodeOneFileDialog() {
-		super(UnitexFrame.mainFrame,"Transcoding",true);
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(replace);
-		bg.add(renameSource);
-		replace.setSelected(true);
-		JPanel panel = new JPanel(new GridLayout(5, 1));
-		panel.setBorder(BorderFactory.createEmptyBorder(5,10,0,10));
-		panel.add(line1);
-		panel
-				.add(new JLabel(
-						"is not a Unicode Little-Endian one. Do you want"));
-		panel.add(line2);
-		panel.add(replace);
-		panel.add(renameSource);
-		getContentPane().add(panel,BorderLayout.CENTER);
-		JPanel buttons=new JPanel();
-		JButton transcode=new JButton("Transcode");
-		transcode.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				ConvertCommand cmd = new ConvertCommand();
-				try {
-					cmd = cmd.src(
-							Transcoder.getEncodingForLanguage(Config
-									.getCurrentLanguage())).dest("LITTLE-ENDIAN");
-				} catch (InvalidDestinationEncodingException e1) {
-					e1.printStackTrace();
-				} catch (InvalidSourceEncodingException e1) {
-					e1.printStackTrace();
-				}
-				if (replace.isSelected()) {
-					cmd = cmd.replace();
-				} else {
-					cmd = cmd.renameSourceWithSuffix(".old");
-				}
-				cmd = cmd.file(file);
-				Launcher.exec(cmd,true,toDo);
-			}				
-		});
-		JButton ignore=new JButton("Ignore file");
-		ignore.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
-		JButton more=new JButton("More options...");
-		more.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-				UnitexFrame.getFrameManager().newTranscodingFrame(file,toDo);
-			}
-		});
-		buttons.add(transcode);
-		buttons.add(ignore);
-		buttons.add(more);
-		getContentPane().add(buttons,BorderLayout.SOUTH);
-		pack();
-		setResizable(false);
-		setLocationRelativeTo(UnitexFrame.mainFrame);
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
-	}
+    File file;
+    ToDo toDo;
+
+    TranscodeOneFileDialog() {
+        super(UnitexFrame.mainFrame, "Transcoding", true);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(replace);
+        final JRadioButton renameSource = new JRadioButton(
+                "Rename source with suffix '.old'");
+        bg.add(renameSource);
+        replace.setSelected(true);
+        JPanel panel = new JPanel(new GridLayout(5, 1));
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
+        panel.add(line1);
+        panel
+                .add(new JLabel(
+                        "is not a Unicode Little-Endian one. Do you want"));
+        panel.add(line2);
+        panel.add(replace);
+        panel.add(renameSource);
+        getContentPane().add(panel, BorderLayout.CENTER);
+        JPanel buttons = new JPanel();
+        JButton transcode = new JButton("Transcode");
+        transcode.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                ConvertCommand cmd = new ConvertCommand();
+                try {
+                    cmd = cmd.src(
+                            Transcoder.getEncodingForLanguage(Config
+                                    .getCurrentLanguage())).dest("LITTLE-ENDIAN");
+                } catch (InvalidDestinationEncodingException e1) {
+                    e1.printStackTrace();
+                } catch (InvalidSourceEncodingException e1) {
+                    e1.printStackTrace();
+                }
+                if (replace.isSelected()) {
+                    cmd = cmd.replace();
+                } else {
+                    cmd = cmd.renameSourceWithSuffix(".old");
+                }
+                cmd = cmd.file(file);
+                Launcher.exec(cmd, true, toDo);
+            }
+        });
+        JButton ignore = new JButton("Ignore file");
+        ignore.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
+        });
+        JButton more = new JButton("More options...");
+        more.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                UnitexFrame.getFrameManager().newTranscodingFrame(file, toDo);
+            }
+        });
+        buttons.add(transcode);
+        buttons.add(ignore);
+        buttons.add(more);
+        getContentPane().add(buttons, BorderLayout.SOUTH);
+        pack();
+        setResizable(false);
+        setLocationRelativeTo(UnitexFrame.mainFrame);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+    }
 
 
-	void configure(File f, ToDo toDo1) {
-		this.file=f;
-		this.toDo=toDo1;
-		line1.setText(f.getAbsolutePath());
-		line2.setText("to transcode it from "
-				+ Transcoder
-						.getEncodingForLanguage(Config.getCurrentLanguage())
-				+ " to Unicode Little-Endian ?");
-		pack();
-	}
-	
-	}
+    void configure(File f, ToDo toDo1) {
+        this.file = f;
+        this.toDo = toDo1;
+        line1.setText(f.getAbsolutePath());
+        line2.setText("to transcode it from "
+                + Transcoder
+                .getEncodingForLanguage(Config.getCurrentLanguage())
+                + " to Unicode Little-Endian ?");
+        pack();
+    }
+
+}
