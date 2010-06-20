@@ -54,7 +54,7 @@ public class MultiAlign {
     }
 
 
-    private static final void usage() {
+    private static void usage() {
         // Just load and prepare texts @see LoadAndPrepareTexts
         System.out.println("Load and prepare texts: ");
         System.out.println("align [-d] -p sfile tfile src-properties tar-properties outfile");
