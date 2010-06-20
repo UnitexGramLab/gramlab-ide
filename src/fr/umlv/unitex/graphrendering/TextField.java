@@ -116,6 +116,7 @@ public class TextField extends GraphTextField {
         specialPaste = new SpecialPaste("special-paste");
         specialCopy = new SpecialCopy("special-copy");
         presentation = new Presentation("presentation");
+        // TextAction that defines what to do for a "select all" operation
         final SelectAll selectAll = new SelectAll("select all");
         cut = new Cut("cut");
         OPEN = new Open("open");
@@ -557,9 +558,9 @@ public class TextField extends GraphTextField {
 
     public SpecialCopy getSpecialCopy() {
         return specialCopy;
-	}
+    }
 
-	public Cut getCut() {
-		return cut;
-	}
+    public Cut getCut() {
+        return cut;
+    }
 }
