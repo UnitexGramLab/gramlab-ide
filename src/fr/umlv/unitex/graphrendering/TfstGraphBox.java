@@ -21,38 +21,31 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.tfst.Bounds;
+
+import java.awt.*;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.tfst.Bounds;
-
 
 /**
  * This class describes a box of a sentence automaton.
- * 
+ *
  * @author Sébastien Paumier
- * 
  */
 public class TfstGraphBox extends GenericGraphBox {
 
     private Bounds bounds;
+
     /**
      * Constructs a new box
-     * 
-     * @param x
-     *            X coordinate of the input point of the box
-     * @param y
-     *            Y coordinate of the input point of the box
-     * @param type
-     *            indicates if the box is initial, final or normal
-     * @param p
-     *            component on which the box will be drawn
+     *
+     * @param x    X coordinate of the input point of the box
+     * @param y    Y coordinate of the input point of the box
+     * @param type indicates if the box is initial, final or normal
+     * @param p    component on which the box will be drawn
      */
     public TfstGraphBox(int x, int y, int type, TfstGraphicalZone p) {
         super(x, y, type, p);
@@ -61,9 +54,8 @@ public class TfstGraphBox extends GenericGraphBox {
     /**
      * Takes a <code>String</code> representing the box content and tokenizes
      * it to divide it into several lines
-     * 
-     * @param s
-     *            the box content
+     *
+     * @param s the box content
      */
     private void tokenizeText(String s, boolean firstTime) {
         int L = s.length(), i;
@@ -90,7 +82,7 @@ public class TfstGraphBox extends GenericGraphBox {
         if (line[0] != '{') {
             n_lines++;
             lines.add(s);
-            greyed.add(new Boolean(false));
+            greyed.add(Boolean.FALSE);
             return;
         }
         i = 1;
@@ -119,12 +111,12 @@ public class TfstGraphBox extends GenericGraphBox {
         }
         n_lines++;
         lines.add(flechi);
-        greyed.add(new Boolean(false));
+        greyed.add(Boolean.FALSE);
         if (!(canonique.equals("") || canonique.equals(flechi))) {
             // if inflected form is equal to canonical, we don't insert it twice
             n_lines++;
             lines.add(canonique);
-            greyed.add(new Boolean(false));
+            greyed.add(Boolean.FALSE);
         }
         transduction = infos;
     }
@@ -138,8 +130,8 @@ public class TfstGraphBox extends GenericGraphBox {
         Scanner scanner = new Scanner(s);
         try {
             int start_pos_in_tokens = scanner.nextInt();
-            if (start_pos_in_tokens==-1) {
-                bounds=null;
+            if (start_pos_in_tokens == -1) {
+                bounds = null;
             } else {
                 /* Nothing to do if the bounds are not computable */
                 int start_pos_in_chars = scanner.nextInt();
@@ -150,8 +142,8 @@ public class TfstGraphBox extends GenericGraphBox {
                 if (scanner.hasNext()) {
                     throw new AssertionError("Malformed token information: " + s);
                 }
-                bounds=new Bounds(start_pos_in_tokens,start_pos_in_chars,start_pos_in_letters,
-                        end_pos_in_tokens,end_pos_in_chars,end_pos_in_letters);
+                bounds = new Bounds(start_pos_in_tokens, start_pos_in_chars, start_pos_in_letters,
+                        end_pos_in_tokens, end_pos_in_chars, end_pos_in_letters);
             }
         } catch (InputMismatchException e) {
             throw new AssertionError("Malformed token information: " + s);
@@ -162,12 +154,11 @@ public class TfstGraphBox extends GenericGraphBox {
         }
     }
 
-    
+
     /**
      * Sets the content of the box
-     * 
-     * @param s
-     *            the content
+     *
+     * @param s the content
      */
     @Override
     public void setContent(String s) {
@@ -195,7 +186,7 @@ public class TfstGraphBox extends GenericGraphBox {
         X_out = x + Width + 5;
     }
 
-    
+
     public void setContentWithBounds(String s) {
         if (type == FINAL)
             return; // nothing to do if we consider the final state
@@ -226,27 +217,26 @@ public class TfstGraphBox extends GenericGraphBox {
     }
 
     public void setBounds(Bounds b) {
-        bounds=b;
+        bounds = b;
     }
-    
-    
-    BasicStroke morphologicalStroke=new BasicStroke(2,BasicStroke.CAP_BUTT,
-            BasicStroke.JOIN_BEVEL,2,new float[] {10f,10f},4f);
-    
+
+
+    BasicStroke morphologicalStroke = new BasicStroke(2, BasicStroke.CAP_BUTT,
+            BasicStroke.JOIN_BEVEL, 2, new float[]{10f, 10f}, 4f);
+
     /**
      * Draws a transition to a box.
      * Modified from GenericGraphBox in order
      * to display bold colored transitions.
-     * 
-     * @param gr
-     *            the graphical context
+     *
+     * @param gr the graphical context
      */
     @Override
-	public void drawTransition(Graphics2D g, GenericGraphBox dest) {
+    public void drawTransition(Graphics2D g, GenericGraphBox dest) {
         TfstGraphBox box = (TfstGraphBox) dest;
         if (box.bounds != null) {
             int startPosInChars = box.bounds.getStart_in_chars();
-            if (startPosInChars != 0 || box.bounds.getStart_in_letters()!=0
+            if (startPosInChars != 0 || box.bounds.getStart_in_letters() != 0
                     || box.content.startsWith("{<E>,")
                     || box.bounds.equals(bounds)) {
                 Stroke old = g.getStroke();
@@ -260,21 +250,21 @@ public class TfstGraphBox extends GenericGraphBox {
             super.drawTransition(g, dest);
         }
     }
-    
-    
-    private static final Color koreanUntaggedTokenColor=new Color(204,255,51);
-    
+
+
+    private static final Color koreanUntaggedTokenColor = new Color(204, 255, 51);
+
     @Override
     void drawOther(Graphics2D g) {
-        Color old=parentGraphicalZone.info.backgroundColor;
+        Color old = parentGraphicalZone.info.backgroundColor;
         if ((Config.isKorean() || Config.isKoreanJeeSun()) && isKoreanUntaggedToken(content)) {
-            parentGraphicalZone.info.backgroundColor=koreanUntaggedTokenColor;
+            parentGraphicalZone.info.backgroundColor = koreanUntaggedTokenColor;
         }
         super.drawOther(g);
-        parentGraphicalZone.info.backgroundColor=old;
+        parentGraphicalZone.info.backgroundColor = old;
     }
 
     private boolean isKoreanUntaggedToken(String s) {
-        return !s.equals("<E>") && s.charAt(0)!='{';
+        return !s.equals("<E>") && s.charAt(0) != '{';
     }
 }
