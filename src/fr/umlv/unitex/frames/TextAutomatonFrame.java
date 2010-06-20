@@ -352,7 +352,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new Integer(s).intValue();
+        return Integer.parseInt(s);
     }
 
     public void loadSentenceFromConcordance(int n) {
@@ -702,6 +702,6 @@ class ImploseDo implements ToDo {
     }
 
     public void toDo() {
-		fr.implodeTextAutomaton(fst);
-	}
+        fr.implodeTextAutomaton(fst);
+    }
 }
