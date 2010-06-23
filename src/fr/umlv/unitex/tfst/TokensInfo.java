@@ -37,24 +37,33 @@ public class TokensInfo {
     public static int getTokenLength(int n) {
         return info[2*n+1];
     }
+
+    private static ArrayList<String> tokens=new ArrayList<String>(); 
     
-    public static void loadTokensInfo(File f) throws FileNotFoundException {
+    public static void loadTokensInfo(File f,String sentence) throws FileNotFoundException {
         Scanner scanner=new Scanner(f,"UTF-16");
         ArrayList<Integer> l=new ArrayList<Integer>();
+        tokens.clear();
+        int currentPos=0;
         while (scanner.hasNextInt()) {
             int n=scanner.nextInt();
             if (n<0) {
                 throw new AssertionError("Negative token number: "+n);
             }
+            /* Reading token number */
             l.add(n);
             if (!scanner.hasNextInt()) {
                 throw new AssertionError("Invalid token info file");
             }
+            /* Reading token length */
             n=scanner.nextInt();
             if (n<-1) {
                 throw new AssertionError("Invalid token bound: "+n+" ; should be >=-1");
             }
             l.add(n);
+            /* Then we compute the token itself */
+            tokens.add(sentence.substring(currentPos,currentPos+n));
+            currentPos=currentPos+n;
         }
         if (scanner.hasNext()) {
             throw new AssertionError("Invalid token info file");
@@ -65,5 +74,16 @@ public class TokensInfo {
         for (int i=0;i<size;i++) {
             info[i]=l.get(i);
         }
+        if (currentPos!=sentence.length()) {
+        	throw new IllegalStateException("Inconsistency in sentence tokens");
+        }
     }
+
+	public static String getTokenSequence(int start, int end) {
+		StringBuilder b=new StringBuilder();
+		for (int i=start;i<=end;i++) {
+			b.append(tokens.get(i));
+		}
+		return b.toString();
+	}
 }
