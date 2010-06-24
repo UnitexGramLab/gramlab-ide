@@ -594,8 +594,8 @@ les id originaux tirés des fichiers source, respectivement target */
                             if (nignore > 0) break;
                             // XXX: what's going on here?
 
-                            s = ((Integer) divStack.pop()).intValue();
-                            p = ((Integer) divStack.pop()).intValue();
+                            s = (Integer) divStack.pop();
+                            p = (Integer) divStack.pop();
 
                             //p = 0; // reset number of id for paragraphes
 
@@ -603,10 +603,10 @@ les id originaux tirés des fichiers source, respectivement target */
                             /* B.G. 12/12/2006 :
                       je change complètement le calcul des longueurs des divisions...
                    */
-                            divLengthMother = ((Integer) divStack.pop()).intValue();
+                            divLengthMother = (Integer) divStack.pop();
 
                             /* B.G 12/12/2006 */
-                            d = ((Integer) divStack.pop()).intValue();
+                            d = (Integer) divStack.pop();
                             curdiv = (String) divStack.pop();
 
 

@@ -656,7 +656,7 @@ public class Cognates {
 
 
         for (; iInd.hasNext();) {
-            i1 = ((Integer) iInd.next()).intValue();
+            i1 = (Integer) iInd.next();
             res.setIgnoreSource(i1 + 1);
             // Il faut, là encore empêcher le meilleur chemin de sauter par dessus
             // la colonne i1+1.
@@ -679,7 +679,7 @@ public class Cognates {
 
 
         for (; iInd.hasNext();) {
-            i1 = ((Integer) iInd.next()).intValue();
+            i1 = (Integer) iInd.next();
             res.setIgnoreTarget(i1 + 1);
             // Il faut, là encore empêcher le meilleur chemin de sauter par dessus
             // la ligne i1+1.

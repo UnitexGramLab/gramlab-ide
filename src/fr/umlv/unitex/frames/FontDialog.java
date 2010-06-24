@@ -119,7 +119,7 @@ public class FontDialog extends JDialog {
         Integer j = (Integer) (sizeList.getSelectedValue());
         if (j != null) {
             size.setText(j + "");
-            info.size = j.intValue();
+            info.size = j;
         }
         /* updating font */
         info.font = new Font(name.getText(), fontStyle, (int) (info.size / 0.72));
@@ -320,7 +320,7 @@ public class FontDialog extends JDialog {
                 String s = (String) (scriptList.getSelectedValue());
                 if (s == null) return;
                 script.setText(s);
-                switch (ranges.get(s).intValue()) {
+                switch (ranges.get(s)) {
                     default:
                         example.setText("AaBbCc");
                         break;
@@ -355,6 +355,6 @@ public class FontDialog extends JDialog {
             }
         });
         scriptList.setSelectedIndex(0);
-	}
+    }
 
 }
