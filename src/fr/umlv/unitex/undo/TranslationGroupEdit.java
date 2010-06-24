@@ -20,58 +20,59 @@
  */
 package fr.umlv.unitex.undo;
 
-import java.util.ArrayList;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 import javax.swing.undo.AbstractUndoableEdit;
-
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import java.util.ArrayList;
 
 /**
  * Class used to save the state of the graph before translate boxes
- * 
+ *
  * @author Decreton Julien
  */
 public class TranslationGroupEdit extends AbstractUndoableEdit {
-	/** boxes selected in the graph */
-	private ArrayList<GenericGraphBox> selectedBoxes;
-	/** length of X, Y shift in pixels */
-	private int x, y;
+    /**
+     * boxes selected in the graph
+     */
+    private final ArrayList<GenericGraphBox> selectedBoxes;
+    /**
+     * length of X, Y shift in pixels
+     */
+    private final int x;
+    private final int y;
 
-	/**
-	 * @param selectedBoxes
-	 *            boes selected in the graph
-	 * @param x
-	 *            length of X shift in pixels
-	 * @param y
-	 *            length of Y shift in pixels
-	 */
-	@SuppressWarnings("unchecked")
-	public TranslationGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
-			int x, int y) {
-		this.selectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
-		this.x = x;
-		this.y = y;
-	}
+    /**
+     * @param selectedBoxes boes selected in the graph
+     * @param x             length of X shift in pixels
+     * @param y             length of Y shift in pixels
+     */
+    @SuppressWarnings("unchecked")
+    public TranslationGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
+                                int x, int y) {
+        this.selectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
+        this.x = x;
+        this.y = y;
+    }
 
-	@Override
-	public void undo() {
-		super.undo();
-		GenericGraphBox g;
-		int L = selectedBoxes.size();
-		for (int i = 0; i < L; i++) {
-			g = selectedBoxes.get(i);
-			g.translate(-x, -y);
-		}
-	}
+    @Override
+    public void undo() {
+        super.undo();
+        GenericGraphBox g;
+        int L = selectedBoxes.size();
+        for (int i = 0; i < L; i++) {
+            g = selectedBoxes.get(i);
+            g.translate(-x, -y);
+        }
+    }
 
-	@Override
-	public void redo() {
-		super.redo();
-		GenericGraphBox g;
-		int L = selectedBoxes.size();
-		for (int i = 0; i < L; i++) {
-			g = selectedBoxes.get(i);
-			g.translate(x, y);
+    @Override
+    public void redo() {
+        super.redo();
+        GenericGraphBox g;
+        int L = selectedBoxes.size();
+        for (int i = 0; i < L; i++) {
+            g = selectedBoxes.get(i);
+            g.translate(x, y);
 		}
 	}
 }

@@ -25,61 +25,63 @@ import java.io.File;
 
 /**
  * This class provides a file filter definition.
- * @author Sébastien Paumier
  *
+ * @author Sébastien Paumier
  */
 public class PersonalFileFilter extends javax.swing.filechooser.FileFilter {
 
-   private String ext;
-   private String description;
-   private boolean isDictionary= false;
+    private final String ext;
+    private final String description;
+    private boolean isDictionary = false;
 
-   /**
-    * Constructs a new <code>PersonalFileFilter</code> 
-    * @param ex the extension of accepted files
-    * @param descript a short description of accepted files
-    */
-   public PersonalFileFilter(String ex, String descript) {
-      super();
-      ext= ex;
-      description= descript;
-      if (ext.equals("dic"))
-         isDictionary= true;
-   }
+    /**
+     * Constructs a new <code>PersonalFileFilter</code>
+     *
+     * @param ex       the extension of accepted files
+     * @param descript a short description of accepted files
+     */
+    public PersonalFileFilter(String ex, String descript) {
+        super();
+        ext = ex;
+        description = descript;
+        if (ext.equals("dic"))
+            isDictionary = true;
+    }
 
-   /**
-    * Tests if a file is accepted by the filter
-    * @return <code>true</code> if the file is accepted, <code>false</code> otherwise 
-    */
-   @Override
-public boolean accept(File f) {
-      if (f.isDirectory()) {
-         return true;
-      }
-      if (isDictionary) {
-         String s= f.getName();
-         if (s.equals("dlf") || s.equals("dlc"))
+    /**
+     * Tests if a file is accepted by the filter
+     *
+     * @return <code>true</code> if the file is accepted, <code>false</code> otherwise
+     */
+    @Override
+    public boolean accept(File f) {
+        if (f.isDirectory()) {
             return true;
-      }
-      String s= Util.getExtensionInLowerCase(f);
-      if (s != null && (s.equals(ext)))
-         return true;
-      return false;
-   }
-   
-   /**
-    * @return a short description of accepted files 
-    */
-   @Override
-public String getDescription() {
-      return description;
-   }
+        }
+        if (isDictionary) {
+            String s = f.getName();
+            if (s.equals("dlf") || s.equals("dlc"))
+                return true;
+        }
+        String s = Util.getExtensionInLowerCase(f);
+        if (s != null && (s.equals(ext)))
+            return true;
+        return false;
+    }
 
-/**
- * @return the file filter extension
- */
-public String getExtension() {
-	return "."+ext;
-}
+    /**
+     * @return a short description of accepted files
+     */
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @return the file filter extension
+     */
+    public String getExtension() {
+        return "." + ext;
+    }
 
 }

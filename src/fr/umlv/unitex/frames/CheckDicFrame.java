@@ -21,115 +21,105 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CheckDicCommand;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"
  * menu of Unitex. The user can select the kind of dictionary he wants to check.
- * 
+ *
  * @author Sébastien Paumier
- * 
  */
 public class CheckDicFrame extends JInternalFrame {
 
-	private JRadioButton DELAS = new JRadioButton("DELAS/DELAC");
-	private JRadioButton DELAF = new JRadioButton("DELAF/DELACF", true);
+    private final JRadioButton DELAS = new JRadioButton("DELAS/DELAC");
+    private final JRadioButton DELAF = new JRadioButton("DELAF/DELACF", true);
 
-	CheckDicFrame() {
-		super("Check Dictionary Format", false, true);
-		constructPanel();
-		setContentPane(constructPanel());
-		setBounds(100, 100, 200, 100);
-		pack();
-	}
+    CheckDicFrame() {
+        super("Check Dictionary Format", false, true);
+        constructPanel();
+        setContentPane(constructPanel());
+        setBounds(100, 100, 200, 100);
+        pack();
+    }
 
-	private JPanel constructPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(constructLeftPanel(), BorderLayout.WEST);
-		panel.add(constructRightPanel(), BorderLayout.CENTER);
-		return panel;
-	}
+    private JPanel constructPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(constructLeftPanel(), BorderLayout.WEST);
+        panel.add(constructRightPanel(), BorderLayout.CENTER);
+        return panel;
+    }
 
-	private JPanel constructLeftPanel() {
-		JPanel leftPanel = new JPanel();
-		JPanel tmp = new JPanel(new GridLayout(2, 1));
-		tmp.setBorder(new TitledBorder("Dictionary Type:"));
-		DELAS.setSelected(false);
-		DELAF.setSelected(true);
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(DELAS);
-		bg.add(DELAF);
-		tmp.add(DELAS);
-		tmp.add(DELAF);
-		leftPanel.add(tmp);
-		return leftPanel;
-	}
+    private JPanel constructLeftPanel() {
+        JPanel leftPanel = new JPanel();
+        JPanel tmp = new JPanel(new GridLayout(2, 1));
+        tmp.setBorder(new TitledBorder("Dictionary Type:"));
+        DELAS.setSelected(false);
+        DELAF.setSelected(true);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(DELAS);
+        bg.add(DELAF);
+        tmp.add(DELAS);
+        tmp.add(DELAF);
+        leftPanel.add(tmp);
+        return leftPanel;
+    }
 
-	private JPanel constructRightPanel() {
-		JPanel rightPanel = new JPanel(new GridLayout(2, 1));
-		rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
-		Action goAction = new AbstractAction("Check Dictionary") {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				checkDELA();
-			}
-		};
-		JButton GO = new JButton(goAction);
-		Action cancelAction = new AbstractAction("Cancel") {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		};
-		JButton CANCEL = new JButton(cancelAction);
-		rightPanel.add(GO);
-		rightPanel.add(CANCEL);
-		return rightPanel;
-	}
+    private JPanel constructRightPanel() {
+        JPanel rightPanel = new JPanel(new GridLayout(2, 1));
+        rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
+        Action goAction = new AbstractAction("Check Dictionary") {
+            public void actionPerformed(ActionEvent arg0) {
+                setVisible(false);
+                checkDELA();
+            }
+        };
+        JButton GO = new JButton(goAction);
+        Action cancelAction = new AbstractAction("Cancel") {
+            public void actionPerformed(ActionEvent arg0) {
+                setVisible(false);
+            }
+        };
+        JButton CANCEL = new JButton(cancelAction);
+        rightPanel.add(GO);
+        rightPanel.add(CANCEL);
+        return rightPanel;
+    }
 
-	/**
-	 * Launches the <code>CheckDic</code> verification program, through the
-	 * creation of a <code>ProcessInfoFrame</code> object.
-	 * 
-	 */
-	void checkDELA() {
-		CheckDicCommand command = new CheckDicCommand().name(
-				Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
-				Config.getAlphabet());
+    /**
+     * Launches the <code>CheckDic</code> verification program, through the
+     * creation of a <code>ProcessInfoFrame</code> object.
+     */
+    void checkDELA() {
+        CheckDicCommand command = new CheckDicCommand().name(
+                Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
+                Config.getAlphabet());
 
-		File tmp = new File(Config.getCurrentDELA().getParentFile(),
-				"CHECK_DIC.TXT");
-		UnitexFrame.getFrameManager().closeCheckResultFrame();
-		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
-	}
+        File tmp = new File(Config.getCurrentDELA().getParentFile(),
+                "CHECK_DIC.TXT");
+        UnitexFrame.getFrameManager().closeCheckResultFrame();
+        Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
+    }
 
-	class CheckDicDo implements ToDo {
-		File results;
+    class CheckDicDo implements ToDo {
+        final File results;
 
-		public CheckDicDo(File s) {
-			results = s;
-		}
+        public CheckDicDo(File s) {
+            results = s;
+        }
 
-		public void toDo() {
-			UnitexFrame.getFrameManager().newCheckResultFrame(results);
-		}
+        public void toDo() {
+            UnitexFrame.getFrameManager().newCheckResultFrame(results);
+        }
 	}
 
 }

@@ -40,9 +40,9 @@ import java.io.File;
  */
 public class TranscodeOneFileDialog extends JDialog {
 
-    JRadioButton replace = new JRadioButton("Replace", true);
-    private JLabel line1 = new JLabel();
-    private JLabel line2 = new JLabel();
+    final JRadioButton replace = new JRadioButton("Replace", true);
+    private final JLabel line1 = new JLabel();
+    private final JLabel line2 = new JLabel();
 
     File file;
     ToDo toDo;

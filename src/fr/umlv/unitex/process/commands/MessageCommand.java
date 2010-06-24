@@ -24,26 +24,25 @@ package fr.umlv.unitex.process.commands;
 
 /**
  * @author Sébastien Paumier
- *  
  */
 public class MessageCommand extends CommandBuilder {
 
-	private String message;
-	
-	public MessageCommand(String mess,boolean errorMessage) {
-		super("");
-		if (errorMessage) type=ERROR_MESSAGE;
-		else type=MESSAGE;
-		message=mess;
-	}
-	
-	public MessageCommand(String mess) {
-		this(mess,false);
-	}
-	
-	public String getMessage() {
-		return message;
-	}
+    private final String message;
+
+    public MessageCommand(String mess, boolean errorMessage) {
+        super("");
+        if (errorMessage) type = ERROR_MESSAGE;
+        else type = MESSAGE;
+        message = mess;
+    }
+
+    public MessageCommand(String mess) {
+        this(mess, false);
+    }
+
+    public String getMessage() {
+        return message;
+    }
 
 
 }

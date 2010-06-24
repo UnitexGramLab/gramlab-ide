@@ -25,16 +25,16 @@ import java.util.EventObject;
 
 public class GraphTextEvent extends EventObject {
 
-	/* null content means that we want to make the text component non editable */
-	String content;
-	
-	public GraphTextEvent(Object source,String content) {
-		super(source);
-		this.content=content;
-	}
-	
-	public String getContent() {
-		return content;
-	}
-	
+    /* null content means that we want to make the text component non editable */
+    final String content;
+
+    public GraphTextEvent(Object source, String content) {
+        super(source);
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
 }

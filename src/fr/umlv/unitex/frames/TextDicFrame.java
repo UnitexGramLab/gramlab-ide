@@ -40,12 +40,12 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 public class TextDicFrame extends JInternalFrame {
-    BigTextList dlf = new BigTextList(true);
-    BigTextList dlc = new BigTextList(true);
-    BigTextList err = new BigTextList();
-    JLabel dlfLabel = new JLabel("");
-    JLabel dlcLabel = new JLabel("");
-    JLabel errLabel = new JLabel("");
+    final BigTextList dlf = new BigTextList(true);
+    final BigTextList dlc = new BigTextList(true);
+    final BigTextList err = new BigTextList();
+    final JLabel dlfLabel = new JLabel("");
+    final JLabel dlcLabel = new JLabel("");
+    final JLabel errLabel = new JLabel("");
 
     TextDicFrame() {
         super("", true, true, true, true);

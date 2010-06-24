@@ -21,83 +21,94 @@
 
 package fr.umlv.unitex.undo;
 
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
+
+import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import javax.swing.undo.AbstractUndoableEdit;
-
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
-
 /**
- *  class uses to save the state of the graph before a boxes' text edit
+ * class uses to save the state of the graph before a boxes' text edit
+ *
  * @author Decreton Julien
  */
 public class BoxGroupTextEdit extends AbstractUndoableEdit {
 
-	/** boxes selected in the graph */
-	private ArrayList<GenericGraphBox> selectedBoxes;
-	/** boxes selected in the graph before adding a transition */
-	private ArrayList<GenericGraphBox> oldSelectedBoxes;
-	/** hash map of the selected boxes and the text before the box group text edit action*/
-	private HashMap<GenericGraphBox,String> selectedBoxesAndOldString;
-	/** replacement string of each selected box of the graph */
-	private String remplacementString;
-	/** area where the graph is drawn */
-	private GenericGraphicalZone zone ;
-	
-	/**
-	 * Contructs an edit to redo and undo a boxes' text edition
-	 * @param selectedBoxes selected boxes before the boxes' text edit
-	 * @param s the text to add in all the boxes
-	 * @param zone the zone where boxes are drawn 
-	 */
-	@SuppressWarnings("unchecked")
-	public BoxGroupTextEdit(ArrayList<GenericGraphBox> selectedBoxes, String s, GenericGraphicalZone zone) {	
-		this.selectedBoxes = selectedBoxes;
-		oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
-		selectedBoxesAndOldString = new HashMap<GenericGraphBox,String>();
-		remplacementString = s;
-		this.zone = zone;
-		
-		// save for each boxe their text
-		for( Iterator it = selectedBoxes.iterator(); it.hasNext(); ){
-			GenericGraphBox g = (GenericGraphBox)it.next();
-			//if( g.TYPE == GenericGraphBox.NORMAL )
-			selectedBoxesAndOldString.put(g,g.getContent());
-		}
-		
-	}
+    /**
+     * boxes selected in the graph
+     */
+    private final ArrayList<GenericGraphBox> selectedBoxes;
+    /**
+     * boxes selected in the graph before adding a transition
+     */
+    private final ArrayList<GenericGraphBox> oldSelectedBoxes;
+    /**
+     * hash map of the selected boxes and the text before the box group text edit action
+     */
+    private final HashMap<GenericGraphBox, String> selectedBoxesAndOldString;
+    /**
+     * replacement string of each selected box of the graph
+     */
+    private final String remplacementString;
+    /**
+     * area where the graph is drawn
+     */
+    private final GenericGraphicalZone zone;
 
-	@Override
-	public void undo(){
-		super.undo();
-		Set<GenericGraphBox> keys = selectedBoxesAndOldString.keySet();
-		
-		// add old text in each boxes
-		for(Iterator<GenericGraphBox> it = keys.iterator() ; it.hasNext() ; ){
-			GenericGraphBox g = it.next();
-			String text = selectedBoxesAndOldString.get(g);
-			g.setContent(text);
-			g.setSelected(true);
-			selectedBoxes.add(g);
-			zone.initText(g.getContent());
-		}
-		
-	}
-	
-	@Override
-	public void redo(){
-		super.redo();
-		
-		// add old text in all boxes
-		for(Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext(); ){
-			GenericGraphBox g = it.next();
-			g.setContent(remplacementString);
-			g.setSelected(true);
-			selectedBoxes.add(g);
+    /**
+     * Contructs an edit to redo and undo a boxes' text edition
+     *
+     * @param selectedBoxes selected boxes before the boxes' text edit
+     * @param s             the text to add in all the boxes
+     * @param zone          the zone where boxes are drawn
+     */
+    @SuppressWarnings("unchecked")
+    public BoxGroupTextEdit(ArrayList<GenericGraphBox> selectedBoxes, String s, GenericGraphicalZone zone) {
+        this.selectedBoxes = selectedBoxes;
+        oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes.clone();
+        selectedBoxesAndOldString = new HashMap<GenericGraphBox, String>();
+        remplacementString = s;
+        this.zone = zone;
+
+        // save for each boxe their text
+        for (Iterator it = selectedBoxes.iterator(); it.hasNext();) {
+            GenericGraphBox g = (GenericGraphBox) it.next();
+            //if( g.TYPE == GenericGraphBox.NORMAL )
+            selectedBoxesAndOldString.put(g, g.getContent());
+        }
+
+    }
+
+    @Override
+    public void undo() {
+        super.undo();
+        Set<GenericGraphBox> keys = selectedBoxesAndOldString.keySet();
+
+        // add old text in each boxes
+        for (Iterator<GenericGraphBox> it = keys.iterator(); it.hasNext();) {
+            GenericGraphBox g = it.next();
+            String text = selectedBoxesAndOldString.get(g);
+            g.setContent(text);
+            g.setSelected(true);
+            selectedBoxes.add(g);
+            zone.initText(g.getContent());
+        }
+
+    }
+
+    @Override
+    public void redo() {
+        super.redo();
+
+        // add old text in all boxes
+        for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
+            GenericGraphBox g = it.next();
+            g.setContent(remplacementString);
+            g.setSelected(true);
+            selectedBoxes.add(g);
 			zone.initText(g.getContent());			
 		}
 	}

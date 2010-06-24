@@ -40,7 +40,8 @@ public class Div {
 
     private Vector Linking = new Vector(); //links of sentences within a text
     private Vector Links = new Vector(); //links of the two texts
-    int spMax, tpMax;
+    final int spMax;
+    final int tpMax;
     int cpSrc = 0, cpTar = 0;
     int level = 0; // counter for saving the current level
 

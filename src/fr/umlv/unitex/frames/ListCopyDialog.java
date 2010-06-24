@@ -20,78 +20,70 @@
  */
 package fr.umlv.unitex.frames;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import fr.umlv.unitex.graphrendering.ContextsInfo;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
-import fr.umlv.unitex.graphrendering.ContextsInfo;
-
 /**
  * This class describes a <code>JPanel</code> that allows the user to set left
  * and right contexts for multiple word copies. This object is designed to be
  * inserted into a dialog box.
- * 
+ *
  * @author Sébastien Paumier
- * 
  */
 public class ListCopyDialog extends JDialog {
 
-	
-	ContextsInfo info;
-	JTextField left, right;
 
-	/**
-	 * Constructs a new empty <code>ListCopyDialog</code>
-	 * 
-	 */
-	public ListCopyDialog() {
-		super(UnitexFrame.mainFrame,true);
-		JPanel p=new JPanel(new GridLayout(3, 1));
-		p.setBorder(new EmptyBorder(10, 10, 10, 10));
-		p.add(new JLabel("Choose your left and right contexts:"));
-		left = new JTextField(5);
-		left.setHorizontalAlignment(SwingConstants.RIGHT);
-		right = new JTextField(5);
-		JPanel inputPanel = new JPanel();
-		inputPanel.setLayout(new FlowLayout());
-		inputPanel.add(left);
-		inputPanel.add(new JLabel("item"));
-		inputPanel.add(right);
-		p.add(inputPanel);
-		JButton ok=new JButton("OK");
-		ok.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				info=new ContextsInfo(left.getText(),right.getText());
-				setVisible(false);
-			}
-		});
-		
-		JPanel down=new JPanel();
-		down.add(ok);
-		p.add(down);
-		setContentPane(p);
-		pack();
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				info=new ContextsInfo(left.getText(),right.getText());
-			}
-		});
-		setLocationRelativeTo(UnitexFrame.mainFrame);
-	}
+    ContextsInfo info;
+    final JTextField left;
+    final JTextField right;
 
-	public ContextsInfo getContextsInfo() {
-		return info;
+    /**
+     * Constructs a new empty <code>ListCopyDialog</code>
+     */
+    public ListCopyDialog() {
+        super(UnitexFrame.mainFrame, true);
+        JPanel p = new JPanel(new GridLayout(3, 1));
+        p.setBorder(new EmptyBorder(10, 10, 10, 10));
+        p.add(new JLabel("Choose your left and right contexts:"));
+        left = new JTextField(5);
+        left.setHorizontalAlignment(SwingConstants.RIGHT);
+        right = new JTextField(5);
+        JPanel inputPanel = new JPanel();
+        inputPanel.setLayout(new FlowLayout());
+        inputPanel.add(left);
+        inputPanel.add(new JLabel("item"));
+        inputPanel.add(right);
+        p.add(inputPanel);
+        JButton ok = new JButton("OK");
+        ok.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                info = new ContextsInfo(left.getText(), right.getText());
+                setVisible(false);
+            }
+        });
+
+        JPanel down = new JPanel();
+        down.add(ok);
+        p.add(down);
+        setContentPane(p);
+        pack();
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                info = new ContextsInfo(left.getText(), right.getText());
+            }
+        });
+        setLocationRelativeTo(UnitexFrame.mainFrame);
+    }
+
+    public ContextsInfo getContextsInfo() {
+        return info;
 	}
 }

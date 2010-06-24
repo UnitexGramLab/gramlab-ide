@@ -21,263 +21,256 @@
 
 package fr.umlv.unitex.editor.ui;
 
+import fr.umlv.unitex.editor.EditionTextArea;
+import fr.umlv.unitex.editor.ReplacementTargetException;
+import fr.umlv.unitex.editor.TargetException;
+
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
-import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.text.BadLocationException;
-
-import fr.umlv.unitex.editor.EditionTextArea;
-import fr.umlv.unitex.editor.ReplacementTargetException;
-import fr.umlv.unitex.editor.TargetException;
-
 
 public class DictionaryFindPanel extends AbstractFindpanel {
 
-	ButtonModel modelCano,
-		modelUp,
-		modelGram,
-		modelDown,
-		modelFl,
-		modelFlCode,
-		modelBegin;
+    final ButtonModel modelCano;
+    final ButtonModel modelUp;
+    final ButtonModel modelGram;
+    final ButtonModel modelDown;
+    final ButtonModel modelFl;
+    final ButtonModel modelFlCode;
+    final ButtonModel modelBegin;
 
-	public DictionaryFindPanel(final EditionTextArea text) {
-		super(text);
+    public DictionaryFindPanel(final EditionTextArea text) {
+        super(text);
 
-		// search options	
-		final ButtonGroup bgS = new ButtonGroup();
+        // search options
+        final ButtonGroup bgS = new ButtonGroup();
 
-		JRadioButton rdUp = new JRadioButton("Search up");
-		rdUp.setMnemonic('u');
-		modelUp = rdUp.getModel();
-		bgS.add(rdUp);
+        JRadioButton rdUp = new JRadioButton("Search up");
+        rdUp.setMnemonic('u');
+        modelUp = rdUp.getModel();
+        bgS.add(rdUp);
 
 
-		JCheckBox chkCano = new JCheckBox("Canonical form");
-		chkCano.setMnemonic('c');
-		modelCano = chkCano.getModel();
-		
+        JCheckBox chkCano = new JCheckBox("Canonical form");
+        chkCano.setMnemonic('c');
+        modelCano = chkCano.getModel();
 
-		JCheckBox chkGram = new JCheckBox("Grammatical code");
-		chkGram.setMnemonic('m');
-		modelGram = chkGram.getModel();
-		
 
-		JRadioButton rdDown = new JRadioButton("Search down", true);
-		rdDown.setMnemonic('d');
-		modelDown = rdDown.getModel();
-		bgS.add(rdDown);
-	
+        JCheckBox chkGram = new JCheckBox("Grammatical code");
+        chkGram.setMnemonic('m');
+        modelGram = chkGram.getModel();
 
-		JRadioButton rdBegin = new JRadioButton("Search from begining");
-		rdBegin.setMnemonic('b');
-		modelBegin = rdBegin.getModel();
-		bgS.add(rdBegin);
-		rdBegin.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent arg0) {
-				text.setCaretPosition(0);
-			}
+        JRadioButton rdDown = new JRadioButton("Search down", true);
+        rdDown.setMnemonic('d');
+        modelDown = rdDown.getModel();
+        bgS.add(rdDown);
 
-		});
-		
 
-		JCheckBox chkFl = new JCheckBox("Inflected form");
-		chkFl.setMnemonic('c');
-		modelFl = chkFl.getModel();
-	
+        JRadioButton rdBegin = new JRadioButton("Search from begining");
+        rdBegin.setMnemonic('b');
+        modelBegin = rdBegin.getModel();
+        bgS.add(rdBegin);
+        rdBegin.addActionListener(new ActionListener() {
 
-		JCheckBox chkFlCode = new JCheckBox("Flexional code");
-		chkFlCode.setMnemonic('x');
-		modelFlCode = chkFlCode.getModel();
-		
-		
-		po.add(rdBegin);
-		po.add(chkGram);
-		po.add(chkCano);
-		po.add(rdUp);
-		po.add(chkFl);
-		po.add(chkFlCode);
-		po.add(rdDown);
-		
-		
-	
-		
-		// find
-		final ActionListener findAction = new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                text.setCaretPosition(0);
+            }
 
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (modelBegin.isSelected())
-						bgS.setSelected(modelDown, true);
+        });
 
-					String key = docFind.getText(0, docFind.getLength());
-					text.dictionaryFindNext(
-						modelUp.isSelected(),
-						(modelGram.isSelected() || modelFlCode.isSelected()),
-						modelGram.isSelected(),
-						modelFl.isSelected(),
-						modelCano.isSelected(),
-						key);
-				} catch (BadLocationException ex) {
-					warning("Bad Location Exception:\n" + ex.getMessage());
-				} catch (KeyErrorException ex) {
-					warning(ex.getMessage());
-				}
-			}
-		};		
-		btFind.addActionListener(findAction);
-		
 
-		// find next when enter is pressed		
-		txtFind.addKeyListener(new KeyAdapter() {
+        JCheckBox chkFl = new JCheckBox("Inflected form");
+        chkFl.setMnemonic('c');
+        modelFl = chkFl.getModel();
 
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if( e.getKeyCode() == KeyEvent.VK_ENTER  )
-				findAction.actionPerformed(null);
-			}
-			
-		}
-		);
-		
-		btRplNext.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int start = text.getSelectionStart();
-				int end = text.getSelectionEnd();
-				//int selectionSize = end - start;
 
-				try {
+        JCheckBox chkFlCode = new JCheckBox("Flexional code");
+        chkFlCode.setMnemonic('x');
+        modelFlCode = chkFlCode.getModel();
 
-					// get the replament word
-					String replacement =
-						docReplace.getText(0, docReplace.getLength());
 
-					// replace	
-					text.setSelection(start, end, modelUp.isSelected());
-					text.replaceSelection(replacement);
-					text.setSelection(
-						start,
-						start + replacement.length(),
-						modelUp.isSelected());
+        po.add(rdBegin);
+        po.add(chkGram);
+        po.add(chkCano);
+        po.add(rdUp);
+        po.add(chkFl);
+        po.add(chkFlCode);
+        po.add(rdDown);
 
-					String key = docFind.getText(0, docFind.getLength());
-					text.dictionaryFindNext(
-						modelUp.isSelected(),
-						(modelGram.isSelected() || modelFlCode.isSelected()),
-						modelGram.isSelected(),
-						modelFl.isSelected(),
-						modelCano.isSelected(),
-						key);
 
-				} catch (BadLocationException ble) {
-					warning("Bad Location Exception\n" + ble.getMessage());
-				} catch (KeyErrorException ex) {
-					warning(ex.getMessage());
-				}
-			}
+        // find
+        final ActionListener findAction = new ActionListener() {
 
-		});
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (modelBegin.isSelected())
+                        bgS.setSelected(modelDown, true);
 
-		ActionListener replaceAction = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+                    String key = docFind.getText(0, docFind.getLength());
+                    text.dictionaryFindNext(
+                            modelUp.isSelected(),
+                            (modelGram.isSelected() || modelFlCode.isSelected()),
+                            modelGram.isSelected(),
+                            modelFl.isSelected(),
+                            modelCano.isSelected(),
+                            key);
+                } catch (BadLocationException ex) {
+                    warning("Bad Location Exception:\n" + ex.getMessage());
+                } catch (KeyErrorException ex) {
+                    warning(ex.getMessage());
+                }
+            }
+        };
+        btFind.addActionListener(findAction);
 
-				int start = text.getSelectionStart();
-				int end = text.getSelectionEnd();
-				//int selectionSize = end - start;
 
-				try {
+        // find next when enter is pressed
+        txtFind.addKeyListener(new KeyAdapter() {
 
-					// get the replament word
-					String replacement =
-						docReplace.getText(0, docReplace.getLength());
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    findAction.actionPerformed(null);
+            }
 
-					// replace	
-					text.setSelection(start, end, modelUp.isSelected());
-					text.replaceSelection(replacement);
-					text.setSelection(
-						start,
-						start + replacement.length(),
-						modelUp.isSelected());
+        }
+        );
 
-				} catch (BadLocationException ble) {
-					warning("Bad Location Exception:\n" + ble.getMessage());
-				}
-			}
-		};	
-		btReplace.addActionListener(replaceAction);
-		
-		btcntO.addActionListener(new ActionListener() {
+        btRplNext.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                int start = text.getSelectionStart();
+                int end = text.getSelectionEnd();
+                //int selectionSize = end - start;
 
-			public void actionPerformed(ActionEvent arg0) {
+                try {
 
-				try {
+                    // get the replament word
+                    String replacement =
+                            docReplace.getText(0, docReplace.getLength());
 
-					String key = docFind.getText(0, docFind.getLength());
-					count.setText(
-						new Integer(
-							text.countAll(
-								key,
-								modelUp.isSelected(),
-								modelGram.isSelected(),
-								modelGram.isSelected()))
-							.toString());
+                    // replace
+                    text.setSelection(start, end, modelUp.isSelected());
+                    text.replaceSelection(replacement);
+                    text.setSelection(
+                            start,
+                            start + replacement.length(),
+                            modelUp.isSelected());
 
-				} catch (BadLocationException e) {
-					warning("Bad Location Exception:\n" + e.getMessage());
-				} catch (KeyErrorException e) {
-					warning(e.getMessage());
-				}
+                    String key = docFind.getText(0, docFind.getLength());
+                    text.dictionaryFindNext(
+                            modelUp.isSelected(),
+                            (modelGram.isSelected() || modelFlCode.isSelected()),
+                            modelGram.isSelected(),
+                            modelFl.isSelected(),
+                            modelCano.isSelected(),
+                            key);
 
-			}
+                } catch (BadLocationException ble) {
+                    warning("Bad Location Exception\n" + ble.getMessage());
+                } catch (KeyErrorException ex) {
+                    warning(ex.getMessage());
+                }
+            }
 
-		});
-		
-		
+        });
 
-		// replace all
-		ActionListener replaceAll = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+        ActionListener replaceAction = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-				try {
+                int start = text.getSelectionStart();
+                int end = text.getSelectionEnd();
+                //int selectionSize = end - start;
 
-					String key = docFind.getText(0, docFind.getLength());
-					String rkey = docReplace.getText(0, docFind.getLength());
-					text.replaceAll(
-						key,
-						rkey,
-						modelUp.isSelected(),
-						(modelGram.isSelected() || modelFlCode.isSelected()),
-						modelGram.isSelected());
-				} catch (BadLocationException ble) {
-					warning("Bad Location Exception:\n" + ble.getMessage());
-				} catch (TargetException te) {
-					warning(te.getMessage());
-				} catch (ReplacementTargetException rte) {
-					warning(rte.getMessage());
-				}
-			}
-		};
-		btReplaceAll.addActionListener(replaceAll);	
-	}
+                try {
 
-	/**
-	* Generate message dialogue box 
-	* @param message
-	**/
-	@Override
-	protected void warning(String message) {
-		JOptionPane.showMessageDialog(
-			text,
-			message,
-			"Warning",
-			JOptionPane.INFORMATION_MESSAGE);
+                    // get the replament word
+                    String replacement =
+                            docReplace.getText(0, docReplace.getLength());
+
+                    // replace
+                    text.setSelection(start, end, modelUp.isSelected());
+                    text.replaceSelection(replacement);
+                    text.setSelection(
+                            start,
+                            start + replacement.length(),
+                            modelUp.isSelected());
+
+                } catch (BadLocationException ble) {
+                    warning("Bad Location Exception:\n" + ble.getMessage());
+                }
+            }
+        };
+        btReplace.addActionListener(replaceAction);
+
+        btcntO.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+
+                try {
+
+                    String key = docFind.getText(0, docFind.getLength());
+                    count.setText(
+                            new Integer(
+                                    text.countAll(
+                                            key,
+                                            modelUp.isSelected(),
+                                            modelGram.isSelected(),
+                                            modelGram.isSelected()))
+                                    .toString());
+
+                } catch (BadLocationException e) {
+                    warning("Bad Location Exception:\n" + e.getMessage());
+                } catch (KeyErrorException e) {
+                    warning(e.getMessage());
+                }
+
+            }
+
+        });
+
+
+        // replace all
+        ActionListener replaceAll = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                try {
+
+                    String key = docFind.getText(0, docFind.getLength());
+                    String rkey = docReplace.getText(0, docFind.getLength());
+                    text.replaceAll(
+                            key,
+                            rkey,
+                            modelUp.isSelected(),
+                            (modelGram.isSelected() || modelFlCode.isSelected()),
+                            modelGram.isSelected());
+                } catch (BadLocationException ble) {
+                    warning("Bad Location Exception:\n" + ble.getMessage());
+                } catch (TargetException te) {
+                    warning(te.getMessage());
+                } catch (ReplacementTargetException rte) {
+                    warning(rte.getMessage());
+                }
+            }
+        };
+        btReplaceAll.addActionListener(replaceAll);
+    }
+
+    /**
+     * Generate message dialogue box
+     *
+     * @param message
+     */
+    @Override
+    protected void warning(String message) {
+        JOptionPane.showMessageDialog(
+                text,
+                message,
+                "Warning",
+                JOptionPane.INFORMATION_MESSAGE);
 	}
 }

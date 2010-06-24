@@ -61,10 +61,10 @@ import java.util.regex.PatternSyntaxException;
  */
 public class TextAutomatonFrame extends JInternalFrame {
 
-    TagFilter filter = new TagFilter();
-    TfstTableModel tfstTableModel = new TfstTableModel(filter);
-    JTextArea sentenceTextArea = new JTextArea();
-    JLabel sentence_count_label = new JLabel(" 0 sentence");
+    final TagFilter filter = new TagFilter();
+    final TfstTableModel tfstTableModel = new TfstTableModel(filter);
+    final JTextArea sentenceTextArea = new JTextArea();
+    final JLabel sentence_count_label = new JLabel(" 0 sentence");
     boolean elagON;
     JSpinner spinner;
     SpinnerNumberModel spinnerModel;
@@ -73,7 +73,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     JLabel ruleslabel;
     TfstGraphicalZone graphicalZone;
 
-    GraphListener listener = new GraphListener() {
+    final GraphListener listener = new GraphListener() {
         public void graphChanged(boolean m) {
             if (m) setModified(true);
             repaint();
@@ -84,7 +84,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         return graphicalZone;
     }
 
-    TfstTextField textfield = new TfstTextField(25, this);
+    final TfstTextField textfield = new TfstTextField(25, this);
     boolean modified = false;
     int sentence_count = 0;
     File sentence_text;
@@ -833,7 +833,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 
 class loadSentenceDo implements ToDo {
-    TextAutomatonFrame frame;
+    final TextAutomatonFrame frame;
 
     loadSentenceDo(TextAutomatonFrame f) {
         frame = f;
@@ -846,8 +846,8 @@ class loadSentenceDo implements ToDo {
 
 
 class ImploseDo implements ToDo {
-    File fst;
-    TextAutomatonFrame fr;
+    final File fst;
+    final TextAutomatonFrame fr;
 
     public ImploseDo(TextAutomatonFrame frame, File f) {
         fst = f;

@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex.stats;
 
+import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,44 +29,42 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.table.AbstractTableModel;
-
 public class StatisticsTableModelMode2 extends AbstractTableModel {
 
-    private String[] columnNames=new String[] {"Collocate","Occurrences in corpus",
-            "Occurrence in match context","z-score"};
-    
+    private final String[] columnNames = new String[]{"Collocate", "Occurrences in corpus",
+            "Occurrence in match context", "z-score"};
+
     class Mode2Data {
         String match;
         int n;
         int n2;
         float z;
     }
-    
-    private ArrayList<Mode2Data> data=new ArrayList<Mode2Data>();
-    
-    
+
+    private final ArrayList<Mode2Data> data = new ArrayList<Mode2Data>();
+
+
     public StatisticsTableModelMode2(File file) {
         try {
-            FileInputStream stream=new FileInputStream(file);
-            
-            Scanner scanner=new Scanner(stream,"UTF-16");
+            FileInputStream stream = new FileInputStream(file);
+
+            Scanner scanner = new Scanner(stream, "UTF-16");
             scanner.useDelimiter("\r\n|\t");
             while (scanner.hasNext()) {
-                Mode2Data d=new Mode2Data();
-                d.match=scanner.next();
+                Mode2Data d = new Mode2Data();
+                d.match = scanner.next();
                 if (!scanner.hasNextInt()) {
                     throw new IOException();
                 }
-                d.n=scanner.nextInt();
+                d.n = scanner.nextInt();
                 if (!scanner.hasNextInt()) {
                     throw new IOException();
                 }
-                d.n2=scanner.nextInt();
+                d.n2 = scanner.nextInt();
                 if (!scanner.hasNextFloat()) {
                     throw new IOException();
                 }
-                d.z=scanner.nextFloat();
+                d.z = scanner.nextFloat();
                 data.add(d);
             }
             scanner.close();
@@ -75,10 +74,10 @@ public class StatisticsTableModelMode2 extends AbstractTableModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
-    
-    
+
+
     public int getColumnCount() {
         return columnNames.length;
     }
@@ -88,13 +87,18 @@ public class StatisticsTableModelMode2 extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Mode2Data d=data.get(rowIndex);
+        Mode2Data d = data.get(rowIndex);
         switch (columnIndex) {
-        case 0: return d.match;
-        case 1: return d.n;
-        case 2: return d.n2;
-        case 3: return d.z;
-        default: throw new IllegalArgumentException("Invalid columnIndex: "+columnIndex);
+            case 0:
+                return d.match;
+            case 1:
+                return d.n;
+            case 2:
+                return d.n2;
+            case 3:
+                return d.z;
+            default:
+                throw new IllegalArgumentException("Invalid columnIndex: " + columnIndex);
         }
     }
 
@@ -102,15 +106,20 @@ public class StatisticsTableModelMode2 extends AbstractTableModel {
     public String getColumnName(int column) {
         return columnNames[column];
     }
-    
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
-        case 0: return String.class;
-        case 1: return Integer.class;
-        case 2: return Integer.class;
-        case 3: return Float.class;
-        default: throw new IllegalArgumentException("Invalid columnIndex: "+columnIndex);
+            case 0:
+                return String.class;
+            case 1:
+                return Integer.class;
+            case 2:
+                return Integer.class;
+            case 3:
+                return Float.class;
+            default:
+                throw new IllegalArgumentException("Invalid columnIndex: " + columnIndex);
         }
     }
 }

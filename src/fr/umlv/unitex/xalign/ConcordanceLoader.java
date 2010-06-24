@@ -21,92 +21,91 @@
 
 package fr.umlv.unitex.xalign;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
 
 /**
  * This is a loader for alignement concordance files.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class ConcordanceLoader {
 
-	
-	static class MatchedSentence {
-		int sentenceNumber;
-		Occurrence occurrence;
-		
-		MatchedSentence(int sentenceNumber,Occurrence occurrence) {
-			this.sentenceNumber=sentenceNumber;
-			this.occurrence=occurrence;
-		}
-	}
-	
-	
-	/**
-	 * This method loads a concordance file supposed to be a UTF8-encoded one,
-	 * made of lines as follows:
-	 * 
-	 * A B C
-	 * 
-	 * where A is the number of the sentence containing the match,
-	 * and B and C are the start and end positions of the match in characters
-	 * from the beginning of the sentence.
-	 */
-	public static void load(final File file,final ConcordanceModel model) {
-		new SwingWorker<Void,MatchedSentence>() {
 
-			@Override
-			protected Void doInBackground() throws Exception {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					public void run() {
-						model.clear();
-					}});
-				Scanner scanner=null;
-				try {
-					scanner=new Scanner(file,"UTF8");
-					int sentence,start,end;
-					while (scanner.hasNextInt()) {
-						/* -1 because in concord.ind files, sentences are numbered from 1 */
-						sentence=scanner.nextInt()-1;
-						if (!scanner.hasNextInt()) {
-							System.err.println("Invalid line in concordance file "+file.getName());
-							return null;
-						}
-						start=scanner.nextInt();
-						if (!scanner.hasNextInt()) {
-							System.err.println("Invalid line in concordance file "+file.getName());
-							return null;
-						}
-						end=scanner.nextInt()-1;
-						if (!scanner.hasNextLine()) {
-							System.err.println("Invalid line in concordance file "+file.getName());
-							return null;
-						}
-						/* We skip the occurrence itself */
-						scanner.nextLine();
-						publish(new MatchedSentence(sentence,new Occurrence(start,end)));
-					}
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} finally {
-					if (scanner!=null) scanner.close();
-				}
-				setProgress(100);
-				return null;
-			}
-			
-			@Override
-			protected void process(java.util.List<MatchedSentence> chunks) {
-				for (MatchedSentence s:chunks) {
-					model.addMatch(s.sentenceNumber,s.occurrence);
-				}
-			}	
+    static class MatchedSentence {
+        final int sentenceNumber;
+        final Occurrence occurrence;
+
+        MatchedSentence(int sentenceNumber, Occurrence occurrence) {
+            this.sentenceNumber = sentenceNumber;
+            this.occurrence = occurrence;
+        }
+    }
+
+
+    /**
+     * This method loads a concordance file supposed to be a UTF8-encoded one,
+     * made of lines as follows:
+     * <p/>
+     * A B C
+     * <p/>
+     * where A is the number of the sentence containing the match,
+     * and B and C are the start and end positions of the match in characters
+     * from the beginning of the sentence.
+     */
+    public static void load(final File file, final ConcordanceModel model) {
+        new SwingWorker<Void, MatchedSentence>() {
+
+            @Override
+            protected Void doInBackground() throws Exception {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run() {
+                        model.clear();
+                    }
+                });
+                Scanner scanner = null;
+                try {
+                    scanner = new Scanner(file, "UTF8");
+                    int sentence, start, end;
+                    while (scanner.hasNextInt()) {
+                        /* -1 because in concord.ind files, sentences are numbered from 1 */
+                        sentence = scanner.nextInt() - 1;
+                        if (!scanner.hasNextInt()) {
+                            System.err.println("Invalid line in concordance file " + file.getName());
+                            return null;
+                        }
+                        start = scanner.nextInt();
+                        if (!scanner.hasNextInt()) {
+                            System.err.println("Invalid line in concordance file " + file.getName());
+                            return null;
+                        }
+                        end = scanner.nextInt() - 1;
+                        if (!scanner.hasNextLine()) {
+                            System.err.println("Invalid line in concordance file " + file.getName());
+                            return null;
+                        }
+                        /* We skip the occurrence itself */
+                        scanner.nextLine();
+                        publish(new MatchedSentence(sentence, new Occurrence(start, end)));
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (scanner != null) scanner.close();
+                }
+                setProgress(100);
+                return null;
+            }
+
+            @Override
+            protected void process(java.util.List<MatchedSentence> chunks) {
+                for (MatchedSentence s : chunks) {
+                    model.addMatch(s.sentenceNumber, s.occurrence);
+                }
+            }
 		}.execute();
 	}
 			

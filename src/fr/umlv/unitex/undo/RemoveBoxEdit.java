@@ -21,65 +21,73 @@
 
 package fr.umlv.unitex.undo;
 
-import java.util.ArrayList;
-
-import javax.swing.undo.AbstractUndoableEdit;
-
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
+import javax.swing.undo.AbstractUndoableEdit;
+import java.util.ArrayList;
+
 /**
- * class uses to save the state of the graph before remove a boxe 
- * @author Decreton Julien
+ * class uses to save the state of the graph before remove a boxe
  *
+ * @author Decreton Julien
  */
 public class RemoveBoxEdit extends AbstractUndoableEdit {
 
-	/** List of transition to a boxe */
-	private ArrayList<GenericGraphBox> transitionsToBoxe;
-	/** boxes of the graph */
-	private ArrayList<GenericGraphBox> boxes;
-	/** boxe to remove */
-	private GenericGraphBox boxe;
-	/** zone where the graph is drawn */
-	private GenericGraphicalZone zone;
-	/** if the boxe to remove have a selftransition or not */	
-	private boolean itSelfTransition = false;
+    /**
+     * List of transition to a boxe
+     */
+    private final ArrayList<GenericGraphBox> transitionsToBoxe;
+    /**
+     * boxes of the graph
+     */
+    private final ArrayList<GenericGraphBox> boxes;
+    /**
+     * boxe to remove
+     */
+    private final GenericGraphBox boxe;
+    /**
+     * zone where the graph is drawn
+     */
+    private final GenericGraphicalZone zone;
+    /**
+     * if the boxe to remove have a selftransition or not
+     */
+    private boolean itSelfTransition = false;
 
-	/**
- 	* 
- 	* @param boxe the boxe to remove
- 	* @param boxes the boxes of the graph
- 	* @param zone the zone where remove the boxe
- 	*/
-	public RemoveBoxEdit(
-		GenericGraphBox boxe,
-		ArrayList<GenericGraphBox> boxes,
-		GenericGraphicalZone zone) {
-		this.boxes = boxes;
-		this.boxe = boxe;
-		this.zone = zone;
-		transitionsToBoxe = zone.getTransitionTo(boxe);		
-		itSelfTransition = boxe.hasTransitionToItself();
-		
-	}
+    /**
+     * @param boxe  the boxe to remove
+     * @param boxes the boxes of the graph
+     * @param zone  the zone where remove the boxe
+     */
+    public RemoveBoxEdit(
+            GenericGraphBox boxe,
+            ArrayList<GenericGraphBox> boxes,
+            GenericGraphicalZone zone) {
+        this.boxes = boxes;
+        this.boxe = boxe;
+        this.zone = zone;
+        transitionsToBoxe = zone.getTransitionTo(boxe);
+        itSelfTransition = boxe.hasTransitionToItself();
 
-	@Override
-	public void undo() {
-		super.undo();
-		boxes.add(boxe);
-		// add thes transition which pointed on this boxe
-		for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
-			GenericGraphBox g = transitionsToBoxe.get(i);
-			g.addTransitionTo(boxe);
-		}
-		if( itSelfTransition ) boxe.addTransitionTo(boxe);
-	}
+    }
 
-	@Override
-	public void redo() {
-		super.redo();
-		boxes.remove(boxe);
+    @Override
+    public void undo() {
+        super.undo();
+        boxes.add(boxe);
+        // add thes transition which pointed on this boxe
+        for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
+            GenericGraphBox g = transitionsToBoxe.get(i);
+            g.addTransitionTo(boxe);
+        }
+        if (itSelfTransition) boxe.addTransitionTo(boxe);
+    }
+
+    @Override
+    public void redo() {
+        super.redo();
+        boxes.remove(boxe);
 		zone.removeTransitionTo(boxe);		
 	}
 

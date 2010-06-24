@@ -41,15 +41,15 @@ public class Sentences {
 
     private Dist srcLengths, tarLengths; //lengths of sentences of two texts
 
-    public static Vector Linking = new Vector(); //links of sentences
+    public static final Vector Linking = new Vector(); //links of sentences
     //within a text
-    public static Vector Links = new Vector(); //links of the two texts
+    public static final Vector Links = new Vector(); //links of the two texts
 
     static int nbLink = 0;
 
     static int nbPaquet = 0;
 
-    private static Cognates xalignResults = new Cognates();
+    private static final Cognates xalignResults = new Cognates();
     // B.G. the results of the alignment
     // process are of the exact same type
     // as the cognates.
