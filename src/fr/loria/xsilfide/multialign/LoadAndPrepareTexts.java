@@ -498,7 +498,7 @@ les id originaux tirés des fichiers source, respectivement target */
                         */
                                 fakeid = curdiv + "d" + (++d);
                                 divStack.push(curdiv);
-                                divStack.push(new Integer(d));
+                                divStack.push(d);
                                 d = 0;
 
                                 ids.put(fakeid, id);
@@ -506,13 +506,13 @@ les id originaux tirés des fichiers source, respectivement target */
                                 id = fakeid;
                                 allIds.add(fakeid);
                                 divTmp.addElement(fakeid);
-                                divTmp.addElement(new Integer(0));
+                                divTmp.addElement(0);
 
                                 /* B.G. 12/12/2006 */
-                                divStack.push(new Integer(divLength));
+                                divStack.push(divLength);
                                 divLength = 0;
-                                divStack.push(new Integer(p));
-                                divStack.push(new Integer(s));
+                                divStack.push(p);
+                                divStack.push(s);
                                 p = 0;
                                 s = 0;
 
@@ -578,7 +578,7 @@ les id originaux tirés des fichiers source, respectivement target */
                             if (nignore > 0) break;
                             Vector elt = new Vector();
                             elt.addElement(idBuf.pop());
-                            elt.addElement(new Integer(stcLength));
+                            elt.addElement(stcLength);
                             vstc.addElement(elt);
                             break;
                         case PARAG:
@@ -587,7 +587,7 @@ les id originaux tirés des fichiers source, respectivement target */
                             para = false;
                             Vector vp = new Vector();
                             vp.addElement(idBuf.pop());
-                            vp.addElement(new Integer(paraLength));
+                            vp.addElement(paraLength);
                             vpara.addElement(vp);
                             break;
                         case DIV:
@@ -613,15 +613,15 @@ les id originaux tirés des fichiers source, respectivement target */
                             Vector tmp = (Vector) ((Vector) vdiv.elementAt(divLevel - 1)).lastElement();
                             if (divLength > 0) {
                                 // it's the case we're at the last level of division tree
-                                tmp.setElementAt(new Integer(divLength), 1);
+                                tmp.setElementAt(divLength, 1);
 
                                 if (divLevel > 1) {
                                     Vector v = (Vector) ((Vector) vdiv.elementAt(divLevel - 2)).lastElement();
-                                    v.setElementAt(new Integer(divLength), 1);
+                                    v.setElementAt(divLength, 1);
                                 }
                             } else if (divLevel > 1) {
                                 Vector v = (Vector) ((Vector) vdiv.elementAt(divLevel - 2)).lastElement();
-                                v.setElementAt(new Integer(divLength), 1);
+                                v.setElementAt(divLength, 1);
                             }
                             //divLength = 0;
                             divLength = divLengthMother + divLength;
