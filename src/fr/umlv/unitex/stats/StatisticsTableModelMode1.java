@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex.stats;
 
+import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,33 +29,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.swing.table.AbstractTableModel;
-
 public class StatisticsTableModelMode1 extends AbstractTableModel {
 
-    private String[] columnNames=new String[] {"Collocate","Occurrences"};
-    
+    private final String[] columnNames = new String[]{"Collocate", "Occurrences"};
+
     class Mode1Data {
         String match;
         int n;
     }
-    
-    private ArrayList<Mode1Data> data=new ArrayList<Mode1Data>();
-    
-    
+
+    private final ArrayList<Mode1Data> data = new ArrayList<Mode1Data>();
+
+
     public StatisticsTableModelMode1(File file) {
         try {
-            FileInputStream stream=new FileInputStream(file);
-            
-            Scanner scanner=new Scanner(stream,"UTF-16");
+            FileInputStream stream = new FileInputStream(file);
+
+            Scanner scanner = new Scanner(stream, "UTF-16");
             scanner.useDelimiter("\r\n|\t");
             while (scanner.hasNext()) {
-                Mode1Data d=new Mode1Data();
-                d.match=scanner.next();
+                Mode1Data d = new Mode1Data();
+                d.match = scanner.next();
                 if (!scanner.hasNextInt()) {
                     throw new IOException();
                 }
-                d.n=scanner.nextInt();
+                d.n = scanner.nextInt();
                 data.add(d);
             }
             scanner.close();
@@ -64,10 +63,10 @@ public class StatisticsTableModelMode1 extends AbstractTableModel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }
-    
-    
+
+
     public int getColumnCount() {
         return columnNames.length;
     }
@@ -77,11 +76,14 @@ public class StatisticsTableModelMode1 extends AbstractTableModel {
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Mode1Data d=data.get(rowIndex);
+        Mode1Data d = data.get(rowIndex);
         switch (columnIndex) {
-        case 0: return d.match;
-        case 1: return d.n;
-        default: throw new IllegalArgumentException("Invalid columnIndex: "+columnIndex);
+            case 0:
+                return d.match;
+            case 1:
+                return d.n;
+            default:
+                throw new IllegalArgumentException("Invalid columnIndex: " + columnIndex);
         }
     }
 
@@ -89,13 +91,16 @@ public class StatisticsTableModelMode1 extends AbstractTableModel {
     public String getColumnName(int column) {
         return columnNames[column];
     }
-    
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
-        case 0: return String.class;
-        case 1: return Integer.class;
-        default: throw new IllegalArgumentException("Invalid columnIndex: "+columnIndex);
+            case 0:
+                return String.class;
+            case 1:
+                return Integer.class;
+            default:
+                throw new IllegalArgumentException("Invalid columnIndex: " + columnIndex);
         }
     }
 

@@ -33,8 +33,8 @@ import java.awt.event.ActionListener;
  * @author Sébastien Paumier
  */
 public class GraphSizeDialog extends JDialog {
-    JTextField Width = new JTextField();
-    JTextField Height = new JTextField();
+    final JTextField Width = new JTextField();
+    final JTextField Height = new JTextField();
     final static int resolutionDPI = Toolkit.getDefaultToolkit()
             .getScreenResolution();
     float X;

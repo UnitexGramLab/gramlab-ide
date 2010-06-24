@@ -36,14 +36,14 @@ import java.util.ArrayList;
 
 public class XAlignPane extends JPanel {
 
-    JList list1;
-    JList list2;
-    MyBean bean1;
-    MyBean bean2;
-    JComponent middle;
-    JScrollPane scrollPane1;
-    JScrollPane scrollPane2;
-    XAlignModel alignmentModel;
+    final JList list1;
+    final JList list2;
+    final MyBean bean1;
+    final MyBean bean2;
+    final JComponent middle;
+    final JScrollPane scrollPane1;
+    final JScrollPane scrollPane2;
+    final XAlignModel alignmentModel;
 
     public XAlignPane(final ConcordanceModel model1, final ConcordanceModel model2,
                       XAlignModel model, Font sourceFont, Font targetFont) {
@@ -284,15 +284,15 @@ public class XAlignPane extends JPanel {
 
             class Alignment {
 
-                Line2D.Double line;
+                final Line2D.Double line;
 
                 /*
                      * We consider alignements between list cell indices, not
                      * sentence numbers.
                      */
-                int srcIndex;
+                final int srcIndex;
 
-                int destIndex;
+                final int destIndex;
 
                 Alignment(Line2D.Double line, int src, int dest) {
                     this.line = line;
@@ -301,7 +301,7 @@ public class XAlignPane extends JPanel {
                 }
             }
 
-            ArrayList<Alignment> alignments = new ArrayList<Alignment>();
+            final ArrayList<Alignment> alignments = new ArrayList<Alignment>();
 
             private final Dimension preferredSize = new Dimension(100, 100);
 
@@ -373,10 +373,10 @@ public class XAlignPane extends JPanel {
                 return preferredSize;
             }
 
-            BasicStroke stroke = new BasicStroke(10, BasicStroke.CAP_ROUND,
+            final BasicStroke stroke = new BasicStroke(10, BasicStroke.CAP_ROUND,
                     BasicStroke.JOIN_ROUND);
 
-            Composite composite = AlphaComposite.getInstance(
+            final Composite composite = AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER, 0.7f);
 
             @Override
@@ -685,6 +685,6 @@ public class XAlignPane extends JPanel {
 
         public void setScrollAdjusting(boolean scrollAdjusting) {
             this.scrollAdjusting = scrollAdjusting;
-		}
-	}
+        }
+    }
 }

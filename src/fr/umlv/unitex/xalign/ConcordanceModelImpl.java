@@ -30,12 +30,12 @@ import java.util.List;
 
 public class ConcordanceModelImpl implements ConcordanceModel {
 
-    private XMLTextModel model;
+    private final XMLTextModel model;
     private DisplayMode mode = DisplayMode.TEXT;
-    private boolean source;
+    private final boolean source;
 
     /* This array contains the indices of matched sentences */
-    private ArrayList<Integer> matchedSentences;
+    private final ArrayList<Integer> matchedSentences;
 
     /* This array contains the indices of sentences that are aligned
       * with matched sentences of the other text */
@@ -49,7 +49,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
     /* The real type of occurrenceArray is List<Occurrence>[], but
       * we can't declare such a thing. */
     Object[] occurrenceArray;
-    private XAlignModel xAlignModel;
+    private final XAlignModel xAlignModel;
 
 
     public ConcordanceModelImpl(XMLTextModel model, boolean source, XAlignModel xAlignModel) {
@@ -232,7 +232,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
     }
 
 
-    StringBuilder builder = new StringBuilder();
+    final StringBuilder builder = new StringBuilder();
     private final static int PLAIN = 0;
     private final static int MATCH = 1;
 
@@ -325,7 +325,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
     }
 
 
-    ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+    final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
     public void addListDataListener(ListDataListener l) {
         listeners.add(l);
@@ -495,7 +495,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
         ArrayList<Integer> copy = new ArrayList<Integer>();
         for (Integer i : matchedSentences) {
             copy.add(i);
-		}
-		return copy;
-	}
+        }
+        return copy;
+    }
 }

@@ -23,24 +23,25 @@ package fr.umlv.unitex.xalign;
 
 /**
  * This class represents a sentence from a XAlign XML text file.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class Sentence {
-	
-	/**
-	 * XML id of the sentence.
-	 */
-	String ID;
-	
-	/**
-	 * Sentence bounds as offsets in the XML file.
-	 */
-	long start,end;
-	
-	Sentence(String ID,int start,int end) {
-		this.ID=ID;
-		this.start=start;
-		this.end=end;
-	}
+
+    /**
+     * XML id of the sentence.
+     */
+    final String ID;
+
+    /**
+     * Sentence bounds as offsets in the XML file.
+     */
+    final long start;
+    final long end;
+
+    Sentence(String ID, int start, int end) {
+        this.ID = ID;
+        this.start = start;
+        this.end = end;
+    }
 }

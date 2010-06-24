@@ -60,14 +60,14 @@ import java.util.Vector;
 
 class ContraintesPoint {
     boolean coutForce;
-    Point cheminSpecial;
-    boolean cheminForceDestruction;
-    boolean cheminForceSubstitution;
-    boolean cheminForceInsertion;
-    boolean cheminForceContraction;
-    boolean cheminForceMelange;
-    boolean cheminForceExpansion;
-    boolean cheminForceUsed;
+    final Point cheminSpecial;
+    final boolean cheminForceDestruction;
+    final boolean cheminForceSubstitution;
+    final boolean cheminForceInsertion;
+    final boolean cheminForceContraction;
+    final boolean cheminForceMelange;
+    final boolean cheminForceExpansion;
+    final boolean cheminForceUsed;
 
     public ContraintesPoint() {
         coutForce = false;
@@ -92,14 +92,14 @@ class ContraintesPoint {
 
 @SuppressWarnings("unchecked")
 public class ContraintesChemin {
-    private int coutsForces[][];
-    private Vector[][] cheminsForces; // c'est un ou logique entre ces chemins...
-    private Point[][] cheminSpecial; // un seul possible.
+    private final int[][] coutsForces;
+    private final Vector[][] cheminsForces; // c'est un ou logique entre ces chemins...
+    private final Point[][] cheminSpecial; // un seul possible.
 
     //private Hashtable table;
-    private ContraintesPoint[][] table;
-    private boolean ignorerDansSource[];
-    private boolean ignorerDansCible[];
+    private final ContraintesPoint[][] table;
+    private final boolean[] ignorerDansSource;
+    private final boolean[] ignorerDansCible;
 
     /*public ContraintesChemin(int coutF[][], Vector cheminF[][]){
 	int i = coutF.length;

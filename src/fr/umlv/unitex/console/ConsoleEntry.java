@@ -23,27 +23,27 @@ package fr.umlv.unitex.console;
 
 public class ConsoleEntry {
 
-    String content;
+    final String content;
     String error;
-    
-    /* 0=no error button, 1=error down button, 2=error up button, 3=nothing */ 
-    int status;
-    
-    boolean systemMsg;
 
-    /* The log ID associated to the command, or null if the command wasn't logged */ 
-    String logID; 
-    
-    public ConsoleEntry(String command,boolean isRealCommand,boolean systemMsg,String logID) {
-        this.content=command;
-        this.status=isRealCommand?0:3;
-        this.systemMsg=systemMsg;
-        this.logID=logID;
-        if (logID!=null && !isRealCommand) {
-        	throw new IllegalArgumentException("Should not have a log ID for a non Unitex command");
+    /* 0=no error button, 1=error down button, 2=error up button, 3=nothing */
+    int status;
+
+    final boolean systemMsg;
+
+    /* The log ID associated to the command, or null if the command wasn't logged */
+    final String logID;
+
+    public ConsoleEntry(String command, boolean isRealCommand, boolean systemMsg, String logID) {
+        this.content = command;
+        this.status = isRealCommand ? 0 : 3;
+        this.systemMsg = systemMsg;
+        this.logID = logID;
+        if (logID != null && !isRealCommand) {
+            throw new IllegalArgumentException("Should not have a log ID for a non Unitex command");
         }
     }
-    
+
     public String getContent() {
         return content;
     }
@@ -59,27 +59,27 @@ public class ConsoleEntry {
     public void setStatus(int status) {
         this.status = status;
     }
-    
+
     public String getlogID() {
-    	return logID;
+        return logID;
     }
 
     public void addErrorMessage(String s) {
-        if (error==null) {
-            error=s;
-            status=1;
+        if (error == null) {
+            error = s;
+            status = 1;
         } else {
             if (!error.endsWith("\r\n") && !error.endsWith("\n")) {
-                error=error+"\n";
+                error = error + "\n";
             }
-            error=error+s;
+            error = error + s;
         }
     }
-    
+
     public String getErrorMessage() {
         return error;
     }
-    
+
     @Override
     public String toString() {
         return getContent();

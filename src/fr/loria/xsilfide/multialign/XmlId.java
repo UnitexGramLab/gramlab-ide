@@ -37,65 +37,69 @@
 package fr.loria.xsilfide.multialign;
 
 
-@SuppressWarnings("unchecked") 
+@SuppressWarnings("unchecked")
 class XmlId implements Comparable {
     static LoadAndPrepareTexts lpt = null;
-    private String uri;
+    private final String uri;
     private String localName;
 
-    
-    public XmlId(String u, String n, LoadAndPrepareTexts lpte){
-	uri = u;
-	localName = n;
-	lpt = lpte;
+
+    public XmlId(String u, String n, LoadAndPrepareTexts lpte) {
+        uri = u;
+        localName = n;
+        lpt = lpte;
     }
-    public XmlId(XmlId x){
-	uri = x.uri;
-	localName = x.localName;
+
+    public XmlId(XmlId x) {
+        uri = x.uri;
+        localName = x.localName;
     }
-    public String getUri(){
-	return uri;
+
+    public String getUri() {
+        return uri;
     }
-    public String getLocalName(){
-	return localName;
+
+    public String getLocalName() {
+        return localName;
     }
+
     @Override
-	public String toString(){
-	return uri+"#"+localName;
+    public String toString() {
+        return uri + "#" + localName;
     }
-    public void setLocalName(String ln){
-	localName = ln;
+
+    public void setLocalName(String ln) {
+        localName = ln;
     }
+
     // translation from an id as xalign computes them
     // to the id as they appear in the source and target files.
-    public XmlId internalToExternalId(){
-	if (getUri().equals(lpt.uriSource)){
-	    return new XmlId(getUri(), (String)lpt.idSrc.get(getLocalName()),
-			     lpt);
-	}
-	else if (getUri().equals(lpt.uriTarget)){
-	    return new XmlId(getUri(), (String)lpt.idTar.get(getLocalName()),
-			     lpt);
-	}
-	else return this;
+    public XmlId internalToExternalId() {
+        if (getUri().equals(lpt.uriSource)) {
+            return new XmlId(getUri(), (String) lpt.idSrc.get(getLocalName()),
+                    lpt);
+        } else if (getUri().equals(lpt.uriTarget)) {
+            return new XmlId(getUri(), (String) lpt.idTar.get(getLocalName()),
+                    lpt);
+        } else return this;
     }
-   
-    static int ordreDansTexte(String s1, String s2, boolean inSource){
-	return lpt.ordreDansTexte(s1, s2, inSource);
+
+    static int ordreDansTexte(String s1, String s2, boolean inSource) {
+        return lpt.ordreDansTexte(s1, s2, inSource);
     }
 
     // on veut ici l'ordre d'apparition dans le texte. 
     // il n'y a que lpt qui connaisse cet ordre
- 
-   public int compareTo(Object o){
-	XmlId xo = (XmlId)o;
 
-	if (lpt == null){
-	    return -1;
-	}
-	return lpt.ordreDansTexte(this, xo);
+    public int compareTo(Object o) {
+        XmlId xo = (XmlId) o;
+
+        if (lpt == null) {
+            return -1;
+        }
+        return lpt.ordreDansTexte(this, xo);
     }
-    
+
 }
 
  

@@ -41,11 +41,11 @@ import java.util.Hashtable;
  */
 public class FontDialog extends JDialog {
 
-    JTextField name = new JTextField(10);
-    JTextField style = new JTextField(10);
-    JTextField size = new JTextField("  ");
-    JTextField script = new JTextField(10);
-    JTextField example = new JTextField(6);
+    final JTextField name = new JTextField(10);
+    final JTextField style = new JTextField(10);
+    final JTextField size = new JTextField("  ");
+    final JTextField script = new JTextField(10);
+    final JTextField example = new JTextField(6);
     JList fontList;
     JList styleList;
     JList sizeList;

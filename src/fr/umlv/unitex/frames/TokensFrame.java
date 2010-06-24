@@ -20,123 +20,112 @@
  */
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.text.BigTextList;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+
 /**
  * This class describes a frame used to display current corpus's token lists.
- * 
+ *
  * @author Sébastien Paumier
- * 
  */
 public class TokensFrame extends JInternalFrame {
-	BigTextList text = new BigTextList(false);
+    final BigTextList text = new BigTextList(false);
 
-	TokensFrame() {
-		super("Token list", true, true, true, true);
-		JPanel top = new JPanel(new BorderLayout());
-		top.add(constructButtonsPanel(), BorderLayout.NORTH);
-		top.add(new JScrollPane(text), BorderLayout.CENTER);
-		setContentPane(top);
-		pack();
-		setBounds(50, 200, 300, 450);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameClosing(InternalFrameEvent e) {
-				try {
-					setIcon(true);
-				} catch (java.beans.PropertyVetoException e2) {
-					e2.printStackTrace();
-				}
-			}
-		});
-		Preferences.addTextFontListener(new FontListener() {
-			public void fontChanged(Font font) {
-				text.setFont(font);
-			}
-		});
-	}
+    TokensFrame() {
+        super("Token list", true, true, true, true);
+        JPanel top = new JPanel(new BorderLayout());
+        top.add(constructButtonsPanel(), BorderLayout.NORTH);
+        top.add(new JScrollPane(text), BorderLayout.CENTER);
+        setContentPane(top);
+        pack();
+        setBounds(50, 200, 300, 450);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                try {
+                    setIcon(true);
+                } catch (java.beans.PropertyVetoException e2) {
+                    e2.printStackTrace();
+                }
+            }
+        });
+        Preferences.addTextFontListener(new FontListener() {
+            public void fontChanged(Font font) {
+                text.setFont(font);
+            }
+        });
+    }
 
-	private JPanel constructButtonsPanel() {
-		JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
-		Action frequenceAction = new AbstractAction("By Frequence") {
-			public void actionPerformed(ActionEvent arg0) {
-				loadTokens(new File(Config.getCurrentSntDir(),
-						"tok_by_freq.txt"));
-				try {
-					setIcon(false);
-					setSelected(true);
-				} catch (java.beans.PropertyVetoException e2) {
-					e2.printStackTrace();
-				}
-			}
-		};
-		JButton byFrequence = new JButton(frequenceAction);
-		Action orderAction = new AbstractAction("By Char Order") {
-			public void actionPerformed(ActionEvent arg0) {
-				loadTokens(new File(Config.getCurrentSntDir(),
-						"tok_by_alph.txt"));
-				try {
-					setIcon(false);
-					setSelected(true);
-				} catch (java.beans.PropertyVetoException e2) {
-					e2.printStackTrace();
-				}
-			}
-		};
-		JButton byCharOrder = new JButton(orderAction);
-		JPanel tmp1 = new JPanel(new BorderLayout());
-		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tmp1.add(byFrequence, BorderLayout.CENTER);
-		JPanel tmp2 = new JPanel(new BorderLayout());
-		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		tmp2.add(byCharOrder, BorderLayout.CENTER);
-		buttonsPanel.add(tmp1);
-		buttonsPanel.add(tmp2);
-		return buttonsPanel;
-	}
+    private JPanel constructButtonsPanel() {
+        JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
+        Action frequenceAction = new AbstractAction("By Frequence") {
+            public void actionPerformed(ActionEvent arg0) {
+                loadTokens(new File(Config.getCurrentSntDir(),
+                        "tok_by_freq.txt"));
+                try {
+                    setIcon(false);
+                    setSelected(true);
+                } catch (java.beans.PropertyVetoException e2) {
+                    e2.printStackTrace();
+                }
+            }
+        };
+        JButton byFrequence = new JButton(frequenceAction);
+        Action orderAction = new AbstractAction("By Char Order") {
+            public void actionPerformed(ActionEvent arg0) {
+                loadTokens(new File(Config.getCurrentSntDir(),
+                        "tok_by_alph.txt"));
+                try {
+                    setIcon(false);
+                    setSelected(true);
+                } catch (java.beans.PropertyVetoException e2) {
+                    e2.printStackTrace();
+                }
+            }
+        };
+        JButton byCharOrder = new JButton(orderAction);
+        JPanel tmp1 = new JPanel(new BorderLayout());
+        tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
+        tmp1.add(byFrequence, BorderLayout.CENTER);
+        JPanel tmp2 = new JPanel(new BorderLayout());
+        tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
+        tmp2.add(byCharOrder, BorderLayout.CENTER);
+        buttonsPanel.add(tmp1);
+        buttonsPanel.add(tmp2);
+        return buttonsPanel;
+    }
 
-	/**
-	 * Loads a token list
-	 * 
-	 * @param file
-	 *            name of the token list file
-	 */
-	void loadTokens(File file) {
-		text.setFont(Config.getCurrentTextFont());
-		if (file.length() <= 2) {
-			text.setText(Config.EMPTY_FILE_MESSAGE);
-		} else {
-			text.load(file);
-		}
-	}
+    /**
+     * Loads a token list
+     *
+     * @param file name of the token list file
+     */
+    void loadTokens(File file) {
+        text.setFont(Config.getCurrentTextFont());
+        if (file.length() <= 2) {
+            text.setText(Config.EMPTY_FILE_MESSAGE);
+        } else {
+            text.load(file);
+        }
+    }
 
-	/**
-	 * Hides the frame
-	 * 
-	 */
-	void hideFrame() {
-		text.reset();
-		setVisible(false);
-		System.gc();
+    /**
+     * Hides the frame
+     */
+    void hideFrame() {
+        text.reset();
+        setVisible(false);
+        System.gc();
 	}
 }

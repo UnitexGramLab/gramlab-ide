@@ -34,9 +34,10 @@ package fr.loria.xsilfide.multialign;
 
 
 @SuppressWarnings("unchecked")
-class Alignement implements Comparable{
+class Alignement implements Comparable {
 
-    private XmlId pSource, pCible;
+    private final XmlId pSource;
+    private final XmlId pCible;
     private Alignement generatedFrom; // the alignement as specified
     // by the user which yields this one.
     // This occurs because an alignement
@@ -45,93 +46,102 @@ class Alignement implements Comparable{
     // englobing elements.
 
     public Alignement(String uriS, String uriC,
-		      String idS, String idC, LoadAndPrepareTexts lpt){
+                      String idS, String idC, LoadAndPrepareTexts lpt) {
 
-	pSource = new XmlId(uriS, idS, lpt);
-	pCible = new XmlId(uriC, idC, lpt);
-	generatedFrom = null;
+        pSource = new XmlId(uriS, idS, lpt);
+        pCible = new XmlId(uriC, idC, lpt);
+        generatedFrom = null;
     }
-    
-    
+
+
     /*public Alignement(Vector vSource, Vector vCible){
-      if (vSource.size() == 2){
-      pSource = new XmlId((String)vSource.elementAt(0),
-      (String)vSource.elementAt(1));
-      }
-      else{
-      pSource = new XmlId("",(String)vSource.elementAt(0));
-				   
-      }
-      if (vCible.size() == 2){
-      pCible = new XmlId((String)vCible.elementAt(0),
-      (String)vCible.elementAt(1));
-      }
-      else{
-      pCible = new XmlId("",(String)vCible.elementAt(0));
+    if (vSource.size() == 2){
+    pSource = new XmlId((String)vSource.elementAt(0),
+    (String)vSource.elementAt(1));
+    }
+    else{
+    pSource = new XmlId("",(String)vSource.elementAt(0));
 
-      }
-      };*/
-    public Alignement(XmlId ps, XmlId pc){
-	pSource = ps;
-	pCible = pc;
-	generatedFrom = null;
     }
-    public String getIdSource(){
-	return pSource.getLocalName();
+    if (vCible.size() == 2){
+    pCible = new XmlId((String)vCible.elementAt(0),
+    (String)vCible.elementAt(1));
     }
-    public void setIdSource(String newId){
-	pSource.setLocalName(newId);
+    else{
+    pCible = new XmlId("",(String)vCible.elementAt(0));
+
     }
-    public String getIdCible(){
-	return pCible.getLocalName();
+    };*/
+    public Alignement(XmlId ps, XmlId pc) {
+        pSource = ps;
+        pCible = pc;
+        generatedFrom = null;
     }
-    public void setIdCible(String newId){
-	pCible.setLocalName(newId);
+
+    public String getIdSource() {
+        return pSource.getLocalName();
     }
+
+    public void setIdSource(String newId) {
+        pSource.setLocalName(newId);
+    }
+
+    public String getIdCible() {
+        return pCible.getLocalName();
+    }
+
+    public void setIdCible(String newId) {
+        pCible.setLocalName(newId);
+    }
+
     @Override
-	public String toString(){
-	return "("+pSource+"<->"+pCible+")";
-	/* String res = "("+pSource+"<->"+pCible+")";
-	   if (getGeneratedFrom() == null){
-	   res = res + "from null";
-	   }
-	   else{
-	   res = res + "from "+ getFirstGeneratedFrom();
-	   }
-	   return res; */
+    public String toString() {
+        return "(" + pSource + "<->" + pCible + ")";
+        /* String res = "("+pSource+"<->"+pCible+")";
+         if (getGeneratedFrom() == null){
+         res = res + "from null";
+         }
+         else{
+         res = res + "from "+ getFirstGeneratedFrom();
+         }
+         return res; */
     }
-    public XmlId getXmlIdSource(){
-	return pSource;
+
+    public XmlId getXmlIdSource() {
+        return pSource;
     }
-    public XmlId getXmlIdTarget(){
-	return pCible;
+
+    public XmlId getXmlIdTarget() {
+        return pCible;
     }
 
 
-
-    // the alignments are sorted according to the order in which their 
+    // the alignments are sorted according to the order in which their
     // pSource appears in the source text.
-    public int compareTo(Object other){
-	return pSource.compareTo(((Alignement)other).getXmlIdSource());
+    public int compareTo(Object other) {
+        return pSource.compareTo(((Alignement) other).getXmlIdSource());
     }
 
-    public void setGeneratedFrom(Alignement a){
-	generatedFrom = a;
+    public void setGeneratedFrom(Alignement a) {
+        generatedFrom = a;
     }
-    public Alignement getGeneratedFrom(){
-	return generatedFrom;
+
+    public Alignement getGeneratedFrom() {
+        return generatedFrom;
     }
-    public Alignement getFirstGeneratedFrom(){
-	Alignement cour = this;
-	Alignement prec = cour;
-	while (cour != null){
-	    prec = cour;
-	    cour = cour.getGeneratedFrom();
-	}
-	return prec;
+
+    public Alignement getFirstGeneratedFrom() {
+        Alignement cour = this;
+        Alignement prec = cour;
+        while (cour != null) {
+            prec = cour;
+            cour = cour.getGeneratedFrom();
+        }
+        return prec;
     }
-    public Alignement duplicate(){
-	return new Alignement(new XmlId(getXmlIdSource()), new XmlId(getXmlIdTarget()));
+
+    public Alignement duplicate() {
+        return new Alignement(new XmlId(getXmlIdSource()), new XmlId(getXmlIdTarget()));
     }
 }
 

@@ -45,7 +45,7 @@ import java.io.PrintStream;
 public class MultiAlign {
     static private String inputAndResult;
 
-    public static int NDOTS = 80;
+    public static final int NDOTS = 80;
 
     private static PrintStream debugOut = null;
 

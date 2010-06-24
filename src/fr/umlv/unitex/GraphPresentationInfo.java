@@ -21,59 +21,59 @@
 
 package fr.umlv.unitex;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class GraphPresentationInfo {
 
-	public Color backgroundColor;
-	public Color foregroundColor;
-	public Color subgraphColor;
-	public Color selectedColor;
-	public Color commentColor;
-	public Color packageColor;
-	public Color contextColor;
-	public Color morphologicalModeColor;
-	public FontInfo input;
-	public FontInfo output;
-	public boolean date;
-	public boolean filename;
-	public boolean pathname;
-	public boolean frame;
-	public boolean rightToLeft;
-	public boolean antialiasing;
-	public String iconBarPosition;
+    public Color backgroundColor;
+    public Color foregroundColor;
+    public Color subgraphColor;
+    public Color selectedColor;
+    public Color commentColor;
+    public final Color packageColor;
+    public final Color contextColor;
+    public final Color morphologicalModeColor;
+    public FontInfo input;
+    public FontInfo output;
+    public boolean date;
+    public boolean filename;
+    public boolean pathname;
+    public boolean frame;
+    public boolean rightToLeft;
+    public boolean antialiasing;
+    public String iconBarPosition;
 
-	public GraphPresentationInfo(Color backgroundColor, Color foregroundColor,
-			Color subgraphColor, Color selectedColor, Color commentColor,
-			Color packageColor, Color contextColor,
-			Color morphologicalModeColor, FontInfo input, FontInfo output,
-			boolean date, boolean filename, boolean pathname, boolean frame,
-			boolean rightToLeft, boolean antialiasing, String iconBarPosition) {
-		this.backgroundColor = backgroundColor;
-		this.foregroundColor = foregroundColor;
-		this.subgraphColor = subgraphColor;
-		this.selectedColor = selectedColor;
-		this.commentColor = commentColor;
-		this.packageColor = packageColor;
-		this.contextColor = contextColor;
-		this.morphologicalModeColor = morphologicalModeColor;
-		this.input = input;
-		this.output = output;
-		this.date = date;
-		this.filename = filename;
-		this.pathname = pathname;
-		this.frame = frame;
-		this.rightToLeft = rightToLeft;
-		this.antialiasing = antialiasing;
-		this.iconBarPosition = iconBarPosition;
-	}
+    public GraphPresentationInfo(Color backgroundColor, Color foregroundColor,
+                                 Color subgraphColor, Color selectedColor, Color commentColor,
+                                 Color packageColor, Color contextColor,
+                                 Color morphologicalModeColor, FontInfo input, FontInfo output,
+                                 boolean date, boolean filename, boolean pathname, boolean frame,
+                                 boolean rightToLeft, boolean antialiasing, String iconBarPosition) {
+        this.backgroundColor = backgroundColor;
+        this.foregroundColor = foregroundColor;
+        this.subgraphColor = subgraphColor;
+        this.selectedColor = selectedColor;
+        this.commentColor = commentColor;
+        this.packageColor = packageColor;
+        this.contextColor = contextColor;
+        this.morphologicalModeColor = morphologicalModeColor;
+        this.input = input;
+        this.output = output;
+        this.date = date;
+        this.filename = filename;
+        this.pathname = pathname;
+        this.frame = frame;
+        this.rightToLeft = rightToLeft;
+        this.antialiasing = antialiasing;
+        this.iconBarPosition = iconBarPosition;
+    }
 
-	@Override
-	public GraphPresentationInfo clone() {
-		return new GraphPresentationInfo(backgroundColor, foregroundColor,
-				subgraphColor, selectedColor, commentColor, packageColor,
-				contextColor, morphologicalModeColor, input.clone(), output.clone(), date,
-				filename, pathname, frame, rightToLeft, antialiasing,
-				iconBarPosition);
-	}
+    @Override
+    public GraphPresentationInfo clone() {
+        return new GraphPresentationInfo(backgroundColor, foregroundColor,
+                subgraphColor, selectedColor, commentColor, packageColor,
+                contextColor, morphologicalModeColor, input.clone(), output.clone(), date,
+                filename, pathname, frame, rightToLeft, antialiasing,
+                iconBarPosition);
+    }
 }

@@ -21,30 +21,30 @@
 
 package fr.umlv.unitex.frames;
 
-import javax.swing.JDialog;
+import javax.swing.*;
 
 
 public class DialogFactory {
 
-	private JDialog dialog;
-	
-	private Class<?> clazz;
-	
-	DialogFactory(Class<?> clazz) {
-		this.clazz=clazz;
-	}
+    private JDialog dialog;
 
-	JDialog newDialog() {
-		if (dialog==null) {
-			try {
-				dialog=(JDialog) clazz.newInstance();
-			} catch (InstantiationException e) {
-				return null;
-			} catch (IllegalAccessException e) {
-				return null;
-			}
-		}
-		return dialog;
-	}
+    private final Class<?> clazz;
+
+    DialogFactory(Class<?> clazz) {
+        this.clazz = clazz;
+    }
+
+    JDialog newDialog() {
+        if (dialog == null) {
+            try {
+                dialog = (JDialog) clazz.newInstance();
+            } catch (InstantiationException e) {
+                return null;
+            } catch (IllegalAccessException e) {
+                return null;
+            }
+        }
+        return dialog;
+    }
 
 }

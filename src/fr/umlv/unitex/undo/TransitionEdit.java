@@ -20,43 +20,43 @@
  */
 package fr.umlv.unitex.undo;
 
-import javax.swing.undo.AbstractUndoableEdit;
-
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
+
+import javax.swing.undo.AbstractUndoableEdit;
 
 /**
  * class uses to save the state of the graph before add a transition
- * 
+ *
  * @author Decreton Julien
  */
 public class TransitionEdit extends AbstractUndoableEdit {
-	/** boxe from transition starts */
-	private GenericGraphBox srcBoxe,
-	/** boxe where tanstion go */
-	dstBoxe;
+    /**
+     * boxe from transition starts
+     */
+    private final GenericGraphBox srcBoxe;
+    private final GenericGraphBox /** boxe where tanstion go */
+            dstBoxe;
 
-	/**
-	 * constuct a Transition Edit
-	 * 
-	 * @param srcBoxe
-	 *            boxe from transition starts
-	 * @param dstBoxe
-	 *            boxe where tanstion go
-	 */
-	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
-		this.srcBoxe = srcBoxe;
-		this.dstBoxe = dstBoxe;
-	}
+    /**
+     * constuct a Transition Edit
+     *
+     * @param srcBoxe boxe from transition starts
+     * @param dstBoxe boxe where tanstion go
+     */
+    public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
+        this.srcBoxe = srcBoxe;
+        this.dstBoxe = dstBoxe;
+    }
 
-	@Override
-	public void undo() {
-		super.undo();
-		srcBoxe.addTransitionTo(dstBoxe);
-	}
+    @Override
+    public void undo() {
+        super.undo();
+        srcBoxe.addTransitionTo(dstBoxe);
+    }
 
-	@Override
-	public void redo() {
-		super.redo();
-		srcBoxe.addTransitionTo(dstBoxe);
+    @Override
+    public void redo() {
+        super.redo();
+        srcBoxe.addTransitionTo(dstBoxe);
 	}
 }

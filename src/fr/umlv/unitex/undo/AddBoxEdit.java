@@ -20,75 +20,79 @@
  */
 package fr.umlv.unitex.undo;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.undo.AbstractUndoableEdit;
-
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
+import javax.swing.undo.AbstractUndoableEdit;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * class uses to save the state of the graph before add a boxe
- * 
+ *
  * @author Decreton Julien
  */
 public class AddBoxEdit extends AbstractUndoableEdit {
-	/** boxes of the graph */
-	private ArrayList<GenericGraphBox> boxes;
-	/** boxe to add to the graph */
-	private GenericGraphBox boxe;
-	/** area where the graph is drawn */
-	private GenericGraphicalZone zone;
-	/** list of transition to the boxe */
-	private ArrayList<GenericGraphBox> transitionsToBoxe;
+    /**
+     * boxes of the graph
+     */
+    private final ArrayList<GenericGraphBox> boxes;
+    /**
+     * boxe to add to the graph
+     */
+    private final GenericGraphBox boxe;
+    /**
+     * area where the graph is drawn
+     */
+    private final GenericGraphicalZone zone;
+    /**
+     * list of transition to the boxe
+     */
+    private ArrayList<GenericGraphBox> transitionsToBoxe;
 
-	/**
-	 * contruct an edit to redo and undo an add boxe action
-	 * 
-	 * @param boxe
-	 *            the boxe to save for the do undo process
-	 * @param boxes
-	 *            the unit boxes of a graph
-	 * @param zone
-	 *            the zone where boxes are drawn
-	 */
-	public AddBoxEdit(GenericGraphBox boxe, ArrayList<GenericGraphBox> boxes,
-			GenericGraphicalZone zone) {
-		this.boxes = boxes;
-		this.boxe = boxe;
-		this.zone = zone;
-	}
+    /**
+     * contruct an edit to redo and undo an add boxe action
+     *
+     * @param boxe  the boxe to save for the do undo process
+     * @param boxes the unit boxes of a graph
+     * @param zone  the zone where boxes are drawn
+     */
+    public AddBoxEdit(GenericGraphBox boxe, ArrayList<GenericGraphBox> boxes,
+                      GenericGraphicalZone zone) {
+        this.boxes = boxes;
+        this.boxe = boxe;
+        this.zone = zone;
+    }
 
-	/**
-	 * undo action
-	 */
-	@Override
-	public void undo() {
-		super.undo();
-		GenericGraphBox g;
-		boxes.remove(boxe);
-		transitionsToBoxe = zone.getTransitionTo(boxe);
-		for (Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it
-				.hasNext();) {
-			g = it.next();
-			g.setSelected(true);
-		}
-		zone.removeTransitionTo(boxe);
-	}
+    /**
+     * undo action
+     */
+    @Override
+    public void undo() {
+        super.undo();
+        GenericGraphBox g;
+        boxes.remove(boxe);
+        transitionsToBoxe = zone.getTransitionTo(boxe);
+        for (Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it
+                .hasNext();) {
+            g = it.next();
+            g.setSelected(true);
+        }
+        zone.removeTransitionTo(boxe);
+    }
 
-	/**
-	 * redo action
-	 */
-	@Override
-	public void redo() {
-		super.redo();
-		GenericGraphBox g;
-		boxes.add(boxe);
-		// add old transition to boxe
-		for (Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it
-				.hasNext();) {
-			g = it.next();
+    /**
+     * redo action
+     */
+    @Override
+    public void redo() {
+        super.redo();
+        GenericGraphBox g;
+        boxes.add(boxe);
+        // add old transition to boxe
+        for (Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it
+                .hasNext();) {
+            g = it.next();
 			g.addTransitionTo(boxe);
 		}
 	}

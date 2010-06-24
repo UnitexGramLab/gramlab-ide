@@ -24,11 +24,12 @@ package fr.umlv.unitex.graphrendering;
 
 public class ContextsInfo {
 
-	public String left,right;
-	
-	public ContextsInfo(String left,String right) {
-		this.left=left;
-		this.right=right;
-	}
+    public final String left;
+    public final String right;
+
+    public ContextsInfo(String left, String right) {
+        this.left = left;
+        this.right = right;
+    }
 
 }
