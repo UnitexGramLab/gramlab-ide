@@ -368,7 +368,7 @@ public class ContraintesChemin {
     private boolean member(int x, Vector v) {
         for (Enumeration e = v.elements();
              e.hasMoreElements();) {
-            if (x == ((Integer) e.nextElement()).intValue()) {
+            if (x == (Integer) e.nextElement()) {
                 return true;
             }
         }
