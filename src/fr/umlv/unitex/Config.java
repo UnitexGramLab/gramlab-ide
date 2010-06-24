@@ -1564,29 +1564,29 @@ public class Config {
     }
 
 
-    private static ArrayList<LanguageListener> listeners = new ArrayList<LanguageListener>();
+    private static final ArrayList<LanguageListener> listeners = new ArrayList<LanguageListener>();
 
-    protected static boolean firing=false;
-	
-	public static void addLanguageListener(LanguageListener l) {
-		listeners.add(l);
-	}
+    protected static boolean firing = false;
 
-	public static void removeLanguageListener(LanguageListener l) {
-		if (firing) {
-			throw new IllegalStateException("Should not remove a listener while firing");
-		}
-		listeners.remove(l);
-	}
-	
-	protected static void fireLanguageChanged() {
-		firing=true;
-		try {
-			for (LanguageListener l:listeners) {
-				l.languageChanged();
-			}
-		} finally {
-			firing=false;
-		}
-	}
+    public static void addLanguageListener(LanguageListener l) {
+        listeners.add(l);
+    }
+
+    public static void removeLanguageListener(LanguageListener l) {
+        if (firing) {
+            throw new IllegalStateException("Should not remove a listener while firing");
+        }
+        listeners.remove(l);
+    }
+
+    protected static void fireLanguageChanged() {
+        firing = true;
+        try {
+            for (LanguageListener l : listeners) {
+                l.languageChanged();
+            }
+        } finally {
+            firing = false;
+        }
+    }
 }

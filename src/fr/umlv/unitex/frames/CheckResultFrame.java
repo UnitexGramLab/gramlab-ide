@@ -21,65 +21,59 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.io.File;
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.text.BigTextList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.text.BigTextList;
+import java.awt.*;
+import java.io.File;
 
 
 /**
  * This class describes a text frame that shows the results of dictionary
  * checkings.
- * 
+ *
  * @author Sébastien Paumier
- *  
  */
 public class CheckResultFrame extends JInternalFrame {
 
-	BigTextList text;
-
-    
-	CheckResultFrame() {
-		super("Check Results", true, true, true, true);
-		JPanel top = new JPanel(new BorderLayout());
-		top.setBorder(new EmptyBorder(2, 2, 2, 2));
-		text=new BigTextList();
-		JPanel middle = new JPanel(new BorderLayout());
-		middle.setBorder(BorderFactory.createLoweredBevelBorder());
-		middle.add(new JScrollPane(text), BorderLayout.CENTER);
-		top.add(middle, BorderLayout.CENTER);
-		setContentPane(top);
-		setBounds(100, 100, 500, 500);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameClosing(InternalFrameEvent e) {
-				text.reset();
-				setVisible(false);
-				System.gc();
-			}
-		});
-	}
+    final BigTextList text;
 
 
-	/**
-	 * Loads a text file.
-	 * 
-	 * @param f
-	 *            the name of the text file
-	 */
-	void load(File f) {
-		text.load(f);
-		text.setFont(Config.getCurrentTextFont());
+    CheckResultFrame() {
+        super("Check Results", true, true, true, true);
+        JPanel top = new JPanel(new BorderLayout());
+        top.setBorder(new EmptyBorder(2, 2, 2, 2));
+        text = new BigTextList();
+        JPanel middle = new JPanel(new BorderLayout());
+        middle.setBorder(BorderFactory.createLoweredBevelBorder());
+        middle.add(new JScrollPane(text), BorderLayout.CENTER);
+        top.add(middle, BorderLayout.CENTER);
+        setContentPane(top);
+        setBounds(100, 100, 500, 500);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosing(InternalFrameEvent e) {
+                text.reset();
+                setVisible(false);
+                System.gc();
+            }
+        });
+    }
+
+
+    /**
+     * Loads a text file.
+     *
+     * @param f the name of the text file
+     */
+    void load(File f) {
+        text.load(f);
+        text.setFont(Config.getCurrentTextFont());
 	}
 
 }

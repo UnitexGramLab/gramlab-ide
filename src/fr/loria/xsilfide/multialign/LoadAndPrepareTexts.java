@@ -167,10 +167,11 @@ les id originaux tirés des fichiers source, respectivement target */
     public Vector divSrc = new MyVectorSrc(), divTar = new MyVectorTar();//for division
 
     // SEAN: ID remapping.
-    public Hashtable idSrc = new Hashtable();
-    public Hashtable idTar = new Hashtable();
+    public final Hashtable idSrc = new Hashtable();
+    public final Hashtable idTar = new Hashtable();
 
-    public String lsource = "", ltarget = "";
+    public String lsource = "";
+    public final String ltarget = "";
 
     public String uriSource, uriTarget;
     private ArrayList<String> fakeIdsSource;
@@ -390,12 +391,12 @@ les id originaux tirés des fichiers source, respectivement target */
 
         private String id = ""; // id of the current element
         private boolean body = false, para = false;
-        private Stack<String> idBuf = new Stack<String>();
+        private final Stack<String> idBuf = new Stack<String>();
 
         // B.G. pile pour numéroter récursivement les div... et calculer correctement
         // les longueurs des divisions. On y empile également le compteur de paragraphes
         // et le compteur de phrases.
-        private Stack<Object> divStack = new Stack<Object>();
+        private final Stack<Object> divStack = new Stack<Object>();
 
         private int paraLength = 0; // length of current paragraph
         private int stcLength; // buffer saving the current read sentence length
@@ -405,21 +406,23 @@ les id originaux tirés des fichiers source, respectivement target */
 
         private short context; // the current context showing the current element
 
-        private Vector vstc, vpara, vdiv;
-        private Hashtable ids;
+        private final Vector vstc;
+        private final Vector vpara;
+        private final Vector vdiv;
+        private final Hashtable ids;
 
         public String lang;        // language gleaned from TEIHeader (if any).
-        public Vector nospec;    // Tags for which a type wasn't defined.
+        public final Vector nospec;    // Tags for which a type wasn't defined.
 
         private String curdiv, curpar;
         private int d = 0, p = 0, s = 0; //counter for generating ids if it does not exist
         private int nignore = 0; // insiding some ignored elements
 
-        private String idEnglob;
+        private final String idEnglob;
         private boolean inPartOfDocumentToWorkOn;
         private String nameOfEnglobingElement;
         private int nestingOfEnglobingElement; /* En espérant ne pas dépasser Integer.MAX_VALUE */
-        private ArrayList<String> allIds;
+        private final ArrayList<String> allIds;
 
         public MAHandler(Vector stcs, Vector paras, Vector divs, Hashtable ids, String idEnglobant, ArrayList<String> Ids) {
             this.vstc = stcs;

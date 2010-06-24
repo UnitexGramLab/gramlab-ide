@@ -21,41 +21,41 @@
 
 package fr.umlv.unitex.frames;
 
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 
 public class FrameFactory {
 
-	private JInternalFrame frame;
-	private Class<?> clazz;
-	
-	FrameFactory(Class<?> clazz) {
-		this.clazz=clazz;
-	}
+    private JInternalFrame frame;
+    private final Class<?> clazz;
 
-	JInternalFrame newFrame() {
-		return newFrame(true);
-	}
+    FrameFactory(Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
-	JInternalFrame newFrame(boolean closeBeforeGet) {
-		if (frame==null) {
-			try {
-				frame=(JInternalFrame) clazz.newInstance();
-			} catch (InstantiationException e) {
-				return null;
-			} catch (IllegalAccessException e) {
-				return null;
-			}
-		}
-		if (closeBeforeGet) frame.doDefaultCloseAction();
-		return frame;
-	}
-	
-	
-	void closeFrame() {
-		if (frame==null) {
-			return;
-		}
-		frame.doDefaultCloseAction();
-	}
-	
+    JInternalFrame newFrame() {
+        return newFrame(true);
+    }
+
+    JInternalFrame newFrame(boolean closeBeforeGet) {
+        if (frame == null) {
+            try {
+                frame = (JInternalFrame) clazz.newInstance();
+            } catch (InstantiationException e) {
+                return null;
+            } catch (IllegalAccessException e) {
+                return null;
+            }
+        }
+        if (closeBeforeGet) frame.doDefaultCloseAction();
+        return frame;
+    }
+
+
+    void closeFrame() {
+        if (frame == null) {
+            return;
+        }
+        frame.doDefaultCloseAction();
+    }
+
 }

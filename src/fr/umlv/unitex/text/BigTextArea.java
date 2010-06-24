@@ -21,225 +21,219 @@
 
 package fr.umlv.unitex.text;
 
-import java.awt.Adjustable;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
+import fr.umlv.unitex.Config;
+
+import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.text.*;
+import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.io.File;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JTextPane;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyledDocument;
-
-import fr.umlv.unitex.Config;
-
 /**
  * This class provides a text component that can display in read-only
- * large UTF16-LE files. 
- * 
+ * large UTF16-LE files.
+ * <p/>
  * WARNING: DON'T PUT THIS COMPONENT INTO A JSCROLLPANE!
- * 
+ *
  * @author Sébastien Paumier
  */
 public class BigTextArea extends JPanel {
 
-	protected static final int NOTHING_SELECTED = 0;
-	protected static final int ALL_IS_SELECTED = 1;
-	protected static final int PREFIX_SELECTED = 2;
-	protected static final int INFIX_SELECTED = 3;
-	protected static final int SUFFIX_SELECTED = 4;
-	
-	TextAsListModel model;
-	JTextPane area;
-	JScrollBar scrollBar;
-	StyledDocument document;
-	Style normal;
-	Style highlighted;
-	final StringBuilder builder=new StringBuilder(10000);
-	
-	
-	public BigTextArea(TextAsListModel m) {
-		super(new BorderLayout());
-		model=m;
-		area=new JTextPane();
-		area.setComponentOrientation(Config.isRightToLeftLanguage()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
-		document=area.getStyledDocument();
-		normal=StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
-		highlighted=document.addStyle("highlighted",normal);
-		StyleConstants.setBackground(highlighted,Color.CYAN);
-		area.setEditable(false);
-		scrollBar=new JScrollBar(Adjustable.VERTICAL,0,0,0,0);
-		add(area);
-		add(scrollBar,BorderLayout.EAST);
-		model.addListDataListener(new ListDataListener() {
-			public void intervalAdded(ListDataEvent e) {
-				int oldMaximum=scrollBar.getMaximum();
-				scrollBar.setMaximum(model.getSize()-1);
-				int maximum=scrollBar.getMaximum();
-				if (maximum>=1000) {
-					scrollBar.setBlockIncrement(1+maximum/100);
-				} else {
-					scrollBar.setBlockIncrement(1);
-				}
-				if (oldMaximum<=100) {
-					/* Just to refresh on the first load */
-					refresh();
-				}
-			}
+    protected static final int NOTHING_SELECTED = 0;
+    protected static final int ALL_IS_SELECTED = 1;
+    protected static final int PREFIX_SELECTED = 2;
+    protected static final int INFIX_SELECTED = 3;
+    protected static final int SUFFIX_SELECTED = 4;
 
-			public void intervalRemoved(ListDataEvent e) {
-				// nothing to do
-			}
-
-			public void contentsChanged(ListDataEvent e) {
-				refresh();
-			}
-		});
-		
-		scrollBar.addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				refresh();
-			}
-
-		});
-	}
-
-	
-	public BigTextArea() {
-		this(new TextAsListModel());
-	}
-	
-	public BigTextArea(File file) {
-		this();
-		load(file);
-	}
+    final TextAsListModel model;
+    final JTextPane area;
+    final JScrollBar scrollBar;
+    final StyledDocument document;
+    final Style normal;
+    final Style highlighted;
+    final StringBuilder builder = new StringBuilder(10000);
 
 
-	public void load(File f) {
-		scrollBar.setMinimum(0);
-		scrollBar.setMaximum(0);
-		scrollBar.setBlockIncrement(0);
-		scrollBar.setValue(0);
-		model.load(f);
-	}
+    public BigTextArea(TextAsListModel m) {
+        super(new BorderLayout());
+        model = m;
+        area = new JTextPane();
+        area.setComponentOrientation(Config.isRightToLeftLanguage() ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT);
+        document = area.getStyledDocument();
+        normal = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
+        highlighted = document.addStyle("highlighted", normal);
+        StyleConstants.setBackground(highlighted, Color.CYAN);
+        area.setEditable(false);
+        scrollBar = new JScrollBar(Adjustable.VERTICAL, 0, 0, 0, 0);
+        add(area);
+        add(scrollBar, BorderLayout.EAST);
+        model.addListDataListener(new ListDataListener() {
+            public void intervalAdded(ListDataEvent e) {
+                int oldMaximum = scrollBar.getMaximum();
+                scrollBar.setMaximum(model.getSize() - 1);
+                int maximum = scrollBar.getMaximum();
+                if (maximum >= 1000) {
+                    scrollBar.setBlockIncrement(1 + maximum / 100);
+                } else {
+                    scrollBar.setBlockIncrement(1);
+                }
+                if (oldMaximum <= 100) {
+                    /* Just to refresh on the first load */
+                    refresh();
+                }
+            }
+
+            public void intervalRemoved(ListDataEvent e) {
+                // nothing to do
+            }
+
+            public void contentsChanged(ListDataEvent e) {
+                refresh();
+            }
+        });
+
+        scrollBar.addAdjustmentListener(new AdjustmentListener() {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                refresh();
+            }
+
+        });
+    }
+
+
+    public BigTextArea() {
+        this(new TextAsListModel());
+    }
+
+    public BigTextArea(File file) {
+        this();
+        load(file);
+    }
+
+
+    public void load(File f) {
+        scrollBar.setMinimum(0);
+        scrollBar.setMaximum(0);
+        scrollBar.setBlockIncrement(0);
+        scrollBar.setValue(0);
+        model.load(f);
+    }
 
     void refresh() {
-		int value=scrollBar.getValue();
-		/* This is an awful trick: we assume that the text area won't
-		 * display more then 45 lines.
-		 */
-		int limit=value+45;
-		if (limit>scrollBar.getMaximum()) {
-			limit=scrollBar.getMaximum();
-		}
-		Interval selection=model.getSelection();
-		int length=document.getLength();
-		try {
-			document.remove(0,length);
-		} catch (BadLocationException e1) {
-			e1.printStackTrace();
-		}
-		builder.setLength(0);
-		Interval x=model.getInterval(value);
-		if (x==null) {
-			String s=model.getContent();
-			if (s!=null) area.setText(s);
-			else area.setText("");
-			return;
-		}
-		int start=x.getStart();
-		for (int i=value;i<=limit;i++) {
-			builder.append(model.getElementAt(i));
-			builder.append('\r');
-			builder.append('\n');
-		}
-		String content=builder.toString();
-		int end=model.getInterval(limit).getEnd();
-		try {
-			int result=compareIntervals(selection,start,end);
-			switch (result) {
-				case NOTHING_SELECTED: document.insertString(0,content,normal); break;
-				case ALL_IS_SELECTED: document.insertString(0,content,highlighted); break;
-				case PREFIX_SELECTED:
-					int a=(selection.getEnd()-start+1);
-					document.insertString(0,content.substring(0,a),highlighted);
-					document.insertString(a,content.substring(a),normal);
-					break;
-				case INFIX_SELECTED:
-					int b=(selection.getStart()-start);
-					int c=(selection.getEnd()-start+1);
-					document.insertString(0,content.substring(0,b),normal);
-					document.insertString(b,content.substring(b,c),highlighted);
-					document.insertString(c,content.substring(c),normal);
-					break;
-				case SUFFIX_SELECTED:
-					int d=(selection.getStart()-start);
-					document.insertString(0,content.substring(0,d),normal);
-					document.insertString(d,content.substring(d),highlighted);
-					break;
-				default: return;
-			}
-		} catch (BadLocationException e1) {
-			e1.printStackTrace();
-		}
-		
-	}
+        int value = scrollBar.getValue();
+        /* This is an awful trick: we assume that the text area won't
+           * display more then 45 lines.
+           */
+        int limit = value + 45;
+        if (limit > scrollBar.getMaximum()) {
+            limit = scrollBar.getMaximum();
+        }
+        Interval selection = model.getSelection();
+        int length = document.getLength();
+        try {
+            document.remove(0, length);
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        }
+        builder.setLength(0);
+        Interval x = model.getInterval(value);
+        if (x == null) {
+            String s = model.getContent();
+            if (s != null) area.setText(s);
+            else area.setText("");
+            return;
+        }
+        int start = x.getStart();
+        for (int i = value; i <= limit; i++) {
+            builder.append(model.getElementAt(i));
+            builder.append('\r');
+            builder.append('\n');
+        }
+        String content = builder.toString();
+        int end = model.getInterval(limit).getEnd();
+        try {
+            int result = compareIntervals(selection, start, end);
+            switch (result) {
+                case NOTHING_SELECTED:
+                    document.insertString(0, content, normal);
+                    break;
+                case ALL_IS_SELECTED:
+                    document.insertString(0, content, highlighted);
+                    break;
+                case PREFIX_SELECTED:
+                    int a = (selection.getEnd() - start + 1);
+                    document.insertString(0, content.substring(0, a), highlighted);
+                    document.insertString(a, content.substring(a), normal);
+                    break;
+                case INFIX_SELECTED:
+                    int b = (selection.getStart() - start);
+                    int c = (selection.getEnd() - start + 1);
+                    document.insertString(0, content.substring(0, b), normal);
+                    document.insertString(b, content.substring(b, c), highlighted);
+                    document.insertString(c, content.substring(c), normal);
+                    break;
+                case SUFFIX_SELECTED:
+                    int d = (selection.getStart() - start);
+                    document.insertString(0, content.substring(0, d), normal);
+                    document.insertString(d, content.substring(d), highlighted);
+                    break;
+                default:
+                    return;
+            }
+        } catch (BadLocationException e1) {
+            e1.printStackTrace();
+        }
 
-	private int compareIntervals(Interval selection,int start,int end) {
-		if (selection==null) return NOTHING_SELECTED;
-		int selectionStart=selection.getStart();
-		int selectionEnd=selection.getEnd();
-		if (selectionStart>end || selectionEnd<start) return NOTHING_SELECTED;
-		if (selectionStart<=start && selectionEnd>=end) return ALL_IS_SELECTED;
-		if (selectionStart<=start && selectionEnd<end) return PREFIX_SELECTED;
-		if (selectionStart>start && selectionEnd<end) return INFIX_SELECTED;
-		return SUFFIX_SELECTED;
-	}
-	
-	
-	@Override
-	public void setFont(Font font) {
-		if (area!=null)	{
-			area.setFont(font);
-			refresh();
-		}
-	}
-	
-	public void setSelection(Interval i) {
-		model.setSelection(i);
-	}
-	
-	public void setSelection(int start,int end) {
-		model.setSelection(new Interval(start,end));
-	}
-	
-	public void scrollToSelection() {
-		Interval selection=model.getSelection();
-		if (selection==null) return;
-		int i=model.getElementContainingPosition(selection.getStart());
-		if (i!=-1) scrollBar.setValue(i);
-	}
+    }
+
+    private int compareIntervals(Interval selection, int start, int end) {
+        if (selection == null) return NOTHING_SELECTED;
+        int selectionStart = selection.getStart();
+        int selectionEnd = selection.getEnd();
+        if (selectionStart > end || selectionEnd < start) return NOTHING_SELECTED;
+        if (selectionStart <= start && selectionEnd >= end) return ALL_IS_SELECTED;
+        if (selectionStart <= start && selectionEnd < end) return PREFIX_SELECTED;
+        if (selectionStart > start && selectionEnd < end) return INFIX_SELECTED;
+        return SUFFIX_SELECTED;
+    }
 
 
-	public void setText(String string) {
-		scrollBar.setMinimum(0);
-		scrollBar.setMaximum(0);
-		scrollBar.setBlockIncrement(0);
-		scrollBar.setValue(0);
-		model.setText(string);
-	}
-	
-	public void reset() {
-		model.reset();
-	}
+    @Override
+    public void setFont(Font font) {
+        if (area != null) {
+            area.setFont(font);
+            refresh();
+        }
+    }
+
+    public void setSelection(Interval i) {
+        model.setSelection(i);
+    }
+
+    public void setSelection(int start, int end) {
+        model.setSelection(new Interval(start, end));
+    }
+
+    public void scrollToSelection() {
+        Interval selection = model.getSelection();
+        if (selection == null) return;
+        int i = model.getElementContainingPosition(selection.getStart());
+        if (i != -1) scrollBar.setValue(i);
+    }
+
+
+    public void setText(String string) {
+        scrollBar.setMinimum(0);
+        scrollBar.setMaximum(0);
+        scrollBar.setBlockIncrement(0);
+        scrollBar.setValue(0);
+        model.setText(string);
+    }
+
+    public void reset() {
+        model.reset();
+    }
 }

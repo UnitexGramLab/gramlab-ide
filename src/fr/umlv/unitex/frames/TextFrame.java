@@ -44,9 +44,9 @@ import java.io.IOException;
  * @author Sébastien Paumier
  */
 public class TextFrame extends JInternalFrame {
-    protected BigTextArea text = new BigTextArea();
-    protected JLabel ligne1 = new JLabel("");
-    protected JLabel ligne2 = new JLabel("");
+    protected final BigTextArea text = new BigTextArea();
+    protected final JLabel ligne1 = new JLabel("");
+    protected final JLabel ligne2 = new JLabel("");
 
     TextFrame() {
         super("", true, true, true, true);

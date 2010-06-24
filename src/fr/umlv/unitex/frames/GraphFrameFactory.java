@@ -21,62 +21,61 @@
 
 package fr.umlv.unitex.frames;
 
-import java.io.File;
-import java.util.ArrayList;
+import fr.umlv.unitex.io.GraphIO;
 
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
-import fr.umlv.unitex.io.GraphIO;
+import java.io.File;
+import java.util.ArrayList;
 
 
 public class GraphFrameFactory {
 
-	ArrayList<GraphFrame> frames=new ArrayList<GraphFrame>();
-	
-	GraphFrame getGraphFrame(File grf) {
-		if (grf!=null) {
-			for (GraphFrame gf:frames) {
-				if (grf.equals(gf.getGraph())) {
-					return gf;
-				}
-			}
-		}
-		final GraphFrame f;
-		if (grf!=null) {
-			GraphIO g=GraphIO.loadGraph(grf,false);
-			if (g==null) return null;
-			f=new GraphFrame(g);
-		} else {
-			f=new GraphFrame(null);
-		}
-		frames.add(f);
-		f.addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameClosed(InternalFrameEvent e) {
-				frames.remove(f);
-			}
-		});
-		return f;
-	}
+    final ArrayList<GraphFrame> frames = new ArrayList<GraphFrame>();
 
-	
-	@SuppressWarnings("unchecked")
-	void closeAllGraphFrames() {
-		/* We have to make a copy of the frame list because as the close
-		 * action of each frame way remove it from 'frames', we could have
-		 * problems 
-		 */
-		ArrayList<GraphFrame> copy=(ArrayList<GraphFrame>) frames.clone();
-		for (GraphFrame f:copy) {
-			f.doDefaultCloseAction();
-		}
-	}
-	
-	GraphFrame[] getGraphFrames() {
-		GraphFrame[] f=new GraphFrame[frames.size()];
-		f=frames.toArray(f);
-		return f;
-	}
+    GraphFrame getGraphFrame(File grf) {
+        if (grf != null) {
+            for (GraphFrame gf : frames) {
+                if (grf.equals(gf.getGraph())) {
+                    return gf;
+                }
+            }
+        }
+        final GraphFrame f;
+        if (grf != null) {
+            GraphIO g = GraphIO.loadGraph(grf, false);
+            if (g == null) return null;
+            f = new GraphFrame(g);
+        } else {
+            f = new GraphFrame(null);
+        }
+        frames.add(f);
+        f.addInternalFrameListener(new InternalFrameAdapter() {
+            @Override
+            public void internalFrameClosed(InternalFrameEvent e) {
+                frames.remove(f);
+            }
+        });
+        return f;
+    }
+
+
+    @SuppressWarnings("unchecked")
+    void closeAllGraphFrames() {
+        /* We have to make a copy of the frame list because as the close
+           * action of each frame way remove it from 'frames', we could have
+           * problems
+           */
+        ArrayList<GraphFrame> copy = (ArrayList<GraphFrame>) frames.clone();
+        for (GraphFrame f : copy) {
+            f.doDefaultCloseAction();
+        }
+    }
+
+    GraphFrame[] getGraphFrames() {
+        GraphFrame[] f = new GraphFrame[frames.size()];
+        f = frames.toArray(f);
+        return f;
+    }
 
 }

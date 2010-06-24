@@ -37,8 +37,8 @@ import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class Cognates {
-    private ArrayList<Paquet> paquetsSource;
-    private ArrayList<Paquet> paquetsCible;
+    private final ArrayList<Paquet> paquetsSource;
+    private final ArrayList<Paquet> paquetsCible;
     private ArrayList<Alignement> alignements;
     private ArrayList<XmlId> noCorrespSource;
     private ArrayList<XmlId> noCorrespCible;
@@ -700,8 +700,8 @@ public class Cognates {
     }
 
     class BiPoint {
-        Point a;
-        Point b;
+        final Point a;
+        final Point b;
 
         public BiPoint(Point x, Point y) {
             a = x;
@@ -1096,7 +1096,8 @@ public class Cognates {
 
     // pour énumérer sur deux vecteurs
     class myIterator implements Iterator {
-        private Iterator e1, e2;
+        private final Iterator e1;
+        private final Iterator e2;
 
         public myIterator(Iterator en1, Iterator en2) {
             e1 = en1;

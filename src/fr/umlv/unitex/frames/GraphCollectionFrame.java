@@ -20,137 +20,126 @@
  */
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.io.File;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphCollection;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  * This class provides a frame that allows the user to select a source directory
  * and a destination graph name, for building a graph collection.
- * 
+ *
  * @author Sébastien Paumier
- * 
  */
 public class GraphCollectionFrame extends JInternalFrame {
-	JTextField srcDir = new JTextField();
-	JTextField resultGrf = new JTextField();
+    final JTextField srcDir = new JTextField();
+    final JTextField resultGrf = new JTextField();
 
-	/**
-	 * Constructs a new <code>GraphCollectionDialog</code>.
-	 */
-	GraphCollectionFrame() {
-		super("Building Graph Collection", false, true, false);
-		setContentPane(constructPanel());
-		pack();
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
-	}
+    /**
+     * Constructs a new <code>GraphCollectionDialog</code>.
+     */
+    GraphCollectionFrame() {
+        super("Building Graph Collection", false, true, false);
+        setContentPane(constructPanel());
+        pack();
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+    }
 
-	private JPanel constructPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(constructUpPanel(), BorderLayout.NORTH);
-		panel.add(constructDownPanel(), BorderLayout.CENTER);
-		return panel;
-	}
+    private JPanel constructPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(constructUpPanel(), BorderLayout.NORTH);
+        panel.add(constructDownPanel(), BorderLayout.CENTER);
+        return panel;
+    }
 
-	private JPanel createPanel(JLabel label, JTextField textField,
-			JButton button) {
-		JPanel p = new JPanel(new GridLayout(2, 1));
-		p.add(label);
-		JPanel tmp = new JPanel(new BorderLayout());
-		tmp.add(textField, BorderLayout.CENTER);
-		tmp.add(button, BorderLayout.EAST);
-		p.add(tmp);
-		return p;
-	}
+    private JPanel createPanel(JLabel label, JTextField textField,
+                               JButton button) {
+        JPanel p = new JPanel(new GridLayout(2, 1));
+        p.add(label);
+        JPanel tmp = new JPanel(new BorderLayout());
+        tmp.add(textField, BorderLayout.CENTER);
+        tmp.add(button, BorderLayout.EAST);
+        p.add(tmp);
+        return p;
+    }
 
-	private JPanel constructUpPanel() {
-		JPanel upPanel = new JPanel(new GridLayout(2, 1));
-		upPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		srcDir.setPreferredSize(new Dimension(280, 20));
-		resultGrf.setPreferredSize(new Dimension(280, 20));
-		Action setSrcAction = new AbstractAction("Set...") {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser f = new JFileChooser();
-				f.setDialogTitle("Choose source directory");
-				f.setCurrentDirectory(Config.getGraphDialogBox(false)
-						.getCurrentDirectory());
-				f.setDialogType(JFileChooser.OPEN_DIALOG);
-				f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-					return;
-				srcDir.setText(f.getSelectedFile().getAbsolutePath());
-			}
-		};
-		JButton setSrcDir = new JButton(setSrcAction);
-		Action setResultAction = new AbstractAction("Set...") {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser dialogBox = Config.getGraphDialogBox(false);
-				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
-				int returnVal = dialogBox.showSaveDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					// we return if the user has clicked on CANCEL
-					return;
-				}
-				File file = dialogBox.getSelectedFile();
-				if (file == null) {
-					return;
-				}
-				String s = file.getAbsolutePath();
-				if (!s.endsWith(".grf"))
-					s = s + ".grf";
-				resultGrf.setText(s);
-			}
-		};
-		JButton setResultGrf = new JButton(setResultAction);
-		JPanel a = createPanel(new JLabel("Source directory:"), srcDir,
-				setSrcDir);
-		JPanel b = createPanel(new JLabel("Resulting GRF grammar:"), resultGrf,
-				setResultGrf);
-		upPanel.add(a);
-		upPanel.add(b);
-		return upPanel;
-	}
+    private JPanel constructUpPanel() {
+        JPanel upPanel = new JPanel(new GridLayout(2, 1));
+        upPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        srcDir.setPreferredSize(new Dimension(280, 20));
+        resultGrf.setPreferredSize(new Dimension(280, 20));
+        Action setSrcAction = new AbstractAction("Set...") {
+            public void actionPerformed(ActionEvent arg0) {
+                JFileChooser f = new JFileChooser();
+                f.setDialogTitle("Choose source directory");
+                f.setCurrentDirectory(Config.getGraphDialogBox(false)
+                        .getCurrentDirectory());
+                f.setDialogType(JFileChooser.OPEN_DIALOG);
+                f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+                    return;
+                srcDir.setText(f.getSelectedFile().getAbsolutePath());
+            }
+        };
+        JButton setSrcDir = new JButton(setSrcAction);
+        Action setResultAction = new AbstractAction("Set...") {
+            public void actionPerformed(ActionEvent arg0) {
+                JFileChooser dialogBox = Config.getGraphDialogBox(false);
+                dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
+                int returnVal = dialogBox.showSaveDialog(null);
+                if (returnVal != JFileChooser.APPROVE_OPTION) {
+                    // we return if the user has clicked on CANCEL
+                    return;
+                }
+                File file = dialogBox.getSelectedFile();
+                if (file == null) {
+                    return;
+                }
+                String s = file.getAbsolutePath();
+                if (!s.endsWith(".grf"))
+                    s = s + ".grf";
+                resultGrf.setText(s);
+            }
+        };
+        JButton setResultGrf = new JButton(setResultAction);
+        JPanel a = createPanel(new JLabel("Source directory:"), srcDir,
+                setSrcDir);
+        JPanel b = createPanel(new JLabel("Resulting GRF grammar:"), resultGrf,
+                setResultGrf);
+        upPanel.add(a);
+        upPanel.add(b);
+        return upPanel;
+    }
 
-	private JPanel constructDownPanel() {
-		JPanel downPanel = new JPanel(new GridLayout(1, 2));
-		Action okAction = new AbstractAction("OK") {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-				GraphCollection.build(new File(srcDir.getText()),
-						new File(resultGrf.getText()), true);
-			}
-		};
-		JButton OK = new JButton(okAction);
-		Action cancelAction = new AbstractAction("Cancel") {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		};
-		JButton CANCEL = new JButton(cancelAction);
-		JPanel left = new JPanel(new BorderLayout());
-		left.setBorder(new EmptyBorder(10, 50, 10, 20));
-		left.add(CANCEL, BorderLayout.CENTER);
-		JPanel right = new JPanel(new BorderLayout());
-		right.setBorder(new EmptyBorder(10, 20, 10, 50));
-		right.add(OK, BorderLayout.CENTER);
-		downPanel.add(left);
-		downPanel.add(right);
-		return downPanel;
-	}
+    private JPanel constructDownPanel() {
+        JPanel downPanel = new JPanel(new GridLayout(1, 2));
+        Action okAction = new AbstractAction("OK") {
+            public void actionPerformed(ActionEvent arg0) {
+                setVisible(false);
+                GraphCollection.build(new File(srcDir.getText()),
+                        new File(resultGrf.getText()), true);
+            }
+        };
+        JButton OK = new JButton(okAction);
+        Action cancelAction = new AbstractAction("Cancel") {
+            public void actionPerformed(ActionEvent arg0) {
+                setVisible(false);
+            }
+        };
+        JButton CANCEL = new JButton(cancelAction);
+        JPanel left = new JPanel(new BorderLayout());
+        left.setBorder(new EmptyBorder(10, 50, 10, 20));
+        left.add(CANCEL, BorderLayout.CENTER);
+        JPanel right = new JPanel(new BorderLayout());
+        right.setBorder(new EmptyBorder(10, 20, 10, 50));
+        right.add(OK, BorderLayout.CENTER);
+        downPanel.add(left);
+        downPanel.add(right);
+        return downPanel;
+    }
 
 }

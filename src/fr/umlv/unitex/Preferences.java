@@ -84,11 +84,11 @@ public class Preferences {
      */
     public static final int MAX_TEXT_FILE_SIZE = 2 * 1024 * 1024;
 
-    public static String ICON_BAR_WEST = BorderLayout.WEST;
-    public static String ICON_BAR_EAST = BorderLayout.EAST;
-    public static String ICON_BAR_NORTH = BorderLayout.NORTH;
-    public static String ICON_BAR_SOUTH = BorderLayout.SOUTH;
-    public static String NO_ICON_BAR = "NONE";
+    public static final String ICON_BAR_WEST = BorderLayout.WEST;
+    public static final String ICON_BAR_EAST = BorderLayout.EAST;
+    public static final String ICON_BAR_NORTH = BorderLayout.NORTH;
+    public static final String ICON_BAR_SOUTH = BorderLayout.SOUTH;
+    public static final String NO_ICON_BAR = "NONE";
     public static String ICON_BAR_DEFAULT = ICON_BAR_WEST;
 
     public GraphPresentationInfo info;
@@ -452,8 +452,8 @@ public class Preferences {
     }
 
 
-    private ArrayList<FontListener> textFontListeners = new ArrayList<FontListener>();
-    private ArrayList<FontListener> concordanceFontListeners = new ArrayList<FontListener>();
+    private final ArrayList<FontListener> textFontListeners = new ArrayList<FontListener>();
+    private final ArrayList<FontListener> concordanceFontListeners = new ArrayList<FontListener>();
 
     public static void addTextFontListener(FontListener listener) {
         pref.textFontListeners.add(listener);
@@ -496,13 +496,12 @@ public class Preferences {
         firingConcordanceFont = true;
         try {
             for (FontListener listener : concordanceFontListeners) {
-				listener.fontChanged(font);
-			}
-		} finally {
-			firingConcordanceFont = false;
-		}
-	}
-	
+                listener.fontChanged(font);
+            }
+        } finally {
+            firingConcordanceFont = false;
+        }
+    }
 
 
 }

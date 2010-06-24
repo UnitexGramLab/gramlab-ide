@@ -45,7 +45,7 @@ public class TextField extends GraphTextField {
     /**
      * Frame that contains this component
      */
-    GraphFrame parent;
+    final GraphFrame parent;
     /**
      * Indicates if the text field content has been modified
      */
@@ -54,27 +54,27 @@ public class TextField extends GraphTextField {
     /**
      * <code>TextAction</code> that defines what to do for a "paste" operation
      */
-    private SpecialPaste specialPaste;
+    private final SpecialPaste specialPaste;
     /**
      * <code>TextAction</code> that defines what to do for a "copy" operation
      */
-    private SpecialCopy specialCopy;
+    private final SpecialCopy specialCopy;
     /**
      * <code>TextAction</code> that defines what to do for a "cut" operation
      */
-    private Cut cut;
+    private final Cut cut;
     /**
      * <code>TextAction</code> that shows the graph presentation frame
      */
-    public Presentation presentation;
+    public final Presentation presentation;
     /**
      * <code>TextAction</code> that shows a dialog box to open a graph
      */
-    public Open OPEN;
+    public final Open OPEN;
     /**
      * <code>TextAction</code> that saves the current graph
      */
-    public Save SAVE;
+    public final Save SAVE;
 
     /**
      * Constructs a new <code>TextField</code>

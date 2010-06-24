@@ -21,58 +21,58 @@
 
 package fr.umlv.unitex.text;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
 
 
 /**
  * This class provides a text component that can display in read-only
  * large UTF16-LE files as lists of lines. This is useful to display
  * dictionaries.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class BigTextList extends JList {
 
-	/**
-	 * Builds a JList designed for large line lists.
-	 * @param m the model containing information about the underlying text file 
-	 * @param isDelaf if true, the list will use a special renderer dedicated
-	 *        to DELAF lines 
-	 */
-	public BigTextList(TextAsListModel m,boolean isDelaf) {
-		super(m);
-		/* Set maximal length of a line:
-		 * This value must big enough holding even the longest dlc entries,
-		 * or strange effects (lines cut up somewhere in the middle) will occur! */
-		setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-		setCellRenderer(new DefaultListCellRenderer() {
+    /**
+     * Builds a JList designed for large line lists.
+     *
+     * @param m       the model containing information about the underlying text file
+     * @param isDelaf if true, the list will use a special renderer dedicated
+     *                to DELAF lines
+     */
+    public BigTextList(TextAsListModel m, boolean isDelaf) {
+        super(m);
+        /* Set maximal length of a line:
+           * This value must big enough holding even the longest dlc entries,
+           * or strange effects (lines cut up somewhere in the middle) will occur! */
+        setPrototypeCellValue("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-                setText(getTabbedString((String)value));
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setText(getTabbedString((String) value));
                 return this;
             }
-            
-            
+
+
             /**
              * The default renderer of a JList is a JLabel. As JLabels don't
              * know how to deal with tabs, we do it here, considering that
              * a tab should be at most 8 space large.
              */
-            StringBuilder builder=new StringBuilder();
+            final StringBuilder builder = new StringBuilder();
+
             private String getTabbedString(String s) {
-                int tab_size=8;
+                int tab_size = 8;
                 builder.setLength(0);
-                int l=s.length();
-                for (int i=0;i<l;i++) {
-                    char c=s.charAt(i);
-                    if (c=='\t') {
-                        int z=tab_size-i%tab_size;
-                        for (int j=0;j<z;j++) {
+                int l = s.length();
+                for (int i = 0; i < l; i++) {
+                    char c = s.charAt(i);
+                    if (c == '\t') {
+                        int z = tab_size - i % tab_size;
+                        for (int j = 0; j < z; j++) {
                             builder.append(' ');
                         }
                     } else {
@@ -81,118 +81,118 @@ public class BigTextList extends JList {
                 }
                 return builder.toString();
             }
-		});
-		if (isDelaf) {
-			setCellRenderer(new DefaultListCellRenderer() {
-				@Override
-				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-					super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-					setText(getDecoratedDelafLine((String)value));
-					return this;
-				}
+        });
+        if (isDelaf) {
+            setCellRenderer(new DefaultListCellRenderer() {
+                @Override
+                public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    setText(getDecoratedDelafLine((String) value));
+                    return this;
+                }
 
-				StringBuilder builder=new StringBuilder();
-				
-				private String getDecoratedDelafLine(String string) {
-					if (string==null) return null;
-					int length=string.length();
-					builder.delete(0,builder.length());
-					builder.append("<html><body>");
-					int comma=-1;
-					int pos=0;
-					do {
-						comma=string.indexOf(',',pos);
-						if (comma==-1) return string;
-						pos=comma+1;
-					} while (comma>0 && string.charAt(comma-1)=='\\');
-					builder.append("<font color=\"blue\">");
-					builder.append(string.substring(0,comma));
-					builder.append("</font>");
-					builder.append(",");
-					int startPos=pos;
-					do {
-						comma=string.indexOf('.',pos);
-						if (comma==-1) return string;
-						pos=comma+1;
-					} while (string.charAt(comma-1)=='\\');
-					if (pos==length) return string;
-					if (startPos!=comma) {
-						builder.append("<font color=\"red\">");
-						builder.append(string.substring(startPos,comma));
-						builder.append("</font>");
-					}
-					char c='.';
-					char last;
-					startPos=pos;
-					do {
-						builder.append(c);
-						builder.append("<font color=\"#00B900\">");
-						do {
-							last=c;
-							c=string.charAt(pos);
-							pos++;
-						} while (pos!=length && !(last!='\\' && (c=='+' || c==':')));
-						if (pos==length) {
-							c='\0';
-							builder.append(string.substring(startPos));
-						} else {
-							builder.append(string.substring(startPos,pos-1));
-							startPos=pos;
-						}
-						builder.append("</font>");
-					} while (c=='+');
-					if (c!='\0') {
-						c=':';
-						startPos=pos;
-						do {
-							builder.append(c);
-							builder.append("<font color=\"#CE6700\">");
-							do {
-								last=c;
-								c=string.charAt(pos);
-								pos++;
-							} while (pos!=length && !(last!='\\' && (c==':')));
-							if (pos==length) {
-								c='\0';
-								builder.append(string.substring(startPos));
-							} else {
-								builder.append(string.substring(startPos,pos-1));
-								startPos=pos;
-							}
-							builder.append("</font>");
-						} while (c==':');
-					}
-					builder.append("</body></html>");
-					return builder.toString();
-				}
-			});
-		}
-	}
-	
-	public BigTextList(TextAsListModel m) {
-		this(m,false);
-	}
+                final StringBuilder builder = new StringBuilder();
 
-	public BigTextList(boolean b) {
-		this(new TextAsListModel(),b);
-	}
+                private String getDecoratedDelafLine(String string) {
+                    if (string == null) return null;
+                    int length = string.length();
+                    builder.delete(0, builder.length());
+                    builder.append("<html><body>");
+                    int comma = -1;
+                    int pos = 0;
+                    do {
+                        comma = string.indexOf(',', pos);
+                        if (comma == -1) return string;
+                        pos = comma + 1;
+                    } while (comma > 0 && string.charAt(comma - 1) == '\\');
+                    builder.append("<font color=\"blue\">");
+                    builder.append(string.substring(0, comma));
+                    builder.append("</font>");
+                    builder.append(",");
+                    int startPos = pos;
+                    do {
+                        comma = string.indexOf('.', pos);
+                        if (comma == -1) return string;
+                        pos = comma + 1;
+                    } while (string.charAt(comma - 1) == '\\');
+                    if (pos == length) return string;
+                    if (startPos != comma) {
+                        builder.append("<font color=\"red\">");
+                        builder.append(string.substring(startPos, comma));
+                        builder.append("</font>");
+                    }
+                    char c = '.';
+                    char last;
+                    startPos = pos;
+                    do {
+                        builder.append(c);
+                        builder.append("<font color=\"#00B900\">");
+                        do {
+                            last = c;
+                            c = string.charAt(pos);
+                            pos++;
+                        } while (pos != length && !(last != '\\' && (c == '+' || c == ':')));
+                        if (pos == length) {
+                            c = '\0';
+                            builder.append(string.substring(startPos));
+                        } else {
+                            builder.append(string.substring(startPos, pos - 1));
+                            startPos = pos;
+                        }
+                        builder.append("</font>");
+                    } while (c == '+');
+                    if (c != '\0') {
+                        c = ':';
+                        startPos = pos;
+                        do {
+                            builder.append(c);
+                            builder.append("<font color=\"#CE6700\">");
+                            do {
+                                last = c;
+                                c = string.charAt(pos);
+                                pos++;
+                            } while (pos != length && !(last != '\\' && (c == ':')));
+                            if (pos == length) {
+                                c = '\0';
+                                builder.append(string.substring(startPos));
+                            } else {
+                                builder.append(string.substring(startPos, pos - 1));
+                                startPos = pos;
+                            }
+                            builder.append("</font>");
+                        } while (c == ':');
+                    }
+                    builder.append("</body></html>");
+                    return builder.toString();
+                }
+            });
+        }
+    }
 
-	public BigTextList() {
-		this(new TextAsListModel(),false);
-	}
-	
-	public void load(File f) {
-		TextAsListModel model=(TextAsListModel)getModel();
-		model.load(f);
-	}
-	
-	public void reset() {
-		TextAsListModel model=(TextAsListModel)getModel();
-		model.reset();
-	}
-	
-	public void setText(String string) {
-		TextAsListModel model=(TextAsListModel)getModel();
-		model.setText(string);
+    public BigTextList(TextAsListModel m) {
+        this(m, false);
+    }
+
+    public BigTextList(boolean b) {
+        this(new TextAsListModel(), b);
+    }
+
+    public BigTextList() {
+        this(new TextAsListModel(), false);
+    }
+
+    public void load(File f) {
+        TextAsListModel model = (TextAsListModel) getModel();
+        model.load(f);
+    }
+
+    public void reset() {
+        TextAsListModel model = (TextAsListModel) getModel();
+        model.reset();
+    }
+
+    public void setText(String string) {
+        TextAsListModel model = (TextAsListModel) getModel();
+        model.setText(string);
 	}
 }

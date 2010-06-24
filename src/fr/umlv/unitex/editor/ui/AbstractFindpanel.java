@@ -21,99 +21,100 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import fr.umlv.unitex.editor.EditionTextArea;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Document;
-
-import fr.umlv.unitex.editor.EditionTextArea;
+import java.awt.*;
 
 abstract class AbstractFindpanel extends SearchPanel {
 
-	protected JTextField txtFind, txtReplace;
-	protected JLabel count;
-	protected Document docFind, docReplace;
-	protected JButton btFind, btReplace, btRplNext, btcntO, btReplaceAll;
-	protected JPanel pc1, po;
-	
-	/**
-	 * @param text
-	 */
-	public AbstractFindpanel(EditionTextArea text) {
-		super(text);
+    protected final JTextField txtFind;
+    protected final JTextField txtReplace;
+    protected final JLabel count;
+    protected final Document docFind;
+    protected final Document docReplace;
+    protected final JButton btFind;
+    protected final JButton btReplace;
+    protected final JButton btRplNext;
+    protected final JButton btcntO;
+    protected final JButton btReplaceAll;
+    protected final JPanel pc1;
+    protected final JPanel po;
 
-		//form
-		pc1 = new JPanel(new BorderLayout());
+    /**
+     * @param text
+     */
+    public AbstractFindpanel(EditionTextArea text) {
+        super(text);
 
-		JPanel pf = new JPanel();
-		pf.setLayout(new DialogLayout(20, 5));
-		pf.setBorder(new EmptyBorder(8, 5, 8, 0));
+        //form
+        pc1 = new JPanel(new BorderLayout());
 
-		pf.add(new JLabel("Find what:"));
-		txtFind = new JTextField();
-		txtFind.setColumns(20);
-		docFind = txtFind.getDocument();
-		pf.add(txtFind);
+        JPanel pf = new JPanel();
+        pf.setLayout(new DialogLayout(20, 5));
+        pf.setBorder(new EmptyBorder(8, 5, 8, 0));
 
-		pf.add(new JLabel("Replace:"));
-		txtReplace = new JTextField();
-		txtReplace.setColumns(20);
-		docReplace = txtReplace.getDocument();
-		pf.add(txtReplace);
+        pf.add(new JLabel("Find what:"));
+        txtFind = new JTextField();
+        txtFind.setColumns(20);
+        docFind = txtFind.getDocument();
+        pf.add(txtFind);
 
-		pf.add(new JLabel("Occurrences:"));
-		count = new JLabel("0");
-		pf.add(count);
+        pf.add(new JLabel("Replace:"));
+        txtReplace = new JTextField();
+        txtReplace.setColumns(20);
+        docReplace = txtReplace.getDocument();
+        pf.add(txtReplace);
 
-		pc1.add(pf, BorderLayout.CENTER);
-		add(pc1, BorderLayout.CENTER);
+        pf.add(new JLabel("Occurrences:"));
+        count = new JLabel("0");
+        pf.add(count);
 
-		// options
-		po = new JPanel(new GridLayout(3, 3,1,1));
-		po.setBorder(new TitledBorder(new EtchedBorder(), "Options"));
-		
-		pc1.add(po, BorderLayout.SOUTH);
-		
-		//Buttons
-		
-		JPanel p01 = new JPanel(new FlowLayout());
-		JPanel p = new JPanel(new GridLayout(6, 1));
+        pc1.add(pf, BorderLayout.CENTER);
+        add(pc1, BorderLayout.CENTER);
 
-		btFind = new JButton("Find Next");
-		btFind.setMnemonic('f');
-		p.add(btFind);
+        // options
+        po = new JPanel(new GridLayout(3, 3, 1, 1));
+        po.setBorder(new TitledBorder(new EtchedBorder(), "Options"));
 
-		btRplNext = new JButton("Replace Next");
-		btRplNext.setMnemonic('n');
-		p.add(btRplNext);
+        pc1.add(po, BorderLayout.SOUTH);
 
-		btReplace = new JButton("Replace");
-		btReplace.setMnemonic('r');
-		p.add(btReplace);
+        //Buttons
 
-		btcntO = new JButton("Count occurrences");
-		btcntO.setMnemonic('o');
-		p.add(btcntO);
+        JPanel p01 = new JPanel(new FlowLayout());
+        JPanel p = new JPanel(new GridLayout(6, 1));
 
-		btReplaceAll = new JButton("Replace All");
-		btReplaceAll.setMnemonic('g');
-		p.add(btReplaceAll);
+        btFind = new JButton("Find Next");
+        btFind.setMnemonic('f');
+        p.add(btFind);
 
-		btClose = new JButton("Close");
-		btClose.setMnemonic('c');
-		p.add(btClose);
+        btRplNext = new JButton("Replace Next");
+        btRplNext.setMnemonic('n');
+        p.add(btRplNext);
 
-		p01.add(p);
-		add(p01, BorderLayout.EAST);
+        btReplace = new JButton("Replace");
+        btReplace.setMnemonic('r');
+        p.add(btReplace);
 
-	}
+        btcntO = new JButton("Count occurrences");
+        btcntO.setMnemonic('o');
+        p.add(btcntO);
+
+        btReplaceAll = new JButton("Replace All");
+        btReplaceAll.setMnemonic('g');
+        p.add(btReplaceAll);
+
+        btClose = new JButton("Close");
+        btClose.setMnemonic('c');
+        p.add(btClose);
+
+        p01.add(p);
+        add(p01, BorderLayout.EAST);
+
+    }
 
 }

@@ -65,7 +65,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
     JList systemDicList;
     BigTextArea credits;
     JScrollPane scrollCredits;
-    String noCreditMessage = "No available description for the dictionary \"";
+    final String noCreditMessage = "No available description for the dictionary \"";
 
 
     ApplyLexicalResourcesFrame() {
@@ -614,7 +614,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             }
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
             for (int i = 0; i < selection.length; i++) {
-                String s = ((String) selection[i]) + "\n";
+                String s = selection[i] + "\n";
                 bw.write(s, 0, s.length());
             }
             bw.close();
@@ -652,11 +652,11 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
     class ApplyLexicalResourcesDo implements ToDo {
         public void toDo() {
-            UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(),false);
-			if (Config.isKorean()) {
-			    UnitexFrame.getFrameManager().newTextAutomatonFrame(1,false);
-			}
-		}
-	}
+            UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
+            if (Config.isKorean()) {
+                UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
+            }
+        }
+    }
 
 }
