@@ -96,7 +96,6 @@ public class DelaFrame extends JInternalFrame {
             }
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
-            return;
         }
     }
 
@@ -124,8 +123,8 @@ public class DelaFrame extends JInternalFrame {
 
         public void toDo() {
             loadUnicodeDela(dela);
-		}
+        }
 
-	}
+    }
 
 }

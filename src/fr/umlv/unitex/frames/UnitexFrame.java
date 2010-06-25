@@ -513,7 +513,6 @@ public class UnitexFrame extends JFrame {
                 if (f instanceof TextAutomatonFrame) {
                     TextAutomatonFrame f2 = (TextAutomatonFrame) f;
                     f2.changeAntialiasingValue();
-                    return;
                 }
             }
         });
@@ -1135,7 +1134,6 @@ public class UnitexFrame extends JFrame {
             }
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
-            return;
         }
     }
 
@@ -1335,9 +1333,9 @@ public class UnitexFrame extends JFrame {
 
     public static JInternalFrame getCurrentFocusedFrame() {
         return mainFrame.desktop.getSelectedFrame();
-	}
+    }
 
-	public static InternalFrameManager getFrameManager() {
-		return mainFrame.frameManager;
-	}
+    public static InternalFrameManager getFrameManager() {
+        return mainFrame.frameManager;
+    }
 }

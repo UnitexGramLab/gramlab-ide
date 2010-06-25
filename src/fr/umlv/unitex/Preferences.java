@@ -402,7 +402,6 @@ public class Preferences {
             stream.close();
         } catch (IOException e2) {
             e2.printStackTrace();
-            return;
         }
     }
 

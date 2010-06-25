@@ -181,7 +181,6 @@ public class BigTextArea extends JPanel {
                     document.insertString(d, content.substring(d), highlighted);
                     break;
                 default:
-                    return;
             }
         } catch (BadLocationException e1) {
             e1.printStackTrace();

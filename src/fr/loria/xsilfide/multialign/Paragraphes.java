@@ -147,7 +147,6 @@ public class Paragraphes {
             tarLengths.setDistAt(i, (Integer) ((Vector) paraTar.elementAt(i)).elementAt(1) / 10);
         }
 
-        return;
     }
 
 
