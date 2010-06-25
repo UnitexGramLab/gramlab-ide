@@ -492,8 +492,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                 File[] files = f.getSelectedFiles();
                 if (files == null)
                     return;
-                for (int i = 0; i < files.length; i++) {
-                    morphoDicListModel.addElement(files[i]);
+                for (File file : files) {
+                    morphoDicListModel.addElement(file);
                 }
             }
         };
@@ -522,5 +522,5 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         setTitle("Preferences for " + Config.getCurrentLanguage());
         privateDirectory.setText(Config.getUserDir().getAbsolutePath());
         refresh();
-	}
+    }
 }

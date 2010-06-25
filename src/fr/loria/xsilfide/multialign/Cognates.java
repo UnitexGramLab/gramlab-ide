@@ -351,11 +351,10 @@ public class Cognates {
             // on veut maintenant tous les contenant d'un élement de vIdSource
             // et tous les contenant d'un élément de vIdTarget
             contenantsSource = new Vector();
-            for (Iterator eSource = vIdSource.iterator();
-                 eSource.hasNext();) {
+            for (Object aVIdSource : vIdSource) {
                 //tmp = (Vector)eSource.nextElement();
                 //idSource = (String)tmp.elementAt(1);
-                idSource = (String) eSource.next();
+                idSource = (String) aVIdSource;
                 tmp = lpt.includedInto(idSource, true);
 
                 //System.out.println("tmp = "+tmp+"\n");
@@ -364,11 +363,10 @@ public class Cognates {
                         tmp);
             }
             contenantsCible = new Vector();
-            for (Iterator eCible = vIdCible.iterator();
-                 eCible.hasNext();) {
+            for (Object aVIdCible : vIdCible) {
                 //tmp = (Vector)eCible.nextElement();
                 //idTarget = (String)tmp.elementAt(1);
-                idTarget = (String) eCible.next();
+                idTarget = (String) aVIdCible;
                 //System.out.println("lpt.includedInto("+idTarget+", false) ="+
                 //	   lpt.includedInto(idTarget, false));
                 tmp = lpt.includedInto(idTarget, false);
@@ -441,20 +439,17 @@ public class Cognates {
         // euhhhh si : on traduit en id internes
         // et d'ailleurs, on fait ça partout !
 
-        for (Iterator e = paquetsSource.iterator();
-             e.hasNext();) {
-            ((Paquet) e.next()).translateIds(lpt, true);
+        for (Object aPaquetsSource : paquetsSource) {
+            ((Paquet) aPaquetsSource).translateIds(lpt, true);
         }
-        for (Iterator e = paquetsCible.iterator();
-             e.hasNext();) {
-            ((Paquet) e.next()).translateIds(lpt, false);
+        for (Object aPaquetsCible : paquetsCible) {
+            ((Paquet) aPaquetsCible).translateIds(lpt, false);
         }
         Alignement aCour;
         String lId;
         String newId;
-        for (Iterator e = alignements.iterator();
-             e.hasNext();) {
-            aCour = (Alignement) e.next();
+        for (Object alignement : alignements) {
+            aCour = (Alignement) alignement;
             aCour.setGeneratedFrom(aCour.duplicate());
             lId = aCour.getIdSource();
             newId = lpt.extToIntIdSource(lId);
@@ -1017,9 +1012,8 @@ public class Cognates {
         } else {
             paquets = paquetsCible;
         }
-        for (Iterator e = paquets.iterator();
-             e.hasNext();) {
-            paquetCour = (Paquet) e.next();
+        for (Object paquet : paquets) {
+            paquetCour = (Paquet) paquet;
             paquetId = paquetCour.getId();
             if (paquetId.equals(id)) {
                 return paquetCour.getContentWithoutUri();

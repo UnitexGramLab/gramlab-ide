@@ -441,13 +441,13 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             cmd = cmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
         if (systemSelection != null && systemSelection.length != 0) {
-            for (int i = 0; i < systemSelection.length; i++) {
-                cmd = cmd.systemDictionary((String) systemSelection[i]);
+            for (Object aSystemSelection : systemSelection) {
+                cmd = cmd.systemDictionary((String) aSystemSelection);
             }
         }
         if (userSelection != null && userSelection.length != 0) {
-            for (int i = 0; i < userSelection.length; i++) {
-                cmd = cmd.userDictionary((String) userSelection[i]);
+            for (Object anUserSelection : userSelection) {
+                cmd = cmd.userDictionary((String) anUserSelection);
             }
         }
         commands.addCommand(cmd);
@@ -499,12 +499,12 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             return v;
         }
         File files_list[] = dir.listFiles();
-        for (int i = 0; i < files_list.length; i++) {
-            String name = files_list[i].getAbsolutePath();
-            if (!files_list[i].isDirectory()
+        for (File aFiles_list : files_list) {
+            String name = aFiles_list.getAbsolutePath();
+            if (!aFiles_list.isDirectory()
                     && (name.endsWith(".bin") || name.endsWith(".BIN")
                     || name.endsWith(".fst2") || name.endsWith(".FST2"))) {
-                v.add(files_list[i].getName());
+                v.add(aFiles_list.getName());
             }
         }
         return v;
@@ -613,8 +613,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 file.createNewFile();
             }
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            for (int i = 0; i < selection.length; i++) {
-                String s = selection[i] + "\n";
+            for (Object aSelection : selection) {
+                String s = aSelection + "\n";
                 bw.write(s, 0, s.length());
             }
             bw.close();

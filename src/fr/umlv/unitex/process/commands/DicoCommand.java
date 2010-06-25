@@ -21,71 +21,70 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
+import java.io.File;
+import java.util.ArrayList;
+
 /**
  * @author Sébastien Paumier
- *  
  */
 public class DicoCommand extends CommandBuilder {
 
-	public DicoCommand() {
-		super("Dico");
-	}
+    public DicoCommand() {
+        super("Dico");
+    }
 
-	public DicoCommand snt(File s) {
-		protectElement("-t"+s.getAbsolutePath());
-		return this;
-	}
-
-	public DicoCommand alphabet(File s) {
-		protectElement("-a"+s.getAbsolutePath());
-		return this;
-	}
-
-	public DicoCommand morphologicalDic(ArrayList<File> dicList) {
-    	if (dicList!=null && !dicList.isEmpty()) {
-    		protectElement("-m"+Preferences.getMorphologicalDicListAsString(dicList));
-    	}
+    public DicoCommand snt(File s) {
+        protectElement("-t" + s.getAbsolutePath());
         return this;
     }
 
-	public DicoCommand dictionary(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-	public DicoCommand userDictionary(String s) {
-		dictionary(new File(new File(Config.getUserCurrentLanguageDir(),"Dela"),s));
-		return this;
-	}
-
-	public DicoCommand systemDictionary(String s) {
-    dictionary(new File(new File(Config.getUnitexCurrentLanguageDir(),"Dela"),s));
-		return this;
-	}
-
-	public DicoCommand dictionaryList(ArrayList<File> list) {
-		for (int i = 0; i < list.size(); i++) {
-			protectElement(list.get(i).getAbsolutePath());
-		}
-		return this;
-	}
-	
-	public DicoCommand korean() {
-		element("-K");
+    public DicoCommand alphabet(File s) {
+        protectElement("-a" + s.getAbsolutePath());
         return this;
     }
 
-	public DicoCommand arabic(File s) {
-		element("-u");
+    public DicoCommand morphologicalDic(ArrayList<File> dicList) {
+        if (dicList != null && !dicList.isEmpty()) {
+            protectElement("-m" + Preferences.getMorphologicalDicListAsString(dicList));
+        }
+        return this;
+    }
+
+    public DicoCommand dictionary(File s) {
         protectElement(s.getAbsolutePath());
-		return this;
-	}
+        return this;
+    }
+
+    public DicoCommand userDictionary(String s) {
+        dictionary(new File(new File(Config.getUserCurrentLanguageDir(), "Dela"), s));
+        return this;
+    }
+
+    public DicoCommand systemDictionary(String s) {
+        dictionary(new File(new File(Config.getUnitexCurrentLanguageDir(), "Dela"), s));
+        return this;
+    }
+
+    public DicoCommand dictionaryList(ArrayList<File> list) {
+        for (File aList : list) {
+            protectElement(aList.getAbsolutePath());
+        }
+        return this;
+    }
+
+    public DicoCommand korean() {
+        element("-K");
+        return this;
+    }
+
+    public DicoCommand arabic(File s) {
+        element("-u");
+        protectElement(s.getAbsolutePath());
+        return this;
+    }
 
 
 }
