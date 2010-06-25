@@ -604,8 +604,8 @@ public class GraphIO {
         int y = 0;
         while (UnicodeIO.isDigit((c = (char) UnicodeIO.readChar(f))))
             y = y * 10 + (c - '0');
-        if (Preferences.getGraphPresentationPreferences().rightToLeft == true
-                || info.rightToLeft == true) {
+        if (Preferences.getGraphPresentationPreferences().rightToLeft
+                || info.rightToLeft) {
             info.rightToLeft = true;
             g.setX(width - x);
         } else {
@@ -793,6 +793,6 @@ public class GraphIO {
     }
 
     public GraphPresentationInfo getGraphPresentationInfo() {
-		return info;
-	}
+        return info;
+    }
 }

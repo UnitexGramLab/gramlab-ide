@@ -1015,7 +1015,7 @@ public class UnitexFrame extends JFrame {
         GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
         if (currentFrame == null)
             return;
-        if (currentFrame.modified == true) {
+        if (currentFrame.modified) {
             JOptionPane.showMessageDialog(null,
                     "Save graph before compiling it", "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -1042,7 +1042,7 @@ public class UnitexFrame extends JFrame {
         GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
         if (currentFrame == null)
             return;
-        if (currentFrame.modified == true) {
+        if (currentFrame.modified) {
             JOptionPane.showMessageDialog(null,
                     "Save graph before compiling it", "Error",
                     JOptionPane.ERROR_MESSAGE);

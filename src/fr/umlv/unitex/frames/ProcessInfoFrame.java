@@ -296,7 +296,7 @@ public class ProcessInfoFrame extends JInternalFrame {
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         public void run() {
-                            if (PB == true) {
+                            if (PB) {
                                 setTitle("ERROR");
                             } else {
                                 setTitle("");
@@ -330,6 +330,6 @@ public class ProcessInfoFrame extends JInternalFrame {
         };
         thread.setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler
                 .getHandler());
-		thread.start();
-	}
+        thread.start();
+    }
 }

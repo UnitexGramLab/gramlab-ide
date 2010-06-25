@@ -99,7 +99,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
 
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
-                if (refreshLock == true || e.getValueIsAdjusting()) {
+                if (refreshLock || e.getValueIsAdjusting()) {
                     return;
                 }
                 refreshLock = true;
