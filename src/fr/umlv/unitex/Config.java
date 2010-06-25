@@ -1557,10 +1557,9 @@ public class Config {
 
 
     static boolean isValidLanguageName(String name) {
-        if (name.equals("App") || name.equals("Users")
+        return !(name.equals("App") || name.equals("Users")
                 || name.equals("Src") || name.equals("XAlign")
-                || name.startsWith(".")) return false;
-        return true;
+                || name.startsWith("."));
     }
 
 

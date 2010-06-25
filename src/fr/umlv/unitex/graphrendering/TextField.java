@@ -547,9 +547,7 @@ public class TextField extends GraphTextField {
         }
         if ("$<".equals(s) || "$>".equals(s) || "$*".equals(s))
             return true;
-        if (tokenize(tmp))
-            return true;
-        return false;
+        return tokenize(tmp);
     }
 
     public SpecialPaste getSpecialPaste() {
