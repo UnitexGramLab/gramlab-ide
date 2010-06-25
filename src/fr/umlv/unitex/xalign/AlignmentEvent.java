@@ -23,6 +23,9 @@ package fr.umlv.unitex.xalign;
 
 public enum AlignmentEvent {
 
-	LOADING,MANUAL_EDIT,SAVING,CLEAR;
-	
+    LOADING,
+    MANUAL_EDIT,
+    SAVING,
+    CLEAR
+
 }

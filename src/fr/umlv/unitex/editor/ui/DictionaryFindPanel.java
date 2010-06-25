@@ -215,13 +215,11 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 
                     String key = docFind.getText(0, docFind.getLength());
                     count.setText(
-                            new Integer(
-                                    text.countAll(
-                                            key,
-                                            modelUp.isSelected(),
-                                            modelGram.isSelected(),
-                                            modelGram.isSelected()))
-                                    .toString());
+                            Integer.toString(text.countAll(
+                                    key,
+                                    modelUp.isSelected(),
+                                    modelGram.isSelected(),
+                                    modelGram.isSelected())));
 
                 } catch (BadLocationException e) {
                     warning("Bad Location Exception:\n" + e.getMessage());
@@ -272,5 +270,5 @@ public class DictionaryFindPanel extends AbstractFindpanel {
                 message,
                 "Warning",
                 JOptionPane.INFORMATION_MESSAGE);
-	}
+    }
 }
