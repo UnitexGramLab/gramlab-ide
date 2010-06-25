@@ -433,11 +433,7 @@ les id originaux tirés des fichiers source, respectivement target */
             idEnglob = idEnglobant;
             allIds = Ids;
 
-            if (idEnglobant.equals("")) {
-                inPartOfDocumentToWorkOn = true;
-            } else {
-                inPartOfDocumentToWorkOn = false;
-            }
+            inPartOfDocumentToWorkOn = idEnglobant.equals("");
             // B.G. 12/12/2006
             curdiv = "";
         }

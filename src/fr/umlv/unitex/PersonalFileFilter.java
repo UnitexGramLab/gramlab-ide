@@ -64,9 +64,7 @@ public class PersonalFileFilter extends javax.swing.filechooser.FileFilter {
                 return true;
         }
         String s = Util.getExtensionInLowerCase(f);
-        if (s != null && (s.equals(ext)))
-            return true;
-        return false;
+        return s != null && (s.equals(ext));
     }
 
     /**

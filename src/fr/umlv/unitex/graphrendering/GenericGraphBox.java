@@ -318,10 +318,7 @@ public class GenericGraphBox {
             transitions.remove(i);
             g.hasIncomingTransitions--;
         }
-        if (transitions.isEmpty())
-            hasOutgoingTransitions = false;
-        else
-            hasOutgoingTransitions = true;
+        hasOutgoingTransitions = !transitions.isEmpty();
         comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
         g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
@@ -345,10 +342,7 @@ public class GenericGraphBox {
             transitions.add(g);
             g.hasIncomingTransitions++;
         }
-        if (transitions.isEmpty())
-            hasOutgoingTransitions = false;
-        else
-            hasOutgoingTransitions = true;
+        hasOutgoingTransitions = !transitions.isEmpty();
         comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
         g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
@@ -365,10 +359,7 @@ public class GenericGraphBox {
             transitions.remove(i);
             g.hasIncomingTransitions--;
         }
-        if (transitions.isEmpty())
-            hasOutgoingTransitions = false;
-        else
-            hasOutgoingTransitions = true;
+        hasOutgoingTransitions = !transitions.isEmpty();
 
         comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
         g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
@@ -1177,18 +1168,18 @@ public class GenericGraphBox {
     }
 
     public void setType(int type) {
-		this.type = type;
-	}
+        this.type = type;
+    }
 
-	public void setTransitions(ArrayList<GenericGraphBox> transitions) {
-		this.transitions = transitions;
-	}
+    public void setTransitions(ArrayList<GenericGraphBox> transitions) {
+        this.transitions = transitions;
+    }
 
-	void updateWithContext(Graphics2D g) {
-		if (context != null) {
-			return;
-		}
-		context = g;
-		update();
-	}
+    void updateWithContext(Graphics2D g) {
+        if (context != null) {
+            return;
+        }
+        context = g;
+        update();
+    }
 }
