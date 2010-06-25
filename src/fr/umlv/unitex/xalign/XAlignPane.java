@@ -642,7 +642,6 @@ public class XAlignPane extends JPanel {
                 if (m instanceof ConcordanceModel) {
                     ConcordanceModel m2 = (ConcordanceModel) m;
                     m2.refresh();
-                    return;
                 }
             }
         });
