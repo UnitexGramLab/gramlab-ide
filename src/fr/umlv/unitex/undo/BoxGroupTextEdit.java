@@ -27,7 +27,6 @@ import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -74,8 +73,8 @@ public class BoxGroupTextEdit extends AbstractUndoableEdit {
         this.zone = zone;
 
         // save for each boxe their text
-        for (Iterator it = selectedBoxes.iterator(); it.hasNext();) {
-            GenericGraphBox g = (GenericGraphBox) it.next();
+        for (Object selectedBoxe : selectedBoxes) {
+            GenericGraphBox g = (GenericGraphBox) selectedBoxe;
             //if( g.TYPE == GenericGraphBox.NORMAL )
             selectedBoxesAndOldString.put(g, g.getContent());
         }
@@ -88,8 +87,7 @@ public class BoxGroupTextEdit extends AbstractUndoableEdit {
         Set<GenericGraphBox> keys = selectedBoxesAndOldString.keySet();
 
         // add old text in each boxes
-        for (Iterator<GenericGraphBox> it = keys.iterator(); it.hasNext();) {
-            GenericGraphBox g = it.next();
+        for (GenericGraphBox g : keys) {
             String text = selectedBoxesAndOldString.get(g);
             g.setContent(text);
             g.setSelected(true);
@@ -104,13 +102,12 @@ public class BoxGroupTextEdit extends AbstractUndoableEdit {
         super.redo();
 
         // add old text in all boxes
-        for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
-            GenericGraphBox g = it.next();
+        for (GenericGraphBox g : oldSelectedBoxes) {
             g.setContent(remplacementString);
             g.setSelected(true);
             selectedBoxes.add(g);
-			zone.initText(g.getContent());			
-		}
-	}
+            zone.initText(g.getContent());
+        }
+    }
 
 }

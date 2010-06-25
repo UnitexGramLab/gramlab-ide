@@ -44,6 +44,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.dnd.DropTarget;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -998,9 +999,9 @@ public class UnitexFrame extends JFrame {
      */
     public void saveAllGraphs() {
         JInternalFrame[] frames = desktop.getAllFrames();
-        for (int i = 0; i < frames.length; i++) {
-            if (frames[i] instanceof GraphFrame) {
-                saveGraph((GraphFrame) frames[i]);
+        for (JInternalFrame frame : frames) {
+            if (frame instanceof GraphFrame) {
+                saveGraph((GraphFrame) frame);
             }
         }
     }
@@ -1170,8 +1171,8 @@ public class UnitexFrame extends JFrame {
     public void tileFrames() {
         JInternalFrame[] f = desktop.getAllFrames();
         int openFrameCount = 0;
-        for (int i = 0; i < f.length; i++) {
-            if (f[i].isVisible() && !f[i].isIcon()) {
+        for (JInternalFrame aF1 : f) {
+            if (aF1.isVisible() && !aF1.isIcon()) {
                 openFrameCount++;
             }
         }
@@ -1189,9 +1190,9 @@ public class UnitexFrame extends JFrame {
             }
         }
         if (openFrameCount == 2) {
-            for (int i = 0; i < f.length; i++) {
+            for (JInternalFrame aF : f) {
                 try {
-                    JInternalFrame F = f[i];
+                    JInternalFrame F = aF;
                     if (F.isVisible() && !F.isIcon()) {
                         if (openFrameCount == 2)
                             F.setBounds(0, 0, bounds.width, bounds.height / 2);
@@ -1207,9 +1208,9 @@ public class UnitexFrame extends JFrame {
             return;
         }
         if (openFrameCount == 3) {
-            for (int i = 0; i < f.length; i++) {
+            for (JInternalFrame aF : f) {
                 try {
-                    JInternalFrame F = f[i];
+                    JInternalFrame F = aF;
                     if (F.isVisible() && !F.isIcon()) {
                         if (openFrameCount == 3)
                             F.setBounds(0, 0, bounds.width, bounds.height / 3);
@@ -1270,16 +1271,16 @@ public class UnitexFrame extends JFrame {
         Component[] f = desktop.getComponents();
         int openFrameCount = 0;
         final int offset = 30;
-        for (int i = 0; i < f.length; i++) {
+        for (Component aF : f) {
             try {
-                JInternalFrame F = (JInternalFrame) f[i];
+                JInternalFrame F = (JInternalFrame) aF;
                 if (F.isVisible() && !F.isIcon()) {
                     openFrameCount++;
                     F.setBounds(offset * (openFrameCount % 6), offset
                             * (openFrameCount % 6), 800, 600);
                     try {
                         F.setSelected(true);
-                    } catch (java.beans.PropertyVetoException e) {
+                    } catch (PropertyVetoException e) {
                         e.printStackTrace();
                     }
                 }
@@ -1296,9 +1297,9 @@ public class UnitexFrame extends JFrame {
         Component[] f = desktop.getComponents();
         int openFrameCount = 0;
         Dimension desktop_bounds = getContentPane().getSize();
-        for (int i = 0; i < f.length; i++) {
+        for (Component aF : f) {
             try {
-                JInternalFrame.JDesktopIcon F = (JInternalFrame.JDesktopIcon) f[i];
+                JInternalFrame.JDesktopIcon F = (JInternalFrame.JDesktopIcon) aF;
                 if (F.isVisible()) {
                     Dimension icon_bounds = F.getSize();
                     int X, Y;

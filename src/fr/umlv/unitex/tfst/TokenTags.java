@@ -65,8 +65,8 @@ public class TokenTags {
 
     public void refreshFilter(TagFilter f) {
         filteredInterpretations.clear();
-        for (int i = 0; i < interpretations.size(); i++) {
-            String s = getFilteredInterpretation(interpretations.get(i), f);
+        for (ArrayList<Tag> interpretation : interpretations) {
+            String s = getFilteredInterpretation(interpretation, f);
             if (s != null && !"".equals(s) && !filteredInterpretations.contains(s)) {
                 filteredInterpretations.add(s);
             }

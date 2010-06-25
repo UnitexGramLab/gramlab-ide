@@ -190,7 +190,7 @@ public class SVG {
         for (int i = 0; i < g.n_lines; i++) {
             Boolean is_greyed = g.greyed.get(i);
             String l = g.lines.get(i);
-            if (is_greyed.booleanValue()) {
+            if (is_greyed) {
                 fillRect(g.X1 + 2, g.Y1 + 4 + i * h_ligne, g.Width - 4, h_ligne,
                         (l.startsWith(":") ? info.packageColor : info.subgraphColor));
             }
@@ -228,7 +228,7 @@ public class SVG {
         for (int i = 0; i < g.n_lines; i++) {
             Boolean is_greyed = g.greyed.get(i);
             String l = g.lines.get(i);
-            if (is_greyed.booleanValue()) {
+            if (is_greyed) {
                 fillRect(g.X1 + 2, g.Y1 + 3 + i * h_ligne, g.Width - 4, h_ligne,
                         (l.startsWith(":") ? info.packageColor : info.subgraphColor));
             }

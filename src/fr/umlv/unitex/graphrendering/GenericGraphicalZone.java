@@ -156,8 +156,8 @@ public abstract class GenericGraphicalZone extends JComponent {
         GenericGraphBox g;
         GraphBoxInfo tmp;
         unSelectAllBoxes();
-        for (int i = 0; i < v.size(); i++) {
-            tmp = v.get(i);
+        for (GraphBoxInfo aV : v) {
+            tmp = aV;
             g = createBox(tmp.X + 20 * m.n, tmp.Y + 20 * m.n);
             g.setContent(tmp.content);
             g.selected = true;
@@ -829,15 +829,15 @@ public abstract class GenericGraphicalZone extends JComponent {
     }
 
     protected void fireGraphTextChanged(String content) {
-		firingGraphText=true;
-		GraphTextEvent e=new GraphTextEvent(this,content);
-		try {
-			for (GraphTextListener l:textListeners) {
-				l.graphTextChanged(e);
-			}
-		} finally {
-			firingGraphText=false;
-		}
-	}
-	
+        firingGraphText = true;
+        GraphTextEvent e = new GraphTextEvent(this, content);
+        try {
+            for (GraphTextListener l : textListeners) {
+                l.graphTextChanged(e);
+            }
+        } finally {
+            firingGraphText = false;
+        }
+    }
+
 }

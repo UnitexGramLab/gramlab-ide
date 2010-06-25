@@ -25,7 +25,6 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * class uses to save the state of the graph before a selection
@@ -55,8 +54,7 @@ public class SelectEdit extends AbstractUndoableEdit {
     @Override
     public void redo() {
         super.redo();
-        for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
-            GenericGraphBox g = it.next();
+        for (GenericGraphBox g : oldSelectedBoxes) {
             g.setSelected(true);
             selectedBoxes.add(g);
         }
@@ -65,12 +63,11 @@ public class SelectEdit extends AbstractUndoableEdit {
     @Override
     public void undo() {
         super.undo();
-        for (Iterator<GenericGraphBox> it = oldSelectedBoxes.iterator(); it.hasNext();) {
-            GenericGraphBox g = it.next();
+        for (GenericGraphBox g : oldSelectedBoxes) {
             g.setSelected(false);
             selectedBoxes.remove(g);
         }
-		
-	}
+
+    }
 
 }

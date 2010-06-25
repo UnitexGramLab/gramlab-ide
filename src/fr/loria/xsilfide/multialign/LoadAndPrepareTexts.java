@@ -833,8 +833,8 @@ les id originaux tirés des fichiers source, respectivement target */
 
     private boolean containsChar(String id, char c) {
         char[] chars = id.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == c) {
+        for (char aChar : chars) {
+            if (aChar == c) {
                 return true;
             }
         }

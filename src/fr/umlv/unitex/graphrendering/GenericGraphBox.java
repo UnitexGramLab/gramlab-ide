@@ -253,7 +253,7 @@ public class GenericGraphBox {
         Boolean b;
         n = (y - Y1 - 4) / (h_ligne);
         b = greyed.get(n);
-        if (b.booleanValue()) {
+        if (b) {
             s = lines.get(n);
             if (!s.endsWith(".grf")) {
                 s = s + ".grf";
@@ -674,7 +674,7 @@ public class GenericGraphBox {
         for (i = 0; i < n_lines; i++) {
             is_greyed = greyed.get(i);
             l = lines.get(i);
-            if (is_greyed.booleanValue()) {
+            if (is_greyed) {
                 g.setColor(parentGraphicalZone.info.subgraphColor);
                 if (l.startsWith(":")) {
                     // if we have a subgraph within a package
@@ -821,7 +821,7 @@ public class GenericGraphBox {
         for (i = 0; i < n_lines; i++) {
             is_greyed = greyed.get(i);
             l = lines.get(i);
-            if (is_greyed.booleanValue()) {
+            if (is_greyed) {
                 g.setColor(parentGraphicalZone.info.subgraphColor);
                 if (l.startsWith(":")) {
                     // if we have a subgraph within a package

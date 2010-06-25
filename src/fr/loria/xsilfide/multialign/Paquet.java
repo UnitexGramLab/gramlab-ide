@@ -30,7 +30,6 @@
  */
 
 
-
 package fr.loria.xsilfide.multialign;
 
 import java.util.ArrayList;
@@ -38,95 +37,95 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-@SuppressWarnings("unchecked") 
-class Paquet{
+@SuppressWarnings("unchecked")
+class Paquet {
     private String id;
-    private TreeSet<XmlId> contenu; 
-    
-    public Paquet(String unId, Collection<XmlId> unContenu){
-	id = unId;
-	contenu = new TreeSet<XmlId>(unContenu);
-    }
-    String getId(){
-	return id;
-    }
-    Collection<XmlId> getContent(){
-	return contenu;
-    }
-    ArrayList<String> getContentWithoutUri(){
-	ArrayList<String> res = new ArrayList<String>();
-	XmlId tmp;
-	for (Iterator e = getContent().iterator();
-	     e.hasNext();){
-	    tmp = (XmlId)e.next();
-	    res.add(tmp.getLocalName());
-	}
-	return res;
+    private TreeSet<XmlId> contenu;
+
+    public Paquet(String unId, Collection<XmlId> unContenu) {
+        id = unId;
+        contenu = new TreeSet<XmlId>(unContenu);
     }
 
-	private void setContent(Collection<XmlId> cont){
-	contenu = new TreeSet(cont);
+    String getId() {
+        return id;
     }
-    public void translateIds(LoadAndPrepareTexts lpt, boolean inSource){
-	String oldId;
-	String newId;
-	ArrayList<XmlId> newContent = new ArrayList<XmlId>();
-	XmlId cour;
-	
-	for (Iterator e = getContent().iterator();
-	     e.hasNext();){
-	    cour = (XmlId)e.next();
-	    oldId = cour.getLocalName();
-	    if (inSource){
-		newId = lpt.extToIntIdSource(oldId);
-	    }
-	    else{
-		newId = lpt.extToIntIdTarget(oldId);
-	    }
-	    newContent.add(new XmlId(cour.getUri(), newId, lpt));
-	}
-	setContent(newContent);
+
+    Collection<XmlId> getContent() {
+        return contenu;
+    }
+
+    ArrayList<String> getContentWithoutUri() {
+        ArrayList<String> res = new ArrayList<String>();
+        XmlId tmp;
+        for (Object o : getContent()) {
+            tmp = (XmlId) o;
+            res.add(tmp.getLocalName());
+        }
+        return res;
+    }
+
+    private void setContent(Collection<XmlId> cont) {
+        contenu = new TreeSet(cont);
+    }
+
+    public void translateIds(LoadAndPrepareTexts lpt, boolean inSource) {
+        String oldId;
+        String newId;
+        ArrayList<XmlId> newContent = new ArrayList<XmlId>();
+        XmlId cour;
+
+        for (Object o : getContent()) {
+            cour = (XmlId) o;
+            oldId = cour.getLocalName();
+            if (inSource) {
+                newId = lpt.extToIntIdSource(oldId);
+            } else {
+                newId = lpt.extToIntIdTarget(oldId);
+            }
+            newContent.add(new XmlId(cour.getUri(), newId, lpt));
+        }
+        setContent(newContent);
     }
 
     /* l'id du paquet si id est dedans, null si pas dans le
        paquet. */
-    public String idPaquetOf(String id1){
-	for (Iterator e = getContent().iterator();
-	     e.hasNext();){
-	    if (e.next().equals(id1)){
-		return getId();
-	    }
-	}
-	return null;
+    public String idPaquetOf(String id1) {
+        for (Object o : getContent()) {
+            if (o.equals(id1)) {
+                return getId();
+            }
+        }
+        return null;
     }
 
     // on recoit un vecteur d'ids, on veut ceux qui sont 
     // présents dans le paquet.
-    public ArrayList<String> containedInPaquet(Collection<String> ids){
-	String idP;
-	Iterator eP;
-	boolean trouve;
-	XmlId cour;
-	ArrayList<String> res = new ArrayList<String>();
+    public ArrayList<String> containedInPaquet(Collection<String> ids) {
+        String idP;
+        Iterator eP;
+        boolean trouve;
+        XmlId cour;
+        ArrayList<String> res = new ArrayList<String>();
 
-	for (Iterator e = ids.iterator();
-	     e.hasNext();){
-	    id = (String)e.next();
-	    eP = getContent().iterator();
-	    trouve = false;
-	    while (eP.hasNext() && !trouve){
-		cour = (XmlId)eP.next();
-		idP = cour.getLocalName();
-		trouve = idP.equals(id);
-	    }
-	    if (trouve){
-		res.add(id);
-	    }
-	}
-	return res;
+        for (Object id1 : ids) {
+            id = (String) id1;
+            eP = getContent().iterator();
+            trouve = false;
+            while (eP.hasNext() && !trouve) {
+                cour = (XmlId) eP.next();
+                idP = cour.getLocalName();
+                trouve = idP.equals(id);
+            }
+            if (trouve) {
+                res.add(id);
+            }
+        }
+        return res;
     }
+
     @Override
-	public String toString(){
-	return getId()+" : "+getContent();
+    public String toString() {
+        return getId() + " : " + getContent();
     }
 }

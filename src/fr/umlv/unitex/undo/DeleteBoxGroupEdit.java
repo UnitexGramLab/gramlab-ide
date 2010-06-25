@@ -27,7 +27,6 @@ import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -77,8 +76,8 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 
         // get, for each deleted boxes the box which have transition to it
         GenericGraphBox g;
-        for (Iterator it = selectedBoxes.iterator(); it.hasNext();) {
-            g = (GenericGraphBox) it.next();
+        for (Object selectedBoxe : selectedBoxes) {
+            g = (GenericGraphBox) selectedBoxe;
             ArrayList<GenericGraphBox> boxeTransitionsTo = zone.getTransitionTo(g);
             ArrayList<GenericGraphBox> boxeTransitionsFrom = (ArrayList) g.getTransitions().clone();
             selectedBoxesAndTransitionsTo.put(g, boxeTransitionsTo);
@@ -96,8 +95,8 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
         Set<GenericGraphBox> keys = selectedBoxesAndTransitionsTo.keySet();
 
         // for each selected boxes before delete
-        for (Iterator<GenericGraphBox> it = keys.iterator(); it.hasNext();) {
-            g = it.next();
+        for (GenericGraphBox key : keys) {
+            g = key;
             g.setTransitions(new ArrayList<GenericGraphBox>());
             transitionsToBoxe = selectedBoxesAndTransitionsTo.get(g);
             transitionsFromBoxe = selectedBoxesAndTransitionsFrom.get(g);
@@ -112,15 +111,15 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
             if (g.hasTransitionToItself())
                 g.addTransitionTo(g);
 
-            for (Iterator<GenericGraphBox> it2 = transitionsToBoxe.iterator(); it2.hasNext();) {
-                g2 = it2.next();
+            for (GenericGraphBox aTransitionsToBoxe : transitionsToBoxe) {
+                g2 = aTransitionsToBoxe;
                 if (!selectedBoxes.contains(g2))
                     g2.onlyAddTransitionTo(g);
             }
 
             // add transitions from each boxe
-            for (Iterator<GenericGraphBox> it2 = transitionsFromBoxe.iterator(); it2.hasNext();) {
-                g2 = it2.next();
+            for (GenericGraphBox aTransitionsFromBoxe : transitionsFromBoxe) {
+                g2 = aTransitionsFromBoxe;
                 g.onlyAddTransitionTo(g2);
             }
 

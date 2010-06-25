@@ -44,7 +44,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 @SuppressWarnings("unchecked")
@@ -276,32 +275,26 @@ class InsertLinkGrp {
 
         //System.out.println("Result = "+Sentences.getXalignResult());
         // we now have to xmlize the result
-        for (Iterator i =
-                Sentences.getXalignResult().getSourcePaquets().iterator();
-             i.hasNext();) {
-            paq = (Paquet) i.next();
+        for (Object o4 : Sentences.getXalignResult().getSourcePaquets()) {
+            paq = (Paquet) o4;
             newLink = new ElementImpl(xdoc, "link");
             newLink.setAttribute("type", "linking");
             newLink.setAttribute("xml:id", paq.getId());
             paqContent = "";
-            for (Iterator p = paq.getContent().iterator();
-                 p.hasNext();) {
-                paqContent = paqContent + ((XmlId) p.next()).internalToExternalId() + " ";
+            for (Object o : paq.getContent()) {
+                paqContent = paqContent + ((XmlId) o).internalToExternalId() + " ";
             }
             newLink.setAttribute("targets", paqContent);
             newLinkGrp.appendChild(newLink);
         }
-        for (Iterator i =
-                Sentences.getXalignResult().getTargetPaquets().iterator();
-             i.hasNext();) {
-            paq = (Paquet) i.next();
+        for (Object o3 : Sentences.getXalignResult().getTargetPaquets()) {
+            paq = (Paquet) o3;
             newLink = new ElementImpl(xdoc, "link");
             newLink.setAttribute("type", "linking");
             newLink.setAttribute("xml:id", paq.getId());
             paqContent = "";
-            for (Iterator p = paq.getContent().iterator();
-                 p.hasNext();) {
-                paqContent = paqContent + ((XmlId) p.next()).internalToExternalId() + " ";
+            for (Object o : paq.getContent()) {
+                paqContent = paqContent + ((XmlId) o).internalToExternalId() + " ";
             }
             newLink.setAttribute("targets", paqContent);
             newLinkGrp.appendChild(newLink);
@@ -312,19 +305,15 @@ class InsertLinkGrp {
         newDiv.appendChild(newLinkGrp);
 
         // now for the noCorresp :
-        for (Iterator i =
-                Sentences.getXalignResult().getNoCorrespSource().iterator();
-             i.hasNext();) {
-            xiCour = (XmlId) i.next();
+        for (Object o2 : Sentences.getXalignResult().getNoCorrespSource()) {
+            xiCour = (XmlId) o2;
             newLink = new ElementImpl(xdoc, "link");
             newLink.setAttribute("type", "noCorresp");
             newLink.setAttribute("targets", "" + xiCour.internalToExternalId());
             newLinkGrp.appendChild(newLink);
         }
-        for (Iterator i =
-                Sentences.getXalignResult().getNoCorrespTarget().iterator();
-             i.hasNext();) {
-            xiCour = (XmlId) i.next();
+        for (Object o1 : Sentences.getXalignResult().getNoCorrespTarget()) {
+            xiCour = (XmlId) o1;
             newLink = new ElementImpl(xdoc, "link");
             newLink.setAttribute("type", "noCorresp");
             newLink.setAttribute("targets", "" + xiCour.internalToExternalId());
@@ -336,10 +325,8 @@ class InsertLinkGrp {
         newDiv.appendChild(newLinkGrp);
 
         // and finally the alignments :
-        for (Iterator i =
-                Sentences.getXalignResult().getAlignments().iterator();
-             i.hasNext();) {
-            aCour = (Alignement) i.next();
+        for (Object o : Sentences.getXalignResult().getAlignments()) {
+            aCour = (Alignement) o;
             newLink = new ElementImpl(xdoc, "link");
             newLink.setAttribute("type", "alignment");
             alignContent = "" + aCour.getXmlIdSource().internalToExternalId() + " "

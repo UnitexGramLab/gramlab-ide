@@ -82,7 +82,7 @@ public class TfstGraphBox extends GenericGraphBox {
         if (line[0] != '{') {
             n_lines++;
             lines.add(s);
-            greyed.add(new Boolean(false));
+            greyed.add(Boolean.FALSE);
             return;
         }
         i = 1;
@@ -111,12 +111,12 @@ public class TfstGraphBox extends GenericGraphBox {
         }
         n_lines++;
         lines.add(flechi);
-        greyed.add(new Boolean(false));
+        greyed.add(Boolean.FALSE);
         if (!(canonique.equals("") || canonique.equals(flechi))) {
             // if inflected form is equal to canonical, we don't insert it twice
             n_lines++;
             lines.add(canonique);
-            greyed.add(new Boolean(false));
+            greyed.add(Boolean.FALSE);
         }
         transduction = infos;
     }

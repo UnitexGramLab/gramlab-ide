@@ -252,9 +252,9 @@ public class MyDropTarget {
                 return;
             }
             if (extension.compareToIgnoreCase("grf") == 0) {
-                for (int i = 0; i < list.size(); i++) {
+                for (Object aList : list) {
                     if (Util.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
-                        final File file = (File) list.get(i);
+                        final File file = (File) aList;
                         UnitexFrame.getFrameManager().newGraphFrame(file);
                     }
                 }
@@ -324,8 +324,8 @@ public class MyDropTarget {
         private void processDropList(List<?> list) {
             TranscodingFrame frame = UnitexFrame.getFrameManager().newTranscodingFrame();
             Object o;
-            for (int i = 0; i < list.size(); i++) {
-                o = list.get(i);
+            for (Object aList : list) {
+                o = aList;
                 if (!(o instanceof File)) {
                     return;
                 }

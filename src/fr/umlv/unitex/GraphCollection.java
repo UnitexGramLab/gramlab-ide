@@ -167,8 +167,8 @@ public class GraphCollection {
 
         // and we parse directories
         String graphLine = "\"";
-        for (int i = 0; i < files_list.length; i++) {
-            String fileName = files_list[i].getName();
+        for (File aFiles_list1 : files_list) {
+            String fileName = aFiles_list1.getName();
             if (stop) {
                 try {
                     stream.close();
@@ -177,7 +177,7 @@ public class GraphCollection {
                 }
                 return;
             }
-            if (files_list[i].isDirectory()) {
+            if (aFiles_list1.isDirectory()) {
                 if (0 == graphLine.compareTo("\"")) {
                     // if this directory is the first of the list
                     graphLine =
@@ -193,7 +193,7 @@ public class GraphCollection {
                                     + "_dir";
                 }
                 buildGraphCollection(
-                        files_list[i],
+                        aFiles_list1,
                         new File(destinationDir, Util.getFileNameWithoutExtension(fileName) + "_dir.grf"),
                         copy,
                         txt);
@@ -209,8 +209,8 @@ public class GraphCollection {
 
         // then, we parse graphs
         graphLine = "\"";
-        for (int i = 0; i < files_list.length; i++) {
-            String fileName = files_list[i].getName();
+        for (File aFiles_list : files_list) {
+            String fileName = aFiles_list.getName();
             if (stop) {
                 try {
                     stream.close();
@@ -219,7 +219,7 @@ public class GraphCollection {
                 }
                 return;
             }
-            if (!files_list[i].isDirectory()
+            if (!aFiles_list.isDirectory()
                     && Util.getExtensionInLowerCase(fileName).compareTo("grf")
                     == 0) {
                 if (0 == graphLine.compareTo("\"")) {
@@ -236,7 +236,7 @@ public class GraphCollection {
                 }
                 if (copy) {
                     Config.copyFile(
-                            files_list[i], new File(destinationDir, fileName));
+                            aFiles_list, new File(destinationDir, fileName));
                 }
             }
         }
