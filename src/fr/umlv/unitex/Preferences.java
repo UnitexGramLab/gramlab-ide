@@ -98,7 +98,7 @@ public class Preferences {
      */
     private static final Properties defaultProperties = new Properties();
 
-    {
+    static {
         /*
            * Initialization of default properties
            */

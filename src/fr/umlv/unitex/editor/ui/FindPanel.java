@@ -249,13 +249,11 @@ public class FindPanel extends AbstractFindpanel {
 
                     String key = docFind.getText(0, docFind.getLength());
                     count.setText(
-                            new Integer(
-                                    text.countAll(
-                                            key,
-                                            modelUp.isSelected(),
-                                            modelWord.isSelected(),
-                                            modelCase.isSelected()))
-                                    .toString());
+                            Integer.toString(text.countAll(
+                                    key,
+                                    modelUp.isSelected(),
+                                    modelWord.isSelected(),
+                                    modelCase.isSelected())));
 
                 } catch (BadLocationException e) {
                     warning("Bad Location Exception:\n" + e.getMessage());
