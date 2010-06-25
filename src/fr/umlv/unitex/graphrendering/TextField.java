@@ -236,7 +236,7 @@ public class TextField extends GraphTextField {
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
-            if (res == null || TextField.this.modified == true) {
+            if (res == null || TextField.this.modified) {
                 // if there is no boxes to copy we do a simple paste
                 paste();
                 return;

@@ -181,7 +181,7 @@ public class Paragraphes {
                 String id = para.elementAt(0).toString();
 
                 if ((Integer) para.elementAt(1) > 0) {
-                    while (((Vector) srcSentences.elementAt(csSrc)).elementAt(0).toString().startsWith(id) == false) {
+                    while (!((Vector) srcSentences.elementAt(csSrc)).elementAt(0).toString().startsWith(id)) {
                         csSrc++;
                         if (csSrc == sMax) break;
                     }
@@ -206,7 +206,7 @@ public class Paragraphes {
                 String id = para.elementAt(0).toString();
 
                 if ((Integer) para.elementAt(1) > 0) {
-                    while (((Vector) tarSentences.elementAt(csTar)).elementAt(1).toString().startsWith(id) == false) {
+                    while (!((Vector) tarSentences.elementAt(csTar)).elementAt(1).toString().startsWith(id)) {
                         csTar++;
                         if (csTar == tMax) break;
                     }

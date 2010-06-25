@@ -105,7 +105,9 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
                     + " is not a Unicode Little-Endian table file", "Error",
                     JOptionPane.ERROR_MESSAGE);
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

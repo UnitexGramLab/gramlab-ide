@@ -118,7 +118,7 @@ public class SVG {
         graphics.setFont(info.input.font);
         h_ligne = graphics.getFontMetrics().getHeight();
         descent = graphics.getFontMetrics().getDescent();
-        if (g.comment == true) {
+        if (g.comment) {
             // if the box is in comment and not selected
             if (g.type == GenericGraphBox.FINAL)
                 drawFinal(g);
@@ -140,7 +140,7 @@ public class SVG {
 
     private void drawInitial(GenericGraphBox g) throws IOException {
         drawOther(g);
-        if (info.rightToLeft == false)
+        if (!info.rightToLeft)
             drawLine(g.X_in, g.Y_in, g.X_in - 10, g.Y_in, info.foregroundColor);
         else
             drawLine(g.X_out - 5, g.Y_out, g.X_out + 5, g.Y_out, info.foregroundColor);
@@ -164,7 +164,7 @@ public class SVG {
         // drawing the box
         if (g.n_lines == 0) {
             drawLine(g.X_in, g.Y_in, g.X_in + 15, g.Y_in, color);
-            if (info.rightToLeft == false)
+            if (!info.rightToLeft)
                 drawLine(g.X_in + 15, g.Y1, g.X_in + 15, g.Y1 + g.Height, color);
             else
                 drawLine(g.X_in, g.Y1, g.X_in, g.Y1 + g.Height, color);
@@ -174,7 +174,7 @@ public class SVG {
         }
         // and the triangle if necessary
         if (g.hasOutgoingTransitions || g.type == GenericGraphBox.INITIAL) {
-            if (info.rightToLeft == false) {
+            if (!info.rightToLeft) {
                 int a = g.X1 + g.Width;
                 int b = g.Y1 + g.Height;
                 drawLine(g.X_out, g.Y_out, a, g.Y1, color);
@@ -217,7 +217,7 @@ public class SVG {
         Color color = info.commentColor;
         if (g.n_lines == 0) {
             drawLine(g.X_in, g.Y_in, g.X_in + 15, g.Y_in, color);
-            if (info.rightToLeft == false)
+            if (!info.rightToLeft)
                 drawLine(g.X_in + 15, g.Y1, g.X_in + 15, g.Y1 + g.Height, color);
             else
                 drawLine(g.X_in, g.Y1, g.X_in, g.Y1 + g.Height, color);
@@ -581,13 +581,13 @@ public class SVG {
      * @throws IOException
      */
     private void drawRect(int x, int y, int width, int height, Color color, int strokeWidth) throws IOException {
-        writer.write("<rect stroke=\"" + rgb(color) + "\" stroke-width=\"" + strokeWidth+"\" fill=\"none\" x=\""+x+"\" y=\""+y+"\" width=\""+width+"\" height=\""+height+"\"/>\n");
-	}
+        writer.write("<rect stroke=\"" + rgb(color) + "\" stroke-width=\"" + strokeWidth + "\" fill=\"none\" x=\"" + x + "\" y=\"" + y + "\" width=\"" + width + "\" height=\"" + height + "\"/>\n");
+    }
 
 
-	private String rgb(Color color) {
-		return "rgb("+color.getRed()+","+color.getGreen()+","+color.getBlue()+")";
-	}
+    private String rgb(Color color) {
+        return "rgb(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + ")";
+    }
 
 
 }
