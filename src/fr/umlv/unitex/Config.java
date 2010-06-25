@@ -1071,8 +1071,8 @@ public class Config {
                 return file.isDirectory() && isValidLanguageName(file.getName());
             }
         });
-        for (int i = 0; i < fileList.length; i++) {
-            languages.add(fileList[i].getName());
+        for (File aFileList : fileList) {
+            languages.add(aFileList.getName());
         }
     }
 
@@ -1253,8 +1253,7 @@ public class Config {
             File files_list[] = path_src
                     .listFiles(new RegFileFilter(expression));
             if (files_list != null) {
-                for (int i = 0; i < files_list.length; i++) {
-                    File F = files_list[i];
+                for (File F : files_list) {
                     if (!F.isDirectory()) {
                         copyFile(F, new File(dest, F.getName()));
                     }
@@ -1283,8 +1282,7 @@ public class Config {
         if (files_list == null) {
             return;
         }
-        for (int i = 0; i < files_list.length; i++) {
-            File f = files_list[i];
+        for (File f : files_list) {
             if (f.isDirectory()) {
                 copyDirRec(f, new File(dest, f.getName()));
             } else if (f.isFile()) {
@@ -1305,8 +1303,8 @@ public class Config {
         File files_list[] = path_src.listFiles(new RegFileFilter(
                 expression));
         if (files_list != null) {
-            for (int i = 0; i < files_list.length; i++) {
-                files_list[i].delete();
+            for (File aFiles_list : files_list) {
+                aFiles_list.delete();
             }
         }
     }
@@ -1323,9 +1321,9 @@ public class Config {
         String expression = src.getName();
         File files_list[] = path_src.listFiles(new RegFileFilter(
                 expression));
-        for (int i = 0; i < files_list.length; i++) {
+        for (File aFiles_list : files_list) {
             File F;
-            if (!(F = files_list[i]).isDirectory()) {
+            if (!(F = aFiles_list).isDirectory()) {
                 F.delete();
             }
         }

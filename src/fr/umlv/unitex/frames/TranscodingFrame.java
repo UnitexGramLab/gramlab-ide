@@ -166,9 +166,9 @@ public class TranscodingFrame extends JInternalFrame {
                 }
                 File[] graphs = Config.getTranscodeDialogBox()
                         .getSelectedFiles();
-                for (int i = 0; i < graphs.length; i++) {
-                    if (!listModel.contains(graphs[i])) {
-                        listModel.addElement(graphs[i]);
+                for (File graph : graphs) {
+                    if (!listModel.contains(graph)) {
+                        listModel.addElement(graph);
                     }
                 }
             }
@@ -176,8 +176,8 @@ public class TranscodingFrame extends JInternalFrame {
         removeFiles.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 Object[] graphs = fileList.getSelectedValues();
-                for (int i = 0; i < graphs.length; i++) {
-                    listModel.removeElement(graphs[i]);
+                for (Object graph : graphs) {
+                    listModel.removeElement(graph);
                 }
             }
         });

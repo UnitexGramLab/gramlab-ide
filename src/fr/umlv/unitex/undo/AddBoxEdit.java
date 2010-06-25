@@ -25,7 +25,6 @@ import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * class uses to save the state of the graph before add a boxe
@@ -73,9 +72,8 @@ public class AddBoxEdit extends AbstractUndoableEdit {
         GenericGraphBox g;
         boxes.remove(boxe);
         transitionsToBoxe = zone.getTransitionTo(boxe);
-        for (Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it
-                .hasNext();) {
-            g = it.next();
+        for (GenericGraphBox aTransitionsToBoxe : transitionsToBoxe) {
+            g = aTransitionsToBoxe;
             g.setSelected(true);
         }
         zone.removeTransitionTo(boxe);
@@ -90,10 +88,9 @@ public class AddBoxEdit extends AbstractUndoableEdit {
         GenericGraphBox g;
         boxes.add(boxe);
         // add old transition to boxe
-        for (Iterator<GenericGraphBox> it = transitionsToBoxe.iterator(); it
-                .hasNext();) {
-            g = it.next();
-			g.addTransitionTo(boxe);
-		}
-	}
+        for (GenericGraphBox aTransitionsToBoxe : transitionsToBoxe) {
+            g = aTransitionsToBoxe;
+            g.addTransitionTo(boxe);
+        }
+    }
 }

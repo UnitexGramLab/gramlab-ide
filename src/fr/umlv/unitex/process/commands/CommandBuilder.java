@@ -21,91 +21,90 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
+import java.io.File;
+import java.util.ArrayList;
+
 /**
  * This class provides facilities for build process command lines.
- * @author Sébastien Paumier
  *
+ * @author Sébastien Paumier
  */
 public abstract class CommandBuilder {
-   
 
-	public static final int PROGRAM=0;
-	public static final int MESSAGE=1;
-	public static final int ERROR_MESSAGE=2;
-	public static final int METHOD=3;
-	
-   private final ArrayList<String> list; 
-   protected int type=PROGRAM;
-    
-   CommandBuilder(String programName) {
-     list=new ArrayList<String>();
-	 programName("UnitexToolLogger");
-     if (Preferences.mustLog()) {
-    	 element("{");
-    	 element("CreateLog");
-    	 element("-d");
-    	 protectElement(Preferences.loggingDir().getAbsolutePath());
-    	 element("-u");
-    	 element("}");
-     }
-     element(programName);
-   }
-   
-   CommandBuilder() {
-	     list=new ArrayList<String>();
-   }
 
-   CommandBuilder(ArrayList<String> list) {
-    this.list=list;
-  }
+    public static final int PROGRAM = 0;
+    public static final int MESSAGE = 1;
+    public static final int ERROR_MESSAGE = 2;
+    public static final int METHOD = 3;
+
+    private final ArrayList<String> list;
+    protected int type = PROGRAM;
+
+    CommandBuilder(String programName) {
+        list = new ArrayList<String>();
+        programName("UnitexToolLogger");
+        if (Preferences.mustLog()) {
+            element("{");
+            element("CreateLog");
+            element("-d");
+            protectElement(Preferences.loggingDir().getAbsolutePath());
+            element("-u");
+            element("}");
+        }
+        element(programName);
+    }
+
+    CommandBuilder() {
+        list = new ArrayList<String>();
+    }
+
+    CommandBuilder(ArrayList<String> list) {
+        this.list = list;
+    }
 
     void element(String s) {
-      list.add(s);
-   }
+        list.add(s);
+    }
 
     void protectElement(String s) {
-       element("\""+s+"\"");
+        element("\"" + s + "\"");
     }
 
     private void programName(String s) {
-       protectElement(new File(Config.getApplicationDir(),s+(Config.getCurrentSystem()==Config.WINDOWS_SYSTEM?".exe":"")).getAbsolutePath());   
+        protectElement(new File(Config.getApplicationDir(), s + (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM ? ".exe" : "")).getAbsolutePath());
     }
 
     public String getCommandLine() {
-      String res="";
-      for (Iterator<String> i=list.iterator();i.hasNext();) {
-        res=res+i.next()+" "; 
-      }
-      return res;
-   }
+        String res = "";
+        for (String aList : list) {
+            res = res + aList + " ";
+        }
+        return res;
+    }
 
     public String[] getCommandArguments() {
-    String[] res=list.toArray(new String[list.size()]);
-    for (int i=0;i<res.length;i++) {
-       if (res[i].startsWith("\"")) {
-          res[i]=res[i].substring(1,res[i].length()-1);
-       }
+        String[] res = list.toArray(new String[list.size()]);
+        for (int i = 0; i < res.length; i++) {
+            if (res[i].startsWith("\"")) {
+                res[i] = res[i].substring(1, res[i].length() - 1);
+            }
+        }
+        return res;
     }
-    return res;
-    }
-    
-    public CommandBuilder getBuilder() {
-      return this;        
-   }
-    
-   @SuppressWarnings("unchecked")
-   ArrayList<String> getCopyOfList() {
-       return (ArrayList<String>) list.clone();
-   }
 
-   public int getType() {
-   	return type;
-   }
+    public CommandBuilder getBuilder() {
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    ArrayList<String> getCopyOfList() {
+        return (ArrayList<String>) list.clone();
+    }
+
+    public int getType() {
+        return type;
+    }
 }
