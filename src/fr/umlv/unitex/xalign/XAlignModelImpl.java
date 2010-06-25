@@ -600,11 +600,11 @@ public class XAlignModelImpl implements XAlignModel {
         builder.append("               <link\n");
         builder.append("                  targets=\"");
         for (Integer i : sentences) {
-            builder.append((source ? sourceFile : destFile) + "#");
-            builder.append((source ? src.getID(i) : dest.getID(i)) + " ");
+            builder.append(source ? sourceFile : destFile).append("#");
+            builder.append(source ? src.getID(i) : dest.getID(i)).append(" ");
         }
         builder.append("\"\n");
-        builder.append("                  type=\"linking\" xml:id=\"" + groupID + "\"/>");
+        builder.append("                  type=\"linking\" xml:id=\"").append(groupID).append("\"/>");
         return builder.toString();
     }
 
