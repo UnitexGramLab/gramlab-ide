@@ -26,52 +26,54 @@ import java.awt.datatransfer.Transferable;
 
 /**
  * This class describes the clipboard content description for copy/paste on multiple boxes.
- * @author Sébastien Paumier
  *
+ * @author Sébastien Paumier
  */
 public class MultipleBoxesSelection implements Transferable {
 
-   MultipleSelection contenu= null;
+    MultipleSelection contenu = null;
 
-   /**
-    * Creates a new multiple box selection object for copy/paste operations 
-    * @param m the box selection
-    */
-   public MultipleBoxesSelection(MultipleSelection m) {
-      contenu= m;
-   }
+    /**
+     * Creates a new multiple box selection object for copy/paste operations
+     *
+     * @param m the box selection
+     */
+    public MultipleBoxesSelection(MultipleSelection m) {
+        contenu = m;
+    }
 
-   /**
-    * Returns the data contained in the clipboard, if it is a multiple box selection
-    * @param f dataflavor identifying the data contained in the clipboard
-    * @return the data, or <code>null</code> if the data type is invalid 
-    */
-   public Object getTransferData(DataFlavor f) {
-      if (f.getHumanPresentableName().equals("Unitex dataflavor"))
-         return contenu;
-      return null;
-   }
+    /**
+     * Returns the data contained in the clipboard, if it is a multiple box selection
+     *
+     * @param f dataflavor identifying the data contained in the clipboard
+     * @return the data, or <code>null</code> if the data type is invalid
+     */
+    public Object getTransferData(DataFlavor f) {
+        if (f.getHumanPresentableName().equals("Unitex dataflavor"))
+            return contenu;
+        return null;
+    }
 
-   /**
-    * Defines a new dataflavor to identify Unitex multiple box selection  
-    * @return an array containing the dataflavor
-    */
-   public DataFlavor[] getTransferDataFlavors() {
-      DataFlavor t[]= new DataFlavor[2];
-      t[0]= new DataFlavor("unitex/boxes", "Unitex dataflavor");
-      return t;
-   }
+    /**
+     * Defines a new dataflavor to identify Unitex multiple box selection
+     *
+     * @return an array containing the dataflavor
+     */
+    public DataFlavor[] getTransferDataFlavors() {
+        DataFlavor t[] = new DataFlavor[2];
+        t[0] = new DataFlavor("unitex/boxes", "Unitex dataflavor");
+        return t;
+    }
 
-   /**
-    * Tests if the dataflavor <code>f</code> is equal to the Unitex multiple box selection one
-    * @param f the dataflavor to test
-    * @return <code>true</code> if the dataflavor is equal to the Unitex multiple box selection 
-    *         one, <code>false</code> otherwise
-    */
-   public boolean isDataFlavorSupported(DataFlavor f) {
-      if (f.getHumanPresentableName().equals("Unitex dataflavor"))
-         return true;
-      return false;
-   }
+    /**
+     * Tests if the dataflavor <code>f</code> is equal to the Unitex multiple box selection one
+     *
+     * @param f the dataflavor to test
+     * @return <code>true</code> if the dataflavor is equal to the Unitex multiple box selection
+     *         one, <code>false</code> otherwise
+     */
+    public boolean isDataFlavorSupported(DataFlavor f) {
+        return f.getHumanPresentableName().equals("Unitex dataflavor");
+    }
 
 }

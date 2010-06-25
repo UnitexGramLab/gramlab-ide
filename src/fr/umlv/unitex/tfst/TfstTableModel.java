@@ -96,13 +96,10 @@ public class TfstTableModel extends AbstractTableModel {
 
     private boolean boxStartsAToken(TfstGraphBox b) {
         Bounds bounds = b.getBounds();
-        if (b.getContent().startsWith("{<E>,")
+        return !(b.getContent().startsWith("{<E>,")
                 || bounds == null
                 || bounds.getStart_in_chars() != 0
-                || bounds.getStart_in_letters() != 0) {
-            return false;
-        }
-        return true;
+                || bounds.getStart_in_letters() != 0);
     }
 
     /**
@@ -166,6 +163,6 @@ public class TfstTableModel extends AbstractTableModel {
         }
         TokenTags t = new TokenTags(start, end, tokenSequence);
         lines.add(t);
-		return t;
-	}
+        return t;
+    }
 }
