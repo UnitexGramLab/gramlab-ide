@@ -104,11 +104,8 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
             JOptionPane.showMessageDialog(null, f.getAbsolutePath()
                     + " is not a Unicode Little-Endian table file", "Error",
                     JOptionPane.ERROR_MESSAGE);
-            return;
         } catch (FileNotFoundException e) {
-            return;
         } catch (IOException e) {
-            return;
         }
     }
 
@@ -123,5 +120,5 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 
     public File getTable() {
         return tableFile;
-	}
+    }
 }

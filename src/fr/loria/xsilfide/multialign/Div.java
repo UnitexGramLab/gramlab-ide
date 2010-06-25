@@ -273,7 +273,6 @@ public class Div {
             tarLengths.setDistAt(i, t);
         }
 
-        return;
     }
 
     // B.G : normalement, Src et Tar contiennent des id et des longueurs.

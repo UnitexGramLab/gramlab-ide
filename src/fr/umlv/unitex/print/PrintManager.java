@@ -21,114 +21,109 @@
 
 package fr.umlv.unitex.print;
 
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.TextAutomatonFrame;
+
+import javax.swing.*;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
-
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.TextAutomatonFrame;
-
 public class PrintManager {
 
-	private static PrinterJob printerJob;
-	private static PageFormat pageFormat;
-	
-	
-	private static PrinterJob getPrinterJob() {
-		if (printerJob==null) {
-			printerJob=PrinterJob.getPrinterJob();
-		}
-		return printerJob;
-	}
-	
-	
-	private static PageFormat getPageFormat() {
-		if (pageFormat==null) {
-			pageFormat=getPrinterJob().defaultPage();
-		}
-		return pageFormat;
-	}
-
-	public static void printOneGraph(GraphFrame g) {
-		if (g==null) {
-			throw new IllegalArgumentException("Cannot print a null graph");
-		}
-		PrinterJob job=getPrinterJob();
-		if (!job.printDialog()) return;
-		job.setPrintable(g.getGraphicalZone(),getPageFormat());
-		try {
-			job.print();
-		} catch (PrinterException e) {
-			JOptionPane.showMessageDialog(null,
-					"Error while printing graph", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	public static void printAllGraphs(GraphFrame[] frames) {
-		if (frames.length == 0)
-			return;
-		PrinterJob job = getPrinterJob();
-		if (!job.printDialog())
-			return;
-		for (GraphFrame g : frames) {
-			job.setPrintable(g.getGraphicalZone(), getPageFormat());
-			try {
-				job.print();
-			} catch (PrinterException e) {
-				JOptionPane.showMessageDialog(null,
-						"Error while printing graph", "Error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
+    private static PrinterJob printerJob;
+    private static PageFormat pageFormat;
 
 
-	/**
-	 * Launch the page setup for printing.
-	 *  
-	 */
-	public static void pageSetup() {
-		PrinterJob job=getPrinterJob();
-		PageFormat format=getPageFormat();
-		format=job.pageDialog(format);
-	}
-
-	
-	/**
-	 * Prints a <code>TextAutomatonFrame</code>.
-	 * 
-	 * @param g
-	 *            the <code>TextAutomatonFrame</code> to be printed.
-	 */
-	public static void printTextAutomatonFrame(TextAutomatonFrame g) {
-		PrinterJob job=getPrinterJob();
-		PageFormat format=getPageFormat();
-		if (!job.printDialog()) return;
-		try {
-			job.setPrintable(g.getGraphicalZone(),format);
-			job.print();
-		} catch (PrinterException e) {
-				JOptionPane.showMessageDialog(null,
-						"Error while printing sentence graph", "Error",
-						JOptionPane.ERROR_MESSAGE);
-		}
-	}
+    private static PrinterJob getPrinterJob() {
+        if (printerJob == null) {
+            printerJob = PrinterJob.getPrinterJob();
+        }
+        return printerJob;
+    }
 
 
-	public static void print(JInternalFrame f) {
-		if (f==null) return;
-		if (f instanceof GraphFrame) {
-			printOneGraph((GraphFrame)f);
-			return;
-		}
-		if (f instanceof TextAutomatonFrame) {
-			printTextAutomatonFrame((TextAutomatonFrame)f);
-			return;
-		}
+    private static PageFormat getPageFormat() {
+        if (pageFormat == null) {
+            pageFormat = getPrinterJob().defaultPage();
+        }
+        return pageFormat;
+    }
+
+    public static void printOneGraph(GraphFrame g) {
+        if (g == null) {
+            throw new IllegalArgumentException("Cannot print a null graph");
+        }
+        PrinterJob job = getPrinterJob();
+        if (!job.printDialog()) return;
+        job.setPrintable(g.getGraphicalZone(), getPageFormat());
+        try {
+            job.print();
+        } catch (PrinterException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error while printing graph", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void printAllGraphs(GraphFrame[] frames) {
+        if (frames.length == 0)
+            return;
+        PrinterJob job = getPrinterJob();
+        if (!job.printDialog())
+            return;
+        for (GraphFrame g : frames) {
+            job.setPrintable(g.getGraphicalZone(), getPageFormat());
+            try {
+                job.print();
+            } catch (PrinterException e) {
+                JOptionPane.showMessageDialog(null,
+                        "Error while printing graph", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
+    /**
+     * Launch the page setup for printing.
+     */
+    public static void pageSetup() {
+        PrinterJob job = getPrinterJob();
+        PageFormat format = getPageFormat();
+        format = job.pageDialog(format);
+    }
+
+
+    /**
+     * Prints a <code>TextAutomatonFrame</code>.
+     *
+     * @param g the <code>TextAutomatonFrame</code> to be printed.
+     */
+    public static void printTextAutomatonFrame(TextAutomatonFrame g) {
+        PrinterJob job = getPrinterJob();
+        PageFormat format = getPageFormat();
+        if (!job.printDialog()) return;
+        try {
+            job.setPrintable(g.getGraphicalZone(), format);
+            job.print();
+        } catch (PrinterException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error while printing sentence graph", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public static void print(JInternalFrame f) {
+        if (f == null) return;
+        if (f instanceof GraphFrame) {
+            printOneGraph((GraphFrame) f);
+            return;
+        }
+        if (f instanceof TextAutomatonFrame) {
+            printTextAutomatonFrame((TextAutomatonFrame) f);
+        }
 	}
 
 }

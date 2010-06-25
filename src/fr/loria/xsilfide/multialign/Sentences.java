@@ -94,7 +94,6 @@ public class Sentences {
             tarLengths.setDistAt(i, (Integer) ((Vector) tarSentences.elementAt(i)).elementAt(2));
         }
 
-        return;
     }
 
     // computation of the results in the new format

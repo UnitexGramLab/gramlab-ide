@@ -198,7 +198,6 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
                 // translates all the selected boxes
                 translateAllSelectedBoxes(dx, dy);
                 // if we were dragging, we have nothing else to do
-                return;
             }
         }
     }
@@ -305,8 +304,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
             b.update();
         }
         setGraphPresentationInfo(g.info);
-		revalidate();
-		repaint();
-	}
+        revalidate();
+        repaint();
+    }
 
 }

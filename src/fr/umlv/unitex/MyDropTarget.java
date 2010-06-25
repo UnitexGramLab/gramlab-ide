@@ -246,7 +246,6 @@ public class MyDropTarget {
                             }
                         } catch (FileNotFoundException e1) {
                             e1.printStackTrace();
-                            return;
                         }
                     }
                 });
@@ -259,7 +258,6 @@ public class MyDropTarget {
                         UnitexFrame.getFrameManager().newGraphFrame(file);
                     }
                 }
-                return;
             }
         }
 
@@ -342,5 +340,5 @@ public class MyDropTarget {
         /* end of UnrestrictedDragNDropListener class */
     }
 
-	/* end of MyDropTarget class */
+    /* end of MyDropTarget class */
 }
