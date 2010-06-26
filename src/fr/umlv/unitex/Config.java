@@ -1413,8 +1413,7 @@ public class Config {
         }
         Properties prop = Preferences.loadProperties(config, null);
         String s = prop.getProperty("CHAR BY CHAR");
-        if (s == null) return false;
-        return Boolean.parseBoolean(s);
+        return s != null && Boolean.parseBoolean(s);
     }
 
     public static boolean morphologicalUseOfSpaceAllowed(String language) {
@@ -1424,8 +1423,7 @@ public class Config {
         }
         Properties prop = Preferences.loadProperties(config, null);
         String s = prop.getProperty("MORPHOLOGICAL USE OF SPACE");
-        if (s == null) return false;
-        return Boolean.parseBoolean(s);
+        return s != null && Boolean.parseBoolean(s);
     }
 
     public static ArrayList<File> morphologicalDic(String language) {
