@@ -35,8 +35,17 @@
 
 package fr.loria.xsilfide.multialign;
 
-import fr.loria.nguyen.mytools.FileIO;
-import fr.loria.nguyen.mytools.XMLTools;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.Writer;
+import java.util.Hashtable;
+import java.util.Properties;
+
 import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.dom.NodeImpl;
@@ -50,9 +59,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import java.io.*;
-import java.util.Hashtable;
-import java.util.Properties;
+import fr.loria.nguyen.mytools.FileIO;
+import fr.loria.nguyen.mytools.XMLTools;
 
 //import javax.swing.*;
 
@@ -60,7 +68,7 @@ import java.util.Properties;
 // when aligning a document which has no ID's on its PHRASE elements.
 // IDifier will not destroy ID's which already exist.
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "deprecation" })
 public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 
     XMLReader parser;

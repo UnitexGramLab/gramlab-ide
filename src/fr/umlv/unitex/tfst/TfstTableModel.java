@@ -165,4 +165,8 @@ public class TfstTableModel extends AbstractTableModel {
         lines.add(t);
         return t;
     }
+
+	public TokenTags getTokenTags(int j) {
+		return lines.get(j);
+	}
 }

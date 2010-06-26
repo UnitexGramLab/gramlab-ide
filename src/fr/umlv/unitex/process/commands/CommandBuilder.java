@@ -107,4 +107,5 @@ public abstract class CommandBuilder {
     public int getType() {
         return type;
     }
+
 }

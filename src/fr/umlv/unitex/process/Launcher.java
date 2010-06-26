@@ -21,6 +21,9 @@
 
 package fr.umlv.unitex.process;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
@@ -55,6 +58,25 @@ public class Launcher {
 			boolean stopIfProblem) {
 		if (c==null) return;
 		UnitexFrame.getFrameManager().newProcessInfoFrame(c,close,myDo,stopIfProblem);
+	}
+
+	/**
+	 * Executing one command but without tracing it in the console.
+	 */
+	public static void execWithoutTracing(CommandBuilder b) {
+        try {
+            Process p = Runtime.getRuntime().exec(b.getCommandArguments());
+            BufferedInputStream in = new BufferedInputStream(p.getInputStream());
+            BufferedInputStream err = new BufferedInputStream(p
+                    .getErrorStream());
+            new EatStreamThread(in).start();
+            new EatStreamThread(err).start();
+            p.waitFor();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 	}
 
 }
