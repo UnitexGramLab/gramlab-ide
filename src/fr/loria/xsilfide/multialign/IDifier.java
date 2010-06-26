@@ -238,7 +238,6 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 
     private boolean isPhrase(String name) {
         String val = (String) types.get(name);
-        if (val != null) return val.equals("PHRASE");
-        return false;
+        return val != null && val.equals("PHRASE");
     }
 }
