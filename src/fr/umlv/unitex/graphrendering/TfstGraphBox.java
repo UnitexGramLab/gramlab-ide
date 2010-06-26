@@ -121,11 +121,6 @@ public class TfstGraphBox extends GenericGraphBox {
         transduction = infos;
     }
 
-    @Override
-    public void setSelected(boolean b) {
-        super.setSelected(b);
-    }
-
     private void readTokenInfos(String s) {
         Scanner scanner = new Scanner(s);
         try {

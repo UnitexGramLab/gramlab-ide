@@ -94,7 +94,7 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
         this.out = out1;
         try {
             InputSource is = null;
-            if (fileIn == "")
+            if (fileIn.equals(""))
                 is = new InputSource(in1);
             else {
                 is = new InputSource(FileIO.openLargeInput(fileIn));
