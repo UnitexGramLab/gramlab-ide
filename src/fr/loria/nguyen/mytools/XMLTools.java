@@ -40,6 +40,7 @@ import org.w3c.dom.Node;
 
 import java.io.FileOutputStream;
 
+@SuppressWarnings("deprecation")
 public class XMLTools {
 
     public static final String STD_HEADER
