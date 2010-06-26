@@ -531,8 +531,13 @@ public class TextField extends GraphTextField {
         if (L > 2 && ligne[0] == '$'
                 && (ligne[L - 1] == '(' || ligne[L - 1] == ')')
                 && s.lastIndexOf('+') == -1) {
+        	int k=1;
+        	if (ligne[k]=='|') {
+        		/* An output variable is of the form $|XYZ( */
+        		k++;
+        	}
             // case of a variable start $a( or end $a)
-            for (int k = 1; k < L - 1; k++)
+            for (; k < L - 1; k++)
                 if (ligne[k] != '_' && !(ligne[k] >= '0' && ligne[k] <= '9')
                         && !(ligne[k] >= 'a' && ligne[k] <= 'z')
                         && !(ligne[k] >= 'A' && ligne[k] <= 'Z')) {

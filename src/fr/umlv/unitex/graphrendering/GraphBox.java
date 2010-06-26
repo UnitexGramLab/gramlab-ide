@@ -226,11 +226,12 @@ public class GraphBox extends GenericGraphBox {
             // case of $a( or $a)
             ////////////////////////////////////////////
             variable = true;
+            outputVariable=(ligne[1]=='|');
             lines.clear();
             greyed.clear();
             lines.add(String.valueOf(ligne[L - 1]));
             greyed.add(Boolean.FALSE);
-            transduction = content.substring(1, L - 1);
+            transduction = content.substring(1+(outputVariable?1:0), L - 1);
             n_lines = 1;
             Height = get_h_variable_ligne() + 3;
             Width = maxVariableLineWidth() + 5;

@@ -21,34 +21,23 @@
 
 package fr.umlv.unitex.frames;
 
-public class TextAutomatonFrameFactory {
+import java.io.File;
 
-	private TextAutomatonFrame frame;
+import fr.umlv.unitex.tfst.TagFilter;
+
+public class ExportTextAsPOSListDialogFactory {
+
+	private ExportTextAsPOSListDialog dialog;
 	
-	TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
-		if (frame==null) {
-			frame=new TextAutomatonFrame();
-		}if (!frame.loadTfst()) {
-			return null;
+	ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output, TagFilter filter) {
+		if (dialog==null) {
+			dialog=new ExportTextAsPOSListDialog(output,filter);
+		} else {
+			dialog.configure(output,filter);
 		}
-		frame.loadSentence(sentenceNumber);
-		return frame;
+		return dialog;
 	}
+
 
 	
-	void closeTextAutomatonFrame() {
-		if (frame==null) return;
-		frame.setVisible(false);
-	}
-
-
-	public boolean existsFrame() {
-		return frame!=null;
-	}
-
-
-	public TextAutomatonFrame getFrame() {
-		return frame;
-	}
-
 }
