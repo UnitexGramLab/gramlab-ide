@@ -456,7 +456,7 @@ les id originaux tirés des fichiers source, respectivement target */
             if (id == null)
                 id = "";
             else {
-                if ((idEnglob != "") && (id.equals(idEnglob))) {
+                if ((!idEnglob.equals("")) && (id.equals(idEnglob))) {
                     inPartOfDocumentToWorkOn = true;
                     nameOfEnglobingElement = name;
                     nestingOfEnglobingElement = 1;
