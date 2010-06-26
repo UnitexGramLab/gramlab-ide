@@ -26,28 +26,24 @@ import java.io.File;
 
 /**
  * @author Sébastien Paumier
- *
  */
 public class MkdirCommand extends AbstractMethodCommand {
-    
-	File dir;
-	
-	public MkdirCommand() {
-		super("mkdir");
-	}
-	
-    public MkdirCommand name(File s) {
-      dir=s;
-      protectElement(s.getAbsolutePath());
-      return this;
+
+    File dir;
+
+    public MkdirCommand() {
+        super("mkdir");
     }
 
-	@Override
-	public boolean execute() {
-		if (dir.exists()) {
-			return true;
-		}
-		return dir.mkdir();
-	}
+    public MkdirCommand name(File s) {
+        dir = s;
+        protectElement(s.getAbsolutePath());
+        return this;
+    }
+
+    @Override
+    public boolean execute() {
+        return dir.exists() || dir.mkdir();
+    }
 
 }

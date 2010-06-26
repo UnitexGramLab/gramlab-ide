@@ -94,10 +94,7 @@ public class MyDropTarget {
     static class DragNDropListener implements DropTargetListener {
 
         private boolean weCanDrag(DropTargetDragEvent e) {
-            if (!e.isDataFlavorSupported(MyDropTarget.dragNDropFlavor)) {
-                return false;
-            }
-            return ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
+            return e.isDataFlavorSupported(MyDropTarget.dragNDropFlavor) && ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
         }
 
         public void dragEnter(DropTargetDragEvent e) {
@@ -267,10 +264,7 @@ public class MyDropTarget {
     static class TranscodeDragNDropListener implements DropTargetListener {
 
         private boolean weCanDrag(DropTargetDragEvent e) {
-            if (!e.isDataFlavorSupported(MyDropTarget.dragNDropFlavor)) {
-                return false;
-            }
-            return ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
+            return e.isDataFlavorSupported(MyDropTarget.dragNDropFlavor) && ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
         }
 
         public void dragEnter(DropTargetDragEvent e) {
