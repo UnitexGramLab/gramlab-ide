@@ -434,7 +434,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 Config.getCurrentSnt()).alphabet(
                 Config.getAlphabet())
                 .morphologicalDic(Preferences.morphologicalDic());
-        if (Config.isKoreanJeeSun()) {
+        if (Config.isKorean()) {
             cmd = cmd.korean();
         }
         if (Config.isArabic()) {
