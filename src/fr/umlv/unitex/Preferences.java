@@ -406,7 +406,6 @@ public class Preferences {
             stream.close();
         } catch (IOException e2) {
             e2.printStackTrace();
-            return;
         }
     }
 
@@ -500,13 +499,12 @@ public class Preferences {
         firingConcordanceFont = true;
         try {
             for (FontListener listener : concordanceFontListeners) {
-				listener.fontChanged(font);
-			}
-		} finally {
-			firingConcordanceFont = false;
-		}
-	}
-	
+                listener.fontChanged(font);
+            }
+        } finally {
+            firingConcordanceFont = false;
+        }
+    }
 
 
 }

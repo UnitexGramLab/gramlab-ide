@@ -324,10 +324,7 @@ public class GenericGraphBox {
             transitions.remove(i);
             g.hasIncomingTransitions--;
         }
-        if (transitions.isEmpty())
-            hasOutgoingTransitions = false;
-        else
-            hasOutgoingTransitions = true;
+        hasOutgoingTransitions = !transitions.isEmpty();
         comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
         g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
@@ -351,10 +348,7 @@ public class GenericGraphBox {
             transitions.add(g);
             g.hasIncomingTransitions++;
         }
-        if (transitions.isEmpty())
-            hasOutgoingTransitions = false;
-        else
-            hasOutgoingTransitions = true;
+        hasOutgoingTransitions = !transitions.isEmpty();
         comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
         g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
@@ -371,10 +365,7 @@ public class GenericGraphBox {
             transitions.remove(i);
             g.hasIncomingTransitions--;
         }
-        if (transitions.isEmpty())
-            hasOutgoingTransitions = false;
-        else
-            hasOutgoingTransitions = true;
+        hasOutgoingTransitions = !transitions.isEmpty();
 
         comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
         g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
@@ -608,7 +599,7 @@ public class GenericGraphBox {
         // drawing the box
         if (n_lines == 0) {
             GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
-            if (parentGraphicalZone.info.rightToLeft == false)
+            if (!parentGraphicalZone.info.rightToLeft)
                 GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1 + Height);
             else
                 GraphicalToolBox.drawLine(g, X_in, Y1, X_in, Y1 + Height);
@@ -617,7 +608,7 @@ public class GenericGraphBox {
         }
         // and the triangle if necessary
         if (hasOutgoingTransitions || type == INITIAL) {
-            if (parentGraphicalZone.info.rightToLeft == false) {
+            if (!parentGraphicalZone.info.rightToLeft) {
                 GraphicalToolBox.drawLine(g, X_out, Y_out, X1 + Width, Y1);
                 GraphicalToolBox.drawLine(g, X1 + Width, Y1, X1 + Width, Y1 + Height);
                 GraphicalToolBox.drawLine(g, X1 + Width, Y1 + Height, X_out, Y_out);
@@ -638,13 +629,13 @@ public class GenericGraphBox {
             GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
         }
         // drawing the entry line
-        if (parentGraphicalZone.info.rightToLeft == false)
+        if (!parentGraphicalZone.info.rightToLeft)
             GraphicalToolBox.drawLine(g, X_in, Y_in, X_in - 10, Y_in);
         else
             GraphicalToolBox.drawLine(g, X_out - 5, Y_out, X_out + 5, Y_out);
         // and the triangle if necessary
         if (hasOutgoingTransitions || type == INITIAL) {
-            if (parentGraphicalZone.info.rightToLeft == false) {
+            if (!parentGraphicalZone.info.rightToLeft) {
                 GraphicalToolBox.drawLine(g, X_out, Y_out, X1 + Width, Y1);
                 GraphicalToolBox.drawLine(g, X1 + Width, Y1, X1 + Width, Y1 + Height);
                 GraphicalToolBox.drawLine(g, X1 + Width, Y1 + Height, X_out, Y_out);
@@ -676,7 +667,7 @@ public class GenericGraphBox {
         // print lines if the box is empty
         if (n_lines == 0) {
             GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
-            if (parentGraphicalZone.info.rightToLeft == false)
+            if (!parentGraphicalZone.info.rightToLeft)
                 GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1 + Height);
             else
                 GraphicalToolBox.drawLine(g, X_in, Y1, X_in, Y1 + Height);
@@ -812,7 +803,7 @@ public class GenericGraphBox {
         // drawing the box
         if (n_lines == 0) {
             GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
-            if (parentGraphicalZone.info.rightToLeft == false)
+            if (!parentGraphicalZone.info.rightToLeft)
                 GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1 + Height);
             else
                 GraphicalToolBox.drawLine(g, X_in, Y1, X_in, Y1 + Height);
@@ -824,7 +815,7 @@ public class GenericGraphBox {
         }
         // and the triangle if necessary
         if (hasOutgoingTransitions || type == INITIAL) {
-            if (parentGraphicalZone.info.rightToLeft == false) {
+            if (!parentGraphicalZone.info.rightToLeft) {
                 int a = X1 + Width;
                 int b = Y1 + Height;
                 GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
@@ -890,7 +881,7 @@ public class GenericGraphBox {
         // and the triangle if necessary
         if (hasOutgoingTransitions || type == INITIAL) {
             g.setColor(parentGraphicalZone.info.foregroundColor);
-            if (parentGraphicalZone.info.rightToLeft == false) {
+            if (!parentGraphicalZone.info.rightToLeft) {
                 GraphicalToolBox.drawLine(g, X_out, Y_out, X1 + Width, Y1);
                 GraphicalToolBox.drawLine(g, X1 + Width, Y1, X1 + Width, Y1 + Height);
                 GraphicalToolBox.drawLine(g, X1 + Width, Y1 + Height, X_out, Y_out);
@@ -923,7 +914,7 @@ public class GenericGraphBox {
 
     private void drawInitial(Graphics2D g) {
         drawOther(g);
-        if (parentGraphicalZone.info.rightToLeft == false)
+        if (!parentGraphicalZone.info.rightToLeft)
             GraphicalToolBox.drawLine(g, X_in, Y_in, X_in - 10, Y_in);
         else
             GraphicalToolBox.drawLine(g, X_out - 5, Y_out, X_out + 5, Y_out);
@@ -932,7 +923,7 @@ public class GenericGraphBox {
     private void drawInitialSelected(Graphics2D g) {
         drawOtherSelected(g);
         g.setColor(parentGraphicalZone.info.foregroundColor);
-        if (parentGraphicalZone.info.rightToLeft == false)
+        if (!parentGraphicalZone.info.rightToLeft)
             GraphicalToolBox.drawLine(g, X_in - 1, Y_in, X_in - 10, Y_in);
         else
             GraphicalToolBox.drawLine(g, X_out - 5, Y_out, X_out + 5, Y_out);
@@ -948,7 +939,7 @@ public class GenericGraphBox {
         g.setFont(parentGraphicalZone.info.input.font);
         h_ligne = g.getFontMetrics().getHeight();
         descent = g.getFontMetrics().getDescent();
-        if (singleDragging == true) {
+        if (singleDragging) {
             // if the box is being dragged just under the mouse,
             // we just draw its frame
             if (type == FINAL)
@@ -957,7 +948,7 @@ public class GenericGraphBox {
                 drawOtherSingleDrag(g);
             else
                 drawInitialSingleDrag(g);
-        } else if (selected == true) {
+        } else if (selected) {
             // if the box was selected before (blue box)
             if (type == FINAL)
                 drawFinalSelected(g);
@@ -965,7 +956,7 @@ public class GenericGraphBox {
                 drawOtherSelected(g);
             else
                 drawInitialSelected(g);
-        } else if (comment == true) {
+        } else if (comment) {
             // if the box is in comment and not selected
             if (type == FINAL)
                 drawFinal(g);
@@ -1187,18 +1178,18 @@ public class GenericGraphBox {
     }
 
     public void setType(int type) {
-		this.type = type;
-	}
+        this.type = type;
+    }
 
-	public void setTransitions(ArrayList<GenericGraphBox> transitions) {
-		this.transitions = transitions;
-	}
+    public void setTransitions(ArrayList<GenericGraphBox> transitions) {
+        this.transitions = transitions;
+    }
 
-	void updateWithContext(Graphics2D g) {
-		if (context != null) {
-			return;
-		}
-		context = g;
-		update();
-	}
+    void updateWithContext(Graphics2D g) {
+        if (context != null) {
+            return;
+        }
+        context = g;
+        update();
+    }
 }
