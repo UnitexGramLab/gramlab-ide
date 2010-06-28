@@ -322,17 +322,18 @@ public abstract class GenericGraphicalZone extends JComponent {
     }
 
     /**
-     * Unselect all selected graph boxes
+     * Unselects all selected graph boxes
      */
     public void unSelectAllBoxes() {
         GenericGraphBox g;
+        boolean someBoxesWereSelected=!selectedBoxes.isEmpty();
         while (!selectedBoxes.isEmpty()) {
             g = selectedBoxes.get(0);
             g.selected = false;
             selectedBoxes.remove(0);
         }
         fireGraphTextChanged(null);
-        fireGraphChanged(true);
+        fireGraphChanged(someBoxesWereSelected);
     }
 
     /**
