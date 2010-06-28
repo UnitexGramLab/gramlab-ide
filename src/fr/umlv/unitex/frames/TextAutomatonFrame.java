@@ -20,58 +20,6 @@
  */
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
-import javax.swing.table.TableCellRenderer;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
@@ -88,14 +36,23 @@ import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ElagCommand;
-import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
-import fr.umlv.unitex.process.commands.RebuildTfstCommand;
-import fr.umlv.unitex.process.commands.TagsetNormTfstCommand;
-import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
+import fr.umlv.unitex.process.commands.*;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokensInfo;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.*;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.text.ParseException;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * This class describes a frame used to display sentence automata.
@@ -104,8 +61,8 @@ import fr.umlv.unitex.tfst.TokensInfo;
  */
 public class TextAutomatonFrame extends JInternalFrame {
 
-	TagFilter filter=new TagFilter();
-	TfstTableModel tfstTableModel=new TfstTableModel(filter);
+    TagFilter filter = new TagFilter();
+    TfstTableModel tfstTableModel = new TfstTableModel(filter);
     JTextArea sentenceTextArea = new JTextArea();
     JLabel sentence_count_label = new JLabel(" 0 sentence");
     boolean elagON;
@@ -217,178 +174,178 @@ public class TextAutomatonFrame extends JInternalFrame {
         textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
         downPanel.add(textfield, BorderLayout.NORTH);
         downPanel.add(scroll, BorderLayout.CENTER);
-        JTabbedPane tabbed=new JTabbedPane();
-		downPanel.add(scroll, BorderLayout.CENTER);
-		tabbed.addTab("Automaton",downPanel);
-		tabbed.addTab("Table",createTablePanel()); 
-		textframe.add(tabbed, BorderLayout.CENTER);
+        JTabbedPane tabbed = new JTabbedPane();
+        downPanel.add(scroll, BorderLayout.CENTER);
+        tabbed.addTab("Automaton", downPanel);
+        tabbed.addTab("Table", createTablePanel());
+        textframe.add(tabbed, BorderLayout.CENTER);
         return textframe;
     }
 
-	private JPanel createTablePanel() {
-		JPanel p=new JPanel(new BorderLayout());
-		final JTable table=new JTable(tfstTableModel);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setFont(Preferences.textFont());
-		Preferences.addTextFontListener(new FontListener() {
-			public void fontChanged(Font font) {
-				table.setFont(font);
-				refreshTableColumnWidths(table);
-				refreshTableRowHeight(table);
-			}
-		});
-		table.getColumnModel().addColumnModelListener(new TableColumnModelListener() {
-			public void columnSelectionChanged(ListSelectionEvent e) {
-				/* nop */
-			}
-			
-			public void columnRemoved(TableColumnModelEvent e) {
-				refreshTableColumnWidths(table);
-			}
-			
-			public void columnMoved(TableColumnModelEvent e) {
-				/* nop */
-			}
-			
-			public void columnMarginChanged(ChangeEvent e) {
-				/* nop */
-			}
-			
-			public void columnAdded(TableColumnModelEvent e) {
-				refreshTableColumnWidths(table);
-			}
-		});
-		refreshTableColumnWidths(table);
-		refreshTableRowHeight(table);
-		p.add(new JScrollPane(table));
-		JPanel filterPanel=new JPanel(new GridBagLayout());
-		GridBagConstraints gbc=new GridBagConstraints();
-		filterPanel.setBorder(BorderFactory.createTitledBorder("Filter grammatical/semantic codes"));
-		final JCheckBox alwaysShowGramCode=new JCheckBox("Always show POS category, regardless filtering");
-		final JRadioButton all=new JRadioButton("All",true);
-		final JRadioButton onlyShowGramCode=new JRadioButton("Only POS category");
-		final JRadioButton usePattern=new JRadioButton("Use filter: ");
-		JButton export=new JButton("Export all text as POS list");
-		export.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				exportTextAsTable();
-			}
-		});
-		ButtonGroup group=new ButtonGroup();
-		group.add(all);
-		group.add(onlyShowGramCode);
-		group.add(usePattern);
-		final JFormattedTextField filterField=new JFormattedTextField(new JFormattedTextField.AbstractFormatter() {
-			@Override
-			public String valueToString(Object value) throws ParseException {
-				try {
-					Pattern p2=(Pattern)value;
-					if (p2==null) return null;
-					String s=p2.toString();
-					return s.substring(2,s.length()-2);
-				} catch (ClassCastException  e) {
-					throw new ParseException("",0);
-				}
-			}
-			
-			@Override
-			public Object stringToValue(String text) throws ParseException {
-				try {
-					if (text.equals("")) return null;
-					return Pattern.compile(".*"+text+".*");
-				} catch (PatternSyntaxException e) {
-					throw new ParseException("",0);
-				}
-			}
-		});
-		final ActionListener l=new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				boolean onlyGramCode=onlyShowGramCode.isSelected();
-				boolean alwaysGramCode=alwaysShowGramCode.isSelected();
-				boolean showAll=all.isSelected();
-				Pattern pattern=(Pattern) ((showAll||onlyGramCode||!usePattern.isSelected())?null:filterField.getValue());
-				filter.setFilter(pattern,alwaysGramCode,onlyGramCode);
-			}
-		};
-		filterField.addCaretListener(new CaretListener() {
-			public void caretUpdate(CaretEvent e) {
-				try {
-					filterField.commitEdit();
-					filterField.setForeground(Color.BLACK);
-					l.actionPerformed(null);
-				} catch (ParseException e2) {
-					filterField.setForeground(Color.RED);
-				}
-			}
-		});
-		alwaysShowGramCode.addActionListener(l);
-		all.addActionListener(l);
-		onlyShowGramCode.addActionListener(l);
-		usePattern.addActionListener(l);
-		gbc.anchor=GridBagConstraints.WEST;
-		filterPanel.add(alwaysShowGramCode,gbc);
-		gbc.gridwidth=GridBagConstraints.REMAINDER;
-		filterPanel.add(export,gbc);
-		gbc.gridwidth=1;
-		filterPanel.add(all,gbc);
-		filterPanel.add(onlyShowGramCode,gbc);
-		filterPanel.add(usePattern,gbc);
-		gbc.gridwidth=GridBagConstraints.REMAINDER;
-		gbc.weightx=1;
-		gbc.fill=GridBagConstraints.HORIZONTAL;
-		filterPanel.add(filterField,gbc);
-		p.add(filterPanel,BorderLayout.NORTH);
-		return p;
-	}
+    private JPanel createTablePanel() {
+        JPanel p = new JPanel(new BorderLayout());
+        final JTable table = new JTable(tfstTableModel);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setFont(Preferences.textFont());
+        Preferences.addTextFontListener(new FontListener() {
+            public void fontChanged(Font font) {
+                table.setFont(font);
+                refreshTableColumnWidths(table);
+                refreshTableRowHeight(table);
+            }
+        });
+        table.getColumnModel().addColumnModelListener(new TableColumnModelListener() {
+            public void columnSelectionChanged(ListSelectionEvent e) {
+                /* nop */
+            }
 
-	protected void exportTextAsTable() {
-		JFileChooser chooser = new JFileChooser();
-		chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
-				"Unicode Raw Texts"));
-		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			// we return if the user has clicked on CANCEL
-			return;
-		}
-		UnitexFrame.getFrameManager().newExportTextAsPOSListDialog(chooser.getSelectedFile(),filter);
-	}
+            public void columnRemoved(TableColumnModelEvent e) {
+                refreshTableColumnWidths(table);
+            }
 
-	protected void refreshTableRowHeight(JTable table) {
-		if (table.getRowCount()==0) return;
-		TableCellRenderer renderer=table.getCellRenderer(0,0);
-		int h=renderer.getTableCellRendererComponent(table,table.getValueAt(0,0),
-				false,false,0,0).getPreferredSize().height;
-		table.setRowHeight(h);
-	}
+            public void columnMoved(TableColumnModelEvent e) {
+                /* nop */
+            }
 
-	/**
-	 * We set each column to its preferred width.
-	 */
-	protected void refreshTableColumnWidths(JTable table) {
-		for (int c=0;c<table.getColumnCount();c++) {
-			int w=getPreferredWidth(table,c);
-			table.getColumnModel().getColumn(c).setPreferredWidth(w);
-			table.getColumnModel().getColumn(c).setWidth(w);
-		}
-	}
+            public void columnMarginChanged(ChangeEvent e) {
+                /* nop */
+            }
 
-	private int getPreferredWidth(JTable table, int column) {
-		int max=0;
-		TableCellRenderer renderer=table.getCellRenderer(0,column);
-		int w=renderer.getTableCellRendererComponent(table,table.getColumnName(column),
-				false,false,0,column).getPreferredSize().width;
-		if (w>max) max=w;
-		for (int row=0;row<table.getRowCount();row++) {
-			w=renderer.getTableCellRendererComponent(table,table.getValueAt(row,column),
-					false,false,row,column).getPreferredSize().width;
-			if (w>max) max=w;
-		}
-		return max+10;
-	}
+            public void columnAdded(TableColumnModelEvent e) {
+                refreshTableColumnWidths(table);
+            }
+        });
+        refreshTableColumnWidths(table);
+        refreshTableRowHeight(table);
+        p.add(new JScrollPane(table));
+        JPanel filterPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        filterPanel.setBorder(BorderFactory.createTitledBorder("Filter grammatical/semantic codes"));
+        final JCheckBox alwaysShowGramCode = new JCheckBox("Always show POS category, regardless filtering");
+        final JRadioButton all = new JRadioButton("All", true);
+        final JRadioButton onlyShowGramCode = new JRadioButton("Only POS category");
+        final JRadioButton usePattern = new JRadioButton("Use filter: ");
+        JButton export = new JButton("Export all text as POS list");
+        export.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                exportTextAsTable();
+            }
+        });
+        ButtonGroup group = new ButtonGroup();
+        group.add(all);
+        group.add(onlyShowGramCode);
+        group.add(usePattern);
+        final JFormattedTextField filterField = new JFormattedTextField(new JFormattedTextField.AbstractFormatter() {
+            @Override
+            public String valueToString(Object value) throws ParseException {
+                try {
+                    Pattern p2 = (Pattern) value;
+                    if (p2 == null) return null;
+                    String s = p2.toString();
+                    return s.substring(2, s.length() - 2);
+                } catch (ClassCastException e) {
+                    throw new ParseException("", 0);
+                }
+            }
 
-	private JPanel constructElagPanel() {
+            @Override
+            public Object stringToValue(String text) throws ParseException {
+                try {
+                    if (text.equals("")) return null;
+                    return Pattern.compile(".*" + text + ".*");
+                } catch (PatternSyntaxException e) {
+                    throw new ParseException("", 0);
+                }
+            }
+        });
+        final ActionListener l = new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                boolean onlyGramCode = onlyShowGramCode.isSelected();
+                boolean alwaysGramCode = alwaysShowGramCode.isSelected();
+                boolean showAll = all.isSelected();
+                Pattern pattern = (Pattern) ((showAll || onlyGramCode || !usePattern.isSelected()) ? null : filterField.getValue());
+                filter.setFilter(pattern, alwaysGramCode, onlyGramCode);
+            }
+        };
+        filterField.addCaretListener(new CaretListener() {
+            public void caretUpdate(CaretEvent e) {
+                try {
+                    filterField.commitEdit();
+                    filterField.setForeground(Color.BLACK);
+                    l.actionPerformed(null);
+                } catch (ParseException e2) {
+                    filterField.setForeground(Color.RED);
+                }
+            }
+        });
+        alwaysShowGramCode.addActionListener(l);
+        all.addActionListener(l);
+        onlyShowGramCode.addActionListener(l);
+        usePattern.addActionListener(l);
+        gbc.anchor = GridBagConstraints.WEST;
+        filterPanel.add(alwaysShowGramCode, gbc);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        filterPanel.add(export, gbc);
+        gbc.gridwidth = 1;
+        filterPanel.add(all, gbc);
+        filterPanel.add(onlyShowGramCode, gbc);
+        filterPanel.add(usePattern, gbc);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        filterPanel.add(filterField, gbc);
+        p.add(filterPanel, BorderLayout.NORTH);
+        return p;
+    }
+
+    protected void exportTextAsTable() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
+                "Unicode Raw Texts"));
+        chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
+        int returnVal = chooser.showOpenDialog(null);
+        if (returnVal != JFileChooser.APPROVE_OPTION) {
+            // we return if the user has clicked on CANCEL
+            return;
+        }
+        UnitexFrame.getFrameManager().newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter);
+    }
+
+    protected void refreshTableRowHeight(JTable table) {
+        if (table.getRowCount() == 0) return;
+        TableCellRenderer renderer = table.getCellRenderer(0, 0);
+        int h = renderer.getTableCellRendererComponent(table, table.getValueAt(0, 0),
+                false, false, 0, 0).getPreferredSize().height;
+        table.setRowHeight(h);
+    }
+
+    /**
+     * We set each column to its preferred width.
+     */
+    protected void refreshTableColumnWidths(JTable table) {
+        for (int c = 0; c < table.getColumnCount(); c++) {
+            int w = getPreferredWidth(table, c);
+            table.getColumnModel().getColumn(c).setPreferredWidth(w);
+            table.getColumnModel().getColumn(c).setWidth(w);
+        }
+    }
+
+    private int getPreferredWidth(JTable table, int column) {
+        int max = 0;
+        TableCellRenderer renderer = table.getCellRenderer(0, column);
+        int w = renderer.getTableCellRendererComponent(table, table.getColumnName(column),
+                false, false, 0, column).getPreferredSize().width;
+        if (w > max) max = w;
+        for (int row = 0; row < table.getRowCount(); row++) {
+            w = renderer.getTableCellRendererComponent(table, table.getValueAt(row, column),
+                    false, false, row, column).getPreferredSize().width;
+            if (w > max) max = w;
+        }
+        return max + 10;
+    }
+
+    private JPanel constructElagPanel() {
         JPanel elagframe = new JPanel(new BorderLayout());
         elagframe.setMinimumSize(new Dimension(0, 0));
         JPanel p = new JPanel(new GridLayout(3, 1));
@@ -519,7 +476,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         if (sentence_count > 1)
             s = s + "s";
         sentence_count_label.setText(s);
-        spinnerModel.setMaximum(new Integer(sentence_count));
+        spinnerModel.setMaximum(sentence_count);
         spinnerModel.setValue(new Integer(1));
         if (sentence_count == 1) {
             /*
@@ -624,9 +581,9 @@ public class TextAutomatonFrame extends JInternalFrame {
         } catch (InterruptedException e1) {
             e1.printStackTrace();
         }
-        String text=readSentenceText();
+        String text = readSentenceText();
         try {
-            TokensInfo.loadTokensInfo(sentence_tok,text);
+            TokensInfo.loadTokensInfo(sentence_tok, text);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -715,8 +672,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         }
         textfield.setFont(g.info.input.font);
         graphicalZone.setup(g);
-		tfstTableModel.init(g.boxes);
-		return true;
+        tfstTableModel.init(g.boxes);
+        return true;
     }
 
     boolean loadElagSentenceGraph(File file) {
@@ -895,9 +852,9 @@ public class TextAutomatonFrame extends JInternalFrame {
     }
 
     public int getSentenceCount() {
-    	return ((Integer)spinnerModel.getMaximum()).intValue();
+        return (Integer) spinnerModel.getMaximum();
     }
-    
+
 }
 
 
