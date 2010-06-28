@@ -21,19 +21,32 @@
 
 package fr.umlv.unitex;
 
+import java.awt.Component;
+import java.awt.HeadlessException;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.Text;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * This class is used to listen drag and drop events. Files that can be dragged
@@ -55,11 +68,14 @@ public class MyDropTarget {
     static final DropTargetListener transcodeDropTargetListener;
 
     static DataFlavor dragNDropFlavor;
+    static DataFlavor uriDragNDropFlavor;
 
     static {
         try {
             dragNDropFlavor = new DataFlavor(
                     "application/x-java-file-list; class=java.util.List");
+            uriDragNDropFlavor = new DataFlavor(
+            "text/uri-list; class=java.lang.String");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -75,7 +91,7 @@ public class MyDropTarget {
      * @return the <code>DropTarget</code> object
      */
     public static DropTarget newDropTarget(Component c) {
-        return new DropTarget(c, DnDConstants.ACTION_COPY_OR_MOVE,
+    	return new DropTarget(c, DnDConstants.ACTION_COPY_OR_MOVE,
                 dropTargetListener, true);
     }
 
@@ -94,7 +110,9 @@ public class MyDropTarget {
     static class DragNDropListener implements DropTargetListener {
 
         private boolean weCanDrag(DropTargetDragEvent e) {
-            return e.isDataFlavorSupported(MyDropTarget.dragNDropFlavor) && ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
+        	return (e.isDataFlavorSupported(MyDropTarget.dragNDropFlavor) 
+            		|| e.isDataFlavorSupported(MyDropTarget.uriDragNDropFlavor))
+            && ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
         }
 
         public void dragEnter(DropTargetDragEvent e) {
@@ -127,10 +145,14 @@ public class MyDropTarget {
 
         @SuppressWarnings("unchecked")
         public void drop(DropTargetDropEvent e) {
-            Object data = null;
+        	Object data = null;
             try {
                 e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                data = e.getTransferable().getTransferData(dragNDropFlavor);
+                if (e.isDataFlavorSupported(dragNDropFlavor)) {
+                	data = e.getTransferable().getTransferData(dragNDropFlavor);
+                } else if (e.isDataFlavorSupported(uriDragNDropFlavor)) {
+                	data = e.getTransferable().getTransferData(uriDragNDropFlavor);
+                }
                 if (data == null)
                     throw new NullPointerException();
             } catch (Exception e2) {
@@ -141,6 +163,25 @@ public class MyDropTarget {
             if (data instanceof List) {
                 List<?> data2 = (List<?>) data;
                 processDropList(data2);
+                e.dropComplete(true);
+            } if (data instanceof String) {
+                String data2 = (String) data;
+                System.err.println(data2);
+                Scanner s=new Scanner(data2);
+                ArrayList<File> list=new ArrayList<File>();
+                while (s.hasNextLine()) {
+                	String name=s.nextLine();
+                	File f;
+					try {
+						f = new File(new URI(name));
+	                	System.err.println(f.getAbsolutePath());
+	                	list.add(f);
+					} catch (URISyntaxException e1) {
+						e1.printStackTrace();
+					}
+                }
+                s.close();
+                processDropList(list);
                 e.dropComplete(true);
             } else {
                 e.dropComplete(false);
