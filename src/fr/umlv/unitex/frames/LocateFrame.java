@@ -26,6 +26,7 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
+import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.*;
@@ -77,6 +78,12 @@ public class LocateFrame extends JInternalFrame {
                 regExp.setFont(font);
             }
         });
+        Config.addLanguageListener(new LanguageListener() {
+			public void languageChanged() {
+				regExp.setText("");
+				graphName.setText("");
+			}
+		});
     }
 
 

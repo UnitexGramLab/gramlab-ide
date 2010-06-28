@@ -35,6 +35,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.text.BigTextArea;
 
@@ -58,7 +59,7 @@ public class AboutUnitexFrame extends JInternalFrame {
 		JPanel up = new JPanel(new BorderLayout());
 		JPanel image = new JPanel(new BorderLayout());
 		image.setBorder(new EmptyBorder(4, 3, 1, 1));
-		image.add(new JLabel(new ImageIcon(AboutUnitexFrame.class.getResource("../Unitex.jpg"))));
+		image.add(new JLabel(new ImageIcon(Unitex.class.getResource("Unitex.jpg"))));
 		up.add(image, BorderLayout.WEST);
 		JPanel info = new JPanel(new BorderLayout());
 		info.setBorder(new TitledBorder("Unitex"));

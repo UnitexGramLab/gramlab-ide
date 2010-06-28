@@ -372,6 +372,19 @@ public class UnitexFrame extends JFrame {
         compressIntoFST.setEnabled(false);
         delaMenu.add(new JMenuItem(compressIntoFST));
         delaMenu.addSeparator();
+        final AbstractAction buildKrMwuDic = new AbstractAction("Build Korean MWU dic graph...") {
+            public void actionPerformed(ActionEvent e) {
+                frameManager.newBuildKrMwuDicFrame();
+            }
+        };
+        buildKrMwuDic.setEnabled(Config.isKorean());
+        delaMenu.add(new JMenuItem(buildKrMwuDic));
+        Config.addLanguageListener(new LanguageListener() {
+			public void languageChanged() {
+				buildKrMwuDic.setEnabled(Config.isKorean());
+			}
+		});
+        delaMenu.addSeparator();
         closeDela = new AbstractAction("Close") {
             public void actionPerformed(ActionEvent e) {
                 frameManager.closeDelaFrame();
