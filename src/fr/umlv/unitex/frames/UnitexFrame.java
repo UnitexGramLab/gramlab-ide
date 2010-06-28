@@ -113,6 +113,8 @@ public class UnitexFrame extends JFrame {
                 closeText.setEnabled(true);
                 frameManager.newTokensFrame(new File(Config.getCurrentSntDir(),
                         "tok_by_freq.txt"));
+                frameManager.newTfstTagsFrame(new File(Config.getCurrentSntDir(),
+                "tfst_tags_by_freq.txt"));
                 frameManager.newTextDicFrame(Config.getCurrentSntDir(), true);
                 frameManager.newTextAutomatonFrame(1, true);
             }
@@ -129,6 +131,7 @@ public class UnitexFrame extends JFrame {
                 frameManager.closeConcordanceFrame();
                 frameManager.closeTextDicFrame();
                 frameManager.closeTextAutomatonFrame();
+                frameManager.closeTfstTagsFrame();
                 frameManager.closeApplyLexicalResourcesFrame();
                 frameManager.closeConcordanceDiffFrame();
                 frameManager.closeConcordanceParameterFrame();

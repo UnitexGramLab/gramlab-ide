@@ -195,6 +195,10 @@ public class ConstructTfstFrame extends JInternalFrame {
                 .getCurrentSntDir(), "text-elag.tind"));
         Config.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "text-elag.tind.bak"));
+        Config.deleteFileByName(new File(Config
+                .getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+        Config.deleteFileByName(new File(Config
+                .getCurrentSntDir(), "tfst_tags_by_alph.txt"));
         File graphDir = new File(Config
                 .getUserCurrentLanguageDir(), "Graphs");
         File normalizationDir = new File(graphDir,
@@ -319,6 +323,7 @@ public class ConstructTfstFrame extends JInternalFrame {
             }
         }
         UnitexFrame.getFrameManager().closeTextAutomatonFrame();
+        UnitexFrame.getFrameManager().closeTfstTagsFrame();
         Launcher.exec(commands, true, new ConstructTfstDo(),
                 false);
     }
@@ -327,6 +332,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 
         public void toDo() {
             UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
+            UnitexFrame.getFrameManager().newTfstTagsFrame(
+            		new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
         }
     }
 
