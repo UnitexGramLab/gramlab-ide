@@ -25,7 +25,6 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.*;
 import fr.umlv.unitex.text.Text;
 
@@ -34,6 +33,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -132,12 +132,14 @@ public class PreprocessDialog extends JDialog {
                         "Sentence and Replace graphs should not be applied on tagged texts."));
         preprocessingUntaggedText = new JPanel(new GridLayout(2, 1));
         preprocessingUntaggedText.setBorder(new TitledBorder("Preprocessing"));
-        preprocessingUntaggedText.add(constructGenericPanel(sentenceCheck, sentenceName));
-        preprocessingUntaggedText.add(constructGenericPanel(replaceCheck, replaceName));
+        sentenceCheck.setMnemonic(KeyEvent.VK_M);
+        replaceCheck.setMnemonic(KeyEvent.VK_R);
+        preprocessingUntaggedText.add(constructGenericPanel(sentenceCheck, sentenceName, true));
+        preprocessingUntaggedText.add(constructGenericPanel(replaceCheck, replaceName, false));
         return preprocessingCurrent = preprocessingUntaggedText;
     }
 
-    private JPanel constructGenericPanel(final JCheckBox checkBox, final JTextField textField) {
+    private JPanel constructGenericPanel(final JCheckBox checkBox, final JTextField textField, final boolean mnemonicToken) {
         final JPanel panel = new JPanel(new BorderLayout());
         Dimension dimension = checkBox.getPreferredSize();
         checkBox.setPreferredSize(new Dimension(190, dimension.height));
@@ -157,6 +159,11 @@ public class PreprocessDialog extends JDialog {
             }
         };
         final JButton setReplace = new JButton(setAction);
+        if (mnemonicToken) {
+            setReplace.setMnemonic(KeyEvent.VK_E);
+        } else {
+            setReplace.setMnemonic(KeyEvent.VK_S);
+        }
         panel.add(setReplace, BorderLayout.EAST);
         return panel;
     }
@@ -170,61 +177,57 @@ public class PreprocessDialog extends JDialog {
     }
 
     private JPanel constructLexicalParsingPanel() {
-        JPanel lexicalParsing = new JPanel(new GridLayout(4, 1));
+        final JPanel lexicalParsing = new JPanel(new GridLayout(4, 1));
         lexicalParsing.setBorder(new TitledBorder("Lexical Parsing"));
+        applyDicCheck.setMnemonic(KeyEvent.VK_D);
         lexicalParsing.add(applyDicCheck);
+        analyseUnknownWordsCheck.setMnemonic(KeyEvent.VK_W);
         lexicalParsing.add(analyseUnknownWordsCheck);
+        analyseUnknownWordsCheck.setMnemonic(KeyEvent.VK_U);
         lexicalParsing.add(analyseUnknownWordsLabel);
+        textFst2Check.setMnemonic(KeyEvent.VK_A);
         lexicalParsing.add(textFst2Check);
         return lexicalParsing;
     }
 
     private JPanel constructButtonsPanel() {
-        JPanel buttons = new JPanel(new GridLayout(3, 1));
+        final JPanel buttons = new JPanel(new GridLayout(3, 1));
         buttons.setBorder(new EmptyBorder(8, 8, 2, 2));
-        Action goAction = new AbstractAction("GO!") {
-            public void actionPerformed(ActionEvent arg0) {
+        final Action goAction = new AbstractAction("GO!") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 setVisible(false);
                 preprocess();
             }
         };
-        JButton OK = new JButton(goAction);
-        Action cancelButIndexAction = new AbstractAction("Cancel but tokenize text") {
-            public void actionPerformed(ActionEvent arg0) {
-                // if the user has clicked on CANCEL but tokenize, we must
+        final JButton goButton = new JButton(goAction);
+        goButton.setMnemonic(KeyEvent.VK_G);
+
+        final Action cancelButIndexAction = new AbstractAction("Cancel but tokenize text") {
+            public void actionPerformed(ActionEvent e) {
+                // if the user has clicked on cancel but tokenize, we must
                 // tokenize anyway
                 setVisible(false);
                 tokenize();
             }
         };
-        JButton CANCELbutIndex = new JButton(cancelButIndexAction);
-        Action cancelAction = new AbstractAction("Cancel and close text") {
-            public void actionPerformed(ActionEvent arg0) {
-                // if the user has clicked on CANCEL, we do nothing
+        final JButton cancelButIndex = new JButton(cancelButIndexAction);
+        cancelButIndex.setMnemonic(KeyEvent.VK_T);
+
+        final Action cancelAction = new AbstractAction("Cancel and close text") {
+            public void actionPerformed(ActionEvent e) {
+                // if the user has clicked on cancel, we do nothing
                 setVisible(false);
                 UnitexFrame.getFrameManager().closeTextFrame();
             }
         };
-        JButton CANCEL = new JButton(cancelAction);
-        buttons.add(OK);
-        buttons.add(CANCELbutIndex);
-        buttons.add(CANCEL);
+        final JButton cancel = new JButton(cancelAction);
+        cancel.setMnemonic(KeyEvent.VK_L);
+
+        buttons.add(goButton);
+        buttons.add(cancelButIndex);
+        buttons.add(cancel);
         return buttons;
-    }
-
-
-    class PreprocessDo implements ToDo {
-        File snt;
-        boolean b;
-
-        public PreprocessDo(File s, boolean taggedText) {
-            snt = s;
-            b = taggedText;
-        }
-
-        public void toDo() {
-            Text.loadCorpus(snt, b);
-        }
     }
 
     private MultiCommands normalizingText(final MultiCommands commands) {
@@ -332,7 +335,6 @@ public class PreprocessDialog extends JDialog {
         // if the extension is nor GRF neither
         // FST2
         JOptionPane.showMessageDialog(null, "Invalid graph name extension !", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
     }
 
     private MultiCommands constructTextAutomaton(final MultiCommands commands) {
