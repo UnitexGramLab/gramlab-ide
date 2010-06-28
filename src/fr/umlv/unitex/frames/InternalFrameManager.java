@@ -79,6 +79,7 @@ public class InternalFrameManager {
 	private GraphFrameFactory graphFrameFactory=new GraphFrameFactory();
 	private TextFrameFactory textFrameFactory=new TextFrameFactory();
 	private TokensFrameFactory tokensFrameFactory=new TokensFrameFactory();
+	private TfstTagsFrameFactory tfstTagsFrameFactory=new TfstTagsFrameFactory();
 	private TextDicFrameFactory textDicFrameFactory=new TextDicFrameFactory();
 	private TextAutomatonFrameFactory textAutomatonFrameFactory=new TextAutomatonFrameFactory();
 	private ConcordanceFrameFactory concordanceFrameFactory=new ConcordanceFrameFactory();
@@ -310,6 +311,14 @@ public class InternalFrameManager {
 	
 	public void closeTokensFrame() {
 		tokensFrameFactory.closeTokensFrame();
+	}
+
+	public TfstTagsFrame newTfstTagsFrame(File tags) {
+		return (TfstTagsFrame) setup(tfstTagsFrameFactory.newTfstTagsFrame(tags),false,true);
+	}
+	
+	public void closeTfstTagsFrame() {
+		tfstTagsFrameFactory.closeTfstTagsFrame();
 	}
 
 	public TextDicFrame newTextDicFrame(File sntDir,boolean iconify) {

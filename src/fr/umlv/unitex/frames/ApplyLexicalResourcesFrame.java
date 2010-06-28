@@ -407,6 +407,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     /* As we construct the text automaton for Korean, we
                           * must close the text automaton frame, if any */
                     UnitexFrame.getFrameManager().closeTextAutomatonFrame();
+                    UnitexFrame.getFrameManager().closeTfstTagsFrame();
                     /* We also have to rebuild the text automaton */
                     Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
                     	.alphabet(Config.getAlphabet()).clean(true).korean();
@@ -660,6 +661,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
             if (Config.isKorean()) {
             	UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
+            	UnitexFrame.getFrameManager().newTfstTagsFrame(
+            			new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
             }
         }
     }
