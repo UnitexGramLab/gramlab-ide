@@ -25,83 +25,83 @@ import java.util.ArrayList;
 
 public class TokenTags {
 
-	/* Bounds of the token sequence in the sentence (a MWU can be
-	 * represented by several tokens)  */
-	private int start;
-	private int end;
-	/* The token itself */
-	private String content;
-	
-	public TokenTags(int start,int end,String content) {
-		this.start=start;
-		this.end=end;
-		this.content=content;
-	}
-	
-	/* Unfiltered interpretion list */
-	private ArrayList<ArrayList<Tag>> interpretations=new ArrayList<ArrayList<Tag>>();
+    /* Bounds of the token sequence in the sentence (a MWU can be
+      * represented by several tokens)  */
+    private int start;
+    private int end;
+    /* The token itself */
+    private String content;
 
-	public int getStart() {
-		return start;
-	}
-	
-	public int getEnd() {
-		return end;
-	}
-	
-	public String getContent() {
-		return content;
-	}
-	
-	private ArrayList<String> filteredInterpretations=new ArrayList<String>();
+    public TokenTags(int start, int end, String content) {
+        this.start = start;
+        this.end = end;
+        this.content = content;
+    }
 
-	public int getInterpretationCount() {
-		return filteredInterpretations.size();
-	}
-	
-	public String getInterpretation(int i) {
-		return filteredInterpretations.get(i);
-	}
-	
-	public void refreshFilter(TagFilter f) {
-		filteredInterpretations.clear();
-		for (int i=0;i<interpretations.size();i++) {
-			String s=getFilteredInterpretation(interpretations.get(i),f);
-			if (s!=null && !"".equals(s) && !filteredInterpretations.contains(s)) {
-				filteredInterpretations.add(s);
-			}
-		}
-	}
+    /* Unfiltered interpretion list */
+    private ArrayList<ArrayList<Tag>> interpretations = new ArrayList<ArrayList<Tag>>();
 
-	private String getFilteredInterpretation(ArrayList<Tag> l,TagFilter f) {
-		StringBuilder b=new StringBuilder();
-		for (int i=0;i<l.size();i++) {
-			Tag tag=l.get(i);
-			String s=tag.toString(f);
-			if (s==null) return null;
-			if (i>0) b.append(" ");
-			b.append(s);
-		}
-		return b.toString();
-	}
-	
+    public int getStart() {
+        return start;
+    }
 
-	public void addInterpretation(ArrayList<Tag> interpretation) {
-		interpretations.add(interpretation);
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder b=new StringBuilder();
-		b.append(content);
-		b.append(": ");
-		int n=getInterpretationCount();
-		for (int i=0;i<n;i++) {
-			if (i>0) b.append("+ ");
-			if (n>1) b.append("(");
-			b.append(getInterpretation(i));
-			if (n>1) b.append(") ");
-		}
-		return b.toString();
-	}
+    public int getEnd() {
+        return end;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    private ArrayList<String> filteredInterpretations = new ArrayList<String>();
+
+    public int getInterpretationCount() {
+        return filteredInterpretations.size();
+    }
+
+    public String getInterpretation(int i) {
+        return filteredInterpretations.get(i);
+    }
+
+    public void refreshFilter(TagFilter f) {
+        filteredInterpretations.clear();
+        for (ArrayList<Tag> interpretation : interpretations) {
+            String s = getFilteredInterpretation(interpretation, f);
+            if (s != null && !"".equals(s) && !filteredInterpretations.contains(s)) {
+                filteredInterpretations.add(s);
+            }
+        }
+    }
+
+    private String getFilteredInterpretation(ArrayList<Tag> l, TagFilter f) {
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < l.size(); i++) {
+            Tag tag = l.get(i);
+            String s = tag.toString(f);
+            if (s == null) return null;
+            if (i > 0) b.append(" ");
+            b.append(s);
+        }
+        return b.toString();
+    }
+
+
+    public void addInterpretation(ArrayList<Tag> interpretation) {
+        interpretations.add(interpretation);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append(content);
+        b.append(": ");
+        int n = getInterpretationCount();
+        for (int i = 0; i < n; i++) {
+            if (i > 0) b.append("+ ");
+            if (n > 1) b.append("(");
+            b.append(getInterpretation(i));
+            if (n > 1) b.append(") ");
+        }
+        return b.toString();
+    }
 }
