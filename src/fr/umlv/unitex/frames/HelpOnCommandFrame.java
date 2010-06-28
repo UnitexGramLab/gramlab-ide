@@ -35,7 +35,9 @@ public class HelpOnCommandFrame extends JInternalFrame {
 
     @SuppressWarnings("unchecked")
     final
-    Class[] commands = {CheckDicCommand.class
+    Class[] commands = {
+    		BuildKrMwuDicCommand.class
+        	, CheckDicCommand.class
             , CompressCommand.class
             , ConcordCommand.class
             , ConcorDiffCommand.class

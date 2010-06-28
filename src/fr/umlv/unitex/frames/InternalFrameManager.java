@@ -52,6 +52,7 @@ public class InternalFrameManager {
 
 	JDesktopPane desktop;
 	private final static Integer LAYER=Integer.valueOf(1);
+	private FrameFactory buildKrMwuDicFrameFactory=new FrameFactory(BuildKrMwuDicFrame.class);
 	private FrameFactory delaFrameFactory=new FrameFactory(DelaFrame.class);
 	private FrameFactory aboutUnitexFrameFactory=new FrameFactory(AboutUnitexFrame.class);
 	private FrameFactory applyLexicalResourcesFrameFactory=new FrameFactory(ApplyLexicalResourcesFrame.class);
@@ -730,6 +731,10 @@ public class InternalFrameManager {
 
 	public TextAutomatonFrame getTextAutomatonFrame() {
 		return textAutomatonFrameFactory.getFrame();
+	}
+
+	public BuildKrMwuDicFrame newBuildKrMwuDicFrame() {
+		return (BuildKrMwuDicFrame) setup(buildKrMwuDicFrameFactory.newFrame());
 	}
 
 }
