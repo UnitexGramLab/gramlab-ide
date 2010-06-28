@@ -30,6 +30,7 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 import fr.umlv.unitex.text.BigTextArea;
 
 import javax.swing.*;
@@ -406,6 +407,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     /* As we construct the text automaton for Korean, we
                           * must close the text automaton frame, if any */
                     UnitexFrame.getFrameManager().closeTextAutomatonFrame();
+                    /* We also have to rebuild the text automaton */
+                    Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
+                    	.alphabet(Config.getAlphabet()).clean(true).korean();
+                    commands.addCommand(txtCmd);
                 }
                 Launcher.exec(commands, true,
                         new ApplyLexicalResourcesDo());
@@ -654,7 +659,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         public void toDo() {
             UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
             if (Config.isKorean()) {
-                UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
+            	UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
             }
         }
     }
