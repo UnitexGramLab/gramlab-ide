@@ -166,7 +166,6 @@ public class MyDropTarget {
                 e.dropComplete(true);
             } if (data instanceof String) {
                 String data2 = (String) data;
-                System.err.println(data2);
                 Scanner s=new Scanner(data2);
                 ArrayList<File> list=new ArrayList<File>();
                 while (s.hasNextLine()) {
@@ -174,7 +173,6 @@ public class MyDropTarget {
                 	File f;
 					try {
 						f = new File(new URI(name));
-	                	System.err.println(f.getAbsolutePath());
 	                	list.add(f);
 					} catch (URISyntaxException e1) {
 						e1.printStackTrace();
