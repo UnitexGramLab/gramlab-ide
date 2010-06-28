@@ -55,7 +55,7 @@ public class PreprocessDialog extends JDialog {
     private final JCheckBox textFst2Check = new JCheckBox("Construct Text Automaton");
     private File originalTextFile;
     private File sntFile;
-    private JPanel preprocessingParent;
+    private final JPanel preprocessingParent;
     private JPanel preprocessingCurrent;
     private JPanel preprocessingTaggedText;
     private JPanel preprocessingUntaggedText;
@@ -116,6 +116,7 @@ public class PreprocessDialog extends JDialog {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(constructProcessingPanel(), BorderLayout.NORTH);
         panel.add(constructTokenizingPanel(), BorderLayout.CENTER);
+//        panel.add(MulticoreCapability.constructExecutionPanel(), BorderLayout.WEST);
         JPanel down = new JPanel(new BorderLayout());
         down.add(constructLexicalParsingPanel(), BorderLayout.WEST);
         down.add(constructButtonsPanel(), BorderLayout.CENTER);
@@ -141,18 +142,16 @@ public class PreprocessDialog extends JDialog {
 
     private JPanel constructGenericPanel(final JCheckBox checkBox, final JTextField textField, final boolean mnemonicToken) {
         final JPanel panel = new JPanel(new BorderLayout());
-        Dimension dimension = checkBox.getPreferredSize();
-        checkBox.setPreferredSize(new Dimension(190, dimension.height));
+        checkBox.setPreferredSize(new Dimension(190, checkBox.getPreferredSize().height));
         panel.add(checkBox, BorderLayout.WEST);
-        dimension = textField.getPreferredSize();
-        textField.setPreferredSize(new Dimension(150, dimension.height));
+        textField.setPreferredSize(new Dimension(150, textField.getPreferredSize().height));
         panel.add(textField, BorderLayout.CENTER);
         final Action setAction = new AbstractAction("Set...") {
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(ActionEvent e) {
                 JFileChooser chooser = Config.getReplaceDialogBox();
                 final int returnVal = chooser.showOpenDialog(null);
                 if (returnVal != JFileChooser.APPROVE_OPTION) {
-                    // we return if the user has clicked on CANCEL
+                    // we return if the user has clicked on cancel
                     return;
                 }
                 textField.setText(chooser.getSelectedFile().getAbsolutePath());
@@ -169,7 +168,7 @@ public class PreprocessDialog extends JDialog {
     }
 
     private JPanel constructTokenizingPanel() {
-        JPanel tokenizingPanel = new JPanel(new GridLayout(2, 1));
+        final JPanel tokenizingPanel = new JPanel(new GridLayout(2, 1));
         tokenizingPanel.setBorder(new TitledBorder("Tokenizing"));
         tokenizingPanel.add(new JLabel("The text is automatically tokenized. This operation is language-dependant,"));
         tokenizingPanel.add(new JLabel("so that Unitex can handle languages with special spacing rules."));
@@ -470,6 +469,7 @@ public class PreprocessDialog extends JDialog {
         if (textFst2Check.isSelected()) {
             commands = constructTextAutomaton(commands);
         }
+
         UnitexFrame.getFrameManager().closeTextFrame();
         Text.removeSntFiles();
         Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
