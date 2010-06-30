@@ -258,7 +258,7 @@ public class Config {
         determineUnitexDir(appPath);
         MyCursors.initCursorsAndIcons();
         determineCurrentUser();
-        chooseInitialLanguage();
+        chooseInitialLanguage(); // TODO set&save a default start-up language in settings/preferences?
         setDefaultPreprocessingGraphs();
     }
 
@@ -333,9 +333,9 @@ public class Config {
         replaceDialogBox.addChoosableFileFilter(new PersonalFileFilter(
                 "grf", "Unicode Graphs"));
         replaceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        File f = new File(Config.getCurrentGraphDir(), "Preprocessing");
-        f = new File(f, "Replace");
-        replaceDialogBox.setCurrentDirectory(f);
+        File currentGraphDir = new File(Config.getCurrentGraphDir(), "Preprocessing");
+        currentGraphDir = new File(currentGraphDir, "Replace");
+        replaceDialogBox.setCurrentDirectory(currentGraphDir);
         replaceDialogBox.setMultiSelectionEnabled(false);
         return replaceDialogBox;
     }
@@ -581,7 +581,7 @@ public class Config {
                 || (currentSystem == SUN_OS_SYSTEM)) {
             /* The default user directory is /home/user/unitex */
             File rep = new File(System.getProperty("user.home"), "unitex");
-            File config = new File(System.getProperty("user.home"), ".unitex.cfg");
+            final File config = new File(System.getProperty("user.home"), ".unitex.cfg");
             if (config.exists()) {
                 FileInputStream s;
                 try {
@@ -926,7 +926,7 @@ public class Config {
      */
     public static File getCurrentCorpusDir() {
         if (currentCorpusDir == null) {
-            System.out.println("ERROR");
+            System.err.println("ERROR: Corpus directory is not set.");
         }
         return currentCorpusDir;
     }
@@ -945,7 +945,7 @@ public class Config {
      */
     public static File getCurrentGraphDir() {
         if (currentGraphDir == null) {
-            System.out.println("ERROR");
+            System.err.println("ERROR: Graph directory is not set.");
         }
         return currentGraphDir;
     }
@@ -964,7 +964,7 @@ public class Config {
      */
     public static File getCurrentElagDir() {
         if (currentElagDir == null) {
-            System.out.println("ERROR");
+            System.out.println("ERROR: Elag directory is not set.");
         }
         return currentElagDir;
     }
@@ -983,7 +983,7 @@ public class Config {
      */
     public static File getAlphabet() {
         if (alphabet == null) {
-            System.out.println("ERROR");
+            System.out.println("ERROR: Alphabet is not set.");
         }
         return alphabet;
     }
@@ -1033,7 +1033,7 @@ public class Config {
             } else {
                 message = "You cannot choose the Unitex directory as your private one";
             }
-            Object[] options = {"OK", "Cancel"};
+            final String[] options = {"OK", "Cancel"};
             int n = JOptionPane.showOptionDialog(null, message, "Error",
                     JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
                     options, options[0]);
@@ -1048,7 +1048,7 @@ public class Config {
      * must be called only when Unitex is running under Windows.
      */
     public static void changeUserDir() {
-        JFileChooser f = new JFileChooser();
+        final JFileChooser f = new JFileChooser();
         f.setDialogTitle("Choose your private directory");
         f.setDialogType(JFileChooser.OPEN_DIALOG);
         f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -1066,7 +1066,7 @@ public class Config {
     }
 
     private static void collectLanguage(File directory, Set<String> languages) {
-        File[] fileList = directory.listFiles(new FileFilter() {
+        final File[] fileList = directory.listFiles(new FileFilter() {
             public boolean accept(File file) {
                 return file.isDirectory() && isValidLanguageName(file.getName());
             }
@@ -1081,7 +1081,7 @@ public class Config {
      * he wants to work on
      */
     public static void chooseInitialLanguage() {
-        JPanel p = new JPanel();
+        final JPanel p = new JPanel();
         p.setLayout(new GridLayout(4, 1));
         p.setOpaque(true);
         TreeSet<String> languages = new TreeSet<String>();
@@ -1092,7 +1092,7 @@ public class Config {
         p.add(new JLabel("Choose the language you want"));
         p.add(new JLabel("to work on:"));
         p.add(langList);
-        Object[] options = {"OK", "Exit"};
+        final String[] options = {"OK", "Exit"};
         if (1 == JOptionPane.showOptionDialog(null, p, "Unitex",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0])) {
@@ -1108,12 +1108,12 @@ public class Config {
      * language.
      */
     public static void changeLanguage() {
-        TreeSet<String> languages = new TreeSet<String>();
+        final TreeSet<String> languages = new TreeSet<String>();
         collectLanguage(getUnitexDir(), languages);
         collectLanguage(getUserDir(), languages);
         JComboBox langList = new JComboBox(languages.toArray());
         String old = getCurrentLanguage();
-        Object[] options = {"OK", "Cancel"};
+        final String[] options = {"OK", "Cancel"};
         if (0 == JOptionPane.showOptionDialog(null, langList,
                 "Choose a language", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0])) {
@@ -1154,8 +1154,7 @@ public class Config {
      * @param s name of the corpus file
      */
     public static void setCurrentSntDir(File s) {
-        String path;
-        path = Util.getFileNameWithoutExtension(s.getAbsolutePath());
+        final String path = Util.getFileNameWithoutExtension(s.getAbsolutePath());
         currentSntDir = new File(path + "_snt");
         if (currentSntDir.exists() && !currentSntDir.isDirectory()) {
             JOptionPane.showMessageDialog(null,
@@ -1247,8 +1246,8 @@ public class Config {
      * @param dest destination
      */
     public static void copyFileByName(File src, File dest) {
-        File path_src = src.getParentFile();
-        String expression = src.getName();
+        final File path_src = src.getParentFile();
+        final String expression = src.getName();
         if (dest.isDirectory()) {
             File files_list[] = path_src
                     .listFiles(new RegFileFilter(expression));
@@ -1298,8 +1297,8 @@ public class Config {
      * @param src source
      */
     public static void deleteFileByName(File src) {
-        File path_src = src.getParentFile();
-        String expression = src.getName();
+        final File path_src = src.getParentFile();
+        final String expression = src.getName();
         File files_list[] = path_src.listFiles(new RegFileFilter(
                 expression));
         if (files_list != null) {
@@ -1317,12 +1316,12 @@ public class Config {
      * @param src source
      */
     public static void removeFile(File src) {
-        File path_src = src.getParentFile();
-        String expression = src.getName();
-        File files_list[] = path_src.listFiles(new RegFileFilter(
+        final File path_src = src.getParentFile();
+        final String expression = src.getName();
+        final File files_list[] = path_src.listFiles(new RegFileFilter(
                 expression));
-        for (File aFiles_list : files_list) {
-            File F;
+        for (final File aFiles_list : files_list) {
+            final File F;
             if (!(F = aFiles_list).isDirectory()) {
                 F.delete();
             }
@@ -1352,8 +1351,8 @@ public class Config {
      */
     public static void copyFile(File src, File dest) {
         try {
-            FileInputStream fis = new FileInputStream(src);
-            FileOutputStream fos = new FileOutputStream(dest);
+            final FileInputStream fis = new FileInputStream(src);
+            final FileOutputStream fos = new FileOutputStream(dest);
             copyStream(fis, fos);
             fis.close();
             fos.close();
@@ -1364,7 +1363,7 @@ public class Config {
 
     private static void copyStream(InputStream fis, OutputStream fos) {
         try {
-            byte[] buf = new byte[2048];
+            final byte[] buf = new byte[2048];
             int i = 0;
             while ((i = fis.read(buf)) != -1) {
                 fos.write(buf, 0, i);
@@ -1407,32 +1406,32 @@ public class Config {
     }
 
     public static boolean isCharByCharLanguage(String language) {
-        File config = new File(new File(Config.getUserDir(), language), "Config");
+        final File config = new File(new File(Config.getUserDir(), language), "Config");
         if (!config.exists()) {
             return false;
         }
-        Properties prop = Preferences.loadProperties(config, null);
-        String s = prop.getProperty("CHAR BY CHAR");
+        final Properties prop = Preferences.loadProperties(config, null);
+        final String s = prop.getProperty("CHAR BY CHAR");
         return s != null && Boolean.parseBoolean(s);
     }
 
     public static boolean morphologicalUseOfSpaceAllowed(String language) {
-        File config = new File(new File(Config.getUserDir(), language), "Config");
+        final File config = new File(new File(Config.getUserDir(), language), "Config");
         if (!config.exists()) {
             return false;
         }
-        Properties prop = Preferences.loadProperties(config, null);
-        String s = prop.getProperty("MORPHOLOGICAL USE OF SPACE");
+        final Properties prop = Preferences.loadProperties(config, null);
+        final String s = prop.getProperty("MORPHOLOGICAL USE OF SPACE");
         return s != null && Boolean.parseBoolean(s);
     }
 
     public static ArrayList<File> morphologicalDic(String language) {
-        File config = new File(new File(Config.getUserDir(), language), "Config");
+        final File config = new File(new File(Config.getUserDir(), language), "Config");
         if (!config.exists()) {
             return null;
         }
-        Properties prop = Preferences.loadProperties(config, null);
-        String s = prop.getProperty("MORPHOLOGICAL DICTIONARY");
+        final Properties prop = Preferences.loadProperties(config, null);
+        final String s = prop.getProperty("MORPHOLOGICAL DICTIONARY");
         if (s == null) return null;
         return Preferences.tokenizeMorphologicalDicList(s);
     }
@@ -1455,9 +1454,9 @@ public class Config {
     }
 
     public static File getXAlignDirectory() {
-        File dir = new File(Config.getUserDir(), "XAlign");
+        final File dir = new File(Config.getUserDir(), "XAlign");
         if (!dir.exists()) {
-            File foo = new File(Config.getUnitexDir(), "XAlign");
+            final File foo = new File(Config.getUnitexDir(), "XAlign");
             if (!foo.exists()) {
                 JOptionPane
                         .showMessageDialog(
@@ -1473,8 +1472,8 @@ public class Config {
 
 
     public static File getAlignmentProperties() {
-        File dir = getXAlignDirectory();
-        File f = new File(dir, "multialign.properties");
+        final File dir = getXAlignDirectory();
+        final File f = new File(dir, "multialign.properties");
         if (!f.exists()) {
             File tmp = new File(new File(Config.getUnitexDir(), "XAlign"), "multialign.properties");
             if (!tmp.exists()) {
@@ -1495,12 +1494,11 @@ public class Config {
     }
 
     public static ArrayList<File> getDefaultDicList(String language) {
-
-        ArrayList<File> res = new ArrayList<File>();
-        File userLanguageDir = new File(Config.getUserDir(), language);
+        final ArrayList<File> res = new ArrayList<File>();
+        final File userLanguageDir = new File(Config.getUserDir(), language);
         File name2 = new File(userLanguageDir, "user_dic.def");
         try {
-            BufferedReader br = new BufferedReader(new FileReader(name2));
+            final BufferedReader br = new BufferedReader(new FileReader(name2));
             String s;
             while ((s = br.readLine()) != null) {
                 res.add(new File(new File(userLanguageDir, "Dela"), s));
@@ -1513,9 +1511,9 @@ public class Config {
         }
         name2 = new File(userLanguageDir, "system_dic.def");
         try {
-            BufferedReader br = new BufferedReader(new FileReader(name2));
+            final BufferedReader br = new BufferedReader(new FileReader(name2));
             String s;
-            File systemDelaDir = new File(new File(Config.getUnitexDir(), language), "Dela");
+            final File systemDelaDir = new File(new File(Config.getUnitexDir(), language), "Dela");
             while ((s = br.readLine()) != null) {
                 res.add(new File(systemDelaDir, s));
             }
