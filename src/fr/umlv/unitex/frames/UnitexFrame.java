@@ -114,7 +114,7 @@ public class UnitexFrame extends JFrame {
                 frameManager.newTokensFrame(new File(Config.getCurrentSntDir(),
                         "tok_by_freq.txt"));
                 frameManager.newTfstTagsFrame(new File(Config.getCurrentSntDir(),
-                "tfst_tags_by_freq.txt"));
+                        "tfst_tags_by_freq.txt"));
                 frameManager.newTextDicFrame(Config.getCurrentSntDir(), true);
                 frameManager.newTextAutomatonFrame(1, true);
             }
@@ -187,15 +187,15 @@ public class UnitexFrame extends JFrame {
      * Builds the menu bar.
      */
     public void buildMenus() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu text = buildTextMenu();
-        JMenu DELA = buildDELAMenu();
-        JMenu fsGraph = buildFsGraphMenu();
-        JMenu lexiconGrammar = buildLexiconGrammarMenu();
-        JMenu xalign = buildXAlignMenu();
-        FileEditionMenu fileEditionMenu = new FileEditionMenu();
-        JMenu windows = buildWindowsMenu();
-        JMenu info = buildInfoMenu();
+        final JMenuBar menuBar = new JMenuBar();
+        final JMenu text = buildTextMenu();
+        final JMenu DELA = buildDELAMenu();
+        final JMenu fsGraph = buildFsGraphMenu();
+        final JMenu lexiconGrammar = buildLexiconGrammarMenu();
+        final JMenu xalign = buildXAlignMenu();
+        final FileEditionMenu fileEditionMenu = new FileEditionMenu();
+        final JMenu windows = buildWindowsMenu();
+        final JMenu info = buildInfoMenu();
         text.setMnemonic(KeyEvent.VK_T);
         DELA.setMnemonic(KeyEvent.VK_D);
         fsGraph.setMnemonic(KeyEvent.VK_G);
@@ -229,7 +229,7 @@ public class UnitexFrame extends JFrame {
     AbstractAction quitUnitex;
 
     public JMenu buildTextMenu() {
-        JMenu textMenu = new JMenu("Text");
+        final JMenu textMenu = new JMenu("Text");
         openText = new AbstractAction("Open...") {
             public void actionPerformed(ActionEvent e) {
                 openText();
@@ -335,8 +335,8 @@ public class UnitexFrame extends JFrame {
     AbstractAction closeDela;
 
     public JMenu buildDELAMenu() {
-        JMenu delaMenu = new JMenu("DELA");
-        JMenuItem open2 = new JMenuItem("Open...");
+        final JMenu delaMenu = new JMenu("DELA");
+        final JMenuItem open2 = new JMenuItem("Open...");
         open2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 openDELA();
@@ -383,10 +383,10 @@ public class UnitexFrame extends JFrame {
         buildKrMwuDic.setEnabled(Config.isKorean());
         delaMenu.add(new JMenuItem(buildKrMwuDic));
         Config.addLanguageListener(new LanguageListener() {
-			public void languageChanged() {
-				buildKrMwuDic.setEnabled(Config.isKorean());
-			}
-		});
+            public void languageChanged() {
+                buildKrMwuDic.setEnabled(Config.isKorean());
+            }
+        });
         delaMenu.addSeparator();
         closeDela = new AbstractAction("Close") {
             public void actionPerformed(ActionEvent e) {
@@ -399,15 +399,15 @@ public class UnitexFrame extends JFrame {
     }
 
     public JMenu buildFsGraphMenu() {
-        JMenu graphMenu = new JMenu("FSGraph");
-        JMenuItem newGraph = new JMenuItem("New");
+        final JMenu graphMenu = new JMenu("FSGraph");
+        final JMenuItem newGraph = new JMenuItem("New");
         newGraph.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newGraphFrame(null);
             }
         });
         graphMenu.add(newGraph);
-        Action open = new AbstractAction("Open...") {
+        final Action open = new AbstractAction("Open...") {
             public void actionPerformed(ActionEvent e) {
                 openGraph();
             }
@@ -415,7 +415,7 @@ public class UnitexFrame extends JFrame {
         open.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, Event.CTRL_MASK));
         graphMenu.add(new JMenuItem(open));
-        Action save = new AbstractAction("Save") {
+        final Action save = new AbstractAction("Save") {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null)
@@ -425,7 +425,7 @@ public class UnitexFrame extends JFrame {
         save.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                 KeyEvent.VK_S, Event.CTRL_MASK));
         graphMenu.add(new JMenuItem(save));
-        Action saveAs = new AbstractAction("Save as...") {
+        final Action saveAs = new AbstractAction("Save as...") {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null)
@@ -433,19 +433,19 @@ public class UnitexFrame extends JFrame {
             }
         };
         graphMenu.add(new JMenuItem(saveAs));
-        Action saveAll = new AbstractAction("Save All") {
+        final Action saveAll = new AbstractAction("Save All") {
             public void actionPerformed(ActionEvent e) {
                 saveAllGraphs();
             }
         };
         graphMenu.add(new JMenuItem(saveAll));
-        Action setup = new AbstractAction("Page Setup") {
+        final Action setup = new AbstractAction("Page Setup") {
             public void actionPerformed(ActionEvent e) {
                 PrintManager.pageSetup();
             }
         };
         graphMenu.add(new JMenuItem(setup));
-        Action print = new AbstractAction("Print...") {
+        final Action print = new AbstractAction("Print...") {
             public void actionPerformed(ActionEvent e) {
                 PrintManager.print(frameManager.getSelectedFrame());
             }
@@ -453,15 +453,15 @@ public class UnitexFrame extends JFrame {
         print.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('P',
                 Event.CTRL_MASK));
         graphMenu.add(new JMenuItem(print));
-        Action printAll = new AbstractAction("Print All...") {
+        final Action printAll = new AbstractAction("Print All...") {
             public void actionPerformed(ActionEvent e) {
                 PrintManager.printAllGraphs(frameManager.getGraphFrames());
             }
         };
         graphMenu.add(new JMenuItem(printAll));
         graphMenu.addSeparator();
-        JMenu tools = new JMenu("Tools");
-        JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
+        final JMenu tools = new JMenu("Tools");
+        final JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
         sortNodeLabel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
@@ -470,7 +470,7 @@ public class UnitexFrame extends JFrame {
                 }
             }
         });
-        JMenuItem explorePaths = new JMenuItem("Explore graph paths");
+        final JMenuItem explorePaths = new JMenuItem("Explore graph paths");
         explorePaths.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
@@ -479,19 +479,19 @@ public class UnitexFrame extends JFrame {
                 }
             }
         });
-        JMenuItem compileFST = new JMenuItem("Compile FST2");
+        final JMenuItem compileFST = new JMenuItem("Compile FST2");
         compileFST.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 compileGraph();
             }
         });
-        JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
+        final JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
         flatten.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 compileAndFlattenGraph();
             }
         });
-        JMenuItem graphCollection = new JMenuItem("Build Graph Collection");
+        final JMenuItem graphCollection = new JMenuItem("Build Graph Collection");
         graphCollection.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newGraphCollectionFrame();
@@ -505,8 +505,8 @@ public class UnitexFrame extends JFrame {
         tools.addSeparator();
         tools.add(graphCollection);
         graphMenu.add(tools);
-        JMenu format = new JMenu("Format");
-        JMenuItem alignment = new JMenuItem("Alignment...");
+        final JMenu format = new JMenu("Format");
+        final JMenuItem alignment = new JMenuItem("Alignment...");
         alignment.setAccelerator(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
         alignment.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -516,7 +516,7 @@ public class UnitexFrame extends JFrame {
                 }
             }
         });
-        JMenuItem antialiasing = new JMenuItem("Antialiasing...");
+        final JMenuItem antialiasing = new JMenuItem("Antialiasing...");
         antialiasing.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JInternalFrame f = frameManager.getSelectedFrame();
@@ -533,7 +533,7 @@ public class UnitexFrame extends JFrame {
                 }
             }
         });
-        JMenuItem presentation = new JMenuItem("Presentation...");
+        final JMenuItem presentation = new JMenuItem("Presentation...");
         presentation.setAccelerator(KeyStroke
                 .getKeyStroke('R', Event.CTRL_MASK));
         presentation.addActionListener(new ActionListener() {
@@ -549,7 +549,7 @@ public class UnitexFrame extends JFrame {
                 }
             }
         });
-        JMenuItem graphSize = new JMenuItem("Graph Size...");
+        final JMenuItem graphSize = new JMenuItem("Graph Size...");
         graphSize.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
@@ -563,17 +563,17 @@ public class UnitexFrame extends JFrame {
         format.add(alignment);
         format.add(presentation);
         format.add(graphSize);
-        JMenu zoom = new JMenu("Zoom");
-        ButtonGroup groupe = new ButtonGroup();
-        JRadioButtonMenuItem fitInScreen = new JRadioButtonMenuItem(
+        final JMenu zoom = new JMenu("Zoom");
+        final ButtonGroup groupe = new ButtonGroup();
+        final JRadioButtonMenuItem fitInScreen = new JRadioButtonMenuItem(
                 "Fit in screen");
-        JRadioButtonMenuItem fitInWindow = new JRadioButtonMenuItem(
+        final JRadioButtonMenuItem fitInWindow = new JRadioButtonMenuItem(
                 "Fit in window");
-        JRadioButtonMenuItem fit60 = new JRadioButtonMenuItem("60%");
-        JRadioButtonMenuItem fit80 = new JRadioButtonMenuItem("80%");
-        JRadioButtonMenuItem fit100 = new JRadioButtonMenuItem("100%");
-        JRadioButtonMenuItem fit120 = new JRadioButtonMenuItem("120%");
-        JRadioButtonMenuItem fit140 = new JRadioButtonMenuItem("140%");
+        final JRadioButtonMenuItem fit60 = new JRadioButtonMenuItem("60%");
+        final JRadioButtonMenuItem fit80 = new JRadioButtonMenuItem("80%");
+        final JRadioButtonMenuItem fit100 = new JRadioButtonMenuItem("100%");
+        final JRadioButtonMenuItem fit120 = new JRadioButtonMenuItem("120%");
+        final JRadioButtonMenuItem fit140 = new JRadioButtonMenuItem("140%");
         groupe.add(fitInScreen);
         groupe.add(fitInWindow);
         groupe.add(fit60);
@@ -584,7 +584,7 @@ public class UnitexFrame extends JFrame {
         groupe.add(fit140);
         fitInScreen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
+                final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
                     f.removeComponentListener(f.compListener);
                     double scale_x = (double) screenSize.width
@@ -602,7 +602,7 @@ public class UnitexFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
-                    Dimension d = f.getScroll().getSize();
+                    final Dimension d = f.getScroll().getSize();
                     double scale_x = (double) (d.width - 3)
                             / (double) f.graphicalZone.getWidth();
                     double scale_y = (double) (d.height - 3)
@@ -631,7 +631,7 @@ public class UnitexFrame extends JFrame {
         });
         fit60.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
+                final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
                     f.removeComponentListener(f.compListener);
                     f.setScaleFactor(0.6);
@@ -640,7 +640,7 @@ public class UnitexFrame extends JFrame {
         });
         fit80.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
+                final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
                     f.removeComponentListener(f.compListener);
                     f.setScaleFactor(0.8);
@@ -649,7 +649,7 @@ public class UnitexFrame extends JFrame {
         });
         fit100.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
+                final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
                     f.removeComponentListener(f.compListener);
                     f.setScaleFactor(1.0);
@@ -658,7 +658,7 @@ public class UnitexFrame extends JFrame {
         });
         fit120.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
+                final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
                     f.removeComponentListener(f.compListener);
                     f.setScaleFactor(1.2);
@@ -667,7 +667,7 @@ public class UnitexFrame extends JFrame {
         });
         fit140.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
+                final GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null) {
                     f.removeComponentListener(f.compListener);
                     f.setScaleFactor(1.4);
@@ -681,7 +681,7 @@ public class UnitexFrame extends JFrame {
         zoom.add(fit100);
         zoom.add(fit120);
         zoom.add(fit140);
-        JMenuItem closeAll = new JMenuItem("Close all");
+        final JMenuItem closeAll = new JMenuItem("Close all");
         closeAll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.closeAllGraphFrames();
@@ -700,7 +700,7 @@ public class UnitexFrame extends JFrame {
     AbstractAction closeLexiconGrammar;
 
     public JMenu buildLexiconGrammarMenu() {
-        JMenu lexiconGrammar = new JMenu("Lexicon-Grammar");
+        final JMenu lexiconGrammar = new JMenu("Lexicon-Grammar");
         openLexiconGrammar = new AbstractAction("Open...") {
             public void actionPerformed(ActionEvent e) {
                 openLexiconGrammarTable();
@@ -711,7 +711,7 @@ public class UnitexFrame extends JFrame {
 
         compileLexiconGrammar = new AbstractAction("Compile to GRF...") {
             public void actionPerformed(ActionEvent e) {
-                LexiconGrammarTableFrame f = frameManager
+                final LexiconGrammarTableFrame f = frameManager
                         .getLexiconGrammarTableFrame();
                 if (f == null) {
                     throw new IllegalStateException("Should not happen !");
@@ -735,8 +735,8 @@ public class UnitexFrame extends JFrame {
 
 
     private JMenu buildXAlignMenu() {
-        JMenu menu = new JMenu("XAlign");
-        JMenuItem open = new JMenuItem("Open files...");
+        final JMenu menu = new JMenu("XAlign");
+        final JMenuItem open = new JMenuItem("Open files...");
         open.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newXAlignConfigFrame();
@@ -748,21 +748,21 @@ public class UnitexFrame extends JFrame {
 
 
     public JMenu buildWindowsMenu() {
-        JMenu windows = new JMenu("Windows");
-        JMenuItem tile = new JMenuItem("Tile");
+        final JMenu windows = new JMenu("Windows");
+        final JMenuItem tile = new JMenuItem("Tile");
         tile.setEnabled(true);
         tile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tileFrames();
             }
         });
-        JMenuItem cascade = new JMenuItem("Cascade");
+        final JMenuItem cascade = new JMenuItem("Cascade");
         cascade.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cascadeFrames();
             }
         });
-        JMenuItem arrangeIcons = new JMenuItem("Arrange Icons");
+        final JMenuItem arrangeIcons = new JMenuItem("Arrange Icons");
         arrangeIcons.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 arrangeIcons();
@@ -776,29 +776,29 @@ public class UnitexFrame extends JFrame {
 
 
     public JMenu buildInfoMenu() {
-        JMenu info = new JMenu("Info");
-        JMenuItem aboutUnitex = new JMenuItem("About Unitex...");
+        final JMenu info = new JMenu("Info");
+        final JMenuItem aboutUnitex = new JMenuItem("About Unitex...");
         aboutUnitex.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newAboutUnitexFrame();
             }
         });
 
-        JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
+        final JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
         helpOnCommands.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newHelpOnCommandFrame();
             }
         });
 
-        JMenuItem preferences = new JMenuItem("Preferences...");
+        final JMenuItem preferences = new JMenuItem("Preferences...");
         preferences.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newGlobalPreferencesFrame();
             }
         });
 
-        JMenuItem console = new JMenuItem("Console");
+        final JMenuItem console = new JMenuItem("Console");
         console.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frameManager.showConsoleFrame();
@@ -817,8 +817,8 @@ public class UnitexFrame extends JFrame {
      * when he clicks on the "Quit Unitex" item in the "Text" menu.
      */
     public void quit() {
-        Object[] options = {"Yes", "No"};
-        int n = JOptionPane.showOptionDialog(this,
+        final String[] options = {"Yes", "No"};
+        final int n = JOptionPane.showOptionDialog(this,
                 "Do you really want to quit ?", "", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (n == 1) {
@@ -836,7 +836,7 @@ public class UnitexFrame extends JFrame {
      */
     public void openText() {
         Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
-        int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
+        final int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
             return;
@@ -850,7 +850,7 @@ public class UnitexFrame extends JFrame {
      */
     public void openTaggedText() {
         Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
-        int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
+        final int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
             return;
@@ -864,14 +864,14 @@ public class UnitexFrame extends JFrame {
      * method.
      */
     public void openGraph() {
-        JFileChooser fc = Config.getGraphDialogBox(false);
+        final JFileChooser fc = Config.getGraphDialogBox(false);
         fc.setDialogType(JFileChooser.OPEN_DIALOG);
-        int returnVal = fc.showOpenDialog(this);
+        final int returnVal = fc.showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
             return;
         }
-        File[] graphs = fc.getSelectedFiles();
+        final File[] graphs = fc.getSelectedFiles();
         for (int i = 0; i < graphs.length; i++) {
             String s = graphs[i].getAbsolutePath();
             if (!s.endsWith(".grf")) {
@@ -888,19 +888,19 @@ public class UnitexFrame extends JFrame {
      * selected, a <code>LexiconGrammarTableFrame</code> object is created.
      */
     public void openLexiconGrammarTable() {
-        int returnVal = Config.getTableDialogBox().showOpenDialog(this);
+        final int returnVal = Config.getTableDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
             return;
         }
-        String name;
+        final String name;
         try {
             name = Config.getTableDialogBox().getSelectedFile()
                     .getCanonicalPath();
         } catch (IOException e) {
             return;
         }
-        File f = new File(name);
+        final File f = new File(name);
         if (!f.exists()) {
             JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
                     JOptionPane.ERROR_MESSAGE);
@@ -936,8 +936,8 @@ public class UnitexFrame extends JFrame {
     public boolean saveAsGraph(GraphFrame f) {
         if (f == null)
             return false;
-        GraphIO g = new GraphIO(f.graphicalZone);
-        JFileChooser fc = Config.getGraphDialogBox(true);
+        final GraphIO g = new GraphIO(f.graphicalZone);
+        final JFileChooser fc = Config.getGraphDialogBox(true);
         fc.setMultiSelectionEnabled(false);
         fc.setDialogType(JFileChooser.SAVE_DIALOG);
         File file = null;
@@ -951,10 +951,10 @@ public class UnitexFrame extends JFrame {
             file = fc.getSelectedFile();
             if (file == null || !file.exists())
                 break;
-            String message = file
+            final String message = file
                     + "\nalready exists. Do you want to replace it ?";
-            Object[] options = {"Yes", "No"};
-            int n = JOptionPane.showOptionDialog(null, message, "Error",
+            final String[] options = {"Yes", "No"};
+            final int n = JOptionPane.showOptionDialog(null, message, "Error",
                     JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
                     options, options[0]);
             if (n == 0) {
@@ -964,7 +964,7 @@ public class UnitexFrame extends JFrame {
         if (file == null) {
             return false;
         }
-        String name = file.getAbsolutePath();
+        final String name = file.getAbsolutePath();
         // if the user wants to save the graph as an image
         if (name.endsWith(".png") || name.endsWith(".PNG")) {
             // we do not change the "modified" status and the title of the
@@ -999,11 +999,11 @@ public class UnitexFrame extends JFrame {
     public boolean saveGraph(GraphFrame f) {
         if (f == null)
             return false;
-        File file = f.getGraph();
+        final File file = f.getGraph();
         if (file == null) {
             return saveAsGraph(f);
         }
-        GraphIO g = new GraphIO(f.graphicalZone);
+        final GraphIO g = new GraphIO(f.graphicalZone);
         f.modified = false;
         g.saveGraph(file);
         f.setTitle(file.getName() + " (" + file.getParent() + ")");
@@ -1014,8 +1014,8 @@ public class UnitexFrame extends JFrame {
      * Saves all <code>GraphFrame</code> s that are on the desktop.
      */
     public void saveAllGraphs() {
-        JInternalFrame[] frames = desktop.getAllFrames();
-        for (JInternalFrame frame : frames) {
+        final JInternalFrame[] frames = desktop.getAllFrames();
+        for (final JInternalFrame frame : frames) {
             if (frame instanceof GraphFrame) {
                 saveGraph((GraphFrame) frame);
             }
@@ -1029,7 +1029,7 @@ public class UnitexFrame extends JFrame {
      * <code>ProcessInfoFrame</code> object.
      */
     public void compileGraph() {
-        GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
+        final GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
         if (currentFrame == null)
             return;
         if (currentFrame.modified) {
@@ -1044,7 +1044,7 @@ public class UnitexFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Grf2Fst2Command command = new Grf2Fst2Command().grf(
+        final Grf2Fst2Command command = new Grf2Fst2Command().grf(
                 currentFrame.getGraph()).enableLoopAndRecursionDetection(true)
                 .tokenizationMode().library();
         Launcher.exec(command, false);
@@ -1056,7 +1056,7 @@ public class UnitexFrame extends JFrame {
      * through the creation of a <code>ProcessInfoFrame</code> object.
      */
     public void compileAndFlattenGraph() {
-        GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
+        final GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
         if (currentFrame == null)
             return;
         if (currentFrame.modified) {
@@ -1065,37 +1065,37 @@ public class UnitexFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        File grf = currentFrame.getGraph();
+        final File grf = currentFrame.getGraph();
         if (grf == null) {
             JOptionPane.showMessageDialog(null,
                     "Cannot compile a graph with no name", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        JPanel mainpane = new JPanel();
+        final JPanel mainpane = new JPanel();
         mainpane.setLayout(new BorderLayout());
-        JPanel pane = new JPanel();
+        final JPanel pane = new JPanel();
         pane.setLayout(new GridLayout(2, 1));
         pane.setBorder(new TitledBorder("Expected result grammar format:"));
-        JRadioButton rtn = new JRadioButton(
+        final JRadioButton rtn = new JRadioButton(
                 "equivalent FST2 (subgraph calls may remain)");
-        JRadioButton fst = new JRadioButton(
+        final JRadioButton fst = new JRadioButton(
                 "Finite State Transducer (can be just an approximation)");
-        ButtonGroup bg = new ButtonGroup();
+        final ButtonGroup bg = new ButtonGroup();
         bg.add(rtn);
         bg.add(fst);
         rtn.setSelected(true);
-        JPanel subpane = new JPanel();
+        final JPanel subpane = new JPanel();
         subpane.setBorder(new TitledBorder("Flattening depth:"));
         subpane.setLayout(new FlowLayout(SwingConstants.HORIZONTAL));
         subpane.add(new JLabel("Maximum flattening depth: "));
-        JTextField depth = new JTextField("10");
+        final JTextField depth = new JTextField("10");
         subpane.add(depth);
         pane.add(rtn);
         pane.add(fst);
         mainpane.add(pane, BorderLayout.CENTER);
         mainpane.add(subpane, BorderLayout.SOUTH);
-        Object[] options = {"OK", "Cancel"};
+        final String[] options = {"OK", "Cancel"};
         if (0 == JOptionPane.showOptionDialog(null, mainpane,
                 "Compile & Flatten", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0])) {
@@ -1113,7 +1113,7 @@ public class UnitexFrame extends JFrame {
             String name_fst2 = grf.getAbsolutePath().substring(0,
                     grf.getAbsolutePath().length() - 4);
             name_fst2 = name_fst2 + ".fst2";
-            MultiCommands commands = new MultiCommands();
+            final MultiCommands commands = new MultiCommands();
             commands.addCommand(new Grf2Fst2Command().grf(grf)
                     .enableLoopAndRecursionDetection(true).tokenizationMode()
                     .library());
@@ -1131,13 +1131,13 @@ public class UnitexFrame extends JFrame {
      */
     public void openDELA() {
         Config.getDelaDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
-        int returnVal = Config.getDelaDialogBox().showOpenDialog(this);
+        final int returnVal = Config.getDelaDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
             return;
         }
         final File dela = Config.getDelaDialogBox().getSelectedFile();
-        ToDo toDo = new ToDo() {
+        final ToDo toDo = new ToDo() {
             public void toDo() {
                 frameManager.newDelaFrame(dela);
             }
@@ -1187,17 +1187,17 @@ public class UnitexFrame extends JFrame {
     public void tileFrames() {
         JInternalFrame[] f = desktop.getAllFrames();
         int openFrameCount = 0;
-        for (JInternalFrame aF1 : f) {
+        for (final JInternalFrame aF1 : f) {
             if (aF1.isVisible() && !aF1.isIcon()) {
                 openFrameCount++;
             }
         }
         if (openFrameCount == 0)
             return;
-        Dimension bounds = getContentPane().getSize();
+        final Dimension bounds = getContentPane().getSize();
         if (openFrameCount == 1) {
             try {
-                JInternalFrame F = f[0];
+                final JInternalFrame F = f[0];
                 if (F.isVisible() && !F.isIcon()) {
                     F.setBounds(0, 0, bounds.width, bounds.height);
                 }
@@ -1206,9 +1206,9 @@ public class UnitexFrame extends JFrame {
             }
         }
         if (openFrameCount == 2) {
-            for (JInternalFrame aF : f) {
+            for (final JInternalFrame aF : f) {
                 try {
-                    JInternalFrame F = aF;
+                    final JInternalFrame F = aF;
                     if (F.isVisible() && !F.isIcon()) {
                         if (openFrameCount == 2)
                             F.setBounds(0, 0, bounds.width, bounds.height / 2);
@@ -1224,9 +1224,9 @@ public class UnitexFrame extends JFrame {
             return;
         }
         if (openFrameCount == 3) {
-            for (JInternalFrame aF : f) {
+            for (final JInternalFrame aF : f) {
                 try {
-                    JInternalFrame F = aF;
+                    final JInternalFrame F = aF;
                     if (F.isVisible() && !F.isIcon()) {
                         if (openFrameCount == 3)
                             F.setBounds(0, 0, bounds.width, bounds.height / 3);
@@ -1244,14 +1244,14 @@ public class UnitexFrame extends JFrame {
             }
             return;
         }
-        int premiere_moitie = openFrameCount / 2;
-        int seconde_moitie = openFrameCount - premiere_moitie;
+        final int premiere_moitie = openFrameCount / 2;
+        final int seconde_moitie = openFrameCount - premiere_moitie;
         openFrameCount = 0;
         // drawing frames on the first half of screen
         int i;
         for (i = 0; i < f.length && openFrameCount < premiere_moitie; i++) {
             try {
-                JInternalFrame F = f[i];
+                final JInternalFrame F = f[i];
                 if (F.isVisible() && !F.isIcon()) {
                     F.setBounds(0, openFrameCount * bounds.height
                             / premiere_moitie, bounds.width / 2, bounds.height
@@ -1266,7 +1266,7 @@ public class UnitexFrame extends JFrame {
         openFrameCount = 0;
         for (; i < f.length && openFrameCount < seconde_moitie; i++) {
             try {
-                JInternalFrame F = f[i];
+                final JInternalFrame F = f[i];
                 if (F.isVisible() && !F.isIcon()) {
                     F.setBounds(bounds.width / 2, openFrameCount
                             * bounds.height / seconde_moitie, bounds.width / 2,
@@ -1284,12 +1284,12 @@ public class UnitexFrame extends JFrame {
      * iconified.
      */
     public void cascadeFrames() {
-        Component[] f = desktop.getComponents();
+        final Component[] f = desktop.getComponents();
         int openFrameCount = 0;
         final int offset = 30;
-        for (Component aF : f) {
+        for (final Component aF : f) {
             try {
-                JInternalFrame F = (JInternalFrame) aF;
+                final JInternalFrame F = (JInternalFrame) aF;
                 if (F.isVisible() && !F.isIcon()) {
                     openFrameCount++;
                     F.setBounds(offset * (openFrameCount % 6), offset
@@ -1310,9 +1310,9 @@ public class UnitexFrame extends JFrame {
      * Arranges all the iconified frames that are on the desktop.
      */
     public void arrangeIcons() {
-        Component[] f = desktop.getComponents();
+        final Component[] f = desktop.getComponents();
         int openFrameCount = 0;
-        Dimension desktop_bounds = getContentPane().getSize();
+        final Dimension desktop_bounds = getContentPane().getSize();
         for (Component aF : f) {
             try {
                 JInternalFrame.JDesktopIcon F = (JInternalFrame.JDesktopIcon) aF;

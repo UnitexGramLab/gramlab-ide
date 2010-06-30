@@ -33,7 +33,7 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 
-class PreprocessDo implements ToDo {
+public class PreprocessDo implements ToDo {
     private final File snt;
     private final boolean b;
 
