@@ -116,7 +116,6 @@ public class PreprocessDialog extends JDialog {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(constructProcessingPanel(), BorderLayout.NORTH);
         panel.add(constructTokenizingPanel(), BorderLayout.CENTER);
-//        panel.add(MulticoreCapability.constructExecutionPanel(), BorderLayout.WEST);
         JPanel down = new JPanel(new BorderLayout());
         down.add(constructLexicalParsingPanel(), BorderLayout.WEST);
         down.add(constructButtonsPanel(), BorderLayout.CENTER);
