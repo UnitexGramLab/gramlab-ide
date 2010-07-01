@@ -65,15 +65,23 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
     JList userDicList;
     JList systemDicList;
     BigTextArea credits;
-    JScrollPane scrollCredits;
     final String noCreditMessage = "No available description for the dictionary \"";
-
+    final String lexicalDir = getLexicalDir();
 
     ApplyLexicalResourcesFrame() {
         super("Lexical Resources", true, true);
         setContentPane(constructMainPanel());
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+    }
+
+    public String getLexicalDir() {
+        if (Preferences.lexicalPackagePath() != null) {
+            final String lexicalPath = Preferences.lexicalPackagePath().toString().substring(Preferences.lexicalPackagePath().toString().indexOf("Dela"), Preferences.lexicalPackagePath().toString().length());
+            return lexicalPath;
+        } else {
+            return "Dela";
+        }
     }
 
     private JPanel constructMainPanel() {
@@ -152,14 +160,14 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 .getUserCurrentLanguageDir(), "system_dic.def"));
         userList = loadDicList(new File(Config
                 .getUserCurrentLanguageDir(), "user_dic_list.txt"));
-        Vector<String> userDicOnDisk = getDicList(new File(Config
-                .getUserCurrentLanguageDir(), "Dela"));
+        final Vector<String> userDicOnDisk = getDicList(new File(Config
+                .getUserCurrentLanguageDir(), lexicalDir));
         userList = merge(userList, userDicOnDisk);
 
         systemList = loadDicList(new File(
                 Config.getUserCurrentLanguageDir(), "system_dic_list.txt"));
         Vector<String> systemDicOnDisk = getDicList(new File(Config
-                .getUnitexCurrentLanguageDir(), "Dela"));
+                .getUnitexCurrentLanguageDir(), lexicalDir));
         systemList = merge(systemList, systemDicOnDisk);
         setContent(userDicList, userList);
         setContent(systemDicList, systemList);
@@ -257,7 +265,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     String s = (String) (userDicList.getModel().getElementAt(index));
                     if (index != -1) {
                         String s2 = Util.getFileNameWithoutExtension(s);
-                        File f = new File(new File(Config.getUserCurrentLanguageDir(), "Dela"), s2 + ".txt");
+                        final File f = new File(new File(Config.getUserCurrentLanguageDir(), lexicalDir), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);
                         } else {
@@ -326,7 +334,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     String s = (String) (systemDicList.getModel().getElementAt(index));
                     if (index != -1) {
                         String s2 = Util.getFileNameWithoutExtension(s);
-                        File f = new File(new File(Config.getUnitexCurrentLanguageDir(), "Dela"), s2 + ".txt");
+                        final File f = new File(new File(Config.getUnitexCurrentLanguageDir(), lexicalDir), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);
                         } else {
@@ -410,7 +418,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     UnitexFrame.getFrameManager().closeTfstTagsFrame();
                     /* We also have to rebuild the text automaton */
                     Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
-                    	.alphabet(Config.getAlphabet()).clean(true).korean();
+                            .alphabet(Config.getAlphabet()).clean(true).korean();
                     commands.addCommand(txtCmd);
                 }
                 Launcher.exec(commands, true,
@@ -660,9 +668,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         public void toDo() {
             UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
             if (Config.isKorean()) {
-            	UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
-            	UnitexFrame.getFrameManager().newTfstTagsFrame(
-            			new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
+                UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
+                UnitexFrame.getFrameManager().newTfstTagsFrame(
+                        new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
             }
         }
     }

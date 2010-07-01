@@ -50,6 +50,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
             "Enable morphological use of space");
     final JTextField packageDirectory = new JTextField("");
+    final JTextField lexicalPackageDirectory = new JTextField("");
     final DefaultListModel morphoDicListModel = new DefaultListModel();
     Preferences pref;
     final JCheckBox mustLogCheckBox = new JCheckBox(
@@ -120,6 +121,30 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                     }
                     pref.packagePath = f;
                 }
+
+                // lexical package path
+                if (lexicalPackageDirectory.getText().equals(""))
+                    pref.lexicalPackagePath = null;
+                else {
+                    File f = new File(lexicalPackageDirectory.getText());
+                    if (!f.exists()) {
+                        JOptionPane.showMessageDialog(null,
+                                "The graph repository\ndoes not exist.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (!f.isDirectory()) {
+                        JOptionPane
+                                .showMessageDialog(
+                                        null,
+                                        "The path given for the graph repository\n is not a directory path.",
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    pref.lexicalPackagePath = f;
+                }
+
+
                 if (loggingDirectory.getText().equals("") && mustLogCheckBox.isSelected()) {
                     JOptionPane
                             .showMessageDialog(
@@ -271,6 +296,38 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         page1.add(setPackageDirectory, gbc);
+
+        ///////////////////////
+
+        JLabel lexicalRepositoryLabel = new JLabel("Lexical repository:");
+        lexicalPackageDirectory.setBackground(Color.WHITE);
+        Action lexicalDirAction = new AbstractAction("Set...") {
+            public void actionPerformed(ActionEvent arg0) {
+                JFileChooser f = new JFileChooser();
+                f.setDialogTitle("Choose your lexical package directory");
+                f.setDialogType(JFileChooser.OPEN_DIALOG);
+                f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+                    return;
+                }
+                lexicalPackageDirectory.setText(f.getSelectedFile().getAbsolutePath());
+            }
+        };
+        JButton setLexicalPackageDirectory = new JButton(lexicalDirAction);
+        gbc.insets = new Insets(20, 2, 2, 2);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.NONE;
+        page1.add(lexicalRepositoryLabel, gbc);
+        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.gridwidth = 1;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        page1.add(lexicalPackageDirectory, gbc);
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        page1.add(setLexicalPackageDirectory, gbc);
 
         loggingDirectory.setEditable(false);
         loggingDirectory.setBackground(Color.WHITE);
@@ -430,6 +487,11 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             packageDirectory.setText("");
         } else {
             packageDirectory.setText(pref.packagePath.getAbsolutePath());
+        }
+        if (pref.lexicalPackagePath == null) {
+            lexicalPackageDirectory.setText("");
+        } else {
+            lexicalPackageDirectory.setText(pref.lexicalPackagePath.getAbsolutePath());
         }
         mustLogCheckBox.setSelected(pref.mustLog);
         if (pref.loggingDir == null) {
