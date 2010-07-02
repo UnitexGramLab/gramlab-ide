@@ -333,8 +333,8 @@ public class Config {
         replaceDialogBox.addChoosableFileFilter(new PersonalFileFilter(
                 "grf", "Unicode Graphs"));
         replaceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        File currentGraphDir = new File(Config.getCurrentGraphDir(), "Preprocessing");
-        currentGraphDir = new File(currentGraphDir, "Replace");
+        File currentGraphDir_ = new File(Config.getCurrentGraphDir(), "Preprocessing");
+        currentGraphDir_ = new File(currentGraphDir_, "Replace");
         replaceDialogBox.setCurrentDirectory(currentGraphDir);
         replaceDialogBox.setMultiSelectionEnabled(false);
         return replaceDialogBox;
