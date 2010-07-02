@@ -79,9 +79,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         if (Preferences.lexicalPackagePath() != null) {
             final String lexicalPath = Preferences.lexicalPackagePath().toString().substring(Preferences.lexicalPackagePath().toString().indexOf("Dela"), Preferences.lexicalPackagePath().toString().length());
             return lexicalPath;
-        } else {
-            return "Dela";
         }
+		return "Dela";
     }
 
     private JPanel constructMainPanel() {
