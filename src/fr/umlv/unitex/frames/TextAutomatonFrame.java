@@ -432,6 +432,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             public void actionPerformed(ActionEvent arg0) {
                 UnitexFrame.getFrameManager().closeTextAutomatonFrame();
                 UnitexFrame.getFrameManager().closeTfstTagsFrame();
+                Config.cleanTfstFiles();
                 RebuildTfstCommand command = new RebuildTfstCommand()
                         .automaton(new File(Config.getCurrentSntDir(),
                                 "text.tfst"));

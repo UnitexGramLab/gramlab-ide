@@ -416,6 +416,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     UnitexFrame.getFrameManager().closeTextAutomatonFrame();
                     UnitexFrame.getFrameManager().closeTfstTagsFrame();
                     /* We also have to rebuild the text automaton */
+                    Config.cleanTfstFiles();
                     Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
                             .alphabet(Config.getAlphabet()).clean(true).korean();
                     commands.addCommand(txtCmd);
