@@ -183,11 +183,13 @@ public class Preferences {
         Font font = new Font(prop.getProperty("TEXT FONT NAME"), style,
                 (int) (size / 0.72));
         textFont = new FontInfo(font, size);
+        fireTextFontChanged(font);
         size = Integer.parseInt(prop
                 .getProperty("CONCORDANCE FONT HTML SIZE"));
         font = new Font(prop.getProperty("CONCORDANCE FONT NAME"), Font.PLAIN,
                 (int) (size / 0.72));
         concordanceFont = new FontInfo(font, size);
+        fireConcordanceFontChanged(font);
         size = Integer.parseInt(prop.getProperty("INPUT FONT SIZE"));
         style = Integer.parseInt(prop.getProperty("INPUT FONT STYLE"));
         font = new Font(prop.getProperty("INPUT FONT NAME"), style,
