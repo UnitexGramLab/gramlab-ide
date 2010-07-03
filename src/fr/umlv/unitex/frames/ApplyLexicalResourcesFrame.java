@@ -66,7 +66,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
     JList systemDicList;
     BigTextArea credits;
     final String noCreditMessage = "No available description for the dictionary \"";
-    final String lexicalDir = getLexicalDir();
+    //final String lexicalDir = getLexicalDir();
 
     ApplyLexicalResourcesFrame() {
         super("Lexical Resources", true, true);
@@ -75,13 +75,13 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
-    public String getLexicalDir() {
+    /*public String getLexicalDir() {
         if (Preferences.lexicalPackagePath() != null) {
             final String lexicalPath = Preferences.lexicalPackagePath().toString().substring(Preferences.lexicalPackagePath().toString().indexOf("Dela"), Preferences.lexicalPackagePath().toString().length());
             return lexicalPath;
         }
 		return "Dela";
-    }
+    }*/
 
     private JPanel constructMainPanel() {
         JPanel main = new JPanel(new BorderLayout());
@@ -160,13 +160,13 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         userList = loadDicList(new File(Config
                 .getUserCurrentLanguageDir(), "user_dic_list.txt"));
         final Vector<String> userDicOnDisk = getDicList(new File(Config
-                .getUserCurrentLanguageDir(), lexicalDir));
+                .getUserCurrentLanguageDir(), "Dela" /*lexicalDir*/));
         userList = merge(userList, userDicOnDisk);
 
         systemList = loadDicList(new File(
                 Config.getUserCurrentLanguageDir(), "system_dic_list.txt"));
         Vector<String> systemDicOnDisk = getDicList(new File(Config
-                .getUnitexCurrentLanguageDir(), lexicalDir));
+                .getUnitexCurrentLanguageDir(), "Dela" /*lexicalDir*/));
         systemList = merge(systemList, systemDicOnDisk);
         setContent(userDicList, userList);
         setContent(systemDicList, systemList);
@@ -264,7 +264,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     String s = (String) (userDicList.getModel().getElementAt(index));
                     if (index != -1) {
                         String s2 = Util.getFileNameWithoutExtension(s);
-                        final File f = new File(new File(Config.getUserCurrentLanguageDir(), lexicalDir), s2 + ".txt");
+                        final File f = new File(new File(Config.getUserCurrentLanguageDir(), "Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);
                         } else {
@@ -333,7 +333,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     String s = (String) (systemDicList.getModel().getElementAt(index));
                     if (index != -1) {
                         String s2 = Util.getFileNameWithoutExtension(s);
-                        final File f = new File(new File(Config.getUnitexCurrentLanguageDir(), lexicalDir), s2 + ".txt");
+                        final File f = new File(new File(Config.getUnitexCurrentLanguageDir(),"Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);
                         } else {

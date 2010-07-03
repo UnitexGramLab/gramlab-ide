@@ -122,6 +122,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                     pref.packagePath = f;
                 }
 
+                /*
                 // lexical package path
                 if (lexicalPackageDirectory.getText().equals(""))
                     pref.lexicalPackagePath = null;
@@ -143,7 +144,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                     }
                     pref.lexicalPackagePath = f;
                 }
-
+				*/
 
                 if (loggingDirectory.getText().equals("") && mustLogCheckBox.isSelected()) {
                     JOptionPane
@@ -298,7 +299,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         page1.add(setPackageDirectory, gbc);
 
         ///////////////////////
-
+        /*
         JLabel lexicalRepositoryLabel = new JLabel("Lexical repository:");
         lexicalPackageDirectory.setBackground(Color.WHITE);
         Action lexicalDirAction = new AbstractAction("Set...") {
@@ -328,7 +329,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         gbc.fill = GridBagConstraints.NONE;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         page1.add(setLexicalPackageDirectory, gbc);
-
+		*/
         loggingDirectory.setEditable(false);
         loggingDirectory.setBackground(Color.WHITE);
         Action loggingDirAction = new AbstractAction("Set...") {
@@ -488,11 +489,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         } else {
             packageDirectory.setText(pref.packagePath.getAbsolutePath());
         }
+        /*
         if (pref.lexicalPackagePath == null) {
             lexicalPackageDirectory.setText("");
         } else {
             lexicalPackageDirectory.setText(pref.lexicalPackagePath.getAbsolutePath());
-        }
+        }*/
         mustLogCheckBox.setSelected(pref.mustLog);
         if (pref.loggingDir == null) {
             loggingDirectory.setText("");
