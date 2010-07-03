@@ -62,7 +62,7 @@ import java.util.regex.PatternSyntaxException;
 public class TextAutomatonFrame extends JInternalFrame {
 
     TagFilter filter = new TagFilter();
-    TfstTableModel tfstTableModel = new TfstTableModel(filter);
+    TfstTableModel tfstTableModel = new TfstTableModel(filter,true);
     JTextArea sentenceTextArea = new JTextArea();
     JLabel sentence_count_label = new JLabel(" 0 sentence");
     boolean elagON;
