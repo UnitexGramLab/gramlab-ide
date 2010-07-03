@@ -21,6 +21,7 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.*;
+import fr.umlv.unitex.listeners.LanguageListener;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -62,6 +63,11 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         setContentPane(constructPanel());
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
+        Config.addLanguageListener(new LanguageListener() {
+			public void languageChanged() {
+				reset();
+			}
+		});
     }
 
     private JPanel constructPanel() {
@@ -500,6 +506,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             loggingDirectory.setText("");
         } else {
             loggingDirectory.setText(pref.loggingDir.getAbsolutePath());
+        }
+        morphoDicListModel.clear();
+        if (Preferences.morphologicalDic() != null) {
+            for (File f : Preferences.morphologicalDic()) {
+                morphoDicListModel.addElement(f);
+            }
         }
     }
 
