@@ -137,28 +137,36 @@ public class Tag {
      * Returns a a representation of the tag where the grammatical code list
      * matches the given pattern, or null if none code matches the pattern.
      */
-    public String toString(TagFilter f) {
+    public String toString(TagFilter f,boolean delafStyle) {
         if (lemma == null) {
             return (f != null && f.getPattern() != null) ? null : inflected;
         }
         StringBuilder b = new StringBuilder();
-        if (!inflected.equals(lemma)) {
-            b.append(inflected);
-            b.append(",");
+        if (delafStyle) {
+        	if (!inflected.equals(lemma)) {
+        		b.append(inflected);
+        		b.append(",");
+        	}
+        	b.append(lemma);
+        } else {
+        	b.append(inflected);
         }
-        b.append(lemma);
         boolean first = true;
         Pattern p = (f == null) ? null : f.getPattern();
         for (int i = 0; i < gramCodes.size(); i++) {
             String code = gramCodes.get(i);
             if ((i == 0 && (f != null && (f.alwaysShowGramCode() || f.onlyShowGramCode()))) || matches(code, p)) {
-                if (first) {
-                    b.append(".");
-                    first = false;
+                if (delafStyle) {
+                	if (first) {
+                		b.append(".");
+                	} else {
+                		b.append("+");
+                	}
                 } else {
-                    b.append("+");
+                	b.append("/");
                 }
                 b.append(code);
+                first=false;
             }
             if (i == 0 && f != null && f.onlyShowGramCode()) break;
         }
@@ -175,7 +183,7 @@ public class Tag {
 
     @Override
     public String toString() {
-        return toString(null);
+        return toString(null,true);
     }
 
     private boolean matches(String code, Pattern p) {
