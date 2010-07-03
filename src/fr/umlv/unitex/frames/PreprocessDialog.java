@@ -192,7 +192,6 @@ public class PreprocessDialog extends JDialog {
         final JPanel buttons = new JPanel(new GridLayout(3, 1));
         buttons.setBorder(new EmptyBorder(8, 8, 2, 2));
         final Action goAction = new AbstractAction("GO!") {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
                 preprocess();
