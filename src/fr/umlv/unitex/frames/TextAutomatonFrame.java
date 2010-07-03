@@ -366,7 +366,9 @@ public class TextAutomatonFrame extends JInternalFrame {
         button = new JButton("Replace");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	UnitexFrame.getFrameManager().closeTfstTagsFrame();
                 replaceElagFst();
+                UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
             }
         });
         p.add(button);
@@ -761,6 +763,16 @@ public class TextAutomatonFrame extends JInternalFrame {
         }
         /* cleanup files */
         File dir = Config.getCurrentSntDir();
+
+        File old_tfst_tags_by_freq=new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt");
+        File old_tfst_tags_by_alph=new File(Config.getCurrentSntDir(),"tfst_tags_by_alph.txt");
+        File new_tfst_tags_by_freq=new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.new.txt");
+        File new_tfst_tags_by_alph=new File(Config.getCurrentSntDir(),"tfst_tags_by_alph.new.txt");
+        old_tfst_tags_by_freq.delete();
+        old_tfst_tags_by_alph.delete();
+        new_tfst_tags_by_freq.renameTo(old_tfst_tags_by_freq);
+        new_tfst_tags_by_alph.renameTo(old_tfst_tags_by_alph);
+        
         Config.deleteFileByName(new File(Config.getCurrentSntDir(),
                 "sentence*.grf"));
         File f = new File(dir, "currelagsentence.grf");
@@ -782,15 +794,24 @@ public class TextAutomatonFrame extends JInternalFrame {
                     ,
                     "Failed to replace " + text_tfst + " with " + elag_tfst);
         }
+        File old_tfst_tind=new File(Config.getCurrentSntDir(),"text.tind");
+        File new_tfst_tind=new File(Config.getCurrentSntDir(),"text-elag.tind");
+        old_tfst_tind.delete();
+        new_tfst_tind.renameTo(old_tfst_tind);
+        
         loadCurrSentence();
     }
 
     void exploseElagFst() {
+    	UnitexFrame.getFrameManager().closeTfstTagsFrame();
         explodeTextAutomaton(elag_tfst);
+        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
     }
 
     void implodeElagFst() {
+    	UnitexFrame.getFrameManager().closeTfstTagsFrame();
         implodeTextAutomaton(elag_tfst);
+        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
     }
 
     boolean explodeTextAutomaton(File f) {
