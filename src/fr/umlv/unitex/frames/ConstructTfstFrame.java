@@ -173,32 +173,7 @@ public class ConstructTfstFrame extends JInternalFrame {
             commands.addCommand(new MkdirCommand().name(dir));
         }
         /* Cleaning files */
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "sentence*.grf"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "cursentence.grf"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "cursentence.txt"));
-        Config
-                .deleteFileByName(new File(Config
-                        .getCurrentSntDir(),
-                        "currentelagsentence.grf"));
-        Config
-                .deleteFileByName(new File(Config
-                        .getCurrentSntDir(),
-                        "currentelagsentence.txt"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "text-elag.tfst"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "text-elag.tfst.bak"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "text-elag.tind"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "text-elag.tind.bak"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "tfst_tags_by_freq.txt"));
-        Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "tfst_tags_by_alph.txt"));
+        Config.cleanTfstFiles();
         File graphDir = new File(Config
                 .getUserCurrentLanguageDir(), "Graphs");
         File normalizationDir = new File(graphDir,
