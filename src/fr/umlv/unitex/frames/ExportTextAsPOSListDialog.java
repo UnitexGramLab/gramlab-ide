@@ -107,7 +107,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 						"foo.txt");
 				File sentenceTok = new File(Config.getCurrentSntDir(),
 						"foo.tok");
-				TfstTableModel model = new TfstTableModel(filter);
+				TfstTableModel model = new TfstTableModel(filter,false);
 				try {
 					FileOutputStream stream = UnicodeIO.openUnicodeLittleEndianFileOutputStream(output);
 					for (int i = 1; i <= sentenceCount; i++) {
@@ -132,12 +132,12 @@ public class ExportTextAsPOSListDialog extends JDialog {
 							 */
 							for (int j = 0; j < TokensInfo.getTokenCount(); j++) {
 								String s=TokensInfo.getTokenAsString(j);
-								if (!s.equals(" ")) UnicodeIO.writeString(stream,s+":\n");
+								UnicodeIO.writeString(stream,s);
 							}
 						} else
 							for (int j = 0; j < model.getRowCount(); j++) {
 								TokenTags t = model.getTokenTags(j);
-								UnicodeIO.writeString(stream,t.toString()+"\n");
+								UnicodeIO.writeString(stream,t.toString()+" ");
 							}
 						/* And we add a sentence delimiter */
 						UnicodeIO.writeString(stream,"{S}\n");

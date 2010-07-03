@@ -38,7 +38,7 @@ public class TokenTags {
         this.content = content;
     }
 
-    /* Unfiltered interpretion list */
+    /* Unfiltered interpretation list */
     private ArrayList<ArrayList<Tag>> interpretations = new ArrayList<ArrayList<Tag>>();
 
     public int getStart() {
@@ -63,23 +63,23 @@ public class TokenTags {
         return filteredInterpretations.get(i);
     }
 
-    public void refreshFilter(TagFilter f) {
+    public void refreshFilter(TagFilter f,boolean delafStyle) {
         filteredInterpretations.clear();
         for (ArrayList<Tag> interpretation : interpretations) {
-            String s = getFilteredInterpretation(interpretation, f);
+            String s = getFilteredInterpretation(interpretation,f,delafStyle);
             if (s != null && !"".equals(s) && !filteredInterpretations.contains(s)) {
                 filteredInterpretations.add(s);
             }
         }
     }
 
-    private String getFilteredInterpretation(ArrayList<Tag> l, TagFilter f) {
+    private String getFilteredInterpretation(ArrayList<Tag> l, TagFilter f,boolean delafStyle) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < l.size(); i++) {
             Tag tag = l.get(i);
-            String s = tag.toString(f);
+            String s = tag.toString(f,delafStyle);
             if (s == null) return null;
-            if (i > 0) b.append(" ");
+            if (i > 0) b.append(delafStyle?" ":"+");
             b.append(s);
         }
         return b.toString();
@@ -93,8 +93,6 @@ public class TokenTags {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        b.append(content);
-        b.append(": ");
         int n = getInterpretationCount();
         for (int i = 0; i < n; i++) {
             if (i > 0) b.append("+ ");
