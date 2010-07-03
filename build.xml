@@ -1,4 +1,4 @@
-<project name="MyProject" default="dist" basedir=".">
+<project name="MyProject" default="install" basedir=".">
 
     <description>simple example build file</description>
 
