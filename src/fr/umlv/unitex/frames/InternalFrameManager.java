@@ -71,6 +71,9 @@ public class InternalFrameManager {
     private FrameFactory transcodingFrameFactory = new FrameFactory(TranscodingFrame.class);
     private FrameFactory consoleFrameFactory = new FrameFactory(ConsoleFrame.class);
     private FrameFactory xAlignLocateFrameFactory = new FrameFactory(XAlignLocateFrame.class);
+    
+    private FrameFactory cassysFrameFactory = new FrameFactory(CassysFrame.class);
+    private FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(TransducerListConfigurationFrame.class);
 
     private FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
     private FrameFactory xAlignConfigFrameFactory = new FrameFactory(XAlignConfigFrame.class);
@@ -96,6 +99,8 @@ public class InternalFrameManager {
     private GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
     private ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
 
+    
+    
 
     public InternalFrameManager(JDesktopPane desktop) {
         this.desktop = desktop;
@@ -347,11 +352,34 @@ public class InternalFrameManager {
         setup(f);
         return f;
     }
-
+    
     public void closeApplyLexicalResourcesFrame() {
         applyLexicalResourcesFrameFactory.closeFrame();
     }
 
+    public CassysFrame newCassysFrame(){
+    	CassysFrame f = (CassysFrame) cassysFrameFactory.newFrame();
+    	if (f == null) return null;
+        setup(f);
+        return f;
+    }
+    
+    public void closeCassysFrame(){
+    	cassysFrameFactory.closeFrame();
+    }
+    
+    public TransducerListConfigurationFrame newTransducerListConfigurationFrame(){
+    	TransducerListConfigurationFrame f = (TransducerListConfigurationFrame) transducerListConfigurationFrameFactory.newFrame();
+    	if (f == null) return null;
+        setup(f);
+        return f;
+    }
+    
+    public void closeTransducerListConfigurationFrame(){
+    	transducerListConfigurationFrameFactory.closeFrame();
+    }
+    
+    
     public CheckDicFrame newCheckDicFrame() {
         return (CheckDicFrame) setup(checkDicFrameFactory.newFrame());
     }
