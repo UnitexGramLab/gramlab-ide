@@ -105,6 +105,7 @@ public class UnitexFrame extends JFrame {
         frameManager.addTextFrameListener(new TextFrameListener() {
             public void textFrameOpened(boolean taggedText) {
                 preprocessText.setEnabled(!taggedText);
+                cassys.setEnabled(true);
                 applyLexicalResources.setEnabled(true);
                 locatePattern.setEnabled(true);
                 displayLocatedSequences.setEnabled(true);
@@ -120,6 +121,7 @@ public class UnitexFrame extends JFrame {
             }
 
             public void textFrameClosed() {
+            	cassys.setEnabled(false);
                 preprocessText.setEnabled(false);
                 applyLexicalResources.setEnabled(false);
                 locatePattern.setEnabled(false);
@@ -227,6 +229,7 @@ public class UnitexFrame extends JFrame {
     AbstractAction convertFst;
     AbstractAction closeText;
     AbstractAction quitUnitex;
+    AbstractAction cassys;
 
     public JMenu buildTextMenu() {
         final JMenu textMenu = new JMenu("Text");
@@ -282,11 +285,22 @@ public class UnitexFrame extends JFrame {
         locatePattern.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                 KeyEvent.VK_L, Event.CTRL_MASK));
         textMenu.add(new JMenuItem(locatePattern));
+        
+        cassys = new AbstractAction("Apply Cascade...") {
+			public void actionPerformed(ActionEvent e) {
+				frameManager.newCassysFrame();
+			}
+		};
+		cassys.setEnabled(false);
+		JMenuItem cassysItem = new JMenuItem(cassys);
+		textMenu.add(cassysItem);
+		
         displayLocatedSequences = new AbstractAction("Located Sequences...") {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newConcordanceParameterFrame();
             }
         };
+        
         displayLocatedSequences.setEnabled(false);
         textMenu.add(new JMenuItem(displayLocatedSequences));
         textMenu.addSeparator();
