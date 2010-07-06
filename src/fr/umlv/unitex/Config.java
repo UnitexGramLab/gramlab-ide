@@ -104,6 +104,17 @@ public class Config {
      * <code>.../(user dir)/(current language)/Alphabet.txt</code>
      */
     private static File alphabet;
+    
+    /**
+	 * Path of the user's current cassys path directory
+	 * <code>.../(user dir)/(current language)/Cassys</code>
+	 */
+	private static File cassysDir;
+	
+	/**
+	 * Path of the current cassys transducer list
+	 */
+	private static File currentTransducerList;
 
     public final static int WINDOWS_SYSTEM = 0;
     public final static int LINUX_SYSTEM = 1;
@@ -245,6 +256,12 @@ public class Config {
      */
     private static JFileChooser fst2UnambigDialogBox;
 
+    /**
+	 * Dialog box used to choose the transducer list file used
+	 * with Cassys
+	 */
+	private static JFileChooser transducerListDialogBox;
+    
 
     /**
      * Initializes the system. This method finds which system is running, which
@@ -478,6 +495,18 @@ public class Config {
         return fst2UnambigDialogBox;
     }
 
+    
+    public static JFileChooser getTransducerListDialogBox() {
+		if(transducerListDialogBox != null){
+			return transducerListDialogBox;
+		}
+		transducerListDialogBox = new JFileChooser(Config.getCassysDir());
+		transducerListDialogBox.setMultiSelectionEnabled(false);
+		transducerListDialogBox.setControlButtonsAreShown(false);
+		return transducerListDialogBox;
+	}
+    
+    
 
     /**
      * Updates working directories of dialog boxes. This method is called when
@@ -755,12 +784,37 @@ public class Config {
         setCurrentGraphDir(new File(getUserCurrentLanguageDir(), "Graphs"));
         setCurrentElagDir(new File(getUserCurrentLanguageDir(), "Elag"));
         setAlphabet(new File(getUserCurrentLanguageDir(), "Alphabet.txt"));
+        setCassysDir(new File(getUserCurrentLanguageDir(),"Cassys"));
         setDefaultPreprocessingGraphs();
         updateOpenSaveDialogBoxes();
         Preferences.reset();
         fireLanguageChanged();
     }
 
+    
+    public static File getCurrentTransducerList(){
+		return currentTransducerList;
+	}
+	
+	
+	public static void setCurrentTransducerList(File f){
+		currentTransducerList = f;
+	}
+	
+	public static File getCassysDir() {
+		if(cassysDir == null){
+			System.out.println("ERROR : Cassys dir not Found");
+		}
+		return cassysDir;
+	}
+	
+	
+	public static void setCassysDir(File c) {
+		cassysDir = c;
+	}
+    
+    
+    
 
     private static final String[] bastien = new String[]{
             "Greek (Ancient)",
