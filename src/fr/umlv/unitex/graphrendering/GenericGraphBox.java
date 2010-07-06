@@ -258,6 +258,7 @@ public class GenericGraphBox {
         String s;
         Boolean b;
         n = (y - Y1 - 4) / (h_ligne);
+        if (n>=greyed.size()) n=greyed.size()-1;
         b = greyed.get(n);
         if (b) {
             s = lines.get(n);
