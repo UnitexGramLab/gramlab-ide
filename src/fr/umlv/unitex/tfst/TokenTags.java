@@ -95,10 +95,10 @@ public class TokenTags {
         StringBuilder b = new StringBuilder();
         int n = getInterpretationCount();
         for (int i = 0; i < n; i++) {
-            if (i > 0) b.append("+ ");
+            if (i > 0) b.append("|");
             if (n > 1) b.append("(");
             b.append(getInterpretation(i));
-            if (n > 1) b.append(") ");
+            if (n > 1) b.append(")");
         }
         return b.toString();
     }
