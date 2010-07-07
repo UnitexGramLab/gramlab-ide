@@ -135,6 +135,7 @@ public class GraphFrame extends JInternalFrame {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         boxContentEditor.setFont(info.input.font);
         if (g != null) {
+        	
             setGraph(g.grf);
         }/* Some loading operations may have set the modified flag, so we
 		 * reset it
@@ -447,7 +448,7 @@ public class GraphFrame extends JInternalFrame {
             if (modified)
                 setTitle(grf.getName() + " (Unsaved)");
             else
-                setTitle(grf.getName());
+                setTitle(grf.getName() + " (" + grf.getParent() + ")" + " (Unsaved)");
         } else {
             if (modified)
                 setTitle(" (Unsaved)");

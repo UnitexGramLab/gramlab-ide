@@ -999,7 +999,6 @@ public class UnitexFrame extends JFrame {
         f.modified = false;
         g.saveGraph(file);
         f.setGraph(file);
-        f.setTitle(file.getName() + " (" + file.getParent() + ")");
         return true;
     }
 
