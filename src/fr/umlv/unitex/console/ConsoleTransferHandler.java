@@ -46,7 +46,7 @@ public class ConsoleTransferHandler extends TransferHandler {
         String s = "";
         int n = model.getRowCount();
         for (int i = 0; i < n; i++) {
-            s = s + model.getValueAt(i, 1) + "\n";
+            s = s + model.getValueAt(i, 2) + "\n";
         }
         return new StringSelection(s);
     }
