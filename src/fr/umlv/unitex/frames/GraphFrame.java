@@ -446,9 +446,9 @@ public class GraphFrame extends JInternalFrame {
         modified = b;
         if (grf != null) {
             if (modified)
-                setTitle(grf.getName() + " (Unsaved)");
-            else
                 setTitle(grf.getName() + " (" + grf.getParent() + ")" + " (Unsaved)");
+            else
+                setTitle(grf.getName() + " (" + grf.getParent() + ")");
         } else {
             if (modified)
                 setTitle(" (Unsaved)");
