@@ -825,7 +825,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 			grf = new File(nameWithExtension);
 		}
 		
-		if(grf != nulliui){
+		if(grf != null){
 			//UnitexFrame.mainFrame.loadGraph(grf);
 			UnitexFrame.getFrameManager().newGraphFrame(grf);
 		}
