@@ -214,10 +214,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		
 		FileFilter filter_fst2 = new FileFilter() {
 
+			@Override
 			public String getDescription() {
 				return new String("*.fst2");
 			}
 			
+			@Override
 			public boolean accept(File f) {
 				if(f.isDirectory()){
 					return true;
@@ -324,8 +326,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 			/**
 			 * Redefinition of the getColumnClass method in order to provide a check box for boolean values
 			 */
-			public Class getColumnClass(int c) {
-	            return getValueAt(0, c).getClass();
+			@Override
+			public Class<?> getColumnClass(int c) {
+				return getValueAt(0, c).getClass();
 	        }
 		};
 		tableModel.addColumn("Name");
@@ -350,13 +353,13 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 
 					if (fileMode.equals("M") || fileMode.equals("Merge")
 							|| fileMode.equals("merge")) {
-						Object[] row = { (String) fileName, new Boolean(true),
+						Object[] row = { fileName, new Boolean(true),
 								new Boolean(false) };
 						tableModel.addRow(row);
 					} else if (fileMode.equals("R")
 							|| fileMode.equals("Replace")
 							|| fileMode.equals("replace")) {
-						Object[] row = { (String) fileName, new Boolean(false),
+						Object[] row = { fileName, new Boolean(false),
 								new Boolean(true) };
 						tableModel.addRow(row);
 					}
@@ -364,9 +367,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 				}
 
 			} catch (FileNotFoundException e1) {
-
+				e1.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -377,6 +379,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 			 * Redefinition of the tableChanged method to ensure integrity data (ie both merge an replace cannot be 
 			 * set at true)
 			 */
+			@Override
 			public void tableChanged(TableModelEvent e){
 			
 			if(e.getColumn() == 1){
@@ -654,9 +657,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 				}
 			}
 			else {
-				String title = "No transducer selected";
+				String t = "No transducer selected";
 				String message = "Please select the transducer to be deleted from the list";
-				JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, message, t, JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		
@@ -725,8 +728,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 	
 	public void quit_asked(){
 		if(configurationHasChanged){
-			Object[] options = { "Yes", "Cancel", "No" };
-			String title = "Save before leaving ?";
 			String message = "Changes to the transducer list may not have been saved.\n Do you want to save changes before leaving ?";
 			
 			int return_val = JOptionPane.showConfirmDialog(this, message);
@@ -829,9 +830,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 			UnitexFrame.getFrameManager().newGraphFrame(grf);
 		}
 		else {
-			String title = "Wrong file selected";
+			String t = "Wrong file selected";
 			String message = "Please select a file with the fst2 extension";
-			JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, message, t, JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}

@@ -11,21 +11,16 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.frames.ConcordanceParameterFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CassysCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.frames.ProcessInfoFrame;
 
 
 
@@ -93,6 +88,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		super("Cassys",true,true,true,true);
 		
 		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
 				setVisible(false);
 			}
