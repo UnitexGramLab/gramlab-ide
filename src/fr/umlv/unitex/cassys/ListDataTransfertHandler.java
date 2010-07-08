@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
-import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,6 +37,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 	 * 
 	 * @return true if data to be imported is <code>String</code> or <code>DataList</code>
 	 */
+	@Override
 	public boolean canImport(TransferSupport support){
 		
 		if (!support.isDrop()) {
@@ -65,6 +65,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 	 * 
 	 * @return true if data is successfully imported 
 	 */
+	@Override
 	public boolean importData(TransferSupport support) {
 		// if we can't handle the import, say so
 		if (!canImport(support)) {
@@ -124,6 +125,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 	 * 
 	 * @return <code>MOVE</code>
 	 */
+	@Override
 	public int getSourceActions(JComponent jc){
 		return TransferHandler.MOVE;
 	}
@@ -134,6 +136,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 	 * 
 	 * @return <code>Transferable</code> object to be dropped
 	 */
+	@Override
 	protected Transferable createTransferable(JComponent c){
 		JTable jt = (JTable) c;
 		int row_selected = jt.getSelectedRow();
@@ -149,6 +152,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 	/**
 	 * Invoked after a successful drop during a drag and drop gesture, removes the source data if transfer mode is set to <code>MOVE</code>
 	 */
+	@Override
 	public void exportDone(JComponent source, Transferable data, int action){
 		
 		if(action == TransferHandler.MOVE){
