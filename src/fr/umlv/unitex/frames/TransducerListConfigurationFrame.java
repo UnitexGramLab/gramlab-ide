@@ -838,4 +838,14 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 	}
 	
 	
+	public void setConfigurationHasChanged(Boolean b){
+		configurationHasChanged = b;
+	}
+	
+	public Boolean getConfigurationHasChanged(){
+		return configurationHasChanged;
+	}
+	
+	
+	
 }
