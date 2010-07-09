@@ -371,6 +371,9 @@ public class InternalFrameManager {
     public TransducerListConfigurationFrame newTransducerListConfigurationFrame(){
     	TransducerListConfigurationFrame f = (TransducerListConfigurationFrame) transducerListConfigurationFrameFactory.newFrame();
     	if (f == null) return null;
+    	
+    	f.setConfigurationHasChanged(false);
+    	f.setFrameTitle();
         setup(f);
         return f;
     }
