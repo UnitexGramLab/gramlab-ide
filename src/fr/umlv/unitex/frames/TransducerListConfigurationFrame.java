@@ -130,13 +130,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 	JButton add_below;
 	
 	/**
-	 * The <code>new</code> button. This class is listening to it.
-	 */
-	JButton _new;
-	
-	
-	
-	/**
 	 * The <code>open</code> button. This class is listening to it.
 	 */
 	JButton open;
@@ -234,8 +227,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		fileBrowse.addChoosableFileFilter(filter_fst2);
 		fileBrowse.setFileFilter(filter_fst2);
 		
-		//this.getContentPane().add(fileBrowse,BorderLayout.WEST);
-		//this.getContentPane().add(fileBrowse);
+		
 		
 		
 		
@@ -244,10 +236,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		setFrameTitle();
 		
 		JScrollPane tableScroller = new JScrollPane(table);
-		
-		//this.getContentPane().add(tableScroller,BorderLayout.EAST);
-		
-		//this.getContentPane().add(create_panel(),BorderLayout.CENTER);
 		
 		create_panel();
 		
@@ -516,12 +504,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		add_below.setToolTipText("Insert the selected file in the explorer file above the selected transducer in the list");
 		button_panel.add(add_below);
 		
-		_new = new JButton("New");
-		_new.addActionListener(this);
-		_new.setMaximumSize(defaultButtonDimension);
-		_new.setAlignmentX(Component.CENTER_ALIGNMENT);
-		button_panel.add(_new);
-		
 		button_panel.add(Box.createRigidArea(new Dimension(50,20)));
 		
 		
@@ -670,21 +652,26 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 			
 			DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 			File selected_file = fileBrowse.getSelectedFile();
+			if (selected_file != null) {
+				try {
+					Object[] row = { new String(selected_file.getPath()),
+							new Boolean(true), new Boolean(false) };
+					if (selected_row == -1) {
+						selected_row = dtm.getRowCount();
+					}
+					dtm.insertRow(selected_row, row);
+					table.getSelectionModel().setSelectionInterval(
+							selected_row, selected_row);
 
-			try {
-				Object[] row = { new String(selected_file.getPath()),
-						new Boolean(true), new Boolean(false) };
-				if (selected_row == -1) {
-					selected_row = dtm.getRowCount();
+				} catch (ArrayIndexOutOfBoundsException e) {
+					e.printStackTrace();
 				}
-				dtm.insertRow(selected_row, row);
-				table.getSelectionModel().setSelectionInterval(selected_row,
-						selected_row);
+			} else {
 
-			} catch (ArrayIndexOutOfBoundsException e) {
-				e.printStackTrace();
-			} catch (NullPointerException e) {
-				e.printStackTrace();
+				String t = "No graph selected";
+				String message = "Please select in the file explorer the graph to be added";
+				JOptionPane.showMessageDialog(this, message, t,
+						JOptionPane.ERROR_MESSAGE);
 			}
 			 
 		}
