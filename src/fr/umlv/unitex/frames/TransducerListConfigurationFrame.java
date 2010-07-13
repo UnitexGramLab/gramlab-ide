@@ -177,6 +177,17 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 	 */
 	boolean configurationHasChanged;
 	
+	
+	/**
+	 * Whether edited file has comments.
+	 * <P>
+	 * Used to warn the user that comment would be erased if he saves the file.
+	 */
+	boolean editedFileHasComment;
+	
+	
+	
+	
 	/**
 	 * The panel containing all the button
 	 */
@@ -326,7 +337,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		if (f != null) {
 			try {
 				BufferedReader r = new BufferedReader(new FileReader(f));
-
+				
+				int line_number = 1;
+				
 				String line;
 				while ((line = r.readLine()) != null) {
 					String fileName = line.substring(0, line.lastIndexOf(' '));
@@ -351,6 +364,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 								new Boolean(true) };
 						tableModel.addRow(row);
 					}
+					
+					line_number ++;
 
 				}
 
@@ -557,14 +572,16 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 	public void actionPerformed(ActionEvent a) {
 		
 		if (up == a.getSource()) {
-			configurationHasChanged = true;
-			setFrameTitle();
 			int selected_row = table.getSelectedRow();
 			if (selected_row > 0) {
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 
 				try {
 					dtm.moveRow(selected_row, selected_row, selected_row - 1);
+					
+					configurationHasChanged = true;
+					setFrameTitle();
+					
 					table.getSelectionModel().setSelectionInterval(
 							selected_row - 1, selected_row - 1);
 				} catch (ArrayIndexOutOfBoundsException e) {
@@ -574,16 +591,20 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		}
 
 		if (down == a.getSource()) {
-			configurationHasChanged = true;
-			setFrameTitle();
+			
 			int selected_row = table.getSelectedRow();
 			if (selected_row != -1 && selected_row < table.getRowCount()-1) {
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 
 				try {
 					dtm.moveRow(selected_row, selected_row, selected_row + 1);
+					
+					configurationHasChanged = true;
+					setFrameTitle();
+					
 					table.getSelectionModel().setSelectionInterval(
 							selected_row + 1, selected_row + 1);
+					
 				} catch (ArrayIndexOutOfBoundsException e) {
 					e.printStackTrace();
 				}
@@ -591,14 +612,17 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		}
 		
 		if(top == a.getSource()){
-			configurationHasChanged = true;
-			setFrameTitle();
+			
 			int selected_row = table.getSelectedRow();
 			if (selected_row != -1) {
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 
 				try {
 					dtm.moveRow(selected_row, selected_row, 0);
+					
+					configurationHasChanged = true;
+					setFrameTitle();
+					
 					table.getSelectionModel().setSelectionInterval(
 							0, 0);
 				} catch (ArrayIndexOutOfBoundsException e) {
@@ -608,16 +632,20 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		}
 		
 		if(bottom == a.getSource()){
-			configurationHasChanged = true;
-			setFrameTitle();
+			
 			int selected_row = table.getSelectedRow();
 			if (selected_row != -1) {
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 
 				try {
 					dtm.moveRow(selected_row, selected_row, table.getRowCount()-1);
+					
+					configurationHasChanged = true;
+					setFrameTitle();
+					
 					table.getSelectionModel().setSelectionInterval(
 							table.getRowCount()-1, table.getRowCount()-1);
+					
 				} catch (ArrayIndexOutOfBoundsException e) {
 					e.printStackTrace();
 				}
@@ -625,14 +653,16 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		}
 		
 		if(delete_ == a.getSource()){
-			configurationHasChanged = true;
-			setFrameTitle();
+			
 			int selected_row = table.getSelectedRow();
 			if (selected_row != -1) {
 				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 
 				try {
 					dtm.removeRow(selected_row);
+					
+					configurationHasChanged = true;
+					setFrameTitle();
 					
 				} catch (ArrayIndexOutOfBoundsException e) {
 					e.printStackTrace();
@@ -646,8 +676,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 		}
 		
 		if(add_below == a.getSource()){
-			configurationHasChanged = true;
-			setFrameTitle();
+			
 			int selected_row = table.getSelectedRow();
 			
 			DefaultTableModel dtm = (DefaultTableModel) table.getModel();
@@ -662,6 +691,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 					dtm.insertRow(selected_row, row);
 					table.getSelectionModel().setSelectionInterval(
 							selected_row, selected_row);
+					
+					configurationHasChanged = true;
+					setFrameTitle();
 
 				} catch (ArrayIndexOutOfBoundsException e) {
 					e.printStackTrace();
