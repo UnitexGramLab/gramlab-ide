@@ -82,8 +82,8 @@ public class ListDataTransfertHandler extends TransferHandler {
                         DataListTransferable.DataListFlavor);
                 JTable table = (JTable) support.getComponent();
                 Object o[] = {dlf.getName(),
-                        new Boolean(dlf.isMerge()),
-                        new Boolean(dlf.isReplace())};
+                        dlf.isMerge(),
+                        dlf.isReplace()};
 
                 ((DefaultTableModel) table.getModel()).insertRow(row, o);
                 return true;
@@ -102,7 +102,7 @@ public class ListDataTransfertHandler extends TransferHandler {
                 String data = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                 JTable table = (JTable) support.getComponent();
 
-                Object[] rowData = {data, new Boolean(true), new Boolean(false)};
+                Object[] rowData = {data, true, false};
                 ((DefaultTableModel) table.getModel()).insertRow(row, rowData);
                 return true;
             } catch (IOException e) {
@@ -155,10 +155,10 @@ public class ListDataTransfertHandler extends TransferHandler {
         if (action == TransferHandler.MOVE) {
             JTable jt = (JTable) source;
             DefaultTableModel dtm = (DefaultTableModel) jt.getModel();
-			dtm.removeRow(jt.getSelectedRow());
-			
-		}
-		
-	}
-	
+            dtm.removeRow(jt.getSelectedRow());
+
+        }
+
+    }
+
 }
