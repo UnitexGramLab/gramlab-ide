@@ -319,14 +319,14 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 
                     if (fileMode.equals("M") || fileMode.equals("Merge")
                             || fileMode.equals("merge")) {
-                        Object[] row = {fileName, new Boolean(true),
-                                new Boolean(false)};
+                        Object[] row = {fileName, true,
+                                false};
                         tableModel.addRow(row);
                     } else if (fileMode.equals("R")
                             || fileMode.equals("Replace")
                             || fileMode.equals("replace")) {
-                        Object[] row = {fileName, new Boolean(false),
-                                new Boolean(true)};
+                        Object[] row = {fileName, false,
+                                true};
                         tableModel.addRow(row);
                     }
 
@@ -641,7 +641,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
             if (selected_file != null) {
                 try {
                     Object[] row = {selected_file.getPath(),
-                            new Boolean(true), new Boolean(false)};
+                            true, false};
                     if (selected_row == -1) {
                         selected_row = dtm.getRowCount();
                     }
@@ -810,14 +810,13 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
     }
 
 
-    public void setConfigurationHasChanged(Boolean b){
-		configurationHasChanged = b;
-	}
-	
-	public Boolean getConfigurationHasChanged(){
-		return configurationHasChanged;
-	}
-	
-	
-	
+    public void setConfigurationHasChanged(Boolean b) {
+        configurationHasChanged = b;
+    }
+
+    public Boolean getConfigurationHasChanged() {
+        return configurationHasChanged;
+    }
+
+
 }
