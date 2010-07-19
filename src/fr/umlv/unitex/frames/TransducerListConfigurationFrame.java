@@ -1,8 +1,11 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.Config;
+import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
 import fr.umlv.unitex.cassys.DataListFileNameRenderer;
 import fr.umlv.unitex.cassys.ListDataTransfertHandler;
+import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
+import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -161,7 +164,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
      * <p/>
      * Used to warn the user that comment would be erased if he saves the file.
      */
-    boolean editedFileHasComment;
+    boolean editedFileHasCommentOrError;
 
 
     /**
@@ -207,9 +210,10 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         fileBrowse.addChoosableFileFilter(filter_fst2);
         fileBrowse.setFileFilter(filter_fst2);
 
-
+        editedFileHasCommentOrError = false;
         create_table(Config.getCurrentTransducerList());
         configurationHasChanged = false;
+        
         setFrameTitle();
 
         JScrollPane tableScroller = new JScrollPane(table);
@@ -243,22 +247,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         mainContainer.add(fileBrowse);
         mainContainer.add(button_panel);
         mainContainer.add(tableScroller);
-
-        System.out.println("table scroller min = " + tableScroller.getMinimumSize());
-        System.out.println("table scroller pref = " + tableScroller.getPreferredSize());
-        System.out.println("table scroller curr = " + tableScroller.getSize());
-
-        System.out.println("table min = " + table.getMinimumSize());
-        System.out.println("table pref = " + table.getPreferredSize());
-        System.out.println("table curr = " + table.getSize());
-
-        System.out.println("panel min = " + button_panel.getMinimumSize());
-        System.out.println("panel pref = " + button_panel.getPreferredSize());
-        System.out.println("panel curr = " + button_panel.getSize());
-
-        System.out.println("browse min = " + fileBrowse.getMinimumSize());
-        System.out.println("browse pref = " + fileBrowse.getPreferredSize());
-        System.out.println("browse curr = " + fileBrowse.getSize());
 
         this.getContentPane().add(mainContainer);
         this.pack();
@@ -299,48 +287,60 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         tableModel.addColumn("Merge");
         tableModel.addColumn("Replace");
 
-        if (f != null) {
-            try {
-                BufferedReader r = new BufferedReader(new FileReader(f));
+		if (f != null) {
+			String FormatErrorLine = "";
+			
+			
+			LineNumberReader r;
+			try {
+				r = new LineNumberReader(new FileReader(f));
 
-                int line_number = 1;
+				String line;
+				try {
+					while ((line = r.readLine()) != null) {
 
-                String line;
-                while ((line = r.readLine()) != null) {
-                    String fileName = line.substring(0, line.lastIndexOf(' '));
-                    String fileMode = line.substring(line.lastIndexOf(' ') + 1);
+						try {
+							ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
+									line);
+							Object[] o = { cfa.getFileName(),
+									(boolean)cfa.isMergeMode(), 
+									(boolean)cfa.isReplaceMode() };
+							tableModel.addRow(o);
+							if(cfa.isCommentFound()){
+								editedFileHasCommentOrError=true;
+							}
+							
+						} catch (EmptyLineException e) {
+							// do nothing
+							editedFileHasCommentOrError = true;
+						} catch (InvalidLineException e) {
+							// keep track of the error to warn the user
+							FormatErrorLine = FormatErrorLine.concat("line " + r.getLineNumber() + ": "+ e.getMessage());
+							editedFileHasCommentOrError = true;
+						}
+						
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						r.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				if (!FormatErrorLine.equals("")) {
+					String t = "Format line Error Found";
+					JOptionPane.showMessageDialog(this, FormatErrorLine, t,
+							JOptionPane.ERROR_MESSAGE);
+				}
 
-                    if (fileName.startsWith("\"")) {
-                        fileName = fileName.substring(1, fileName
-                                .lastIndexOf('\"'));
-                    }
-                    // System.out.println("line read = "+ fileName + "--" +
-                    // fileMode);
-
-                    if (fileMode.equals("M") || fileMode.equals("Merge")
-                            || fileMode.equals("merge")) {
-                        Object[] row = {fileName, true,
-                                false};
-                        tableModel.addRow(row);
-                    } else if (fileMode.equals("R")
-                            || fileMode.equals("Replace")
-                            || fileMode.equals("replace")) {
-                        Object[] row = {fileName, false,
-                                true};
-                        tableModel.addRow(row);
-                    }
-
-                    line_number++;
-
-                }
-
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+			} catch (FileNotFoundException e) {
+				String t = "File Not Found";
+	            String message = "Please select an existing file";
+	            JOptionPane.showMessageDialog(this, message, t, JOptionPane.ERROR_MESSAGE);
+			}
+		}
 
         table = new JTable(tableModel) {
             /**
@@ -685,10 +685,32 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         }
 
         if (save == a.getSource()) {
-            if (Config.getCurrentTransducerList() != null) {
-                saveListToFile();
+            if (Config.getCurrentTransducerList() == null) {
+            	showSaveFrame();
             } else {
-                showSaveFrame();
+            	if(editedFileHasCommentOrError){
+            		String message = "Empty lines, format line error or comments were found when loading the file.\n"
+            			+"Saving with the original name will result in erasing original data\n\n" 
+            			+ "If you want to keep all information in your original file, you should use the 'save as' button instead\n\n"
+            			+ "Do you want to save anyway ?";
+            		
+            		Object[] options = {"Save", "Save As", "Cancel"};
+            		
+            		String t = "Warning : Data loss may happen";
+            		
+                    int return_val = JOptionPane.showOptionDialog(this, message,t,JOptionPane.YES_NO_CANCEL_OPTION,
+                    		JOptionPane.WARNING_MESSAGE,
+                    		null,options,options[1]);
+
+
+                    if (return_val == JOptionPane.YES_OPTION) {
+                        saveListToFile();
+                    } else if (return_val == JOptionPane.NO_OPTION) {
+                        showSaveFrame();
+                    }
+            	} else {
+            		saveListToFile();
+            	}
             }
         }
 
@@ -709,7 +731,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
             if (return_val == JOptionPane.YES_OPTION) {
                 showSaveFrame();
             } else if (return_val == JOptionPane.NO_OPTION) {
-                System.out.println("NO OPTION");
                 quit();
             }
 
@@ -762,6 +783,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
             }
 
             fw.close();
+            editedFileHasCommentOrError = false;
             configurationHasChanged = false;
             setFrameTitle();
             //parent.rescanCurrentDirectory();
