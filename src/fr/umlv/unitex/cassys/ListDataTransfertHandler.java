@@ -41,12 +41,8 @@ public class ListDataTransfertHandler extends TransferHandler {
             return false;
         }
 
-        if (!support.isDataFlavorSupported(DataFlavor.stringFlavor) &&
-                !support.isDataFlavorSupported(DataListTransferable.DataListFlavor)) {
-            return false;
-        }
-
-        return true;
+        return !(!support.isDataFlavorSupported(DataFlavor.stringFlavor) &&
+                !support.isDataFlavorSupported(DataListTransferable.DataListFlavor));
 
     }
 
