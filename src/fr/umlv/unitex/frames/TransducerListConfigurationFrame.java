@@ -2,10 +2,10 @@ package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
-import fr.umlv.unitex.cassys.DataListFileNameRenderer;
-import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
+import fr.umlv.unitex.cassys.DataListFileNameRenderer;
+import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -201,10 +201,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
                     return true;
                 }
                 String fileName = f.getName();
-                if (fileName.lastIndexOf(".") >= 0 && fileName.substring(fileName.lastIndexOf(".")).equals(".fst2")) {
-                    return true;
-                }
-                return false;
+                return fileName.lastIndexOf(".") >= 0 && fileName.substring(fileName.lastIndexOf(".")).equals(".fst2");
             }
         };
         fileBrowse.addChoosableFileFilter(filter_fst2);
@@ -213,7 +210,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         editedFileHasCommentOrError = false;
         create_table(Config.getCurrentTransducerList());
         configurationHasChanged = false;
-        
+
         setFrameTitle();
 
         JScrollPane tableScroller = new JScrollPane(table);
@@ -287,60 +284,60 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         tableModel.addColumn("Merge");
         tableModel.addColumn("Replace");
 
-		if (f != null) {
-			String FormatErrorLine = "";
-			
-			
-			LineNumberReader r;
-			try {
-				r = new LineNumberReader(new FileReader(f));
+        if (f != null) {
+            String FormatErrorLine = "";
 
-				String line;
-				try {
-					while ((line = r.readLine()) != null) {
 
-						try {
-							ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
-									line);
-							Object[] o = { cfa.getFileName(),
-									(boolean)cfa.isMergeMode(), 
-									(boolean)cfa.isReplaceMode() };
-							tableModel.addRow(o);
-							if(cfa.isCommentFound()){
-								editedFileHasCommentOrError=true;
-							}
-							
-						} catch (EmptyLineException e) {
-							// do nothing
-							editedFileHasCommentOrError = true;
-						} catch (InvalidLineException e) {
-							// keep track of the error to warn the user
-							FormatErrorLine = FormatErrorLine.concat("line " + r.getLineNumber() + ": "+ e.getMessage());
-							editedFileHasCommentOrError = true;
-						}
-						
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						r.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-				if (!FormatErrorLine.equals("")) {
-					String t = "Format line Error Found";
-					JOptionPane.showMessageDialog(this, FormatErrorLine, t,
-							JOptionPane.ERROR_MESSAGE);
-				}
+            LineNumberReader r;
+            try {
+                r = new LineNumberReader(new FileReader(f));
 
-			} catch (FileNotFoundException e) {
-				String t = "File Not Found";
-	            String message = "Please select an existing file";
-	            JOptionPane.showMessageDialog(this, message, t, JOptionPane.ERROR_MESSAGE);
-			}
-		}
+                String line;
+                try {
+                    while ((line = r.readLine()) != null) {
+
+                        try {
+                            ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
+                                    line);
+                            Object[] o = {cfa.getFileName(),
+                                    (boolean) cfa.isMergeMode(),
+                                    (boolean) cfa.isReplaceMode()};
+                            tableModel.addRow(o);
+                            if (cfa.isCommentFound()) {
+                                editedFileHasCommentOrError = true;
+                            }
+
+                        } catch (EmptyLineException e) {
+                            // do nothing
+                            editedFileHasCommentOrError = true;
+                        } catch (InvalidLineException e) {
+                            // keep track of the error to warn the user
+                            FormatErrorLine = FormatErrorLine.concat("line " + r.getLineNumber() + ": " + e.getMessage());
+                            editedFileHasCommentOrError = true;
+                        }
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        r.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                if (!FormatErrorLine.equals("")) {
+                    String t = "Format line Error Found";
+                    JOptionPane.showMessageDialog(this, FormatErrorLine, t,
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (FileNotFoundException e) {
+                String t = "File Not Found";
+                String message = "Please select an existing file";
+                JOptionPane.showMessageDialog(this, message, t, JOptionPane.ERROR_MESSAGE);
+            }
+        }
 
         table = new JTable(tableModel) {
             /**
@@ -353,11 +350,11 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
                 if (e.getColumn() == 1) {
                     if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
                         for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-                            if ((Boolean) getValueAt(i, 1) == true && (Boolean) getValueAt(i, 2) == true) {
+                            if ((Boolean) getValueAt(i, 1) && (Boolean) getValueAt(i, 2)) {
                                 setValueAt(Boolean.FALSE, i, 2);
                             }
 
-                            if ((Boolean) getValueAt(i, 1) == false && (Boolean) getValueAt(i, 2) == false) {
+                            if (!((Boolean) getValueAt(i, 1)) && !((Boolean) getValueAt(i, 2))) {
                                 setValueAt(Boolean.TRUE, i, 2);
                             }
                             // make sure that custom renderer repaint all the changed value
@@ -371,10 +368,10 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
                     if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
 
                         for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-                            if ((Boolean) getValueAt(i, 2) == true && (Boolean) getValueAt(i, 1) == true) {
+                            if ((Boolean) getValueAt(i, 2) && (Boolean) getValueAt(i, 1)) {
                                 setValueAt(Boolean.FALSE, i, 1);
                             }
-                            if ((Boolean) getValueAt(i, 2) == false && (Boolean) getValueAt(i, 1) == false) {
+                            if (!((Boolean) getValueAt(i, 2)) && !((Boolean) getValueAt(i, 1))) {
                                 setValueAt(Boolean.TRUE, i, 1);
                             }
                             // make sure that custom renderer repaint all the changed value
@@ -686,21 +683,21 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 
         if (save == a.getSource()) {
             if (Config.getCurrentTransducerList() == null) {
-            	showSaveFrame();
+                showSaveFrame();
             } else {
-            	if(editedFileHasCommentOrError){
-            		String message = "Empty lines, format line error or comments were found when loading the file.\n"
-            			+"Saving with the original name will result in erasing original data\n\n" 
-            			+ "If you want to keep all information in your original file, you should use the 'save as' button instead\n\n"
-            			+ "Do you want to save anyway ?";
-            		
-            		Object[] options = {"Save", "Save As", "Cancel"};
-            		
-            		String t = "Warning : Data loss may happen";
-            		
-                    int return_val = JOptionPane.showOptionDialog(this, message,t,JOptionPane.YES_NO_CANCEL_OPTION,
-                    		JOptionPane.WARNING_MESSAGE,
-                    		null,options,options[1]);
+                if (editedFileHasCommentOrError) {
+                    String message = "Empty lines, format line error or comments were found when loading the file.\n"
+                            + "Saving with the original name will result in erasing original data\n\n"
+                            + "If you want to keep all information in your original file, you should use the 'save as' button instead\n\n"
+                            + "Do you want to save anyway ?";
+
+                    Object[] options = {"Save", "Save As", "Cancel"};
+
+                    String t = "Warning : Data loss may happen";
+
+                    int return_val = JOptionPane.showOptionDialog(this, message, t, JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null, options, options[1]);
 
 
                     if (return_val == JOptionPane.YES_OPTION) {
@@ -708,9 +705,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
                     } else if (return_val == JOptionPane.NO_OPTION) {
                         showSaveFrame();
                     }
-            	} else {
-            		saveListToFile();
-            	}
+                } else {
+                    saveListToFile();
+                }
             }
         }
 
@@ -774,7 +771,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
             for (int i = 0; i < table.getModel().getRowCount(); i++) {
                 String fileName = (String) table.getValueAt(i, 0);
                 fw.write("\"" + fileName + "\" ");
-                if ((Boolean) table.getValueAt(i, 1) == true) {
+                if ((Boolean) table.getValueAt(i, 1)) {
                     fw.write("Merge");
                 } else {
                     fw.write("Replace");
