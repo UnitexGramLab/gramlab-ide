@@ -300,8 +300,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
                             ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
                                     line);
                             Object[] o = {cfa.getFileName(),
-                                    (boolean) cfa.isMergeMode(),
-                                    (boolean) cfa.isReplaceMode()};
+                                    cfa.isMergeMode(),
+                                    cfa.isReplaceMode()};
                             tableModel.addRow(o);
                             if (cfa.isCommentFound()) {
                                 editedFileHasCommentOrError = true;
