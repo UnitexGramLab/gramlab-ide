@@ -83,11 +83,15 @@ public class ConfigurationFileAnalyser {
 		public InvalidLineException(String s){
 			super(s);
 		}
-		public InvalidLineException(){}
+		public InvalidLineException() {
+			/* NOP */
+		}
 	}
 	
 	public class EmptyLineException extends Exception {
-		public EmptyLineException(){}
+		public EmptyLineException() {
+			/* NOP */
+		}
 	}
 	
 }
