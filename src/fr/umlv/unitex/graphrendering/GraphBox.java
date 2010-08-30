@@ -214,6 +214,9 @@ public class GraphBox extends GenericGraphBox {
         if (type == 1)
             return; // nothing to do if we consider the final state
         content = s;
+        if (s.equals("")) {
+        	throw new IllegalStateException("The graph contains an unexpected empty box that is not the final state");
+        }
         char ligne[] = new char[10000];
         String tmp = "";
         int i, L;
