@@ -208,7 +208,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         fileBrowse.setFileFilter(filter_fst2);
 
         editedFileHasCommentOrError = false;
-        create_table(Config.getCurrentTransducerList());
+        create_table();
         configurationHasChanged = false;
 
         setFrameTitle();
@@ -270,7 +270,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
      * <li>Drag and drop enabled for <code>String</code> and <code>ListData</code></li>
      * </ul>
      */
-    void create_table(File f) {
+    void create_table() {
         DefaultTableModel tableModel = new DefaultTableModel() {
             /**
              * Redefinition of the getColumnClass method in order to provide a check box for boolean values
@@ -284,60 +284,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         tableModel.addColumn("Merge");
         tableModel.addColumn("Replace");
 
-        if (f != null) {
-            String FormatErrorLine = "";
-
-
-            LineNumberReader r;
-            try {
-                r = new LineNumberReader(new FileReader(f));
-
-                String line;
-                try {
-                    while ((line = r.readLine()) != null) {
-
-                        try {
-                            ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
-                                    line);
-                            Object[] o = {cfa.getFileName(),
-                                    cfa.isMergeMode(),
-                                    cfa.isReplaceMode()};
-                            tableModel.addRow(o);
-                            if (cfa.isCommentFound()) {
-                                editedFileHasCommentOrError = true;
-                            }
-
-                        } catch (EmptyLineException e) {
-                            // do nothing
-                            editedFileHasCommentOrError = true;
-                        } catch (InvalidLineException e) {
-                            // keep track of the error to warn the user
-                            FormatErrorLine = FormatErrorLine.concat("line " + r.getLineNumber() + ": " + e.getMessage());
-                            editedFileHasCommentOrError = true;
-                        }
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        r.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-                if (!FormatErrorLine.equals("")) {
-                    String t = "Format line Error Found";
-                    JOptionPane.showMessageDialog(this, FormatErrorLine, t,
-                            JOptionPane.ERROR_MESSAGE);
-                }
-
-            } catch (FileNotFoundException e) {
-                String t = "File Not Found";
-                String message = "Please select an existing file";
-                JOptionPane.showMessageDialog(this, message, t, JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        
 
         table = new JTable(tableModel) {
             /**
@@ -413,9 +360,80 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         table.getColumnModel().getColumn(1).setPreferredWidth(60);
         table.getColumnModel().getColumn(2).setPreferredWidth(60);
 
-
     }
 
+    
+	void fill_table(File f) {
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		
+		if (f != null) {
+			String FormatErrorLine = "";
+
+			LineNumberReader r;
+			try {
+				r = new LineNumberReader(new FileReader(f));
+
+				String line;
+				try {
+					while ((line = r.readLine()) != null) {
+
+						try {
+							ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
+									line);
+							Object[] o = { cfa.getFileName(),
+									cfa.isMergeMode(), cfa.isReplaceMode() };
+							tableModel.addRow(o);
+							if (cfa.isCommentFound()) {
+								editedFileHasCommentOrError = true;
+							}
+
+						} catch (EmptyLineException e) {
+							// do nothing
+							editedFileHasCommentOrError = true;
+						} catch (InvalidLineException e) {
+							// keep track of the error to warn the user
+							FormatErrorLine = FormatErrorLine
+									.concat("line " + r.getLineNumber() + ": "
+											+ e.getMessage());
+							editedFileHasCommentOrError = true;
+						}
+
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						r.close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				if (!FormatErrorLine.equals("")) {
+					String t = "Format line Error Found";
+					JOptionPane.showMessageDialog(this, FormatErrorLine, t,
+							JOptionPane.ERROR_MESSAGE);
+				}
+
+			} catch (FileNotFoundException e) {
+				String t = "File Not Found";
+				String message = "Please select an existing file";
+				JOptionPane.showMessageDialog(this, message, t,
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		configurationHasChanged = false;
+		setFrameTitle();
+	}
+    
+    void void_table(){
+    	DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+    	
+    	while(tableModel.getRowCount()>0){
+    		tableModel.removeRow(0);
+    	}
+    	configurationHasChanged = false;
+    	setFrameTitle();
+    }
 
     /**
      * Constructs and return a panel of buttons for user interaction with the table. <code>ConfigurationFrame</code> is added
@@ -739,6 +757,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 
 
     public void quit() {
+    	void_table();
         dispose();
     }
 

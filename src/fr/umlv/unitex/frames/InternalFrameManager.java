@@ -368,12 +368,16 @@ public class InternalFrameManager {
     	cassysFrameFactory.closeFrame();
     }
     
-    public TransducerListConfigurationFrame newTransducerListConfigurationFrame(){
+    public TransducerListConfigurationFrame newTransducerListConfigurationFrame(File file){
     	TransducerListConfigurationFrame f = (TransducerListConfigurationFrame) transducerListConfigurationFrameFactory.newFrame();
     	if (f == null) return null;
     	
     	f.setConfigurationHasChanged(false);
     	f.setFrameTitle();
+    	if(file != null){
+    		f.fill_table(file);
+    	}
+    	
         setup(f);
         return f;
     }

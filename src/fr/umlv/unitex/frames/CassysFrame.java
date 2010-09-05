@@ -151,13 +151,13 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		
 		if(a.getSource() == _new){
 			Config.setCurrentTransducerList(null);
-			UnitexFrame.getFrameManager().newTransducerListConfigurationFrame();
+			UnitexFrame.getFrameManager().newTransducerListConfigurationFrame(null);
 		}
 		
 		
 		if (a.getSource() == edit) {
 			Config.setCurrentTransducerList(fc.getSelectedFile());
-			UnitexFrame.getFrameManager().newTransducerListConfigurationFrame();
+			UnitexFrame.getFrameManager().newTransducerListConfigurationFrame(fc.getSelectedFile());
 		}
 
 		if (a.getSource() == launch) {
