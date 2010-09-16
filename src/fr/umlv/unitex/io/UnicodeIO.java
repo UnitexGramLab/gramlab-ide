@@ -69,8 +69,10 @@ public class UnicodeIO {
     */
    public static int readChar(FileInputStream f) {
       int c= readCharRawly(f);
+      if (c==-1) return -1;
       if (c == 0x0d) {
          readCharRawly(f);
+         if (c==-1) return -1;
          c= '\n';
       }
       return c;
@@ -135,9 +137,8 @@ public class UnicodeIO {
     * @param f the file input stream
     */
    public static void skipLine(FileInputStream f) {
-      while (readChar(f) != '\n') {
-        // do nothing
-      }
+	   int c;
+      while ((c=readChar(f)) != '\n' && c!=-1) {/**/}
    }
 
    /**
