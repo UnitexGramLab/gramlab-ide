@@ -34,6 +34,9 @@ public class DicoCommand extends CommandBuilder {
 
     public DicoCommand() {
         super("Dico");
+        if (Config.isSemiticLanguage()) {
+        	semitic();
+        }
     }
 
     public DicoCommand snt(File s) {
@@ -77,6 +80,11 @@ public class DicoCommand extends CommandBuilder {
 
     public DicoCommand korean() {
         element("-K");
+        return this;
+    }
+
+    public DicoCommand semitic() {
+        element("--semitic");
         return this;
     }
 
