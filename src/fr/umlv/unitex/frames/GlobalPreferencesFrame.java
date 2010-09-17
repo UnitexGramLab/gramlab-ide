@@ -46,6 +46,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     JTextField morphologicalDicViewer = new JTextField("");
     final JCheckBox rightToLeftCheckBox = new JCheckBox(
             "Right to left rendering for corpus and graphs");
+    final JCheckBox semiticCheckBox = new JCheckBox(
+    		"Semitic language");
     final JCheckBox charByCharCheckBox = new JCheckBox(
             "Analyze this language char by char");
     final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
@@ -97,6 +99,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
         Action okAction = new AbstractAction("OK") {
             public void actionPerformed(ActionEvent arg0) {
+            	pref.semitic = semiticCheckBox.isSelected();
                 pref.rightToLeft = rightToLeftCheckBox.isSelected();
                 pref.info.rightToLeft = pref.rightToLeft;
                 if (htmlViewer.getText().equals(""))
@@ -386,15 +389,16 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     }
 
     private JPanel constructPage2() {
-        JPanel page2 = new JPanel(new GridLayout(6, 1));
+        JPanel page2 = new JPanel(new GridLayout(5, 1));
         textFont.setEnabled(false);
         concordanceFont.setEnabled(false);
         textFont.setDisabledTextColor(Color.black);
         concordanceFont.setDisabledTextColor(Color.black);
         page2.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JPanel yuyu = new JPanel(new GridLayout(3, 1));
+        JPanel yuyu = new JPanel(new GridLayout(4, 1));
         yuyu.add(charByCharCheckBox);
         yuyu.add(morphologicalUseOfSpaceCheckBox);
+        yuyu.add(semiticCheckBox);
         yuyu.add(rightToLeftCheckBox);
         page2.add(yuyu);
         JPanel tmp = new JPanel(new GridLayout(2, 1));
@@ -533,6 +537,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             }
         }
         final JList list = new JList(morphoDicListModel);
+        list.setPreferredSize(new Dimension(200,400));
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList l,

@@ -23,6 +23,8 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
+import fr.umlv.unitex.Config;
+
 /**
  * @author Sébastien Paumier
  *
@@ -31,6 +33,9 @@ public class CompressCommand extends CommandBuilder {
     
     public CompressCommand() {
     	super("Compress");
+        if (Config.isSemiticLanguage()) {
+        	semitic();
+        }
     }
     
     public CompressCommand name(File s) {
@@ -42,5 +47,10 @@ public class CompressCommand extends CommandBuilder {
       element("--flip");
       return this;
      }
+
+    public CompressCommand semitic() {
+        element("--semitic");
+        return this;
+       }
 
 }
