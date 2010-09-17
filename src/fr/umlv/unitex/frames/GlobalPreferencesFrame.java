@@ -491,6 +491,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         } else {
             htmlViewer.setText(pref.htmlViewer.getAbsolutePath());
         }
+        semiticCheckBox.setSelected(pref.semitic);
+        rightToLeftCheckBox.setSelected(pref.rightToLeft);
         charByCharCheckBox.setSelected(pref.charByChar);
         morphologicalUseOfSpaceCheckBox
                 .setSelected(pref.morphologicalUseOfSpace);
