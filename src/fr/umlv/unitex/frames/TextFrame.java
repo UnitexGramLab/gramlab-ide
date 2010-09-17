@@ -159,7 +159,7 @@ public class TextFrame extends JInternalFrame {
         loadStatistics();
         text.setFont(Config.getCurrentTextFont());
         text
-                .setComponentOrientation(Config.isRightToLeftLanguage() ? ComponentOrientation.RIGHT_TO_LEFT
+                .setComponentOrientation(Config.isRightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         if (sntFile.length() <= 2) {
             text.setText(Config.EMPTY_FILE_MESSAGE);

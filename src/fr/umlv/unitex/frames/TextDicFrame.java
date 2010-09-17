@@ -64,13 +64,13 @@ public class TextDicFrame extends JInternalFrame {
             }
         });
         dlf.setComponentOrientation(
-        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
         dlc.setComponentOrientation(
-        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
         err.setComponentOrientation(
-        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
         Preferences.addTextFontListener(new FontListener() {
             public void fontChanged(Font font) {
@@ -78,13 +78,13 @@ public class TextDicFrame extends JInternalFrame {
                 dlc.setFont(font);
                 err.setFont(font);
                 dlf.setComponentOrientation(
-                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
                 				:ComponentOrientation.LEFT_TO_RIGHT);
                 dlc.setComponentOrientation(
-                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
                 				:ComponentOrientation.LEFT_TO_RIGHT);
                 err.setComponentOrientation(
-                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
                 				:ComponentOrientation.LEFT_TO_RIGHT);
             }
         });

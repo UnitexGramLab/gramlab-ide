@@ -370,7 +370,7 @@ public class GraphFrame extends JInternalFrame {
         JPanel p = new JPanel(new BorderLayout());
         boxContentEditor = new TextField(25, this);
         boxContentEditor
-                .setComponentOrientation(Preferences.rightToLeft() ? ComponentOrientation.RIGHT_TO_LEFT
+                .setComponentOrientation(Preferences.rightToLeftForGraphs() ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         p.add(boxContentEditor);
         return p;

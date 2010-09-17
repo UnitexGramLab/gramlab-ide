@@ -1490,8 +1490,12 @@ public class Config {
         return Preferences.tokenizeMorphologicalDicList(s);
     }
 
-    public static boolean isRightToLeftLanguage() {
-        return Preferences.rightToLeft();
+    public static boolean isRightToLeftForText() {
+        return Preferences.rightToLeftForText();
+    }
+
+    public static boolean isRightToLeftForGraphs() {
+        return Preferences.rightToLeftForGraphs();
     }
 
     public static boolean isSemiticLanguage() {

@@ -85,20 +85,20 @@ public class DelaFrame extends JInternalFrame {
             }
         });
         text.setComponentOrientation(
-        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
         scrollBar=scrollText.getHorizontalScrollBar();
         scrollText.setComponentOrientation(
-        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
         Preferences.addTextFontListener(new FontListener() {
             public void fontChanged(Font font) {
                 text.setFont(font);
                 text.setComponentOrientation(
-                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
                 				:ComponentOrientation.LEFT_TO_RIGHT);
                 scrollText.setComponentOrientation(
-                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
                 				:ComponentOrientation.LEFT_TO_RIGHT);
             }
         });

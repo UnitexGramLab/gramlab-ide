@@ -44,8 +44,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     final JTextField concordanceFont = new JTextField("");
     final JTextField htmlViewer = new JTextField("");
     JTextField morphologicalDicViewer = new JTextField("");
-    final JCheckBox rightToLeftCheckBox = new JCheckBox(
-            "Right to left rendering for corpus and graphs");
+    final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
+            "Right to left rendering for text");
+    final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
+    "Right to left rendering for graphs");
     final JCheckBox semiticCheckBox = new JCheckBox(
     		"Semitic language");
     final JCheckBox charByCharCheckBox = new JCheckBox(
@@ -100,8 +102,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         Action okAction = new AbstractAction("OK") {
             public void actionPerformed(ActionEvent arg0) {
             	pref.semitic = semiticCheckBox.isSelected();
-                pref.rightToLeft = rightToLeftCheckBox.isSelected();
-                pref.info.rightToLeft = pref.rightToLeft;
+                pref.rightToLeftForText = rightToLeftForCorpusCheckBox.isSelected();
+                pref.rightToLeftForGraphs = rightToLeftForGraphsCheckBox.isSelected();
+                pref.info.rightToLeft = pref.rightToLeftForGraphs;
                 if (htmlViewer.getText().equals(""))
                     pref.htmlViewer = null;
                 else
@@ -395,11 +398,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         textFont.setDisabledTextColor(Color.black);
         concordanceFont.setDisabledTextColor(Color.black);
         page2.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JPanel yuyu = new JPanel(new GridLayout(4, 1));
+        JPanel yuyu = new JPanel(new GridLayout(5, 1));
         yuyu.add(charByCharCheckBox);
         yuyu.add(morphologicalUseOfSpaceCheckBox);
         yuyu.add(semiticCheckBox);
-        yuyu.add(rightToLeftCheckBox);
+        yuyu.add(rightToLeftForCorpusCheckBox);
+        yuyu.add(rightToLeftForGraphsCheckBox);
         page2.add(yuyu);
         JPanel tmp = new JPanel(new GridLayout(2, 1));
         tmp.setPreferredSize(new Dimension(180, 60));
@@ -492,7 +496,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             htmlViewer.setText(pref.htmlViewer.getAbsolutePath());
         }
         semiticCheckBox.setSelected(pref.semitic);
-        rightToLeftCheckBox.setSelected(pref.rightToLeft);
+        rightToLeftForCorpusCheckBox.setSelected(pref.rightToLeftForText);
+        rightToLeftForGraphsCheckBox.setSelected(pref.rightToLeftForGraphs);
         charByCharCheckBox.setSelected(pref.charByChar);
         morphologicalUseOfSpaceCheckBox
                 .setSelected(pref.morphologicalUseOfSpace);
