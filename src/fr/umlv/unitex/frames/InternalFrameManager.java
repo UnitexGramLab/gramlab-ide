@@ -55,6 +55,7 @@ public class InternalFrameManager {
     private FrameFactory aboutUnitexFrameFactory = new FrameFactory(AboutUnitexFrame.class);
     private FrameFactory applyLexicalResourcesFrameFactory = new FrameFactory(ApplyLexicalResourcesFrame.class);
     private FrameFactory checkDicFrameFactory = new FrameFactory(CheckDicFrame.class);
+    private FrameFactory transliterationFrameFactory = new FrameFactory(TransliterationFrame.class);
     private FrameFactory checkResultFrameFactory = new FrameFactory(CheckResultFrame.class);
     private FrameFactory concordanceDiffFrameFactory = new FrameFactory(ConcordanceDiffFrame.class);
     private FrameFactory concordanceParameterFrameFactory = new FrameFactory(ConcordanceParameterFrame.class);
@@ -393,6 +394,14 @@ public class InternalFrameManager {
 
     public void closeCheckDicFrame() {
         checkDicFrameFactory.closeFrame();
+    }
+
+    public TransliterationFrame newTransliterationFrame() {
+        return (TransliterationFrame) setup(transliterationFrameFactory.newFrame());
+    }
+
+    public void closeTransliterationFrame() {
+    	transliterationFrameFactory.closeFrame();
     }
 
     public CheckResultFrame newCheckResultFrame(File file) {

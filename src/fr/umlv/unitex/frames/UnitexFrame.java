@@ -146,6 +146,7 @@ public class UnitexFrame extends JFrame {
         frameManager.addDelaFrameListener(new DelaFrameListener() {
             public void delaFrameOpened() {
                 checkDelaFormat.setEnabled(true);
+                transliterate.setEnabled(true);
                 sortDictionary.setEnabled(true);
                 inflect.setEnabled(true);
                 compressIntoFST.setEnabled(true);
@@ -154,9 +155,11 @@ public class UnitexFrame extends JFrame {
 
             public void delaFrameClosed() {
                 frameManager.closeCheckDicFrame();
+                frameManager.closeTransliterationFrame();
                 frameManager.closeCheckResultFrame();
                 frameManager.closeInflectFrame();
                 checkDelaFormat.setEnabled(false);
+                transliterate.setEnabled(false);
                 sortDictionary.setEnabled(false);
                 inflect.setEnabled(false);
                 compressIntoFST.setEnabled(false);
@@ -343,6 +346,7 @@ public class UnitexFrame extends JFrame {
     }
 
     AbstractAction checkDelaFormat;
+    AbstractAction transliterate;
     AbstractAction sortDictionary;
     AbstractAction inflect;
     AbstractAction compressIntoFST;
@@ -367,6 +371,13 @@ public class UnitexFrame extends JFrame {
         checkDelaFormat.putValue(Action.ACCELERATOR_KEY, KeyStroke
                 .getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK));
         delaMenu.add(new JMenuItem(checkDelaFormat));
+        transliterate = new AbstractAction("Transliterate...") {
+            public void actionPerformed(ActionEvent e) {
+                frameManager.newTransliterationFrame();
+            }
+        };
+        transliterate.setEnabled(false);
+        delaMenu.add(new JMenuItem(transliterate));
         sortDictionary = new AbstractAction("Sort Dictionary") {
             public void actionPerformed(ActionEvent e) {
                 sortDELA();
