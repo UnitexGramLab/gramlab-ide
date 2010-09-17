@@ -353,10 +353,10 @@ public class XAlignFrame extends JInternalFrame {
      */
     public static File tryToFindAlphabet(File f) {
         File languageDir = Config.getLanguageDirForFile(f);
-        if (languageDir == null) return null;
-        /* Now, we will look into the config file which is the preferred font
-           * for this language */
-        File alphabet = new File(f, "Alphabet.txt");
+        if (languageDir == null) {
+        	return null;
+        }
+        File alphabet = new File(languageDir, "Alphabet.txt");
         if (!alphabet.exists()) {
             return null;
         }
