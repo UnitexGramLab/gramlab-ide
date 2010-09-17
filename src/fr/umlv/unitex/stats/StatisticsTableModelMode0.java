@@ -48,7 +48,7 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
 
 
     public StatisticsTableModelMode0(File file) {
-        if (Config.isRightToLeftLanguage()) {
+        if (Config.isRightToLeftForText()) {
             columnNames = new String[]{"Right context", "Match", "Left context", "Occurrences"};
         } else {
             columnNames = new String[]{"Left context", "Match", "Right context", "Occurrences"};
@@ -65,7 +65,7 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
                 }
                 Mode0Data d = new Mode0Data();
                 data.add(d);
-                if (Config.isRightToLeftLanguage()) {
+                if (Config.isRightToLeftForText()) {
                     d.left = matcher.group(3);
                     d.right = matcher.group(1);
                 } else {

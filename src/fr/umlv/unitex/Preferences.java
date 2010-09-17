@@ -65,7 +65,8 @@ public class Preferences {
     /**
      * Indicates if the language must be read from right to left or not
      */
-    public boolean rightToLeft;
+    public boolean rightToLeftForText;
+    public boolean rightToLeftForGraphs;
 
     /**
      * Indicates if the language is a semitic one, according to 
@@ -125,7 +126,8 @@ public class Preferences {
         defaultProperties.setProperty("FILE NAME", "true");
         defaultProperties.setProperty("PATH NAME", "false");
         defaultProperties.setProperty("FRAME", "true");
-        defaultProperties.setProperty("RIGHT TO LEFT", "false");
+        defaultProperties.setProperty("RIGHT TO LEFT FOR TEXT", "false");
+        defaultProperties.setProperty("RIGHT TO LEFT FOR GRAPHS", "false");
         defaultProperties.setProperty("SEMITIC", "false");
         defaultProperties.setProperty("BACKGROUND COLOR", ""
                 + Color.WHITE.getRGB());
@@ -232,11 +234,12 @@ public class Preferences {
         boolean frame = Boolean.valueOf(prop.getProperty("FRAME"));
         boolean antialiasing = Boolean.valueOf(prop.getProperty("ANTIALIASING"));
         String iconBarPosition = prop.getProperty("ICON BAR POSITION");
-        rightToLeft = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT"));
+        rightToLeftForText = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT FOR TEXT"));
+        rightToLeftForGraphs = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT FOR GRAPHS"));
         semitic = Boolean.valueOf(prop.getProperty("SEMITIC"));
         info = new GraphPresentationInfo(backgroundColor, foregroundColor, subgraphColor, selectedColor,
                 commentColor, outputVariableColor, packageColor, contextColor, morphologicalModeColor, input, output,
-                date, filename, pathname, frame, rightToLeft, antialiasing, iconBarPosition);
+                date, filename, pathname, frame, rightToLeftForGraphs, antialiasing, iconBarPosition);
         String s = prop.getProperty("HTML VIEWER");
         htmlViewer = (s == null || s.equals("")) ? null : new File(s);
         morphologicalDic = tokenizeMorphologicalDicList(prop.getProperty("MORPHOLOGICAL DICTIONARY"));
@@ -300,7 +303,8 @@ public class Preferences {
         prop.setProperty("FILE NAME", "" + info.filename);
         prop.setProperty("PATH NAME", "" + info.pathname);
         prop.setProperty("FRAME", "" + info.frame);
-        prop.setProperty("RIGHT TO LEFT", "" + rightToLeft);
+        prop.setProperty("RIGHT TO LEFT FOR TEXT", "" + rightToLeftForText);
+        prop.setProperty("RIGHT TO LEFT FOR GRAPHS", "" + rightToLeftForGraphs);
         prop.setProperty("SEMITIC", "" + semitic);
         prop.setProperty("BACKGROUND COLOR", "" + info.backgroundColor.getRGB());
         prop.setProperty("FOREGROUND COLOR", "" + info.foregroundColor.getRGB());
@@ -438,8 +442,12 @@ public class Preferences {
         return pref.morphologicalUseOfSpace;
     }
 
-    public static boolean rightToLeft() {
-        return pref.rightToLeft;
+    public static boolean rightToLeftForText() {
+        return pref.rightToLeftForText;
+    }
+
+    public static boolean rightToLeftForGraphs() {
+        return pref.rightToLeftForGraphs;
     }
 
     public static boolean semitic() {
