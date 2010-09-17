@@ -24,6 +24,7 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
 /**
@@ -34,6 +35,10 @@ public class LocateCommand extends CommandBuilder {
 
     public LocateCommand() {
         super("Locate");
+        if (Config.isArabic()) {
+            arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+        }
+
     }
 
     public LocateCommand snt(File s) {
@@ -53,6 +58,12 @@ public class LocateCommand extends CommandBuilder {
 
     public LocateCommand shortestMatches() {
         element("-S");
+        return this;
+    }
+
+    public LocateCommand arabic(File s) {
+        element("-u");
+        protectElement(s.getAbsolutePath());
         return this;
     }
 
