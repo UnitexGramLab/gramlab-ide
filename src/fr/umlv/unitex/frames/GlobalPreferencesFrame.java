@@ -61,7 +61,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     final JTextField loggingDirectory = new JTextField("");
 
     GlobalPreferencesFrame() {
-        super("", false, true, false, false);
+        super("", true, true, false, false);
         setContentPane(constructPanel());
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
