@@ -21,20 +21,28 @@
 
 package fr.umlv.unitex.frames;
 
+import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+import javax.swing.BorderFactory;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.BigTextList;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 
 /**
@@ -46,6 +54,7 @@ public class DelaFrame extends JInternalFrame {
 
     final JPanel middle;
     final BigTextList text = new BigTextList(true);
+    JScrollBar scrollBar;
 
     DelaFrame() {
         super("", true, true, true, true);
@@ -53,7 +62,8 @@ public class DelaFrame extends JInternalFrame {
         top.setBorder(new EmptyBorder(2, 2, 2, 2));
         middle = new JPanel(new BorderLayout());
         middle.setBorder(BorderFactory.createLoweredBevelBorder());
-        middle.add(new JScrollPane(text));
+        final JScrollPane scrollText=new JScrollPane(text,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        middle.add(scrollText);
         top.add(middle, BorderLayout.CENTER);
         setContentPane(top);
         pack();
@@ -74,9 +84,22 @@ public class DelaFrame extends JInternalFrame {
                 System.gc();
             }
         });
+        text.setComponentOrientation(
+        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        scrollBar=scrollText.getHorizontalScrollBar();
+        scrollText.setComponentOrientation(
+        		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
         Preferences.addTextFontListener(new FontListener() {
             public void fontChanged(Font font) {
                 text.setFont(font);
+                text.setComponentOrientation(
+                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                				:ComponentOrientation.LEFT_TO_RIGHT);
+                scrollText.setComponentOrientation(
+                		Preferences.rightToLeft()?ComponentOrientation.RIGHT_TO_LEFT
+                				:ComponentOrientation.LEFT_TO_RIGHT);
             }
         });
     }

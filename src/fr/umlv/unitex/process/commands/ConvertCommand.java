@@ -110,4 +110,13 @@ public class ConvertCommand extends CommandBuilder {
         return this;
     }
 
+	public ConvertCommand delas() {
+		element("--delas");
+		return this;
+	}
+
+	public ConvertCommand delaf() {
+		element("--delaf");
+		return this;
+	}
 }
