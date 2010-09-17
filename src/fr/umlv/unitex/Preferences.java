@@ -68,6 +68,12 @@ public class Preferences {
     public boolean rightToLeft;
 
     /**
+     * Indicates if the language is a semitic one, according to 
+     * the consonant skeleton model
+     */
+    public boolean semitic;
+
+    /**
      * Path of the graph package repository
      */
     public File packagePath;
@@ -102,8 +108,8 @@ public class Preferences {
 
     {
         /*
-           * Initialization of default properties
-           */
+         * Initialization of default properties
+         */
         defaultProperties.setProperty("TEXT FONT NAME", "Courier New");
         defaultProperties.setProperty("TEXT FONT STYLE", "" + Font.PLAIN);
         defaultProperties.setProperty("TEXT FONT SIZE", "10");
@@ -120,6 +126,7 @@ public class Preferences {
         defaultProperties.setProperty("PATH NAME", "false");
         defaultProperties.setProperty("FRAME", "true");
         defaultProperties.setProperty("RIGHT TO LEFT", "false");
+        defaultProperties.setProperty("SEMITIC", "false");
         defaultProperties.setProperty("BACKGROUND COLOR", ""
                 + Color.WHITE.getRGB());
         defaultProperties.setProperty("FOREGROUND COLOR", ""
@@ -226,6 +233,7 @@ public class Preferences {
         boolean antialiasing = Boolean.valueOf(prop.getProperty("ANTIALIASING"));
         String iconBarPosition = prop.getProperty("ICON BAR POSITION");
         rightToLeft = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT"));
+        semitic = Boolean.valueOf(prop.getProperty("SEMITIC"));
         info = new GraphPresentationInfo(backgroundColor, foregroundColor, subgraphColor, selectedColor,
                 commentColor, outputVariableColor, packageColor, contextColor, morphologicalModeColor, input, output,
                 date, filename, pathname, frame, rightToLeft, antialiasing, iconBarPosition);
@@ -293,6 +301,7 @@ public class Preferences {
         prop.setProperty("PATH NAME", "" + info.pathname);
         prop.setProperty("FRAME", "" + info.frame);
         prop.setProperty("RIGHT TO LEFT", "" + rightToLeft);
+        prop.setProperty("SEMITIC", "" + semitic);
         prop.setProperty("BACKGROUND COLOR", "" + info.backgroundColor.getRGB());
         prop.setProperty("FOREGROUND COLOR", "" + info.foregroundColor.getRGB());
         prop.setProperty("AUXILIARY NODES COLOR", ""
@@ -431,6 +440,10 @@ public class Preferences {
 
     public static boolean rightToLeft() {
         return pref.rightToLeft;
+    }
+
+    public static boolean semitic() {
+        return pref.semitic;
     }
 
     public static ArrayList<File> morphologicalDic() {

@@ -1494,6 +1494,10 @@ public class Config {
         return Preferences.rightToLeft();
     }
 
+    public static boolean isSemiticLanguage() {
+        return Preferences.semitic();
+    }
+
     public static boolean isKorean() {
         return Config.getCurrentLanguage().equals("Korean")
                 || isKoreanJeeSun();
