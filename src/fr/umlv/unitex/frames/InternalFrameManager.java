@@ -71,7 +71,7 @@ public class InternalFrameManager {
     private FrameFactory helpOnCommandFrameFactory = new FrameFactory(HelpOnCommandFrame.class);
     private FrameFactory transcodingFrameFactory = new FrameFactory(TranscodingFrame.class);
     private FrameFactory consoleFrameFactory = new FrameFactory(ConsoleFrame.class);
-    private FrameFactory xAlignLocateFrameFactory = new FrameFactory(XAlignLocateFrame.class);
+    private XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
     
     private FrameFactory cassysFrameFactory = new FrameFactory(CassysFrame.class);
     private FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(TransducerListConfigurationFrame.class);
@@ -713,7 +713,7 @@ public class InternalFrameManager {
     }
 
     public XAlignLocateFrame newXAlignLocateFrame(String language, File snt, ConcordanceModel model) {
-        XAlignLocateFrame f = (XAlignLocateFrame) xAlignLocateFrameFactory.newFrame();
+        XAlignLocateFrame f = xAlignLocateFrameFactory.newXAlignLocateFrame(language);
         if (f == null) return null;
         f.configure(language, snt, model);
         setup(f);
@@ -721,7 +721,7 @@ public class InternalFrameManager {
     }
 
     public void closeXAlignLocateFrame() {
-        xAlignLocateFrameFactory.closeFrame();
+        xAlignLocateFrameFactory.closeXAlignLocateFrame();
     }
 
     public FontInfo newFontDialog(FontInfo info) {
