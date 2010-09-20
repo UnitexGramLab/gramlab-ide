@@ -31,6 +31,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
@@ -46,7 +48,13 @@ public class TextDicFrame extends JInternalFrame {
     final JLabel dlfLabel = new JLabel("");
     final JLabel dlcLabel = new JLabel("");
     final JLabel errLabel = new JLabel("");
-
+    JScrollBar dlfScrollbar;
+    JScrollBar dlcScrollbar;
+    JScrollBar errScrollbar;
+    JScrollPane dlfScroll;
+    JScrollPane dlcScroll;
+    JScrollPane errScroll;
+    
     TextDicFrame() {
         super("", true, true, true, true);
         setContentPane(constructPanel());
@@ -61,6 +69,19 @@ public class TextDicFrame extends JInternalFrame {
                 } catch (java.beans.PropertyVetoException e2) {
                     e2.printStackTrace();
                 }
+            }
+            
+            @Override
+            public void internalFrameDeiconified(InternalFrameEvent e) {
+                Timer t=new Timer(400,new ActionListener() {
+        			public void actionPerformed(ActionEvent e2) {
+        				dlfScrollbar.setValue(0);
+        				dlcScrollbar.setValue(0);
+        				errScrollbar.setValue(0);
+        			}
+        		});
+                t.setRepeats(false);
+                t.start();
             }
         });
         dlf.setComponentOrientation(
@@ -99,12 +120,16 @@ public class TextDicFrame extends JInternalFrame {
 
     private JPanel constructDicPanel() {
         JPanel dicPanel = new JPanel(new GridLayout(2, 1));
-        JScrollPane dlfScroll = new JScrollPane(dlf);
-        dlfScroll
-                .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        JScrollPane dlcScroll = new JScrollPane(dlc);
-        dlcScroll
-                .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        dlfScroll = new JScrollPane(dlf,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        dlfScroll.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        dlfScrollbar=dlfScroll.getHorizontalScrollBar();
+        dlcScroll = new JScrollPane(dlc,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        dlcScroll.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        dlcScrollbar=dlcScroll.getHorizontalScrollBar();
         JPanel up = new JPanel(new BorderLayout());
         up.setBorder(new EmptyBorder(5, 5, 5, 5));
         up.add(dlfLabel, BorderLayout.NORTH);
@@ -127,9 +152,11 @@ public class TextDicFrame extends JInternalFrame {
     private JPanel constructErrPanel() {
         JPanel errPanel = new JPanel(new BorderLayout());
         errPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JScrollPane errScroll = new JScrollPane(err);
-        errScroll
-                .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        errScroll = new JScrollPane(err,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        errScroll.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        errScrollbar=errScroll.getHorizontalScrollBar();
         errPanel.add(errLabel, BorderLayout.NORTH);
         JPanel tmp = new JPanel(new BorderLayout());
         tmp.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -200,6 +227,33 @@ public class TextDicFrame extends JInternalFrame {
             errLabel.setText(message);
         }
         setTitle("Word Lists in " + dir);
+        dlf.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        dlc.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        err.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        dlfScroll.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        dlcScroll.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        errScroll.setComponentOrientation(
+        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
+        				:ComponentOrientation.LEFT_TO_RIGHT);
+        Timer t=new Timer(400,new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dlfScrollbar.setValue(0);
+				dlcScrollbar.setValue(0);
+				errScrollbar.setValue(0);
+			}
+		});
+        t.setRepeats(false);
+        t.start();
     }
 
     /**
