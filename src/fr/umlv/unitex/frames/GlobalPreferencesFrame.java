@@ -392,7 +392,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     }
 
     private JPanel constructPage2() {
-        JPanel page2 = new JPanel(new GridLayout(5, 1));
+        JPanel page2 = new JPanel(null);
+    	page2.setLayout(new BoxLayout(page2,BoxLayout.Y_AXIS));
         textFont.setEnabled(false);
         concordanceFont.setEnabled(false);
         textFont.setDisabledTextColor(Color.black);
