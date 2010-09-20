@@ -25,7 +25,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 
 /**
  * @author Sébastien Paumier
@@ -116,7 +115,9 @@ public class LocateCommand extends CommandBuilder {
 
     public LocateCommand morphologicalDic(ArrayList<File> dicList) {
         if (dicList!=null && !dicList.isEmpty()) {
-            protectElement("--morpho=" + Preferences.getMorphologicalDicListAsString(dicList));
+        	for (File f:dicList) {
+        		protectElement("-m" + f.getAbsolutePath());
+        	}
         }
         return this;
     }
