@@ -65,8 +65,9 @@ public class XAlignLocateFrame extends JInternalFrame {
     ConcordanceModel concordModel;
 
 
-    XAlignLocateFrame() {
+    XAlignLocateFrame(String language) {
         super("XAlign Locate Pattern", false, true);
+        this.language=language;
         setContentPane(constructPanel());
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
