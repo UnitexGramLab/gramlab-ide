@@ -24,6 +24,8 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -33,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -88,6 +91,13 @@ public class DelaFrame extends JInternalFrame {
         		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
         scrollBar=scrollText.getHorizontalScrollBar();
+        Timer t=new Timer(400,new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scrollBar.setValue(0);
+			}
+		});
+        t.setRepeats(false);
+        t.start();
         scrollText.setComponentOrientation(
         		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
         				:ComponentOrientation.LEFT_TO_RIGHT);
@@ -100,6 +110,13 @@ public class DelaFrame extends JInternalFrame {
                 scrollText.setComponentOrientation(
                 		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
                 				:ComponentOrientation.LEFT_TO_RIGHT);
+                Timer t2=new Timer(400,new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				scrollBar.setValue(0);
+        			}
+        		});
+                t2.setRepeats(false);
+                t2.start();
             }
         });
     }
@@ -128,6 +145,13 @@ public class DelaFrame extends JInternalFrame {
         text.setFont(Config.getCurrentTextFont());
         setTitle(dela.getAbsolutePath());
         setVisible(true);
+        Timer t=new Timer(400,new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				scrollBar.setValue(0);
+			}
+		});
+        t.setRepeats(false);
+        t.start();
         try {
             setIcon(false);
             setSelected(true);
