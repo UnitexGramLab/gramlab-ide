@@ -71,6 +71,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     TfstGraphicalZone elaggraph;
     File elagrules;
     JLabel ruleslabel;
+    JScrollBar tfstScrollbar;
     TfstGraphicalZone graphicalZone;
 
     GraphListener listener = new GraphListener() {
@@ -168,7 +169,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         graphicalZone.addGraphListener(listener);
         graphicalZone.setPreferredSize(new Dimension(1188, 840));
         final JScrollPane scroll = new JScrollPane(graphicalZone);
-        scroll.getHorizontalScrollBar().setUnitIncrement(20);
+        tfstScrollbar=scroll.getHorizontalScrollBar();
+        tfstScrollbar.setUnitIncrement(20);
         scroll.getVerticalScrollBar().setUnitIncrement(20);
         scroll.setPreferredSize(new Dimension(1188, 840));
         textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
@@ -676,6 +678,17 @@ public class TextAutomatonFrame extends JInternalFrame {
         textfield.setFont(g.info.input.font);
         graphicalZone.setup(g);
         tfstTableModel.init(g.boxes);
+        Timer t=new Timer(300,new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Config.isRightToLeftForGraphs()) {
+					tfstScrollbar.setValue(tfstScrollbar.getMaximum());
+				} else {
+			        tfstScrollbar.setValue(0);
+				}
+			}
+		});
+        t.setRepeats(false);
+        t.start();
         return true;
     }
 
