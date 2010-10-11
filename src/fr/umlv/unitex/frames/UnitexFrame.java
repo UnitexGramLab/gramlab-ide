@@ -289,7 +289,7 @@ public class UnitexFrame extends JFrame {
                 KeyEvent.VK_L, Event.CTRL_MASK));
         textMenu.add(new JMenuItem(locatePattern));
         
-        cassys = new AbstractAction("Apply Cascade...") {
+        cassys = new AbstractAction("Apply CasSys Cascade...") {
 			public void actionPerformed(ActionEvent e) {
 				frameManager.newCassysFrame();
 			}
