@@ -14,12 +14,12 @@ public class CassysCommand extends CommandBuilder {
 	}
 	
 	public CassysCommand targetText(File s){
-		protectElement("-f"+s.getAbsolutePath());
+		protectElement("-t"+s.getAbsolutePath());
 		return this;
 	}
 	
 	public CassysCommand transducerList(File s){
-		protectElement("-t"+s.getAbsolutePath());
+		protectElement("-l"+s.getAbsolutePath());
 		return this;
 	}
 }
