@@ -261,8 +261,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() != MouseEvent.BUTTON1) {
                     int index = userDicList.locationToIndex(e.getPoint());
-                    String s = (String) (userDicList.getModel().getElementAt(index));
                     if (index != -1) {
+                    String s = (String) (userDicList.getModel().getElementAt(index));
                         String s2 = Util.getFileNameWithoutExtension(s);
                         final File f = new File(new File(Config.getUserCurrentLanguageDir(), "Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
