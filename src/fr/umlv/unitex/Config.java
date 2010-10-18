@@ -947,6 +947,10 @@ public class Config {
         if (!f.exists()) {
             copyDirRec(new File(getUnitexCurrentLanguageDir(), "Graphs"), f);
         }
+        f = new File(userCurrentLanguageDir, "Cassys");
+        if (!f.exists()) {
+            copyDirRec(new File(getUnitexCurrentLanguageDir(), "Cassys"), f);
+        }
 
     }
 
