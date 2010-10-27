@@ -270,6 +270,9 @@ public class XAlignLocateFrame extends JInternalFrame {
         if (Config.isKorean() || Config.isKoreanJeeSun()) {
             locateCmd = locateCmd.korean();
         }
+        if (Config.isArabic()) {
+            locateCmd=locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+        }
         if (stopAfterNmatches.isSelected()) {
             locateCmd = locateCmd.limit(n);
         } else {

@@ -33,9 +33,6 @@ public class DicoCommand extends CommandBuilder {
 
     public DicoCommand() {
         super("Dico");
-        if (Config.isSemiticLanguage()) {
-        	semitic();
-        }
     }
 
     public DicoCommand snt(File s) {

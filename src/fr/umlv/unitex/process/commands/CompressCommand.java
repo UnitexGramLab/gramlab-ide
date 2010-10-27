@@ -18,39 +18,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
- *
+ * 
  */
 public class CompressCommand extends CommandBuilder {
-    
-    public CompressCommand() {
-    	super("Compress");
-        if (Config.isSemiticLanguage()) {
-        	semitic();
-        }
-    }
-    
-    public CompressCommand name(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-    }
+	public CompressCommand() {
+		super("Compress");
+	}
 
-    public CompressCommand flip() {
-      element("--flip");
-      return this;
-     }
+	public CompressCommand name(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public CompressCommand semitic() {
-        element("--semitic");
-        return this;
-       }
+	public CompressCommand flip() {
+		element("--flip");
+		return this;
+	}
 
+	public CompressCommand semitic() {
+		element("--semitic");
+		return this;
+	}
 }

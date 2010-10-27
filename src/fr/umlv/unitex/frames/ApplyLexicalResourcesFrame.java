@@ -454,6 +454,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         if (Config.isArabic()) {
             cmd = cmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
+        if (Config.isSemiticLanguage()) {
+        	cmd=cmd.semitic();
+        }
         if (systemSelection != null && systemSelection.length != 0) {
             for (Object aSystemSelection : systemSelection) {
                 cmd = cmd.systemDictionary((String) aSystemSelection);
