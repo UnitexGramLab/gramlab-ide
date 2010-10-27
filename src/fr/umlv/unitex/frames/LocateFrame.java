@@ -333,6 +333,9 @@ public class LocateFrame extends JInternalFrame {
             if (Config.isKorean()) {
                 locateCmd = locateCmd.korean();
             }
+            if (Config.isArabic()) {
+                locateCmd=locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+            }
             if (Config.isCharByCharLanguage()) {
                 locateCmd = locateCmd.charByChar();
             }

@@ -1202,6 +1202,9 @@ public class UnitexFrame extends JFrame {
     public void compressDELA() {
         CompressCommand command = new CompressCommand().name(Config
                 .getCurrentDELA());
+        if (Config.isSemiticLanguage()) {
+        	command=command.semitic();
+        }
         Launcher.exec(command, false, null);
     }
 
