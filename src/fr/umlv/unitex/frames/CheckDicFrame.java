@@ -103,7 +103,10 @@ public class CheckDicFrame extends JInternalFrame {
         CheckDicCommand command = new CheckDicCommand().name(
                 Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
                 Config.getAlphabet());
-
+    	if (Config.getCurrentLanguage().equals("Chinese") ||
+    	        Config.getCurrentLanguage().equals("Mandarin")) {
+    	    command=command.no_space_warning();
+    	}
         File tmp = new File(Config.getCurrentDELA().getParentFile(),
                 "CHECK_DIC.TXT");
         UnitexFrame.getFrameManager().closeCheckResultFrame();

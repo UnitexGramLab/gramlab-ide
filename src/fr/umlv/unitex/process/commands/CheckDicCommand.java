@@ -18,40 +18,36 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-
 /**
  * @author Sébastien Paumier
- *
+ * 
  */
 public class CheckDicCommand extends CommandBuilder {
-    
-    public CheckDicCommand() {
-    	super("CheckDic");
-    	if (Config.getCurrentLanguage().equals("Chinese") ||
-    	        Config.getCurrentLanguage().equals("Mandarin")) {
-    	    element("-n");
-    	}
-    }
-    
-    public CheckDicCommand name(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-    }
+	public CheckDicCommand() {
+		super("CheckDic");
+	}
 
-    public CheckDicCommand alphabet(File s) {
-        protectElement("-a"+s.getAbsolutePath());
-        return this;
-      }
+	public CheckDicCommand name(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public CheckDicCommand delaType(boolean isDelas) {
-      element(isDelas?"--delas":"--delaf");
-      return this;
-     }
+	public CheckDicCommand alphabet(File s) {
+		protectElement("-a" + s.getAbsolutePath());
+		return this;
+	}
 
+	public CheckDicCommand delaType(boolean isDelas) {
+		element(isDelas ? "--delas" : "--delaf");
+		return this;
+	}
+	
+	public CheckDicCommand no_space_warning() {
+		element("-n");
+		return this;
+	}
 }

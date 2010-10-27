@@ -207,6 +207,9 @@ public class ConstructTfstFrame extends JInternalFrame {
                     Config.getCurrentSnt()).fst2(vProSuf)
                     .alphabet(Config.getAlphabet())
                     .longestMatches().mergeOutputs().noLimit();
+            if (Config.isArabic()) {
+                locateCmd=locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+            }
             if (Config.isKorean()) {
                 /*
                      * Reconstrucao should not be used for Korean,

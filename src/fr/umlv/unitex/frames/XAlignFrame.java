@@ -257,6 +257,9 @@ public class XAlignFrame extends JInternalFrame {
             if (Config.isArabic()) {
                 dico = dico.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
+            if (Config.isSemiticLanguage()) {
+            	dico=dico.semitic();
+            }
             ArrayList<File> param = Config.getDefaultDicList(language);
             if (param != null && param.size() > 0) {
                 dico = dico.dictionaryList(param);
