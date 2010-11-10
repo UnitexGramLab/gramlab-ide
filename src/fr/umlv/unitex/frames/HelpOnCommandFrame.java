@@ -72,6 +72,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             , Tfst2GrfCommand.class
             , Tfst2UnambigCommand.class
             , TokenizeCommand.class
+            , TrainingTaggerCommand.class
             , Txt2TfstCommand.class
             , UncompressCommand.class
             , XAlignCommand.class
