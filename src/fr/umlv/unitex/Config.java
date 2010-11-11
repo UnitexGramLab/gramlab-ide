@@ -1648,10 +1648,12 @@ public class Config {
             firing = false;
         }
     }
-    
-    public static void cleanTfstFiles() {
-        Config.deleteFileByName(new File(Config
+
+    public static void cleanTfstFiles(boolean deleteSentenceGraphs) {
+    	if (deleteSentenceGraphs) {
+    		Config.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "sentence*.grf"));
+    	}
         Config.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "cursentence.grf"));
         Config.deleteFileByName(new File(Config

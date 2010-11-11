@@ -173,7 +173,7 @@ public class ConstructTfstFrame extends JInternalFrame {
             commands.addCommand(new MkdirCommand().name(dir));
         }
         /* Cleaning files */
-        Config.cleanTfstFiles();
+        Config.cleanTfstFiles(true);
         File graphDir = new File(Config
                 .getUserCurrentLanguageDir(), "Graphs");
         File normalizationDir = new File(graphDir,
