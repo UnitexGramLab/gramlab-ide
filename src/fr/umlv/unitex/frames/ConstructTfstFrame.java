@@ -50,7 +50,7 @@ public class ConstructTfstFrame extends JInternalFrame {
             .getAbsolutePath());
     final JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
     final JTextField tagger_data = new JTextField(new File(new File(Config
-            .getUserCurrentLanguageDir(), "Dela"), "tagger_data_raw.bin")
+            .getUserCurrentLanguageDir(), "Dela"), "tagger_data_cat.bin")
             .getAbsolutePath());
 
     /**
