@@ -61,10 +61,10 @@ import java.util.regex.PatternSyntaxException;
  */
 public class TextAutomatonFrame extends JInternalFrame {
 
-    private TagFilter filter = new TagFilter();
-    private TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
-    private JTextArea sentenceTextArea = new JTextArea();
-    private JLabel sentence_count_label = new JLabel(" 0 sentence");
+    private final TagFilter filter = new TagFilter();
+    private final TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
+    private final JTextArea sentenceTextArea = new JTextArea();
+    private final JLabel sentence_count_label = new JLabel(" 0 sentence");
     private boolean elagON;
     private JSpinner spinner;
     private SpinnerNumberModel spinnerModel;
@@ -74,7 +74,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     private JScrollBar tfstScrollbar;
     private TfstGraphicalZone graphicalZone;
 
-    private GraphListener listener = new GraphListener() {
+    private final GraphListener listener = new GraphListener() {
         public void graphChanged(boolean m) {
             if (m) setModified(true);
             repaint();
@@ -85,7 +85,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         return graphicalZone;
     }
 
-    private TfstTextField textfield = new TfstTextField(25, this);
+    private final TfstTextField textfield = new TfstTextField(25, this);
     boolean modified = false;
     private int sentence_count = 0;
     private File sentence_text;
@@ -894,7 +894,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 
 class loadSentenceDo implements ToDo {
-    private TextAutomatonFrame frame;
+    private final TextAutomatonFrame frame;
 
     loadSentenceDo(TextAutomatonFrame f) {
         frame = f;
@@ -907,8 +907,8 @@ class loadSentenceDo implements ToDo {
 
 
 class ImploseDo implements ToDo {
-    private File fst;
-    private TextAutomatonFrame fr;
+    private final File fst;
+    private final TextAutomatonFrame fr;
 
     public ImploseDo(TextAutomatonFrame frame, File f) {
         fst = f;

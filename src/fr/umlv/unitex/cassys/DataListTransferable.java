@@ -22,7 +22,7 @@ class DataListTransferable implements Transferable {
     /**
      * The dataList to be transfered
      */
-    private DataList dl;
+    private final DataList dl;
 
     /**
      * Creates the <code>DataList</code> identifier type and stores the data to be transfered.

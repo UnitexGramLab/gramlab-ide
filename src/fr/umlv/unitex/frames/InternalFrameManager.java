@@ -48,57 +48,57 @@ import java.util.ArrayList;
  */
 public class InternalFrameManager {
 
-    private JDesktopPane desktop;
+    private final JDesktopPane desktop;
     private final static Integer LAYER = 1;
-    private FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(BuildKrMwuDicFrame.class);
-    private FrameFactory delaFrameFactory = new FrameFactory(DelaFrame.class);
-    private FrameFactory aboutUnitexFrameFactory = new FrameFactory(AboutUnitexFrame.class);
-    private FrameFactory applyLexicalResourcesFrameFactory = new FrameFactory(ApplyLexicalResourcesFrame.class);
-    private FrameFactory checkDicFrameFactory = new FrameFactory(CheckDicFrame.class);
-    private FrameFactory transliterationFrameFactory = new FrameFactory(TransliterationFrame.class);
-    private FrameFactory checkResultFrameFactory = new FrameFactory(CheckResultFrame.class);
-    private FrameFactory concordanceDiffFrameFactory = new FrameFactory(ConcordanceDiffFrame.class);
-    private FrameFactory concordanceParameterFrameFactory = new FrameFactory(ConcordanceParameterFrame.class);
-    private FrameFactory constructTfstFrameFactory = new FrameFactory(ConstructTfstFrame.class);
-    private FrameFactory convertTfstToTextFrameFactory = new FrameFactory(ConvertTfstToTextFrame.class);
-    private FrameFactory elagCompFrameFactory = new FrameFactory(ElagCompFrame.class);
-    private FrameFactory globalPreferencesFrameFactory = new FrameFactory(GlobalPreferencesFrame.class);
-    private FrameFactory graphCollectionFrameFactory = new FrameFactory(GraphCollectionFrame.class);
-    private FrameFactory inflectFrameFactory = new FrameFactory(InflectFrame.class);
-    private FrameFactory convertLexiconGrammarFrameFactory = new FrameFactory(ConvertLexiconGrammarFrame.class);
-    private FrameFactory locateFrameFactory = new FrameFactory(LocateFrame.class);
-    private FrameFactory messageWhileWorkingFrameFactory = new FrameFactory(MessageWhileWorkingFrame.class);
-    private FrameFactory helpOnCommandFrameFactory = new FrameFactory(HelpOnCommandFrame.class);
-    private FrameFactory transcodingFrameFactory = new FrameFactory(TranscodingFrame.class);
-    private FrameFactory consoleFrameFactory = new FrameFactory(ConsoleFrame.class);
-    private XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
+    private final FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(BuildKrMwuDicFrame.class);
+    private final FrameFactory delaFrameFactory = new FrameFactory(DelaFrame.class);
+    private final FrameFactory aboutUnitexFrameFactory = new FrameFactory(AboutUnitexFrame.class);
+    private final FrameFactory applyLexicalResourcesFrameFactory = new FrameFactory(ApplyLexicalResourcesFrame.class);
+    private final FrameFactory checkDicFrameFactory = new FrameFactory(CheckDicFrame.class);
+    private final FrameFactory transliterationFrameFactory = new FrameFactory(TransliterationFrame.class);
+    private final FrameFactory checkResultFrameFactory = new FrameFactory(CheckResultFrame.class);
+    private final FrameFactory concordanceDiffFrameFactory = new FrameFactory(ConcordanceDiffFrame.class);
+    private final FrameFactory concordanceParameterFrameFactory = new FrameFactory(ConcordanceParameterFrame.class);
+    private final FrameFactory constructTfstFrameFactory = new FrameFactory(ConstructTfstFrame.class);
+    private final FrameFactory convertTfstToTextFrameFactory = new FrameFactory(ConvertTfstToTextFrame.class);
+    private final FrameFactory elagCompFrameFactory = new FrameFactory(ElagCompFrame.class);
+    private final FrameFactory globalPreferencesFrameFactory = new FrameFactory(GlobalPreferencesFrame.class);
+    private final FrameFactory graphCollectionFrameFactory = new FrameFactory(GraphCollectionFrame.class);
+    private final FrameFactory inflectFrameFactory = new FrameFactory(InflectFrame.class);
+    private final FrameFactory convertLexiconGrammarFrameFactory = new FrameFactory(ConvertLexiconGrammarFrame.class);
+    private final FrameFactory locateFrameFactory = new FrameFactory(LocateFrame.class);
+    private final FrameFactory messageWhileWorkingFrameFactory = new FrameFactory(MessageWhileWorkingFrame.class);
+    private final FrameFactory helpOnCommandFrameFactory = new FrameFactory(HelpOnCommandFrame.class);
+    private final FrameFactory transcodingFrameFactory = new FrameFactory(TranscodingFrame.class);
+    private final FrameFactory consoleFrameFactory = new FrameFactory(ConsoleFrame.class);
+    private final XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
 
-    private FrameFactory cassysFrameFactory = new FrameFactory(CassysFrame.class);
-    private FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(TransducerListConfigurationFrame.class);
+    private final FrameFactory cassysFrameFactory = new FrameFactory(CassysFrame.class);
+    private final FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(TransducerListConfigurationFrame.class);
 
-    private FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
-    private FrameFactory xAlignConfigFrameFactory = new FrameFactory(XAlignConfigFrame.class);
-    private GraphFrameFactory graphFrameFactory = new GraphFrameFactory();
-    private TextFrameFactory textFrameFactory = new TextFrameFactory();
-    private TokensFrameFactory tokensFrameFactory = new TokensFrameFactory();
-    private TfstTagsFrameFactory tfstTagsFrameFactory = new TfstTagsFrameFactory();
-    private TextDicFrameFactory textDicFrameFactory = new TextDicFrameFactory();
-    private TextAutomatonFrameFactory textAutomatonFrameFactory = new TextAutomatonFrameFactory();
-    private ConcordanceFrameFactory concordanceFrameFactory = new ConcordanceFrameFactory();
-    private LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory = new LexiconGrammarTableFrameFactory();
-    private StatisticsFrameFactory statisticsFrameFactory = new StatisticsFrameFactory();
-    private XAlignFrameFactory xAlignFrameFactory = new XAlignFrameFactory();
+    private final FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
+    private final FrameFactory xAlignConfigFrameFactory = new FrameFactory(XAlignConfigFrame.class);
+    private final GraphFrameFactory graphFrameFactory = new GraphFrameFactory();
+    private final TextFrameFactory textFrameFactory = new TextFrameFactory();
+    private final TokensFrameFactory tokensFrameFactory = new TokensFrameFactory();
+    private final TfstTagsFrameFactory tfstTagsFrameFactory = new TfstTagsFrameFactory();
+    private final TextDicFrameFactory textDicFrameFactory = new TextDicFrameFactory();
+    private final TextAutomatonFrameFactory textAutomatonFrameFactory = new TextAutomatonFrameFactory();
+    private final ConcordanceFrameFactory concordanceFrameFactory = new ConcordanceFrameFactory();
+    private final LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory = new LexiconGrammarTableFrameFactory();
+    private final StatisticsFrameFactory statisticsFrameFactory = new StatisticsFrameFactory();
+    private final XAlignFrameFactory xAlignFrameFactory = new XAlignFrameFactory();
 
-    private DialogFactory graphPathDialogFactory = new DialogFactory(GraphPathDialog.class);
-    private DialogFactory transcodeOneFileDialogFactory = new DialogFactory(TranscodeOneFileDialog.class);
-    private DialogFactory listCopyDialogFactory = new DialogFactory(ListCopyDialog.class);
+    private final DialogFactory graphPathDialogFactory = new DialogFactory(GraphPathDialog.class);
+    private final DialogFactory transcodeOneFileDialogFactory = new DialogFactory(TranscodeOneFileDialog.class);
+    private final DialogFactory listCopyDialogFactory = new DialogFactory(ListCopyDialog.class);
 
-    private PreprocessDialogFactory preprocessDialogFactory = new PreprocessDialogFactory();
-    private FontDialogFactory fontDialogFactory = new FontDialogFactory();
-    private GraphPresentationDialogFactory graphPresentationDialogFactory = new GraphPresentationDialogFactory();
-    private GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
-    private GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
-    private ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
+    private final PreprocessDialogFactory preprocessDialogFactory = new PreprocessDialogFactory();
+    private final FontDialogFactory fontDialogFactory = new FontDialogFactory();
+    private final GraphPresentationDialogFactory graphPresentationDialogFactory = new GraphPresentationDialogFactory();
+    private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
+    private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
+    private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
 
 
     public InternalFrameManager(JDesktopPane desktop) {
@@ -209,7 +209,7 @@ public class InternalFrameManager {
         return textFrameFactory.getTextFrame();
     }
 
-    private ArrayList<TextFrameListener> textFrameListeners = new ArrayList<TextFrameListener>();
+    private final ArrayList<TextFrameListener> textFrameListeners = new ArrayList<TextFrameListener>();
     private boolean firingTextFrame = false;
 
     public void addTextFrameListener(TextFrameListener l) {
@@ -246,7 +246,7 @@ public class InternalFrameManager {
     }
 
 
-    private InternalFrameListener delaFrameListener = new InternalFrameAdapter() {
+    private final InternalFrameListener delaFrameListener = new InternalFrameAdapter() {
         @Override
         public void internalFrameClosing(InternalFrameEvent e) {
             fireDelaFrameClosed();
@@ -270,7 +270,7 @@ public class InternalFrameManager {
         delaFrameFactory.closeFrame();
     }
 
-    private ArrayList<DelaFrameListener> delaFrameListeners = new ArrayList<DelaFrameListener>();
+    private final ArrayList<DelaFrameListener> delaFrameListeners = new ArrayList<DelaFrameListener>();
     private boolean firingDelaFrame = false;
 
     public void addDelaFrameListener(DelaFrameListener l) {
@@ -525,7 +525,7 @@ public class InternalFrameManager {
     }
 
 
-    private ArrayList<LexiconGrammarTableFrameListener> lgFrameListeners = new ArrayList<LexiconGrammarTableFrameListener>();
+    private final ArrayList<LexiconGrammarTableFrameListener> lgFrameListeners = new ArrayList<LexiconGrammarTableFrameListener>();
     private boolean firingLGFrame = false;
 
     public void addLexiconGrammarTableFrameListener(LexiconGrammarTableFrameListener l) {

@@ -48,7 +48,7 @@ public class DelaFrame extends JInternalFrame {
 
     private final JPanel middle;
     private final BigTextList text = new BigTextList(true);
-    private JScrollBar scrollBar;
+    private final JScrollBar scrollBar;
 
     DelaFrame() {
         super("", true, true, true, true);

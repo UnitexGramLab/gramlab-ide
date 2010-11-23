@@ -132,12 +132,12 @@ public class GenericGraphBox {
     /**
      * Tokenized box lines
      */
-    public ArrayList<String> lines;
+    public final ArrayList<String> lines;
 
     /**
      * greyed[i]==true if the line i is a subgraph call
      */
-    public ArrayList<Boolean> greyed;
+    public final ArrayList<Boolean> greyed;
 
     /**
      * Transduction text, if exists
@@ -190,7 +190,7 @@ public class GenericGraphBox {
      */
     ArrayList<GenericGraphBox> transitions;
 
-    public static Font variableFont = new Font("Times New Roman", Font.BOLD, 30);
+    public static final Font variableFont = new Font("Times New Roman", Font.BOLD, 30);
 
     Graphics2D context;
 
