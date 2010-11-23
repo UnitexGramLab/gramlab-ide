@@ -27,10 +27,10 @@ public class TokenTags {
 
     /* Bounds of the token sequence in the sentence (a MWU can be
       * represented by several tokens)  */
-    private int start;
-    private int end;
+    private final int start;
+    private final int end;
     /* The token itself */
-    private String content;
+    private final String content;
 
     public TokenTags(int start, int end, String content) {
         this.start = start;
@@ -39,7 +39,7 @@ public class TokenTags {
     }
 
     /* Unfiltered interpretation list */
-    private ArrayList<ArrayList<Tag>> interpretations = new ArrayList<ArrayList<Tag>>();
+    private final ArrayList<ArrayList<Tag>> interpretations = new ArrayList<ArrayList<Tag>>();
 
     public int getStart() {
         return start;
@@ -53,7 +53,7 @@ public class TokenTags {
         return content;
     }
 
-    private ArrayList<String> filteredInterpretations = new ArrayList<String>();
+    private final ArrayList<String> filteredInterpretations = new ArrayList<String>();
 
     public int getInterpretationCount() {
         return filteredInterpretations.size();
@@ -63,23 +63,23 @@ public class TokenTags {
         return filteredInterpretations.get(i);
     }
 
-    public void refreshFilter(TagFilter f,boolean delafStyle) {
+    public void refreshFilter(TagFilter f, boolean delafStyle) {
         filteredInterpretations.clear();
         for (ArrayList<Tag> interpretation : interpretations) {
-            String s = getFilteredInterpretation(interpretation,f,delafStyle);
+            String s = getFilteredInterpretation(interpretation, f, delafStyle);
             if (s != null && !"".equals(s) && !filteredInterpretations.contains(s)) {
                 filteredInterpretations.add(s);
             }
         }
     }
 
-    private String getFilteredInterpretation(ArrayList<Tag> l, TagFilter f,boolean delafStyle) {
+    private String getFilteredInterpretation(ArrayList<Tag> l, TagFilter f, boolean delafStyle) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < l.size(); i++) {
             Tag tag = l.get(i);
-            String s = tag.toString(f,delafStyle);
+            String s = tag.toString(f, delafStyle);
             if (s == null) return null;
-            if (i > 0) b.append(delafStyle?" ":"+");
+            if (i > 0) b.append(delafStyle ? " " : "+");
             b.append(s);
         }
         return b.toString();
