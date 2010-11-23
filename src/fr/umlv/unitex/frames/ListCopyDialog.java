@@ -37,12 +37,12 @@ import java.awt.event.WindowEvent;
  *
  * @author Sébastien Paumier
  */
-public class ListCopyDialog extends JDialog {
+class ListCopyDialog extends JDialog {
 
 
-    ContextsInfo info;
-    final JTextField left;
-    final JTextField right;
+    private ContextsInfo info;
+    private final JTextField left;
+    private final JTextField right;
 
     /**
      * Constructs a new empty <code>ListCopyDialog</code>
@@ -85,5 +85,5 @@ public class ListCopyDialog extends JDialog {
 
     public ContextsInfo getContextsInfo() {
         return info;
-	}
+    }
 }

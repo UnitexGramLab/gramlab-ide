@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class Tag {
+class Tag {
 
     private String inflected;
     /* If lemma is null, it means that we have a non tag token like "2" */
@@ -137,19 +137,19 @@ public class Tag {
      * Returns a a representation of the tag where the grammatical code list
      * matches the given pattern, or null if none code matches the pattern.
      */
-    public String toString(TagFilter f,boolean delafStyle) {
+    public String toString(TagFilter f, boolean delafStyle) {
         if (lemma == null) {
             return (f != null && f.getPattern() != null) ? null : inflected;
         }
         StringBuilder b = new StringBuilder();
         if (delafStyle) {
-        	if (!inflected.equals(lemma)) {
-        		b.append(inflected);
-        		b.append(",");
-        	}
-        	b.append(lemma);
+            if (!inflected.equals(lemma)) {
+                b.append(inflected);
+                b.append(",");
+            }
+            b.append(lemma);
         } else {
-        	b.append(inflected);
+            b.append(inflected);
         }
         boolean first = true;
         Pattern p = (f == null) ? null : f.getPattern();
@@ -157,16 +157,16 @@ public class Tag {
             String code = gramCodes.get(i);
             if ((i == 0 && (f != null && (f.alwaysShowGramCode() || f.onlyShowGramCode()))) || matches(code, p)) {
                 if (delafStyle) {
-                	if (first) {
-                		b.append(".");
-                	} else {
-                		b.append("+");
-                	}
+                    if (first) {
+                        b.append(".");
+                    } else {
+                        b.append("+");
+                    }
                 } else {
-                	b.append("/");
+                    b.append("/");
                 }
                 b.append(code);
-                first=false;
+                first = false;
             }
             if (i == 0 && f != null && f.onlyShowGramCode()) break;
         }
@@ -183,7 +183,7 @@ public class Tag {
 
     @Override
     public String toString() {
-        return toString(null,true);
+        return toString(null, true);
     }
 
     private boolean matches(String code, Pattern p) {

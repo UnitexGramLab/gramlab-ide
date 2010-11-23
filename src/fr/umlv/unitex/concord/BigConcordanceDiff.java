@@ -39,7 +39,7 @@ import java.io.File;
 public class BigConcordanceDiff extends JList {
 
 
-    public BigConcordanceDiff(ConcordanceDiffAsListModel m) {
+    private BigConcordanceDiff(ConcordanceDiffAsListModel m) {
         super(m);
         setPrototypeCellValue(new ConcordanceDiffAsListModel.DiffLine("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm", Color.BLACK, "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm", Color.BLACK));
         setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));

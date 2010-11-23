@@ -39,14 +39,14 @@ import java.awt.event.ItemListener;
 public class GraphAlignmentDialog extends JDialog {
 
     GridBagLayout horizGridBag = new GridBagLayout();
-    final GridBagLayout vertGridBag = new GridBagLayout();
-    final GridBagConstraints vertConstraints = new GridBagConstraints();
-    final JCheckBox showGrid = new JCheckBox();
-    final JTextField nPixels = new JTextField("30");
+    private final GridBagLayout vertGridBag = new GridBagLayout();
+    private final GridBagConstraints vertConstraints = new GridBagConstraints();
+    private final JCheckBox showGrid = new JCheckBox();
+    private final JTextField nPixels = new JTextField("30");
 
-    int nPix = 30;
+    private int nPix = 30;
 
-    GraphFrame f;
+    private GraphFrame f;
 
     /**
      * Constructs a new <code>GraphAlignmentMenu</code>.
@@ -192,6 +192,6 @@ public class GraphAlignmentDialog extends JDialog {
         if (n < 10) {
             n = 10;
         }
-        nPixels.setText(n+"");
-	}
+        nPixels.setText(n + "");
+    }
 }

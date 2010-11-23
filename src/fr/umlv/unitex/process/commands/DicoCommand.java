@@ -21,10 +21,10 @@
 
 package fr.umlv.unitex.process.commands;
 
+import fr.umlv.unitex.Config;
+
 import java.io.File;
 import java.util.ArrayList;
-
-import fr.umlv.unitex.Config;
 
 /**
  * @author Sébastien Paumier
@@ -47,14 +47,14 @@ public class DicoCommand extends CommandBuilder {
 
     public DicoCommand morphologicalDic(ArrayList<File> dicList) {
         if (dicList != null && !dicList.isEmpty()) {
-        	for (File f:dicList) {
-        		protectElement("-m" + f.getAbsolutePath());
-        	}
+            for (File f : dicList) {
+                protectElement("-m" + f.getAbsolutePath());
+            }
         }
         return this;
     }
 
-    public DicoCommand dictionary(File s) {
+    DicoCommand dictionary(File s) {
         protectElement(s.getAbsolutePath());
         return this;
     }

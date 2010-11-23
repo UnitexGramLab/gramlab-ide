@@ -47,26 +47,26 @@ import java.io.IOException;
  */
 public class ConcordanceParameterFrame extends JInternalFrame {
 
-    final JTextField leftChars = new JTextField("40");
-    final JTextField rightChars = new JTextField("55");
-    final JCheckBox leftCtxStopAtEOS = new JCheckBox("", false);
-    final JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
-    JComboBox sortBox;
-    final JCheckBox openWithBrowser = new JCheckBox(
+    private final JTextField leftChars = new JTextField("40");
+    private final JTextField rightChars = new JTextField("55");
+    private final JCheckBox leftCtxStopAtEOS = new JCheckBox("", false);
+    private final JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
+    private JComboBox sortBox;
+    private final JCheckBox openWithBrowser = new JCheckBox(
             "Use a web browser to view the concordance");
-    final JTextField modifiedTxtFile = new JTextField("");
-    final JTextField extractFile = new JTextField("");
-    String numberOfMatches = null;
-    boolean useWebBrowser;
-    JButton diffButton;
+    private final JTextField modifiedTxtFile = new JTextField("");
+    private final JTextField extractFile = new JTextField("");
+    private String numberOfMatches = null;
+    private boolean useWebBrowser;
+    private JButton diffButton;
 
-    final JRadioButton mode0 = new JRadioButton("collocates by z-score", true);
-    final JRadioButton mode1 = new JRadioButton("collocates by frequency", false);
-    final JRadioButton mode2 = new JRadioButton("contexts by frequency", false);
-    final JTextField leftContextForStats = new JTextField("1");
-    final JTextField rightContextForStats = new JTextField("1");
-    final JRadioButton caseSensitive = new JRadioButton("case sensitive", true);
-    final JRadioButton caseInsensitive = new JRadioButton("case insensitive", false);
+    private final JRadioButton mode0 = new JRadioButton("collocates by z-score", true);
+    private final JRadioButton mode1 = new JRadioButton("collocates by frequency", false);
+    private final JRadioButton mode2 = new JRadioButton("contexts by frequency", false);
+    private final JTextField leftContextForStats = new JTextField("1");
+    private final JTextField rightContextForStats = new JTextField("1");
+    private final JRadioButton caseSensitive = new JRadioButton("case sensitive", true);
+    private final JRadioButton caseInsensitive = new JRadioButton("case insensitive", false);
 
     /**
      * Constructs a new <code>ConcordanceParameterFrame</code>.
@@ -634,5 +634,5 @@ public class ConcordanceParameterFrame extends JInternalFrame {
     void reset() {
         numberOfMatches = null;
         updateDiffButton();
-	}
+    }
 }

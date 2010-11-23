@@ -29,9 +29,9 @@ import java.awt.datatransfer.Transferable;
  *
  * @author Sébastien Paumier
  */
-public class MultipleBoxesSelection implements Transferable {
+class MultipleBoxesSelection implements Transferable {
 
-    MultipleSelection contenu = null;
+    private MultipleSelection contenu = null;
 
     /**
      * Creates a new multiple box selection object for copy/paste operations

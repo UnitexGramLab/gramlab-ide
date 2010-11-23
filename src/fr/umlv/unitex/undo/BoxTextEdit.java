@@ -36,17 +36,17 @@ public class BoxTextEdit extends AbstractUndoableEdit {
     /**
      * text before editing
      */
-    final String oldText;
-    final String /** text to put in the boxe */
+    private final String oldText;
+    private final String /** text to put in the boxe */
             newText;
     /**
      * boxe where change text
      */
-    final GenericGraphBox boxe;
+    private final GenericGraphBox boxe;
     /**
      * zone where the graph is drawn
      */
-    final GenericGraphicalZone zone;
+    private final GenericGraphicalZone zone;
 
     /**
      * contruct an edit to redo and undo a text edition in a boxe
@@ -76,7 +76,7 @@ public class BoxTextEdit extends AbstractUndoableEdit {
     public void redo() {
         super.redo();
         boxe.setContent(newText);
-		
-	}
+
+    }
 
 }

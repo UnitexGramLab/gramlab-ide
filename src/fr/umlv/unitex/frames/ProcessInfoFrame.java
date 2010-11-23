@@ -45,11 +45,11 @@ import java.lang.reflect.InvocationTargetException;
  * @author Sébastien Paumier
  */
 public class ProcessInfoFrame extends JInternalFrame {
-    Process p;
-    final ProcessOutputListModel stdoutModel = new ProcessOutputListModel();
-    final ProcessOutputListModel stderrModel = new ProcessOutputListModel();
-    final JList stdoutList = new JList(stdoutModel);
-    final JList stderrList = new JList(stderrModel);
+    private Process p;
+    private final ProcessOutputListModel stdoutModel = new ProcessOutputListModel();
+    private final ProcessOutputListModel stderrModel = new ProcessOutputListModel();
+    private final JList stdoutList = new JList(stdoutModel);
+    private final JList stderrList = new JList(stderrModel);
     public final static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
     final static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
         @Override
@@ -62,12 +62,12 @@ public class ProcessInfoFrame extends JInternalFrame {
             return this;
         }
     };
-    final boolean close_on_finish;
-    final boolean stop_if_problem;
-    MultiCommands commands = null;
-    final ToDo DO;
-    final JButton ok;
-    final JButton cancel;
+    private final boolean close_on_finish;
+    private final boolean stop_if_problem;
+    private MultiCommands commands = null;
+    private final ToDo DO;
+    private final JButton ok;
+    private final JButton cancel;
 
     /**
      * Creates a new <code>ProcessInfoFrame</code>

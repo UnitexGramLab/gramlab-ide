@@ -69,7 +69,7 @@ public class Preferences {
     public boolean rightToLeftForGraphs;
 
     /**
-     * Indicates if the language is a semitic one, according to 
+     * Indicates if the language is a semitic one, according to
      * the consonant skeleton model
      */
     public boolean semitic;
@@ -169,7 +169,7 @@ public class Preferences {
      * Constructs a new <code>Preferences</code>, using
      * language configuration values.
      */
-    public Preferences() {
+    private Preferences() {
         setPreferencesFromProperties(defaultProperties);
     }
 
@@ -330,7 +330,7 @@ public class Preferences {
     }
 
 
-    public static String getMorphologicalDicListAsString(ArrayList<File> list) {
+    private static String getMorphologicalDicListAsString(ArrayList<File> list) {
         if (list == null || list.size() == 0) {
             return "";
         }
@@ -344,7 +344,7 @@ public class Preferences {
     /**
      * @return a copy of the preferences
      */
-    public Preferences getPreferences() {
+    Preferences getPreferences() {
         Properties prop = setPropertiesFromPreferences();
         Preferences p = new Preferences();
         p.setPreferencesFromProperties(prop);
@@ -494,7 +494,7 @@ public class Preferences {
         pref.textFontListeners.add(listener);
     }
 
-    protected boolean firingTextFont = false;
+    private boolean firingTextFont = false;
 
     public static void removeTextFontListener(FontListener listener) {
         if (pref.firingTextFont) {
@@ -503,7 +503,7 @@ public class Preferences {
         pref.textFontListeners.remove(listener);
     }
 
-    protected void fireTextFontChanged(Font font) {
+    void fireTextFontChanged(Font font) {
         firingTextFont = true;
         try {
             for (FontListener listener : textFontListeners) {
@@ -518,7 +518,7 @@ public class Preferences {
         pref.concordanceFontListeners.add(listener);
     }
 
-    protected boolean firingConcordanceFont = false;
+    private boolean firingConcordanceFont = false;
 
     public static void removeConcordanceFontListener(FontListener listener) {
         if (pref.firingConcordanceFont) {
@@ -527,7 +527,7 @@ public class Preferences {
         pref.concordanceFontListeners.remove(listener);
     }
 
-    protected void fireConcordanceFontChanged(Font font) {
+    void fireConcordanceFontChanged(Font font) {
         firingConcordanceFont = true;
         try {
             for (FontListener listener : concordanceFontListeners) {

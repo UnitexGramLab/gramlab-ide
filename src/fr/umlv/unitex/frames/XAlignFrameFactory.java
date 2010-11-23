@@ -21,38 +21,37 @@
 
 package fr.umlv.unitex.frames;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
+class XAlignFrameFactory {
 
-public class XAlignFrameFactory {
+    private XAlignFrame frame;
 
-	private XAlignFrame frame;
-	
-	XAlignFrame newXAlignFrame(File src,File dst,File alignment) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-		}
-		try {
-			frame=new XAlignFrame(src,dst,alignment);
-		} catch (IOException e) {
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"I/O error while loading alignment files",
-								"Error",
-								JOptionPane.ERROR_MESSAGE);
-				return null;
-			}
-		return frame;
-	}
+    XAlignFrame newXAlignFrame(File src, File dst, File alignment) {
+        if (frame != null) {
+            frame.doDefaultCloseAction();
+        }
+        try {
+            frame = new XAlignFrame(src, dst, alignment);
+        } catch (IOException e) {
+            JOptionPane
+                    .showMessageDialog(
+                            null,
+                            "I/O error while loading alignment files",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        return frame;
+    }
 
-	public void closeXAlignFrame() {
-		if (frame!=null) {
-			frame.dispose();
-			frame=null;
-		}
-	}
-		
+    public void closeXAlignFrame() {
+        if (frame != null) {
+            frame.dispose();
+            frame = null;
+        }
+    }
+
 }

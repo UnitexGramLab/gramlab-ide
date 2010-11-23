@@ -40,7 +40,7 @@ public class XMLTextModelImpl implements XMLTextModel {
 
     private MappedByteBuffer buffer;
     private static final Charset utf8 = Charset.forName("UTF-8");
-    final ArrayList<Sentence> sentences;
+    private final ArrayList<Sentence> sentences;
     private final HashMap<String, Integer> id;
 
 
@@ -109,7 +109,7 @@ public class XMLTextModelImpl implements XMLTextModel {
     }
 
 
-    final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+    private final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
     public void addListDataListener(ListDataListener l) {
         listeners.add(l);
@@ -135,7 +135,7 @@ public class XMLTextModelImpl implements XMLTextModel {
         fireIntervalAdded(this, start, end);
     }
 
-    protected void fireIntervalAdded(Object source, int start, int end) {
+    void fireIntervalAdded(Object source, int start, int end) {
         ListDataEvent event = new ListDataEvent(source, ListDataEvent.INTERVAL_ADDED, start, end);
         for (ListDataListener l : listeners) {
             l.intervalAdded(event);

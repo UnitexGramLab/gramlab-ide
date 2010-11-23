@@ -40,7 +40,7 @@ import java.io.IOException;
 
 public class GraphCollection {
 
-    volatile static boolean stop;
+    private volatile static boolean stop;
 
     /**
      * Builds a graph that calls all subgraphs contained in a directory. If the
@@ -77,7 +77,7 @@ public class GraphCollection {
      * @param destGraph the destination graph
      * @param copy      indicates if subgraphs must be copied or not
      */
-    public static void buildGraphCollection(
+    private static void buildGraphCollection(
             File srcDir,
             File destGraph,
             boolean copy,

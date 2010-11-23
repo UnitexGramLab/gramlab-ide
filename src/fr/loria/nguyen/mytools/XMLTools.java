@@ -88,7 +88,7 @@ public class XMLTools {
         return ret;
     }
 
-    public static String text = null;
+    private static String text = null;
 
     public static String getText(Node node) {
         String ret = null;
@@ -99,7 +99,7 @@ public class XMLTools {
         return ret;
     }
 
-    public static void walkText(Node node) {
+    private static void walkText(Node node) {
         int type = node.getNodeType();
 
         if (type == Node.TEXT_NODE)
@@ -112,7 +112,7 @@ public class XMLTools {
 
     }//end of walkText
 
-    public static void walk(Node node) {
+    private static void walk(Node node) {
         int type = node.getNodeType();
         switch (type) {
             case Node.ELEMENT_NODE: {

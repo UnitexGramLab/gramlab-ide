@@ -45,11 +45,11 @@ public class TextField extends GraphTextField {
     /**
      * Frame that contains this component
      */
-    final GraphFrame parent;
+    private final GraphFrame parent;
     /**
      * Indicates if the text field content has been modified
      */
-    public boolean modified = false;
+    private boolean modified = false;
 
     /**
      * <code>TextAction</code> that defines what to do for a "paste" operation
@@ -66,15 +66,15 @@ public class TextField extends GraphTextField {
     /**
      * <code>TextAction</code> that shows the graph presentation frame
      */
-    public final Presentation presentation;
+    private final Presentation presentation;
     /**
      * <code>TextAction</code> that shows a dialog box to open a graph
      */
-    public final Open OPEN;
+    private final Open OPEN;
     /**
      * <code>TextAction</code> that saves the current graph
      */
-    public final Save SAVE;
+    private final Save SAVE;
 
     /**
      * Constructs a new <code>TextField</code>
@@ -324,7 +324,7 @@ public class TextField extends GraphTextField {
         return false;
     }
 
-    class MyKeyListener extends KeyAdapter {
+    private class MyKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.isControlDown() || e.isAltDown()) {
@@ -344,7 +344,7 @@ public class TextField extends GraphTextField {
      * @return <code>true</code> if the content has changed, <code>false</code>
      *         otherwise
      */
-    public boolean hasChangedTextField() {
+    boolean hasChangedTextField() {
         return modified;
     }
 
@@ -506,7 +506,7 @@ public class TextField extends GraphTextField {
      * @return <code>true</code> if the content is valid, <code>false</code>
      *         otherwise
      */
-    public boolean isValidGraphBoxContent(String s) {
+    boolean isValidGraphBoxContent(String s) {
         if (s.equals(""))
             return true;
         char ligne[];
@@ -531,11 +531,11 @@ public class TextField extends GraphTextField {
         if (L > 2 && ligne[0] == '$'
                 && (ligne[L - 1] == '(' || ligne[L - 1] == ')')
                 && s.lastIndexOf('+') == -1) {
-        	int k=1;
-        	if (ligne[k]=='|') {
-        		/* An output variable is of the form $|XYZ( */
-        		k++;
-        	}
+            int k = 1;
+            if (ligne[k] == '|') {
+                /* An output variable is of the form $|XYZ( */
+                k++;
+            }
             // case of a variable start $a( or end $a)
             for (; k < L - 1; k++)
                 if (ligne[k] != '_' && !(ligne[k] >= '0' && ligne[k] <= '9')

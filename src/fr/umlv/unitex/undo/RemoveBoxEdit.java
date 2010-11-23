@@ -32,7 +32,7 @@ import java.util.ArrayList;
  *
  * @author Decreton Julien
  */
-public class RemoveBoxEdit extends AbstractUndoableEdit {
+class RemoveBoxEdit extends AbstractUndoableEdit {
 
     /**
      * List of transition to a boxe
@@ -88,7 +88,7 @@ public class RemoveBoxEdit extends AbstractUndoableEdit {
     public void redo() {
         super.redo();
         boxes.remove(boxe);
-		zone.removeTransitionTo(boxe);		
-	}
+        zone.removeTransitionTo(boxe);
+    }
 
 }

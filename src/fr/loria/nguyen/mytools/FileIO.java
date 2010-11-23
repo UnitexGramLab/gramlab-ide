@@ -21,28 +21,16 @@
 
 package fr.loria.nguyen.mytools;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import javax.swing.*;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
-import javax.swing.ProgressMonitorInputStream;
-
-/** FileIO.java
+/**
+ * FileIO.java
  * Methods for file I/O operations
+ *
  * @author Thi Minh Huyen Nguyen
  * @author LORIA, France
  * @version 1
@@ -51,113 +39,111 @@ import javax.swing.ProgressMonitorInputStream;
 public class FileIO {
 
 
-    public static Properties loadPROPS(String fileIn){
-	/** Load properties from a file 
-	 * @param fileIn Properties file name
-	 * @return a Properties object
-	 */
-	
-	Properties p = new Properties();
-	
-	try {
-	    p.load(new FileInputStream(fileIn));
-	} catch (IOException ioe) {
-	    System.err.println("Can't read properties file "
-			       + fileIn + ": ");
-	    ioe.printStackTrace();
-	    return null;
-  	}
+    public static Properties loadPROPS(String fileIn) {
+        /** Load properties from a file
+         * @param fileIn Properties file name
+         * @return a Properties object
+         */
 
-	return p;
+        Properties p = new Properties();
+
+        try {
+            p.load(new FileInputStream(fileIn));
+        } catch (IOException ioe) {
+            System.err.println("Can't read properties file "
+                    + fileIn + ": ");
+            ioe.printStackTrace();
+            return null;
+        }
+
+        return p;
     }
 
-     
+
     public static BufferedReader openIN(String fileIn, String enc) {
-	/** Open a file to read with a given encoding 
-	 * @param fileIn reading file name, enc character encoding (UTF8/ASCII)
-	 * @return BufferedReader object
-	 * @exception FileNotFoundException, IOException 
-	 */
-  	BufferedReader in = null;
+        /** Open a file to read with a given encoding
+         * @param fileIn reading file name, enc character encoding (UTF8/ASCII)
+         * @return BufferedReader object
+         * @exception FileNotFoundException, IOException
+         */
+        BufferedReader in = null;
 
-  	try {
-	    if (enc.equals("UTF-8")) {
-		in = new BufferedReader(new InputStreamReader(new FileInputStream(fileIn),"UTF-8"));
-	
-		/** For Windows users: Edited file using UTF8 format contains a redundant character at the begining, this character should be deleted  */	
-		System.err.println(fileIn+": delete first character of UTF-8 file (Y/N)? (Windows user)");
-		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-		if(stdin.readLine().equalsIgnoreCase("Y"))
-		    in.read();	
-	    }
-	    else
-		in = new BufferedReader(new FileReader(fileIn));
-  	} catch (FileNotFoundException e) {
-	    System.err.println(fileIn + " does not exist!");
-	    return null;
-	} catch(IOException exc) {
-	    exc.printStackTrace();
-  	}
-	
-	return in;
+        try {
+            if (enc.equals("UTF-8")) {
+                in = new BufferedReader(new InputStreamReader(new FileInputStream(fileIn), "UTF-8"));
+
+                /** For Windows users: Edited file using UTF8 format contains a redundant character at the begining, this character should be deleted  */
+                System.err.println(fileIn + ": delete first character of UTF-8 file (Y/N)? (Windows user)");
+                BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+                if (stdin.readLine().equalsIgnoreCase("Y"))
+                    in.read();
+            } else
+                in = new BufferedReader(new FileReader(fileIn));
+        } catch (FileNotFoundException e) {
+            System.err.println(fileIn + " does not exist!");
+            return null;
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+
+        return in;
     }
-  
 
-    
+
     public static PrintWriter openOUT(String fileOut, String enc) {
-	/** Open a file to write with a given encoding 
-	 * @param fileIn writing file name, enc character encoding (UTF8/ASCII)
-	 * @return PrintWriter object
-	 * @exception IOException 
-	 */
-	PrintWriter out = null;
+        /** Open a file to write with a given encoding
+         * @param fileIn writing file name, enc character encoding (UTF8/ASCII)
+         * @return PrintWriter object
+         * @exception IOException
+         */
+        PrintWriter out = null;
 
-  	try {	
-	    File f = new File(fileOut);
-	    if (f.exists()) {
-  		System.out.println(fileOut + " exists ... Do you want to overwrite it? (Y/N)");
-  		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-	  	if(!(stdin.readLine().equalsIgnoreCase("Y")))
-		    return null;
-	    }
-	    if (enc.equals("UTF-8"))
-		out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(f),"UTF-8"));
-	    else
-		out = new PrintWriter(new BufferedWriter(new FileWriter(f)));
-  	} catch(IOException exc) {
-	    exc.printStackTrace();
-  	}
-	return out;
-   }
-    
-    protected static final int BUFSIZE = 8192;
-    
-    public static InputStream openLargeInput(String name) throws FileNotFoundException  {
-	/** Utility function to do expensive, long processing asynchronously 
-	 * @param input file name
-	 * @return Reader object
-	 * @exception MalformedURLException, IOException
-	 * @throws FileNotFoundException
-	 */
-	InputStream is;
-	try {
-	    URL u = new URL(name);
-	    is = new ProgressMonitorInputStream(null, "Reading" + " "
-						+name,
-						u.openStream());
-	} catch (MalformedURLException e) {
-	    is = new ProgressMonitorInputStream(null, "Reading" + " "
-						+name,
-						new FileInputStream(name));
-	} catch (IOException f) {
-	    is = new ProgressMonitorInputStream(null, "Reading" + " "
-						+name,
-						new FileInputStream(name));
-	}
-	InputStream buf = new BufferedInputStream(is, BUFSIZE);
-	return buf;
-	
+        try {
+            File f = new File(fileOut);
+            if (f.exists()) {
+                System.out.println(fileOut + " exists ... Do you want to overwrite it? (Y/N)");
+                BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+                if (!(stdin.readLine().equalsIgnoreCase("Y")))
+                    return null;
+            }
+            if (enc.equals("UTF-8"))
+                out = new PrintWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF-8"));
+            else
+                out = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+        } catch (IOException exc) {
+            exc.printStackTrace();
+        }
+        return out;
     }
 
-    
+    private static final int BUFSIZE = 8192;
+
+    public static InputStream openLargeInput(String name) throws FileNotFoundException {
+        /** Utility function to do expensive, long processing asynchronously
+         * @param input file name
+         * @return Reader object
+         * @exception MalformedURLException, IOException
+         * @throws FileNotFoundException
+         */
+        InputStream is;
+        try {
+            URL u = new URL(name);
+            is = new ProgressMonitorInputStream(null, "Reading" + " "
+                    + name,
+                    u.openStream());
+        } catch (MalformedURLException e) {
+            is = new ProgressMonitorInputStream(null, "Reading" + " "
+                    + name,
+                    new FileInputStream(name));
+        } catch (IOException f) {
+            is = new ProgressMonitorInputStream(null, "Reading" + " "
+                    + name,
+                    new FileInputStream(name));
+        }
+        InputStream buf = new BufferedInputStream(is, BUFSIZE);
+        return buf;
+
+    }
+
+
 }

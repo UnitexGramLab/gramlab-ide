@@ -22,18 +22,17 @@
 package fr.umlv.unitex.frames;
 
 
+class GraphAlignmentDialogFactory {
 
-public class GraphAlignmentDialogFactory {
+    private GraphAlignmentDialog dialog;
 
-	private GraphAlignmentDialog dialog;
-	
-	GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
-		if (dialog==null) {
-			dialog=new GraphAlignmentDialog(f);
-		} else {
-			dialog.configure(f);
-		}
-		return dialog;
-	}
+    GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
+        if (dialog == null) {
+            dialog = new GraphAlignmentDialog(f);
+        } else {
+            dialog.configure(f);
+        }
+        return dialog;
+    }
 
 }

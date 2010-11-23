@@ -23,20 +23,21 @@ package fr.umlv.unitex.process.commands;
 
 public abstract class AbstractMethodCommand extends CommandBuilder {
 
-	public AbstractMethodCommand() {
-		type=CommandBuilder.METHOD;
-	}
-	
-	public AbstractMethodCommand(String s) {
-		/* We don't call super(s), because we want to see 'mkdir'
-		 * and not '.../Unitex/App/mkdir' */
-		element(s);
-		type=CommandBuilder.METHOD;
-	}
-	
-	/**
-	 * The method to invoke to do the job.
-	 * @return false if an error occurred; true otherwise
-	 */
-	public abstract boolean execute();
+    AbstractMethodCommand() {
+        type = CommandBuilder.METHOD;
+    }
+
+    AbstractMethodCommand(String s) {
+        /* We don't call super(s), because we want to see 'mkdir'
+           * and not '.../Unitex/App/mkdir' */
+        element(s);
+        type = CommandBuilder.METHOD;
+    }
+
+    /**
+     * The method to invoke to do the job.
+     *
+     * @return false if an error occurred; true otherwise
+     */
+    public abstract boolean execute();
 }

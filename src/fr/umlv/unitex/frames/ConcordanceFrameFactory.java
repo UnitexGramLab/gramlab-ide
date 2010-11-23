@@ -23,24 +23,24 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class ConcordanceFrameFactory {
+class ConcordanceFrameFactory {
 
-	private ConcordanceFrame frame;
-	
-	ConcordanceFrame newConcordanceFrame(File f,int widthInChars) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-		}
-		frame=new ConcordanceFrame(f,widthInChars);
-		return frame;
-	}
-	
-	
-	void closeConcordanceFrame() {
-		if (frame==null) {
-			return;
-		}
-		frame.doDefaultCloseAction();
-	}
+    private ConcordanceFrame frame;
+
+    ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
+        if (frame != null) {
+            frame.doDefaultCloseAction();
+        }
+        frame = new ConcordanceFrame(f, widthInChars);
+        return frame;
+    }
+
+
+    void closeConcordanceFrame() {
+        if (frame == null) {
+            return;
+        }
+        frame.doDefaultCloseAction();
+    }
 
 }

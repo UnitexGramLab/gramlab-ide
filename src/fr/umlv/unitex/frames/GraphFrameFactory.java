@@ -29,9 +29,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class GraphFrameFactory {
+class GraphFrameFactory {
 
-    final ArrayList<GraphFrame> frames = new ArrayList<GraphFrame>();
+    private final ArrayList<GraphFrame> frames = new ArrayList<GraphFrame>();
 
     GraphFrame getGraphFrame(File grf) {
         if (grf != null) {

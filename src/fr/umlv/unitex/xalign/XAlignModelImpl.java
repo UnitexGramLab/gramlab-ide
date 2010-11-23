@@ -35,12 +35,13 @@ import java.util.concurrent.ExecutionException;
 
 public class XAlignModelImpl implements XAlignModel {
 
-    final XMLTextModel src;
-    final XMLTextModel dest;
-    final ArrayList<Couple> alignments;
-    HashMap<String, ArrayList<String>> group;
-    String sourceFile, destFile;
-    int startPosition = -1;
+    private final XMLTextModel src;
+    private final XMLTextModel dest;
+    private final ArrayList<Couple> alignments;
+    private HashMap<String, ArrayList<String>> group;
+    private String sourceFile;
+    private String destFile;
+    private int startPosition = -1;
 
     private boolean modified = false;
 
@@ -88,12 +89,12 @@ public class XAlignModelImpl implements XAlignModel {
     }
 
 
-    MappedByteBuffer buffer;
-    int dataLength = 0;
-    SwingWorker<Void, PublishInfo> worker;
-    FileChannel channel;
-    FileInputStream stream;
-    File file;
+    private MappedByteBuffer buffer;
+    private int dataLength = 0;
+    private SwingWorker<Void, PublishInfo> worker;
+    private FileChannel channel;
+    private FileInputStream stream;
+    private File file;
     Charset utf8 = Charset.forName("UTF-8");
 
     public void load(File f) throws IOException {
@@ -295,9 +296,9 @@ public class XAlignModelImpl implements XAlignModel {
     }
 
 
-    final ArrayList<AlignmentListener> listeners = new ArrayList<AlignmentListener>();
+    private final ArrayList<AlignmentListener> listeners = new ArrayList<AlignmentListener>();
 
-    protected void fireAlignmentChanged(AlignmentEvent e) {
+    void fireAlignmentChanged(AlignmentEvent e) {
         for (AlignmentListener l : listeners) {
             l.alignmentChanged(e);
         }
@@ -321,7 +322,7 @@ public class XAlignModelImpl implements XAlignModel {
      * A string can represent either a single sentence like "d4p5s2" or a
      * sentence group like "l12".
      */
-    protected void align(String s1, String s2) {
+    void align(String s1, String s2) {
         ArrayList<String> l1 = group.get(s1);
         if (l1 == null) {
             l1 = new ArrayList<String>();
@@ -593,7 +594,7 @@ public class XAlignModelImpl implements XAlignModel {
     }
 
 
-    final StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
 
     private String createLink(String groupID, ArrayList<Integer> sentences, boolean source) {
         builder.setLength(0);

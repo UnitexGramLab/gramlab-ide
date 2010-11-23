@@ -64,22 +64,22 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class LoadAndPrepareTexts {
     // Element Properties : 
-    static final short EMPTY = 0;
-    static final short IGNORE = 1;
-    static final short PHRASE = 2;
-    static final short PARAG = 3;
-    static final short DIV = 4;
-    static final short SEQ = 5;
-    static final short TRANSP = 6;
-    static final short BODY = 7;
+    private static final short EMPTY = 0;
+    private static final short IGNORE = 1;
+    private static final short PHRASE = 2;
+    private static final short PARAG = 3;
+    private static final short DIV = 4;
+    private static final short SEQ = 5;
+    private static final short TRANSP = 6;
+    private static final short BODY = 7;
 
-    static final String S_IGNORE = "IGNORE";
-    static final String S_PHRASE = "PHRASE";
-    static final String S_PARAG = "PARAG";
-    static final String S_DIV = "DIV";
-    static final String S_SEQ = "SEQ";
-    static final String S_TRANSP = "TRANSP";
-    static final String S_BODY = "BODY";
+    private static final String S_IGNORE = "IGNORE";
+    private static final String S_PHRASE = "PHRASE";
+    private static final String S_PARAG = "PARAG";
+    private static final String S_DIV = "DIV";
+    private static final String S_SEQ = "SEQ";
+    private static final String S_TRANSP = "TRANSP";
+    private static final String S_BODY = "BODY";
 
 
     /* Les deux classes suivantes sont uniquement là pour
@@ -178,7 +178,8 @@ les id originaux tirés des fichiers source, respectivement target */
     private ArrayList<String> fakeIdsTarget;
 
     // SEAN: "prop" maps tags -> types.
-    String psource, ptarget;
+    private String psource;
+    private String ptarget;
     Properties prop; // variable containing properties saved in a file
 
 
@@ -254,8 +255,7 @@ les id originaux tirés des fichiers source, respectivement target */
 
         try {
             parser = XMLReaderFactory.createXMLReader(XMLTools.parserClass);
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             System.err.println("lAPT: " + e);
             e.printStackTrace();
             System.exit(-1);
@@ -351,7 +351,7 @@ les id originaux tirés des fichiers source, respectivement target */
      *
      * @param name The name of the tag.
      */
-    public final short getContext(String name) {
+    final short getContext(String name) {
         if (name == null) return EMPTY;
 
         String p = prop.getProperty(name);
@@ -845,7 +845,7 @@ les id originaux tirés des fichiers source, respectivement target */
         return (containsChar(id, 'p') && (!containsChar(id, 's')));
     }
 
-    public boolean isIdOfSentence(String id) {
+    boolean isIdOfSentence(String id) {
         return containsChar(id, 's');
     }
 
@@ -893,7 +893,7 @@ les id originaux tirés des fichiers source, respectivement target */
         return lesIds.indexOf(i1) - lesIds.indexOf(i2);
     }
 
-    public void setProperties(Properties p) {
+    void setProperties(Properties p) {
         prop = p;
     }
 }

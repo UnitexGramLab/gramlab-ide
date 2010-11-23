@@ -104,22 +104,22 @@ public class Config {
      * <code>.../(user dir)/(current language)/Alphabet.txt</code>
      */
     private static File alphabet;
-    
+
     /**
-	 * Path of the user's current cassys path directory
-	 * <code>.../(user dir)/(current language)/Cassys</code>
-	 */
-	private static File cassysDir;
-	
-	/**
-	 * Path of the current cassys transducer list
-	 */
-	private static File currentTransducerList;
+     * Path of the user's current cassys path directory
+     * <code>.../(user dir)/(current language)/Cassys</code>
+     */
+    private static File cassysDir;
+
+    /**
+     * Path of the current cassys transducer list
+     */
+    private static File currentTransducerList;
 
     public final static int WINDOWS_SYSTEM = 0;
-    public final static int LINUX_SYSTEM = 1;
-    public final static int MAC_OS_X_SYSTEM = 2;
-    public final static int SUN_OS_SYSTEM = 3;
+    private final static int LINUX_SYSTEM = 1;
+    private final static int MAC_OS_X_SYSTEM = 2;
+    private final static int SUN_OS_SYSTEM = 3;
 
     /**
      * Limit over which the concordance should be viewed with a web navigator
@@ -257,11 +257,11 @@ public class Config {
     private static JFileChooser fst2UnambigDialogBox;
 
     /**
-	 * Dialog box used to choose the transducer list file used
-	 * with Cassys
-	 */
-	private static JFileChooser transducerListDialogBox;
-    
+     * Dialog box used to choose the transducer list file used
+     * with Cassys
+     */
+    private static JFileChooser transducerListDialogBox;
+
 
     /**
      * Initializes the system. This method finds which system is running, which
@@ -495,24 +495,23 @@ public class Config {
         return fst2UnambigDialogBox;
     }
 
-    
+
     public static JFileChooser getTransducerListDialogBox() {
-		if(transducerListDialogBox != null){
-			return transducerListDialogBox;
-		}
-		transducerListDialogBox = new JFileChooser(Config.getCassysDir());
-		transducerListDialogBox.setMultiSelectionEnabled(false);
-		transducerListDialogBox.setControlButtonsAreShown(false);
-		return transducerListDialogBox;
-	}
-    
-    
+        if (transducerListDialogBox != null) {
+            return transducerListDialogBox;
+        }
+        transducerListDialogBox = new JFileChooser(Config.getCassysDir());
+        transducerListDialogBox.setMultiSelectionEnabled(false);
+        transducerListDialogBox.setControlButtonsAreShown(false);
+        return transducerListDialogBox;
+    }
+
 
     /**
      * Updates working directories of dialog boxes. This method is called when
      * the user changes of working language.
      */
-    public static void updateOpenSaveDialogBoxes() {
+    private static void updateOpenSaveDialogBoxes() {
         if (graphDialogBox != null)
             graphDialogBox.setCurrentDirectory(Config.getCurrentGraphDir());
         if (grfAndFst2DialogBox != null)
@@ -555,7 +554,7 @@ public class Config {
      * directory. If appPath is not null, it represents the external
      * programs directory.
      */
-    public static void determineUnitexDir(String appPath) {
+    private static void determineUnitexDir(String appPath) {
         setApplicationDir(appPath, new File(System.getProperty("user.dir")));
     }
 
@@ -565,7 +564,7 @@ public class Config {
      * Windows. Under Linux or MacOS, his private directory is a directory named
      * "unitex", created in his home directory.
      */
-    public static void determineCurrentUser() {
+    private static void determineCurrentUser() {
         userName = System.getProperty("user.name");
         if (currentSystem == WINDOWS_SYSTEM) {
             // configuration procedure under Windows
@@ -646,7 +645,7 @@ public class Config {
      * Finds which operating system is used. If the system is not supported by
      * Unitex, the program stops.
      */
-    public static void determineWhichSystemIsRunning() {
+    private static void determineWhichSystemIsRunning() {
         currentSystemName = System.getProperty("os.name");
         if (currentSystemName.equalsIgnoreCase("Windows NT")
                 || currentSystemName.equalsIgnoreCase("Windows 2003")
@@ -705,7 +704,7 @@ public class Config {
      * @param appPath if not null, it represents the external programs directory
      * @param s       directory's path
      */
-    public static void setApplicationDir(String appPath, File s) {
+    private static void setApplicationDir(String appPath, File s) {
         if (appPath != null) {
             applicationDir = new File(appPath);
         } else {
@@ -729,7 +728,7 @@ public class Config {
      *
      * @param s directory's path
      */
-    public static void setUnitexDir(File s) {
+    private static void setUnitexDir(File s) {
         unitexDir = s;
     }
 
@@ -748,7 +747,7 @@ public class Config {
      *
      * @param s directory's path
      */
-    public static void setUserDir(File s) {
+    private static void setUserDir(File s) {
         userDir = s;
         if (!userDir.exists()) {
             // if the directory does not exists, we create it
@@ -776,7 +775,7 @@ public class Config {
      *
      * @param s language's name
      */
-    public static void setCurrentLanguage(String s) {
+    private static void setCurrentLanguage(String s) {
         currentLanguage = s;
         setUnitexCurrentLanguageDir(new File(getUnitexDir(), currentLanguage));
         setUserCurrentLanguageDir(new File(getUserDir(), currentLanguage));
@@ -784,37 +783,35 @@ public class Config {
         setCurrentGraphDir(new File(getUserCurrentLanguageDir(), "Graphs"));
         setCurrentElagDir(new File(getUserCurrentLanguageDir(), "Elag"));
         setAlphabet(new File(getUserCurrentLanguageDir(), "Alphabet.txt"));
-        setCassysDir(new File(getUserCurrentLanguageDir(),"Cassys"));
+        setCassysDir(new File(getUserCurrentLanguageDir(), "Cassys"));
         setDefaultPreprocessingGraphs();
         updateOpenSaveDialogBoxes();
         Preferences.reset();
         fireLanguageChanged();
     }
 
-    
-    public static File getCurrentTransducerList(){
-		return currentTransducerList;
-	}
-	
-	
-	public static void setCurrentTransducerList(File f){
-		currentTransducerList = f;
-	}
-	
-	public static File getCassysDir() {
-		if(cassysDir == null){
-			System.out.println("ERROR : Cassys dir not Found");
-		}
-		return cassysDir;
-	}
-	
-	
-	public static void setCassysDir(File c) {
-		cassysDir = c;
-	}
-    
-    
-    
+
+    public static File getCurrentTransducerList() {
+        return currentTransducerList;
+    }
+
+
+    public static void setCurrentTransducerList(File f) {
+        currentTransducerList = f;
+    }
+
+    public static File getCassysDir() {
+        if (cassysDir == null) {
+            System.out.println("ERROR : Cassys dir not Found");
+        }
+        return cassysDir;
+    }
+
+
+    private static void setCassysDir(File c) {
+        cassysDir = c;
+    }
+
 
     private static final String[] bastien = new String[]{
             "Greek (Ancient)",
@@ -885,7 +882,7 @@ public class Config {
      *
      * @param s directory's path
      */
-    public static void setUnitexCurrentLanguageDir(File s) {
+    private static void setUnitexCurrentLanguageDir(File s) {
         unitexCurrentLanguageDir = s;
     }
 
@@ -907,7 +904,7 @@ public class Config {
      *
      * @param s directory's path
      */
-    public static void setUserCurrentLanguageDir(File s) {
+    private static void setUserCurrentLanguageDir(File s) {
         userCurrentLanguageDir = s;
         // now, we verify if the directory exists
         if (!userCurrentLanguageDir.exists()) {
@@ -994,7 +991,7 @@ public class Config {
      *
      * @param s directory's path
      */
-    public static void setCurrentCorpusDir(File s) {
+    private static void setCurrentCorpusDir(File s) {
         currentCorpusDir = s;
     }
 
@@ -1032,7 +1029,7 @@ public class Config {
      *
      * @param s directory's path
      */
-    public static void setCurrentElagDir(File s) {
+    private static void setCurrentElagDir(File s) {
         currentElagDir = s;
     }
 
@@ -1051,7 +1048,7 @@ public class Config {
      *
      * @param s file's path
      */
-    public static void setAlphabet(File s) {
+    private static void setAlphabet(File s) {
         alphabet = s;
     }
 
@@ -1066,7 +1063,7 @@ public class Config {
      * Asks for the user to select his private directory. IMPORTANT: this method
      * must be called only when Unitex is running under Windows.
      */
-    public static void chooseNewUserDir() {
+    private static void chooseNewUserDir() {
         String message = "Welcome " + getUserName() + "!\n\n";
         message = message
                 + "To use Unitex, you must choose a private \ndirectory to store your data ";
@@ -1138,7 +1135,7 @@ public class Config {
      * Shows a dialog box that offers to the user to choose the initial language
      * he wants to work on
      */
-    public static void chooseInitialLanguage() {
+    private static void chooseInitialLanguage() {
         final JPanel p = new JPanel();
         p.setLayout(new GridLayout(4, 1));
         p.setOpaque(true);
@@ -1211,7 +1208,7 @@ public class Config {
      *
      * @param s name of the corpus file
      */
-    public static void setCurrentSntDir(File s) {
+    private static void setCurrentSntDir(File s) {
         final String path = Util.getFileNameWithoutExtension(s.getAbsolutePath());
         currentSntDir = new File(path + "_snt");
         if (currentSntDir.exists() && !currentSntDir.isDirectory()) {
@@ -1236,7 +1233,7 @@ public class Config {
      *
      * @param s graph's name
      */
-    public static void setCurrentSentenceGraph(File s) {
+    private static void setCurrentSentenceGraph(File s) {
         currentSentenceGraph = s;
     }
 
@@ -1252,7 +1249,7 @@ public class Config {
      *
      * @param s graph's name
      */
-    public static void setCurrentReplaceGraph(File s) {
+    private static void setCurrentReplaceGraph(File s) {
         currentReplaceGraph = s;
     }
 
@@ -1275,7 +1272,7 @@ public class Config {
     /**
      * Sets sentence delimitation and replace graphs
      */
-    public static void setDefaultPreprocessingGraphs() {
+    private static void setDefaultPreprocessingGraphs() {
         File sentence = new File(getUserCurrentLanguageDir(), "Graphs");
         sentence = new File(sentence, "Preprocessing");
         File replace = new File(sentence, "Replace");
@@ -1303,7 +1300,7 @@ public class Config {
      * @param src  source
      * @param dest destination
      */
-    public static void copyFileByName(File src, File dest) {
+    private static void copyFileByName(File src, File dest) {
         final File path_src = src.getParentFile();
         final String expression = src.getName();
         if (dest.isDirectory()) {
@@ -1327,7 +1324,7 @@ public class Config {
      * @param dest destination directory
      */
 
-    public static void copyDirRec(File src, File dest) {
+    private static void copyDirRec(File src, File dest) {
 
         if (!src.isDirectory()) {
             return;
@@ -1586,9 +1583,7 @@ public class Config {
             br.close();
         } catch (FileNotFoundException ee) {
             // nothing to do
-        }
-
-        catch (IOException e) {
+        } catch (IOException e) {
             // e.printStackTrace();
         }
         return res;
@@ -1616,7 +1611,7 @@ public class Config {
     }
 
 
-    static boolean isValidLanguageName(String name) {
+    private static boolean isValidLanguageName(String name) {
         return !(name.equals("App") || name.equals("Users")
                 || name.equals("Src") || name.equals("XAlign")
                 || name.startsWith("."));
@@ -1625,7 +1620,7 @@ public class Config {
 
     private static final ArrayList<LanguageListener> listeners = new ArrayList<LanguageListener>();
 
-    protected static boolean firing = false;
+    private static boolean firing = false;
 
     public static void addLanguageListener(LanguageListener l) {
         listeners.add(l);
@@ -1638,7 +1633,7 @@ public class Config {
         listeners.remove(l);
     }
 
-    protected static void fireLanguageChanged() {
+    private static void fireLanguageChanged() {
         firing = true;
         try {
             for (LanguageListener l : listeners) {
@@ -1650,10 +1645,10 @@ public class Config {
     }
 
     public static void cleanTfstFiles(boolean deleteSentenceGraphs) {
-    	if (deleteSentenceGraphs) {
-    		Config.deleteFileByName(new File(Config
-                .getCurrentSntDir(), "sentence*.grf"));
-    	}
+        if (deleteSentenceGraphs) {
+            Config.deleteFileByName(new File(Config
+                    .getCurrentSntDir(), "sentence*.grf"));
+        }
         Config.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "cursentence.grf"));
         Config.deleteFileByName(new File(Config

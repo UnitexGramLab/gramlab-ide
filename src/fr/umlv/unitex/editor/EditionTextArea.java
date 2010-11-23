@@ -38,8 +38,8 @@ import java.util.regex.Pattern;
 public class EditionTextArea extends JTextArea {
 
     Timer currentTimer = null;
-    int searchIndex = 0;
-    boolean modified = false;
+    private int searchIndex = 0;
+    private boolean modified = false;
 
     /**
      * Default Constructor
@@ -393,8 +393,8 @@ public class EditionTextArea extends JTextArea {
     }
 
 
-    final static String separatorsRegexp = "[^\\p{javaLowerCase}\\p{javaUpperCase}]";
-    final static String lettersRegexp = "[\\p{javaLowerCase}\\p{javaUpperCase}]";
+    private final static String separatorsRegexp = "[^\\p{javaLowerCase}\\p{javaUpperCase}]";
+    private final static String lettersRegexp = "[\\p{javaLowerCase}\\p{javaUpperCase}]";
 
     /**
      * checks is a word ( "key" ) is not surrounded by other letters

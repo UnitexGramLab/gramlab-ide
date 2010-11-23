@@ -23,16 +23,16 @@ package fr.umlv.unitex.console;
 
 public class ConsoleEntry {
 
-    final String content;
-    String error;
+    private final String content;
+    private String error;
 
     /* 0=no error button, 1=error down button, 2=error up button, 3=nothing */
-    int status;
+    private int status;
 
-    final boolean systemMsg;
+    private final boolean systemMsg;
 
     /* The log ID associated to the command, or null if the command wasn't logged */
-    final String logID;
+    private final String logID;
 
     public ConsoleEntry(String command, boolean isRealCommand, boolean systemMsg, String logID) {
         this.content = command;

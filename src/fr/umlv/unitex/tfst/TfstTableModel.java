@@ -34,19 +34,19 @@ import java.util.ArrayList;
  */
 public class TfstTableModel extends AbstractTableModel {
 
-    int nColumns;
-    final ArrayList<TokenTags> lines = new ArrayList<TokenTags>();
-    final TagFilter filter;
-    final boolean delafStyle;
+    private int nColumns;
+    private final ArrayList<TokenTags> lines = new ArrayList<TokenTags>();
+    private final TagFilter filter;
+    private final boolean delafStyle;
 
-    public TfstTableModel(TagFilter f,final boolean delafStyle) {
+    public TfstTableModel(TagFilter f, final boolean delafStyle) {
         filter = f;
-        this.delafStyle=delafStyle;
+        this.delafStyle = delafStyle;
         filter.addFilterListener(new FilterListener() {
             public void filterChanged() {
                 nColumns = 1;
                 for (TokenTags t : lines) {
-                    t.refreshFilter(filter,delafStyle);
+                    t.refreshFilter(filter, delafStyle);
                     int max = 1 + t.getInterpretationCount();
                     if (max > nColumns) nColumns = max;
                 }
@@ -88,7 +88,7 @@ public class TfstTableModel extends AbstractTableModel {
         }
         nColumns = 1;
         for (TokenTags t : lines) {
-            t.refreshFilter(filter,delafStyle);
+            t.refreshFilter(filter, delafStyle);
             int max = 1 + t.getInterpretationCount();
             if (max > nColumns) nColumns = max;
         }
@@ -168,7 +168,7 @@ public class TfstTableModel extends AbstractTableModel {
         return t;
     }
 
-	public TokenTags getTokenTags(int j) {
-		return lines.get(j);
-	}
+    public TokenTags getTokenTags(int j) {
+        return lines.get(j);
+    }
 }

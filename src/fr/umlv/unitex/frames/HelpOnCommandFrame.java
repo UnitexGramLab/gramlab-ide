@@ -34,10 +34,10 @@ import java.io.IOException;
 public class HelpOnCommandFrame extends JInternalFrame {
 
     @SuppressWarnings("unchecked")
-    final
+    private final
     Class[] commands = {
-    		BuildKrMwuDicCommand.class
-        	, CheckDicCommand.class
+            BuildKrMwuDicCommand.class
+            , CheckDicCommand.class
             , CompressCommand.class
             , ConcordCommand.class
             , ConcorDiffCommand.class
@@ -79,7 +79,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             , XMLizerCommand.class
     };
 
-    boolean refreshLock = false;
+    private boolean refreshLock = false;
 
     HelpOnCommandFrame() {
         super("Help on commands", true, true, true, true);
@@ -126,8 +126,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
                     e1.printStackTrace();
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                }
-                finally {
+                } finally {
                     refreshLock = false;
                 }
             }

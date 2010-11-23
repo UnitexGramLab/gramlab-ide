@@ -48,7 +48,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 
     /* The real type of occurrenceArray is List<Occurrence>[], but
       * we can't declare such a thing. */
-    Object[] occurrenceArray;
+    private Object[] occurrenceArray;
     private final XAlignModel xAlignModel;
 
 
@@ -232,7 +232,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
     }
 
 
-    final StringBuilder builder = new StringBuilder();
+    private final StringBuilder builder = new StringBuilder();
     private final static int PLAIN = 0;
     private final static int MATCH = 1;
 
@@ -325,7 +325,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
     }
 
 
-    final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+    private final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
     public void addListDataListener(ListDataListener l) {
         listeners.add(l);
@@ -335,21 +335,21 @@ public class ConcordanceModelImpl implements ConcordanceModel {
         listeners.remove(l);
     }
 
-    protected void fireIntervalAdded(Object source1, int start, int end) {
+    void fireIntervalAdded(Object source1, int start, int end) {
         ListDataEvent event = new ListDataEvent(source1, ListDataEvent.INTERVAL_ADDED, start, end);
         for (ListDataListener l : listeners) {
             l.intervalAdded(event);
         }
     }
 
-    protected void fireIntervalRemoved(Object source1, int start, int end) {
+    void fireIntervalRemoved(Object source1, int start, int end) {
         ListDataEvent event = new ListDataEvent(source1, ListDataEvent.INTERVAL_REMOVED, start, end);
         for (ListDataListener l : listeners) {
             l.intervalRemoved(event);
         }
     }
 
-    protected void fireContentChanged(Object source1, int start, int end) {
+    void fireContentChanged(Object source1, int start, int end) {
         ListDataEvent event = new ListDataEvent(source1, ListDataEvent.CONTENTS_CHANGED, start, end);
         for (ListDataListener l : listeners) {
             l.contentsChanged(event);
@@ -403,7 +403,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
     }
 
 
-    ListDataListener alignModeDataLister;
+    private ListDataListener alignModeDataLister;
 
     /**
      * We may need to know the model of the other text, because of

@@ -26,7 +26,7 @@ package fr.umlv.unitex.xalign;
  *
  * @author Sébastien Paumier
  */
-public class Sentence {
+class Sentence {
 
     /**
      * XML id of the sentence.

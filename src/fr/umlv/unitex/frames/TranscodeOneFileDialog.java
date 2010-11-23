@@ -40,12 +40,12 @@ import java.io.File;
  */
 public class TranscodeOneFileDialog extends JDialog {
 
-    final JRadioButton replace = new JRadioButton("Replace", true);
+    private final JRadioButton replace = new JRadioButton("Replace", true);
     private final JLabel line1 = new JLabel();
     private final JLabel line2 = new JLabel();
 
-    File file;
-    ToDo toDo;
+    private File file;
+    private ToDo toDo;
 
     TranscodeOneFileDialog() {
         super(UnitexFrame.mainFrame, "Transcoding", true);
