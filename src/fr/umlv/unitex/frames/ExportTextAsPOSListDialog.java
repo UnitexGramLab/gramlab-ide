@@ -41,7 +41,7 @@ import java.lang.reflect.InvocationTargetException;
 public class ExportTextAsPOSListDialog extends JDialog {
     private File output;
     private boolean canceled = false;
-    private JProgressBar progress = new JProgressBar();
+    private final JProgressBar progress = new JProgressBar();
     private TagFilter filter;
 
     /**
