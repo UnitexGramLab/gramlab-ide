@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 @SuppressWarnings("unchecked")
-public class Sentences {
+class Sentences {
 
     private Dist srcLengths, tarLengths; //lengths of sentences of two texts
 
@@ -45,9 +45,9 @@ public class Sentences {
     //within a text
     public static final Vector Links = new Vector(); //links of the two texts
 
-    static int nbLink = 0;
+    private static int nbLink = 0;
 
-    static int nbPaquet = 0;
+    private static int nbPaquet = 0;
 
     private static final Cognates xalignResults = new Cognates();
     // B.G. the results of the alignment
@@ -97,10 +97,10 @@ public class Sentences {
     }
 
     // computation of the results in the new format
-    public void createAlignementResults(Vector srcId, Vector tarId,
-                                        String uriSrc, String uriTar,
-                                        LoadAndPrepareTexts lpt,
-                                        Path path) {
+    void createAlignementResults(Vector srcId, Vector tarId,
+                                 String uriSrc, String uriTar,
+                                 LoadAndPrepareTexts lpt,
+                                 Path path) {
         Point pt;
         int whereInSrc, whereInTar;
         ArrayList<XmlId> contentOfpaquet;
@@ -198,7 +198,7 @@ public class Sentences {
         }
     }
 
-    public void createLinks(Vector srcId, Vector Xptr, Path path) {
+    void createLinks(Vector srcId, Vector Xptr, Path path) {
         // nbLink: Number of links within a text
         int srcCpt = 0, tarCpt = 0; //counter for vectors srcId & tarId
 

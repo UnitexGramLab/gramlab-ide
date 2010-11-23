@@ -36,12 +36,12 @@ import java.awt.*;
  */
 public class ConsoleFrame extends JInternalFrame {
 
-    final ConsoleTableModel model;
-    final JTable table;
-    int longestCommandWidth = 80;
-    int longestIDWidth = 50;
+    private final ConsoleTableModel model;
+    private final JTable table;
+    private int longestCommandWidth = 80;
+    private int longestIDWidth = 50;
 
-    static final ImageIcon statusOK = new ImageIcon(Console.class.getResource("OK.png"));
+    private static final ImageIcon statusOK = new ImageIcon(Console.class.getResource("OK.png"));
     public static final ImageIcon statusErrorDown = new ImageIcon(Console.class.getResource("error1.png"));
     public static final ImageIcon statusErrorUp = new ImageIcon(Console.class.getResource("error2.png"));
 

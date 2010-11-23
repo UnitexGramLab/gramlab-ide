@@ -39,7 +39,7 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 public class TokensFrame extends JInternalFrame {
-    final BigTextList text = new BigTextList(false);
+    private final BigTextList text = new BigTextList(false);
 
     TokensFrame() {
         super("Token list", true, true, true, true);
@@ -127,5 +127,5 @@ public class TokensFrame extends JInternalFrame {
         text.reset();
         setVisible(false);
         System.gc();
-	}
+    }
 }

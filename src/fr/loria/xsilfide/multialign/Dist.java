@@ -35,13 +35,13 @@
 package fr.loria.xsilfide.multialign;
 
 
-public class Dist {
-    protected final int[] dist;
-    protected final int num;
+class Dist {
+    private final int[] dist;
+    private final int num;
     static private double align_cst_c = 1.0D;                  // BG : moyenne ?
     static private double align_cst_s2 = 6.7999999999999998D;   //BG : sigma 2 = variance ???
 
-    static public final int BIG_DISTANCE = 2500;
+    private static final int BIG_DISTANCE = 2500;
 
     public Dist(int nb) {
         num = nb;

@@ -21,32 +21,34 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import javax.swing.JTextField;
+import javax.swing.*;
+
 /**
  * Ancestor of graph box text editor.
- * @author paumier
  *
+ * @author paumier
  */
 public abstract class GraphTextField extends JTextField {
 
-	public GraphTextField(int n) {
-		super(n);
-	}
+    GraphTextField(int n) {
+        super(n);
+    }
 
-	/**
-	 * Sets the content of the text editor, making it editable or not
-	 * depending on s
-	 * @param s
-	 */
-	public abstract void setContent(String s);
-	
-	/**
-	 * Tests if the current content is valid and if so, validates it
-	 * by committing the content to the selected boxes. 
+    /**
+     * Sets the content of the text editor, making it editable or not
+     * depending on s
+     *
+     * @param s
+     */
+    public abstract void setContent(String s);
 
-	 * @return <code>true</code> if boxes have actually been modified,
-	 *         <code>false</code> otherwise
-	 */
-	public abstract boolean validateContent();
-	
+    /**
+     * Tests if the current content is valid and if so, validates it
+     * by committing the content to the selected boxes.
+     *
+     * @return <code>true</code> if boxes have actually been modified,
+     *         <code>false</code> otherwise
+     */
+    public abstract boolean validateContent();
+
 }

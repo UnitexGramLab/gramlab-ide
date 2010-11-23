@@ -46,25 +46,25 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 public class TranscodingFrame extends JInternalFrame {
-    final JList srcEncodingList = new JList(Transcoder.getAvailableEncodings());
-    final JList destEncodingList = new JList(Transcoder.getAvailableEncodings());
-    final JRadioButton replace = new JRadioButton("Replace");
-    final JRadioButton renameSourceWithPrefix = new JRadioButton(
+    private final JList srcEncodingList = new JList(Transcoder.getAvailableEncodings());
+    private final JList destEncodingList = new JList(Transcoder.getAvailableEncodings());
+    private final JRadioButton replace = new JRadioButton("Replace");
+    private final JRadioButton renameSourceWithPrefix = new JRadioButton(
             "Rename source with prefix");
-    final JRadioButton renameSourceWithSuffix = new JRadioButton(
+    private final JRadioButton renameSourceWithSuffix = new JRadioButton(
             "Rename source with suffix");
-    final JRadioButton nameDestWithPrefix = new JRadioButton(
+    private final JRadioButton nameDestWithPrefix = new JRadioButton(
             "Name destination with prefix");
-    final JRadioButton nameDestWithSuffix = new JRadioButton(
+    private final JRadioButton nameDestWithSuffix = new JRadioButton(
             "Name destination with suffix");
-    final JTextField prefixSuffix = new JTextField("");
-    final DefaultListModel listModel = new DefaultListModel();
-    final JList fileList = new JList(listModel);
-    final JButton addFiles = new JButton("Add Files");
-    final JButton removeFiles = new JButton("Remove Files");
-    final JButton transcode = new JButton("Transcode");
-    final JButton cancel = new JButton("Cancel");
-    ToDo toDo;
+    private final JTextField prefixSuffix = new JTextField("");
+    private final DefaultListModel listModel = new DefaultListModel();
+    private final JList fileList = new JList(listModel);
+    private final JButton addFiles = new JButton("Add Files");
+    private final JButton removeFiles = new JButton("Remove Files");
+    private final JButton transcode = new JButton("Transcode");
+    private final JButton cancel = new JButton("Cancel");
+    private ToDo toDo;
 
     TranscodingFrame() {
         super("Transcode Files", true, true);

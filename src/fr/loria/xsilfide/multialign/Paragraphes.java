@@ -37,7 +37,7 @@ import java.util.Vector;
 
 
 @SuppressWarnings("unchecked")
-public class Paragraphes {
+class Paragraphes {
 
     private Dist srcLengths, tarLengths; //lengths of paragraphs
 
@@ -45,7 +45,8 @@ public class Paragraphes {
     public static Vector Links = new Vector(); //links of the two texts
 
     // csSrc,csTar: counter for marking current position in sentence's vectors
-    static int csSrc = 0, csTar = 0;
+    private static int csSrc = 0;
+    private static int csTar = 0;
 
     public Paragraphes(Vector paraSrc, Vector paraTar, Vector stceSrc, Vector stceTar, int sMax, int tMax, Cognates cogn, LoadAndPrepareTexts lpt) {
         int nbSrc = paraSrc.size();
@@ -150,11 +151,11 @@ public class Paragraphes {
     }
 
 
-    public void alignSentences(Vector srcParas, Vector tarParas,
-                               Path path,
-                               Vector srcSentences, Vector tarSentences,
-                               int sMax, int tMax, Cognates cogn,
-                               LoadAndPrepareTexts lpt)
+    void alignSentences(Vector srcParas, Vector tarParas,
+                        Path path,
+                        Vector srcSentences, Vector tarSentences,
+                        int sMax, int tMax, Cognates cogn,
+                        LoadAndPrepareTexts lpt)
 
     {
 

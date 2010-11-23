@@ -46,9 +46,9 @@ import java.nio.channels.FileChannel;
  */
 public class FileManager {
 
-    Timer currentTimer = null;
-    FileEditionTextFrame fileEditionTextFrame;
-    boolean FILE_TOO_LARGE = false;
+    private Timer currentTimer = null;
+    private FileEditionTextFrame fileEditionTextFrame;
+    private boolean FILE_TOO_LARGE = false;
 
     /**
      * loads file and checks encoding type
@@ -180,7 +180,7 @@ public class FileManager {
      * @param file     the text to load
      * @param textArea aera where put the text
      */
-    public Document load(File file, final EditionTextArea textArea)
+    Document load(File file, final EditionTextArea textArea)
             throws IOException, IllegalArgumentException {
 
         final StringContent content = new StringContent();

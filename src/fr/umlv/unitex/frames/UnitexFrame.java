@@ -64,7 +64,7 @@ public class UnitexFrame extends JFrame {
     /**
      * The desktop of the frame.
      */
-    final JDesktopPane desktop;
+    private final JDesktopPane desktop;
     final InternalFrameManager frameManager;
     /**
      * The clipboard used to copy and paste text and graph box selections.
@@ -74,7 +74,7 @@ public class UnitexFrame extends JFrame {
      * The main frame of the system.
      */
     public static UnitexFrame mainFrame;
-    static Dimension screenSize;
+    private static Dimension screenSize;
     public static boolean closing = false;
 
     /**
@@ -121,7 +121,7 @@ public class UnitexFrame extends JFrame {
             }
 
             public void textFrameClosed() {
-            	cassys.setEnabled(false);
+                cassys.setEnabled(false);
                 preprocessText.setEnabled(false);
                 applyLexicalResources.setEnabled(false);
                 locatePattern.setEnabled(false);
@@ -191,7 +191,7 @@ public class UnitexFrame extends JFrame {
     /**
      * Builds the menu bar.
      */
-    public void buildMenus() {
+    void buildMenus() {
         final JMenuBar menuBar = new JMenuBar();
         final JMenu text = buildTextMenu();
         final JMenu DELA = buildDELAMenu();
@@ -220,21 +220,21 @@ public class UnitexFrame extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    Action openText;
-    Action openTaggedText;
-    public Action preprocessText;
-    Action changeLang;
-    public Action applyLexicalResources;
-    public Action locatePattern;
-    public AbstractAction displayLocatedSequences;
-    AbstractAction elagComp;
-    AbstractAction constructFst;
-    AbstractAction convertFst;
-    AbstractAction closeText;
-    AbstractAction quitUnitex;
-    AbstractAction cassys;
+    private Action openText;
+    private Action openTaggedText;
+    private Action preprocessText;
+    private Action changeLang;
+    private Action applyLexicalResources;
+    private Action locatePattern;
+    private AbstractAction displayLocatedSequences;
+    private AbstractAction elagComp;
+    private AbstractAction constructFst;
+    private AbstractAction convertFst;
+    private AbstractAction closeText;
+    private AbstractAction quitUnitex;
+    private AbstractAction cassys;
 
-    public JMenu buildTextMenu() {
+    JMenu buildTextMenu() {
         final JMenu textMenu = new JMenu("Text");
         openText = new AbstractAction("Open...") {
             public void actionPerformed(ActionEvent e) {
@@ -288,22 +288,22 @@ public class UnitexFrame extends JFrame {
         locatePattern.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                 KeyEvent.VK_L, Event.CTRL_MASK));
         textMenu.add(new JMenuItem(locatePattern));
-        
+
         cassys = new AbstractAction("Apply CasSys Cascade...") {
-			public void actionPerformed(ActionEvent e) {
-				frameManager.newCassysFrame();
-			}
-		};
-		cassys.setEnabled(false);
-		JMenuItem cassysItem = new JMenuItem(cassys);
-		textMenu.add(cassysItem);
-		
+            public void actionPerformed(ActionEvent e) {
+                frameManager.newCassysFrame();
+            }
+        };
+        cassys.setEnabled(false);
+        JMenuItem cassysItem = new JMenuItem(cassys);
+        textMenu.add(cassysItem);
+
         displayLocatedSequences = new AbstractAction("Located Sequences...") {
             public void actionPerformed(ActionEvent e) {
                 frameManager.newConcordanceParameterFrame();
             }
         };
-        
+
         displayLocatedSequences.setEnabled(false);
         textMenu.add(new JMenuItem(displayLocatedSequences));
         textMenu.addSeparator();
@@ -345,14 +345,14 @@ public class UnitexFrame extends JFrame {
         return textMenu;
     }
 
-    AbstractAction checkDelaFormat;
-    AbstractAction transliterate;
-    AbstractAction sortDictionary;
-    AbstractAction inflect;
-    AbstractAction compressIntoFST;
-    AbstractAction closeDela;
+    private AbstractAction checkDelaFormat;
+    private AbstractAction transliterate;
+    private AbstractAction sortDictionary;
+    private AbstractAction inflect;
+    private AbstractAction compressIntoFST;
+    private AbstractAction closeDela;
 
-    public JMenu buildDELAMenu() {
+    JMenu buildDELAMenu() {
         final JMenu delaMenu = new JMenu("DELA");
         final JMenuItem open2 = new JMenuItem("Open...");
         open2.addActionListener(new ActionListener() {
@@ -423,7 +423,7 @@ public class UnitexFrame extends JFrame {
         return delaMenu;
     }
 
-    public JMenu buildFsGraphMenu() {
+    JMenu buildFsGraphMenu() {
         final JMenu graphMenu = new JMenu("FSGraph");
         final JMenuItem newGraph = new JMenuItem("New");
         newGraph.addActionListener(new ActionListener() {
@@ -720,11 +720,11 @@ public class UnitexFrame extends JFrame {
         return graphMenu;
     }
 
-    AbstractAction openLexiconGrammar;
-    AbstractAction compileLexiconGrammar;
-    AbstractAction closeLexiconGrammar;
+    private AbstractAction openLexiconGrammar;
+    private AbstractAction compileLexiconGrammar;
+    private AbstractAction closeLexiconGrammar;
 
-    public JMenu buildLexiconGrammarMenu() {
+    JMenu buildLexiconGrammarMenu() {
         final JMenu lexiconGrammar = new JMenu("Lexicon-Grammar");
         openLexiconGrammar = new AbstractAction("Open...") {
             public void actionPerformed(ActionEvent e) {
@@ -772,7 +772,7 @@ public class UnitexFrame extends JFrame {
     }
 
 
-    public JMenu buildWindowsMenu() {
+    JMenu buildWindowsMenu() {
         final JMenu windows = new JMenu("Windows");
         final JMenuItem tile = new JMenuItem("Tile");
         tile.setEnabled(true);
@@ -800,7 +800,7 @@ public class UnitexFrame extends JFrame {
     }
 
 
-    public JMenu buildInfoMenu() {
+    JMenu buildInfoMenu() {
         final JMenu info = new JMenu("Info");
         final JMenuItem aboutUnitex = new JMenuItem("About Unitex...");
         aboutUnitex.addActionListener(new ActionListener() {
@@ -841,7 +841,7 @@ public class UnitexFrame extends JFrame {
      * This method is called when the user tries to close the main window, or
      * when he clicks on the "Quit Unitex" item in the "Text" menu.
      */
-    public void quit() {
+    void quit() {
         final String[] options = {"Yes", "No"};
         final int n = JOptionPane.showOptionDialog(this,
                 "Do you really want to quit ?", "", JOptionPane.YES_NO_OPTION,
@@ -859,7 +859,7 @@ public class UnitexFrame extends JFrame {
      * Shows a dialog box to select a corpus. If a corpus is selected, it is
      * opened with a call to the <code>Text.loadCorpus(String)</code> method.
      */
-    public void openText() {
+    void openText() {
         Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
         final int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -873,7 +873,7 @@ public class UnitexFrame extends JFrame {
      * Shows a dialog box to select a tagged corpus. If a corpus is selected, it
      * is opened with a call to the <code>Text.loadCorpus(String)</code> method.
      */
-    public void openTaggedText() {
+    void openTaggedText() {
         Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
         final int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -912,7 +912,7 @@ public class UnitexFrame extends JFrame {
      * Shows a dialog box to select a lexicon-grammar table. If a table is
      * selected, a <code>LexiconGrammarTableFrame</code> object is created.
      */
-    public void openLexiconGrammarTable() {
+    void openLexiconGrammarTable() {
         final int returnVal = Config.getTableDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
@@ -958,7 +958,7 @@ public class UnitexFrame extends JFrame {
      *
      * @param f the <code>GraphFrame</code> to be saved
      */
-    public boolean saveAsGraph(GraphFrame f) {
+    boolean saveAsGraph(GraphFrame f) {
         if (f == null)
             return false;
         final GraphIO g = new GraphIO(f.graphicalZone);
@@ -1037,7 +1037,7 @@ public class UnitexFrame extends JFrame {
     /**
      * Saves all <code>GraphFrame</code> s that are on the desktop.
      */
-    public void saveAllGraphs() {
+    void saveAllGraphs() {
         final JInternalFrame[] frames = desktop.getAllFrames();
         for (final JInternalFrame frame : frames) {
             if (frame instanceof GraphFrame) {
@@ -1079,7 +1079,7 @@ public class UnitexFrame extends JFrame {
      * the user clicks on the "OK" button, the compilation process is launched
      * through the creation of a <code>ProcessInfoFrame</code> object.
      */
-    public void compileAndFlattenGraph() {
+    void compileAndFlattenGraph() {
         final GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
         if (currentFrame == null)
             return;
@@ -1153,7 +1153,7 @@ public class UnitexFrame extends JFrame {
      * it is opened with a call to the <code>DelaFrame.loadDela(String)</code>
      * method.
      */
-    public void openDELA() {
+    void openDELA() {
         Config.getDelaDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
         final int returnVal = Config.getDelaDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -1182,7 +1182,7 @@ public class UnitexFrame extends JFrame {
      * Sorts the current dictionary. The external program "SortTxt" is called
      * through the creation of a <code>ProcessInfoFrame</code> object.
      */
-    public void sortDELA() {
+    void sortDELA() {
         SortTxtCommand command = new SortTxtCommand().file(Config
                 .getCurrentDELA());
         if (Config.getCurrentLanguage().equals("Thai")) {
@@ -1199,11 +1199,11 @@ public class UnitexFrame extends JFrame {
      * Compresses the current dictionary. The external program "Compress" is
      * called through the creation of a <code>ProcessInfoFrame</code> object.
      */
-    public void compressDELA() {
+    void compressDELA() {
         CompressCommand command = new CompressCommand().name(Config
                 .getCurrentDELA());
         if (Config.isSemiticLanguage()) {
-        	command=command.semitic();
+            command = command.semitic();
         }
         Launcher.exec(command, false, null);
     }
@@ -1211,7 +1211,7 @@ public class UnitexFrame extends JFrame {
     /**
      * Tiles all the frames that are on the desktop and that are not iconified.
      */
-    public void tileFrames() {
+    void tileFrames() {
         JInternalFrame[] f = desktop.getAllFrames();
         int openFrameCount = 0;
         for (final JInternalFrame aF1 : f) {
@@ -1310,7 +1310,7 @@ public class UnitexFrame extends JFrame {
      * Cascades all the frames that are on the desktop and that are not
      * iconified.
      */
-    public void cascadeFrames() {
+    void cascadeFrames() {
         final Component[] f = desktop.getComponents();
         int openFrameCount = 0;
         final int offset = 30;
@@ -1336,7 +1336,7 @@ public class UnitexFrame extends JFrame {
     /**
      * Arranges all the iconified frames that are on the desktop.
      */
-    public void arrangeIcons() {
+    void arrangeIcons() {
         final Component[] f = desktop.getComponents();
         int openFrameCount = 0;
         final Dimension desktop_bounds = getContentPane().getSize();

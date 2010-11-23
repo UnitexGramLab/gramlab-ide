@@ -216,7 +216,7 @@ public class TfstGraphBox extends GenericGraphBox {
     }
 
 
-    final BasicStroke morphologicalStroke = new BasicStroke(2, BasicStroke.CAP_BUTT,
+    private final BasicStroke morphologicalStroke = new BasicStroke(2, BasicStroke.CAP_BUTT,
             BasicStroke.JOIN_BEVEL, 2, new float[]{10f, 10f}, 4f);
 
     /**

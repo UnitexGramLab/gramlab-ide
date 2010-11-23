@@ -53,9 +53,9 @@ import java.util.ArrayList;
  * @author Sébastien Paumier
  */
 public class GraphFrame extends JInternalFrame {
-    static int openFrameCount = 0;
-    static final int offset = 30;
-    TextField boxContentEditor;
+    private static int openFrameCount = 0;
+    private static final int offset = 30;
+    private TextField boxContentEditor;
     final GraphicalZone graphicalZone;
 
     public GraphicalZone getGraphicalZone() {
@@ -70,7 +70,7 @@ public class GraphFrame extends JInternalFrame {
      * Indicates if the graph must be saved
      */
     boolean modified = false;
-    final UndoManager manager;
+    private final UndoManager manager;
     private JButton redoButton;
     private JButton undoButton;
     private final JScrollPane scroll;
@@ -135,7 +135,7 @@ public class GraphFrame extends JInternalFrame {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         boxContentEditor.setFont(info.input.font);
         if (g != null) {
-        	
+
             setGraph(g.grf);
         }/* Some loading operations may have set the modified flag, so we
 		 * reset it
@@ -376,7 +376,7 @@ public class GraphFrame extends JInternalFrame {
         return p;
     }
 
-    class MyInternalFrameListener extends InternalFrameAdapter {
+    private class MyInternalFrameListener extends InternalFrameAdapter {
         @Override
         public void internalFrameActivated(InternalFrameEvent e) {
             boxContentEditor.requestFocus();
@@ -442,7 +442,7 @@ public class GraphFrame extends JInternalFrame {
      * @param b <code>true</code> if the graph must be marked as modified,
      *          <code>false</code> otherwise
      */
-    public void setModified(boolean b) {
+    void setModified(boolean b) {
         modified = b;
         if (grf != null) {
             if (modified)
@@ -505,7 +505,7 @@ public class GraphFrame extends JInternalFrame {
         }
     }
 
-    class UndoIt implements ActionListener {
+    private class UndoIt implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
             try {
                 manager.undo();
@@ -517,7 +517,7 @@ public class GraphFrame extends JInternalFrame {
         }
     }
 
-    class RedoIt implements ActionListener {
+    private class RedoIt implements ActionListener {
         public void actionPerformed(ActionEvent ev) {
             try {
                 manager.redo();
@@ -693,8 +693,8 @@ public class GraphFrame extends JInternalFrame {
         setModified(true);
     }
 
-	public void unSelectAllBoxes() {
-		graphicalZone.unSelectAllBoxes();
-	}
+    public void unSelectAllBoxes() {
+        graphicalZone.unSelectAllBoxes();
+    }
 
 }

@@ -46,10 +46,10 @@ public class FileEditionTextFrame extends JInternalFrame {
     /**
      * Area where the text is stored and can be edited
      */
-    final EditionTextArea text;
-    FileManager fileManager;
-    File file;
-    final Action saveAction = new AbstractAction("Save", MyCursors.saveIcon) {
+    private final EditionTextArea text;
+    private FileManager fileManager;
+    private File file;
+    private final Action saveAction = new AbstractAction("Save", MyCursors.saveIcon) {
         public void actionPerformed(ActionEvent e) {
             saveFile(file);
         }
@@ -59,22 +59,22 @@ public class FileEditionTextFrame extends JInternalFrame {
             saveFile(null);
         }
     };
-    final Action cutAction = new AbstractAction("Cut", MyCursors.cutIcon) {
+    private final Action cutAction = new AbstractAction("Cut", MyCursors.cutIcon) {
         public void actionPerformed(ActionEvent e) {
             text.cut();
         }
     };
-    final Action copyAction = new AbstractAction("Copy", MyCursors.copyIcon) {
+    private final Action copyAction = new AbstractAction("Copy", MyCursors.copyIcon) {
         public void actionPerformed(ActionEvent e) {
             text.copy();
         }
     };
-    final Action pasteAction = new AbstractAction("Paste", MyCursors.pasteIcon) {
+    private final Action pasteAction = new AbstractAction("Paste", MyCursors.pasteIcon) {
         public void actionPerformed(ActionEvent e) {
             text.paste();
         }
     };
-    final Action findAction = new AbstractAction("Find", MyCursors.findIcon) {
+    private final Action findAction = new AbstractAction("Find", MyCursors.findIcon) {
         public void actionPerformed(ActionEvent e) {
             UnitexFrame.getFrameManager().newFindDialog(
                     FileEditionTextFrame.this);
@@ -261,7 +261,7 @@ public class FileEditionTextFrame extends JInternalFrame {
     /**
      * Save a file
      */
-    public void saveFile(File f) {
+    void saveFile(File f) {
         if (f == null) {
             JFileChooser chooser = new JFileChooser();
             chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
@@ -290,6 +290,6 @@ public class FileEditionTextFrame extends JInternalFrame {
 
     File getFile() {
         return file;
-	}
+    }
 
 }

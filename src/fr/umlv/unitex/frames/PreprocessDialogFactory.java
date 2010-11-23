@@ -24,16 +24,16 @@ package fr.umlv.unitex.frames;
 import java.io.File;
 
 
-public class PreprocessDialogFactory {
+class PreprocessDialogFactory {
 
-	private PreprocessDialog dialog;
-	
-	PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText) {
-		if (dialog==null) {
-			dialog=new PreprocessDialog();
-		}
-		dialog.setFiles(text,sntFile,taggedText);
-		return dialog;
-	}
+    private PreprocessDialog dialog;
+
+    PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText) {
+        if (dialog == null) {
+            dialog = new PreprocessDialog();
+        }
+        dialog.setFiles(text, sntFile, taggedText);
+        return dialog;
+    }
 
 }

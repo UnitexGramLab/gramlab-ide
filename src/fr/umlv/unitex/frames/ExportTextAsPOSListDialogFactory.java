@@ -21,23 +21,22 @@
 
 package fr.umlv.unitex.frames;
 
-import java.io.File;
-
 import fr.umlv.unitex.tfst.TagFilter;
 
-public class ExportTextAsPOSListDialogFactory {
+import java.io.File;
 
-	private ExportTextAsPOSListDialog dialog;
-	
-	ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output, TagFilter filter) {
-		if (dialog==null) {
-			dialog=new ExportTextAsPOSListDialog(output,filter);
-		} else {
-			dialog.configure(output,filter);
-		}
-		return dialog;
-	}
+class ExportTextAsPOSListDialogFactory {
+
+    private ExportTextAsPOSListDialog dialog;
+
+    ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output, TagFilter filter) {
+        if (dialog == null) {
+            dialog = new ExportTextAsPOSListDialog(output, filter);
+        } else {
+            dialog.configure(output, filter);
+        }
+        return dialog;
+    }
 
 
-	
 }

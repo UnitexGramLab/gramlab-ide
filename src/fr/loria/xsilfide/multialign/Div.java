@@ -36,14 +36,15 @@ package fr.loria.xsilfide.multialign;
 import java.util.Vector;
 
 @SuppressWarnings("unchecked")
-public class Div {
+class Div {
 
     private Vector Linking = new Vector(); //links of sentences within a text
     private Vector Links = new Vector(); //links of the two texts
-    final int spMax;
-    final int tpMax;
-    int cpSrc = 0, cpTar = 0;
-    int level = 0; // counter for saving the current level
+    private final int spMax;
+    private final int tpMax;
+    private int cpSrc = 0;
+    private int cpTar = 0;
+    private int level = 0; // counter for saving the current level
 
     private Dist srcLengths, tarLengths; //lengths of divisions to align
 
@@ -276,7 +277,7 @@ public class Div {
     }
 
     // B.G : normalement, Src et Tar contiennent des id et des longueurs.
-    public Path alignDiv(Vector Src, Vector Tar, Cognates cogn) {
+    Path alignDiv(Vector Src, Vector Tar, Cognates cogn) {
 
         Path path;
         ContraintesChemin cc = cogn.cognates2Chemins(Src, Tar);
@@ -294,7 +295,7 @@ public class Div {
 
     }
 
-    public void alignParas(Vector idSrcDiv, Vector idTarDiv, Vector parSrc, Vector parTar, Vector stcSrc, Vector stcTar, Cognates cogn, LoadAndPrepareTexts lpt) {
+    void alignParas(Vector idSrcDiv, Vector idTarDiv, Vector parSrc, Vector parTar, Vector stcSrc, Vector stcTar, Cognates cogn, LoadAndPrepareTexts lpt) {
 
         //MultiAlign.debug.println(idSrcDiv.toString()+"\n"+idTarDiv.toString());
 

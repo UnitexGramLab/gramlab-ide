@@ -46,9 +46,9 @@ import java.io.File;
  */
 public class ConcordanceFrame extends JInternalFrame {
 
-    final BigConcordance list;
+    private final BigConcordance list;
     private final JLabel numberOfMatches = new JLabel("");
-    final JComponent invisible = new JComponent() {
+    private final JComponent invisible = new JComponent() {
         @Override
         protected void paintComponent(Graphics g) {
             /* Do nothing since this is an invisible component
@@ -176,6 +176,6 @@ public class ConcordanceFrame extends JInternalFrame {
             }
         });
         list.load(concor);
-	}
+    }
 
 }

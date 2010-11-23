@@ -41,7 +41,7 @@ import java.io.File;
  */
 public class ConcordanceDiffFrame extends JInternalFrame {
 
-    final BigConcordanceDiff list = new BigConcordanceDiff();
+    private final BigConcordanceDiff list = new BigConcordanceDiff();
 
 
     /**
@@ -92,7 +92,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
         d.setSize((g < 800) ? g : 800, d.height);
         Util.getHtmlPageTitle(concor);
         list.load(concor);
-	}
+    }
 
 }
 	

@@ -30,7 +30,7 @@ import java.awt.geom.QuadCurve2D;
 /**
  * @author Sébastien Paumier
  */
-public class GraphicalToolBox {
+class GraphicalToolBox {
 
     private static final Ellipse2D.Double ellipse = new Ellipse2D.Double();
     private static final Line2D.Double line = new Line2D.Double();

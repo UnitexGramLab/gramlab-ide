@@ -40,7 +40,7 @@ import java.io.File;
  */
 public class ConvertTfstToTextFrame extends JInternalFrame {
 
-    final JTextField textName = new JTextField();
+    private final JTextField textName = new JTextField();
 
     ConvertTfstToTextFrame() {
         super("Convert Text Automaton to Text", false, true);

@@ -40,7 +40,7 @@ import java.awt.event.KeyEvent;
 public class FindSentencePanel extends SearchPanel {
 
 
-    final JTextField sentenceNumber;
+    private final JTextField sentenceNumber;
 
     public FindSentencePanel(final EditionTextArea text) {
         super(text);

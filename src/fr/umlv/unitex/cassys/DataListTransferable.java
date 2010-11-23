@@ -12,7 +12,7 @@ import java.io.IOException;
  *
  * @author dnott
  */
-public class DataListTransferable implements Transferable {
+class DataListTransferable implements Transferable {
 
     /**
      * Data type identifier used for transfer
@@ -22,7 +22,7 @@ public class DataListTransferable implements Transferable {
     /**
      * The dataList to be transfered
      */
-    DataList dl;
+    private DataList dl;
 
     /**
      * Creates the <code>DataList</code> identifier type and stores the data to be transfered.
@@ -83,6 +83,6 @@ public class DataListTransferable implements Transferable {
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return (flavor.equals(DataListFlavor) || flavor.equals(DataFlavor.stringFlavor));
-	}
+    }
 
 }

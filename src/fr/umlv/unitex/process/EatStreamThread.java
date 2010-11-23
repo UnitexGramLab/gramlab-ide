@@ -28,8 +28,8 @@ import java.io.OutputStream;
  * @author Olivier Blanc
  */
 public class EatStreamThread extends Thread {
-    final InputStream in;
-    final OutputStream out;
+    private final InputStream in;
+    private final OutputStream out;
 
     public EatStreamThread(InputStream _in) {
         in = _in;

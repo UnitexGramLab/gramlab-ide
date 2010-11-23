@@ -32,23 +32,23 @@ import java.awt.*;
 
 abstract class AbstractFindpanel extends SearchPanel {
 
-    protected final JTextField txtFind;
-    protected final JTextField txtReplace;
-    protected final JLabel count;
-    protected final Document docFind;
-    protected final Document docReplace;
-    protected final JButton btFind;
-    protected final JButton btReplace;
-    protected final JButton btRplNext;
-    protected final JButton btcntO;
-    protected final JButton btReplaceAll;
-    protected final JPanel pc1;
-    protected final JPanel po;
+    final JTextField txtFind;
+    private final JTextField txtReplace;
+    final JLabel count;
+    final Document docFind;
+    final Document docReplace;
+    final JButton btFind;
+    final JButton btReplace;
+    final JButton btRplNext;
+    final JButton btcntO;
+    final JButton btReplaceAll;
+    final JPanel pc1;
+    final JPanel po;
 
     /**
      * @param text
      */
-    public AbstractFindpanel(EditionTextArea text) {
+    AbstractFindpanel(EditionTextArea text) {
         super(text);
 
         //form

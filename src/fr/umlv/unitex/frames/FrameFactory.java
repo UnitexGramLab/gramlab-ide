@@ -23,7 +23,7 @@ package fr.umlv.unitex.frames;
 
 import javax.swing.*;
 
-public class FrameFactory {
+class FrameFactory {
 
     private JInternalFrame frame;
     private final Class<?> clazz;

@@ -42,22 +42,22 @@ import java.io.File;
  */
 public class BigTextArea extends JPanel {
 
-    protected static final int NOTHING_SELECTED = 0;
-    protected static final int ALL_IS_SELECTED = 1;
-    protected static final int PREFIX_SELECTED = 2;
-    protected static final int INFIX_SELECTED = 3;
-    protected static final int SUFFIX_SELECTED = 4;
+    private static final int NOTHING_SELECTED = 0;
+    private static final int ALL_IS_SELECTED = 1;
+    private static final int PREFIX_SELECTED = 2;
+    private static final int INFIX_SELECTED = 3;
+    private static final int SUFFIX_SELECTED = 4;
 
-    final TextAsListModel model;
-    final JTextPane area;
-    final JScrollBar scrollBar;
-    final StyledDocument document;
-    final Style normal;
-    final Style highlighted;
-    final StringBuilder builder = new StringBuilder(10000);
+    private final TextAsListModel model;
+    private final JTextPane area;
+    private final JScrollBar scrollBar;
+    private final StyledDocument document;
+    private final Style normal;
+    private final Style highlighted;
+    private final StringBuilder builder = new StringBuilder(10000);
 
 
-    public BigTextArea(TextAsListModel m) {
+    private BigTextArea(TextAsListModel m) {
         super(new BorderLayout());
         model = m;
         area = new JTextPane();

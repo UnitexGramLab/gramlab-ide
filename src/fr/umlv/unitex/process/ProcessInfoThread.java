@@ -35,12 +35,12 @@ import java.io.*;
  */
 public class ProcessInfoThread extends Thread {
 
-    final JList list;
-    BufferedReader stream;
-    final boolean close_on_finish;
-    ProcessInfoFrame parent_frame;
-    final boolean scrollDown;
-    final ConsoleEntry entry;
+    private final JList list;
+    private BufferedReader stream;
+    private final boolean close_on_finish;
+    private ProcessInfoFrame parent_frame;
+    private final boolean scrollDown;
+    private final ConsoleEntry entry;
 
     /**
      * Creates a new <code>ProcessInfoThread</code>
@@ -71,9 +71,9 @@ public class ProcessInfoThread extends Thread {
     }
 
 
-    char nextChar = '\0';
+    private char nextChar = '\0';
 
-    public String myReadLine(BufferedReader reader) {
+    String myReadLine(BufferedReader reader) {
         int c;
         String result = "";
         if (nextChar != '\0') {

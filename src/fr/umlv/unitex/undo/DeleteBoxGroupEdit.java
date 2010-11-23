@@ -38,23 +38,23 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
     /**
      * graph's boxes
      */
-    final ArrayList<GenericGraphBox> boxes;
-    final ArrayList<GenericGraphBox> /** boxes selected in the graph */
+    private final ArrayList<GenericGraphBox> boxes;
+    private final ArrayList<GenericGraphBox> /** boxes selected in the graph */
             selectedBoxes;
-    final ArrayList<GenericGraphBox> /** boxes selected in the graph before adding a transition */
+    private final ArrayList<GenericGraphBox> /** boxes selected in the graph before adding a transition */
             oldSelectedBoxes;
     /**
      * zone where the graph is drawn
      */
-    final GenericGraphicalZone zone;
+    private final GenericGraphicalZone zone;
     /**
      * hashmap which store the boxes selected before the delete action and the transitions to its
      */
-    final HashMap<GenericGraphBox, ArrayList<GenericGraphBox>> selectedBoxesAndTransitionsTo;
+    private final HashMap<GenericGraphBox, ArrayList<GenericGraphBox>> selectedBoxesAndTransitionsTo;
     /**
      * hashmap which store the boxes selected before the delete action and the transitions from its
      */
-    final HashMap<GenericGraphBox, ArrayList<GenericGraphBox>> selectedBoxesAndTransitionsFrom;
+    private final HashMap<GenericGraphBox, ArrayList<GenericGraphBox>> selectedBoxesAndTransitionsFrom;
 
     /**
      * @param selectedBoxes the boxes selected before the delete action

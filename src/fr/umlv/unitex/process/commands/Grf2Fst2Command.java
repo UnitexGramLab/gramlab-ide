@@ -21,58 +21,57 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.File;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
+import java.io.File;
+
 /**
  * @author Sébastien Paumier
- *  
  */
 public class Grf2Fst2Command extends CommandBuilder {
 
-	public Grf2Fst2Command() {
-		super("Grf2Fst2");
-	}
+    public Grf2Fst2Command() {
+        super("Grf2Fst2");
+    }
 
-	public Grf2Fst2Command grf(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-    public Grf2Fst2Command enableLoopAndRecursionDetection(boolean b) {
-        element(b?"-y":"-n");
+    public Grf2Fst2Command grf(File s) {
+        protectElement(s.getAbsolutePath());
         return this;
     }
-    
+
+    public Grf2Fst2Command enableLoopAndRecursionDetection(boolean b) {
+        element(b ? "-y" : "-n");
+        return this;
+    }
+
     private Grf2Fst2Command charByCharTokenization() {
         element("--char_by_char");
         return this;
     }
 
     private Grf2Fst2Command alphabetTokenization(File f) {
-    	protectElement("--alphabet="+f.getAbsolutePath());
+        protectElement("--alphabet=" + f.getAbsolutePath());
         return this;
     }
 
     public Grf2Fst2Command tokenizationMode() {
-    	if (Config.isCharByCharLanguage()) {
-    		return charByCharTokenization();
-    	}
-    	return alphabetTokenization(Config.getAlphabet());
+        if (Config.isCharByCharLanguage()) {
+            return charByCharTokenization();
+        }
+        return alphabetTokenization(Config.getAlphabet());
     }
-    
-    public Grf2Fst2Command library(File f) {
-    	element("-d");
-    	protectElement(f.getAbsolutePath());
-    	return this;
+
+    Grf2Fst2Command library(File f) {
+        element("-d");
+        protectElement(f.getAbsolutePath());
+        return this;
     }
-    
+
     public Grf2Fst2Command library() {
-    	if (Preferences.packagePath()!=null) {
-    		return library(Preferences.packagePath());
-    	}
-    	return this;
+        if (Preferences.packagePath() != null) {
+            return library(Preferences.packagePath());
+        }
+        return this;
     }
 }

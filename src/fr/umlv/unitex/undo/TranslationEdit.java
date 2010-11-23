@@ -33,12 +33,12 @@ public class TranslationEdit extends AbstractUndoableEdit {
     /**
      * box to translate
      */
-    final GenericGraphBox boxe;
+    private final GenericGraphBox boxe;
     /**
      * length of X, Y shift in pixels
      */
-    final int x;
-    final int y;
+    private final int x;
+    private final int y;
 
     /**
      * @param boxe the boxe to translate
@@ -61,5 +61,5 @@ public class TranslationEdit extends AbstractUndoableEdit {
     public void redo() {
         super.redo();
         boxe.translate(x, y);
-	}
+    }
 }

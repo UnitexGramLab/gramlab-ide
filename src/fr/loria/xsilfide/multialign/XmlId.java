@@ -39,7 +39,7 @@ package fr.loria.xsilfide.multialign;
 
 @SuppressWarnings("unchecked")
 class XmlId implements Comparable {
-    static LoadAndPrepareTexts lpt = null;
+    private static LoadAndPrepareTexts lpt = null;
     private final String uri;
     private String localName;
 

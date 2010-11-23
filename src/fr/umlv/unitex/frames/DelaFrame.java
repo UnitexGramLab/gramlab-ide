@@ -21,31 +21,22 @@
 
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.BigTextList;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 
 /**
@@ -55,9 +46,9 @@ import fr.umlv.unitex.text.BigTextList;
  */
 public class DelaFrame extends JInternalFrame {
 
-    final JPanel middle;
-    final BigTextList text = new BigTextList(true);
-    JScrollBar scrollBar;
+    private final JPanel middle;
+    private final BigTextList text = new BigTextList(true);
+    private JScrollBar scrollBar;
 
     DelaFrame() {
         super("", true, true, true, true);
@@ -65,7 +56,7 @@ public class DelaFrame extends JInternalFrame {
         top.setBorder(new EmptyBorder(2, 2, 2, 2));
         middle = new JPanel(new BorderLayout());
         middle.setBorder(BorderFactory.createLoweredBevelBorder());
-        final JScrollPane scrollText=new JScrollPane(text,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        final JScrollPane scrollText = new JScrollPane(text, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         middle.add(scrollText);
         top.add(middle, BorderLayout.CENTER);
         setContentPane(top);
@@ -88,33 +79,33 @@ public class DelaFrame extends JInternalFrame {
             }
         });
         text.setComponentOrientation(
-        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
-        				:ComponentOrientation.LEFT_TO_RIGHT);
-        scrollBar=scrollText.getHorizontalScrollBar();
-        Timer t=new Timer(400,new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				scrollBar.setValue(0);
-			}
-		});
+                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                        : ComponentOrientation.LEFT_TO_RIGHT);
+        scrollBar = scrollText.getHorizontalScrollBar();
+        Timer t = new Timer(400, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                scrollBar.setValue(0);
+            }
+        });
         t.setRepeats(false);
         t.start();
         scrollText.setComponentOrientation(
-        		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
-        				:ComponentOrientation.LEFT_TO_RIGHT);
+                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                        : ComponentOrientation.LEFT_TO_RIGHT);
         Preferences.addTextFontListener(new FontListener() {
             public void fontChanged(Font font) {
                 text.setFont(font);
                 text.setComponentOrientation(
-                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
-                				:ComponentOrientation.LEFT_TO_RIGHT);
+                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                                : ComponentOrientation.LEFT_TO_RIGHT);
                 scrollText.setComponentOrientation(
-                		Preferences.rightToLeftForText()?ComponentOrientation.RIGHT_TO_LEFT
-                				:ComponentOrientation.LEFT_TO_RIGHT);
-                Timer t2=new Timer(400,new ActionListener() {
-        			public void actionPerformed(ActionEvent e) {
-        				scrollBar.setValue(0);
-        			}
-        		});
+                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                                : ComponentOrientation.LEFT_TO_RIGHT);
+                Timer t2 = new Timer(400, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        scrollBar.setValue(0);
+                    }
+                });
                 t2.setRepeats(false);
                 t2.start();
             }
@@ -145,11 +136,11 @@ public class DelaFrame extends JInternalFrame {
         text.setFont(Config.getCurrentTextFont());
         setTitle(dela.getAbsolutePath());
         setVisible(true);
-        Timer t=new Timer(400,new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				scrollBar.setValue(0);
-			}
-		});
+        Timer t = new Timer(400, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                scrollBar.setValue(0);
+            }
+        });
         t.setRepeats(false);
         t.start();
         try {

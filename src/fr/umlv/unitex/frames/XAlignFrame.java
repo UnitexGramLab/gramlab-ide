@@ -45,12 +45,14 @@ import java.util.Properties;
 
 public class XAlignFrame extends JInternalFrame {
 
-    Font sourceFont;
-    Font targetFont;
-    File alignementFile;
-    XMLTextModel text1, text2;
-    XAlignModel model;
-    ConcordanceModel concordModel1, concordModel2;
+    private Font sourceFont;
+    private Font targetFont;
+    private File alignementFile;
+    private XMLTextModel text1;
+    private XMLTextModel text2;
+    private XAlignModel model;
+    private ConcordanceModel concordModel1;
+    private ConcordanceModel concordModel2;
 
     XAlignFrame(final File f1, final File f2, final File align) throws IOException {
         super("XAlign", true, true);
@@ -210,7 +212,7 @@ public class XAlignFrame extends JInternalFrame {
         return button;
     }
 
-    protected void launchLocate(File file, final ConcordanceModel concordModel) {
+    void launchLocate(File file, final ConcordanceModel concordModel) {
         String xmlName = file.getAbsolutePath();
         String targetName;
         if (!xmlName.endsWith(".xml")) {
@@ -258,7 +260,7 @@ public class XAlignFrame extends JInternalFrame {
                 dico = dico.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
             if (Config.isSemiticLanguage()) {
-            	dico=dico.semitic();
+                dico = dico.semitic();
             }
             ArrayList<File> param = Config.getDefaultDicList(language);
             if (param != null && param.size() > 0) {
@@ -278,7 +280,7 @@ public class XAlignFrame extends JInternalFrame {
         UnitexFrame.getFrameManager().newXAlignLocateFrame(language, snt, concordModel);
     }
 
-    protected void saveAlignment(XAlignModel model1) {
+    void saveAlignment(XAlignModel model1) {
         if (alignementFile != null) {
             saveAlignment(alignementFile, model1);
         } else {
@@ -357,7 +359,7 @@ public class XAlignFrame extends JInternalFrame {
     public static File tryToFindAlphabet(File f) {
         File languageDir = Config.getLanguageDirForFile(f);
         if (languageDir == null) {
-        	return null;
+            return null;
         }
         File alphabet = new File(languageDir, "Alphabet.txt");
         if (!alphabet.exists()) {
@@ -411,7 +413,7 @@ public class XAlignFrame extends JInternalFrame {
                 model1.load(f);
             } catch (IOException e) {
                 UnitexFrame.getFrameManager().closeXAlignFrame();
-			}
-		}
-	}
+            }
+        }
+    }
 }

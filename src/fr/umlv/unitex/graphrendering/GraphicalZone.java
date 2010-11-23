@@ -43,7 +43,8 @@ import java.util.Date;
  */
 public class GraphicalZone extends GenericGraphicalZone implements Printable {
     boolean dragBegin = true;
-    int dX, dY;
+    private int dX;
+    private int dY;
 
     /**
      * Constructs a new <code>GraphicalZone</code>.
@@ -89,7 +90,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         return new GraphBox(x, y, type, (GraphicalZone) p);
     }
 
-    class MyMouseListener implements MouseListener {
+    private class MyMouseListener implements MouseListener {
 
         public void mouseClicked(MouseEvent e) {
             int boxSelected;
@@ -292,7 +293,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         }
     }
 
-    class MyMouseMotionListener implements MouseMotionListener {
+    private class MyMouseMotionListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent e) {
             int Xtmp = X_end_drag;
             int Ytmp = Y_end_drag;
@@ -448,8 +449,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         if (selecting) {
             // here we draw the selection rectangle
             f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);
-		}
-		return Printable.PAGE_EXISTS;
-	}
+        }
+        return Printable.PAGE_EXISTS;
+    }
 
 }

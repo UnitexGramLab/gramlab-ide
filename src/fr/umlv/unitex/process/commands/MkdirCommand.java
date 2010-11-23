@@ -29,7 +29,7 @@ import java.io.File;
  */
 public class MkdirCommand extends AbstractMethodCommand {
 
-    File dir;
+    private File dir;
 
     public MkdirCommand() {
         super("mkdir");

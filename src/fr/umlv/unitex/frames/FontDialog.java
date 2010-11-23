@@ -39,19 +39,19 @@ import java.util.Hashtable;
  *
  * @author Sébastien Paumier
  */
-public class FontDialog extends JDialog {
+class FontDialog extends JDialog {
 
-    final JTextField name = new JTextField(10);
-    final JTextField style = new JTextField(10);
-    final JTextField size = new JTextField("  ");
-    final JTextField script = new JTextField(10);
-    final JTextField example = new JTextField(6);
-    JList fontList;
-    JList styleList;
-    JList sizeList;
-    JList scriptList;
-    Hashtable<String, Integer> styles;
-    Hashtable<String, Integer> ranges;
+    private final JTextField name = new JTextField(10);
+    private final JTextField style = new JTextField(10);
+    private final JTextField size = new JTextField("  ");
+    private final JTextField script = new JTextField(10);
+    private final JTextField example = new JTextField(6);
+    private JList fontList;
+    private JList styleList;
+    private JList sizeList;
+    private JList scriptList;
+    private Hashtable<String, Integer> styles;
+    private Hashtable<String, Integer> ranges;
 
     private static final int ASCII_BASE = 0x0000;
     private static final int GREEK_BASE = 0x0370;
@@ -64,7 +64,7 @@ public class FontDialog extends JDialog {
     private static final int HANGUL_BASE = 0x3130;
     private static final int KANJI_BASE = 0x4E00;
 
-    FontInfo info;
+    private FontInfo info;
 
     /**
      * Creates a new font dialog box.

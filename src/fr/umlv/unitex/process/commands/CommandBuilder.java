@@ -41,7 +41,7 @@ public abstract class CommandBuilder {
     public static final int METHOD = 3;
 
     private final ArrayList<String> list;
-    protected int type = PROGRAM;
+    int type = PROGRAM;
 
     CommandBuilder(String programName) {
         list = new ArrayList<String>();

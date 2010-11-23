@@ -24,27 +24,27 @@ package fr.umlv.unitex.frames;
 import java.io.File;
 
 
-public class LexiconGrammarTableFrameFactory {
+class LexiconGrammarTableFrameFactory {
 
-	private LexiconGrammarTableFrame frame;
-	
-	LexiconGrammarTableFrame newLexiconGrammarTableFrame(File f) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-		}
-		frame=new LexiconGrammarTableFrame(f);
-		return frame;
-	}
-	
-	void closeLexiconGrammarTableFrame() {
-		if (frame==null) {
-			return;
-		}
-		frame.doDefaultCloseAction();
-	}
+    private LexiconGrammarTableFrame frame;
 
-	public LexiconGrammarTableFrame getFrame() {
-		return frame;
-	}
+    LexiconGrammarTableFrame newLexiconGrammarTableFrame(File f) {
+        if (frame != null) {
+            frame.doDefaultCloseAction();
+        }
+        frame = new LexiconGrammarTableFrame(f);
+        return frame;
+    }
+
+    void closeLexiconGrammarTableFrame() {
+        if (frame == null) {
+            return;
+        }
+        frame.doDefaultCloseAction();
+    }
+
+    public LexiconGrammarTableFrame getFrame() {
+        return frame;
+    }
 
 }

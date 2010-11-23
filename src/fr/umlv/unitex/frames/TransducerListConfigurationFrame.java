@@ -79,64 +79,64 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
      * method has been redefined.
      * </P>
      */
-    JTable table;
+    private JTable table;
 
     /**
      * The <code>up</code> button. This class is listening to it.
      */
-    JButton up;
+    private JButton up;
 
     /**
      * The <code>down</code> button. This class is listening to it.
      */
-    JButton down;
+    private JButton down;
 
     /**
      * The <code>top</code> button. This class is listening to it.
      */
-    JButton top;
+    private JButton top;
 
     /**
      * The <code>bottom</code> button. This class is listening to it.
      */
-    JButton bottom;
+    private JButton bottom;
 
     /**
      * The <code>delete_</code> button. This class is listening to it.
      */
-    JButton delete_;
+    private JButton delete_;
 
     /**
      * The <code>add_below</code> button. This class is listening to it.
      */
-    JButton add_below;
+    private JButton add_below;
 
     /**
      * The <code>open</code> button. This class is listening to it.
      */
-    JButton open;
+    private JButton open;
 
     /**
      * The <code>save</code> button. This class is listening to it.
      */
-    JButton save;
+    private JButton save;
 
     /**
      * The <code>save</code> button. This class is listening to it.
      */
-    JButton saveAs;
+    private JButton saveAs;
 
     /**
      * The <code>close</code> button. This class is listening to it.
      */
-    JButton close;
+    private JButton close;
 
     /**
      * The system file explorer.
      * <p/>
      * User may use it to select file. Buttons of this frame interacts with selected buttons
      */
-    JFileChooser fileBrowse;
+    private JFileChooser fileBrowse;
 
     /**
      * The name of transducers list file name
@@ -156,7 +156,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
      * Used to display an <code>unsaved</code> symbol next to the transducer name and to query the user
      * to save before leaving.
      */
-    boolean configurationHasChanged;
+    private boolean configurationHasChanged;
 
 
     /**
@@ -164,13 +164,13 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
      * <p/>
      * Used to warn the user that comment would be erased if he saves the file.
      */
-    boolean editedFileHasCommentOrError;
+    private boolean editedFileHasCommentOrError;
 
 
     /**
      * The panel containing all the button
      */
-    JPanel button_panel;
+    private JPanel button_panel;
 
 
     public TransducerListConfigurationFrame() {
@@ -284,7 +284,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         tableModel.addColumn("Merge");
         tableModel.addColumn("Replace");
 
-        
 
         table = new JTable(tableModel) {
             /**
@@ -362,77 +361,77 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 
     }
 
-    
-	void fill_table(File f) {
-		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-		
-		if (f != null) {
-			String FormatErrorLine = "";
 
-			LineNumberReader r;
-			try {
-				r = new LineNumberReader(new FileReader(f));
+    void fill_table(File f) {
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 
-				String line;
-				try {
-					while ((line = r.readLine()) != null) {
+        if (f != null) {
+            String FormatErrorLine = "";
 
-						try {
-							ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
-									line);
-							Object[] o = { cfa.getFileName(),
-									cfa.isMergeMode(), cfa.isReplaceMode() };
-							tableModel.addRow(o);
-							if (cfa.isCommentFound()) {
-								editedFileHasCommentOrError = true;
-							}
+            LineNumberReader r;
+            try {
+                r = new LineNumberReader(new FileReader(f));
 
-						} catch (EmptyLineException e) {
-							// do nothing
-							editedFileHasCommentOrError = true;
-						} catch (InvalidLineException e) {
-							// keep track of the error to warn the user
-							FormatErrorLine = FormatErrorLine
-									.concat("line " + r.getLineNumber() + ": "
-											+ e.getMessage());
-							editedFileHasCommentOrError = true;
-						}
+                String line;
+                try {
+                    while ((line = r.readLine()) != null) {
 
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						r.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				}
-				if (!FormatErrorLine.equals("")) {
-					String t = "Format line Error Found";
-					JOptionPane.showMessageDialog(this, FormatErrorLine, t,
-							JOptionPane.ERROR_MESSAGE);
-				}
+                        try {
+                            ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
+                                    line);
+                            Object[] o = {cfa.getFileName(),
+                                    cfa.isMergeMode(), cfa.isReplaceMode()};
+                            tableModel.addRow(o);
+                            if (cfa.isCommentFound()) {
+                                editedFileHasCommentOrError = true;
+                            }
 
-			} catch (FileNotFoundException e) {
-				String t = "File Not Found";
-				String message = "Please select an existing file";
-				JOptionPane.showMessageDialog(this, message, t,
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		configurationHasChanged = false;
-		setFrameTitle();
-	}
-    
-    void void_table(){
-    	DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-    	
-    	while(tableModel.getRowCount()>0){
-    		tableModel.removeRow(0);
-    	}
-    	configurationHasChanged = false;
-    	setFrameTitle();
+                        } catch (EmptyLineException e) {
+                            // do nothing
+                            editedFileHasCommentOrError = true;
+                        } catch (InvalidLineException e) {
+                            // keep track of the error to warn the user
+                            FormatErrorLine = FormatErrorLine
+                                    .concat("line " + r.getLineNumber() + ": "
+                                            + e.getMessage());
+                            editedFileHasCommentOrError = true;
+                        }
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        r.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                if (!FormatErrorLine.equals("")) {
+                    String t = "Format line Error Found";
+                    JOptionPane.showMessageDialog(this, FormatErrorLine, t,
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (FileNotFoundException e) {
+                String t = "File Not Found";
+                String message = "Please select an existing file";
+                JOptionPane.showMessageDialog(this, message, t,
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        configurationHasChanged = false;
+        setFrameTitle();
+    }
+
+    void void_table() {
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+
+        while (tableModel.getRowCount() > 0) {
+            tableModel.removeRow(0);
+        }
+        configurationHasChanged = false;
+        setFrameTitle();
     }
 
     /**
@@ -736,7 +735,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
 
     }
 
-    public void quit_asked() {
+    void quit_asked() {
         if (configurationHasChanged) {
             String message = "Changes to the transducer list may not have been saved.\n Do you want to save changes before leaving ?";
 
@@ -756,12 +755,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
     }
 
 
-    public void quit() {
-    	void_table();
+    void quit() {
+        void_table();
         dispose();
     }
 
-    public void showSaveFrame() {
+    void showSaveFrame() {
         JFileChooser saveFileChooser;
 
         if (Config.getCurrentTransducerList() != null) {
@@ -782,7 +781,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
     }
 
 
-    public void saveListToFile() {
+    void saveListToFile() {
         try {
             BufferedWriter fw = new BufferedWriter(new FileWriter(
                     Config.getCurrentTransducerList()));
@@ -824,7 +823,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
     }
 
 
-    public void viewGraph(File f) {
+    void viewGraph(File f) {
         File grf = null;
 
         if (f.getName().endsWith(".grf")) {

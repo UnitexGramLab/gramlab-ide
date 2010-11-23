@@ -44,15 +44,15 @@ import java.io.File;
  * @author Sébastien Paumier 11.11.2005 modified HyunGue HUH
  */
 public class GraphPathDialog extends JDialog {
-    final BigTextList textArea = new BigTextList();
+    private final BigTextList textArea = new BigTextList();
     final JTextField graphName = new JTextField();
-    JCheckBox limit;
-    JTextField limitSize;
-    JRadioButton ignoreOutputs;
-    JRadioButton separateOutputs;
-    JRadioButton mergeOutputs;
-    JRadioButton exploreRecursively;
-    JRadioButton onlyPaths;
+    private JCheckBox limit;
+    private JTextField limitSize;
+    private JRadioButton ignoreOutputs;
+    private JRadioButton separateOutputs;
+    private JRadioButton mergeOutputs;
+    private JRadioButton exploreRecursively;
+    private JRadioButton onlyPaths;
 
     GraphPathDialog() {
         super(UnitexFrame.mainFrame, "Explore graph paths", true);
@@ -171,7 +171,7 @@ public class GraphPathDialog extends JDialog {
         return panel;
     }
 
-    protected void close() {
+    void close() {
         setVisible(false);
         textArea.reset();
         textArea.clearSelection();
