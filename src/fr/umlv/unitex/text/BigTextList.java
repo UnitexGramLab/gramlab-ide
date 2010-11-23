@@ -42,7 +42,7 @@ public class BigTextList extends JList {
      * @param isDelaf if true, the list will use a special renderer dedicated
      *                to DELAF lines
      */
-    public BigTextList(TextAsListModel m, boolean isDelaf) {
+    private BigTextList(TextAsListModel m, boolean isDelaf) {
         super(m);
         /* Set maximal length of a line:
            * This value must big enough holding even the longest dlc entries,
@@ -194,5 +194,5 @@ public class BigTextList extends JList {
     public void setText(String string) {
         TextAsListModel model = (TextAsListModel) getModel();
         model.setText(string);
-	}
+    }
 }

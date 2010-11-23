@@ -23,22 +23,22 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class TokensFrameFactory {
+class TokensFrameFactory {
 
-	private TokensFrame frame;
-	
-	TokensFrame newTokensFrame(File tokens) {
-		if (frame==null) {
-			frame=new TokensFrame();
-		} else {
-			frame.hideFrame();
-		}
-		frame.loadTokens(tokens);
-		return frame;
-	}
-	
-	void closeTokensFrame() {
-		if (frame==null) return;
-		frame.hideFrame();
-	}
+    private TokensFrame frame;
+
+    TokensFrame newTokensFrame(File tokens) {
+        if (frame == null) {
+            frame = new TokensFrame();
+        } else {
+            frame.hideFrame();
+        }
+        frame.loadTokens(tokens);
+        return frame;
+    }
+
+    void closeTokensFrame() {
+        if (frame == null) return;
+        frame.hideFrame();
+    }
 }

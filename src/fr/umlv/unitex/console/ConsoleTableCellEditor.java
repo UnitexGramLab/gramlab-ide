@@ -34,7 +34,7 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements TableC
 
     private final JButton button;
     private int currentRow = -1;
-    final ConsoleTableModel model;
+    private final ConsoleTableModel model;
 
     public ConsoleTableCellEditor(final ConsoleTableModel model) {
         this.model = model;

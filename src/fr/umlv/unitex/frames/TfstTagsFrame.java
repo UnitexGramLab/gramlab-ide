@@ -39,7 +39,7 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 public class TfstTagsFrame extends JInternalFrame {
-    final BigTextList text = new BigTextList(false);
+    private final BigTextList text = new BigTextList(false);
 
     TfstTagsFrame() {
         super("Tfst tag list", true, true, true, true);
@@ -112,7 +112,7 @@ public class TfstTagsFrame extends JInternalFrame {
      * @param file name of the token list file
      */
     boolean loadTokens(File file) {
-    	if (!file.exists()) return false;
+        if (!file.exists()) return false;
         text.setFont(Config.getCurrentTextFont());
         if (file.length() <= 2) {
             text.setText(Config.EMPTY_FILE_MESSAGE);
@@ -129,5 +129,5 @@ public class TfstTagsFrame extends JInternalFrame {
         text.reset();
         setVisible(false);
         System.gc();
-	}
+    }
 }

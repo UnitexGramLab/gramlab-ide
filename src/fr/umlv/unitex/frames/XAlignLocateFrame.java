@@ -49,25 +49,25 @@ import java.io.*;
  */
 public class XAlignLocateFrame extends JInternalFrame {
 
-    final JRadioButton regularExpression = new JRadioButton("Regular expression:");
-    final JRadioButton graph = new JRadioButton("Graph:", true);
-    final JTextField regExp = new JTextField();
-    final JTextField graphName = new JTextField();
-    final JRadioButton shortestMatches = new JRadioButton("Shortest matches");
-    final JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
-    final JRadioButton allMatches = new JRadioButton("All matches");
-    final JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
-    final JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text");
-    final JTextField nMatches = new JTextField("200");
+    private final JRadioButton regularExpression = new JRadioButton("Regular expression:");
+    private final JRadioButton graph = new JRadioButton("Graph:", true);
+    private final JTextField regExp = new JTextField();
+    private final JTextField graphName = new JTextField();
+    private final JRadioButton shortestMatches = new JRadioButton("Shortest matches");
+    private final JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
+    private final JRadioButton allMatches = new JRadioButton("All matches");
+    private final JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
+    private final JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text");
+    private final JTextField nMatches = new JTextField("200");
 
-    String language;
-    File snt;
-    ConcordanceModel concordModel;
+    private String language;
+    private File snt;
+    private ConcordanceModel concordModel;
 
 
     XAlignLocateFrame(String language) {
         super("XAlign Locate Pattern", false, true);
-        this.language=language;
+        this.language = language;
         setContentPane(constructPanel());
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -271,7 +271,7 @@ public class XAlignLocateFrame extends JInternalFrame {
             locateCmd = locateCmd.korean();
         }
         if (Config.isArabic()) {
-            locateCmd=locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+            locateCmd = locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
         if (stopAfterNmatches.isSelected()) {
             locateCmd = locateCmd.limit(n);

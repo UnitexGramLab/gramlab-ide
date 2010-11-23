@@ -71,7 +71,7 @@ public class TagFilter {
         listeners.remove(l);
     }
 
-    protected void fireFilterChanged() {
+    void fireFilterChanged() {
         firing = true;
         try {
             for (FilterListener l : listeners) {

@@ -39,10 +39,10 @@ import java.io.File;
  */
 public class InflectFrame extends JInternalFrame {
 
-    final JTextField directory = new JTextField("");
-    final JRadioButton allWords = new JRadioButton("Allow both simple and compound words", true);
-    final JRadioButton onlySimpleWords = new JRadioButton("Allow only simple words", false);
-    final JRadioButton onlyCompoundWords = new JRadioButton("Allow only compound words", false);
+    private final JTextField directory = new JTextField("");
+    private final JRadioButton allWords = new JRadioButton("Allow both simple and compound words", true);
+    private final JRadioButton onlySimpleWords = new JRadioButton("Allow only simple words", false);
+    private final JRadioButton onlyCompoundWords = new JRadioButton("Allow only compound words", false);
 
 
     InflectFrame() {
@@ -139,6 +139,6 @@ public class InflectFrame extends JInternalFrame {
             command = command.korean();
         }
         Launcher.exec(command, false, null);
-	}
+    }
 
 }

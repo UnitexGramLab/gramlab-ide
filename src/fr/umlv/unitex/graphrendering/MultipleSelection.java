@@ -50,7 +50,7 @@ public class MultipleSelection {
     }
 
 
-    public void multipleSelectionGraphBoxes(ArrayList<GenericGraphBox> v) {
+    void multipleSelectionGraphBoxes(ArrayList<GenericGraphBox> v) {
         int L = v.size();
         elem = new ArrayList<GraphBoxInfo>();
         for (int i = 0; i < L; i++) {
@@ -92,7 +92,7 @@ public class MultipleSelection {
      * @param v just indicates that the objects are <code>FstGraphBox</code>. The value of this
      *          parameter is not taken into account
      */
-    public void multipleSelectionFstGraphBoxes(ArrayList<GenericGraphBox> v) {
+    void multipleSelectionFstGraphBoxes(ArrayList<GenericGraphBox> v) {
         int L = v.size();
         elem = new ArrayList<GraphBoxInfo>();
         for (int i = 0; i < L; i++) {

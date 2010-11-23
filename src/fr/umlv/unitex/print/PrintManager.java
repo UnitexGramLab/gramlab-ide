@@ -50,7 +50,7 @@ public class PrintManager {
         return pageFormat;
     }
 
-    public static void printOneGraph(GraphFrame g) {
+    private static void printOneGraph(GraphFrame g) {
         if (g == null) {
             throw new IllegalArgumentException("Cannot print a null graph");
         }
@@ -100,7 +100,7 @@ public class PrintManager {
      *
      * @param g the <code>TextAutomatonFrame</code> to be printed.
      */
-    public static void printTextAutomatonFrame(TextAutomatonFrame g) {
+    private static void printTextAutomatonFrame(TextAutomatonFrame g) {
         PrinterJob job = getPrinterJob();
         PageFormat format = getPageFormat();
         if (!job.printDialog()) return;
@@ -124,6 +124,6 @@ public class PrintManager {
         if (f instanceof TextAutomatonFrame) {
             printTextAutomatonFrame((TextAutomatonFrame) f);
         }
-	}
+    }
 
 }

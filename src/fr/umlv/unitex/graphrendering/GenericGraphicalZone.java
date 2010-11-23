@@ -57,7 +57,7 @@ public abstract class GenericGraphicalZone extends JComponent {
     /**
      * ArrayList containing all the graph's boxes
      */
-    protected ArrayList<GenericGraphBox> graphBoxes;
+    ArrayList<GenericGraphBox> graphBoxes;
 
     /**
      * Indicates if a grid must be drawn in background
@@ -70,21 +70,22 @@ public abstract class GenericGraphicalZone extends JComponent {
     /**
      * Graph's rendering properties
      */
-    protected GraphPresentationInfo info;
+    GraphPresentationInfo info;
     /**
      * <code>JInternalFrame</code> that contains this component
      */
-    protected final JInternalFrame parentFrame;
+    final JInternalFrame parentFrame;
 
     public JInternalFrame getParentFrame() {
         return parentFrame;
     }
 
-    protected final UndoableEditSupport support = new UndoableEditSupport();
+    private final UndoableEditSupport support = new UndoableEditSupport();
 
     public double scaleFactor = 1.0;
-    protected int Xmouse, Ymouse;
-    protected boolean mouseInGraphicalZone = false;
+    int Xmouse;
+    int Ymouse;
+    boolean mouseInGraphicalZone = false;
     private Rectangle clipZone;
     /**
      * Indicates mouse's editing mode
@@ -95,8 +96,8 @@ public abstract class GenericGraphicalZone extends JComponent {
     protected abstract void initializeEmptyGraph();
 
 
-    public GenericGraphicalZone(GraphIO g, GraphTextField t,
-                                final JInternalFrame p) {
+    GenericGraphicalZone(GraphIO g, GraphTextField t,
+                         final JInternalFrame p) {
         super();
         text = t;
         text.setEditable(false);
@@ -132,7 +133,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param g the graph box
      */
-    public void addBox(GenericGraphBox g) {
+    void addBox(GenericGraphBox g) {
         if (graphBoxes.size() >= 2) {
             UndoableEdit edit = new AddBoxEdit(g, graphBoxes, this);
             postEdit(edit);
@@ -308,7 +309,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      * @return the position of the box in the <code>graphBoxes</code> vector, or
      *         -1 if no box was selected by the click
      */
-    public int getSelectedBox(int x, int y) {
+    int getSelectedBox(int x, int y) {
         int i, L;
         GenericGraphBox g;
         L = graphBoxes.size();
@@ -326,7 +327,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      */
     public void unSelectAllBoxes() {
         GenericGraphBox g;
-        boolean someBoxesWereSelected=!selectedBoxes.isEmpty();
+        boolean someBoxesWereSelected = !selectedBoxes.isEmpty();
         while (!selectedBoxes.isEmpty()) {
             g = selectedBoxes.get(0);
             g.selected = false;
@@ -360,7 +361,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      * @param w width of the selection rectangle
      * @param h height of the selection rectangle
      */
-    public void selectByRectangle(int x, int y, int w, int h) {
+    void selectByRectangle(int x, int y, int w, int h) {
         int i, L;
         GenericGraphBox g;
         L = graphBoxes.size();
@@ -392,7 +393,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      * @param dx value to be added to X coordinates
      * @param dy value to be added to Y coordinates
      */
-    public void translateAllSelectedBoxes(int dx, int dy) {
+    void translateAllSelectedBoxes(int dx, int dy) {
         int i, L;
         GenericGraphBox g;
         if (selectedBoxes.isEmpty())
@@ -405,13 +406,18 @@ public abstract class GenericGraphicalZone extends JComponent {
         fireGraphChanged(true);
     }
 
-    protected int X_start_drag, Y_start_drag;
-    protected int X_end_drag, Y_end_drag;
-    protected int X_drag, Y_drag, dragWidth, dragHeight;
-    protected boolean selecting = false;
-    protected boolean dragging = false;
-    protected boolean singleDragging = false;
-    protected GenericGraphBox singleDraggedBox;
+    int X_start_drag;
+    int Y_start_drag;
+    int X_end_drag;
+    int Y_end_drag;
+    int X_drag;
+    int Y_drag;
+    int dragWidth;
+    int dragHeight;
+    boolean selecting = false;
+    boolean dragging = false;
+    boolean singleDragging = false;
+    GenericGraphBox singleDraggedBox;
 
     /**
      * Adds transitions from all selected boxes to a specified graph box
@@ -419,8 +425,8 @@ public abstract class GenericGraphicalZone extends JComponent {
      * @param dest the target graph box
      * @param save True if we went to save the state for do undo action
      */
-    public void addTransitionsFromSelectedBoxes(GenericGraphBox dest,
-                                                boolean save) {
+    void addTransitionsFromSelectedBoxes(GenericGraphBox dest,
+                                         boolean save) {
         int i, L;
         GenericGraphBox g;
         if (selectedBoxes.isEmpty())
@@ -442,7 +448,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param src the source graph box
      */
-    public void addReverseTransitionsFromSelectedBoxes(GenericGraphBox src) {
+    void addReverseTransitionsFromSelectedBoxes(GenericGraphBox src) {
         int i, L;
         GenericGraphBox g;
         if (selectedBoxes.isEmpty())
@@ -461,7 +467,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param gr the graphical context
      */
-    public void drawAllTransitions(Graphics2D gr) {
+    void drawAllTransitions(Graphics2D gr) {
         int i, L;
         GenericGraphBox g;
         if (graphBoxes.isEmpty())
@@ -478,7 +484,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param gr the graphical context
      */
-    public void drawTransitionsFromMousePointerToSelectedBoxes(Graphics2D gr) {
+    void drawTransitionsFromMousePointerToSelectedBoxes(Graphics2D gr) {
         GenericGraphBox temp = newBox(Xmouse, Ymouse, 2, this);
         GenericGraphBox g;
         temp.X_out = Xmouse;
@@ -495,7 +501,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param gr the graphical context
      */
-    public void drawTransitionsFromSelectedBoxesToMousePointer(Graphics2D gr) {
+    void drawTransitionsFromSelectedBoxesToMousePointer(Graphics2D gr) {
         GenericGraphBox temp = newBox(Xmouse, Ymouse, 2, this);
         GenericGraphBox g;
         temp.X_out = Xmouse;
@@ -512,7 +518,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param gr the graphical context
      */
-    public void drawAllBoxes(Graphics2D gr) {
+    void drawAllBoxes(Graphics2D gr) {
         int i, L;
         GenericGraphBox g;
         if (graphBoxes.isEmpty())
@@ -530,7 +536,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      *
      * @param f the graphical context
      */
-    public void drawGrid(Graphics2D f) {
+    void drawGrid(Graphics2D f) {
         if (!isGrid)
             return;
         int x, y;
@@ -718,7 +724,7 @@ public abstract class GenericGraphicalZone extends JComponent {
     /**
      * Updates all graph's boxes
      */
-    public void updateAllBoxes() {
+    void updateAllBoxes() {
         GenericGraphBox g;
         int i;
         for (i = 0; i < graphBoxes.size(); i++) {
@@ -737,7 +743,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         support.removeUndoableEditListener(listener);
     }
 
-    public void postEdit(UndoableEdit e) {
+    void postEdit(UndoableEdit e) {
         support.postEdit(e);
     }
 
@@ -752,7 +758,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         return clipZone;
     }
 
-    public void setClipZone(Rectangle r) {
+    void setClipZone(Rectangle r) {
         clipZone = r;
     }
 
@@ -780,7 +786,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 
     private final ArrayList<GraphListener> graphListeners = new ArrayList<GraphListener>();
-    protected boolean firingGraph = false;
+    private boolean firingGraph = false;
 
     public void addGraphListener(GraphListener l) {
         graphListeners.add(l);
@@ -793,7 +799,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         graphListeners.remove(l);
     }
 
-    protected void fireGraphChanged(boolean modified) {
+    void fireGraphChanged(boolean modified) {
         firingGraph = true;
         try {
             for (GraphListener l : graphListeners) {
@@ -816,9 +822,9 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 
     private final ArrayList<GraphTextListener> textListeners = new ArrayList<GraphTextListener>();
-    protected boolean firingGraphText = false;
+    private boolean firingGraphText = false;
 
-    public void addGraphTextListener(GraphTextListener l) {
+    void addGraphTextListener(GraphTextListener l) {
         textListeners.add(l);
     }
 
@@ -829,7 +835,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         textListeners.remove(l);
     }
 
-    protected void fireGraphTextChanged(String content) {
+    void fireGraphTextChanged(String content) {
         firingGraphText = true;
         GraphTextEvent e = new GraphTextEvent(this, content);
         try {

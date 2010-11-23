@@ -59,15 +59,15 @@ import java.util.Vector;
 // Hastable.put(clef, valeur).
 
 class ContraintesPoint {
-    boolean coutForce;
-    final Point cheminSpecial;
-    final boolean cheminForceDestruction;
-    final boolean cheminForceSubstitution;
-    final boolean cheminForceInsertion;
-    final boolean cheminForceContraction;
-    final boolean cheminForceMelange;
-    final boolean cheminForceExpansion;
-    final boolean cheminForceUsed;
+    private boolean coutForce;
+    private final Point cheminSpecial;
+    private final boolean cheminForceDestruction;
+    private final boolean cheminForceSubstitution;
+    private final boolean cheminForceInsertion;
+    private final boolean cheminForceContraction;
+    private final boolean cheminForceMelange;
+    private final boolean cheminForceExpansion;
+    private final boolean cheminForceUsed;
 
     public ContraintesPoint() {
         coutForce = false;

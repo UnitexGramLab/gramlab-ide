@@ -33,17 +33,17 @@ import java.awt.event.ActionListener;
  * @author Sébastien Paumier
  */
 public class GraphSizeDialog extends JDialog {
-    final JTextField Width = new JTextField();
-    final JTextField Height = new JTextField();
-    final static int resolutionDPI = Toolkit.getDefaultToolkit()
+    private final JTextField Width = new JTextField();
+    private final JTextField Height = new JTextField();
+    private final static int resolutionDPI = Toolkit.getDefaultToolkit()
             .getScreenResolution();
-    float X;
-    float Y;
-    static final int PIXELS = 0;
-    static final int INCHES = 1;
+    private float X;
+    private float Y;
+    private static final int PIXELS = 0;
+    private static final int INCHES = 1;
     static final int CM = 2;
-    static int unit = PIXELS;
-    GraphFrame f;
+    private static int unit = PIXELS;
+    private GraphFrame f;
 
     /**
      * Constructs a new <code>GraphSizeMenu</code>

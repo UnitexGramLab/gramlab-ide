@@ -22,18 +22,17 @@
 package fr.umlv.unitex.frames;
 
 
+class GraphSizeDialogFactory {
 
-public class GraphSizeDialogFactory {
+    private GraphSizeDialog dialog;
 
-	private GraphSizeDialog dialog;
-	
-	GraphSizeDialog newGraphSizeDialog(GraphFrame f) {
-		if (dialog==null) {
-			dialog=new GraphSizeDialog(f);
-		} else {
-			dialog.configure(f);
-		}
-		return dialog;
-	}
+    GraphSizeDialog newGraphSizeDialog(GraphFrame f) {
+        if (dialog == null) {
+            dialog = new GraphSizeDialog(f);
+        } else {
+            dialog.configure(f);
+        }
+        return dialog;
+    }
 
 }

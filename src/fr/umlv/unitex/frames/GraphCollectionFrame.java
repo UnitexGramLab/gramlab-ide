@@ -36,8 +36,8 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 public class GraphCollectionFrame extends JInternalFrame {
-    final JTextField srcDir = new JTextField();
-    final JTextField resultGrf = new JTextField();
+    private final JTextField srcDir = new JTextField();
+    private final JTextField resultGrf = new JTextField();
 
     /**
      * Constructs a new <code>GraphCollectionDialog</code>.

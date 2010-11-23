@@ -23,39 +23,39 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class TextFrameFactory {
+class TextFrameFactory {
 
-	private TextFrame frame;
+    private TextFrame frame;
 
-	/**
-	 * We try to load the given .snt file, closing first the previous
-	 * text frame, if any.
-	 * 
-	 * @param text
-	 * @param taggedText
-	 * @return
-	 */
-	TextFrame newTextFrame(File text) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-		}
-		frame=new TextFrame();
-		frame.loadText(text);
-		return frame;
-	}
+    /**
+     * We try to load the given .snt file, closing first the previous
+     * text frame, if any.
+     *
+     * @param text
+     * @param taggedText
+     * @return
+     */
+    TextFrame newTextFrame(File text) {
+        if (frame != null) {
+            frame.doDefaultCloseAction();
+        }
+        frame = new TextFrame();
+        frame.loadText(text);
+        return frame;
+    }
 
-	
-	void closeTextFrame() {
-		if (frame==null) {
-			return;
-		}
-		frame.doDefaultCloseAction();
-		frame=null;
-	}
-	
-	
-	TextFrame getTextFrame() {
-		return frame;
-	}
+
+    void closeTextFrame() {
+        if (frame == null) {
+            return;
+        }
+        frame.doDefaultCloseAction();
+        frame = null;
+    }
+
+
+    TextFrame getTextFrame() {
+        return frame;
+    }
 
 }

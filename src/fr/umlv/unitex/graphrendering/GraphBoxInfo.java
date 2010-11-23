@@ -24,29 +24,29 @@ package fr.umlv.unitex.graphrendering;
 import java.util.Vector;
 
 /**
- * This class is used to store information on a box. It is used for doing 
- * multiple box selections. 
- * @author Sébastien Paumier
+ * This class is used to store information on a box. It is used for doing
+ * multiple box selections.
  *
+ * @author Sébastien Paumier
  */
-public class GraphBoxInfo {
-   /**
-    * X coordinate of the box 
-    */
-   public int X;
+class GraphBoxInfo {
+    /**
+     * X coordinate of the box
+     */
+    public int X;
 
-   /**
-    * Y coordinate of the box 
-    */
-   public int Y;
+    /**
+     * Y coordinate of the box
+     */
+    public int Y;
 
-   /**
-    * Text content of the box 
-    */
-   public String content;
+    /**
+     * Text content of the box
+     */
+    public String content;
 
-   /**
-    * Vector containing integers that are reference to boxes that can be reached from this box 
-    */
-   public Vector<Integer> reachableBoxes;
+    /**
+     * Vector containing integers that are reference to boxes that can be reached from this box
+     */
+    public Vector<Integer> reachableBoxes;
 }

@@ -21,66 +21,63 @@
 
 package fr.umlv.unitex.concord;
 
-import java.awt.Component;
-import java.awt.Font;
-import java.io.File;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JList;
-
 import fr.umlv.unitex.Preferences;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 
 
 /**
  * This class provides a text component that can display in read-only
  * large HTML concordance files.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class BigConcordance extends JList {
 
-	
-	public BigConcordance(ConcordanceAsListModel m,int widthInChars) {
-		super(m);
-		setPrototypeCellValue(getStringOfGivenWidth(widthInChars));
-		setFont(new Font(Preferences.getConcordanceFontName(),0,Preferences.getConcordanceFontSize()));
-		setCellRenderer(new DefaultListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
-				StringBuilder builder=new StringBuilder();
-				builder.append("<html><body>");
-				String s=(String)value;
-				builder.append(s);
+
+    private BigConcordance(ConcordanceAsListModel m, int widthInChars) {
+        super(m);
+        setPrototypeCellValue(getStringOfGivenWidth(widthInChars));
+        setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
+        setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                StringBuilder builder = new StringBuilder();
+                builder.append("<html><body>");
+                String s = (String) value;
+                builder.append(s);
                 builder.append("</body></html>");
-				setText(builder.toString());
-				return this;
-			}
-		});
-	}
-	
-
-	private Object getStringOfGivenWidth(int widthInChars) {
-		StringBuilder b=new StringBuilder(widthInChars);
-		for (int i=0;i<widthInChars;i++) {
-			b.append("W");
-		}
-		return b.toString();
-	}
+                setText(builder.toString());
+                return this;
+            }
+        });
+    }
 
 
-	public BigConcordance(int widthInChars) {
-		this(new ConcordanceAsListModel(),widthInChars);
-	}
+    private Object getStringOfGivenWidth(int widthInChars) {
+        StringBuilder b = new StringBuilder(widthInChars);
+        for (int i = 0; i < widthInChars; i++) {
+            b.append("W");
+        }
+        return b.toString();
+    }
 
-	public void load(File f) {
-		ConcordanceAsListModel model=(ConcordanceAsListModel)getModel();
-		model.load(f);
-	}
-	
-	public void reset() {
-		ConcordanceAsListModel model=(ConcordanceAsListModel)getModel();
-		model.reset();
-	}
-	
+
+    public BigConcordance(int widthInChars) {
+        this(new ConcordanceAsListModel(), widthInChars);
+    }
+
+    public void load(File f) {
+        ConcordanceAsListModel model = (ConcordanceAsListModel) getModel();
+        model.load(f);
+    }
+
+    public void reset() {
+        ConcordanceAsListModel model = (ConcordanceAsListModel) getModel();
+        model.reset();
+    }
+
 }

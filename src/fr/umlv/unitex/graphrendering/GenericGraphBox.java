@@ -67,7 +67,7 @@ public class GenericGraphBox {
      * If 'variable' is true, this field is used to know whether the
      * variable is a normal one or an output one
      */
-    public boolean outputVariable;
+    boolean outputVariable;
 
     /**
      * Indicates if the box contains a context limit
@@ -82,7 +82,7 @@ public class GenericGraphBox {
     /**
      * Indicates if the box is currently selected
      */
-    protected boolean selected;
+    boolean selected;
 
     /**
      * Indicates if the box is in comment (no input/output transition)
@@ -97,12 +97,12 @@ public class GenericGraphBox {
     /**
      * Indicates if there is at least one transition that comes in this box
      */
-    protected int hasIncomingTransitions;
+    private int hasIncomingTransitions;
 
     /**
      * Indicates if the box is being dragged alone
      */
-    protected boolean singleDragging;
+    boolean singleDragging;
 
     /**
      * X coordinate of the box input point
@@ -127,7 +127,7 @@ public class GenericGraphBox {
     /**
      * Text contained in the box, as it can be viewed when the box is edited
      */
-    protected String content;
+    String content;
 
     /**
      * Tokenized box lines
@@ -173,31 +173,31 @@ public class GenericGraphBox {
     /**
      * Height of a box line
      */
-    protected int h_ligne;
+    private int h_ligne;
 
     /**
      * Heigth of the bottom of letters like j, q or g
      */
-    protected int descent;
+    private int descent;
 
     /**
      * <code>GenericGraphicalZone</code> object that contains the box
      */
-    protected GenericGraphicalZone parentGraphicalZone;
+    GenericGraphicalZone parentGraphicalZone;
 
     /**
      * Numbers of boxes that can be reached with transitions going out this box
      */
-    protected ArrayList<GenericGraphBox> transitions;
+    ArrayList<GenericGraphBox> transitions;
 
     public static Font variableFont = new Font("Times New Roman", Font.BOLD, 30);
 
-    protected Graphics2D context;
+    Graphics2D context;
 
     /**
      * Number of the box
      */
-    protected int identificationNumber; // number used to numerote the state
+    int identificationNumber; // number used to numerote the state
 
     /**
      * Constructs a new box
@@ -207,7 +207,7 @@ public class GenericGraphBox {
      * @param type indicates if the box is initial, final or normal
      * @param p    component on which the box will be drawn
      */
-    public GenericGraphBox(int x, int y, int type, GenericGraphicalZone p) {
+    GenericGraphBox(int x, int y, int type, GenericGraphicalZone p) {
         this.x = x;
         Y = y;
         parentGraphicalZone = p;
@@ -258,7 +258,7 @@ public class GenericGraphBox {
         String s;
         Boolean b;
         n = (y - Y1 - 4) / (h_ligne);
-        if (n>=greyed.size()) n=greyed.size()-1;
+        if (n >= greyed.size()) n = greyed.size() - 1;
         b = greyed.get(n);
         if (b) {
             s = lines.get(n);
@@ -746,7 +746,7 @@ public class GenericGraphBox {
         g.setColor(parentGraphicalZone.info.selectedColor);
         GraphicalToolBox.fillRect(g, X1 + 5, Y1 + Height + g.getFontMetrics().getDescent(), g
                 .getFontMetrics(parentGraphicalZone.info.output.font).stringWidth(
-                transduction), g.getFontMetrics(
+                        transduction), g.getFontMetrics(
                 parentGraphicalZone.info.output.font).getHeight() + 1);
         g.setColor(parentGraphicalZone.info.backgroundColor);
         g.setFont(parentGraphicalZone.info.output.font);
@@ -1007,7 +1007,7 @@ public class GenericGraphBox {
      *
      * @return the width
      */
-    public int maxLineWidth() {
+    int maxLineWidth() {
         if (context == null) {
             return 0;
         }

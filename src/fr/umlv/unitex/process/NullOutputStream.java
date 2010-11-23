@@ -23,33 +23,31 @@ package fr.umlv.unitex.process;
 import java.io.OutputStream;
 
 /**
- * 
  * @author Olivier Blanc
- * 
  */
-public class NullOutputStream extends OutputStream {
-	@Override
-	public void close() {
-		// nothing to do
-	}
+class NullOutputStream extends OutputStream {
+    @Override
+    public void close() {
+        // nothing to do
+    }
 
-	@Override
-	public void flush() {
-		// nothing to do
-	}
+    @Override
+    public void flush() {
+        // nothing to do
+    }
 
-	@Override
-	public void write(byte[] b) {
-		// nothing to do
-	}
+    @Override
+    public void write(byte[] b) {
+        // nothing to do
+    }
 
-	@Override
-	public void write(byte[] b, int off, int len) {
-		// nothing to do
-	}
+    @Override
+    public void write(byte[] b, int off, int len) {
+        // nothing to do
+    }
 
-	@Override
-	public void write(int b) {
-		// nothing to do
-	}
+    @Override
+    public void write(int b) {
+        // nothing to do
+    }
 }

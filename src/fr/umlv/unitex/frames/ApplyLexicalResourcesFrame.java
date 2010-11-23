@@ -62,10 +62,10 @@ import java.util.Vector;
  */
 public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
-    JList userDicList;
-    JList systemDicList;
-    BigTextArea credits;
-    final String noCreditMessage = "No available description for the dictionary \"";
+    private JList userDicList;
+    private JList systemDicList;
+    private BigTextArea credits;
+    private final String noCreditMessage = "No available description for the dictionary \"";
     //final String lexicalDir = getLexicalDir();
 
     ApplyLexicalResourcesFrame() {
@@ -262,7 +262,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 if (e.getButton() != MouseEvent.BUTTON1) {
                     int index = userDicList.locationToIndex(e.getPoint());
                     if (index != -1) {
-                    String s = (String) (userDicList.getModel().getElementAt(index));
+                        String s = (String) (userDicList.getModel().getElementAt(index));
                         String s2 = Util.getFileNameWithoutExtension(s);
                         final File f = new File(new File(Config.getUserCurrentLanguageDir(), "Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
@@ -333,7 +333,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     String s = (String) (systemDicList.getModel().getElementAt(index));
                     if (index != -1) {
                         String s2 = Util.getFileNameWithoutExtension(s);
-                        final File f = new File(new File(Config.getUnitexCurrentLanguageDir(),"Dela" /*lexicalDir*/), s2 + ".txt");
+                        final File f = new File(new File(Config.getUnitexCurrentLanguageDir(), "Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);
                         } else {
@@ -455,7 +455,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             cmd = cmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
         if (Config.isSemiticLanguage()) {
-        	cmd=cmd.semitic();
+            cmd = cmd.semitic();
         }
         if (systemSelection != null && systemSelection.length != 0) {
             for (Object aSystemSelection : systemSelection) {
@@ -510,7 +510,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * @param dir the directory to be scanned
      * @return a <code>Vector</code> containing file names.
      */
-    public Vector<String> getDicList(File dir) {
+    Vector<String> getDicList(File dir) {
         Vector<String> v = new Vector<String>();
         if (!dir.exists()) {
             return v;
@@ -533,7 +533,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * @param name the name of a file containing one ".bin" file name per line
      * @return a <code>Vector</code> containing file names.
      */
-    public Vector<String> loadDicList(File name) {
+    Vector<String> loadDicList(File name) {
         Vector<String> v = null;
         BufferedReader br;
         try {
@@ -563,7 +563,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * @param v    the <code>Vector</code> containing a list of the file name
      *             to be selected.
      */
-    public void setDefaultSelection(JList list, Vector<String> v) {
+    void setDefaultSelection(JList list, Vector<String> v) {
         int[] indices = new int[256];
         int i = 0;
         if (v == null)
@@ -591,7 +591,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * @return the position in the <code>ListModel</code> if the file name
      *         were found, -1 otherwise
      */
-    public int getElementIndex(ListModel model, String s) {
+    int getElementIndex(ListModel model, String s) {
         if (model == null)
             return -1;
         int l = model.getSize();
@@ -609,7 +609,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * <code>(user dir)/(current language dir)/user_dic.def</code> and
      * <code>(user dir)/(current language dir)/system_dic.def</code>.
      */
-    public void saveDefaultDicLists() {
+    void saveDefaultDicLists() {
         saveSelectionToFile(userDicList, new File(Config
                 .getUserCurrentLanguageDir(), "user_dic.def"));
         saveSelectionToFile(systemDicList, new File(Config
@@ -623,7 +623,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * @param list the file list
      * @param file the output file
      */
-    public void saveSelectionToFile(JList list, File file) {
+    void saveSelectionToFile(JList list, File file) {
         Object[] selection = list.getSelectedValues();
         try {
             if (!file.exists()) {
@@ -648,7 +648,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
      * @param list the file list
      * @param file the output file
      */
-    public void saveListToFile(JList list, File file) {
+    void saveListToFile(JList list, File file) {
         try {
             if (!file.exists()) {
                 file.createNewFile();

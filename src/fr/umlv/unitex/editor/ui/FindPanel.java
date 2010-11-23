@@ -36,15 +36,15 @@ import java.awt.event.KeyEvent;
 public class FindPanel extends AbstractFindpanel {
 
 
-    final ButtonModel modelUp;
-    final ButtonModel modelPrefixe;
+    private final ButtonModel modelUp;
+    private final ButtonModel modelPrefixe;
     ButtonModel modelWordmodelCase;
-    final ButtonModel modelDown;
-    final ButtonModel modelSuffixe;
-    final ButtonModel modelWord;
-    final ButtonModel modelCase;
-    final ButtonModel modelRadical;
-    final ButtonModel modelBegin;
+    private final ButtonModel modelDown;
+    private final ButtonModel modelSuffixe;
+    private final ButtonModel modelWord;
+    private final ButtonModel modelCase;
+    private final ButtonModel modelRadical;
+    private final ButtonModel modelBegin;
 
 
     public FindPanel(final EditionTextArea text) {

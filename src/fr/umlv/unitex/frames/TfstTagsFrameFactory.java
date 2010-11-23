@@ -23,22 +23,22 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class TfstTagsFrameFactory {
+class TfstTagsFrameFactory {
 
-	private TfstTagsFrame frame;
-	
-	TfstTagsFrame newTfstTagsFrame(File tokens) {
-		if (frame==null) {
-			frame=new TfstTagsFrame();
-		} else {
-			frame.hideFrame();
-		}
-		if (!frame.loadTokens(tokens)) return null;
-		return frame;
-	}
-	
-	void closeTfstTagsFrame() {
-		if (frame==null) return;
-		frame.hideFrame();
-	}
+    private TfstTagsFrame frame;
+
+    TfstTagsFrame newTfstTagsFrame(File tokens) {
+        if (frame == null) {
+            frame = new TfstTagsFrame();
+        } else {
+            frame.hideFrame();
+        }
+        if (!frame.loadTokens(tokens)) return null;
+        return frame;
+    }
+
+    void closeTfstTagsFrame() {
+        if (frame == null) return;
+        frame.hideFrame();
+    }
 }

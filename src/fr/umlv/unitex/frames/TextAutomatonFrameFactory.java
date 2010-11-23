@@ -21,34 +21,35 @@
 
 package fr.umlv.unitex.frames;
 
-public class TextAutomatonFrameFactory {
+class TextAutomatonFrameFactory {
 
-	private TextAutomatonFrame frame;
-	
-	TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
-		if (frame==null) {
-			frame=new TextAutomatonFrame();
-		}if (!frame.loadTfst()) {
-			return null;
-		}
-		frame.loadSentence(sentenceNumber);
-		return frame;
-	}
+    private TextAutomatonFrame frame;
 
-	
-	void closeTextAutomatonFrame() {
-		if (frame==null) return;
-		frame.setVisible(false);
-	}
+    TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
+        if (frame == null) {
+            frame = new TextAutomatonFrame();
+        }
+        if (!frame.loadTfst()) {
+            return null;
+        }
+        frame.loadSentence(sentenceNumber);
+        return frame;
+    }
 
 
-	public boolean existsFrame() {
-		return frame!=null;
-	}
+    void closeTextAutomatonFrame() {
+        if (frame == null) return;
+        frame.setVisible(false);
+    }
 
 
-	public TextAutomatonFrame getFrame() {
-		return frame;
-	}
+    public boolean existsFrame() {
+        return frame != null;
+    }
+
+
+    public TextAutomatonFrame getFrame() {
+        return frame;
+    }
 
 }

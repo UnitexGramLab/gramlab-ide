@@ -21,28 +21,31 @@
 
 package fr.umlv.unitex.xalign;
 
-public class Occurrence {
+class Occurrence {
 
-	private int start;
-	private int end;
-	
-	public Occurrence(int start,int end) {
-		setStart(start);
-		setEnd(end);
-	}
-	
-	public int getEnd() {
-		return end;
-	}
-	public void setEnd(int end) {
-		this.end = end;
-	}
-	public int getStart() {
-		return start;
-	}
-	public void setStart(int start) {
-		this.start = start;
-	}
-	
-	
+    private int start;
+    private int end;
+
+    public Occurrence(int start, int end) {
+        setStart(start);
+        setEnd(end);
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    void setEnd(int end) {
+        this.end = end;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    void setStart(int start) {
+        this.start = start;
+    }
+
+
 }

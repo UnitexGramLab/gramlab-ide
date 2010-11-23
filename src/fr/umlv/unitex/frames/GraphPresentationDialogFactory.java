@@ -24,18 +24,18 @@ package fr.umlv.unitex.frames;
 import fr.umlv.unitex.GraphPresentationInfo;
 
 
-public class GraphPresentationDialogFactory {
+class GraphPresentationDialogFactory {
 
-	private GraphPresentationDialog dialog;
-	
-	GraphPresentationDialog newGraphPresentationDialog(GraphPresentationInfo info,
-			boolean showRightToLeftCheckBox) {
-		if (dialog==null) {
-			dialog=new GraphPresentationDialog(info,showRightToLeftCheckBox);
-		} else {
-			dialog.configure(info,showRightToLeftCheckBox);
-		}
-		return dialog;
-	}
+    private GraphPresentationDialog dialog;
+
+    GraphPresentationDialog newGraphPresentationDialog(GraphPresentationInfo info,
+                                                       boolean showRightToLeftCheckBox) {
+        if (dialog == null) {
+            dialog = new GraphPresentationDialog(info, showRightToLeftCheckBox);
+        } else {
+            dialog.configure(info, showRightToLeftCheckBox);
+        }
+        return dialog;
+    }
 
 }

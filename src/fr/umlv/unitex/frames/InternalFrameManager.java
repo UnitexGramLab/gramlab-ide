@@ -48,7 +48,7 @@ import java.util.ArrayList;
  */
 public class InternalFrameManager {
 
-    JDesktopPane desktop;
+    private JDesktopPane desktop;
     private final static Integer LAYER = 1;
     private FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(BuildKrMwuDicFrame.class);
     private FrameFactory delaFrameFactory = new FrameFactory(DelaFrame.class);
@@ -72,7 +72,7 @@ public class InternalFrameManager {
     private FrameFactory transcodingFrameFactory = new FrameFactory(TranscodingFrame.class);
     private FrameFactory consoleFrameFactory = new FrameFactory(ConsoleFrame.class);
     private XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
-    
+
     private FrameFactory cassysFrameFactory = new FrameFactory(CassysFrame.class);
     private FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(TransducerListConfigurationFrame.class);
 
@@ -100,8 +100,6 @@ public class InternalFrameManager {
     private GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
     private ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
 
-    
-    
 
     public InternalFrameManager(JDesktopPane desktop) {
         this.desktop = desktop;
@@ -125,15 +123,15 @@ public class InternalFrameManager {
     }
 
 
-    public JInternalFrame setup(JInternalFrame f) {
+    JInternalFrame setup(JInternalFrame f) {
         return setup(f, false, false);
     }
 
-    public JInternalFrame setup(JInternalFrame f, boolean removeOnClose) {
+    JInternalFrame setup(JInternalFrame f, boolean removeOnClose) {
         return setup(f, removeOnClose, false);
     }
 
-    public JInternalFrame setup(JInternalFrame f, boolean removeOnClose, boolean iconify) {
+    JInternalFrame setup(JInternalFrame f, boolean removeOnClose, boolean iconify) {
         if (f == null) return null;
         addToDesktopIfNecessary(f, removeOnClose);
         f.setVisible(true);
@@ -212,7 +210,7 @@ public class InternalFrameManager {
     }
 
     private ArrayList<TextFrameListener> textFrameListeners = new ArrayList<TextFrameListener>();
-    protected boolean firingTextFrame = false;
+    private boolean firingTextFrame = false;
 
     public void addTextFrameListener(TextFrameListener l) {
         textFrameListeners.add(l);
@@ -225,7 +223,7 @@ public class InternalFrameManager {
         textFrameListeners.remove(l);
     }
 
-    protected void fireTextFrameOpened(boolean taggedText) {
+    void fireTextFrameOpened(boolean taggedText) {
         firingTextFrame = true;
         try {
             for (TextFrameListener l : textFrameListeners) {
@@ -236,7 +234,7 @@ public class InternalFrameManager {
         }
     }
 
-    protected void fireTextFrameClosed() {
+    void fireTextFrameClosed() {
         firingTextFrame = true;
         try {
             for (TextFrameListener l : textFrameListeners) {
@@ -273,7 +271,7 @@ public class InternalFrameManager {
     }
 
     private ArrayList<DelaFrameListener> delaFrameListeners = new ArrayList<DelaFrameListener>();
-    protected boolean firingDelaFrame = false;
+    private boolean firingDelaFrame = false;
 
     public void addDelaFrameListener(DelaFrameListener l) {
         delaFrameListeners.add(l);
@@ -286,7 +284,7 @@ public class InternalFrameManager {
         delaFrameListeners.remove(l);
     }
 
-    protected void fireDelaFrameOpened() {
+    void fireDelaFrameOpened() {
         firingDelaFrame = true;
         try {
             for (DelaFrameListener l : delaFrameListeners) {
@@ -297,7 +295,7 @@ public class InternalFrameManager {
         }
     }
 
-    protected void fireDelaFrameClosed() {
+    void fireDelaFrameClosed() {
         firingDelaFrame = true;
         try {
             for (DelaFrameListener l : delaFrameListeners) {
@@ -353,41 +351,41 @@ public class InternalFrameManager {
         setup(f);
         return f;
     }
-    
+
     public void closeApplyLexicalResourcesFrame() {
         applyLexicalResourcesFrameFactory.closeFrame();
     }
 
-    public CassysFrame newCassysFrame(){
-    	CassysFrame f = (CassysFrame) cassysFrameFactory.newFrame();
-    	if (f == null) return null;
+    public CassysFrame newCassysFrame() {
+        CassysFrame f = (CassysFrame) cassysFrameFactory.newFrame();
+        if (f == null) return null;
         setup(f);
         return f;
     }
-    
-    public void closeCassysFrame(){
-    	cassysFrameFactory.closeFrame();
+
+    public void closeCassysFrame() {
+        cassysFrameFactory.closeFrame();
     }
-    
-    public TransducerListConfigurationFrame newTransducerListConfigurationFrame(File file){
-    	TransducerListConfigurationFrame f = (TransducerListConfigurationFrame) transducerListConfigurationFrameFactory.newFrame();
-    	if (f == null) return null;
-    	
-    	f.setConfigurationHasChanged(false);
-    	f.setFrameTitle();
-    	if(file != null){
-    		f.fill_table(file);
-    	}
-    	
+
+    public TransducerListConfigurationFrame newTransducerListConfigurationFrame(File file) {
+        TransducerListConfigurationFrame f = (TransducerListConfigurationFrame) transducerListConfigurationFrameFactory.newFrame();
+        if (f == null) return null;
+
+        f.setConfigurationHasChanged(false);
+        f.setFrameTitle();
+        if (file != null) {
+            f.fill_table(file);
+        }
+
         setup(f);
         return f;
     }
-    
-    public void closeTransducerListConfigurationFrame(){
-    	transducerListConfigurationFrameFactory.closeFrame();
+
+    public void closeTransducerListConfigurationFrame() {
+        transducerListConfigurationFrameFactory.closeFrame();
     }
-    
-    
+
+
     public CheckDicFrame newCheckDicFrame() {
         return (CheckDicFrame) setup(checkDicFrameFactory.newFrame());
     }
@@ -401,7 +399,7 @@ public class InternalFrameManager {
     }
 
     public void closeTransliterationFrame() {
-    	transliterationFrameFactory.closeFrame();
+        transliterationFrameFactory.closeFrame();
     }
 
     public CheckResultFrame newCheckResultFrame(File file) {
@@ -528,7 +526,7 @@ public class InternalFrameManager {
 
 
     private ArrayList<LexiconGrammarTableFrameListener> lgFrameListeners = new ArrayList<LexiconGrammarTableFrameListener>();
-    protected boolean firingLGFrame = false;
+    private boolean firingLGFrame = false;
 
     public void addLexiconGrammarTableFrameListener(LexiconGrammarTableFrameListener l) {
         lgFrameListeners.add(l);
@@ -785,6 +783,6 @@ public class InternalFrameManager {
 
     public BuildKrMwuDicFrame newBuildKrMwuDicFrame() {
         return (BuildKrMwuDicFrame) setup(buildKrMwuDicFrameFactory.newFrame());
-	}
+    }
 
 }

@@ -21,14 +21,13 @@
 
 package fr.umlv.unitex.process.commands;
 
-import java.io.File;
-
 import fr.umlv.unitex.Preferences;
+
+import java.io.File;
 
 
 /**
  * @author Sébastien Paumier
- *  
  */
 public class MultiFlexCommand extends CommandBuilder {
 
@@ -42,45 +41,46 @@ public class MultiFlexCommand extends CommandBuilder {
     }
 
     public MultiFlexCommand result(File s) {
-      protectElement("-o"+s.getAbsolutePath());
-      return this;
-  }
+        protectElement("-o" + s.getAbsolutePath());
+        return this;
+    }
 
     public MultiFlexCommand alphabet(File s) {
-        protectElement("-a"+s.getAbsolutePath());
+        protectElement("-a" + s.getAbsolutePath());
         return this;
     }
 
     public MultiFlexCommand dir(File s) {
-        protectElement("-d"+s.getAbsolutePath());
+        protectElement("-d" + s.getAbsolutePath());
         return this;
     }
-    
+
     public MultiFlexCommand onlySimpleWords() {
         protectElement("-s");
         return this;
     }
+
     public MultiFlexCommand onlyCompoundWords() {
         protectElement("-c");
         return this;
     }
-    
-	public MultiFlexCommand korean() {
-		element("-K");
+
+    public MultiFlexCommand korean() {
+        element("-K");
         return this;
     }
 
-    public MultiFlexCommand library(File f) {
-    	element("-p");
-    	protectElement(f.getAbsolutePath());
-    	return this;
+    MultiFlexCommand library(File f) {
+        element("-p");
+        protectElement(f.getAbsolutePath());
+        return this;
     }
-    
+
     public MultiFlexCommand library() {
-    	if (Preferences.packagePath()!=null) {
-    		return library(Preferences.packagePath());
-    	}
-    	return this;
+        if (Preferences.packagePath() != null) {
+            return library(Preferences.packagePath());
+        }
+        return this;
     }
 
 }

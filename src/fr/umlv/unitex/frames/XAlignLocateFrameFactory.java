@@ -22,24 +22,24 @@
 package fr.umlv.unitex.frames;
 
 
-public class XAlignLocateFrameFactory {
+class XAlignLocateFrameFactory {
 
-	private XAlignLocateFrame frame;
-	
-	XAlignLocateFrame newXAlignLocateFrame(String language) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-		}
-		frame=new XAlignLocateFrame(language);
-		return frame;
-	}
-	
-	
-	void closeXAlignLocateFrame() {
-		if (frame==null) {
-			return;
-		}
-		frame.doDefaultCloseAction();
-	}
+    private XAlignLocateFrame frame;
+
+    XAlignLocateFrame newXAlignLocateFrame(String language) {
+        if (frame != null) {
+            frame.doDefaultCloseAction();
+        }
+        frame = new XAlignLocateFrame(language);
+        return frame;
+    }
+
+
+    void closeXAlignLocateFrame() {
+        if (frame == null) {
+            return;
+        }
+        frame.doDefaultCloseAction();
+    }
 
 }

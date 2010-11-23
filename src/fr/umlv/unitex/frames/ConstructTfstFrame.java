@@ -41,15 +41,15 @@ import java.io.File;
  */
 public class ConstructTfstFrame extends JInternalFrame {
 
-    final JCheckBox reconstrucao = new JCheckBox(
+    private final JCheckBox reconstrucao = new JCheckBox(
             "Build clitic normalization grammar (available only for Portuguese (Portugal))");
-    final JCheckBox normFst = new JCheckBox("Apply the Normalization grammar");
-    final JCheckBox cleanFst = new JCheckBox("Clean Text FST");
-    final JCheckBox elagFst = new JCheckBox("Normalize according to Elag tagset.def");
-    final JTextField normGrf = new JTextField(Config.getCurrentNormGraph()
+    private final JCheckBox normFst = new JCheckBox("Apply the Normalization grammar");
+    private final JCheckBox cleanFst = new JCheckBox("Clean Text FST");
+    private final JCheckBox elagFst = new JCheckBox("Normalize according to Elag tagset.def");
+    private final JTextField normGrf = new JTextField(Config.getCurrentNormGraph()
             .getAbsolutePath());
-    final JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
-    final JTextField tagger_data = new JTextField(new File(new File(Config
+    private final JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
+    private final JTextField tagger_data = new JTextField(new File(new File(Config
             .getUserCurrentLanguageDir(), "Dela"), "tagger_data_cat.bin")
             .getAbsolutePath());
 
@@ -165,7 +165,7 @@ public class ConstructTfstFrame extends JInternalFrame {
         return buttons;
     }
 
-    protected void constructTfst() {
+    void constructTfst() {
         MultiCommands commands = new MultiCommands();
         File dir = Config.getCurrentSntDir();
         if (!dir.exists()) {
@@ -208,7 +208,7 @@ public class ConstructTfstFrame extends JInternalFrame {
                     .alphabet(Config.getAlphabet())
                     .longestMatches().mergeOutputs().noLimit();
             if (Config.isArabic()) {
-                locateCmd=locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+                locateCmd = locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
             if (Config.isKorean()) {
                 /*
@@ -311,7 +311,7 @@ public class ConstructTfstFrame extends JInternalFrame {
         public void toDo() {
             UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
             UnitexFrame.getFrameManager().newTfstTagsFrame(
-            		new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
+                    new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
         }
     }
 

@@ -21,51 +21,49 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import fr.umlv.unitex.editor.EditionTextArea;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  * @author Decreton Julien
- *
  */
 abstract class SearchPanel extends JPanel {
 
-	protected final EditionTextArea text;
-	protected JButton btClose;
+    final EditionTextArea text;
+    JButton btClose;
 
-	protected SearchPanel(EditionTextArea text) {
-		super(new BorderLayout());
-		this.text = text;
-		
-		//close button
-		btClose = new JButton("Close");
-		btClose.setMnemonic('c');
-	}
+    SearchPanel(EditionTextArea text) {
+        super(new BorderLayout());
+        this.text = text;
 
-	/**
-	* Generate message dialogue box 
-	* @param message
-	**/
-	protected void warning(String message) {
-		JOptionPane.showMessageDialog(
-			text,
-			message,
-			"Warning",
-			JOptionPane.INFORMATION_MESSAGE);
-	}
+        //close button
+        btClose = new JButton("Close");
+        btClose.setMnemonic('c');
+    }
 
-	/**
-		 * Add an action to the close button
-		 * @param action action to add to the pnel's close button
-		 */
-	public void addCloseAction(ActionListener action) {
-		btClose.addActionListener(action);
-	}
+    /**
+     * Generate message dialogue box
+     *
+     * @param message
+     */
+    void warning(String message) {
+        JOptionPane.showMessageDialog(
+                text,
+                message,
+                "Warning",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Add an action to the close button
+     *
+     * @param action action to add to the pnel's close button
+     */
+    public void addCloseAction(ActionListener action) {
+        btClose.addActionListener(action);
+    }
 
 }

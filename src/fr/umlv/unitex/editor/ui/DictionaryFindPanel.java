@@ -35,13 +35,13 @@ import java.awt.event.KeyEvent;
 
 public class DictionaryFindPanel extends AbstractFindpanel {
 
-    final ButtonModel modelCano;
-    final ButtonModel modelUp;
-    final ButtonModel modelGram;
-    final ButtonModel modelDown;
-    final ButtonModel modelFl;
-    final ButtonModel modelFlCode;
-    final ButtonModel modelBegin;
+    private final ButtonModel modelCano;
+    private final ButtonModel modelUp;
+    private final ButtonModel modelGram;
+    private final ButtonModel modelDown;
+    private final ButtonModel modelFl;
+    private final ButtonModel modelFlCode;
+    private final ButtonModel modelBegin;
 
     public DictionaryFindPanel(final EditionTextArea text) {
         super(text);

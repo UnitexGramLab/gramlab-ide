@@ -126,7 +126,7 @@ class Alignement implements Comparable {
         generatedFrom = a;
     }
 
-    public Alignement getGeneratedFrom() {
+    Alignement getGeneratedFrom() {
         return generatedFrom;
     }
 

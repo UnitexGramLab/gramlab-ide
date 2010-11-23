@@ -43,16 +43,16 @@ import java.io.*;
  * @author Olivier Blanc
  */
 public class ElagCompFrame extends JInternalFrame {
-    JFileChooser fc;
-    File currdir;
-    final File elagDir;
-    File lstfile;
-    File outputfile;
-    final DefaultListModel rules;
-    final JList list;
-    final JLabel lstlabel;
-    final JLabel outlabel;
-    final JLabel pathlabel;
+    private JFileChooser fc;
+    private File currdir;
+    private final File elagDir;
+    private File lstfile;
+    private File outputfile;
+    private final DefaultListModel rules;
+    private final JList list;
+    private final JLabel lstlabel;
+    private final JLabel outlabel;
+    private final JLabel pathlabel;
 
     ElagCompFrame() {
         super("Elag Grammar Compilation", true, true, true, true);

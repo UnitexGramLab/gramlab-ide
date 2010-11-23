@@ -23,23 +23,23 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class TextDicFrameFactory {
+class TextDicFrameFactory {
 
-	private TextDicFrame frame;
-	
-	TextDicFrame newTextDicFrame(File sntDir) {
-		if (frame==null) {
-			frame=new TextDicFrame();
-		} else {
-			frame.hideFrame();
-		}
-		frame.loadTextDic(sntDir);
-		return frame;
-	}
+    private TextDicFrame frame;
 
-	
-	void closeTextDicFrame() {
-		if (frame==null) return;
-		frame.hideFrame();
-	}
+    TextDicFrame newTextDicFrame(File sntDir) {
+        if (frame == null) {
+            frame = new TextDicFrame();
+        } else {
+            frame.hideFrame();
+        }
+        frame.loadTextDic(sntDir);
+        return frame;
+    }
+
+
+    void closeTextDicFrame() {
+        if (frame == null) return;
+        frame.hideFrame();
+    }
 }

@@ -38,11 +38,11 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Matrix {
+class Matrix {
 
-    protected int[][] data;
-    protected int num_rows;
-    protected int num_cols;
+    private int[][] data;
+    private int num_rows;
+    private int num_cols;
 
     /*
     * Construct & Initialize to 0.0
@@ -54,7 +54,7 @@ public class Matrix {
     /*
     * Construct & Initialize to init_value
     */
-    public Matrix(int rows, int cols, int init_value) {
+    private Matrix(int rows, int cols, int init_value) {
         num_rows = rows;
         num_cols = cols;
 

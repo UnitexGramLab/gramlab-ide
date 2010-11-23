@@ -21,13 +21,6 @@
 
 package fr.umlv.unitex.text;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.swing.JOptionPane;
-
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
@@ -40,164 +33,168 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * This class provides methods for loading corpora.
- * 
+ *
  * @author Sébastien Paumier
- *  
  */
 public class Text {
 
-	
-	public static void loadCorpus(File name) {
-		loadCorpus(name,false);
-	}
-	/**
-	 * Loads a ".txt" or a ".snt" file
-	 * 
-	 * @param name
-	 *            file name
-	 */
-	public static void loadCorpus(File name,boolean taggedText) {
-		TextConversionDo toDo = new TextConversionDo(name,taggedText);
-		try {
-			if (!UnicodeIO.isAUnicodeLittleEndianFile(name)) {
-				UnitexFrame.getFrameManager().newTranscodeOneFileDialog(name,toDo);
-			} else {
-				toDo.toDo();
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
-	/**
-	 * Loads a ".txt" file. Asks for preprocessing the text.
-	 * 
-	 * @param file
-	 *            file name
-	 */
-	static void loadTxt(File file,boolean taggedText) {
-    String name=file.getAbsolutePath();
-		FileInputStream source;
-		if (!file.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		if (!file.canRead()) {
-			JOptionPane.showMessageDialog(null, "Cannot read " + name, "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		if (file.length() <= 2) {
-			JOptionPane.showMessageDialog(null, name + " is empty", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		try {
-			source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
-			source.close();
-		} catch (NotAUnicodeLittleEndianFileException e) {
-			JOptionPane.showMessageDialog(null, name
-					+ " is not a Unicode Little-Endian text", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		} catch (IOException e) {
-			// do nothing
-		}
-		String nomSnt = Util.getFileNameWithoutExtension(name);
-		nomSnt = nomSnt + ".snt";
-		Config.setCurrentSnt(new File(nomSnt));
-		Object[] options = {"Yes", "No"};
-		if (0 == JOptionPane.showOptionDialog(UnitexFrame.mainFrame,
-				"Do you want to preprocess the text ?", "",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				options, options[0])) {
-			preprocessSnt(file, Config.getCurrentSnt(),taggedText);
-		} else {
-			preprocessLightSnt(file,taggedText);
-		}
-	}
+    public static void loadCorpus(File name) {
+        loadCorpus(name, false);
+    }
 
-	private static void preprocessSnt(File name, File snt,boolean taggedText) {
-		UnitexFrame.getFrameManager().newPreprocessDialog(name,snt,taggedText);
-	}
+    /**
+     * Loads a ".txt" or a ".snt" file
+     *
+     * @param name file name
+     */
+    public static void loadCorpus(File name, boolean taggedText) {
+        TextConversionDo toDo = new TextConversionDo(name, taggedText);
+        try {
+            if (!UnicodeIO.isAUnicodeLittleEndianFile(name)) {
+                UnitexFrame.getFrameManager().newTranscodeOneFileDialog(name, toDo);
+            } else {
+                toDo.toDo();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
-	private static void preprocessLightSnt(File name,boolean taggedText) {
-		File dir = Config.getCurrentSntDir();
-		MultiCommands commands = new MultiCommands();
-		// NORMALIZING TEXT...
-		NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(name);
-		commands.addCommand(normalizeCmd);
-		// creating snt dir
-		MkdirCommand mkdir=new MkdirCommand().name(dir);
-		commands.addCommand(mkdir);
-		// TOKENIZING...
-		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
-				Config.getCurrentSnt()).alphabet(Config.getAlphabet());
-		if (Config.getCurrentLanguage().equals("Thai")
-				|| Config.getCurrentLanguage().equals("Chinese")) {
-			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
-		}
-		commands.addCommand(tokenizeCmd);
-		/* We have to close the text frame there, because if not, we will have
-		 * problem when trying to close the .snt file that is mapped */
-		UnitexFrame.getFrameManager().closeTextFrame();
-		Text.removeSntFiles();
-		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),taggedText));
-	}
+    /**
+     * Loads a ".txt" file. Asks for preprocessing the text.
+     *
+     * @param file file name
+     */
+    private static void loadTxt(File file, boolean taggedText) {
+        String name = file.getAbsolutePath();
+        FileInputStream source;
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!file.canRead()) {
+            JOptionPane.showMessageDialog(null, "Cannot read " + name, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (file.length() <= 2) {
+            JOptionPane.showMessageDialog(null, name + " is empty", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
+            source.close();
+        } catch (NotAUnicodeLittleEndianFileException e) {
+            JOptionPane.showMessageDialog(null, name
+                    + " is not a Unicode Little-Endian text", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (IOException e) {
+            // do nothing
+        }
+        String nomSnt = Util.getFileNameWithoutExtension(name);
+        nomSnt = nomSnt + ".snt";
+        Config.setCurrentSnt(new File(nomSnt));
+        Object[] options = {"Yes", "No"};
+        if (0 == JOptionPane.showOptionDialog(UnitexFrame.mainFrame,
+                "Do you want to preprocess the text ?", "",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                options, options[0])) {
+            preprocessSnt(file, Config.getCurrentSnt(), taggedText);
+        } else {
+            preprocessLightSnt(file, taggedText);
+        }
+    }
 
-	/**
-	 * Loads a ".snt" file and all related files (token lists, dictionaries and
-	 * text automaton)
-	 * 
-	 * @param snt
-	 *            file name
-	 */
-	static void loadSnt(File snt,boolean taggedText) {
-		UnitexFrame.getFrameManager().newTextFrame(snt,taggedText);
-	}
+    private static void preprocessSnt(File name, File snt, boolean taggedText) {
+        UnitexFrame.getFrameManager().newPreprocessDialog(name, snt, taggedText);
+    }
 
-	/**
-	 * Remove all files related to the current ".snt" file
-	 *  
-	 */
-	public static void removeSntFiles() {
-		if (Config.getCurrentSntDir().exists()) {
-			Config.removeFile(new File(Config.getCurrentSntDir(),"*"));
-		}
-	}
+    private static void preprocessLightSnt(File name, boolean taggedText) {
+        File dir = Config.getCurrentSntDir();
+        MultiCommands commands = new MultiCommands();
+        // NORMALIZING TEXT...
+        NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(name);
+        commands.addCommand(normalizeCmd);
+        // creating snt dir
+        MkdirCommand mkdir = new MkdirCommand().name(dir);
+        commands.addCommand(mkdir);
+        // TOKENIZING...
+        TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
+                Config.getCurrentSnt()).alphabet(Config.getAlphabet());
+        if (Config.getCurrentLanguage().equals("Thai")
+                || Config.getCurrentLanguage().equals("Chinese")) {
+            tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
+        }
+        commands.addCommand(tokenizeCmd);
+        /* We have to close the text frame there, because if not, we will have
+           * problem when trying to close the .snt file that is mapped */
+        UnitexFrame.getFrameManager().closeTextFrame();
+        Text.removeSntFiles();
+        Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(), taggedText));
+    }
 
-	static class TextDo implements ToDo {
-		File SNT;
-		boolean b;
+    /**
+     * Loads a ".snt" file and all related files (token lists, dictionaries and
+     * text automaton)
+     *
+     * @param snt file name
+     */
+    private static void loadSnt(File snt, boolean taggedText) {
+        UnitexFrame.getFrameManager().newTextFrame(snt, taggedText);
+    }
 
-		public TextDo(File s,boolean taggedText) {
-			SNT = s;
-			b=taggedText;
-		}
-		public void toDo() {
-			Text.loadSnt(SNT,b);
-		}
-	}
+    /**
+     * Remove all files related to the current ".snt" file
+     */
+    public static void removeSntFiles() {
+        if (Config.getCurrentSntDir().exists()) {
+            Config.removeFile(new File(Config.getCurrentSntDir(), "*"));
+        }
+    }
 
-	static class TextConversionDo implements ToDo {
-		File file;
-		boolean b;
+    static class TextDo implements ToDo {
+        File SNT;
+        boolean b;
 
-		public TextConversionDo(File s,boolean taggedText) {
-			file = s;
-			b=taggedText;
-		}
-		public void toDo() {
-			if (Util.getFileNameExtension(file).equalsIgnoreCase("snt")) {
-				Config.setCurrentSnt(file);
-				loadSnt(file,b);
-			} else {
-				loadTxt(file,b);
-			}
-		}
-	}
+        public TextDo(File s, boolean taggedText) {
+            SNT = s;
+            b = taggedText;
+        }
+
+        public void toDo() {
+            Text.loadSnt(SNT, b);
+        }
+    }
+
+    static class TextConversionDo implements ToDo {
+        File file;
+        boolean b;
+
+        public TextConversionDo(File s, boolean taggedText) {
+            file = s;
+            b = taggedText;
+        }
+
+        public void toDo() {
+            if (Util.getFileNameExtension(file).equalsIgnoreCase("snt")) {
+                Config.setCurrentSnt(file);
+                loadSnt(file, b);
+            } else {
+                loadTxt(file, b);
+            }
+        }
+    }
 
 }

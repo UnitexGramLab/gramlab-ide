@@ -39,28 +39,28 @@ import java.util.ArrayList;
  * @author Sébastien Paumier
  */
 public class GlobalPreferencesFrame extends JInternalFrame {
-    final JTextField privateDirectory = new JTextField("");
-    final JTextField textFont = new JTextField("");
-    final JTextField concordanceFont = new JTextField("");
-    final JTextField htmlViewer = new JTextField("");
+    private final JTextField privateDirectory = new JTextField("");
+    private final JTextField textFont = new JTextField("");
+    private final JTextField concordanceFont = new JTextField("");
+    private final JTextField htmlViewer = new JTextField("");
     JTextField morphologicalDicViewer = new JTextField("");
-    final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
+    private final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
             "Right to left rendering for text");
-    final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
-    "Right to left rendering for graphs");
-    final JCheckBox semiticCheckBox = new JCheckBox(
-    		"Semitic language");
-    final JCheckBox charByCharCheckBox = new JCheckBox(
+    private final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
+            "Right to left rendering for graphs");
+    private final JCheckBox semiticCheckBox = new JCheckBox(
+            "Semitic language");
+    private final JCheckBox charByCharCheckBox = new JCheckBox(
             "Analyze this language char by char");
-    final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
+    private final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
             "Enable morphological use of space");
-    final JTextField packageDirectory = new JTextField("");
+    private final JTextField packageDirectory = new JTextField("");
     final JTextField lexicalPackageDirectory = new JTextField("");
-    final DefaultListModel morphoDicListModel = new DefaultListModel();
-    Preferences pref;
-    final JCheckBox mustLogCheckBox = new JCheckBox(
+    private final DefaultListModel morphoDicListModel = new DefaultListModel();
+    private Preferences pref;
+    private final JCheckBox mustLogCheckBox = new JCheckBox(
             "Produce log information in directory:");
-    final JTextField loggingDirectory = new JTextField("");
+    private final JTextField loggingDirectory = new JTextField("");
 
     GlobalPreferencesFrame() {
         super("", true, true, false, false);
@@ -68,10 +68,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         Config.addLanguageListener(new LanguageListener() {
-			public void languageChanged() {
-				reset();
-			}
-		});
+            public void languageChanged() {
+                reset();
+            }
+        });
     }
 
     private JPanel constructPanel() {
@@ -101,7 +101,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
         Action okAction = new AbstractAction("OK") {
             public void actionPerformed(ActionEvent arg0) {
-            	pref.semitic = semiticCheckBox.isSelected();
+                pref.semitic = semiticCheckBox.isSelected();
                 pref.rightToLeftForText = rightToLeftForCorpusCheckBox.isSelected();
                 pref.rightToLeftForGraphs = rightToLeftForGraphsCheckBox.isSelected();
                 pref.info.rightToLeft = pref.rightToLeftForGraphs;
@@ -231,7 +231,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         return downPanel;
     }
 
-    protected ArrayList<File> getFileList(DefaultListModel model) {
+    ArrayList<File> getFileList(DefaultListModel model) {
         ArrayList<File> list = new ArrayList<File>();
         for (int i = 0; i < model.size(); i++) {
             list.add((File) model.get(i));
@@ -393,7 +393,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 
     private JPanel constructPage2() {
         JPanel page2 = new JPanel(null);
-    	page2.setLayout(new BoxLayout(page2,BoxLayout.Y_AXIS));
+        page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
         textFont.setEnabled(false);
         concordanceFont.setEnabled(false);
         textFont.setDisabledTextColor(Color.black);
@@ -486,7 +486,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     /**
      * Refreshes the frame.
      */
-    public void refresh() {
+    void refresh() {
         textFont.setText("" + pref.textFont.font.getFontName() + "  "
                 + pref.textFont.size + "");
         concordanceFont.setText("" + pref.concordanceFont.font.getName() + "  "
@@ -545,7 +545,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             }
         }
         final JList list = new JList(morphoDicListModel);
-        list.setPreferredSize(new Dimension(200,400));
+        list.setPreferredSize(new Dimension(200, 400));
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList l,

@@ -27,9 +27,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class FileEditionTextFrameFactory {
+class FileEditionTextFrameFactory {
 
-    final ArrayList<FileEditionTextFrame> frames = new ArrayList<FileEditionTextFrame>();
+    private final ArrayList<FileEditionTextFrame> frames = new ArrayList<FileEditionTextFrame>();
 
     FileEditionTextFrame getFileEditionTextFrame(File file) {
         if (file != null) {

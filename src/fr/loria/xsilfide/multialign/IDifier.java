@@ -35,17 +35,8 @@
 
 package fr.loria.xsilfide.multialign;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.Writer;
-import java.util.Hashtable;
-import java.util.Properties;
-
+import fr.loria.nguyen.mytools.FileIO;
+import fr.loria.nguyen.mytools.XMLTools;
 import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.dom.NodeImpl;
@@ -59,8 +50,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import fr.loria.nguyen.mytools.FileIO;
-import fr.loria.nguyen.mytools.XMLTools;
+import java.io.*;
+import java.util.Hashtable;
+import java.util.Properties;
 
 //import javax.swing.*;
 
@@ -68,20 +60,20 @@ import fr.loria.nguyen.mytools.XMLTools;
 // when aligning a document which has no ID's on its PHRASE elements.
 // IDifier will not destroy ID's which already exist.
 
-@SuppressWarnings({ "unchecked", "deprecation" })
+@SuppressWarnings({"unchecked", "deprecation"})
 public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 
-    XMLReader parser;
-    final Hashtable types;
-    InputStream in;
-    OutputStream out;
-    PrintStream sysout;
-    DocumentImpl doc;
-    NodeImpl curNode;
-    int n;
-    final boolean force;
+    private XMLReader parser;
+    private final Hashtable types;
+    private InputStream in;
+    private OutputStream out;
+    private PrintStream sysout;
+    private DocumentImpl doc;
+    private NodeImpl curNode;
+    private int n;
+    private final boolean force;
 
-    public IDifier(Hashtable t, boolean force) {
+    private IDifier(Hashtable t, boolean force) {
         types = t;
         this.force = force;
         try {
@@ -97,7 +89,7 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 
     }
 
-    public void idify(String fileIn, InputStream in1, OutputStream out1) {
+    void idify(String fileIn, InputStream in1, OutputStream out1) {
         this.in = in1;
         this.out = out1;
         try {
@@ -116,7 +108,7 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
         }
     }
 
-    public static void usage() {
+    private static void usage() {
         System.out.println("Usage: idify [-f] property-file [input [output] ]");
         System.out.println("Add id's to some elements in a document.");
         System.out.println("If input or output is not given, standard input or output is used.");

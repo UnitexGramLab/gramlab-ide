@@ -47,15 +47,15 @@ import java.util.Vector;
 
 
 @SuppressWarnings("unchecked")
-public class NewLoadAndPrepareTexts {
-    String sourceName;
-    String targetName;
-    String idSource;
-    String idTarget;
+class NewLoadAndPrepareTexts {
+    private String sourceName;
+    private String targetName;
+    private String idSource;
+    private String idTarget;
     Vector filesPlusId;
-    final LoadAndPrepareTexts lpt;
-    Cognates cogn;
-    final Properties prop = new Properties();
+    private final LoadAndPrepareTexts lpt;
+    private Cognates cogn;
+    private final Properties prop = new Properties();
 
     @SuppressWarnings("null")
     public NewLoadAndPrepareTexts(String fileName) {
@@ -64,8 +64,7 @@ public class NewLoadAndPrepareTexts {
 
         try {
             parser = XMLReaderFactory.createXMLReader(XMLTools.parserClass);
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             System.err.println("lAPT: " + e);
             e.printStackTrace();
             System.exit(-1);
@@ -136,8 +135,7 @@ public class NewLoadAndPrepareTexts {
             is.setEncoding("UTF-8");
             is.setSystemId(fileName);
             parser.parse(is);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("source: " + e);
             e.printStackTrace();
         }

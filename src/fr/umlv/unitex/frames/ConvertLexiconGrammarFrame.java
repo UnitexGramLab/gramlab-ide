@@ -36,9 +36,9 @@ import java.io.File;
  * @author Sébastien Paumier
  */
 public class ConvertLexiconGrammarFrame extends JInternalFrame {
-    final JTextField grfName = new JTextField();
-    final JTextField resultName = new JTextField();
-    final JTextField subgraphName = new JTextField();
+    private final JTextField grfName = new JTextField();
+    private final JTextField resultName = new JTextField();
+    private final JTextField subgraphName = new JTextField();
     private File table;
 
     ConvertLexiconGrammarFrame() {
@@ -154,7 +154,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
         return downPanel;
     }
 
-    protected void compileLGTable() {
+    void compileLGTable() {
         Table2GrfCommand command = new Table2GrfCommand().table(table)
                 .parametrizedGraph(new File(grfName.getText()))
                 .resultMainGraph(new File(resultName.getText()));

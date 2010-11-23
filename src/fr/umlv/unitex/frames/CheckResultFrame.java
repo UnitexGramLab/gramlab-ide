@@ -40,7 +40,7 @@ import java.io.File;
  */
 public class CheckResultFrame extends JInternalFrame {
 
-    final BigTextList text;
+    private final BigTextList text;
 
 
     CheckResultFrame() {
@@ -74,6 +74,6 @@ public class CheckResultFrame extends JInternalFrame {
     void load(File f) {
         text.load(f);
         text.setFont(Config.getCurrentTextFont());
-	}
+    }
 
 }

@@ -23,24 +23,24 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-public class StatisticsFrameFactory {
+class StatisticsFrameFactory {
 
-	private StatisticsFrame frame;
-	
-	StatisticsFrame newStatisticsFrame(File file,int mode) {
-		if (frame!=null) {
-			frame.doDefaultCloseAction();
-		}
-		frame=new StatisticsFrame(file,mode);
-		return frame;
-	}
-	
-	
-	void closeStatisticsFrame() {
-		if (frame==null) {
-			return;
-		}
-		frame.doDefaultCloseAction();
-	}
+    private StatisticsFrame frame;
+
+    StatisticsFrame newStatisticsFrame(File file, int mode) {
+        if (frame != null) {
+            frame.doDefaultCloseAction();
+        }
+        frame = new StatisticsFrame(file, mode);
+        return frame;
+    }
+
+
+    void closeStatisticsFrame() {
+        if (frame == null) {
+            return;
+        }
+        frame.doDefaultCloseAction();
+    }
 
 }

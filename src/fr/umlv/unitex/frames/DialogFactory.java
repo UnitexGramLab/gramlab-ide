@@ -24,7 +24,7 @@ package fr.umlv.unitex.frames;
 import javax.swing.*;
 
 
-public class DialogFactory {
+class DialogFactory {
 
     private JDialog dialog;
 

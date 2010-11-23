@@ -220,7 +220,7 @@ public class Cognates {
     }
 
 
-    public Alignement addFuzzyAlign(String idSource, String idCible, LoadAndPrepareTexts lpt) {
+    Alignement addFuzzyAlign(String idSource, String idCible, LoadAndPrepareTexts lpt) {
         Alignement aCour;
 
         aCour = new Alignement(uriSource, uriCible,
@@ -850,8 +850,7 @@ public class Cognates {
                     //System.out.println("idDebutAlignTarget = |"+idDebutAlignTarget+"|");
                     try {
                         vcour = (Vector) eT.nextElement();
-                    }
-                    catch (java.util.NoSuchElementException exp) {
+                    } catch (java.util.NoSuchElementException exp) {
                         System.err.println("Unable to find " + idDebutAlignTarget + " in the target file. This is related to the alignment : " + aCour.getFirstGeneratedFrom());
                         System.exit(42);
                     }
@@ -866,8 +865,7 @@ public class Cognates {
                 while (!idFinAlignTarget.equals(idTargetCour)) {
                     try {
                         vcour = (Vector) eT.nextElement();
-                    }
-                    catch (java.util.NoSuchElementException exp) {
+                    } catch (java.util.NoSuchElementException exp) {
                         System.err.println("Unable to find " + idFinAlignTarget + " in the target file. This is related to the alignment : " + aCour.getFirstGeneratedFrom());
                         System.exit(42);
                     }

@@ -37,8 +37,8 @@ import java.util.concurrent.ExecutionException;
  */
 public class XMLTextLoader {
 
-    final XMLTextModel model;
-    final MappedByteBuffer buffer;
+    private final XMLTextModel model;
+    private final MappedByteBuffer buffer;
 
 
     public XMLTextLoader(XMLTextModel model, MappedByteBuffer buffer) {
@@ -116,5 +116,5 @@ public class XMLTextLoader {
         FileChannel channel = new FileInputStream(file).getChannel();
         return channel.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
     }
-		
+
 }

@@ -38,11 +38,11 @@ import java.util.Vector;
 
 @SuppressWarnings("unchecked")
 public class Path {
-    protected int cur;        // index of current point
-    protected final int num_points; // number of points
-    protected final int nx;         // max x
-    protected final int ny;         // max y
-    protected final Vector path;    // set of points
+    private int cur;        // index of current point
+    private final int num_points; // number of points
+    private final int nx;         // max x
+    private final int ny;         // max y
+    private final Vector path;    // set of points
 
     public Path(int x, int y, int size) {
         num_points = size;

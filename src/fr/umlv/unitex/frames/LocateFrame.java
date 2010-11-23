@@ -46,26 +46,26 @@ import java.io.*;
  */
 public class LocateFrame extends JInternalFrame {
 
-    final JRadioButton regularExpression = new JRadioButton("Regular expression:");
+    private final JRadioButton regularExpression = new JRadioButton("Regular expression:");
     final JRadioButton graph = new JRadioButton("Graph:", true);
-    final JTextField regExp = new JTextField();
+    private final JTextField regExp = new JTextField();
     final JTextField graphName = new JTextField();
-    final JRadioButton shortestMatches = new JRadioButton("Shortest matches");
-    final JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
-    final JRadioButton allMatches = new JRadioButton("All matches");
-    final JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account", true);
-    final JRadioButton mergeOutputs = new JRadioButton("Merge with input text");
-    final JRadioButton replaceOutputs = new JRadioButton("Replace recognized sequences");
-    final JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
-    final JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text");
-    final JTextField nMatches = new JTextField("200");
-    final JRadioButton locateOnSnt = new JRadioButton("Paumier 2003, working on text (quicker)", true);
-    final JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)");
-    final JRadioButton allowAmbiguousOutputs = new JRadioButton("Allow ambiguous outputs", true);
-    final JRadioButton forbidAmbiguousOutputs = new JRadioButton("Forbid ambiguous outputs");
-    final JRadioButton ignoreVariableErrors = new JRadioButton("Ignore variable errors", true);
-    final JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error");
-    final JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error");
+    private final JRadioButton shortestMatches = new JRadioButton("Shortest matches");
+    private final JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
+    private final JRadioButton allMatches = new JRadioButton("All matches");
+    private final JRadioButton ignoreOutputs = new JRadioButton("Are not taken into account", true);
+    private final JRadioButton mergeOutputs = new JRadioButton("Merge with input text");
+    private final JRadioButton replaceOutputs = new JRadioButton("Replace recognized sequences");
+    private final JRadioButton stopAfterNmatches = new JRadioButton("Stop after ", true);
+    private final JRadioButton indexAllMatches = new JRadioButton("Index all utterances in text");
+    private final JTextField nMatches = new JTextField("200");
+    private final JRadioButton locateOnSnt = new JRadioButton("Paumier 2003, working on text (quicker)", true);
+    private final JRadioButton locateOnTfst = new JRadioButton("automaton intersection (higher precision)");
+    private final JRadioButton allowAmbiguousOutputs = new JRadioButton("Allow ambiguous outputs", true);
+    private final JRadioButton forbidAmbiguousOutputs = new JRadioButton("Forbid ambiguous outputs");
+    private final JRadioButton ignoreVariableErrors = new JRadioButton("Ignore variable errors", true);
+    private final JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error");
+    private final JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error");
 
 
     LocateFrame() {
@@ -79,11 +79,11 @@ public class LocateFrame extends JInternalFrame {
             }
         });
         Config.addLanguageListener(new LanguageListener() {
-			public void languageChanged() {
-				regExp.setText("");
-				graphName.setText("");
-			}
-		});
+            public void languageChanged() {
+                regExp.setText("");
+                graphName.setText("");
+            }
+        });
     }
 
 
@@ -334,7 +334,7 @@ public class LocateFrame extends JInternalFrame {
                 locateCmd = locateCmd.korean();
             }
             if (Config.isArabic()) {
-                locateCmd=locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
+                locateCmd = locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
             if (Config.isCharByCharLanguage()) {
                 locateCmd = locateCmd.charByChar();
@@ -444,7 +444,7 @@ public class LocateFrame extends JInternalFrame {
     /**
      * Loads the content of a 'concord.n' file.
      */
-    static String readInfo(File file) {
+    private static String readInfo(File file) {
         if (!file.exists()) {
             return null;
         }

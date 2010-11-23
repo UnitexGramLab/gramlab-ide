@@ -61,7 +61,7 @@ public class GraphIO {
     private int nBoxes;
     public File grf;
 
-    public GraphIO() {
+    private GraphIO() {
         info = Preferences.getGraphPresentationPreferences();
     }
 
@@ -150,12 +150,12 @@ public class GraphIO {
                     JOptionPane.ERROR_MESSAGE);
             return null;
         } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Cannot open "+grfFile.getAbsolutePath(),
+            JOptionPane.showMessageDialog(null, "Cannot open " + grfFile.getAbsolutePath(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             return null;
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error in file "+grfFile.getAbsolutePath()+": "+e.getMessage(),
+            JOptionPane.showMessageDialog(null, "Error in file " + grfFile.getAbsolutePath() + ": " + e.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             return null;
@@ -169,36 +169,36 @@ public class GraphIO {
         char c;
         // reading width
         width = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1 && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             width = width * 10 + (c - '0');
-        if (z==-1) throw new IOException("Number expected");
+        if (z == -1) throw new IOException("Number expected");
         // reading height
-        z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1 && UnicodeIO.isDigit((c = (char) z)))
+        z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             height = height * 10 + (c - '0');
-        if (z==-1) throw new IOException("Number expected");
+        if (z == -1) throw new IOException("Number expected");
     }
 
     private void readInputFont(FileInputStream f) throws IOException {
         UnicodeIO.skipChars(f, 5);
         String s = "";
         char c;
-        int z=-1;
-        while ((z = (char) UnicodeIO.readChar(f)) != ':' && z!=-1)
-            s = s + (char)z;
-        if (z==-1) throw new IOException("Error while reading input font information");
-        boolean bold = ((z=UnicodeIO.readChar(f)) == 'B');
-        if (z!='B' && z!=' ') throw new IOException("Error while reading input font information");
-        if (z==-1) throw new IOException("Error while reading input font information");
-        boolean italic = ((z=UnicodeIO.readChar(f)) == 'I');
-        if (z!='I' && z!=' ') throw new IOException("Error while reading input font information");
-        if (z==-1) throw new IOException("Error while reading input font information");
+        int z = -1;
+        while ((z = (char) UnicodeIO.readChar(f)) != ':' && z != -1)
+            s = s + (char) z;
+        if (z == -1) throw new IOException("Error while reading input font information");
+        boolean bold = ((z = UnicodeIO.readChar(f)) == 'B');
+        if (z != 'B' && z != ' ') throw new IOException("Error while reading input font information");
+        if (z == -1) throw new IOException("Error while reading input font information");
+        boolean italic = ((z = UnicodeIO.readChar(f)) == 'I');
+        if (z != 'I' && z != ' ') throw new IOException("Error while reading input font information");
+        if (z == -1) throw new IOException("Error while reading input font information");
         int size = 0;
-        z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             size = size * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading input font information");
+        if (z == -1) throw new IOException("Error while reading input font information");
         info.input.size = size;
         int style;
         if (bold && italic)
@@ -216,21 +216,21 @@ public class GraphIO {
         UnicodeIO.skipChars(f, 6);
         String s = "";
         char c;
-        int z=-1;
-        while ((z = (char) UnicodeIO.readChar(f)) != ':' && z!=-1)
-            s = s + (char)z;
-        if (z==-1) throw new IOException("Error while reading output font information");
-        boolean bold = ((z=UnicodeIO.readChar(f)) == 'B');
-        if (z!='B' && z!=' ') throw new IOException("Error while reading output font information");
-        if (z==-1) throw new IOException("Error while reading output font information");
-        boolean italic = ((z=UnicodeIO.readChar(f)) == 'I');
-        if (z!='I' && z!=' ') throw new IOException("Error while reading output font information");
-        if (z==-1) throw new IOException("Error while reading output font information");
+        int z = -1;
+        while ((z = (char) UnicodeIO.readChar(f)) != ':' && z != -1)
+            s = s + (char) z;
+        if (z == -1) throw new IOException("Error while reading output font information");
+        boolean bold = ((z = UnicodeIO.readChar(f)) == 'B');
+        if (z != 'B' && z != ' ') throw new IOException("Error while reading output font information");
+        if (z == -1) throw new IOException("Error while reading output font information");
+        boolean italic = ((z = UnicodeIO.readChar(f)) == 'I');
+        if (z != 'I' && z != ' ') throw new IOException("Error while reading output font information");
+        if (z == -1) throw new IOException("Error while reading output font information");
         int size = 0;
-        z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             size = size * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading output font information");
+        if (z == -1) throw new IOException("Error while reading output font information");
         info.output.size = size;
         int style;
         if (bold && italic)
@@ -248,10 +248,10 @@ public class GraphIO {
         UnicodeIO.skipChars(f, 7);
         char c;
         int n = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             n = n * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading background color information");
+        if (z == -1) throw new IOException("Error while reading background color information");
         info.backgroundColor = new Color(n);
     }
 
@@ -259,10 +259,10 @@ public class GraphIO {
         UnicodeIO.skipChars(f, 7);
         char c;
         int n = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             n = n * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading foreground color information");
+        if (z == -1) throw new IOException("Error while reading foreground color information");
         info.foregroundColor = new Color(n);
     }
 
@@ -270,10 +270,10 @@ public class GraphIO {
         UnicodeIO.skipChars(f, 7);
         char c;
         int n = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             n = n * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading subgraph color information");
+        if (z == -1) throw new IOException("Error while reading subgraph color information");
         info.subgraphColor = new Color(n);
     }
 
@@ -281,10 +281,10 @@ public class GraphIO {
         UnicodeIO.skipChars(f, 7);
         char c;
         int n = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             n = n * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading selected color information");
+        if (z == -1) throw new IOException("Error while reading selected color information");
         info.selectedColor = new Color(n);
     }
 
@@ -292,141 +292,141 @@ public class GraphIO {
         UnicodeIO.skipChars(f, 7);
         char c;
         int n = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             n = n * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading comment color information");
+        if (z == -1) throw new IOException("Error while reading comment color information");
         info.commentColor = new Color(n);
     }
 
     private void readDrawFrame(FileInputStream f) throws IOException {
         UnicodeIO.skipChars(f, 7);
         int z;
-        info.frame = ((z=UnicodeIO.readChar(f)) == 'y');
-        if (z!='y' && z!='n') throw new IOException("Error while reading frame information");
-        if (-1==UnicodeIO.readChar(f)) throw new IOException("Error while reading frame information");
+        info.frame = ((z = UnicodeIO.readChar(f)) == 'y');
+        if (z != 'y' && z != 'n') throw new IOException("Error while reading frame information");
+        if (-1 == UnicodeIO.readChar(f)) throw new IOException("Error while reading frame information");
     }
 
     private void readDate(FileInputStream f) throws IOException {
         UnicodeIO.skipChars(f, 6);
         int z;
-        info.date = ((z=UnicodeIO.readChar(f)) == 'y');
-        if (z!='y' && z!='n') throw new IOException("Error while reading date information");
-        if (-1==UnicodeIO.readChar(f)) throw new IOException("Error while reading date information");
+        info.date = ((z = UnicodeIO.readChar(f)) == 'y');
+        if (z != 'y' && z != 'n') throw new IOException("Error while reading date information");
+        if (-1 == UnicodeIO.readChar(f)) throw new IOException("Error while reading date information");
     }
 
     private void readFile(FileInputStream f) throws IOException {
         UnicodeIO.skipChars(f, 6);
         int z;
-        info.filename = ((z=UnicodeIO.readChar(f)) == 'y');
-        if (z!='y' && z!='n') throw new IOException("Error while reading file name information");
-        if (-1==UnicodeIO.readChar(f)) throw new IOException("Error while reading file name information");
+        info.filename = ((z = UnicodeIO.readChar(f)) == 'y');
+        if (z != 'y' && z != 'n') throw new IOException("Error while reading file name information");
+        if (-1 == UnicodeIO.readChar(f)) throw new IOException("Error while reading file name information");
     }
 
     private void readDirectory(FileInputStream f) throws IOException {
         UnicodeIO.skipChars(f, 5);
         int z;
-        info.pathname = ((z=UnicodeIO.readChar(f)) == 'y');
-        if (z!='y' && z!='n') throw new IOException("Error while reading path name information");
-        if (-1==UnicodeIO.readChar(f)) throw new IOException("Error while reading path name information");
+        info.pathname = ((z = UnicodeIO.readChar(f)) == 'y');
+        if (z != 'y' && z != 'n') throw new IOException("Error while reading path name information");
+        if (-1 == UnicodeIO.readChar(f)) throw new IOException("Error while reading path name information");
     }
 
     private void readRightToLeft(FileInputStream f) throws IOException {
         UnicodeIO.skipChars(f, 5);
         int z;
-        info.rightToLeft = ((z=UnicodeIO.readChar(f)) == 'y');
-        if (z!='y' && z!='n') throw new IOException("Error while reading right to left information");
-        if (-1==UnicodeIO.readChar(f)) throw new IOException("Error while reading right to left information");
+        info.rightToLeft = ((z = UnicodeIO.readChar(f)) == 'y');
+        if (z != 'y' && z != 'n') throw new IOException("Error while reading right to left information");
+        if (-1 == UnicodeIO.readChar(f)) throw new IOException("Error while reading right to left information");
     }
 
     private void readBoxNumber(FileInputStream f) throws IOException {
         char c;
         nBoxes = 0;
-        int z=-1;
-        while ((z=UnicodeIO.readChar(f))!=-1  && UnicodeIO.isDigit((c = (char) z)))
+        int z = -1;
+        while ((z = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((c = (char) z)))
             nBoxes = nBoxes * 10 + (c - '0');
-        if (z==-1) throw new IOException("Error while reading graph box number");
+        if (z == -1) throw new IOException("Error while reading graph box number");
     }
 
     private void readGraphLine(FileInputStream f, int n) throws IOException {
         GenericGraphBox g = boxes.get(n);
         int z;
-        if ((z=UnicodeIO.readChar(f)) == 's') {
+        if ((z = UnicodeIO.readChar(f)) == 's') {
             // is a "s" was read, then we read the " char
-            z=UnicodeIO.readChar(f);
+            z = UnicodeIO.readChar(f);
         }
-        if (z!='"') throw new IOException("Error while reading graph box #"+n);
+        if (z != '"') throw new IOException("Error while reading graph box #" + n);
         String s = "";
         int c;
         while ((c = UnicodeIO.readChar(f)) != '"') {
-            if (c==-1) throw new IOException("Error while reading graph box #"+n);
-        	if (c == '\\') {
+            if (c == -1) throw new IOException("Error while reading graph box #" + n);
+            if (c == '\\') {
                 c = UnicodeIO.readChar(f);
-                if (c==-1) throw new IOException("Error while reading graph box #"+n);
+                if (c == -1) throw new IOException("Error while reading graph box #" + n);
                 if (c != '\\') {
                     // case of \: \+ and \"
                     if (c == '"')
-                        s = s + (char)c;
+                        s = s + (char) c;
                     else
-                        s = s + "\\" + (char)c;
+                        s = s + "\\" + (char) c;
                 } else {
                     // case of \\\" that must be transformed into \"
                     c = UnicodeIO.readChar(f);
-                    if (c==-1) throw new IOException("Error while reading graph box #"+n);
+                    if (c == -1) throw new IOException("Error while reading graph box #" + n);
                     if (c == '\\') {
                         // we are in the case \\\" -> \"
                         c = UnicodeIO.readChar(f);
-                        if (c==-1) throw new IOException("Error while reading graph box #"+n);
-                        s = s + "\\" + (char)c;
+                        if (c == -1) throw new IOException("Error while reading graph box #" + n);
+                        s = s + "\\" + (char) c;
                     } else {
                         // we are in the case \\a -> \\a
                         s = s + "\\\\";
                         if (c != '"')
-                            s = s + (char)c;
+                            s = s + (char) c;
                         else
                             break;
                     }
                 }
             } else
-                s = s + (char)c;
+                s = s + (char) c;
         }
         // skipping the space after "
-        if (UnicodeIO.readChar(f)!=' ') throw new IOException("Error while reading graph box #"+n);
+        if (UnicodeIO.readChar(f) != ' ') throw new IOException("Error while reading graph box #" + n);
         // reading the X coordinate
         int x = 0;
         int neg = 1;
         c = UnicodeIO.readChar(f);
-        if (c==-1) throw new IOException("Error while reading graph box #"+n);
+        if (c == -1) throw new IOException("Error while reading graph box #" + n);
         if (c == '-') {
             neg = -1;
-        } else if (UnicodeIO.isDigit((char)c)) {
-            x = ((char)c - '0');
+        } else if (UnicodeIO.isDigit((char) c)) {
+            x = ((char) c - '0');
         } else {
-        	throw new IOException("Error while reading graph box #"+n);
+            throw new IOException("Error while reading graph box #" + n);
         }
-        c=-1;
-        while ((c=UnicodeIO.readChar(f))!=-1 && UnicodeIO.isDigit((char)c)) {
-            x = x * 10 + ((char)c - '0');
+        c = -1;
+        while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c)) {
+            x = x * 10 + ((char) c - '0');
         }
-        if (c==-1) throw new IOException("Error while reading graph box #"+n);
+        if (c == -1) throw new IOException("Error while reading graph box #" + n);
         x = x * neg;
         // reading the Y coordinate
         int y = 0;
         neg = 1;
         c = UnicodeIO.readChar(f);
-        if (c==-1) throw new IOException("Error while reading graph box #"+n);
+        if (c == -1) throw new IOException("Error while reading graph box #" + n);
         if (c == '-') {
             neg = -1;
-        } else if (UnicodeIO.isDigit((char)c)) {
-            y = ((char)c - '0');
+        } else if (UnicodeIO.isDigit((char) c)) {
+            y = ((char) c - '0');
         } else {
-        	throw new IOException("Error while reading graph box #"+n);
+            throw new IOException("Error while reading graph box #" + n);
         }
-        c=-1;
-        while ((c=UnicodeIO.readChar(f))!=-1 && UnicodeIO.isDigit((char)c)) {
-            y = y * 10 + ((char)c - '0');
+        c = -1;
+        while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c)) {
+            y = y * 10 + ((char) c - '0');
         }
-        if (c==-1) throw new IOException("Error while reading graph box #"+n);
+        if (c == -1) throw new IOException("Error while reading graph box #" + n);
         y = y * neg;
         g.setX(x);
         g.setY(y);
@@ -451,20 +451,20 @@ public class GraphIO {
             g.setX_out(g.getX_in() + 25);
         }
         int trans = 0;
-        c=-1;
-        while ((c=UnicodeIO.readChar(f))!=-1 && UnicodeIO.isDigit((char)c))
-            trans = trans * 10 + ((char)c - '0');
-        if (c==-1) throw new IOException("Error while reading graph box #"+n);
+        c = -1;
+        while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c))
+            trans = trans * 10 + ((char) c - '0');
+        if (c == -1) throw new IOException("Error while reading graph box #" + n);
         for (int j = 0; j < trans; j++) {
             int dest = 0;
-            c=-1;
-            while ((c=UnicodeIO.readChar(f))!=-1 && UnicodeIO.isDigit((char)c))
-                dest = dest * 10 + ((char)c - '0');
-            if (c==-1) throw new IOException("Error while reading graph box #"+n);
+            c = -1;
+            while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c))
+                dest = dest * 10 + ((char) c - '0');
+            if (c == -1) throw new IOException("Error while reading graph box #" + n);
             g.addTransitionTo(boxes.get(dest));
         }
         // skipping the end-of-line
-        if (UnicodeIO.readChar(f)!='\n')  throw new IOException("Error while reading graph box #"+n);
+        if (UnicodeIO.readChar(f) != '\n') throw new IOException("Error while reading graph box #" + n);
     }
 
     /**

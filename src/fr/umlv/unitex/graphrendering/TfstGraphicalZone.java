@@ -69,7 +69,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         return new TfstGraphBox(x, y, type, (TfstGraphicalZone) p);
     }
 
-    boolean hasMoved = false;
+    private boolean hasMoved = false;
 
     class FstGraphMouseListener extends MouseAdapter {
         final MouseMotionListener motionListener = new FstGraphMouseMotionListener();
@@ -179,7 +179,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         }
     }
 
-    class FstGraphMouseMotionListener extends MouseMotionAdapter {
+    private class FstGraphMouseMotionListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
             hasMoved = true;

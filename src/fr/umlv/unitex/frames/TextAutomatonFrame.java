@@ -61,20 +61,20 @@ import java.util.regex.PatternSyntaxException;
  */
 public class TextAutomatonFrame extends JInternalFrame {
 
-    TagFilter filter = new TagFilter();
-    TfstTableModel tfstTableModel = new TfstTableModel(filter,true);
-    JTextArea sentenceTextArea = new JTextArea();
-    JLabel sentence_count_label = new JLabel(" 0 sentence");
-    boolean elagON;
-    JSpinner spinner;
-    SpinnerNumberModel spinnerModel;
-    TfstGraphicalZone elaggraph;
-    File elagrules;
-    JLabel ruleslabel;
-    JScrollBar tfstScrollbar;
-    TfstGraphicalZone graphicalZone;
+    private TagFilter filter = new TagFilter();
+    private TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
+    private JTextArea sentenceTextArea = new JTextArea();
+    private JLabel sentence_count_label = new JLabel(" 0 sentence");
+    private boolean elagON;
+    private JSpinner spinner;
+    private SpinnerNumberModel spinnerModel;
+    private TfstGraphicalZone elaggraph;
+    private File elagrules;
+    private JLabel ruleslabel;
+    private JScrollBar tfstScrollbar;
+    private TfstGraphicalZone graphicalZone;
 
-    GraphListener listener = new GraphListener() {
+    private GraphListener listener = new GraphListener() {
         public void graphChanged(boolean m) {
             if (m) setModified(true);
             repaint();
@@ -85,18 +85,18 @@ public class TextAutomatonFrame extends JInternalFrame {
         return graphicalZone;
     }
 
-    TfstTextField textfield = new TfstTextField(25, this);
+    private TfstTextField textfield = new TfstTextField(25, this);
     boolean modified = false;
-    int sentence_count = 0;
-    File sentence_text;
-    File sentence_grf;
-    File sentence_tok;
-    File sentence_modified;
-    File text_tfst;
-    File elag_tfst;
-    File elagsentence_grf;
-    boolean isAcurrentLoadingThread = false;
-    boolean isAcurrentElagLoadingThread = false;
+    private int sentence_count = 0;
+    private File sentence_text;
+    private File sentence_grf;
+    private File sentence_tok;
+    private File sentence_modified;
+    private File text_tfst;
+    private File elag_tfst;
+    private File elagsentence_grf;
+    private boolean isAcurrentLoadingThread = false;
+    private boolean isAcurrentElagLoadingThread = false;
     Process currentElagLoadingProcess = null;
     private JSplitPane superpanel;
     private JButton resetSentenceGraph;
@@ -169,7 +169,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         graphicalZone.addGraphListener(listener);
         graphicalZone.setPreferredSize(new Dimension(1188, 840));
         final JScrollPane scroll = new JScrollPane(graphicalZone);
-        tfstScrollbar=scroll.getHorizontalScrollBar();
+        tfstScrollbar = scroll.getHorizontalScrollBar();
         tfstScrollbar.setUnitIncrement(20);
         scroll.getVerticalScrollBar().setUnitIncrement(20);
         scroll.setPreferredSize(new Dimension(1188, 840));
@@ -300,7 +300,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         return p;
     }
 
-    protected void exportTextAsTable() {
+    void exportTextAsTable() {
         JFileChooser chooser = new JFileChooser();
         chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
                 "Unicode Raw Texts"));
@@ -314,7 +314,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         UnitexFrame.getFrameManager().newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter);
     }
 
-    protected void refreshTableRowHeight(JTable table) {
+    void refreshTableRowHeight(JTable table) {
         if (table.getRowCount() == 0) return;
         TableCellRenderer renderer = table.getCellRenderer(0, 0);
         int h = renderer.getTableCellRendererComponent(table, table.getValueAt(0, 0),
@@ -325,7 +325,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     /**
      * We set each column to its preferred width.
      */
-    protected void refreshTableColumnWidths(JTable table) {
+    void refreshTableColumnWidths(JTable table) {
         for (int c = 0; c < table.getColumnCount(); c++) {
             int w = getPreferredWidth(table, c);
             table.getColumnModel().getColumn(c).setPreferredWidth(w);
@@ -368,9 +368,9 @@ public class TextAutomatonFrame extends JInternalFrame {
         button = new JButton("Replace");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	UnitexFrame.getFrameManager().closeTfstTagsFrame();
+                UnitexFrame.getFrameManager().closeTfstTagsFrame();
                 replaceElagFst();
-                UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
+                UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
             }
         });
         p.add(button);
@@ -500,7 +500,7 @@ public class TextAutomatonFrame extends JInternalFrame {
      * @param b <code>true</code> if the graph has been modified,
      *          <code>false</code> otherwise
      */
-    public void setModified(boolean b) {
+    void setModified(boolean b) {
         repaint();
         resetSentenceGraph.setVisible(b);
         int n = spinnerModel.getNumber().intValue();
@@ -606,7 +606,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         return true;
     }
 
-    public boolean loadElagSentence(int n) {
+    boolean loadElagSentence(int n) {
         if (n < 1 || n > sentence_count) {
             System.err.println("loadElagSentence: n = " + n + " out of bounds");
             return false;
@@ -678,15 +678,15 @@ public class TextAutomatonFrame extends JInternalFrame {
         textfield.setFont(g.info.input.font);
         graphicalZone.setup(g);
         tfstTableModel.init(g.boxes);
-        Timer t=new Timer(300,new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (Config.isRightToLeftForGraphs()) {
-					tfstScrollbar.setValue(tfstScrollbar.getMaximum());
-				} else {
-			        tfstScrollbar.setValue(0);
-				}
-			}
-		});
+        Timer t = new Timer(300, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (Config.isRightToLeftForGraphs()) {
+                    tfstScrollbar.setValue(tfstScrollbar.getMaximum());
+                } else {
+                    tfstScrollbar.setValue(0);
+                }
+            }
+        });
         t.setRepeats(false);
         t.start();
         return true;
@@ -777,15 +777,15 @@ public class TextAutomatonFrame extends JInternalFrame {
         /* cleanup files */
         File dir = Config.getCurrentSntDir();
 
-        File old_tfst_tags_by_freq=new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt");
-        File old_tfst_tags_by_alph=new File(Config.getCurrentSntDir(),"tfst_tags_by_alph.txt");
-        File new_tfst_tags_by_freq=new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.new.txt");
-        File new_tfst_tags_by_alph=new File(Config.getCurrentSntDir(),"tfst_tags_by_alph.new.txt");
+        File old_tfst_tags_by_freq = new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt");
+        File old_tfst_tags_by_alph = new File(Config.getCurrentSntDir(), "tfst_tags_by_alph.txt");
+        File new_tfst_tags_by_freq = new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.new.txt");
+        File new_tfst_tags_by_alph = new File(Config.getCurrentSntDir(), "tfst_tags_by_alph.new.txt");
         old_tfst_tags_by_freq.delete();
         old_tfst_tags_by_alph.delete();
         new_tfst_tags_by_freq.renameTo(old_tfst_tags_by_freq);
         new_tfst_tags_by_alph.renameTo(old_tfst_tags_by_alph);
-        
+
         Config.deleteFileByName(new File(Config.getCurrentSntDir(),
                 "sentence*.grf"));
         File f = new File(dir, "currelagsentence.grf");
@@ -807,24 +807,24 @@ public class TextAutomatonFrame extends JInternalFrame {
                     ,
                     "Failed to replace " + text_tfst + " with " + elag_tfst);
         }
-        File old_tfst_tind=new File(Config.getCurrentSntDir(),"text.tind");
-        File new_tfst_tind=new File(Config.getCurrentSntDir(),"text-elag.tind");
+        File old_tfst_tind = new File(Config.getCurrentSntDir(), "text.tind");
+        File new_tfst_tind = new File(Config.getCurrentSntDir(), "text-elag.tind");
         old_tfst_tind.delete();
         new_tfst_tind.renameTo(old_tfst_tind);
-        
+
         loadCurrSentence();
     }
 
     void exploseElagFst() {
-    	UnitexFrame.getFrameManager().closeTfstTagsFrame();
+        UnitexFrame.getFrameManager().closeTfstTagsFrame();
         explodeTextAutomaton(elag_tfst);
-        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
+        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
     }
 
     void implodeElagFst() {
-    	UnitexFrame.getFrameManager().closeTfstTagsFrame();
+        UnitexFrame.getFrameManager().closeTfstTagsFrame();
         implodeTextAutomaton(elag_tfst);
-        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
+        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
     }
 
     boolean explodeTextAutomaton(File f) {
@@ -894,7 +894,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 
 class loadSentenceDo implements ToDo {
-    TextAutomatonFrame frame;
+    private TextAutomatonFrame frame;
 
     loadSentenceDo(TextAutomatonFrame f) {
         frame = f;
@@ -907,8 +907,8 @@ class loadSentenceDo implements ToDo {
 
 
 class ImploseDo implements ToDo {
-    File fst;
-    TextAutomatonFrame fr;
+    private File fst;
+    private TextAutomatonFrame fr;
 
     public ImploseDo(TextAutomatonFrame frame, File f) {
         fst = f;

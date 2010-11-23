@@ -24,17 +24,17 @@ package fr.umlv.unitex.frames;
 import fr.umlv.unitex.FontInfo;
 
 
-public class FontDialogFactory {
+class FontDialogFactory {
 
-	private FontDialog dialog;
-	
-	FontDialog newFontDialog(FontInfo info) {
-		if (dialog==null) {
-			dialog=new FontDialog(info);
-		} else {
-			dialog.configureFont(info);
-		}
-		return dialog;
-	}
+    private FontDialog dialog;
+
+    FontDialog newFontDialog(FontInfo info) {
+        if (dialog == null) {
+            dialog = new FontDialog(info);
+        } else {
+            dialog.configureFont(info);
+        }
+        return dialog;
+    }
 
 }

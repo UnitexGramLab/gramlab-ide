@@ -36,8 +36,8 @@ import java.awt.event.KeyEvent;
  */
 public class TfstTextField extends GraphTextField {
 
-    protected final TextAutomatonFrame parent;
-    protected boolean modified = false;
+    private final TextAutomatonFrame parent;
+    private boolean modified = false;
 
     /**
      * Constructs a new empty <code>FstTextField</code>.
@@ -96,7 +96,7 @@ public class TfstTextField extends GraphTextField {
         return false;
     }
 
-    class MyKeyListener extends KeyAdapter {
+    private class MyKeyListener extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -114,7 +114,7 @@ public class TfstTextField extends GraphTextField {
      * @return <code>true</code> if the content has changed, <code>false</code>
      *         otherwise
      */
-    public boolean hasChangedTextField() {
+    boolean hasChangedTextField() {
         return modified;
     }
 
@@ -125,7 +125,7 @@ public class TfstTextField extends GraphTextField {
      * @return <code>true</code> if the content is valid, <code>false</code>
      *         otherwise
      */
-    public boolean isGoodText(String s) {
+    boolean isGoodText(String s) {
         if (s.equals(""))
             return true;
         char ligne[] = new char[10000];
@@ -198,9 +198,9 @@ public class TfstTextField extends GraphTextField {
         if (i == L) {
             JOptionPane.showMessageDialog(null, "No closing '}'", "Error",
                     JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return true;
-	}
+            return false;
+        }
+        return true;
+    }
 
 }

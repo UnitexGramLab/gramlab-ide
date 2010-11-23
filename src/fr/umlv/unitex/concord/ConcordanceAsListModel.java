@@ -48,21 +48,21 @@ public class ConcordanceAsListModel extends AbstractListModel {
      * HTML_START_LINES lines, then there are the real concordance lines, then
      * there are HTML_END_LINES that close open HTML tags.
      */
-    protected int HTML_START_LINES = 7;
-    protected int HTML_END_LINES = 2;
-    protected int HTML_CONTROL_LINES = HTML_START_LINES + HTML_END_LINES;
+    int HTML_START_LINES = 7;
+    private int HTML_END_LINES = 2;
+    private int HTML_CONTROL_LINES = HTML_START_LINES + HTML_END_LINES;
 
     MappedByteBuffer buffer;
-    int dataLength;
-    SwingWorker<Void, Integer> worker;
+    private int dataLength;
+    private SwingWorker<Void, Integer> worker;
     Interval selection;
-    FileChannel channel;
-    FileInputStream stream;
-    File file;
-    public static final Charset utf8 = Charset.forName("UTF-8");
+    private FileChannel channel;
+    private FileInputStream stream;
+    private File file;
+    static final Charset utf8 = Charset.forName("UTF-8");
 
-    int[] endOfLines;
-    int numberOfEOL;
+    private int[] endOfLines;
+    private int numberOfEOL;
 
     public void load(File f) {
         this.file = f;
@@ -151,7 +151,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
         super();
     }
 
-    public ConcordanceAsListModel(int html_start_lines, int html_end_lines) {
+    ConcordanceAsListModel(int html_start_lines, int html_end_lines) {
         this.HTML_START_LINES = html_start_lines;
         this.HTML_END_LINES = html_end_lines;
         this.HTML_CONTROL_LINES = HTML_START_LINES + HTML_END_LINES;
@@ -167,7 +167,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
     /**
      * Returns the text corresponding to the paragraph #i.
      */
-    public String getElementReallyAt(int i) {
+    String getElementReallyAt(int i) {
         Interval interval = getInterval(i);
         long start = interval.getStart() + 15; // we don't want neither the <tr><td nowrap>
         long end = interval.getEnd() - 12;     // nor the </td></tr>\r\n

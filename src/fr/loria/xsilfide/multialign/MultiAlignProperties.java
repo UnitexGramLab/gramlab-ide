@@ -36,37 +36,29 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * 
- * 
- * 
- * @author    Patrice Bonhomme
- * @version   
+ * @author Patrice Bonhomme
  */
 
-public class MultiAlignProperties 
-  extends java.util.Properties 
-{
-  protected String filename;
-  
-  public MultiAlignProperties(String filename) 
-  {
-    this.filename = filename;
-  }
-  
-  public void load(String filename1)
-    throws FileNotFoundException, IOException
-  {
-    this.filename = filename1;
-    load();
-  }  
-  
-  public void load()
-    throws FileNotFoundException, IOException
-  {
-    FileInputStream f = new FileInputStream(filename);
-    load(f);    
-  }
-  
+class MultiAlignProperties
+        extends java.util.Properties {
+    private String filename;
+
+    public MultiAlignProperties(String filename) {
+        this.filename = filename;
+    }
+
+    public void load(String filename1)
+            throws FileNotFoundException, IOException {
+        this.filename = filename1;
+        load();
+    }
+
+    void load()
+            throws FileNotFoundException, IOException {
+        FileInputStream f = new FileInputStream(filename);
+        load(f);
+    }
+
 }
 
 // EOF MultiAlignProperties
