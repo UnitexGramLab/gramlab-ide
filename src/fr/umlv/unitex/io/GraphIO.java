@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.io;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
@@ -116,6 +117,9 @@ public class GraphIO {
             res.readFile(source);
             res.readDirectory(source);
             res.readRightToLeft(source);
+            if (isSentenceGraph) {
+            	res.info.rightToLeft=Config.isRightToLeftForText();
+            }
             UnicodeIO.skipLine(source); // ignoring DRST
             UnicodeIO.skipLine(source); // ignoring FITS
             UnicodeIO.skipLine(source); // ignoring PORIENT
