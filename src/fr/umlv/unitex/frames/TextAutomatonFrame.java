@@ -63,7 +63,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
     private final TagFilter filter = new TagFilter();
     private final TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
-    private final JTextArea sentenceTextArea = new JTextArea();
+    final JTextArea sentenceTextArea = new JTextArea();
     private final JLabel sentence_count_label = new JLabel(" 0 sentence");
     private boolean elagON;
     private JSpinner spinner;
@@ -71,7 +71,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     private TfstGraphicalZone elaggraph;
     private File elagrules;
     private JLabel ruleslabel;
-    private JScrollBar tfstScrollbar;
+    JScrollBar tfstScrollbar;
     private TfstGraphicalZone graphicalZone;
 
     private final GraphListener listener = new GraphListener() {
