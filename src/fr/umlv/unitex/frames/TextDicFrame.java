@@ -54,6 +54,8 @@ public class TextDicFrame extends JInternalFrame {
     private JScrollPane dlfScroll;
     private JScrollPane dlcScroll;
     private JScrollPane errScroll;
+    private JCheckBox tags_err=new JCheckBox("Filter unknown words with tags.ind",false);
+    File text_dir;
 
     TextDicFrame() {
         super("", true, true, true, true);
@@ -157,7 +159,16 @@ public class TextDicFrame extends JInternalFrame {
                 Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         errScrollbar = errScroll.getHorizontalScrollBar();
-        errPanel.add(errLabel, BorderLayout.NORTH);
+        JPanel p=new JPanel(new GridLayout(2,1));
+        p.add(errLabel);
+        p.add(tags_err);
+        tags_err.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				err.reset();
+				loadERR();
+			}
+		});
+        errPanel.add(p, BorderLayout.NORTH);
         JPanel tmp = new JPanel(new BorderLayout());
         tmp.setBorder(BorderFactory.createLoweredBevelBorder());
         tmp.add(errScroll, BorderLayout.CENTER);
@@ -165,16 +176,10 @@ public class TextDicFrame extends JInternalFrame {
         return errPanel;
     }
 
-    /**
-     * Loads "dlf", "dlc" and "err" files contained in a directory, and shows
-     * the frame
-     *
-     * @param dir directory to look in
-     */
-    void loadTextDic(File dir) {
-        File FILE = new File(dir, "dlf");
+    void loadDLF() {
+        File FILE = new File(text_dir, "dlf");
         dlf.setFont(Config.getCurrentTextFont());
-        String n = UnicodeIO.readFirstLine(new File(dir, "dlf.n"));
+        String n = UnicodeIO.readFirstLine(new File(text_dir, "dlf.n"));
         String message = "DLF";
         if (n != null) {
             message = message + ": " + n + " simple-word lexical entr";
@@ -190,11 +195,13 @@ public class TextDicFrame extends JInternalFrame {
             dlf.load(FILE);
             dlfLabel.setText(message);
         }
-        /********* Loading DLC file *********/
-        FILE = new File(dir, "dlc");
+    }
+
+    void loadDLC() {
+        File FILE = new File(text_dir, "dlc");
         dlc.setFont(Config.getCurrentTextFont());
-        n = UnicodeIO.readFirstLine(new File(dir, "dlc.n"));
-        message = "DLC";
+        String n = UnicodeIO.readFirstLine(new File(text_dir, "dlc.n"));
+        String message = "DLC";
         if (n != null) {
             message = message + ": " + n + " compound lexical entr";
             if (Integer.parseInt(n) <= 1)
@@ -209,11 +216,15 @@ public class TextDicFrame extends JInternalFrame {
             dlc.load(FILE);
             dlcLabel.setText(message);
         }
-        /********* Loading ERR file *********/
-        FILE = new File(dir, "err");
+    }
+    
+
+    void loadERR() {
+    	boolean tags_errors=tags_err.isSelected();
+        File FILE = new File(text_dir, tags_errors?"tags_err":"err");
         err.setFont(Config.getCurrentTextFont());
-        n = UnicodeIO.readFirstLine(new File(dir, "err.n"));
-        message = "ERR";
+        String n = UnicodeIO.readFirstLine(new File(text_dir, tags_errors?"tags_err.n":"err.n"));
+        String message = tags_errors?"TAGS_ERR":"ERR";
         if (n != null) {
             message = message + ": " + n + " unknown simple word";
             if (Integer.parseInt(n) > 1)
@@ -226,7 +237,22 @@ public class TextDicFrame extends JInternalFrame {
             err.load(FILE);
             errLabel.setText(message);
         }
-        setTitle("Word Lists in " + dir);
+    	
+    }
+    
+    /**
+     * Loads "dlf", "dlc" and "err" files contained in a directory, and shows
+     * the frame
+     *
+     * @param text_dir directory to look in
+     */
+    void loadTextDic(File directory) {
+    	this.text_dir=directory;
+        loadDLF();
+        loadDLC();
+        loadERR();
+        
+        setTitle("Word Lists in " + text_dir);
         dlf.setComponentOrientation(
                 Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
@@ -260,6 +286,7 @@ public class TextDicFrame extends JInternalFrame {
      * Hides the frame
      */
     void hideFrame() {
+    	text_dir=null;
         dlf.reset();
         dlc.reset();
         err.reset();
