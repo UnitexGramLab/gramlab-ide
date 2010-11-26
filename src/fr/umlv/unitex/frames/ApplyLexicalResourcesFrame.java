@@ -500,6 +500,16 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
             sortCmd3 = sortCmd3.sortAlphabet(alph);
         }
         commands.addCommand(sortCmd3);
+        SortTxtCommand sortCmd4 = new SortTxtCommand().file(
+                new File(Config.getCurrentSntDir(), "tags_err"))
+                .saveNumberOfLines(new File(
+                        Config.getCurrentSntDir(), "tags_err.n"));
+        if (Config.getCurrentLanguage().equals("Thai")) {
+            sortCmd4 = sortCmd4.thai();
+        } else {
+            sortCmd4 = sortCmd4.sortAlphabet(alph);
+        }
+        commands.addCommand(sortCmd4);
         return (commands);
     }
 
