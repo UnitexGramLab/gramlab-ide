@@ -334,16 +334,20 @@ public class XAlignFrame extends JInternalFrame {
         if (languageDir == null) return null;
         /* Now, we will look into the config file which is the preferred font
            * for this language */
-        File config = new File(f, "Config");
+        File config = new File(languageDir, "Config");
         if (!config.exists()) {
             return null;
         }
         Properties prop = Preferences.loadProperties(config, null);
         String s = prop.getProperty("TEXT FONT SIZE");
-        if (s == null) return null;
+        if (s == null) {
+        	return null;
+        }
         int fontSize = Integer.parseInt(s);
         s = prop.getProperty("TEXT FONT NAME");
-        if (s == null) return null;
+        if (s == null) {
+        	return null;
+        }
         Font font = new Font(s, Font.PLAIN, (int) (fontSize / 0.72));
         return font;
     }
