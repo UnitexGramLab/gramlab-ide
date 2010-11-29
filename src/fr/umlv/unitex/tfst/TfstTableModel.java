@@ -79,9 +79,22 @@ public class TfstTableModel extends AbstractTableModel {
     }
 
     public void init(ArrayList<GenericGraphBox> boxes) {
+    	boolean[] boxStartingTokens=new boolean[boxes.size()];
+    	for (int i=0;i<boxStartingTokens.length;i++) {
+    		boxStartingTokens[i]=true;
+    	}
+    	for (int i=0;i<boxStartingTokens.length;i++) {
+    		TfstGraphBox b=(TfstGraphBox) boxes.get(i);
+    		for (GenericGraphBox b2:b.getTransitions()) {
+    			if (b.isNextBoxInSameToken((TfstGraphBox) b2)) {
+    				boxStartingTokens[boxes.indexOf(b2)]=false;
+    			}
+    		}
+    	}
         lines.clear();
-        for (GenericGraphBox b : boxes) {
-            if (b.getType() != GenericGraphBox.NORMAL || !boxStartsAToken((TfstGraphBox) b)) continue;
+        for (int i=0;i<boxes.size();i++) {
+        	GenericGraphBox b=boxes.get(i);
+            if (b.getType() != GenericGraphBox.NORMAL || !boxStartingTokens[i]) continue;
             TfstGraphBox t = (TfstGraphBox) b;
             ArrayList<TfstGraphBox> tmp = new ArrayList<TfstGraphBox>();
             exploreBox(t, tmp);
