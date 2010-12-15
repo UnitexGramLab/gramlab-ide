@@ -172,7 +172,13 @@ public class ConcordanceFrame extends JInternalFrame {
                 } catch (PropertyVetoException e2) {
                     e2.printStackTrace();
                 }
-                UnitexFrame.getFrameManager().newTextAutomatonFrame(sentenceNumber, true);
+                boolean iconified=true;
+                TextAutomatonFrame foo=UnitexFrame.getFrameManager().getTextAutomatonFrame();
+                if (foo!=null) {
+                	iconified=foo.isIcon();
+                }
+                UnitexFrame.getFrameManager().newTextAutomatonFrame(sentenceNumber,iconified);
+                list.clearSelection();
             }
         });
         list.load(concor);

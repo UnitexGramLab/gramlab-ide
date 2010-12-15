@@ -331,6 +331,7 @@ public class InternalFrameManager {
         textDicFrameFactory.closeTextDicFrame();
     }
 
+
     public TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber, boolean iconify) {
         return (TextAutomatonFrame) setup(textAutomatonFrameFactory.newTextAutomatonFrame(sentenceNumber), false, iconify);
     }
