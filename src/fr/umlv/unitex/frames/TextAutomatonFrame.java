@@ -407,7 +407,6 @@ public class TextAutomatonFrame extends JInternalFrame {
         cornerPanel.add(sentence_count_label);
         JPanel middle = new JPanel(new BorderLayout());
         middle.add(new JLabel(" Sentence # "), BorderLayout.WEST);
-        JPanel right = new JPanel(new BorderLayout());
         spinnerModel = new SpinnerNumberModel(1, 1, 1, 1);
         spinnerModel.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent arg0) {
@@ -415,9 +414,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             }
         });
         spinner = new JSpinner(spinnerModel);
-        spinner.setPreferredSize(new Dimension(50, 20));
-        right.add(spinner);
-        middle.add(right, BorderLayout.EAST);
+        middle.add(spinner, BorderLayout.CENTER);
         cornerPanel.add(middle);
         Action resetSentenceAction = new AbstractAction("Reset Sentence Graph") {
             public void actionPerformed(ActionEvent arg0) {
@@ -554,7 +551,7 @@ public class TextAutomatonFrame extends JInternalFrame {
      * @return <code>false</code> if a sentence is already being loaded,
      *         <code>true</code> otherwise
      */
-    public boolean loadSentence(int n) {
+    private boolean loadSentence(int n) {
         if (n < 1 || n > sentence_count)
             return false;
         final int z = n;

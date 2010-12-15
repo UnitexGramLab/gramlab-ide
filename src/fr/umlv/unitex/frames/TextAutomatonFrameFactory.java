@@ -32,7 +32,7 @@ class TextAutomatonFrameFactory {
         if (!frame.loadTfst()) {
             return null;
         }
-        frame.loadSentence(sentenceNumber);
+        frame.loadSentenceFromConcordance(sentenceNumber);
         return frame;
     }
 
