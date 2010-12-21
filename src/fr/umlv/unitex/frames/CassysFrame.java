@@ -29,7 +29,7 @@ import java.io.File;
  * file and three <code>JButton</code> which allows the user to launch the cascade, edit an existing transducer
  * list file or create a new existing transducer list file.
  *
- * @author David Nott
+ * @author David Nott and Nathalie Friburger
  */
 public class CassysFrame extends JInternalFrame implements ActionListener {
 
