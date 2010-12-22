@@ -497,14 +497,20 @@ public class Config {
 
 
     public static JFileChooser getTransducerListDialogBox() {
-        if (transducerListDialogBox != null) {
-            return transducerListDialogBox;
-        }
-        transducerListDialogBox = new JFileChooser(Config.getCassysDir());
-        transducerListDialogBox.setMultiSelectionEnabled(false);
-        transducerListDialogBox.setControlButtonsAreShown(false);
-        return transducerListDialogBox;
-    }
+		if(transducerListDialogBox != null){
+			return transducerListDialogBox;
+		}
+		transducerListDialogBox = new JFileChooser(Config.getCassysDir());
+		
+		transducerListDialogBox.setFileFilter(new PersonalFileFilter("csc",
+         "CaSCade configuration File"));
+		//transducerListDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+		//transducerListDialogBox.setCurrentDirectory(Config.getCassysDir());
+       
+		transducerListDialogBox.setMultiSelectionEnabled(false);
+		transducerListDialogBox.setControlButtonsAreShown(false);
+		return transducerListDialogBox;
+	}
 
 
     /**
