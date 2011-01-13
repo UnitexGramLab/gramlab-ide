@@ -256,10 +256,10 @@ public class GenericGraphBox {
     public File getGraphClicked(int y) {
         int n;
         String s;
-        Boolean b;
+        Boolean b=false;
         n = (y - Y1 - 4) / (h_ligne);
         if (n >= greyed.size()) n = greyed.size() - 1;
-        b = greyed.get(n);
+        b = (n>=0) && greyed.get(n);
         if (b) {
             s = lines.get(n);
             if (!s.endsWith(".grf")) {
