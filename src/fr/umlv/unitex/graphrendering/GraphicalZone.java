@@ -224,7 +224,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
             selecting = false;
             if (selectedBox != -1) {
                 // if we start dragging a box
-                singleDraggedBox = graphBoxes.get(selectedBox);
+            	singleDraggedBox = graphBoxes.get(selectedBox);
                 fireGraphTextChanged(singleDraggedBox.content);
                 if (!singleDraggedBox.selected) {
                     /* Dragging a selected box is handled below with
@@ -233,8 +233,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     singleDragging = true;
                     singleDraggedBox.singleDragging = true;
                     fireGraphChanged(true);
+                    return;
                 }
-                return;
             }
             if (!selectedBoxes.isEmpty()) {
                 dragging = true;
