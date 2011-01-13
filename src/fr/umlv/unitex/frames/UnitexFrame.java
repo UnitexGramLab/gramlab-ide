@@ -1183,8 +1183,8 @@ public class UnitexFrame extends JFrame {
      * through the creation of a <code>ProcessInfoFrame</code> object.
      */
     void sortDELA() {
-        SortTxtCommand command = new SortTxtCommand().file(Config
-                .getCurrentDELA());
+        File dela=Config.getCurrentDELA();
+    	SortTxtCommand command = new SortTxtCommand().file(dela);
         if (Config.getCurrentLanguage().equals("Thai")) {
             command = command.thai();
         } else {
@@ -1192,7 +1192,7 @@ public class UnitexFrame extends JFrame {
                     .getUserCurrentLanguageDir(), "Alphabet_sort.txt"));
         }
         frameManager.closeDelaFrame();
-        Launcher.exec(command, true, new DelaDo(Config.getCurrentDELA()));
+        Launcher.exec(command, true, new DelaDo(dela));
     }
 
     /**
