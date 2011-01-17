@@ -673,10 +673,8 @@ public class Config {
         } else if (currentSystemName.equalsIgnoreCase("sunos")) {
             currentSystem = SUN_OS_SYSTEM;
         } else {
-            JOptionPane.showMessageDialog(null,
-                    "Unitex is not configured for " + currentSystemName + ".\nPlease contact unitex@univ-mlv.fr", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
+        	/* By default, we assume that a have a linux compatible system */
+        	currentSystem = LINUX_SYSTEM;
         }
         System.out.println("Unitex is running under " + currentSystemName);
     }
