@@ -302,6 +302,8 @@ public class ConstructTfstFrame extends JInternalFrame {
         }
         UnitexFrame.getFrameManager().closeTextAutomatonFrame();
         UnitexFrame.getFrameManager().closeTfstTagsFrame();
+        /* We also have to rebuild the text automaton */
+        Config.cleanTfstFiles(true);
         Launcher.exec(commands, true, new ConstructTfstDo(),
                 false);
     }

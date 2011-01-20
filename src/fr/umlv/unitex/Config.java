@@ -1363,7 +1363,7 @@ public class Config {
                 expression));
         if (files_list != null) {
             for (File aFiles_list : files_list) {
-                aFiles_list.delete();
+            	aFiles_list.delete();
             }
         }
     }
