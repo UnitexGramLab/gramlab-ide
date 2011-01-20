@@ -88,14 +88,18 @@ public class TfstTableModel extends AbstractTableModel {
     	for (int i=0;i<boxStartingTokens.length;i++) {
     		TfstGraphBox b=(TfstGraphBox) boxes.get(i);
     		for (GenericGraphBox b2:b.getTransitions()) {
-    			if (b.isNextBoxInSameToken((TfstGraphBox) b2)) {
+    			if (i!=0 && b.isNextBoxInSameToken((TfstGraphBox) b2)) {
+    				/* If b2 is connected to the initial state, there is need to test
+    				 * whether it starts on a token or not */
     				boxStartingTokens[boxes.indexOf(b2)]=false;
     			}
     		}
     	}
         for (int i=0;i<boxes.size();i++) {
         	GenericGraphBox b=boxes.get(i);
-            if (b.getType() != GenericGraphBox.NORMAL || !boxStartingTokens[i]) continue;
+            if (b.getType() != GenericGraphBox.NORMAL || !boxStartingTokens[i]) {
+            	continue;
+            }
             TfstGraphBox t = (TfstGraphBox) b;
             ArrayList<TfstGraphBox> tmp = new ArrayList<TfstGraphBox>();
             exploreBox(t, tmp);
@@ -114,14 +118,6 @@ public class TfstTableModel extends AbstractTableModel {
     	if (boxes.size()!=3) return false;
     	return boxes.get(2).getContent().equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED");
 	}
-
-	private boolean boxStartsAToken(TfstGraphBox b) {
-        Bounds bounds = b.getBounds();
-        return !(b.getContent().startsWith("{<E>,")
-                || bounds == null
-                || bounds.getStart_in_chars() != 0
-                || bounds.getStart_in_letters() != 0);
-    }
 
     /**
      * We explore boxes until we have to move to the next token.
