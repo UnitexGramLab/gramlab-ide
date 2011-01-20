@@ -79,6 +79,8 @@ public class TfstTableModel extends AbstractTableModel {
     }
 
     public void init(ArrayList<GenericGraphBox> boxes) {
+        lines.clear();
+        if (emptySentenceGraph(boxes)) return;
     	boolean[] boxStartingTokens=new boolean[boxes.size()];
     	for (int i=0;i<boxStartingTokens.length;i++) {
     		boxStartingTokens[i]=true;
@@ -91,7 +93,6 @@ public class TfstTableModel extends AbstractTableModel {
     			}
     		}
     	}
-        lines.clear();
         for (int i=0;i<boxes.size();i++) {
         	GenericGraphBox b=boxes.get(i);
             if (b.getType() != GenericGraphBox.NORMAL || !boxStartingTokens[i]) continue;
@@ -109,7 +110,12 @@ public class TfstTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    private boolean boxStartsAToken(TfstGraphBox b) {
+    private boolean emptySentenceGraph(ArrayList<GenericGraphBox> boxes) {
+    	if (boxes.size()!=3) return false;
+    	return boxes.get(2).getContent().equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED");
+	}
+
+	private boolean boxStartsAToken(TfstGraphBox b) {
         Bounds bounds = b.getBounds();
         return !(b.getContent().startsWith("{<E>,")
                 || bounds == null
