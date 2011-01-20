@@ -242,6 +242,7 @@ public class TfstGraphBox extends GenericGraphBox {
 
     public boolean isNextBoxInSameToken(TfstGraphBox box) {
         if (box.bounds != null) {
+        	if (bounds!=null && bounds.getEnd_in_tokens()<box.bounds.getStart_in_tokens()) return false;
             if (box.bounds.getStart_in_chars() != 0 || box.bounds.getStart_in_letters() != 0
                     || box.content.startsWith("{<E>,")
                     || box.bounds.equals(bounds)) {
