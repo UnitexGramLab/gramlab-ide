@@ -26,12 +26,13 @@ class TextAutomatonFrameFactory {
     private TextAutomatonFrame frame;
 
     TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
-        if (frame == null) {
+    	if (frame == null) {
             frame = new TextAutomatonFrame();
         }
         if (!frame.loadTfst()) {
             return null;
         }
+        frame.setVisible(true);
         frame.loadSentenceFromConcordance(sentenceNumber);
         return frame;
     }
