@@ -49,7 +49,7 @@ public class TextFrame extends JInternalFrame {
     private final JLabel ligne2 = new JLabel("");
 
     TextFrame() {
-        super("", true, true, true, true);
+        super("", true, false, true, true);
         MyDropTarget.newDropTarget(this);
         JPanel top = new JPanel(new BorderLayout());
         top.setOpaque(true);
