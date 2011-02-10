@@ -21,13 +21,21 @@
 
 package fr.umlv.unitex.concord;
 
-import fr.umlv.unitex.Preferences;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.io.File;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
-import java.awt.*;
-import java.io.File;
+
+import fr.umlv.unitex.Preferences;
 
 
 /**

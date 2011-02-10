@@ -21,13 +21,31 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.console.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.ImageIcon;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import java.awt.*;
+
+import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.console.ConsoleEntry;
+import fr.umlv.unitex.console.ConsoleTableCellEditor;
+import fr.umlv.unitex.console.ConsoleTableModel;
+import fr.umlv.unitex.console.ConsoleTransferHandler;
 
 /**
  * This class describes a frame that shows all the command lines that have been launched.

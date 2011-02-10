@@ -21,13 +21,16 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.GraphCollection;
+import java.awt.BorderLayout;
 
-import javax.swing.*;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
+
+import fr.umlv.unitex.GraphCollection;
 
 
 /**

@@ -21,13 +21,16 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.tfst.Bounds;
-
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.tfst.Bounds;
 
 
 /**

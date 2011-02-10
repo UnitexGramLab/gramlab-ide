@@ -21,12 +21,15 @@
 
 package fr.umlv.unitex.editor;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.frames.UnitexFrame;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JFileChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * Menu to handle file edition

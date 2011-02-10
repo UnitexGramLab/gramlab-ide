@@ -20,11 +20,12 @@
  */
 package fr.umlv.unitex.undo;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
+import java.util.ArrayList;
 
 import javax.swing.undo.AbstractUndoableEdit;
-import java.util.ArrayList;
+
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph before add a boxe

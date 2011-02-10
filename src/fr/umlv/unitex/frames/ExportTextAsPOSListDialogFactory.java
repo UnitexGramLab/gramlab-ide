@@ -21,9 +21,9 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.tfst.TagFilter;
-
 import java.io.File;
+
+import fr.umlv.unitex.tfst.TagFilter;
 
 class ExportTextAsPOSListDialogFactory {
 

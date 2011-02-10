@@ -21,22 +21,34 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.Util;
-import fr.umlv.unitex.concord.BigConcordance;
-import fr.umlv.unitex.listeners.FontListener;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
+import java.io.File;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyVetoException;
-import java.io.File;
+
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.Util;
+import fr.umlv.unitex.concord.BigConcordance;
+import fr.umlv.unitex.listeners.FontListener;
 
 
 /**

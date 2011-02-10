@@ -20,21 +20,28 @@
  */
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
-
-import javax.swing.*;
-import javax.swing.text.Document;
-import javax.swing.text.Keymap;
-import javax.swing.text.TextAction;
-import java.awt.*;
-import java.awt.datatransfer.*;
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.text.Document;
+import javax.swing.text.Keymap;
+import javax.swing.text.TextAction;
+
+import fr.umlv.unitex.GraphPresentationInfo;
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class describes the text field used to get the box text in a graph.
@@ -63,6 +70,10 @@ public class TextField extends GraphTextField {
      * <code>TextAction</code> that defines what to do for a "cut" operation
      */
     private final Cut cut;
+
+    
+    private final Completion completion=new Completion("completion");
+    
     /**
      * <code>TextAction</code> that shows the graph presentation frame
      */
@@ -149,6 +160,8 @@ public class TextField extends GraphTextField {
                 cut);
         k.addActionForKeyStroke(KeyStroke.getKeyStroke('X', Event.CTRL_MASK),
                 cut);
+        k.addActionForKeyStroke(KeyStroke.getKeyStroke(' ', Event.CTRL_MASK),
+                completion);
         this.setKeymap(k);
         addKeyListener(new MyKeyListener());
     }
@@ -285,7 +298,16 @@ public class TextField extends GraphTextField {
         }
     }
 
+    class Completion extends TextAction {
+        public Completion(String s) {
+            super(s);
+        }
 
+        public void actionPerformed(ActionEvent e) {
+        }
+    }
+
+    
     @Override
     public void setContent(String s) {
         modified = false;

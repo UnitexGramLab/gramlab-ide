@@ -20,6 +20,21 @@
  */
 package fr.umlv.unitex.frames;
 
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.GraphIO;
@@ -30,13 +45,6 @@ import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokenTags;
 import fr.umlv.unitex.tfst.TokensInfo;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 
 public class ExportTextAsPOSListDialog extends JDialog {
     private File output;
@@ -114,7 +122,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
-                        GraphIO g = GraphIO.loadGraph(tmpGrf, true);
+                        GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
                         model.init(g.boxes);
                         if (model.getRowCount() == 0) {
                             /*

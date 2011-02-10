@@ -21,6 +21,13 @@
 
 package fr.umlv.unitex.text;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
@@ -32,12 +39,6 @@ import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
-
-import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 /**
  * This class provides methods for loading corpora.

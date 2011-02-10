@@ -21,16 +21,24 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.frames.GraphFrame;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.font.TextLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import javax.swing.JOptionPane;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
+import fr.umlv.unitex.exceptions.MissingGraphNameException;
+import fr.umlv.unitex.exceptions.NoClosingQuoteException;
+import fr.umlv.unitex.exceptions.NoClosingRoundBracketException;
+import fr.umlv.unitex.exceptions.NoClosingSupException;
+import fr.umlv.unitex.frames.GraphFrame;
 
 /**
  * This class describes a box of a graph or a sentence graph.
@@ -245,6 +253,42 @@ public class GenericGraphBox {
         identificationNumber = -1;
     }
 
+
+    private boolean existsGraph(int n) {
+    	if (!greyed.get(n)) throw new IllegalArgumentException("Should not be called with a normal line");
+        String s = lines.get(n);
+        if (!s.endsWith(".grf")) {
+            s = s + ".grf";
+        }
+        /* replace ':' by '/' resp. '\\' */
+        if (s.startsWith(":")) {
+            // if the graph is located in the package repository
+            s = s.replace(':', File.separatorChar);
+            return new File(Preferences.packagePath(), s.substring(1)).exists();
+        }
+        // otherwise
+        File f = new File(s);
+        if (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM &&
+                f.isAbsolute()) {
+            // first we test if we have an absolute windows pathname,
+            // in order to avoid wrong transformations like:
+            //
+            // C:\\foo\foo.grf  =>  C\\\foo\foo.grf
+            //
+            return f.exists();
+        }
+        s = s.replace(':', File.separatorChar);
+        if (!f.isAbsolute()) {
+            File currentGraph = ((GraphFrame) parentGraphicalZone.parentFrame).getGraph();
+            if (currentGraph == null) {
+                // if we try to open a subgraph inside a newly created graph with no name
+                return false;
+            }
+			return new File(currentGraph.getParentFile(), s).exists();
+        }
+        return f.exists();
+    }
+    
     /**
      * Tests if the click point was in a sub-graph call area. In that case, it
      * returns the sub-graph's name
@@ -284,7 +328,6 @@ public class GenericGraphBox {
             }
             s = s.replace(':', File.separatorChar);
             if (!f.isAbsolute()) {
-                System.out.println();
                 File currentGraph = ((GraphFrame) parentGraphicalZone.parentFrame).getGraph();
                 if (currentGraph == null) {
                     // if we try to open a subgraph inside a newly created graph with no name
@@ -687,6 +730,10 @@ public class GenericGraphBox {
                     // if we have a subgraph within a package
                     g.setColor(parentGraphicalZone.info.packageColor);
                 }
+                if (!existsGraph(i)) {
+                	/* We use a special color to mark non existing graphs */
+                	g.setColor(parentGraphicalZone.info.unreachableGraphColor);
+                }
                 GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
                 g.setColor(parentGraphicalZone.info.commentColor);
 
@@ -837,6 +884,9 @@ public class GenericGraphBox {
                 if (l.startsWith(":")) {
                     // if we have a subgraph within a package
                     g.setColor(parentGraphicalZone.info.packageColor);
+                }
+                if (!existsGraph(i)) {
+                	g.setColor(parentGraphicalZone.info.unreachableGraphColor);
                 }
                 GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
                 g.setColor(parentGraphicalZone.info.foregroundColor);

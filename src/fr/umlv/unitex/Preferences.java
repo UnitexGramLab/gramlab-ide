@@ -21,13 +21,19 @@
 
 package fr.umlv.unitex;
 
-import fr.umlv.unitex.listeners.FontListener;
-
-import java.awt.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
+import fr.umlv.unitex.listeners.FontListener;
 
 
 /**
@@ -145,6 +151,8 @@ public class Preferences {
                 + Color.GREEN.getRGB());
         defaultProperties.setProperty("MORPHOLOGICAL NODES COLOR", ""
                 + new Color(0xC4, 0x4F, 0xD0).getRGB());
+        defaultProperties.setProperty("UNREACHABLE GRAPH COLOR", ""
+                + Color.RED.getRGB());
         defaultProperties.setProperty("SELECTED NODES COLOR", ""
                 + Color.BLUE.getRGB());//255");
         defaultProperties.setProperty("ANTIALIASING", "false");
@@ -228,6 +236,8 @@ public class Preferences {
                 .getProperty("CONTEXT NODES COLOR")));
         Color morphologicalModeColor = new Color(Integer.parseInt(prop
                 .getProperty("MORPHOLOGICAL NODES COLOR")));
+        Color unreachableGraphColor = new Color(Integer.parseInt(prop
+                .getProperty("UNREACHABLE GRAPH COLOR")));
         boolean date = Boolean.valueOf(prop.getProperty("DATE"));
         boolean filename = Boolean.valueOf(prop.getProperty("FILE NAME"));
         boolean pathname = Boolean.valueOf(prop.getProperty("PATH NAME"));
@@ -238,7 +248,8 @@ public class Preferences {
         rightToLeftForGraphs = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT FOR GRAPHS"));
         semitic = Boolean.valueOf(prop.getProperty("SEMITIC"));
         info = new GraphPresentationInfo(backgroundColor, foregroundColor, subgraphColor, selectedColor,
-                commentColor, outputVariableColor, packageColor, contextColor, morphologicalModeColor, input, output,
+                commentColor, outputVariableColor, packageColor, contextColor, morphologicalModeColor, 
+                unreachableGraphColor, input, output,
                 date, filename, pathname, frame, rightToLeftForGraphs, antialiasing, iconBarPosition);
         String s = prop.getProperty("HTML VIEWER");
         htmlViewer = (s == null || s.equals("")) ? null : new File(s);

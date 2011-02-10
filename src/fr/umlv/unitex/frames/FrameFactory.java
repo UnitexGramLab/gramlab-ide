@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.frames;
 
-import javax.swing.*;
+import javax.swing.JInternalFrame;
 
 class FrameFactory {
 

@@ -21,18 +21,34 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.Preferences;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.GraphPresentationInfo;
+import fr.umlv.unitex.Preferences;
 
 /**
  * This class describes the graph presentation dialog box, that allows the user

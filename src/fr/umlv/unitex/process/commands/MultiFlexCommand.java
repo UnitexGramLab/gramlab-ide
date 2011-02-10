@@ -21,9 +21,9 @@
 
 package fr.umlv.unitex.process.commands;
 
-import fr.umlv.unitex.Preferences;
-
 import java.io.File;
+
+import fr.umlv.unitex.Preferences;
 
 
 /**
