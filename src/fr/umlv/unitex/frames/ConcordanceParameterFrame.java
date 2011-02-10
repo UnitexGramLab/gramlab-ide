@@ -293,7 +293,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
     }
 
     private JPanel constructDiffPanel() {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new GridLayout(2,1));
         panel.setBorder(new TitledBorder(""));
         Action diffAction = new AbstractAction(
                 "Show differences with previous concordance") {
@@ -303,6 +303,12 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         };
         diffButton = new JButton(diffAction);
         panel.add(diffButton);
+        Action ambiguous=new AbstractAction("Show ambiguous outputs") {
+			public void actionPerformed(ActionEvent e) {
+				buildConcordance(true);
+			}
+		};
+        panel.add(new JButton(ambiguous));
         return panel;
     }
 
@@ -401,7 +407,6 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         JPanel tmp_left = new JPanel();
         tmp_left.add(ctxLengthCol);
         tmp_left.add(stopAtEosCol);
-        tmp_left.add(new JPanel());
         downPanel.add(tmp_left, BorderLayout.WEST);
 
         JPanel sortAccTo = new JPanel(new GridLayout(2, 1));
@@ -421,7 +426,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         tmp_right.add(sortAccTo);
         Action buildAction = new AbstractAction("Build concordance") {
             public void actionPerformed(ActionEvent arg0) {
-                buildConcordance();
+                buildConcordance(false);
             }
         };
         JButton buildConcordance = new JButton(buildAction);
@@ -514,7 +519,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         Launcher.exec(builder, true, null);
     }
 
-    void buildConcordance() {
+    void buildConcordance(boolean onlyAmbiguous) {
         int leftContext;
         int rightContext;
         try {
@@ -546,9 +551,13 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                     Preferences.getConcordanceFontName()).fontSize(
                     Preferences.getConcordanceFontSize()).left(leftContext,
                     leftCtxStopAtEOS.isSelected()).right(rightContext,
-                    rightCtxStopAtEOS.isSelected()).order(
-                    sortBox.getSelectedIndex()).html().sortAlphabet().thai(
+                    rightCtxStopAtEOS.isSelected()).html().sortAlphabet().thai(
                     Config.getCurrentLanguage().equals("Thai"));
+            if (onlyAmbiguous) {
+            	command=command.onlyAmbiguous();
+            } else {
+            	command=command.order(sortBox.getSelectedIndex());
+            }
         } catch (InvalidConcordanceOrderException e) {
             e.printStackTrace();
             return;

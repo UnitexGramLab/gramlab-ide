@@ -120,4 +120,9 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand onlyAmbiguous() {
+		element("--only_ambiguous");
+		return this;
+	}
+
 }
