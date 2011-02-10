@@ -21,10 +21,13 @@
 
 package fr.umlv.unitex;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -196,6 +199,21 @@ public class Util {
                     .toString();
         }
         return null;
+    }
+
+    public static void write(String s, File f) {
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(f), "UTF-16LE"));
+            bw.write('\ufeff');
+            bw.write(s, 0, s.length());
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

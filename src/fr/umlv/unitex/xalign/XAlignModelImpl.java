@@ -21,10 +21,12 @@
 
 package fr.umlv.unitex.xalign;
 
-import fr.umlv.unitex.listeners.AlignmentListener;
-
-import javax.swing.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -32,6 +34,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
+
+import javax.swing.SwingWorker;
+
+import fr.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignModelImpl implements XAlignModel {
 

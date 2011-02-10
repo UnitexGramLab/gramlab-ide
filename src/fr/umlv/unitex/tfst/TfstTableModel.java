@@ -21,11 +21,12 @@
 
 package fr.umlv.unitex.tfst;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphBox;
+import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
+
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.TfstGraphBox;
 
 /**
  * This model is used to present a sentence automaton as a table.

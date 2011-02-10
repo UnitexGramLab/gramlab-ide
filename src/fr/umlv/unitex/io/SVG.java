@@ -21,16 +21,18 @@
 
 package fr.umlv.unitex.io;
 
-import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
+
+import fr.umlv.unitex.GraphPresentationInfo;
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GraphicalZone;
 
 /**
  * This class provides static method for saving graphs as SVG files.

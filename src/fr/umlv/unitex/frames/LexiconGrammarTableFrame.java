@@ -21,18 +21,24 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
-import fr.umlv.unitex.io.UnicodeIO;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.UnicodeIO;
 
 /**
  * This class is used to display a lexicon-grammar table

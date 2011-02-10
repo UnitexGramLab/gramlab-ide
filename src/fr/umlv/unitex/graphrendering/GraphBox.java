@@ -21,10 +21,14 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.exceptions.*;
-
-import java.awt.*;
+import java.awt.FontMetrics;
 import java.util.ArrayList;
+
+import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
+import fr.umlv.unitex.exceptions.MissingGraphNameException;
+import fr.umlv.unitex.exceptions.NoClosingQuoteException;
+import fr.umlv.unitex.exceptions.NoClosingRoundBracketException;
+import fr.umlv.unitex.exceptions.NoClosingSupException;
 
 /**
  * This class describes a box of a graph.

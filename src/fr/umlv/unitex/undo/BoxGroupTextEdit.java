@@ -21,13 +21,14 @@
 
 package fr.umlv.unitex.undo;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
-
-import javax.swing.undo.AbstractUndoableEdit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import javax.swing.undo.AbstractUndoableEdit;
+
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph before a boxes' text edit

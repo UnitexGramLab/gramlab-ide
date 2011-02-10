@@ -21,12 +21,18 @@
 
 package fr.umlv.unitex.process;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+
+import javax.swing.JList;
+import javax.swing.SwingUtilities;
+
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.frames.ProcessInfoFrame;
-
-import javax.swing.*;
-import java.io.*;
 
 /**
  * This class is used to monitor stdout and stderr messages of external processes.

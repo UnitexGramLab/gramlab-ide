@@ -21,13 +21,13 @@
 
 package fr.umlv.unitex.transcoding;
 
-import fr.umlv.unitex.process.commands.ConvertCommand;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import fr.umlv.unitex.process.commands.ConvertCommand;
 
 public class Transcoder {
 

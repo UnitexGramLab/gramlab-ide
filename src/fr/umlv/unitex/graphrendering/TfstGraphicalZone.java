@@ -20,17 +20,22 @@
  */
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.frames.TextAutomatonFrame;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.tfst.Bounds;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+
+import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.tfst.Bounds;
 
 /**
  * This class describes a component on which a sentence graph can be drawn.

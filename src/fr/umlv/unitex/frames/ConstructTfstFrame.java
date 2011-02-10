@@ -21,17 +21,36 @@
 
 package fr.umlv.unitex.frames;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.io.File;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.*;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.LocateCommand;
+import fr.umlv.unitex.process.commands.MessageCommand;
+import fr.umlv.unitex.process.commands.MkdirCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
+import fr.umlv.unitex.process.commands.TaggerCommand;
+import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user

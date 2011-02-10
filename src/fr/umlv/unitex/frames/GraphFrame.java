@@ -20,32 +20,53 @@
  */
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.graphrendering.*;
-import fr.umlv.unitex.graphrendering.TextField;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.io.SVG;
-import fr.umlv.unitex.listeners.GraphListener;
+import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
+
+import fr.umlv.unitex.GraphPresentationInfo;
+import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GraphBox;
+import fr.umlv.unitex.graphrendering.GraphicalZone;
+import fr.umlv.unitex.graphrendering.MultipleSelection;
+import fr.umlv.unitex.graphrendering.TextField;
+import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.io.SVG;
+import fr.umlv.unitex.listeners.GraphListener;
 
 /**
  * This class describes a frame used to display and edit a graph.

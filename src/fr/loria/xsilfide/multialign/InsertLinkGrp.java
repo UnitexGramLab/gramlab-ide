@@ -34,7 +34,9 @@
 
 package fr.loria.xsilfide.multialign;
 
-import fr.loria.nguyen.mytools.XMLTools;
+import java.util.Hashtable;
+import java.util.Vector;
+
 import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.dom.TextImpl;
@@ -43,8 +45,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.util.Hashtable;
-import java.util.Vector;
+import fr.loria.nguyen.mytools.XMLTools;
 
 @SuppressWarnings("unchecked")
 class InsertLinkGrp {

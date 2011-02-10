@@ -21,12 +21,13 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.io.GraphIO;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import java.io.File;
-import java.util.ArrayList;
+
+import fr.umlv.unitex.io.GraphIO;
 
 
 class GraphFrameFactory {
@@ -43,7 +44,7 @@ class GraphFrameFactory {
         }
         final GraphFrame f;
         if (grf != null) {
-            GraphIO g = GraphIO.loadGraph(grf, false);
+            GraphIO g = GraphIO.loadGraph(grf, false, true);
             if (g == null) return null;
             f = new GraphFrame(g);
         } else {

@@ -21,19 +21,25 @@
 
 package fr.umlv.unitex;
 
-import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
-import fr.umlv.unitex.frames.SplashScreen;
-import fr.umlv.unitex.frames.UnitexFrame;
-
-import javax.swing.*;
-import javax.swing.plaf.metal.OceanTheme;
-import java.awt.*;
+import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Locale;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.OceanTheme;
+
+import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.frames.SplashScreen;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This is the main class of the Unitex system.

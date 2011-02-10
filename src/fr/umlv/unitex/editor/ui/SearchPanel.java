@@ -21,11 +21,14 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import fr.umlv.unitex.editor.EditionTextArea;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import fr.umlv.unitex.editor.EditionTextArea;
 
 /**
  * @author Decreton Julien

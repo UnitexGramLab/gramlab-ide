@@ -32,7 +32,12 @@
 
 package fr.loria.xsilfide.multialign;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.TreeSet;
+import java.util.Vector;
 
 
 @SuppressWarnings("unchecked")

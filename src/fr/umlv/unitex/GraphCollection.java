@@ -21,15 +21,17 @@
 
 package fr.umlv.unitex;
 
-import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.UnicodeIO;
-
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.io.UnicodeIO;
 
 /**
  * This class provides methods that generate a graph that calls all the subgraphs

@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import javax.swing.*;
+import javax.swing.JTextField;
 
 /**
  * Ancestor of graph box text editor.

@@ -21,12 +21,15 @@
 
 package fr.umlv.unitex.cassys;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.TransferHandler;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Class specifying how drag and drop transfer from and to the table are done.

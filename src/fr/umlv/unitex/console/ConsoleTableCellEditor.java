@@ -21,13 +21,17 @@
 
 package fr.umlv.unitex.console;
 
-import fr.umlv.unitex.frames.ConsoleFrame;
-
-import javax.swing.*;
-import javax.swing.table.TableCellEditor;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.AbstractCellEditor;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.TableCellEditor;
+
+import fr.umlv.unitex.frames.ConsoleFrame;
 
 @SuppressWarnings("serial")
 public class ConsoleTableCellEditor extends AbstractCellEditor implements TableCellEditor {

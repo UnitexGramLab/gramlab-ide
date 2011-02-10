@@ -21,10 +21,12 @@
 
 package fr.umlv.unitex.console;
 
-import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
 
 
 @SuppressWarnings("serial")

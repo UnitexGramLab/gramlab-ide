@@ -21,13 +21,14 @@
 
 package fr.umlv.unitex.stats;
 
-import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.table.AbstractTableModel;
 
 public class StatisticsTableModelMode1 extends AbstractTableModel {
 
