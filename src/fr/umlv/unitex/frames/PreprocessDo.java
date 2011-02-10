@@ -21,10 +21,10 @@
 
 package fr.umlv.unitex.frames;
 
+import java.io.File;
+
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.Text;
-
-import java.io.File;
 
 /**
  * This class describes a dialog box that allows the user to parameter the

@@ -21,16 +21,15 @@
 
 package fr.umlv.unitex;
 
-import fr.umlv.unitex.frames.TranscodingFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.text.Text;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
@@ -38,6 +37,16 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import fr.umlv.unitex.frames.TranscodingFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.text.Text;
 
 /**
  * This class is used to listen drag and drop events. Files that can be dragged

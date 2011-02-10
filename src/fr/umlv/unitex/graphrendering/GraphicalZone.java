@@ -20,14 +20,13 @@
  */
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.undo.TranslationGroupEdit;
-
-import javax.swing.undo.UndoableEdit;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -35,6 +34,15 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.io.File;
 import java.util.Date;
+
+import javax.swing.SwingConstants;
+import javax.swing.undo.UndoableEdit;
+
+import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.undo.TranslationGroupEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.
@@ -125,7 +133,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     unSelectAllBoxes();
                 }
             } else if (EDITING_MODE == MyCursors.CREATE_BOXES
-                    || (EDITING_MODE == MyCursors.NORMAL && e.isControlDown())) {
+                    || (EDITING_MODE == MyCursors.NORMAL && (e.isControlDown() ||e.getButton()==MouseEvent.BUTTON3))) {
                 // Control+click
                 // creation of a new box
                 b = (GraphBox) createBox((int) (e.getX() / scaleFactor),

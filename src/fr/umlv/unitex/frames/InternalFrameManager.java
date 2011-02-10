@@ -21,6 +21,16 @@
 
 package fr.umlv.unitex.frames;
 
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
+
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
@@ -31,14 +41,6 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.xalign.ConcordanceModel;
-
-import javax.swing.*;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
-import java.beans.PropertyVetoException;
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * This class is responsible for managing all internal frames in Unitex
@@ -61,6 +63,7 @@ public class InternalFrameManager {
     private final FrameFactory concordanceParameterFrameFactory = new FrameFactory(ConcordanceParameterFrame.class);
     private final FrameFactory constructTfstFrameFactory = new FrameFactory(ConstructTfstFrame.class);
     private final FrameFactory convertTfstToTextFrameFactory = new FrameFactory(ConvertTfstToTextFrame.class);
+    private final FrameFactory dicLookupFrameFactory = new FrameFactory(DicLookupFrame.class);
     private final FrameFactory elagCompFrameFactory = new FrameFactory(ElagCompFrame.class);
     private final FrameFactory globalPreferencesFrameFactory = new FrameFactory(GlobalPreferencesFrame.class);
     private final FrameFactory graphCollectionFrameFactory = new FrameFactory(GraphCollectionFrame.class);
@@ -355,6 +358,17 @@ public class InternalFrameManager {
 
     public void closeApplyLexicalResourcesFrame() {
         applyLexicalResourcesFrameFactory.closeFrame();
+    }
+
+    public DicLookupFrame newDicLookupFrame() {
+    	DicLookupFrame f = (DicLookupFrame) dicLookupFrameFactory.newFrame(false);
+        if (f == null) return null;
+        setup(f);
+        return f;
+    }
+
+    public void closeDicLookupFrame() {
+    	dicLookupFrameFactory.closeFrame();
     }
 
     public CassysFrame newCassysFrame() {

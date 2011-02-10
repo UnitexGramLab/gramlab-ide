@@ -21,15 +21,19 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.text.BigTextList;
+import java.awt.BorderLayout;
+import java.io.File;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
-import java.io.File;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.text.BigTextList;
 
 
 /**

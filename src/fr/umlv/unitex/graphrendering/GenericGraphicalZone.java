@@ -20,6 +20,20 @@
  */
 package fr.umlv.unitex.graphrendering;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.UndoableEdit;
+import javax.swing.undo.UndoableEditSupport;
+
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.Preferences;
@@ -27,16 +41,14 @@ import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
 import fr.umlv.unitex.listeners.GraphTextListener;
-import fr.umlv.unitex.undo.*;
-
-import javax.swing.*;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.undo.AbstractUndoableEdit;
-import javax.swing.undo.UndoableEdit;
-import javax.swing.undo.UndoableEditSupport;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Vector;
+import fr.umlv.unitex.undo.AddBoxEdit;
+import fr.umlv.unitex.undo.BoxGroupTextEdit;
+import fr.umlv.unitex.undo.BoxTextEdit;
+import fr.umlv.unitex.undo.DeleteBoxGroupEdit;
+import fr.umlv.unitex.undo.SelectEdit;
+import fr.umlv.unitex.undo.TransitionEdit;
+import fr.umlv.unitex.undo.TransitionGroupEdit;
+import fr.umlv.unitex.undo.TranslationEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.

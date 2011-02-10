@@ -21,14 +21,20 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import fr.umlv.unitex.editor.EditionTextArea;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Document;
-import java.awt.*;
+
+import fr.umlv.unitex.editor.EditionTextArea;
 
 abstract class AbstractFindpanel extends SearchPanel {
 

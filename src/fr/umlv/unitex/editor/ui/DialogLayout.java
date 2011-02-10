@@ -21,7 +21,11 @@
 
 package fr.umlv.unitex.editor.ui;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
 
 
 class DialogLayout implements LayoutManager {

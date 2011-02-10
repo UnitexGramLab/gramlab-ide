@@ -21,11 +21,11 @@
 
 package fr.umlv.unitex.process.commands;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
-
 import java.io.File;
 import java.util.ArrayList;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
 
 /**
  * This class provides facilities for build process command lines.

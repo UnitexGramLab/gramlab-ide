@@ -21,21 +21,44 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.*;
-import fr.umlv.unitex.text.Text;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
+import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.commands.DicoCommand;
+import fr.umlv.unitex.process.commands.FlattenCommand;
+import fr.umlv.unitex.process.commands.Fst2TxtCommand;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.MessageCommand;
+import fr.umlv.unitex.process.commands.MkdirCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.PolyLexCommand;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import fr.umlv.unitex.text.Text;
 
 /**
  * This class describes a dialog box that allows the user to parameter the

@@ -21,12 +21,13 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.frames.TextAutomatonFrame;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JOptionPane;
+
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 
 /**
  * This class describes the text field used to get the box text in a sentence

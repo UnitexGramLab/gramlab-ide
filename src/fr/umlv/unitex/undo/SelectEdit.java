@@ -21,10 +21,11 @@
 
 package fr.umlv.unitex.undo;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import java.util.ArrayList;
 
 import javax.swing.undo.AbstractUndoableEdit;
-import java.util.ArrayList;
+
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * class uses to save the state of the graph before a selection

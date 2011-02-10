@@ -21,12 +21,13 @@
 
 package fr.umlv.unitex.graphrendering;
 
-import fr.umlv.unitex.frames.UnitexFrame;
+import java.util.StringTokenizer;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import java.util.StringTokenizer;
+
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /*
  * This class catches text and turns it into a list if it contains \n

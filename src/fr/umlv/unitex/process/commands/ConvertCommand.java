@@ -21,12 +21,12 @@
 
 package fr.umlv.unitex.process.commands;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.transcoding.Transcoder;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * @author Sébastien Paumier

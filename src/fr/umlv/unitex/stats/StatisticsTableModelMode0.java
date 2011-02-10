@@ -21,9 +21,6 @@
 
 package fr.umlv.unitex.stats;
 
-import fr.umlv.unitex.Config;
-
-import javax.swing.table.AbstractTableModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +29,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.table.AbstractTableModel;
+
+import fr.umlv.unitex.Config;
 
 public class StatisticsTableModelMode0 extends AbstractTableModel {
 

@@ -21,9 +21,10 @@
 
 package fr.umlv.unitex.frames;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.JOptionPane;
 
 class XAlignFrameFactory {
 

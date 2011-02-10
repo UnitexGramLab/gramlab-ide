@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class GraphPresentationInfo {
 
@@ -34,6 +34,7 @@ public class GraphPresentationInfo {
     public final Color packageColor;
     public final Color contextColor;
     public final Color morphologicalModeColor;
+    public final Color unreachableGraphColor;
     public FontInfo input;
     public FontInfo output;
     public boolean date;
@@ -47,7 +48,7 @@ public class GraphPresentationInfo {
     public GraphPresentationInfo(Color backgroundColor, Color foregroundColor,
                                  Color subgraphColor, Color selectedColor, Color commentColor,
                                  Color outputVariableColor, Color packageColor, Color contextColor,
-                                 Color morphologicalModeColor, FontInfo input, FontInfo output,
+                                 Color morphologicalModeColor, Color unreachableGraphColor, FontInfo input, FontInfo output,
                                  boolean date, boolean filename, boolean pathname, boolean frame,
                                  boolean rightToLeft, boolean antialiasing, String iconBarPosition) {
         this.backgroundColor = backgroundColor;
@@ -59,6 +60,7 @@ public class GraphPresentationInfo {
         this.packageColor = packageColor;
         this.contextColor = contextColor;
         this.morphologicalModeColor = morphologicalModeColor;
+        this.unreachableGraphColor = unreachableGraphColor;
         this.input = input;
         this.output = output;
         this.date = date;
@@ -74,7 +76,7 @@ public class GraphPresentationInfo {
     public GraphPresentationInfo clone() {
         return new GraphPresentationInfo(backgroundColor, foregroundColor,
                 subgraphColor, selectedColor, commentColor, outputVariableColor, packageColor,
-                contextColor, morphologicalModeColor, input.clone(), output.clone(), date,
+                contextColor, morphologicalModeColor, unreachableGraphColor, input.clone(), output.clone(), date,
                 filename, pathname, frame, rightToLeft, antialiasing,
                 iconBarPosition);
     }

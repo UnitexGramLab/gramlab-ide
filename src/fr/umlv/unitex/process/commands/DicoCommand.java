@@ -21,10 +21,10 @@
 
 package fr.umlv.unitex.process.commands;
 
-import fr.umlv.unitex.Config;
-
 import java.io.File;
 import java.util.ArrayList;
+
+import fr.umlv.unitex.Config;
 
 /**
  * @author Sébastien Paumier
@@ -92,5 +92,9 @@ public class DicoCommand extends CommandBuilder {
         return this;
     }
 
+    public DicoCommand raw(File s) {
+        protectElement("-r"+s.getAbsolutePath());
+        return this;
+    }
 
 }

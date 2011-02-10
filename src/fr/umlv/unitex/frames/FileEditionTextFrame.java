@@ -20,22 +20,40 @@
  */
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.editor.EditionTextArea;
-import fr.umlv.unitex.editor.FileEditionMenu;
-import fr.umlv.unitex.editor.FileManager;
-
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.editor.EditionTextArea;
+import fr.umlv.unitex.editor.FileEditionMenu;
+import fr.umlv.unitex.editor.FileManager;
 
 /*
  * This class is used to display the text

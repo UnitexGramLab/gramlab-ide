@@ -21,10 +21,11 @@
 
 package fr.umlv.unitex.frames;
 
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
 import java.io.File;
 import java.util.ArrayList;
+
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 
 class FileEditionTextFrameFactory {

@@ -21,13 +21,15 @@
 
 package fr.umlv.unitex.print;
 
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.TextAutomatonFrame;
-
-import javax.swing.*;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.TextAutomatonFrame;
 
 public class PrintManager {
 

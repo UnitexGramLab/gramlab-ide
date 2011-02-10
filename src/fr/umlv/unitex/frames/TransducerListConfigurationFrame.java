@@ -1,20 +1,40 @@
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
-import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
-import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
-import fr.umlv.unitex.cassys.DataListFileNameRenderer;
-import fr.umlv.unitex.cassys.ListDataTransfertHandler;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.LineNumberReader;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.DropMode;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.*;
+
+import fr.umlv.unitex.Config;
+import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
+import fr.umlv.unitex.cassys.DataListFileNameRenderer;
+import fr.umlv.unitex.cassys.ListDataTransfertHandler;
+import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
+import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
 
 
 /**

@@ -21,9 +21,6 @@
 
 package fr.umlv.unitex.concord;
 
-import fr.umlv.unitex.text.Interval;
-
-import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +29,11 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+
+import javax.swing.AbstractListModel;
+import javax.swing.SwingWorker;
+
+import fr.umlv.unitex.text.Interval;
 
 
 /**

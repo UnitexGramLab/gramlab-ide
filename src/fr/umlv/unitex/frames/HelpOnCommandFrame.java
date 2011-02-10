@@ -21,15 +21,62 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.process.ProcessInfoThread;
-import fr.umlv.unitex.process.ProcessOutputListModel;
-import fr.umlv.unitex.process.commands.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JInternalFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
-import java.io.IOException;
+
+import fr.umlv.unitex.process.ProcessInfoThread;
+import fr.umlv.unitex.process.ProcessOutputListModel;
+import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;
+import fr.umlv.unitex.process.commands.CheckDicCommand;
+import fr.umlv.unitex.process.commands.CommandBuilder;
+import fr.umlv.unitex.process.commands.CompressCommand;
+import fr.umlv.unitex.process.commands.ConcorDiffCommand;
+import fr.umlv.unitex.process.commands.ConcordCommand;
+import fr.umlv.unitex.process.commands.ConvertCommand;
+import fr.umlv.unitex.process.commands.DicoCommand;
+import fr.umlv.unitex.process.commands.ElagCommand;
+import fr.umlv.unitex.process.commands.ElagCompCommand;
+import fr.umlv.unitex.process.commands.EvambCommand;
+import fr.umlv.unitex.process.commands.ExtractCommand;
+import fr.umlv.unitex.process.commands.FlattenCommand;
+import fr.umlv.unitex.process.commands.Fst2CheckCommand;
+import fr.umlv.unitex.process.commands.Fst2ListCommand;
+import fr.umlv.unitex.process.commands.Fst2TxtCommand;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
+import fr.umlv.unitex.process.commands.LocateCommand;
+import fr.umlv.unitex.process.commands.LocateTfstCommand;
+import fr.umlv.unitex.process.commands.MultiFlexCommand;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
+import fr.umlv.unitex.process.commands.PolyLexCommand;
+import fr.umlv.unitex.process.commands.RebuildTfstCommand;
+import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
+import fr.umlv.unitex.process.commands.Reg2GrfCommand;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.process.commands.StatsCommand;
+import fr.umlv.unitex.process.commands.TEI2TxtCommand;
+import fr.umlv.unitex.process.commands.Table2GrfCommand;
+import fr.umlv.unitex.process.commands.TaggerCommand;
+import fr.umlv.unitex.process.commands.TagsetNormTfstCommand;
+import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
+import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
+import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.process.commands.TrainingTaggerCommand;
+import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import fr.umlv.unitex.process.commands.UncompressCommand;
+import fr.umlv.unitex.process.commands.UntokenizeCommand;
+import fr.umlv.unitex.process.commands.XAlignCommand;
+import fr.umlv.unitex.process.commands.XMLizerCommand;
 
 public class HelpOnCommandFrame extends JInternalFrame {
 

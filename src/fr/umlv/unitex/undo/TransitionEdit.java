@@ -20,9 +20,9 @@
  */
 package fr.umlv.unitex.undo;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-
 import javax.swing.undo.AbstractUndoableEdit;
+
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * class uses to save the state of the graph before add a transition

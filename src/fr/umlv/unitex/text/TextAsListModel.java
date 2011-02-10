@@ -21,7 +21,6 @@
 
 package fr.umlv.unitex.text;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +29,9 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
+
+import javax.swing.AbstractListModel;
+import javax.swing.SwingWorker;
 
 
 /**
