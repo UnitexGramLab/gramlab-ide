@@ -132,6 +132,11 @@ public class MyCursors {
 	/** find icon */
 	public static ImageIcon findIcon;
 	
+	public static ImageIcon calledGrfIcon;
+	public static ImageIcon callersGrfIcon;
+	public static ImageIcon closeIcon;
+
+	
 	/**
 	 *  Configuration icon
 	 */	
@@ -150,6 +155,9 @@ public class MyCursors {
 	 */
 	public static void initCursorsAndIcons() {
 		
+		calledGrfIcon = new ImageIcon(MyCursors.class.getResource("calledGrf.png"));
+		callersGrfIcon = new ImageIcon(MyCursors.class.getResource("callersGrf.png"));
+		closeIcon = new ImageIcon(MyCursors.class.getResource("close.png"));
 		undoIcon = new ImageIcon(MyCursors.class.getResource("undo.gif"));
 		redoIcon = new ImageIcon(MyCursors.class.getResource("redo.gif"));
 		findIcon = new ImageIcon(MyCursors.class.getResource("find.gif"));
