@@ -21,6 +21,8 @@
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -38,32 +40,43 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.MultipleSelection;
 import fr.umlv.unitex.graphrendering.TextField;
+import fr.umlv.unitex.graphtools.Dependancies;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
@@ -78,7 +91,12 @@ public class GraphFrame extends JInternalFrame {
     private static final int offset = 30;
     private TextField boxContentEditor;
     final GraphicalZone graphicalZone;
-
+    DefaultListModel grfListModel=new DefaultListModel();
+    JList grfList=new JList(grfListModel);
+    JScrollPane grfListScroll=new JScrollPane(grfList);
+    JPanel grfListPanel;
+    JLabel grfListLabel=new JLabel();
+    
     public GraphicalZone getGraphicalZone() {
         return graphicalZone;
     }
@@ -102,6 +120,7 @@ public class GraphFrame extends JInternalFrame {
     }
 
     private final JPanel mainPanel;
+    private final JPanel actualMainPanel;
     /**
      * Component used to listen frame changes. It is used to adapt the zoom
      * factor to the frame's dimensions when the zoom mode is "Fit in Windows"
@@ -122,6 +141,7 @@ public class GraphFrame extends JInternalFrame {
         MyDropTarget.newDropTarget(this);
         openFrameCount++;
         setTitle("Graph");
+        actualMainPanel = new JPanel(new BorderLayout());
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         JPanel top = new JPanel(new BorderLayout());
@@ -148,7 +168,8 @@ public class GraphFrame extends JInternalFrame {
             mainPanel.add(myToolBar, info.iconBarPosition);
         }
         mainPanel.add(top, BorderLayout.CENTER);
-        setContentPane(mainPanel);
+        actualMainPanel.add(mainPanel,BorderLayout.CENTER);
+        setContentPane(actualMainPanel);
         pack();
         addInternalFrameListener(new MyInternalFrameListener());
         setBounds(offset * (openFrameCount % 6), offset * (openFrameCount % 6),
@@ -162,6 +183,50 @@ public class GraphFrame extends JInternalFrame {
 		 * reset it
 		 */
         setModified(false);
+        grfList.setCellRenderer(new DefaultListCellRenderer() {
+        	@Override
+        	public Component getListCellRendererComponent(JList list,
+        			Object value, int index, boolean selected,
+        			boolean cellHasFocus) {
+        		File f=(File)value;
+        		String s=Util.getRelativePath(getGraph(),f);
+        		if (s.endsWith(".grf")) {
+        			s=s.substring(0,s.lastIndexOf('.'));
+        		}
+        		return super.getListCellRendererComponent(list,s, index, selected,
+        				cellHasFocus);
+        	}
+        });
+        grfList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        grfList.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				int n=grfList.getSelectedIndex();
+				if (n==-1) return;
+				File f=(File)grfListModel.get(n);
+				UnitexFrame.getFrameManager().newGraphFrame(f);
+			}
+		});
+        grfListPanel=new JPanel(new BorderLayout());
+        JPanel up=new JPanel(new BorderLayout());
+        up.add(grfListLabel,BorderLayout.CENTER);
+        JButton closeButton=new JButton(MyCursors.closeIcon);
+        closeButton.setPreferredSize(new Dimension(MyCursors.closeIcon.getIconWidth()+8, MyCursors.closeIcon.getIconHeight()+8));
+        closeButton.setBorderPainted(false);
+        closeButton.setOpaque(false);
+        closeButton.setContentAreaFilled(false);
+        closeButton.setFocusPainted(false);
+        closeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				actualMainPanel.remove(grfListPanel);
+				actualMainPanel.revalidate();
+				actualMainPanel.repaint();
+			}
+		});
+        up.add(closeButton,BorderLayout.EAST);
+        up.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+        grfListPanel.add(up,BorderLayout.NORTH);
+        grfListPanel.add(grfListScroll,BorderLayout.CENTER);
+        grfListPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
     }
 
     private void createToolBar(String iconBarPosition) {
@@ -385,9 +450,59 @@ public class GraphFrame extends JInternalFrame {
         myToolBar.addSeparator();
         myToolBar.addSeparator();
         myToolBar.add(configuration);
-    }
+        
+        JButton calledGrf = new JButton(MyCursors.calledGrfIcon);
+        calledGrf.setMaximumSize(new Dimension(36, 36));
+        calledGrf.setMinimumSize(new Dimension(36, 36));
+        calledGrf.setPreferredSize(new Dimension(36, 36));
+        calledGrf.setToolTipText("Subgraphs called from this one");
+        calledGrf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showGraphDependencies(true);
+			}
+		});
+        myToolBar.add(calledGrf);
 
-    private JPanel buildTextPanel() {
+        JButton callersGrf = new JButton(MyCursors.callersGrfIcon);
+        callersGrf.setMaximumSize(new Dimension(36, 36));
+        callersGrf.setMinimumSize(new Dimension(36, 36));
+        callersGrf.setPreferredSize(new Dimension(36, 36));
+        callersGrf.setToolTipText("Graphs that call this one");
+        callersGrf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showGraphDependencies(false);
+			}
+		});
+        myToolBar.add(callersGrf);
+}
+
+    protected void showGraphDependencies(boolean showCalledGrf) {
+        if (getGraph() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Cannot compile a graph with no name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ArrayList<File> files;
+        if (showCalledGrf) {
+        	files=Dependancies.getAllSubgraphs(getGraph());
+        	grfListLabel.setText("Called graphs:");
+        } else {
+        	files=Dependancies.whoCalls(getGraph(),Config.getUserCurrentLanguageDir());
+        	grfListLabel.setText("Caller graphs:");
+        }
+        grfListModel.clear();
+        for (File f:files) {
+        	grfListModel.addElement(f);
+        }
+        if (!actualMainPanel.isAncestorOf(grfListPanel)) {
+        	actualMainPanel.add(grfListPanel,BorderLayout.EAST);
+        }
+        actualMainPanel.revalidate();
+        actualMainPanel.repaint();
+	}
+
+	private JPanel buildTextPanel() {
         JPanel p = new JPanel(new BorderLayout());
         boxContentEditor = new TextField(25, this);
         boxContentEditor
