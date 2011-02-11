@@ -104,7 +104,7 @@ public class Preferences {
     public static String ICON_BAR_NORTH = BorderLayout.NORTH;
     public static String ICON_BAR_SOUTH = BorderLayout.SOUTH;
     public static String NO_ICON_BAR = "NONE";
-    public static String ICON_BAR_DEFAULT = ICON_BAR_WEST;
+    public static String ICON_BAR_DEFAULT = ICON_BAR_NORTH;
 
     public GraphPresentationInfo info;
 
@@ -159,7 +159,7 @@ public class Preferences {
         defaultProperties.setProperty("HTML VIEWER", "");
         defaultProperties.setProperty("MORPHOLOGICAL DICTIONARY", "");
         defaultProperties.setProperty("MAX TEXT FILE SIZE", "2048000");
-        defaultProperties.setProperty("ICON BAR POSITION", "West");
+        defaultProperties.setProperty("TOOLBAR POSITION", "North");
         defaultProperties.setProperty("CHAR BY CHAR", "false");
         defaultProperties.setProperty("MORPHOLOGICAL USE OF SPACE", "false");
         defaultProperties.setProperty("PACKAGE PATH", "");
@@ -243,7 +243,7 @@ public class Preferences {
         boolean pathname = Boolean.valueOf(prop.getProperty("PATH NAME"));
         boolean frame = Boolean.valueOf(prop.getProperty("FRAME"));
         boolean antialiasing = Boolean.valueOf(prop.getProperty("ANTIALIASING"));
-        String iconBarPosition = prop.getProperty("ICON BAR POSITION");
+        String iconBarPosition = prop.getProperty("TOOLBAR POSITION");
         rightToLeftForText = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT FOR TEXT"));
         rightToLeftForGraphs = Boolean.valueOf(prop.getProperty("RIGHT TO LEFT FOR GRAPHS"));
         semitic = Boolean.valueOf(prop.getProperty("SEMITIC"));
