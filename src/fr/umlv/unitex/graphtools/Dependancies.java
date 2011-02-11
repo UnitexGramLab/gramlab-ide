@@ -23,12 +23,15 @@ package fr.umlv.unitex.graphtools;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.io.GraphIO;
 
@@ -39,9 +42,6 @@ import fr.umlv.unitex.io.GraphIO;
  */
 public class Dependancies {
 	
-	public static void main(String[] args) {
-		whoCalls(new File("/home/paumier/unitex/French/Graphs/Preprocessing/Sentence/Nombres.grf"),new File("/home/paumier/unitex/French"));
-	}
 	
 	/**
 	 * Looks recursively in the given directory for all graphs that call the given one
@@ -57,9 +57,9 @@ public class Dependancies {
 		for (File f:map.keySet()) {
 			if (map.get(f).contains(grf)) {
 				callers.add(f);
-				System.err.println(grf.getAbsolutePath()+" est appelé par:\n   "+f.getAbsolutePath());
 			}
 		}
+		Collections.sort(callers);
 		return callers;
 	}
 	
@@ -84,11 +84,13 @@ public class Dependancies {
 		GraphIO io = GraphIO.loadGraph(grf,false,false);
 		if (io==null) return null;
 		ArrayList<File> subgraphs=new ArrayList<File>();
-		boolean[] marked=new boolean[io.boxes.size()];
-		markAccessibleBoxes(io.boxes,marked,0);
+		boolean[] accessible=new boolean[io.boxes.size()];
+		int[] coaccessible=new int[io.boxes.size()];
+		for (int i=0;i<coaccessible.length;i++) coaccessible[i]=UNTESTED;
+		markAccessibleBoxes(io.boxes,accessible,0);
 		for (int i=0;i<io.boxes.size();i++) {
-			if (marked[i]) {
-				/* We only consider accessible boxes */
+			if (accessible[i] && isCoaccessibleBoxes(io.boxes,coaccessible,i)) {
+				/* We only consider useful boxes */
 				addSubgraphs(subgraphs,io.boxes.get(i),grf,emitErrorMessages);
 			}
 		}
@@ -105,6 +107,26 @@ public class Dependancies {
 		}
 	}
 
+	public static ArrayList<File> getAllSubgraphs(File grf) {
+		HashMap<File,ArrayList<File>> map=new HashMap<File, ArrayList<File>>();
+		computeGraphDependencies(grf,map);
+		ArrayList<File> files=new ArrayList<File>();
+		for (File f:map.keySet()) {
+			if (!f.equals(grf) && !files.contains(f)) {
+				files.add(f);
+			}
+		}
+		for (ArrayList<File> values:map.values()) {
+			for (File f:values) {
+				if (!files.contains(f)) {
+					files.add(f);
+				}	
+			}
+		}
+		Collections.sort(files);
+		return files;
+	}
+	
 	/**
 	 * Adds to the given list the subgraphs contained in the given box
 	 * @param subgraphs
@@ -169,4 +191,36 @@ public class Dependancies {
 			markAccessibleBoxes(boxes,marked,boxes.indexOf(box));
 		}
 	}
+
+	private final static int UNTESTED=0;
+	private final static int TESTED_TRUE=1;
+	private final static int TESTED_FALSE=2;
+	private final static int BEING_TESTED=3;
+	
+	
+	private static boolean isCoaccessibleBoxes(ArrayList<GenericGraphBox> boxes,
+			int[] marked, int n) {
+		if (marked[n]==TESTED_FALSE || marked[n]==TESTED_TRUE) return marked[n]==TESTED_TRUE;
+		if (marked[n]==BEING_TESTED) return false;
+		marked[n]=BEING_TESTED;
+		GenericGraphBox b=boxes.get(n);
+		if (b.type==GenericGraphBox.FINAL) {
+			marked[n]=TESTED_TRUE;
+			return true;
+		}
+		ArrayList<GenericGraphBox> dest=b.getTransitions();
+		if (dest==null) {
+			marked[n]=TESTED_FALSE;
+			return false;
+		}
+		for (GenericGraphBox box:dest) {
+			if (isCoaccessibleBoxes(boxes,marked,boxes.indexOf(box))) {
+				marked[n]=TESTED_TRUE;
+				return true;
+			}
+		}
+		marked[n]=TESTED_FALSE;
+		return false;
+	}
+
 }
