@@ -216,4 +216,129 @@ public class Util {
         }
     }
 
+    
+    /**
+     * Creates a description of f relative to parent. For instance:
+     * 
+     * parent=/tmp/grf/toto.grf
+     * file=/tmp/grf/sub/foo.grf
+     * => sub/foo.grf
+     * 
+     * parent=/tmp/grf/toto.grf
+     * file=/dst/foo.grf
+     * => ../../dst/foo.grf
+     */
+	public static String getRelativePath(File parent,File f) {
+		String s=isAncestor(parent.getParentFile(),f.getParentFile());
+		if (s!=null) {
+			/* Case 1: f is in the same dir or a child dir */
+			return s+f.getName();
+		}
+		/* Case 2: we have to find the common dir ancestor */
+		File ancestor=commonAncestor(parent.getParentFile(),f.getParentFile());
+		if (ancestor==null) {
+			/* If files are on different drives under Windows,
+			 * we have no choice: we must use f's absolute path */
+			return f.getAbsolutePath();
+		}
+		s=f.getName();
+		f=f.getParentFile();
+		while (!f.equals(ancestor)) {
+			s=f.getName()+File.separator+s;
+			f=f.getParentFile();
+		}
+		int n=dirsUpToDir(ancestor,parent);
+		for (int i=0;i<n;i++) s=".."+File.separator+s;
+		return s;
+	}
+
+
+	/**
+	 * Returns the common directory ancestor, or null if there is none 
+	 * because the files are on different drives under Windows.
+	 */
+	private static File commonAncestor(File dir1, File dir2) {
+		int n1=dirsUpToRoot(dir1);
+		int n2=dirsUpToRoot(dir2);
+		if (n1<n2) {
+			dir2=moveUp(n2-n1,dir2);
+		} else if (n1>n2) {
+			dir1=moveUp(n1-n2,dir1);
+		}
+		/* At this point, we have dir1 and dir2 at the same depth from the root */
+		while (n1>=0) {
+			if (dir1.equals(dir2)) {
+				return dir1;
+			}
+			n1--;
+			dir1=dir1.getParentFile();
+			dir2=dir2.getParentFile();
+		}
+		/* If we get there, we are in a Windows case like dir1=C:\ and dir2=D:\ */
+		return null;
+	}
+
+	/**
+	 * Performs n 'cd ..' on the given directory
+	 */
+	private static File moveUp(int n,File dir) {
+		while (n!=0) {
+			n--;
+			dir=dir.getParentFile();
+		}
+		return dir;
+	}
+
+	/**
+	 * Returns the number of directories there are to cross up before reaching
+	 * the root:
+	 * 
+	 * /tmp/sub/ => 2
+	 */
+	private static int dirsUpToRoot(File dir) {
+		int n=0;
+		while (!isRoot(dir)) {
+			n++;
+			dir=dir.getParentFile();
+		}
+		return n;
+	}
+
+	/**
+	 * Returns the number of directories there are to cross up before reaching
+	 * the parent directory:
+	 * 
+	 * /tmp/sub/
+	 * /tmp/sub/titi/tata/toto/ => 2
+	 */
+	private static int dirsUpToDir(File parent,File dir) {
+		int n=0;
+		while (!dir.equals(parent)) {
+			n++;
+			dir=dir.getParentFile();
+		}
+		return n;
+	}
+
+	
+	private static boolean isRoot(File dir) {
+		for (File f:File.listRoots()) {
+			if (f.equals(dir)) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return a non null relative path if dir1 is equals to dir2 or is an ancestor of dir2
+	 */
+	private static String isAncestor(File dir1,File dir2) {
+		String s="";
+		while (dir2!=null && !dir2.equals(dir1)) {
+			s=dir2.getName()+File.separator+s;
+			dir2=dir2.getParentFile();
+		}
+		if (dir2!=null) return s;
+		return null;
+	}
+
 }
