@@ -57,5 +57,10 @@ public class ConcorDiffCommand extends CommandBuilder {
 		element("-s"+size);
 		return this;
 	}
+	
+	public ConcorDiffCommand diffOnly() {
+		element("-d");
+		return this;
+	}
 
 }

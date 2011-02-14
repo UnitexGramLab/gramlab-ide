@@ -588,7 +588,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         command = new ConcorDiffCommand().firstIndFile(prevIndFile)
                 .secondIndFile(indFile).output(outputHtmlFile).font(
                         Preferences.getConcordanceFontName()).fontSize(
-                        Preferences.getConcordanceFontSize());
+                        Preferences.getConcordanceFontSize())
+                .diffOnly();
         setVisible(false);
         int width = 160;
         Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
