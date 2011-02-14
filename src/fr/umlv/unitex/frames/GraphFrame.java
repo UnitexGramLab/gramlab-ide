@@ -585,11 +585,13 @@ public class GraphFrame extends JInternalFrame {
                         return;
                 }
                 if (n != 2) {
+                	autoRefresh.stop();
                     dispose();
                     return;
                 }
                 return;
             }
+        	autoRefresh.stop();
             dispose();
         }
     }
