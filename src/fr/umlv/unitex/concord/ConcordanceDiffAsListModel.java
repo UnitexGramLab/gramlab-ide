@@ -40,7 +40,7 @@ public class ConcordanceDiffAsListModel extends ConcordanceAsListModel {
 	 * HTML_START_LINES lines, then there are the real concordance lines, then
 	 * there are HTML_END_LINES that close open HTML tags.
 	 */
-	private static final int DIFF_HTML_START_LINES = 15;
+	private static final int DIFF_HTML_START_LINES = 17;
 	private static final int DIFF_HTML_END_LINES = 3;
 
 	public ConcordanceDiffAsListModel() {
@@ -84,6 +84,7 @@ public class ConcordanceDiffAsListModel extends ConcordanceAsListModel {
 			if ("green".equals(tmp)) result.color1=Color.GREEN;
 			else if ("red".equals(tmp)) result.color1=Color.RED;
 			else if ("blue".equals(tmp)) result.color1=Color.BLUE;
+			else if ("orange".equals(tmp)) result.color1=Color.ORANGE;
 			else return null;
 			int start=line.indexOf('>',pos)+1;
 			pos=line.indexOf('<',start)+1;
@@ -100,6 +101,7 @@ public class ConcordanceDiffAsListModel extends ConcordanceAsListModel {
 			if ("green".equals(tmp)) result.color2=Color.GREEN;
 			else if ("red".equals(tmp)) result.color2=Color.RED;
 			else if ("blue".equals(tmp)) result.color2=Color.BLUE;
+			else if ("orange".equals(tmp)) result.color2=Color.ORANGE;
 			else return null;
 			start=line.indexOf('>',pos)+1;
 			pos=line.indexOf('<',start)+1;
