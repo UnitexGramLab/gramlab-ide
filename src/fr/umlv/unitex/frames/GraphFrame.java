@@ -21,7 +21,6 @@
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
@@ -56,6 +55,7 @@ import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -105,6 +105,7 @@ public class GraphFrame extends JInternalFrame {
      * The graph file
      */
     private File grf;
+    private long lastModification;
     /**
      * Indicates if the graph must be saved
      */
@@ -119,6 +120,26 @@ public class GraphFrame extends JInternalFrame {
         return nonEmptyGraph;
     }
 
+    private Timer autoRefresh=new Timer(2000,new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if (grf==null) return;
+			if (grf.lastModified()>lastModification) {
+				int ret=JOptionPane.showConfirmDialog(GraphFrame.this,
+						"Graph has changed on disk. Do you want to reload it ?",
+						"",JOptionPane.YES_NO_OPTION);
+				if (ret==JOptionPane.YES_OPTION) {
+					GraphIO g=GraphIO.loadGraph(getGraph(),false,false);
+					graphicalZone.refresh(g);
+					setModified(false);
+					lastModification=grf.lastModified();
+				} else {
+					/* We don't want to be asked again until another modification */
+					lastModification=grf.lastModified();
+				}
+			}
+		}
+	});
+    
     private final JPanel mainPanel;
     private final JPanel actualMainPanel;
     /**
@@ -153,6 +174,7 @@ public class GraphFrame extends JInternalFrame {
                 if (m) setModified(true);
             }
         });
+        autoRefresh.start();
         manager = new UndoManager();
         manager.setLimit(30);
         graphicalZone.addUndoableEditListener(manager);
@@ -177,7 +199,6 @@ public class GraphFrame extends JInternalFrame {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         boxContentEditor.setFont(info.input.font);
         if (g != null) {
-
             setGraph(g.grf);
         }/* Some loading operations may have set the modified flag, so we
 		 * reset it
@@ -474,9 +495,24 @@ public class GraphFrame extends JInternalFrame {
 			}
 		});
         myToolBar.add(callersGrf);
+
+        JButton refresh = new JButton(MyCursors.refreshIcon);
+        refresh.setMaximumSize(new Dimension(36, 36));
+        refresh.setMinimumSize(new Dimension(36, 36));
+        refresh.setPreferredSize(new Dimension(36, 36));
+        refresh.setToolTipText("Reload graph from disk");
+        refresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GraphIO g=GraphIO.loadGraph(getGraph(),false,false);
+				graphicalZone.refresh(g);
+				setModified(false);
+			}
+		});
+        myToolBar.add(refresh);
 }
 
-    protected void showGraphDependencies(boolean showCalledGrf) {
+
+	protected void showGraphDependencies(boolean showCalledGrf) {
         if (getGraph() == null) {
             JOptionPane.showMessageDialog(null,
                     "Cannot compile a graph with no name", "Error",
@@ -684,6 +720,7 @@ public class GraphFrame extends JInternalFrame {
     }
 
     public void setGraph(File grf) {
+    	this.lastModification=grf.lastModified();
         this.grf = grf;
         this.nonEmptyGraph = true;
         this.setTitle(grf.getName() + " (" + grf.getParent() + ")");
