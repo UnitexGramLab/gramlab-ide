@@ -116,6 +116,17 @@ public abstract class GenericGraphicalZone extends JComponent {
         parentFrame = p;
         selectedBoxes = new ArrayList<GenericGraphBox>();
         setBackground(Color.white);
+        addGraphTextListener(new GraphTextListener() {
+            public void graphTextChanged(GraphTextEvent e) {
+                initText(e.getContent());
+            }
+        });
+        refresh(g);
+    }
+
+    
+    public void refresh(GraphIO g) {
+    	text.setText("");
         if (g != null) {
             info = g.info;
             Dimension d = new Dimension(g.width, g.height);
@@ -133,13 +144,9 @@ public abstract class GenericGraphicalZone extends JComponent {
             b.parentGraphicalZone = this;
             b.update();
         }
-        addGraphTextListener(new GraphTextListener() {
-            public void graphTextChanged(GraphTextEvent e) {
-                initText(e.getContent());
-            }
-        });
+        repaint();
     }
-
+    
     /**
      * Adds a graph box to the graph
      *

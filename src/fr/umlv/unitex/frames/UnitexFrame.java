@@ -1071,7 +1071,7 @@ public class UnitexFrame extends JFrame {
         final GraphIO g = new GraphIO(f.graphicalZone);
         f.modified = false;
         g.saveGraph(file);
-        f.setTitle(file.getName() + " (" + file.getParent() + ")");
+        f.setGraph(file);
         return true;
     }
 
