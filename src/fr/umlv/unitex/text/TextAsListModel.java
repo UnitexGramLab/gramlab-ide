@@ -29,6 +29,8 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractListModel;
 import javax.swing.SwingWorker;
@@ -41,7 +43,7 @@ import javax.swing.SwingWorker;
  *
  * @author Sébastien Paumier
  */
-class TextAsListModel extends AbstractListModel {
+public class TextAsListModel extends AbstractListModel {
 
     private MappedByteBuffer buffer;
     private int dataLength;
@@ -280,4 +282,21 @@ class TextAsListModel extends AbstractListModel {
         setText("");
     }
 
+    
+    public int getNextMatchedElement(int currentPosition,Pattern p) {
+    	int n=getSize();
+    	for (int i=currentPosition+1;i<n;i++) {
+    		Matcher m=p.matcher(getElementAt(i));
+    		if (m.matches()) return i;
+    	}
+    	return -1;
+    }
+
+    public int getPreviousMatchedElement(int currentPosition,Pattern p) {
+    	for (int i=currentPosition-1;i>=0;i--) {
+    		Matcher m=p.matcher(getElementAt(i));
+    		if (m.matches()) return i;
+    	}
+    	return -1;
+    }
 }
