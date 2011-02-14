@@ -167,7 +167,7 @@ public class ConcordanceFrame extends JInternalFrame {
             public void valueChanged(ListSelectionEvent e) {
                 TextFrame f = UnitexFrame.getFrameManager().getTextFrame();
                 String s = (String) list.getSelectedValue();
-                if (s == null || e.getValueIsAdjusting() || f.isIcon()) return;
+                if (s == null || e.getValueIsAdjusting()) return;
                 int start = s.indexOf("<a href=\"") + 9;
                 int end = s.indexOf(' ', start);
                 int selectionStart = Integer.valueOf((String) s.subSequence(start, end));
@@ -178,6 +178,9 @@ public class ConcordanceFrame extends JInternalFrame {
                 end = s.indexOf('\"', start);
                 int sentenceNumber = Integer.valueOf((String) s.subSequence(start, end));
                 try {
+                	if (f.isIcon()) {
+                		f.setIcon(false);
+                	}
                     f.getText().setSelection(selectionStart, selectionEnd - 1);
                     f.getText().scrollToSelection();
                     f.setSelected(true);
