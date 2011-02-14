@@ -63,7 +63,6 @@ public class ConcordanceDiffFrame extends JInternalFrame {
         JPanel top = new JPanel(new GridLayout(3, 1));
         top.setBackground(Color.WHITE);
         top.setBorder(new EmptyBorder(2, 2, 2, 2));
-        top.add(new JLabel("<html><body><font color=\"#0000FF\">Blue:</font>&nbsp;identical sequences</body></html>"));
         top.add(new JLabel("<html><body><font color=\"#FF0000\">Red:</font>&nbsp;similar but different sequences</body></html>"));
         top.add(new JLabel("<html><body><font color=\"#00FF00\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
         middle.add(top, BorderLayout.NORTH);
