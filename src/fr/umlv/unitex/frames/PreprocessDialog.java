@@ -45,6 +45,7 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
+import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
@@ -92,6 +93,11 @@ public class PreprocessDialog extends JDialog {
         super(UnitexFrame.mainFrame, "Preprocessing & Lexical parsing", true);
         setContentPane(preprocessingParent = constructPanel());
         refreshOnLanguageChange();
+        Config.addLanguageListener(new LanguageListener() {
+			public void languageChanged() {
+				refreshOnLanguageChange();
+			}
+		});
         pack();
         setResizable(false);
         setLocationRelativeTo(UnitexFrame.mainFrame);
