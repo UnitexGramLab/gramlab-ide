@@ -1380,7 +1380,9 @@ public class Config {
      * @param src source
      */
     public static void deleteFileByName(File src) {
+    	if (src==null) return;
         final File path_src = src.getParentFile();
+        if (path_src==null) return;
         final String expression = src.getName();
         File files_list[] = path_src.listFiles(new RegFileFilter(
                 expression));
@@ -1399,7 +1401,9 @@ public class Config {
      * @param src source
      */
     public static void removeFile(File src) {
+    	if (src==null) return;
         final File path_src = src.getParentFile();
+        if (path_src==null) return;
         final String expression = src.getName();
         final File files_list[] = path_src.listFiles(new RegFileFilter(
                 expression));
