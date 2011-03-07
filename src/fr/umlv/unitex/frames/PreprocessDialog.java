@@ -108,7 +108,8 @@ public class PreprocessDialog extends JDialog {
     void refreshOnLanguageChange() {
         if (Config.getCurrentLanguage().equals("Dutch")
                 || Config.getCurrentLanguage().equals("German")
-                || Config.getCurrentLanguage().equals("Norwegian")
+                || Config.getCurrentLanguage().equals("Norwegian (Bokmal)")
+                || Config.getCurrentLanguage().equals("Norwegian (Nynorsk)")
                 || Config.getCurrentLanguage().equals("Russian")) {
             analyseUnknownWordsCheck.setSelected(true);
             analyseUnknownWordsCheck.setEnabled(true);
@@ -310,7 +311,9 @@ public class PreprocessDialog extends JDialog {
         File dic = new File(Config.getUnitexCurrentLanguageDir(), "Dela");
         if (lang.equals("German"))
             dic = new File(dic, "dela.bin");
-        else if (lang.equals("Norwegian"))
+        else if (lang.equals("Norwegian (Bokmal)"))
+            dic = new File(dic, "Dela-sample.bin");
+        else if (lang.equals("Norwegian (Nynorsk)"))
             dic = new File(dic, "Dela-sample.bin");
         else if (lang.equals("Russian"))
             dic = new File(dic, "CISLEXru_igrok.bin");
