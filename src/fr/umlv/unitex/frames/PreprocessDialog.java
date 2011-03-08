@@ -211,7 +211,6 @@ public class PreprocessDialog extends JDialog {
         lexicalParsing.add(applyDicCheck);
         analyseUnknownWordsCheck.setMnemonic(KeyEvent.VK_W);
         lexicalParsing.add(analyseUnknownWordsCheck);
-        analyseUnknownWordsCheck.setMnemonic(KeyEvent.VK_U);
         lexicalParsing.add(analyseUnknownWordsLabel);
         textFst2Check.setMnemonic(KeyEvent.VK_A);
         lexicalParsing.add(textFst2Check);
