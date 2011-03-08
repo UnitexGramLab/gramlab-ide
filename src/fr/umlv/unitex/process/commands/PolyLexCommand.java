@@ -41,7 +41,7 @@ public class PolyLexCommand extends CommandBuilder {
 			element("-G");
 			return this;
 		}
-		if (s.equals("NORWEGIAN") || s.equals("Norwegian")) {
+		if (s.startsWith("NORWEGIAN") || s.startsWith("Norwegian")) {
 			element("-N");
 			return this;
 		}
