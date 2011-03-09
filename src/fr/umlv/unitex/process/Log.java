@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
@@ -42,6 +44,13 @@ public class Log {
 		}
 		if (Preferences.loggingDir()==null) {
 			throw new IllegalStateException("Should not have a null logging directory when mustLog is true");
+		}
+		if (!Preferences.loggingDir().exists()) {
+			JOptionPane.showMessageDialog(null,
+                    "Log directory does not exist: \n\n"+Preferences.loggingDir().getAbsolutePath()+
+                    "\n\nSet it properly or deactivate logging",
+                    "Log dir error", JOptionPane.ERROR_MESSAGE);
+			return null;
 		}
 		File count=new File(Preferences.loggingDir(),"unitex_logging_parameters_count.txt");
 		if (!count.exists()) {
