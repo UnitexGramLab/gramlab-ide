@@ -576,8 +576,21 @@ public class InternalFrameManager {
         }
     }
 
+    private final InternalFrameListener lgTableFrameListener = new InternalFrameAdapter() {
+        @Override
+        public void internalFrameClosing(InternalFrameEvent e) {
+        	fireLexiconGrammarTableFrameClosed();
+        }
+    };
+
     public LexiconGrammarTableFrame newLexiconGrammarTableFrame(File file) {
-        return (LexiconGrammarTableFrame) setup(lexiconGrammarTableFrameFactory.newLexiconGrammarTableFrame(file), true);
+    	LexiconGrammarTableFrame f=(LexiconGrammarTableFrame) setup(lexiconGrammarTableFrameFactory.newLexiconGrammarTableFrame(file), true);
+    	/* We don't want the same listener to be added twice */
+    	f.removeInternalFrameListener(lgTableFrameListener);
+    	f.addInternalFrameListener(lgTableFrameListener);
+    	fireLexiconGrammarTableFrameOpened();
+    	return f;
+        
     }
 
     public void closeLexiconGrammarTableFrame() {
