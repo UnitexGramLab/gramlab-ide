@@ -86,7 +86,6 @@ public class Unitex {
         }
 
         final SplashScreen splash = new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")));
-        splash.setAlwaysOnTop(true);
         splash.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
