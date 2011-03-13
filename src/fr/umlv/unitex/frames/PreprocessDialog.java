@@ -281,7 +281,7 @@ public class PreprocessDialog extends JDialog {
         commands.addCommand(tokenizeCmd);
         UnitexFrame.getFrameManager().closeTextFrame();
         Text.removeSntFiles();
-        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
+        Launcher.exec(commands, true, new AfterPreprocessDo(sntFile, taggedText));
     }
 
     private MultiCommands applyDefaultDictionaries(final MultiCommands commands) {
@@ -512,7 +512,7 @@ public class PreprocessDialog extends JDialog {
 
         UnitexFrame.getFrameManager().closeTextFrame();
         Text.removeSntFiles();
-        Launcher.exec(commands, true, new PreprocessDo(sntFile, taggedText));
+        Launcher.exec(commands, true, new AfterPreprocessDo(sntFile, taggedText));
     }
 
 }

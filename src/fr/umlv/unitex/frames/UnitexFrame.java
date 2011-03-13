@@ -916,7 +916,7 @@ public class UnitexFrame extends JFrame {
      */
     void openTaggedText() {
         Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
-        final int returnVal = Config.getCorpusDialogBox().showOpenDialog(this);
+        final int returnVal = Config.getTaggedCorpusDialogBox().showOpenDialog(this);
         if (returnVal != JFileChooser.APPROVE_OPTION) {
             // we return if the user has clicked on CANCEL
             return;

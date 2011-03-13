@@ -26,23 +26,16 @@ import java.io.File;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.Text;
 
-/**
- * This class describes a dialog box that allows the user to parameter the
- * preprocessing of a text.
- *
- * @author Sébastien Paumier
- */
-
-public class PreprocessDo implements ToDo {
+public class AfterPreprocessDo implements ToDo {
     private final File snt;
     private final boolean b;
 
-    public PreprocessDo(final File sntFile, final boolean taggedText) {
+    public AfterPreprocessDo(final File sntFile, final boolean taggedText) {
         snt = sntFile;
         b = taggedText;
     }
 
     public void toDo() {
-        Text.loadCorpus(snt, b);
+        Text.loadSnt(snt,b);
     }
 }
