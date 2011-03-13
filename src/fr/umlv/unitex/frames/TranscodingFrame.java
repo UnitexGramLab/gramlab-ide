@@ -80,6 +80,7 @@ public class TranscodingFrame extends JInternalFrame {
     private final JButton transcode = new JButton("Transcode");
     private final JButton cancel = new JButton("Cancel");
     private ToDo toDo;
+    private boolean closeAfterWork=false;
 
     TranscodingFrame() {
         super("Transcode Files", true, true);
@@ -248,7 +249,7 @@ public class TranscodingFrame extends JInternalFrame {
                 for (int i = 0; i < l; i++) {
                     cmd.file((File) listModel.getElementAt(i));
                 }
-                Launcher.exec(cmd, false, d);
+                Launcher.exec(cmd, closeAfterWork, d);
             }
         });
         cancel.addActionListener(new ActionListener() {
@@ -274,8 +275,9 @@ public class TranscodingFrame extends JInternalFrame {
         return listModel;
     }
 
-    void configure(File file, ToDo toDo1) {
+    void configure(File file, ToDo toDo1, boolean closeAfterWork) {
         listModel.removeAllElements();
+        this.closeAfterWork=closeAfterWork;
         this.toDo = toDo1;
         if (toDo1 != null) {
             listModel.addElement(file);
