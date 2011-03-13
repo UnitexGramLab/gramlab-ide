@@ -45,6 +45,11 @@ public class NormalizeCommand extends CommandBuilder {
 		return this;
 	}
 	
+	public NormalizeCommand noSeparatorNormalization() {
+		element("--no_separator_normalization");
+		return this;
+	}
+	
 	public NormalizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
