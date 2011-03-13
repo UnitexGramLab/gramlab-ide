@@ -110,7 +110,7 @@ public class TranscodeOneFileDialog extends JDialog {
 
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                UnitexFrame.getFrameManager().newTranscodingFrame(file, toDo);
+                UnitexFrame.getFrameManager().newTranscodingFrame(file, toDo, true);
             }
         });
         buttons.add(transcode);

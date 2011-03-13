@@ -670,13 +670,13 @@ public class InternalFrameManager {
     }
 
     public TranscodingFrame newTranscodingFrame() {
-        return newTranscodingFrame(null, null);
+        return newTranscodingFrame(null, null, false);
     }
 
-    public TranscodingFrame newTranscodingFrame(File file, ToDo toDo) {
+    public TranscodingFrame newTranscodingFrame(File file, ToDo toDo,boolean closeAfterWork) {
         TranscodingFrame f = (TranscodingFrame) transcodingFrameFactory.newFrame();
         if (f == null) return null;
-        f.configure(file, toDo);
+        f.configure(file, toDo, closeAfterWork);
         setup(f);
         return f;
     }

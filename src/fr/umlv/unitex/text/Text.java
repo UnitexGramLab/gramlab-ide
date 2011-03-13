@@ -39,6 +39,7 @@ import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 
 /**
  * This class provides methods for loading corpora.
@@ -152,7 +153,7 @@ public class Text {
      *
      * @param snt file name
      */
-    private static void loadSnt(File snt, boolean taggedText) {
+    public static void loadSnt(File snt, boolean taggedText) {
         UnitexFrame.getFrameManager().newTextFrame(snt, taggedText);
     }
 
@@ -192,10 +193,61 @@ public class Text {
             if (Util.getFileNameExtension(file).equalsIgnoreCase("snt")) {
                 Config.setCurrentSnt(file);
                 loadSnt(file, b);
-            } else {
+            } if (Util.getFileNameExtension(file).equalsIgnoreCase("txt")) {
                 loadTxt(file, b);
+            } else {
+            	/* xml or html file */
+            	loadXmlOrHtml(file);
             }
         }
     }
+
+	public static void loadXmlOrHtml(File file) {
+        String name = file.getAbsolutePath();
+        FileInputStream source;
+        if (!file.exists()) {
+            JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!file.canRead()) {
+            JOptionPane.showMessageDialog(null, "Cannot read " + name, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (file.length() <= 2) {
+            JOptionPane.showMessageDialog(null, name + " is empty", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
+            source.close();
+        } catch (NotAUnicodeLittleEndianFileException e) {
+            JOptionPane.showMessageDialog(null, name
+                    + " is not a Unicode Little-Endian file", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (IOException e) {
+            // do nothing
+        }
+		UnxmlizeCommand cmd=new UnxmlizeCommand().text(file);
+		String s=Util.getFileNameWithoutExtension(file)+".txt";
+		Launcher.exec(cmd,true,new LoadTxtDo(new File(s)));
+	}
+	
+	static class LoadTxtDo implements ToDo {
+
+		File txt;
+		
+		public LoadTxtDo(File txt) {
+			this.txt=txt;
+		}
+
+		public void toDo() {
+			loadTxt(txt,false);
+		}
+		
+	}
 
 }

@@ -429,6 +429,23 @@ public class Config {
         corpusDialogBox = new JFileChooser();
         corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("txt",
                 "Raw Unicode Texts"));
+        corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("xml",
+        "XML files"));
+        corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("html",
+        "HTML files"));
+        corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("snt",
+                "Unitex Texts"));
+        corpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+        corpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
+        corpusDialogBox.setMultiSelectionEnabled(false);
+        return corpusDialogBox;
+    }
+
+    public static JFileChooser getTaggedCorpusDialogBox() {
+        if (corpusDialogBox != null) {
+            return corpusDialogBox;
+        }
+        corpusDialogBox = new JFileChooser();
         corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("snt",
                 "Unitex Texts"));
         corpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);

@@ -75,6 +75,7 @@ import fr.umlv.unitex.process.commands.TrainingTaggerCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 import fr.umlv.unitex.process.commands.UncompressCommand;
 import fr.umlv.unitex.process.commands.UntokenizeCommand;
+import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 import fr.umlv.unitex.process.commands.XAlignCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
 
@@ -123,6 +124,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             , Txt2TfstCommand.class
             , UncompressCommand.class
             , UntokenizeCommand.class
+            , UnxmlizeCommand.class
             , XAlignCommand.class
             , XMLizerCommand.class
     };
