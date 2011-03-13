@@ -69,6 +69,7 @@ import fr.umlv.unitex.text.Text;
  */
 public class PreprocessDialog extends JDialog {
 
+    private final JCheckBox noSeparatorNormalization = new JCheckBox("No separator normalization (allows preprocessing graphs to match multi-separators)", false);
     private final JCheckBox sentenceCheck = new JCheckBox("Apply graph in MERGE mode:", true);
     private final JCheckBox replaceCheck = new JCheckBox("Apply graph in REPLACE mode:", true);
     private final JTextField sentenceName = new JTextField();
@@ -160,10 +161,11 @@ public class PreprocessDialog extends JDialog {
         preprocessingTaggedText
                 .add(new JLabel(
                         "Sentence and Replace graphs should not be applied on tagged texts."));
-        preprocessingUntaggedText = new JPanel(new GridLayout(2, 1));
+        preprocessingUntaggedText = new JPanel(new GridLayout(3, 1));
         preprocessingUntaggedText.setBorder(new TitledBorder("Preprocessing"));
         sentenceCheck.setMnemonic(KeyEvent.VK_M);
         replaceCheck.setMnemonic(KeyEvent.VK_R);
+        preprocessingUntaggedText.add(noSeparatorNormalization);
         preprocessingUntaggedText.add(constructGenericPanel(sentenceCheck, sentenceName, true));
         preprocessingUntaggedText.add(constructGenericPanel(replaceCheck, replaceName, false));
         return preprocessingCurrent = preprocessingUntaggedText;
@@ -258,6 +260,9 @@ public class PreprocessDialog extends JDialog {
 
     private MultiCommands normalizingText(final MultiCommands commands) {
         NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
+        if (!taggedText && noSeparatorNormalization.isSelected()) {
+        	normalizeCmd=normalizeCmd.noSeparatorNormalization();
+        }
         commands.addCommand(normalizeCmd);
         return commands;
     }
