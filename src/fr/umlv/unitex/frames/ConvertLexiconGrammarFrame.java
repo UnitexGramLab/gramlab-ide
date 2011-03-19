@@ -176,7 +176,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
     }
 
     public void setupTable(File t) {
-        if (table == null) {
+        if (t == null) {
             throw new IllegalArgumentException(
                     "Cannot work on a null table file");
         }
