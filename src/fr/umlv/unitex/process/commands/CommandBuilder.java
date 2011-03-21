@@ -73,7 +73,7 @@ public abstract class CommandBuilder {
         element("\"" + s + "\"");
     }
 
-    private void programName(String s) {
+    void programName(String s) {
         protectElement(new File(Config.getApplicationDir(), s + (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM ? ".exe" : "")).getAbsolutePath());
     }
 
