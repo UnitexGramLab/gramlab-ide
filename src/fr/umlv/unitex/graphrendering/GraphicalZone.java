@@ -26,7 +26,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -35,10 +34,10 @@ import java.awt.print.Printable;
 import java.io.File;
 import java.util.Date;
 
-import javax.swing.SwingConstants;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.diff.DiffInfo;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.GraphIO;
@@ -53,7 +52,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
     boolean dragBegin = true;
     private int dX;
     private int dY;
-
+    
     /**
      * Constructs a new <code>GraphicalZone</code>.
      *
@@ -62,10 +61,13 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
      * @param t text field to edit box contents
      * @param p frame that contains the component
      */
-    public GraphicalZone(GraphIO gio, TextField t, GraphFrame p) {
-        super(gio, t, p);
-        addMouseListener(new MyMouseListener());
-        addMouseMotionListener(new MyMouseMotionListener());
+    public GraphicalZone(GraphIO gio, TextField t, GraphFrame p,DiffInfo diff) {
+        super(gio, t, p, diff);
+        if (diff==null) {
+        	/* No need to have mouse listeners on a read-only diff display */
+        	addMouseListener(new MyMouseListener());
+            addMouseMotionListener(new MyMouseMotionListener());
+        }
     }
 
     @Override
@@ -379,14 +381,16 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
             f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
         }
         f.setColor(info.foregroundColor);
+        if (diff==null) {
         File file = ((GraphFrame) parentFrame).getGraph();
-        if (info.filename) {
-            if (info.pathname)
-                f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
+        	if (info.filename) {
+        		if (info.pathname)
+        			f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
                         getHeight() - 45);
-            else
-                f.drawString((file != null) ? file.getName() : "", 20,
+        		else
+        			f.drawString((file != null) ? file.getName() : "", 20,
                         getHeight() - 45);
+        	}
         }
         if (info.date)
             f.drawString(new Date().toString(), 20, getHeight() - 25);

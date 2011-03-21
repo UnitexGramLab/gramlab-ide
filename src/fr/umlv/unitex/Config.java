@@ -203,6 +203,8 @@ public class Config {
     private static PersonalFileFilter svgFileFilter;
     private static PersonalFileFilter grfFileFilter;
 
+    private static JFileChooser graphDiffDialogBox;
+
     /**
      * Dialog box used to choose a ".grf" or ".fst2" graph to be used in pattern
      * matching
@@ -332,6 +334,18 @@ public class Config {
         graphDialogBox.setCurrentDirectory(Config.getCurrentGraphDir());
         graphDialogBox.setMultiSelectionEnabled(true);
         return graphDialogBox;
+    }
+
+    public static JFileChooser getGraphDiffDialogBox(File base) {
+        if (graphDiffDialogBox == null) {
+            graphDiffDialogBox = new JFileChooser();
+            grfFileFilter = new PersonalFileFilter("grf", "Unicode Graphs");
+            graphDiffDialogBox.addChoosableFileFilter(grfFileFilter);
+            graphDiffDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+            graphDiffDialogBox.setMultiSelectionEnabled(false);
+        }
+        graphDiffDialogBox.setCurrentDirectory(base.getParentFile());
+        return graphDiffDialogBox;
     }
 
     public static JFileChooser getGrfAndFst2DialogBox() {

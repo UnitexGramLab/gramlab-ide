@@ -44,6 +44,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -71,6 +72,7 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.diff.DiffInfo;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -80,6 +82,9 @@ import fr.umlv.unitex.graphtools.Dependancies;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
+import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.GrfDiffCommand;
 
 /**
  * This class describes a frame used to display and edit a graph.
@@ -167,7 +172,7 @@ public class GraphFrame extends JInternalFrame {
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         JPanel top = new JPanel(new BorderLayout());
         top.add(buildTextPanel(), BorderLayout.NORTH);
-        graphicalZone = new GraphicalZone(g, boxContentEditor, this);
+        graphicalZone = new GraphicalZone(g, boxContentEditor, this,null);
         graphicalZone.addGraphListener(new GraphListener() {
             public void graphChanged(boolean m) {
                 repaint();
@@ -200,7 +205,8 @@ public class GraphFrame extends JInternalFrame {
         boxContentEditor.setFont(info.input.font);
         if (g != null) {
             setGraph(g.grf);
-        }/* Some loading operations may have set the modified flag, so we
+        }
+        /* Some loading operations may have set the modified flag, so we
 		 * reset it
 		 */
         setModified(false);
@@ -509,9 +515,82 @@ public class GraphFrame extends JInternalFrame {
 			}
 		});
         myToolBar.add(refresh);
-}
+        
+        JButton diff = new JButton(MyCursors.diffIcon);
+        diff.setMaximumSize(new Dimension(36, 36));
+        diff.setMinimumSize(new Dimension(36, 36));
+        diff.setPreferredSize(new Dimension(36, 36));
+        diff.setToolTipText("Compare with another graph");
+        diff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		        if (grf == null) {
+		            JOptionPane.showMessageDialog(null,
+		                    "Cannot compare a graph with no name, save it first", "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+				JFileChooser fc=Config.getGraphDiffDialogBox(grf);
+	            int returnVal = fc.showOpenDialog(GraphFrame.this);
+	            if (returnVal != JFileChooser.APPROVE_OPTION) {
+	                return;
+	            }
+	            File file = fc.getSelectedFile();
+	            if (file == null || !file.exists()) return;
+	            File diffResult=new File(Config.getUserCurrentLanguageDir(),"diff");
+	            GrfDiffCommand cmd=new GrfDiffCommand().files(grf,file)
+	            	.output(diffResult);
+	            Launcher.exec(cmd,true,new ShowDiffDo(grf,file,diffResult));
+			}
+		});
+        myToolBar.add(diff);
+    }
 
 
+    class ShowDiffDo implements ToDo {
+
+    	File base,dest,diffResult;
+
+    	
+		public ShowDiffDo(File base, File dest, File diffResult) {
+			this.base=base;
+			this.dest=dest;
+			this.diffResult=diffResult;
+		}
+
+
+		public void toDo() {
+			DiffInfo info=DiffInfo.loadDiffFile(diffResult);
+			if (info==null) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot load diff result file", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+	            return;
+			}
+			if (info.noDifference()) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Graphs are identical", "Diff result",
+	                    JOptionPane.INFORMATION_MESSAGE);
+	            return;
+			}
+			GraphIO baseGrf=GraphIO.loadGraph(base,false,false);
+			if (baseGrf==null) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot load base graph file", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+	            return;
+			}
+			GraphIO destGrf=GraphIO.loadGraph(dest,false,false);
+			if (destGrf==null) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot load dest graph file", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+	            return;
+			}
+			UnitexFrame.getFrameManager().newGraphDiffFrame(base,dest,baseGrf,destGrf,info);
+		}
+    	
+    }
+    
 	protected void showGraphDependencies(boolean showCalledGrf) {
         if (getGraph() == null) {
             JOptionPane.showMessageDialog(null,

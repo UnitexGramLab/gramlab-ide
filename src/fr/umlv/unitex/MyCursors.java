@@ -136,6 +136,7 @@ public class MyCursors {
 	public static ImageIcon callersGrfIcon;
 	public static ImageIcon closeIcon;
 	public static ImageIcon refreshIcon;
+	public static ImageIcon diffIcon;
 
 	
 	/**
@@ -156,6 +157,7 @@ public class MyCursors {
 	 */
 	public static void initCursorsAndIcons() {
 		
+		diffIcon = new ImageIcon(MyCursors.class.getResource("diff.png"));
 		calledGrfIcon = new ImageIcon(MyCursors.class.getResource("calledGrf.png"));
 		callersGrfIcon = new ImageIcon(MyCursors.class.getResource("callersGrf.png"));
 		closeIcon = new ImageIcon(MyCursors.class.getResource("close.png"));
