@@ -37,6 +37,7 @@ import javax.swing.undo.UndoableEditSupport;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.diff.DiffInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
@@ -99,6 +100,13 @@ public abstract class GenericGraphicalZone extends JComponent {
     int Ymouse;
     boolean mouseInGraphicalZone = false;
     private Rectangle clipZone;
+    
+    /**
+     * If diff is null, it is the normal display case. If not,
+     * we use special drawing tricks.
+     */
+    DiffInfo diff;
+    
     /**
      * Indicates mouse's editing mode
      */
@@ -109,11 +117,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 
     GenericGraphicalZone(GraphIO g, GraphTextField t,
-                         final JInternalFrame p) {
+                         final JInternalFrame p,DiffInfo diff) {
         super();
         text = t;
         text.setEditable(false);
         parentFrame = p;
+        this.diff=diff;
         selectedBoxes = new ArrayList<GenericGraphBox>();
         setBackground(Color.white);
         addGraphTextListener(new GraphTextListener() {

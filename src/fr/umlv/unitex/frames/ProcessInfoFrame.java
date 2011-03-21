@@ -50,6 +50,7 @@ import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.AbstractMethodCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
+import fr.umlv.unitex.process.commands.GrfDiffCommand;
 import fr.umlv.unitex.process.commands.MessageCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
@@ -267,10 +268,18 @@ public class ProcessInfoFrame extends JInternalFrame {
                                         if (stop_if_problem) {
                                             problem = true;
                                         }
-                                    } else if (p.exitValue() != 0) {
-                                        if (stop_if_problem) {
-                                            problem = true;
-                                        }
+                                    } else {
+                                    	if (command instanceof GrfDiffCommand) {
+                                    		/* GrfDiff has a special return value meaning */
+                                    		if (stop_if_problem && p.exitValue()==2) {
+                                    			problem = true;
+                                    		}
+                                    	}
+                                    	else if (p.exitValue() != 0) {
+                                    		if (stop_if_problem) {
+                                    			problem = true;
+                                    		}
+                                    	}
                                     }
                                 } catch (IllegalThreadStateException e) {
                                     p.destroy();

@@ -54,7 +54,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
      */
     public TfstGraphicalZone(GraphIO gio, TfstTextField t,
                              TextAutomatonFrame p, boolean listeners) {
-        super(gio, t, p);
+        super(gio, t, p, null);
         if (listeners) {
             addMouseListener(new FstGraphMouseListener());
         }

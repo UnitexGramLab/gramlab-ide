@@ -33,7 +33,9 @@ import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
+import fr.umlv.unitex.diff.DiffInfo;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
+import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
 import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.listeners.TextFrameListener;
@@ -210,6 +212,11 @@ public class InternalFrameManager {
 
     public TextFrame getTextFrame() {
         return textFrameFactory.getTextFrame();
+    }
+
+    public GraphDiffFrame newGraphDiffFrame(File fbase,File fdest,GraphIO base,GraphIO dest,DiffInfo diff) {
+    	GraphDiffFrame f=new GraphDiffFrame(fbase,fdest,base,dest,diff);
+        return (GraphDiffFrame) setup(f,true);
     }
 
     private final ArrayList<TextFrameListener> textFrameListeners = new ArrayList<TextFrameListener>();

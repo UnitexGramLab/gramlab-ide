@@ -31,8 +31,7 @@ import java.io.File;
 public class GrfDiffCommand extends CommandBuilder {
 
 	public GrfDiffCommand() {
-		//super("GrfDiff");
-		programName("GrfDiff");
+		super("GrfDiff");
 	}
 
 	public GrfDiffCommand files(File base,File dest) {

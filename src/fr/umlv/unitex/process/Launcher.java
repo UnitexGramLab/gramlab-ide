@@ -63,7 +63,7 @@ public class Launcher {
 	/**
 	 * Executing one command but without tracing it in the console.
 	 */
-	public static void execWithoutTracing(CommandBuilder b) {
+	public static int execWithoutTracing(CommandBuilder b) {
         try {
             Process p = Runtime.getRuntime().exec(b.getCommandArguments());
             BufferedInputStream in = new BufferedInputStream(p.getInputStream());
@@ -71,12 +71,13 @@ public class Launcher {
                     .getErrorStream());
             new EatStreamThread(in).start();
             new EatStreamThread(err).start();
-            p.waitFor();
+            return p.waitFor();
         } catch (IOException e1) {
             e1.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return 1;
 	}
 
 }
