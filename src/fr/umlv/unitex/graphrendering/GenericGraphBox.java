@@ -24,6 +24,7 @@ package fr.umlv.unitex.graphrendering;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.font.TextLayout;
 import java.io.File;
 import java.util.ArrayList;
@@ -33,11 +34,7 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
-import fr.umlv.unitex.exceptions.MissingGraphNameException;
-import fr.umlv.unitex.exceptions.NoClosingQuoteException;
-import fr.umlv.unitex.exceptions.NoClosingRoundBracketException;
-import fr.umlv.unitex.exceptions.NoClosingSupException;
+import fr.umlv.unitex.diff.DiffInfo;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**
@@ -253,6 +250,9 @@ public class GenericGraphBox {
         identificationNumber = -1;
     }
 
+    public int getBoxNumber() {
+    	return parentGraphicalZone.graphBoxes.indexOf(this);
+    }
 
     private boolean existsGraph(int n) {
     	if (!greyed.get(n)) throw new IllegalArgumentException("Should not be called with a normal line");
@@ -453,11 +453,20 @@ public class GenericGraphBox {
      * @param dest the destination box
      */
     public void drawTransition(Graphics2D g, GenericGraphBox dest) {
-        g.setColor(parentGraphicalZone.info.foregroundColor);
+    	int boxNumber=getBoxNumber();
+    	int destNumber=dest.getBoxNumber();
+    	Stroke oldStroke=g.getStroke();
+    	if (parentGraphicalZone.diff==null) {
+    		g.setColor(parentGraphicalZone.info.foregroundColor);
+    	} else {
+    		g.setColor(parentGraphicalZone.diff.getTransitionColor(boxNumber,destNumber,parentGraphicalZone.info.foregroundColor));
+    		g.setStroke(parentGraphicalZone.diff.getTransitionStroke(boxNumber,destNumber,oldStroke));
+    	}
         if (!parentGraphicalZone.info.rightToLeft) {
             if (dest.X_in > this.X_out) {
                 // easiest case: drawing a line
                 GraphicalToolBox.drawLine(g, this.X_out, this.Y_out, dest.X_in, dest.Y_in);
+                g.setStroke(oldStroke);
                 return;
             }
             if (this.equals(dest)) {
@@ -468,6 +477,7 @@ public class GenericGraphBox {
                 GraphicalToolBox.drawArc(g, dest.X_in - diametre1 / 2, dest.Y_in - diametre1,
                         diametre1, diametre1, 90, 180);
                 GraphicalToolBox.drawLine(g, X_in, Y_in - diametre1, X_out, Y_out - diametre1);
+                g.setStroke(oldStroke);
                 return;
             }
             if ((Y1 < (dest.Y1 + dest.Height)) && ((Y1 + Height) > dest.Y1)) {
@@ -490,6 +500,7 @@ public class GenericGraphBox {
                         Ypoint1, Xmilieu, Ymilieu);
                 GraphicalToolBox.drawCurve(g, Xpoint2, Ypoint2, Xpoint2 - largeurLimite,
                         Ypoint2, Xmilieu, Ymilieu);
+                g.setStroke(oldStroke);
                 return;
             }
             if (Y1 < (dest.Y1 + dest.Height)) {
@@ -512,6 +523,7 @@ public class GenericGraphBox {
                         Ypoint1 - hauteurLimite, Xmilieu, Ymilieu);
                 GraphicalToolBox.drawCurve(g, Xpoint2, Ypoint2, Xpoint2,
                         Ypoint2 + hauteurLimite, Xmilieu, Ymilieu);
+                g.setStroke(oldStroke);
                 return;
             }
             int diametre1 = 10 + Height / 2;
@@ -533,12 +545,14 @@ public class GenericGraphBox {
                     Xmilieu, Ymilieu);
             GraphicalToolBox.drawCurve(g, Xpoint2, Ypoint2, Xpoint2, Ypoint2 - hauteurLimite,
                     Xmilieu, Ymilieu);
+            g.setStroke(oldStroke);
             return;
         }
         // end of the left to right mode
         if (dest.X_out - 5 < this.X_in - 5) {
             // easiest case: drawing a line
             GraphicalToolBox.drawLine(g, this.X_in - 5, this.Y_in, dest.X_out - 5, dest.Y_out);
+            g.setStroke(oldStroke);
             return;
         }
         if (this.equals(dest)) {
@@ -550,6 +564,7 @@ public class GenericGraphBox {
                     diametre1, diametre1, 90, -180);
             GraphicalToolBox.drawLine(g, X_out - 5, Y_out - diametre1, X_in - 5, Y_in
                     - diametre1);
+            g.setStroke(oldStroke);
             return;
         }
         if ((Y1 < (dest.Y1 + dest.Height)) && ((Y1 + Height) > dest.Y1)) {
@@ -572,6 +587,7 @@ public class GenericGraphBox {
                     Xmilieu, Ymilieu);
             GraphicalToolBox.drawCurve(g, Xpoint2, Ypoint2, Xpoint2 - largeurLimite, Ypoint2,
                     Xmilieu, Ymilieu);
+            g.setStroke(oldStroke);
             return;
         }
         if (Y1 < (dest.Y1 + dest.Height)) {
@@ -594,6 +610,7 @@ public class GenericGraphBox {
                     Xmilieu, Ymilieu);
             GraphicalToolBox.drawCurve(g, Xpoint2, Ypoint2, Xpoint2, Ypoint2 + hauteurLimite,
                     Xmilieu, Ymilieu);
+            g.setStroke(oldStroke);
             return;
         }
         int diametre1 = 10 + Height / 2;
@@ -615,6 +632,7 @@ public class GenericGraphBox {
                 Xmilieu, Ymilieu);
         GraphicalToolBox.drawCurve(g, Xpoint2, Ypoint2, Xpoint2, Ypoint2 - hauteurLimite,
                 Xmilieu, Ymilieu);
+        g.setStroke(oldStroke);
     }
 
     /**
@@ -699,6 +717,28 @@ public class GenericGraphBox {
         int i;
         Boolean is_greyed;
         String l;
+        int boxNumber=getBoxNumber();
+        if (parentGraphicalZone.diff!=null && parentGraphicalZone.diff.requiresSpecialLineDrawing(boxNumber)) {
+        	g.setColor(parentGraphicalZone.diff.getBoxLineColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+        	Stroke old=g.getStroke();
+            g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
+            GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
+            if (hasOutgoingTransitions || type == INITIAL) {
+                if (!parentGraphicalZone.info.rightToLeft) {
+                    int a = X1 + Width;
+                    int b = Y1 + Height;
+                    GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
+                    GraphicalToolBox.drawLine(g, a, Y1, a, b);
+                    GraphicalToolBox.drawLine(g, a, b, X_out, Y_out);
+                } else {
+                    GraphicalToolBox.drawLine(g, X_in - 5, Y_in, X1, Y1);
+                    GraphicalToolBox.drawLine(g, X1, Y1, X1, Y1 + Height);
+                    GraphicalToolBox.drawLine(g, X1, Y1 + Height, X_in - 5, Y_in);
+                }
+            }
+            g.setStroke(old);
+            g.setColor(parentGraphicalZone.info.foregroundColor);
+        }
         if (variable) {
             drawVariableComment(g);
             return;
@@ -756,9 +796,17 @@ public class GenericGraphBox {
     private void drawFinal(Graphics2D g) {
         g.setColor(parentGraphicalZone.info.backgroundColor);
         GraphicalToolBox.fillEllipse(g, x, Y - 10, 21, 21);
-        g.setColor(parentGraphicalZone.info.foregroundColor);
+        Stroke old=g.getStroke();
+        if (parentGraphicalZone.diff==null) {
+        	g.setColor(parentGraphicalZone.info.foregroundColor);
+        } else {
+        	int boxNumber=getBoxNumber();
+        	g.setColor(parentGraphicalZone.diff.getBoxLineColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+        	g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
+        }
         GraphicalToolBox.drawEllipse(g, x, Y - 10, 21, 21);
         GraphicalToolBox.drawRect(g, x + 5, Y - 5, 10, 10);
+        g.setStroke(old);
     }
 
     private void drawFinalSelected(Graphics2D g) {
@@ -832,9 +880,33 @@ public class GenericGraphBox {
     }
 
     void drawOther(Graphics2D g) {
+    	int boxNumber=getBoxNumber();
         int i;
         Boolean is_greyed;
         String l;
+        boolean boxDrawn=false;
+        if (parentGraphicalZone.diff!=null && parentGraphicalZone.diff.requiresSpecialLineDrawing(boxNumber)) {
+        	g.setColor(parentGraphicalZone.diff.getBoxLineColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+        	Stroke old=g.getStroke();
+            g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
+            GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
+            if (hasOutgoingTransitions || type == INITIAL) {
+                if (!parentGraphicalZone.info.rightToLeft) {
+                    int a = X1 + Width;
+                    int b = Y1 + Height;
+                    GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
+                    GraphicalToolBox.drawLine(g, a, Y1, a, b);
+                    GraphicalToolBox.drawLine(g, a, b, X_out, Y_out);
+                } else {
+                    GraphicalToolBox.drawLine(g, X_in - 5, Y_in, X1, Y1);
+                    GraphicalToolBox.drawLine(g, X1, Y1, X1, Y1 + Height);
+                    GraphicalToolBox.drawLine(g, X1, Y1 + Height, X_in - 5, Y_in);
+                }
+            }
+            g.setStroke(old);
+            g.setColor(parentGraphicalZone.info.foregroundColor);
+           	boxDrawn=true;
+        }
         if (variable) {
             drawVariable(g);
             return;
@@ -856,13 +928,20 @@ public class GenericGraphBox {
             else
                 GraphicalToolBox.drawLine(g, X_in, Y1, X_in, Y1 + Height);
         } else {
-            g.setColor(parentGraphicalZone.info.backgroundColor);
+        	if (parentGraphicalZone.diff==null) {
+                g.setColor(parentGraphicalZone.info.backgroundColor);
+        	} else {
+        		g.setColor(parentGraphicalZone.diff.getBoxFillColor(boxNumber,parentGraphicalZone.info.backgroundColor));
+        	}
             GraphicalToolBox.fillRect(g, X1 + 1, Y1 + 1, Width - 2, Height - 2);
-            g.setColor(parentGraphicalZone.info.foregroundColor);
-            GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
-        }
+            if (!boxDrawn) {
+            	g.setColor(parentGraphicalZone.info.foregroundColor);
+                GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
+            }
+         }
+        g.setColor(parentGraphicalZone.info.foregroundColor);
         // and the triangle if necessary
-        if (hasOutgoingTransitions || type == INITIAL) {
+        if (!boxDrawn && (hasOutgoingTransitions || type == INITIAL)) {
             if (!parentGraphicalZone.info.rightToLeft) {
                 int a = X1 + Width;
                 int b = Y1 + Height;
