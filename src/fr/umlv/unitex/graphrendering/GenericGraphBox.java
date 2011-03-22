@@ -255,6 +255,11 @@ public class GenericGraphBox {
     }
 
     private boolean existsGraph(int n) {
+    	if (parentGraphicalZone.parentFrame==null) {
+    		/* If this method is called from a graph diff frame, we answer 
+    		 * true to avoid problems */
+    		return true;
+    	}
     	if (!greyed.get(n)) throw new IllegalArgumentException("Should not be called with a normal line");
         String s = lines.get(n);
         if (!s.endsWith(".grf")) {
