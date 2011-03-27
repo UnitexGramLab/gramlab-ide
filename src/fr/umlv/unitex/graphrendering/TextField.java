@@ -543,6 +543,12 @@ public class TextField extends GraphTextField {
                     "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+        if (L == 3 && ligne[0] == '$' && ligne[1] == '|' && (ligne[2] == '(' || ligne[2] == ')')) {
+            JOptionPane.showMessageDialog(null,
+                    "You must indicate an output variable name between $| and ( or )",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
         while ((i != L) && (test_transduction(ligne, i) == 0))
             tmp = tmp.concat(String.valueOf(ligne[i++]));
         if ((i != L) && (i == 0)) {
