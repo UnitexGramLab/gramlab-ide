@@ -33,7 +33,7 @@ import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.diff.DiffInfo;
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
@@ -214,7 +214,7 @@ public class InternalFrameManager {
         return textFrameFactory.getTextFrame();
     }
 
-    public GraphDiffFrame newGraphDiffFrame(File fbase,File fdest,GraphIO base,GraphIO dest,DiffInfo diff) {
+    public GraphDiffFrame newGraphDiffFrame(File fbase,File fdest,GraphIO base,GraphIO dest,GraphDecorator diff) {
     	GraphDiffFrame f=new GraphDiffFrame(fbase,fdest,base,dest,diff);
         return (GraphDiffFrame) setup(f,true);
     }

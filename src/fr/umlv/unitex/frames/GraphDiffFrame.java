@@ -78,8 +78,8 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
-import fr.umlv.unitex.diff.DiffColors;
-import fr.umlv.unitex.diff.DiffInfo;
+import fr.umlv.unitex.diff.GraphDecoratorConfig;
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -99,7 +99,7 @@ public class GraphDiffFrame extends JInternalFrame {
 	JScrollPane destPane;
 	JPanel main;
 	
-    public GraphDiffFrame(File fbase,File fdest,GraphIO base, GraphIO dest, DiffInfo diff) {
+    public GraphDiffFrame(File fbase,File fdest,GraphIO base, GraphIO dest, GraphDecorator diff) {
     	super("Graph Diff",true,true,true,true);
         MyDropTarget.newDropTarget(this);
         main=new JPanel(new BorderLayout());
@@ -111,7 +111,7 @@ public class GraphDiffFrame extends JInternalFrame {
     	setSize(850,550);
 	}
 
-	private JScrollPane createPane(GraphIO gio,DiffInfo diff) {
+	private JScrollPane createPane(GraphIO gio,GraphDecorator diff) {
 		GraphicalZone graphicalZone=new GraphicalZone(gio,new TextField(0,null),null,diff);
 		JScrollPane scroll = new JScrollPane(graphicalZone);
         scroll.getHorizontalScrollBar().setUnitIncrement(20);
@@ -120,7 +120,7 @@ public class GraphDiffFrame extends JInternalFrame {
         return scroll;
 	}
 
-	private Component constructTopPanel(File fbase,File fdest,DiffInfo diff) {
+	private Component constructTopPanel(File fbase,File fdest,GraphDecorator diff) {
 		boolean propertyChanges=diff.propertyOps.size()!=0;
 		JPanel p=new JPanel(new GridLayout(3+(propertyChanges?1:0),1));
 		ButtonGroup bg=new ButtonGroup();
@@ -153,13 +153,13 @@ public class GraphDiffFrame extends JInternalFrame {
 		JPanel p2=new JPanel(null);
 		p2.setLayout(new BoxLayout(p2,BoxLayout.X_AXIS));
 		p2.add(new JLabel(" "));
-		p2.add(createOpaqueLabel(DiffColors.ADDED));
+		p2.add(createOpaqueLabel(GraphDecoratorConfig.ADDED));
 		p2.add(new JLabel(" added   "));
-		p2.add(createOpaqueLabel(DiffColors.REMOVED));
+		p2.add(createOpaqueLabel(GraphDecoratorConfig.REMOVED));
 		p2.add(new JLabel(" removed   "));
-		p2.add(createOpaqueLabel(DiffColors.MOVED));
+		p2.add(createOpaqueLabel(GraphDecoratorConfig.MOVED));
 		p2.add(new JLabel(" moved   "));
-		p2.add(createOpaqueLabel(DiffColors.CONTENT_CHANGED));
+		p2.add(createOpaqueLabel(GraphDecoratorConfig.CONTENT_CHANGED));
 		p2.add(new JLabel(" content changed"));
 		p.add(p2);
 		if (propertyChanges) {

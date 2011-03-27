@@ -37,7 +37,7 @@ import javax.swing.undo.UndoableEditSupport;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.diff.DiffInfo;
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
@@ -70,7 +70,7 @@ public abstract class GenericGraphicalZone extends JComponent {
     /**
      * ArrayList containing all the graph's boxes
      */
-    ArrayList<GenericGraphBox> graphBoxes;
+    public ArrayList<GenericGraphBox> graphBoxes;
 
     /**
      * Indicates if a grid must be drawn in background
@@ -105,7 +105,7 @@ public abstract class GenericGraphicalZone extends JComponent {
      * If diff is null, it is the normal display case. If not,
      * we use special drawing tricks.
      */
-    DiffInfo diff;
+    GraphDecorator diff;
     
     /**
      * Indicates mouse's editing mode
@@ -117,7 +117,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 
     GenericGraphicalZone(GraphIO g, GraphTextField t,
-                         final JInternalFrame p,DiffInfo diff) {
+                         final JInternalFrame p,GraphDecorator diff) {
         super();
         text = t;
         text.setEditable(false);
@@ -343,7 +343,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         L = graphBoxes.size();
         for (i = 0; i < L; i++) {
             g = graphBoxes.get(i);
-            if (x >= g.x && x <= g.x + g.Width && y >= g.Y1
+            if (x >= g.X && x <= g.X + g.Width && y >= g.Y1
                     && y <= g.Y1 + g.Height)
                 return i;
         }

@@ -29,10 +29,10 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-public class DiffInfo {
+public class GraphDecorator {
 
-	boolean base=true;
-	
+	/* Those fields are used in diff mode */
+	boolean base=true;	
 	public ArrayList<String> propertyOps=new ArrayList<String>();
 	ArrayList<Integer> boxAdded=new ArrayList<Integer>();
 	ArrayList<Integer> boxRemoved=new ArrayList<Integer>();
@@ -41,10 +41,14 @@ public class DiffInfo {
 	ArrayList<Integer> transitionAdded=new ArrayList<Integer>();
 	ArrayList<Integer> transitionRemoved=new ArrayList<Integer>();
 
-	public static DiffInfo loadDiffFile(File f) {
+	/* Those fields are used in debug mode */
+	private int currentBox=-1;
+	private int currentLine=-1;
+	
+	public static GraphDecorator loadDiffFile(File f) {
 		try {
 			Scanner scanner=new Scanner(f,"UTF-8");
-			DiffInfo info=new DiffInfo();
+			GraphDecorator info=new GraphDecorator();
 			while (scanner.hasNext()) {
 				try {
 					String s=scanner.next();
@@ -109,8 +113,8 @@ public class DiffInfo {
 	
 	
 	@SuppressWarnings("unchecked")
-	public DiffInfo clone(boolean b) {
-		DiffInfo info=new DiffInfo();
+	public GraphDecorator clone(boolean b) {
+		GraphDecorator info=new GraphDecorator();
 		info.base=b;
 		info.propertyOps=(ArrayList<String>) propertyOps.clone();
 		info.boxAdded=(ArrayList<Integer>) boxAdded.clone();
@@ -173,42 +177,72 @@ public class DiffInfo {
 
 
 	public Color getTransitionColor(int boxNumber, int destNumber,Color c) {
-		if (transitionAdded(boxNumber,destNumber)) return DiffColors.ADDED;
-		if (transitionRemoved(boxNumber,destNumber)) return DiffColors.REMOVED;
+		if (transitionAdded(boxNumber,destNumber)) return GraphDecoratorConfig.ADDED;
+		if (transitionRemoved(boxNumber,destNumber)) return GraphDecoratorConfig.REMOVED;
 		return c;
 	}
 
 
 	public Stroke getTransitionStroke(int boxNumber, int destNumber,Stroke s) {
-		if (transitionAdded(boxNumber,destNumber)) return DiffColors.DIFF_STROKE;
-		if (transitionRemoved(boxNumber,destNumber)) return DiffColors.DIFF_STROKE;
+		if (transitionAdded(boxNumber,destNumber)) return GraphDecoratorConfig.STROKE;
+		if (transitionRemoved(boxNumber,destNumber)) return GraphDecoratorConfig.STROKE;
 		return s;
 	}
 
 	public Stroke getBoxStroke(int boxNumber,Stroke s) {
-		if (hasBeenAdded(boxNumber)) return DiffColors.DIFF_STROKE;
-		if (hasBeenRemoved(boxNumber)) return DiffColors.DIFF_STROKE;
-		if (hasMoved(boxNumber)) return DiffColors.DIFF_STROKE;
+		if (hasBeenAdded(boxNumber)) return GraphDecoratorConfig.STROKE;
+		if (hasBeenRemoved(boxNumber)) return GraphDecoratorConfig.STROKE;
+		if (hasMoved(boxNumber)) return GraphDecoratorConfig.STROKE;
+		if (boxNumber==currentBox) return GraphDecoratorConfig.STROKE;
 		return s;
 	}
 
 
-	public Color getBoxLineColor(int boxNumber,Color c) {
-		if (hasBeenAdded(boxNumber)) return DiffColors.ADDED;
-		if (hasBeenRemoved(boxNumber)) return DiffColors.REMOVED;
-		if (hasMoved(boxNumber)) return DiffColors.MOVED;
+	public Color getBoxShapeColor(int boxNumber,Color c) {
+		if (hasBeenAdded(boxNumber)) return GraphDecoratorConfig.ADDED;
+		if (hasBeenRemoved(boxNumber)) return GraphDecoratorConfig.REMOVED;
+		if (hasMoved(boxNumber)) return GraphDecoratorConfig.MOVED;
+		if (boxNumber==currentBox) return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
 		return c;
+	}
+	
+	public boolean isBoxLineHighlighted(int boxNumber,int lineNumber) {
+		return (boxNumber==currentBox && lineNumber==currentLine);
 	}
 
 	public boolean requiresSpecialLineDrawing(int boxNumber) {
 		return hasBeenAdded(boxNumber) 
 			|| hasBeenRemoved(boxNumber)
-			|| hasMoved(boxNumber);
+			|| hasMoved(boxNumber)
+			|| boxNumber==currentBox;
 	}
 
+	public boolean isHighlighted(int boxNumber) {
+		return boxNumber==currentBox;
+	}
+	
 	public Color getBoxFillColor(int boxNumber,Color c) {
-		if (contentChanged(boxNumber)) return DiffColors.CONTENT_CHANGED;
+		if (contentChanged(boxNumber)) return GraphDecoratorConfig.CONTENT_CHANGED;
 		return c;
+	}
+
+
+	public void clear() {
+		propertyOps.clear();
+		boxAdded.clear();
+		boxRemoved.clear();
+		boxContentChanged.clear();
+		boxMoved.clear();
+		transitionAdded.clear();
+		transitionRemoved.clear();
+		currentBox=-1;
+		currentLine=-1;
+	}
+
+
+	public void highlightBoxLine(int box, int line) {
+		currentBox=box;
+		currentLine=line;
 	}
 
 }

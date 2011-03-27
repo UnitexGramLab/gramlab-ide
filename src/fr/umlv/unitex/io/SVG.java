@@ -276,8 +276,8 @@ public class SVG {
 
 
     private void drawFinal(GenericGraphBox g) throws IOException {
-        drawCircle(g.x + 10, g.Y, 10, info.foregroundColor, info.backgroundColor);
-        drawRect(g.x + 5, g.Y - 5, 10, 10, info.foregroundColor, 1);
+        drawCircle(g.X + 10, g.Y, 10, info.foregroundColor, info.backgroundColor);
+        drawRect(g.X + 5, g.Y - 5, 10, 10, info.foregroundColor, 1);
     }
 
 

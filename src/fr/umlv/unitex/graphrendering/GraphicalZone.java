@@ -37,7 +37,7 @@ import java.util.Date;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.diff.DiffInfo;
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.GraphIO;
@@ -61,7 +61,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
      * @param t text field to edit box contents
      * @param p frame that contains the component
      */
-    public GraphicalZone(GraphIO gio, TextField t, GraphFrame p,DiffInfo diff) {
+    public GraphicalZone(GraphIO gio, TextField t, GraphFrame p,GraphDecorator diff) {
         super(gio, t, p, diff);
         if (diff==null) {
         	/* No need to have mouse listeners on a read-only diff display */
