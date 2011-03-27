@@ -175,8 +175,11 @@ public class ConcordanceFrame extends JInternalFrame {
                 end = s.indexOf(' ', start);
                 int selectionEnd = Integer.valueOf((String) s.subSequence(start, end));
                 start = end + 1;
-                end = s.indexOf('\"', start);
+                end = s.indexOf(' ', start);
                 int sentenceNumber = Integer.valueOf((String) s.subSequence(start, end));
+                /*start = end + 1;
+                end = s.indexOf('\"', start);
+                int matchNumber = Integer.valueOf((String) s.subSequence(start, end));*/
                 try {
                 	if (f.isIcon()) {
                 		f.setIcon(false);
