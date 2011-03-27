@@ -68,10 +68,16 @@ public class Grf2Fst2Command extends CommandBuilder {
         return this;
     }
 
-    public Grf2Fst2Command library() {
+    public Grf2Fst2Command repository() {
         if (Preferences.packagePath() != null) {
             return library(Preferences.packagePath());
         }
         return this;
     }
+
+    public Grf2Fst2Command debug() {
+        element("--debug");
+        return this;
+    }
+
 }

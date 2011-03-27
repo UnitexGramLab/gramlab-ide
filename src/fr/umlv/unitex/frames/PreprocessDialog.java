@@ -452,7 +452,7 @@ public class PreprocessDialog extends JDialog {
             File fst2;
             if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
                 // we must compile the grf
-                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().library();
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().repository();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";

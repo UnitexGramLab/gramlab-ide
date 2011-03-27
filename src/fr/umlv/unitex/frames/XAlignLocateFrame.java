@@ -247,7 +247,7 @@ public class XAlignLocateFrame extends JInternalFrame {
             commands.addCommand(reg2GrfCmd);
             Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(new File(Config.getUserDir(), language), "regexp.grf"))
                     .enableLoopAndRecursionDetection(true)
-                    .tokenizationMode().library();
+                    .tokenizationMode().repository();
             commands.addCommand(grfCmd);
             fst2 = new File(new File(Config.getUserDir(), language), "regexp.fst2");
         } else {
@@ -264,7 +264,7 @@ public class XAlignLocateFrame extends JInternalFrame {
                 // we must compile the grf
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(
                         grfName)).enableLoopAndRecursionDetection(true)
-                        .tokenizationMode().library();
+                        .tokenizationMode().repository();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";

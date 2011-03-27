@@ -43,6 +43,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -95,6 +96,7 @@ public class LocateFrame extends JInternalFrame {
     private final JRadioButton ignoreVariableErrors = new JRadioButton("Ignore variable errors", true);
     private final JRadioButton exitOnVariableErrors = new JRadioButton("Exit on variable error");
     private final JRadioButton backtrackOnVariableErrors = new JRadioButton("Backtrack on variable error");
+    private final JCheckBox debug = new JCheckBox("Activate debug mode",false);
 
 
     LocateFrame() {
@@ -199,6 +201,7 @@ public class LocateFrame extends JInternalFrame {
         p.add(graph, BorderLayout.WEST);
         p.add(graphName, BorderLayout.CENTER);
         p.add(setGraphButton, BorderLayout.EAST);
+        p.add(debug,BorderLayout.SOUTH);
         patternPanel.add(p, BorderLayout.SOUTH);
         return patternPanel;
     }
@@ -304,7 +307,8 @@ public class LocateFrame extends JInternalFrame {
             Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
                     new File(Config.getUserCurrentLanguageDir(), "regexp.grf"))
                     .enableLoopAndRecursionDetection(true).tokenizationMode()
-                    .library();
+                    .repository();
+            if (debug.isSelected()) grfCmd=grfCmd.debug();
             commands.addCommand(grfCmd);
             fst2 = new File(Config.getUserCurrentLanguageDir(), "regexp.fst2");
         } else {
@@ -321,7 +325,8 @@ public class LocateFrame extends JInternalFrame {
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
                         new File(grfName))
                         .enableLoopAndRecursionDetection(true)
-                        .tokenizationMode().library();
+                        .tokenizationMode().repository();
+                if (debug.isSelected()) grfCmd=grfCmd.debug();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";
@@ -331,6 +336,12 @@ public class LocateFrame extends JInternalFrame {
                         .equalsIgnoreCase("fst2"))) {
                     JOptionPane.showMessageDialog(null,
                             "Invalid graph name extension !", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (debug.isSelected()) {
+                	JOptionPane.showMessageDialog(null,
+                            "Cannot work in debug mode with precompiled .fst2.\nSelect a .grf file or a enter a regular expression.", "Error",
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }

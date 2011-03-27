@@ -243,7 +243,7 @@ public class GraphBox extends GenericGraphBox {
             Height = get_h_variable_ligne() + 3;
             Width = maxVariableLineWidth() + 5;
             Y1 = Y - Height / 2;
-            X_out = x + Width + 2;
+            X_out = X + Width + 2;
             return;
         }
         variable = false;
@@ -265,7 +265,7 @@ public class GraphBox extends GenericGraphBox {
             Height = get_h_variable_ligne() + 3;
             Width = maxContextMarkLineWidth(sub) + 5;
             Y1 = Y - Height / 2;
-            X_out = x + Width + 2;
+            X_out = X + Width + 2;
             return;
         }
         contextMark = false;
@@ -284,7 +284,7 @@ public class GraphBox extends GenericGraphBox {
             Height = get_h_variable_ligne() + 3;
             Width = maxContextMarkLineWidth(sub) + 5;
             Y1 = Y - Height / 2;
-            X_out = x + Width + 2;
+            X_out = X + Width + 2;
             return;
         }
         morphologicalModeMark = false;
@@ -323,7 +323,7 @@ public class GraphBox extends GenericGraphBox {
             Width = 15;
         }
         Y1 = Y - Height / 2;
-        X_out = x + Width + 5;
+        X_out = X + Width + 5;
     }
 
 

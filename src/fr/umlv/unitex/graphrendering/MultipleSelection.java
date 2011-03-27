@@ -59,7 +59,7 @@ public class MultipleSelection {
             g.identificationNumber = i;
             // and create the corresponding GraphBoxInfo
             GraphBoxInfo gbi = new GraphBoxInfo();
-            gbi.X = g.x;
+            gbi.X = g.X;
             gbi.Y = g.Y;
             gbi.content = g.content;
             gbi.reachableBoxes = new Vector<Integer>();
@@ -101,7 +101,7 @@ public class MultipleSelection {
             g.identificationNumber = i;
             // and create the corresponding GraphBoxInfo
             GraphBoxInfo gbi = new GraphBoxInfo();
-            gbi.X = g.x;
+            gbi.X = g.X;
             gbi.Y = g.Y;
             gbi.content = g.content;
             gbi.reachableBoxes = new Vector<Integer>();

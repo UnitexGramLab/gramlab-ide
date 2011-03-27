@@ -1111,7 +1111,7 @@ public class UnitexFrame extends JFrame {
         }
         final Grf2Fst2Command command = new Grf2Fst2Command().grf(
                 currentFrame.getGraph()).enableLoopAndRecursionDetection(true)
-                .tokenizationMode().library();
+                .tokenizationMode().repository();
         Launcher.exec(command, false);
     }
 
@@ -1181,7 +1181,7 @@ public class UnitexFrame extends JFrame {
             final MultiCommands commands = new MultiCommands();
             commands.addCommand(new Grf2Fst2Command().grf(grf)
                     .enableLoopAndRecursionDetection(true).tokenizationMode()
-                    .library());
+                    .repository());
             commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
                     .resultType(!rtn.isSelected()).depth(depthValue));
             Launcher.exec(commands, false);

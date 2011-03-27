@@ -34,7 +34,8 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.diff.DiffInfo;
+import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**
@@ -47,7 +48,7 @@ public class GenericGraphBox {
     /**
      * Box X coordinate
      */
-    public int x;
+    public int X;
 
     /**
      * Box Y coordinate
@@ -213,7 +214,7 @@ public class GenericGraphBox {
      * @param p    component on which the box will be drawn
      */
     GenericGraphBox(int x, int y, int type, GenericGraphicalZone p) {
-        this.x = x;
+        this.X = x;
         Y = y;
         parentGraphicalZone = p;
         this.type = type;
@@ -427,7 +428,7 @@ public class GenericGraphBox {
      * @param dy length of Y shift in pixels
      */
     public void translate(int dx, int dy) {
-        x = x + dx;
+        X = X + dx;
         Y = Y + dy;
         X_in = X_in + dx;
         Y_in = Y_in + dy;
@@ -724,7 +725,7 @@ public class GenericGraphBox {
         String l;
         int boxNumber=getBoxNumber();
         if (parentGraphicalZone.diff!=null && parentGraphicalZone.diff.requiresSpecialLineDrawing(boxNumber)) {
-        	g.setColor(parentGraphicalZone.diff.getBoxLineColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+        	g.setColor(parentGraphicalZone.diff.getBoxShapeColor(boxNumber,parentGraphicalZone.info.foregroundColor));
         	Stroke old=g.getStroke();
             g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
             GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
@@ -780,14 +781,10 @@ public class GenericGraphBox {
                 	g.setColor(parentGraphicalZone.info.unreachableGraphColor);
                 }
                 GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
-                g.setColor(parentGraphicalZone.info.commentColor);
-
-                TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
-                textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
-            } else {
-                TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
-                textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
             }
+            g.setColor(parentGraphicalZone.info.commentColor);
+            TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
+            textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
         }
         // prints the transduction, if exists
         g.setColor(parentGraphicalZone.info.foregroundColor);
@@ -800,25 +797,25 @@ public class GenericGraphBox {
 
     private void drawFinal(Graphics2D g) {
         g.setColor(parentGraphicalZone.info.backgroundColor);
-        GraphicalToolBox.fillEllipse(g, x, Y - 10, 21, 21);
+        GraphicalToolBox.fillEllipse(g, X, Y - 10, 21, 21);
         Stroke old=g.getStroke();
         if (parentGraphicalZone.diff==null) {
         	g.setColor(parentGraphicalZone.info.foregroundColor);
         } else {
         	int boxNumber=getBoxNumber();
-        	g.setColor(parentGraphicalZone.diff.getBoxLineColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+        	g.setColor(parentGraphicalZone.diff.getBoxShapeColor(boxNumber,parentGraphicalZone.info.foregroundColor));
         	g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
         }
-        GraphicalToolBox.drawEllipse(g, x, Y - 10, 21, 21);
-        GraphicalToolBox.drawRect(g, x + 5, Y - 5, 10, 10);
+        GraphicalToolBox.drawEllipse(g, X, Y - 10, 21, 21);
+        GraphicalToolBox.drawRect(g, X + 5, Y - 5, 10, 10);
         g.setStroke(old);
     }
 
     private void drawFinalSelected(Graphics2D g) {
         g.setColor(parentGraphicalZone.info.selectedColor);
-        GraphicalToolBox.fillEllipse(g, x, Y - 10, 21, 21);
+        GraphicalToolBox.fillEllipse(g, X, Y - 10, 21, 21);
         g.setColor(parentGraphicalZone.info.backgroundColor);
-        GraphicalToolBox.drawRect(g, x + 5, Y - 5, 10, 10);
+        GraphicalToolBox.drawRect(g, X + 5, Y - 5, 10, 10);
     }
 
     private void drawVariable(Graphics2D g) {
@@ -891,7 +888,7 @@ public class GenericGraphBox {
         String l;
         boolean boxDrawn=false;
         if (parentGraphicalZone.diff!=null && parentGraphicalZone.diff.requiresSpecialLineDrawing(boxNumber)) {
-        	g.setColor(parentGraphicalZone.diff.getBoxLineColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+        	g.setColor(parentGraphicalZone.diff.getBoxShapeColor(boxNumber,parentGraphicalZone.info.foregroundColor));
         	Stroke old=g.getStroke();
             g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
             GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
@@ -973,8 +970,14 @@ public class GenericGraphBox {
                 	g.setColor(parentGraphicalZone.info.unreachableGraphColor);
                 }
                 GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
-                g.setColor(parentGraphicalZone.info.foregroundColor);
             }
+            if (n_lines>1 
+            		&& parentGraphicalZone.diff!=null 
+            		&& parentGraphicalZone.diff.isBoxLineHighlighted(boxNumber,i)) {
+            	g.setColor(GraphDecoratorConfig.DEBUG_HIGHLIGHT);
+            	GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
+            }
+            g.setColor(parentGraphicalZone.info.foregroundColor);
             TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
             textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
         }
@@ -1182,7 +1185,7 @@ public class GenericGraphBox {
     }
 
     public int getX() {
-        return x;
+        return X;
     }
 
     public int getY() {
@@ -1204,7 +1207,7 @@ public class GenericGraphBox {
      */
     public void translateToPosition(int xPos, int yPos) {
 
-        x = xPos;
+        X = xPos;
         Y = yPos;
 
         if (type == FINAL) {
@@ -1249,7 +1252,7 @@ public class GenericGraphBox {
     }
 
     public void setX(int x1) {
-        x = x1;
+        X = x1;
     }
 
     public void setY(int y) {
