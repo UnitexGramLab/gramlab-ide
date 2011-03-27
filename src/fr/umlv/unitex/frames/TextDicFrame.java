@@ -22,6 +22,7 @@ package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -30,11 +31,13 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -68,6 +71,7 @@ public class TextDicFrame extends JInternalFrame {
     private JScrollPane errScroll;
     private JCheckBox tags_err=new JCheckBox("Filter unknown words with tags.ind",false);
     File text_dir;
+
 
     TextDicFrame() {
         super("", true, true, true, true);
@@ -125,16 +129,26 @@ public class TextDicFrame extends JInternalFrame {
         });
     }
 
-    private JPanel constructPanel() {
-        JPanel panel = new JPanel(new GridLayout(1, 2));
-        panel.add(constructDicPanel());
-        panel.add(constructErrPanel());
-        return panel;
+    private JSplitPane constructPanel() {
+        JComponent dic=constructDicPanel();
+        dic.setMinimumSize(new Dimension(0,0));
+        JComponent err2=constructErrPanel();
+        err2.setMinimumSize(new Dimension(0,0));
+        JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,true,dic,err2) {
+        	boolean firstTime=false;
+        	@Override
+			protected void paintComponent(java.awt.Graphics g) {
+        		if (!firstTime) {
+        			firstTime=true;
+        			setDividerLocation(0.5);
+        		}
+        	}
+        };
+        return split;
     }
 
-    private JPanel constructDicPanel() {
-        JPanel dicPanel = new JPanel(new GridLayout(2, 1));
-        dlfScroll = new JScrollPane(dlf, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+    private JSplitPane constructDicPanel() {
+    	dlfScroll = new JScrollPane(dlf, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         dlfScroll.setComponentOrientation(
                 Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
@@ -158,9 +172,19 @@ public class TextDicFrame extends JInternalFrame {
         tmp2.setBorder(BorderFactory.createLoweredBevelBorder());
         tmp2.add(dlcScroll, BorderLayout.CENTER);
         down.add(tmp2, BorderLayout.CENTER);
-        dicPanel.add(up);
-        dicPanel.add(down);
-        return dicPanel;
+        up.setMinimumSize(new Dimension(0,0));
+        down.setMinimumSize(new Dimension(0,0));
+        JSplitPane split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,up,down) {
+        	boolean firstTime=false;
+        	@Override
+			protected void paintComponent(java.awt.Graphics g) {
+        		if (!firstTime) {
+        			firstTime=true;
+        			setDividerLocation(0.5);
+        		}
+        	}
+        };
+        return split;
     }
 
     private JPanel constructErrPanel() {
