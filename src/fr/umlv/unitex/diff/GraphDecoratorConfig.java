@@ -25,13 +25,14 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 
-public class DiffColors {
+public class GraphDecoratorConfig {
 
 	public static final Color ADDED=Color.GREEN;
 	public static final Color REMOVED=Color.RED;
 	public static final Color MOVED=new Color(0xC4, 0x4F, 0xD0);
 	public static final Color CONTENT_CHANGED=Color.ORANGE;
+	public static final Color DEBUG_HIGHLIGHT=Color.GREEN;
 	
-	public static final Stroke DIFF_STROKE=new BasicStroke(3);
+	public static final Stroke STROKE=new BasicStroke(3);
 
 }

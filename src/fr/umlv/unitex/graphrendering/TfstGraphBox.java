@@ -181,7 +181,7 @@ public class TfstGraphBox extends GenericGraphBox {
             Width = 15;
         }
         Y1 = Y - Height / 2;
-        X_out = x + Width + 5;
+        X_out = X + Width + 5;
     }
 
 
@@ -207,7 +207,7 @@ public class TfstGraphBox extends GenericGraphBox {
             Width = 15;
         }
         Y1 = Y - Height / 2;
-        X_out = x + Width + 5;
+        X_out = X + Width + 5;
     }
 
     public Bounds getBounds() {

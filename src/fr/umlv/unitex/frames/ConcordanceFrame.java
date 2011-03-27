@@ -37,6 +37,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
@@ -48,6 +50,10 @@ import javax.swing.event.ListSelectionListener;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.concord.BigConcordance;
+import fr.umlv.unitex.debug.DebugDetails;
+import fr.umlv.unitex.debug.DebugGraphPane;
+import fr.umlv.unitex.debug.DebugInfos;
+import fr.umlv.unitex.debug.DebugTableModel;
 import fr.umlv.unitex.listeners.FontListener;
 
 
@@ -78,12 +84,21 @@ public class ConcordanceFrame extends JInternalFrame {
             return true;
         }
     };
-
+    DebugInfos index=null;
+    DebugTableModel model=null;
+    DebugGraphPane graphPane=null;
+    ListSelectionModel selectionModel=null;
+    
     /**
      * Constructs a new <code>ConcordanceFrame</code>.
      */
     ConcordanceFrame(File f, int widthInChars) {
         super("", true, true, true, true);
+        index=DebugInfos.loadConcordanceIndex(f);
+        if (index!=null) {
+        	model=new DebugTableModel(index);
+        	graphPane=new DebugGraphPane(index);
+        }
         list = new BigConcordance(widthInChars);
         invisible.setOpaque(false);
         invisible.setVisible(true);
@@ -108,7 +123,12 @@ public class ConcordanceFrame extends JInternalFrame {
         up.setBorder(new EmptyBorder(2, 2, 2, 2));
         up.add(numberOfMatches, BorderLayout.CENTER);
         top.add(up, BorderLayout.NORTH);
-        setContentPane(top);
+        if (index==null) {
+        	setContentPane(top);
+        } else {
+        	/* In debug mode, we have to add things to the frame */
+        	setContentPane(createDebugFrame(top));
+        }
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
@@ -131,6 +151,11 @@ public class ConcordanceFrame extends JInternalFrame {
             @Override
             public void internalFrameActivated(InternalFrameEvent e) {
                 getLayeredPane().remove(invisible);
+                try {
+					if (index!=null) setMaximum(true);
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
+				}
                 revalidate();
                 repaint();
             }
@@ -139,7 +164,30 @@ public class ConcordanceFrame extends JInternalFrame {
         load(f, widthInChars);
     }
 
-    /**
+    
+    private JSplitPane createDebugFrame(JPanel concordPanel) {
+		JTable table=new JTable(model);
+		selectionModel=table.getSelectionModel();
+		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				int n=selectionModel.getMinSelectionIndex();
+				if (n==-1) {
+					graphPane.clear();
+				} else {
+					DebugDetails d=model.getDetailsAt(n);
+					graphPane.setDisplay(d.graph,d.box,d.line);
+				}
+			}
+		});
+		JScrollPane scroll=new JScrollPane(table);
+		JSplitPane split2=new JSplitPane(JSplitPane.VERTICAL_SPLIT,concordPanel,graphPane);
+		JSplitPane split=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scroll,split2);
+		return split;
+	}
+
+    
+	/**
      * Constructs a new <code>ConcordanceFrame</code> and loads in it an HTML
      * file. The number of lines in the concordance is shown in the caption of
      * the frame.
@@ -177,16 +225,25 @@ public class ConcordanceFrame extends JInternalFrame {
                 start = end + 1;
                 end = s.indexOf(' ', start);
                 int sentenceNumber = Integer.valueOf((String) s.subSequence(start, end));
-                /*start = end + 1;
+                start = end + 1;
                 end = s.indexOf('\"', start);
-                int matchNumber = Integer.valueOf((String) s.subSequence(start, end));*/
+                int matchNumber = Integer.valueOf((String) s.subSequence(start, end));
+                if (model!=null) {
+                	model.setMatchNumber(matchNumber);
+                	if (selectionModel!=null) {
+                		selectionModel.setSelectionInterval(0,0);
+                	}
+                }
                 try {
                 	if (f.isIcon()) {
                 		f.setIcon(false);
                 	}
                     f.getText().setSelection(selectionStart, selectionEnd - 1);
                     f.getText().scrollToSelection();
-                    f.setSelected(true);
+                    if (index==null) {
+                    	/* We don't want to move text frame on top on debug mode */
+                    	f.setSelected(true);
+                    }
                 } catch (PropertyVetoException e2) {
                     e2.printStackTrace();
                 }
@@ -197,6 +254,13 @@ public class ConcordanceFrame extends JInternalFrame {
                 }
                 UnitexFrame.getFrameManager().newTextAutomatonFrame(sentenceNumber,iconified);
                 list.clearSelection();
+                if (index!=null) {
+                	try {
+						setSelected(true);
+					} catch (PropertyVetoException e1) {
+						e1.printStackTrace();
+					}
+                }
             }
         });
         list.load(concor);

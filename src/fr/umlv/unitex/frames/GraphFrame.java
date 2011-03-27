@@ -72,7 +72,7 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
-import fr.umlv.unitex.diff.DiffInfo;
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -559,7 +559,7 @@ public class GraphFrame extends JInternalFrame {
 
 
 		public void toDo() {
-			DiffInfo info=DiffInfo.loadDiffFile(diffResult);
+			GraphDecorator info=GraphDecorator.loadDiffFile(diffResult);
 			if (info==null) {
 	            JOptionPane.showMessageDialog(null,
 	                    "Cannot load diff result file", "Error",
