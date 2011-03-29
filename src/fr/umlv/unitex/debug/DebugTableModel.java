@@ -135,6 +135,18 @@ public class DebugTableModel extends AbstractTableModel {
 				/* Nothing to do if there is a transition */
 				continue;
 			}
+			if (src.box==dst.box && src.line==dst.line) {
+				/* If we are in the same line of the same box, it may be because
+				 * there is only one tag in the line and a loop on the box,
+				 * but it may also be because the line contains several tokens */
+				String line=srcBox.lines.get(src.line);
+				int pos=line.indexOf(src.tag);
+				pos=line.indexOf(dst.tag,pos+src.tag.length());
+				if (pos!=-1) {
+					/* We are in the same line, nothing to do */
+					continue;
+				}
+			}
 			ArrayList<GenericGraphBox> visited=new ArrayList<GenericGraphBox>();
 			ArrayList<Integer> path=new ArrayList<Integer>();
 			if (!findEpsilonPath(0,srcBox,dstBox,visited,path,gio.boxes)) {
