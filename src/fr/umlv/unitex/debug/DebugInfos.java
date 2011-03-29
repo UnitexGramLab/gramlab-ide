@@ -32,6 +32,7 @@ import fr.umlv.unitex.Util;
 
 public class DebugInfos {
 
+	public File concordIndFile=null;
 	public ArrayList<String> graphNames=new ArrayList<String>();
 	public ArrayList<File> graphs=new ArrayList<File>();
 	public ArrayList<String> lines=new ArrayList<String>();
@@ -52,6 +53,7 @@ public class DebugInfos {
 				return null;
 			}
 			DebugInfos infos=new DebugInfos();
+			infos.concordIndFile=f;
 			int n=scanner.nextInt();
 			scanner.nextLine();
 			Pattern normalDelimiter=scanner.delimiter();
