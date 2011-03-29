@@ -230,7 +230,7 @@ public class ConcordanceFrame extends JInternalFrame {
                 int matchNumber = Integer.valueOf((String) s.subSequence(start, end));
                 if (model!=null) {
                 	model.setMatchNumber(matchNumber);
-                	if (selectionModel!=null) {
+                	if (selectionModel!=null && model.getRowCount()>0) {
                 		selectionModel.setSelectionInterval(0,0);
                 	}
                 }
