@@ -119,7 +119,14 @@ public class DebugTableModel extends AbstractTableModel {
 			GraphIO gio=map.get(Integer.valueOf(src.graph));
 			if (gio==null) {
 				gio=GraphIO.loadGraph(f,false,false);
-				if (gio==null) return false;
+				if (gio==null) {
+					JOptionPane
+		            .showMessageDialog(
+		                    null,
+		                    "Cannot load graph "+f.getAbsolutePath(),
+		                    "Error", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
 				map.put(Integer.valueOf(src.graph),gio);
 			}
 			GenericGraphBox srcBox=gio.boxes.get(src.box);
@@ -131,6 +138,11 @@ public class DebugTableModel extends AbstractTableModel {
 			ArrayList<GenericGraphBox> visited=new ArrayList<GenericGraphBox>();
 			ArrayList<Integer> path=new ArrayList<Integer>();
 			if (!findEpsilonPath(0,srcBox,dstBox,visited,path,gio.boxes)) {
+				JOptionPane
+	            .showMessageDialog(
+	                    null,
+	                    "Cannot find <E> path between box "+src.box+" and "+dst.box+ " in graph "+f.getAbsolutePath(),
+	                    "Error", JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 			for (int j=0;j<path.size();j=j+2) {
@@ -159,6 +171,17 @@ public class DebugTableModel extends AbstractTableModel {
 		}
 		if (current.transduction!=null && current.transduction.length()>0) {
 			/* Boxes with an output cannot be considered */
+			return false;
+		}
+		if (current.lines.size()==0) {
+			/* Case of a box only containing <E> */
+			path.add(boxes.indexOf(current));
+			path.add(0);
+			for (GenericGraphBox dest:current.transitions) {
+				if (findEpsilonPath(depth+1,dest,dstBox,visited,path,boxes)) return true;
+			}
+			path.remove(path.size()-1);
+			path.remove(path.size()-1);
 			return false;
 		}
 		for (int i=0;i<current.lines.size();i++) {
