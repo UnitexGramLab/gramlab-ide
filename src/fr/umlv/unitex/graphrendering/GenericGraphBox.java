@@ -191,10 +191,7 @@ public class GenericGraphBox {
      */
     GenericGraphicalZone parentGraphicalZone;
 
-    /**
-     * Numbers of boxes that can be reached with transitions going out this box
-     */
-    ArrayList<GenericGraphBox> transitions;
+    public ArrayList<GenericGraphBox> transitions;
 
     public static final Font variableFont = new Font("Times New Roman", Font.BOLD, 30);
 
