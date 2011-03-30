@@ -25,13 +25,18 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.HashMap;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.TextField;
@@ -47,11 +52,20 @@ public class DebugGraphPane extends JPanel {
 	private JScrollPane scroll=null;
 	private HashMap<File,Point> scrollPreferences=new HashMap<File,Point>();
 	private GraphicalZone graphicalZone=null;
+	private MouseListener listener;
 	
-	
-	public DebugGraphPane(DebugInfos infos) {
+	public DebugGraphPane(final DebugInfos infos) {
 		super(new BorderLayout());
 		this.infos=infos;
+		this.listener=new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount()==2 && currentGraph!=-1) {
+					File f=infos.graphs.get(currentGraph-1);
+					UnitexFrame.mainFrame.frameManager.newGraphFrame(f);
+				}
+			}
+		};
 	}
 
 	public void clear() {
@@ -60,7 +74,10 @@ public class DebugGraphPane extends JPanel {
 		}
 		currentGraph=-1;
 		scroll=null;
-		graphicalZone=null;
+		if (graphicalZone!=null) {
+			graphicalZone.removeMouseListener(listener);
+			graphicalZone=null;
+		}
 		removeAll();
 		revalidate();
 		repaint();
@@ -74,9 +91,13 @@ public class DebugGraphPane extends JPanel {
 				scrollPreferences.put(infos.graphs.get(currentGraph-1),scroll.getViewport().getViewPosition());
 			}
 			this.currentGraph=graph;
-			GraphIO gio=GraphIO.loadGraph(f,false,false);
+			GraphIO gio=infos.getGraphIO(graph);//GraphIO.loadGraph(f,false,false);
+			if (gio==null) {
+				throw new IllegalStateException("null GraphIO in setDisplay should not happen");
+			}
 			diff.clear();
 			graphicalZone=new GraphicalZone(gio,new TextField(0,null),null,diff);
+			graphicalZone.addMouseListener(listener);
 			scroll = new JScrollPane(graphicalZone);
 	        scroll.getHorizontalScrollBar().setUnitIncrement(20);
 	        scroll.getVerticalScrollBar().setUnitIncrement(20);
@@ -86,6 +107,7 @@ public class DebugGraphPane extends JPanel {
 	        	scroll.getViewport().setViewPosition(p);
 	        }
 	        add(scroll,BorderLayout.CENTER);
+	        add(new JLabel("Double-click to open the graph:"),BorderLayout.NORTH);
 		}
 		diff.highlightBoxLine(box,line);
 		revalidate();
