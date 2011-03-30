@@ -98,9 +98,22 @@ public class DebugTableModel extends AbstractTableModel {
 	 */
 	private boolean restore_E_steps() {
 		HashMap<Integer,GraphIO> map=new HashMap<Integer,GraphIO>();
+		int nestedContexts=0;
 		for (int i=0;i<details.size()-1;i++) {
 			DebugDetails src=details.get(i);
 			DebugDetails dst=details.get(i+1);
+			if (src.tag.equals("$[") || src.tag.equals("$![")) {
+				/* If we enter a context, we note it */
+				nestedContexts++;
+			}
+			if (src.tag.equals("$]")) {
+				/* If we exit a context, we note it */
+				nestedContexts--;
+			}
+			if (nestedContexts!=0) {
+				/* There is no need to look for <E> path within a context */
+				continue;
+			}
 			if (src.graph!=dst.graph) {
 				/* There cannot be a missing <E> if the
 				 * graphs are different */
