@@ -99,7 +99,7 @@ public class UnitexFrame extends JFrame {
      * The desktop of the frame.
      */
     private final JDesktopPane desktop;
-    final InternalFrameManager frameManager;
+    public final InternalFrameManager frameManager;
     /**
      * The clipboard used to copy and paste text and graph box selections.
      */

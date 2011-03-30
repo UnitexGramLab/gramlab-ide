@@ -24,11 +24,15 @@ package fr.umlv.unitex.debug;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import javax.swing.JOptionPane;
+
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.io.GraphIO;
 
 public class DebugInfos {
 
@@ -36,6 +40,8 @@ public class DebugInfos {
 	public ArrayList<String> graphNames=new ArrayList<String>();
 	public ArrayList<File> graphs=new ArrayList<File>();
 	public ArrayList<String> lines=new ArrayList<String>();
+	public HashMap<Integer,GraphIO> graphIOMap=new HashMap<Integer,GraphIO>();
+
 	
 	public static DebugInfos loadConcordanceIndex(File html) {
 		String concord_ind=Util.getFileNameWithoutExtension(html)+".ind";
@@ -87,6 +93,40 @@ public class DebugInfos {
 			if (scanner!=null) scanner.close();
 			return null;
 		}
+	}
+	
+	
+	public GraphIO getGraphIO(int n) {
+		GraphIO gio=graphIOMap.get(Integer.valueOf(n));
+		if (gio==null) {
+			/* If we try to load a graph for the first time,
+			 * we check if it has been modified since the concordance was built.
+			 * Once loaded, we use the cached version, so that we are sure
+			 * to debug on the correct version, even if the graph has been changed
+			 * while debugging
+			 */
+			File f=graphs.get(n-1);
+			if (f.lastModified()>concordIndFile.lastModified()) {
+				JOptionPane
+	            .showMessageDialog(
+	                    null,
+	                    "File "+f.getAbsolutePath()+ " has been modified\n"+
+	                    "since the concordance index was built. Cannot debug it.",
+	                    "Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+			gio=GraphIO.loadGraph(f,false,false);
+			if (gio==null) {
+				JOptionPane
+	            .showMessageDialog(
+	                    null,
+	                    "Cannot load graph "+f.getAbsolutePath(),
+	                    "Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+			graphIOMap.put(Integer.valueOf(n),gio);
+		}
+		return gio;
 	}
 
 
