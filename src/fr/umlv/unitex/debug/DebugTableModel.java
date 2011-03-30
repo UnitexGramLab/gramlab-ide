@@ -23,7 +23,6 @@ package fr.umlv.unitex.debug;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -97,7 +96,6 @@ public class DebugTableModel extends AbstractTableModel {
 	 * exploration.
 	 */
 	private boolean restore_E_steps() {
-		HashMap<Integer,GraphIO> map=new HashMap<Integer,GraphIO>();
 		int nestedContexts=0;
 		for (int i=0;i<details.size()-1;i++) {
 			DebugDetails src=details.get(i);
@@ -120,27 +118,9 @@ public class DebugTableModel extends AbstractTableModel {
 				continue;
 			}
 			File f=infos.graphs.get(src.graph-1);
-			if (f.lastModified()>infos.concordIndFile.lastModified()) {
-				JOptionPane
-	            .showMessageDialog(
-	                    null,
-	                    "File "+f.getAbsolutePath()+ " has been modified\n"+
-	                    "since the concordance index was built. Cannot debug it.",
-	                    "Error", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-			GraphIO gio=map.get(Integer.valueOf(src.graph));
+			GraphIO gio=infos.getGraphIO(src.graph);
 			if (gio==null) {
-				gio=GraphIO.loadGraph(f,false,false);
-				if (gio==null) {
-					JOptionPane
-		            .showMessageDialog(
-		                    null,
-		                    "Cannot load graph "+f.getAbsolutePath(),
-		                    "Error", JOptionPane.ERROR_MESSAGE);
-					return false;
-				}
-				map.put(Integer.valueOf(src.graph),gio);
+				return false;
 			}
 			GenericGraphBox srcBox=gio.boxes.get(src.box);
 			GenericGraphBox dstBox=gio.boxes.get(dst.box);
