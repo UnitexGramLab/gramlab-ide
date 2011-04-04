@@ -30,11 +30,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.frames.GraphFrame;
 
@@ -800,6 +800,13 @@ public class GenericGraphBox {
         	g.setColor(parentGraphicalZone.info.foregroundColor);
         } else {
         	int boxNumber=getBoxNumber();
+           	JLabel r=parentGraphicalZone.diff.getCoverageInfoLabel(boxNumber);
+           	if (r!=null) {
+        		TextLayout textlayout = new TextLayout(r.getText(), parentGraphicalZone.info.input.font, g.getFontRenderContext());
+           		g.setColor(r.getForeground());
+           		g.setFont(r.getFont());
+           		textlayout.draw(g,X1+2,Y1-5);
+            }
         	g.setColor(parentGraphicalZone.diff.getBoxShapeColor(boxNumber,parentGraphicalZone.info.foregroundColor));
         	g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
         }
@@ -905,6 +912,15 @@ public class GenericGraphBox {
             g.setStroke(old);
             g.setColor(parentGraphicalZone.info.foregroundColor);
            	boxDrawn=true;
+        }
+        if (parentGraphicalZone.diff!=null) {
+        	JLabel r=parentGraphicalZone.diff.getCoverageInfoLabel(boxNumber);
+        	if (r!=null) {
+       			TextLayout textlayout = new TextLayout(r.getText(), parentGraphicalZone.info.input.font, g.getFontRenderContext());
+       			g.setColor(r.getForeground());
+       			g.setFont(r.getFont());
+       			textlayout.draw(g,X1+2,Y1-5);
+            }
         }
         if (variable) {
             drawVariable(g);
