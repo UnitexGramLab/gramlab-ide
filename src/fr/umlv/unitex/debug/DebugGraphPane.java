@@ -47,7 +47,7 @@ public class DebugGraphPane extends JPanel {
 	private DebugInfos infos;
 	
 	private int currentGraph=-1;
-	private GraphDecorator diff=new GraphDecorator();
+	private GraphDecorator decorator=new GraphDecorator();
 	
 	private JScrollPane scroll=null;
 	private HashMap<File,Point> scrollPreferences=new HashMap<File,Point>();
@@ -66,6 +66,7 @@ public class DebugGraphPane extends JPanel {
 				}
 			}
 		};
+		decorator.setCoverage(Coverage.computeCoverageInfos(infos));
 	}
 
 	public void clear() {
@@ -95,8 +96,8 @@ public class DebugGraphPane extends JPanel {
 			if (gio==null) {
 				throw new IllegalStateException("null GraphIO in setDisplay should not happen");
 			}
-			diff.clear();
-			graphicalZone=new GraphicalZone(gio,new TextField(0,null),null,diff);
+			decorator.clear();
+			graphicalZone=new GraphicalZone(gio,new TextField(0,null),null,decorator);
 			graphicalZone.addMouseListener(listener);
 			scroll = new JScrollPane(graphicalZone);
 	        scroll.getHorizontalScrollBar().setUnitIncrement(20);
@@ -109,7 +110,7 @@ public class DebugGraphPane extends JPanel {
 	        add(scroll,BorderLayout.CENTER);
 	        add(new JLabel("Double-click to open the graph:"),BorderLayout.NORTH);
 		}
-		diff.highlightBoxLine(box,line);
+		decorator.highlightBoxLine(graph,box,line);
 		revalidate();
 		repaint();
 		GenericGraphBox b=graphicalZone.graphBoxes.get(box);
