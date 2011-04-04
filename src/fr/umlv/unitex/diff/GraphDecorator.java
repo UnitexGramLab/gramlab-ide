@@ -22,12 +22,17 @@
 package fr.umlv.unitex.diff;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Stroke;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
+import javax.swing.JLabel;
+
+import fr.umlv.unitex.debug.Coverage;
 
 public class GraphDecorator {
 
@@ -42,8 +47,11 @@ public class GraphDecorator {
 	ArrayList<Integer> transitionRemoved=new ArrayList<Integer>();
 
 	/* Those fields are used in debug mode */
+	private int currentGraph=-1;
 	private int currentBox=-1;
 	private int currentLine=-1;
+	
+	private Coverage coverage=null;
 	
 	public static GraphDecorator loadDiffFile(File f) {
 		try {
@@ -235,14 +243,43 @@ public class GraphDecorator {
 		boxMoved.clear();
 		transitionAdded.clear();
 		transitionRemoved.clear();
+		currentGraph=-1;
 		currentBox=-1;
 		currentLine=-1;
 	}
 
-
-	public void highlightBoxLine(int box, int line) {
+	/**
+	 * Note: graph must be in [1;number of graphs]
+	 */
+	public void highlightBoxLine(int graph,int box,int line) {
+		currentGraph=graph;
 		currentBox=box;
 		currentLine=line;
 	}
 
+	private JLabel coverageRenderer=createCoverageRenderer();
+	
+	public JLabel getCoverageInfoLabel(int box) {
+		if (coverage==null) return null;
+		coverageRenderer.setText(""+coverage.getBoxCounter(currentGraph,box));
+		coverageRenderer.setSize(coverageRenderer.getPreferredSize());
+		return coverageRenderer;
+	}
+	
+	private JLabel createCoverageRenderer() {
+		JLabel l=new JLabel();
+		l.setOpaque(true);
+		l.setBackground(Color.WHITE);
+		l.setForeground(Color.RED);
+		Font f=l.getFont();
+		l.setFont(f.deriveFont(8));
+		return l;
+	}
+
+
+	public void setCoverage(Coverage c) {
+		coverage=c;
+	}
+	
+	
 }

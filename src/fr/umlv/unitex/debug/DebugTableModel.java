@@ -21,15 +21,9 @@
 
 package fr.umlv.unitex.debug;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
-
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.io.GraphIO;
 
 public class DebugTableModel extends AbstractTableModel {
 	
@@ -64,147 +58,10 @@ public class DebugTableModel extends AbstractTableModel {
 		int size=details.size();
 		details.clear();
 		if (size>0) fireTableRowsDeleted(0,size-1);
-		Scanner scanner=new Scanner(infos.lines.get(n));
-		scanner.useDelimiter(""+(char)2);
-		while (scanner.hasNext()) {
-			/* We skip the initial char #1 */
-			String output=scanner.next().substring(1);
-			scanner.useDelimiter(":");
-			int graph=Integer.parseInt(scanner.next().substring(1));
-			int box=scanner.nextInt();
-			scanner.useDelimiter(""+(char)3);
-			int line=Integer.parseInt(scanner.next().substring(1));
-			scanner.useDelimiter(""+(char)4);
-			String tag=scanner.next().substring(1);
-			scanner.useDelimiter(""+(char)1);
-			String matched=scanner.next().substring(1);
-			details.add(new DebugDetails(tag,output,matched,graph,box,line,infos));
-			scanner.useDelimiter(""+(char)2);
-		}
-		scanner.close();
-		if (!restore_E_steps()) {
-			details.clear();
-			return;
-		}
+		infos.getMatchDetails(n,details);
 		fireTableRowsInserted(0,details.size());
 	}
 
-	/**
-	 * In debug mode, <E> with no output are compiled without debug 
-	 * information, so that they cannot be present in debug concordance.
-	 * So, this function is there to restore those <E> steps in graph
-	 * exploration.
-	 */
-	private boolean restore_E_steps() {
-		int nestedContexts=0;
-		for (int i=0;i<details.size()-1;i++) {
-			DebugDetails src=details.get(i);
-			DebugDetails dst=details.get(i+1);
-			if (src.tag.equals("$[") || src.tag.equals("$![")) {
-				/* If we enter a context, we note it */
-				nestedContexts++;
-			}
-			if (src.tag.equals("$]")) {
-				/* If we exit a context, we note it */
-				nestedContexts--;
-			}
-			if (nestedContexts!=0) {
-				/* There is no need to look for <E> path within a context */
-				continue;
-			}
-			if (src.graph!=dst.graph) {
-				/* There cannot be a missing <E> if the
-				 * graphs are different */
-				continue;
-			}
-			File f=infos.graphs.get(src.graph-1);
-			GraphIO gio=infos.getGraphIO(src.graph);
-			if (gio==null) {
-				return false;
-			}
-			GenericGraphBox srcBox=gio.boxes.get(src.box);
-			GenericGraphBox dstBox=gio.boxes.get(dst.box);
-			if (srcBox.transitions.contains(dstBox)) {
-				/* Nothing to do if there is a transition */
-				continue;
-			}
-			if (src.box==dst.box && src.line==dst.line) {
-				/* If we are in the same line of the same box, it may be because
-				 * there is only one tag in the line and a loop on the box,
-				 * but it may also be because the line contains several tokens */
-				String line=srcBox.lines.get(src.line);
-				int pos=line.indexOf(src.tag);
-				pos=line.indexOf(dst.tag,pos+src.tag.length());
-				if (pos!=-1) {
-					/* We are in the same line, nothing to do */
-					continue;
-				}
-			}
-			ArrayList<GenericGraphBox> visited=new ArrayList<GenericGraphBox>();
-			ArrayList<Integer> path=new ArrayList<Integer>();
-			if (!findEpsilonPath(0,srcBox,dstBox,visited,path,gio.boxes)) {
-				JOptionPane
-	            .showMessageDialog(
-	                    null,
-	                    "Cannot find <E> path between box "+src.box+" and "+dst.box+ " in graph "+f.getAbsolutePath(),
-	                    "Error", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-			for (int j=0;j<path.size();j=j+2) {
-				int box=path.get(j);
-				int line=path.get(j+1);
-				DebugDetails d=new DebugDetails("<E>","","",src.graph,box,line,infos);
-				i++;
-				details.add(i,d);
-			}
-		}
-		return true;
-	}
-
-	private boolean findEpsilonPath(int depth,GenericGraphBox current,
-			GenericGraphBox dstBox, ArrayList<GenericGraphBox> visited,
-			ArrayList<Integer> path,ArrayList<GenericGraphBox> boxes) {
-		if (current.equals(dstBox) && depth>0) return true;
-		if (visited.contains(current)) return false;
-		visited.add(current);
-		if (depth==0) {
-			/* Special of the starting box */
-			for (GenericGraphBox dest:current.transitions) {
-				if (findEpsilonPath(depth+1,dest,dstBox,visited,path,boxes)) return true;
-			}
-			return false;
-		}
-		if (current.transduction!=null && current.transduction.length()>0) {
-			/* Boxes with an output cannot be considered */
-			return false;
-		}
-		if (current.lines.size()==0) {
-			/* Case of a box only containing <E> */
-			path.add(boxes.indexOf(current));
-			path.add(0);
-			for (GenericGraphBox dest:current.transitions) {
-				if (findEpsilonPath(depth+1,dest,dstBox,visited,path,boxes)) return true;
-			}
-			path.remove(path.size()-1);
-			path.remove(path.size()-1);
-			return false;
-		}
-		for (int i=0;i<current.lines.size();i++) {
-			if (current.lines.get(i).equals("<E>")) {
-				/* The box line is a candidate */
-				path.add(boxes.indexOf(current));
-				path.add(i);
-				for (GenericGraphBox dest:current.transitions) {
-					if (findEpsilonPath(depth+1,dest,dstBox,visited,path,boxes)) return true;
-				}
-				path.remove(path.size()-1);
-				path.remove(path.size()-1);
-				/* An <E> is enough to go through a box, so we can stop */
-				break;
-			}
-		}
-		return false;
-	}
 
 	public DebugDetails getDetailsAt(int n) {
 		return details.get(n);
