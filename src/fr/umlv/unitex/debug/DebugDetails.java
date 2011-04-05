@@ -33,9 +33,9 @@ public class DebugDetails {
 			int graph, int box, int line,DebugInfos infos) {
 		this.tag=tag;
 		if (tag.startsWith((char)5+"<")) {
-			this.tag="Calling graph "+infos.graphNames.get(Integer.parseInt(tag.substring(2))-1);
+			this.tag="<< "+infos.graphNames.get(Integer.parseInt(tag.substring(2))-1);
 		} else if (tag.startsWith((char)5+">")) {
-			this.tag="Returning from "+infos.graphNames.get(Integer.parseInt(tag.substring(2))-1);
+			this.tag=">> "+infos.graphNames.get(Integer.parseInt(tag.substring(2))-1);
 		}
 		this.output=output;
 		this.matched=matched;

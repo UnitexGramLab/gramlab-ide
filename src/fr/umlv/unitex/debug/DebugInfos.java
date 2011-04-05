@@ -175,6 +175,29 @@ public class DebugInfos {
 			DebugDetails tmp2=new DebugDetails("","","",tmp.graph,1,0,this);
 			d.add(tmp2);
 		}
+		/* And we add the initial and final states for all subgraphs called */
+		for (int i=1;i<d.size();i++) {
+			tmp=d.get(i);
+			if (tmp.tag.startsWith("<< ")) {
+				/* If we have a subgraph call, we add the initial state, if needed */
+				DebugDetails tmp2=d.get(i+1);
+				if (tmp2.box!=0) {
+					tmp=new DebugDetails("<E>","","",tmp2.graph,0,getEpsilonLineInInitialState(tmp2.graph),this);
+					d.add(i+1,tmp);
+				}
+				continue;
+			}
+			if (tmp.tag.startsWith(">> ")) {
+				/* If we have a subgraph call end, we add the initial state, if needed */
+				DebugDetails tmp2=d.get(i-1);
+				if (tmp2.box!=0) {
+					tmp=new DebugDetails("","","",tmp2.graph,1,0,this);
+					d.add(i,tmp);
+				}
+				i++;
+				continue;
+			}
+		}
 		if (!restore_E_steps(d)) {
 			d.clear();
 		}
