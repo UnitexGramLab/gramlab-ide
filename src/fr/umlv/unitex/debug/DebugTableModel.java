@@ -42,6 +42,11 @@ public class DebugTableModel extends AbstractTableModel {
 	public int getColumnCount() {
 		return 3;
 	}
+	
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+		return String.class;
+	}
 
 	public int getRowCount() {
 		return details.size();

@@ -25,14 +25,20 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.HashMap;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import fr.umlv.unitex.diff.GraphDecorator;
@@ -92,7 +98,7 @@ public class DebugGraphPane extends JPanel {
 				scrollPreferences.put(infos.graphs.get(currentGraph-1),scroll.getViewport().getViewPosition());
 			}
 			this.currentGraph=graph;
-			GraphIO gio=infos.getGraphIO(graph);//GraphIO.loadGraph(f,false,false);
+			GraphIO gio=infos.getGraphIO(graph);
 			if (gio==null) {
 				throw new IllegalStateException("null GraphIO in setDisplay should not happen");
 			}

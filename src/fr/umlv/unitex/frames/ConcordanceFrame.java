@@ -22,6 +22,8 @@
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -46,6 +48,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
@@ -167,6 +170,21 @@ public class ConcordanceFrame extends JInternalFrame {
     
     private JSplitPane createDebugFrame(JPanel concordPanel) {
 		JTable table=new JTable(model);
+		table.setDefaultRenderer(String.class,new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable t, Object value,
+					boolean isSelected2, boolean hasFocus, int row, int column) {
+				String s=(String)value;
+				setOpaque(true);
+				if (column==0 && (s.startsWith("<< ") || s.startsWith(">> "))) {
+					setBackground(Color.LIGHT_GRAY);
+				} else {
+					setBackground(Color.WHITE);
+				}
+				super.getTableCellRendererComponent(t,s,isSelected2,hasFocus,row,column);
+				return this;
+			}
+		});
 		selectionModel=table.getSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
