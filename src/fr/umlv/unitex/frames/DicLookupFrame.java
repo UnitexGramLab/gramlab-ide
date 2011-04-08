@@ -113,12 +113,7 @@ public class DicLookupFrame extends JInternalFrame {
     private JPanel constructInfoPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        JTextArea text = new JTextArea("Select dictionaries to look up into:");
-        text.setFont(new JLabel().getFont());
-        text.setEditable(false);
-        text.setLineWrap(true);
-        text.setWrapStyleWord(true);
-        text.setBackground(panel.getBackground());
+        JLabel text = new JLabel("Select dictionaries to look up into:");
         panel.add(text, BorderLayout.CENTER);
         return panel;
     }
@@ -180,16 +175,22 @@ public class DicLookupFrame extends JInternalFrame {
         final BigTextList text = new BigTextList(true);
         final JScrollPane scrollText = new JScrollPane(text, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         final JScrollBar scrollBar=scrollText.getVerticalScrollBar();
+        final JTextField inputText=new JTextField();
         text.setFont(Preferences.textFont());
+        inputText.setFont(Preferences.textFont());
+        text.setFixedCellHeight(inputText.getPreferredSize().height);
         Preferences.addTextFontListener(new FontListener() {
             public void fontChanged(Font font) {
                 text.setFont(font);
+                inputText.setFont(font);
+                text.setFixedCellHeight(inputText.getPreferredSize().height);
                 text.setComponentOrientation(
                         Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
                 scrollText.setComponentOrientation(
                         Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
+                text.repaint();
                 Timer t2 = new Timer(400, new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         scrollBar.setValue(0);
@@ -222,7 +223,6 @@ public class DicLookupFrame extends JInternalFrame {
         JButton refreshButton = new JButton(refreshAction);
         p.add(refreshButton,gbc);
         p.add(new JLabel(" Word:"),gbc);
-        final JTextField inputText=new JTextField();
         gbc.fill=GridBagConstraints.HORIZONTAL;
         gbc.weightx=1;
         p.add(inputText,gbc);
