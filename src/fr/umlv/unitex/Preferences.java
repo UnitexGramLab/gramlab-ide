@@ -510,7 +510,7 @@ public class Preferences {
         textFontListeners.remove(listener);
     }
 
-    void fireTextFontChanged(Font font) {
+    protected static void fireTextFontChanged(Font font) {
     	if (textFontListeners==null) return;
         firingTextFont = true;
         try {
@@ -535,7 +535,7 @@ public class Preferences {
         concordanceFontListeners.remove(listener);
     }
 
-    void fireConcordanceFontChanged(Font font) {
+    protected static void fireConcordanceFontChanged(Font font) {
     	if (concordanceFontListeners==null) return;
         firingConcordanceFont = true;
         try {

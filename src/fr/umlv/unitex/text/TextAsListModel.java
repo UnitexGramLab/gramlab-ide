@@ -201,7 +201,7 @@ public class TextAsListModel extends AbstractListModel {
 
 
     Interval getInterval(int i) {
-        if (!dataFromFile) {
+        if (!dataFromFile || i>=endOfLines.length) {
             return null;
         }
         int end = endOfLines[i];
