@@ -165,30 +165,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                     pref.packagePath = f;
                 }
 
-                /*
-                // lexical package path
-                if (lexicalPackageDirectory.getText().equals(""))
-                    pref.lexicalPackagePath = null;
-                else {
-                    File f = new File(lexicalPackageDirectory.getText());
-                    if (!f.exists()) {
-                        JOptionPane.showMessageDialog(null,
-                                "The graph repository\ndoes not exist.",
-                                "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    if (!f.isDirectory()) {
-                        JOptionPane
-                                .showMessageDialog(
-                                        null,
-                                        "The path given for the graph repository\n is not a directory path.",
-                                        "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    pref.lexicalPackagePath = f;
-                }
-				*/
-
                 if (loggingDirectory.getText().equals("") && mustLogCheckBox.isSelected()) {
                     JOptionPane
                             .showMessageDialog(

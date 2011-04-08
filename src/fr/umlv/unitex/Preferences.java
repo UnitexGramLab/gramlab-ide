@@ -473,10 +473,6 @@ public class Preferences {
         return pref.packagePath;
     }
 
-    /*public static File lexicalPackagePath() {
-        return pref.lexicalPackagePath;
-    }*/
-
     public static File loggingDir() {
         return pref.loggingDir;
     }
@@ -498,23 +494,24 @@ public class Preferences {
     }
 
 
-    private ArrayList<FontListener> textFontListeners = new ArrayList<FontListener>();
-    private ArrayList<FontListener> concordanceFontListeners = new ArrayList<FontListener>();
+    private static ArrayList<FontListener> textFontListeners = new ArrayList<FontListener>();
+    private static ArrayList<FontListener> concordanceFontListeners = new ArrayList<FontListener>();
 
     public static void addTextFontListener(FontListener listener) {
-        pref.textFontListeners.add(listener);
+        textFontListeners.add(listener);
     }
 
-    private boolean firingTextFont = false;
+    private static boolean firingTextFont = false;
 
     public static void removeTextFontListener(FontListener listener) {
-        if (pref.firingTextFont) {
+        if (firingTextFont) {
             throw new IllegalStateException("Should not try to remove a listener while firing");
         }
-        pref.textFontListeners.remove(listener);
+        textFontListeners.remove(listener);
     }
 
     void fireTextFontChanged(Font font) {
+    	if (textFontListeners==null) return;
         firingTextFont = true;
         try {
             for (FontListener listener : textFontListeners) {
@@ -526,19 +523,20 @@ public class Preferences {
     }
 
     public static void addConcordanceFontListener(FontListener listener) {
-        pref.concordanceFontListeners.add(listener);
+        concordanceFontListeners.add(listener);
     }
 
-    private boolean firingConcordanceFont = false;
+    private static boolean firingConcordanceFont = false;
 
     public static void removeConcordanceFontListener(FontListener listener) {
-        if (pref.firingConcordanceFont) {
+        if (firingConcordanceFont) {
             throw new IllegalStateException("Should not try to remove a listener while firing");
         }
-        pref.concordanceFontListeners.remove(listener);
+        concordanceFontListeners.remove(listener);
     }
 
     void fireConcordanceFontChanged(Font font) {
+    	if (concordanceFontListeners==null) return;
         firingConcordanceFont = true;
         try {
             for (FontListener listener : concordanceFontListeners) {
