@@ -193,11 +193,12 @@ public class Text {
             if (Util.getFileNameExtension(file).equalsIgnoreCase("snt")) {
                 Config.setCurrentSnt(file);
                 loadSnt(file, b);
-            } else if (Util.getFileNameExtension(file).equalsIgnoreCase("txt")) {
-                loadTxt(file, b);
-            } else {
-            	/* xml or html file */
+            } else if (Util.getFileNameExtension(file).equalsIgnoreCase("xml")
+            		|| Util.getFileNameExtension(file).equalsIgnoreCase("html")) {
             	loadXmlOrHtml(file);
+            } else {
+            	/* txt file */
+            	loadTxt(file, b);
             }
         }
     }
