@@ -57,7 +57,8 @@ public class HexListModel extends AbstractListModel {
 	
 	
 	public static void main(String[] args) {
-		HexListModel m=HexListModel.createModel(new File("/home/paumier/tmp/concord_uima/Corpus17/unitexInput.snt"));
+		HexListModel m=HexListModel.createModel(new File("/home/paumier/tmp/concord_uima/Norm_Fanny.txt"));
+		//HexListModel m=HexListModel.createModel(new File("/home/paumier/tmp/concord_uima/Corpus15/unitexInput.snt"));
 		int size=m.getSize();
 		for (int i=0;i<size;i++) {
 			System.err.println(m.getElementAt(i));

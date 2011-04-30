@@ -71,7 +71,8 @@ public class DebugInfos {
 				scanner.useDelimiter(normalDelimiter);
 				/* We skip the delimiter char # 1*/
 				s=scanner.nextLine().substring(1);
-				infos.graphs.add(new File(s));
+				if (s.equals("")) infos.graphs.add(null);
+				else infos.graphs.add(new File(s));
 				n--;
 			}
 			/* We skip the #[IMR] line */
@@ -109,6 +110,12 @@ public class DebugInfos {
 			 * while debugging
 			 */
 			File f=graphs.get(n-1);
+			if (f==null) {
+				/* If f is null, it is because it was indicated as
+				 * not to be being loaded in concord.ind because
+				 * it was an empty graph in the fst2 */
+				return null;
+			}
 			if (f.lastModified()>concordIndFile.lastModified()) {
 				JOptionPane
 	            .showMessageDialog(
@@ -135,6 +142,7 @@ public class DebugInfos {
 
 	public int getEpsilonLineInInitialState(int graph) {
 		GraphIO gio=getGraphIO(graph);
+		if (gio==null) return -1;
 		GenericGraphBox box=gio.boxes.get(0);
 		return box.lines.indexOf("<E>");
 	}
