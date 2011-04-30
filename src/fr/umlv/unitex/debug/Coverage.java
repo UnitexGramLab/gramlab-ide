@@ -36,7 +36,8 @@ public class Coverage {
 			GraphIO gio=d.getGraphIO(i+1);
 			/* +1 because the store in cell #0 the total
 			 * number of matched box for the graph */
-			infos[i]=new int[gio.boxes.size()+1];
+			int n=(gio==null)?0:gio.boxes.size()+1;
+			infos[i]=new int[n];
 		}
 	}
 
