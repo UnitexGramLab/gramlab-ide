@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex.graphrendering;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -716,6 +717,24 @@ public class GenericGraphBox {
         drawFinal(g);
     }
 
+    private static Font rangeFont=new JLabel().getFont().deriveFont(0.8f);
+    private static Color rangeColor=new Color(0xF8,0x72,0x17);
+    private void drawRange(Graphics2D g) {
+    	String range=getRangeOutput(transduction);
+    	if (range.equals("")) return;
+		TextLayout textlayout = new TextLayout(range, parentGraphicalZone.info.input.font, g.getFontRenderContext());
+   		g.setColor(rangeColor);
+   		g.setFont(rangeFont);
+   		textlayout.draw(g,X1+2,Y1-5);
+    }
+    
+    private int getRangeShift(Graphics2D g) {
+    	String range=getRangeOutput(transduction);
+    	if (range.equals("")) return 0;
+		TextLayout textlayout = new TextLayout(range, parentGraphicalZone.info.input.font, g.getFontRenderContext());
+		return (int) (textlayout.getBounds().getWidth()+10);
+    }
+    
     void drawOtherComment(Graphics2D g) {
         int i;
         Boolean is_greyed;
@@ -785,13 +804,39 @@ public class GenericGraphBox {
         }
         // prints the transduction, if exists
         g.setColor(parentGraphicalZone.info.foregroundColor);
-        if (!transduction.equals("")) {
+        String output=getNonRangeOutput(transduction);
+        if (!output.equals("")) {
             g.setFont(parentGraphicalZone.info.output.font);
-            g.drawString(transduction, X1 + 5, Y1 + Height
+            g.drawString(output, X1 + 5, Y1 + Height
                     + g.getFontMetrics().getHeight());
         }
+        drawRange(g);
+    }
+    
+    /**
+     * If the output string starts with $[...]$,
+     * the function returns the range expression
+     * or "" if there is not;
+     */
+    private String getRangeOutput(String output) {
+    	if (!output.startsWith("$[")) return "";
+    	int pos=output.indexOf("]$");
+    	if (pos==-1) return "";
+    	return output.substring(0,pos+2);
     }
 
+    /**
+     * If the output string starts with $[...]$,
+     * the function returns the string without the 
+     * range expression.
+     */
+    private String getNonRangeOutput(String output) {
+    	if (!output.startsWith("$[")) return output;
+    	int pos=output.indexOf("]$");
+    	if (pos==-1) return output;
+    	return output.substring(pos+2);
+    }
+    
     private void drawFinal(Graphics2D g) {
         g.setColor(parentGraphicalZone.info.backgroundColor);
         GraphicalToolBox.fillEllipse(g, X, Y - 10, 21, 21);
@@ -805,7 +850,7 @@ public class GenericGraphBox {
         		TextLayout textlayout = new TextLayout(r.getText(), parentGraphicalZone.info.input.font, g.getFontRenderContext());
            		g.setColor(r.getForeground());
            		g.setFont(r.getFont());
-           		textlayout.draw(g,X1+2,Y1-5);
+           		textlayout.draw(g,X1+2+getRangeShift(g),Y1-5);
             }
         	g.setColor(parentGraphicalZone.diff.getBoxShapeColor(boxNumber,parentGraphicalZone.info.foregroundColor));
         	g.setStroke(parentGraphicalZone.diff.getBoxStroke(boxNumber,old));
@@ -919,7 +964,7 @@ public class GenericGraphBox {
        			TextLayout textlayout = new TextLayout(r.getText(), parentGraphicalZone.info.input.font, g.getFontRenderContext());
        			g.setColor(r.getForeground());
        			g.setFont(r.getFont());
-       			textlayout.draw(g,X1+2,Y1-5);
+       			textlayout.draw(g,X1+2+getRangeShift(g),Y1-5);
             }
         }
         if (variable) {
@@ -996,11 +1041,13 @@ public class GenericGraphBox {
         }
         // prints the output, if any
         g.setColor(parentGraphicalZone.info.foregroundColor);
-        if (!transduction.equals("")) {
+        String output=getNonRangeOutput(transduction);
+        if (!output.equals("")) {
             g.setFont(parentGraphicalZone.info.output.font);
-            g.drawString(transduction, X1 + 5, Y1 + Height
+            g.drawString(output, X1 + 5, Y1 + Height
                     + g.getFontMetrics().getHeight());
         }
+        drawRange(g);
     }
 
     void drawOtherSelected(Graphics2D g) {
@@ -1050,17 +1097,19 @@ public class GenericGraphBox {
             textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
         }
         // prints the transduction, if exists
-        if (!transduction.equals("")) {
+        String output=getNonRangeOutput(transduction);
+        if (!output.equals("")) {
             g.setColor(parentGraphicalZone.info.selectedColor);
             GraphicalToolBox.fillRect(g, X1 + 5, Y1 + Height + g.getFontMetrics().getDescent(),
                     g.getFontMetrics(parentGraphicalZone.info.output.font)
-                            .stringWidth(transduction), g.getFontMetrics(
+                            .stringWidth(output), g.getFontMetrics(
                             parentGraphicalZone.info.output.font).getHeight() + 1);
             g.setColor(parentGraphicalZone.info.backgroundColor);
             g.setFont(parentGraphicalZone.info.output.font);
-            g.drawString(transduction, X1 + 5, Y1 + Height
+            g.drawString(output, X1 + 5, Y1 + Height
                     + g.getFontMetrics().getHeight());
         }
+        drawRange(g);
     }
 
     private void drawInitial(Graphics2D g) {

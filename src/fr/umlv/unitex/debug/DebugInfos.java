@@ -266,6 +266,10 @@ public class DebugInfos {
 					/* We are in the same line, nothing to do */
 					continue;
 				}
+				/* It may also be because the box contains a range indication */
+				if (srcBox.transduction!=null && srcBox.transduction.startsWith("$[")) {
+					continue;
+				}
 			}
 			ArrayList<GenericGraphBox> visited=new ArrayList<GenericGraphBox>();
 			ArrayList<Integer> path=new ArrayList<Integer>();
