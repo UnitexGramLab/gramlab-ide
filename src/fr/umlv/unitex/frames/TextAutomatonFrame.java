@@ -607,12 +607,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         sentenceTextArea.setText("");
         Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(text_tfst)
                 .sentence(z);
-        if (Config.isKorean() || Config.isKoreanJeeSun()) {
-            cmd = cmd.font("Gulim").fontSize(12);
-        } else {
-            cmd = cmd.font(Preferences.inputFont().getName()).fontSize(
+        cmd = cmd.font(Preferences.inputFont().getName()).fontSize(
                     Preferences.inputFontSize());
-        }
         Console.addCommand(cmd.getCommandLine(), false, Log.getCurrentLogID());
         Process p;
         try {
