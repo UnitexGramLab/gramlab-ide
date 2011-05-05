@@ -21,8 +21,11 @@
 
 package fr.umlv.unitex.graphrendering;
 
+import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
 import fr.umlv.unitex.exceptions.MissingGraphNameException;
@@ -387,6 +390,33 @@ public class GraphBox extends GenericGraphBox {
         }
     }
 
+    private boolean isUnitTestBox() {
+    	if (!comment) return false;
+    	if (!Pattern.matches("@TEST:[NIMR]:[SLA]@",lines.get(0))) return false;
+    	/* We check if the second line is of the form xxx<yyy>zzz */
+    	if (!Pattern.matches("(\\.|[^\\\\])*<(\\.|[^\\\\])+>.*",lines.get(1))) return false;
+    	if (lines.get(0).startsWith("@TEST:M") || lines.get(0).startsWith("@TEST:R")) {
+    		return lines.size()==3;
+    	}
+    	return lines.size()==2;
+    }
+    
+    
+    @Override
+    void drawOtherComment(Graphics2D g) {
+    	if (!isUnitTestBox()) {
+    		super.drawOtherComment(g);
+    		return;
+    	}
+    	Color old=parentGraphicalZone.info.foregroundColor;
+    	try {
+    		parentGraphicalZone.info.foregroundColor=Color.BLUE;
+        	drawOther(g);
+    	} finally {
+    		parentGraphicalZone.info.foregroundColor=old;
+    	}
+    }
+    
 }
 
 /* end of GraphBox */
