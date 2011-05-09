@@ -30,7 +30,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -85,9 +89,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
             "Use a web browser to view the concordance");
     private final JTextField modifiedTxtFile = new JTextField("");
     private final JTextField extractFile = new JTextField("");
-    private String numberOfMatches = null;
     private boolean useWebBrowser;
     private JButton diffButton;
+    private JButton ambiguousOutputsButton;
 
     private final JRadioButton mode0 = new JRadioButton("collocates by z-score", true);
     private final JRadioButton mode1 = new JRadioButton("collocates by frequency", false);
@@ -308,7 +312,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				buildConcordance(true);
 			}
 		};
-        panel.add(new JButton(ambiguous));
+		ambiguousOutputsButton=new JButton(ambiguous);
+        panel.add(ambiguousOutputsButton);
         return panel;
     }
 
@@ -670,8 +675,61 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 
     }
 
+    
+    
     void reset() {
-        numberOfMatches = null;
         updateDiffButton();
+        updateShowAmbiguousOutputsButton();
     }
+
+    
+    private static final Pattern pattern=Pattern.compile("([0-9]+)\\.[0-9]+\\.[0-9]+ ([0-9]+)\\.[0-9]+\\.[0-9]+.*");
+    
+	private void updateShowAmbiguousOutputsButton() {
+		File f=new File(Config.getCurrentSntDir(),"concord.ind");
+		ambiguousOutputsButton.setEnabled(false);
+		if (!f.exists()) {
+			/* Should not happen */
+			System.err.println(f.getAbsolutePath()+" does not exist!");
+			return;
+		}
+		try {
+			Scanner scanner=new Scanner(f,"UTF-16LE");
+			int a=-1,b=-1;
+			/* Skipping the header. We look for the first line
+			 * containing #[IMR], because there may be lines before it,
+			 * if the concord.ind file was produced in debug mode */
+			while (scanner.hasNextLine()) {
+				String s=scanner.nextLine();
+				if (s.startsWith("\uFEFF")) s=s.substring(1);
+				if (s.equals("#I") || s.equals("#M") || s.equals("#R")) break;
+			}
+			while (scanner.hasNextLine()) {
+				String s=scanner.nextLine();
+				Matcher m=pattern.matcher(s);
+				if (m.matches()) {
+					/* Should always happen */
+					if (a==-1) {
+						a=Integer.parseInt(m.group(1));
+						b=Integer.parseInt(m.group(2));
+					} else {
+						int a2=Integer.parseInt(m.group(1));
+						int b2=Integer.parseInt(m.group(2));
+						if (a2==a && b2==b) {
+							ambiguousOutputsButton.setEnabled(true);
+							scanner.close();
+							return;
+						}
+						a=a2;
+						b=b2;
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+	}
+	
 }
