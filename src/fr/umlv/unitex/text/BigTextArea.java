@@ -28,6 +28,8 @@ import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.File;
 
 import javax.swing.JPanel;
@@ -81,6 +83,17 @@ public class BigTextArea extends JPanel {
         scrollBar = new JScrollBar(Adjustable.VERTICAL, 0, 0, 0, 0);
         add(area);
         add(scrollBar, BorderLayout.EAST);
+        area.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				int scrollUnits=scrollBar.getBlockIncrement()*e.getUnitsToScroll();
+				int newValue=scrollBar.getValue()+scrollUnits;
+				if (newValue<0) newValue=0;
+				else if (newValue>=scrollBar.getMaximum()) {
+					newValue=scrollBar.getMaximum()-1;
+				}
+				scrollBar.setValue(newValue);
+			}
+		});
         model.addListDataListener(new ListDataListener() {
             public void intervalAdded(ListDataEvent e) {
                 int oldMaximum = scrollBar.getMaximum();
