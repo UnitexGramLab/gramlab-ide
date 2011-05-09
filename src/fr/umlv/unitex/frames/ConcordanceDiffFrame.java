@@ -74,11 +74,9 @@ public class ConcordanceDiffFrame extends JInternalFrame {
                 list.setFont(font);
             }
         });
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosing(InternalFrameEvent e) {
-                setVisible(false);
                 list.reset();
                 list.clearSelection();
             }

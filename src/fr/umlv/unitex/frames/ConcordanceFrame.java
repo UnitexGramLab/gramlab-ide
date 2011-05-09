@@ -73,8 +73,8 @@ public class ConcordanceFrame extends JInternalFrame {
         @Override
         protected void paintComponent(Graphics g) {
             /* Do nothing since this is an invisible component
-                * only used to catch mouse events.
-                */
+             * only used to catch mouse events.
+             */
         }
 
         @Override
@@ -102,7 +102,7 @@ public class ConcordanceFrame extends JInternalFrame {
         	model=new DebugTableModel(index);
         	graphPane=new DebugGraphPane(index);
         }
-        list = new BigConcordance(widthInChars);
+        list = new BigConcordance();
         invisible.setOpaque(false);
         invisible.setVisible(true);
         invisible.addMouseListener(new MouseAdapter() {
