@@ -428,16 +428,16 @@ public class GraphIO {
 			z = UnicodeIO.readChar(f);
 		}
 		if (z != '"')
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #1 while reading graph box #" + n);
 		String s = "";
 		int c;
 		while ((c = UnicodeIO.readChar(f)) != '"') {
 			if (c == -1)
-				throw new IOException("Error while reading graph box #" + n);
+				throw new IOException("Error #2 while reading graph box #" + n);
 			if (c == '\\') {
 				c = UnicodeIO.readChar(f);
 				if (c == -1)
-					throw new IOException("Error while reading graph box #" + n);
+					throw new IOException("Error #3 while reading graph box #" + n);
 				if (c != '\\') {
 					// case of \: \+ and \"
 					if (c == '"')
@@ -448,14 +448,14 @@ public class GraphIO {
 					// case of \\\" that must be transformed into \"
 					c = UnicodeIO.readChar(f);
 					if (c == -1)
-						throw new IOException("Error while reading graph box #"
+						throw new IOException("Error #4 while reading graph box #"
 								+ n);
 					if (c == '\\') {
 						// we are in the case \\\" -> \"
 						c = UnicodeIO.readChar(f);
 						if (c == -1)
 							throw new IOException(
-									"Error while reading graph box #" + n);
+									"Error #5 while reading graph box #" + n);
 						s = s + "\\" + (char) c;
 					} else {
 						// we are in the case \\a -> \\a
@@ -471,46 +471,46 @@ public class GraphIO {
 		}
 		// skipping the space after "
 		if (UnicodeIO.readChar(f) != ' ')
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #6 while reading graph box #" + n);
 		// reading the X coordinate
 		int x = 0;
 		int neg = 1;
 		c = UnicodeIO.readChar(f);
 		if (c == -1)
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #7 while reading graph box #" + n);
 		if (c == '-') {
 			neg = -1;
 		} else if (UnicodeIO.isDigit((char) c)) {
 			x = ((char) c - '0');
 		} else {
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #8 while reading graph box #" + n);
 		}
 		c = -1;
 		while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c)) {
 			x = x * 10 + ((char) c - '0');
 		}
 		if (c == -1)
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #9 while reading graph box #" + n);
 		x = x * neg;
 		// reading the Y coordinate
 		int y = 0;
 		neg = 1;
 		c = UnicodeIO.readChar(f);
 		if (c == -1)
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #10 while reading graph box #" + n);
 		if (c == '-') {
 			neg = -1;
 		} else if (UnicodeIO.isDigit((char) c)) {
 			y = ((char) c - '0');
 		} else {
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #11 while reading graph box #" + n);
 		}
 		c = -1;
 		while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c)) {
 			y = y * 10 + ((char) c - '0');
 		}
 		if (c == -1)
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #12 while reading graph box #" + n);
 		y = y * neg;
 		g.setX(x);
 		g.setY(y);
@@ -539,7 +539,7 @@ public class GraphIO {
 		while ((c = UnicodeIO.readChar(f)) != -1 && UnicodeIO.isDigit((char) c))
 			trans = trans * 10 + ((char) c - '0');
 		if (c == -1)
-			throw new IOException("Error while reading graph box #" + n);
+			throw new IOException("Error #13 while reading graph box #" + n);
 		for (int j = 0; j < trans; j++) {
 			int dest = 0;
 			c = -1;
@@ -547,12 +547,13 @@ public class GraphIO {
 					&& UnicodeIO.isDigit((char) c))
 				dest = dest * 10 + ((char) c - '0');
 			if (c == -1)
-				throw new IOException("Error while reading graph box #" + n);
+				throw new IOException("Error #14 while reading graph box #" + n);
 			g.addTransitionTo(boxes.get(dest));
 		}
 		// skipping the end-of-line
-		if (UnicodeIO.readChar(f) != '\n')
-			throw new IOException("Error while reading graph box #" + n);
+		int foo=UnicodeIO.readChar(f);
+		if (foo != '\n')
+			throw new IOException("Error #15 while reading graph box #" + n);
 	}
 
 	/**
