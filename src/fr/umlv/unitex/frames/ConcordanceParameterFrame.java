@@ -597,6 +597,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 .diffOnly();
         setVisible(false);
         int width = 160;
+        UnitexFrame.getFrameManager().closeConcordanceDiffFrame();
         Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
                 openWithBrowser.isSelected(), width));
     }

@@ -165,11 +165,11 @@ public class UnitexFrame extends JFrame {
                 closeText.setEnabled(false);
                 frameManager.closeTokensFrame();
                 frameManager.closeConcordanceFrame();
+                frameManager.closeConcordanceDiffFrame();
                 frameManager.closeTextDicFrame();
                 frameManager.closeTextAutomatonFrame();
                 frameManager.closeTfstTagsFrame();
                 frameManager.closeApplyLexicalResourcesFrame();
-                frameManager.closeConcordanceDiffFrame();
                 frameManager.closeConcordanceParameterFrame();
                 frameManager.closeConstructTfstFrame();
                 frameManager.closeConvertTfstToTextFrame();
