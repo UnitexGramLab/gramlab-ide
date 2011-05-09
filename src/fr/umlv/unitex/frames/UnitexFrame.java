@@ -907,7 +907,14 @@ public class UnitexFrame extends JFrame {
             // we return if the user has clicked on CANCEL
             return;
         }
-        Text.loadCorpus(Config.getCorpusDialogBox().getSelectedFile());
+        File f=Config.getCorpusDialogBox().getSelectedFile();
+        if (!f.exists()) {
+        	JOptionPane.showMessageDialog(null, "File "+f.getAbsolutePath()
+                    + " does not exist",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Text.loadCorpus(f);
     }
 
     /**
@@ -921,7 +928,14 @@ public class UnitexFrame extends JFrame {
             // we return if the user has clicked on CANCEL
             return;
         }
-        Text.loadCorpus(Config.getCorpusDialogBox().getSelectedFile(), true);
+        File f=Config.getCorpusDialogBox().getSelectedFile();
+        if (!f.exists()) {
+        	JOptionPane.showMessageDialog(null, "File "+f.getAbsolutePath()
+                    + " does not exist",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Text.loadCorpus(f, true);
     }
 
     /**
@@ -943,6 +957,12 @@ public class UnitexFrame extends JFrame {
             if (!s.endsWith(".grf")) {
                 s = s + ".grf";
                 graphs[i] = new File(s);
+                if (!graphs[i].exists()) {
+                	JOptionPane.showMessageDialog(null, "File "+graphs[i].getAbsolutePath()
+                            + " does not exist",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                	continue;
+                }
             }
             Config.setCurrentGraphDir(graphs[i].getParentFile());
             frameManager.newGraphFrame(graphs[i]);
