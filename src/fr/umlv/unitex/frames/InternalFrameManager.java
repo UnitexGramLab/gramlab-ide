@@ -440,7 +440,7 @@ public class InternalFrameManager {
         ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory.newFrame();
         if (f == null) return null;
         f.load(file, widthInChars);
-        setup(f);
+        setup(f,true);
         return f;
     }
 

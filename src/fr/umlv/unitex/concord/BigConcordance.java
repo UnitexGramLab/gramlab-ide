@@ -40,7 +40,7 @@ import fr.umlv.unitex.Preferences;
 public class BigConcordance extends JList {
 
 
-    private BigConcordance(ConcordanceAsListModel m, int widthInChars) {
+    private BigConcordance(ConcordanceAsListModel m) {
         super(m);
         setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
         setCellRenderer(new DefaultListCellRenderer() {
@@ -68,8 +68,8 @@ public class BigConcordance extends JList {
     }
 
 
-    public BigConcordance(int widthInChars) {
-        this(new ConcordanceAsListModel(), widthInChars);
+    public BigConcordance() {
+        this(new ConcordanceAsListModel());
     }
 
     public void load(File f) {
