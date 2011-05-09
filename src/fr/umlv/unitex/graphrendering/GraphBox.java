@@ -392,6 +392,10 @@ public class GraphBox extends GenericGraphBox {
 
     private boolean isUnitTestBox() {
     	if (!comment) return false;
+    	if (lines.size()==0) {
+    		/* Should not happen */
+    		return false;
+    	}
     	if (!Pattern.matches("@TEST:[NIMR]:[SLA]@",lines.get(0))) return false;
     	/* We check if the second line is of the form xxx<yyy>zzz */
     	if (!Pattern.matches("(\\.|[^\\\\])*<(\\.|[^\\\\])+>.*",lines.get(1))) return false;
