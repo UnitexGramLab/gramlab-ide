@@ -42,7 +42,6 @@ public class BigConcordance extends JList {
 
     private BigConcordance(ConcordanceAsListModel m, int widthInChars) {
         super(m);
-        setPrototypeCellValue(getStringOfGivenWidth(widthInChars));
         setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
         setCellRenderer(new DefaultListCellRenderer() {
             @Override
