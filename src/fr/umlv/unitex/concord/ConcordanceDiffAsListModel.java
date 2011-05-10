@@ -53,15 +53,15 @@ public class ConcordanceDiffAsListModel extends ConcordanceAsListModel {
 	@Override
 	public Object getElementAt(int i) {
 		Interval interval=getInterval(i+HTML_START_LINES);
-		int start=interval.getStart()+33; // we don't want neither the <tr><td width="450"><font color="
-		int end=interval.getEnd()-17;     // nor the </font></td></tr>
+		int start=interval.getStart()+55; // we don't want neither the <tr><td nowrap bgcolor="#90EE90"><font color="#008000">
+		int end=interval.getEnd()-19;     // nor the </font></td></tr>
 		byte[] tmp=new byte[end-start+1];
 		int z=0;
 		buffer.position(start);
 		for (int pos=start;pos<=end;pos++) {
 			tmp[z++]=buffer.get();
 		}
-		return DiffLine.buildDiffLine(new String(tmp,utf8));
+		return new String(tmp,utf8);
 	}
 
 	static class DiffLine {
