@@ -954,7 +954,7 @@ public class UnitexFrame extends JFrame {
         final File[] graphs = fc.getSelectedFiles();
         for (int i = 0; i < graphs.length; i++) {
             String s = graphs[i].getAbsolutePath();
-            if (!s.endsWith(".grf")) {
+            if (!graphs[i].exists() && !s.endsWith(".grf")) {
                 s = s + ".grf";
                 graphs[i] = new File(s);
                 if (!graphs[i].exists()) {
