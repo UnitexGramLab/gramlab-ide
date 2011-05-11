@@ -436,10 +436,10 @@ public class InternalFrameManager {
         checkResultFrameFactory.closeFrame();
     }
 
-    public ConcordanceDiffFrame newConcordanceDiffFrame(File file, int widthInChars) {
+    public ConcordanceDiffFrame newConcordanceDiffFrame(File file) {
         ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory.newFrame();
         if (f == null) return null;
-        f.load(file, widthInChars);
+        f.load(file);
         setup(f,true);
         return f;
     }
