@@ -401,9 +401,12 @@ public abstract class GenericGraphicalZone extends JComponent {
                 selectedBoxes.add(g);
                 if (s == null) {
                     s = g.content;
-                } else {
-                    /* We don't want to set a text for multiple box selection */
-                    s = "";
+                } else if (!s.equals("")) {
+                	if (!s.equals(g.content)) {
+                		/* We don't want to set a text for multiple box selection, unless
+                		 * all selected boxes share the same text */
+                		s = "";
+                	}
                 }
             }
         }
