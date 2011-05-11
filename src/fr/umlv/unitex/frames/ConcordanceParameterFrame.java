@@ -642,7 +642,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                             widthInChars);
                 } else {
                     UnitexFrame.getFrameManager().newConcordanceDiffFrame(
-                            htmlFile, widthInChars);
+                            htmlFile);
                 }
             }
         }

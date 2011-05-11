@@ -59,15 +59,6 @@ public class BigConcordance extends JList {
     }
 
 
-    private Object getStringOfGivenWidth(int widthInChars) {
-        StringBuilder b = new StringBuilder(widthInChars);
-        for (int i = 0; i < widthInChars; i++) {
-            b.append("W");
-        }
-        return b.toString();
-    }
-
-
     public BigConcordance() {
         this(new ConcordanceAsListModel());
     }
