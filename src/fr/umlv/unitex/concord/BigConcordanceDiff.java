@@ -46,7 +46,7 @@ public class BigConcordanceDiff extends JList {
         setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
         setCellRenderer(new DefaultListCellRenderer() {
 
-        	private Color[] bg=new Color[] {Color.WHITE,new Color(210,210,210)};
+        	private Color[] bg=new Color[] {new Color(210,210,210),Color.WHITE};
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 String s=(String)value;
