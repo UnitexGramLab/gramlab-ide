@@ -159,13 +159,6 @@ public class Util {
         return ext;
     }
 
-    public static int toInt(String s) {
-        int j = 0;
-        for (int i = 0; i < s.length(); i++)
-            j = j * 10 + s.charAt(i) - '0';
-        return j;
-    }
-
     /**
      * Takes a file and looks for the text between the tags <code>&lt;title&gt;</code>
      * and <code>&lt;/title&gt;</code>.
