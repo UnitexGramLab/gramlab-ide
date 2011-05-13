@@ -85,9 +85,9 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		JScrollPane scroll = new JScrollPane(list);
 		JPanel middle = new JPanel(new BorderLayout());
 		middle.add(scroll, BorderLayout.CENTER);
-		JPanel top = new JPanel(new GridLayout(3, 1));
+		JPanel top = new JPanel(new GridLayout(4, 1));
 		top.setBackground(Color.WHITE);
-		top.setBorder(new EmptyBorder(2, 2, 2, 2));
+		top.setBorder(new EmptyBorder(2, 2, 5, 2));
 		top
 				.add(new JLabel(
 						"<html><body><font color=\"#800080\">Violet:</font>&nbsp;identical sequences with different outputs</body></html>"));
@@ -96,7 +96,8 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 						"<html><body><font color=\"#FF0000\">Red:</font>&nbsp;similar but different sequences</body></html>"));
 		top
 				.add(new JLabel(
-						"<html><body><font color=\"#00FF00\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
+						"<html><body><font color=\"#008000\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
+		top.add(new JLabel("<html><body><font bgcolor=\"#D2D2D2\">Grey background=previous matches</font>&nbsp;&nbsp;White background=new matches</body></html>"));
 		middle.add(top, BorderLayout.NORTH);
 		setContentPane(middle);
 		list.setFont(new Font(Preferences.getConcordanceFontName(), 0,
