@@ -21,10 +21,12 @@
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +42,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -58,6 +61,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -85,6 +89,8 @@ import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
+import fr.umlv.unitex.svn.ConflictSolvedListener;
+import fr.umlv.unitex.svn.SvnConflict;
 
 /**
  * This class describes a frame used to display and edit a graph.
@@ -128,6 +134,13 @@ public class GraphFrame extends JInternalFrame {
     private Timer autoRefresh=new Timer(2000,new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (grf==null) return;
+			SvnConflict conflict=SvnConflict.getConflict(grf);
+			if (conflict!=null) {
+				Timer t=(Timer)e.getSource();
+				t.stop();
+				handleSvnConflict(conflict,t);
+				return;
+			}
 			if (grf.lastModified()>lastModification) {
 				int ret=JOptionPane.showConfirmDialog(GraphFrame.this,
 						"Graph has changed on disk. Do you want to reload it ?",
@@ -147,7 +160,10 @@ public class GraphFrame extends JInternalFrame {
     
     private final JPanel mainPanel;
     private final JPanel actualMainPanel;
-    /**
+	private JPanel svnPanel;
+	
+
+	/**
      * Component used to listen frame changes. It is used to adapt the zoom
      * factor to the frame's dimensions when the zoom mode is "Fit in Windows"
      */
@@ -179,7 +195,6 @@ public class GraphFrame extends JInternalFrame {
                 if (m) setModified(true);
             }
         });
-        autoRefresh.start();
         manager = new UndoManager();
         manager.setLimit(30);
         graphicalZone.addUndoableEditListener(manager);
@@ -254,9 +269,113 @@ public class GraphFrame extends JInternalFrame {
         grfListPanel.add(up,BorderLayout.NORTH);
         grfListPanel.add(grfListScroll,BorderLayout.CENTER);
         grfListPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        autoRefresh.setInitialDelay(5);
+        autoRefresh.start();
     }
 
-    private void createToolBar(String iconBarPosition) {
+    protected void handleSvnConflict(final SvnConflict conflict,final Timer t) {
+    	setGraph(conflict.mine);
+		GraphIO g=GraphIO.loadGraph(conflict.mine,false,false);
+		graphicalZone.refresh(g);
+		setModified(false);
+		svnPanel=createSvnPanel(conflict);
+		actualMainPanel.add(svnPanel,BorderLayout.NORTH);
+		conflict.addConflictSolvedListener(new ConflictSolvedListener() {
+
+			public void conflictSolved() {
+				actualMainPanel.remove(svnPanel);
+				svnPanel=null;
+				setGraph(conflict.grf);
+				GraphIO g=GraphIO.loadGraph(conflict.grf,false,false);
+				graphicalZone.refresh(g);
+				setModified(false);
+				lastModification=grf.lastModified();
+				actualMainPanel.revalidate();
+				actualMainPanel.repaint();
+				t.start();
+			}
+			
+		});
+		actualMainPanel.revalidate();
+		actualMainPanel.repaint();
+	}
+
+	private JPanel createSvnPanel(final SvnConflict conflict) {
+		JPanel main=new JPanel(new GridLayout(2,1));
+		TitledBorder border=BorderFactory.createTitledBorder("Svn conflict detected on graph "+conflict.grf.getAbsolutePath());
+		border.setTitleColor(Color.RED);
+		main.setBorder(border);
+		JPanel p=new JPanel(null);
+		p.setLayout(new BoxLayout(p,BoxLayout.X_AXIS));
+		JButton showBase=new JButton("Show base (r"+conflict.baseNumber+")");
+		showBase.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UnitexFrame.getFrameManager().newGraphFrame(conflict.base);
+			}
+		});
+		p.add(showBase);
+		JButton showOther=new JButton("Show conflicting grf (r"+conflict.otherNumber+")");
+		showOther.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UnitexFrame.getFrameManager().newGraphFrame(conflict.other);
+			}
+		});
+		p.add(showOther);
+		JButton diff=new JButton("Show diff with r"+conflict.otherNumber);
+		diff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				File diffResult=new File(Config.getUserCurrentLanguageDir(),"diff");
+	            GrfDiffCommand cmd=new GrfDiffCommand().files(conflict.mine,conflict.other)
+	            	.output(diffResult);
+	            Launcher.exec(cmd,true,new ShowDiffDo(conflict.mine,conflict.other,diffResult));
+			}
+		});
+		p.add(diff);
+		main.add(p);
+		
+		JPanel p2=new JPanel(null);
+		p2.setLayout(new BoxLayout(p2,BoxLayout.X_AXIS));
+		p2.add(new JLabel("Conflict resolution:  "));
+		JButton useMine=new JButton("Use mine");
+		useMine.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				conflict.useMine();
+			}
+		});
+		p2.add(useMine);
+		JButton useOther=new JButton("Use other");
+		useOther.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				conflict.useOther();
+			}
+		});
+		p2.add(useOther);
+		JButton merge=new JButton("Try to merge");
+		merge.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (modified) {
+		            JOptionPane.showMessageDialog(null,
+		                    "Save graph before trying to merge", "Error",
+		                    JOptionPane.ERROR_MESSAGE);
+		            return;
+				}
+				if (!conflict.merge()) {
+		            JOptionPane.showMessageDialog(null,
+		                    "Conflicts remain, cannot merge files", "Merge failed",
+		                    JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null,
+		                    "Merge successed", "",
+		                    JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		p2.add(merge);
+		main.add(p2);
+		return main;
+	}
+
+	private void createToolBar(String iconBarPosition) {
         myToolBar = new JToolBar("Tools");
         if (iconBarPosition.equals(Preferences.ICON_BAR_WEST)
                 || iconBarPosition.equals(Preferences.ICON_BAR_EAST)) {

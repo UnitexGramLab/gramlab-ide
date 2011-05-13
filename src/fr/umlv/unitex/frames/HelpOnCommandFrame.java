@@ -53,6 +53,7 @@ import fr.umlv.unitex.process.commands.Fst2CheckCommand;
 import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Fst2TxtCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.GrfDiff3Command;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
 import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
 import fr.umlv.unitex.process.commands.LocateCommand;
@@ -102,6 +103,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             , Fst2TxtCommand.class
             , Grf2Fst2Command.class
             , GrfDiffCommand.class
+            , GrfDiff3Command.class
             , ImplodeTfstCommand.class
             , LocateCommand.class
             , LocateTfstCommand.class
