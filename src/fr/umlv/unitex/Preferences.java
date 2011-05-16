@@ -93,6 +93,9 @@ public class Preferences {
     public File loggingDir;
     public boolean mustLog = false;
 
+    public boolean svnMonitoring = true;
+    public boolean onlyCosmetic = false;
+
     /**
      * Maximum size in bytes of text files. If a file is bigger than this
      * limit, it won't be loaded.
@@ -165,6 +168,8 @@ public class Preferences {
         defaultProperties.setProperty("PACKAGE PATH", "");
         defaultProperties.setProperty("LOGGING DIR", "");
         defaultProperties.setProperty("MUST LOG", "false");
+        defaultProperties.setProperty("SVN MONITORING", "true");
+        defaultProperties.setProperty("ONLY COSMETIC", "false");
     }
 
     /**
@@ -267,6 +272,8 @@ public class Preferences {
             /* Should not happen */
             mustLog = false;
         }
+        svnMonitoring = Boolean.valueOf(prop.getProperty("SVN MONITORING"));
+        onlyCosmetic = Boolean.valueOf(prop.getProperty("ONLY COSMETIC"));
     }
 
     public static ArrayList<File> tokenizeMorphologicalDicList(String s) {
@@ -337,6 +344,8 @@ public class Preferences {
         //prop.setProperty("LEXICAL PACKAGE PATH", (lexicalPackagePath == null) ? "" : lexicalPackagePath.getAbsolutePath());
         prop.setProperty("LOGGING DIR", (loggingDir == null) ? "" : loggingDir.getAbsolutePath());
         prop.setProperty("MUST LOG", "" + mustLog);
+        prop.setProperty("SVN MONITORING", "" + svnMonitoring);
+        prop.setProperty("ONLY COSMETIC", "" + onlyCosmetic);
         return prop;
     }
 
@@ -547,5 +556,12 @@ public class Preferences {
         }
     }
 
+    public static boolean svnMonitoring() {
+        return pref.svnMonitoring;
+    }
+
+    public static boolean onlyCosmetic() {
+        return pref.onlyCosmetic;
+    }
 
 }

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.GrfDiff3Command;
 
@@ -37,7 +38,7 @@ public class SvnConflict {
 	public File grf,mine,base,other;
 	public int baseNumber,otherNumber;
 	
-	public SvnConflict(File grf, File mine, File base, File other,
+	public SvnConflict(final File grf, File mine, File base, File other,
 			int baseNumber, int otherNumber) {
 		this.grf=grf;
 		this.mine=mine;
@@ -45,6 +46,11 @@ public class SvnConflict {
 		this.other=other;
 		this.baseNumber=baseNumber;
 		this.otherNumber=otherNumber;
+		addConflictSolvedListener(new ConflictSolvedListener() {
+			public void conflictSolved() {
+				SvnMonitor.conflictResolved(grf);
+			}
+		});
 	}
 
 
@@ -149,7 +155,8 @@ public class SvnConflict {
 	 * on success; false otherwise.
 	 */
 	public boolean merge() {
-		GrfDiff3Command diff3=new GrfDiff3Command().files(mine,base,other).output(grf);
+		GrfDiff3Command diff3=new GrfDiff3Command().files(mine,base,other)
+		.output(grf).onlyCosmetic(Preferences.onlyCosmetic());
 		int res=Launcher.execWithoutTracing(diff3);
 		if (res!=0)	return false;
 		mine.delete();

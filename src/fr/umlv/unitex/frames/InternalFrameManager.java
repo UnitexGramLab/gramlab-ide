@@ -77,6 +77,7 @@ public class InternalFrameManager {
     private final FrameFactory transcodingFrameFactory = new FrameFactory(TranscodingFrame.class);
     private final FrameFactory consoleFrameFactory = new FrameFactory(ConsoleFrame.class);
     private final XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
+    private final FrameFactory svnConflictsFrameFactory = new FrameFactory(SvnConflictsFrame.class);
 
     private final FrameFactory cassysFrameFactory = new FrameFactory(CassysFrame.class);
     private final FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(TransducerListConfigurationFrame.class);
@@ -709,6 +710,21 @@ public class InternalFrameManager {
         }
     }
 
+    public SvnConflictsFrame getSvnConflictsFrame() {
+        return newSvnConflictsFrame();
+    }
+
+    private SvnConflictsFrame newSvnConflictsFrame() {
+    	SvnConflictsFrame f = (SvnConflictsFrame) svnConflictsFrameFactory.newFrame(false);
+        if (f == null) return null;
+        addToDesktopIfNecessary(f, false);
+        return f;
+    }
+
+    public void showSvnConflictsFrame() {
+    	SvnConflictsFrame f = getSvnConflictsFrame();
+        f.setVisible(true);
+    }
 
     public FileEditionTextFrame newFileEditionTextFrame(File file) {
         return (FileEditionTextFrame) setup(fileEditionTextFrameFactory.getFileEditionTextFrame(file), true);
