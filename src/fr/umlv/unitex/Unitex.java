@@ -40,6 +40,7 @@ import javax.swing.plaf.metal.OceanTheme;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.svn.SvnMonitor;
 
 /**
  * This is the main class of the Unitex system.
@@ -102,6 +103,7 @@ public class Unitex {
                                 Image img48x48 = new ImageIcon(Unitex.class.getResource("48x48.png")).getImage();
                                 frame.setIconImages(Arrays.asList(img16x16, img32x32, img48x48));
                                 frame.setVisible(true);
+                                SvnMonitor.start();
                             }
                         });
                         timer.stop();
