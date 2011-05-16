@@ -76,7 +76,7 @@ public class SvnMonitor {
 		File svn=new File(dir,".svn");
 		if (!svn.exists()) {
 			/* If the directory is not versioned with svn, there is nothing to do */
-			//return;
+			return;
 		}
 		/* We look for conflicts */
 		File[] files=dir.listFiles(new FilenameFilter() {
