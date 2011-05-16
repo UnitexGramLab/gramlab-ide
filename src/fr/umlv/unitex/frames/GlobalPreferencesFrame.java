@@ -38,6 +38,7 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
@@ -93,6 +94,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             "Produce log information in directory:");
     private final JTextField loggingDirectory = new JTextField("");
 
+    private final JCheckBox svnMonitoring = new JCheckBox(
+    "Auto-monitor graphs for SVN conflicts",true);
+    private final JCheckBox onlyCosmetic = new JCheckBox(
+    	    "Use --only-cosmetic option for GrfDiff3",false);
+
+    
     GlobalPreferencesFrame() {
         super("", true, true, false, false);
         setContentPane(constructPanel());
@@ -118,11 +125,23 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tabbedPane.addTab("Directories", constructPage1());
         tabbedPane.addTab("Language & Presentation", constructPage2());
         tabbedPane.addTab("Morphological dictionaries", constructPage4());
+        tabbedPane.addTab("SVN", constructSvnPage());
         upPanel.add(tabbedPane);
         return upPanel;
     }
 
-    private JPanel constructDownPanel() {
+    private JPanel constructSvnPage() {
+		JPanel p=new JPanel(null);
+		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+		svnMonitoring.setSelected(Preferences.svnMonitoring());
+		p.add(svnMonitoring);
+		onlyCosmetic.setSelected(Preferences.onlyCosmetic());
+		p.add(onlyCosmetic);
+		p.add(Box.createVerticalGlue());
+		return p;
+	}
+
+	private JPanel constructDownPanel() {
         JPanel downPanel = new JPanel(new BorderLayout());
         JPanel tmp = new JPanel(new GridLayout(1, 2));
         tmp.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -132,6 +151,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
         Action okAction = new AbstractAction("OK") {
             public void actionPerformed(ActionEvent arg0) {
+            	pref.svnMonitoring=svnMonitoring.isSelected();
+            	pref.onlyCosmetic=onlyCosmetic.isSelected();
                 pref.semitic = semiticCheckBox.isSelected();
                 pref.rightToLeftForText = rightToLeftForCorpusCheckBox.isSelected();
                 pref.rightToLeftForGraphs = rightToLeftForGraphsCheckBox.isSelected();
