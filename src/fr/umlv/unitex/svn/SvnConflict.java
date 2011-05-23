@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.GrfDiff3Command;
@@ -64,8 +65,6 @@ public class SvnConflict {
 			throw new IllegalArgumentException("File "+grf.getAbsolutePath()+" does not exist");
 		}
 		final String name=grf.getName();
-		File mine=new File(grf.getAbsolutePath()+".mine");
-		if (!mine.exists()) return null;
 		File[] list=grf.getParentFile().listFiles(new FilenameFilter() {
 			public boolean accept(File dir,String s) {
 				if (!s.startsWith(name+".r")) return false;
@@ -73,8 +72,9 @@ public class SvnConflict {
 				return pattern.matcher(end).matches();
 			}
 		});
+		if (list.length==0) return null;
 		if (list.length!=2) {
-			throw new IllegalStateException("More than 2 files named "+grf.getAbsolutePath()+".rXXXX");
+			throw new IllegalStateException(list.length+" file(s) named "+grf.getAbsolutePath()+".rXXXX while there should be 2");
 		}
 		int baseNumber=getRevisionNumber(list[0]);
 		int otherNumber=getRevisionNumber(list[1]);
@@ -86,6 +86,13 @@ public class SvnConflict {
 			int tmp=baseNumber;
 			baseNumber=otherNumber;
 			otherNumber=tmp;
+		}
+		File mine=new File(grf.getAbsolutePath()+".mine");
+		if (!mine.exists()) {
+			/* Some svn clients do not produce a .mine file: they
+			 * just let the original file untouched. To deal with that,
+			 * we create a .mine file in that case */
+			Config.copyFile(grf,mine);
 		}
 		return new SvnConflict(grf,mine,base,other,baseNumber,otherNumber);
 	} 
