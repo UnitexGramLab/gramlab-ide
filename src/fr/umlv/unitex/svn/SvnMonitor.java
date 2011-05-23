@@ -81,13 +81,10 @@ public class SvnMonitor {
 		/* We look for conflicts */
 		File[] files=dir.listFiles(new FilenameFilter() {
 			public boolean accept(@SuppressWarnings("hiding") File dir,String s) {
-				return s.endsWith(".grf.mine");
+				return s.endsWith(".grf");
 			}
 		});
-		for (File f:files) {
-			String name=f.getAbsolutePath();
-			String s=name.substring(0,name.length()-5); /* Skipping the .mine part */
-			File candidate=new File(s);
+		for (File candidate:files) {
 			if (SvnConflict.getConflict(candidate)!=null && !svnConflictModel.contains(candidate)) {
 				svnConflictModel.addElement(candidate);
 			}
