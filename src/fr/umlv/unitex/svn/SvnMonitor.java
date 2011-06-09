@@ -69,7 +69,7 @@ public class SvnMonitor {
 	 * duplicate reports.
 	 */
 	protected static void monitor(File dir) {
-		if (!dir.exists()) return;
+		if (dir==null || !dir.exists()) return;
 		if (!dir.isDirectory()) {
 			throw new IllegalArgumentException("monitor() expects a directory");
 		}
