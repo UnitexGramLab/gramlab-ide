@@ -55,11 +55,11 @@ public class GraphCollection {
      * @param copy      indicates if subgraphs must be copied or not
      */
     public static void build(final File srcDir, final File destGraph, final boolean copy) {
-        stop = false;
-        new Thread() {
-            @Override
-            public void run() {
+        new Thread(new Runnable() {
+			
+        	public void run() {
                 MessageWhileWorkingFrame f = UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
+                stop=false;
                 buildGraphCollection(
                         srcDir,
                         destGraph,
@@ -67,7 +67,7 @@ public class GraphCollection {
                         f.getLabel());
                 UnitexFrame.getFrameManager().closeMessageWhileWorkingFrame();
             }
-        }.start();
+        }).start();
     }
 
     /**
@@ -84,11 +84,9 @@ public class GraphCollection {
             File destGraph,
             boolean copy,
             JLabel txt) {
-
         if (stop) {
             return;
         }
-
         if (!srcDir.isDirectory()) {
             JOptionPane.showMessageDialog(
                     null,
