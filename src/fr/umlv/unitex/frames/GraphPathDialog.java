@@ -42,6 +42,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
@@ -60,7 +62,7 @@ import fr.umlv.unitex.text.BigTextList;
  * @author Sébastien Paumier 11.11.2005 modified HyunGue HUH
  */
 public class GraphPathDialog extends JDialog {
-    private final BigTextList textArea = new BigTextList();
+    final BigTextList textArea = new BigTextList();
     final JTextField graphName = new JTextField();
     private JCheckBox limit;
     private JTextField limitSize;
@@ -70,6 +72,21 @@ public class GraphPathDialog extends JDialog {
     private JRadioButton exploreRecursively;
     private JRadioButton onlyPaths;
 
+    ListDataListener listListener=new ListDataListener() {
+		public void intervalRemoved(ListDataEvent e) {
+			/* */
+		}
+		
+		public void intervalAdded(ListDataEvent e) {
+            int n=textArea.getModel().getSize();
+            setTitle(n+" line"+(n>1?"s":""));
+		}
+		
+		public void contentsChanged(ListDataEvent e) {
+			/* */
+		}
+	};
+    
     GraphPathDialog() {
         super(UnitexFrame.mainFrame, "Explore graph paths", true);
         setContentPane(constructPanel());
@@ -153,7 +170,8 @@ public class GraphPathDialog extends JDialog {
                     cmd = cmd.separateOutputs(separateOutputs.isSelected());
                 }
                 grfCmd.grf(new File(graphName.getText()))
-                        .enableLoopAndRecursionDetection(true).repository();
+                        .enableLoopAndRecursionDetection(true).repository()
+                        .noEmptyGraphWarning();
                 fst2 = new File(Util.getFileNameWithoutExtension(graphName
                         .getText())
                         + ".fst2");
@@ -171,7 +189,7 @@ public class GraphPathDialog extends JDialog {
                 commands.addCommand(grfCmd);
                 commands.addCommand(cmd);
                 textArea.reset();
-                Launcher.exec(commands, true, new ShowPathsDo(list));
+                Launcher.exec(commands, true, new ShowPathsDo(list),false);
             }
         };
         JButton GO = new JButton(goAction);
@@ -191,6 +209,7 @@ public class GraphPathDialog extends JDialog {
         setVisible(false);
         textArea.reset();
         textArea.clearSelection();
+        textArea.getModel().removeListDataListener(listListener);
     }
 
     private JPanel constructLimitPanel() {
@@ -220,6 +239,7 @@ public class GraphPathDialog extends JDialog {
 
         public void toDo() {
             textArea.load(name);
+            textArea.getModel().addListDataListener(listListener);
         }
     }
 }
