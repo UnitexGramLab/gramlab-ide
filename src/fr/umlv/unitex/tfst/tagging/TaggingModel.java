@@ -295,7 +295,7 @@ public class TaggingModel {
 		 * any path from n to the limit node */
 		for (GenericGraphBox gb:boxes[n].transitions) {
 			int destIndex=getBoxIndex((TfstGraphBox) gb);
-			if (getBoxState(destIndex)==TaggingState.TO_BE_REMOVED) {
+			if (getBoxStateTfst(destIndex)==TaggingState.TO_BE_REMOVED) {
 				setBoxStateInternal(destIndex,TaggingState.NEUTRAL);
 				contaminateFollowers(destIndex,limit);
 			}
@@ -328,7 +328,7 @@ public class TaggingModel {
 		}	
 		/* See similar comment in contaminateFollowers */
 		for (Integer srcIndex:reverse[n]) {
-			if (getBoxState(srcIndex)==TaggingState.TO_BE_REMOVED) {
+			if (getBoxStateTfst(srcIndex)==TaggingState.TO_BE_REMOVED) {
 				setBoxStateInternal(srcIndex,TaggingState.NEUTRAL);
 				contaminateAncestors(srcIndex,limit,reverse);
 			}
@@ -474,24 +474,24 @@ public class TaggingModel {
 	 * NOTE: the given box number is relative to the box array 
 	 * list of the graphical zone 
 	 */
-	public TaggingState getBoxState(int boxIndexInTfst) {
+	public TaggingState getBoxStateTfst(int boxIndexInTfst) {
 		TfstGraphBox box=(TfstGraphBox) zone.graphBoxes.get(boxIndexInTfst);
 		return getBoxState(box);
 	}
 
 	
 	public boolean isSelected(int boxIndex) {
-		return TaggingState.SELECTED==getBoxState(boxIndex);
+		return TaggingState.SELECTED==getBoxStateTfst(boxIndex);
 	}
 	
 	public boolean isToBeRemoved(TfstGraphBox box) {
 		int boxIndex=getBoxIndex(box);
-		TaggingState s=getBoxState(boxIndex);
+		TaggingState s=taggingStates[boxIndex];
 		return TaggingState.TO_BE_REMOVED==s || TaggingState.USELESS==s;
 	}
 
 	public boolean isToBeRemovedTfstIndex(int boxIndex) {
-		TaggingState s=getBoxState(boxIndex);
+		TaggingState s=getBoxStateTfst(boxIndex);
 		return TaggingState.TO_BE_REMOVED==s || TaggingState.USELESS==s;
 	}
 
