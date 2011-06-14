@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -35,6 +36,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
+
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
@@ -84,7 +88,10 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
     }
 
     boolean hasMoved = false;
-
+    boolean scrollingWhileTagging=false;
+    int X_start_scrolling;
+    int Y_start_scrolling;
+    Point originalViewPoint;
     class FstGraphMouseListener extends MouseAdapter {
         final MouseMotionListener motionListener = new FstGraphMouseMotionListener();
 
@@ -149,7 +156,16 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         public void mousePressed(MouseEvent e) {
             int selectedBox;
             addMouseMotionListener(motionListener);
-            if (e.getButton()==MouseEvent.BUTTON3 || e.isShiftDown() || e.isAltDown() || e.isControlDown()) {
+            if (e.getButton()==MouseEvent.BUTTON3 || e.isControlDown()) {
+            	scrollingWhileTagging=true;
+            	X_start_scrolling = (int) (e.getX() / scaleFactor);
+                Y_start_scrolling = (int) (e.getY() / scaleFactor);
+                JScrollPane scroll=((TextAutomatonFrame)parentFrame).scrollPane;
+                JViewport view=scroll.getViewport();
+                originalViewPoint=view.getViewPosition();
+                return;
+            }
+            if (e.isShiftDown() || e.isAltDown()) {
                 return;
             }
             validateContent();
@@ -183,8 +199,16 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         @Override
         public void mouseReleased(MouseEvent e) {
             removeMouseMotionListener(motionListener);
-            if (e.getButton()==MouseEvent.BUTTON3 || e.isShiftDown() || e.isAltDown() || e.isControlDown())
+            if (e.getButton()==MouseEvent.BUTTON3 || e.isControlDown()) {
+            	scrollingWhileTagging=false;
+            	X_start_scrolling=-1;
+            	Y_start_scrolling=-1;
+            	originalViewPoint=null;
+            	return;
+            }
+            if (e.isShiftDown() || e.isAltDown()) {
                 return;
+            }
             dragging = false;
             if (singleDragging) {
                 singleDragging = false;
@@ -201,6 +225,27 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
     class FstGraphMouseMotionListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent e) {
+        	if (scrollingWhileTagging) {
+        		/* We want to scroll while tagging the tfst */
+                int X_current_scrolling = (int) (e.getX() / scaleFactor);
+                int Y_current_scrolling = (int) (e.getY() / scaleFactor);
+                int shiftX=X_current_scrolling-X_start_scrolling;
+                int shiftY=Y_current_scrolling-Y_start_scrolling;
+                JScrollPane scroll=((TextAutomatonFrame)parentFrame).scrollPane;
+                JViewport view=scroll.getViewport();
+                int newX=view.getViewPosition().x+shiftX;
+                int newY=view.getViewPosition().y+shiftY;
+                if (newX<0) newX=0;
+                if (newY<0) newY=0;
+                int maxX=getWidth()-view.getWidth();
+                int maxY=getHeight()-view.getHeight();
+                if (newX>maxX) newX=maxX;
+                if (newY>maxY) newY=maxY;
+                view.setViewPosition(new Point(newX,newY));
+                X_start_scrolling=X_current_scrolling+shiftX;
+                Y_start_scrolling=Y_current_scrolling+shiftY;
+        		return;
+        	}
             hasMoved = true;
             int Xtmp = X_end_drag;
             int Ytmp = Y_end_drag;

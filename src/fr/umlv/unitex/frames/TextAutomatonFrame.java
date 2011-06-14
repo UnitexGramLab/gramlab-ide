@@ -123,6 +123,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     private JLabel ruleslabel;
     JScrollBar tfstScrollbar;
     private TfstGraphicalZone graphicalZone;
+    public JScrollPane scrollPane;
     
     private final GraphListener listener = new GraphListener() {
         public void graphChanged(boolean m) {
@@ -218,16 +219,16 @@ public class TextAutomatonFrame extends JInternalFrame {
         graphicalZone = new TfstGraphicalZone(null, textfield, this, true);
         graphicalZone.addGraphListener(listener);
         graphicalZone.setPreferredSize(new Dimension(1188, 840));
-        final JScrollPane scroll = new JScrollPane(graphicalZone);
-        tfstScrollbar = scroll.getHorizontalScrollBar();
+        scrollPane = new JScrollPane(graphicalZone);
+        tfstScrollbar = scrollPane.getHorizontalScrollBar();
         tfstScrollbar.setUnitIncrement(20);
-        scroll.getVerticalScrollBar().setUnitIncrement(20);
-        scroll.setPreferredSize(new Dimension(1188, 840));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.setPreferredSize(new Dimension(1188, 840));
         textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
         downPanel.add(textfield, BorderLayout.NORTH);
-        downPanel.add(scroll, BorderLayout.CENTER);
+        downPanel.add(scrollPane, BorderLayout.CENTER);
         JTabbedPane tabbed = new JTabbedPane();
-        downPanel.add(scroll, BorderLayout.CENTER);
+        downPanel.add(scrollPane, BorderLayout.CENTER);
         tabbed.addTab("Automaton", downPanel);
         tabbed.addTab("Table", createTablePanel());
         textframe.add(tabbed, BorderLayout.CENTER);
