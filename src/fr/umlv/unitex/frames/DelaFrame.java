@@ -59,7 +59,7 @@ import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.BigTextList;
-import fr.umlv.unitex.text.TextAsListModel;
+import fr.umlv.unitex.text.TextAsListModelImpl;
 
 
 /**
@@ -218,7 +218,7 @@ public class DelaFrame extends JInternalFrame {
 		} catch (PatternSyntaxException e2) {
 			return;
 		}
-		TextAsListModel model=(TextAsListModel) text.getModel();
+		TextAsListModelImpl model=(TextAsListModelImpl) text.getModel();
 		int n;
 		if (forward) n=model.getNextMatchedElement(currentPosition,p1);
 		else n=model.getPreviousMatchedElement(currentPosition,p1);
