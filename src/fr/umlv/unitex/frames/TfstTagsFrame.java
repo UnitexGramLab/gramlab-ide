@@ -48,7 +48,7 @@ import fr.umlv.unitex.text.BigTextList;
  */
 public class TfstTagsFrame extends JInternalFrame {
     private final BigTextList text = new BigTextList(false);
-
+	
     TfstTagsFrame() {
         super("Tfst tag list", true, true, true, true);
         JPanel top = new JPanel(new BorderLayout());

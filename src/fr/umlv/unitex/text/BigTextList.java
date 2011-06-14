@@ -44,7 +44,7 @@ public class BigTextList extends JList {
      * @param isDelaf if true, the list will use a special renderer dedicated
      *                to DELAF lines
      */
-    private BigTextList(TextAsListModel m, boolean isDelaf) {
+    private BigTextList(TextAsListModelImpl m, boolean isDelaf) {
         super(m);
         /* Set maximal length of a line:
            * This value must big enough holding even the longest dlc entries,
@@ -171,30 +171,30 @@ public class BigTextList extends JList {
         }
     }
 
-    public BigTextList(TextAsListModel m) {
+    public BigTextList(TextAsListModelImpl m) {
         this(m, false);
     }
 
     public BigTextList(boolean b) {
-        this(new TextAsListModel(), b);
+        this(new TextAsListModelImpl(), b);
     }
 
     public BigTextList() {
-        this(new TextAsListModel(), false);
+        this(new TextAsListModelImpl(), false);
     }
 
     public void load(File f) {
-        TextAsListModel model = (TextAsListModel) getModel();
+        TextAsListModelImpl model = (TextAsListModelImpl) getModel();
         model.load(f);
     }
 
     public void reset() {
-        TextAsListModel model = (TextAsListModel) getModel();
+        TextAsListModelImpl model = (TextAsListModelImpl) getModel();
         model.reset();
     }
 
     public void setText(String string) {
-        TextAsListModel model = (TextAsListModel) getModel();
+        TextAsListModelImpl model = (TextAsListModelImpl) getModel();
         model.setText(string);
     }
 }

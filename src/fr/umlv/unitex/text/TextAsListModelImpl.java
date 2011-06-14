@@ -43,7 +43,7 @@ import javax.swing.SwingWorker;
  *
  * @author Sébastien Paumier
  */
-public class TextAsListModel extends AbstractListModel {
+public class TextAsListModelImpl extends AbstractListModel {
 
     private MappedByteBuffer buffer;
     private int dataLength;
@@ -156,7 +156,7 @@ public class TextAsListModel extends AbstractListModel {
         worker.execute();
     }
 
-    public TextAsListModel() {
+    public TextAsListModelImpl() {
         super();
         dataFromFile = false;
         setText("");
