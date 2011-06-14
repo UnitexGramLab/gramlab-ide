@@ -26,16 +26,21 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.util.ArrayList;
 
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.tfst.Bounds;
+import fr.umlv.unitex.tfst.tagging.TaggingModel;
 
 /**
  * This class describes a component on which a sentence graph can be drawn.
@@ -45,6 +50,8 @@ import fr.umlv.unitex.tfst.Bounds;
 public class TfstGraphicalZone extends GenericGraphicalZone implements
         Printable {
 
+	TaggingModel model;
+	
     /**
      * Constructs a new <code>TfstGraphicalZone</code>.
      *
@@ -55,6 +62,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
     public TfstGraphicalZone(GraphIO gio, TfstTextField t,
                              TextAutomatonFrame p, boolean listeners) {
         super(gio, t, p, null);
+        model=new TaggingModel(this);
+        setDecorator(new GraphDecorator(model));
         if (listeners) {
             addMouseListener(new FstGraphMouseListener());
         }
@@ -102,10 +111,15 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
                     unSelectAllBoxes();
                 }
             } else if (e.isControlDown()) {
-                /*
-                     * We don't allow box creation in the text automaton, since it
-                     * is too complicated to keep text bounds up to date
-                     */
+                /* In the text automaton, Ctrl+click is used to select
+                 * a box for tagging */
+                boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
+                        (int) (e.getY() / scaleFactor));
+                if (boxSelected != -1) {
+                    // if we click on a box
+                    b = (TfstGraphBox) graphBoxes.get(boxSelected);
+                    model.selectBox(b);
+                }
             } else {
                 boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
                         (int) (e.getY() / scaleFactor));
@@ -298,6 +312,26 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         setPreferredSize(new Dimension(d));
     }
 
+    
+    private ArrayList<ActionListener> listeners=new ArrayList<ActionListener>();
+    private boolean firing=false;
+    public void addActionListner(ActionListener l) {
+    	listeners.add(l);
+    }
+    public void removeActionListner(ActionListener l) {
+    	if (firing) {
+    		throw new IllegalStateException("Cannot remove a listener while firing");
+    	}
+    	listeners.remove(l);
+    }
+    protected void fireActionPerformed() {
+    	ActionEvent e=new ActionEvent(this,0,null);
+    	for (ActionListener l:listeners) {
+    		l.actionPerformed(e);
+    	}
+    }
+
+    
     public void setup(GraphIO g) {
         Dimension d = new Dimension(g.width, g.height);
         setSize(d);
@@ -311,6 +345,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         setGraphPresentationInfo(g.info);
         revalidate();
         repaint();
+        fireActionPerformed();
     }
 
+    public boolean isBoxToBeRemoved(TfstGraphBox box) {
+    	return model.isToBeRemoved(box);
+    }
+    
 }
