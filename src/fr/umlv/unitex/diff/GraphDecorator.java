@@ -245,7 +245,7 @@ public class GraphDecorator {
 			|| hasBeenRemoved(boxNumber)
 			|| hasMoved(boxNumber)
 			|| boxNumber==currentBox
-			|| (model!=null && TaggingState.SELECTED==model.getBoxState(boxNumber));
+			|| (model!=null && TaggingState.SELECTED==model.getBoxStateTfst(boxNumber));
 	}
 
 	public boolean isHighlighted(int boxNumber) {
