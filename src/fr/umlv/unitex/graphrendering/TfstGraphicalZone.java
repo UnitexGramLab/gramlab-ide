@@ -233,8 +233,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
                 int shiftY=Y_current_scrolling-Y_start_scrolling;
                 JScrollPane scroll=((TextAutomatonFrame)parentFrame).scrollPane;
                 JViewport view=scroll.getViewport();
-                int newX=view.getViewPosition().x+shiftX;
-                int newY=view.getViewPosition().y+shiftY;
+                int newX=view.getViewPosition().x-shiftX;
+                int newY=view.getViewPosition().y-shiftY;
                 if (newX<0) newX=0;
                 if (newY<0) newY=0;
                 int maxX=getWidth()-view.getWidth();
@@ -242,8 +242,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
                 if (newX>maxX) newX=maxX;
                 if (newY>maxY) newY=maxY;
                 view.setViewPosition(new Point(newX,newY));
-                X_start_scrolling=X_current_scrolling+shiftX;
-                Y_start_scrolling=Y_current_scrolling+shiftY;
+                X_start_scrolling=X_current_scrolling-shiftX;
+                Y_start_scrolling=Y_current_scrolling-shiftY;
         		return;
         	}
             hasMoved = true;
