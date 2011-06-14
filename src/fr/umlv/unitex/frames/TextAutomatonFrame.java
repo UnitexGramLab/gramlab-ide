@@ -35,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -79,7 +80,10 @@ import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
 import fr.umlv.unitex.graphrendering.TfstTextField;
 import fr.umlv.unitex.io.GraphIO;
@@ -98,6 +102,7 @@ import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokensInfo;
+import fr.umlv.unitex.tfst.tagging.TaggingModel;
 
 /**
  * This class describes a frame used to display sentence automata.
@@ -118,7 +123,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     private JLabel ruleslabel;
     JScrollBar tfstScrollbar;
     private TfstGraphicalZone graphicalZone;
-
+    
     private final GraphListener listener = new GraphListener() {
         public void graphChanged(boolean m) {
             if (m) setModified(true);
@@ -447,7 +452,7 @@ public class TextAutomatonFrame extends JInternalFrame {
     }
 
     private JPanel constructCornerPanel() {
-        JPanel cornerPanel = new JPanel(new GridLayout(5, 1));
+        JPanel cornerPanel = new JPanel(new GridLayout(6, 1));
         cornerPanel.setBorder(BorderFactory.createRaisedBevelBorder());
         cornerPanel.add(sentence_count_label);
         JPanel middle = new JPanel(new BorderLayout());
@@ -499,6 +504,20 @@ public class TextAutomatonFrame extends JInternalFrame {
             }
         });
         cornerPanel.add(elagButton);
+        
+        JButton deleteStates=new JButton("Remove greyed states");
+        deleteStates.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<GenericGraphBox> boxes=new ArrayList<GenericGraphBox>();
+				for (GenericGraphBox gb:graphicalZone.graphBoxes) {
+					if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
+						boxes.add(gb);
+					}
+				}
+				graphicalZone.removeBoxes(boxes);
+			}
+		});
+        cornerPanel.add(deleteStates);
         return cornerPanel;
     }
 

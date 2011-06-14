@@ -53,7 +53,7 @@ public class DebugGraphPane extends JPanel {
 	private DebugInfos infos;
 	
 	private int currentGraph=-1;
-	private GraphDecorator decorator=new GraphDecorator();
+	private GraphDecorator decorator=new GraphDecorator(null);
 	
 	private JScrollPane scroll=null;
 	private HashMap<File,Point> scrollPreferences=new HashMap<File,Point>();

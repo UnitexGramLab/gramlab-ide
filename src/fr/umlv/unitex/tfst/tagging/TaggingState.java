@@ -19,28 +19,20 @@
  *
  */
 
-package fr.umlv.unitex.diff;
+package fr.umlv.unitex.tfst.tagging;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Stroke;
+public enum TaggingState {
 
-public class GraphDecoratorConfig {
-
-	public static final Color ADDED=Color.GREEN;
-	public static final Color REMOVED=Color.RED;
-	public static final Color MOVED=new Color(0xC4, 0x4F, 0xD0);
-	public static final Color CONTENT_CHANGED=Color.ORANGE;
-	public static final Color DEBUG_HIGHLIGHT=Color.GREEN;
+	/* The box has been selected by the user */
+	SELECTED,
 	
-	/* Values used for tagging the text automaton */
-	public static final float SHADE_ALPHA=0.2f;
-	public static final Color SHADED=new Color(0f,0f,0f,SHADE_ALPHA);
-	public static final Composite SHADE_COMPOSITE=AlphaComposite.getInstance(AlphaComposite.SRC_OVER,SHADE_ALPHA);
-	public static final Color LINEAR_TFST=Color.GREEN;
+	/* The box is competing with a selected box and so,
+	 * must be discarded */
+	TO_BE_REMOVED,
 	
-	public static final Stroke STROKE=new BasicStroke(3);
-
+	/* The box is not both accessible and co-accessible */
+	USELESS,
+	
+	/* None of previous cases */
+	NEUTRAL
 }

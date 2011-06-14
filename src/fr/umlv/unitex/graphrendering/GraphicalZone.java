@@ -381,7 +381,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
             f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
         }
         f.setColor(info.foregroundColor);
-        if (diff==null) {
+        if (decorator==null) {
         File file = ((GraphFrame) parentFrame).getGraph();
         	if (info.filename) {
         		if (info.pathname)

@@ -130,12 +130,11 @@ public class TfstTableModel extends AbstractTableModel {
         list.add(t);
         ArrayList<GenericGraphBox> transitions = t.getTransitions();
         if (transitions.size() == 0) {
-            throw new IllegalStateException("Should not happen");
+            return;
         }
         TfstGraphBox tmp = (TfstGraphBox) transitions.get(0);
         if (!t.isNextBoxInSameToken(tmp)) {
             addInterpretation(list);
-
         } else {
             for (GenericGraphBox b : transitions) {
                 tmp = (TfstGraphBox) b;
