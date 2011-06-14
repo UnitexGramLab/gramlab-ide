@@ -23,6 +23,7 @@ package fr.umlv.unitex.graphrendering;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.util.InputMismatchException;
@@ -263,7 +264,12 @@ public class TfstGraphBox extends GenericGraphBox {
         if ((Config.isKorean() || Config.isKoreanJeeSun()) && isKoreanUntaggedToken(content)) {
             parentGraphicalZone.info.backgroundColor = koreanUntaggedTokenColor;
         }
+        Composite c=g.getComposite();
+        if (parentGraphicalZone.decorator!=null) {
+        	g.setComposite(parentGraphicalZone.decorator.getBoxComposite(getBoxNumber(),c));
+        }
         super.drawOther(g);
+        g.setComposite(c);
         parentGraphicalZone.info.backgroundColor = old;
     }
 

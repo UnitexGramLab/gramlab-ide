@@ -102,10 +102,10 @@ public abstract class GenericGraphicalZone extends JComponent {
     private Rectangle clipZone;
     
     /**
-     * If diff is null, it is the normal display case. If not,
+     * If decorator is null, it is the normal display case. If not,
      * we use special drawing tricks.
      */
-    GraphDecorator diff;
+    GraphDecorator decorator;
     
     /**
      * Indicates mouse's editing mode
@@ -122,7 +122,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         text = t;
         text.setEditable(false);
         parentFrame = p;
-        this.diff=diff;
+        this.decorator=diff;
         selectedBoxes = new ArrayList<GenericGraphBox>();
         setBackground(Color.white);
         addGraphTextListener(new GraphTextListener() {
@@ -234,6 +234,22 @@ public abstract class GenericGraphicalZone extends JComponent {
             }
         }
     }
+    
+    private void removeBox(GenericGraphBox box) {
+    	graphBoxes.remove(box);
+    	for (GenericGraphBox b:graphBoxes) {
+    		b.transitions.remove(box);
+    	}
+    }
+    
+    public void removeBoxes(ArrayList<GenericGraphBox> boxes) {
+    	for (GenericGraphBox b:boxes) {
+    		removeBox(b);
+    	}
+    	fireGraphChanged(true);
+    	repaint();
+    }
+    
 
     /**
      * Removes all transitions that go to a specified graph box
@@ -878,4 +894,8 @@ public abstract class GenericGraphicalZone extends JComponent {
         }
     }
 
+    
+    public void setDecorator(GraphDecorator d) {
+    	this.decorator=d;
+    }
 }

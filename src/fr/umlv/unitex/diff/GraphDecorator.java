@@ -22,6 +22,7 @@
 package fr.umlv.unitex.diff;
 
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Stroke;
 import java.io.File;
@@ -33,6 +34,8 @@ import java.util.Scanner;
 import javax.swing.JLabel;
 
 import fr.umlv.unitex.debug.Coverage;
+import fr.umlv.unitex.tfst.tagging.TaggingModel;
+import fr.umlv.unitex.tfst.tagging.TaggingState;
 
 public class GraphDecorator {
 
@@ -51,12 +54,19 @@ public class GraphDecorator {
 	private int currentBox=-1;
 	private int currentLine=-1;
 	
+	/* This is used for tagging display in text automaton */
+	private TaggingModel model;
+	
 	private Coverage coverage=null;
+
+	public GraphDecorator(TaggingModel model) {
+		this.model=model;
+	}
 	
 	public static GraphDecorator loadDiffFile(File f) {
 		try {
 			Scanner scanner=new Scanner(f,"UTF-8");
-			GraphDecorator info=new GraphDecorator();
+			GraphDecorator info=new GraphDecorator(null);
 			while (scanner.hasNext()) {
 				try {
 					String s=scanner.next();
@@ -122,7 +132,7 @@ public class GraphDecorator {
 	
 	@SuppressWarnings("unchecked")
 	public GraphDecorator clone(boolean b) {
-		GraphDecorator info=new GraphDecorator();
+		GraphDecorator info=new GraphDecorator(null);
 		info.base=b;
 		info.propertyOps=(ArrayList<String>) propertyOps.clone();
 		info.boxAdded=(ArrayList<Integer>) boxAdded.clone();
@@ -187,6 +197,10 @@ public class GraphDecorator {
 	public Color getTransitionColor(int boxNumber, int destNumber,Color c) {
 		if (transitionAdded(boxNumber,destNumber)) return GraphDecoratorConfig.ADDED;
 		if (transitionRemoved(boxNumber,destNumber)) return GraphDecoratorConfig.REMOVED;
+		if (model!=null && (model.isToBeRemovedTfstIndex(boxNumber) || model.isToBeRemovedTfstIndex(destNumber))) {
+			return GraphDecoratorConfig.SHADED;
+		}
+		if (model!=null && model.isLinearTfst()) return GraphDecoratorConfig.LINEAR_TFST;
 		return c;
 	}
 
@@ -202,6 +216,9 @@ public class GraphDecorator {
 		if (hasBeenRemoved(boxNumber)) return GraphDecoratorConfig.STROKE;
 		if (hasMoved(boxNumber)) return GraphDecoratorConfig.STROKE;
 		if (boxNumber==currentBox) return GraphDecoratorConfig.STROKE;
+		if (model!=null && model.isSelected(boxNumber)) {
+			return GraphDecoratorConfig.STROKE;
+		}
 		return s;
 	}
 
@@ -211,7 +228,12 @@ public class GraphDecorator {
 		if (hasBeenRemoved(boxNumber)) return GraphDecoratorConfig.REMOVED;
 		if (hasMoved(boxNumber)) return GraphDecoratorConfig.MOVED;
 		if (boxNumber==currentBox) return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
+		if (model!=null && model.isLinearTfst()) return GraphDecoratorConfig.LINEAR_TFST;
 		return c;
+	}
+	
+	public boolean isLinearTfst() {
+		return model!=null && model.isLinearTfst();
 	}
 	
 	public boolean isBoxLineHighlighted(int boxNumber,int lineNumber) {
@@ -222,7 +244,8 @@ public class GraphDecorator {
 		return hasBeenAdded(boxNumber) 
 			|| hasBeenRemoved(boxNumber)
 			|| hasMoved(boxNumber)
-			|| boxNumber==currentBox;
+			|| boxNumber==currentBox
+			|| (model!=null && TaggingState.SELECTED==model.getBoxState(boxNumber));
 	}
 
 	public boolean isHighlighted(int boxNumber) {
@@ -234,6 +257,10 @@ public class GraphDecorator {
 		return c;
 	}
 
+	public Composite getBoxComposite(int boxNumber,Composite c) {
+		if (model!=null && model.isToBeRemovedTfstIndex(boxNumber)) return GraphDecoratorConfig.SHADE_COMPOSITE;
+		return c;
+	}
 
 	public void clear() {
 		propertyOps.clear();
