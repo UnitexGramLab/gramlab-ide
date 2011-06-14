@@ -110,7 +110,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
                     // simple click not on a box
                     unSelectAllBoxes();
                 }
-            } else if (e.isControlDown()) {
+            } else if (e.isControlDown() || e.getButton()==MouseEvent.BUTTON3) {
                 /* In the text automaton, Ctrl+click is used to select
                  * a box for tagging */
                 boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
@@ -149,7 +149,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         public void mousePressed(MouseEvent e) {
             int selectedBox;
             addMouseMotionListener(motionListener);
-            if (e.isShiftDown() || e.isAltDown() || e.isControlDown()) {
+            if (e.getButton()==MouseEvent.BUTTON3 || e.isShiftDown() || e.isAltDown() || e.isControlDown()) {
                 return;
             }
             validateContent();
@@ -183,7 +183,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
         @Override
         public void mouseReleased(MouseEvent e) {
             removeMouseMotionListener(motionListener);
-            if (e.isShiftDown() || e.isAltDown() || e.isControlDown())
+            if (e.getButton()==MouseEvent.BUTTON3 || e.isShiftDown() || e.isAltDown() || e.isControlDown())
                 return;
             dragging = false;
             if (singleDragging) {
