@@ -61,7 +61,7 @@ public class BigTextArea extends JPanel {
     private static final int INFIX_SELECTED = 3;
     private static final int SUFFIX_SELECTED = 4;
 
-    private final TextAsListModel model;
+    private final TextAsListModelImpl model;
     private final JTextPane area;
     private final JScrollBar scrollBar;
     private final StyledDocument document;
@@ -70,7 +70,7 @@ public class BigTextArea extends JPanel {
     private final StringBuilder builder = new StringBuilder(10000);
 
 
-    private BigTextArea(TextAsListModel m) {
+    private BigTextArea(TextAsListModelImpl m) {
         super(new BorderLayout());
         model = m;
         area = new JTextPane();
@@ -129,7 +129,7 @@ public class BigTextArea extends JPanel {
 
 
     public BigTextArea() {
-        this(new TextAsListModel());
+        this(new TextAsListModelImpl());
     }
 
     public BigTextArea(File file) {
