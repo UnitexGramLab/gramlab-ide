@@ -23,6 +23,7 @@ package fr.umlv.unitex.text;
 
 import java.awt.Component;
 import java.io.File;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
@@ -186,6 +187,11 @@ public class BigTextList extends JList {
     public void load(File f) {
         TextAsListModelImpl model = (TextAsListModelImpl) getModel();
         model.load(f);
+    }
+
+    public void load(File f,Pattern p) {
+        TextAsListModelImpl model = (TextAsListModelImpl) getModel();
+        model.load(f,p);
     }
 
     public void reset() {

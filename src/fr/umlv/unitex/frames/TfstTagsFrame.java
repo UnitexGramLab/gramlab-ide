@@ -25,6 +25,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -125,7 +126,8 @@ public class TfstTagsFrame extends JInternalFrame {
         if (file.length() <= 2) {
             text.setText(Config.EMPTY_FILE_MESSAGE);
         } else {
-            text.load(file);
+        	Pattern p=Pattern.compile(".*PREP.*");
+            text.load(file,/*p*/null);
         }
         return true;
     }

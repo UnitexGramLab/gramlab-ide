@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +61,10 @@ public class TextAsListModelImpl extends AbstractListModel {
     private int numberOfEOL;
 
     public void load(File f) {
+    	load(f,null);
+    }
+
+    public void load(File f,final Pattern filter) {
         content = null;
         dataFromFile = true;
         this.file = f;
@@ -92,15 +97,28 @@ public class TextAsListModelImpl extends AbstractListModel {
             @Override
             protected Void doInBackground() throws Exception {
                 int lastStart = 0;
+                StringBuilder builder=new StringBuilder();
                 for (int pos = 0; pos < dataLength; pos = pos + 1) {
                     int a = 0xFF & parseBuffer.get();
                     int b = 0xFF & parseBuffer.get();
                     char c = (char) (b << 8 | a);
                     if (c == '\n') {
                         // if we have an end-of-line
-                        publish(pos);
+                    	boolean publish=false;
+                    	if (filter==null) {
+                    		publish(pos);
+                    	} else {
+                    		Matcher m=filter.matcher(builder.toString());
+                    		if (m.matches()) publish(pos);
+                    	}
+                        builder.setLength(0);
                         setProgress((int) ((long) pos * 100 / dataLength));
-                        lastStart = pos + 1;
+                        if (publish) {
+                        	publish(pos);
+                        	lastStart = pos + 1;
+                        }
+                    } else {
+                    	if (filter!=null && c!='\r') builder.append(c);
                     }
                 }
                 if (lastStart < (dataLength - 1)) {
