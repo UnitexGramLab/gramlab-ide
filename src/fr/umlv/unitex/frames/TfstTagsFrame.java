@@ -21,24 +21,33 @@
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.text.ParseException;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.RegexFormatter;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.text.BigTextList;
 
@@ -49,6 +58,7 @@ import fr.umlv.unitex.text.BigTextList;
  */
 public class TfstTagsFrame extends JInternalFrame {
     private final BigTextList text = new BigTextList(false);
+	final JFormattedTextField pattern=new JFormattedTextField(new RegexFormatter());
 	
     TfstTagsFrame() {
         super("Tfst tag list", true, true, true, true);
@@ -77,6 +87,22 @@ public class TfstTagsFrame extends JInternalFrame {
     }
 
     private JPanel constructButtonsPanel() {
+    	JPanel top=new JPanel(new GridLayout(2,1));
+    	JPanel top2=new JPanel(new BorderLayout());
+    	top2.add(new JLabel("Regex filter: "),BorderLayout.WEST);
+		pattern.addCaretListener(new CaretListener() {
+			public void caretUpdate(CaretEvent e) {
+				try {
+					pattern.commitEdit();
+					pattern.setForeground(Color.BLACK);
+				} catch (ParseException e2) {
+					pattern.setForeground(Color.RED);
+				}
+				
+			}
+		});
+    	top2.add(pattern,BorderLayout.CENTER);
+    	top.add(top2);
         JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
         Action frequenceAction = new AbstractAction("By Frequence") {
             public void actionPerformed(ActionEvent arg0) {
@@ -112,7 +138,8 @@ public class TfstTagsFrame extends JInternalFrame {
         tmp2.add(byCharOrder, BorderLayout.CENTER);
         buttonsPanel.add(tmp1);
         buttonsPanel.add(tmp2);
-        return buttonsPanel;
+        top.add(buttonsPanel);
+        return top;
     }
 
     /**
@@ -126,8 +153,18 @@ public class TfstTagsFrame extends JInternalFrame {
         if (file.length() <= 2) {
             text.setText(Config.EMPTY_FILE_MESSAGE);
         } else {
-        	Pattern p=Pattern.compile(".*PREP.*");
-            text.load(file,/*p*/null);
+    		/* We don't use pattern.getValue(), because in order to
+    		 * match lines, we have to add .* before and after the actual
+    		 * pattern entered by the user */
+    		Pattern p1=null;
+    		try {
+    			if (!pattern.getText().equals("")) {
+    				p1=Pattern.compile(".*"+pattern.getText()+".*");
+    			}
+    		} catch (PatternSyntaxException e2) {
+    			p1=null;
+    		}
+            text.load(file,p1);
         }
         return true;
     }
