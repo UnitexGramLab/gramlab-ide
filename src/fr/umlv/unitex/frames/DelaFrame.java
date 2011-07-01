@@ -46,7 +46,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
-import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -55,6 +54,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.RegexFormatter;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.ToDo;
@@ -134,26 +134,6 @@ public class DelaFrame extends JInternalFrame {
                 t2.start();
             }
         });
-    }
-
-    class RegexFormatter extends AbstractFormatter {
-
-		@Override
-		public Object stringToValue(String s) throws ParseException {
-			try {
-				return Pattern.compile(s);
-			} catch (PatternSyntaxException e) {
-				throw new ParseException("Invalid regular expression",0);
-			}
-		}
-
-		@Override
-		public String valueToString(Object value) throws ParseException {
-			if (value==null) return "";
-			Pattern p=(Pattern)value;
-			return p.pattern();
-		}
-    	
     }
     
     private JPanel constructFindPanel() {
