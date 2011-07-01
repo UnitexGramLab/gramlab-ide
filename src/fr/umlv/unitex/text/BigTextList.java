@@ -186,11 +186,13 @@ public class BigTextList extends JList {
 
     public void load(File f) {
         TextAsListModelImpl model = (TextAsListModelImpl) getModel();
+        model.reset();
         model.load(f);
     }
 
     public void load(File f,Pattern p) {
         TextAsListModelImpl model = (TextAsListModelImpl) getModel();
+        model.reset();
         model.load(f,p);
     }
 
