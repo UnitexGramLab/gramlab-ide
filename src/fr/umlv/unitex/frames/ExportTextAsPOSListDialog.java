@@ -29,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JDialog;
@@ -37,6 +39,7 @@ import javax.swing.JProgressBar;
 
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
@@ -48,7 +51,7 @@ import fr.umlv.unitex.tfst.TokensInfo;
 
 public class ExportTextAsPOSListDialog extends JDialog {
     private File output;
-    private boolean canceled = false;
+    boolean canceled = false;
     private final JProgressBar progress = new JProgressBar();
     private TagFilter filter;
 
@@ -108,7 +111,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
                         "foo.tok");
                 TfstTableModel model = new TfstTableModel(filter, false);
                 try {
-                    FileOutputStream stream = UnicodeIO.openUnicodeLittleEndianFileOutputStream(output);
+                    OutputStreamWriter writer=Config.getEncoding().getOutputStreamWriter(output);
                     for (int i = 1; i <= sentenceCount; i++) {
                         if (canceled) {
                             break;
@@ -125,21 +128,19 @@ public class ExportTextAsPOSListDialog extends JDialog {
                         GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
                         model.init(g.boxes);
                         if (model.getRowCount() == 0) {
-                            /*
-                                    * If the sentence automaton has been emptied, we
-                                    * generate the token list, excluding spaces
-                                    */
+                            /* If the sentence automaton has been emptied, we
+                             * generate the token list, excluding spaces */
                             for (int j = 0; j < TokensInfo.getTokenCount(); j++) {
                                 String s = TokensInfo.getTokenAsString(j);
-                                UnicodeIO.writeString(stream, s);
+                                UnicodeIO.writeString(writer, s);
                             }
                         } else
                             for (int j = 0; j < model.getRowCount(); j++) {
                                 TokenTags t = model.getTokenTags(j);
-                                UnicodeIO.writeString(stream, t.toString() + " ");
+                                UnicodeIO.writeString(writer, t.toString() + " ");
                             }
                         /* And we add a sentence delimiter */
-                        UnicodeIO.writeString(stream, "{S}\n");
+                        UnicodeIO.writeString(writer, "{S}\n");
                         final int z = i;
                         EventQueue.invokeLater(new Runnable() {
                             public void run() {
@@ -148,7 +149,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
                             }
                         });
                     }
-                    stream.close();
+                    writer.close();
                 } catch (IOException e1) {
                     /* nop */
                 } finally {
@@ -158,10 +159,9 @@ public class ExportTextAsPOSListDialog extends JDialog {
                     sentenceTok.delete();
                     try {
                         /* We have to wait a little bit because if the text is too
-                               * small, we may have finished before setVisible(true) is
-                               * invoked. In that case, the JDialog made visible could never
-                               * become invisible again, blocking the user
-                               */
+                         * small, we may have finished before setVisible(true) is
+                         * invoked. In that case, the JDialog made visible could never
+                         * become invisible again, blocking the user */
                         Thread.sleep(100);
                     } catch (InterruptedException e2) {
                         e2.printStackTrace();
@@ -185,15 +185,13 @@ public class ExportTextAsPOSListDialog extends JDialog {
     String readSentenceText(File f) {
         String s = "";
         try {
-            FileInputStream br = UnicodeIO
-                    .openUnicodeLittleEndianFileInputStream(f);
-            s = UnicodeIO.readLine(br);
+            InputStreamReader reader=Encoding.getInputStreamReader(f); 
+            if (reader==null) return null;
+            s = UnicodeIO.readLine(reader);
             if (s == null || s.equals("")) {
                 return "";
             }
-            br.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            e.printStackTrace();
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

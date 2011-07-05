@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -104,7 +105,7 @@ public class GraphCollection {
             return;
         }
         File destinationDir = destGraph.getParentFile();
-        FileOutputStream stream;
+        OutputStreamWriter writer;
         try {
             if (!destinationDir.exists()) {
                 destinationDir.mkdirs();
@@ -118,45 +119,40 @@ public class GraphCollection {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try {
-            stream = new FileOutputStream(destGraph);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-        UnicodeIO.writeChar(stream, (char) 0xFEFF);
-        UnicodeIO.writeString(stream, "#Unigraph\n");
-        UnicodeIO.writeString(stream, "SIZE 1188 840\n");
-        UnicodeIO.writeString(stream, "FONT Times New Roman:  10\n");
-        UnicodeIO.writeString(stream, "OFONT Times New Roman:B 12\n");
-        UnicodeIO.writeString(stream, "BCOLOR 16777215\n");
-        UnicodeIO.writeString(stream, "FCOLOR 0\n");
-        UnicodeIO.writeString(stream, "ACOLOR 13487565\n");
-        UnicodeIO.writeString(stream, "SCOLOR 16711680\n");
-        UnicodeIO.writeString(stream, "CCOLOR 255\n");
-        UnicodeIO.writeString(stream, "DBOXES y\n");
-        UnicodeIO.writeString(stream, "DFRAME y\n");
-        UnicodeIO.writeString(stream, "DDATE y\n");
-        UnicodeIO.writeString(stream, "DFILE y\n");
-        UnicodeIO.writeString(stream, "DDIR n\n");
-        UnicodeIO.writeString(stream, "DRIG n\n");
-        UnicodeIO.writeString(stream, "DRST n\n");
-        UnicodeIO.writeString(stream, "FITS 100\n");
-        UnicodeIO.writeString(stream, "PORIENT L\n");
-        UnicodeIO.writeString(stream, "#\n");
-        UnicodeIO.writeString(stream, "6\n");
-        UnicodeIO.writeString(stream, "\"<E>\" 42 372 2 4 5 \n");
-        UnicodeIO.writeString(stream, "\"\" 574 238 0 \n");
+        writer=Config.getEncoding().getOutputStreamWriter(destGraph);
+        UnicodeIO.writeChar(writer, (char) 0xFEFF);
+        UnicodeIO.writeString(writer, "#Unigraph\n");
+        UnicodeIO.writeString(writer, "SIZE 1188 840\n");
+        UnicodeIO.writeString(writer, "FONT Times New Roman:  10\n");
+        UnicodeIO.writeString(writer, "OFONT Times New Roman:B 12\n");
+        UnicodeIO.writeString(writer, "BCOLOR 16777215\n");
+        UnicodeIO.writeString(writer, "FCOLOR 0\n");
+        UnicodeIO.writeString(writer, "ACOLOR 13487565\n");
+        UnicodeIO.writeString(writer, "SCOLOR 16711680\n");
+        UnicodeIO.writeString(writer, "CCOLOR 255\n");
+        UnicodeIO.writeString(writer, "DBOXES y\n");
+        UnicodeIO.writeString(writer, "DFRAME y\n");
+        UnicodeIO.writeString(writer, "DDATE y\n");
+        UnicodeIO.writeString(writer, "DFILE y\n");
+        UnicodeIO.writeString(writer, "DDIR n\n");
+        UnicodeIO.writeString(writer, "DRIG n\n");
+        UnicodeIO.writeString(writer, "DRST n\n");
+        UnicodeIO.writeString(writer, "FITS 100\n");
+        UnicodeIO.writeString(writer, "PORIENT L\n");
+        UnicodeIO.writeString(writer, "#\n");
+        UnicodeIO.writeString(writer, "6\n");
+        UnicodeIO.writeString(writer, "\"<E>\" 42 372 2 4 5 \n");
+        UnicodeIO.writeString(writer, "\"\" 574 238 0 \n");
         UnicodeIO.writeString(
-                stream,
+                writer,
                 "\"Grammars corresponding+to sub-directories:\" 34 186 0 \n");
         UnicodeIO.writeString(
-                stream,
+                writer,
                 "\"Grammars corresponding to graphs:\" 180 348 0 \n");
 
         if (stop) {
             try {
-                stream.close();
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -171,7 +167,7 @@ public class GraphCollection {
             String fileName = aFiles_list1.getName();
             if (stop) {
                 try {
-                    stream.close();
+                    writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -205,7 +201,7 @@ public class GraphCollection {
         } else {
             graphLine = graphLine + "\" 125 238 1 1 \n";
         }
-        UnicodeIO.writeString(stream, graphLine);
+        UnicodeIO.writeString(writer, graphLine);
 
         // then, we parse graphs
         graphLine = "\"";
@@ -213,7 +209,7 @@ public class GraphCollection {
             String fileName = aFiles_list.getName();
             if (stop) {
                 try {
-                    stream.close();
+                    writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -246,17 +242,17 @@ public class GraphCollection {
         } else {
             graphLine = graphLine + "\" 416 372 1 1 \n";
         }
-        UnicodeIO.writeString(stream, graphLine);
+        UnicodeIO.writeString(writer, graphLine);
         if (stop) {
             try {
-                stream.close();
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return;
         }
         try {
-            stream.close();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

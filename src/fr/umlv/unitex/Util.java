@@ -199,11 +199,9 @@ public class Util {
             if (!f.exists()) {
                 f.createNewFile();
             }
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(f), "UTF-16LE"));
-            bw.write('\ufeff');
-            bw.write(s, 0, s.length());
-            bw.close();
+            OutputStreamWriter writer=Config.getEncoding().getOutputStreamWriter(f);
+            writer.write(s, 0, s.length());
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

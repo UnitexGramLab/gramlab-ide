@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
@@ -41,6 +42,7 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.text.BigTextArea;
@@ -93,7 +95,7 @@ public class TextFrame extends JInternalFrame {
     private void loadStatistics() {
         ligne1.setText("");
         ligne2.setText("");
-        FileInputStream source;
+        InputStreamReader reader;
         String s;
         s = UnicodeIO.readFirstLine(new File(Config.getCurrentSntDir(),
                 "stats.n"));
@@ -125,13 +127,12 @@ public class TextFrame extends JInternalFrame {
         int compound_total;
         int err_total;
         try {
-            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(f);
-            simple_total = Integer.parseInt(UnicodeIO.readLine(source));
-            compound_total = Integer.parseInt(UnicodeIO.readLine(source));
-            err_total = Integer.parseInt(UnicodeIO.readLine(source));
-            source.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            return;
+            reader=Encoding.getInputStreamReader(f);
+            if (reader==null) return;
+            simple_total = Integer.parseInt(UnicodeIO.readLine(reader));
+            compound_total = Integer.parseInt(UnicodeIO.readLine(reader));
+            err_total = Integer.parseInt(UnicodeIO.readLine(reader));
+            reader.close();
         } catch (FileNotFoundException e) {
             return;
         } catch (IOException e) {

@@ -75,13 +75,6 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
-    /*public String getLexicalDir() {
-        if (Preferences.lexicalPackagePath() != null) {
-            final String lexicalPath = Preferences.lexicalPackagePath().toString().substring(Preferences.lexicalPackagePath().toString().indexOf("Dela"), Preferences.lexicalPackagePath().toString().length());
-            return lexicalPath;
-        }
-		return "Dela";
-    }*/
 
     private JPanel constructMainPanel() {
         JPanel main = new JPanel(new BorderLayout());

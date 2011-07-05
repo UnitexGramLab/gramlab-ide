@@ -68,6 +68,7 @@ import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
@@ -1006,16 +1007,10 @@ public class UnitexFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try {
-            FileInputStream source = UnicodeIO
-                    .openUnicodeLittleEndianFileInputStream(f);
-            source.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
+        if (null==Encoding.getEncoding(f)) {
             JOptionPane.showMessageDialog(null, name
-                    + " is not a Unicode Little-Endian lexicon grammar table",
+                    + " is not a Unicode lexicon grammar table",
                     "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        } catch (IOException e) {
             return;
         }
         frameManager.newLexiconGrammarTableFrame(f);
@@ -1236,16 +1231,13 @@ public class UnitexFrame extends JFrame {
                 frameManager.newDelaFrame(dela);
             }
         };
-        try {
-            if (!UnicodeIO.isAUnicodeLittleEndianFile(dela)) {
-                UnitexFrame.getFrameManager().newTranscodeOneFileDialog(dela,
-                        toDo);
-            } else {
-                toDo.toDo();
-            }
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
+        if (null==Encoding.getEncoding(dela)
+				/*UnicodeIO.isAUnicodeLittleEndianFile(dela)*/) {
+		    UnitexFrame.getFrameManager().newTranscodeOneFileDialog(dela,
+		            toDo);
+		} else {
+		    toDo.toDo();
+		}
     }
 
     /**

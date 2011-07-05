@@ -139,7 +139,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
                     temp[insertPos++] = i;
                 }
                 /* If we keep the following instructions in this order,
-                     * there is no need to synchronize */
+                 * there is no need to synchronize */
                 endOfLines = temp;
                 numberOfEOL = newSize;
                 fireIntervalAdded(this, oldSize, newSize - 1);
@@ -171,8 +171,8 @@ public class ConcordanceAsListModel extends AbstractListModel {
      */
     String getElementReallyAt(int i) {
         Interval interval = getInterval(i);
-        long start = interval.getStart() + 15; // we don't want neither the <tr><td nowrap>
-        long end = interval.getEnd() - 12;     // nor the </td></tr>\r\n
+        long start = interval.getStartInBytes() + 15; // we don't want neither the <tr><td nowrap>
+        long end = interval.getEndInBytes() - 12;     // nor the </td></tr>\r\n
         byte[] tmp = new byte[(int) (end - start + 1)];
         int z = 0;
         for (long pos = start; pos <= end; pos++) {
@@ -184,7 +184,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
     Interval getInterval(int i) {
         int end = endOfLines[i];
         int start = (i == 0) ? 0 : (endOfLines[i - 1] + 1);
-        return new Interval(start, end);
+        return new Interval(start,end,-1,-1);
     }
 
     /**
