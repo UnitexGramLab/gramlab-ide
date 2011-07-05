@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.FontListener;
 
 
@@ -110,6 +111,8 @@ public class Preferences {
     public static String ICON_BAR_DEFAULT = ICON_BAR_NORTH;
 
     public GraphPresentationInfo info;
+    
+    public Encoding encoding;
 
     /**
      * Properties for current language
@@ -170,6 +173,7 @@ public class Preferences {
         defaultProperties.setProperty("MUST LOG", "false");
         defaultProperties.setProperty("SVN MONITORING", "true");
         defaultProperties.setProperty("ONLY COSMETIC", "false");
+        defaultProperties.setProperty("ENCODING", Encoding.UTF16LE.toString());
     }
 
     /**
@@ -274,6 +278,11 @@ public class Preferences {
         }
         svnMonitoring = Boolean.valueOf(prop.getProperty("SVN MONITORING"));
         onlyCosmetic = Boolean.valueOf(prop.getProperty("ONLY COSMETIC"));
+        try {
+        	encoding=Encoding.valueOf(prop.getProperty("ENCODING"));
+        } catch (Exception e) {
+        	encoding=Encoding.UTF16LE;
+        }
     }
 
     public static ArrayList<File> tokenizeMorphologicalDicList(String s) {
@@ -346,6 +355,7 @@ public class Preferences {
         prop.setProperty("MUST LOG", "" + mustLog);
         prop.setProperty("SVN MONITORING", "" + svnMonitoring);
         prop.setProperty("ONLY COSMETIC", "" + onlyCosmetic);
+        prop.setProperty("ENCODING",encoding.toString());
         return prop;
     }
 
@@ -563,5 +573,9 @@ public class Preferences {
     public static boolean onlyCosmetic() {
         return pref.onlyCosmetic;
     }
+
+	public static Encoding encoding() {
+		return pref.encoding;
+	}
 
 }

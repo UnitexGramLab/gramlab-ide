@@ -50,6 +50,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.LanguageListener;
 
 /**
@@ -1737,5 +1738,10 @@ public class Config {
         Config.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "tfst_tags_by_alph.txt"));
     }
+
+
+	public static Encoding getEncoding() {
+		return Preferences.encoding();
+	}
 
 }

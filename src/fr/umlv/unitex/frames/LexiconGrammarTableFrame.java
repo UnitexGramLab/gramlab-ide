@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -38,6 +39,7 @@ import javax.swing.ScrollPaneConstants;
 
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 
 /**
@@ -95,21 +97,23 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        FileInputStream source;
+        InputStreamReader source=Encoding.getInputStreamReader(f);
+        if (source==null) {
+            JOptionPane.showMessageDialog(null, f.getAbsolutePath()
+                    + " is not a Unicode Little-Endian table file", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         try {
-            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(f);
             rowData = new Vector<Vector<String>>();
             // we process the column names first
             columnNames = tokenizeToVector(UnicodeIO.readLine(source));
             // and then the lines
-            while (source.available() != 0) {
-                rowData.add(tokenizeToVector(UnicodeIO.readLine(source)));
+            String line;
+            while ((line=UnicodeIO.readLine(source))!=null) {
+            	rowData.add(tokenizeToVector(line));
             }
             source.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            JOptionPane.showMessageDialog(null, f.getAbsolutePath()
-                    + " is not a Unicode Little-Endian table file", "Error",
-                    JOptionPane.ERROR_MESSAGE);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

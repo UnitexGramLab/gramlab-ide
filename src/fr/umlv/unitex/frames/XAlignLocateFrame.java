@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import javax.swing.AbstractAction;
@@ -53,6 +54,7 @@ import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -349,15 +351,14 @@ public class XAlignLocateFrame extends JInternalFrame {
             return null;
         }
         String res;
-        FileInputStream source;
+        InputStreamReader source;
         try {
-            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
+            source=Encoding.getInputStreamReader(file);
+            if (source==null) return null;
             res = UnicodeIO.readLine(source) + "\n";
             res = res + UnicodeIO.readLine(source) + "\n";
             res = res + UnicodeIO.readLine(source);
             source.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            return null;
         } catch (FileNotFoundException e) {
             return null;
         } catch (IOException e) {

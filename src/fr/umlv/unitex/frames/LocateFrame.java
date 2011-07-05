@@ -35,6 +35,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import javax.swing.AbstractAction;
@@ -58,6 +59,7 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.listeners.LanguageListener;
@@ -477,15 +479,15 @@ public class LocateFrame extends JInternalFrame {
             return null;
         }
         String res;
-        FileInputStream source;
+        InputStreamReader reader=Encoding.getInputStreamReader(file);
+        if (reader==null) {
+        	return null;
+        }
         try {
-            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
-            res = UnicodeIO.readLine(source) + "\n";
-            res = res + UnicodeIO.readLine(source) + "\n";
-            res = res + UnicodeIO.readLine(source);
-            source.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            return null;
+            res = UnicodeIO.readLine(reader) + "\n";
+            res = res + UnicodeIO.readLine(reader) + "\n";
+            res = res + UnicodeIO.readLine(reader);
+            reader.close();
         } catch (FileNotFoundException e) {
             return null;
         } catch (IOException e) {
@@ -505,13 +507,13 @@ public class LocateFrame extends JInternalFrame {
             return null;
         }
         String res;
-        FileInputStream source;
+        InputStreamReader source=Encoding.getInputStreamReader(file);
+        if (source==null) {
+        	return null;
+        }
         try {
-            source = UnicodeIO.openUnicodeLittleEndianFileInputStream(file);
             res = UnicodeIO.readLine(source);
             source.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            return null;
         } catch (FileNotFoundException e) {
             return null;
         } catch (IOException e) {

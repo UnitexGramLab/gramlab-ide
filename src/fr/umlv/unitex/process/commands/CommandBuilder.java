@@ -24,6 +24,8 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
+
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 
@@ -77,21 +79,35 @@ public abstract class CommandBuilder {
         protectElement(new File(Config.getApplicationDir(), s + (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM ? ".exe" : "")).getAbsolutePath());
     }
 
+    public String getOutputEncoding() {
+    	switch (Config.getEncoding()) {
+    	case UTF8: return "-qutf8-no-bom";
+    	case UTF16LE: return null;
+    	case UTF16BE: return "-qutf16be-bom";
+    	}
+		return null;
+    }
+
     public String getCommandLine() {
         String res = "";
         for (String aList : list) {
             res = res + aList + " ";
         }
+        if (getOutputEncoding()!=null) {
+        	res=res+" "+getOutputEncoding();
+        }
         return res;
     }
 
     public String[] getCommandArguments() {
-        String[] res = list.toArray(new String[list.size()]);
-        for (int i = 0; i < res.length; i++) {
+    	String encoding=getOutputEncoding();
+        String[] res = list.toArray(new String[list.size()+((encoding!=null)?1:0)]);
+        for (int i = 0; i < list.size(); i++) {
             if (res[i].startsWith("\"")) {
                 res[i] = res[i].substring(1, res[i].length() - 1);
             }
         }
+        if (encoding!=null) res[res.length-1]=getOutputEncoding();
         return res;
     }
 

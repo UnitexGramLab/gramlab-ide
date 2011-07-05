@@ -22,19 +22,33 @@
 package fr.umlv.unitex.text;
 
 public class Interval {
-	private final int start;
-	private final int end;
+
+	private final int startInBytes;
+	private final int endInBytes;
+	private final int startInChars;
+	private final int endInChars;
 	
-	public Interval(int s,int e) {
-		start=s;
-		end=e;
+	public Interval(int s,int e,int s2,int e2) {
+		startInBytes=s;
+		endInBytes=e;
+		startInChars=s2;
+		endInChars=e2;
 	}
 
-	public int getEnd() {
-		return end;
+	public int getStartInBytes() {
+		return startInBytes;
 	}
 
-	public int getStart() {
-		return start;
+	public int getEndInBytes() {
+		return endInBytes;
 	}
+
+	public int getStartInChars() {
+		return startInChars;
+	}
+
+	public int getEndInChars() {
+		return endInChars;
+	}
+
 }
