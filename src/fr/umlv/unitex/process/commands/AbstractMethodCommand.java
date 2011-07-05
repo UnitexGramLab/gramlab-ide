@@ -21,6 +21,8 @@
 
 package fr.umlv.unitex.process.commands;
 
+import fr.umlv.unitex.Config;
+
 public abstract class AbstractMethodCommand extends CommandBuilder {
 
     AbstractMethodCommand() {
@@ -40,4 +42,5 @@ public abstract class AbstractMethodCommand extends CommandBuilder {
      * @return false if an error occurred; true otherwise
      */
     public abstract boolean execute();
+    
 }

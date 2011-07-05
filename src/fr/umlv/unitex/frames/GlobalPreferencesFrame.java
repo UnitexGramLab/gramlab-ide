@@ -38,8 +38,10 @@ import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -51,6 +53,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -63,6 +66,7 @@ import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.LanguageListener;
 
 /**
@@ -99,6 +103,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     private final JCheckBox onlyCosmetic = new JCheckBox(
     	    "Use --only-cosmetic option for GrfDiff3",false);
 
+    private JRadioButton[] encodingButtons=new JRadioButton[Encoding.values().length];
     
     GlobalPreferencesFrame() {
         super("", true, true, false, false);
@@ -126,6 +131,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tabbedPane.addTab("Language & Presentation", constructPage2());
         tabbedPane.addTab("Morphological dictionaries", constructPage4());
         tabbedPane.addTab("SVN", constructSvnPage());
+        tabbedPane.addTab("Encoding", constructEncodingPage());
         upPanel.add(tabbedPane);
         return upPanel;
     }
@@ -137,6 +143,31 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		p.add(svnMonitoring);
 		onlyCosmetic.setSelected(Preferences.onlyCosmetic());
 		p.add(onlyCosmetic);
+		p.add(Box.createVerticalGlue());
+		return p;
+	}
+
+    private JPanel constructEncodingPage() {
+    	JPanel p=new JPanel(null);
+		p.setBorder(BorderFactory.createTitledBorder("Select encoding to be used by Unitex:"));
+		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
+		ButtonGroup bg=new ButtonGroup();
+		int i=0; 
+		for (Encoding e:Encoding.values()) {
+			encodingButtons[i]=new JRadioButton(e.toString(),e==Preferences.encoding());
+			final Encoding e2=e;
+			final int j=i;
+			encodingButtons[i].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (encodingButtons[j].isSelected()) {
+						pref.encoding=e2;
+					}
+				}
+			});
+			p.add(encodingButtons[i]);
+			bg.add(encodingButtons[i]);
+			i++;
+		}
 		p.add(Box.createVerticalGlue());
 		return p;
 	}
@@ -535,12 +566,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         } else {
             packageDirectory.setText(pref.packagePath.getAbsolutePath());
         }
-        /*
-        if (pref.lexicalPackagePath == null) {
-            lexicalPackageDirectory.setText("");
-        } else {
-            lexicalPackageDirectory.setText(pref.lexicalPackagePath.getAbsolutePath());
-        }*/
         mustLogCheckBox.setSelected(pref.mustLog);
         if (pref.loggingDir == null) {
             loggingDirectory.setText("");
@@ -552,6 +577,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             for (File f : Preferences.morphologicalDic()) {
                 morphoDicListModel.addElement(f);
             }
+        }
+        for (int i=0;i<Encoding.values().length;i++) {
+        	encodingButtons[i].setSelected(pref.encoding==Encoding.values()[i]);
         }
     }
 

@@ -170,14 +170,14 @@ public class BigTextArea extends JPanel {
             else area.setText("");
             return;
         }
-        int start = x.getStart();
+        int start = x.getStartInChars();
         for (int i = value; i <= limit; i++) {
             builder.append(model.getElementAt(i));
             builder.append('\r');
             builder.append('\n');
         }
         String content = builder.toString();
-        int end = model.getInterval(limit).getEnd();
+        int end = model.getInterval(limit).getEndInChars();
         try {
             int result = compareIntervals(selection, start, end);
             switch (result) {
@@ -188,19 +188,19 @@ public class BigTextArea extends JPanel {
                     document.insertString(0, content, highlighted);
                     break;
                 case PREFIX_SELECTED:
-                    int a = (selection.getEnd() - start + 1);
+                    int a = (selection.getEndInChars() - start + 1);
                     document.insertString(0, content.substring(0, a), highlighted);
                     document.insertString(a, content.substring(a), normal);
                     break;
                 case INFIX_SELECTED:
-                    int b = (selection.getStart() - start);
-                    int c = (selection.getEnd() - start + 1);
+                    int b = (selection.getStartInChars() - start);
+                    int c = (selection.getEndInChars() - start + 1);
                     document.insertString(0, content.substring(0, b), normal);
                     document.insertString(b, content.substring(b, c), highlighted);
                     document.insertString(c, content.substring(c), normal);
                     break;
                 case SUFFIX_SELECTED:
-                    int d = (selection.getStart() - start);
+                    int d = (selection.getStartInChars() - start);
                     document.insertString(0, content.substring(0, d), normal);
                     document.insertString(d, content.substring(d), highlighted);
                     break;
@@ -214,8 +214,8 @@ public class BigTextArea extends JPanel {
 
     private int compareIntervals(Interval selection, int start, int end) {
         if (selection == null) return NOTHING_SELECTED;
-        int selectionStart = selection.getStart();
-        int selectionEnd = selection.getEnd();
+        int selectionStart = selection.getStartInChars();
+        int selectionEnd = selection.getEndInChars();
         if (selectionStart > end || selectionEnd < start) return NOTHING_SELECTED;
         if (selectionStart <= start && selectionEnd >= end) return ALL_IS_SELECTED;
         if (selectionStart <= start && selectionEnd < end) return PREFIX_SELECTED;
@@ -236,14 +236,14 @@ public class BigTextArea extends JPanel {
         model.setSelection(i);
     }
 
-    public void setSelection(int start, int end) {
-        model.setSelection(new Interval(start, end));
+    public void setSelection(int startInChars, int endInChars) {
+        model.setSelection(new Interval(-1,-1,startInChars,endInChars));
     }
 
     public void scrollToSelection() {
         Interval selection = model.getSelection();
         if (selection == null) return;
-        int i = model.getElementContainingPosition(selection.getStart());
+        int i = model.getElementContainingPositionInChars(selection.getStartInChars());
         if (i != -1) scrollBar.setValue(i);
     }
 

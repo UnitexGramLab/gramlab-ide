@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -86,6 +87,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
 import fr.umlv.unitex.graphrendering.TfstTextField;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -580,15 +582,15 @@ public class TextAutomatonFrame extends JInternalFrame {
     private int readSentenceCount(File f) {
         String s = "0";
         try {
-            FileInputStream br = UnicodeIO
-                    .openUnicodeLittleEndianFileInputStream(f);
-            s = UnicodeIO.readLine(br);
+            InputStreamReader reader=Encoding.getInputStreamReader(f);
+            if (reader==null) {
+            	return 0;
+            }
+            s = UnicodeIO.readLine(reader);
             if (s == null || s.equals("")) {
                 return 0;
             }
-            br.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            e.printStackTrace();
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -710,8 +712,10 @@ public class TextAutomatonFrame extends JInternalFrame {
     String readSentenceText() {
         String s = "";
         try {
-            FileInputStream br = UnicodeIO
-                    .openUnicodeLittleEndianFileInputStream(sentence_text);
+            InputStreamReader br=Encoding.getInputStreamReader(sentence_text);
+            if (br==null) {
+            	return "";
+            }
             s = UnicodeIO.readLine(br);
             if (s == null || s.equals("")) {
                 return "";
@@ -719,8 +723,6 @@ public class TextAutomatonFrame extends JInternalFrame {
             sentenceTextArea.setFont(Config.getCurrentTextFont());
             sentenceTextArea.setText(s);
             br.close();
-        } catch (NotAUnicodeLittleEndianFileException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

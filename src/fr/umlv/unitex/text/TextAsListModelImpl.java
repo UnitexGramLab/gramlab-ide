@@ -29,12 +29,13 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.AbstractListModel;
 import javax.swing.SwingWorker;
+
+import fr.umlv.unitex.io.Encoding;
 
 
 /**
@@ -46,8 +47,7 @@ import javax.swing.SwingWorker;
  */
 public class TextAsListModelImpl extends AbstractListModel {
 
-    private MappedByteBuffer buffer;
-    private int dataLength;
+    private MappedByteBuffer mappedBuffer;
     private SwingWorker<Void, Interval> worker;
     private Interval selection;
     private String content = null;
@@ -55,10 +55,9 @@ public class TextAsListModelImpl extends AbstractListModel {
     private FileInputStream stream;
     private File file;
     private boolean dataFromFile;
-    private ByteBuffer parseBuffer;
+    ByteBuffer parseBuffer;
+    Encoding encoding;
 
-    //private int[] endOfLines;
-    //private int numberOfEOL;
     private ArrayList<Interval> lines=new ArrayList<Interval>();
 
     public void load(File f) {
@@ -70,8 +69,7 @@ public class TextAsListModelImpl extends AbstractListModel {
         dataFromFile = true;
         this.file = f;
         long fileLength = file.length();
-        //endOfLines = new int[0];
-        //numberOfEOL = 0;
+        this.encoding=Encoding.getEncoding(f);
         try {
             stream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
@@ -80,29 +78,33 @@ public class TextAsListModelImpl extends AbstractListModel {
         }
         channel = stream.getChannel();
         try {
-            buffer = channel.map(FileChannel.MapMode.READ_ONLY, 2, fileLength - 2);
+        	/* We skip the BOM for UTF16 encodings */
+        	if (encoding==Encoding.UTF16LE || encoding==Encoding.UTF16BE) {
+        		mappedBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 2, fileLength - 2);
+        	} else {
+        		mappedBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, fileLength);
+        	}
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
-        dataLength = (int) ((fileLength - 2) / 2);
-        /*
-           * parseBuffer must NOT be a final variable, because it would keep
-           * a reference on the buffer that would never be null, so that the
-           * buffer can never be garbage collected. As a consequence, the
-           * underlying file mapping will never be released.
-           */
-        parseBuffer = buffer.duplicate();
+        /* parseBuffer must NOT be a final variable, because it would keep
+         * a reference on the buffer that would never be null, so that the
+         * buffer can never be garbage collected. As a consequence, the
+         * underlying file mapping would never be released.
+         */
+        parseBuffer = mappedBuffer.duplicate();
         worker = new SwingWorker<Void,Interval>() {
 
             @Override
             protected Void doInBackground() throws Exception {
-                int lastStart = 0;
+                int lastStartInChars = 0;
+                int lastStartInBytes=0;
                 StringBuilder builder1=new StringBuilder();
-                for (int pos = 0; pos < dataLength; pos = pos + 1) {
-                    int a = 0xFF & parseBuffer.get();
-                    int b = 0xFF & parseBuffer.get();
-                    char c = (char) (b << 8 | a);
+                int pos;
+                for (pos = 0; parseBuffer.position()<parseBuffer.capacity(); pos = pos + 1) {
+                	int posInBuffer=parseBuffer.position();
+                	int c=encoding.readChar(parseBuffer);
                     if (c == '\n') {
                         // if we have an end-of-line
                     	boolean publish=false;
@@ -113,17 +115,18 @@ public class TextAsListModelImpl extends AbstractListModel {
                     		if (m.matches()) publish=true;
                     	}
                         builder1.setLength(0);
-                        setProgress((int) ((long) pos * 100 / dataLength));
+                        setProgress((int) ((long) parseBuffer.position() * 100 / parseBuffer.capacity()));
                         if (publish) {
-                        	publish(new Interval(lastStart,pos));
+                        	publish(new Interval(lastStartInBytes,posInBuffer,lastStartInChars,pos));
                         }
-                    	lastStart = pos + 1;
+                    	lastStartInChars = pos + 1;
+                    	lastStartInBytes=parseBuffer.position();
                     } else {
                     	if (filter!=null && c!='\r') builder1.append(c);
                     }
                 }
-                if (lastStart < (dataLength - 1)) {
-                    publish(new Interval(lastStart,dataLength-1));
+                if (lastStartInBytes < (parseBuffer.capacity() - 1)) {
+                    publish(new Interval(lastStartInBytes,parseBuffer.position(),lastStartInChars,pos));
                     setProgress(100);
                 }
                 return null;
@@ -173,15 +176,13 @@ public class TextAsListModelImpl extends AbstractListModel {
         if (!dataFromFile) return content;
         Interval interval = getInterval(i);
         builder.setLength(0);
-        int start = interval.getStart();
-        int end = interval.getEnd();
-        buffer.position(2 * start);
+        int start = interval.getStartInChars();
+        int end = interval.getEndInChars();
+        mappedBuffer.position(interval.getStartInBytes());
         for (int pos = start; pos <= end; pos++) {
-            int a = 0xFF & buffer.get();
-            int b = 0xFF & buffer.get();
-            char c = (char) (b * 256 + a);
+        	int c=encoding.readChar(mappedBuffer);
             if (c != '\r' && c != '\n') {
-                builder.append(c);
+                builder.append((char)c);
             }
         }
         return builder.toString();
@@ -213,21 +214,20 @@ public class TextAsListModelImpl extends AbstractListModel {
     }
 
     /**
-     * We want to get the number of the interval that contains the given position.
+     * We want to get the number of the interval that contains the given position in chars.
      *
      * @param position
      * @return the number of the interval, or -1 if the position is not contained
      *         in an interval of the model
      */
-    public int getElementContainingPosition(int position) {
+    public int getElementContainingPositionInChars(int position) {
         if (!dataFromFile) return -1;
         if (position < 0) return -1;
         /* We cache the size and length in case there is a publish
-           * operation that updates the array.
-           */
+         * operation that updates the array */
         for (int i=0;i<lines.size();i++) {
         	Interval tmp=lines.get(i);
-        	if (position>=tmp.getStart() && position<=tmp.getEnd()) return i;
+        	if (position>=tmp.getStartInChars() && position<=tmp.getEndInChars()) return i;
         }
         return -1;
     }
@@ -241,7 +241,7 @@ public class TextAsListModelImpl extends AbstractListModel {
             worker.cancel(true);
             worker = null;
         }
-        if (buffer != null) buffer = null;
+        if (mappedBuffer != null) mappedBuffer = null;
         if (parseBuffer != null) parseBuffer = null;
         System.gc();
         if (channel != null) {
