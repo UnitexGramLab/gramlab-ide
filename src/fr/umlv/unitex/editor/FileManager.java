@@ -47,6 +47,7 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.frames.FileEditionTextFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.io.Encoding;
 
 /**
  * This class provides methods for loading corpora
@@ -109,13 +110,8 @@ public class FileManager {
             text.setDocument(new PlainDocument());
             text.setText(Config.EMPTY_FILE_MESSAGE);
         } else if (file.length() < Preferences.MAX_TEXT_FILE_SIZE) {
-            try {
-                load(file, text);
-            } catch (IOException E) {
-                text.setDocument(new PlainDocument());
-                text.setText(Config.ERROR_WHILE_READING_FILE_MESSAGE);
-                FILE_TOO_LARGE = true;
-            }
+            load(file, text);
+            text.setCaretPosition(0);
             FILE_TOO_LARGE = false;
         } else {
             FILE_TOO_LARGE = true;
@@ -142,15 +138,9 @@ public class FileManager {
             FileEditionTextFrame fetf = UnitexFrame.getFrameManager().getSelectedFileEditionTextFrame();
             if (fetf == null) return;
             EditionTextArea t = fetf.getText();
-
-            //save in unicode little indian UTF-16LE
-            String s = "UTF-16LE";
-            OutputStreamWriter osr =
-                    new OutputStreamWriter(
-                            new FileOutputStream(new File(absolutePath), false), s);
+            OutputStreamWriter osr=Config.getEncoding().getOutputStreamWriter(new File(absolutePath));
             String content = t.getText();
             int l = content.length();
-            osr.write(0xfeff);
             for (int i = 0; i < l; i++) {
                 char c = content.charAt(i);
                 osr.write(c);
@@ -188,64 +178,17 @@ public class FileManager {
      * @param textArea aera where put the text
      */
     Document load(File file, final EditionTextArea textArea)
-            throws IOException, IllegalArgumentException {
+            throws  IllegalArgumentException {
 
         final StringContent content = new StringContent();
-        final FileChannel channel = new FileInputStream(file).getChannel();
         final PlainDocument document = new PlainDocument(content);
-        final Timer timer = new Timer(300, null);
-        currentTimer = timer;
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(16000);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
-        final CharBuffer charBuffer = buffer.asCharBuffer();
-
+        String fileContent=Encoding.getContent(file);
         textArea.setDocument(document);
-
-        // remove unicode header
-        // reading two firsts byte
-        buffer.limit(1);
-        channel.read(buffer);
-        buffer.position(0);
-        channel.read(buffer);
-        // and clear it
-        buffer.clear();
-
-        // asynchronous text update in the text aera
-        timer.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ev) {
-
-                try {
-
-                    if (channel.read(buffer) > 0) {
-                        int bufferPosition = buffer.position();
-                        if ((bufferPosition & 1) == 1)
-                            throw new InternalError("bad alignement: the text file is corrupted");
-
-                        String s = charBuffer.limit(bufferPosition >> 1).toString();
-                        int caretPosition = textArea.getCaretPosition();
-                        try {
-                            document.insertString(content.length() - 1, s, null);
-                        } catch (BadLocationException e) {
-                            throw new Error(e);
-                        }
-                        textArea.setCaretPosition(caretPosition);
-
-                        buffer.clear();
-                    } else {
-                        timer.stop();
-                        currentTimer = null;
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    timer.stop();
-                    currentTimer = null;
-                }
-            }
-        });
-        timer.setCoalesce(true);
-        timer.setRepeats(true);
-        timer.start();
-
+        try {
+			document.insertString(0,fileContent, null);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
         return document;
     }
 

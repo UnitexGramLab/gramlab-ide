@@ -34,6 +34,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
+import fr.umlv.unitex.Preferences;
+
 public enum Encoding {
 	UTF16LE {
 		@Override
@@ -258,4 +260,31 @@ public enum Encoding {
 	}
 
 	public abstract char readChar(ByteBuffer parseBuffer);
+
+	/**
+	 * Returns the content of the given file as a String, or null
+	 * if the size is >=Preferences.MAX_TEXT_FILE_SIZE
+	 */
+	public static String getContent(File file) {
+		if (file.length()>=Preferences.MAX_TEXT_FILE_SIZE) {
+			return null;
+		}
+		StringBuilder builder=new StringBuilder();
+		InputStreamReader reader=getInputStreamReader(file);
+		if (reader==null) {
+			return null;
+		}
+		int c;
+		try {
+			while ((c=reader.read())!=-1) {
+				builder.append((char)c);
+			}
+			reader.close();
+		} catch (IOException e) {
+			return null;
+		} catch (OutOfMemoryError e) {
+			return null;
+		}
+		return builder.toString();
+	}
 }
