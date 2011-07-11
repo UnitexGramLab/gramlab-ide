@@ -125,8 +125,8 @@ public class TextAsListModelImpl extends AbstractListModel {
                     	if (filter!=null && c!='\r') builder1.append(c);
                     }
                 }
-                if (lastStartInBytes < (parseBuffer.capacity() - 1)) {
-                    publish(new Interval(lastStartInBytes,parseBuffer.position(),lastStartInChars,pos));
+                if (lastStartInBytes < parseBuffer.capacity()) {
+                    publish(new Interval(lastStartInBytes,parseBuffer.position(),lastStartInChars,pos-1));
                     setProgress(100);
                 }
                 return null;
