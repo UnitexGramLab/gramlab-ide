@@ -34,6 +34,7 @@ import java.util.Scanner;
 import javax.swing.JLabel;
 
 import fr.umlv.unitex.debug.Coverage;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.tfst.tagging.TaggingModel;
 import fr.umlv.unitex.tfst.tagging.TaggingState;
 
@@ -65,7 +66,7 @@ public class GraphDecorator {
 	
 	public static GraphDecorator loadDiffFile(File f) {
 		try {
-			Scanner scanner=new Scanner(f,"UTF-8");
+			Scanner scanner=new Scanner(f,Encoding.getEncoding(f).getCharset());
 			GraphDecorator info=new GraphDecorator(null);
 			while (scanner.hasNext()) {
 				try {

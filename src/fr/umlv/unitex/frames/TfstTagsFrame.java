@@ -38,7 +38,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -57,7 +56,7 @@ import fr.umlv.unitex.text.BigTextList;
  * @author Sébastien Paumier
  */
 public class TfstTagsFrame extends JInternalFrame {
-    private final BigTextList text = new BigTextList(false);
+    final BigTextList text = new BigTextList(false);
 	final JFormattedTextField pattern=new JFormattedTextField(new RegexFormatter());
 	
     TfstTagsFrame() {
