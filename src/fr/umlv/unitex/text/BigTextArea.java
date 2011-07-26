@@ -47,7 +47,7 @@ import fr.umlv.unitex.Config;
 
 /**
  * This class provides a text component that can display in read-only
- * large UTF16-LE files.
+ * large files.
  * <p/>
  * WARNING: DON'T PUT THIS COMPONENT INTO A JSCROLLPANE!
  *
