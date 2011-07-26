@@ -31,7 +31,7 @@ import javax.swing.JList;
 
 /**
  * This class provides a text component that can display in read-only
- * large UTF16-LE files as lists of lines. This is useful to display
+ * large files as lists of lines. This is useful to display
  * dictionaries.
  *
  * @author Sébastien Paumier

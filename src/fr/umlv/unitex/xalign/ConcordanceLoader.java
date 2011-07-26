@@ -28,6 +28,8 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import fr.umlv.unitex.io.Encoding;
+
 
 /**
  * This is a loader for alignement concordance files.
@@ -70,7 +72,7 @@ public class ConcordanceLoader {
                 });
                 Scanner scanner = null;
                 try {
-                    scanner = new Scanner(file, "UTF8");
+                    scanner = new Scanner(file, Encoding.getCharset(file));
                     int sentence, start, end;
                     while (scanner.hasNextInt()) {
                         /* -1 because in concord.ind files, sentences are numbered from 1 */

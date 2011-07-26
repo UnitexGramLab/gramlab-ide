@@ -208,6 +208,11 @@ public enum Encoding {
 			return UTF8;
 		return null;
 	}
+	
+	
+	public static String getCharset(File f) {
+		return getEncoding(f).getCharset();
+	}
 
 	/**
 	 * Returns a reader for the given file. For UTF16 encodings, we skip the
