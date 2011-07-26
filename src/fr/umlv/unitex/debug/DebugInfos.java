@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 
 public class DebugInfos {
@@ -50,7 +51,7 @@ public class DebugInfos {
 		if (!f.exists()) return null;
 		Scanner scanner=null;
 		try {
-			scanner=new Scanner(f,"UTF-16LE");
+			scanner=new Scanner(f,Encoding.getEncoding(html).getCharset());
 			String z=scanner.nextLine();
 			if (z.startsWith("\uFEFF")) {
 				z=z.substring(1);

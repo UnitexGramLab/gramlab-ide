@@ -29,7 +29,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,7 +52,6 @@ import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
@@ -74,10 +72,10 @@ import fr.umlv.unitex.xalign.ConcordanceModel;
  */
 public class XAlignLocateFrame extends JInternalFrame {
 
-    private final JRadioButton regularExpression = new JRadioButton("Regular expression:");
-    private final JRadioButton graph = new JRadioButton("Graph:", true);
+    final JRadioButton regularExpression = new JRadioButton("Regular expression:");
+    final JRadioButton graph = new JRadioButton("Graph:", true);
     private final JTextField regExp = new JTextField();
-    private final JTextField graphName = new JTextField();
+    final JTextField graphName = new JTextField();
     private final JRadioButton shortestMatches = new JRadioButton("Shortest matches");
     private final JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
     private final JRadioButton allMatches = new JRadioButton("All matches");

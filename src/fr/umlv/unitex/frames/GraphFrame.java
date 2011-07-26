@@ -115,8 +115,8 @@ public class GraphFrame extends JInternalFrame {
     /**
      * The graph file
      */
-    private File grf;
-    private long lastModification;
+    File grf;
+    long lastModification;
     /**
      * Indicates if the graph must be saved
      */

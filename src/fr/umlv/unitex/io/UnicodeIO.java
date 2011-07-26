@@ -21,14 +21,9 @@
 package fr.umlv.unitex.io;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 
 /**
  * This class provides methods for loading and saving UTF-16LE texts.
@@ -36,11 +31,6 @@ import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
  * @author Sébastien Paumier
  */
 public class UnicodeIO {
-	private static int toInt(byte b) {
-		if (b >= 0)
-			return b;
-		return 256 + b;
-	}
 
 	/**
 	 * Reads a character from a file, considering <code>0x0D</code> and
