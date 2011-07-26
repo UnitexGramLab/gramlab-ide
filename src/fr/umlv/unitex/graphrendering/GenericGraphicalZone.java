@@ -24,6 +24,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -204,6 +206,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         }
         initText("");
         fireGraphChanged(true);
+        fireBoxSelectionChanged();
     }
 
     public void initText(String s) {
@@ -379,6 +382,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         }
         fireGraphTextChanged(null);
         fireGraphChanged(someBoxesWereSelected);
+        fireBoxSelectionChanged();
     }
 
     /**
@@ -393,6 +397,7 @@ public abstract class GenericGraphicalZone extends JComponent {
             selectedBoxes.add(g);
         }
         fireGraphTextChanged("");
+        fireBoxSelectionChanged();
         repaint();
     }
 
@@ -432,6 +437,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         }
         fireGraphTextChanged(s);
         fireGraphChanged(false);
+        fireBoxSelectionChanged();
     }
 
     /**
@@ -891,6 +897,32 @@ public abstract class GenericGraphicalZone extends JComponent {
             }
         } finally {
             firingGraphText = false;
+        }
+    }
+
+    
+    private final ArrayList<ActionListener> boxSelectionListeners = new ArrayList<ActionListener>();
+    private boolean firingSelection = false;
+
+    void addBoxSelectionListener(ActionListener l) {
+    	boxSelectionListeners.add(l);
+    }
+
+    public void removeBoxSelectionListener(ActionListener l) {
+        if (firingSelection) {
+            throw new IllegalStateException("Should not try to remove a listener while firing");
+        }
+        boxSelectionListeners.remove(l);
+    }
+
+    void fireBoxSelectionChanged() {
+        firingSelection = true;
+        try {
+            for (ActionListener l : boxSelectionListeners) {
+                l.actionPerformed(null);
+            }
+        } finally {
+            firingSelection = false;
         }
     }
 

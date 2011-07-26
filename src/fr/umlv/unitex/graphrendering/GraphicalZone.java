@@ -26,6 +26,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -34,6 +36,9 @@ import java.awt.print.Printable;
 import java.io.File;
 import java.util.Date;
 
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
@@ -50,9 +55,11 @@ import fr.umlv.unitex.undo.TranslationGroupEdit;
  */
 public class GraphicalZone extends GenericGraphicalZone implements Printable {
     boolean dragBegin = true;
-    private int dX;
-    private int dY;
-    
+    int dX;
+    int dY;
+
+    JMenu submenu;
+
     /**
      * Constructs a new <code>GraphicalZone</code>.
      *
@@ -68,9 +75,35 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         	addMouseListener(new MyMouseListener());
             addMouseMotionListener(new MyMouseMotionListener());
         }
+        JPopupMenu popup=createPopup();
+        setComponentPopupMenu(popup);
     }
 
-    @Override
+    private JPopupMenu createPopup() {
+		JPopupMenu popup=new JPopupMenu();
+		submenu=new JMenu("Surround with...");
+		JMenuItem inputVar=new JMenuItem("Input variable");
+		submenu.add(inputVar);
+		JMenuItem outputVar=new JMenuItem("Output variable");
+		submenu.add(outputVar);
+		submenu.addSeparator();
+		JMenuItem leftCtx=new JMenuItem("Left context");
+		submenu.add(leftCtx);
+		JMenuItem positiveRightCtx=new JMenuItem("Positive right context");
+		submenu.add(positiveRightCtx);
+		JMenuItem negativeRightCtx=new JMenuItem("Negative right context");
+		submenu.add(negativeRightCtx);
+		submenu.setEnabled(false);
+		addBoxSelectionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				submenu.setEnabled(selectedBoxes.size()!=0);
+			}
+		});
+		popup.add(submenu);
+		return popup;
+	}
+
+	@Override
     protected void initializeEmptyGraph() {
         GraphBox g, g2;
         // creating the final state
@@ -100,7 +133,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         return new GraphBox(x, y, type, (GraphicalZone) p);
     }
 
-    private class MyMouseListener implements MouseListener {
+    class MyMouseListener implements MouseListener {
 
         public void mouseClicked(MouseEvent e) {
             int boxSelected;
@@ -150,6 +183,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                 selectedBoxes.add(b);
                 fireGraphTextChanged(b.content); /* Should be "<E>" */
                 fireGraphChanged(true);
+                fireBoxSelectionChanged();
             } else if (EDITING_MODE == MyCursors.OPEN_SUBGRAPH
                     || (EDITING_MODE == MyCursors.NORMAL && e.isAltDown())) {
                 // Alt+click
@@ -201,6 +235,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                             b.selected = true;
                             selectedBoxes.add(b);
                             fireGraphTextChanged(b.content);
+                            fireBoxSelectionChanged();
                         }
                     }
                 } else {
@@ -303,7 +338,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         }
     }
 
-    private class MyMouseMotionListener implements MouseMotionListener {
+    class MyMouseMotionListener implements MouseMotionListener {
         public void mouseDragged(MouseEvent e) {
             int Xtmp = X_end_drag;
             int Ytmp = Y_end_drag;

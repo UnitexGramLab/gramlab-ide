@@ -38,8 +38,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
@@ -67,10 +65,8 @@ import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.editor.FileEditionMenu;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
@@ -110,7 +106,7 @@ public class UnitexFrame extends JFrame {
      * The main frame of the system.
      */
     public static UnitexFrame mainFrame;
-    private static Dimension screenSize;
+    static Dimension screenSize;
     public static boolean closing = false;
 
     /**
@@ -256,19 +252,19 @@ public class UnitexFrame extends JFrame {
         setJMenuBar(menuBar);
     }
 
-    private Action openText;
-    private Action openTaggedText;
-    private Action preprocessText;
-    private Action changeLang;
-    private Action applyLexicalResources;
-    private Action locatePattern;
-    private AbstractAction displayLocatedSequences;
-    private AbstractAction elagComp;
-    private AbstractAction constructFst;
-    private AbstractAction convertFst;
-    private AbstractAction closeText;
-    private AbstractAction quitUnitex;
-    private AbstractAction cassys;
+    Action openText;
+    Action openTaggedText;
+    Action preprocessText;
+    Action changeLang;
+    Action applyLexicalResources;
+    Action locatePattern;
+    AbstractAction displayLocatedSequences;
+    AbstractAction elagComp;
+    AbstractAction constructFst;
+    AbstractAction convertFst;
+    AbstractAction closeText;
+    AbstractAction quitUnitex;
+    AbstractAction cassys;
 
     JMenu buildTextMenu() {
         final JMenu textMenu = new JMenu("Text");
@@ -381,12 +377,12 @@ public class UnitexFrame extends JFrame {
         return textMenu;
     }
 
-    private AbstractAction checkDelaFormat;
-    private AbstractAction transliterate;
-    private AbstractAction sortDictionary;
-    private AbstractAction inflect;
-    private AbstractAction compressIntoFST;
-    private AbstractAction closeDela;
+    AbstractAction checkDelaFormat;
+    AbstractAction transliterate;
+    AbstractAction sortDictionary;
+    AbstractAction inflect;
+    AbstractAction compressIntoFST;
+    AbstractAction closeDela;
 
     JMenu buildDELAMenu() {
         final JMenu delaMenu = new JMenu("DELA");
@@ -771,9 +767,9 @@ public class UnitexFrame extends JFrame {
         return graphMenu;
     }
 
-    private AbstractAction openLexiconGrammar;
-    private AbstractAction compileLexiconGrammar;
-    private AbstractAction closeLexiconGrammar;
+    AbstractAction openLexiconGrammar;
+    AbstractAction compileLexiconGrammar;
+    AbstractAction closeLexiconGrammar;
 
     JMenu buildLexiconGrammarMenu() {
         final JMenu lexiconGrammar = new JMenu("Lexicon-Grammar");

@@ -200,41 +200,4 @@ public class FileManager {
     }
 
 
-    /**
-     * convert a file to an HTML file
-     *
-     * @param fileDestinationpath the file destination path
-     */
-    public void convertToHtml(String fileDestinationpath) {
-        String path = Util.getFilePathWithoutFileName(fileDestinationpath) + "\\";
-        String fileName = Util.getFileNameWithoutFilePath(fileDestinationpath);
-
-        try {
-
-            String charset = "UTF-8";
-            // Lecture du fichier
-            File file = new File(fileDestinationpath);
-            File HtmlFile = new File(path + fileName + ".html");
-
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(file));
-            char[] tab = new char[(int) file.length()];
-            isr.read(tab);
-            isr.close();
-            OutputStreamWriter osr =
-                    new OutputStreamWriter(new FileOutputStream(HtmlFile), charset);
-
-            osr.write("<html><body>");
-
-            // offset de 2 pour enlever l'ent�te unicode
-            osr.write(tab, 2, tab.length - 2);
-
-            osr.write("</html></body>");
-
-            osr.flush();
-            osr.close();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Unable to save !!");
-        }
-    }
-
 }

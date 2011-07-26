@@ -25,7 +25,6 @@ import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,7 +40,6 @@ import javax.swing.event.InternalFrameEvent;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -53,7 +51,7 @@ import fr.umlv.unitex.text.BigTextArea;
  * @author Sébastien Paumier
  */
 public class TextFrame extends JInternalFrame {
-    private final BigTextArea text = new BigTextArea();
+    final BigTextArea text = new BigTextArea();
     private final JLabel ligne1 = new JLabel("");
     private final JLabel ligne2 = new JLabel("");
 

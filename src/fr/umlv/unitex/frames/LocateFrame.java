@@ -29,14 +29,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -58,7 +54,6 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -78,9 +73,9 @@ import fr.umlv.unitex.process.commands.Reg2GrfCommand;
  */
 public class LocateFrame extends JInternalFrame {
 
-    private final JRadioButton regularExpression = new JRadioButton("Regular expression:");
+    final JRadioButton regularExpression = new JRadioButton("Regular expression:");
     final JRadioButton graph = new JRadioButton("Graph:", true);
-    private final JTextField regExp = new JTextField();
+    final JTextField regExp = new JTextField();
     final JTextField graphName = new JTextField();
     private final JRadioButton shortestMatches = new JRadioButton("Shortest matches");
     private final JRadioButton longuestMatches = new JRadioButton("Longest matches", true);
@@ -471,7 +466,7 @@ public class LocateFrame extends JInternalFrame {
     /**
      * Loads the content of a 'concord.n' file.
      */
-    private static String readInfo(File file) {
+    static String readInfo(File file) {
         if (!file.exists()) {
             return null;
         }

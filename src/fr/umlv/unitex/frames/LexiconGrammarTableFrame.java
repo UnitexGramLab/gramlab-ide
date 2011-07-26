@@ -23,7 +23,6 @@ package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,7 +37,6 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 
 import fr.umlv.unitex.Preferences;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 

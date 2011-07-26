@@ -31,7 +31,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -81,8 +80,6 @@ import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.exceptions.NotAUnicodeLittleEndianFileException;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
@@ -104,7 +101,6 @@ import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokensInfo;
-import fr.umlv.unitex.tfst.tagging.TaggingModel;
 
 /**
  * This class describes a frame used to display sentence automata.
@@ -113,18 +109,18 @@ import fr.umlv.unitex.tfst.tagging.TaggingModel;
  */
 public class TextAutomatonFrame extends JInternalFrame {
 
-    private final TagFilter filter = new TagFilter();
-    private final TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
+    final TagFilter filter = new TagFilter();
+    final TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
     final JTextArea sentenceTextArea = new JTextArea();
-    private final JLabel sentence_count_label = new JLabel(" 0 sentence");
-    private boolean elagON;
-    private JSpinner spinner;
-    private SpinnerNumberModel spinnerModel;
-    private TfstGraphicalZone elaggraph;
-    private File elagrules;
-    private JLabel ruleslabel;
+    final JLabel sentence_count_label = new JLabel(" 0 sentence");
+    boolean elagON;
+    JSpinner spinner;
+    SpinnerNumberModel spinnerModel;
+    TfstGraphicalZone elaggraph;
+    File elagrules;
+    JLabel ruleslabel;
     JScrollBar tfstScrollbar;
-    private TfstGraphicalZone graphicalZone;
+    TfstGraphicalZone graphicalZone;
     public JScrollPane scrollPane;
     
     private final GraphListener listener = new GraphListener() {
@@ -140,19 +136,19 @@ public class TextAutomatonFrame extends JInternalFrame {
 
     private final TfstTextField textfield = new TfstTextField(25, this);
     boolean modified = false;
-    private int sentence_count = 0;
-    private File sentence_text;
-    private File sentence_grf;
-    private File sentence_tok;
-    private File sentence_modified;
-    private File text_tfst;
-    private File elag_tfst;
-    private File elagsentence_grf;
-    private boolean isAcurrentLoadingThread = false;
-    private boolean isAcurrentElagLoadingThread = false;
+    int sentence_count = 0;
+    File sentence_text;
+    File sentence_grf;
+    File sentence_tok;
+    File sentence_modified;
+    File text_tfst;
+    File elag_tfst;
+    File elagsentence_grf;
+    boolean isAcurrentLoadingThread = false;
+    boolean isAcurrentElagLoadingThread = false;
     Process currentElagLoadingProcess = null;
-    private JSplitPane superpanel;
-    private JButton resetSentenceGraph;
+    JSplitPane superpanel;
+    JButton resetSentenceGraph;
 
     TextAutomatonFrame() {
         super("FST-Text", true, true, true, true);
@@ -618,7 +614,7 @@ public class TextAutomatonFrame extends JInternalFrame {
      * @return <code>false</code> if a sentence is already being loaded,
      *         <code>true</code> otherwise
      */
-    private boolean loadSentence(int n) {
+    boolean loadSentence(int n) {
         if (n < 1 || n > sentence_count)
             return false;
         final int z = n;
