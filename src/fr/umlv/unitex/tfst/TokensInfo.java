@@ -26,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import fr.umlv.unitex.io.Encoding;
+
 public class TokensInfo {
 
     private static int[] info;
@@ -40,7 +42,7 @@ public class TokensInfo {
     }
 
     public static void loadTokensInfo(File f,String sentence) throws FileNotFoundException {
-        Scanner scanner=new Scanner(f,"UTF-16");
+        Scanner scanner=new Scanner(f,Encoding.getEncoding(f).getCharset());
         ArrayList<Integer> l=new ArrayList<Integer>();
         tokens.clear();
         int currentPos=0;
