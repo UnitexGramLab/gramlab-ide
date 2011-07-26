@@ -331,9 +331,8 @@ public class XAlignLocateFrame extends JInternalFrame {
             if (!f.exists()) {
                 f.createNewFile();
             }
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(f), "UTF-16LE"));
-            bw.write('\ufeff');
+            OutputStreamWriter writer=Config.getEncoding().getOutputStreamWriter(f);
+            BufferedWriter bw = new BufferedWriter(writer);
             bw.write(regExp2, 0, regExp2.length());
             bw.close();
         } catch (IOException e) {

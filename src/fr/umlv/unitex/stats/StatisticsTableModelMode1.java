@@ -30,6 +30,8 @@ import java.util.Scanner;
 
 import javax.swing.table.AbstractTableModel;
 
+import fr.umlv.unitex.io.Encoding;
+
 public class StatisticsTableModelMode1 extends AbstractTableModel {
 
     private final String[] columnNames = new String[]{"Collocate", "Occurrences"};
@@ -46,7 +48,7 @@ public class StatisticsTableModelMode1 extends AbstractTableModel {
         try {
             FileInputStream stream = new FileInputStream(file);
 
-            Scanner scanner = new Scanner(stream, "UTF-16");
+            Scanner scanner = new Scanner(stream,Encoding.getCharset(file));
             scanner.useDelimiter("\r\n|\t");
             while (scanner.hasNext()) {
                 Mode1Data d = new Mode1Data();

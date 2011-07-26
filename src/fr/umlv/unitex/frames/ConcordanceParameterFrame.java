@@ -61,6 +61,7 @@ import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConcorDiffCommand;
@@ -695,7 +696,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			return;
 		}
 		try {
-			Scanner scanner=new Scanner(f,"UTF-16LE");
+			Scanner scanner=new Scanner(f,Encoding.getCharset(f));
 			int a=-1,b=-1;
 			/* Skipping the header. We look for the first line
 			 * containing #[IMR], because there may be lines before it,

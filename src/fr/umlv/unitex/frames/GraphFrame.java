@@ -83,6 +83,7 @@ import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.MultipleSelection;
 import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.graphtools.Dependancies;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
@@ -968,12 +969,10 @@ public class GraphFrame extends JInternalFrame {
             return;
         }
         try {
-            stream = new FileOutputStream(file);
-            OutputStreamWriter writer = new OutputStreamWriter(stream, "UTF-8");
+        	OutputStreamWriter writer = Config.getEncoding().getOutputStreamWriter(file);
             SVG svg = new SVG(writer, this);
             svg.save();
             writer.close();
-            stream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
