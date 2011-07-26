@@ -34,115 +34,7 @@ import javax.swing.ImageIcon;
  */
 public class MyCursors {
 
-	/**
-	 * Normal mouse cursor 
-	 */
-	public static Cursor normalCursor;
 
-	/**
-	 * Cursor used to create boxes 
-	 */
-	public static Cursor createBoxesCursor;
-
-	/**
-	 *  Cursor used to kill boxes
-	 */
-	public static Cursor killBoxesCursor;
-
-	/**
-	 *  Cursor used to link boxes
-	 */
-	public static Cursor linkBoxesCursor;
-
-	/**
-	 *  Cursor used to create reverse transitions
-	 */
-	public static Cursor reverseLinkBoxesCursor;
-
-	/**
-	 *  Cursor used to open sub-graphs
-	 */
-	public static Cursor openSubgraphCursor;
-
-	/**
-	 *  Save icon
-	 */
-	public static ImageIcon saveIcon;
-
-	/**
-	 *  Graph compilation icon
-	 */
-	public static ImageIcon compilationIcon;
-
-	/**
-	 *  Cut icon
-	 */
-	public static ImageIcon cutIcon;
-
-	/**
-	 *  Paste icon
-	 */
-	public static ImageIcon pasteIcon;
-
-	/**
-	 *  Copy icon
-	 */
-	public static ImageIcon copyIcon;
-
-	/**
-	 *  Arrow icon used to return in normal mouse mode
-	 */
-	public static ImageIcon arrowIcon;
-
-	/**
-	 *  Creating boxes icon
-	 */
-	public static ImageIcon createBoxesIcon;
-
-	/**
-	 *  Killing boxes icon
-	 */
-	public static ImageIcon killBoxesIcon;
-
-	/**
-	 *  Linking boxes icon
-	 */
-	public static ImageIcon linkBoxesIcon;
-
-	/**
-	 *  Creating reverse transitions icon
-	 */
-	public static ImageIcon reverseLinkBoxesIcon;
-
-	/**
-	 *  Opening sub-graphs icon
-	 */
-	public static ImageIcon openSubgraphIcon;
-
-	/**
-	 * Undo graph icon
-	 */
-	public static ImageIcon undoIcon;
-
-	/**
-	 * Redo graph icon
-	 */	
-	public static ImageIcon redoIcon;
-	
-	/** find icon */
-	public static ImageIcon findIcon;
-	
-	public static ImageIcon calledGrfIcon;
-	public static ImageIcon callersGrfIcon;
-	public static ImageIcon closeIcon;
-	public static ImageIcon refreshIcon;
-	public static ImageIcon diffIcon;
-
-	
-	/**
-	 *  Configuration icon
-	 */	
-	public static ImageIcon configurationIcon;
 
 	public static final int NORMAL = 0;
 	public static final int CREATE_BOXES = 3;
@@ -155,72 +47,69 @@ public class MyCursors {
 	 * Initializes all cursors and icons. 
 	 *
 	 */
-	public static void initCursorsAndIcons() {
+		public static ImageIcon diffIcon = new ImageIcon(MyCursors.class.getResource("diff.png"));
+		public static ImageIcon calledGrfIcon = new ImageIcon(MyCursors.class.getResource("calledGrf.png"));
+		public static ImageIcon callersGrfIcon = new ImageIcon(MyCursors.class.getResource("callersGrf.png"));
+		public static ImageIcon closeIcon = new ImageIcon(MyCursors.class.getResource("close.png"));
+		public static ImageIcon refreshIcon = new ImageIcon(MyCursors.class.getResource("refresh.png"));
+		public static ImageIcon undoIcon = new ImageIcon(MyCursors.class.getResource("undo.gif"));
+		public static ImageIcon redoIcon = new ImageIcon(MyCursors.class.getResource("redo.gif"));
+		public static ImageIcon findIcon = new ImageIcon(MyCursors.class.getResource("find.gif"));
 		
-		diffIcon = new ImageIcon(MyCursors.class.getResource("diff.png"));
-		calledGrfIcon = new ImageIcon(MyCursors.class.getResource("calledGrf.png"));
-		callersGrfIcon = new ImageIcon(MyCursors.class.getResource("callersGrf.png"));
-		closeIcon = new ImageIcon(MyCursors.class.getResource("close.png"));
-		refreshIcon = new ImageIcon(MyCursors.class.getResource("refresh.png"));
-		undoIcon = new ImageIcon(MyCursors.class.getResource("undo.gif"));
-		redoIcon = new ImageIcon(MyCursors.class.getResource("redo.gif"));
-		findIcon = new ImageIcon(MyCursors.class.getResource("find.gif"));
-		
-		saveIcon = new ImageIcon(MyCursors.class.getResource("saveIcon.gif"));
-		compilationIcon =
+		public static ImageIcon saveIcon = new ImageIcon(MyCursors.class.getResource("saveIcon.gif"));
+		public static ImageIcon compilationIcon =
 			new ImageIcon(MyCursors.class.getResource("compilationIcon.gif"));
-		cutIcon = new ImageIcon(MyCursors.class.getResource("cutIcon.gif"));
-		pasteIcon = new ImageIcon(MyCursors.class.getResource("pasteIcon.gif"));
-		copyIcon = new ImageIcon(MyCursors.class.getResource("copyIcon.gif"));
-		arrowIcon = new ImageIcon(MyCursors.class.getResource("arrowIcon.gif"));
-		createBoxesIcon =
+		public static ImageIcon cutIcon = new ImageIcon(MyCursors.class.getResource("cutIcon.gif"));
+		public static ImageIcon pasteIcon = new ImageIcon(MyCursors.class.getResource("pasteIcon.gif"));
+		public static ImageIcon copyIcon = new ImageIcon(MyCursors.class.getResource("copyIcon.gif"));
+		public static ImageIcon arrowIcon = new ImageIcon(MyCursors.class.getResource("arrowIcon.gif"));
+		public static ImageIcon createBoxesIcon =
 			new ImageIcon(MyCursors.class.getResource("createBoxesIcon.gif"));
-		killBoxesIcon =
+		public static ImageIcon killBoxesIcon =
 			new ImageIcon(MyCursors.class.getResource("killBoxesIcon.gif"));
-		linkBoxesIcon =
+		public static ImageIcon linkBoxesIcon =
 			new ImageIcon(MyCursors.class.getResource("linkBoxesIcon.gif"));
-		reverseLinkBoxesIcon =
+		public static ImageIcon reverseLinkBoxesIcon =
 			new ImageIcon(
 				MyCursors.class.getResource("reverseLinkBoxesIcon.gif"));
-		openSubgraphIcon =
+		public static ImageIcon openSubgraphIcon =
 			new ImageIcon(MyCursors.class.getResource("openSubgraphIcon.gif"));
-		configurationIcon =
+		public static ImageIcon configurationIcon =
 			new ImageIcon(MyCursors.class.getResource("configurationIcon.gif"));
-		normalCursor = Cursor.getDefaultCursor();
-		createBoxesCursor =
+		public static Cursor normalCursor = Cursor.getDefaultCursor();
+		public static Cursor createBoxesCursor =
 			Toolkit.getDefaultToolkit().createCustomCursor(
 				new ImageIcon(
 					MyCursors.class.getResource("createBoxesCursor.gif"))
 					.getImage(),
 				new Point(0, 0),
 				"createBoxesCursor");
-		killBoxesCursor =
+		public static Cursor killBoxesCursor =
 			Toolkit.getDefaultToolkit().createCustomCursor(
 				new ImageIcon(
 					MyCursors.class.getResource("killBoxesCursor.gif"))
 					.getImage(),
 				new Point(0, 0),
 				"killBoxesCursor");
-		linkBoxesCursor =
+		public static Cursor linkBoxesCursor =
 			Toolkit.getDefaultToolkit().createCustomCursor(
 				new ImageIcon(
 					MyCursors.class.getResource("linkBoxesCursor.gif"))
 					.getImage(),
 				new Point(0, 0),
 				"linkBoxesCursor");
-		reverseLinkBoxesCursor =
+		public static Cursor reverseLinkBoxesCursor =
 			Toolkit.getDefaultToolkit().createCustomCursor(
 				new ImageIcon(
 					MyCursors.class.getResource("reverseLinkBoxesCursor.gif"))
 					.getImage(),
 				new Point(0, 0),
 				"reverseLinkBoxesCursor");
-		openSubgraphCursor =
+		public static Cursor openSubgraphCursor =
 			Toolkit.getDefaultToolkit().createCustomCursor(
 				new ImageIcon(
 					MyCursors.class.getResource("openSubgraphCursor.gif"))
 					.getImage(),
 				new Point(0, 0),
 				"openSubgraphCursor");
-	}
 }
