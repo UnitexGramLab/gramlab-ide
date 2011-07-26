@@ -299,7 +299,6 @@ public class Config {
     public static void initConfig(String appPath) {
         determineWhichSystemIsRunning();
         determineUnitexDir(appPath);
-        MyCursors.initCursorsAndIcons();
         determineCurrentUser();
         chooseInitialLanguage(); // TODO set&save a default start-up language in settings/preferences?
         setDefaultPreprocessingGraphs();
