@@ -52,7 +52,7 @@ public class TextField extends GraphTextField {
     /**
      * Frame that contains this component
      */
-    private final GraphFrame parent;
+    final GraphFrame parent;
     /**
      * Indicates if the text field content has been modified
      */
@@ -294,7 +294,7 @@ public class TextField extends GraphTextField {
         }
 
         public void actionPerformed(ActionEvent e) {
-            UnitexFrame.mainFrame.saveGraph(parent);
+            parent.saveGraph();
         }
     }
 

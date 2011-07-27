@@ -89,6 +89,7 @@ import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
 import fr.umlv.unitex.svn.ConflictSolvedListener;
 import fr.umlv.unitex.svn.SvnConflict;
@@ -461,17 +462,14 @@ public class GraphFrame extends JInternalFrame {
         configuration.setToolTipText("Graph configuration");
         save.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphFrame f = UnitexFrame.mainFrame.frameManager
-                        .getCurrentFocusedGraphFrame();
-                if (f != null)
-                    UnitexFrame.mainFrame.saveGraph(f);
+                saveGraph();
             }
         });
         compile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        UnitexFrame.mainFrame.compileGraph();
+                        compileGraph();
                     }
                 });
             }
@@ -780,7 +778,7 @@ public class GraphFrame extends JInternalFrame {
                 if (n == JOptionPane.CLOSED_OPTION)
                     return;
                 if (n == 0) {
-                    if (!UnitexFrame.mainFrame.saveGraph(GraphFrame.this))
+                    if (!saveGraph())
                         return;
                 }
                 if (n != 2) {
@@ -1067,6 +1065,99 @@ public class GraphFrame extends JInternalFrame {
 
     public void unSelectAllBoxes() {
         graphicalZone.unSelectAllBoxes();
+    }
+
+    
+    /**
+     * Compiles the current <code>GraphFrame</code>. If the graph is
+     * unsaved, an error message is shown and nothing is done; otherwise the
+     * compilation process is launched through the creation of a
+     * <code>ProcessInfoFrame</code> object.
+     */
+    public void compileGraph() {
+        if (modified) {
+            JOptionPane.showMessageDialog(null,
+                    "Save graph before compiling it", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (getGraph() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Cannot compile a graph with no name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        final Grf2Fst2Command command = new Grf2Fst2Command().grf(
+                getGraph()).enableLoopAndRecursionDetection(true)
+                .tokenizationMode().repository();
+        Launcher.exec(command, false);
+    }
+
+    
+    public boolean saveGraph() {
+        final File file = getGraph();
+        if (file == null) {
+            return saveAsGraph();
+        }
+        final GraphIO g = new GraphIO(graphicalZone);
+        modified = false;
+        g.saveGraph(file);
+        setGraph(file);
+        return true;
+    }
+    
+    
+    public boolean saveAsGraph() {
+        final GraphIO g = new GraphIO(graphicalZone);
+        final JFileChooser fc = Config.getGraphDialogBox(true);
+        fc.setMultiSelectionEnabled(false);
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        File file = null;
+        for (; ;) {
+            int returnVal = fc.showSaveDialog(this);
+            fc.setMultiSelectionEnabled(true);
+            if (returnVal != JFileChooser.APPROVE_OPTION) {
+                // we return if the user has clicked on CANCEL
+                return false;
+            }
+            file = fc.getSelectedFile();
+            if (file == null || !file.exists())
+                break;
+            final String message = file
+                    + "\nalready exists. Do you want to replace it ?";
+            final String[] options = {"Yes", "No"};
+            final int n = JOptionPane.showOptionDialog(null, message, "Error",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
+                    options, options[0]);
+            if (n == 0) {
+                break;
+            }
+        }
+        if (file == null) {
+            return false;
+        }
+        final String name = file.getAbsolutePath();
+        // if the user wants to save the graph as an image
+        if (name.endsWith(".png") || name.endsWith(".PNG")) {
+            // we do not change the "modified" status and the title of the
+            // frame
+            saveGraphAsAnImage(file);
+            return true;
+        }
+        // if the user wants to save the graph as a vectorial file
+        if (name.endsWith(".svg") || name.endsWith(".SVG")) {
+            // we do not change the "modified" status and the title of the
+            // frame
+            saveGraphAsAnSVG(file);
+            return true;
+        }
+        if (!name.endsWith(".grf")) {
+            file = new File(name + ".grf");
+        }
+        modified = false;
+        g.saveGraph(file);
+        setGraph(file);
+        return true;
     }
 
 }
