@@ -483,7 +483,7 @@ public class UnitexFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null)
-                    saveGraph(f);
+                    f.saveGraph();
             }
         };
         save.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -493,7 +493,7 @@ public class UnitexFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 GraphFrame f = frameManager.getCurrentFocusedGraphFrame();
                 if (f != null)
-                    saveAsGraph(f);
+                    f.saveAsGraph();
             }
         };
         graphMenu.add(new JMenuItem(saveAs));
@@ -546,7 +546,10 @@ public class UnitexFrame extends JFrame {
         final JMenuItem compileFST = new JMenuItem("Compile FST2");
         compileFST.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                compileGraph();
+                final GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
+                if (currentFrame == null)
+                    return;
+                currentFrame.compileGraph();
             }
         });
         final JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
@@ -1013,127 +1016,19 @@ public class UnitexFrame extends JFrame {
     }
 
 
-    /**
-     * Opens a "Save As" dialog box to save a graph. The graph is actually saved
-     * by a call to the <code>GraphFrame.saveGraph(String)</code> method.
-     *
-     * @param f the <code>GraphFrame</code> to be saved
-     */
-    boolean saveAsGraph(GraphFrame f) {
-        if (f == null)
-            return false;
-        final GraphIO g = new GraphIO(f.graphicalZone);
-        final JFileChooser fc = Config.getGraphDialogBox(true);
-        fc.setMultiSelectionEnabled(false);
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        File file = null;
-        for (; ;) {
-            int returnVal = fc.showSaveDialog(this);
-            fc.setMultiSelectionEnabled(true);
-            if (returnVal != JFileChooser.APPROVE_OPTION) {
-                // we return if the user has clicked on CANCEL
-                return false;
-            }
-            file = fc.getSelectedFile();
-            if (file == null || !file.exists())
-                break;
-            final String message = file
-                    + "\nalready exists. Do you want to replace it ?";
-            final String[] options = {"Yes", "No"};
-            final int n = JOptionPane.showOptionDialog(null, message, "Error",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
-                    options, options[0]);
-            if (n == 0) {
-                break;
-            }
-        }
-        if (file == null) {
-            return false;
-        }
-        final String name = file.getAbsolutePath();
-        // if the user wants to save the graph as an image
-        if (name.endsWith(".png") || name.endsWith(".PNG")) {
-            // we do not change the "modified" status and the title of the
-            // frame
-            f.saveGraphAsAnImage(file);
-            return true;
-        }
-        // if the user wants to save the graph as a vectorial file
-        if (name.endsWith(".svg") || name.endsWith(".SVG")) {
-            // we do not change the "modified" status and the title of the
-            // frame
-            f.saveGraphAsAnSVG(file);
-            return true;
-        }
-        if (!name.endsWith(".grf")) {
-            file = new File(name + ".grf");
-        }
-        f.modified = false;
-        g.saveGraph(file);
-        f.setGraph(file);
-        return true;
-    }
 
     /**
-     * If the graph has no name, the <code>saveAsGraph(GraphFrame)</code> is
-     * called. Otherwise, the graph is saved by a call to the
-     * <code>GraphFrame.saveGraph(String)</code> method.
-     *
-     * @param f the <code>GraphFrame</code> to be saved
-     */
-    public boolean saveGraph(GraphFrame f) {
-        if (f == null)
-            return false;
-        final File file = f.getGraph();
-        if (file == null) {
-            return saveAsGraph(f);
-        }
-        final GraphIO g = new GraphIO(f.graphicalZone);
-        f.modified = false;
-        g.saveGraph(file);
-        f.setGraph(file);
-        return true;
-    }
-
-    /**
-     * Saves all <code>GraphFrame</code> s that are on the desktop.
+     * Saves all <code>GraphFrame</code> that are on the desktop.
      */
     void saveAllGraphs() {
         final JInternalFrame[] frames = desktop.getAllFrames();
         for (final JInternalFrame frame : frames) {
             if (frame instanceof GraphFrame) {
-                saveGraph((GraphFrame) frame);
+            	((GraphFrame) frame).saveGraph();
             }
         }
     }
 
-    /**
-     * Compiles the current focused <code>GraphFrame</code>. If the graph is
-     * unsaved, an error message is shown and nothing is done; otherwise the
-     * compilation process is launched through the creation of a
-     * <code>ProcessInfoFrame</code> object.
-     */
-    public void compileGraph() {
-        final GraphFrame currentFrame = frameManager.getCurrentFocusedGraphFrame();
-        if (currentFrame == null)
-            return;
-        if (currentFrame.modified) {
-            JOptionPane.showMessageDialog(null,
-                    "Save graph before compiling it", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (currentFrame.getGraph() == null) {
-            JOptionPane.showMessageDialog(null,
-                    "Cannot compile a graph with no name", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        final Grf2Fst2Command command = new Grf2Fst2Command().grf(
-                currentFrame.getGraph()).enableLoopAndRecursionDetection(true)
-                .tokenizationMode().repository();
-        Launcher.exec(command, false);
-    }
 
     /**
      * Shows a window that offers the user to compile and flatten a graph. If
