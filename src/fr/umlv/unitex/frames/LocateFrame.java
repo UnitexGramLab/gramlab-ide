@@ -51,9 +51,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -101,11 +104,11 @@ public class LocateFrame extends JInternalFrame {
         setContentPane(constructPanel());
         pack();
         setDefaultCloseOperation(HIDE_ON_CLOSE);
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                regExp.setFont(font);
-            }
-        });
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				regExp.setFont(ConfigManager.getManager().getTextFont(null));
+			}
+		});
         Config.addLanguageListener(new LanguageListener() {
             public void languageChanged() {
                 regExp.setText("");
@@ -192,7 +195,7 @@ public class LocateFrame extends JInternalFrame {
         bg.add(graph);
         patternPanel.add(regularExpression, BorderLayout.NORTH);
         regExp.setPreferredSize(new Dimension(300, 30));
-        regExp.setFont(Preferences.textFont());
+        regExp.setFont(ConfigManager.getManager().getTextFont(null));
         patternPanel.add(regExp, BorderLayout.CENTER);
         JPanel p = new JPanel(new BorderLayout());
         p.add(graph, BorderLayout.WEST);
@@ -303,7 +306,7 @@ public class LocateFrame extends JInternalFrame {
             commands.addCommand(reg2GrfCmd);
             Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
                     new File(Config.getUserCurrentLanguageDir(), "regexp.grf"))
-                    .enableLoopAndRecursionDetection(true).tokenizationMode()
+                    .enableLoopAndRecursionDetection(true).tokenizationMode(null)
                     .repository();
             if (debug.isSelected()) grfCmd=grfCmd.debug();
             commands.addCommand(grfCmd);
@@ -322,7 +325,7 @@ public class LocateFrame extends JInternalFrame {
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
                         new File(grfName))
                         .enableLoopAndRecursionDetection(true)
-                        .tokenizationMode().repository();
+                        .tokenizationMode(null).repository();
                 if (debug.isSelected()) grfCmd=grfCmd.debug();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
@@ -349,7 +352,7 @@ public class LocateFrame extends JInternalFrame {
         if (locateOnSnt.isSelected()) {
             /* Locate on .snt text */
             LocateCommand locateCmd = new LocateCommand().snt(
-                    Config.getCurrentSnt()).fst2(fst2).alphabet(Config.getAlphabet());
+                    Config.getCurrentSnt()).fst2(fst2).alphabet(ConfigManager.getManager().getAlphabet(null));
             if (shortestMatches.isSelected())
                 locateCmd = locateCmd.shortestMatches();
             else if (longuestMatches.isSelected())
@@ -367,20 +370,21 @@ public class LocateFrame extends JInternalFrame {
             } else {
                 locateCmd = locateCmd.noLimit();
             }
-            if (Config.isKorean()) {
+            if (ConfigManager.getManager().isKorean(null)) {
                 locateCmd = locateCmd.korean();
             }
-            if (Config.isArabic()) {
+            if (ConfigManager.getManager().isArabic(null)) {
+            	/* TODO: mettre le fichier arabic typo rules dans le config manager */
                 locateCmd = locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
-            if (Config.isCharByCharLanguage()) {
+            if (ConfigManager.getManager().isCharByCharLanguage(null)) {
                 locateCmd = locateCmd.charByChar();
             }
-            if (Config.morphologicalUseOfSpaceAllowed()) {
+            if (ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null)) {
                 locateCmd = locateCmd.enableMorphologicalUseOfSpace();
             }
             locateCmd = locateCmd
-                    .morphologicalDic(Preferences.morphologicalDic());
+                    .morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
             if (allowAmbiguousOutputs.isSelected()) {
                 locateCmd = locateCmd.allowAmbiguousOutputs();
             } else {
@@ -407,7 +411,7 @@ public class LocateFrame extends JInternalFrame {
                 return;
             }
             LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(tfst)
-                    .fst2(fst2).alphabet(Config.getAlphabet());
+                    .fst2(fst2).alphabet(ConfigManager.getManager().getAlphabet(null));
             if (shortestMatches.isSelected())
                 locateCmd = locateCmd.shortestMatches();
             else if (longuestMatches.isSelected())
@@ -425,7 +429,7 @@ public class LocateFrame extends JInternalFrame {
             } else {
                 locateCmd = locateCmd.noLimit();
             }
-            if (Config.isKorean()) {
+            if (ConfigManager.getManager().isKorean(null)) {
                 locateCmd = locateCmd.korean();
             }
             if (allowAmbiguousOutputs.isSelected()) {

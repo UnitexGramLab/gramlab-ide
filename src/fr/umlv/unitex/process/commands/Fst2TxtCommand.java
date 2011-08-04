@@ -44,7 +44,7 @@ public class Fst2TxtCommand extends CommandBuilder {
     }
 
     public Fst2TxtCommand alphabet(File alphabet) {
-      protectElement("-a"+alphabet.getAbsolutePath());
+      if (alphabet!=null) protectElement("-a"+alphabet.getAbsolutePath());
       return this;
   }
 

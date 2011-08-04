@@ -44,8 +44,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.text.BigTextList;
@@ -102,28 +105,25 @@ public class TextDicFrame extends JInternalFrame {
                 t.start();
             }
         });
-        dlf.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
+        dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        dlc.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        dlc.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        err.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        err.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+            	Font font=ConfigManager.getManager().getTextFont(null);
                 dlf.setFont(font);
                 dlc.setFont(font);
                 err.setFont(font);
-                dlf.setComponentOrientation(
-                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
+                dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
-                dlc.setComponentOrientation(
-                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                dlc.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
-                err.setComponentOrientation(
-                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                err.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
             }
         });
@@ -148,14 +148,13 @@ public class TextDicFrame extends JInternalFrame {
     }
 
     private JSplitPane constructDicPanel() {
+        boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
     	dlfScroll = new JScrollPane(dlf, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        dlfScroll.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        dlfScroll.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         dlfScrollbar = dlfScroll.getHorizontalScrollBar();
         dlcScroll = new JScrollPane(dlc, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        dlcScroll.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        dlcScroll.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         dlcScrollbar = dlcScroll.getHorizontalScrollBar();
         JPanel up = new JPanel(new BorderLayout());
@@ -192,7 +191,7 @@ public class TextDicFrame extends JInternalFrame {
         errPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         errScroll = new JScrollPane(err, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         errScroll.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                ConfigManager.getManager().isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         errScrollbar = errScroll.getHorizontalScrollBar();
         JPanel p=new JPanel(new GridLayout(2,1));
@@ -214,7 +213,7 @@ public class TextDicFrame extends JInternalFrame {
 
     void loadDLF() {
         File FILE = new File(text_dir, "dlf");
-        dlf.setFont(Config.getCurrentTextFont());
+        dlf.setFont(ConfigManager.getManager().getTextFont(null));
         String n = UnicodeIO.readFirstLine(new File(text_dir, "dlf.n"));
         String message = "DLF";
         if (n != null) {
@@ -235,7 +234,7 @@ public class TextDicFrame extends JInternalFrame {
 
     void loadDLC() {
         File FILE = new File(text_dir, "dlc");
-        dlc.setFont(Config.getCurrentTextFont());
+        dlc.setFont(ConfigManager.getManager().getTextFont(null));
         String n = UnicodeIO.readFirstLine(new File(text_dir, "dlc.n"));
         String message = "DLC";
         if (n != null) {
@@ -258,7 +257,7 @@ public class TextDicFrame extends JInternalFrame {
     void loadERR() {
     	boolean tags_errors=tags_err.isSelected();
         File FILE = new File(text_dir, tags_errors?"tags_err":"err");
-        err.setFont(Config.getCurrentTextFont());
+        err.setFont(ConfigManager.getManager().getTextFont(null));
         String n = UnicodeIO.readFirstLine(new File(text_dir, tags_errors?"tags_err.n":"err.n"));
         String message = tags_errors?"TAGS_ERR":"ERR";
         if (n != null) {
@@ -287,25 +286,19 @@ public class TextDicFrame extends JInternalFrame {
         loadDLF();
         loadDLC();
         loadERR();
-        
         setTitle("Word Lists in " + text_dir);
-        dlf.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
+        dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        dlc.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        dlc.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        err.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        err.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        dlfScroll.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        dlfScroll.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        dlcScroll.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        dlcScroll.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
-        errScroll.setComponentOrientation(
-                Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+        errScroll.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         Timer t = new Timer(400, new ActionListener() {
             public void actionPerformed(ActionEvent e) {

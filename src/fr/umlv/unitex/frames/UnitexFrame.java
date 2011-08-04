@@ -60,11 +60,12 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.Version;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.FileEditionMenu;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
@@ -444,11 +445,11 @@ public class UnitexFrame extends JFrame {
                 frameManager.newBuildKrMwuDicFrame();
             }
         };
-        buildKrMwuDic.setEnabled(Config.isKorean());
+        buildKrMwuDic.setEnabled(ConfigManager.getManager().isKorean(null));
         delaMenu.add(new JMenuItem(buildKrMwuDic));
         Config.addLanguageListener(new LanguageListener() {
             public void languageChanged() {
-                buildKrMwuDic.setEnabled(Config.isKorean());
+                buildKrMwuDic.setEnabled(ConfigManager.getManager().isKorean(null));
             }
         });
         delaMenu.addSeparator();
@@ -1095,7 +1096,7 @@ public class UnitexFrame extends JFrame {
             name_fst2 = name_fst2 + ".fst2";
             final MultiCommands commands = new MultiCommands();
             commands.addCommand(new Grf2Fst2Command().grf(grf)
-                    .enableLoopAndRecursionDetection(true).tokenizationMode()
+                    .enableLoopAndRecursionDetection(true).tokenizationMode(null)
                     .repository());
             commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
                     .resultType(!rtn.isSelected()).depth(depthValue));
@@ -1155,7 +1156,7 @@ public class UnitexFrame extends JFrame {
     void compressDELA() {
         CompressCommand command = new CompressCommand().name(Config
                 .getCurrentDELA());
-        if (Config.isSemiticLanguage()) {
+        if (ConfigManager.getManager().isSemiticLanguage(null)) {
             command = command.semitic();
         }
         Launcher.exec(command, false, null);

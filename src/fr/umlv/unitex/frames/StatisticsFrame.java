@@ -36,7 +36,8 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.stats.StatisticsTableModelMode0;
 import fr.umlv.unitex.stats.StatisticsTableModelMode1;
 import fr.umlv.unitex.stats.StatisticsTableModelMode2;
@@ -48,7 +49,7 @@ public class StatisticsFrame extends JInternalFrame {
 		super("Statistics", true, true, true, true);
 		JPanel top = new JPanel(new BorderLayout());
 		JTable table = createTable(file,mode);
-		table.setFont(Preferences.textFont());
+		table.setFont(ConfigManager.getManager().getTextFont(null));
 		JScrollPane scroll = new JScrollPane(table);
 		scroll
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);

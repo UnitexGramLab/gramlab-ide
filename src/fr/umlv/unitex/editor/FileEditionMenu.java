@@ -28,7 +28,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 /**

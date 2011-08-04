@@ -32,7 +32,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.text.BigTextList;
 
 
@@ -77,7 +78,7 @@ public class CheckResultFrame extends JInternalFrame {
      */
     void load(File f) {
         text.load(f);
-        text.setFont(Config.getCurrentTextFont());
+        text.setFont(ConfigManager.getManager().getTextFont(null));
     }
 
 }

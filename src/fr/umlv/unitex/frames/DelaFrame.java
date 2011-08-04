@@ -51,9 +51,12 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.RegexFormatter;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -105,8 +108,9 @@ public class DelaFrame extends JInternalFrame {
 				System.gc();
 			}
 		});
+		boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
 		text
-				.setComponentOrientation(Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
 						: ComponentOrientation.LEFT_TO_RIGHT);
 		scrollBar = scrollText.getHorizontalScrollBar();
 		Timer t = new Timer(400, new ActionListener() {
@@ -117,18 +121,16 @@ public class DelaFrame extends JInternalFrame {
 		t.setRepeats(false);
 		t.start();
 		scrollText
-				.setComponentOrientation(Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
 						: ComponentOrientation.LEFT_TO_RIGHT);
-		Preferences.addTextFontListener(new FontListener() {
-			public void fontChanged(Font font) {
-				text.setFont(font);
+		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				text.setFont(ConfigManager.getManager().getTextFont(null));
 				text
-						.setComponentOrientation(Preferences
-								.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+						.setComponentOrientation(ConfigManager.getManager().isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 				scrollText
-						.setComponentOrientation(Preferences
-								.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+						.setComponentOrientation(ConfigManager.getManager().isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 				Timer t2 = new Timer(400, new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -255,7 +257,7 @@ public class DelaFrame extends JInternalFrame {
 	void loadUnicodeDela(File dela) {
 		text.load(dela);
 		Config.setCurrentDELA(dela);
-		text.setFont(Config.getCurrentTextFont());
+		text.setFont(ConfigManager.getManager().getTextFont(null));
 		setTitle(dela.getAbsolutePath());
 		setVisible(true);
 		Timer t = new Timer(400, new ActionListener() {

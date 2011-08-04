@@ -48,9 +48,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ElagCompCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
@@ -355,7 +355,7 @@ public class ElagCompFrame extends JInternalFrame {
                         /* We have to compile the .grf into a .elg */
                         commands.addCommand(new Grf2Fst2Command().grf(grf)
                                 .enableLoopAndRecursionDetection(true)
-                                .tokenizationMode().repository());
+                                .tokenizationMode(null).repository());
                         commands.addCommand(new FlattenCommand().fst2(fst2)
                                 .resultType(true));
                         ElagCompCommand elagCompCmd = new ElagCompCommand()

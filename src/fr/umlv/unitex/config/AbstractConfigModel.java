@@ -18,24 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
-package fr.umlv.unitex.frames;
-
-import fr.umlv.unitex.grf.GraphPresentationInfo;
+package fr.umlv.unitex.config;
 
 
-class GraphPresentationDialogFactory {
-
-    private GraphPresentationDialog dialog;
-
-    GraphPresentationDialog newGraphPresentationDialog(GraphPresentationInfo info,
-                                                       boolean showRightToLeftCheckBox) {
-        if (dialog == null) {
-            dialog = new GraphPresentationDialog(info, showRightToLeftCheckBox);
-        } else {
-            dialog.configure(info, showRightToLeftCheckBox);
-        }
-        return dialog;
+public abstract class AbstractConfigModel implements ConfigModel {
+	
+	public boolean isKorean(String language) {
+    	if (language==null) language=getCurrentLanguage();
+        return language.equals("Korean");
     }
-
+	
+    public boolean isArabic(String language) {
+    	if (language==null) language=getCurrentLanguage();
+        return language.equals("Arabic");
+    }
+    
 }

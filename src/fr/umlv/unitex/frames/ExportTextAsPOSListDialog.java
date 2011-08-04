@@ -35,7 +35,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -108,7 +109,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
                         "foo.tok");
                 TfstTableModel model = new TfstTableModel(filter, false);
                 try {
-                    OutputStreamWriter writer=Config.getEncoding().getOutputStreamWriter(output);
+                    OutputStreamWriter writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(output);
                     for (int i = 1; i <= sentenceCount; i++) {
                         if (canceled) {
                             break;

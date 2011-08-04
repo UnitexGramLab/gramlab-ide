@@ -50,8 +50,9 @@ import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.listeners.AlignmentListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -285,11 +286,11 @@ public class XAlignFrame extends JInternalFrame {
             commands.addCommand(tokenize);
             DicoCommand dico = new DicoCommand()
                     .snt(snt).alphabet(alphabet)
-                    .morphologicalDic(Config.morphologicalDic(language));
-            if (Config.isArabic()) {
+                    .morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(language));
+            if (ConfigManager.getManager().isArabic(language)) {
                 dico = dico.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
-            if (Config.isSemiticLanguage()) {
+            if (ConfigManager.getManager().isSemiticLanguage(language)) {
                 dico = dico.semitic();
             }
             ArrayList<File> param = Config.getDefaultDicList(language);
@@ -362,24 +363,7 @@ public class XAlignFrame extends JInternalFrame {
     private Font tryToFindFont(File f) {
         File languageDir = Config.getLanguageDirForFile(f);
         if (languageDir == null) return null;
-        /* Now, we will look into the config file which is the preferred font
-           * for this language */
-        File config = new File(languageDir, "Config");
-        if (!config.exists()) {
-            return null;
-        }
-        Properties prop = Preferences.loadProperties(config, null);
-        String s = prop.getProperty("TEXT FONT SIZE");
-        if (s == null) {
-        	return null;
-        }
-        int fontSize = Integer.parseInt(s);
-        s = prop.getProperty("TEXT FONT NAME");
-        if (s == null) {
-        	return null;
-        }
-        Font font = new Font(s, Font.PLAIN, (int) (fontSize / 0.72));
-        return font;
+        return ConfigManager.getManager().getTextFont(languageDir.getName());
     }
 
 
@@ -395,11 +379,7 @@ public class XAlignFrame extends JInternalFrame {
         if (languageDir == null) {
             return null;
         }
-        File alphabet = new File(languageDir, "Alphabet.txt");
-        if (!alphabet.exists()) {
-            return null;
-        }
-        return alphabet;
+        return ConfigManager.getManager().getAlphabet(languageDir.getName());
     }
 
 

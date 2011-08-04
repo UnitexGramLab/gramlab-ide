@@ -45,8 +45,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.listeners.LanguageListener;

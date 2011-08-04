@@ -9,7 +9,7 @@ public class CassysCommand extends CommandBuilder {
 	}
 	
 	public CassysCommand alphabet(File s){
-		protectElement("-a"+s.getAbsolutePath());
+		if (s!=null) protectElement("-a"+s.getAbsolutePath());
 		return this;
 	}
 	

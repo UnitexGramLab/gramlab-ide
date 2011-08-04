@@ -19,26 +19,23 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.config;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.listeners.FontListener;
 
 
 /**
- * This class describes graph presentation preferences.
+ * This class describes language preferences.
  *
  * @author Sébastien Paumier
  */
@@ -84,7 +81,7 @@ public class Preferences {
     /**
      * Path of the graph package repository
      */
-    public File packagePath;
+    public File graphRepositoryPath;
 
     //public File lexicalPackagePath;
 
@@ -117,7 +114,7 @@ public class Preferences {
     /**
      * Properties for current language
      */
-    private static final Properties defaultProperties = new Properties();
+    protected static final Properties defaultProperties = new Properties();
 
     {
         /*
@@ -176,26 +173,13 @@ public class Preferences {
         defaultProperties.setProperty("ENCODING", Encoding.UTF16LE.toString());
     }
 
-    /**
-     * General preferences
-     */
-    private static Preferences pref = new Preferences();
-
 
     /**
      * Constructs a new <code>Preferences</code>, using
      * language configuration values.
      */
-    private Preferences() {
+    protected Preferences() {
         setPreferencesFromProperties(defaultProperties);
-    }
-
-    /**
-     * Sets the values to the default ones for the.
-     */
-    public static void reset() {
-        Properties prop = loadProperties();
-        pref.setPreferencesFromProperties(prop);
     }
 
     /**
@@ -203,19 +187,17 @@ public class Preferences {
      *
      * @param prop
      */
-    private void setPreferencesFromProperties(Properties prop) {
+    protected void setPreferencesFromProperties(Properties prop) {
         int size = Integer.parseInt(prop.getProperty("TEXT FONT SIZE"));
         int style = Integer.parseInt(prop.getProperty("TEXT FONT STYLE"));
         Font font = new Font(prop.getProperty("TEXT FONT NAME"), style,
                 (int) (size / 0.72));
         textFont = new FontInfo(font, size);
-        fireTextFontChanged(font);
         size = Integer.parseInt(prop
                 .getProperty("CONCORDANCE FONT HTML SIZE"));
         font = new Font(prop.getProperty("CONCORDANCE FONT NAME"), Font.PLAIN,
                 (int) (size / 0.72));
         concordanceFont = new FontInfo(font, size);
-        fireConcordanceFontChanged(font);
         size = Integer.parseInt(prop.getProperty("INPUT FONT SIZE"));
         style = Integer.parseInt(prop.getProperty("INPUT FONT STYLE"));
         font = new Font(prop.getProperty("INPUT FONT NAME"), style,
@@ -266,7 +248,7 @@ public class Preferences {
         charByChar = Boolean.valueOf(prop.getProperty("CHAR BY CHAR"));
         morphologicalUseOfSpace = Boolean.valueOf(prop.getProperty("MORPHOLOGICAL USE OF SPACE"));
         s = prop.getProperty("PACKAGE PATH");
-        packagePath = (s == null || s.equals("")) ? null : new File(s);
+        graphRepositoryPath = (s == null || s.equals("")) ? null : new File(s);
         /*s = prop.getProperty("LEXICAL PACKAGE PATH");
         lexicalPackagePath = (s == null || s.equals("")) ? null : new File(s);*/
         s = prop.getProperty("LOGGING DIR");
@@ -285,7 +267,7 @@ public class Preferences {
         }
     }
 
-    public static ArrayList<File> tokenizeMorphologicalDicList(String s) {
+    private ArrayList<File> tokenizeMorphologicalDicList(String s) {
         if (s == null || s.equals("")) return null;
         ArrayList<File> list = new ArrayList<File>();
         StringTokenizer tokenizer = new StringTokenizer(s, ";");
@@ -295,25 +277,8 @@ public class Preferences {
         return list;
     }
 
-    private void setPreferences(Preferences p) {
-        pref = p;
-        fireTextFontChanged(pref.textFont.font);
-        fireConcordanceFontChanged(pref.concordanceFont.font);
-    }
 
-    /**
-     * Saves <code>Preferences</code> p to the current language
-     * configuration file.
-     *
-     * @param p
-     */
-    public static void savePreferences(Preferences p) {
-        pref.setPreferences(p);
-        Properties prop = pref.setPropertiesFromPreferences();
-        saveProperties(prop);
-    }
-
-    private Properties setPropertiesFromPreferences() {
+    protected Properties setPropertiesFromPreferences() {
         Properties prop = new Properties(defaultProperties);
         prop.setProperty("TEXT FONT NAME", textFont.font.getName());
         prop.setProperty("TEXT FONT STYLE", "" + textFont.font.getStyle());
@@ -349,7 +314,7 @@ public class Preferences {
         prop.setProperty("ICON BAR POSITION", info.iconBarPosition);
         prop.setProperty("CHAR BY CHAR", "" + charByChar);
         prop.setProperty("MORPHOLOGICAL USE OF SPACE", "" + morphologicalUseOfSpace);
-        prop.setProperty("PACKAGE PATH", (packagePath == null) ? "" : packagePath.getAbsolutePath());
+        prop.setProperty("PACKAGE PATH", (graphRepositoryPath == null) ? "" : graphRepositoryPath.getAbsolutePath());
         //prop.setProperty("LEXICAL PACKAGE PATH", (lexicalPackagePath == null) ? "" : lexicalPackagePath.getAbsolutePath());
         prop.setProperty("LOGGING DIR", (loggingDir == null) ? "" : loggingDir.getAbsolutePath());
         prop.setProperty("MUST LOG", "" + mustLog);
@@ -360,7 +325,7 @@ public class Preferences {
     }
 
 
-    private static String getMorphologicalDicListAsString(ArrayList<File> list) {
+    private String getMorphologicalDicListAsString(ArrayList<File> list) {
         if (list == null || list.size() == 0) {
             return "";
         }
@@ -374,208 +339,12 @@ public class Preferences {
     /**
      * @return a copy of the preferences
      */
-    Preferences getPreferences() {
+    @Override
+    protected Preferences clone() {
         Properties prop = setPropertiesFromPreferences();
         Preferences p = new Preferences();
         p.setPreferencesFromProperties(prop);
         return p;
     }
-
-    /**
-     * @return a copy of global preferences
-     */
-    public static Preferences getCloneOfPreferences() {
-        return pref.getPreferences();
-    }
-
-    /**
-     * @return the name of the HTML concordance font
-     */
-    public static String getConcordanceFontName() {
-        return pref.concordanceFont.font.getName();
-    }
-
-    /**
-     * @return the size of the HTML concordance font
-     */
-    public static int getConcordanceFontSize() {
-        return pref.concordanceFont.size;
-    }
-
-
-    /**
-     * Loads user properties.
-     */
-    public static Properties loadProperties(File config, Properties defaultProperties1) {
-        Properties languageProperties = new Properties(defaultProperties1);
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(config);
-        } catch (FileNotFoundException e) {
-            return languageProperties;
-        }
-        try {
-            languageProperties.load(stream);
-            stream.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return languageProperties;
-    }
-
-    /**
-     * Loads user properties for current language
-     */
-    private static Properties loadProperties() {
-        return loadProperties(new File(Config
-                .getUserCurrentLanguageDir(), "Config"), defaultProperties);
-    }
-
-    /**
-     * Saves user properties for current language
-     */
-    private static void saveProperties(Properties prop) {
-        FileOutputStream stream = null;
-        try {
-            File f = new File(Config
-                    .getUserCurrentLanguageDir(), "Config");
-            stream = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-        try {
-            prop.store(stream, "Unitex configuration file of '"
-                    + Config.getUserName() + "' for '"
-                    + Config.getCurrentLanguage() + "'");
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            return;
-        }
-        try {
-            stream.close();
-        } catch (IOException e2) {
-            e2.printStackTrace();
-        }
-    }
-
-
-    public static GraphPresentationInfo getGraphPresentationPreferences() {
-        return pref.info.clone();
-    }
-
-    public static boolean charByChar() {
-        return pref.charByChar;
-    }
-
-    public static boolean morphologicalUseOfSpace() {
-        return pref.morphologicalUseOfSpace;
-    }
-
-    public static boolean rightToLeftForText() {
-        return pref.rightToLeftForText;
-    }
-
-    public static boolean rightToLeftForGraphs() {
-        return pref.rightToLeftForGraphs;
-    }
-
-    public static boolean semitic() {
-        return pref.semitic;
-    }
-
-    public static ArrayList<File> morphologicalDic() {
-        return pref.morphologicalDic;
-    }
-
-    public static File packagePath() {
-        return pref.packagePath;
-    }
-
-    public static File loggingDir() {
-        return pref.loggingDir;
-    }
-
-    public static boolean mustLog() {
-        return pref.mustLog;
-    }
-
-    public static Font textFont() {
-        return pref.textFont.font;
-    }
-
-    public static Font inputFont() {
-        return pref.info.input.font;
-    }
-
-    public static int inputFontSize() {
-        return pref.info.input.size;
-    }
-
-
-    private static ArrayList<FontListener> textFontListeners = new ArrayList<FontListener>();
-    private static ArrayList<FontListener> concordanceFontListeners = new ArrayList<FontListener>();
-
-    public static void addTextFontListener(FontListener listener) {
-        textFontListeners.add(listener);
-    }
-
-    private static boolean firingTextFont = false;
-
-    public static void removeTextFontListener(FontListener listener) {
-        if (firingTextFont) {
-            throw new IllegalStateException("Should not try to remove a listener while firing");
-        }
-        textFontListeners.remove(listener);
-    }
-
-    protected static void fireTextFontChanged(Font font) {
-    	if (textFontListeners==null) return;
-        firingTextFont = true;
-        try {
-            for (FontListener listener : textFontListeners) {
-                listener.fontChanged(font);
-            }
-        } finally {
-            firingTextFont = false;
-        }
-    }
-
-    public static void addConcordanceFontListener(FontListener listener) {
-        concordanceFontListeners.add(listener);
-    }
-
-    private static boolean firingConcordanceFont = false;
-
-    public static void removeConcordanceFontListener(FontListener listener) {
-        if (firingConcordanceFont) {
-            throw new IllegalStateException("Should not try to remove a listener while firing");
-        }
-        concordanceFontListeners.remove(listener);
-    }
-
-    protected static void fireConcordanceFontChanged(Font font) {
-    	if (concordanceFontListeners==null) return;
-        firingConcordanceFont = true;
-        try {
-            for (FontListener listener : concordanceFontListeners) {
-                listener.fontChanged(font);
-            }
-        } finally {
-            firingConcordanceFont = false;
-        }
-    }
-
-    public static boolean svnMonitoring() {
-        return pref.svnMonitoring;
-    }
-
-    public static boolean onlyCosmetic() {
-        return pref.onlyCosmetic;
-    }
-
-	public static Encoding encoding() {
-		return pref.encoding;
-	}
 
 }

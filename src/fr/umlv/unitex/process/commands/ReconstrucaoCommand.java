@@ -34,7 +34,7 @@ public class ReconstrucaoCommand extends CommandBuilder {
 	}
 
 	public ReconstrucaoCommand alphabet(File alphabet) {
-    protectElement("-a"+alphabet.getAbsolutePath());
+    if (alphabet!=null) protectElement("-a"+alphabet.getAbsolutePath());
     return this;
 }
 

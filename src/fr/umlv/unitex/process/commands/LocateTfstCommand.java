@@ -44,7 +44,7 @@ public class LocateTfstCommand extends CommandBuilder {
 	}
 
 	public LocateTfstCommand alphabet(File alphabet) {
-		protectElement("-a"+alphabet.getAbsolutePath());
+		if (alphabet!=null) protectElement("-a"+alphabet.getAbsolutePath());
 		return this;
 	}
 	

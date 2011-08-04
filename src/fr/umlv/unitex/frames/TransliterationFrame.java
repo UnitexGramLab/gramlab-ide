@@ -36,7 +36,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.process.Launcher;

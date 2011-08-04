@@ -50,9 +50,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.concord.BigConcordance;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.debug.DebugDetails;
 import fr.umlv.unitex.debug.DebugGraphPane;
 import fr.umlv.unitex.debug.DebugInfos;
@@ -222,12 +225,12 @@ public class ConcordanceFrame extends JInternalFrame {
         d.setSize((g < 800) ? g : 800, d.height);
         setSize(d);
         Util.getHtmlPageTitle(concor);
-        Preferences.addConcordanceFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                list.setFont(font);
-            }
-        });
-        list.setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
+		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				list.setFont(ConfigManager.getManager().getConcordanceFont(null));
+			}
+		});
+        list.setFont(ConfigManager.getManager().getConcordanceFont(null));
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {

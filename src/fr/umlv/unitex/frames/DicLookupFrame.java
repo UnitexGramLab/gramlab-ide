@@ -68,9 +68,12 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
@@ -176,19 +179,20 @@ public class DicLookupFrame extends JInternalFrame {
         final JScrollPane scrollText = new JScrollPane(text, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         final JScrollBar scrollBar=scrollText.getVerticalScrollBar();
         final JTextField inputText=new JTextField();
-        text.setFont(Preferences.textFont());
-        inputText.setFont(Preferences.textFont());
+        Font font=ConfigManager.getManager().getTextFont(null);
+        text.setFont(font);
+        inputText.setFont(font);
         text.setFixedCellHeight(inputText.getPreferredSize().height);
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                text.setFont(font);
-                inputText.setFont(font);
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				Font f=ConfigManager.getManager().getTextFont(null);
+                text.setFont(f);
+                inputText.setFont(f);
                 text.setFixedCellHeight(inputText.getPreferredSize().height);
-                text.setComponentOrientation(
-                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
+                text.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
-                scrollText.setComponentOrientation(
-                        Preferences.rightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                scrollText.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
                                 : ComponentOrientation.LEFT_TO_RIGHT);
                 text.repaint();
                 Timer t2 = new Timer(400, new ActionListener() {
@@ -273,7 +277,7 @@ public class DicLookupFrame extends JInternalFrame {
         }
         DicoCommand cmd = new DicoCommand().snt(
                 new File(Config.getUserCurrentLanguageDir(),"dic_lookup.in")).alphabet(
-                Config.getAlphabet());
+                		ConfigManager.getManager().getAlphabet(null));
         if (systemSelection != null && systemSelection.length != 0) {
             for (Object aSystemSelection : systemSelection) {
                 cmd = cmd.systemDictionary((String) aSystemSelection);
@@ -455,7 +459,7 @@ public class DicLookupFrame extends JInternalFrame {
     class ApplyLexicalResourcesDo implements ToDo {
         public void toDo() {
             UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
-            if (Config.isKorean()) {
+            if (ConfigManager.getManager().isKorean(null)) {
                 UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
                 UnitexFrame.getFrameManager().newTfstTagsFrame(
                         new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
