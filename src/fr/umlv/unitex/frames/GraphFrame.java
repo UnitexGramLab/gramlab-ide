@@ -72,11 +72,11 @@ import javax.swing.undo.UndoManager;
 
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -234,7 +234,7 @@ public class GraphFrame extends JInternalFrame {
         			Object value, int index, boolean selected,
         			boolean cellHasFocus) {
         		File f=(File)value;
-        		String s=Util.getRelativePath(getGraph(),f);
+        		String s=FileUtil.getRelativePath(getGraph(),f);
         		if (s.endsWith(".grf")) {
         			s=s.substring(0,s.lastIndexOf('.'));
         		}

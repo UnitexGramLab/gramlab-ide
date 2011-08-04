@@ -62,10 +62,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.LanguageListener;
@@ -439,8 +440,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                         "Are you sure you want to clear logs ?", "", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     File dir = new File(loggingDirectory.getText());
-                    Config.removeFile(new File(dir, "*.ulp"));
-                    Config.removeFile(new File(dir, "unitex_logging_parameters_count.txt"));
+                    FileUtil.removeFile(new File(dir, "*.ulp"));
+                    FileUtil.removeFile(new File(dir, "unitex_logging_parameters_count.txt"));
                 }
             }
         });

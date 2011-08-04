@@ -48,9 +48,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
-import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.ElagCompCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
@@ -134,7 +134,7 @@ public class ElagCompFrame extends JInternalFrame {
                 currdir = f.getCurrentDirectory();
                 lstfile = f.getSelectedFile();
                 String ext;
-                if ((ext = Util.getExtensionInLowerCase(lstfile)) == null
+                if ((ext = FileUtil.getExtensionInLowerCase(lstfile)) == null
                         || !ext.equals("lst")) {
                     lstfile = new File(lstfile.getAbsolutePath() + ".lst");
                 }
@@ -396,8 +396,8 @@ public class ElagCompFrame extends JInternalFrame {
         readLstFile();
         lstlabel.setText(lstfile.getName());
         String fname = lstfile.getAbsolutePath();
-        if (Util.getExtensionInLowerCase(lstfile).equals("lst")) {
-            outputfile = new File(Util.getFileNameWithoutExtension(fname)
+        if (FileUtil.getExtensionInLowerCase(lstfile).equals("lst")) {
+            outputfile = new File(FileUtil.getFileNameWithoutExtension(fname)
                     + ".rul");
         } else {
             outputfile = new File(fname + ".rul");

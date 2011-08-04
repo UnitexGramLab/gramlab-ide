@@ -55,13 +55,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -469,11 +469,11 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         }
         modifyCommand = modifyCommand.indFile(indFile).outputModifiedTxtFile(
                 txt);
-        String sntDir = Util.getFileNameWithoutExtension(txt.getAbsolutePath())
+        String sntDir = FileUtil.getFileNameWithoutExtension(txt.getAbsolutePath())
                 + "_snt";
         File tmp = new File(sntDir);
         ModifyTextDo toDo = null;
-        String sntName = Util.getFileNameWithoutExtension(txt) + ".snt";
+        String sntName = FileUtil.getFileNameWithoutExtension(txt) + ".snt";
         if (new File(sntName).equals(Config.getCurrentSnt())) {
             UnitexFrame.getFrameManager().closeTextFrame();
             toDo = new ModifyTextDo(new File(sntName));
@@ -513,7 +513,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         command = command.snt(Config.getCurrentSnt()).ind(indFile).result(
                 result);
         MultiCommands builder = new MultiCommands();
-        String sntDir = Util.getFileNameWithoutExtension(result
+        String sntDir = FileUtil.getFileNameWithoutExtension(result
                 .getAbsolutePath())
                 + "_snt";
         File tmp = new File(sntDir);

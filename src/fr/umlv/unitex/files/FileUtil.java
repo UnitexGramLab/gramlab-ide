@@ -19,14 +19,15 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.files;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +41,7 @@ import fr.umlv.unitex.config.ConfigManager;
  *
  * @author Sébastien Paumier
  */
-public class Util {
+public class FileUtil {
 
     /**
      * Returns the name without extension of a file.
@@ -334,5 +335,152 @@ public class Util {
 		if (dir2!=null) return s;
 		return null;
 	}
+
+
+    /**
+     * Tries to find the language directory corresponding to the given file.
+     *
+     * @param f
+     * @return the language directory, or null if no language directory was
+     *         found in the path of f
+     */
+    public static File getLanguageDirForFile(File f) {
+        if (f == null) return null;
+        File parent = f.getParentFile();
+        while (true) {
+            if (parent == null) return null;
+            if (parent.equals(Config.getUserDir()) ||
+                    parent.equals(Config.getUnitexDir())) break;
+            f = parent;
+            parent = parent.getParentFile();
+        }
+        if (!ConfigManager.getManager().isValidLanguageName(f.getName())) return null;
+        return f;
+    }
+
+    /**
+     * Copies files. The source is specified by a file name that can contain *
+     * and ? jokers.
+     *
+     * @param src  source
+     * @param dest destination
+     */
+    public static void copyFileByName(File src, File dest) {
+        final File path_src = src.getParentFile();
+        final String expression = src.getName();
+        if (dest.isDirectory()) {
+            File files_list[] = path_src
+                    .listFiles(new RegFileFilter(expression));
+            if (files_list != null) {
+                for (File F : files_list) {
+                    if (!F.isDirectory()) {
+                        copyFile(F, new File(dest, F.getName()));
+                    }
+                }
+            }
+        } else
+            copyFile(src, dest);
+    }
+
+    /**
+     * Copies a directory recursively.
+     *
+     * @param src  source directory
+     * @param dest destination directory
+     */
+
+    public static void copyDirRec(File src, File dest) {
+
+        if (!src.isDirectory()) {
+            return;
+        }
+        if (!dest.exists()) {
+            dest.mkdirs();
+        }
+        File files_list[] = src.listFiles();
+        if (files_list == null) {
+            return;
+        }
+        for (File f : files_list) {
+            if (f.isDirectory()) {
+                copyDirRec(f, new File(dest, f.getName()));
+            } else if (f.isFile()) {
+                copyFile(f, new File(dest, f.getName()));
+            }
+        }
+    }
+
+    /**
+     * Deletes files. The source is specified by a file name that can contain *
+     * and ? jokers.
+     *
+     * @param src source
+     */
+    public static void deleteFileByName(File src) {
+    	if (src==null) return;
+        final File path_src = src.getParentFile();
+        if (path_src==null) return;
+        final String expression = src.getName();
+        File files_list[] = path_src.listFiles(new RegFileFilter(
+                expression));
+        if (files_list != null) {
+            for (File aFiles_list : files_list) {
+            	aFiles_list.delete();
+            }
+        }
+    }
+
+    /**
+     * Deletes files. The source is specified by a file name that can contains *
+     * and ? jokers. This method differs from deleteFileByName because it cannot
+     * delete directories.
+     *
+     * @param src source
+     */
+    public static void removeFile(File src) {
+    	if (src==null) return;
+        final File path_src = src.getParentFile();
+        if (path_src==null) return;
+        final String expression = src.getName();
+        final File files_list[] = path_src.listFiles(new RegFileFilter(
+                expression));
+        for (final File aFiles_list : files_list) {
+            final File F;
+            if (!(F = aFiles_list).isDirectory()) {
+                F.delete();
+            }
+        }
+    }
+
+    /**
+     * Copy one file.
+     *
+     * @param src  source file
+     * @param dest destination file
+     */
+    public static void copyFile(File src, File dest) {
+        try {
+            final FileInputStream fis = new FileInputStream(src);
+            final FileOutputStream fos = new FileOutputStream(dest);
+            copyStream(fis, fos);
+            fis.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void copyStream(InputStream fis, OutputStream fos) {
+        try {
+            final byte[] buf = new byte[2048];
+            int i = 0;
+            while ((i = fis.read(buf)) != -1) {
+                fos.write(buf, 0, i);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

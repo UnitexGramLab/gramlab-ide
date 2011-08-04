@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Util;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
@@ -46,7 +46,7 @@ public class DebugInfos {
 
 	
 	public static DebugInfos loadConcordanceIndex(File html) {
-		String concord_ind=Util.getFileNameWithoutExtension(html)+".ind";
+		String concord_ind=FileUtil.getFileNameWithoutExtension(html)+".ind";
 		File f=new File(concord_ind);
 		if (!f.exists()) return null;
 		Scanner scanner=null;

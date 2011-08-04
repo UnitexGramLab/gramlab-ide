@@ -19,7 +19,7 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.files;
 
 import java.io.File;
 
@@ -63,7 +63,7 @@ public class PersonalFileFilter extends javax.swing.filechooser.FileFilter {
             if (s.equals("dlf") || s.equals("dlc"))
                 return true;
         }
-        String s = Util.getExtensionInLowerCase(f);
+        String s = FileUtil.getExtensionInLowerCase(f);
         return s != null && (s.equals(ext));
     }
 

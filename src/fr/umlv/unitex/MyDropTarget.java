@@ -42,6 +42,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
@@ -196,7 +197,7 @@ public class MyDropTarget {
 			if (!(o instanceof File))
 				return;
 			f = (File) o;
-			extension = Util.getFileNameExtension(f);
+			extension = FileUtil.getFileNameExtension(f);
 			if ((extension.compareToIgnoreCase("snt") == 0)
 					|| (extension.compareToIgnoreCase("txt") == 0)) {
 				if (list.size() > 1) {
@@ -283,7 +284,7 @@ public class MyDropTarget {
 			}
 			if (extension.compareToIgnoreCase("grf") == 0) {
 				for (Object aList : list) {
-					if (Util.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
+					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
 						final File file = (File) aList;
 						UnitexFrame.getFrameManager().newGraphFrame(file);
 					}
