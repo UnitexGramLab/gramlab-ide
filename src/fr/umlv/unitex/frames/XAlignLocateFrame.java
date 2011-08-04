@@ -48,11 +48,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.Launcher;
@@ -310,7 +310,7 @@ public class XAlignLocateFrame extends JInternalFrame {
         }
         locateCmd = locateCmd.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(language));
         commands.addCommand(locateCmd);
-        String foo = Util.getFileNameWithoutExtension(snt) + "_snt";
+        String foo = FileUtil.getFileNameWithoutExtension(snt) + "_snt";
         File indFile = new File(foo, "concord.ind");
         ConcordCommand concord = null;
         try {
@@ -322,7 +322,7 @@ public class XAlignLocateFrame extends JInternalFrame {
             e.printStackTrace();
         }
         setVisible(false);
-        foo = Util.getFileNameWithoutExtension(indFile) + ".txt";
+        foo = FileUtil.getFileNameWithoutExtension(indFile) + ".txt";
         Launcher.exec(commands, true, new XAlignLocateDo(new File(foo), concordModel), false);
     }
 

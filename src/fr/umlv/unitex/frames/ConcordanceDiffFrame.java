@@ -44,12 +44,12 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.concord.BigConcordanceDiff;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.listeners.FontListener;
 
 /**
@@ -162,7 +162,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 	void load(File concor) {
 		Dimension d = getSize();
 		d.setSize(800, d.height);
-		Util.getHtmlPageTitle(concor);
+		FileUtil.getHtmlPageTitle(concor);
 		list.load(concor);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {

@@ -28,8 +28,8 @@ import java.io.OutputStreamWriter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -179,18 +179,18 @@ public class GraphCollection {
                     graphLine =
                             graphLine
                                     + ":"
-                                    + Util.getFileNameWithoutExtension(fileName)
+                                    + FileUtil.getFileNameWithoutExtension(fileName)
                                     + "_dir";
                 } else {
                     graphLine =
                             graphLine
                                     + "+:"
-                                    + Util.getFileNameWithoutExtension(fileName)
+                                    + FileUtil.getFileNameWithoutExtension(fileName)
                                     + "_dir";
                 }
                 buildGraphCollection(
                         aFiles_list1,
-                        new File(destinationDir, Util.getFileNameWithoutExtension(fileName) + "_dir.grf"),
+                        new File(destinationDir, FileUtil.getFileNameWithoutExtension(fileName) + "_dir.grf"),
                         copy,
                         txt);
             }
@@ -216,22 +216,22 @@ public class GraphCollection {
                 return;
             }
             if (!aFiles_list.isDirectory()
-                    && Util.getExtensionInLowerCase(fileName).compareTo("grf")
+                    && FileUtil.getExtensionInLowerCase(fileName).compareTo("grf")
                     == 0) {
                 if (0 == graphLine.compareTo("\"")) {
                     // if this directory is the first of the list
                     graphLine =
                             graphLine
                                     + ":"
-                                    + Util.getFileNameWithoutExtension(fileName);
+                                    + FileUtil.getFileNameWithoutExtension(fileName);
                 } else {
                     graphLine =
                             graphLine
                                     + "+:"
-                                    + Util.getFileNameWithoutExtension(fileName);
+                                    + FileUtil.getFileNameWithoutExtension(fileName);
                 }
                 if (copy) {
-                    Config.copyFile(
+                	FileUtil.copyFile(
                             aFiles_list, new File(destinationDir, fileName));
                 }
             }

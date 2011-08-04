@@ -33,7 +33,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -52,7 +51,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.listeners.AlignmentListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -361,7 +360,7 @@ public class XAlignFrame extends JInternalFrame {
      * ..../my unitex/French/...../foo.xml => French
      */
     private Font tryToFindFont(File f) {
-        File languageDir = Config.getLanguageDirForFile(f);
+        File languageDir = FileUtil.getLanguageDirForFile(f);
         if (languageDir == null) return null;
         return ConfigManager.getManager().getTextFont(languageDir.getName());
     }
@@ -375,7 +374,7 @@ public class XAlignFrame extends JInternalFrame {
      * ..../my unitex/French/...../foo.xml => French
      */
     public static File tryToFindAlphabet(File f) {
-        File languageDir = Config.getLanguageDirForFile(f);
+        File languageDir = FileUtil.getLanguageDirForFile(f);
         if (languageDir == null) {
             return null;
         }

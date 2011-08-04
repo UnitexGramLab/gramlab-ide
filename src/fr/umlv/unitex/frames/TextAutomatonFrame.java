@@ -23,7 +23,6 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -76,13 +75,13 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
@@ -90,7 +89,6 @@ import fr.umlv.unitex.graphrendering.TfstTextField;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.Launcher;
@@ -844,7 +842,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         new_tfst_tags_by_freq.renameTo(old_tfst_tags_by_freq);
         new_tfst_tags_by_alph.renameTo(old_tfst_tags_by_alph);
 
-        Config.deleteFileByName(new File(Config.getCurrentSntDir(),
+        FileUtil.deleteFileByName(new File(Config.getCurrentSntDir(),
                 "sentence*.grf"));
         File f = new File(dir, "currelagsentence.grf");
         if (f.exists() && !f.delete()) {
@@ -922,7 +920,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
     class RebuildTextAutomatonDo implements ToDo {
         public void toDo() {
-            Config.deleteFileByName(new File(Config.getCurrentSntDir(),
+        	FileUtil.deleteFileByName(new File(Config.getCurrentSntDir(),
                     "sentence*.grf"));
             File dir = Config.getCurrentSntDir();
             File f = new File(dir, "currelagsentence.grf");

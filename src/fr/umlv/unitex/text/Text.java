@@ -24,9 +24,9 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.Launcher;
@@ -93,7 +93,7 @@ public class Text {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		String nomSnt = Util.getFileNameWithoutExtension(name);
+		String nomSnt = FileUtil.getFileNameWithoutExtension(name);
 		nomSnt = nomSnt + ".snt";
 		Config.setCurrentSnt(new File(nomSnt));
 		Object[] options = { "Yes", "No" };
@@ -156,7 +156,7 @@ public class Text {
 	 */
 	public static void removeSntFiles() {
 		if (Config.getCurrentSntDir().exists()) {
-			Config.removeFile(new File(Config.getCurrentSntDir(), "*"));
+			FileUtil.removeFile(new File(Config.getCurrentSntDir(), "*"));
 		}
 	}
 
@@ -184,11 +184,11 @@ public class Text {
 		}
 
 		public void toDo() {
-			if (Util.getFileNameExtension(file).equalsIgnoreCase("snt")) {
+			if (FileUtil.getFileNameExtension(file).equalsIgnoreCase("snt")) {
 				Config.setCurrentSnt(file);
 				loadSnt(file, b);
-			} else if (Util.getFileNameExtension(file).equalsIgnoreCase("xml")
-					|| Util.getFileNameExtension(file).equalsIgnoreCase("html")) {
+			} else if (FileUtil.getFileNameExtension(file).equalsIgnoreCase("xml")
+					|| FileUtil.getFileNameExtension(file).equalsIgnoreCase("html")) {
 				loadXmlOrHtml(file);
 			} else {
 				/* txt file */
@@ -222,7 +222,7 @@ public class Text {
 			return;
 		}
 		UnxmlizeCommand cmd = new UnxmlizeCommand().text(file);
-		String s = Util.getFileNameWithoutExtension(file) + ".txt";
+		String s = FileUtil.getFileNameWithoutExtension(file) + ".txt";
 		Launcher.exec(cmd, true, new LoadTxtDo(new File(s)));
 	}
 

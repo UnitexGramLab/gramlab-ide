@@ -27,9 +27,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.GrfDiff3Command;
 
@@ -93,7 +92,7 @@ public class SvnConflict {
 			/* Some svn clients do not produce a .mine file: they
 			 * just let the original file untouched. To deal with that,
 			 * we create a .mine file in that case */
-			Config.copyFile(grf,mine);
+			FileUtil.copyFile(grf,mine);
 		}
 		return new SvnConflict(grf,mine,base,other,baseNumber,otherNumber);
 	} 

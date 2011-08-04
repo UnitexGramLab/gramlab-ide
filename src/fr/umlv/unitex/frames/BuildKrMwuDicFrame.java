@@ -38,9 +38,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
-import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;

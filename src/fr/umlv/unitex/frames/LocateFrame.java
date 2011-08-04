@@ -51,12 +51,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -301,7 +301,7 @@ public class LocateFrame extends JInternalFrame {
             }
             File regexpFile = new File(Config.getUserCurrentLanguageDir(),
                     "regexp.txt");
-            Util.write(regExp.getText(), regexpFile);
+            FileUtil.write(regExp.getText(), regexpFile);
             Reg2GrfCommand reg2GrfCmd = new Reg2GrfCommand().file(regexpFile);
             commands.addCommand(reg2GrfCmd);
             Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
