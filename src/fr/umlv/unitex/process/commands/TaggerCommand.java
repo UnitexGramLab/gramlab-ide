@@ -40,7 +40,7 @@ public class TaggerCommand extends CommandBuilder {
     }
 
     public TaggerCommand alphabet(File s) {
-        protectElement("-a"+s.getAbsolutePath());
+        if (s!=null) protectElement("-a"+s.getAbsolutePath());
         return this;
     }
     

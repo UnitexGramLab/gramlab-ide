@@ -45,7 +45,7 @@ public class LocateCommand extends CommandBuilder {
     }
 
     public LocateCommand alphabet(File alphabet) {
-        protectElement("-a" + alphabet.getAbsolutePath());
+        if (alphabet!=null) protectElement("-a" + alphabet.getAbsolutePath());
         return this;
     }
 

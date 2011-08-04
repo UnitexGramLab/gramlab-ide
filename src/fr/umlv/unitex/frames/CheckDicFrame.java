@@ -36,7 +36,8 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CheckDicCommand;
@@ -110,7 +111,7 @@ public class CheckDicFrame extends JInternalFrame {
     void checkDELA() {
         CheckDicCommand command = new CheckDicCommand().name(
                 Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
-                Config.getAlphabet());
+                		ConfigManager.getManager().getAlphabet(null));
     	if (Config.getCurrentLanguage().equals("Chinese") ||
     	        Config.getCurrentLanguage().equals("Mandarin")) {
     	    command=command.no_space_warning();

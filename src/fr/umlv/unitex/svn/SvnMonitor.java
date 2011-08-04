@@ -30,8 +30,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.Timer;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 public class SvnMonitor {
@@ -40,7 +41,7 @@ public class SvnMonitor {
 	
 	private final static Timer timer=new Timer(5000,new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if (Preferences.svnMonitoring()) {
+			if (ConfigManager.getManager().svnMonitoring(null)) {
 				monitor(true);
 			}
 		}
@@ -56,7 +57,7 @@ public class SvnMonitor {
 			}
 		}
 		monitor(Config.getCurrentGraphDir());
-		monitor(Preferences.packagePath());
+		monitor(ConfigManager.getManager().getGraphRepositoryPath(null));
 		if (!autoMonitoring || svnConflictModel.size()>0) {
 			UnitexFrame.getFrameManager().showSvnConflictsFrame();
 		}

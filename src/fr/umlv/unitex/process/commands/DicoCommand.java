@@ -24,7 +24,7 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
 
 /**
  * @author Sébastien Paumier
@@ -41,7 +41,7 @@ public class DicoCommand extends CommandBuilder {
     }
 
     public DicoCommand alphabet(File s) {
-        protectElement("-a" + s.getAbsolutePath());
+        if (s!=null) protectElement("-a" + s.getAbsolutePath());
         return this;
     }
 

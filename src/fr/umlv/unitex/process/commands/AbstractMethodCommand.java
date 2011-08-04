@@ -21,7 +21,7 @@
 
 package fr.umlv.unitex.process.commands;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
 
 public abstract class AbstractMethodCommand extends CommandBuilder {
 

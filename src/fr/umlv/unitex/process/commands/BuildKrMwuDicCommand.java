@@ -39,7 +39,7 @@ public class BuildKrMwuDicCommand extends CommandBuilder {
     }
 
     public BuildKrMwuDicCommand alphabet(File s) {
-        protectElement("-a"+s.getAbsolutePath());
+        if (s!=null) protectElement("-a"+s.getAbsolutePath());
         return this;
       }
 

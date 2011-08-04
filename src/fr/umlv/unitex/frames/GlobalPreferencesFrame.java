@@ -61,11 +61,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.LanguageListener;
 
@@ -139,9 +140,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     private JPanel constructSvnPage() {
 		JPanel p=new JPanel(null);
 		p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
-		svnMonitoring.setSelected(Preferences.svnMonitoring());
+		svnMonitoring.setSelected(ConfigManager.getManager().svnMonitoring(null));
 		p.add(svnMonitoring);
-		onlyCosmetic.setSelected(Preferences.onlyCosmetic());
+		onlyCosmetic.setSelected(ConfigManager.getManager().onlyCosmetic(null));
 		p.add(onlyCosmetic);
 		p.add(Box.createVerticalGlue());
 		return p;
@@ -154,7 +155,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		ButtonGroup bg=new ButtonGroup();
 		int i=0; 
 		for (Encoding e:Encoding.values()) {
-			encodingButtons[i]=new JRadioButton(e.toString(),e==Preferences.encoding());
+		encodingButtons[i]=new JRadioButton(e.toString(),e==ConfigManager.getManager().getEncoding(null));
 			final Encoding e2=e;
 			final int j=i;
 			encodingButtons[i].addActionListener(new ActionListener() {
@@ -197,7 +198,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                 pref.morphologicalUseOfSpace = morphologicalUseOfSpaceCheckBox
                         .isSelected();
                 if (packageDirectory.getText().equals(""))
-                    pref.packagePath = null;
+                    pref.graphRepositoryPath = null;
                 else {
                     File f = new File(packageDirectory.getText());
                     if (!f.exists()) {
@@ -214,7 +215,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                                         "Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    pref.packagePath = f;
+                    pref.graphRepositoryPath = f;
                 }
 
                 if (loggingDirectory.getText().equals("") && mustLogCheckBox.isSelected()) {
@@ -240,8 +241,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
                 }
                 pref.mustLog = mustLogCheckBox.isSelected();
                 pref.loggingDir = f;
-
-                Preferences.savePreferences(pref);
+                ConfigManager.getManager().savePreferences(pref,null);
                 /* We save the user directory */
                 if (!privateDirectory.getText().equals("")) {
                     File rep = new File(privateDirectory.getText());
@@ -561,10 +561,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         charByCharCheckBox.setSelected(pref.charByChar);
         morphologicalUseOfSpaceCheckBox
                 .setSelected(pref.morphologicalUseOfSpace);
-        if (pref.packagePath == null) {
+        if (pref.graphRepositoryPath == null) {
             packageDirectory.setText("");
         } else {
-            packageDirectory.setText(pref.packagePath.getAbsolutePath());
+            packageDirectory.setText(pref.graphRepositoryPath.getAbsolutePath());
         }
         mustLogCheckBox.setSelected(pref.mustLog);
         if (pref.loggingDir == null) {
@@ -573,8 +573,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
             loggingDirectory.setText(pref.loggingDir.getAbsolutePath());
         }
         morphoDicListModel.clear();
-        if (Preferences.morphologicalDic() != null) {
-            for (File f : Preferences.morphologicalDic()) {
+        ArrayList<File> dictionaries=ConfigManager.getManager().morphologicalDictionaries(null);
+        if (dictionaries != null) {
+            for (File f : dictionaries) {
                 morphoDicListModel.addElement(f);
             }
         }
@@ -595,8 +596,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         p.add(p_);
         JPanel p2 = new JPanel(new BorderLayout());
         morphoDicListModel.clear();
-        if (Preferences.morphologicalDic() != null) {
-            for (File f : Preferences.morphologicalDic()) {
+        ArrayList<File> dictionaries=ConfigManager.getManager().morphologicalDictionaries(null);
+        if (dictionaries != null) {
+            for (File f : dictionaries) {
                 morphoDicListModel.addElement(f);
             }
         }
@@ -663,7 +665,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
     }
 
     void reset() {
-        pref = Preferences.getCloneOfPreferences();
+        pref = ConfigManager.getManager().getPreferences(null);
         setTitle("Preferences for " + Config.getCurrentLanguage());
         privateDirectory.setText(Config.getUserDir().getAbsolutePath());
         refresh();

@@ -38,7 +38,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.MultiFlexCommand;
 
@@ -138,15 +139,15 @@ public class InflectFrame extends JInternalFrame {
         tmp = tmp + "flx.dic";
         MultiFlexCommand command = new MultiFlexCommand().delas(f)
                 .result(new File(tmp))
-                .alphabet(Config.getAlphabet())
-                .library()
+                .alphabet(ConfigManager.getManager().getAlphabet(null))
+                .repository()
                 .dir(new File(directory.getText()));
         if (onlySimpleWords.isSelected()) {
             command = command.onlySimpleWords();
         } else if (onlyCompoundWords.isSelected()) {
             command = command.onlyCompoundWords();
         }
-        if (Config.isKorean()) {
+        if (ConfigManager.getManager().isKorean(null)) {
             command = command.korean();
         }
         Launcher.exec(command, false, null);

@@ -44,9 +44,12 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
 import fr.umlv.unitex.concord.BigConcordanceDiff;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.listeners.FontListener;
 
 /**
@@ -100,8 +103,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		top.add(new JLabel("<html><body><font bgcolor=\"#D2D2D2\">Grey background=previous matches</font>&nbsp;&nbsp;White background=new matches</body></html>"));
 		middle.add(top, BorderLayout.NORTH);
 		setContentPane(middle);
-		list.setFont(new Font(Preferences.getConcordanceFontName(), 0,
-				Preferences.getConcordanceFontSize()));
+        list.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		invisible.setOpaque(false);
 		invisible.setVisible(true);
 		invisible.addMouseListener(new MouseAdapter() {
@@ -112,9 +114,9 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 				repaint();
 			}
 		});
-		Preferences.addConcordanceFontListener(new FontListener() {
-			public void fontChanged(Font font) {
-				list.setFont(font);
+		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				list.setFont(ConfigManager.getManager().getConcordanceFont(null));
 			}
 		});
 		addInternalFrameListener(new InternalFrameAdapter() {

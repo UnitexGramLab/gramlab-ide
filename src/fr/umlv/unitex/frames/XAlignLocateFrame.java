@@ -48,9 +48,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -247,7 +248,7 @@ public class XAlignLocateFrame extends JInternalFrame {
             commands.addCommand(reg2GrfCmd);
             Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(new File(Config.getUserDir(), language), "regexp.grf"))
                     .enableLoopAndRecursionDetection(true)
-                    .tokenizationMode().repository();
+                    .tokenizationMode(null).repository();
             commands.addCommand(grfCmd);
             fst2 = new File(new File(Config.getUserDir(), language), "regexp.fst2");
         } else {
@@ -264,7 +265,7 @@ public class XAlignLocateFrame extends JInternalFrame {
                 // we must compile the grf
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(
                         grfName)).enableLoopAndRecursionDetection(true)
-                        .tokenizationMode().repository();
+                        .tokenizationMode(null).repository();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";
@@ -290,10 +291,10 @@ public class XAlignLocateFrame extends JInternalFrame {
         else
             locateCmd = locateCmd.allMatches();
         locateCmd = locateCmd.ignoreOutputs();
-        if (Config.isKorean() || Config.isKoreanJeeSun()) {
+        if (ConfigManager.getManager().isKorean(language)) {
             locateCmd = locateCmd.korean();
         }
-        if (Config.isArabic()) {
+        if (ConfigManager.getManager().isArabic(language)) {
             locateCmd = locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
         if (stopAfterNmatches.isSelected()) {
@@ -301,13 +302,13 @@ public class XAlignLocateFrame extends JInternalFrame {
         } else {
             locateCmd = locateCmd.noLimit();
         }
-        if (Config.isCharByCharLanguage(language)) {
+        if (ConfigManager.getManager().isCharByCharLanguage(language)) {
             locateCmd = locateCmd.charByChar();
         }
-        if (Config.morphologicalUseOfSpaceAllowed(language)) {
+        if (ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(language)) {
             locateCmd = locateCmd.enableMorphologicalUseOfSpace();
         }
-        locateCmd = locateCmd.morphologicalDic(Config.morphologicalDic(language));
+        locateCmd = locateCmd.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(language));
         commands.addCommand(locateCmd);
         String foo = Util.getFileNameWithoutExtension(snt) + "_snt";
         File indFile = new File(foo, "concord.ind");
@@ -331,7 +332,7 @@ public class XAlignLocateFrame extends JInternalFrame {
             if (!f.exists()) {
                 f.createNewFile();
             }
-            OutputStreamWriter writer=Config.getEncoding().getOutputStreamWriter(f);
+            OutputStreamWriter writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(f);
             BufferedWriter bw = new BufferedWriter(writer);
             bw.write(regExp2, 0, regExp2.length());
             bw.close();

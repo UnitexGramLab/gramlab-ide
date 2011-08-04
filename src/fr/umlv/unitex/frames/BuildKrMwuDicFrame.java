@@ -38,8 +38,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;
@@ -239,7 +240,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
             return;
         }
         BuildKrMwuDicCommand command = new BuildKrMwuDicCommand().output(new File(outputName.getText()))
-                .alphabet(Config.getAlphabet())
+                .alphabet(ConfigManager.getManager().getAlphabet(null))
                 .binaryDic(new File(binaryDic.getText()))
                 .inflectionDir(new File(inflectionDir.getText()))
                 .input(new File(mwuDic.getText()));

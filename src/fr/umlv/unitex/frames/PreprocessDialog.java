@@ -42,8 +42,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
@@ -279,7 +280,7 @@ public class PreprocessDialog extends JDialog {
         commands = normalizingText(commands);
         // TOKENIZING...
         TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
-                .alphabet(Config.getAlphabet());
+                .alphabet(ConfigManager.getManager().getAlphabet(null));
         if (Config.getCurrentLanguage().equals("Thai") || Config.getCurrentLanguage().equals("Chinese")) {
             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
         }
@@ -292,15 +293,15 @@ public class PreprocessDialog extends JDialog {
     private MultiCommands applyDefaultDictionaries(final MultiCommands commands) {
         DicoCommand dicoCmd;
         dicoCmd = new DicoCommand().snt(Config.getCurrentSnt())
-                .alphabet(Config.getAlphabet())
-                .morphologicalDic(Preferences.morphologicalDic());
-        if (Config.isKorean()) {
+                .alphabet(ConfigManager.getManager().getAlphabet(null))
+                .morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
+        if (ConfigManager.getManager().isKorean(null)) {
             dicoCmd = dicoCmd.korean();
         }
-        if (Config.isArabic()) {
+        if (ConfigManager.getManager().isArabic(null)) {
             dicoCmd = dicoCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
-        if (Config.isSemiticLanguage()) {
+        if (ConfigManager.getManager().isSemiticLanguage(null)) {
         	dicoCmd=dicoCmd.semitic();
         }
         ArrayList<File> param = Config.getDefaultDicList();
@@ -325,7 +326,7 @@ public class PreprocessDialog extends JDialog {
             PolyLexCommand polyLexCmd;
             try {
                 polyLexCmd = new PolyLexCommand().language(lang)
-                        .alphabet(Config.getAlphabet()).bin(dic)
+                        .alphabet(ConfigManager.getManager().getAlphabet(null)).bin(dic)
                         .wordList(new File(Config.getCurrentSntDir(), "err"))
                         .output(new File(Config.getCurrentSntDir(), "dlf"))
                         .info(new File(Config.getCurrentSntDir(), "decomp.txt"));
@@ -390,7 +391,7 @@ public class PreprocessDialog extends JDialog {
             String grfName = norm.getAbsolutePath();
             if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
                 // we must compile the grf
-                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode(null);
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";
@@ -402,8 +403,8 @@ public class PreprocessDialog extends JDialog {
             }
         }
         Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
-                .alphabet(Config.getAlphabet()).clean(true);
-        if (Config.isKorean()) {
+                .alphabet(ConfigManager.getManager().getAlphabet(null)).clean(true);
+        if (ConfigManager.getManager().isKorean(null)) {
             txtCmd = txtCmd.korean();
         }
         if (norm != null) {
@@ -423,7 +424,7 @@ public class PreprocessDialog extends JDialog {
             File fst2;
             if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
                 // we must compile the grf
-                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode();
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode(null);
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";
@@ -435,9 +436,9 @@ public class PreprocessDialog extends JDialog {
                 fst2 = new File(grfName);
             }
             Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
-                    .alphabet(Config.getAlphabet()).mode(false);
-            if (Config.isCharByCharLanguage())
-                cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
+                    .alphabet(ConfigManager.getManager().getAlphabet(null)).mode(false);
+            if (ConfigManager.getManager().isCharByCharLanguage(null))
+                cmd = cmd.charByChar(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
             commands.addCommand(cmd);
         }
         return commands;
@@ -452,7 +453,7 @@ public class PreprocessDialog extends JDialog {
             File fst2;
             if (grfName.substring(grfName.length() - 3, grfName.length()).equalsIgnoreCase("grf")) {
                 // we must compile the grf
-                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode().repository();
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(new File(grfName)).enableLoopAndRecursionDetection(true).tokenizationMode(null).repository();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
                 fst2Name = fst2Name + "fst2";
@@ -468,9 +469,9 @@ public class PreprocessDialog extends JDialog {
                 fst2 = new File(grfName);
             }
             Fst2TxtCommand cmd = new Fst2TxtCommand().text(Config.getCurrentSnt()).fst2(fst2)
-                    .alphabet(Config.getAlphabet()).mode(true);
-            if (Config.isCharByCharLanguage())
-                cmd = cmd.charByChar(Config.morphologicalUseOfSpaceAllowed());
+                    .alphabet(ConfigManager.getManager().getAlphabet(null)).mode(true);
+            if (ConfigManager.getManager().isCharByCharLanguage(null))
+                cmd = cmd.charByChar(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
             commands.addCommand(cmd);
         }
         return commands;
@@ -487,8 +488,8 @@ public class PreprocessDialog extends JDialog {
 
     private MultiCommands tokenization(final MultiCommands commands) {
         TokenizeCommand tokenizeCmd = new TokenizeCommand().text(Config.getCurrentSnt())
-                .alphabet(Config.getAlphabet());
-        if (Config.isCharByCharLanguage()) {
+                .alphabet(ConfigManager.getManager().getAlphabet(null));
+        if (ConfigManager.getManager().isCharByCharLanguage(null)) {
             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
         }
         commands.addCommand(tokenizeCmd);

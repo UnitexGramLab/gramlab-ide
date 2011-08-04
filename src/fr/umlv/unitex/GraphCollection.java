@@ -22,14 +22,14 @@
 package fr.umlv.unitex;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -119,7 +119,7 @@ public class GraphCollection {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        writer=Config.getEncoding().getOutputStreamWriter(destGraph);
+        writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(destGraph);
         UnicodeIO.writeChar(writer, (char) 0xFEFF);
         UnicodeIO.writeString(writer, "#Unigraph\n");
         UnicodeIO.writeString(writer, "SIZE 1188 840\n");

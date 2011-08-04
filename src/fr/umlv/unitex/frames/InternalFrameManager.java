@@ -32,9 +32,9 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
 import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;

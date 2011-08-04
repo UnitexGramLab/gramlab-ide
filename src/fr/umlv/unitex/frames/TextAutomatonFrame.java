@@ -75,10 +75,13 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
@@ -169,11 +172,11 @@ public class TextAutomatonFrame extends JInternalFrame {
         });
         textfield.setEditable(false);
         closeElagFrame();
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                sentenceTextArea.setFont(font);
-            }
-        });
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				sentenceTextArea.setFont(ConfigManager.getManager().getTextFont(null));
+			}
+		});
     }
 
     private JPanel constructPanel() {
@@ -222,7 +225,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         tfstScrollbar.setUnitIncrement(20);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
         scrollPane.setPreferredSize(new Dimension(1188, 840));
-        textfield.setFont(Preferences.getCloneOfPreferences().info.input.font);
+        textfield.setFont(ConfigManager.getManager().getInputFont(null));
         downPanel.add(textfield, BorderLayout.NORTH);
         downPanel.add(scrollPane, BorderLayout.CENTER);
         JTabbedPane tabbed = new JTabbedPane();
@@ -237,14 +240,14 @@ public class TextAutomatonFrame extends JInternalFrame {
         JPanel p = new JPanel(new BorderLayout());
         final JTable table = new JTable(tfstTableModel);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        table.setFont(Preferences.textFont());
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                table.setFont(font);
+        table.setFont(ConfigManager.getManager().getTextFont(null));
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				table.setFont(ConfigManager.getManager().getTextFont(null));
                 refreshTableColumnWidths(table);
                 refreshTableRowHeight(table);
-            }
-        });
+			}
+		});
         table.getColumnModel().addColumnModelListener(new TableColumnModelListener() {
             public void columnSelectionChanged(ListSelectionEvent e) {
                 /* nop */
@@ -432,8 +435,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
     private JPanel constructUpPanel() {
         JPanel upPanel = new JPanel(new BorderLayout());
-        sentenceTextArea
-                .setFont(Preferences.getCloneOfPreferences().textFont.font);
+        sentenceTextArea.setFont(ConfigManager.getManager().getTextFont(null));
         sentenceTextArea.setEditable(false);
         sentenceTextArea.setText("");
         sentenceTextArea.setLineWrap(true);
@@ -625,8 +627,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         sentenceTextArea.setText("");
         Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(text_tfst)
                 .sentence(z);
-        cmd = cmd.font(Preferences.inputFont().getName()).fontSize(
-                    Preferences.inputFontSize());
+        cmd = cmd.font(ConfigManager.getManager().getInputFont(null).getName()).fontSize(
+        		ConfigManager.getManager().getInputFontSize(null));
         Console.addCommand(cmd.getCommandLine(), false, Log.getCurrentLogID());
         Process p;
         try {
@@ -679,8 +681,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         }
         Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(elag_tfst)
                 .sentence(z).output("currelagsentence").font(
-                        Preferences.inputFont().getName()).fontSize(
-                        Preferences.inputFontSize());
+                		ConfigManager.getManager().getInputFont(null).getName()).fontSize(
+                				ConfigManager.getManager().getInputFontSize(null));
         Console.addCommand(cmd.getCommandLine(), false, Log.getCurrentLogID());
         try {
             Process p = Runtime.getRuntime().exec(cmd.getCommandArguments());
@@ -716,7 +718,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             if (s == null || s.equals("")) {
                 return "";
             }
-            sentenceTextArea.setFont(Config.getCurrentTextFont());
+            sentenceTextArea.setFont(ConfigManager.getManager().getTextFont(null));
             sentenceTextArea.setText(s);
             br.close();
         } catch (IOException e) {
@@ -736,7 +738,7 @@ public class TextAutomatonFrame extends JInternalFrame {
         tfstTableModel.init(g.boxes);
         Timer t = new Timer(300, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (Config.isRightToLeftForGraphs()) {
+                if (ConfigManager.getManager().isRightToLeftForGraphs(null)) {
                     tfstScrollbar.setValue(tfstScrollbar.getMaximum());
                 } else {
                     tfstScrollbar.setValue(0);

@@ -19,23 +19,35 @@
  *
  */
 
-package fr.umlv.unitex.frames;
+package fr.umlv.unitex.grf;
 
-import fr.umlv.unitex.grf.GraphPresentationInfo;
+import java.util.HashMap;
+import java.util.Set;
 
 
-class GraphPresentationDialogFactory {
 
-    private GraphPresentationDialog dialog;
+public class GraphMetaData {
 
-    GraphPresentationDialog newGraphPresentationDialog(GraphPresentationInfo info,
-                                                       boolean showRightToLeftCheckBox) {
-        if (dialog == null) {
-            dialog = new GraphPresentationDialog(info, showRightToLeftCheckBox);
-        } else {
-            dialog.configure(info, showRightToLeftCheckBox);
-        }
-        return dialog;
-    }
+	public static final String LANGUAGE = "LANGUAGE";
+	private HashMap<String,String> map=new HashMap<String,String>();
 
+	public void setLanguage(String language) {
+		map.put(LANGUAGE,language);
+	}
+
+	public String getLanguage() {
+		return map.get(LANGUAGE);
+	}
+
+	public void set(String key,String value) {
+		map.put(key,value);
+	}
+
+	public Set<String> getKeySet() {
+		return map.keySet();
+	}
+
+	public String getValue(String key) {
+		return map.get(key);
+	}
 }

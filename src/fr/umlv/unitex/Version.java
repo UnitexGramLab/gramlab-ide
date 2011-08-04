@@ -29,6 +29,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Scanner;
 
+import fr.umlv.unitex.config.Config;
+
 /**
  * This class only contains a <code>String</code> that indicates version information.
  * The content of this string appears in the caption of the main frame.  

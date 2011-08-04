@@ -70,12 +70,12 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
@@ -83,6 +83,7 @@ import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.MultipleSelection;
 import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.graphtools.Dependancies;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.SVG;
@@ -739,7 +740,7 @@ public class GraphFrame extends JInternalFrame {
         JPanel p = new JPanel(new BorderLayout());
         boxContentEditor = new TextField(25, this);
         boxContentEditor
-                .setComponentOrientation(Preferences.rightToLeftForGraphs() ? ComponentOrientation.RIGHT_TO_LEFT
+                .setComponentOrientation(ConfigManager.getManager().isRightToLeftForGraphs(null) ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         p.add(boxContentEditor);
         return p;
@@ -967,7 +968,7 @@ public class GraphFrame extends JInternalFrame {
             return;
         }
         try {
-        	OutputStreamWriter writer = Config.getEncoding().getOutputStreamWriter(file);
+        	OutputStreamWriter writer = ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(file);
             SVG svg = new SVG(writer, this);
             svg.save();
             writer.close();
@@ -1089,7 +1090,7 @@ public class GraphFrame extends JInternalFrame {
         }
         final Grf2Fst2Command command = new Grf2Fst2Command().grf(
                 getGraph()).enableLoopAndRecursionDetection(true)
-                .tokenizationMode().repository();
+                .tokenizationMode(graphicalZone.getMetadata().getLanguage()).repository();
         Launcher.exec(command, false);
     }
 

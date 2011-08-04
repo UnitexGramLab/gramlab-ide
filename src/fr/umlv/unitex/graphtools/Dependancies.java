@@ -29,9 +29,10 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.io.GraphIO;
 
@@ -152,7 +153,8 @@ public class Dependancies {
         if (s.startsWith(":")) {
             // if the graph is located in the package repository
             s = s.replace(':', File.separatorChar);
-            if (Preferences.packagePath()==null) {
+            File repository=ConfigManager.getManager().getGraphRepositoryPath(null);
+            if (repository==null) {
                 if (emitErrorMessages) 
                 JOptionPane.showMessageDialog(null, "In graph "+parent.getAbsolutePath()+":\ncannot resolve relative graph path:\n\n"
                         + s + "\n\nbecause the location of the graph  repository is\n" +
@@ -160,7 +162,7 @@ public class Dependancies {
                         JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            return new File(Preferences.packagePath(), s.substring(1));
+            return new File(repository, s.substring(1));
         }
         // otherwise
         File f = new File(s);

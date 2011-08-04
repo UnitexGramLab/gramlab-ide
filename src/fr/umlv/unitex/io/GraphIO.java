@@ -31,13 +31,15 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
+import fr.umlv.unitex.grf.GraphMetaData;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 
 /**
  * This class provides methods for loading and saving graphs.
@@ -66,9 +68,12 @@ public class GraphIO {
 	 */
 	private int nBoxes;
 	public File grf;
+	
+	public GraphMetaData metadata;
 
 	private GraphIO() {
-		info = Preferences.getGraphPresentationPreferences();
+		info = ConfigManager.getManager().getGraphPresentationPreferences(null);
+		metadata = new GraphMetaData();
 	}
 
 	public GraphIO(GenericGraphicalZone zone) {
@@ -76,6 +81,7 @@ public class GraphIO {
 		width = zone.getWidth();
 		height = zone.getHeight();
 		boxes = zone.getBoxes();
+		metadata = zone.getMetadata();
 	}
 
 	/**
@@ -129,12 +135,26 @@ public class GraphIO {
 			res.readDirectory(reader);
 			res.readRightToLeft(reader);
 			if (isSentenceGraph) {
-				res.info.rightToLeft = Config.isRightToLeftForText();
+				res.info.rightToLeft = ConfigManager.getManager().isRightToLeftForText(null);
 			}
 			UnicodeIO.skipLine(reader); // ignoring DRST
 			UnicodeIO.skipLine(reader); // ignoring FITS
 			UnicodeIO.skipLine(reader); // ignoring PORIENT
-			UnicodeIO.skipLine(reader); // ignoring #
+			/* Reading metadata until we find the # line */
+			String line;
+			while (!(line=UnicodeIO.readLine(reader)).equals("#")) {
+				int pos=line.indexOf("=");
+				if (pos==-1) {
+					if (emitErrorMessage)
+						JOptionPane.showMessageDialog(null, "Invalid header line in "
+								+ grfFile.getAbsolutePath()+":\n"+line, "Error",
+								JOptionPane.ERROR_MESSAGE);
+					return null;
+				}
+				String key=line.substring(0,pos);
+				String value=line.substring(pos+1);
+				res.metadata.set(key,value);
+			}
 			res.readBoxNumber(reader);
 			res.boxes = new ArrayList<GenericGraphBox>();
 			if (isSentenceGraph) {
@@ -578,7 +598,7 @@ public class GraphIO {
 			return;
 		}
 		try {
-			Encoding e=Config.getEncoding();
+			Encoding e=ConfigManager.getManager().getEncoding(null);
 			writer=e.getOutputStreamWriter(grfFile);
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
@@ -657,6 +677,9 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "DRST n\n");
 			UnicodeIO.writeString(writer, "FITS 100\n");
 			UnicodeIO.writeString(writer, "PORIENT L\n");
+			for (String key:metadata.getKeySet()) {
+				UnicodeIO.writeString(writer,key+"="+metadata.getValue(key)+"\n");
+			}
 			UnicodeIO.writeString(writer, "#\n");
 			nBoxes = boxes.size();
 			UnicodeIO.writeString(writer, String.valueOf(nBoxes) + "\n");
@@ -752,7 +775,7 @@ public class GraphIO {
 		int y = 0;
 		while (UnicodeIO.isDigit((c = (char) UnicodeIO.readChar(r))))
 			y = y * 10 + (c - '0');
-		if (Preferences.getGraphPresentationPreferences().rightToLeft
+		if (ConfigManager.getManager().getGraphPresentationPreferences(null).rightToLeft
 				|| info.rightToLeft) {
 			info.rightToLeft = true;
 			g.setX(width - x);
@@ -818,7 +841,8 @@ public class GraphIO {
 			return;
 		}
 		try {
-			writer=Config.getEncoding().getOutputStreamWriter(file);
+			/* TODO: use here the language in metadata, if any */
+			writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(file);
 			UnicodeIO.writeChar(writer, (char) 0xFEFF);
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "

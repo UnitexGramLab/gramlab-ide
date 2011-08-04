@@ -19,49 +19,11 @@
  *
  */
 
-package fr.umlv.unitex.process.commands;
+package fr.umlv.unitex.config;
 
-import java.io.File;
 
-/**
- * @author Sébastien Paumier
- * 
- */
-public class Txt2TfstCommand extends CommandBuilder {
+public interface PreferencesListener {
 
-	public Txt2TfstCommand() {
-		super("Txt2Tfst");
-	}
+	public void preferencesChanged(String language);
 
-	public Txt2TfstCommand text(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-	public Txt2TfstCommand alphabet(File alphabet) {
-		if (alphabet!=null) protectElement("-a" + alphabet.getAbsolutePath());
-		return this;
-	}
-
-	public Txt2TfstCommand clean(boolean clean) {
-		if (clean) {
-			element("--clean");
-		}
-		return this;
-	}
-
-	public Txt2TfstCommand fst2(File s) {
-		protectElement("-n" + s.getAbsolutePath());
-		return this;
-	}
-
-	public Txt2TfstCommand tagset(File s) {
-		protectElement("-t" + s.getAbsolutePath());
-		return this;
-	}
-
-	public Txt2TfstCommand korean() {
-		element("-K");
-		return this;
-	}
 }

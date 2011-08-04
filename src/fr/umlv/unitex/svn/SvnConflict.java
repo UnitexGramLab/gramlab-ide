@@ -27,8 +27,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.GrfDiff3Command;
 
@@ -163,7 +164,7 @@ public class SvnConflict {
 	 */
 	public boolean merge() {
 		GrfDiff3Command diff3=new GrfDiff3Command().files(mine,base,other)
-		.output(grf).onlyCosmetic(Preferences.onlyCosmetic());
+		.output(grf).onlyCosmetic(ConfigManager.getManager().onlyCosmetic(null));
 		int res=Launcher.execWithoutTracing(diff3);
 		if (res!=0)	return false;
 		mine.delete();

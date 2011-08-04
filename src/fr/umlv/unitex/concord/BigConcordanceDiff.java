@@ -29,7 +29,8 @@ import java.io.File;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 
 
 /**
@@ -43,7 +44,7 @@ public class BigConcordanceDiff extends JList {
 
     private BigConcordanceDiff(ConcordanceDiffAsListModel m) {
         super(m);
-        setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
+        setFont(ConfigManager.getManager().getConcordanceFont(null));
         setCellRenderer(new DefaultListCellRenderer() {
 
         	private Color[] bg=new Color[] {new Color(210,210,210),Color.WHITE};

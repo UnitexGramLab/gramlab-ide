@@ -39,7 +39,7 @@ public class TokenizeCommand extends CommandBuilder {
 	}
 
     public TokenizeCommand alphabet(File f) {
-        protectElement("-a"+f.getAbsolutePath());
+        if (f!=null) protectElement("-a"+f.getAbsolutePath());
         return this;
     }
 

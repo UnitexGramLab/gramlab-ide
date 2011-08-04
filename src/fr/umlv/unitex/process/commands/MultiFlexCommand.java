@@ -23,7 +23,8 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 
 
 /**
@@ -46,7 +47,7 @@ public class MultiFlexCommand extends CommandBuilder {
     }
 
     public MultiFlexCommand alphabet(File s) {
-        protectElement("-a" + s.getAbsolutePath());
+        if (s!=null) protectElement("-a" + s.getAbsolutePath());
         return this;
     }
 
@@ -70,15 +71,11 @@ public class MultiFlexCommand extends CommandBuilder {
         return this;
     }
 
-    MultiFlexCommand library(File f) {
-        element("-p");
-        protectElement(f.getAbsolutePath());
-        return this;
-    }
-
-    public MultiFlexCommand library() {
-        if (Preferences.packagePath() != null) {
-            return library(Preferences.packagePath());
+    public MultiFlexCommand repository() {
+    	File f=ConfigManager.getManager().getGraphRepositoryPath(null);
+        if (f != null) {
+            element("-p");
+            protectElement(f.getAbsolutePath());
         }
         return this;
     }

@@ -36,8 +36,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.text.BigTextList;
 
@@ -68,11 +71,11 @@ public class TokensFrame extends JInternalFrame {
                 }
             }
         });
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                text.setFont(font);
-            }
-        });
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				text.setFont(ConfigManager.getManager().getTextFont(null));
+			}
+		});
     }
 
     private JPanel constructButtonsPanel() {
@@ -120,7 +123,7 @@ public class TokensFrame extends JInternalFrame {
      * @param file name of the token list file
      */
     void loadTokens(File file) {
-        text.setFont(Config.getCurrentTextFont());
+        text.setFont(ConfigManager.getManager().getTextFont(null));
         if (file.length() <= 2) {
             text.setText(Config.EMPTY_FILE_MESSAGE);
         } else {

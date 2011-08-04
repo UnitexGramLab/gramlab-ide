@@ -36,8 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.GraphCollection;
+import fr.umlv.unitex.config.Config;
 
 /**
  * This class provides a frame that allows the user to select a source directory

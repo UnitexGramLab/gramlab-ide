@@ -24,8 +24,9 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.Launcher;
@@ -123,7 +124,7 @@ public class Text {
 		commands.addCommand(mkdir);
 		// TOKENIZING...
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
-				Config.getCurrentSnt()).alphabet(Config.getAlphabet());
+				Config.getCurrentSnt()).alphabet(ConfigManager.getManager().getAlphabet(null));
 		if (Config.getCurrentLanguage().equals("Thai")
 				|| Config.getCurrentLanguage().equals("Chinese")) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();

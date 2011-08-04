@@ -47,8 +47,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.GraphPresentationInfo;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 
 /**
  * This class describes the graph presentation dialog box, that allows the user
@@ -416,7 +417,7 @@ class GraphPresentationDialog extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
                 if (UnitexFrame.mainFrame.frameManager.getCurrentFocusedGraphFrame() == null)
                     return;
-                info = Preferences.getGraphPresentationPreferences();
+                info = ConfigManager.getManager().getGraphPresentationPreferences(null);
                 configure(info, rightToLeftCheckBox.isVisible());
             }
         };

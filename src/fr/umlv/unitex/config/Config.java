@@ -19,9 +19,8 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.config;
 
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -37,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
@@ -50,7 +48,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.umlv.unitex.io.Encoding;
+import fr.umlv.unitex.PersonalFileFilter;
+import fr.umlv.unitex.Util;
 import fr.umlv.unitex.listeners.LanguageListener;
 
 /**
@@ -845,7 +844,6 @@ public class Config {
         setCassysDir(new File(getUserCurrentLanguageDir(), "Cassys"));
         setDefaultPreprocessingGraphs();
         updateOpenSaveDialogBoxes();
-        Preferences.reset();
         fireLanguageChanged();
     }
 
@@ -1090,16 +1088,6 @@ public class Config {
      */
     private static void setCurrentElagDir(File s) {
         currentElagDir = s;
-    }
-
-    /**
-     * @return user's current alphabet file
-     */
-    public static File getAlphabet() {
-        if (alphabet == null) {
-            System.out.println("ERROR: Alphabet is not set.");
-        }
-        return alphabet;
     }
 
     /**
@@ -1507,78 +1495,6 @@ public class Config {
         return currentDELA;
     }
 
-    /**
-     * @return current font used to display texts
-     */
-    public static Font getCurrentTextFont() {
-        return Preferences.getCloneOfPreferences().textFont.font;
-    }
-
-
-    public static boolean isCharByCharLanguage() {
-        return Preferences.charByChar();
-    }
-
-    public static boolean morphologicalUseOfSpaceAllowed() {
-        return Preferences.morphologicalUseOfSpace();
-    }
-
-    public static boolean isCharByCharLanguage(String language) {
-        final File config = new File(new File(Config.getUserDir(), language), "Config");
-        if (!config.exists()) {
-            return false;
-        }
-        final Properties prop = Preferences.loadProperties(config, null);
-        final String s = prop.getProperty("CHAR BY CHAR");
-        return s != null && Boolean.parseBoolean(s);
-    }
-
-    public static boolean morphologicalUseOfSpaceAllowed(String language) {
-        final File config = new File(new File(Config.getUserDir(), language), "Config");
-        if (!config.exists()) {
-            return false;
-        }
-        final Properties prop = Preferences.loadProperties(config, null);
-        final String s = prop.getProperty("MORPHOLOGICAL USE OF SPACE");
-        return s != null && Boolean.parseBoolean(s);
-    }
-
-    public static ArrayList<File> morphologicalDic(String language) {
-        final File config = new File(new File(Config.getUserDir(), language), "Config");
-        if (!config.exists()) {
-            return null;
-        }
-        final Properties prop = Preferences.loadProperties(config, null);
-        final String s = prop.getProperty("MORPHOLOGICAL DICTIONARY");
-        if (s == null) return null;
-        return Preferences.tokenizeMorphologicalDicList(s);
-    }
-
-    public static boolean isRightToLeftForText() {
-        return Preferences.rightToLeftForText();
-    }
-
-    public static boolean isRightToLeftForGraphs() {
-        return Preferences.rightToLeftForGraphs();
-    }
-
-    public static boolean isSemiticLanguage() {
-        return Preferences.semitic();
-    }
-
-    public static boolean isKorean() {
-        return Config.getCurrentLanguage().equals("Korean")
-                || isKoreanJeeSun();
-    }
-
-    public static boolean isKoreanJeeSun() {
-        return Config.getCurrentLanguage().equals("KoreanJeeSun");
-    }
-
-    public static boolean isArabic() {
-        return Config.getCurrentLanguage().equals("Arabic");
-    }
-
     public static File getXAlignDirectory() {
         final File dir = new File(Config.getUserDir(), "XAlign");
         if (!dir.exists()) {
@@ -1738,9 +1654,5 @@ public class Config {
                 .getCurrentSntDir(), "tfst_tags_by_alph.txt"));
     }
 
-
-	public static Encoding getEncoding() {
-		return Preferences.encoding();
-	}
 
 }

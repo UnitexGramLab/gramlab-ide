@@ -26,8 +26,9 @@ import java.util.ArrayList;
 
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 
 /**
  * This class provides facilities for build process command lines.
@@ -48,11 +49,11 @@ public abstract class CommandBuilder {
     CommandBuilder(String programName) {
         list = new ArrayList<String>();
         programName("UnitexToolLogger");
-        if (Preferences.mustLog()) {
+        if (ConfigManager.getManager().mustLog(null)) {
             element("{");
             element("CreateLog");
             element("-d");
-            protectElement(Preferences.loggingDir().getAbsolutePath());
+            protectElement(ConfigManager.getManager().getLogDirectory(null).getAbsolutePath());
             element("-u");
             element("}");
         }
@@ -80,7 +81,7 @@ public abstract class CommandBuilder {
     }
 
     public String getOutputEncoding() {
-    	switch (Config.getEncoding()) {
+    	switch (ConfigManager.getManager().getEncoding(null)) {
     	case UTF8: return "-qutf8-no-bom";
     	case UTF16LE: return null;
     	case UTF16BE: return "-qutf16be-bom";

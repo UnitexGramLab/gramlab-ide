@@ -49,8 +49,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.editor.FileManager;
@@ -265,7 +266,7 @@ public class FileEditionTextFrame extends JInternalFrame {
         myToolBar.add(cut);
         myToolBar.add(paste);
         myToolBar.add(find);
-        text.setFont(Config.getCurrentTextFont());
+        text.setFont(ConfigManager.getManager().getTextFont(null));
         text.setLineWrap(true);
         return myToolBar;
     }
