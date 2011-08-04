@@ -34,7 +34,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Preferences;
 
 public enum Encoding {
 	UTF16LE {

@@ -27,8 +27,9 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 
 public class Log {
 
@@ -39,24 +40,25 @@ public class Log {
 	 * @return the log ID or null, in case of error or if logs are disabled
 	 */
 	public static String getCurrentLogID() {
-		if (!Preferences.mustLog()) {
+		if (!ConfigManager.getManager().mustLog(null)) {
 			return null;
 		}
-		if (Preferences.loggingDir()==null) {
+		File logDir=ConfigManager.getManager().getLogDirectory(null);
+		if (logDir==null) {
 			throw new IllegalStateException("Should not have a null logging directory when mustLog is true");
 		}
-		if (!Preferences.loggingDir().exists()) {
+		if (!logDir.exists()) {
 			JOptionPane.showMessageDialog(null,
-                    "Log directory does not exist: \n\n"+Preferences.loggingDir().getAbsolutePath()+
+                    "Log directory does not exist: \n\n"+logDir.getAbsolutePath()+
                     "\n\nSet it properly or deactivate logging",
                     "Log dir error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
-		File count=new File(Preferences.loggingDir(),"unitex_logging_parameters_count.txt");
+		File count=new File(logDir,"unitex_logging_parameters_count.txt");
 		if (!count.exists()) {
 			/* If the configuration file does not exist, the first log will 
 			 * have #1 and we have to delete any preexisting .ulp files */ 
-			Config.removeFile(new File(Preferences.loggingDir(),"*.ulp"));
+			Config.removeFile(new File(logDir,"*.ulp"));
 			return "1";
 		}
 		try {

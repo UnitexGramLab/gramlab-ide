@@ -36,7 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.Table2GrfCommand;
 

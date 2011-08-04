@@ -55,10 +55,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
 import fr.umlv.unitex.io.Encoding;
@@ -109,7 +110,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         super("Located sequences...", true, true);
         setContentPane(constructPanel());
         pack();
-        useWebBrowser = (Preferences.getCloneOfPreferences().htmlViewer != null);
+        useWebBrowser = (ConfigManager.getManager().getHtmlViewer(null) != null);
         setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
@@ -209,7 +210,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 File output = new File(indFile.getParentFile(),
                         "statistics.txt");
                 StatsCommand cmd = new StatsCommand();
-                cmd = cmd.concord(indFile).alphabet(Config.getAlphabet()).left(
+                cmd = cmd.concord(indFile).alphabet(ConfigManager.getManager().getAlphabet(null)).left(
                         leftContext).right(rightContext).output(output)
                         .caseSensitive(caseSensitive.isSelected());
                 int mode;
@@ -485,8 +486,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         MkdirCommand mkdir = new MkdirCommand().name(tmp);
         commands.addCommand(mkdir);
         TokenizeCommand tokenizeCmd = new TokenizeCommand().text(txt).alphabet(
-                Config.getAlphabet());
-        if (Config.isCharByCharLanguage()) {
+        		ConfigManager.getManager().getAlphabet(null));
+        if (ConfigManager.getManager().isCharByCharLanguage(null)) {
             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
         }
         commands.addCommand(tokenizeCmd);
@@ -554,8 +555,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         ConcordCommand command;
         try {
             command = new ConcordCommand().indFile(indFile).font(
-                    Preferences.getConcordanceFontName()).fontSize(
-                    Preferences.getConcordanceFontSize()).left(leftContext,
+                    ConfigManager.getManager().getConcordanceFontName(null)).fontSize(
+                    		ConfigManager.getManager().getConcordanceFontSize(null)).left(leftContext,
                     leftCtxStopAtEOS.isSelected()).right(rightContext,
                     rightCtxStopAtEOS.isSelected()).html().sortAlphabet().thai(
                     Config.getCurrentLanguage().equals("Thai"));
@@ -593,8 +594,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         File outputHtmlFile = new File(Config.getCurrentSntDir(), "diff.html");
         command = new ConcorDiffCommand().firstIndFile(prevIndFile)
                 .secondIndFile(indFile).output(outputHtmlFile).font(
-                        Preferences.getConcordanceFontName()).fontSize(
-                        Preferences.getConcordanceFontSize())
+                        ConfigManager.getManager().getConcordanceFontName(null)).fontSize(
+                        		ConfigManager.getManager().getConcordanceFontSize(null))
                 .diffOnly();
         setVisible(false);
         int width = 160;
@@ -625,11 +626,10 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         }
 
         public void toDo() {
-            if (browser
-                    && Preferences.getCloneOfPreferences().htmlViewer != null) {
+        	File htmlViewer=ConfigManager.getManager().getHtmlViewer(null);
+            if (browser && htmlViewer != null) {
                 String[] s = new String[2];
-                s[0] = Preferences.getCloneOfPreferences().htmlViewer
-                        .getAbsolutePath();
+                s[0] = htmlViewer.getAbsolutePath();
                 s[1] = htmlFile.getAbsolutePath();
                 Console.addCommand("\"" + s[0] + "\" \"" + s[1] + "\"", false, null);
                 try {

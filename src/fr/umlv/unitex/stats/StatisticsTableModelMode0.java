@@ -32,7 +32,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.table.AbstractTableModel;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.io.Encoding;
 
 public class StatisticsTableModelMode0 extends AbstractTableModel {
@@ -50,7 +51,7 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
 
 
     public StatisticsTableModelMode0(File file) {
-        if (Config.isRightToLeftForText()) {
+        if (ConfigManager.getManager().isRightToLeftForText(null)) {
             columnNames = new String[]{"Right context", "Match", "Left context", "Occurrences"};
         } else {
             columnNames = new String[]{"Left context", "Match", "Right context", "Occurrences"};
@@ -67,7 +68,7 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
                 }
                 Mode0Data d = new Mode0Data();
                 data.add(d);
-                if (Config.isRightToLeftForText()) {
+                if (ConfigManager.getManager().isRightToLeftForText(null)) {
                     d.left = matcher.group(3);
                     d.right = matcher.group(1);
                 } else {

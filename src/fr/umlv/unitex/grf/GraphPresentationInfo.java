@@ -19,9 +19,11 @@
  *
  */
 
-package fr.umlv.unitex;
+package fr.umlv.unitex.grf;
 
 import java.awt.Color;
+
+import fr.umlv.unitex.FontInfo;
 
 public class GraphPresentationInfo {
 

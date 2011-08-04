@@ -34,8 +34,9 @@ import java.util.Iterator;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.frames.GraphFrame;
 
@@ -268,7 +269,7 @@ public class GenericGraphBox {
         if (s.startsWith(":")) {
             // if the graph is located in the package repository
             s = s.replace(':', File.separatorChar);
-            return new File(Preferences.packagePath(), s.substring(1)).exists();
+            return new File(ConfigManager.getManager().getGraphRepositoryPath(null), s.substring(1)).exists();
         }
         // otherwise
         File f = new File(s);
@@ -317,7 +318,7 @@ public class GenericGraphBox {
             if (s.startsWith(":")) {
                 // if the graph is located in the package repository
                 s = s.replace(':', File.separatorChar);
-                return new File(Preferences.packagePath(), s.substring(1));
+                return new File(ConfigManager.getManager().getGraphRepositoryPath(null), s.substring(1));
             }
             // otherwise
             File f = new File(s);

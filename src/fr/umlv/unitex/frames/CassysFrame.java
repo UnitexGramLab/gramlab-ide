@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CassysCommand;
@@ -159,7 +160,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 
                 MultiCommands cassysCommand = new MultiCommands();
 
-                File f_alphabet = Config.getAlphabet();
+                File f_alphabet = ConfigManager.getManager().getAlphabet(null);
                 File f_transducer = fc.getSelectedFile();
                 File f_target = Config.getCurrentSnt();
                 CassysCommand com = new CassysCommand().alphabet(f_alphabet)

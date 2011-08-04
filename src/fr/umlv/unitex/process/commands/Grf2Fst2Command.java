@@ -23,8 +23,9 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 
 /**
  * @author Sébastien Paumier
@@ -51,26 +52,24 @@ public class Grf2Fst2Command extends CommandBuilder {
     }
 
     private Grf2Fst2Command alphabetTokenization(File f) {
+    	if (f==null) return this;
         protectElement("--alphabet=" + f.getAbsolutePath());
         return this;
     }
 
-    public Grf2Fst2Command tokenizationMode() {
-        if (Config.isCharByCharLanguage()) {
+    public Grf2Fst2Command tokenizationMode(String language) {
+        if (ConfigManager.getManager().isCharByCharLanguage(language)) {
             return charByCharTokenization();
         }
-        return alphabetTokenization(Config.getAlphabet());
-    }
-
-    Grf2Fst2Command library(File f) {
-        element("-d");
-        protectElement(f.getAbsolutePath());
-        return this;
+        File alphabet=ConfigManager.getManager().getAlphabet(language);
+        return alphabetTokenization(alphabet);
     }
 
     public Grf2Fst2Command repository() {
-        if (Preferences.packagePath() != null) {
-            return library(Preferences.packagePath());
+    	File f=ConfigManager.getManager().getGraphRepositoryPath(null);
+        if (f != null) {
+            element("-d");
+            protectElement(f.getAbsolutePath());
         }
         return this;
     }

@@ -37,9 +37,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.MyDropTarget;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.listeners.FontListener;
@@ -65,12 +68,12 @@ public class TextFrame extends JInternalFrame {
         middle.setOpaque(true);
         middle.setBorder(BorderFactory.createLoweredBevelBorder());
         middle.add(text);
-        final FontListener fontListener = new FontListener() {
-            public void fontChanged(Font font) {
-                text.setFont(font);
-            }
-        };
-        Preferences.addTextFontListener(fontListener);
+        final PreferencesListener preferencesListener=new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				text.setFont(ConfigManager.getManager().getTextFont(null));
+			}
+		};
+        PreferencesManager.addPreferencesListener(preferencesListener);
         JPanel up = new JPanel(new GridLayout(2, 1));
         up.setBorder(new EmptyBorder(2, 2, 2, 2));
         up.add(ligne1);
@@ -83,7 +86,7 @@ public class TextFrame extends JInternalFrame {
         addInternalFrameListener(new InternalFrameAdapter() {
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
-                Preferences.removeTextFontListener(fontListener);
+                PreferencesManager.removePreferencesListener(preferencesListener);
                 text.reset();
                 System.gc();
             }
@@ -163,9 +166,9 @@ public class TextFrame extends JInternalFrame {
      */
     void loadText(File sntFile) {
         loadStatistics();
-        text.setFont(Config.getCurrentTextFont());
+        text.setFont(ConfigManager.getManager().getTextFont(null));
         text
-                .setComponentOrientation(Config.isRightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT
+                .setComponentOrientation(ConfigManager.getManager().isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
                         : ComponentOrientation.LEFT_TO_RIGHT);
         if (sntFile.length() <= 2) {
             text.setText(Config.EMPTY_FILE_MESSAGE);

@@ -21,9 +21,12 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -174,11 +177,11 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         JPanel p = new JPanel(new BorderLayout());
         p.add(new JLabel("Right-click a dictionary to get information about it :"), BorderLayout.NORTH);
         credits = new BigTextArea();
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                credits.setFont(font);
-            }
-        });
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				credits.setFont(ConfigManager.getManager().getTextFont(null));
+			}
+		});
         p.add(credits, BorderLayout.CENTER);
         return p;
     }
@@ -403,15 +406,15 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 commands = getRunCmd();
                 if (commands.numberOfCommands() == 0) return;
 
-                if (Config.isKorean()) {
+                if (ConfigManager.getManager().isKorean(null)) {
                     /* As we construct the text automaton for Korean, we
-                          * must close the text automaton frame, if any */
+                     * must close the text automaton frame, if any */
                     UnitexFrame.getFrameManager().closeTextAutomatonFrame();
                     UnitexFrame.getFrameManager().closeTfstTagsFrame();
                     /* We also have to rebuild the text automaton */
                     Config.cleanTfstFiles(true);
                     Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
-                            .alphabet(Config.getAlphabet()).clean(true).korean();
+                            .alphabet(ConfigManager.getManager().getAlphabet(null)).clean(true).korean();
                     commands.addCommand(txtCmd);
                 }
                 Launcher.exec(commands, true,
@@ -439,15 +442,15 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         }
         DicoCommand cmd = new DicoCommand().snt(
                 Config.getCurrentSnt()).alphabet(
-                Config.getAlphabet())
-                .morphologicalDic(Preferences.morphologicalDic());
-        if (Config.isKorean()) {
+                ConfigManager.getManager().getAlphabet(null))
+                .morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
+        if (ConfigManager.getManager().isKorean(null)) {
             cmd = cmd.korean();
         }
-        if (Config.isArabic()) {
+        if (ConfigManager.getManager().isArabic(null)) {
             cmd = cmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
         }
-        if (Config.isSemiticLanguage()) {
+        if (ConfigManager.getManager().isSemiticLanguage(null)) {
             cmd = cmd.semitic();
         }
         if (systemSelection != null && systemSelection.length != 0) {
@@ -673,7 +676,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
     class ApplyLexicalResourcesDo implements ToDo {
         public void toDo() {
             UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
-            if (Config.isKorean()) {
+            if (ConfigManager.getManager().isKorean(null)) {
                 UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
                 UnitexFrame.getFrameManager().newTfstTagsFrame(
                         new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));

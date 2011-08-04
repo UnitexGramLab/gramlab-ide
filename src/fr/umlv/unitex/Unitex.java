@@ -37,6 +37,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
@@ -96,6 +98,7 @@ public class Unitex {
                         splash.dispose();
                         EventQueue.invokeLater(new Runnable() {
                             public void run() {
+                            	ConfigManager.setManager(new ConfigManager());
                                 Config.initConfig(args.length == 1 ? args[0] : null);
                                 JFrame frame = new UnitexFrame();
                                 Image img16x16 = new ImageIcon(Unitex.class.getResource("16x16.png")).getImage();

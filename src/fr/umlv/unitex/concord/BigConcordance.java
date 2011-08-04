@@ -28,7 +28,8 @@ import java.io.File;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 
 
 /**
@@ -42,7 +43,7 @@ public class BigConcordance extends JList {
 
     private BigConcordance(ConcordanceAsListModel m) {
         super(m);
-        setFont(new Font(Preferences.getConcordanceFontName(), 0, Preferences.getConcordanceFontSize()));
+        setFont(ConfigManager.getManager().getConcordanceFont(null));
         setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

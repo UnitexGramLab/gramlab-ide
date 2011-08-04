@@ -43,7 +43,8 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 
 /**
  * This class provides a text component that can display in read-only
@@ -74,7 +75,7 @@ public class BigTextArea extends JPanel {
         super(new BorderLayout());
         model = m;
         area = new JTextPane();
-        area.setComponentOrientation(Config.isRightToLeftForText() ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT);
+        area.setComponentOrientation(ConfigManager.getManager().isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT);
         document = area.getStyledDocument();
         normal = StyleContext.getDefaultStyleContext().getStyle(StyleContext.DEFAULT_STYLE);
         highlighted = document.addStyle("highlighted", normal);

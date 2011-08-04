@@ -39,9 +39,9 @@ import javax.swing.text.Document;
 import javax.swing.text.Keymap;
 import javax.swing.text.TextAction;
 
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 
 /**
  * This class describes the text field used to get the box text in a graph.

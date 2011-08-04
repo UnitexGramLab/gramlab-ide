@@ -36,10 +36,12 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoableEditSupport;
 
-import fr.umlv.unitex.GraphPresentationInfo;
 import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.grf.GraphMetaData;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
@@ -86,6 +88,8 @@ public abstract class GenericGraphicalZone extends JComponent {
      * Graph's rendering properties
      */
     GraphPresentationInfo info;
+    
+    GraphMetaData metadata;
     /**
      * <code>JInternalFrame</code> that contains this component
      */
@@ -140,6 +144,7 @@ public abstract class GenericGraphicalZone extends JComponent {
     	text.setText("");
         if (g != null) {
             info = g.info;
+            metadata=g.metadata;
             Dimension d = new Dimension(g.width, g.height);
             setSize(d);
             setPreferredSize(new Dimension(d));
@@ -147,7 +152,8 @@ public abstract class GenericGraphicalZone extends JComponent {
         } else {
             /* Default graphical zone */
             graphBoxes = new ArrayList<GenericGraphBox>();
-            info = Preferences.getGraphPresentationPreferences();
+            info = ConfigManager.getManager().getGraphPresentationPreferences(null);
+            metadata=new GraphMetaData();
             initializeEmptyGraph();
         }
         for (GenericGraphBox b : graphBoxes) {
@@ -930,4 +936,9 @@ public abstract class GenericGraphicalZone extends JComponent {
     public void setDecorator(GraphDecorator d) {
     	this.decorator=d;
     }
+
+
+	public GraphMetaData getMetadata() {
+		return metadata;
+	}
 }

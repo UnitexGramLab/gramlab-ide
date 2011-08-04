@@ -31,6 +31,9 @@ import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+
 /**
  * This class provides methods to get information about files, like path, file
  * name or extension.
@@ -199,7 +202,7 @@ public class Util {
             if (!f.exists()) {
                 f.createNewFile();
             }
-            OutputStreamWriter writer=Config.getEncoding().getOutputStreamWriter(f);
+            OutputStreamWriter writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(f);
             writer.write(s, 0, s.length());
             writer.close();
         } catch (IOException e) {

@@ -30,7 +30,8 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.tfst.Bounds;
 
 
@@ -261,7 +262,7 @@ public class TfstGraphBox extends GenericGraphBox {
     @Override
     void drawOther(Graphics2D g) {
         Color old = parentGraphicalZone.info.backgroundColor;
-        if ((Config.isKorean() || Config.isKoreanJeeSun()) && isKoreanUntaggedToken(content)) {
+        if (ConfigManager.getManager().isKorean(null) && isKoreanUntaggedToken(content)) {
             parentGraphicalZone.info.backgroundColor = koreanUntaggedTokenColor;
         }
         Composite c=g.getComposite();

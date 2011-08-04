@@ -40,7 +40,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Config;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
@@ -98,7 +99,7 @@ public class ConstructTfstFrame extends JInternalFrame {
         reconstrucao.setEnabled(portuguese);
         reconstrucao.setSelected(portuguese);
         cleanFst.setSelected(true);
-        boolean morphemeCase = Config.isKorean();
+        boolean morphemeCase = ConfigManager.getManager().isKorean(null);
         elagFst.setSelected(false);
         if (!morphemeCase) {
             normFst.setSelected(true);
@@ -224,21 +225,21 @@ public class ConstructTfstFrame extends JInternalFrame {
             // construction of this grammar
             LocateCommand locateCmd = new LocateCommand().snt(
                     Config.getCurrentSnt()).fst2(vProSuf)
-                    .alphabet(Config.getAlphabet())
+                    .alphabet(ConfigManager.getManager().getAlphabet(null))
                     .longestMatches().mergeOutputs().noLimit();
-            if (Config.isArabic()) {
+            if (ConfigManager.getManager().isArabic(null)) {
                 locateCmd = locateCmd.arabic(new File(Config.getUserCurrentLanguageDir(), "arabic_typo_rules.txt"));
             }
-            if (Config.isKorean()) {
+            if (ConfigManager.getManager().isKorean(null)) {
                 /*
-                     * Reconstrucao should not be used for Korean,
-                     * but one never knows...
-                     */
+                 * Reconstrucao should not be used for Korean,
+                 * but one never knows...
+                 */
                 locateCmd = locateCmd.korean();
             }
             commands.addCommand(locateCmd);
             ReconstrucaoCommand reconstrucaoCmd = new ReconstrucaoCommand()
-                    .alphabet(Config.getAlphabet())
+                    .alphabet(ConfigManager.getManager().getAlphabet(null))
                     .ind(
                             new File(Config.getCurrentSntDir(),
                                     "concord.ind"))
@@ -254,14 +255,14 @@ public class ConstructTfstFrame extends JInternalFrame {
             commands.addCommand(reconstrucaoCmd);
             Grf2Fst2Command grfCommand = new Grf2Fst2Command()
                     .grf(new File(normalizationDir, "Norm.grf"))
-                    .tokenizationMode().repository();
+                    .tokenizationMode(null).repository();
             commands.addCommand(grfCommand);
         }
         Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
                 Config.getCurrentSnt()).alphabet(
-                Config.getAlphabet()).clean(
+                		ConfigManager.getManager().getAlphabet(null)).clean(
                 cleanFst.isSelected());
-        if (Config.isKorean()) {
+        if (ConfigManager.getManager().isKorean(null)) {
             txtCmd = txtCmd.korean();
         }
         File normFile = null;
@@ -275,7 +276,7 @@ public class ConstructTfstFrame extends JInternalFrame {
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command()
                         .grf(normGrfFile)
                         .enableLoopAndRecursionDetection(true)
-                        .tokenizationMode();
+                        .tokenizationMode(null);
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName
                         .length() - 3);
@@ -315,7 +316,7 @@ public class ConstructTfstFrame extends JInternalFrame {
                 TaggerCommand taggerCmd = new TaggerCommand()
                         .tfst(tfst).dic(data).tagset(
                                 elag_tagset).alphabet(
-                                Config.getAlphabet());
+                                		ConfigManager.getManager().getAlphabet(null));
                 commands.addCommand(taggerCmd);
             }
         }

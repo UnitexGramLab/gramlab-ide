@@ -45,9 +45,12 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import fr.umlv.unitex.Config;
-import fr.umlv.unitex.Preferences;
 import fr.umlv.unitex.Util;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -98,12 +101,12 @@ public class GraphPathDialog extends JDialog {
                 close();
             }
         });
-        textArea.setFont(Config.getCurrentTextFont());
-        Preferences.addTextFontListener(new FontListener() {
-            public void fontChanged(Font font) {
-                textArea.setFont(font);
-            }
-        });
+        textArea.setFont(ConfigManager.getManager().getTextFont(null));
+        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			public void preferencesChanged(String language) {
+				textArea.setFont(ConfigManager.getManager().getTextFont(null));
+			}
+		});
         setLocationRelativeTo(UnitexFrame.mainFrame);
     }
 

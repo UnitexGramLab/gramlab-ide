@@ -37,8 +37,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import fr.umlv.unitex.Config;
 import fr.umlv.unitex.Version;
+import fr.umlv.unitex.config.Config;
 
 /**
  * This class defines an <code>Exception</code> that is thrown when the user wants to validate

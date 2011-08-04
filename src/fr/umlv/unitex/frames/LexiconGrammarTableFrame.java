@@ -36,7 +36,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 
-import fr.umlv.unitex.Preferences;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 
@@ -63,7 +64,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
         buildVectors(file);
         JPanel top = new JPanel(new BorderLayout());
         JTable table = new JTable(rowData, columnNames);
-        table.setFont(Preferences.getCloneOfPreferences().textFont.font);
+        table.setFont(ConfigManager.getManager().getTextFont(null));
         table.getTableHeader().setReorderingAllowed(false);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scroll = new JScrollPane(table);
