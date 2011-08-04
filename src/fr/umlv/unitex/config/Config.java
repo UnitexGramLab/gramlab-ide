@@ -28,19 +28,14 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.regex.Pattern;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -81,30 +76,6 @@ public class Config {
     private static String currentLanguage;
 
     /**
-     * Path of the user's current language directory
-     * <code>.../(user dir)/(current language)</code>
-     */
-    private static File userCurrentLanguageDir;
-
-    /**
-     * Path of the system's current language directory
-     * <code>.../Unitex/(current language)</code>
-     */
-    private static File unitexCurrentLanguageDir;
-
-    /**
-     * Path of the user's corpus directory
-     * <code>.../(user dir)/(current language)/Corpus</code>
-     */
-    private static File currentCorpusDir;
-
-    /**
-     * Path of the user's graph directory
-     * <code>.../(user dir)/(current language)/Graphs</code>
-     */
-    private static File currentGraphDir;
-
-    /**
      * Path of the user's current corpus
      * <code>.../(user dir)/(current language)/Corpus/(my_corpus.snt)</code>
      */
@@ -115,24 +86,6 @@ public class Config {
      * <code>.../(user dir)/(current language)/Corpus/(my_corpus_snt)</code>
      */
     private static File currentSntDir;
-
-    /**
-     * Path of the user's ELAG directory
-     * <code>.../(user dir)/(current language)/Elag</code>
-     */
-    private static File currentElagDir;
-
-    /**
-     * Path of the user's current language alphabet file
-     * <code>.../(user dir)/(current language)/Alphabet.txt</code>
-     */
-    private static File alphabet;
-
-    /**
-     * Path of the user's current cassys path directory
-     * <code>.../(user dir)/(current language)/Cassys</code>
-     */
-    private static File cassysDir;
 
     /**
      * Path of the current cassys transducer list
@@ -266,16 +219,6 @@ public class Config {
     private static JFileChooser fileEditionDialogBox;
 
     /**
-     * Dialog box used to select for derivation directory
-     */
-    private static JFileChooser variationDialogBox;
-
-    /**
-     * Dialog box used to select for derivation directory
-     */
-    private static JFileChooser derivationDialogBox;
-
-    /**
      * Dialog box used to choose an output text file for
      * Fst2Unambig
      */
@@ -388,7 +331,7 @@ public class Config {
         replaceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         File currentGraphDir_ = new File(Config.getCurrentGraphDir(), "Preprocessing");
         currentGraphDir_ = new File(currentGraphDir_, "Replace");
-        replaceDialogBox.setCurrentDirectory(currentGraphDir);
+        replaceDialogBox.setCurrentDirectory(getCurrentGraphDir());
         replaceDialogBox.setMultiSelectionEnabled(false);
         return replaceDialogBox;
     }
@@ -477,30 +420,6 @@ public class Config {
         inflectDialogBox.setCurrentDirectory(new File(Config
                 .getUserCurrentLanguageDir(), "Inflection"));
         return inflectDialogBox;
-    }
-
-    public static JFileChooser getVarDialogBox() {
-        if (variationDialogBox != null)
-            return variationDialogBox;
-        variationDialogBox = new JFileChooser();
-        variationDialogBox.setDialogTitle("Choose the variation directory");
-        variationDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        variationDialogBox.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        variationDialogBox.setCurrentDirectory(new File(Config
-                .getUserCurrentLanguageDir(), "Variation"));
-        return variationDialogBox;
-    }
-
-    public static JFileChooser getDevDialogBox() {
-        if (derivationDialogBox != null)
-            return derivationDialogBox;
-        derivationDialogBox = new JFileChooser();
-        derivationDialogBox.setDialogTitle("Choose the derivation directory");
-        derivationDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        derivationDialogBox.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        derivationDialogBox.setCurrentDirectory(new File(Config
-                .getUserCurrentLanguageDir(), "Derivation"));
-        return derivationDialogBox;
     }
 
     public static JFileChooser getTableDialogBox() {
@@ -835,13 +754,7 @@ public class Config {
      */
     private static void setCurrentLanguage(String s) {
         currentLanguage = s;
-        setUnitexCurrentLanguageDir(new File(getUnitexDir(), currentLanguage));
         setUserCurrentLanguageDir(new File(getUserDir(), currentLanguage));
-        setCurrentCorpusDir(new File(getUserCurrentLanguageDir(), "Corpus"));
-        setCurrentGraphDir(new File(getUserCurrentLanguageDir(), "Graphs"));
-        setCurrentElagDir(new File(getUserCurrentLanguageDir(), "Elag"));
-        setAlphabet(new File(getUserCurrentLanguageDir(), "Alphabet.txt"));
-        setCassysDir(new File(getUserCurrentLanguageDir(), "Cassys"));
         setDefaultPreprocessingGraphs();
         updateOpenSaveDialogBoxes();
         fireLanguageChanged();
@@ -858,15 +771,7 @@ public class Config {
     }
 
     public static File getCassysDir() {
-        if (cassysDir == null) {
-            System.out.println("ERROR : Cassys dir not Found");
-        }
-        return cassysDir;
-    }
-
-
-    private static void setCassysDir(File c) {
-        cassysDir = c;
+        return new File(getUserCurrentLanguageDir(), "Cassys");
     }
 
 
@@ -928,29 +833,14 @@ public class Config {
      * @return system's current language directory
      */
     public static File getUnitexCurrentLanguageDir() {
-        if (unitexCurrentLanguageDir == null) {
-            System.err.println("ERROR");
-        }
-        return unitexCurrentLanguageDir;
-    }
-
-    /**
-     * Sets the system's current language directory
-     *
-     * @param s directory's path
-     */
-    private static void setUnitexCurrentLanguageDir(File s) {
-        unitexCurrentLanguageDir = s;
+        return new File(getUnitexDir(),getCurrentLanguage());
     }
 
     /**
      * @return the users' current language directory
      */
     public static File getUserCurrentLanguageDir() {
-        if (userCurrentLanguageDir == null) {
-            System.err.println("ERROR");
-        }
-        return userCurrentLanguageDir;
+        return new File(getUserDir(),getCurrentLanguage());
     }
 
     /**
@@ -961,20 +851,19 @@ public class Config {
      *
      * @param s directory's path
      */
-    private static void setUserCurrentLanguageDir(File s) {
-        userCurrentLanguageDir = s;
+    private static void setUserCurrentLanguageDir(File userCurrentLanguageDir) {
         // now, we verify if the directory exists
         if (!userCurrentLanguageDir.exists()) {
             // if the path does not exists
             if (!userCurrentLanguageDir.mkdir()) {
                 System.err.println("ERROR: cannot create directory "
-                        + s.getAbsolutePath());
+                        + userCurrentLanguageDir.getAbsolutePath());
                 System.exit(1);
             }
             FileUtil.copyFileByName(new File(getUnitexCurrentLanguageDir(), "*"),
                     getUserCurrentLanguageDir());
         }
-        if (deprecatedConfigFile(new File(s, "Config"))) {
+        if (deprecatedConfigFile(new File(userCurrentLanguageDir, "Config"))) {
         	FileUtil.copyFileByName(new File(getUnitexCurrentLanguageDir(), "Config"),
                     getUserCurrentLanguageDir());
         }
@@ -1037,66 +926,21 @@ public class Config {
      * @return user's current corpus directory
      */
     public static File getCurrentCorpusDir() {
-        if (currentCorpusDir == null) {
-            System.err.println("ERROR: Corpus directory is not set.");
-        }
-        return currentCorpusDir;
-    }
-
-    /**
-     * Sets the user's current corpus directory
-     *
-     * @param s directory's path
-     */
-    private static void setCurrentCorpusDir(File s) {
-        currentCorpusDir = s;
+        return new File(getUserCurrentLanguageDir(),"Corpus");
     }
 
     /**
      * @return user's current graph directory
      */
     public static File getCurrentGraphDir() {
-        if (currentGraphDir == null) {
-            System.err.println("ERROR: Graph directory is not set.");
-        }
-        return currentGraphDir;
-    }
-
-    /**
-     * Sets the user's current graph directory
-     *
-     * @param s directory's path
-     */
-    public static void setCurrentGraphDir(File s) {
-        currentGraphDir = s;
+    	return new File(getUserCurrentLanguageDir(),"Graphs");
     }
 
     /**
      * @return user's current ELAG directory
      */
     public static File getCurrentElagDir() {
-        if (currentElagDir == null) {
-            System.out.println("ERROR: Elag directory is not set.");
-        }
-        return currentElagDir;
-    }
-
-    /**
-     * Sets the user's current ELAG directory
-     *
-     * @param s directory's path
-     */
-    private static void setCurrentElagDir(File s) {
-        currentElagDir = s;
-    }
-
-    /**
-     * Sets user's current alphabet file
-     *
-     * @param s file's path
-     */
-    private static void setAlphabet(File s) {
-        alphabet = s;
+    	return new File(getUserCurrentLanguageDir(),"Elag");
     }
 
     /**

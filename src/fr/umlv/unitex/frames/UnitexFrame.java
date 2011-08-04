@@ -974,7 +974,6 @@ public class UnitexFrame extends JFrame {
                 	continue;
                 }
             }
-            Config.setCurrentGraphDir(graphs[i].getParentFile());
             frameManager.newGraphFrame(graphs[i]);
         }
     }
