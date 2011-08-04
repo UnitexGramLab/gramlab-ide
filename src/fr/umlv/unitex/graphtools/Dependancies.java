@@ -29,10 +29,10 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.io.GraphIO;
 

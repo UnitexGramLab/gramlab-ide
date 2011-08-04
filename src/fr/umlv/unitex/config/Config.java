@@ -48,8 +48,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Util;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.listeners.LanguageListener;
 
 /**
@@ -971,27 +971,27 @@ public class Config {
                         + s.getAbsolutePath());
                 System.exit(1);
             }
-            copyFileByName(new File(getUnitexCurrentLanguageDir(), "*"),
+            FileUtil.copyFileByName(new File(getUnitexCurrentLanguageDir(), "*"),
                     getUserCurrentLanguageDir());
         }
         if (deprecatedConfigFile(new File(s, "Config"))) {
-            copyFileByName(new File(getUnitexCurrentLanguageDir(), "Config"),
+        	FileUtil.copyFileByName(new File(getUnitexCurrentLanguageDir(), "Config"),
                     getUserCurrentLanguageDir());
         }
         // if any of the sub-directories does not exist, we create it
         File f = new File(userCurrentLanguageDir, "Corpus");
         if (!f.exists()) {
             f.mkdir();
-            copyDirRec(new File(getUnitexCurrentLanguageDir(), "Corpus"), f);
+            FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(), "Corpus"), f);
         }
         f = new File(userCurrentLanguageDir, "Elag");
         if (!f.exists()) {
-            copyDirRec(new File(getUnitexCurrentLanguageDir(), "Elag"), f);
+        	FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(), "Elag"), f);
         }
 
         f = new File(userCurrentLanguageDir, "Inflection");
         if (!f.exists()) {
-            copyDirRec(new File(getUnitexCurrentLanguageDir(), "Inflection"), f);
+        	FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(), "Inflection"), f);
         }
         f = new File(userCurrentLanguageDir, "Dela");
         if (!f.exists()) {
@@ -999,18 +999,18 @@ public class Config {
         }
         f = new File(userCurrentLanguageDir, "Graphs");
         if (!f.exists()) {
-            copyDirRec(new File(getUnitexCurrentLanguageDir(), "Graphs"), f);
+        	FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(), "Graphs"), f);
         }
         f = new File(userCurrentLanguageDir, "Cassys");
         if (!f.exists()) {
-            copyDirRec(new File(getUnitexCurrentLanguageDir(), "Cassys"), f);
+        	FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(), "Cassys"), f);
         }
 
     }
 
     /**
      * @param file
-     * @return true if the configuration file does start with '#'
+     * @return true if the configuration file does not start with '#'
      */
     private static boolean deprecatedConfigFile(File file) {
         if (file == null) {
@@ -1170,7 +1170,7 @@ public class Config {
     private static void collectLanguage(File directory, Set<String> languages) {
         final File[] fileList = directory.listFiles(new FileFilter() {
             public boolean accept(File file) {
-                return file.isDirectory() && isValidLanguageName(file.getName());
+                return file.isDirectory() && ConfigManager.getManager().isValidLanguageName(file.getName());
             }
         });
         for (File aFileList : fileList) {
@@ -1256,7 +1256,7 @@ public class Config {
      * @param s name of the corpus file
      */
     private static void setCurrentSntDir(File s) {
-        final String path = Util.getFileNameWithoutExtension(s.getAbsolutePath());
+        final String path = FileUtil.getFileNameWithoutExtension(s.getAbsolutePath());
         currentSntDir = new File(path + "_snt");
         if (currentSntDir.exists() && !currentSntDir.isDirectory()) {
             JOptionPane.showMessageDialog(null,
@@ -1341,145 +1341,6 @@ public class Config {
     }
 
     /**
-     * Copies files. The source is specified by a file name that can contain *
-     * and ? jokers.
-     *
-     * @param src  source
-     * @param dest destination
-     */
-    private static void copyFileByName(File src, File dest) {
-        final File path_src = src.getParentFile();
-        final String expression = src.getName();
-        if (dest.isDirectory()) {
-            File files_list[] = path_src
-                    .listFiles(new RegFileFilter(expression));
-            if (files_list != null) {
-                for (File F : files_list) {
-                    if (!F.isDirectory()) {
-                        copyFile(F, new File(dest, F.getName()));
-                    }
-                }
-            }
-        } else
-            copyFile(src, dest);
-    }
-
-    /**
-     * Copies a directory recursively.
-     *
-     * @param src  source directory
-     * @param dest destination directory
-     */
-
-    private static void copyDirRec(File src, File dest) {
-
-        if (!src.isDirectory()) {
-            return;
-        }
-        if (!dest.exists()) {
-            dest.mkdirs();
-        }
-        File files_list[] = src.listFiles();
-        if (files_list == null) {
-            return;
-        }
-        for (File f : files_list) {
-            if (f.isDirectory()) {
-                copyDirRec(f, new File(dest, f.getName()));
-            } else if (f.isFile()) {
-                copyFile(f, new File(dest, f.getName()));
-            }
-        }
-    }
-
-    /**
-     * Deletes files. The source is specified by a file name that can contain *
-     * and ? jokers.
-     *
-     * @param src source
-     */
-    public static void deleteFileByName(File src) {
-    	if (src==null) return;
-        final File path_src = src.getParentFile();
-        if (path_src==null) return;
-        final String expression = src.getName();
-        File files_list[] = path_src.listFiles(new RegFileFilter(
-                expression));
-        if (files_list != null) {
-            for (File aFiles_list : files_list) {
-            	aFiles_list.delete();
-            }
-        }
-    }
-
-    /**
-     * Deletes files. The source is specified by a file name that can contains *
-     * and ? jokers. This method differs from deleteFileByName because it cannot
-     * delete directories.
-     *
-     * @param src source
-     */
-    public static void removeFile(File src) {
-    	if (src==null) return;
-        final File path_src = src.getParentFile();
-        if (path_src==null) return;
-        final String expression = src.getName();
-        final File files_list[] = path_src.listFiles(new RegFileFilter(
-                expression));
-        for (final File aFiles_list : files_list) {
-            final File F;
-            if (!(F = aFiles_list).isDirectory()) {
-                F.delete();
-            }
-        }
-    }
-
-    static class RegFileFilter implements FilenameFilter {
-
-        public String expression;
-
-        RegFileFilter(String exp) {
-            expression = exp.replaceAll("\u002C", "\\.");
-            expression = expression.replaceAll("\\*", ".*");
-            expression = expression.replaceAll("\\?", ".");
-        }
-
-        public boolean accept(File dir, String f) {
-            return Pattern.matches(expression, f);
-        }
-    }
-
-    /**
-     * Copy one file.
-     *
-     * @param src  source file
-     * @param dest destination file
-     */
-    public static void copyFile(File src, File dest) {
-        try {
-            final FileInputStream fis = new FileInputStream(src);
-            final FileOutputStream fos = new FileOutputStream(dest);
-            copyStream(fis, fos);
-            fis.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static void copyStream(InputStream fis, OutputStream fos) {
-        try {
-            final byte[] buf = new byte[2048];
-            int i = 0;
-            while ((i = fis.read(buf)) != -1) {
-                fos.write(buf, 0, i);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Sets current DELA
      *
      * @param s dictionary name
@@ -1507,7 +1368,7 @@ public class Config {
                                 "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            copyDirRec(foo, dir);
+            FileUtil.copyDirRec(foo, dir);
         }
         return dir;
     }
@@ -1526,7 +1387,7 @@ public class Config {
                                 "Error", JOptionPane.ERROR_MESSAGE);
                 return null;
             }
-            copyFile(tmp, f);
+            FileUtil.copyFile(tmp, f);
         }
         return f;
     }
@@ -1568,33 +1429,6 @@ public class Config {
         return res;
     }
 
-    /**
-     * Tries to find the language directory corresponding to the given file.
-     *
-     * @param f
-     * @return the language directory, or null if no language directory was
-     *         found in the path of f
-     */
-    public static File getLanguageDirForFile(File f) {
-        if (f == null) return null;
-        File parent = f.getParentFile();
-        while (true) {
-            if (parent == null) return null;
-            if (parent.equals(Config.getUserDir()) ||
-                    parent.equals(Config.getUnitexDir())) break;
-            f = parent;
-            parent = parent.getParentFile();
-        }
-        if (!isValidLanguageName(f.getName())) return null;
-        return f;
-    }
-
-
-    private static boolean isValidLanguageName(String name) {
-        return !(name.equals("App") || name.equals("Users")
-                || name.equals("Src") || name.equals("XAlign")
-                || name.startsWith("."));
-    }
 
 
     private static final ArrayList<LanguageListener> listeners = new ArrayList<LanguageListener>();
@@ -1625,32 +1459,32 @@ public class Config {
 
     public static void cleanTfstFiles(boolean deleteSentenceGraphs) {
         if (deleteSentenceGraphs) {
-            Config.deleteFileByName(new File(Config
+            FileUtil.deleteFileByName(new File(Config
                     .getCurrentSntDir(), "sentence*.grf"));
         }
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "cursentence.grf"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "cursentence.txt"));
-        Config
+        FileUtil
                 .deleteFileByName(new File(Config
                         .getCurrentSntDir(),
                         "currentelagsentence.grf"));
-        Config
+        FileUtil
                 .deleteFileByName(new File(Config
                         .getCurrentSntDir(),
                         "currentelagsentence.txt"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "text-elag.tfst"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "text-elag.tfst.bak"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "text-elag.tind"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "text-elag.tind.bak"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "tfst_tags_by_freq.txt"));
-        Config.deleteFileByName(new File(Config
+        FileUtil.deleteFileByName(new File(Config
                 .getCurrentSntDir(), "tfst_tags_by_alph.txt"));
     }
 

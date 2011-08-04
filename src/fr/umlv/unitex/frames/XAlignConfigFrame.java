@@ -39,9 +39,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.umlv.unitex.PersonalFileFilter;
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
@@ -187,7 +187,7 @@ public class XAlignConfigFrame extends JInternalFrame {
             }
             NormalizeCommand norm = new NormalizeCommand().textWithDefaultNormalization(source);
             commands.addCommand(norm);
-            String snt = Util.getFileNameWithoutExtension(source) + ".snt";
+            String snt = FileUtil.getFileNameWithoutExtension(source) + ".snt";
             XMLizerCommand cmd = new XMLizerCommand().output(xmlSource)
                     .alphabet(alphabet).sentence(sentence).input(new File(snt));
             commands.addCommand(cmd);
@@ -247,7 +247,7 @@ public class XAlignConfigFrame extends JInternalFrame {
             }
             NormalizeCommand norm = new NormalizeCommand().textWithDefaultNormalization(dest);
             commands.addCommand(norm);
-            String snt = Util.getFileNameWithoutExtension(dest) + ".snt";
+            String snt = FileUtil.getFileNameWithoutExtension(dest) + ".snt";
             XMLizerCommand cmd = new XMLizerCommand().output(xmlTarget)
                     .alphabet(alphabet).sentence(sentence).input(new File(snt));
             commands.addCommand(cmd);

@@ -45,12 +45,12 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -175,7 +175,7 @@ public class GraphPathDialog extends JDialog {
                 grfCmd.grf(new File(graphName.getText()))
                         .enableLoopAndRecursionDetection(true).repository()
                         .noEmptyGraphWarning();
-                fst2 = new File(Util.getFileNameWithoutExtension(graphName
+                fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
                         .getText())
                         + ".fst2");
                 if (onlyPaths.isSelected()) {
@@ -183,7 +183,7 @@ public class GraphPathDialog extends JDialog {
                             "list.txt");
                     cmd = cmd.listOfPaths(fst2, list);
                 } else {
-                    list = new File(Util.getFileNameWithoutExtension(graphName
+                    list = new File(FileUtil.getFileNameWithoutExtension(graphName
                             .getText())
                             + "autolst.txt");
                     cmd = cmd.listsOfSubgraph(fst2);

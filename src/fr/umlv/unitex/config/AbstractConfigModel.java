@@ -33,4 +33,9 @@ public abstract class AbstractConfigModel implements ConfigModel {
         return language.equals("Arabic");
     }
     
+    public boolean isValidLanguageName(String language) {
+        return !(language.equals("App") || language.equals("Users")
+                || language.equals("Src") || language.equals("XAlign")
+                || language.startsWith("."));
+    }
 }

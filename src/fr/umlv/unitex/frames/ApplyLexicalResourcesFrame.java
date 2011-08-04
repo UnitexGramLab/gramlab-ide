@@ -21,12 +21,12 @@
 
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -259,7 +259,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     int index = userDicList.locationToIndex(e.getPoint());
                     if (index != -1) {
                         String s = (String) (userDicList.getModel().getElementAt(index));
-                        String s2 = Util.getFileNameWithoutExtension(s);
+                        String s2 = FileUtil.getFileNameWithoutExtension(s);
                         final File f = new File(new File(Config.getUserCurrentLanguageDir(), "Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);
@@ -328,7 +328,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     int index = systemDicList.locationToIndex(e.getPoint());
                     String s = (String) (systemDicList.getModel().getElementAt(index));
                     if (index != -1) {
-                        String s2 = Util.getFileNameWithoutExtension(s);
+                        String s2 = FileUtil.getFileNameWithoutExtension(s);
                         final File f = new File(new File(Config.getUnitexCurrentLanguageDir(), "Dela" /*lexicalDir*/), s2 + ".txt");
                         if (f.exists()) {
                             credits.load(f);

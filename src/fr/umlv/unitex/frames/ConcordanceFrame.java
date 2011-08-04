@@ -50,7 +50,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.concord.BigConcordance;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
@@ -60,6 +59,7 @@ import fr.umlv.unitex.debug.DebugDetails;
 import fr.umlv.unitex.debug.DebugGraphPane;
 import fr.umlv.unitex.debug.DebugInfos;
 import fr.umlv.unitex.debug.DebugTableModel;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.listeners.FontListener;
 
 
@@ -219,12 +219,12 @@ public class ConcordanceFrame extends JInternalFrame {
      */
     private void load(File concor, int widthInChars) {
         setTitle("Concordance: " + concor.getAbsolutePath());
-        numberOfMatches.setText(Util.getHtmlPageTitle(concor));
+        numberOfMatches.setText(FileUtil.getHtmlPageTitle(concor));
         Dimension d = getSize();
         int g = widthInChars * 8;
         d.setSize((g < 800) ? g : 800, d.height);
         setSize(d);
-        Util.getHtmlPageTitle(concor);
+        FileUtil.getHtmlPageTitle(concor);
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
 			public void preferencesChanged(String language) {
 				list.setFont(ConfigManager.getManager().getConcordanceFont(null));

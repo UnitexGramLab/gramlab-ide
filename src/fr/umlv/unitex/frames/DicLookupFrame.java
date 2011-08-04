@@ -68,12 +68,12 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.Util;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
@@ -236,7 +236,7 @@ public class DicLookupFrame extends JInternalFrame {
             	String s=inputText.getText();
             	if (s.equals("")) return;
             	File f=new File(Config.getUserCurrentLanguageDir(),"dic_lookup.in");
-            	Util.write(s,f);
+            	FileUtil.write(s,f);
                 DicoCommand cmd = getRunCmd();
                 if (cmd==null) return;
                 Launcher.execWithoutTracing(cmd);

@@ -27,9 +27,8 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.files.FileUtil;
 
 public class Log {
 
@@ -58,7 +57,7 @@ public class Log {
 		if (!count.exists()) {
 			/* If the configuration file does not exist, the first log will 
 			 * have #1 and we have to delete any preexisting .ulp files */ 
-			Config.removeFile(new File(logDir,"*.ulp"));
+			FileUtil.removeFile(new File(logDir,"*.ulp"));
 			return "1";
 		}
 		try {
