@@ -72,7 +72,7 @@ public class ConcordanceLoader {
                 });
                 Scanner scanner = null;
                 try {
-                    scanner = new Scanner(file, Encoding.getCharset(file));
+                    scanner = Encoding.getScanner(file);
                     int sentence, start, end;
                     while (scanner.hasNextInt()) {
                         /* -1 because in concord.ind files, sentences are numbered from 1 */
@@ -95,8 +95,6 @@ public class ConcordanceLoader {
                         scanner.nextLine();
                         publish(new MatchedSentence(sentence, new Occurrence(start, end)));
                     }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } finally {
                     if (scanner != null) scanner.close();
                 }

@@ -58,7 +58,7 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
         }
         try {
             FileInputStream stream = new FileInputStream(file);
-            Scanner scanner = new Scanner(stream,Encoding.getCharset(file));
+            Scanner scanner = Encoding.getScanner(file);
             Pattern pattern = Pattern.compile("(.*)\t(.+)\t(.*)\t([0-9]+)");
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
