@@ -65,69 +65,65 @@ public class GraphDecorator {
 	}
 	
 	public static GraphDecorator loadDiffFile(File f) {
-		try {
-			Scanner scanner=new Scanner(f,Encoding.getEncoding(f).getCharset());
-			GraphDecorator info=new GraphDecorator(null);
-			while (scanner.hasNext()) {
-				try {
-					String s=scanner.next();
-					if (s.equals("P")) {
-						/* Propery changed */
-						info.propertyOps.add(scanner.next());
-						continue;
-					}
-					if (s.equals("M")) {
-						/* Box moved */
-						info.boxMoved.add(scanner.nextInt());
-						info.boxMoved.add(scanner.nextInt());
-						continue;
-					}
-					if (s.equals("C")) {
-						/* Box content changed */
-						info.boxContentChanged.add(scanner.nextInt());
-						info.boxContentChanged.add(scanner.nextInt());
-						continue;
-					}
-					if (s.equals("A")) {
-						/* Box added */
-						info.boxAdded.add(scanner.nextInt());
-						continue;
-					}
-					if (s.equals("R")) {
-						/* Box removed */
-						info.boxRemoved.add(scanner.nextInt());
-						continue;
-					}
-					if (s.equals("T")) {
-						/* Transition added: we only store the information
-						 * about the dest graph */
-						scanner.nextInt();
-						scanner.nextInt();
-						info.transitionAdded.add(scanner.nextInt());
-						info.transitionAdded.add(scanner.nextInt());
-						continue;
-					}
-					if (s.equals("X")) {
-						/* Transition removed: we only store the information
-						 * about the base graph */
-						info.transitionRemoved.add(scanner.nextInt());
-						info.transitionRemoved.add(scanner.nextInt());
-						scanner.nextInt();
-						scanner.nextInt();
-						continue;
-					}
-					scanner.close();
-					return null;
-				} catch (NoSuchElementException e) {
-					scanner.close();
-					return null;
+		Scanner scanner=Encoding.getScanner(f);
+		GraphDecorator info=new GraphDecorator(null);
+		while (scanner.hasNext()) {
+			try {
+				String s=scanner.next();
+				if (s.equals("P")) {
+					/* Propery changed */
+					info.propertyOps.add(scanner.next());
+					continue;
 				}
+				if (s.equals("M")) {
+					/* Box moved */
+					info.boxMoved.add(scanner.nextInt());
+					info.boxMoved.add(scanner.nextInt());
+					continue;
+				}
+				if (s.equals("C")) {
+					/* Box content changed */
+					info.boxContentChanged.add(scanner.nextInt());
+					info.boxContentChanged.add(scanner.nextInt());
+					continue;
+				}
+				if (s.equals("A")) {
+					/* Box added */
+					info.boxAdded.add(scanner.nextInt());
+					continue;
+				}
+				if (s.equals("R")) {
+					/* Box removed */
+					info.boxRemoved.add(scanner.nextInt());
+					continue;
+				}
+				if (s.equals("T")) {
+					/* Transition added: we only store the information
+					 * about the dest graph */
+					scanner.nextInt();
+					scanner.nextInt();
+					info.transitionAdded.add(scanner.nextInt());
+					info.transitionAdded.add(scanner.nextInt());
+					continue;
+				}
+				if (s.equals("X")) {
+					/* Transition removed: we only store the information
+					 * about the base graph */
+					info.transitionRemoved.add(scanner.nextInt());
+					info.transitionRemoved.add(scanner.nextInt());
+					scanner.nextInt();
+					scanner.nextInt();
+					continue;
+				}
+				scanner.close();
+				return null;
+			} catch (NoSuchElementException e) {
+				scanner.close();
+				return null;
 			}
-			scanner.close();
-			return info;
-		} catch (FileNotFoundException e) {
-			return null;
 		}
+		scanner.close();
+		return info;
 	}
 	
 	

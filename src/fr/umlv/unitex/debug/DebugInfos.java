@@ -51,11 +51,8 @@ public class DebugInfos {
 		if (!f.exists()) return null;
 		Scanner scanner=null;
 		try {
-			scanner=new Scanner(f,Encoding.getEncoding(html).getCharset());
+			scanner=Encoding.getScanner(html);
 			String z=scanner.nextLine();
-			if (z.startsWith("\uFEFF")) {
-				z=z.substring(1);
-			}
 			if (!z.startsWith("#D")) {
 				scanner.close();
 				return null;
@@ -90,8 +87,6 @@ public class DebugInfos {
 			}
 			scanner.close();
 			return infos;
-		} catch (FileNotFoundException e) {
-			return null;
 		} catch (NoSuchElementException e2) {
 			if (scanner!=null) scanner.close();
 			return null;

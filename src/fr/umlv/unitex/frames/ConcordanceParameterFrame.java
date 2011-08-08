@@ -695,41 +695,35 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			System.err.println(f.getAbsolutePath()+" does not exist!");
 			return;
 		}
-		try {
-			Scanner scanner=new Scanner(f,Encoding.getCharset(f));
-			int a=-1,b=-1;
-			/* Skipping the header. We look for the first line
-			 * containing #[IMR], because there may be lines before it,
-			 * if the concord.ind file was produced in debug mode */
-			while (scanner.hasNextLine()) {
-				String s=scanner.nextLine();
-				if (s.startsWith("\uFEFF")) s=s.substring(1);
-				if (s.equals("#I") || s.equals("#M") || s.equals("#R")) break;
-			}
-			while (scanner.hasNextLine()) {
-				String s=scanner.nextLine();
-				Matcher m=pattern.matcher(s);
-				if (m.matches()) {
-					/* Should always happen */
-					if (a==-1) {
-						a=Integer.parseInt(m.group(1));
-						b=Integer.parseInt(m.group(2));
-					} else {
-						int a2=Integer.parseInt(m.group(1));
-						int b2=Integer.parseInt(m.group(2));
-						if (a2==a && b2==b) {
-							ambiguousOutputsButton.setEnabled(true);
-							scanner.close();
-							return;
-						}
-						a=a2;
-						b=b2;
+		Scanner scanner=Encoding.getScanner(f);
+		int a=-1,b=-1;
+		/* Skipping the header. We look for the first line
+		 * containing #[IMR], because there may be lines before it,
+		 * if the concord.ind file was produced in debug mode */
+		while (scanner.hasNextLine()) {
+			String s=scanner.nextLine();
+			if (s.equals("#I") || s.equals("#M") || s.equals("#R")) break;
+		}
+		while (scanner.hasNextLine()) {
+			String s=scanner.nextLine();
+			Matcher m=pattern.matcher(s);
+			if (m.matches()) {
+				/* Should always happen */
+				if (a==-1) {
+					a=Integer.parseInt(m.group(1));
+					b=Integer.parseInt(m.group(2));
+				} else {
+					int a2=Integer.parseInt(m.group(1));
+					int b2=Integer.parseInt(m.group(2));
+					if (a2==a && b2==b) {
+						ambiguousOutputsButton.setEnabled(true);
+						scanner.close();
+						return;
 					}
+					a=a2;
+					b=b2;
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
 		}
 		
 	}

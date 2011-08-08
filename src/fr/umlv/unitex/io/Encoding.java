@@ -33,6 +33,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
+import java.util.Scanner;
 
 import fr.umlv.unitex.config.Preferences;
 
@@ -167,6 +168,13 @@ public enum Encoding {
 		}
 	};
 	public abstract String getCharset();
+	
+	/**
+	 * Returns a Scanner, ready to work, the BOM having been read if any.
+	 */
+	public static Scanner getScanner(File f) {
+		return new Scanner(getInputStreamReader(f));
+	}
 
 	/**
 	 * 
@@ -210,10 +218,6 @@ public enum Encoding {
 	}
 	
 	
-	public static String getCharset(File f) {
-		return getEncoding(f).getCharset();
-	}
-
 	/**
 	 * Returns a reader for the given file. For UTF16 encodings, we skip the
 	 * BOM.
