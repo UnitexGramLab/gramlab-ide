@@ -42,7 +42,7 @@ public class TokensInfo {
     }
 
     public static void loadTokensInfo(File f,String sentence) throws FileNotFoundException {
-        Scanner scanner=new Scanner(f,Encoding.getEncoding(f).getCharset());
+        Scanner scanner=Encoding.getScanner(f);
         ArrayList<Integer> l=new ArrayList<Integer>();
         tokens.clear();
         int currentPos=0;
@@ -67,7 +67,7 @@ public class TokensInfo {
             currentPos=currentPos+n;
         }
         if (scanner.hasNext()) {
-            throw new AssertionError("Invalid token info file");
+            throw new AssertionError("Invalid token info file: unexpected remaining token <"+scanner.next()+">");
         }
         scanner.close();
         int size=l.size();

@@ -48,7 +48,7 @@ public class StatisticsTableModelMode1 extends AbstractTableModel {
         try {
             FileInputStream stream = new FileInputStream(file);
 
-            Scanner scanner = new Scanner(stream,Encoding.getCharset(file));
+            Scanner scanner = Encoding.getScanner(file);
             scanner.useDelimiter("\r\n|\t");
             while (scanner.hasNext()) {
                 Mode1Data d = new Mode1Data();
