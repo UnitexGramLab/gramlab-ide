@@ -52,7 +52,7 @@ import fr.umlv.unitex.xalign.ConcordanceModel;
  */
 public class InternalFrameManager {
 
-    private final JDesktopPane desktop;
+    final JDesktopPane desktop;
     private final static Integer LAYER = 1;
     private final FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(BuildKrMwuDicFrame.class);
     private final FrameFactory delaFrameFactory = new FrameFactory(DelaFrame.class);
@@ -98,7 +98,7 @@ public class InternalFrameManager {
     private final DialogFactory graphPathDialogFactory = new DialogFactory(GraphPathDialog.class);
     private final DialogFactory transcodeOneFileDialogFactory = new DialogFactory(TranscodeOneFileDialog.class);
     private final DialogFactory listCopyDialogFactory = new DialogFactory(ListCopyDialog.class);
-
+    
     private final PreprocessDialogFactory preprocessDialogFactory = new PreprocessDialogFactory();
     private final FontDialogFactory fontDialogFactory = new FontDialogFactory();
     private final GraphPresentationDialogFactory graphPresentationDialogFactory = new GraphPresentationDialogFactory();
@@ -819,6 +819,12 @@ public class InternalFrameManager {
         if (d == null) return null;
         d.setVisible(true);
         return d.getContextsInfo();
+    }
+
+    public String newVariableInsertionDialog(boolean inputVariable) {
+    	VariableInsertionDialog d = new VariableInsertionDialog(inputVariable);
+        d.setVisible(true);
+        return d.getVariableName();
     }
 
     public ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output, TagFilter filter) {

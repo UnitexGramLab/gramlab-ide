@@ -218,7 +218,7 @@ public class GraphBox extends GenericGraphBox {
      */
     @Override
     public void setContent(String s) {
-        if (type == 1)
+        if (type == GenericGraphBox.FINAL)
             return; // nothing to do if we consider the final state
         content = s;
         if (s.equals("")) {
