@@ -34,8 +34,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -79,13 +82,60 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         setComponentPopupMenu(popup);
     }
 
+    Action surroundWithInputVar;
+    public Action getSurroundWithInputVarAction() {
+    	return surroundWithInputVar;
+    }
+    Action surroundWithOutputVar;
+    public Action getSurroundWithOutputVarAction() {
+    	return surroundWithOutputVar;
+    }
+    Action surroundWithMorphologicalMode;
+    public Action getSurroundMorphologicalModeAction() {
+    	return surroundWithMorphologicalMode;
+    }
+    
     private JPopupMenu createPopup() {
 		JPopupMenu popup=new JPopupMenu();
 		submenu=new JMenu("Surround with...");
-		JMenuItem inputVar=new JMenuItem("Input variable");
-		submenu.add(inputVar);
-		JMenuItem outputVar=new JMenuItem("Output variable");
-		submenu.add(outputVar);
+		surroundWithInputVar=new AbstractAction("Input variable") {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				String name=UnitexFrame.getFrameManager().newVariableInsertionDialog(true);
+				if (name==null || name.equals("")) return;
+				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$"+name+"(","$"+name+")");
+			}
+		};
+		surroundWithInputVar.setEnabled(false);
+		surroundWithInputVar.putValue(Action.SHORT_DESCRIPTION,"Surround box selection with an input variable");
+		submenu.add(new JMenuItem(surroundWithInputVar));
+		
+		surroundWithOutputVar=new AbstractAction("Output variable") {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				String name=UnitexFrame.getFrameManager().newVariableInsertionDialog(false);
+				if (name==null || name.equals("")) return;
+				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$|"+name+"(","$|"+name+")");
+			}
+		};
+		surroundWithOutputVar.setEnabled(false);
+		surroundWithOutputVar.putValue(Action.SHORT_DESCRIPTION,"Surround box selection with an output variable");
+		submenu.add(new JMenuItem(surroundWithOutputVar));
+		
+		submenu.addSeparator();
+		surroundWithMorphologicalMode=new AbstractAction("Morphological mode") {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$<","$>");
+			}
+		};
+		surroundWithMorphologicalMode.setEnabled(false);
+		surroundWithMorphologicalMode.putValue(Action.SHORT_DESCRIPTION,"Surround box selection with morphological mode tags");
+		submenu.add(new JMenuItem(surroundWithMorphologicalMode));
+
 		submenu.addSeparator();
 		JMenuItem leftCtx=new JMenuItem("Left context");
 		submenu.add(leftCtx);
@@ -96,11 +146,147 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		submenu.setEnabled(false);
 		addBoxSelectionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				submenu.setEnabled(selectedBoxes.size()!=0);
+				boolean selected=selectedBoxes.size()!=0;
+				submenu.setEnabled(selected);
+				surroundWithInputVar.setEnabled(selected);
+				surroundWithOutputVar.setEnabled(selected);
+				surroundWithMorphologicalMode.setEnabled(selected);
 			}
 		});
 		popup.add(submenu);
 		return popup;
+	}
+
+	protected void surroundWithBoxes(ArrayList<GenericGraphBox> selection,String box1,String box2) {
+		ArrayList<GenericGraphBox> inputBoxes=new ArrayList<GenericGraphBox>();
+		ArrayList<GenericGraphBox> outputBoxes=new ArrayList<GenericGraphBox>();
+		computeInputOutputBoxes(selection,inputBoxes,outputBoxes);
+		if (box1!=null && inputBoxes.isEmpty()) {
+			System.err.println("empty input boxes");
+			return;
+		}
+		if (box2!=null && outputBoxes.isEmpty()) {
+			System.err.println("empty output boxes");
+			return;
+		}
+		if (box1!=null) {
+			GraphBox inputBox=createInputBox(selection,inputBoxes,box1);
+			graphBoxes.add(inputBox);
+		}
+		if (box2!=null) {
+			GraphBox outputBox=createOutputBox(selection,outputBoxes,box2);
+			graphBoxes.add(outputBox);
+		}
+		fireGraphChanged(true);
+	}
+
+	private GraphBox createInputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> inputBoxes,String content) {
+		if (inputBoxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
+		int y=getAverageY(inputBoxes);
+		int x=inputBoxes.get(0).X_in;
+		for (GenericGraphBox b:inputBoxes) {
+			if (b.X_in<x) x=b.X_in; 
+		}
+		GraphBox newBox=new GraphBox(x-30,y,GenericGraphBox.NORMAL,this);
+		/* Finally, we set up all transitions */
+		for (GenericGraphBox from:graphBoxes) {
+			if (selection.contains(from)) continue;
+			for (int i=from.transitions.size()-1;i>=0;i--) {
+				GenericGraphBox dest=from.transitions.get(i);
+				if (inputBoxes.contains(dest)) {
+					from.removeTransitionTo(dest);
+					if (!from.transitions.contains(newBox)) {
+						from.addTransitionTo(newBox);
+					}
+				}
+			}
+		}
+		for (GenericGraphBox b:inputBoxes) {
+			newBox.addTransitionTo(b);
+		}
+		newBox.setContent(content);
+		return newBox;
+	}
+
+	private GraphBox createOutputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> outputBoxes,String content) {
+		if (outputBoxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
+		int y=getAverageY(outputBoxes);
+		int x=outputBoxes.get(0).X_out;
+		for (GenericGraphBox b:outputBoxes) {
+			if (b.X_out>x) x=b.X_out; 
+		}
+		GraphBox newBox=new GraphBox(x+30,y,GenericGraphBox.NORMAL,this);
+		/* Finally, we set up all transitions */
+		for (GenericGraphBox from:outputBoxes) {
+			for (int i=from.transitions.size()-1;i>=0;i--) {
+				GenericGraphBox dest=from.transitions.get(i);
+				if (selection.contains(dest)) continue;
+				from.removeTransitionTo(dest);
+				if (!newBox.transitions.contains(dest)) {
+					newBox.addTransitionTo(dest);
+				}
+			}
+		}
+		for (GenericGraphBox b:outputBoxes) {
+			b.addTransitionTo(newBox);
+		}
+		newBox.setContent(content);
+		return newBox;
+	}
+
+	/**
+	 * We return the average Y coordinate computed from all the given boxes. 
+	 */
+	private int getAverageY(ArrayList<GenericGraphBox> boxes) {
+		if (boxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
+		int y=0;
+		for (GenericGraphBox b:boxes) y=y+b.Y_in;
+		return y/boxes.size();
+	}
+
+	/**
+	 * This method considers a box group and computes which boxes within this group
+	 * are to be considered as input and/or output ones. Those input and output
+	 * boxes are useful when one wants to surround a box selection with, for instance,
+	 * a variable declaration. In such a case, transitions to input boxes are turned
+	 * into transitions to the $aaa( box that is then created, and the $aaa( box is then
+	 * linked to all input boxes. The same for output boxes.  
+	 */
+	private void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
+			ArrayList<GenericGraphBox> inputBoxes,
+			ArrayList<GenericGraphBox> outputBoxes) {
+		ArrayList<GenericGraphBox> accessible=new ArrayList<GenericGraphBox>();
+		for (GenericGraphBox ggb:graphBoxes) {
+			if (selection.contains(ggb)) continue;
+			for (GenericGraphBox dest:ggb.transitions) {
+				if (selection.contains(dest)) {
+					if (!inputBoxes.contains(dest) && dest.type==GenericGraphBox.NORMAL) inputBoxes.add(dest);
+				}
+			}
+		}
+		for (GenericGraphBox ggb:graphBoxes) {
+			for (GenericGraphBox dest:ggb.transitions) {
+				if (!accessible.contains(dest)) accessible.add(dest);
+			}
+		}
+		for (GenericGraphBox ggb:selection) {
+			if (!accessible.contains(ggb) && !inputBoxes.contains(ggb)
+					&& ggb.type==GenericGraphBox.NORMAL) {
+				/* By convention, we consider that boxes with no incoming transitions
+				 * are input boxes */
+				inputBoxes.add(ggb);
+			}
+			if (ggb.transitions.isEmpty()) {
+				/* By convention, we consider that boxes with no outgoing transitions
+				 * are output boxes */
+				if (!outputBoxes.contains(ggb) && ggb.type==GenericGraphBox.NORMAL) outputBoxes.add(ggb);
+			} else {
+				for (GenericGraphBox dest:ggb.transitions) {
+					if (selection.contains(dest)) continue;
+					if (!outputBoxes.contains(ggb) && ggb.type==GenericGraphBox.NORMAL) outputBoxes.add(ggb);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -148,6 +334,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                 if (boxSelected != -1) {
                     // if we click on a box
                     b = (GraphBox) graphBoxes.get(boxSelected);
+                    fireBoxSelectionChanged();
                     if (!selectedBoxes.isEmpty()) {
                         // if there are selected boxes, we rely them to the
                         // current
@@ -160,6 +347,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                             // we select it
                             b.selected = true;
                             selectedBoxes.add(b);
+                            fireBoxSelectionChanged();
                             fireGraphTextChanged(b.content);
                         }
                     }
@@ -217,6 +405,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     }
                 }
             } else {
+            	/* NORMAL BOX SELECTION */
                 boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
                         (int) (e.getY() / scaleFactor));
                 if (boxSelected != -1) {
@@ -238,6 +427,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                             fireBoxSelectionChanged();
                         }
                     }
+                    fireBoxSelectionChanged();
                 } else {
                     // simple click not on a box
                     unSelectAllBoxes();
