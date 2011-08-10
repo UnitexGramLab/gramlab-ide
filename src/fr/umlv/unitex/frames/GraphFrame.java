@@ -218,7 +218,7 @@ public class GraphFrame extends JInternalFrame {
         pack();
         addInternalFrameListener(new MyInternalFrameListener());
         setBounds(offset * (openFrameCount % 6), offset * (openFrameCount % 6),
-                850, 550);
+                1000, 550);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         boxContentEditor.setFont(info.input.font);
         if (g != null) {
@@ -662,7 +662,35 @@ public class GraphFrame extends JInternalFrame {
 			}
 		});
         myToolBar.add(diff);
-    }
+        
+        myToolBar.addSeparator();
+        JButton inputVar=new JButton(graphicalZone.getSurroundWithInputVarAction());
+        inputVar.setHideActionText(true);
+        inputVar.setText("( )");
+        inputVar.setMaximumSize(new Dimension(36, 36));
+        inputVar.setMinimumSize(new Dimension(36, 36));
+        inputVar.setPreferredSize(new Dimension(36, 36));
+        inputVar.setForeground(Color.RED);
+        myToolBar.add(inputVar);
+
+        JButton outputVar=new JButton(graphicalZone.getSurroundWithOutputVarAction());
+        outputVar.setHideActionText(true);
+        outputVar.setText("( )");
+        outputVar.setMaximumSize(new Dimension(36, 36));
+        outputVar.setMinimumSize(new Dimension(36, 36));
+        outputVar.setPreferredSize(new Dimension(36, 36));
+        outputVar.setForeground(Color.BLUE);
+        myToolBar.add(outputVar);
+
+        JButton morpho=new JButton(graphicalZone.getSurroundMorphologicalModeAction());
+        morpho.setHideActionText(true);
+        morpho.setText("< >");
+        morpho.setMaximumSize(new Dimension(36, 36));
+        morpho.setMinimumSize(new Dimension(36, 36));
+        morpho.setPreferredSize(new Dimension(36, 36));
+        morpho.setForeground(new Color(0xC4, 0x4F, 0xD0));
+        myToolBar.add(morpho);
+}
 
 
     class ShowDiffDo implements ToDo {
