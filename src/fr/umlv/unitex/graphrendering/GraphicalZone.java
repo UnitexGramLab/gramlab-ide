@@ -49,6 +49,11 @@ import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.undo.AddBoxEdit;
+import fr.umlv.unitex.undo.BoxTextEdit;
+import fr.umlv.unitex.undo.SelectEdit;
+import fr.umlv.unitex.undo.SurroundEdit;
+import fr.umlv.unitex.undo.TransitionEdit;
 import fr.umlv.unitex.undo.TranslationGroupEdit;
 
 /**
@@ -205,25 +210,26 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		ArrayList<GenericGraphBox> outputBoxes=new ArrayList<GenericGraphBox>();
 		computeInputOutputBoxes(selection,inputBoxes,outputBoxes);
 		if (box1!=null && inputBoxes.isEmpty()) {
-			System.err.println("empty input boxes");
 			return;
 		}
 		if (box2!=null && outputBoxes.isEmpty()) {
-			System.err.println("empty output boxes");
 			return;
-		}
+		}		
+		SurroundEdit edit=new SurroundEdit();
+		edit.addEdit(new SelectEdit(selection));
 		if (box1!=null) {
-			GraphBox inputBox=createInputBox(selection,inputBoxes,box1);
+			GraphBox inputBox=createInputBox(selection,inputBoxes,box1,edit);
 			graphBoxes.add(inputBox);
 		}
 		if (box2!=null) {
-			GraphBox outputBox=createOutputBox(selection,outputBoxes,box2);
+			GraphBox outputBox=createOutputBox(selection,outputBoxes,box2,edit);
 			graphBoxes.add(outputBox);
 		}
+		postEdit(edit);
 		fireGraphChanged(true);
 	}
 
-	private GraphBox createInputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> inputBoxes,String content) {
+	private GraphBox createInputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> inputBoxes,String content, SurroundEdit edit) {
 		if (inputBoxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
 		int y=getAverageY(inputBoxes);
 		int x=inputBoxes.get(0).X_in;
@@ -231,6 +237,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (b.X_in<x) x=b.X_in; 
 		}
 		GraphBox newBox=new GraphBox(x-40,y,GenericGraphBox.NORMAL,this);
+		edit.addEdit(new AddBoxEdit(newBox,graphBoxes,this));
 		/* Finally, we set up all transitions */
 		for (GenericGraphBox from:graphBoxes) {
 			if (selection.contains(from)) continue;
@@ -238,20 +245,24 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				GenericGraphBox dest=from.transitions.get(i);
 				if (inputBoxes.contains(dest)) {
 					from.removeTransitionTo(dest);
+					edit.addEdit(new TransitionEdit(from,dest));
 					if (!from.transitions.contains(newBox)) {
 						from.addTransitionTo(newBox);
+						edit.addEdit(new TransitionEdit(from,newBox));
 					}
 				}
 			}
 		}
 		for (GenericGraphBox b:inputBoxes) {
 			newBox.addTransitionTo(b);
+			edit.addEdit(new TransitionEdit(newBox,b));
 		}
 		newBox.setContent(content);
+		edit.addEdit(new BoxTextEdit(newBox,content,this));
 		return newBox;
 	}
 
-	private GraphBox createOutputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> outputBoxes,String content) {
+	private GraphBox createOutputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> outputBoxes,String content, SurroundEdit edit) {
 		if (outputBoxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
 		int y=getAverageY(outputBoxes);
 		int x=outputBoxes.get(0).X_out;
@@ -259,21 +270,26 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (b.X_out>x) x=b.X_out; 
 		}
 		GraphBox newBox=new GraphBox(x+30,y,GenericGraphBox.NORMAL,this);
+		edit.addEdit(new AddBoxEdit(newBox,graphBoxes,this));
 		/* Finally, we set up all transitions */
 		for (GenericGraphBox from:outputBoxes) {
 			for (int i=from.transitions.size()-1;i>=0;i--) {
 				GenericGraphBox dest=from.transitions.get(i);
 				if (selection.contains(dest)) continue;
 				from.removeTransitionTo(dest);
+				edit.addEdit(new TransitionEdit(from,dest));
 				if (!newBox.transitions.contains(dest)) {
 					newBox.addTransitionTo(dest);
+					edit.addEdit(new TransitionEdit(newBox,dest));
 				}
 			}
 		}
 		for (GenericGraphBox b:outputBoxes) {
 			b.addTransitionTo(newBox);
+			edit.addEdit(new TransitionEdit(b,newBox));
 		}
 		newBox.setContent(content);
+		edit.addEdit(new BoxTextEdit(newBox,content,this));
 		return newBox;
 	}
 
