@@ -27,6 +27,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import javax.swing.JOptionPane;
+
 import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
 import fr.umlv.unitex.exceptions.MissingGraphNameException;
 import fr.umlv.unitex.exceptions.NoClosingQuoteException;
@@ -224,22 +226,45 @@ public class GraphBox extends GenericGraphBox {
         if (s.equals("")) {
         	throw new IllegalStateException("The graph contains an unexpected empty box that is not the final state");
         }
-        char ligne[] = new char[10000];
         String tmp = "";
-        int i, L;
-
-        ligne = content.toCharArray();
-        i = 0;
+        int i=0, L;
         L = content.length();
-        if (ligne[0] == '$' && (ligne[L - 1] == '(' || ligne[L - 1] == ')')) {
+    	variable=false;
+    	contextMark=false;
+    	morphologicalModeMark=false;
+    	standaloneBox=false;
+    	transduction="";
+    	greyed.clear();
+        if (tokenizeCommentBox(content,lines)) {
+        	/* Case of a special comment box */
+        	commentBox=true;
+        	standaloneBox=true;
+        	n_lines=lines.size();
+        	for (int j=0;j<n_lines;j++) {
+        		greyed.add(Boolean.FALSE);
+        	}
+            // dimensions of a full box
+            Width = maxLineWidth() + 10;
+            Height = n_lines * get_h_ligne() + 6;
+            Y1 = Y - Height / 2;
+            X_out = X + Width + 5;
+            /* As a comment box cannot have any incoming or outgoing transition,
+             * we remove all such transitions, if any */
+            removeAllOutgoingTransitions();
+            removeAllIncomingTransitions();
+            return;
+        }
+    	lines.clear();
+        char line[] = content.toCharArray();
+        if (line[0] == '$' && (line[L - 1] == '(' || line[L - 1] == ')')) {
             ////////////////////////////////////////////
             // case of $a( or $a)
             ////////////////////////////////////////////
             variable = true;
-            outputVariable=(ligne[1]=='|');
+            outputVariable=(line[1]=='|');
             lines.clear();
             greyed.clear();
-            lines.add(String.valueOf(ligne[L - 1]));
+            lines.add(String.valueOf(line[L - 1]));
             greyed.add(Boolean.FALSE);
             transduction = content.substring(1+(outputVariable?1:0), L - 1);
             n_lines = 1;
@@ -249,7 +274,6 @@ public class GraphBox extends GenericGraphBox {
             X_out = X + Width + 2;
             return;
         }
-        variable = false;
         if (content.equals("$[") || content.equals("$![")
                 || content.equals("$]") || content.equals("$*")) {
             ////////////////////////////////////////////
@@ -271,7 +295,6 @@ public class GraphBox extends GenericGraphBox {
             X_out = X + Width + 2;
             return;
         }
-        contextMark = false;
         if (content.equals("$<") || content.equals("$>")) {
             ////////////////////////////////////////////
             // case of morphological mode marks ($< and $>)
@@ -290,14 +313,13 @@ public class GraphBox extends GenericGraphBox {
             X_out = X + Width + 2;
             return;
         }
-        morphologicalModeMark = false;
-        while ((i != L) && (test_transduction(ligne, i) == 0))
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
+        while ((i != L) && (test_transduction(line, i) == 0))
+            tmp = tmp.concat(String.valueOf(line[i++]));
         transduction = "";
         if (i != L) {
             i++;
             while (i != L)
-                transduction = transduction.concat(String.valueOf(ligne[i++]));
+                transduction = transduction.concat(String.valueOf(line[i++]));
         }
         n_lines = 0;
         lines.clear();
@@ -330,7 +352,44 @@ public class GraphBox extends GenericGraphBox {
     }
 
 
-    private int strcmp(String a, String b) {
+	/**
+     * Tokenizes a comment box. Returns true if the given String was a valid comment.
+     * If lines is not null, it is filled with the String to be displayed in the box.
+     */
+    public static boolean tokenizeCommentBox(String line, ArrayList<String> lines) {
+    	if (lines!=null) lines.clear();
+    	if (line==null || !line.startsWith("/") || line.equals("/")
+    			|| line.startsWith("/+")) return false;
+    	int l=line.length();
+    	StringBuilder builder=new StringBuilder();
+    	int i=1;
+    	while (i<l) {
+    		builder.setLength(0);
+    		while (i<l && line.charAt(i)!='+') {
+    			if (line.charAt(i)=='\\') {
+    				if (i+1==l) {
+    					/* A \ at the end of the content is an error */
+    					if (lines!=null) lines.clear();
+    					return false;
+    				}
+    				i++;
+    			}
+    			builder.append(line.charAt(i));
+    			i++;
+    		}
+    		if (i+1==l && line.charAt(i)=='+') {
+    			/* A + at the end of the content is an error */
+    			if (lines!=null) lines.clear();
+				return false;
+    		}
+    		i++;
+    		if (lines!=null) lines.add(builder.toString());
+    	}
+    	return true;
+	}
+
+
+	private int strcmp(String a, String b) {
         if (a.compareTo("<E>") == 0) {
             if (b.compareTo("<E>") == 0)
                 return 0;
@@ -391,7 +450,7 @@ public class GraphBox extends GenericGraphBox {
     }
 
     private boolean isUnitTestBox() {
-    	if (!comment) return false;
+    	if (!standaloneBox) return false;
     	if (lines.size()==0) {
     		/* Should not happen */
     		return false;
@@ -407,9 +466,9 @@ public class GraphBox extends GenericGraphBox {
     
     
     @Override
-    void drawOtherComment(Graphics2D g) {
+    void drawOtherStandalone(Graphics2D g) {
     	if (!isUnitTestBox()) {
-    		super.drawOtherComment(g);
+    		super.drawOtherStandalone(g);
     		return;
     	}
     	Color old=parentGraphicalZone.info.foregroundColor;
