@@ -93,9 +93,16 @@ public class GenericGraphBox {
     boolean selected;
 
     /**
-     * Indicates if the box is in comment (no input/output transition)
+     * Indicates if the box is isolated (no input/output transition)
      */
-    public boolean comment;
+    public boolean standaloneBox;
+    
+    /**
+     * Comment boxes start with / and have their content tokenized in a different
+     * way than normal boxes: + is used to separate lines, and \ is used to protect
+     * + and \. The initial / is not displayed, neither are the protecting \
+     */
+    public boolean commentBox;
 
     /**
      * Indicates if there is at least one transition that goes out this box
@@ -244,7 +251,7 @@ public class GenericGraphBox {
         }
         selected = false;
         singleDragging = false;
-        comment = true;
+        standaloneBox = true;
         hasOutgoingTransitions = false;
         hasIncomingTransitions = 0;
         identificationNumber = -1;
@@ -358,12 +365,15 @@ public class GenericGraphBox {
      * @param g the destination box
      */
     public void addTransitionTo(GenericGraphBox g) {
-        int i;
         if (this.type == FINAL) {
             // if it is the final, we don't allow parent.pref.output transitions
             return;
         }
-        i = transitions.indexOf(g);
+        if (commentBox || g.commentBox) {
+        	/* We never add any transition from or to a comment box */ 
+        	return;
+        }
+        int i = transitions.indexOf(g);
         if (i == -1) {
             // if the transition to g does not exist, we create it
             transitions.add(g);
@@ -374,8 +384,8 @@ public class GenericGraphBox {
             g.hasIncomingTransitions--;
         }
         hasOutgoingTransitions = !transitions.isEmpty();
-        comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
-        g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
+        standaloneBox = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
+        g.standaloneBox = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
 
     /**
@@ -386,20 +396,23 @@ public class GenericGraphBox {
      */
 
     public void onlyAddTransitionTo(GenericGraphBox g) {
-        int i;
         if (this.type == FINAL) {
             // if it is the final, we don't allow parent.pref.output transitions
             return;
         }
-        i = transitions.indexOf(g);
+        if (commentBox || g.commentBox) {
+        	/* We never add any transition from or to a comment box */ 
+        	return;
+        }
+        int i = transitions.indexOf(g);
         if (i == -1) {
             // if the transition to g does not exist, we create it
             transitions.add(g);
             g.hasIncomingTransitions++;
         }
         hasOutgoingTransitions = !transitions.isEmpty();
-        comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
-        g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
+        standaloneBox = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
+        g.standaloneBox = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
 
     /**
@@ -416,9 +429,28 @@ public class GenericGraphBox {
         }
         hasOutgoingTransitions = !transitions.isEmpty();
 
-        comment = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
-        g.comment = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
+        standaloneBox = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
+        g.standaloneBox = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
     }
+
+    
+    public void removeAllOutgoingTransitions() {
+		for (int i=transitions.size()-1;i>=0;i--) {
+			removeTransitionTo(transitions.get(i));
+		}
+	}
+
+    public void removeAllIncomingTransitions() {
+    	if (parentGraphicalZone==null) {
+    		/* This happens when the graph is loaded */
+    		return;
+    	}
+		for (GenericGraphBox g:parentGraphicalZone.graphBoxes) {
+			g.removeTransitionTo(this);
+		}
+	}
+
+
 
     /**
      * Translates the box
@@ -659,7 +691,7 @@ public class GenericGraphBox {
     }
 
     void drawOtherSingleDrag(Graphics2D g) {
-        if (comment)
+        if (standaloneBox)
             g.setColor(parentGraphicalZone.info.commentColor);
         else
             g.setColor(parentGraphicalZone.info.foregroundColor);
@@ -736,7 +768,7 @@ public class GenericGraphBox {
 		return (int) (textlayout.getBounds().getWidth()+10);
     }
     
-    void drawOtherComment(Graphics2D g) {
+    void drawOtherStandalone(Graphics2D g) {
         int i;
         Boolean is_greyed;
         String l;
@@ -763,14 +795,17 @@ public class GenericGraphBox {
             g.setColor(parentGraphicalZone.info.foregroundColor);
         }
         if (variable) {
-            drawVariableComment(g);
+            drawVariableStandalone(g);
             return;
         }
         if (contextMark) {
-            drawContextMarkComment(g);
+            drawContextMarkStandalone(g);
             return;
         }
         g.setColor(parentGraphicalZone.info.commentColor);
+        if (commentBox) {
+        	g.setColor(Color.GREEN.darker());
+        }
         // print lines if the box is empty
         if (n_lines == 0) {
             GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
@@ -782,6 +817,9 @@ public class GenericGraphBox {
             g.setColor(parentGraphicalZone.info.backgroundColor);
             GraphicalToolBox.fillRect(g, X1 + 1, Y1 + 1, Width - 2, Height - 2);
             g.setColor(parentGraphicalZone.info.commentColor);
+            if (commentBox) {
+            	g.setColor(Color.GREEN.darker());
+            }
         }
         // prints the lines of the box
         for (i = 0; i < n_lines; i++) {
@@ -800,8 +838,13 @@ public class GenericGraphBox {
                 GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne, Width - 4, h_ligne);
             }
             g.setColor(parentGraphicalZone.info.commentColor);
-            TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
-            textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
+            if (commentBox) {
+            	g.setColor(Color.GREEN.darker());
+            }
+            if (!l.equals("")) {
+            	TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
+            	textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
+            }
         }
         // prints the transduction, if exists
         g.setColor(parentGraphicalZone.info.foregroundColor);
@@ -901,7 +944,7 @@ public class GenericGraphBox {
                 + g.getFontMetrics().getHeight());
     }
 
-    private void drawVariableComment(Graphics2D g) {
+    private void drawVariableStandalone(Graphics2D g) {
         drawVariable(g);
     }
 
@@ -916,7 +959,7 @@ public class GenericGraphBox {
         drawVariableSelected(g);
     }
 
-    private void drawContextMarkComment(Graphics2D g) {
+    private void drawContextMarkStandalone(Graphics2D g) {
         drawContextMark(g);
     }
 
@@ -1101,8 +1144,10 @@ public class GenericGraphBox {
         g.setColor(parentGraphicalZone.info.backgroundColor);
         for (i = 0; i < n_lines; i++) {
             l = lines.get(i);
-            TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
-            textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
+            if (!l.equals("")) {
+            	TextLayout textlayout = new TextLayout(l, parentGraphicalZone.info.input.font, g.getFontRenderContext());
+            	textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
+            }
         }
         // prints the transduction, if exists
         String output=getNonRangeOutput(transduction);
@@ -1169,12 +1214,12 @@ public class GenericGraphBox {
                 drawOtherSelected(g);
             else
                 drawInitialSelected(g);
-        } else if (comment) {
+        } else if (standaloneBox) {
             // if the box is in comment and not selected
             if (type == FINAL)
                 drawFinal(g);
             else if (type == NORMAL)
-                drawOtherComment(g);
+                drawOtherStandalone(g);
             else
                 drawInitial(g);
         } else {
