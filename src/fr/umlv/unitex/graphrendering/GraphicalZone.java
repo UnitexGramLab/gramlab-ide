@@ -91,8 +91,20 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
     	return surroundWithOutputVar;
     }
     Action surroundWithMorphologicalMode;
-    public Action getSurroundMorphologicalModeAction() {
+    public Action getSurroundWithMorphologicalModeAction() {
     	return surroundWithMorphologicalMode;
+    }
+    Action surroundWithLeftContext;
+    public Action getSurroundWithLeftContextAction() {
+    	return surroundWithLeftContext;
+    }
+    Action surroundWithRightContext;
+    public Action getSurroundWithRightContextAction() {
+    	return surroundWithRightContext;
+    }
+    Action surroundWithNegativeRightContext;
+    public Action getSurroundWithNegativeRightContextAction() {
+    	return surroundWithNegativeRightContext;
     }
     
     private JPopupMenu createPopup() {
@@ -137,12 +149,40 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		submenu.add(new JMenuItem(surroundWithMorphologicalMode));
 
 		submenu.addSeparator();
-		JMenuItem leftCtx=new JMenuItem("Left context");
-		submenu.add(leftCtx);
-		JMenuItem positiveRightCtx=new JMenuItem("Positive right context");
-		submenu.add(positiveRightCtx);
-		JMenuItem negativeRightCtx=new JMenuItem("Negative right context");
-		submenu.add(negativeRightCtx);
+
+		surroundWithLeftContext=new AbstractAction("Left context") {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$*",null);
+			}
+		};
+		surroundWithLeftContext.setEnabled(false);
+		surroundWithLeftContext.putValue(Action.SHORT_DESCRIPTION,"Inserts left context mark before box selection");
+		submenu.add(new JMenuItem(surroundWithLeftContext));
+
+		surroundWithRightContext=new AbstractAction("Right context") {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$[","$]");
+			}
+		};
+		surroundWithRightContext.setEnabled(false);
+		surroundWithRightContext.putValue(Action.SHORT_DESCRIPTION,"Surround box selection with right context tags");
+		submenu.add(new JMenuItem(surroundWithRightContext));
+
+		surroundWithNegativeRightContext=new AbstractAction("Negative right context") {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$![","$]");
+			}
+		};
+		surroundWithNegativeRightContext.setEnabled(false);
+		surroundWithNegativeRightContext.putValue(Action.SHORT_DESCRIPTION,"Surround box selection with negative right context tags");
+		submenu.add(new JMenuItem(surroundWithNegativeRightContext));
+
 		submenu.setEnabled(false);
 		addBoxSelectionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -151,6 +191,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				surroundWithInputVar.setEnabled(selected);
 				surroundWithOutputVar.setEnabled(selected);
 				surroundWithMorphologicalMode.setEnabled(selected);
+				surroundWithLeftContext.setEnabled(selected);
+				surroundWithRightContext.setEnabled(selected);
+				surroundWithNegativeRightContext.setEnabled(selected);
 			}
 		});
 		popup.add(submenu);
@@ -187,7 +230,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		for (GenericGraphBox b:inputBoxes) {
 			if (b.X_in<x) x=b.X_in; 
 		}
-		GraphBox newBox=new GraphBox(x-30,y,GenericGraphBox.NORMAL,this);
+		GraphBox newBox=new GraphBox(x-40,y,GenericGraphBox.NORMAL,this);
 		/* Finally, we set up all transitions */
 		for (GenericGraphBox from:graphBoxes) {
 			if (selection.contains(from)) continue;

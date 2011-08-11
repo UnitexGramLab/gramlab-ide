@@ -682,7 +682,7 @@ public class GraphFrame extends JInternalFrame {
         outputVar.setForeground(Color.BLUE);
         myToolBar.add(outputVar);
 
-        JButton morpho=new JButton(graphicalZone.getSurroundMorphologicalModeAction());
+        JButton morpho=new JButton(graphicalZone.getSurroundWithMorphologicalModeAction());
         morpho.setHideActionText(true);
         morpho.setText("< >");
         morpho.setMaximumSize(new Dimension(36, 36));
@@ -690,6 +690,33 @@ public class GraphFrame extends JInternalFrame {
         morpho.setPreferredSize(new Dimension(36, 36));
         morpho.setForeground(new Color(0xC4, 0x4F, 0xD0));
         myToolBar.add(morpho);
+
+        JButton left=new JButton(graphicalZone.getSurroundWithLeftContextAction());
+        left.setHideActionText(true);
+        left.setText("$*");
+        left.setMaximumSize(new Dimension(36, 36));
+        left.setMinimumSize(new Dimension(36, 36));
+        left.setPreferredSize(new Dimension(36, 36));
+        left.setForeground(Color.GREEN);
+        myToolBar.add(left);
+
+        JButton right=new JButton(graphicalZone.getSurroundWithRightContextAction());
+        right.setHideActionText(true);
+        right.setText("$[");
+        right.setMaximumSize(new Dimension(36, 36));
+        right.setMinimumSize(new Dimension(36, 36));
+        right.setPreferredSize(new Dimension(36, 36));
+        right.setForeground(Color.GREEN);
+        myToolBar.add(right);
+
+        JButton negative=new JButton(graphicalZone.getSurroundWithNegativeRightContextAction());
+        negative.setHideActionText(true);
+        negative.setText("$![");
+        negative.setMaximumSize(new Dimension(36, 36));
+        negative.setMinimumSize(new Dimension(36, 36));
+        negative.setPreferredSize(new Dimension(36, 36));
+        negative.setForeground(Color.GREEN);
+        myToolBar.add(negative);
 }
 
 
