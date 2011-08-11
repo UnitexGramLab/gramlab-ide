@@ -385,11 +385,10 @@ public class TextField extends GraphTextField {
         return 1;
     }
 
-    private boolean tokenize(String s) {
+    private boolean tokenizeNonCommentBox(String s) {
         int L = s.length(), i = 0;
         String tmp;
-        char ligne[] = new char[10000];
-        ligne = s.toCharArray();
+        char ligne[] = s.toCharArray();
         if (ligne[0] == '+') {
             JOptionPane.showMessageDialog(null,
                     "Unexpected \"+\" as first character of the line", "Error",
@@ -531,6 +530,27 @@ public class TextField extends GraphTextField {
     boolean isValidGraphBoxContent(String s) {
         if (s.equals(""))
             return true;
+    	if (s.equals("/")) {
+    		JOptionPane.showMessageDialog(null,
+                    "Invalid empty comment box", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+    	}
+    	if (s.startsWith("/")) {
+    		if (s.startsWith("/+")) {
+        		JOptionPane.showMessageDialog(null,
+                        "Invalid comment box: content should not start with +", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return false;
+    		}
+    		if (GraphBox.tokenizeCommentBox(s,null)) {
+    			return true;
+    		}
+    		JOptionPane.showMessageDialog(null,
+                    "Invalid comment box: content should not end with \\ or +", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return false;
+    	}
         char ligne[];
         String tmp = "";
         int i, L;
@@ -578,7 +598,7 @@ public class TextField extends GraphTextField {
                 }
             return true;
         }
-        return "$<".equals(s) || "$>".equals(s) || "$*".equals(s) || tokenize(tmp);
+        return "$<".equals(s) || "$>".equals(s) || "$*".equals(s) || tokenizeNonCommentBox(tmp);
     }
 
     public SpecialPaste getSpecialPaste() {

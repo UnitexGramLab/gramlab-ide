@@ -120,7 +120,7 @@ public class SVG {
         graphics.setFont(info.input.font);
         h_ligne = graphics.getFontMetrics().getHeight();
         descent = graphics.getFontMetrics().getDescent();
-        if (g.comment) {
+        if (g.standaloneBox) {
             // if the box is in comment and not selected
             if (g.type == GenericGraphBox.FINAL)
                 drawFinal(g);
