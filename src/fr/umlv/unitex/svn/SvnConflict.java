@@ -62,7 +62,8 @@ public class SvnConflict {
 	 */
 	public static SvnConflict getConflict(File grf) {
 		if (!grf.exists()) {
-			throw new IllegalArgumentException("File "+grf.getAbsolutePath()+" does not exist");
+			/* May happen if a temp file has been detected before being deleted */
+			return null;
 		}
 		final String name=grf.getName();
 		File[] list=grf.getParentFile().listFiles(new FilenameFilter() {
