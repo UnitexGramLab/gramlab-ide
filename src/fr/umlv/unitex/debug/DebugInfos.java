@@ -51,7 +51,7 @@ public class DebugInfos {
 		if (!f.exists()) return null;
 		Scanner scanner=null;
 		try {
-			scanner=Encoding.getScanner(html);
+			scanner=Encoding.getScanner(f);
 			String z=scanner.nextLine();
 			if (!z.startsWith("#D")) {
 				scanner.close();
