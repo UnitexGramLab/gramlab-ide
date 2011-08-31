@@ -316,6 +316,9 @@ public class ProcessInfoFrame extends JInternalFrame {
                             }// end of method command
                         } // end of switch
                     } // end of if ((command = commands.getCommand(i)) != null)
+                if (stderrModel.size()>0) {
+                	problem=true;
+                }
                 final boolean PB = problem, CL = close_on_finish;
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
