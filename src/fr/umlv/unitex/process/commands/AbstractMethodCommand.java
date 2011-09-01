@@ -21,7 +21,6 @@
 
 package fr.umlv.unitex.process.commands;
 
-import fr.umlv.unitex.config.Config;
 
 public abstract class AbstractMethodCommand extends CommandBuilder {
 
@@ -42,5 +41,18 @@ public abstract class AbstractMethodCommand extends CommandBuilder {
      * @return false if an error occurred; true otherwise
      */
     public abstract boolean execute();
-    
+ 
+    @Override
+	public String getCommandLine() {
+        String res = "";
+        for (String aList : list) {
+            res = res + aList + " ";
+        }
+        /* No additional parameter for an external command 
+         * if (getOutputEncoding()!=null) {
+        	res=res+" "+getOutputEncoding();
+        }*/
+        return res;
+    }
+
 }
