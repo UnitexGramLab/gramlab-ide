@@ -40,7 +40,7 @@ public abstract class CommandBuilder {
     public static final int ERROR_MESSAGE = 2;
     public static final int METHOD = 3;
 
-    private final ArrayList<String> list;
+    protected final ArrayList<String> list;
     int type = PROGRAM;
 
     CommandBuilder(String programName) {
