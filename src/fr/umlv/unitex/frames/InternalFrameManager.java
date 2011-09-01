@@ -64,6 +64,7 @@ public class InternalFrameManager {
     private final FrameFactory concordanceDiffFrameFactory = new FrameFactory(ConcordanceDiffFrame.class);
     private final FrameFactory concordanceParameterFrameFactory = new FrameFactory(ConcordanceParameterFrame.class);
     private final FrameFactory constructTfstFrameFactory = new FrameFactory(ConstructTfstFrame.class);
+    private final FrameFactory constructSeqTfstFrameFactory = new FrameFactory(ConstructSeqTfstFrame.class);
     private final FrameFactory convertTfstToTextFrameFactory = new FrameFactory(ConvertTfstToTextFrame.class);
     private final FrameFactory dicLookupFrameFactory = new FrameFactory(DicLookupFrame.class);
     private final FrameFactory elagCompFrameFactory = new FrameFactory(ElagCompFrame.class);
@@ -475,6 +476,14 @@ public class InternalFrameManager {
 
     public void closeConstructTfstFrame() {
         constructTfstFrameFactory.closeFrame();
+    }
+
+    public ConstructSeqTfstFrame newConstructSeqTfstFrame(){
+    	return (ConstructSeqTfstFrame) setup(constructSeqTfstFrameFactory.newFrame());
+    }
+    
+    public void closeConstructSeqTfstFrame(){
+    	constructSeqTfstFrameFactory.closeFrame();
     }
 
     public ConvertTfstToTextFrame newConvertTfstToTextFrame() {

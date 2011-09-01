@@ -64,6 +64,7 @@ import fr.umlv.unitex.process.commands.PolyLexCommand;
 import fr.umlv.unitex.process.commands.RebuildTfstCommand;
 import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
 import fr.umlv.unitex.process.commands.Reg2GrfCommand;
+import fr.umlv.unitex.process.commands.Seq2GrfCommand;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.StatsCommand;
 import fr.umlv.unitex.process.commands.TEI2TxtCommand;
@@ -115,6 +116,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
             , RebuildTfstCommand.class
             , ReconstrucaoCommand.class
             , Reg2GrfCommand.class
+            , Seq2GrfCommand.class
             , SortTxtCommand.class
             , StatsCommand.class
             , Table2GrfCommand.class
