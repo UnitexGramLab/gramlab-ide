@@ -143,6 +143,7 @@ public class UnitexFrame extends JFrame {
                 locatePattern.setEnabled(true);
                 displayLocatedSequences.setEnabled(true);
                 constructFst.setEnabled(true);
+                constructSeqFst.setEnabled(true);
                 convertFst.setEnabled(true);
                 closeText.setEnabled(true);
                 frameManager.newTokensFrame(new File(Config.getCurrentSntDir(),
@@ -160,6 +161,7 @@ public class UnitexFrame extends JFrame {
                 locatePattern.setEnabled(false);
                 displayLocatedSequences.setEnabled(false);
                 constructFst.setEnabled(false);
+                constructSeqFst.setEnabled(false);
                 convertFst.setEnabled(false);
                 closeText.setEnabled(false);
                 frameManager.closeTokensFrame();
@@ -262,6 +264,7 @@ public class UnitexFrame extends JFrame {
     AbstractAction displayLocatedSequences;
     AbstractAction elagComp;
     AbstractAction constructFst;
+    AbstractAction constructSeqFst;
     AbstractAction convertFst;
     AbstractAction closeText;
     AbstractAction quitUnitex;
@@ -354,6 +357,13 @@ public class UnitexFrame extends JFrame {
         };
         constructFst.setEnabled(false);
         textMenu.add(new JMenuItem(constructFst));
+        constructSeqFst = new AbstractAction("Construct Sequences Automaton") {
+			public void actionPerformed(ActionEvent e) {
+					frameManager.newConstructSeqTfstFrame();
+			}
+		};
+        constructSeqFst.setEnabled(false);
+        textMenu.add(new JMenuItem(constructSeqFst));
         convertFst = new AbstractAction("Convert FST-Text to Text...") {
             public void actionPerformed(ActionEvent e) {
                 UnitexFrame.getFrameManager().newConvertTfstToTextFrame();
