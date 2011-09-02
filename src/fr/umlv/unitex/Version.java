@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 
 /**
  * This class only contains a <code>String</code> that indicates version information.
@@ -51,7 +52,7 @@ public class Version {
    private static String getJarDate() {
 	   String date="(";
 	   Calendar calendar=Calendar.getInstance();
-	   calendar.setTimeInMillis(new File(Config.getApplicationDir(),"Unitex.jar").lastModified());
+	   calendar.setTimeInMillis(new File(ConfigManager.getManager().getApplicationDirectory(),"Unitex.jar").lastModified());
 	   switch (calendar.get(Calendar.MONTH)) {
 	   		case Calendar.JANUARY: date=date+"January "; break;
 	   		case Calendar.FEBRUARY: date=date+"February "; break;
@@ -70,7 +71,7 @@ public class Version {
    }
    
    public static String getRevisionDate() {
-	   File f=new File(Config.getApplicationDir(),"revision.date");
+	   File f=new File(ConfigManager.getManager().getApplicationDirectory(),"revision.date");
 	   if (!f.exists() || f.length()==0) {
 		   return getJarDate();
 	   }
@@ -98,7 +99,7 @@ public class Version {
    }
 
 public static String getRevisionNumberForJava() {
-    File f=new File(Config.getUnitexDir(),"Src");
+    File f=new File(ConfigManager.getManager().getMainDirectory(),"Src");
     f=new File(f,"log_svn_Java.txt");
     Scanner s=null;
     try {
@@ -122,7 +123,7 @@ public static String getRevisionNumberForJava() {
 
 
 public static String getRevisionNumberForC() {
-    File f=new File(Config.getUnitexDir(),"Src");
+    File f=new File(ConfigManager.getManager().getMainDirectory(),"Src");
     f=new File(f,"log_svn_C++.txt");
     Scanner s=null;
     try {

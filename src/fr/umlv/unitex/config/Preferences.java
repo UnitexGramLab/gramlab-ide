@@ -178,7 +178,7 @@ public class Preferences {
      * Constructs a new <code>Preferences</code>, using
      * language configuration values.
      */
-    protected Preferences() {
+    public Preferences() {
         setPreferencesFromProperties(defaultProperties);
     }
 
