@@ -252,6 +252,7 @@ public class GenericGraphBox {
         selected = false;
         singleDragging = false;
         standaloneBox = true;
+        commentBox=false;
         hasOutgoingTransitions = false;
         hasIncomingTransitions = 0;
         identificationNumber = -1;
