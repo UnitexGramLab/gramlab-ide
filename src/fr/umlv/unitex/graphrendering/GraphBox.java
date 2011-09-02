@@ -232,7 +232,7 @@ public class GraphBox extends GenericGraphBox {
     	variable=false;
     	contextMark=false;
     	morphologicalModeMark=false;
-    	standaloneBox=false;
+    	commentBox=false;
     	transduction="";
     	greyed.clear();
         if (tokenizeCommentBox(content,lines)) {
