@@ -2,7 +2,6 @@ package fr.gramlab.workspace;
 
 import java.util.ArrayList;
 
-import fr.gramlab.listeners.ProjectListener;
 
 public class ProjectManager {
 	
