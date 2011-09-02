@@ -219,4 +219,24 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.concordanceFont.size;
 	}
 
+	public String getConfigName() {
+		return "Unitex config manager";
+	}
+
+	public File getUnitexToolLogger() {
+		return Config.getUnitexToolLogger();
+	}
+
+	public File getMainDirectory() {
+		return Config.getUnitexDir();
+	}
+
+	public File getApplicationDirectory() {
+		return Config.getApplicationDir();
+	}
+
+	public File getCurrentGraphDirectory() {
+		return Config.getCurrentGraphDir();
+	}
+
 }

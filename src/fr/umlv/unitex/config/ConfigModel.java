@@ -29,6 +29,7 @@ import fr.umlv.unitex.io.Encoding;
 
 public interface ConfigModel {
 	
+	public String getConfigName();
     public String getCurrentLanguage();
 	public File getAlphabet(String language);
     public Preferences getPreferences(String language);
@@ -58,4 +59,8 @@ public interface ConfigModel {
     public boolean isArabic(String language);
     public boolean isValidLanguageName(String language);
     
+    public File getMainDirectory();
+    public File getApplicationDirectory();
+    public File getUnitexToolLogger();
+    public File getCurrentGraphDirectory();
 }

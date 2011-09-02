@@ -1,8 +1,9 @@
-package fr.gramlab;
+package fr.gramlab.frames;
 
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -13,9 +14,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTree;
 
-import fr.gramlab.listeners.ProjectListener;
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 @SuppressWarnings("serial")
@@ -29,10 +31,18 @@ public class GramlabFrame extends JFrame {
 	public GramlabFrame() {
 		super("GramLab");
 		setJMenuBar(createMenuBar());
+		JPanel tree=createWorkspacePane();
 		desktop=new JDesktopPane();
+		JSplitPane p=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,true,tree,desktop);
 		frameManager=new InternalFrameManager(desktop);
-		setContentPane(desktop);
+		setContentPane(p);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	private JPanel createWorkspacePane() {
+		JPanel p=new JPanel(new BorderLayout());
+		p.add(new JTree());
+		return p;
 	}
 
 	private JMenuBar createMenuBar() {
@@ -52,7 +62,11 @@ public class GramlabFrame extends JFrame {
 		JMenu m=new JMenu("Project");
 		Action n=new AbstractAction("New") {
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new CreateProjectDialog();
+					}
+				});
 			}
 		};
 		m.add(new JMenuItem(n));
@@ -70,7 +84,7 @@ public class GramlabFrame extends JFrame {
 			}
 		};
 		editProject.setEnabled(false);
-		m.add(new JMenuItem(editProject));	
+		m.add(new JMenuItem(editProject));
 		deleteProject=new AbstractAction("Delete") {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -79,21 +93,6 @@ public class GramlabFrame extends JFrame {
 		};
 		deleteProject.setEnabled(false);
 		m.add(new JMenuItem(deleteProject));
-		addProjectListener(new ProjectListener() {
-
-			
-			public void projectClosed() {
-				editProject.setEnabled(false);
-				deleteProject.setEnabled(false);
-			}
-
-			
-			public void projectOpened() {
-				editProject.setEnabled(true);
-				deleteProject.setEnabled(true);
-			}
-			
-		}); 
 		m.addSeparator();
 		Action modify=new AbstractAction("Modify a project") {
 			
@@ -110,42 +109,6 @@ public class GramlabFrame extends JFrame {
 		};
 		m.add(new JMenuItem(delete));	
 		return m;
-	}
-
-	
-	private ArrayList<ProjectListener> projectListeners=new ArrayList<ProjectListener>();
-	private boolean firingProject=false;
-	public void addProjectListener(ProjectListener l) {
-		projectListeners.add(l);
-	}
-	
-	public void removeProjectListener(ProjectListener l) {
-		if (firingProject) {
-			throw new IllegalStateException("Cannot remove a listener while firing");
-		}
-		projectListeners.remove(l);
-	}
-	
-	protected void fireProjectOpened() {
-		firingProject=true;
-		try {
-			for (ProjectListener l:projectListeners) {
-				l.projectOpened();
-			}
-		} finally {
-			firingProject=false;
-		}
-	}
-
-	protected void fireProjectClosed() {
-		firingProject=true;
-		try {
-			for (ProjectListener l:projectListeners) {
-				l.projectClosed();
-			}
-		} finally {
-			firingProject=false;
-		}
 	}
 
 	

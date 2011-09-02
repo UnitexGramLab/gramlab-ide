@@ -1,6 +1,7 @@
 package fr.gramlab;
 
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.util.Locale;
 
 import javax.swing.JFrame;
@@ -8,8 +9,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.config.ConfigManager;
+import fr.gramlab.config.GramlabConfigManager;
+import fr.gramlab.frames.GramlabFrame;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 
 public class Main {
@@ -24,6 +25,8 @@ public class Main {
 		});
 	}
 
+	private static JFrame frame;
+	
 	protected static void launchGramlab(@SuppressWarnings("unused") String[] args) {
 		Thread.currentThread().setUncaughtExceptionHandler(
 				UnitexUncaughtExceptionHandler.getHandler());
@@ -53,10 +56,14 @@ public class Main {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		ConfigManager.setManager(new GramlabConfigManager());
-        JFrame frame = new GramlabFrame();
+		GramlabConfigManager.initConfig();
+        frame = new GramlabFrame();
         frame.setVisible(true);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
+	public static JFrame getMainFrame() {
+		return frame;
+	}
+	
 }
