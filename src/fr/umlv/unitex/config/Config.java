@@ -59,6 +59,8 @@ public class Config {
      */
     private static File applicationDir;
 
+    private static File unitexToolLogger;
+
     /**
      * Path of the directory <code>.../Unitex</code>
      */
@@ -273,7 +275,7 @@ public class Config {
         }
         graphDialogBox.addChoosableFileFilter(grfFileFilter);
         graphDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        graphDialogBox.setCurrentDirectory(Config.getCurrentGraphDir());
+        graphDialogBox.setCurrentDirectory(ConfigManager.getManager().getCurrentGraphDirectory());
         graphDialogBox.setMultiSelectionEnabled(true);
         return graphDialogBox;
     }
@@ -299,7 +301,7 @@ public class Config {
         grfAndFst2DialogBox.addChoosableFileFilter(new PersonalFileFilter(
                 "grf", "Unicode Graphs"));
         grfAndFst2DialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        grfAndFst2DialogBox.setCurrentDirectory(Config.getCurrentGraphDir());
+        grfAndFst2DialogBox.setCurrentDirectory(ConfigManager.getManager().getCurrentGraphDirectory());
         grfAndFst2DialogBox.setMultiSelectionEnabled(false);
         return grfAndFst2DialogBox;
     }
@@ -313,7 +315,7 @@ public class Config {
         sentenceDialogBox.addChoosableFileFilter(new PersonalFileFilter(
                 "grf", "Unicode Graphs"));
         sentenceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        File f = new File(Config.getCurrentGraphDir(), "Preprocessing");
+        File f = new File(ConfigManager.getManager().getCurrentGraphDirectory(), "Preprocessing");
         f = new File(f, "Sentence");
         sentenceDialogBox.setCurrentDirectory(f);
         sentenceDialogBox.setMultiSelectionEnabled(false);
@@ -329,9 +331,9 @@ public class Config {
         replaceDialogBox.addChoosableFileFilter(new PersonalFileFilter(
                 "grf", "Unicode Graphs"));
         replaceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        File currentGraphDir_ = new File(Config.getCurrentGraphDir(), "Preprocessing");
-        currentGraphDir_ = new File(currentGraphDir_, "Replace");
-        replaceDialogBox.setCurrentDirectory(getCurrentGraphDir());
+        File f = new File(ConfigManager.getManager().getCurrentGraphDirectory(), "Preprocessing");
+        f = new File(f, "Replace");
+        replaceDialogBox.setCurrentDirectory(f);
         replaceDialogBox.setMultiSelectionEnabled(false);
         return replaceDialogBox;
     }
@@ -345,7 +347,7 @@ public class Config {
         normDialogBox.addChoosableFileFilter(new PersonalFileFilter(
                 "grf", "Unicode Graphs"));
         normDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        File f = new File(Config.getCurrentGraphDir(), "Normalization");
+        File f = new File(ConfigManager.getManager().getCurrentGraphDirectory(), "Normalization");
         normDialogBox.setCurrentDirectory(f);
         normDialogBox.setMultiSelectionEnabled(false);
         return normDialogBox;
@@ -621,34 +623,42 @@ public class Config {
 
     /**
      * Finds which operating system is used. If the system is not supported by
-     * Unitex, the program stops.
+     * Unitex, the program behaves as for a Linux one.
      */
     private static void determineWhichSystemIsRunning() {
-        currentSystemName = System.getProperty("os.name");
-        if (currentSystemName.equalsIgnoreCase("Windows NT")
-                || currentSystemName.equalsIgnoreCase("Windows 2003")
-                || currentSystemName.equalsIgnoreCase("Windows 2000")
-                || currentSystemName.equalsIgnoreCase("Windows 98")
-                || currentSystemName.equalsIgnoreCase("Windows 95")
-                || currentSystemName.equalsIgnoreCase("Windows XP")
-                || currentSystemName.equalsIgnoreCase("Windows ME")
-                || currentSystemName.equalsIgnoreCase("Windows Server 2008")
-                || currentSystemName.equalsIgnoreCase("Windows Vista")
-                || currentSystemName.equalsIgnoreCase("Windows 7")
-                || currentSystemName.startsWith("Windows ")) {
-            currentSystem = WINDOWS_SYSTEM;
-        } else if (currentSystemName.equalsIgnoreCase("linux")) {
-            currentSystem = LINUX_SYSTEM;
-        } else if (currentSystemName.equalsIgnoreCase("mac os x") ||
-                currentSystemName.equalsIgnoreCase("Darwin")) {
-            currentSystem = MAC_OS_X_SYSTEM;
-        } else if (currentSystemName.equalsIgnoreCase("sunos")) {
-            currentSystem = SUN_OS_SYSTEM;
+    	currentSystemName = System.getProperty("os.name");
+    	currentSystem=getSystem();
+        System.out.println("Unitex is running under " + currentSystemName);
+    }
+    
+
+    public static int getSystem() {
+        String currentSystemName1 = System.getProperty("os.name");
+        int currentSystem1=-1;
+        if (currentSystemName1.equalsIgnoreCase("Windows NT")
+                || currentSystemName1.equalsIgnoreCase("Windows 2003")
+                || currentSystemName1.equalsIgnoreCase("Windows 2000")
+                || currentSystemName1.equalsIgnoreCase("Windows 98")
+                || currentSystemName1.equalsIgnoreCase("Windows 95")
+                || currentSystemName1.equalsIgnoreCase("Windows XP")
+                || currentSystemName1.equalsIgnoreCase("Windows ME")
+                || currentSystemName1.equalsIgnoreCase("Windows Server 2008")
+                || currentSystemName1.equalsIgnoreCase("Windows Vista")
+                || currentSystemName1.equalsIgnoreCase("Windows 7")
+                || currentSystemName1.startsWith("Windows ")) {
+            currentSystem1 = WINDOWS_SYSTEM;
+        } else if (currentSystemName1.equalsIgnoreCase("linux")) {
+            currentSystem1 = LINUX_SYSTEM;
+        } else if (currentSystemName1.equalsIgnoreCase("mac os x") ||
+                currentSystemName1.equalsIgnoreCase("Darwin")) {
+            currentSystem1 = MAC_OS_X_SYSTEM;
+        } else if (currentSystemName1.equalsIgnoreCase("sunos")) {
+            currentSystem1 = SUN_OS_SYSTEM;
         } else {
         	/* By default, we assume that a have a linux compatible system */
-        	currentSystem = LINUX_SYSTEM;
+        	currentSystem1 = LINUX_SYSTEM;
         }
-        System.out.println("Unitex is running under " + currentSystemName);
+        return currentSystem1;
     }
 
     /**
@@ -675,6 +685,10 @@ public class Config {
         return applicationDir;
     }
 
+    public static File getUnitexToolLogger() {
+    	return unitexToolLogger;
+    }
+    
     /**
      * Sets the application directory
      *
@@ -687,6 +701,8 @@ public class Config {
         } else {
             applicationDir = s;
         }
+        unitexToolLogger=new File(applicationDir, 
+        		"UnitexToolLogger" + (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM ? ".exe" : ""));
         setUnitexDir(applicationDir.getParentFile());
     }
 

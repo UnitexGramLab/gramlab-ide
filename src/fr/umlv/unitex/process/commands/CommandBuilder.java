@@ -45,7 +45,7 @@ public abstract class CommandBuilder {
 
     CommandBuilder(String programName) {
         list = new ArrayList<String>();
-        programName("UnitexToolLogger");
+        protectElement(ConfigManager.getManager().getUnitexToolLogger().getAbsolutePath());
         if (ConfigManager.getManager().mustLog(null)) {
             element("{");
             element("CreateLog");
@@ -71,10 +71,6 @@ public abstract class CommandBuilder {
 
     void protectElement(String s) {
         element("\"" + s + "\"");
-    }
-
-    void programName(String s) {
-        protectElement(new File(Config.getApplicationDir(), s + (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM ? ".exe" : "")).getAbsolutePath());
     }
 
     public String getOutputEncoding() {
