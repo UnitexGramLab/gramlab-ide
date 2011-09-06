@@ -1,0 +1,42 @@
+package fr.gramlab.workspace;
+
+import javax.swing.tree.DefaultTreeModel;
+
+import fr.gramlab.config.GramlabConfigManager;
+
+public class WorkspaceTreeModel extends DefaultTreeModel {
+
+	RootNode root;
+	
+	private WorkspaceTreeModel(RootNode root) {
+		super(root);
+		this.root=root;
+	}
+
+	public WorkspaceTreeModel() {
+		this(new RootNode(GramlabConfigManager.getWorkspaceDirectory()));
+		ProjectManager.addProjectListener(new ProjectListener() {
+			public void projectOpened(Project p,int pos) {
+				/* We have to update the project node icon */
+				nodeChanged(root.getChildAt(pos));
+			}
+			
+			public void projectClosed(Project p,int pos) {
+				/* We have to update the project node icon */
+				nodeChanged(root.getChildAt(pos));
+			}
+			
+			public void projectAdded(Project p,int pos) {
+				root.addProjectNode(p,pos);
+				nodesWereInserted((RootNode)getRoot(),new int[]{pos});
+			}
+
+			public void projectRemoved(Project p,int pos) {
+				root.removeProjectNode(p,pos);
+				nodesWereRemoved((RootNode)getRoot(),new int[]{pos},null);
+			}
+			
+		});
+	}
+	
+}

@@ -11,6 +11,7 @@ import javax.swing.plaf.metal.OceanTheme;
 
 import fr.gramlab.config.GramlabConfigManager;
 import fr.gramlab.frames.GramlabFrame;
+import fr.gramlab.workspace.ProjectManager;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 
 public class Main {
@@ -60,6 +61,7 @@ public class Main {
         frame = new GramlabFrame();
         frame.setVisible(true);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		ProjectManager.loadProjects();
 	}
 
 	public static JFrame getMainFrame() {
