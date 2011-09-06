@@ -12,7 +12,7 @@ import fr.umlv.unitex.config.ConfigModel;
  * @author paumier
  *
  */
-public class Project {
+public class Project implements Comparable<Project> {
 	
 	private ConfigModel config;
 	private String name;
@@ -24,8 +24,42 @@ public class Project {
 	private File sentenceDirectory;
 	private File replaceDirectory;
 	private File configFile;
+	private boolean open;
 	
-	private Project(String name) {
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==null || !(obj instanceof Project)) return false;
+		Project p=(Project)obj;
+		return directory.equals(p.getDirectory());
+	}
+	
+	@Override
+	public int hashCode() {
+		return getDirectory().hashCode();
+	}
+	
+	public int compareTo(Project p) {
+		return getName().compareTo(p.getName());
+	}
+	
+	
+	public boolean isOpen() {
+		return open;
+	}
+
+	private void setOpen(boolean open) {
+		this.open = open;
+	}
+	
+	void open() {
+		setOpen(true);
+	}
+
+	void close() {
+		setOpen(false);
+	}
+
+	public Project(String name) {
 		this.name=name;
 		this.directory=new File(GramlabConfigManager.getWorkspaceDirectory(),name);
 		this.configFile=new File(directory,".gramlab_project");

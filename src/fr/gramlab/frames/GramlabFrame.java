@@ -1,12 +1,18 @@
 package fr.gramlab.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -15,9 +21,21 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 
+import fr.gramlab.icons.Icons;
+import fr.gramlab.workspace.Project;
+import fr.gramlab.workspace.ProjectManager;
+import fr.gramlab.workspace.ProjectNode;
+import fr.gramlab.workspace.RootNode;
+import fr.gramlab.workspace.WorkspaceTreeModel;
+import fr.gramlab.workspace.WorkspaceTreeNode;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 @SuppressWarnings("serial")
@@ -41,7 +59,109 @@ public class GramlabFrame extends JFrame {
 
 	private JPanel createWorkspacePane() {
 		JPanel p=new JPanel(new BorderLayout());
-		p.add(new JTree());
+		p.setBorder(BorderFactory.createTitledBorder("Projects"));
+		p.setMinimumSize(new Dimension(200,1));
+		final WorkspaceTreeModel model=new WorkspaceTreeModel();
+		final JTree tree=new JTree(model);
+		tree.setRootVisible(false);
+		model.addTreeModelListener(new TreeModelListener() {
+			public void treeStructureChanged(TreeModelEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			public void treeNodesRemoved(TreeModelEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			public void treeNodesInserted(TreeModelEvent e) {
+				// TODO Auto-generated method stub
+			}
+			
+			public void treeNodesChanged(TreeModelEvent e) {
+				Object o=e.getTreePath().getLastPathComponent();
+				if (o instanceof RootNode) {
+					/* When a project node changes, if it is open we
+					 * expand the node; if the project is closed, we
+					 * collapse it */
+					RootNode root=(RootNode)o;
+					for (int i:e.getChildIndices()) {
+						ProjectNode node=(ProjectNode) root.getChildAt(i);
+						if (node.getProject().isOpen()) {
+							tree.expandPath(new TreePath(model.getPathToRoot(node)));
+						} else {
+							tree.collapsePath(new TreePath(model.getPathToRoot(node)));
+						}
+					}
+				}
+				tree.repaint();
+			}
+		});
+		tree.setCellRenderer(new DefaultTreeCellRenderer() {
+			@Override
+			public Component getTreeCellRendererComponent(JTree tree,
+					Object value, boolean sel, boolean expanded, boolean leaf,
+					int row, boolean hasFocus) {
+				WorkspaceTreeNode node=(WorkspaceTreeNode)value;
+				String name=node.getFile().getName();
+				if (value instanceof ProjectNode) {
+					/* If we have a project node, we change the icon if the project
+					 * is open */
+					ProjectNode n=(ProjectNode)value;
+					/* For a project node, we always force leaf to false in
+					 * order to have the folder icon */
+					super.getTreeCellRendererComponent(tree, name, sel, expanded, false,
+							row, hasFocus);
+					if (n.getProject().isOpen()) setIcon(Icons.openFolderIcon);
+				} else {
+					/* Normal case */
+					super.getTreeCellRendererComponent(tree, name, sel, expanded, leaf,
+							row, hasFocus);
+				}
+				return this;
+			}
+		});
+		tree.addMouseListener(new MouseAdapter() {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getButton()!=MouseEvent.BUTTON3) return;
+			final int x=e.getX();
+			final int y=e.getY();
+			TreePath path=tree.getClosestPathForLocation(x,y);
+			if (path==null) return;
+			Rectangle r=tree.getPathBounds(path);
+			if (r.contains(x,y)) {
+				Object o=path.getLastPathComponent();
+				if (o instanceof ProjectNode) {
+					ProjectNode pn=(ProjectNode)o;
+					final JPopupMenu popup=createProjectPopup(pn.getProject());
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							popup.show(tree,x,y);
+						}
+					});
+				} else {
+					System.err.println("oops: "+o);
+					ProjectNode n=(ProjectNode)o;
+					System.err.println("project="+n.getProject().getName());
+				}
+			}
+		}
+
+		private JPopupMenu createProjectPopup(final Project project) {
+			JPopupMenu popup=new JPopupMenu();
+			final boolean open=project.isOpen();
+			Action openClose=new AbstractAction((open?"Close":"Open")+" project "
+					+project.getName()) {
+				public void actionPerformed(ActionEvent e) {
+					if (open) ProjectManager.closeProject(project);
+					else ProjectManager.openProject(project);
+				}
+			};
+			popup.add(new JMenuItem(openClose));
+			return popup;
+		}
+		});
+		p.add(tree);
 		return p;
 	}
 
