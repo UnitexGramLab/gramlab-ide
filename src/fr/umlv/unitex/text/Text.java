@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.Launcher;
@@ -57,7 +58,7 @@ public class Text {
 		TextConversionDo toDo = new TextConversionDo(name, taggedText);
 		Encoding e = Encoding.getEncoding(name);
 		if (e == null) {
-			UnitexFrame.getFrameManager().newTranscodeOneFileDialog(name, toDo);
+			InternalFrameManager.getManager().newTranscodeOneFileDialog(name, toDo);
 		} else {
 			toDo.toDo();
 		}
@@ -108,7 +109,7 @@ public class Text {
 	}
 
 	private static void preprocessSnt(File name, File snt, boolean taggedText) {
-		UnitexFrame.getFrameManager()
+		InternalFrameManager.getManager()
 				.newPreprocessDialog(name, snt, taggedText);
 	}
 
@@ -134,7 +135,7 @@ public class Text {
 		 * We have to close the text frame there, because if not, we will have
 		 * problem when trying to close the .snt file that is mapped
 		 */
-		UnitexFrame.getFrameManager().closeTextFrame();
+		InternalFrameManager.getManager().closeTextFrame();
 		Text.removeSntFiles();
 		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),
 				taggedText));
@@ -148,7 +149,7 @@ public class Text {
 	 *            file name
 	 */
 	public static void loadSnt(File snt, boolean taggedText) {
-		UnitexFrame.getFrameManager().newTextFrame(snt, taggedText);
+		InternalFrameManager.getManager().newTextFrame(snt, taggedText);
 	}
 
 	/**

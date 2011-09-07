@@ -529,7 +529,7 @@ public class LocateFrame extends JInternalFrame {
             JOptionPane.showMessageDialog(null, res, "Result Info",
                     JOptionPane.PLAIN_MESSAGE);
             if (!res.startsWith("0")) {
-                UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+            	InternalFrameManager.getManager().newConcordanceParameterFrame();
             }
         }
     }
@@ -542,7 +542,7 @@ public class LocateFrame extends JInternalFrame {
             JOptionPane.showMessageDialog(null, res, "Result Info",
                     JOptionPane.PLAIN_MESSAGE);
             if (!res.startsWith("0")) {
-                UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+            	InternalFrameManager.getManager().newConcordanceParameterFrame();
             }
         }
     }

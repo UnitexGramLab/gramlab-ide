@@ -40,6 +40,7 @@ import javax.swing.text.Keymap;
 import javax.swing.text.TextAction;
 
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 
@@ -265,11 +266,11 @@ public class TextField extends GraphTextField {
         }
 
         public void actionPerformed(ActionEvent e) {
-            GraphFrame f = UnitexFrame.getFrameManager()
+            GraphFrame f = InternalFrameManager.getManager()
                     .getCurrentFocusedGraphFrame();
             if (f == null)
                 return;
-            GraphPresentationInfo info = UnitexFrame.getFrameManager()
+            GraphPresentationInfo info = InternalFrameManager.getManager()
                     .newGraphPresentationDialog(f.getGraphPresentationInfo(),
                             true);
             if (info != null) {

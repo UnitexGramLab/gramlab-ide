@@ -107,7 +107,17 @@ public class InternalFrameManager {
     private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
     private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
 
-
+    private static InternalFrameManager manager;
+    
+    
+    public static InternalFrameManager getManager() {
+    	return manager;
+    }
+    
+    public static void setManager(InternalFrameManager m) {
+    	manager=m;
+    }
+    
     public InternalFrameManager(JDesktopPane desktop) {
         this.desktop = desktop;
     }

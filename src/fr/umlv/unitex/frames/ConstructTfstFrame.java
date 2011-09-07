@@ -320,8 +320,8 @@ public class ConstructTfstFrame extends JInternalFrame {
                 commands.addCommand(taggerCmd);
             }
         }
-        UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-        UnitexFrame.getFrameManager().closeTfstTagsFrame();
+        InternalFrameManager.getManager().closeTextAutomatonFrame();
+        InternalFrameManager.getManager().closeTfstTagsFrame();
         /* We also have to rebuild the text automaton */
         Config.cleanTfstFiles(true);
         Launcher.exec(commands, true, new ConstructTfstDo(),
@@ -331,8 +331,8 @@ public class ConstructTfstFrame extends JInternalFrame {
     class ConstructTfstDo implements ToDo {
 
         public void toDo() {
-            UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
-            UnitexFrame.getFrameManager().newTfstTagsFrame(
+        	InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
+        	InternalFrameManager.getManager().newTfstTagsFrame(
                     new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
         }
     }

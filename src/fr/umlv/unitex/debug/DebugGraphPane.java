@@ -42,6 +42,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -68,7 +69,7 @@ public class DebugGraphPane extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount()==2 && currentGraph!=-1) {
 					File f=infos.graphs.get(currentGraph-1);
-					UnitexFrame.mainFrame.frameManager.newGraphFrame(f);
+					InternalFrameManager.getManager().newGraphFrame(f);
 				}
 			}
 		};

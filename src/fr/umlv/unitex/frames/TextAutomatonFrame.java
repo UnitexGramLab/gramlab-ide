@@ -361,7 +361,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             // we return if the user has clicked on CANCEL
             return;
         }
-        UnitexFrame.getFrameManager().newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter);
+        InternalFrameManager.getManager().newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter);
     }
 
     void refreshTableRowHeight(JTable table) {
@@ -418,9 +418,9 @@ public class TextAutomatonFrame extends JInternalFrame {
         button = new JButton("Replace");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                UnitexFrame.getFrameManager().closeTfstTagsFrame();
+            	InternalFrameManager.getManager().closeTfstTagsFrame();
                 replaceElagFst();
-                UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+                InternalFrameManager.getManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
             }
         });
         p.add(button);
@@ -480,8 +480,8 @@ public class TextAutomatonFrame extends JInternalFrame {
         cornerPanel.add(resetSentenceGraph);
         Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
             public void actionPerformed(ActionEvent arg0) {
-                UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-                UnitexFrame.getFrameManager().closeTfstTagsFrame();
+            	InternalFrameManager.getManager().closeTextAutomatonFrame();
+            	InternalFrameManager.getManager().closeTfstTagsFrame();
                 Config.cleanTfstFiles(false);
                 RebuildTfstCommand command = new RebuildTfstCommand()
                         .automaton(new File(Config.getCurrentSntDir(),
@@ -872,15 +872,15 @@ public class TextAutomatonFrame extends JInternalFrame {
     }
 
     void exploseElagFst() {
-        UnitexFrame.getFrameManager().closeTfstTagsFrame();
+    	InternalFrameManager.getManager().closeTfstTagsFrame();
         explodeTextAutomaton(elag_tfst);
-        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+        InternalFrameManager.getManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
     }
 
     void implodeElagFst() {
-        UnitexFrame.getFrameManager().closeTfstTagsFrame();
+    	InternalFrameManager.getManager().closeTfstTagsFrame();
         implodeTextAutomaton(elag_tfst);
-        UnitexFrame.getFrameManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+        InternalFrameManager.getManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
     }
 
     boolean explodeTextAutomaton(File f) {
@@ -938,7 +938,7 @@ public class TextAutomatonFrame extends JInternalFrame {
                 JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
                         "unable to delete " + f);
             }
-            UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
+            InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
         }
     }
 
