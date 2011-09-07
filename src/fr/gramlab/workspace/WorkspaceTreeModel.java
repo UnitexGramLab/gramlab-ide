@@ -18,7 +18,10 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 		ProjectManager.addProjectListener(new ProjectListener() {
 			public void projectOpened(Project p,int pos) {
 				/* We have to update the project node icon */
-				nodeChanged(root.getChildAt(pos));
+				ProjectNode node=(ProjectNode) root.getChildAt(pos);
+				node.refresh();
+				nodeChanged(node);
+				nodeStructureChanged(node);
 			}
 			
 			public void projectClosed(Project p,int pos) {

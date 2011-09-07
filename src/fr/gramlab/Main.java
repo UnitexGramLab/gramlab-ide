@@ -2,6 +2,7 @@ package fr.gramlab;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.io.File;
 import java.util.Locale;
 
 import javax.swing.JFrame;
@@ -57,7 +58,11 @@ public class Main {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		GramlabConfigManager.initConfig();
+		File path=null;
+		if (args.length==1) {
+			path=new File(args[0]);
+		}
+		GramlabConfigManager.initConfig(path);
         frame = new GramlabFrame();
         frame.setVisible(true);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);

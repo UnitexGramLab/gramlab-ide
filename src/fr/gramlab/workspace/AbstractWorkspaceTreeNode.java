@@ -23,6 +23,15 @@ public abstract class AbstractWorkspaceTreeNode implements TreeNode, Comparable<
     	return file.getAbsolutePath().compareTo(node.getFile().getAbsolutePath());	
     }
     
-    public abstract ArrayList<WorkspaceTreeNode> getNodes();
+    public abstract ArrayList<WorkspaceTreeNode> getNodes(boolean reload);
 	
+    /**
+     * Refreshes the children nodes
+     */
+    public void refresh() {
+    	ArrayList<WorkspaceTreeNode> nodes=getNodes(true);
+    	for (WorkspaceTreeNode n:nodes) {
+    		n.refresh();
+    	}
+    }
 }

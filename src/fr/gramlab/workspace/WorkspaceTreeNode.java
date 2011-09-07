@@ -25,19 +25,20 @@ public class WorkspaceTreeNode extends AbstractWorkspaceTreeNode {
 	private ArrayList<WorkspaceTreeNode> nodes=null;
 
 	@Override
-	public ArrayList<WorkspaceTreeNode> getNodes() {
-		if (nodes!=null) return nodes;
+	public ArrayList<WorkspaceTreeNode> getNodes(boolean reload) {
+		if (nodes!=null && !reload) return nodes;
 		nodes=new ArrayList<WorkspaceTreeNode>();
 		File[] files=file.listFiles();
 		if (files==null) return nodes;
 		for (File f:files) {
 			nodes.add(new WorkspaceTreeNode(f,this));
 		}
+		Collections.sort(nodes);
 		return nodes;
 	}
 	
 	public Enumeration<WorkspaceTreeNode> children() {
-		return Collections.enumeration(getNodes());
+		return Collections.enumeration(getNodes(false));
 	}
 
 	public boolean getAllowsChildren() {
@@ -45,15 +46,15 @@ public class WorkspaceTreeNode extends AbstractWorkspaceTreeNode {
 	}
 
 	public TreeNode getChildAt(int childIndex) {
-		return getNodes().get(childIndex);
+		return getNodes(false).get(childIndex);
 	}
 
 	public int getChildCount() {
-		return getNodes().size();
+		return getNodes(false).size();
 	}
 
 	public int getIndex(TreeNode node) {
-		return getNodes().indexOf(node);
+		return getNodes(false).indexOf(node);
 	}
 
 	public TreeNode getParent() {
