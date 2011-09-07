@@ -81,7 +81,7 @@ public class ProcessInfoFrame extends JInternalFrame {
     private final boolean close_on_finish;
     private final boolean stop_if_problem;
     private MultiCommands commands = null;
-    private final ToDo DO;
+    ToDo DO;
     private final JButton ok;
     private final JButton cancel;
 
@@ -127,6 +127,9 @@ public class ProcessInfoFrame extends JInternalFrame {
                     }
                 }
                 dispose();
+                if (DO!=null) {
+                	DO.toDo();
+                }
             }
         };
         ok = new JButton(okAction);
@@ -316,20 +319,22 @@ public class ProcessInfoFrame extends JInternalFrame {
                             }// end of method command
                         } // end of switch
                     } // end of if ((command = commands.getCommand(i)) != null)
-                if (stderrModel.size()>0) {
-                	problem=true;
-                }
+                final boolean cantCloseBecauseOfErrMessages=(stderrModel.size()>0);
                 final boolean PB = problem, CL = close_on_finish;
                 try {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         public void run() {
                             if (PB) {
                                 setTitle("ERROR");
+                                DO=null;
                             } else {
-                                setTitle("");
+                                setTitle("Done");
                             }
-                            if (!PB && CL) {
+                            if (!cantCloseBecauseOfErrMessages && !PB && CL) {
                                 dispose();
+                                if (DO!=null) {
+                                	DO.toDo();
+                                }
                             }
                         }
                     });
@@ -337,19 +342,6 @@ public class ProcessInfoFrame extends JInternalFrame {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
-                }
-                if (!problem && DO != null) {
-                    try {
-                        SwingUtilities.invokeAndWait(new Runnable() {
-                            public void run() {
-                                DO.toDo();
-                            }
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
                 }
                 ok.setEnabled(true);
                 cancel.setEnabled(false);
