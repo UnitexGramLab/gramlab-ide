@@ -175,9 +175,9 @@ public class GramlabFrame extends JFrame {
 						+ " project " + project.getName()) {
 					public void actionPerformed(ActionEvent e) {
 						if (open)
-							ProjectManager.closeProject(project);
+							ProjectManager.getManager().closeProject(project);
 						else
-							ProjectManager.openProject(project);
+							ProjectManager.getManager().openProject(project);
 					}
 				};
 				popup.add(new JMenuItem(openClose));

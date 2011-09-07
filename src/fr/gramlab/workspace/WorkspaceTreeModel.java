@@ -15,7 +15,7 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 
 	public WorkspaceTreeModel() {
 		this(new RootNode(GramlabConfigManager.getWorkspaceDirectory()));
-		ProjectManager.addProjectListener(new ProjectListener() {
+		ProjectManager.getManager().addProjectListener(new ProjectListener() {
 			public void projectOpened(Project p,int pos) {
 				/* We have to update the project node icon */
 				ProjectNode node=(ProjectNode) root.getChildAt(pos);

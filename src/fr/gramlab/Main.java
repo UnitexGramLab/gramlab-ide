@@ -66,7 +66,8 @@ public class Main {
         frame = new GramlabFrame();
         frame.setVisible(true);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-		ProjectManager.loadProjects();
+		ProjectManager.setManager(new ProjectManager());
+		ProjectManager.getManager().loadProjects();
 	}
 
 	public static JFrame getMainFrame() {
