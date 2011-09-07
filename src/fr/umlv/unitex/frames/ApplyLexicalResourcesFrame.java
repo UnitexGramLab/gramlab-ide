@@ -401,7 +401,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         Action goAction = new AbstractAction("Apply") {
             public void actionPerformed(ActionEvent arg0) {
                 setVisible(false);
-                UnitexFrame.getFrameManager().closeTextDicFrame();
+                InternalFrameManager.getManager().closeTextDicFrame();
                 MultiCommands commands;
                 commands = getRunCmd();
                 if (commands.numberOfCommands() == 0) return;
@@ -409,8 +409,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 if (ConfigManager.getManager().isKorean(null)) {
                     /* As we construct the text automaton for Korean, we
                      * must close the text automaton frame, if any */
-                    UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-                    UnitexFrame.getFrameManager().closeTfstTagsFrame();
+                	InternalFrameManager.getManager().closeTextAutomatonFrame();
+                	InternalFrameManager.getManager().closeTfstTagsFrame();
                     /* We also have to rebuild the text automaton */
                     Config.cleanTfstFiles(true);
                     Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
@@ -675,10 +675,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
     class ApplyLexicalResourcesDo implements ToDo {
         public void toDo() {
-            UnitexFrame.getFrameManager().newTextDicFrame(Config.getCurrentSntDir(), false);
+        	InternalFrameManager.getManager().newTextDicFrame(Config.getCurrentSntDir(), false);
             if (ConfigManager.getManager().isKorean(null)) {
-                UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
-                UnitexFrame.getFrameManager().newTfstTagsFrame(
+            	InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
+            	InternalFrameManager.getManager().newTfstTagsFrame(
                         new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
             }
         }

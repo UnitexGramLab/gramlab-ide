@@ -29,6 +29,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
@@ -70,14 +71,14 @@ public class FileEditionMenu extends JMenu {
         convert.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-                UnitexFrame.getFrameManager().newTranscodingFrame();
+            	InternalFrameManager.getManager().newTranscodingFrame();
             }
         });
 
         JMenuItem closeAll = new JMenuItem("Close All");
         closeAll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                UnitexFrame.getFrameManager().closeAllFileEditionTextFrames();
+            	InternalFrameManager.getManager().closeAllFileEditionTextFrames();
             }
         });
         add(newFile);

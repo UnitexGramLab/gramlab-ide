@@ -191,8 +191,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 //        File normFile = null;
 //        File normGrfFile = null;
         commands.addCommand(seqCmd);
-        UnitexFrame.getFrameManager().closeTextAutomatonFrame();
-        UnitexFrame.getFrameManager().closeTfstTagsFrame();
+        InternalFrameManager.getManager().closeTextAutomatonFrame();
+        InternalFrameManager.getManager().closeTfstTagsFrame();
         /* We also have to rebuild the text automaton */
         Config.cleanTfstFiles(true);
         Launcher.exec(commands,true);
@@ -210,7 +210,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
             //UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
 //        	File f = new File(GRFfile.getText());
         	Config.cleanTfstFiles(true);
-        	UnitexFrame.getFrameManager().newGraphFrame(new File(GRFfile.getName()));
+        	InternalFrameManager.getManager().newGraphFrame(new File(GRFfile.getName()));
         }
     }
 }

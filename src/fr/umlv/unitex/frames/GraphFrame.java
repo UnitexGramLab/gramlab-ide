@@ -248,7 +248,7 @@ public class GraphFrame extends JInternalFrame {
 				int n=grfList.getSelectedIndex();
 				if (n==-1) return;
 				File f=(File)grfListModel.get(n);
-				UnitexFrame.getFrameManager().newGraphFrame(f);
+				InternalFrameManager.getManager().newGraphFrame(f);
 			}
 		});
         grfListPanel=new JPanel(new BorderLayout());
@@ -313,14 +313,14 @@ public class GraphFrame extends JInternalFrame {
 		JButton showBase=new JButton("Show base (r"+conflict.baseNumber+")");
 		showBase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UnitexFrame.getFrameManager().newGraphFrame(conflict.base);
+				InternalFrameManager.getManager().newGraphFrame(conflict.base);
 			}
 		});
 		p.add(showBase);
 		JButton showOther=new JButton("Show conflicting grf (r"+conflict.otherNumber+")");
 		showOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UnitexFrame.getFrameManager().newGraphFrame(conflict.other);
+				InternalFrameManager.getManager().newGraphFrame(conflict.other);
 			}
 		});
 		p.add(showOther);
@@ -558,8 +558,8 @@ public class GraphFrame extends JInternalFrame {
             public void actionPerformed(ActionEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        GraphPresentationInfo info = UnitexFrame
-                                .getFrameManager().newGraphPresentationDialog(
+                        GraphPresentationInfo info = 
+                        	InternalFrameManager.getManager().newGraphPresentationDialog(
                                         getGraphPresentationInfo(), true);
                         if (info != null) {
                             setGraphPresentationInfo(info);
@@ -760,7 +760,7 @@ public class GraphFrame extends JInternalFrame {
 	                    JOptionPane.ERROR_MESSAGE);
 	            return;
 			}
-			UnitexFrame.getFrameManager().newGraphDiffFrame(base,dest,baseGrf,destGrf,info);
+			InternalFrameManager.getManager().newGraphDiffFrame(base,dest,baseGrf,destGrf,info);
 		}
     	
     }

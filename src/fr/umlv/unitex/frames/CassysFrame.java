@@ -146,13 +146,13 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 
         if (a.getSource() == _new) {
             Config.setCurrentTransducerList(null);
-            UnitexFrame.getFrameManager().newTransducerListConfigurationFrame(null);
+            InternalFrameManager.getManager().newTransducerListConfigurationFrame(null);
         }
 
 
         if (a.getSource() == edit) {
             Config.setCurrentTransducerList(fc.getSelectedFile());
-            UnitexFrame.getFrameManager().newTransducerListConfigurationFrame(fc.getSelectedFile());
+            InternalFrameManager.getManager().newTransducerListConfigurationFrame(fc.getSelectedFile());
         }
 
         if (a.getSource() == launch) {
@@ -182,7 +182,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
     class CassysDo implements ToDo {
 
         public void toDo() {
-            UnitexFrame.getFrameManager().newConcordanceParameterFrame();
+        	InternalFrameManager.getManager().newConcordanceParameterFrame();
         }
 
     }

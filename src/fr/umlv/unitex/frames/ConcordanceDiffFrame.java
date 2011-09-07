@@ -168,7 +168,7 @@ public class ConcordanceDiffFrame extends JInternalFrame {
         list.addListSelectionListener(new ListSelectionListener() {
 
         	public void valueChanged(ListSelectionEvent e) {
-                TextFrame f = UnitexFrame.getFrameManager().getTextFrame();
+                TextFrame f = InternalFrameManager.getManager().getTextFrame();
                 String s = (String) list.getSelectedValue();
                 if (s == null || e.getValueIsAdjusting()) return;
                 int start = s.indexOf("<a href=\"") + 9;
@@ -194,11 +194,11 @@ public class ConcordanceDiffFrame extends JInternalFrame {
                     e2.printStackTrace();
                 }
                 boolean iconified=true;
-                TextAutomatonFrame foo=UnitexFrame.getFrameManager().getTextAutomatonFrame();
+                TextAutomatonFrame foo=InternalFrameManager.getManager().getTextAutomatonFrame();
                 if (foo!=null) {
                 	iconified=foo.isIcon();
                 }
-                UnitexFrame.getFrameManager().newTextAutomatonFrame(sentenceNumber,iconified);
+                InternalFrameManager.getManager().newTextAutomatonFrame(sentenceNumber,iconified);
                 list.clearSelection();
             }
         });

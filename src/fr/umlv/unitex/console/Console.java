@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex.console;
 
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 public class Console {
@@ -33,12 +34,12 @@ public class Console {
 	 */
 	public static ConsoleEntry addCommand(String command,
 			boolean isRealCommand, int pos, boolean systemMsg,String logID) {
-		return UnitexFrame.getFrameManager().getConsoleFrame().addCommand(
+		return InternalFrameManager.getManager().getConsoleFrame().addCommand(
 				command, isRealCommand, pos, systemMsg,logID);
 	}
 
 	public static ConsoleEntry addCommand(String command, boolean systemMsg,String logID) {
-		return UnitexFrame.getFrameManager().getConsoleFrame().addCommand(
+		return InternalFrameManager.getManager().getConsoleFrame().addCommand(
 				command, true, -1, systemMsg,logID);
 	}
 
