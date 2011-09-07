@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import fr.gramlab.config.GramlabConfigManager;
 import fr.umlv.unitex.config.ConfigModel;
+import fr.umlv.unitex.files.FileUtil;
 
 /**
  * Description of a gramlab project.
@@ -25,6 +26,8 @@ public class Project implements Comparable<Project> {
 	private File replaceDirectory;
 	private File configFile;
 	private boolean open;
+	
+	public static final String CONFIG_FILE_NAME=".gramlab_config";
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -62,7 +65,7 @@ public class Project implements Comparable<Project> {
 	public Project(String name) {
 		this.name=name;
 		this.directory=new File(GramlabConfigManager.getWorkspaceDirectory(),name);
-		this.configFile=new File(directory,".gramlab_project");
+		this.configFile=new File(directory,CONFIG_FILE_NAME);
 	}
 
 	public String getName() {
@@ -148,6 +151,23 @@ public class Project implements Comparable<Project> {
 
 	public ConfigModel getConfigModel() {
 		return config;
+	}
+
+	public static Project cloneWorkspaceProject(String name,File src) {
+		Project p=createEmptyProject(name);
+		FileUtil.copyDirRec(src,p.getDirectory());
+		return p;
+	}
+
+	public static Project cloneUnitexResourcesProject(String name,File src) {
+		Project p=createEmptyProject(name);
+		FileUtil.copyDirRec(new File(src,"Corpus"),p.getCorpusDirectory());
+		FileUtil.copyDirRec(new File(src,"Dela"),p.getDelaDirectory());
+		FileUtil.copyDirRec(new File(src,"Graphs"),p.getGraphsDirectory());
+		FileUtil.copyFile(new File(src,"Alphabet.txt"),new File(p.getDirectory(),"Alphabet.txt"));
+		FileUtil.copyFile(new File(src,"Alphabet_sort.txt"),new File(p.getDirectory(),"Alphabet_sort.txt"));
+		FileUtil.copyFile(new File(src,"Config"),p.getConfigFile());
+		return p;
 	}
 	
 }

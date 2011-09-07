@@ -23,10 +23,12 @@ public class GramlabConfigManager {
 	private static String user;
 	private static File workspace;
 
-	public static void initConfig() {
+	public static void initConfig(File path) {
 		system = Config.getSystem();
-		File jarPath = new File(System.getProperty("user.dir"));
-		defaultConfig = new DefaultConfig(jarPath);
+		if (path==null) {
+			path = new File(System.getProperty("user.dir"));
+		}
+		defaultConfig = new DefaultConfig(path);
 		setCurrentProject(null);
 		user = System.getProperty("user.name");
 		findWorkspace();
