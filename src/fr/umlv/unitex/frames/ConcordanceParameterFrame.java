@@ -475,7 +475,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         ModifyTextDo toDo = null;
         String sntName = FileUtil.getFileNameWithoutExtension(txt) + ".snt";
         if (new File(sntName).equals(Config.getCurrentSnt())) {
-            UnitexFrame.getFrameManager().closeTextFrame();
+        	InternalFrameManager.getManager().closeTextFrame();
             toDo = new ModifyTextDo(new File(sntName));
         }
         MultiCommands commands = new MultiCommands();
@@ -574,7 +574,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         if (width < 40) {
             width = 40;
         }
-        UnitexFrame.getFrameManager().closeConcordanceFrame();
+        InternalFrameManager.getManager().closeConcordanceFrame();
         Launcher.exec(command, true, new ConcordanceDo(false, new File(Config
                 .getCurrentSntDir(), "concord.html"), openWithBrowser
                 .isSelected(), width));
@@ -599,7 +599,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 .diffOnly();
         setVisible(false);
         int width = 160;
-        UnitexFrame.getFrameManager().closeConcordanceDiffFrame();
+        InternalFrameManager.getManager().closeConcordanceDiffFrame();
         Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
                 openWithBrowser.isSelected(), width));
     }
@@ -639,10 +639,10 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 }
             } else {
                 if (!diff) {
-                    UnitexFrame.getFrameManager().newConcordanceFrame(htmlFile,
+                	InternalFrameManager.getManager().newConcordanceFrame(htmlFile,
                             widthInChars);
                 } else {
-                    UnitexFrame.getFrameManager().newConcordanceDiffFrame(
+                	InternalFrameManager.getManager().newConcordanceDiffFrame(
                             htmlFile);
                 }
             }
@@ -657,7 +657,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         }
 
         public void toDo() {
-            UnitexFrame.getFrameManager().newTextFrame(snt, false);
+        	InternalFrameManager.getManager().newTextFrame(snt, false);
         }
     }
 
@@ -672,7 +672,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         }
 
         public void toDo() {
-            UnitexFrame.getFrameManager().newStatisticsFrame(f, mode);
+        	InternalFrameManager.getManager().newStatisticsFrame(f, mode);
         }
 
     }

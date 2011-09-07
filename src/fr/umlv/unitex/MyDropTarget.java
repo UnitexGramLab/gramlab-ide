@@ -43,6 +43,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
@@ -247,7 +248,7 @@ public class MyDropTarget {
 							e.printStackTrace();
 							return;
 						}
-						UnitexFrame.getFrameManager().newDelaFrame(dela);
+						InternalFrameManager.getManager().newDelaFrame(dela);
 					}
 				});
 				return;
@@ -267,13 +268,13 @@ public class MyDropTarget {
 					public void run() {
 						ToDo toDo = new ToDo() {
 							public void toDo() {
-								UnitexFrame.getFrameManager()
+								InternalFrameManager.getManager()
 										.newDelaFrame(dela);
 							}
 						};
 						Encoding e = Encoding.getEncoding(dela);
 						if (e == null) {
-							UnitexFrame.getFrameManager()
+							InternalFrameManager.getManager()
 									.newTranscodeOneFileDialog(dela, toDo);
 						} else {
 							toDo.toDo();
@@ -286,7 +287,7 @@ public class MyDropTarget {
 				for (Object aList : list) {
 					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
 						final File file = (File) aList;
-						UnitexFrame.getFrameManager().newGraphFrame(file);
+						InternalFrameManager.getManager().newGraphFrame(file);
 					}
 				}
 			}
@@ -349,7 +350,7 @@ public class MyDropTarget {
 		}
 
 		private void processDropList(List<?> list) {
-			TranscodingFrame frame = UnitexFrame.getFrameManager()
+			TranscodingFrame frame = InternalFrameManager.getManager()
 					.newTranscodingFrame();
 			Object o;
 			for (Object aList : list) {

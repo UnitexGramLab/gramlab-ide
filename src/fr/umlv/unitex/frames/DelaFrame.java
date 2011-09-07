@@ -248,7 +248,7 @@ public class DelaFrame extends JInternalFrame {
 		LoadDelaDo toDo = new LoadDelaDo(dela);
 		Encoding e = Encoding.getEncoding(dela);
 		if (e == null) {
-			UnitexFrame.getFrameManager().newTranscodeOneFileDialog(dela, toDo);
+			InternalFrameManager.getManager().newTranscodeOneFileDialog(dela, toDo);
 		} else {
 			toDo.toDo();
 		}

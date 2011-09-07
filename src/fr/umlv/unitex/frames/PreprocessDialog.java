@@ -247,7 +247,7 @@ public class PreprocessDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 // if the user has clicked on cancel, we do nothing
                 setVisible(false);
-                UnitexFrame.getFrameManager().closeTextFrame();
+                InternalFrameManager.getManager().closeTextFrame();
             }
         };
         final JButton cancel = new JButton(cancelAction);
@@ -285,7 +285,7 @@ public class PreprocessDialog extends JDialog {
             tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
         }
         commands.addCommand(tokenizeCmd);
-        UnitexFrame.getFrameManager().closeTextFrame();
+        InternalFrameManager.getManager().closeTextFrame();
         Text.removeSntFiles();
         Launcher.exec(commands, true, new AfterPreprocessDo(sntFile, taggedText));
     }
@@ -515,8 +515,7 @@ public class PreprocessDialog extends JDialog {
         if (textFst2Check.isSelected()) {
             commands = constructTextAutomaton(commands);
         }
-
-        UnitexFrame.getFrameManager().closeTextFrame();
+        InternalFrameManager.getManager().closeTextFrame();
         Text.removeSntFiles();
         Launcher.exec(commands, true, new AfterPreprocessDo(sntFile, taggedText));
     }

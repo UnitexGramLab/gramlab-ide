@@ -33,6 +33,7 @@ import javax.swing.Timer;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 public class SvnMonitor {
@@ -59,7 +60,7 @@ public class SvnMonitor {
 		monitor(Config.getCurrentGraphDir());
 		monitor(ConfigManager.getManager().getGraphRepositoryPath(null));
 		if (!autoMonitoring || svnConflictModel.size()>0) {
-			UnitexFrame.getFrameManager().showSvnConflictsFrame();
+			InternalFrameManager.getManager().showSvnConflictsFrame();
 		}
 	}
 	

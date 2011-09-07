@@ -95,7 +95,7 @@ public class FileEditionTextFrame extends JInternalFrame {
     };
     private final Action findAction = new AbstractAction("Find", MyCursors.findIcon) {
         public void actionPerformed(ActionEvent e) {
-            UnitexFrame.getFrameManager().newFindDialog(
+        	InternalFrameManager.getManager().newFindDialog(
                     FileEditionTextFrame.this);
         }
     };

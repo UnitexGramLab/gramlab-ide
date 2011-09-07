@@ -240,7 +240,7 @@ public class ElagCompFrame extends JInternalFrame {
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                UnitexFrame.getFrameManager().newGraphFrame(grf);
+                InternalFrameManager.getManager().newGraphFrame(grf);
             }
         });
         c.gridx = 4;
@@ -277,7 +277,7 @@ public class ElagCompFrame extends JInternalFrame {
                                     "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                UnitexFrame.getFrameManager().newLocateFrame(conc);
+                InternalFrameManager.getManager().newLocateFrame(conc);
             }
         });
         c.gridx = 4;

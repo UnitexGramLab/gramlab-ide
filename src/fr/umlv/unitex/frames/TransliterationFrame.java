@@ -170,7 +170,7 @@ public class TransliterationFrame extends JInternalFrame {
     class ReloadDicDo implements ToDo {
         
     	public void toDo() {
-            UnitexFrame.getFrameManager().newDelaFrame(Config.getCurrentDELA());
+            InternalFrameManager.getManager().newDelaFrame(Config.getCurrentDELA());
         }
 	}
 

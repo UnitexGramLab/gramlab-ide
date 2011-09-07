@@ -92,7 +92,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
     public void launch() {
         canceled = false;
         progress.setMinimum(0);
-        final int sentenceCount = UnitexFrame.getFrameManager()
+        final int sentenceCount = InternalFrameManager.getManager()
                 .getTextAutomatonFrame().getSentenceCount();
         progress.setMaximum(sentenceCount);
         progress.setValue(0);

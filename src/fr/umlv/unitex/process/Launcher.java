@@ -24,6 +24,7 @@ package fr.umlv.unitex.process;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
@@ -57,7 +58,7 @@ public class Launcher {
 	public static void exec(MultiCommands c, boolean close, ToDo myDo, 
 			boolean stopIfProblem) {
 		if (c==null) return;
-		UnitexFrame.getFrameManager().newProcessInfoFrame(c,close,myDo,stopIfProblem);
+		InternalFrameManager.getManager().newProcessInfoFrame(c,close,myDo,stopIfProblem);
 	}
 
 	/**

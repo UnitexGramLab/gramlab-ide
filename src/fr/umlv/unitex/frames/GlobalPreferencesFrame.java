@@ -473,7 +473,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tmp2.add(textFont, BorderLayout.CENTER);
         Action textFontAction = new AbstractAction("Set...") {
             public void actionPerformed(ActionEvent arg0) {
-                FontInfo i = UnitexFrame.getFrameManager().newFontDialog(
+                FontInfo i = InternalFrameManager.getManager().newFontDialog(
                         pref.textFont);
                 if (i != null) {
                     pref.textFont = i;
@@ -493,7 +493,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         tmp2_.add(concordanceFont, BorderLayout.CENTER);
         Action concord = new AbstractAction("Set...") {
             public void actionPerformed(ActionEvent arg0) {
-                FontInfo i = UnitexFrame.getFrameManager().newFontDialog(
+                FontInfo i = InternalFrameManager.getManager().newFontDialog(
                         pref.concordanceFont);
                 if (i != null) {
                     pref.concordanceFont = i;
@@ -531,7 +531,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
         JButton graphConfig = new JButton("Graph configuration");
         graphConfig.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GraphPresentationInfo i = UnitexFrame.getFrameManager()
+                GraphPresentationInfo i = InternalFrameManager.getManager()
                         .newGraphPresentationDialog(pref.info, false);
                 if (i != null) {
                     pref.info = i;

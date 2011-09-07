@@ -391,7 +391,7 @@ public class FileUtil {
 
     public static void copyDirRec(File src, File dest) {
 
-        if (!src.isDirectory()) {
+        if (!src.exists() || !src.isDirectory()) {
             return;
         }
         if (!dest.exists()) {
@@ -466,7 +466,7 @@ public class FileUtil {
             fis.close();
             fos.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            return;
         }
     }
 
@@ -478,7 +478,7 @@ public class FileUtil {
                 fos.write(buf, 0, i);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            return;
         }
     }
 

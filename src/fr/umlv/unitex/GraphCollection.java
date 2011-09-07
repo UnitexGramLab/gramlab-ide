@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -59,14 +60,14 @@ public class GraphCollection {
         new Thread(new Runnable() {
 			
         	public void run() {
-                MessageWhileWorkingFrame f = UnitexFrame.getFrameManager().newMessageWhileWorkingFrame("Building graph collection");
+                MessageWhileWorkingFrame f = InternalFrameManager.getManager().newMessageWhileWorkingFrame("Building graph collection");
                 stop=false;
                 buildGraphCollection(
                         srcDir,
                         destGraph,
                         copy,
                         f.getLabel());
-                UnitexFrame.getFrameManager().closeMessageWhileWorkingFrame();
+                InternalFrameManager.getManager().closeMessageWhileWorkingFrame();
             }
         }).start();
     }

@@ -47,6 +47,7 @@ import javax.swing.undo.UndoableEdit;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.undo.AddBoxEdit;
@@ -118,7 +119,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithInputVar=new AbstractAction("Input variable") {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				String name=UnitexFrame.getFrameManager().newVariableInsertionDialog(true);
+				String name=InternalFrameManager.getManager().newVariableInsertionDialog(true);
 				if (name==null || name.equals("")) return;
 				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
 						"$"+name+"(","$"+name+")");
@@ -131,7 +132,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithOutputVar=new AbstractAction("Output variable") {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				String name=UnitexFrame.getFrameManager().newVariableInsertionDialog(false);
+				String name=InternalFrameManager.getManager().newVariableInsertionDialog(false);
 				if (name==null || name.equals("")) return;
 				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
 						"$|"+name+"(","$|"+name+")");
@@ -443,7 +444,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     b = (GraphBox) graphBoxes.get(boxSelected);
                     File file = b.getGraphClicked(y_tmp);
                     if (file != null) {
-                        UnitexFrame.getFrameManager().newGraphFrame(file);
+                    	InternalFrameManager.getManager().newGraphFrame(file);
                     }
                 }
             } else if (EDITING_MODE == MyCursors.KILL_BOXES) {

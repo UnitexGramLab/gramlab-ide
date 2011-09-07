@@ -47,6 +47,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FileEditionTextFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
 
@@ -104,7 +105,7 @@ public class FileManager {
      * @param file file path
      */
     private void load(File file) {
-        fileEditionTextFrame = UnitexFrame.getFrameManager().newFileEditionTextFrame(file);
+        fileEditionTextFrame = InternalFrameManager.getManager().newFileEditionTextFrame(file);
         EditionTextArea text = fileEditionTextFrame.getText();
         if (file.length() <= 2) {
             FILE_TOO_LARGE = true;
@@ -136,7 +137,7 @@ public class FileManager {
     public void save(String absolutePath) {
 
         try {
-            FileEditionTextFrame fetf = UnitexFrame.getFrameManager().getSelectedFileEditionTextFrame();
+            FileEditionTextFrame fetf = InternalFrameManager.getManager().getSelectedFileEditionTextFrame();
             if (fetf == null) return;
             EditionTextArea t = fetf.getText();
             OutputStreamWriter osr=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(new File(absolutePath));
@@ -197,7 +198,7 @@ public class FileManager {
      * load an empty text
      */
     public void newFile() {
-        UnitexFrame.getFrameManager().newFileEditionTextFrame(null);
+    	InternalFrameManager.getManager().newFileEditionTextFrame(null);
     }
 
 
