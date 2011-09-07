@@ -15,7 +15,7 @@ public class RootNode extends WorkspaceTreeNode {
 	public ArrayList<WorkspaceTreeNode> getNodes(boolean reload) {
 		if (nodes!=null && !reload) return nodes;
 		nodes=new ArrayList<WorkspaceTreeNode>();
-		ArrayList<Project> projects=ProjectManager.getProjects();
+		ArrayList<Project> projects=ProjectManager.getManager().getProjects();
 		for (Project p:projects) {
 			nodes.add(new ProjectNode(p,this));
 		}

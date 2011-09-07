@@ -122,7 +122,7 @@ public class CreateProjectDialog extends JDialog {
 	                        JOptionPane.ERROR_MESSAGE);
 	                return;
 				}
-				ProjectManager.addProject(project);
+				ProjectManager.getManager().addProject(project);
 				setVisible(false);
 				dispose();
 			}
@@ -216,7 +216,7 @@ public class CreateProjectDialog extends JDialog {
 	                return;
 				}
 				
-				ProjectManager.addProject(project);
+				ProjectManager.getManager().addProject(project);
 				setVisible(false);
 				dispose();
 			}
@@ -260,7 +260,7 @@ public class CreateProjectDialog extends JDialog {
 
 	private ArrayList<File> getWorkspaceProjectDirs() {
 		ArrayList<File> l=new ArrayList<File>();
-		for (Project p:ProjectManager.getProjects()) {
+		for (Project p:ProjectManager.getManager().getProjects()) {
 			l.add(p.getDirectory());
 		}
 		Collections.sort(l);
