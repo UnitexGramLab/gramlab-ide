@@ -32,6 +32,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
@@ -55,7 +56,6 @@ public class InternalFrameManager {
     final JDesktopPane desktop;
     private final static Integer LAYER = 1;
     private final FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(BuildKrMwuDicFrame.class);
-    private final FrameFactory delaFrameFactory = new FrameFactory(DelaFrame.class);
     private final FrameFactory aboutUnitexFrameFactory = new FrameFactory(AboutUnitexFrame.class);
     private final FrameFactory applyLexicalResourcesFrameFactory = new FrameFactory(ApplyLexicalResourcesFrame.class);
     private final FrameFactory checkDicFrameFactory = new FrameFactory(CheckDicFrame.class);
@@ -86,6 +86,7 @@ public class InternalFrameManager {
     private final FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
     private final FrameFactory xAlignConfigFrameFactory = new FrameFactory(XAlignConfigFrame.class);
     private final GraphFrameFactory graphFrameFactory = new GraphFrameFactory();
+    private final MultiInstanceFrameFactory<DelaFrame,File> delaFrameFactory = new MultiInstanceFrameFactory<DelaFrame,File>();
     private final TextFrameFactory textFrameFactory = new TextFrameFactory();
     private final TokensFrameFactory tokensFrameFactory = new TokensFrameFactory();
     private final TfstTagsFrameFactory tfstTagsFrameFactory = new TfstTagsFrameFactory();
@@ -149,7 +150,7 @@ public class InternalFrameManager {
             f.addInternalFrameListener(new InternalFrameAdapter() {
                 @Override
                 public void internalFrameClosed(InternalFrameEvent e) {
-                    desktop.remove(f);
+                	desktop.remove(f);
                 }
             });
         }
@@ -288,25 +289,29 @@ public class InternalFrameManager {
     private final InternalFrameListener delaFrameListener = new InternalFrameAdapter() {
         @Override
         public void internalFrameClosing(InternalFrameEvent e) {
-            fireDelaFrameClosed();
+            fireDelaFrameClosed(delaFrameFactory.getFrameCount()-1);
         }
     };
 
     public DelaFrame newDelaFrame(File dela) {
-        DelaFrame f = (DelaFrame) delaFrameFactory.newFrame();
-        if (f == null) return null;
+        DelaFrame f = delaFrameFactory.getFrameIfExists(dela);
+        if (f!=null) return f;
+        f=new DelaFrame();
         f.loadDela(dela);
-        /* We don't want to add the same listener twice, so we remove it
-           * and then add it */
-        f.removeInternalFrameListener(delaFrameListener);
+        delaFrameFactory.addFrame(f);
         f.addInternalFrameListener(delaFrameListener);
         setup(f);
         fireDelaFrameOpened();
         return f;
     }
     
-    public void closeDelaFrame() {
-        delaFrameFactory.closeFrame();
+    public void closeCurrentDelaFrame() {
+    	File f=Config.getCurrentDELA();
+    	if (f==null) return;
+    	DelaFrame frame=delaFrameFactory.getFrameIfExists(f);
+    	if (frame!=null) {
+    		frame.doDefaultCloseAction();
+    	}
     }
 
     private final ArrayList<DelaFrameListener> delaFrameListeners = new ArrayList<DelaFrameListener>();
@@ -334,11 +339,11 @@ public class InternalFrameManager {
         }
     }
 
-    void fireDelaFrameClosed() {
+    void fireDelaFrameClosed(int remainingFrames) {
         firingDelaFrame = true;
         try {
             for (DelaFrameListener l : delaFrameListeners) {
-                l.delaFrameClosed();
+                l.delaFrameClosed(remainingFrames);
             }
         } finally {
             firingDelaFrame = false;
