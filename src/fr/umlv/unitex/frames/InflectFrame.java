@@ -41,6 +41,7 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiFlexCommand;
 
 /**
@@ -137,8 +138,9 @@ public class InflectFrame extends JInternalFrame {
             tmp = tmp.substring(0, point);
         }
         tmp = tmp + "flx.dic";
+        File resultDic=new File(tmp);
         MultiFlexCommand command = new MultiFlexCommand().delas(f)
-                .result(new File(tmp))
+                .result(resultDic)
                 .alphabet(ConfigManager.getManager().getAlphabet(null))
                 .repository()
                 .dir(new File(directory.getText()));
@@ -150,7 +152,21 @@ public class InflectFrame extends JInternalFrame {
         if (ConfigManager.getManager().isKorean(null)) {
             command = command.korean();
         }
-        Launcher.exec(command, false, null);
+        Launcher.exec(command, false, new LoadDelaDo(resultDic));
     }
 
+    class LoadDelaDo implements ToDo {
+
+    	File dela;
+    	
+		public LoadDelaDo(File dela) {
+			this.dela=dela;
+		}
+
+		public void toDo() {
+			InternalFrameManager.getManager(dela).newDelaFrame(dela);
+		}
+    	
+    }
+    
 }
