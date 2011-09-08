@@ -50,8 +50,9 @@ public class SvnConflictsFrame extends JInternalFrame {
         list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				Object[] files=list.getSelectedValues();
-				for (Object f:files) {
-					InternalFrameManager.getManager().newGraphFrame((File)f);
+				for (Object o:files) {
+					File f=(File)o;
+					InternalFrameManager.getManager(f).newGraphFrame(f);
 				}
 			}
 		});

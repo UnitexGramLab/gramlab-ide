@@ -29,8 +29,8 @@ import fr.umlv.unitex.io.Encoding;
 
 public interface ConfigModel {
 	
-	public String getConfigName();
     public String getCurrentLanguage();
+	public File getAlphabetForGrf(String language,File grf);
 	public File getAlphabet(String language);
     public Preferences getPreferences(String language);
     public void savePreferences(Preferences p,String language);

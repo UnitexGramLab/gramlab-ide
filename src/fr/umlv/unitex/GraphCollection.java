@@ -60,14 +60,14 @@ public class GraphCollection {
         new Thread(new Runnable() {
 			
         	public void run() {
-                MessageWhileWorkingFrame f = InternalFrameManager.getManager().newMessageWhileWorkingFrame("Building graph collection");
+                MessageWhileWorkingFrame f = InternalFrameManager.getManager(null).newMessageWhileWorkingFrame("Building graph collection");
                 stop=false;
                 buildGraphCollection(
                         srcDir,
                         destGraph,
                         copy,
                         f.getLabel());
-                InternalFrameManager.getManager().closeMessageWhileWorkingFrame();
+                InternalFrameManager.getManager(null).closeMessageWhileWorkingFrame();
             }
         }).start();
     }

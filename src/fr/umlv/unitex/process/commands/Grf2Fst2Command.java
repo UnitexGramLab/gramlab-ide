@@ -57,11 +57,11 @@ public class Grf2Fst2Command extends CommandBuilder {
         return this;
     }
 
-    public Grf2Fst2Command tokenizationMode(String language) {
+    public Grf2Fst2Command tokenizationMode(String language,File grf) {
         if (ConfigManager.getManager().isCharByCharLanguage(language)) {
             return charByCharTokenization();
         }
-        File alphabet=ConfigManager.getManager().getAlphabet(language);
+        File alphabet=ConfigManager.getManager().getAlphabetForGrf(language,grf);
         return alphabetTokenization(alphabet);
     }
 

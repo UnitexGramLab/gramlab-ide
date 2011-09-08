@@ -109,9 +109,22 @@ public class InternalFrameManager {
 
     private static InternalFrameManager manager;
     
+    /**
+     * If the frame manager has submanagers, it must override
+     * this method to get the actual manager to be used.
+     * This getter is designed for compatibility with Gramlab. 
+     * Unitex does not use the resource parameter, but gramlab will.
+     */
+    public InternalFrameManager getSubManager(@SuppressWarnings("unused") File resource) {
+    	return this;
+    }
     
-    public static InternalFrameManager getManager() {
-    	return manager;
+    /**
+     * Here we have a static access to the main frame manager.
+     * This getter is designed for compatibility with Gramlab.
+     */
+    public static InternalFrameManager getManager(File resource) {
+    	return manager.getSubManager(resource);
     }
     
     public static void setManager(InternalFrameManager m) {
@@ -122,6 +135,10 @@ public class InternalFrameManager {
         this.desktop = desktop;
     }
 
+    public JDesktopPane getDesktop() {
+		return desktop;
+	}
+    
     private void addToDesktopIfNecessary(final JInternalFrame f, boolean removeOnClose) {
         for (JInternalFrame frame : desktop.getAllFrames()) {
             if (frame.equals(f)) {
@@ -176,7 +193,7 @@ public class InternalFrameManager {
     }
 
     public void closeAllGraphFrames() {
-        graphFrameFactory.closeAllGraphFrames();
+        graphFrameFactory.closeAllFrames();
     }
 
 
@@ -191,8 +208,8 @@ public class InternalFrameManager {
         return null;
     }
 
-    public GraphFrame[] getGraphFrames() {
-        return graphFrameFactory.getGraphFrames();
+    public ArrayList<GraphFrame> getGraphFrames() {
+        return graphFrameFactory.getFrames();
     }
 
 
@@ -287,7 +304,7 @@ public class InternalFrameManager {
         fireDelaFrameOpened();
         return f;
     }
-
+    
     public void closeDelaFrame() {
         delaFrameFactory.closeFrame();
     }

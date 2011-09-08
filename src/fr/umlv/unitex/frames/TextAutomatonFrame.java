@@ -361,7 +361,7 @@ public class TextAutomatonFrame extends JInternalFrame {
             // we return if the user has clicked on CANCEL
             return;
         }
-        InternalFrameManager.getManager().newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter);
+        InternalFrameManager.getManager(null).newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter);
     }
 
     void refreshTableRowHeight(JTable table) {
@@ -418,9 +418,9 @@ public class TextAutomatonFrame extends JInternalFrame {
         button = new JButton("Replace");
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	InternalFrameManager.getManager().closeTfstTagsFrame();
+            	InternalFrameManager.getManager(null).closeTfstTagsFrame();
                 replaceElagFst();
-                InternalFrameManager.getManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+                InternalFrameManager.getManager(null).newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
             }
         });
         p.add(button);
@@ -480,13 +480,13 @@ public class TextAutomatonFrame extends JInternalFrame {
         cornerPanel.add(resetSentenceGraph);
         Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
             public void actionPerformed(ActionEvent arg0) {
-            	InternalFrameManager.getManager().closeTextAutomatonFrame();
-            	InternalFrameManager.getManager().closeTfstTagsFrame();
+            	InternalFrameManager.getManager(null).closeTextAutomatonFrame();
+            	InternalFrameManager.getManager(null).closeTfstTagsFrame();
                 Config.cleanTfstFiles(false);
                 RebuildTfstCommand command = new RebuildTfstCommand()
                         .automaton(new File(Config.getCurrentSntDir(),
                                 "text.tfst"));
-                Launcher.exec(command, true, new RebuildTextAutomatonDo());
+                Launcher.exec(command, true, new RebuildTextAutomatonDo(Config.getCurrentSntDir()));
             }
         };
         JButton rebuildTfstButton = new JButton(rebuildAction);
@@ -818,7 +818,7 @@ public class TextAutomatonFrame extends JInternalFrame {
                 new File(Config.getCurrentElagDir(), "tagset.def")).rules(
                 elagrules).output(elag_tfst).automaton(text_tfst);
         if (implodeCheckBox.isSelected()) {
-            Launcher.exec(elagcmd, false, new ImploseDo(this, elag_tfst));
+            Launcher.exec(elagcmd, false, new ImplodeDo(this, elag_tfst));
         } else {
             Launcher.exec(elagcmd, false, new loadSentenceDo(this));
         }
@@ -872,15 +872,15 @@ public class TextAutomatonFrame extends JInternalFrame {
     }
 
     void exploseElagFst() {
-    	InternalFrameManager.getManager().closeTfstTagsFrame();
+    	InternalFrameManager.getManager(null).closeTfstTagsFrame();
         explodeTextAutomaton(elag_tfst);
-        InternalFrameManager.getManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+        InternalFrameManager.getManager(null).newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
     }
 
     void implodeElagFst() {
-    	InternalFrameManager.getManager().closeTfstTagsFrame();
+    	InternalFrameManager.getManager(null).closeTfstTagsFrame();
         implodeTextAutomaton(elag_tfst);
-        InternalFrameManager.getManager().newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+        InternalFrameManager.getManager(null).newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
     }
 
     boolean explodeTextAutomaton(File f) {
@@ -912,33 +912,38 @@ public class TextAutomatonFrame extends JInternalFrame {
                 new File(Config.getCurrentElagDir(), "tagset.def")).automaton(
                 text_tfst);
         if (implode) {
-            Launcher.exec(tagsetcmd, false, new ImploseDo(this, text_tfst));
+            Launcher.exec(tagsetcmd, false, new ImplodeDo(this, text_tfst));
         } else {
             Launcher.exec(tagsetcmd, false, new loadSentenceDo(this));
         }
     }
 
     class RebuildTextAutomatonDo implements ToDo {
+    	
+    	File sntDir;
+    	
+    	public RebuildTextAutomatonDo(File sntDir) {
+    		this.sntDir=sntDir;
+    	}
+    	
         public void toDo() {
-        	FileUtil.deleteFileByName(new File(Config.getCurrentSntDir(),
-                    "sentence*.grf"));
-            File dir = Config.getCurrentSntDir();
-            File f = new File(dir, "currelagsentence.grf");
+        	FileUtil.deleteFileByName(new File(sntDir,"sentence*.grf"));
+            File f = new File(sntDir, "currelagsentence.grf");
             if (f.exists() && !f.delete()) {
                 JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
                         "Failed to delete " + f);
             }
-            f = new File(dir, "currelagsentence.txt");
+            f = new File(sntDir, "currelagsentence.txt");
             if (f.exists() && !f.delete()) {
                 JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
                         "Failed to delete " + f);
             }
-            f = new File(dir, "text-elag.tfst");
+            f = new File(sntDir, "text-elag.tfst");
             if (f.exists() && !f.delete()) {
                 JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
                         "unable to delete " + f);
             }
-            InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
+            InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1, false);
         }
     }
 
@@ -962,11 +967,11 @@ class loadSentenceDo implements ToDo {
 }
 
 
-class ImploseDo implements ToDo {
+class ImplodeDo implements ToDo {
     private final File fst;
     private final TextAutomatonFrame fr;
 
-    public ImploseDo(TextAutomatonFrame frame, File f) {
+    public ImplodeDo(TextAutomatonFrame frame, File f) {
         fst = f;
         fr = frame;
     }

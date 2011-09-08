@@ -92,24 +92,24 @@ public class ExportTextAsPOSListDialog extends JDialog {
     public void launch() {
         canceled = false;
         progress.setMinimum(0);
-        final int sentenceCount = InternalFrameManager.getManager()
+        final int sentenceCount = InternalFrameManager.getManager(null)
                 .getTextAutomatonFrame().getSentenceCount();
         progress.setMaximum(sentenceCount);
         progress.setValue(0);
         progress.setStringPainted(true);
         final ExportTextAsPOSListDialog dialog = this;
+        final File sntDir=Config.getCurrentSntDir();
+        final Encoding encoding=ConfigManager.getManager().getEncoding(null);
         new Thread(new Runnable() {
             public void run() {
                 TokensInfo.save();
-                File tfst = new File(Config.getCurrentSntDir(), "text.tfst");
-                File tmpGrf = new File(Config.getCurrentSntDir(), "foo.grf");
-                File sentenceText = new File(Config.getCurrentSntDir(),
-                        "foo.txt");
-                File sentenceTok = new File(Config.getCurrentSntDir(),
-                        "foo.tok");
+                File tfst = new File(sntDir, "text.tfst");
+                File tmpGrf = new File(sntDir, "foo.grf");
+                File sentenceText = new File(sntDir,"foo.txt");
+                File sentenceTok = new File(sntDir,"foo.tok");
                 TfstTableModel model = new TfstTableModel(filter, false);
                 try {
-                    OutputStreamWriter writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(output);
+                    OutputStreamWriter writer=encoding.getOutputStreamWriter(output);
                     for (int i = 1; i <= sentenceCount; i++) {
                         if (canceled) {
                             break;

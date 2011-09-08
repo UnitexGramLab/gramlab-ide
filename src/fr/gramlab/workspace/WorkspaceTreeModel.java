@@ -38,6 +38,14 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 				root.removeProjectNode(p,pos);
 				nodesWereRemoved((RootNode)getRoot(),new int[]{pos},null);
 			}
+
+			public void currentProjectChanged(Project p,int pos) {
+				/* We have to update all the project nodes */
+				int n=root.getChildCount();
+				for (int i=0;i<n;i++) {
+					nodeChanged(root.getChildAt(i));
+				}
+			}
 			
 		});
 	}

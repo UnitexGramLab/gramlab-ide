@@ -12,8 +12,10 @@ import javax.swing.plaf.metal.OceanTheme;
 
 import fr.gramlab.config.GramlabConfigManager;
 import fr.gramlab.frames.GramlabFrame;
+import fr.gramlab.frames.ProjectFrameManager;
 import fr.gramlab.workspace.ProjectManager;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.frames.InternalFrameManager;
 
 public class Main {
 	/**
@@ -62,11 +64,12 @@ public class Main {
 		if (args.length==1) {
 			path=new File(args[0]);
 		}
+		InternalFrameManager.setManager(new ProjectFrameManager());
+		ProjectManager.setManager(new ProjectManager());
 		GramlabConfigManager.initConfig(path);
         frame = new GramlabFrame();
         frame.setVisible(true);
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-		ProjectManager.setManager(new ProjectManager());
 		ProjectManager.getManager().loadProjects();
 	}
 

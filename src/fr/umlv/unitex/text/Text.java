@@ -58,7 +58,7 @@ public class Text {
 		TextConversionDo toDo = new TextConversionDo(name, taggedText);
 		Encoding e = Encoding.getEncoding(name);
 		if (e == null) {
-			InternalFrameManager.getManager().newTranscodeOneFileDialog(name, toDo);
+			InternalFrameManager.getManager(name).newTranscodeOneFileDialog(name, toDo);
 		} else {
 			toDo.toDo();
 		}
@@ -109,7 +109,7 @@ public class Text {
 	}
 
 	private static void preprocessSnt(File name, File snt, boolean taggedText) {
-		InternalFrameManager.getManager()
+		InternalFrameManager.getManager(name)
 				.newPreprocessDialog(name, snt, taggedText);
 	}
 
@@ -135,7 +135,7 @@ public class Text {
 		 * We have to close the text frame there, because if not, we will have
 		 * problem when trying to close the .snt file that is mapped
 		 */
-		InternalFrameManager.getManager().closeTextFrame();
+		InternalFrameManager.getManager(null).closeTextFrame();
 		Text.removeSntFiles();
 		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),
 				taggedText));
@@ -149,7 +149,7 @@ public class Text {
 	 *            file name
 	 */
 	public static void loadSnt(File snt, boolean taggedText) {
-		InternalFrameManager.getManager().newTextFrame(snt, taggedText);
+		InternalFrameManager.getManager(snt).newTextFrame(snt, taggedText);
 	}
 
 	/**

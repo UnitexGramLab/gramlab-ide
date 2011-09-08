@@ -475,7 +475,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         ModifyTextDo toDo = null;
         String sntName = FileUtil.getFileNameWithoutExtension(txt) + ".snt";
         if (new File(sntName).equals(Config.getCurrentSnt())) {
-        	InternalFrameManager.getManager().closeTextFrame();
+        	InternalFrameManager.getManager(null).closeTextFrame();
             toDo = new ModifyTextDo(new File(sntName));
         }
         MultiCommands commands = new MultiCommands();
@@ -574,7 +574,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         if (width < 40) {
             width = 40;
         }
-        InternalFrameManager.getManager().closeConcordanceFrame();
+        InternalFrameManager.getManager(null).closeConcordanceFrame();
         Launcher.exec(command, true, new ConcordanceDo(false, new File(Config
                 .getCurrentSntDir(), "concord.html"), openWithBrowser
                 .isSelected(), width));
@@ -599,7 +599,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 .diffOnly();
         setVisible(false);
         int width = 160;
-        InternalFrameManager.getManager().closeConcordanceDiffFrame();
+        InternalFrameManager.getManager(null).closeConcordanceDiffFrame();
         Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
                 openWithBrowser.isSelected(), width));
     }
@@ -609,12 +609,14 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         final boolean browser;
         final int widthInChars;
         final boolean diff;
+        final File htmlViewer;
 
         public ConcordanceDo(File page) {
             htmlFile = page;
             browser = false;
             widthInChars = 95;
             diff = false;
+        	htmlViewer=ConfigManager.getManager().getHtmlViewer(null);
         }
 
         public ConcordanceDo(boolean diff, File page, boolean br, int width) {
@@ -622,11 +624,10 @@ public class ConcordanceParameterFrame extends JInternalFrame {
             browser = br;
             widthInChars = width;
             this.diff = diff;
-
+        	htmlViewer=ConfigManager.getManager().getHtmlViewer(null);
         }
 
         public void toDo() {
-        	File htmlViewer=ConfigManager.getManager().getHtmlViewer(null);
             if (browser && htmlViewer != null) {
                 String[] s = new String[2];
                 s[0] = htmlViewer.getAbsolutePath();
@@ -639,10 +640,10 @@ public class ConcordanceParameterFrame extends JInternalFrame {
                 }
             } else {
                 if (!diff) {
-                	InternalFrameManager.getManager().newConcordanceFrame(htmlFile,
+                	InternalFrameManager.getManager(htmlFile).newConcordanceFrame(htmlFile,
                             widthInChars);
                 } else {
-                	InternalFrameManager.getManager().newConcordanceDiffFrame(
+                	InternalFrameManager.getManager(htmlFile).newConcordanceDiffFrame(
                             htmlFile);
                 }
             }
@@ -657,7 +658,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         }
 
         public void toDo() {
-        	InternalFrameManager.getManager().newTextFrame(snt, false);
+        	InternalFrameManager.getManager(snt).newTextFrame(snt, false);
         }
     }
 
@@ -672,7 +673,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
         }
 
         public void toDo() {
-        	InternalFrameManager.getManager().newStatisticsFrame(f, mode);
+        	InternalFrameManager.getManager(f).newStatisticsFrame(f, mode);
         }
 
     }

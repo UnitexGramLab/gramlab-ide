@@ -74,7 +74,7 @@ class ListDocument extends PlainDocument {
             return;
         }
 
-        ContextsInfo info = InternalFrameManager.getManager().newListCopyDialog();
+        ContextsInfo info = InternalFrameManager.getManager(null).newListCopyDialog();
         // tokenizes the text
         StringTokenizer st = new StringTokenizer(s, "\n");
         String res = info.left;

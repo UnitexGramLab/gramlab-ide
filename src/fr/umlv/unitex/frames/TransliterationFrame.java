@@ -24,6 +24,7 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -162,15 +163,20 @@ public class TransliterationFrame extends JInternalFrame {
 		} catch (InvalidDestinationEncodingException e) {
 			e.printStackTrace();
 		}
-
         setVisible(false);
-        Launcher.exec(command.getBuilder(), true, new ReloadDicDo());
+        Launcher.exec(command.getBuilder(), true, new ReloadDicDo(Config.getCurrentDELA()));
     }
 
     class ReloadDicDo implements ToDo {
         
+    	File dela;
+    	
+    	public ReloadDicDo(File dela) {
+    		this.dela=dela;
+    	}
+    	
     	public void toDo() {
-            InternalFrameManager.getManager().newDelaFrame(Config.getCurrentDELA());
+            InternalFrameManager.getManager(dela).newDelaFrame(dela);
         }
 	}
 

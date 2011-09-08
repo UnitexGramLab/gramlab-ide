@@ -1,6 +1,7 @@
 package fr.gramlab.frames;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -13,7 +14,6 @@ import java.io.File;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -22,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
@@ -31,29 +32,43 @@ import javax.swing.tree.TreePath;
 
 import fr.gramlab.icons.Icons;
 import fr.gramlab.workspace.Project;
+import fr.gramlab.workspace.ProjectAdapter;
 import fr.gramlab.workspace.ProjectManager;
 import fr.gramlab.workspace.ProjectNode;
+import fr.gramlab.workspace.ProjectTabbedPane;
 import fr.gramlab.workspace.RootNode;
 import fr.gramlab.workspace.WorkspaceTreeModel;
 import fr.gramlab.workspace.WorkspaceTreeNode;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 @SuppressWarnings("serial")
 public class GramlabFrame extends JFrame {
 	Action editProject;
 	Action deleteProject;
-	JDesktopPane desktop;
+	ProjectTabbedPane tabbedPane;
 
 	public GramlabFrame() {
-		super("GramLab");
+		super();
 		setJMenuBar(createMenuBar());
 		JPanel tree = createWorkspacePane();
-		desktop = new JDesktopPane();
+		tabbedPane=new ProjectTabbedPane();
 		JSplitPane p = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, tree,
-				desktop);
-		InternalFrameManager.setManager(new InternalFrameManager(desktop));
+				tabbedPane);
 		setContentPane(p);
+		refreshTitle();
+		ProjectManager.getManager().addProjectListener(new ProjectAdapter() {
+			@Override
+			public void currentProjectChanged(Project p1, int pos) {
+				refreshTitle();
+			}
+		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	void refreshTitle() {
+		String project=ConfigManager.getManager().getCurrentLanguage();
+		setTitle("Gramlab - "+((project==null)?"no current project":"current project is "+project));
 	}
 
 	private JPanel createWorkspacePane() {
@@ -119,6 +134,10 @@ public class GramlabFrame extends JFrame {
 							expanded, false, row, hasFocus);
 					if (n.getProject().isOpen())
 						setIcon(Icons.openFolderIcon);
+					if (ProjectManager.getManager().getCurrentProject()==n.getProject()) {
+						/* The current project is displayed with a different color */
+						setForeground(Color.RED);
+					}
 				} else {
 					/* Normal case */
 					super.getTreeCellRendererComponent(tree, name, sel,
@@ -162,8 +181,10 @@ public class GramlabFrame extends JFrame {
 					if (doubleClick && f.isFile()) {
 						/* Double-click on a file */
 						if (f.getName().endsWith(".grf")) {
-							InternalFrameManager.getManager().newGraphFrame(f);
-						}
+							InternalFrameManager.getManager(f).newGraphFrame(f);
+						} else if (f.getName().endsWith(".dic")) {
+							InternalFrameManager.getManager(f).newDelaFrame(f);
+						} 
 					}
 				}
 			}
@@ -181,10 +202,20 @@ public class GramlabFrame extends JFrame {
 					}
 				};
 				popup.add(new JMenuItem(openClose));
+				if (open && ProjectManager.getManager().getCurrentProject()!=project) {
+					/* If the project is not the current one, we offer here 
+					 * to make it so */
+					Action setCurrent = new AbstractAction("Set as current project") {
+						public void actionPerformed(ActionEvent e) {
+							ProjectManager.getManager().setCurrentProject(project);
+						}
+					};
+					popup.add(new JMenuItem(setCurrent));
+				}
 				return popup;
 			}
 		});
-		p.add(tree);
+		p.add(new JScrollPane(tree));
 		return p;
 	}
 
@@ -251,6 +282,7 @@ public class GramlabFrame extends JFrame {
 	public void openGraph() {
 		final JFileChooser fc = new JFileChooser();
 		fc.setMultiSelectionEnabled(true);
+		fc.setCurrentDirectory(ConfigManager.getManager().getCurrentGraphDirectory());
 		fc.setDialogType(JFileChooser.OPEN_DIALOG);
 		final int returnVal = fc.showOpenDialog(this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -270,7 +302,7 @@ public class GramlabFrame extends JFrame {
 					continue;
 				}
 			}
-			InternalFrameManager.getManager().newGraphFrame(graphs[i]);
+			InternalFrameManager.getManager(graphs[i]).newGraphFrame(graphs[i]);
 		}
 	}
 
@@ -278,7 +310,7 @@ public class GramlabFrame extends JFrame {
 		JMenu m = new JMenu("Graphs");
 		Action n = new AbstractAction("New") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager().newGraphFrame(null);
+				InternalFrameManager.getManager(null).newGraphFrame(null);
 			}
 		};
 		m.add(new JMenuItem(n));

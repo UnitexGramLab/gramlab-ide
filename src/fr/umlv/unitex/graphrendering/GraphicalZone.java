@@ -119,7 +119,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithInputVar=new AbstractAction("Input variable") {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				String name=InternalFrameManager.getManager().newVariableInsertionDialog(true);
+				String name=InternalFrameManager.getManager(null).newVariableInsertionDialog(true);
 				if (name==null || name.equals("")) return;
 				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
 						"$"+name+"(","$"+name+")");
@@ -132,7 +132,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithOutputVar=new AbstractAction("Output variable") {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				String name=InternalFrameManager.getManager().newVariableInsertionDialog(false);
+				String name=InternalFrameManager.getManager(null).newVariableInsertionDialog(false);
 				if (name==null || name.equals("")) return;
 				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes.clone(),
 						"$|"+name+"(","$|"+name+")");
@@ -444,7 +444,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     b = (GraphBox) graphBoxes.get(boxSelected);
                     File file = b.getGraphClicked(y_tmp);
                     if (file != null) {
-                    	InternalFrameManager.getManager().newGraphFrame(file);
+                    	InternalFrameManager.getManager(null).newGraphFrame(file);
                     }
                 }
             } else if (EDITING_MODE == MyCursors.KILL_BOXES) {

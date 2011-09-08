@@ -248,7 +248,7 @@ public class MyDropTarget {
 							e.printStackTrace();
 							return;
 						}
-						InternalFrameManager.getManager().newDelaFrame(dela);
+						InternalFrameManager.getManager(dela).newDelaFrame(dela);
 					}
 				});
 				return;
@@ -268,13 +268,13 @@ public class MyDropTarget {
 					public void run() {
 						ToDo toDo = new ToDo() {
 							public void toDo() {
-								InternalFrameManager.getManager()
+								InternalFrameManager.getManager(dela)
 										.newDelaFrame(dela);
 							}
 						};
 						Encoding e = Encoding.getEncoding(dela);
 						if (e == null) {
-							InternalFrameManager.getManager()
+							InternalFrameManager.getManager(dela)
 									.newTranscodeOneFileDialog(dela, toDo);
 						} else {
 							toDo.toDo();
@@ -287,7 +287,7 @@ public class MyDropTarget {
 				for (Object aList : list) {
 					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
 						final File file = (File) aList;
-						InternalFrameManager.getManager().newGraphFrame(file);
+						InternalFrameManager.getManager(file).newGraphFrame(file);
 					}
 				}
 			}
@@ -350,7 +350,7 @@ public class MyDropTarget {
 		}
 
 		private void processDropList(List<?> list) {
-			TranscodingFrame frame = InternalFrameManager.getManager()
+			TranscodingFrame frame = InternalFrameManager.getManager(null)
 					.newTranscodingFrame();
 			Object o;
 			for (Object aList : list) {
