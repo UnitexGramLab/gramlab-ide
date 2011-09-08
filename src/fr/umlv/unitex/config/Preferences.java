@@ -41,6 +41,14 @@ import fr.umlv.unitex.io.Encoding;
  */
 public class Preferences {
 
+	/* Base preferences: the preferences the current preferences inherited of. This
+	 * is useful to know when we want to save the config file, in order
+	 * to dump only values that differs between preferences and base.
+	 * 
+	 * A null value indicates that we inherits from the default preferences.
+	 */
+	private Preferences base;
+	
     public FontInfo textFont;
     public FontInfo concordanceFont;
 
@@ -180,14 +188,22 @@ public class Preferences {
      */
     public Preferences() {
         setPreferencesFromProperties(defaultProperties);
+        base=null;
     }
 
     /**
-     * Sets configuration values to those specified by prop
+     * Sets configuration values to those specified by prop, inheriting the base
+     * properties if needed.
      *
      * @param prop
      */
     protected void setPreferencesFromProperties(Properties prop) {
+    	Properties baseProperties=getBaseProperties();
+    	for (Object key:baseProperties.keySet()) {
+    		if (!prop.containsKey(key)) {
+    			prop.put(key,baseProperties.get(key));
+    		}
+    	}
         int size = Integer.parseInt(prop.getProperty("TEXT FONT SIZE"));
         int style = Integer.parseInt(prop.getProperty("TEXT FONT STYLE"));
         Font font = new Font(prop.getProperty("TEXT FONT NAME"), style,
@@ -340,11 +356,38 @@ public class Preferences {
      * @return a copy of the preferences
      */
     @Override
-    protected Preferences clone() {
+    public Preferences clone() {
         Properties prop = setPropertiesFromPreferences();
         Preferences p = new Preferences();
         p.setPreferencesFromProperties(prop);
         return p;
     }
 
+    public Properties getBaseProperties() {
+    	if (base==null) {
+    		return defaultProperties;
+    	}
+    	return base.setPropertiesFromPreferences();
+    }
+    
+    public void setBase(Preferences p) {
+    	this.base=p;
+    }
+
+    /**
+     * Returns properties that differ from base properties.
+     */
+	public Properties getOwnProperties() {
+		Properties tmp=setPropertiesFromPreferences();
+		Properties diff=new Properties();
+		Properties base1=getBaseProperties();
+		for (Object key:tmp.keySet()) {
+			Object value=tmp.get(key);
+			if (!base1.containsKey(key) || !base1.get(key).equals(value)) {
+				diff.put(key,value);
+			}
+		}
+		return diff;
+	}
+    
 }
