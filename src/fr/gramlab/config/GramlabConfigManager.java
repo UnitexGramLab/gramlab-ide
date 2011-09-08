@@ -17,7 +17,6 @@ import fr.umlv.unitex.config.ConfigModel;
 
 public class GramlabConfigManager {
 	
-	private static ConfigModel defaultConfig;
 	private static Project currentProject;
 	private static int system = -1;
 	private static String user;
@@ -28,7 +27,7 @@ public class GramlabConfigManager {
 		if (path==null) {
 			path = new File(System.getProperty("user.dir"));
 		}
-		defaultConfig = new DefaultConfig(path);
+		ConfigManager.setManager(new ProjectConfig(path));
 		setCurrentProject(null);
 		user = System.getProperty("user.name");
 		findWorkspace();
@@ -118,14 +117,7 @@ public class GramlabConfigManager {
 	}
 
 	public static void setCurrentProject(Project p) {
-		ConfigModel currentProjectConfig;
-		if (p == null) {
-			currentProjectConfig = defaultConfig;
-		} else {
-			currentProjectConfig = p.getConfigModel();
-		}
 		currentProject=p;
-		ConfigManager.setManager(currentProjectConfig);
 	}
 	
 	

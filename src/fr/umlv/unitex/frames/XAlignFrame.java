@@ -166,7 +166,7 @@ public class XAlignFrame extends JInternalFrame {
 
             @Override
             public void internalFrameClosed(InternalFrameEvent e) {
-            	InternalFrameManager.getManager().closeXAlignLocateFrame();
+            	InternalFrameManager.getManager(null).closeXAlignLocateFrame();
             }
         });
         getContentPane().setLayout(new BorderLayout());
@@ -301,13 +301,13 @@ public class XAlignFrame extends JInternalFrame {
             }
             ToDo toDo = new ToDo() {
                 public void toDo() {
-                	InternalFrameManager.getManager().newXAlignLocateFrame(language, snt, concordModel);
+                	InternalFrameManager.getManager(null).newXAlignLocateFrame(language, snt, concordModel);
                 }
             };
             Launcher.exec(commands, true, toDo, true);
             return;
         }
-        InternalFrameManager.getManager().newXAlignLocateFrame(language, snt, concordModel);
+        InternalFrameManager.getManager(null).newXAlignLocateFrame(language, snt, concordModel);
     }
 
     void saveAlignment(XAlignModel model1) {
@@ -425,7 +425,7 @@ public class XAlignFrame extends JInternalFrame {
             try {
                 model1.load(f);
             } catch (IOException e) {
-            	InternalFrameManager.getManager().closeXAlignFrame();
+            	InternalFrameManager.getManager(null).closeXAlignFrame();
             }
         }
     }

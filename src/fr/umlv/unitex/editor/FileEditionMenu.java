@@ -71,14 +71,14 @@ public class FileEditionMenu extends JMenu {
         convert.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
-            	InternalFrameManager.getManager().newTranscodingFrame();
+            	InternalFrameManager.getManager(null).newTranscodingFrame();
             }
         });
 
         JMenuItem closeAll = new JMenuItem("Close All");
         closeAll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	InternalFrameManager.getManager().closeAllFileEditionTextFrames();
+            	InternalFrameManager.getManager(null).closeAllFileEditionTextFrames();
             }
         });
         add(newFile);

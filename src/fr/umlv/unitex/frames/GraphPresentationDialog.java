@@ -373,7 +373,7 @@ class GraphPresentationDialog extends JDialog {
         GridBagConstraints gbc = new GridBagConstraints();
         Action inputAction = new AbstractAction("Input") {
             public void actionPerformed(ActionEvent arg0) {
-                FontInfo i = InternalFrameManager.getManager().newFontDialog(info.input);
+                FontInfo i = InternalFrameManager.getManager(null).newFontDialog(info.input);
                 if (i != null) {
                     info.input = i;
                     configure(info, rightToLeftCheckBox.isVisible());
@@ -383,7 +383,7 @@ class GraphPresentationDialog extends JDialog {
         JButton input = new JButton(inputAction);
         Action outputAction = new AbstractAction("Output") {
             public void actionPerformed(ActionEvent arg0) {
-                FontInfo i = InternalFrameManager.getManager().newFontDialog(info.output);
+                FontInfo i = InternalFrameManager.getManager(null).newFontDialog(info.output);
                 if (i != null) {
                     info.output = i;
                     configure(info, rightToLeftCheckBox.isVisible());
@@ -415,7 +415,7 @@ class GraphPresentationDialog extends JDialog {
         buttonPanel.setBorder(new EmptyBorder(5, 5, 0, 0));
         Action defaultAction = new AbstractAction("Default") {
             public void actionPerformed(ActionEvent arg0) {
-                if (InternalFrameManager.getManager().getCurrentFocusedGraphFrame() == null)
+                if (InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame() == null)
                     return;
                 info = ConfigManager.getManager().getGraphPresentationPreferences(null);
                 configure(info, rightToLeftCheckBox.isVisible());

@@ -304,9 +304,9 @@ public class LocateFrame extends JInternalFrame {
             FileUtil.write(regExp.getText(), regexpFile);
             Reg2GrfCommand reg2GrfCmd = new Reg2GrfCommand().file(regexpFile);
             commands.addCommand(reg2GrfCmd);
-            Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
-                    new File(Config.getUserCurrentLanguageDir(), "regexp.grf"))
-                    .enableLoopAndRecursionDetection(true).tokenizationMode(null)
+            File grf=new File(Config.getUserCurrentLanguageDir(), "regexp.grf");
+            Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
+                    .enableLoopAndRecursionDetection(true).tokenizationMode(null,grf)
                     .repository();
             if (debug.isSelected()) grfCmd=grfCmd.debug();
             commands.addCommand(grfCmd);
@@ -322,10 +322,10 @@ public class LocateFrame extends JInternalFrame {
             String grfName = graphName.getText();
             if (grfName.substring(grfName.length() - 3, grfName.length())
                     .equalsIgnoreCase("grf")) {
-                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
-                        new File(grfName))
+            	File grf=new File(grfName);
+                Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
                         .enableLoopAndRecursionDetection(true)
-                        .tokenizationMode(null).repository();
+                        .tokenizationMode(null,grf).repository();
                 if (debug.isSelected()) grfCmd=grfCmd.debug();
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName.length() - 3);
@@ -398,7 +398,7 @@ public class LocateFrame extends JInternalFrame {
                 locateCmd = locateCmd.backtrackOnVariableErrors();
             }
             commands.addCommand(locateCmd);
-            toDo = new LocateDo();
+            toDo = new LocateDo(Config.getCurrentSntDir());
         } else {
             /* If we want to work on the text automaton */
             File tfst = new File(Config.getCurrentSntDir(), "text.tfst");
@@ -445,7 +445,7 @@ public class LocateFrame extends JInternalFrame {
                 locateCmd = locateCmd.backtrackOnVariableErrors();
             }
             commands.addCommand(locateCmd);
-            toDo = new LocateTfstDo();
+            toDo = new LocateTfstDo(Config.getCurrentSntDir());
         }
         setVisible(false);
         savePreviousConcordance();
@@ -523,26 +523,36 @@ public class LocateFrame extends JInternalFrame {
 
     class LocateDo implements ToDo {
 
+    	File sntDir;
+    	
+    	public LocateDo(File sntDir) {
+    		this.sntDir=sntDir;
+    	}
+    	
         public void toDo() {
-            String res = readInfo(new File(Config.getCurrentSntDir(),
-                    "concord.n"));
+            String res = readInfo(new File(sntDir,"concord.n"));
             JOptionPane.showMessageDialog(null, res, "Result Info",
                     JOptionPane.PLAIN_MESSAGE);
             if (!res.startsWith("0")) {
-            	InternalFrameManager.getManager().newConcordanceParameterFrame();
+            	InternalFrameManager.getManager(sntDir).newConcordanceParameterFrame();
             }
         }
     }
 
     class LocateTfstDo implements ToDo {
-
+    	
+    	File sntDir;
+    	
+    	public LocateTfstDo(File sntDir) {
+    		this.sntDir=sntDir;
+    	}
+    	
         public void toDo() {
-            String res = readTfstInfo(new File(Config.getCurrentSntDir(),
-                    "concord_tfst.n"));
+            String res = readTfstInfo(new File(sntDir,"concord_tfst.n"));
             JOptionPane.showMessageDialog(null, res, "Result Info",
                     JOptionPane.PLAIN_MESSAGE);
             if (!res.startsWith("0")) {
-            	InternalFrameManager.getManager().newConcordanceParameterFrame();
+            	InternalFrameManager.getManager(sntDir).newConcordanceParameterFrame();
             }
         }
     }

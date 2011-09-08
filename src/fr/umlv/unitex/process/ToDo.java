@@ -34,5 +34,13 @@ package fr.umlv.unitex.process;
  *
  */
 public interface ToDo {
-   public void toDo();
+	
+	/**
+	 * IMPORTANT: a toDo() method must NEVER use things like Config.getCurrent...
+	 *            because in Gramlab mode, there is not guarantee that the current language is
+	 *            the same when Launcher.exec is invoked and when toDo is invoked.
+	 *            All needed files must must passed in the ToDo constructor
+	 */
+	public void toDo();
+   
 }

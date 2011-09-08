@@ -69,7 +69,7 @@ public class DebugGraphPane extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount()==2 && currentGraph!=-1) {
 					File f=infos.graphs.get(currentGraph-1);
-					InternalFrameManager.getManager().newGraphFrame(f);
+					InternalFrameManager.getManager(f).newGraphFrame(f);
 				}
 			}
 		};

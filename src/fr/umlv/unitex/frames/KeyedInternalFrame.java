@@ -18,26 +18,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.config;
+package fr.umlv.unitex.frames;
 
+import javax.swing.JInternalFrame;
 
-
-public abstract class AbstractConfigModel implements ConfigModel {
+public abstract class KeyedInternalFrame<K> extends JInternalFrame {
 	
-	public boolean isKorean(String language) {
-    	if (language==null) language=getCurrentLanguage();
-        return language.equals("Korean");
-    }
-	
-    public boolean isArabic(String language) {
-    	if (language==null) language=getCurrentLanguage();
-        return language.equals("Arabic");
-    }
-    
-    public boolean isValidLanguageName(String language) {
-        return !(language.equals("App") || language.equals("Users")
-                || language.equals("Src") || language.equals("XAlign")
-                || language.startsWith("."));
-    }
-    
+	public KeyedInternalFrame(String string, boolean b, boolean c, boolean d,
+			boolean e) {
+		super(string,b,c,d,e);
+	}
+
+	public abstract K getKey();
 }

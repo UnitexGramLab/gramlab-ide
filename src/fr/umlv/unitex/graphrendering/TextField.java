@@ -266,11 +266,11 @@ public class TextField extends GraphTextField {
         }
 
         public void actionPerformed(ActionEvent e) {
-            GraphFrame f = InternalFrameManager.getManager()
+            GraphFrame f = InternalFrameManager.getManager(null)
                     .getCurrentFocusedGraphFrame();
             if (f == null)
                 return;
-            GraphPresentationInfo info = InternalFrameManager.getManager()
+            GraphPresentationInfo info = InternalFrameManager.getManager(null)
                     .newGraphPresentationDialog(f.getGraphPresentationInfo(),
                             true);
             if (info != null) {

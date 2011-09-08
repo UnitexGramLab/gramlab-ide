@@ -219,10 +219,6 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.concordanceFont.size;
 	}
 
-	public String getConfigName() {
-		return "Unitex config manager";
-	}
-
 	public File getUnitexToolLogger() {
 		return Config.getUnitexToolLogger();
 	}
@@ -237,6 +233,10 @@ public class ConfigManager extends AbstractConfigModel {
 
 	public File getCurrentGraphDirectory() {
 		return Config.getCurrentGraphDir();
+	}
+
+	public File getAlphabetForGrf(String language, File grf) {
+		return getAlphabet(language);
 	}
 
 }

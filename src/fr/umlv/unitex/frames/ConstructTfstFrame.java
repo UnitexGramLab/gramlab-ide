@@ -253,9 +253,10 @@ public class ConstructTfstFrame extends JInternalFrame {
                             new File(normalizationDir,
                                     "Norm.grf"));
             commands.addCommand(reconstrucaoCmd);
+            File grf=new File(normalizationDir, "Norm.grf");
             Grf2Fst2Command grfCommand = new Grf2Fst2Command()
-                    .grf(new File(normalizationDir, "Norm.grf"))
-                    .tokenizationMode(null).repository();
+                    .grf(grf)
+                    .tokenizationMode(null,grf).repository();
             commands.addCommand(grfCommand);
         }
         Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
@@ -276,7 +277,7 @@ public class ConstructTfstFrame extends JInternalFrame {
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command()
                         .grf(normGrfFile)
                         .enableLoopAndRecursionDetection(true)
-                        .tokenizationMode(null);
+                        .tokenizationMode(null,normGrfFile);
                 commands.addCommand(grfCmd);
                 String fst2Name = grfName.substring(0, grfName
                         .length() - 3);
@@ -320,20 +321,26 @@ public class ConstructTfstFrame extends JInternalFrame {
                 commands.addCommand(taggerCmd);
             }
         }
-        InternalFrameManager.getManager().closeTextAutomatonFrame();
-        InternalFrameManager.getManager().closeTfstTagsFrame();
+        InternalFrameManager.getManager(null).closeTextAutomatonFrame();
+        InternalFrameManager.getManager(null).closeTfstTagsFrame();
         /* We also have to rebuild the text automaton */
         Config.cleanTfstFiles(true);
-        Launcher.exec(commands, true, new ConstructTfstDo(),
+        Launcher.exec(commands, true, new ConstructTfstDo(Config.getCurrentSntDir()),
                 false);
     }
 
     class ConstructTfstDo implements ToDo {
 
+    	File sntDir;
+    	
+    	public ConstructTfstDo(File sntDir) {
+    		this.sntDir=sntDir;
+    	}
+    	
         public void toDo() {
-        	InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
-        	InternalFrameManager.getManager().newTfstTagsFrame(
-                    new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+        	InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1, false);
+        	InternalFrameManager.getManager(sntDir).newTfstTagsFrame(
+                    new File(sntDir, "tfst_tags_by_freq.txt"));
         }
     }
 

@@ -58,7 +58,7 @@ public class Launcher {
 	public static void exec(MultiCommands c, boolean close, ToDo myDo, 
 			boolean stopIfProblem) {
 		if (c==null) return;
-		InternalFrameManager.getManager().newProcessInfoFrame(c,close,myDo,stopIfProblem);
+		InternalFrameManager.getManager(null).newProcessInfoFrame(c,close,myDo,stopIfProblem);
 	}
 
 	/**

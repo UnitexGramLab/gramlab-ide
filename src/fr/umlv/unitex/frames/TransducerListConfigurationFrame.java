@@ -856,7 +856,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements 
         }
 
         if (grf != null) {
-        	InternalFrameManager.getManager().newGraphFrame(grf);
+        	InternalFrameManager.getManager(grf).newGraphFrame(grf);
         } else {
             String t = "Wrong file selected";
             String message = "Please select a file with the fst2 extension";
