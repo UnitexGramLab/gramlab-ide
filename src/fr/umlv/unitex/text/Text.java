@@ -149,6 +149,7 @@ public class Text {
 	 *            file name
 	 */
 	public static void loadSnt(File snt, boolean taggedText) {
+		Config.setCurrentSnt(snt);
 		InternalFrameManager.getManager(snt).newTextFrame(snt, taggedText);
 	}
 
