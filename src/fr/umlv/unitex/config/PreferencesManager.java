@@ -20,7 +20,6 @@
  */
 package fr.umlv.unitex.config;
 
-import java.awt.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,8 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-import fr.umlv.unitex.listeners.FontListener;
-
 /**
  *
  * @author paumier
@@ -40,7 +37,7 @@ import fr.umlv.unitex.listeners.FontListener;
 public class PreferencesManager {
 
 	/**
-	 * Loads a config file. If base is not null, then copies of its values are overrided
+	 * Loads a config file. If base is not null, then copies of its values are overridden
 	 * instead of overriding default values. base is not modified.
 	 * @param f
 	 * @param base
@@ -48,7 +45,10 @@ public class PreferencesManager {
 	 */
 	public static Preferences loadPreferences(File f,Preferences base) {
 		Preferences p;
-		if (base!=null) p=base.clone();
+		if (base!=null) {
+			p=base.clone();
+			p.setBase(base);
+		}
 		else p=new Preferences();
 		Properties properties=loadProperties(f);
         p.setPreferencesFromProperties(properties);
@@ -56,7 +56,7 @@ public class PreferencesManager {
 	}
 	
     private static Properties loadProperties(File f) {
-        Properties languageProperties = new Properties(Preferences.defaultProperties);
+    	Properties languageProperties = new Properties(null);
         FileInputStream stream = null;
         try {
             stream = new FileInputStream(f);
@@ -73,7 +73,7 @@ public class PreferencesManager {
     }
 
 	public static void savePreferences(File f,Preferences p,String language) {
-        Properties prop = p.setPropertiesFromPreferences();
+        Properties prop = p.getOwnProperties();
         saveProperties(f,prop);
         firePreferencesChanged(language);
 	}
@@ -120,7 +120,7 @@ public class PreferencesManager {
     	Info info=cache.get(language);
     	if (info!=null) {
     		/* There is something in the cache. Is it still up-to-date ? */
-    		if (info.f.exists() && info.f.lastModified()<info.date) {
+    		if (info.f.exists() && info.f.lastModified()<=info.date) {
     			return info.p;
     		}
     		info.f=ConfigManager.getManager().getConfigFileForLanguage(language);

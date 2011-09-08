@@ -880,10 +880,6 @@ public class Config {
             FileUtil.copyFileByName(new File(getUnitexCurrentLanguageDir(), "*"),
                     getUserCurrentLanguageDir());
         }
-        if (deprecatedConfigFile(new File(userCurrentLanguageDir, "Config"))) {
-        	FileUtil.copyFileByName(new File(getUnitexCurrentLanguageDir(), "Config"),
-                    getUserCurrentLanguageDir());
-        }
         // if any of the sub-directories does not exist, we create it
         File f = new File(userCurrentLanguageDir, "Corpus");
         if (!f.exists()) {
@@ -912,31 +908,6 @@ public class Config {
         	FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(), "Cassys"), f);
         }
 
-    }
-
-    /**
-     * @param file
-     * @return true if the configuration file does not start with '#'
-     */
-    private static boolean deprecatedConfigFile(File file) {
-        if (file == null) {
-            return false;
-        }
-        try {
-            FileInputStream stream = new FileInputStream(file);
-            if (stream.available() == 0) {
-                stream.close();
-                return false;
-            }
-            int c = stream.read();
-            stream.close();
-            return (c != '#');
-
-        } catch (FileNotFoundException e) {
-            return false;
-        } catch (IOException e1) {
-            return false;
-        }
     }
 
     /**
