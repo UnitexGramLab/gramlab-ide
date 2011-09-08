@@ -105,7 +105,7 @@ public class FileManager {
      * @param file file path
      */
     private void load(File file) {
-        fileEditionTextFrame = InternalFrameManager.getManager().newFileEditionTextFrame(file);
+        fileEditionTextFrame = InternalFrameManager.getManager(file).newFileEditionTextFrame(file);
         EditionTextArea text = fileEditionTextFrame.getText();
         if (file.length() <= 2) {
             FILE_TOO_LARGE = true;
@@ -137,7 +137,7 @@ public class FileManager {
     public void save(String absolutePath) {
 
         try {
-            FileEditionTextFrame fetf = InternalFrameManager.getManager().getSelectedFileEditionTextFrame();
+            FileEditionTextFrame fetf = InternalFrameManager.getManager(null).getSelectedFileEditionTextFrame();
             if (fetf == null) return;
             EditionTextArea t = fetf.getText();
             OutputStreamWriter osr=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(new File(absolutePath));
@@ -198,7 +198,7 @@ public class FileManager {
      * load an empty text
      */
     public void newFile() {
-    	InternalFrameManager.getManager().newFileEditionTextFrame(null);
+    	InternalFrameManager.getManager(null).newFileEditionTextFrame(null);
     }
 
 

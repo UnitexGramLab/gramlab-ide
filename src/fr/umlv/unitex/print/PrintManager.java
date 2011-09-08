@@ -24,6 +24,7 @@ package fr.umlv.unitex.print;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
@@ -68,8 +69,8 @@ public class PrintManager {
         }
     }
 
-    public static void printAllGraphs(GraphFrame[] frames) {
-        if (frames.length == 0)
+    public static void printAllGraphs(ArrayList<GraphFrame> frames) {
+        if (frames.size() == 0)
             return;
         PrinterJob job = getPrinterJob();
         if (!job.printDialog())

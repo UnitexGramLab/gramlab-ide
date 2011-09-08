@@ -34,12 +34,12 @@ public class Console {
 	 */
 	public static ConsoleEntry addCommand(String command,
 			boolean isRealCommand, int pos, boolean systemMsg,String logID) {
-		return InternalFrameManager.getManager().getConsoleFrame().addCommand(
+		return InternalFrameManager.getManager(null).getConsoleFrame().addCommand(
 				command, isRealCommand, pos, systemMsg,logID);
 	}
 
 	public static ConsoleEntry addCommand(String command, boolean systemMsg,String logID) {
-		return InternalFrameManager.getManager().getConsoleFrame().addCommand(
+		return InternalFrameManager.getManager(null).getConsoleFrame().addCommand(
 				command, true, -1, systemMsg,logID);
 	}
 

@@ -3,6 +3,7 @@ package fr.gramlab.workspace;
 
 public interface ProjectListener {
 	
+	public void currentProjectChanged(Project p,int pos);
 	public void projectAdded(Project p,int pos);
 	public void projectRemoved(Project p,int pos);
 	public void projectOpened(Project p,int pos);

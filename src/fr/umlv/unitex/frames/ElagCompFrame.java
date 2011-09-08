@@ -240,7 +240,7 @@ public class ElagCompFrame extends JInternalFrame {
                             JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                InternalFrameManager.getManager().newGraphFrame(grf);
+                InternalFrameManager.getManager(grf).newGraphFrame(grf);
             }
         });
         c.gridx = 4;
@@ -277,7 +277,7 @@ public class ElagCompFrame extends JInternalFrame {
                                     "ERROR", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                InternalFrameManager.getManager().newLocateFrame(conc);
+                InternalFrameManager.getManager(conc).newLocateFrame(conc);
             }
         });
         c.gridx = 4;
@@ -355,7 +355,7 @@ public class ElagCompFrame extends JInternalFrame {
                         /* We have to compile the .grf into a .elg */
                         commands.addCommand(new Grf2Fst2Command().grf(grf)
                                 .enableLoopAndRecursionDetection(true)
-                                .tokenizationMode(null).repository());
+                                .tokenizationMode(null,grf).repository());
                         commands.addCommand(new FlattenCommand().fst2(fst2)
                                 .resultType(true));
                         ElagCompCommand elagCompCmd = new ElagCompCommand()

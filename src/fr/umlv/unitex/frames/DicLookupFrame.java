@@ -455,16 +455,4 @@ public class DicLookupFrame extends JInternalFrame {
         }
     }
 
-
-    class ApplyLexicalResourcesDo implements ToDo {
-        public void toDo() {
-        	InternalFrameManager.getManager().newTextDicFrame(Config.getCurrentSntDir(), false);
-            if (ConfigManager.getManager().isKorean(null)) {
-            	InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
-            	InternalFrameManager.getManager().newTfstTagsFrame(
-                        new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
-            }
-        }
-    }
-
 }

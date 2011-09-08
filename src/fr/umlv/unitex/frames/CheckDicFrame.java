@@ -118,7 +118,7 @@ public class CheckDicFrame extends JInternalFrame {
     	}
         File tmp = new File(Config.getCurrentDELA().getParentFile(),
                 "CHECK_DIC.TXT");
-        InternalFrameManager.getManager().closeCheckResultFrame();
+        InternalFrameManager.getManager(null).closeCheckResultFrame();
         Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
     }
 
@@ -130,7 +130,7 @@ public class CheckDicFrame extends JInternalFrame {
         }
 
         public void toDo() {
-        	InternalFrameManager.getManager().newCheckResultFrame(results);
+        	InternalFrameManager.getManager(results).newCheckResultFrame(results);
         }
 	}
 

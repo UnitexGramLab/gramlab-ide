@@ -268,10 +268,10 @@ public class XAlignConfigFrame extends JInternalFrame {
         final File alignmentFile2 = alignmentFile;
         /* We close the parameter frame */
         setVisible(false);
-        InternalFrameManager.getManager().closeXAlignFrame();
+        InternalFrameManager.getManager(null).closeXAlignFrame();
         ToDo toDo = new ToDo() {
             public void toDo() {
-            	InternalFrameManager.getManager().newXAlignFrame(xmlSourceFile, xmlTargetFile,
+            	InternalFrameManager.getManager(null).newXAlignFrame(xmlSourceFile, xmlTargetFile,
                         alignmentFile2);
             }
         };

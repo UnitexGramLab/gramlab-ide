@@ -100,7 +100,7 @@ import fr.umlv.unitex.svn.SvnConflict;
  *
  * @author Sébastien Paumier
  */
-public class GraphFrame extends JInternalFrame {
+public class GraphFrame extends KeyedInternalFrame<File> {
     private static int openFrameCount = 0;
     private static final int offset = 30;
     private TextField boxContentEditor;
@@ -248,7 +248,7 @@ public class GraphFrame extends JInternalFrame {
 				int n=grfList.getSelectedIndex();
 				if (n==-1) return;
 				File f=(File)grfListModel.get(n);
-				InternalFrameManager.getManager().newGraphFrame(f);
+				InternalFrameManager.getManager(f).newGraphFrame(f);
 			}
 		});
         grfListPanel=new JPanel(new BorderLayout());
@@ -313,14 +313,14 @@ public class GraphFrame extends JInternalFrame {
 		JButton showBase=new JButton("Show base (r"+conflict.baseNumber+")");
 		showBase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager().newGraphFrame(conflict.base);
+				InternalFrameManager.getManager(conflict.base).newGraphFrame(conflict.base);
 			}
 		});
 		p.add(showBase);
 		JButton showOther=new JButton("Show conflicting grf (r"+conflict.otherNumber+")");
 		showOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager().newGraphFrame(conflict.other);
+				InternalFrameManager.getManager(conflict.other).newGraphFrame(conflict.other);
 			}
 		});
 		p.add(showOther);
@@ -559,7 +559,7 @@ public class GraphFrame extends JInternalFrame {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         GraphPresentationInfo info = 
-                        	InternalFrameManager.getManager().newGraphPresentationDialog(
+                        	InternalFrameManager.getManager(grf).newGraphPresentationDialog(
                                         getGraphPresentationInfo(), true);
                         if (info != null) {
                             setGraphPresentationInfo(info);
@@ -760,7 +760,7 @@ public class GraphFrame extends JInternalFrame {
 	                    JOptionPane.ERROR_MESSAGE);
 	            return;
 			}
-			InternalFrameManager.getManager().newGraphDiffFrame(base,dest,baseGrf,destGrf,info);
+			InternalFrameManager.getManager(base).newGraphDiffFrame(base,dest,baseGrf,destGrf,info);
 		}
     	
     }
@@ -1145,7 +1145,7 @@ public class GraphFrame extends JInternalFrame {
         }
         final Grf2Fst2Command command = new Grf2Fst2Command().grf(
                 getGraph()).enableLoopAndRecursionDetection(true)
-                .tokenizationMode(graphicalZone.getMetadata().getLanguage()).repository();
+                .tokenizationMode(graphicalZone.getMetadata().getLanguage(),getGraph()).repository();
         Launcher.exec(command, false);
     }
 
@@ -1215,5 +1215,10 @@ public class GraphFrame extends JInternalFrame {
         setGraph(file);
         return true;
     }
+
+	@Override
+	public File getKey() {
+		return grf;
+	}
 
 }

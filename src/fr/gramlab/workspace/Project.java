@@ -3,9 +3,14 @@ package fr.gramlab.workspace;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JDesktopPane;
+
 import fr.gramlab.config.GramlabConfigManager;
 import fr.umlv.unitex.config.ConfigModel;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.frames.InternalFrameManager;
 
 /**
  * Description of a gramlab project.
@@ -26,6 +31,10 @@ public class Project implements Comparable<Project> {
 	private File replaceDirectory;
 	private File configFile;
 	private boolean open;
+	private File alphabet;
+	private File sortAlphabet;
+	private Preferences preferences;
+	private InternalFrameManager frameManager;
 	
 	public static final String CONFIG_FILE_NAME=".gramlab_config";
 	
@@ -66,6 +75,9 @@ public class Project implements Comparable<Project> {
 		this.name=name;
 		this.directory=new File(GramlabConfigManager.getWorkspaceDirectory(),name);
 		this.configFile=new File(directory,CONFIG_FILE_NAME);
+		if (configFile.exists()) {
+			setPreferences(PreferencesManager.loadPreferences(configFile,null));
+		}
 	}
 
 	public String getName() {
@@ -153,6 +165,22 @@ public class Project implements Comparable<Project> {
 		return config;
 	}
 
+	public File getAlphabet() {
+		if (alphabet==null) {
+			alphabet=new File(getDirectory(),"Alphabet.txt");
+		}
+		if (!alphabet.exists()) return null;
+		return alphabet;
+	}
+	
+	public File getSortAlphabet() {
+		if (sortAlphabet==null) {
+			sortAlphabet=new File(getDirectory(),"Alphabet_sort.txt");
+		}
+		if (!sortAlphabet.exists()) return null;
+		return sortAlphabet;
+	}
+	
 	public static Project cloneWorkspaceProject(String name,File src) {
 		Project p=createEmptyProject(name);
 		FileUtil.copyDirRec(src,p.getDirectory());
@@ -167,7 +195,25 @@ public class Project implements Comparable<Project> {
 		FileUtil.copyFile(new File(src,"Alphabet.txt"),new File(p.getDirectory(),"Alphabet.txt"));
 		FileUtil.copyFile(new File(src,"Alphabet_sort.txt"),new File(p.getDirectory(),"Alphabet_sort.txt"));
 		FileUtil.copyFile(new File(src,"Config"),p.getConfigFile());
+		if (p.getConfigFile().exists()) {
+			p.setPreferences(PreferencesManager.loadPreferences(p.getConfigFile(),null));
+		}
 		return p;
 	}
-	
+
+	public void setPreferences(Preferences preferences) {
+		this.preferences = preferences;
+	}
+
+	public Preferences getPreferences() {
+		return preferences;
+	}
+
+	public InternalFrameManager getFrameManager() {
+		return frameManager;
+	}
+
+	public void setFrameManager(InternalFrameManager m) {
+		frameManager=m;
+	}
 }

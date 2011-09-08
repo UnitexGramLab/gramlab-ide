@@ -262,6 +262,7 @@ public class Config {
 
     public static JFileChooser getGraphDialogBox(boolean allowImageFormats) {
         if (graphDialogBox != null) {
+            graphDialogBox.setCurrentDirectory(ConfigManager.getManager().getCurrentGraphDirectory());
             updateGraphFileFilters(allowImageFormats);
             return graphDialogBox;
         }

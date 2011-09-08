@@ -401,7 +401,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
         Action goAction = new AbstractAction("Apply") {
             public void actionPerformed(ActionEvent arg0) {
                 setVisible(false);
-                InternalFrameManager.getManager().closeTextDicFrame();
+                InternalFrameManager.getManager(null).closeTextDicFrame();
                 MultiCommands commands;
                 commands = getRunCmd();
                 if (commands.numberOfCommands() == 0) return;
@@ -409,8 +409,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                 if (ConfigManager.getManager().isKorean(null)) {
                     /* As we construct the text automaton for Korean, we
                      * must close the text automaton frame, if any */
-                	InternalFrameManager.getManager().closeTextAutomatonFrame();
-                	InternalFrameManager.getManager().closeTfstTagsFrame();
+                	InternalFrameManager.getManager(null).closeTextAutomatonFrame();
+                	InternalFrameManager.getManager(null).closeTfstTagsFrame();
                     /* We also have to rebuild the text automaton */
                     Config.cleanTfstFiles(true);
                     Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(Config.getCurrentSnt())
@@ -418,7 +418,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                     commands.addCommand(txtCmd);
                 }
                 Launcher.exec(commands, true,
-                        new ApplyLexicalResourcesDo());
+                        new ApplyLexicalResourcesDo(Config.getCurrentSntDir()));
             }
         };
         return new JButton(goAction);
@@ -674,12 +674,19 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 
     class ApplyLexicalResourcesDo implements ToDo {
+    	
+    	File sntDir;
+    	
+    	public ApplyLexicalResourcesDo(File sntDir) {
+    		this.sntDir=sntDir;
+    	}
+    	
         public void toDo() {
-        	InternalFrameManager.getManager().newTextDicFrame(Config.getCurrentSntDir(), false);
+        	InternalFrameManager.getManager(sntDir).newTextDicFrame(sntDir, false);
             if (ConfigManager.getManager().isKorean(null)) {
-            	InternalFrameManager.getManager().newTextAutomatonFrame(1, false);
-            	InternalFrameManager.getManager().newTfstTagsFrame(
-                        new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+            	InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1, false);
+            	InternalFrameManager.getManager(sntDir).newTfstTagsFrame(
+                        new File(sntDir, "tfst_tags_by_freq.txt"));
             }
         }
     }
