@@ -187,8 +187,7 @@ public class Preferences {
      * language configuration values.
      */
     public Preferences() {
-        setPreferencesFromProperties(defaultProperties);
-        base=null;
+    	base=null;
     }
 
     /**
@@ -294,8 +293,8 @@ public class Preferences {
     }
 
 
-    protected Properties setPropertiesFromPreferences() {
-        Properties prop = new Properties(defaultProperties);
+    public Properties setPropertiesFromPreferences() {
+        Properties prop = new Properties();
         prop.setProperty("TEXT FONT NAME", textFont.font.getName());
         prop.setProperty("TEXT FONT STYLE", "" + textFont.font.getStyle());
         prop.setProperty("TEXT FONT SIZE", "" + textFont.size);
@@ -323,6 +322,8 @@ public class Preferences {
         prop.setProperty("PACKAGE NODES COLOR", "" + info.packageColor.getRGB());
         prop.setProperty("CONTEXT NODES COLOR", "" + info.contextColor.getRGB());
         prop.setProperty("MORPHOLOGICAL NODES COLOR", "" + info.morphologicalModeColor.getRGB());
+        prop.setProperty("OUTPUT VARIABLE COLOR",""+info.outputVariableColor.getRGB());
+        prop.setProperty("UNREACHABLE GRAPH COLOR",""+info.unreachableGraphColor.getRGB());
         prop.setProperty("ANTIALIASING", "" + info.antialiasing);
         prop.setProperty("HTML VIEWER", (htmlViewer == null) ? "" : htmlViewer.getAbsolutePath());
         prop.setProperty("MORPHOLOGICAL DICTIONARY", getMorphologicalDicListAsString(morphologicalDic));
@@ -355,11 +356,27 @@ public class Preferences {
     /**
      * @return a copy of the preferences
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public Preferences clone() {
-        Properties prop = setPropertiesFromPreferences();
         Preferences p = new Preferences();
-        p.setPreferencesFromProperties(prop);
+    	p.base=base;
+    	p.textFont=textFont;
+        p.concordanceFont=concordanceFont;
+        p.htmlViewer=htmlViewer;
+        p.morphologicalDic=(morphologicalDic==null)?null:(ArrayList<File>) morphologicalDic.clone();
+        p.charByChar=charByChar;
+        p.morphologicalUseOfSpace=morphologicalUseOfSpace;
+        p.rightToLeftForText=rightToLeftForText;
+        p.rightToLeftForGraphs=rightToLeftForGraphs;
+        p.semitic=semitic;
+        p.graphRepositoryPath=graphRepositoryPath;
+        p.loggingDir=loggingDir;
+        p.mustLog=mustLog;
+        p.svnMonitoring=svnMonitoring;
+        p.onlyCosmetic=onlyCosmetic;
+        p.info=(info==null)?null:info.clone();
+        p.encoding=encoding;
         return p;
     }
 
