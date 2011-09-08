@@ -38,6 +38,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -45,6 +46,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -69,10 +71,11 @@ import fr.umlv.unitex.text.TextAsListModelImpl;
  * 
  * @author Sébastien Paumier
  */
-public class DelaFrame extends JInternalFrame {
+public class DelaFrame extends KeyedInternalFrame<File> {
 	private final JPanel middle;
 	private final BigTextList text = new BigTextList(true);
 	private final JScrollBar scrollBar;
+	private File dela;
 
 	DelaFrame() {
 		super("", true, true, true, true);
@@ -89,7 +92,7 @@ public class DelaFrame extends JInternalFrame {
 		setContentPane(top);
 		pack();
 		setBounds(100, 100, 500, 500);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
@@ -106,6 +109,13 @@ public class DelaFrame extends JInternalFrame {
 					e2.printStackTrace();
 				}
 				System.gc();
+			}
+			
+			@Override
+			public void internalFrameActivated(InternalFrameEvent e) {
+				if (dela!=null) {
+					Config.setCurrentDELA(dela);
+				}
 			}
 		});
 		boolean rightToLeftForText=ConfigManager.getManager().isRightToLeftForText(null);
@@ -241,24 +251,25 @@ public class DelaFrame extends JInternalFrame {
 	/**
 	 * Loads a dictionary.
 	 * 
-	 * @param dela
+	 * @param dela1
 	 *            the dictionary to be loaded
 	 */
-	public void loadDela(File dela) {
-		LoadDelaDo toDo = new LoadDelaDo(dela);
-		Encoding e = Encoding.getEncoding(dela);
+	public void loadDela(File dela1) {
+		LoadDelaDo toDo = new LoadDelaDo(dela1);
+		Encoding e = Encoding.getEncoding(dela1);
 		if (e == null) {
-			InternalFrameManager.getManager(dela).newTranscodeOneFileDialog(dela,toDo);
+			InternalFrameManager.getManager(dela1).newTranscodeOneFileDialog(dela1,toDo);
 		} else {
 			toDo.toDo();
 		}
 	}
 
-	void loadUnicodeDela(File dela) {
-		text.load(dela);
-		Config.setCurrentDELA(dela);
+	void loadUnicodeDela(File dela1) {
+		this.dela=dela1;
+		text.load(dela1);
+		Config.setCurrentDELA(dela1);
 		text.setFont(ConfigManager.getManager().getTextFont(null));
-		setTitle(dela.getAbsolutePath());
+		setTitle(dela1.getAbsolutePath());
 		setVisible(true);
 		Timer t = new Timer(400, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -285,5 +296,10 @@ public class DelaFrame extends JInternalFrame {
 		public void toDo() {
 			loadUnicodeDela(dela);
 		}
+	}
+
+	@Override
+	public File getKey() {
+		return dela;
 	}
 }
