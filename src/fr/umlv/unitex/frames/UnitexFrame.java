@@ -187,17 +187,19 @@ public class UnitexFrame extends JFrame {
                 closeDela.setEnabled(true);
             }
 
-            public void delaFrameClosed() {
+            public void delaFrameClosed(int remainingFrames) {
             	InternalFrameManager.getManager(null).closeCheckDicFrame();
             	InternalFrameManager.getManager(null).closeTransliterationFrame();
             	InternalFrameManager.getManager(null).closeCheckResultFrame();
             	InternalFrameManager.getManager(null).closeInflectFrame();
-                checkDelaFormat.setEnabled(false);
-                transliterate.setEnabled(false);
-                sortDictionary.setEnabled(false);
-                inflect.setEnabled(false);
-                compressIntoFST.setEnabled(false);
-                closeDela.setEnabled(false);
+            	if (remainingFrames==0) {
+            		checkDelaFormat.setEnabled(false);
+            		transliterate.setEnabled(false);
+            		sortDictionary.setEnabled(false);
+            		inflect.setEnabled(false);
+            		compressIntoFST.setEnabled(false);
+            		closeDela.setEnabled(false);
+            	}
             }
         });
         InternalFrameManager.getManager(null)
@@ -464,7 +466,7 @@ public class UnitexFrame extends JFrame {
         delaMenu.addSeparator();
         closeDela = new AbstractAction("Close") {
             public void actionPerformed(ActionEvent e) {
-            	InternalFrameManager.getManager(null).closeDelaFrame();
+            	InternalFrameManager.getManager(null).closeCurrentDelaFrame();
             }
         };
         closeDela.setEnabled(false);
@@ -1152,7 +1154,7 @@ public class UnitexFrame extends JFrame {
             command = command.sortAlphabet(new File(Config
                     .getUserCurrentLanguageDir(), "Alphabet_sort.txt"));
         }
-        InternalFrameManager.getManager(null).closeDelaFrame();
+        InternalFrameManager.getManager(null).closeCurrentDelaFrame();
         Launcher.exec(command, true, new DelaDo(dela));
     }
 

@@ -24,6 +24,6 @@ package fr.umlv.unitex.listeners;
 public interface DelaFrameListener {
 
 	public void delaFrameOpened();
-	public void delaFrameClosed();
+	public void delaFrameClosed(int remainingFrames);
 
 }

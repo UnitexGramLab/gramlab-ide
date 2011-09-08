@@ -21,14 +21,10 @@
 
 package fr.umlv.unitex.frames;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-
-import fr.umlv.unitex.io.GraphIO;
 
 
 class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>,K> {
@@ -55,7 +51,7 @@ class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>,K> {
             }
         });
 	}
-
+	
     @SuppressWarnings("unchecked")
     void closeAllFrames() {
         /* We have to make a copy of the frame list because as the close
@@ -67,10 +63,14 @@ class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>,K> {
             f.doDefaultCloseAction();
         }
     }
-
+    
     @SuppressWarnings("unchecked")
 	ArrayList<F> getFrames() {
         return (ArrayList<F>) frames.clone();
     }
 
+    int getFrameCount() {
+    	return frames.size();
+    }
+    
 }
