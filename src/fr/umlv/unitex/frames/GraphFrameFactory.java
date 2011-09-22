@@ -30,7 +30,7 @@ class GraphFrameFactory extends MultiInstanceFrameFactory<GraphFrame,File>{
 
     GraphFrame getGraphFrame(File grf) {
         GraphFrame f1=getFrameIfExists(grf);
-        if (f1!=null) return null;
+        if (f1!=null) return f1;
         final GraphFrame f;
         if (grf != null) {
             GraphIO g = GraphIO.loadGraph(grf, false, true);
