@@ -64,7 +64,7 @@ public class Unitex {
      * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo and
      * then creates a <code>UnitexFrame</code>.
      */
-    private static void launchUnitex(final String[] args) {
+    static void launchUnitex(final String[] args) {
         Thread.currentThread().setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
         Locale.setDefault(Locale.ENGLISH);
         try {
