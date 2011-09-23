@@ -48,7 +48,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -83,8 +82,8 @@ import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.MultipleSelection;
 import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.graphtools.Dependancies;
+import fr.umlv.unitex.graphtools.GraphCall;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
@@ -233,13 +232,24 @@ public class GraphFrame extends KeyedInternalFrame<File> {
         	public Component getListCellRendererComponent(JList list,
         			Object value, int index, boolean selected,
         			boolean cellHasFocus) {
-        		File f=(File)value;
-        		String s=FileUtil.getRelativePath(getGraph(),f);
+        		GraphCall c=(GraphCall)value;
+        		String s=FileUtil.getRelativePath(getGraph(),c.getGrf());
         		if (s.endsWith(".grf")) {
         			s=s.substring(0,s.lastIndexOf('.'));
         		}
-        		return super.getListCellRendererComponent(list,s, index, selected,
+				if (!c.isDirect()) {
+					s="-> "+s;
+				}
+        		super.getListCellRendererComponent(list,s, index, selected,
         				cellHasFocus);
+        		if (!c.getGrf().exists()) {
+        			setForeground(Color.RED);
+        		} else {
+        			if (!c.isUseful()) {
+        				setForeground(Color.ORANGE);
+        			}
+        		}
+        		return this;
         	}
         });
         grfList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -247,7 +257,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			public void valueChanged(ListSelectionEvent e) {
 				int n=grfList.getSelectedIndex();
 				if (n==-1) return;
-				File f=(File)grfListModel.get(n);
+				GraphCall c=(GraphCall)grfListModel.get(n);
+				File f=c.getGrf();
 				InternalFrameManager.getManager(f).newGraphFrame(f);
 			}
 		});
@@ -772,17 +783,17 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        ArrayList<File> files;
+        ArrayList<GraphCall> files;
         if (showCalledGrf) {
-        	files=Dependancies.getAllSubgraphs(getGraph());
+            files=Dependancies.getAllSubgraphs(getGraph());
         	grfListLabel.setText("Called graphs:");
         } else {
         	files=Dependancies.whoCalls(getGraph(),Config.getUserCurrentLanguageDir());
         	grfListLabel.setText("Caller graphs:");
         }
         grfListModel.clear();
-        for (File f:files) {
-        	grfListModel.addElement(f);
+        for (GraphCall c:files) {
+        	grfListModel.addElement(c);
         }
         if (!actualMainPanel.isAncestorOf(grfListPanel)) {
         	actualMainPanel.add(grfListPanel,BorderLayout.EAST);
