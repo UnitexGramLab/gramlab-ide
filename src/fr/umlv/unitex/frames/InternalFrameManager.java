@@ -554,7 +554,8 @@ public class InternalFrameManager {
         }
         GraphPathDialog d = (GraphPathDialog) graphPathDialogFactory.newDialog();
         if (d == null) return null;
-        d.graphName.setText(gf.getGraph().getAbsolutePath());
+        File f=gf.getGraph();
+        d.graphName.setText(f.getAbsolutePath());
         d.setVisible(true);
         return d;
     }
