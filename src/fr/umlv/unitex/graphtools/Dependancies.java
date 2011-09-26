@@ -126,9 +126,6 @@ public class Dependancies {
 		}
 		for (int i=0;i<io.boxes.size();i++) {
 			boolean useful=accessible[i] && coaccessible[i]==TESTED_TRUE;
-			if (whoCallsMode && !useful) {
-				continue;
-			}
 			addSubgraphs(subgraphs,io.boxes.get(i),grf,emitErrorMessages,useful,main,whoCallsMode);
 		}
 		return subgraphs;
@@ -165,9 +162,10 @@ public class Dependancies {
 	private static void addSubgraphs(ArrayList<GraphCall> subgraphs,
 			GenericGraphBox box,File parent,boolean emitErrorMessages,
 			boolean useful,boolean main,boolean whoCallsMode) {
-		if (!useful && (!main || whoCallsMode)) {
-			/* useless graphs are only collected if we are
-			 * in the main graph */
+		if (!whoCallsMode && !useful && !main) {
+			/* useless graphs are only collected 
+			 * 1) in whoCallsMode 
+			 * 2) or if we are in the main graph */
 			return;
 		}
 		for (int i=0;i<box.lines.size();i++) {
