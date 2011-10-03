@@ -211,6 +211,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 //        	File f = new File(GRFfile.getText());
         	Config.cleanTfstFiles(true);
         	InternalFrameManager.getManager(GrfFileName).newGraphFrame(GrfFileName);
+        	InternalFrameManager.getManager(GrfFileName).newGraphFrame(new File(GRFfile.getName()));
         }
     }
 }
