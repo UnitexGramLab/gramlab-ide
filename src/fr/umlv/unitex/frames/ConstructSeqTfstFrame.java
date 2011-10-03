@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -69,7 +69,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
     //private final JTextField SNTfile = new JTextField();
     private final JTextField GRFfile = new JTextField();
     private final JTextField alphFile = new JTextField();
-    
+   
     /**
      * Creates and shows a new <code>ConstructSeqFstFrame</code>.
      */
@@ -111,72 +111,72 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
         return buttons;
     }
     private JPanel textPanel(){
-    	JPanel textP = new JPanel();
-    	textP.setBorder(new TitledBorder("Name the output GRF File"));
-    	textP.add(new JLabel("The programm will construct the automata that regognizes all theses sequences."));
-    	
-    	return textP;
+        JPanel textP = new JPanel();
+        textP.setBorder(new TitledBorder("Name the output GRF File"));
+        textP.add(new JLabel("The programm will construct the automata that regognizes all theses sequences."));
+       
+        return textP;
     }
     private JPanel alphabetPanel(){
-    	JPanel alphabetPanel = new JPanel(new GridLayout(1,3));
-    	alphabetPanel.setBorder(new EmptyBorder(8,8,1,1));
-    	alphabetPanel.add(new JLabel("choose your alphabet"));
-    	String aFile =ConfigManager.getManager().getAlphabet(null).getAbsolutePath();
-    	System.out.println("alphabetFile : "+aFile);
-    	alphFile.setEditable(true);
-    	alphFile.setText(aFile);
-    	alphabetPanel.add(alphFile, BorderLayout.LINE_START);
-    	Action alphabetAction = new AbstractAction("Choose your Alphabet") {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser chooser = Config.getNormDialogBox();
+        JPanel alphabetPanel = new JPanel(new GridLayout(1,3));
+        alphabetPanel.setBorder(new EmptyBorder(8,8,1,1));
+        alphabetPanel.add(new JLabel("choose your alphabet"));
+        String aFile =ConfigManager.getManager().getAlphabet(null).getAbsolutePath();
+        System.out.println("alphabetFile : "+aFile);
+        alphFile.setEditable(true);
+        alphFile.setText(aFile);
+        alphabetPanel.add(alphFile, BorderLayout.LINE_START);
+        Action alphabetAction = new AbstractAction("Choose your Alphabet") {
+            public void actionPerformed(ActionEvent arg0) {
+                JFileChooser chooser = Config.getNormDialogBox();
                 int returnVal = chooser.showOpenDialog(null);
                 if (returnVal != JFileChooser.APPROVE_OPTION) {
                     // we return if the user has clicked on CANCEL
                     return;
                 }
                 alphFile.setText(chooser.getSelectedFile().getAbsolutePath());
-			}
-		};
-    	JButton setButton = new JButton(alphabetAction);
-    	alphabetPanel.add(setButton);
-    	return alphabetPanel;
+            }
+        };
+        JButton setButton = new JButton(alphabetAction);
+        alphabetPanel.add(setButton);
+        return alphabetPanel;
     }
     private JPanel outputFilePanel(){
-    	JPanel fileP = new JPanel(new FlowLayout());
-    	String sntName = Config.getCurrentSnt().getName();
-    	String grfFile =Config.getCurrentSntDir().getPath()
-    			+File.separatorChar
-    			+sntName.substring(0,sntName.length()-3)+"grf";
-    	System.out.println("GRF FILE : "+grfFile);
-// ?    	
-    	GRFfile.setName(grfFile);
-    	fileP.setBorder(new EmptyBorder(8,8,1,1));
-    	fileP.add(new JLabel("choose the name of the resulting grf file"));
-// ?    	
-    	GRFfile.setText(grfFile);
-    	fileP.add(GRFfile, BorderLayout.LINE_START);
-    	Action setAction = new AbstractAction("Set ..."){
-    		public void actionPerformed(ActionEvent arg1){
-    			JFileChooser chooser = Config.getGrfAndFst2DialogBox();
-    			System.out.println("chooser dir : "+chooser.getCurrentDirectory());
-    			chooser.setCurrentDirectory(Config.getCurrentSntDir());
+        JPanel fileP = new JPanel(new FlowLayout());
+        String sntName = Config.getCurrentSnt().getName();
+        String grfFile =Config.getCurrentSntDir().getPath()
+                +File.separatorChar
+                +sntName.substring(0,sntName.length()-3)+"grf";
+        System.out.println("GRF FILE : "+grfFile);
+// ?       
+        GRFfile.setName(grfFile);
+        fileP.setBorder(new EmptyBorder(8,8,1,1));
+        fileP.add(new JLabel("choose the name of the resulting grf file"));
+// ?       
+        GRFfile.setText(grfFile);
+        fileP.add(GRFfile, BorderLayout.LINE_START);
+        Action setAction = new AbstractAction("Set ..."){
+            public void actionPerformed(ActionEvent arg1){
+                JFileChooser chooser = Config.getGrfAndFst2DialogBox();
+                System.out.println("chooser dir : "+chooser.getCurrentDirectory());
+                chooser.setCurrentDirectory(Config.getCurrentSntDir());
                 int returnVal = chooser.showOpenDialog(null);
                 if (returnVal != JFileChooser.APPROVE_OPTION) {
                     // we return if the user has clicked on CANCEL
                     return;
                 }
                 GRFfile.setText(chooser.getSelectedFile().getAbsolutePath());
-// ?                
+// ?               
                 GRFfile.setName(chooser.getSelectedFile().getAbsolutePath());
-    		}
-    	};
-    	JButton setButton = new JButton(setAction);
-    	setButton.setSize(4, 1);
-    	fileP.add(setButton);
-    	return fileP;
+            }
+        };
+        JButton setButton = new JButton(setAction);
+        setButton.setSize(4, 1);
+        fileP.add(setButton);
+        return fileP;
     }
     void constructSeqTfst() {
-    	MultiCommands commands = new MultiCommands();
+        MultiCommands commands = new MultiCommands();
         File dir = Config.getCurrentSntDir();
         if (!dir.exists()) {
             /* If the directory toto_snt does not exist, we create it */
@@ -185,9 +185,9 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
         /* Cleaning files */
         Config.cleanTfstFiles(true);
         Seq2GrfCommand seqCmd = new Seq2GrfCommand()
-        		.alphabet(ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
+                .alphabet(ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
                 .output(GRFfile.getText())
-        		.text(Config.getCurrentSnt());
+                .text(Config.getCurrentSnt());
 //        File normFile = null;
 //        File normGrfFile = null;
         commands.addCommand(seqCmd);
@@ -196,22 +196,19 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
         /* We also have to rebuild the text automaton */
         Config.cleanTfstFiles(true);
         Launcher.exec(commands,true);
-        File GRF = new File(Config.getCurrentSntDir(),
-        		GRFfile.getName());
+        File GRF = new File(
+                GRFfile.getName());
         Launcher.exec(commands, true, new ConstructTfstDo(GRF),
                 false);
     }
     class ConstructTfstDo implements ToDo {
-    	File GrfFileName;
-    	ConstructTfstDo(File grf){
-    		GrfFileName = grf;
-    	}
+        File GrfFileName;
+        ConstructTfstDo(File grf){
+            GrfFileName = grf;
+        }
         public void toDo() {
-            //UnitexFrame.getFrameManager().newTextAutomatonFrame(1, false);
-//        	File f = new File(GRFfile.getText());
-        	Config.cleanTfstFiles(true);
+            Config.cleanTfstFiles(true);
         	InternalFrameManager.getManager(GrfFileName).newGraphFrame(GrfFileName);
-        	InternalFrameManager.getManager(GrfFileName).newGraphFrame(new File(GRFfile.getName()));
         }
     }
 }
