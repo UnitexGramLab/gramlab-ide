@@ -270,17 +270,29 @@ public class GenericGraphBox {
     	}
     	if (!greyed.get(n)) throw new IllegalArgumentException("Should not be called with a normal line");
         String s = lines.get(n);
+        boolean endWithGrf=true;
         if (!s.endsWith(".grf")) {
             s = s + ".grf";
+            endWithGrf=false;
         }
         /* replace ':' by '/' resp. '\\' */
         if (s.startsWith(":")) {
             // if the graph is located in the package repository
             s = s.replace(':', File.separatorChar);
-            return new File(ConfigManager.getManager().getGraphRepositoryPath(null), s.substring(1)).exists();
+            if (new File(ConfigManager.getManager().getGraphRepositoryPath(null), s.substring(1)).exists()) {
+            	return true;
+            }
+            if (!endWithGrf) {
+            	/* If there was no explicit .grf extension, we try to look for a .fst2 */
+            	s = s.replace(':', File.separatorChar);
+            	s=lines.get(n)+".fst2";
+            	return new File(ConfigManager.getManager().getGraphRepositoryPath(null), s.substring(1)).exists();
+            }
+            return false;
         }
         // otherwise
         File f = new File(s);
+        File fst2=new File(s.substring(0,s.lastIndexOf('.'))+".fst2");
         if (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM &&
                 f.isAbsolute()) {
             // first we test if we have an absolute windows pathname,
@@ -288,7 +300,11 @@ public class GenericGraphBox {
             //
             // C:\\foo\foo.grf  =>  C\\\foo\foo.grf
             //
-            return f.exists();
+            if (f.exists()) return true;
+            if (!endWithGrf) {
+            	return fst2.exists();
+            }
+            return false;
         }
         s = s.replace(':', File.separatorChar);
         if (!f.isAbsolute()) {
@@ -297,9 +313,19 @@ public class GenericGraphBox {
                 // if we try to open a subgraph inside a newly created graph with no name
                 return false;
             }
-			return new File(currentGraph.getParentFile(), s).exists();
+			if (new File(currentGraph.getParentFile(), s).exists()) return true;
+			if (!endWithGrf) {
+				s=s.substring(0,s.lastIndexOf('.'))+".fst2";
+				return new File(currentGraph.getParentFile(), s).exists();
+			}
+			return false;
         }
-        return f.exists();
+        if (f.exists()) return true;
+        if (!endWithGrf) {
+        	s=s.substring(0,s.lastIndexOf('.'))+".fst2";
+        	return new File(s).exists();
+        }
+        return false;
     }
     
     /**
