@@ -28,6 +28,7 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -66,6 +67,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
     boolean dragBegin = true;
     int dX;
     int dY;
+    
+    int popupX=-1,popupY=-1;
 
     JMenu submenu;
 
@@ -84,8 +87,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
         	addMouseListener(new MyMouseListener());
             addMouseMotionListener(new MyMouseMotionListener());
         }
-        JPopupMenu popup=createPopup();
-        setComponentPopupMenu(popup);
+        createPopup();
     }
 
     Action surroundWithInputVar;
@@ -113,8 +115,30 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
     	return surroundWithNegativeRightContext;
     }
     
-    private JPopupMenu createPopup() {
-		JPopupMenu popup=new JPopupMenu();
+    private void createPopup() {
+		final JPopupMenu popup=new JPopupMenu();
+		final Action newBox=new AbstractAction("Create box") {
+
+			public void actionPerformed(ActionEvent e) {
+				GraphBox b = (GraphBox) createBox((int) (popupX / scaleFactor),
+                        (int) (popupY / scaleFactor));
+                // if some boxes are selected, we rely them to the new one
+                if (!selectedBoxes.isEmpty()) {
+                    addTransitionsFromSelectedBoxes(b, false);
+                }
+                // then, the only selected box is the new one
+                unSelectAllBoxes();
+                b.selected = true;
+                selectedBoxes.add(b);
+                fireGraphTextChanged(b.content);
+                fireGraphChanged(true);
+                fireBoxSelectionChanged();
+			}
+		};
+		newBox.setEnabled(true);
+		newBox.putValue(Action.SHORT_DESCRIPTION,"Create a new box");
+		popup.add(new JMenuItem(newBox));
+
 		submenu=new JMenu("Surround with...");
 		surroundWithInputVar=new AbstractAction("Input variable") {
 			@SuppressWarnings("unchecked")
@@ -193,6 +217,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		addBoxSelectionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean selected=selectedBoxes.size()!=0;
+				newBox.setEnabled(!selected);
 				submenu.setEnabled(selected);
 				surroundWithInputVar.setEnabled(selected);
 				surroundWithOutputVar.setEnabled(selected);
@@ -203,7 +228,32 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		popup.add(submenu);
-		return popup;
+		
+		addMouseListener(new MouseAdapter() {
+
+			void show(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					popupX=e.getX();
+					popupY=e.getY();
+					popup.show(e.getComponent(),e.getX(),e.getY());
+				}
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				show(e);
+			}
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				show(e);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				show(e);
+			}
+		});
 	}
 
 	protected void surroundWithBoxes(ArrayList<GenericGraphBox> selection,String box1,String box2) {
