@@ -38,6 +38,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
@@ -431,14 +432,40 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
     class MyMouseListener implements MouseListener {
 
+    	
+        // Shift+click
+        // reverse transitions
+    	boolean isReverseTransitionClick(MouseEvent e) {
+    		return (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES
+                    || (EDITING_MODE == MyCursors.NORMAL && e.isShiftDown() && !e.isControlDown()));
+    	}
+    	
+        // Control+click
+        // creation of a new box
+    	boolean isBoxCreationClick(MouseEvent e) {
+    		return EDITING_MODE == MyCursors.CREATE_BOXES
+            || (EDITING_MODE == MyCursors.NORMAL && ((e.isControlDown() && !e.isShiftDown())||e.getButton()==MouseEvent.BUTTON3));
+    	}
+    	
+        // Alt+click
+        // opening of a sub-graph
+    	boolean isOpenGraphClick(MouseEvent e) {
+    		return EDITING_MODE == MyCursors.OPEN_SUBGRAPH
+            || (EDITING_MODE == MyCursors.NORMAL && e.isAltDown());
+    	}
+    	
+    	// Ctrl+Shift+click
+        // multiple box selection
+    	boolean isMultipleSelectionClick(MouseEvent e) {
+    		return (EDITING_MODE == MyCursors.NORMAL && e.isControlDown() && e.isShiftDown());
+    	}
+    	
         public void mouseClicked(MouseEvent e) {
             int boxSelected;
             GraphBox b;
             int x_tmp, y_tmp;
-            if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES
-                    || (EDITING_MODE == MyCursors.NORMAL && e.isShiftDown())) {
-                // Shift+click
-                // reverse transitions
+            if (isReverseTransitionClick(e)) {
+            	System.err.println("A");
                 boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
                         (int) (e.getY() / scaleFactor));
                 if (boxSelected != -1) {
@@ -465,10 +492,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     // simple click not on a box
                     unSelectAllBoxes();
                 }
-            } else if (EDITING_MODE == MyCursors.CREATE_BOXES
-                    || (EDITING_MODE == MyCursors.NORMAL && (e.isControlDown() ||e.getButton()==MouseEvent.BUTTON3))) {
-                // Control+click
-                // creation of a new box
+            } else if (isBoxCreationClick(e)) {
                 b = (GraphBox) createBox((int) (e.getX() / scaleFactor),
                         (int) (e.getY() / scaleFactor));
                 // if some boxes are selected, we rely them to the new one
@@ -482,10 +506,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                 fireGraphTextChanged(b.content); /* Should be "<E>" */
                 fireGraphChanged(true);
                 fireBoxSelectionChanged();
-            } else if (EDITING_MODE == MyCursors.OPEN_SUBGRAPH
-                    || (EDITING_MODE == MyCursors.NORMAL && e.isAltDown())) {
-                // Alt+click
-                // opening of a sub-graph
+            } else if (isOpenGraphClick(e)) {
                 x_tmp = (int) (e.getX() / scaleFactor);
                 y_tmp = (int) (e.getY() / scaleFactor);
                 boxSelected = getSelectedBox(x_tmp, y_tmp);
@@ -514,6 +535,17 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                         removeSelected();
                     }
                 }
+            } else if (isMultipleSelectionClick(e)) {
+                	boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
+                        (int) (e.getY() / scaleFactor));
+                	if (boxSelected != -1) {
+                		// if we click on a box
+                		b = (GraphBox) graphBoxes.get(boxSelected);
+                		b.selected = true;
+                		selectedBoxes.add(b);
+                		fireGraphTextChanged(b.content);
+                		fireBoxSelectionChanged();
+                	}
             } else {
             	/* NORMAL BOX SELECTION */
                 boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
