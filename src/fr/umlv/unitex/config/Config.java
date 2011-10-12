@@ -95,9 +95,9 @@ public class Config {
     private static File currentTransducerList;
 
     public final static int WINDOWS_SYSTEM = 0;
-    private final static int LINUX_SYSTEM = 1;
-    private final static int MAC_OS_X_SYSTEM = 2;
-    private final static int SUN_OS_SYSTEM = 3;
+    public final static int LINUX_SYSTEM = 1;
+    public final static int MAC_OS_X_SYSTEM = 2;
+    public final static int SUN_OS_SYSTEM = 3;
 
     /**
      * Limit over which the concordance should be viewed with a web navigator

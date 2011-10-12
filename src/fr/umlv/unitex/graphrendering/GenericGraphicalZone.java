@@ -244,7 +244,7 @@ public abstract class GenericGraphicalZone extends JComponent {
         }
     }
     
-    private void removeBox(GenericGraphBox box) {
+    protected void removeBox(GenericGraphBox box) {
     	graphBoxes.remove(box);
     	for (GenericGraphBox b:graphBoxes) {
     		b.transitions.remove(box);
