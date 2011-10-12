@@ -155,13 +155,13 @@ public class GenericGraphBox {
     public final ArrayList<Boolean> greyed;
 
     /**
-     * Transduction text, if exists
+     * output of the box, if any
      */
     public String transduction;
 
     /**
      * Number of visible lines in the box: 0 if the box contains only the
-     * espilon symbol, the number of lines otherwise
+     * epsilon symbol, the number of lines otherwise
      */
     public int n_lines; // number of visible lines in the box
 

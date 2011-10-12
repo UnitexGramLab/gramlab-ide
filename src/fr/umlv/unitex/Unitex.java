@@ -25,6 +25,8 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -57,8 +60,7 @@ public class Unitex {
             public void run() {
                 launchUnitex(args);
             }
-        });
-    }
+        });    }
 
     /**
      * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo and

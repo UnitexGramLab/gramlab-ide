@@ -43,10 +43,13 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
@@ -54,6 +57,7 @@ import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
+import fr.umlv.unitex.undo.RemoveBoxEdit;
 import fr.umlv.unitex.undo.SelectEdit;
 import fr.umlv.unitex.undo.SurroundEdit;
 import fr.umlv.unitex.undo.TransitionEdit;
@@ -139,7 +143,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		newBox.setEnabled(true);
 		newBox.putValue(Action.SHORT_DESCRIPTION,"Create a new box");
 		popup.add(new JMenuItem(newBox));
-
+		popup.addSeparator();
 		submenu=new JMenu("Surround with...");
 		surroundWithInputVar=new AbstractAction("Input variable") {
 			@SuppressWarnings("unchecked")
@@ -214,7 +218,19 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithNegativeRightContext.putValue(Action.SHORT_DESCRIPTION,"Surround box selection with negative right context tags");
 		submenu.add(new JMenuItem(surroundWithNegativeRightContext));
 
-		submenu.setEnabled(false);
+		popup.add(submenu);
+		
+		final Action mergeBoxesAction=new AbstractAction("Merge boxes") {
+
+			public void actionPerformed(ActionEvent e) {
+				mergeSelectedBoxes();
+			}
+		};
+		mergeBoxesAction.putValue(Action.SHORT_DESCRIPTION,"Merge selected boxes");
+		mergeBoxesAction.setEnabled(false);
+		JMenuItem mergeBoxes=new JMenuItem(mergeBoxesAction);
+		popup.add(mergeBoxes);
+		
 		addBoxSelectionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean selected=selectedBoxes.size()!=0;
@@ -226,10 +242,10 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				surroundWithLeftContext.setEnabled(selected);
 				surroundWithRightContext.setEnabled(selected);
 				surroundWithNegativeRightContext.setEnabled(selected);
+				mergeBoxesAction.setEnabled(selected);
 			}
 		});
-		popup.add(submenu);
-		
+
 		addMouseListener(new MouseAdapter() {
 
 			void show(MouseEvent e) {
@@ -255,6 +271,155 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				show(e);
 			}
 		});
+	}
+
+    /**
+     * This function merge all the selected boxes in one box. If a box
+     * X is linked to a box Y, then the two of them are replace by a unique box
+     * whose content is the combination of X's and Y's content. For instance,
+     * if X=one+the and Y=cat+dog+pet, then the resulting box contains:
+     * 
+     * one cat+one dog+one pet+the cat+the dog+the pet
+     * 
+     * If there is no link relation, then the box contents are added and the
+     * resulting box receive all incoming and outgoing transitions from X and Y.
+     */
+	@SuppressWarnings("unchecked")
+	protected void mergeSelectedBoxes() {
+		if (selectedBoxes.size()<=1) return;
+		if (!mergeableBoxes(selectedBoxes)) return;
+		ArrayList<GenericGraphBox> selection=(ArrayList<GenericGraphBox>) selectedBoxes.clone();
+		unSelectAllBoxes();
+		/* Iteratively, we merge pairs of boxes until there remains only one */
+		int i;
+		while (selection.size()!=1) {
+			GenericGraphBox a=selection.get(0);
+			boolean merge=false;
+			for (i=1;i<selection.size();i++) {
+				GenericGraphBox b=selection.get(i);
+				if (a.transitions.contains(b)) {
+					mergeLinkedBoxes(a,b);
+					selection.remove(b);
+					UndoableEdit edit=new RemoveBoxEdit(b,graphBoxes,this);
+					postEdit(edit);
+					removeBox(b);
+					merge=true;
+					break;
+				}
+				if (b.transitions.contains(a)) {
+					mergeLinkedBoxes(b,a);
+					selection.remove(a);
+					UndoableEdit edit=new RemoveBoxEdit(a,graphBoxes,this);
+					postEdit(edit);
+					removeBox(a);
+					merge=true;
+					break;
+				}
+			}
+			if (!merge) {
+				/* If we found no linked boxes to merge,
+				 * then we sum two boxes */
+				GenericGraphBox b=selection.get(1);
+				mergeUnlinkedBoxes(a,b);
+				selection.remove(b);
+				removeBox(b);
+			}
+		}
+		fireGraphChanged(true);
+		repaint();
+	}
+
+	private boolean mergeableBoxes(ArrayList<GenericGraphBox> boxes) {
+		for (GenericGraphBox b:boxes) {
+			/* We don't merge comment boxes nor special boxes */ 
+			if (b.content.startsWith("/")) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot merge comment boxes", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if (b.content.equals("$<") || b.content.equals("$>")) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot merge morphological mode boxes", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if (b.content.equals("$[") || b.content.equals("$![") 
+					|| b.content.equals("$]") || b.content.equals("$*")) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot merge context boxes", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if (b.content.startsWith("$") && 
+					(b.content.endsWith("(") || b.content.endsWith(")"))) {
+	            JOptionPane.showMessageDialog(null,
+	                    "Cannot merge variable boxes", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if (b.transduction!=null && !b.transduction.equals("")) {
+				JOptionPane.showMessageDialog(null,
+	                    "Cannot merge boxes with outputs", "Error",
+	                    JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * This function must be called to merge boxes a and b,
+	 * when there is a link from a to b
+	 */
+	private void mergeLinkedBoxes(GenericGraphBox a,GenericGraphBox b) {
+		String content="";
+		for (int i=0;i<a.lines.size();i++) {
+			for (int j=0;j<b.lines.size();j++) {
+				String A=a.lines.get(i);
+				String B=b.lines.get(j);
+				if (!content.equals("")) {
+					content=content+"+";
+				}
+				if (A.equals("<E>")) {
+					if (B.equals("<E>")) {
+						/* We don't insert <E><E>, but just <E> */
+						content=content+"<E>";
+					} else {
+						/* We don't insert <E>ABC but just ABC */
+						content=content+B;
+					}
+				} else {
+					if (B.equals("<E>")) {
+						/* We don't insert ABC<E>, but just <E> */
+						content=content+A;
+					} else {
+						/* We don't insert ABCXYZ but ABC XYZ */
+						content=content+A+" "+B;
+					}
+				}
+			}
+		}
+		/* We replace all lines of a by the new ones */
+        AbstractUndoableEdit edit = new BoxTextEdit(a, content, this);
+        postEdit(edit);
+		a.setContent(content);
+		/* Finally, we give a b's outgoing transitions */
+		for (GenericGraphBox dest:b.transitions) {
+			if (dest!=a && !a.transitions.contains(dest)) {
+				TransitionEdit edit2=new TransitionEdit(a,dest);
+				a.transitions.add(dest);
+				postEdit(edit2);
+			}
+		}
+	}
+
+	/**
+	 * This function must be called to merge boxes a and b,
+	 * when there is no link from a to b
+	 */
+	private void mergeUnlinkedBoxes(GenericGraphBox a,GenericGraphBox b) {
+		
 	}
 
 	protected void surroundWithBoxes(ArrayList<GenericGraphBox> selection,String box1,String box2) {
@@ -432,19 +597,26 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
     class MyMouseListener implements MouseListener {
 
+    	/**
+    	 * Thanks to Steve f*$%!# Jobs, Meta replaces Ctrl on mac os
+    	 */
+    	boolean isControlDown(MouseEvent e) {
+    		if (Config.getSystem()!=Config.MAC_OS_X_SYSTEM) return e.isControlDown();
+    		return e.isMetaDown();
+    	}
     	
         // Shift+click
         // reverse transitions
     	boolean isReverseTransitionClick(MouseEvent e) {
     		return (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES
-                    || (EDITING_MODE == MyCursors.NORMAL && e.isShiftDown() && !e.isControlDown()));
+                    || (EDITING_MODE == MyCursors.NORMAL && e.isShiftDown() && !isControlDown(e)));
     	}
     	
         // Control+click
         // creation of a new box
     	boolean isBoxCreationClick(MouseEvent e) {
     		return EDITING_MODE == MyCursors.CREATE_BOXES
-            || (EDITING_MODE == MyCursors.NORMAL && ((e.isControlDown() && !e.isShiftDown())||e.getButton()==MouseEvent.BUTTON3));
+            || (EDITING_MODE == MyCursors.NORMAL && ((isControlDown(e) && !e.isShiftDown())||e.getButton()==MouseEvent.BUTTON3));
     	}
     	
         // Alt+click
@@ -457,7 +629,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
     	// Ctrl+Shift+click
         // multiple box selection
     	boolean isMultipleSelectionClick(MouseEvent e) {
-    		return (EDITING_MODE == MyCursors.NORMAL && e.isControlDown() && e.isShiftDown());
+    		return (EDITING_MODE == MyCursors.NORMAL && isControlDown(e) && e.isShiftDown());
     	}
     	
         public void mouseClicked(MouseEvent e) {
