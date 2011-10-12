@@ -465,7 +465,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
             GraphBox b;
             int x_tmp, y_tmp;
             if (isReverseTransitionClick(e)) {
-            	System.err.println("A");
                 boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
                         (int) (e.getY() / scaleFactor));
                 if (boxSelected != -1) {
