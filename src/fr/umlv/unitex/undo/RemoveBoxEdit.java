@@ -33,7 +33,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
  *
  * @author Decreton Julien
  */
-class RemoveBoxEdit extends AbstractUndoableEdit {
+public class RemoveBoxEdit extends AbstractUndoableEdit {
 
     /**
      * List of transition to a boxe
