@@ -322,6 +322,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				GenericGraphBox b=selection.get(1);
 				mergeUnlinkedBoxes(a,b);
 				selection.remove(b);
+				UndoableEdit edit=new RemoveBoxEdit(b,graphBoxes,this);
+				postEdit(edit);
 				removeBox(b);
 			}
 		}
@@ -374,28 +376,50 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 */
 	private void mergeLinkedBoxes(GenericGraphBox a,GenericGraphBox b) {
 		String content="";
+		ArrayList<String> foo=new ArrayList<String>();
 		for (int i=0;i<a.lines.size();i++) {
 			for (int j=0;j<b.lines.size();j++) {
 				String A=a.lines.get(i);
 				String B=b.lines.get(j);
-				if (!content.equals("")) {
-					content=content+"+";
-				}
 				if (A.equals("<E>")) {
 					if (B.equals("<E>")) {
 						/* We don't insert <E><E>, but just <E> */
-						content=content+"<E>";
+						if (!foo.contains("<E>")) {
+							if (!content.equals("")) {
+								content=content+"+";
+							}
+							content=content+"<E>";
+							foo.add("<E>");
+						}
 					} else {
 						/* We don't insert <E>ABC but just ABC */
-						content=content+B;
+						if (!foo.contains(B)) {
+							if (!content.equals("")) {
+								content=content+"+";
+							}
+							content=content+B;
+							foo.add(B);
+						}
 					}
 				} else {
 					if (B.equals("<E>")) {
-						/* We don't insert ABC<E>, but just <E> */
-						content=content+A;
+						/* We don't insert ABC<E>, but just ABC */
+						if (!foo.contains(A)) {
+							if (!content.equals("")) {
+								content=content+"+";
+							}
+							content=content+A;
+							foo.add(A);
+						}
 					} else {
 						/* We don't insert ABCXYZ but ABC XYZ */
-						content=content+A+" "+B;
+						if (!foo.contains(A+" "+B)) {
+							if (!content.equals("")) {
+								content=content+"+";
+							}
+							content=content+A+" "+B;
+							foo.add(A+" "+B);
+						}
 					}
 				}
 			}
@@ -406,7 +430,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		a.setContent(content);
 		/* Finally, we give a b's outgoing transitions */
 		for (GenericGraphBox dest:b.transitions) {
-			if (dest!=a && !a.transitions.contains(dest)) {
+			if (dest!=a && dest!=b && !a.transitions.contains(dest)) {
 				TransitionEdit edit2=new TransitionEdit(a,dest);
 				a.transitions.add(dest);
 				postEdit(edit2);
@@ -419,7 +443,42 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * when there is no link from a to b
 	 */
 	private void mergeUnlinkedBoxes(GenericGraphBox a,GenericGraphBox b) {
-		
+		ArrayList<String> lines=new ArrayList<String>();
+		for (String s:a.lines) {
+			if (!lines.contains(s)) {
+				lines.add(s);
+			}
+		}
+		for (String s:b.lines) {
+			if (!lines.contains(s)) {
+				lines.add(s);
+			}
+		}
+		String content=lines.get(0);
+		for (int i=1;i<lines.size();i++) {
+			content=content+"+"+lines.get(i);
+		}
+		/* We replace all lines of a by the new ones */
+        AbstractUndoableEdit edit = new BoxTextEdit(a, content, this);
+        postEdit(edit);
+		a.setContent(content);
+		/* We add b's outgoing transitions to a */
+		for (GenericGraphBox dest:b.transitions) {
+			if (dest!=a && dest!=b && !a.transitions.contains(dest)) {
+				TransitionEdit edit2=new TransitionEdit(a,dest);
+				a.transitions.add(dest);
+				postEdit(edit2);
+			}
+		}
+		/* Finally, we add b's incoming transitions to a */
+		for (GenericGraphBox box:graphBoxes) {
+			if (box==a || box==b) continue;
+			if (box.transitions.contains(b) && !box.transitions.contains(a)) {
+				TransitionEdit edit2=new TransitionEdit(box,a);
+				box.transitions.add(a);
+				postEdit(edit2);
+			}
+		}
 	}
 
 	protected void surroundWithBoxes(ArrayList<GenericGraphBox> selection,String box1,String box2) {
