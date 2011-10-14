@@ -80,7 +80,7 @@ public class MultipleSelection {
             }
         }
         for (int i = 0; i < L; i++) {
-            // finally, we put the numero value back to -1
+            // finally, we put the identificationNumber value back to -1
             GraphBox g = (GraphBox) v.get(i);
             g.identificationNumber = -1;
         }
