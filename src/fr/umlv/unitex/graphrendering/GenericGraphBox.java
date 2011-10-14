@@ -1353,26 +1353,9 @@ public class GenericGraphBox {
      * @param yPos
      */
     public void translateToPosition(int xPos, int yPos) {
-
-        X = xPos;
-        Y = yPos;
-
-        if (type == FINAL) {
-            X_in = xPos;
-            Y_in = Y;
-            X1 = xPos;
-            Y1 = Y - 10;
-            Y_out = Y_in;
-            X_out = X_in + 25;
-        } else {
-            X1 = xPos;
-            Y1 = Y;
-            X_in = xPos;
-            Y_in = Y + Height / 2;
-            X_out = xPos + Width + 5;
-            Y_out = Y_in;
-        }
-
+    	int dx=xPos-X;
+    	int dy=yPos-Y;
+    	translate(dx,dy);
     }
 
     public boolean hasTransitionToItself() {
