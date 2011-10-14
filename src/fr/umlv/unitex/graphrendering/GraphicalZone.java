@@ -431,7 +431,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		for (GenericGraphBox dest:b.transitions) {
 			if (dest!=a && dest!=b && !a.transitions.contains(dest)) {
 				TransitionEdit edit2=new TransitionEdit(a,dest);
-				a.transitions.add(dest);
+				a.addTransitionTo(dest);
 				edit.addEdit(edit2);
 			}
 		}
@@ -464,7 +464,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		for (GenericGraphBox dest:b.transitions) {
 			if (dest!=a && dest!=b && !a.transitions.contains(dest)) {
 				TransitionEdit edit2=new TransitionEdit(a,dest);
-				a.transitions.add(dest);
+				a.addTransitionTo(dest);
 				edit.addEdit(edit2);
 			}
 		}
@@ -473,7 +473,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (box==a || box==b) continue;
 			if (box.transitions.contains(b) && !box.transitions.contains(a)) {
 				TransitionEdit edit2=new TransitionEdit(box,a);
-				box.transitions.add(a);
+				box.addTransitionTo(a);
 				edit.addEdit(edit2);
 			}
 		}
