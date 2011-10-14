@@ -31,7 +31,7 @@ import java.awt.datatransfer.Transferable;
  */
 class MultipleBoxesSelection implements Transferable {
 
-    private MultipleSelection contenu = null;
+    private MultipleSelection content = null;
 
     /**
      * Creates a new multiple box selection object for copy/paste operations
@@ -39,7 +39,7 @@ class MultipleBoxesSelection implements Transferable {
      * @param m the box selection
      */
     public MultipleBoxesSelection(MultipleSelection m) {
-        contenu = m;
+        content = m;
     }
 
     /**
@@ -50,7 +50,7 @@ class MultipleBoxesSelection implements Transferable {
      */
     public Object getTransferData(DataFlavor f) {
         if (f.getHumanPresentableName().equals("Unitex dataflavor"))
-            return contenu;
+            return content;
         return null;
     }
 

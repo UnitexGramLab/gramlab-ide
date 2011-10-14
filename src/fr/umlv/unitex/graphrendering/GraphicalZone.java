@@ -231,6 +231,28 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		JMenuItem mergeBoxes=new JMenuItem(mergeBoxesAction);
 		popup.add(mergeBoxes);
 		
+		final Action newGraphAction=new AbstractAction("Export as new graph") {
+
+			public void actionPerformed(ActionEvent e) {
+				MultipleSelection selection=new MultipleSelection(selectedBoxes,true);
+				ArrayList<GenericGraphBox> inputBoxes=new ArrayList<GenericGraphBox>();
+				ArrayList<GenericGraphBox> outputBoxes=new ArrayList<GenericGraphBox>();
+				computeInputOutputBoxes(selectedBoxes,inputBoxes,outputBoxes);
+				boolean[] inputBox=new boolean[selectedBoxes.size()];
+				boolean[] outputBox=new boolean[selectedBoxes.size()];
+				for (int i=0;i<selectedBoxes.size();i++) {
+					GenericGraphBox box=selectedBoxes.get(i);
+					if (inputBoxes.contains(box)) inputBox[i]=true;
+					if (outputBoxes.contains(box)) outputBox[i]=true;
+				}
+				createNewGraph(selection,inputBox,outputBox);
+			}
+		};
+		newGraphAction.putValue(Action.SHORT_DESCRIPTION,"Create a new graph from selected boxes");
+		newGraphAction.setEnabled(false);
+		JMenuItem newGraph=new JMenuItem(newGraphAction);
+		popup.add(newGraph);
+
 		addBoxSelectionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean selected=selectedBoxes.size()!=0;
@@ -243,6 +265,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				surroundWithRightContext.setEnabled(selected);
 				surroundWithNegativeRightContext.setEnabled(selected);
 				mergeBoxesAction.setEnabled(selected);
+				newGraphAction.setEnabled(selected);
 			}
 		});
 
@@ -274,6 +297,53 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	}
 
     /**
+     * We create a new graph from a box selection.
+     * @param outputBox 
+     * @param inputBox 
+     */
+    protected void createNewGraph(MultipleSelection selection, boolean[] inputBox, boolean[] outputBox) {
+		GraphFrame f=InternalFrameManager.getManager(null).newGraphFrame(null);
+		GraphicalZone zone=f.getGraphicalZone();
+		zone.pasteSelection(selection);
+		/* Now, we compute the coordinates of the pasted box area */
+		GenericGraphBox box=zone.graphBoxes.get(2);
+		int minX=box.X;
+		int minY=box.Y;
+		int maxX=box.X+box.Width;
+		int maxY=box.Y+box.Height;
+		for (int i=3;i<zone.graphBoxes.size();i++) {
+			box=zone.graphBoxes.get(i);
+			if (box.X<minX) minX=box.X;
+			if (box.Y<minY) minY=box.Y;
+			if (box.X+box.Width>maxX) maxX=box.X+box.Width;
+			if (box.Y+box.Height>maxY) maxY=box.Y+box.Height;
+		}
+		/* We adjust the pasted boxes' coordinates so that the upper left
+		 * corner of the rectangle is at x=150,y=50
+		 */
+		int shiftX=150-minX;
+		int shiftY=50-minY;
+		for (int i=2;i<zone.graphBoxes.size();i++) {
+			box=zone.graphBoxes.get(i);
+			box.translate(shiftX,shiftY);
+		}
+		/* Then we adjust accordingly the positions of the initial and final states */
+		box=zone.graphBoxes.get(0);
+		box.translateToPosition(box.X,50+(maxY-minY)/2);
+		box=zone.graphBoxes.get(1);
+		box.translateToPosition(maxX+shiftX+100,50+(maxY-minY)/2);
+		for (int i=2;i<zone.graphBoxes.size();i++) {
+			box=zone.graphBoxes.get(i);
+			if (inputBox[i-2]) {
+				zone.graphBoxes.get(0).addTransitionTo(box);
+			}
+			if (outputBox[i-2]) {
+				box.addTransitionTo(zone.graphBoxes.get(1));
+			}
+		}
+	}
+
+	/**
      * This function merge all the selected boxes in one box. If a box
      * X is linked to a box Y, then the two of them are replace by a unique box
      * whose content is the combination of X's and Y's content. For instance,
