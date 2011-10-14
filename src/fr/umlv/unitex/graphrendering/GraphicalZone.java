@@ -290,6 +290,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		if (!mergeableBoxes(selectedBoxes)) return;
 		ArrayList<GenericGraphBox> selection=(ArrayList<GenericGraphBox>) selectedBoxes.clone();
 		unSelectAllBoxes();
+		/* We check if the popup trigger click was on a selected box.
+		 * If it is the case, we will try to make this box the one that 
+		 * absorbs the others in the merge process
+		 */
+		GenericGraphBox clicked=null;
+		int n=getSelectedBox(popupX,popupY);
+		if (n!=-1) {
+			clicked=graphBoxes.get(n);
+			if (!selection.contains(clicked)) {
+				clicked=null;
+			}
+		}
 		MultipleEdit edit=new MultipleEdit();
 		edit.addEdit(new SelectEdit(selection));
 		/* Iteratively, we merge pairs of boxes until there remains only one */
@@ -302,6 +314,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				if (a.transitions.contains(b)) {
 					mergeLinkedBoxes(a,b,edit);
 					selection.remove(b);
+					if (b==clicked) {
+						clicked=null;
+					}
 					edit.addEdit(new RemoveBoxEdit(b,graphBoxes,this));
 					removeBox(b);
 					merge=true;
@@ -310,6 +325,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				if (b.transitions.contains(a)) {
 					mergeLinkedBoxes(b,a,edit);
 					selection.remove(a);
+					if (a==clicked) {
+						clicked=null;
+					}
 					edit.addEdit(new RemoveBoxEdit(a,graphBoxes,this));
 					removeBox(a);
 					merge=true;
@@ -319,7 +337,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (!merge) {
 				/* If we found no linked boxes to merge,
 				 * then we sum two boxes */
-				GenericGraphBox b=selection.get(1);
+				GenericGraphBox b;
+				if (clicked==null) {
+					b=selection.get(1);
+				} else {
+					/* if we have a preferred main box, we use it */
+					a=clicked;
+					if (a==selection.get(0)) {
+						b=selection.get(1);
+					} else {
+						b=selection.get(0);
+					}
+				}
 				mergeUnlinkedBoxes(a,b,edit);
 				selection.remove(b);
 				edit.addEdit(new RemoveBoxEdit(b,graphBoxes,this));
