@@ -30,7 +30,7 @@ import javax.swing.undo.UndoableEdit;
 /**
  * Undo/redo object for box selection surround operations
  */
-public class SurroundEdit extends AbstractUndoableEdit {
+public class MultipleEdit extends AbstractUndoableEdit {
 	
 	private ArrayList<UndoableEdit> edits=new ArrayList<UndoableEdit>();
 	

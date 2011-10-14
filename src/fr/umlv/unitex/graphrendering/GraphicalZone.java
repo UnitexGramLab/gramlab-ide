@@ -59,7 +59,7 @@ import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
 import fr.umlv.unitex.undo.RemoveBoxEdit;
 import fr.umlv.unitex.undo.SelectEdit;
-import fr.umlv.unitex.undo.SurroundEdit;
+import fr.umlv.unitex.undo.MultipleEdit;
 import fr.umlv.unitex.undo.TransitionEdit;
 import fr.umlv.unitex.undo.TranslationGroupEdit;
 
@@ -290,6 +290,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		if (!mergeableBoxes(selectedBoxes)) return;
 		ArrayList<GenericGraphBox> selection=(ArrayList<GenericGraphBox>) selectedBoxes.clone();
 		unSelectAllBoxes();
+		MultipleEdit edit=new MultipleEdit();
+		edit.addEdit(new SelectEdit(selection));
 		/* Iteratively, we merge pairs of boxes until there remains only one */
 		int i;
 		while (selection.size()!=1) {
@@ -298,19 +300,17 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			for (i=1;i<selection.size();i++) {
 				GenericGraphBox b=selection.get(i);
 				if (a.transitions.contains(b)) {
-					mergeLinkedBoxes(a,b);
+					mergeLinkedBoxes(a,b,edit);
 					selection.remove(b);
-					UndoableEdit edit=new RemoveBoxEdit(b,graphBoxes,this);
-					postEdit(edit);
+					edit.addEdit(new RemoveBoxEdit(b,graphBoxes,this));
 					removeBox(b);
 					merge=true;
 					break;
 				}
 				if (b.transitions.contains(a)) {
-					mergeLinkedBoxes(b,a);
+					mergeLinkedBoxes(b,a,edit);
 					selection.remove(a);
-					UndoableEdit edit=new RemoveBoxEdit(a,graphBoxes,this);
-					postEdit(edit);
+					edit.addEdit(new RemoveBoxEdit(a,graphBoxes,this));
 					removeBox(a);
 					merge=true;
 					break;
@@ -320,13 +320,13 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				/* If we found no linked boxes to merge,
 				 * then we sum two boxes */
 				GenericGraphBox b=selection.get(1);
-				mergeUnlinkedBoxes(a,b);
+				mergeUnlinkedBoxes(a,b,edit);
 				selection.remove(b);
-				UndoableEdit edit=new RemoveBoxEdit(b,graphBoxes,this);
-				postEdit(edit);
+				edit.addEdit(new RemoveBoxEdit(b,graphBoxes,this));
 				removeBox(b);
 			}
 		}
+		postEdit(edit);
 		fireGraphChanged(true);
 		repaint();
 	}
@@ -374,7 +374,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * This function must be called to merge boxes a and b,
 	 * when there is a link from a to b
 	 */
-	private void mergeLinkedBoxes(GenericGraphBox a,GenericGraphBox b) {
+	private void mergeLinkedBoxes(GenericGraphBox a,GenericGraphBox b,UndoableEdit edit) {
 		String content="";
 		ArrayList<String> foo=new ArrayList<String>();
 		for (int i=0;i<a.lines.size();i++) {
@@ -425,15 +425,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		}
 		/* We replace all lines of a by the new ones */
-        AbstractUndoableEdit edit = new BoxTextEdit(a, content, this);
-        postEdit(edit);
+        edit.addEdit(new BoxTextEdit(a, content, this));
 		a.setContent(content);
 		/* Finally, we give a b's outgoing transitions */
 		for (GenericGraphBox dest:b.transitions) {
 			if (dest!=a && dest!=b && !a.transitions.contains(dest)) {
 				TransitionEdit edit2=new TransitionEdit(a,dest);
 				a.transitions.add(dest);
-				postEdit(edit2);
+				edit.addEdit(edit2);
 			}
 		}
 	}
@@ -442,7 +441,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * This function must be called to merge boxes a and b,
 	 * when there is no link from a to b
 	 */
-	private void mergeUnlinkedBoxes(GenericGraphBox a,GenericGraphBox b) {
+	private void mergeUnlinkedBoxes(GenericGraphBox a,GenericGraphBox b,UndoableEdit edit) {
 		ArrayList<String> lines=new ArrayList<String>();
 		for (String s:a.lines) {
 			if (!lines.contains(s)) {
@@ -459,15 +458,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			content=content+"+"+lines.get(i);
 		}
 		/* We replace all lines of a by the new ones */
-        AbstractUndoableEdit edit = new BoxTextEdit(a, content, this);
-        postEdit(edit);
+        edit.addEdit(new BoxTextEdit(a, content, this));
 		a.setContent(content);
 		/* We add b's outgoing transitions to a */
 		for (GenericGraphBox dest:b.transitions) {
 			if (dest!=a && dest!=b && !a.transitions.contains(dest)) {
 				TransitionEdit edit2=new TransitionEdit(a,dest);
 				a.transitions.add(dest);
-				postEdit(edit2);
+				edit.addEdit(edit2);
 			}
 		}
 		/* Finally, we add b's incoming transitions to a */
@@ -476,7 +474,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (box.transitions.contains(b) && !box.transitions.contains(a)) {
 				TransitionEdit edit2=new TransitionEdit(box,a);
 				box.transitions.add(a);
-				postEdit(edit2);
+				edit.addEdit(edit2);
 			}
 		}
 	}
@@ -491,7 +489,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		if (box2!=null && outputBoxes.isEmpty()) {
 			return;
 		}		
-		SurroundEdit edit=new SurroundEdit();
+		MultipleEdit edit=new MultipleEdit();
 		edit.addEdit(new SelectEdit(selection));
 		if (box1!=null) {
 			GraphBox inputBox=createInputBox(selection,inputBoxes,box1,edit);
@@ -505,7 +503,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		fireGraphChanged(true);
 	}
 
-	private GraphBox createInputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> inputBoxes,String content, SurroundEdit edit) {
+	private GraphBox createInputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> inputBoxes,String content, MultipleEdit edit) {
 		if (inputBoxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
 		int y=getAverageY(inputBoxes);
 		int x=inputBoxes.get(0).X_in;
@@ -538,7 +536,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return newBox;
 	}
 
-	private GraphBox createOutputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> outputBoxes,String content, SurroundEdit edit) {
+	private GraphBox createOutputBox(ArrayList<GenericGraphBox> selection,ArrayList<GenericGraphBox> outputBoxes,String content, MultipleEdit edit) {
 		if (outputBoxes.isEmpty()) throw new IllegalArgumentException("Cannot compute the y average of no boxes");
 		int y=getAverageY(outputBoxes);
 		int x=outputBoxes.get(0).X_out;
