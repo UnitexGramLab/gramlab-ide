@@ -867,10 +867,16 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                 	if (boxSelected != -1) {
                 		// if we click on a box
                 		b = (GraphBox) graphBoxes.get(boxSelected);
-                		b.selected = true;
-                		selectedBoxes.add(b);
-                		fireGraphTextChanged(b.content);
+                		if (!b.selected) {
+                			b.selected = true;
+                			selectedBoxes.add(b);
+                		} else {
+                			b.selected = false;
+                			selectedBoxes.remove(b);
+                		}
+                		fireGraphChanged(false);
                 		fireBoxSelectionChanged();
+                		return;
                 	}
             } else {
             	/* NORMAL BOX SELECTION */
@@ -906,7 +912,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
         public void mousePressed(MouseEvent e) {
             int selectedBox;
-            if ((EDITING_MODE == MyCursors.NORMAL && (e.isShiftDown()
+            if (e.isPopupTrigger()
+            		|| (EDITING_MODE == MyCursors.NORMAL && (e.isShiftDown()
                     || e.isAltDown() || e.isControlDown()))
                     || (EDITING_MODE == MyCursors.OPEN_SUBGRAPH)
                     || (EDITING_MODE == MyCursors.KILL_BOXES)) {
