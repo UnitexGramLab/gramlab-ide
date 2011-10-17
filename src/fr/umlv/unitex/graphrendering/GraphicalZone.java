@@ -38,14 +38,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
@@ -53,13 +51,12 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
+import fr.umlv.unitex.undo.MultipleEdit;
 import fr.umlv.unitex.undo.RemoveBoxEdit;
 import fr.umlv.unitex.undo.SelectEdit;
-import fr.umlv.unitex.undo.MultipleEdit;
 import fr.umlv.unitex.undo.TransitionEdit;
 import fr.umlv.unitex.undo.TranslationGroupEdit;
 
@@ -542,12 +539,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 */
 	private void mergeUnlinkedBoxes(GenericGraphBox a,GenericGraphBox b,UndoableEdit edit) {
 		ArrayList<String> lines=new ArrayList<String>();
-		for (String s:a.lines) {
+		for (int i=0;i<a.lines.size();i++) {
+			String s=(a.greyed.get(i)?":":"")+a.lines.get(i);
 			if (!lines.contains(s)) {
 				lines.add(s);
 			}
 		}
-		for (String s:b.lines) {
+		for (int i=0;i<b.lines.size();i++) {
+			String s=(b.greyed.get(i)?":":"")+b.lines.get(i);
 			if (!lines.contains(s)) {
 				lines.add(s);
 			}
@@ -684,7 +683,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * into transitions to the $aaa( box that is then created, and the $aaa( box is then
 	 * linked to all input boxes. The same for output boxes.  
 	 */
-	private void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
+	void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
 			ArrayList<GenericGraphBox> inputBoxes,
 			ArrayList<GenericGraphBox> outputBoxes) {
 		ArrayList<GenericGraphBox> accessible=new ArrayList<GenericGraphBox>();
