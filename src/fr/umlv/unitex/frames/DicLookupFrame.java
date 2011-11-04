@@ -31,6 +31,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -65,6 +68,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -89,6 +94,8 @@ public class DicLookupFrame extends JInternalFrame {
 
     private JList userDicList;
     private JList systemDicList;
+    final BigTextList text = new BigTextList(true);
+    final JTextField inputText=new JTextField();
 
     DicLookupFrame() {
         super("Dictionary Lookup", true, true);
@@ -100,6 +107,14 @@ public class DicLookupFrame extends JInternalFrame {
 			public void languageChanged() {
 				refreshDicLists();
 				setVisible(false);
+			}
+		});
+        addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent e) {
+		        Font font=ConfigManager.getManager().getTextFont(null);
+		        text.setFont(font);
+		        inputText.setFont(font);
+		        text.setFixedCellHeight(inputText.getPreferredSize().height);
 			}
 		});
     }
@@ -175,10 +190,8 @@ public class DicLookupFrame extends JInternalFrame {
 
     private JPanel constructLookupPanel() {
     	JPanel panel=new JPanel(new BorderLayout());
-        final BigTextList text = new BigTextList(true);
         final JScrollPane scrollText = new JScrollPane(text, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         final JScrollBar scrollBar=scrollText.getVerticalScrollBar();
-        final JTextField inputText=new JTextField();
         Font font=ConfigManager.getManager().getTextFont(null);
         text.setFont(font);
         inputText.setFont(font);
