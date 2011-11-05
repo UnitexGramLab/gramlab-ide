@@ -110,6 +110,7 @@ public class DicLookupFrame extends JInternalFrame {
 			}
 		});
         addComponentListener(new ComponentAdapter() {
+			@Override
 			public void componentShown(ComponentEvent e) {
 		        Font font=ConfigManager.getManager().getTextFont(null);
 		        text.setFont(font);
