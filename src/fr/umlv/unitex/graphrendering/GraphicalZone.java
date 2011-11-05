@@ -473,10 +473,20 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	private void mergeLinkedBoxes(GenericGraphBox a,GenericGraphBox b,UndoableEdit edit) {
 		String content="";
 		ArrayList<String> foo=new ArrayList<String>();
-		for (int i=0;i<a.lines.size();i++) {
-			for (int j=0;j<b.lines.size();j++) {
-				String A=a.lines.get(i);
-				String B=b.lines.get(j);
+		ArrayList<String> A_lines=a.lines;
+		if (a.lines.size()==0) {
+			A_lines=new ArrayList<String>();
+			A_lines.add("<E>");
+		}
+		ArrayList<String> B_lines=b.lines;
+		if (b.lines.size()==0) {
+			B_lines=new ArrayList<String>();
+			B_lines.add("<E>");
+		}
+		for (int i=0;i<A_lines.size();i++) {
+			for (int j=0;j<B_lines.size();j++) {
+				String A=A_lines.get(i);
+				String B=B_lines.get(j);
 				if (A.equals("<E>")) {
 					if (B.equals("<E>")) {
 						/* We don't insert <E><E>, but just <E> */
