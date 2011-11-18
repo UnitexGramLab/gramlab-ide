@@ -31,6 +31,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
@@ -42,7 +43,9 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.MultiFlexCommand;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
 
 /**
  * This class describes a frame that allows the user to set parameters of the
@@ -56,6 +59,7 @@ public class InflectFrame extends JInternalFrame {
     private final JRadioButton allWords = new JRadioButton("Allow both simple and compound words", true);
     private final JRadioButton onlySimpleWords = new JRadioButton("Allow only simple words", false);
     private final JRadioButton onlyCompoundWords = new JRadioButton("Allow only compound words", false);
+    private final JCheckBox factorizeInflectionalCodes = new JCheckBox("Sort and factorize inflectional codes", false);
 
 
     InflectFrame() {
@@ -74,7 +78,7 @@ public class InflectFrame extends JInternalFrame {
     }
 
     private JPanel constructUpPanel() {
-        JPanel upPanel = new JPanel(new GridLayout(4, 1));
+        JPanel upPanel = new JPanel(new GridLayout(5, 1));
         upPanel.setBorder(new TitledBorder(
                 "Directory where inflectional FST2 are stored: "));
         JPanel tempPanel = new JPanel(new BorderLayout());
@@ -102,6 +106,7 @@ public class InflectFrame extends JInternalFrame {
         upPanel.add(allWords);
         upPanel.add(onlySimpleWords);
         upPanel.add(onlyCompoundWords);
+        upPanel.add(factorizeInflectionalCodes);
         return upPanel;
     }
 
@@ -139,6 +144,7 @@ public class InflectFrame extends JInternalFrame {
         }
         tmp = tmp + "flx.dic";
         File resultDic=new File(tmp);
+        MultiCommands cmds=new MultiCommands();
         MultiFlexCommand command = new MultiFlexCommand().delas(f)
                 .result(resultDic)
                 .alphabet(ConfigManager.getManager().getAlphabet(null))
@@ -152,7 +158,12 @@ public class InflectFrame extends JInternalFrame {
         if (ConfigManager.getManager().isKorean(null)) {
             command = command.korean();
         }
-        Launcher.exec(command, false, new LoadDelaDo(resultDic));
+        cmds.addCommand(command);
+        if (factorizeInflectionalCodes.isSelected()) {
+        	SortTxtCommand sort=new SortTxtCommand().file(resultDic).factorizeInflectionalCodes();
+        	cmds.addCommand(sort);
+        }
+        Launcher.exec(cmds, true, new LoadDelaDo(resultDic));
     }
 
     class LoadDelaDo implements ToDo {
