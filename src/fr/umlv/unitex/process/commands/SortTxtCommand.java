@@ -62,5 +62,10 @@ public class SortTxtCommand extends CommandBuilder {
         element("--thai");
         return this;
     }
+        
+    public SortTxtCommand factorizeInflectionalCodes() {
+    	element("-f");
+        return this;
+    }
 
 }
