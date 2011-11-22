@@ -1118,7 +1118,11 @@ public class GenericGraphBox {
             textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
         }
         // prints the output, if any
-        g.setColor(parentGraphicalZone.info.foregroundColor);
+        if (parentGraphicalZone.decorator==null) {
+            g.setColor(parentGraphicalZone.info.foregroundColor);
+    	} else {
+    		g.setColor(parentGraphicalZone.decorator.getBoxFillColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+    	}
         String output=getNonRangeOutput(transduction);
         if (!output.equals("")) {
             g.setFont(parentGraphicalZone.info.output.font);
