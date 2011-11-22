@@ -39,9 +39,13 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
@@ -69,6 +73,9 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
     //private final JTextField SNTfile = new JTextField();
     private final JTextField GRFfile = new JTextField();
     private final JTextField alphFile = new JTextField();
+    private int n_op=0, n_r=0,n_d=0,n_a=0;
+    JSpinner spinner_op,spinner_r,spinner_d,spinner_a;
+    SpinnerNumberModel sm_op, sm_r,sm_d,sm_a ;
    
     /**
      * Creates and shows a new <code>ConstructSeqFstFrame</code>.
@@ -81,13 +88,18 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
     }
 
     private JPanel constructPanel() {
+    	JPanel top = new JPanel(new GridLayout(1,2));
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(textPanel(),BorderLayout.CENTER);
         JPanel FilePanel = new JPanel(new BorderLayout());
         //midPanel.add(alphabetPanel(),BorderLayout.NORTH);
         FilePanel.add(outputFilePanel(),BorderLayout.SOUTH);
-        panel.add(FilePanel,BorderLayout.NORTH);
+        top.add(FilePanel);
+        
         panel.add(constructButtonsPanel(), BorderLayout.SOUTH);
+        JPanel jokerPanel = new JPanel(new BorderLayout());
+        top.add(jokersPanel(),BorderLayout.EAST);
+        panel.add(top,BorderLayout.NORTH);
         return panel;
     }
     private JPanel constructButtonsPanel() {
@@ -142,7 +154,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
         return alphabetPanel;
     }
     private JPanel outputFilePanel(){
-        JPanel fileP = new JPanel(new FlowLayout());
+        JPanel fileP = new JPanel(new GridLayout(3,1));
         String sntName = Config.getCurrentSnt().getName();
         String grfFile =Config.getCurrentSntDir().getPath()
                 +File.separatorChar
@@ -187,9 +199,14 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
         Seq2GrfCommand seqCmd = new Seq2GrfCommand()
                 .alphabet(ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
                 .output(GRFfile.getText())
+                .jokers(n_op)
+                .joker_insert(n_a)
+                .joker_replace(n_r)
+                .joker_delete(n_d)
                 .text(Config.getCurrentSnt());
 //        File normFile = null;
 //        File normGrfFile = null;
+        System.out.println("seqCmd ="+seqCmd.getCommandLine());
         commands.addCommand(seqCmd);
         InternalFrameManager.getManager(null).closeTextAutomatonFrame();
         InternalFrameManager.getManager(null).closeTfstTagsFrame();
@@ -210,5 +227,79 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
             Config.cleanTfstFiles(true);
         	InternalFrameManager.getManager(GrfFileName).newGraphFrame(GrfFileName);
         }
+    }
+    
+
+    private JPanel jokersPanel(){
+//    	cf TextAutomatonFrame.java line 453
+    	JPanel p= new JPanel(new GridLayout(5,2));
+    	p.setBorder(BorderFactory.createRaisedBevelBorder());
+    	String[] labels ={"Jokers","Insert","Replace","Delete"};
+    	JLabel jokers = new JLabel("Jokers");
+    	JLabel insert = new JLabel("insert");
+    	JLabel replace = new JLabel("replace");
+    	JLabel delete = new JLabel("delete");
+    	sm_op = new SpinnerNumberModel(0,0,10,1);
+        sm_op.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent arg0) {
+            	n_op=sm_op.getNumber().intValue();   
+            	System.out.println(	"n_op ="+n_op+
+						"\nn_a ="+n_a+
+						"\nn_r ="+n_r+
+						"\nn_d ="+n_d
+            						);         	
+            }
+        });
+        spinner_op= new JSpinner(sm_op);
+    	sm_a = new SpinnerNumberModel(0,0,10,1);
+        sm_a.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent arg0) {
+            	n_a=sm_a.getNumber().intValue();    
+            	System.out.println(	"n_op ="+n_op+
+						"\nn_a ="+n_a+
+						"\nn_r ="+n_r+
+						"\nn_d ="+n_d
+            						);        	
+            }
+        });
+        spinner_a= new JSpinner(sm_a);
+    	sm_d = new SpinnerNumberModel(0,0,10,1);
+        sm_d.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent arg0) {
+            	n_d=sm_d.getNumber().intValue();    
+            	System.out.println(	"n_op ="+n_op+
+						"\nn_a ="+n_a+
+						"\nn_r ="+n_r+
+						"\nn_d ="+n_d
+            						);        	
+            }
+        });
+        spinner_d= new JSpinner(sm_d);
+    	sm_r = new SpinnerNumberModel(0,0,10,1);
+        sm_r.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent arg0) {
+            	n_r=sm_r.getNumber().intValue();   
+            	System.out.println(	"n_op ="+n_op+
+						"\nn_a ="+n_a+
+						"\nn_r ="+n_r+
+						"\nn_d ="+n_d
+            						);
+            	
+            	
+            }
+        });
+        spinner_r= new JSpinner(sm_r);
+       
+    	p.add(jokers);
+    	p.add(spinner_op);
+    	p.add(insert);
+    	p.add(spinner_a);
+    	p.add(replace);
+    	p.add(spinner_r);
+    	p.add(delete);
+    	p.add(spinner_d);
+    	
+    	
+    	return p;
     }
 }
