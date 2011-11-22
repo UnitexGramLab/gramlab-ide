@@ -101,12 +101,17 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
             g.setTransitions(new ArrayList<GenericGraphBox>());
             transitionsToBoxe = selectedBoxesAndTransitionsTo.get(g);
             transitionsFromBoxe = selectedBoxesAndTransitionsFrom.get(g);
-            boxes.add(g);
+            if (g.type==GenericGraphBox.NORMAL) {
+            	boxes.add(g);
+            }
 
             // select this boxe
             g.setSelected(true);
             selectedBoxes.add(g);
-            zone.initText(g.getContent());
+            
+            if (g.type!=GenericGraphBox.FINAL) {
+            	zone.initText(g.getContent());
+            }
 
             // add transitions which pointed on this box
             if (g.hasTransitionToItself())

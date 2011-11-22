@@ -29,14 +29,14 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
- * class uses to save the state of the graph before remove a boxe
+ * class uses to save the state of the graph before removing a box
  *
  * @author Decreton Julien
  */
 public class RemoveBoxEdit extends AbstractUndoableEdit {
 
     /**
-     * List of transition to a boxe
+     * List of transition to a box
      */
     private final ArrayList<GenericGraphBox> transitionsToBoxe;
     /**
@@ -44,52 +44,54 @@ public class RemoveBoxEdit extends AbstractUndoableEdit {
      */
     private final ArrayList<GenericGraphBox> boxes;
     /**
-     * boxe to remove
+     * box to remove
      */
-    private final GenericGraphBox boxe;
+    private final GenericGraphBox box;
     /**
      * zone where the graph is drawn
      */
     private final GenericGraphicalZone zone;
     /**
-     * if the boxe to remove have a selftransition or not
+     * if the box to remove have a self transition or not
      */
     private boolean itSelfTransition = false;
 
     /**
-     * @param boxe  the boxe to remove
+     * @param boxe  the box to remove
      * @param boxes the boxes of the graph
-     * @param zone  the zone where remove the boxe
+     * @param zone  the zone where remove the box
      */
     public RemoveBoxEdit(
             GenericGraphBox boxe,
             ArrayList<GenericGraphBox> boxes,
             GenericGraphicalZone zone) {
         this.boxes = boxes;
-        this.boxe = boxe;
+        this.box = boxe;
         this.zone = zone;
         transitionsToBoxe = zone.getTransitionTo(boxe);
         itSelfTransition = boxe.hasTransitionToItself();
-
     }
 
     @Override
     public void undo() {
         super.undo();
-        boxes.add(boxe);
+    	if (box.type!=GenericGraphBox.NORMAL) {
+    		return;
+    	}
+        boxes.add(box);
         // add thes transition which pointed on this boxe
         for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
-            GenericGraphBox g = transitionsToBoxe.get(i);
-            g.addTransitionTo(boxe);
+        	GenericGraphBox g = transitionsToBoxe.get(i);
+        	g.addTransitionTo(box);
         }
-        if (itSelfTransition) boxe.addTransitionTo(boxe);
+        if (itSelfTransition) box.addTransitionTo(box);
     }
 
     @Override
     public void redo() {
         super.redo();
-        boxes.remove(boxe);
-        zone.removeTransitionTo(boxe);
+        boxes.remove(box);
+        zone.removeTransitionTo(box);
     }
 
 }
