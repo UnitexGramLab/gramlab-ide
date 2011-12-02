@@ -320,7 +320,7 @@ public class LocateFrame extends JInternalFrame {
                 return;
             }
             String grfName = graphName.getText();
-            if (grfName.substring(grfName.length() - 3, grfName.length())
+            if (grfName.length()>4 && grfName.substring(grfName.length() - 3, grfName.length())
                     .equalsIgnoreCase("grf")) {
             	File grf=new File(grfName);
                 Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
@@ -332,7 +332,7 @@ public class LocateFrame extends JInternalFrame {
                 fst2Name = fst2Name + "fst2";
                 fst2 = new File(fst2Name);
             } else {
-                if (!(grfName.substring(grfName.length() - 4, grfName.length())
+                if (grfName.length()>4 && !(grfName.substring(grfName.length() - 4, grfName.length())
                         .equalsIgnoreCase("fst2"))) {
                     JOptionPane.showMessageDialog(null,
                             "Invalid graph name extension !", "Error",
