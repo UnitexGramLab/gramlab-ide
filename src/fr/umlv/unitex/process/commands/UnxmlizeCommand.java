@@ -38,5 +38,15 @@ public class UnxmlizeCommand extends CommandBuilder {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
+	
+	public UnxmlizeCommand PRLG(File s) {
+		protectElement("--PRLG="+s.getAbsolutePath());
+		return this;
+	}
+
+	public UnxmlizeCommand outputOffsets(File s) {
+		protectElement("--output_offsets="+s.getAbsolutePath());
+		return this;
+	}
 
 }

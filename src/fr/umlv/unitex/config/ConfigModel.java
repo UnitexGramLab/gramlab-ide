@@ -57,6 +57,7 @@ public interface ConfigModel {
     public int getConcordanceFontSize(String language);
     public boolean isKorean(String language);
     public boolean isArabic(String language);
+    public boolean isAncientGreek(String language);
     public boolean isValidLanguageName(String language);
     
     public File getMainDirectory();

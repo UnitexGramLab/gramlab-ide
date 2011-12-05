@@ -59,6 +59,8 @@ import fr.umlv.unitex.process.commands.PolyLexCommand;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import fr.umlv.unitex.process.commands.UnxmlizeCommand;
+import fr.umlv.unitex.text.SntUtil;
 import fr.umlv.unitex.text.Text;
 
 /**
@@ -92,6 +94,7 @@ public class PreprocessDialog extends JDialog {
 	private JPanel preprocessingTaggedText;
 	private JPanel preprocessingUntaggedText;
 	private boolean taggedText = false;
+	private UnxmlizeCommand unxmlizeCmd;
 
 	/**
 	 * Creates and shows a new <code>PreprocessFrame</code>
@@ -132,10 +135,12 @@ public class PreprocessDialog extends JDialog {
 		textFst2Check.setSelected(false);
 	}
 
-	void setFiles(File originalTextFile, File sntFile, boolean taggedText) {
+	void setFiles(File originalTextFile, File sntFile, boolean taggedText,
+			UnxmlizeCommand cmd) {
 		this.originalTextFile = originalTextFile;
 		this.sntFile = sntFile;
 		this.taggedText = taggedText;
+		this.unxmlizeCmd=cmd;
 		preprocessingParent.remove(preprocessingCurrent);
 		if (taggedText) {
 			preprocessingCurrent = preprocessingTaggedText;
@@ -249,7 +254,7 @@ public class PreprocessDialog extends JDialog {
 				// if the user has clicked on cancel but tokenize, we must
 				// tokenize anyway
 				setVisible(false);
-				tokenize();
+				justTokenize();
 			}
 		};
 		final JButton cancelButIndex = new JButton(cancelButIndexAction);
@@ -269,17 +274,24 @@ public class PreprocessDialog extends JDialog {
 		return buttons;
 	}
 
-	private MultiCommands normalizingText(final MultiCommands commands) {
+	private MultiCommands normalizingText(final MultiCommands commands,
+			File inputOffsets,File outputOffsets) {
 		NormalizeCommand normalizeCmd = new NormalizeCommand()
 				.textWithDefaultNormalization(originalTextFile);
 		if (!taggedText && noSeparatorNormalization.isSelected()) {
 			normalizeCmd = normalizeCmd.noSeparatorNormalization();
 		}
+		if (inputOffsets!=null) {
+			normalizeCmd = normalizeCmd.inputOffsets(inputOffsets);
+		}
+		if (outputOffsets!=null) {
+			normalizeCmd = normalizeCmd.outputOffsets(outputOffsets);
+		}
 		commands.addCommand(normalizeCmd);
 		return commands;
 	}
 
-	void tokenize() {
+	void justTokenize() {
 		MultiCommands commands = new MultiCommands();
 		File dir = Config.getCurrentSntDir();
 		if (!dir.exists()) {
@@ -288,7 +300,17 @@ public class PreprocessDialog extends JDialog {
 			MkdirCommand mkdir = new MkdirCommand().name(dir);
 			commands.addCommand(mkdir);
 		}
-		commands = normalizingText(commands);
+		File sntDir=Config.getCurrentSntDir();
+		File nextOutputOffsets=null;
+		File lastOutputOffsets=null;
+		if (unxmlizeCmd!=null) {
+			commands.addCommand(unxmlizeCmd);
+			lastOutputOffsets=new File(sntDir,"unxmlize.out.offsets");
+			nextOutputOffsets=new File(sntDir,"normalize.out.offsets");
+		}
+		commands = normalizingText(commands,lastOutputOffsets,nextOutputOffsets);
+		lastOutputOffsets=nextOutputOffsets;
+		nextOutputOffsets=new File(sntDir,"tokenize.out.offsets");
 		// TOKENIZING...
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
 				Config.getCurrentSnt()).alphabet(
@@ -297,9 +319,15 @@ public class PreprocessDialog extends JDialog {
 				|| Config.getCurrentLanguage().equals("Chinese")) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
 		}
+		if (lastOutputOffsets!=null) {
+			tokenizeCmd=tokenizeCmd.inputOffsets(lastOutputOffsets);
+		}
+		if (nextOutputOffsets!=null) {
+			tokenizeCmd=tokenizeCmd.outputOffsets(nextOutputOffsets);
+		}
 		commands.addCommand(tokenizeCmd);
 		InternalFrameManager.getManager(null).closeTextFrame();
-		Text.removeSntFiles();
+		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true,
 				new AfterPreprocessDo(sntFile, taggedText));
 	}
@@ -451,7 +479,8 @@ public class PreprocessDialog extends JDialog {
 		return commands;
 	}
 
-	private MultiCommands replaceGraph(final MultiCommands commands) {
+	private MultiCommands replaceGraph(final MultiCommands commands,File inputOffsets,
+			File outputOffsets) {
 		File f = new File(replaceName.getText());
 		if (!f.exists()) {
 			commands
@@ -485,12 +514,19 @@ public class PreprocessDialog extends JDialog {
 			if (ConfigManager.getManager().isCharByCharLanguage(null))
 				cmd = cmd.charByChar(ConfigManager.getManager()
 						.isMorphologicalUseOfSpaceAllowed(null));
+			if (inputOffsets!=null) {
+				cmd=cmd.inputOffsets(inputOffsets);
+			}
+			if (outputOffsets!=null) {
+				cmd=cmd.outputOffsets(outputOffsets);
+			}
 			commands.addCommand(cmd);
 		}
 		return commands;
 	}
 
-	private MultiCommands sentenceGraph(final MultiCommands commands) {
+	private MultiCommands sentenceGraph(final MultiCommands commands,File inputOffsets,
+			File outputOffsets) {
 		File sentence = new File(sentenceName.getText());
 		if (!sentence.exists()) {
 			commands
@@ -529,6 +565,12 @@ public class PreprocessDialog extends JDialog {
 			if (ConfigManager.getManager().isCharByCharLanguage(null))
 				cmd = cmd.charByChar(ConfigManager.getManager()
 						.isMorphologicalUseOfSpaceAllowed(null));
+			if (inputOffsets!=null) {
+				cmd=cmd.inputOffsets(inputOffsets);
+			}
+			if (outputOffsets!=null) {
+				cmd=cmd.outputOffsets(outputOffsets);
+			}
 			commands.addCommand(cmd);
 		}
 		return commands;
@@ -543,29 +585,57 @@ public class PreprocessDialog extends JDialog {
 		return commands;
 	}
 
-	private MultiCommands tokenization(final MultiCommands commands) {
+	private MultiCommands tokenization(final MultiCommands commands,File inputOffsets,
+			File outputOffsets) {
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
 				Config.getCurrentSnt()).alphabet(
 				ConfigManager.getManager().getAlphabet(null));
 		if (ConfigManager.getManager().isCharByCharLanguage(null)) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
 		}
+		if (inputOffsets!=null) {
+			tokenizeCmd=tokenizeCmd.inputOffsets(inputOffsets);
+		}
+		if (outputOffsets!=null) {
+			tokenizeCmd=tokenizeCmd.outputOffsets(outputOffsets);
+		}
 		commands.addCommand(tokenizeCmd);
 		return commands;
 	}
 
 	void preprocess() {
+		File sntDir=Config.getCurrentSntDir();
 		// build & execute a command chain
 		MultiCommands commands = new MultiCommands();
-		commands = normalizingText(commands);
 		commands = createSndDir(commands);
+		boolean offsets=(unxmlizeCmd!=null);
+		File nextOutputOffsets=null;
+		File lastOutputOffsets=null;
+		if (unxmlizeCmd!=null) {
+			commands.addCommand(unxmlizeCmd);
+			lastOutputOffsets=new File(sntDir,"unxmlize.out.offsets");
+			nextOutputOffsets=new File(sntDir,"normalize.out.offsets");
+		}
+		commands = normalizingText(commands,lastOutputOffsets,nextOutputOffsets);
+		lastOutputOffsets=nextOutputOffsets;
 		if (sentenceCheck.isSelected()) {
-			commands = sentenceGraph(commands);
+			if (offsets) {
+				nextOutputOffsets=new File(sntDir,"sentence.out.offsets");
+			}
+			commands = sentenceGraph(commands,lastOutputOffsets,nextOutputOffsets);
 		}
+		lastOutputOffsets=nextOutputOffsets;
 		if (replaceCheck.isSelected()) {
-			commands = replaceGraph(commands);
+			if (offsets) {
+				nextOutputOffsets=new File(sntDir,"replace.out.offsets");
+			}
+			commands = replaceGraph(commands,lastOutputOffsets,nextOutputOffsets);
 		}
-		commands = tokenization(commands);
+		lastOutputOffsets=nextOutputOffsets;
+		if (offsets) {
+			nextOutputOffsets=new File(sntDir,"tokenize.out.offsets");
+		}
+		commands = tokenization(commands,lastOutputOffsets,nextOutputOffsets);
 		if (applyDicCheck.isSelected()) {
 			commands = applyDefaultDictionaries(commands);
 		}
@@ -573,7 +643,7 @@ public class PreprocessDialog extends JDialog {
 			commands = constructTextAutomaton(commands);
 		}
 		InternalFrameManager.getManager(null).closeTextFrame();
-		Text.removeSntFiles();
+		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true,
 				new AfterPreprocessDo(sntFile, taggedText));
 	}

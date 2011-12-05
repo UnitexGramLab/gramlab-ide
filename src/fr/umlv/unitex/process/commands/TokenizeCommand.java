@@ -48,4 +48,14 @@ public class TokenizeCommand extends CommandBuilder {
         return this;
     }
 
+	public TokenizeCommand inputOffsets(File s) {
+		protectElement("--input_offsets="+s.getAbsolutePath());
+		return this;
+	}
+
+	public TokenizeCommand outputOffsets(File s) {
+		protectElement("--output_offsets="+s.getAbsolutePath());
+		return this;
+	}
+
 }
