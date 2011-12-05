@@ -42,6 +42,7 @@ import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.xalign.ConcordanceModel;
 
@@ -684,11 +685,12 @@ public class InternalFrameManager {
     }
 
     public PreprocessDialog newPreprocessDialog(File text, File sntFile) {
-        return newPreprocessDialog(text, sntFile, false);
+        return newPreprocessDialog(text, sntFile, false, null);
     }
 
-    public PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText) {
-        PreprocessDialog d = preprocessDialogFactory.newPreprocessDialog(text, sntFile, taggedText);
+    public PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText,
+    		UnxmlizeCommand cmd) {
+        PreprocessDialog d = preprocessDialogFactory.newPreprocessDialog(text, sntFile, taggedText, cmd);
         if (d == null) return null;
         d.setVisible(true);
         return d;
