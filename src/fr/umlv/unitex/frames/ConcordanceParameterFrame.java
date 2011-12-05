@@ -73,6 +73,7 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.StatsCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.text.SntUtil;
 
 /**
  * This class describes a frame in which the user can select how to use the
@@ -564,6 +565,13 @@ public class ConcordanceParameterFrame extends JInternalFrame {
             	command=command.onlyAmbiguous();
             } else {
             	command=command.order(sortBox.getSelectedIndex());
+            }
+            if (ConfigManager.getManager().isAncientGreek(null)) {
+            	File prlgIndex=new File(Config.getCurrentSntDir(),"prlg.idx");
+            	File offsets=new File(Config.getCurrentSntDir(),"tokenize.out.offsets");
+            	if (prlgIndex.exists() && offsets.exists()) {
+            		command=command.PRLG(prlgIndex,offsets);
+            	}
             }
         } catch (InvalidConcordanceOrderException e) {
             e.printStackTrace();

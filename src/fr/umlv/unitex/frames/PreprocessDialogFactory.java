@@ -23,16 +23,19 @@ package fr.umlv.unitex.frames;
 
 import java.io.File;
 
+import fr.umlv.unitex.process.commands.UnxmlizeCommand;
+
 
 class PreprocessDialogFactory {
 
     private PreprocessDialog dialog;
 
-    PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText) {
+    PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText,
+    		UnxmlizeCommand cmd) {
         if (dialog == null) {
             dialog = new PreprocessDialog();
         }
-        dialog.setFiles(text, sntFile, taggedText);
+        dialog.setFiles(text, sntFile, taggedText, cmd);
         return dialog;
     }
 

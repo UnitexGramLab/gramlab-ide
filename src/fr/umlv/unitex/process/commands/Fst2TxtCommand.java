@@ -59,4 +59,14 @@ public class Fst2TxtCommand extends CommandBuilder {
       return this;
   }
 
+	public Fst2TxtCommand inputOffsets(File s) {
+		protectElement("--input_offsets="+s.getAbsolutePath());
+		return this;
+	}
+
+	public Fst2TxtCommand outputOffsets(File s) {
+		protectElement("--output_offsets="+s.getAbsolutePath());
+		return this;
+	}
+
 }

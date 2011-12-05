@@ -125,4 +125,9 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand PRLG(File prlgIndex, File offsets) {
+		protectElement("--PRLG="+prlgIndex.getAbsolutePath()+","+offsets.getAbsolutePath());
+		return this;
+	}
+
 }

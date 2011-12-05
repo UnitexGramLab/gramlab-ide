@@ -70,7 +70,7 @@ public class Text {
 	 * @param file
 	 *            file name
 	 */
-	static void loadTxt(File file, boolean taggedText) {
+	static void loadTxt(File file, boolean taggedText, UnxmlizeCommand cmd) {
 		String name = file.getAbsolutePath();
 		if (!file.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
@@ -102,20 +102,23 @@ public class Text {
 				"Do you want to preprocess the text ?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 				options, options[0])) {
-			preprocessSnt(file, Config.getCurrentSnt(), taggedText);
+			preprocessSnt(file, Config.getCurrentSnt(), taggedText, cmd);
 		} else {
-			preprocessLightSnt(file, taggedText);
+			preprocessLightSnt(file, taggedText, cmd);
 		}
 	}
 
-	private static void preprocessSnt(File name, File snt, boolean taggedText) {
+	private static void preprocessSnt(File name, File snt, boolean taggedText, UnxmlizeCommand cmd) {
 		InternalFrameManager.getManager(name)
-				.newPreprocessDialog(name, snt, taggedText);
+				.newPreprocessDialog(name, snt, taggedText, cmd);
 	}
 
-	private static void preprocessLightSnt(File name, boolean taggedText) {
+	private static void preprocessLightSnt(File name, boolean taggedText, UnxmlizeCommand cmd) {
 		File dir = Config.getCurrentSntDir();
 		MultiCommands commands = new MultiCommands();
+		if (cmd!=null) {
+			commands.addCommand(cmd);
+		}
 		// NORMALIZING TEXT...
 		NormalizeCommand normalizeCmd = new NormalizeCommand()
 				.textWithDefaultNormalization(name);
@@ -136,7 +139,7 @@ public class Text {
 		 * problem when trying to close the .snt file that is mapped
 		 */
 		InternalFrameManager.getManager(null).closeTextFrame();
-		Text.removeSntFiles();
+		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),
 				taggedText));
 	}
@@ -151,15 +154,6 @@ public class Text {
 	public static void loadSnt(File snt, boolean taggedText) {
 		Config.setCurrentSnt(snt);
 		InternalFrameManager.getManager(snt).newTextFrame(snt, taggedText);
-	}
-
-	/**
-	 * Remove all files related to the current ".snt" file
-	 */
-	public static void removeSntFiles() {
-		if (Config.getCurrentSntDir().exists()) {
-			FileUtil.removeFile(new File(Config.getCurrentSntDir(), "*"));
-		}
 	}
 
 	static class TextDo implements ToDo {
@@ -194,7 +188,7 @@ public class Text {
 				loadXmlOrHtml(file);
 			} else {
 				/* txt file */
-				loadTxt(file, b);
+				loadTxt(file, b, null);
 			}
 		}
 	}
@@ -224,19 +218,12 @@ public class Text {
 			return;
 		}
 		UnxmlizeCommand cmd = new UnxmlizeCommand().text(file);
+		if (ConfigManager.getManager().isAncientGreek(null)) {
+			cmd=cmd.PRLG(new File(SntUtil.getSntDir(file),"prlg.idx"));
+			cmd=cmd.outputOffsets(new File(SntUtil.getSntDir(file),"unxmlize.out.offsets"));
+		}
 		String s = FileUtil.getFileNameWithoutExtension(file) + ".txt";
-		Launcher.exec(cmd, true, new LoadTxtDo(new File(s)));
+		loadTxt(new File(s),false,cmd);
 	}
 
-	static class LoadTxtDo implements ToDo {
-		File txt;
-
-		public LoadTxtDo(File txt) {
-			this.txt = txt;
-		}
-
-		public void toDo() {
-			loadTxt(txt, false);
-		}
-	}
 }

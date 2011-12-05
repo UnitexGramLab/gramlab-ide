@@ -19,49 +19,37 @@
  *
  */
 
-package fr.umlv.unitex.process.commands;
+package fr.umlv.unitex.text;
 
 import java.io.File;
 
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.files.FileUtil;
 
-/**
- * @author Sébastien Paumier
- *  
- */
-public class NormalizeCommand extends CommandBuilder {
+public class SntUtil {
 
-	public NormalizeCommand() {
-		super("Normalize");
+	/**
+	 * Returns a new file obtained by replacing the extension by .snt
+	 */
+	public static File getSnt(File f) {
+		return new File(FileUtil.getFileNameWithoutExtension(f)+".snt");
 	}
-
-	public NormalizeCommand textWithDefaultNormalization(File s) {
-		protectElement(s.getAbsolutePath());
-		
-		File norm=new File(Config.getUserCurrentLanguageDir(),"Norm.txt");
-		if (norm.exists()) {
-		    protectElement("-r"+norm.getAbsolutePath());
+	
+	public static File getSntDir(File f) {
+		return new File(FileUtil.getFileNameWithoutExtension(f)+"_snt");
+	}
+	
+	/**
+	 * This function cleans the content of the _snt dir associated to
+	 * the given file f. It also works if f is the _snt dir itself. 
+	 */
+	public static void cleanSntDir(File f) {
+		if (!f.isDirectory() || ".snt".equalsIgnoreCase(FileUtil.getExtensionInLowerCase(f))) {
+			f=getSntDir(f);
 		}
-		return this;
-	}
-	
-	public NormalizeCommand noSeparatorNormalization() {
-		element("--no_separator_normalization");
-		return this;
-	}
-	
-	public NormalizeCommand text(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
+		if (f.exists()) {
+			FileUtil.removeFile(new File(f, "*"));
+		}
 
-	public NormalizeCommand inputOffsets(File s) {
-		protectElement("--input_offsets="+s.getAbsolutePath());
-		return this;
-	}
-
-	public NormalizeCommand outputOffsets(File s) {
-		protectElement("--output_offsets="+s.getAbsolutePath());
-		return this;
 	}
 }
