@@ -34,9 +34,12 @@ public abstract class AbstractConfigModel implements ConfigModel {
         return language.equals("Arabic");
     }
     
-    public boolean isAncientGreek(String language) {
+    public boolean isPRLGLanguage(String language) {
     	if (language==null) language=getCurrentLanguage();
-        return language.equals("Greek (Ancient)");
+        return language.equals("Greek (Ancient)")
+        	|| language.equals("Arabic (Middle Arabic)")
+        	|| language.equals("Armenian (Ancient)")
+        	|| language.equals("Georgian (Ancient)");
     }
 
     public boolean isValidLanguageName(String language) {
