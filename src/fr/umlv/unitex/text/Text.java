@@ -67,28 +67,31 @@ public class Text {
 	/**
 	 * Loads a ".txt" file. Asks for preprocessing the text.
 	 * 
+	 * Note that the .txt file may not exist yet if the original file was a 
+	 * .xml or a .html file. This is why we test cmd!=null
+	 * 
 	 * @param file
 	 *            file name
 	 */
 	static void loadTxt(File file, boolean taggedText, UnxmlizeCommand cmd) {
 		String name = file.getAbsolutePath();
-		if (!file.exists()) {
+		if (cmd==null && !file.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (!file.canRead()) {
+		if (cmd==null && !file.canRead()) {
 			JOptionPane.showMessageDialog(null, "Cannot read " + name, "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (file.length() <= 2) {
+		if (cmd==null && file.length() <= 2) {
 			JOptionPane.showMessageDialog(null, name + " is empty", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		Encoding e=Encoding.getEncoding(file);
-		if (e==null) {
+		if (cmd==null && e==null) {
 		JOptionPane.showMessageDialog(null, name
 					+ " is not a Unicode Little-Endian text", "Error",
 					JOptionPane.ERROR_MESSAGE);
