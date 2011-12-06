@@ -221,7 +221,7 @@ public class Text {
 			return;
 		}
 		UnxmlizeCommand cmd = new UnxmlizeCommand().text(file);
-		if (ConfigManager.getManager().isAncientGreek(null)) {
+		if (ConfigManager.getManager().isPRLGLanguage(null)) {
 			cmd=cmd.PRLG(new File(SntUtil.getSntDir(file),"prlg.idx"));
 			cmd=cmd.outputOffsets(new File(SntUtil.getSntDir(file),"unxmlize.out.offsets"));
 		}
