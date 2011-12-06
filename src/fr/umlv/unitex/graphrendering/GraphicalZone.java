@@ -253,7 +253,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		addBoxSelectionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean selected=selectedBoxes.size()!=0;
-				newBox.setEnabled(!selected);
 				submenu.setEnabled(selected);
 				surroundWithInputVar.setEnabled(selected);
 				surroundWithOutputVar.setEnabled(selected);
