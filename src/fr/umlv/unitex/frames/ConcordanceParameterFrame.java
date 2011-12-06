@@ -566,7 +566,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
             } else {
             	command=command.order(sortBox.getSelectedIndex());
             }
-            if (ConfigManager.getManager().isAncientGreek(null)) {
+            if (ConfigManager.getManager().isPRLGLanguage(null)) {
             	File prlgIndex=new File(Config.getCurrentSntDir(),"prlg.idx");
             	File offsets=new File(Config.getCurrentSntDir(),"tokenize.out.offsets");
             	if (prlgIndex.exists() && offsets.exists()) {
