@@ -51,9 +51,10 @@ class VariableInsertionDialog extends JDialog {
 	
     public VariableInsertionDialog(boolean inputVar) {
         super(UnitexFrame.mainFrame, true);
-        JPanel p = new JPanel(new GridLayout(3, 1));
+        JPanel p = new JPanel(new GridLayout(4, 1));
         p.setBorder(new EmptyBorder(10, 10, 10, 10));
         p.add(new JLabel("Choose your "+(inputVar?"input":"output")+" variable name:"));
+        p.add(new JLabel("(valid characters=[a-zA-Z0-9_])"));
         name = new JTextField(30);
         name.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
