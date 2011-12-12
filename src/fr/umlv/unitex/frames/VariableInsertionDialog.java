@@ -24,6 +24,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.ParseException;
 import java.util.regex.Pattern;
 
@@ -36,6 +39,7 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.JTextComponent.KeyBinding;
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set a
@@ -65,11 +69,23 @@ class VariableInsertionDialog extends JDialog {
 				}
 			}
 		});
+        name.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					if (pattern.matcher(name.getText()).matches()) {
+	            		setVisible(false);
+	            	}
+				}
+			}
+		});
         p.add(name);
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+            	if (pattern.matcher(name.getText()).matches()) {
+            		setVisible(false);
+            	}
             }
         });
 
