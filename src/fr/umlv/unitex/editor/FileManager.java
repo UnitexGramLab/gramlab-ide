@@ -18,22 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.editor;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -45,161 +35,144 @@ import javax.swing.text.StringContent;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FileEditionTextFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
 
 /**
  * This class provides methods for loading corpora
  */
 public class FileManager {
+	private Timer currentTimer = null;
+	private FileEditionTextFrame fileEditionTextFrame;
 
-    private Timer currentTimer = null;
-    private FileEditionTextFrame fileEditionTextFrame;
-    private boolean FILE_TOO_LARGE = false;
+	/**
+	 * loads file and checks encoding type
+	 * 
+	 * @param file
+	 *            the text file
+	 */
+	public void loadFile(File file) {
+		if (file == null) {
+			System.err.println("Internal error in FileManager.loadFile");
+			return;
+		}
+		if (!file.exists()) {
+			JOptionPane.showMessageDialog(null, "Cannot find "
+					+ file.getAbsolutePath(), "Error", ImageObserver.ERROR);
+			return;
+		}
+		if (!file.canRead()) {
+			JOptionPane.showMessageDialog(null, "Cannot read "
+					+ file.getAbsolutePath(), "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (file.length() <= 2) {
+			JOptionPane.showMessageDialog(null, file.getAbsolutePath()
+					+ " is empty", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		JOptionPane.showMessageDialog(null,
+				"This is not necessarily the text being processed by Unitex",
+				"Warning", JOptionPane.WARNING_MESSAGE);
+		load(file);
+	}
 
-    /**
-     * loads file and checks encoding type
-     *
-     * @param file the text file
-     */
-    public void loadFile(File file) {
-        if (file == null) {
-            System.err.println("Internal error in FileManager.loadFile");
-            return;
-        }
-        if (!file.exists()) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Cannot find " + file.getAbsolutePath(),
-                    "Error",
-                    ImageObserver.ERROR);
-            return;
-        }
-        if (!file.canRead()) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Cannot read " + file.getAbsolutePath(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (file.length() <= 2) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    file.getAbsolutePath() + " is empty",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        JOptionPane.showMessageDialog(null, "This is not necessarily the text being processed by Unitex", "Warning", JOptionPane.WARNING_MESSAGE);
-        load(file);
-    }
+	/**
+	 * loads a file from
+	 * 
+	 * @param file
+	 *            file path
+	 */
+	private void load(File file) {
+		fileEditionTextFrame = InternalFrameManager.getManager(file)
+				.newFileEditionTextFrame(file);
+		final EditionTextArea text = fileEditionTextFrame.getText();
+		if (file.length() <= 2) {
+			text.setDocument(new PlainDocument());
+			text.setText(Config.EMPTY_FILE_MESSAGE);
+		} else if (file.length() < Preferences.MAX_TEXT_FILE_SIZE) {
+			load(file, text);
+			text.setCaretPosition(0);
+		} else {
+			text.setDocument(new PlainDocument());
+			text.setText(Config.FILE_TOO_LARGE_MESSAGE);
+		}
+	}
 
+	public void killTimer() {
+		if (currentTimer != null) {
+			currentTimer.stop();
+			currentTimer = null;
+		}
+	}
 
-    /**
-     * loads a file from
-     *
-     * @param file file path
-     */
-    private void load(File file) {
-        fileEditionTextFrame = InternalFrameManager.getManager(file).newFileEditionTextFrame(file);
-        EditionTextArea text = fileEditionTextFrame.getText();
-        if (file.length() <= 2) {
-            FILE_TOO_LARGE = true;
-            text.setDocument(new PlainDocument());
-            text.setText(Config.EMPTY_FILE_MESSAGE);
-        } else if (file.length() < Preferences.MAX_TEXT_FILE_SIZE) {
-            load(file, text);
-            text.setCaretPosition(0);
-            FILE_TOO_LARGE = false;
-        } else {
-            FILE_TOO_LARGE = true;
-            text.setDocument(new PlainDocument());
-            text.setText(Config.FILE_TOO_LARGE_MESSAGE);
-        }
-    }
+	/**
+	 * saves a file
+	 * 
+	 * @param absolutePath
+	 *            the absolute path of the file
+	 */
+	public void save(String absolutePath) {
+		try {
+			final FileEditionTextFrame fetf = InternalFrameManager.getManager(
+					null).getSelectedFileEditionTextFrame();
+			if (fetf == null)
+				return;
+			final EditionTextArea t = fetf.getText();
+			final OutputStreamWriter osr = ConfigManager.getManager()
+					.getEncoding(null).getOutputStreamWriter(
+							new File(absolutePath));
+			final String content = t.getText();
+			final int l = content.length();
+			for (int i = 0; i < l; i++) {
+				final char c = content.charAt(i);
+				osr.write(c);
+			}
+			osr.flush();
+			osr.close();
+			t.setUnmodified();
+		} catch (final IOException e) {
+			JOptionPane.showMessageDialog(null, "Unable to save "
+					+ absolutePath, "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (final ClassCastException e) {
+			JOptionPane.showMessageDialog(null,
+					"please, select a text edition frame", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (final NullPointerException e) {
+			JOptionPane.showMessageDialog(null,
+					"please, select a text edition frame", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
-    public void killTimer() {
-        if (currentTimer != null) {
-            currentTimer.stop();
-            currentTimer = null;
-        }
-    }
-
-    /**
-     * saves a file
-     *
-     * @param absolutePath the absolute path of the file
-     */
-    public void save(String absolutePath) {
-
-        try {
-            FileEditionTextFrame fetf = InternalFrameManager.getManager(null).getSelectedFileEditionTextFrame();
-            if (fetf == null) return;
-            EditionTextArea t = fetf.getText();
-            OutputStreamWriter osr=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(new File(absolutePath));
-            String content = t.getText();
-            int l = content.length();
-            for (int i = 0; i < l; i++) {
-                char c = content.charAt(i);
-                osr.write(c);
-            }
-            osr.flush();
-            osr.close();
-            t.setUnmodified();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Unable to save " + absolutePath,
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (ClassCastException e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "please, select a text edition frame",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "please, select a text edition frame",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-    }
-
-
-    /**
-     * Load an little endian Unicode texte file put it in a document
-     *
-     * @param file     the text to load
-     * @param textArea aera where put the text
-     */
-    Document load(File file, final EditionTextArea textArea)
-            throws  IllegalArgumentException {
-
-        final StringContent content = new StringContent();
-        final PlainDocument document = new PlainDocument(content);
-        String fileContent=Encoding.getContent(file);
-        textArea.setDocument(document);
-        try {
-			document.insertString(0,fileContent, null);
-		} catch (BadLocationException e) {
+	/**
+	 * Load an little endian Unicode texte file put it in a document
+	 * 
+	 * @param file
+	 *            the text to load
+	 * @param textArea
+	 *            aera where put the text
+	 */
+	Document load(File file, final EditionTextArea textArea)
+			throws IllegalArgumentException {
+		final StringContent content = new StringContent();
+		final PlainDocument document = new PlainDocument(content);
+		final String fileContent = Encoding.getContent(file);
+		textArea.setDocument(document);
+		try {
+			document.insertString(0, fileContent, null);
+		} catch (final BadLocationException e) {
 			e.printStackTrace();
 		}
-        return document;
-    }
+		return document;
+	}
 
-    /**
-     * load an empty text
-     */
-    public void newFile() {
-    	InternalFrameManager.getManager(null).newFileEditionTextFrame(null);
-    }
-
-
+	/**
+	 * load an empty text
+	 */
+	public void newFile() {
+		InternalFrameManager.getManager(null).newFileEditionTextFrame(null);
+	}
 }

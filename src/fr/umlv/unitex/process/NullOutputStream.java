@@ -26,28 +26,28 @@ import java.io.OutputStream;
  * @author Olivier Blanc
  */
 class NullOutputStream extends OutputStream {
-    @Override
-    public void close() {
-        // nothing to do
-    }
+	@Override
+	public void close() {
+		// nothing to do
+	}
 
-    @Override
-    public void flush() {
-        // nothing to do
-    }
+	@Override
+	public void flush() {
+		// nothing to do
+	}
 
-    @Override
-    public void write(byte[] b) {
-        // nothing to do
-    }
+	@Override
+	public void write(byte[] b) {
+		// nothing to do
+	}
 
-    @Override
-    public void write(byte[] b, int off, int len) {
-        // nothing to do
-    }
+	@Override
+	public void write(byte[] b, int off, int len) {
+		// nothing to do
+	}
 
-    @Override
-    public void write(int b) {
-        // nothing to do
-    }
+	@Override
+	public void write(int b) {
+		// nothing to do
+	}
 }

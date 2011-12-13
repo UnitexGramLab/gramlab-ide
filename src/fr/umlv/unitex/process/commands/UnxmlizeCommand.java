@@ -18,18 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class UnxmlizeCommand extends CommandBuilder {
-
 	public UnxmlizeCommand() {
 		super("Unxmlize");
 	}
@@ -38,15 +35,14 @@ public class UnxmlizeCommand extends CommandBuilder {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
-	
+
 	public UnxmlizeCommand PRLG(File s) {
-		protectElement("--PRLG="+s.getAbsolutePath());
+		protectElement("--PRLG=" + s.getAbsolutePath());
 		return this;
 	}
 
 	public UnxmlizeCommand outputOffsets(File s) {
-		protectElement("--output_offsets="+s.getAbsolutePath());
+		protectElement("--output_offsets=" + s.getAbsolutePath());
 		return this;
 	}
-
 }

@@ -18,14 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.console;
 
 import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
 
 public class Console {
-
 	/**
 	 * Adds a <code>String</code> to the the command lines
 	 * 
@@ -33,14 +30,14 @@ public class Console {
 	 *            the command line to be added
 	 */
 	public static ConsoleEntry addCommand(String command,
-			boolean isRealCommand, int pos, boolean systemMsg,String logID) {
-		return InternalFrameManager.getManager(null).getConsoleFrame().addCommand(
-				command, isRealCommand, pos, systemMsg,logID);
+			boolean isRealCommand, int pos, boolean systemMsg, String logID) {
+		return InternalFrameManager.getManager(null).getConsoleFrame()
+				.addCommand(command, isRealCommand, pos, systemMsg, logID);
 	}
 
-	public static ConsoleEntry addCommand(String command, boolean systemMsg,String logID) {
-		return InternalFrameManager.getManager(null).getConsoleFrame().addCommand(
-				command, true, -1, systemMsg,logID);
+	public static ConsoleEntry addCommand(String command, boolean systemMsg,
+			String logID) {
+		return InternalFrameManager.getManager(null).getConsoleFrame()
+				.addCommand(command, true, -1, systemMsg, logID);
 	}
-
 }

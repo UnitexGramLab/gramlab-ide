@@ -18,21 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.tfst.tagging;
 
 public enum TaggingState {
-
 	/* The box has been selected by the user */
 	SELECTED,
-	
-	/* The box is competing with a selected box and so,
-	 * must be discarded */
+	/*
+	 * The box is competing with a selected box and so, must be discarded
+	 */
 	TO_BE_REMOVED,
-	
 	/* The box is not both accessible and co-accessible */
 	USELESS,
-	
 	/* None of previous cases */
 	NEUTRAL
 }

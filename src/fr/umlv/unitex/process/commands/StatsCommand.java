@@ -18,54 +18,52 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class StatsCommand extends CommandBuilder {
-
 	public StatsCommand() {
 		super("Stats");
 	}
 
 	public StatsCommand mode(int mode) {
-        protectElement("-m"+mode);
-        return this;
-    }
+		protectElement("-m" + mode);
+		return this;
+	}
 
-    public StatsCommand alphabet(File alphabet) {
-        if (alphabet!=null) protectElement("-a"+alphabet.getAbsolutePath());
-        return this;
-    }
-    
-    public StatsCommand output(File output) {
-        protectElement("-o"+output.getAbsolutePath());
-        return this;
-    }
+	public StatsCommand alphabet(File alphabet) {
+		if (alphabet != null)
+			protectElement("-a" + alphabet.getAbsolutePath());
+		return this;
+	}
 
-    public StatsCommand left(int left) {
-        protectElement("-l"+left);
-        return this;
-    }
+	public StatsCommand output(File output) {
+		protectElement("-o" + output.getAbsolutePath());
+		return this;
+	}
 
-    public StatsCommand right(int right) {
-        protectElement("-r"+right);
-        return this;
-    }
+	public StatsCommand left(int left) {
+		protectElement("-l" + left);
+		return this;
+	}
 
-    public StatsCommand caseSensitive(boolean sensitive) {
-        protectElement("-c"+(sensitive?"1":"0"));
-        return this;
-    }
+	public StatsCommand right(int right) {
+		protectElement("-r" + right);
+		return this;
+	}
 
-    public StatsCommand concord(File concord) {
-        protectElement(concord.getAbsolutePath());
-        return this;
-    }
+	public StatsCommand caseSensitive(boolean sensitive) {
+		protectElement("-c" + (sensitive ? "1" : "0"));
+		return this;
+	}
 
+	public StatsCommand concord(File concord) {
+		protectElement(concord.getAbsolutePath());
+		return this;
+	}
 }

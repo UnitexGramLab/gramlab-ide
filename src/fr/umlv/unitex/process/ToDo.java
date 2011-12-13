@@ -18,29 +18,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process;
 
 /**
- * This interface is used to define a method named <code>toDo()</code>. It is used to
- * define what must be done after a sequence of command lines in the 
- * <code>ProcessInfoFrame.launchCommand()</code> method: after all processes have been completed, 
- * a <code>toDo()</code> method is called to execute some actions.
+ * This interface is used to define a method named <code>toDo()</code>. It is
+ * used to define what must be done after a sequence of command lines in the
+ * <code>ProcessInfoFrame.launchCommand()</code> method: after all processes
+ * have been completed, a <code>toDo()</code> method is called to execute some
+ * actions.
  * 
- * All classes or methods that create <code>ProcessInfoFrame</code> objects should create
- * their own object, extending the <code>DoAbstract</code> class. 
- *  
+ * All classes or methods that create <code>ProcessInfoFrame</code> objects
+ * should create their own object, extending the <code>DoAbstract</code> class.
+ * 
  * @author Sébastien Paumier
- *
+ * 
  */
 public interface ToDo {
-	
 	/**
-	 * IMPORTANT: a toDo() method must NEVER use things like Config.getCurrent...
-	 *            because in Gramlab mode, there is not guarantee that the current language is
-	 *            the same when Launcher.exec is invoked and when toDo is invoked.
-	 *            All needed files must must passed in the ToDo constructor
+	 * IMPORTANT: a toDo() method must NEVER use things like
+	 * Config.getCurrent... because in Gramlab mode, there is not guarantee that
+	 * the current language is the same when Launcher.exec is invoked and when
+	 * toDo is invoked. All needed files must must passed in the ToDo
+	 * constructor
 	 */
 	public void toDo();
-   
 }

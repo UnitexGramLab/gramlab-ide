@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process;
 
 import java.io.File;
@@ -31,10 +30,10 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 
 public class Log {
-
 	/**
-	 * Note: The log # cannot be stored in the Command object, since a failure can
-	 * skip commands. So, we have to call this method just before invoking the command.
+	 * Note: The log # cannot be stored in the Command object, since a failure
+	 * can skip commands. So, we have to call this method just before invoking
+	 * the command.
 	 * 
 	 * @return the log ID or null, in case of error or if logs are disabled
 	 */
@@ -42,38 +41,42 @@ public class Log {
 		if (!ConfigManager.getManager().mustLog(null)) {
 			return null;
 		}
-		File logDir=ConfigManager.getManager().getLogDirectory(null);
-		if (logDir==null) {
-			throw new IllegalStateException("Should not have a null logging directory when mustLog is true");
+		final File logDir = ConfigManager.getManager().getLogDirectory(null);
+		if (logDir == null) {
+			throw new IllegalStateException(
+					"Should not have a null logging directory when mustLog is true");
 		}
 		if (!logDir.exists()) {
 			JOptionPane.showMessageDialog(null,
-                    "Log directory does not exist: \n\n"+logDir.getAbsolutePath()+
-                    "\n\nSet it properly or deactivate logging",
-                    "Log dir error", JOptionPane.ERROR_MESSAGE);
+					"Log directory does not exist: \n\n"
+							+ logDir.getAbsolutePath()
+							+ "\n\nSet it properly or deactivate logging",
+					"Log dir error", JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
-		File count=new File(logDir,"unitex_logging_parameters_count.txt");
+		final File count = new File(logDir,
+				"unitex_logging_parameters_count.txt");
 		if (!count.exists()) {
-			/* If the configuration file does not exist, the first log will 
-			 * have #1 and we have to delete any preexisting .ulp files */ 
-			FileUtil.removeFile(new File(logDir,"*.ulp"));
+			/*
+			 * If the configuration file does not exist, the first log will have
+			 * #1 and we have to delete any preexisting .ulp files
+			 */
+			FileUtil.removeFile(new File(logDir, "*.ulp"));
 			return "1";
 		}
 		try {
-			Scanner scanner=new Scanner(count,"UTF8");
+			final Scanner scanner = new Scanner(count, "UTF8");
 			if (!scanner.hasNextInt()) {
 				return null;
 			}
-			int n=scanner.nextInt();
-			if (n<0) return null;
+			final int n = scanner.nextInt();
+			if (n < 0)
+				return null;
 			scanner.close();
 			/* +1 because the file contains the last log # */
-			return ""+(n+1);
-		} catch (FileNotFoundException e) {
+			return "" + (n + 1);
+		} catch (final FileNotFoundException e) {
 			return null;
 		}
-		
 	}
-	
 }

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.xalign;
 
 import java.util.ArrayList;
@@ -26,19 +25,29 @@ import java.util.ArrayList;
 import javax.swing.ListModel;
 
 public interface ConcordanceModel extends ListModel {
+	public void addMatch(int sentence, Occurrence match);
 
-	public void addMatch(int sentence,Occurrence match);
 	public boolean isMatchedSentenceNumber(int sentence);
+
 	public boolean isMatchedSentenceIndex(int index);
+
 	public ArrayList<Integer> getMatchedSentences();
-	public void setMode(DisplayMode mode,ConcordanceModel otherModel);
+
+	public void setMode(DisplayMode mode, ConcordanceModel otherModel);
+
 	public void setMode(DisplayMode mode);
+
 	public DisplayMode getMode();
+
 	public XMLTextModel getModel();
+
 	public int getNumberOfSentences();
+
 	public int getSentence(int index);
+
 	public int getSentenceIndex(int sentence);
+
 	public void refresh();
+
 	public void clear();
-	
 }

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.editor;
 
 import java.awt.event.ActionEvent;
@@ -30,81 +29,70 @@ import javax.swing.JMenuItem;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * Menu to handle file edition
  */
 public class FileEditionMenu extends JMenu {
+	private static FileManager fileManager;
 
-    private static FileManager fileManager;
+	/**
+	 * File edition menu constructor
+	 */
+	public FileEditionMenu() {
+		super("File Edition");
+		fileManager = new FileManager();
+		final JMenuItem open = new JMenuItem("Open...");
+		open.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openFile();
+				// save.setEnabled(true);
+			}
+		});
+		final JMenuItem newFile = new JMenuItem("New File");
+		newFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newFile();
+				// save.setEnabled(true);
+			}
+		});
+		// conversion menu
+		final JMenuItem convert = new JMenuItem("Transcode Files");
+		convert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				InternalFrameManager.getManager(null).newTranscodingFrame();
+			}
+		});
+		final JMenuItem closeAll = new JMenuItem("Close All");
+		closeAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InternalFrameManager.getManager(null)
+						.closeAllFileEditionTextFrames();
+			}
+		});
+		add(newFile);
+		add(open);
+		add(convert);
+		add(closeAll);
+	}
 
-    /**
-     * File edition menu constructor
-     */
-    public FileEditionMenu() {
+	/**
+	 * Opens and displays the file content in an edition area.
+	 */
+	public static void openFile() {
+		final JFileChooser chooser = Config.getFileEditionDialogBox();
+		final int returnVal = chooser.showOpenDialog(null);
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			// we return if the user has clicked on CANCEL
+			return;
+		}
+		fileManager.loadFile(chooser.getSelectedFile());
+	}
 
-        super("File Edition");
-        fileManager = new FileManager();
-
-        JMenuItem open = new JMenuItem("Open...");
-        open.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                openFile();
-                //save.setEnabled(true);
-            }
-        });
-
-        JMenuItem newFile = new JMenuItem("New File");
-        newFile.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                newFile();
-                //save.setEnabled(true);
-            }
-        });
-
-        // conversion menu
-
-        JMenuItem convert = new JMenuItem("Transcode Files");
-        convert.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent arg0) {
-            	InternalFrameManager.getManager(null).newTranscodingFrame();
-            }
-        });
-
-        JMenuItem closeAll = new JMenuItem("Close All");
-        closeAll.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	InternalFrameManager.getManager(null).closeAllFileEditionTextFrames();
-            }
-        });
-        add(newFile);
-        add(open);
-        add(convert);
-        add(closeAll);
-    }
-
-    /**
-     * Opens and displays the file content in an edition area.
-     */
-    public static void openFile() {
-        JFileChooser chooser = Config.getFileEditionDialogBox();
-        int returnVal = chooser.showOpenDialog(null);
-        if (returnVal != JFileChooser.APPROVE_OPTION) {
-            // we return if the user has clicked on CANCEL
-            return;
-        }
-        fileManager.loadFile(chooser.getSelectedFile());
-    }
-
-    /**
-     * Create a new empty text area
-     */
-    void newFile() {
-        fileManager.newFile();
-    }
-
+	/**
+	 * Create a new empty text area
+	 */
+	void newFile() {
+		fileManager.newFile();
+	}
 }

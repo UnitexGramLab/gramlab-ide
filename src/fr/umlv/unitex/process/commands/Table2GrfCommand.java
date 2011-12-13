@@ -18,18 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class Table2GrfCommand extends CommandBuilder {
-
 	public Table2GrfCommand() {
 		super("Table2Grf");
 	}
@@ -39,19 +36,18 @@ public class Table2GrfCommand extends CommandBuilder {
 		return this;
 	}
 
-    public Table2GrfCommand parametrizedGraph(File s) {
-        protectElement("-r"+s.getAbsolutePath());
-        return this;
-    }
+	public Table2GrfCommand parametrizedGraph(File s) {
+		protectElement("-r" + s.getAbsolutePath());
+		return this;
+	}
 
-    public Table2GrfCommand resultMainGraph(File s) {
-      protectElement("-o"+s.getAbsolutePath());
-      return this;
-  }
+	public Table2GrfCommand resultMainGraph(File s) {
+		protectElement("-o" + s.getAbsolutePath());
+		return this;
+	}
 
-    public Table2GrfCommand subgraphName(File s) {
-      protectElement("-s"+s.getAbsolutePath());
-      return this;
-  }
-
+	public Table2GrfCommand subgraphName(File s) {
+		protectElement("-s" + s.getAbsolutePath());
+		return this;
+	}
 }

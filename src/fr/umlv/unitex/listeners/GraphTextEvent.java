@@ -18,23 +18,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.listeners;
 
 import java.util.EventObject;
 
 public class GraphTextEvent extends EventObject {
+	/* null content means that we want to make the text component non editable */
+	private final String content;
 
-    /* null content means that we want to make the text component non editable */
-    private final String content;
+	public GraphTextEvent(Object source, String content) {
+		super(source);
+		this.content = content;
+	}
 
-    public GraphTextEvent(Object source, String content) {
-        super(source);
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
+	public String getContent() {
+		return content;
+	}
 }

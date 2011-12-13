@@ -18,31 +18,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
-
 
 /**
  * @author Sébastien Paumier
  */
 public class MessageCommand extends CommandBuilder {
+	private final String message;
 
-    private final String message;
+	public MessageCommand(String mess, boolean errorMessage) {
+		super("");
+		if (errorMessage)
+			type = ERROR_MESSAGE;
+		else
+			type = MESSAGE;
+		message = mess;
+	}
 
-    public MessageCommand(String mess, boolean errorMessage) {
-        super("");
-        if (errorMessage) type = ERROR_MESSAGE;
-        else type = MESSAGE;
-        message = mess;
-    }
+	public MessageCommand(String mess) {
+		this(mess, false);
+	}
 
-    public MessageCommand(String mess) {
-        this(mess, false);
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-
+	public String getMessage() {
+		return message;
+	}
 }

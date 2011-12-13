@@ -18,42 +18,50 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.debug;
 
-
 public class DebugDetails {
+	public static String[] fields = new String[] { "Tag", "Output", "Matched",
+			"Graph", "Box", "Line" };
+	public String tag, output, matched;
+	public int graph, box, line;
 
-	public static String[] fields=new String[] {"Tag","Output","Matched","Graph","Box","Line"};
-
-	public String tag,output,matched;
-	public int graph,box,line;
-	
-	public DebugDetails(String tag, String output, String matched,
-			int graph, int box, int line,DebugInfos infos) {
-		this.tag=tag;
-		if (tag.startsWith((char)5+"<")) {
-			this.tag="<< "+infos.graphNames.get(Integer.parseInt(tag.substring(2))-1);
-		} else if (tag.startsWith((char)5+">")) {
-			this.tag=">> "+infos.graphNames.get(Integer.parseInt(tag.substring(2))-1);
+	public DebugDetails(String tag, String output, String matched, int graph,
+			int box, int line, DebugInfos infos) {
+		this.tag = tag;
+		if (tag.startsWith((char) 5 + "<")) {
+			this.tag = "<< "
+					+ infos.graphNames
+							.get(Integer.parseInt(tag.substring(2)) - 1);
+		} else if (tag.startsWith((char) 5 + ">")) {
+			this.tag = ">> "
+					+ infos.graphNames
+							.get(Integer.parseInt(tag.substring(2)) - 1);
 		}
-		this.output=output;
-		this.matched=matched;
-		this.graph=graph;
-		this.box=box;
-		this.line=line;
+		this.output = output;
+		this.matched = matched;
+		this.graph = graph;
+		this.box = box;
+		this.line = line;
 	}
 
 	public Object getField(int columnIndex) {
-		switch(columnIndex) {
-		case 0: return tag;
-		case 1: return output;
-		case 2: return matched;
-		case 3: return Integer.valueOf(graph);
-		case 4: return Integer.valueOf(box);
-		case 5: return Integer.valueOf(line);
-		default: throw new IllegalArgumentException("Invalid field index: "+columnIndex);
+		switch (columnIndex) {
+		case 0:
+			return tag;
+		case 1:
+			return output;
+		case 2:
+			return matched;
+		case 3:
+			return Integer.valueOf(graph);
+		case 4:
+			return Integer.valueOf(box);
+		case 5:
+			return Integer.valueOf(line);
+		default:
+			throw new IllegalArgumentException("Invalid field index: "
+					+ columnIndex);
 		}
 	}
-
 }

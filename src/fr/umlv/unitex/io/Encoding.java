@@ -29,10 +29,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CoderResult;
 import java.util.Scanner;
 
 import fr.umlv.unitex.config.Preferences;
@@ -46,9 +42,9 @@ public enum Encoding {
 
 		@Override
 		public char readChar(ByteBuffer parseBuffer) {
-			int a = 0xFF & parseBuffer.get();
-			int b = 0xFF & parseBuffer.get();
-			char c = (char) (b << 8 | a);
+			final int a = 0xFF & parseBuffer.get();
+			final int b = 0xFF & parseBuffer.get();
+			final char c = (char) (b << 8 | a);
 			return c;
 		}
 	},
@@ -65,9 +61,9 @@ public enum Encoding {
 
 		@Override
 		public char readChar(ByteBuffer parseBuffer) {
-			int b = 0xFF & parseBuffer.get();
-			int a = 0xFF & parseBuffer.get();
-			char c = (char) (b << 8 | a);
+			final int b = 0xFF & parseBuffer.get();
+			final int a = 0xFF & parseBuffer.get();
+			final char c = (char) (b << 8 | a);
 			return c;
 		}
 	},
@@ -82,13 +78,13 @@ public enum Encoding {
 			FileInputStream stream;
 			try {
 				stream = new FileInputStream(f);
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
 				return false;
 			}
 			InputStreamReader reader;
 			try {
 				reader = new InputStreamReader(stream, getCharset());
-			} catch (UnsupportedEncodingException e) {
+			} catch (final UnsupportedEncodingException e) {
 				return false;
 			}
 			int c = 0;
@@ -108,7 +104,7 @@ public enum Encoding {
 				}
 				reader.close();
 				stream.close();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				return false;
 			}
 			return true;
@@ -119,7 +115,7 @@ public enum Encoding {
 			int c = buffer.get() & 0xFF;
 			if (c <= 0x7F) {
 				/* Case of a 1 byte character 0XXX XXXX */
-				return (char)c;
+				return (char) c;
 			}
 			/* Case of a character encoded on several bytes */
 			int number_of_bytes;
@@ -168,7 +164,7 @@ public enum Encoding {
 		}
 	};
 	public abstract String getCharset();
-	
+
 	/**
 	 * Returns a Scanner, ready to work, the BOM having been read if any.
 	 */
@@ -187,13 +183,13 @@ public enum Encoding {
 		FileInputStream stream;
 		try {
 			stream = new FileInputStream(f);
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			return false;
 		}
 		InputStreamReader reader;
 		try {
 			reader = new InputStreamReader(stream, getCharset());
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			return false;
 		}
 		int c = 0;
@@ -201,7 +197,7 @@ public enum Encoding {
 			c = reader.read();
 			reader.close();
 			stream.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return false;
 		}
 		return c == 0xFEFF;
@@ -216,19 +212,18 @@ public enum Encoding {
 			return UTF8;
 		return null;
 	}
-	
-	
+
 	/**
 	 * Returns a reader for the given file. For UTF16 encodings, we skip the
 	 * BOM.
 	 */
 	public static InputStreamReader getInputStreamReader(File f) {
-		Encoding e = getEncoding(f);
+		final Encoding e = getEncoding(f);
 		if (e == null)
 			return null;
 		try {
-			InputStreamReader r = new InputStreamReader(new FileInputStream(f),
-					e.getCharset());
+			final InputStreamReader r = new InputStreamReader(
+					new FileInputStream(f), e.getCharset());
 			if (e == UTF16LE || e == UTF16BE) {
 				if (r.read() != 0xFEFF) {
 					/* Should not happen */
@@ -236,11 +231,11 @@ public enum Encoding {
 				}
 			}
 			return r;
-		} catch (UnsupportedEncodingException e1) {
+		} catch (final UnsupportedEncodingException e1) {
 			return null;
-		} catch (FileNotFoundException e1) {
+		} catch (final FileNotFoundException e1) {
 			return null;
-		} catch (IOException e1) {
+		} catch (final IOException e1) {
 			return null;
 		}
 	}
@@ -251,19 +246,19 @@ public enum Encoding {
 	 */
 	public OutputStreamWriter getOutputStreamWriter(File f) {
 		try {
-			OutputStreamWriter writer = new OutputStreamWriter(
+			final OutputStreamWriter writer = new OutputStreamWriter(
 					new FileOutputStream(f), getCharset());
 			if (this == UTF16LE || this == UTF16BE) {
 				try {
 					writer.write(0xFEFF);
-				} catch (IOException e1) {
+				} catch (final IOException e1) {
 					return null;
 				}
 			}
 			return writer;
-		} catch (UnsupportedEncodingException e1) {
+		} catch (final UnsupportedEncodingException e1) {
 			return null;
-		} catch (FileNotFoundException e1) {
+		} catch (final FileNotFoundException e1) {
 			return null;
 		}
 	}
@@ -271,27 +266,27 @@ public enum Encoding {
 	public abstract char readChar(ByteBuffer parseBuffer);
 
 	/**
-	 * Returns the content of the given file as a String, or null
-	 * if the size is >=Preferences.MAX_TEXT_FILE_SIZE
+	 * Returns the content of the given file as a String, or null if the size is
+	 * >=Preferences.MAX_TEXT_FILE_SIZE
 	 */
 	public static String getContent(File file) {
-		if (file.length()>=Preferences.MAX_TEXT_FILE_SIZE) {
+		if (file.length() >= Preferences.MAX_TEXT_FILE_SIZE) {
 			return null;
 		}
-		StringBuilder builder=new StringBuilder();
-		InputStreamReader reader=getInputStreamReader(file);
-		if (reader==null) {
+		final StringBuilder builder = new StringBuilder();
+		final InputStreamReader reader = getInputStreamReader(file);
+		if (reader == null) {
 			return null;
 		}
 		int c;
 		try {
-			while ((c=reader.read())!=-1) {
-				builder.append((char)c);
+			while ((c = reader.read()) != -1) {
+				builder.append((char) c);
 			}
 			reader.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return null;
-		} catch (OutOfMemoryError e) {
+		} catch (final OutOfMemoryError e) {
 			return null;
 		}
 		return builder.toString();

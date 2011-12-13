@@ -18,17 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class ConcorDiffCommand extends CommandBuilder {
-
 	public ConcorDiffCommand() {
 		super("ConcorDiff");
 	}
@@ -44,23 +42,22 @@ public class ConcorDiffCommand extends CommandBuilder {
 	}
 
 	public ConcorDiffCommand output(File s) {
-		protectElement("-o"+s.getAbsolutePath());
+		protectElement("-o" + s.getAbsolutePath());
 		return this;
 	}
 
 	public ConcorDiffCommand font(String s) {
-		protectElement("-f"+s);
+		protectElement("-f" + s);
 		return this;
 	}
 
 	public ConcorDiffCommand fontSize(int size) {
-		element("-s"+size);
+		element("-s" + size);
 		return this;
 	}
-	
+
 	public ConcorDiffCommand diffOnly() {
 		element("-d");
 		return this;
 	}
-
 }

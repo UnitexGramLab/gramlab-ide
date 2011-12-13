@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.debug;
 
 import java.util.ArrayList;
@@ -26,23 +25,22 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class DebugTableModel extends AbstractTableModel {
-	
-	private DebugInfos infos;
-	private ArrayList<DebugDetails> details=new ArrayList<DebugDetails>();
-	
+	private final DebugInfos infos;
+	private final ArrayList<DebugDetails> details = new ArrayList<DebugDetails>();
+
 	public DebugTableModel(DebugInfos infos) {
-		this.infos=infos;
+		this.infos = infos;
 	}
-	
+
 	@Override
 	public String getColumnName(int column) {
 		return DebugDetails.fields[column];
 	}
-	
+
 	public int getColumnCount() {
 		return 3;
 	}
-	
+
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		return String.class;
@@ -53,20 +51,20 @@ public class DebugTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		DebugDetails d=details.get(rowIndex);
-		if (d==null) return null;
+		final DebugDetails d = details.get(rowIndex);
+		if (d == null)
+			return null;
 		return d.getField(columnIndex);
 	}
-	
-	
-	public void setMatchNumber(int n) {
-		int size=details.size();
-		details.clear();
-		if (size>0) fireTableRowsDeleted(0,size-1);
-		infos.getMatchDetails(n,details);
-		fireTableRowsInserted(0,details.size());
-	}
 
+	public void setMatchNumber(int n) {
+		final int size = details.size();
+		details.clear();
+		if (size > 0)
+			fireTableRowsDeleted(0, size - 1);
+		infos.getMatchDetails(n, details);
+		fireTableRowsInserted(0, details.size());
+	}
 
 	public DebugDetails getDetailsAt(int n) {
 		return details.get(n);

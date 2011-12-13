@@ -18,30 +18,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class EvambCommand extends CommandBuilder {
-
 	public EvambCommand() {
 		super("Evamb");
 	}
 
-    public EvambCommand automaton(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-  }
+	public EvambCommand automaton(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public EvambCommand sentenceNumber(int n) {
-      element("-s"+n);
-      return this;
-  }
-
+	public EvambCommand sentenceNumber(int n) {
+		element("-s" + n);
+		return this;
+	}
 }

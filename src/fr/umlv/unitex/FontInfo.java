@@ -18,28 +18,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex;
 
 import java.awt.Font;
 
 public class FontInfo {
-
 	public Font font;
 	public int size;
-	
+
 	/**
-	 * We have to store the size that will be displayed to the user,
-	 * because font.getSize() returns a point size that is not the same
-	 * because of the $*!# .72 factor !
+	 * We have to store the size that will be displayed to the user, because
+	 * font.getSize() returns a point size that is not the same because of the
+	 * $*!# .72 factor !
 	 */
-	public FontInfo(Font font,int size) {
-		this.font=font;
-		this.size=size;
+	public FontInfo(Font font, int size) {
+		this.font = font;
+		this.size = size;
 	}
-	
+
 	@Override
 	public FontInfo clone() {
-		return new FontInfo(font,size);
+		return new FontInfo(font, size);
 	}
 }

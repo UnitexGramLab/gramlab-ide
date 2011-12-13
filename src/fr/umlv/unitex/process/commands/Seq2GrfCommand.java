@@ -22,71 +22,73 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-public class Seq2GrfCommand extends CommandBuilder{
-	
-	public Seq2GrfCommand(){
+public class Seq2GrfCommand extends CommandBuilder {
+	public Seq2GrfCommand() {
 		super("Seq2Grf");
 	}
-	
-	public Seq2GrfCommand(File alphabet, File outputfile){
+
+	public Seq2GrfCommand(File alphabet, File outputfile) {
 		super("Seq2Grf");
-		protectElement("-a" +alphabet.getAbsolutePath());
-		protectElement("-o" +outputfile.getAbsolutePath());
-		
+		protectElement("-a" + alphabet.getAbsolutePath());
+		protectElement("-o" + outputfile.getAbsolutePath());
 	}
-	public Seq2GrfCommand(File alphabet, File outputfile, int j,int i,int r, int d){
+
+	public Seq2GrfCommand(File alphabet, File outputfile, int j, int i, int r,
+			int d) {
 		super("Seq2Grf");
-		protectElement("-a" +alphabet.getAbsolutePath());
-		protectElement("-o" +outputfile.getAbsolutePath());
-		protectElement("-j"+j);
-		protectElement("-i"+i);
-		protectElement("-r"+r);
-		protectElement("-d"+d);
-		
+		protectElement("-a" + alphabet.getAbsolutePath());
+		protectElement("-o" + outputfile.getAbsolutePath());
+		protectElement("-j" + j);
+		protectElement("-i" + i);
+		protectElement("-r" + r);
+		protectElement("-d" + d);
 	}
-	
-	public Seq2GrfCommand automaton(File s){
+
+	public Seq2GrfCommand automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
-	
-	
-	public Seq2GrfCommand output(String o){
-		element("-o"+o);
-		return this;
-	}
-	
-	public Seq2GrfCommand help(String h){
-		protectElement("-h"+h);
+
+	public Seq2GrfCommand output(String o) {
+		element("-o" + o);
 		return this;
 	}
 
+	public Seq2GrfCommand help(String h) {
+		protectElement("-h" + h);
+		return this;
+	}
 
 	public Seq2GrfCommand text(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
-	public Seq2GrfCommand jokers(int j){
-		element("-j"+j);
-		return this;
-	}
-	public Seq2GrfCommand joker_insert(int i){
-		element("-i"+i);
-		return this;
-	}
-	public Seq2GrfCommand joker_replace(int r){
-		element("-r"+r);
-		return this;
-	}
-	public Seq2GrfCommand joker_delete(int d){
-		element("-d"+d);
+
+	public Seq2GrfCommand jokers(int j) {
+		element("-j" + j);
 		return this;
 	}
 
-	public Seq2GrfCommand alphabet(String a){
-		element("-a"+a);
+	public Seq2GrfCommand joker_insert(int i) {
+		element("-i" + i);
 		return this;
 	}
+
+	public Seq2GrfCommand joker_replace(int r) {
+		element("-r" + r);
+		return this;
+	}
+
+	public Seq2GrfCommand joker_delete(int d) {
+		element("-d" + d);
+		return this;
+	}
+
+	public Seq2GrfCommand alphabet(String a) {
+		element("-a" + a);
+		return this;
+	}
+
 	public Seq2GrfCommand alphabet(File alphabet) {
 		protectElement("-a" + alphabet.getAbsolutePath());
 		return this;
@@ -98,9 +100,9 @@ public class Seq2GrfCommand extends CommandBuilder{
 		}
 		return this;
 	}
+
 	public Seq2GrfCommand fst2(File s) {
 		protectElement("-n" + s.getAbsolutePath());
 		return this;
 	}
 }
-

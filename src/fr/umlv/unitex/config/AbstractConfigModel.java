@@ -20,33 +20,32 @@
  */
 package fr.umlv.unitex.config;
 
-
-
 public abstract class AbstractConfigModel implements ConfigModel {
-	
 	public boolean isKorean(String language) {
-    	if (language==null) language=getCurrentLanguage();
-        return language.equals("Korean");
-    }
-	
-    public boolean isArabic(String language) {
-    	if (language==null) language=getCurrentLanguage();
-        return language.equals("Arabic");
-    }
-    
-    public boolean isPRLGLanguage(String language) {
-    	if (language==null) language=getCurrentLanguage();
-        return language.equals("Greek (Ancient)")
-        	|| language.equals("Arabic (Middle Arabic)")
-        	|| language.equals("Armenian (Ancient)")
-        	|| language.equals("Georgian (Ancient)")
-        	|| language.equals("Latin");
-    }
+		if (language == null)
+			language = getCurrentLanguage();
+		return language.equals("Korean");
+	}
 
-    public boolean isValidLanguageName(String language) {
-        return !(language.equals("App") || language.equals("Users")
-                || language.equals("Src") || language.equals("XAlign")
-                || language.startsWith("."));
-    }
-    
+	public boolean isArabic(String language) {
+		if (language == null)
+			language = getCurrentLanguage();
+		return language.equals("Arabic");
+	}
+
+	public boolean isPRLGLanguage(String language) {
+		if (language == null)
+			language = getCurrentLanguage();
+		return language.equals("Greek (Ancient)")
+				|| language.equals("Arabic (Middle Arabic)")
+				|| language.equals("Armenian (Ancient)")
+				|| language.equals("Georgian (Ancient)")
+				|| language.equals("Latin");
+	}
+
+	public boolean isValidLanguageName(String language) {
+		return !(language.equals("App") || language.equals("Users")
+				|| language.equals("Src") || language.equals("XAlign") || language
+				.startsWith("."));
+	}
 }

@@ -18,17 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class SortTxtCommand extends CommandBuilder {
-
 	public SortTxtCommand() {
 		super("SortTxt");
 	}
@@ -49,23 +47,22 @@ public class SortTxtCommand extends CommandBuilder {
 	}
 
 	public SortTxtCommand sortAlphabet(File alphabet) {
-    protectElement("-o"+alphabet.getAbsolutePath());
+		protectElement("-o" + alphabet.getAbsolutePath());
 		return this;
 	}
 
-    public SortTxtCommand saveNumberOfLines(File file) {
-        protectElement("-l"+file.getAbsolutePath());
-        return this;
-    }
+	public SortTxtCommand saveNumberOfLines(File file) {
+		protectElement("-l" + file.getAbsolutePath());
+		return this;
+	}
 
-    public SortTxtCommand thai() {
-        element("--thai");
-        return this;
-    }
-        
-    public SortTxtCommand factorizeInflectionalCodes() {
-    	element("-f");
-        return this;
-    }
+	public SortTxtCommand thai() {
+		element("--thai");
+		return this;
+	}
 
+	public SortTxtCommand factorizeInflectionalCodes() {
+		element("-f");
+		return this;
+	}
 }

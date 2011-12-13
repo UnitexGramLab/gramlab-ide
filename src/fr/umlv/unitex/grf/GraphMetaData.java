@@ -18,29 +18,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.grf;
 
 import java.util.HashMap;
 import java.util.Set;
 
-
-
 public class GraphMetaData {
-
 	public static final String LANGUAGE = "LANGUAGE";
-	private HashMap<String,String> map=new HashMap<String,String>();
+	private final HashMap<String, String> map = new HashMap<String, String>();
 
 	public void setLanguage(String language) {
-		map.put(LANGUAGE,language);
+		map.put(LANGUAGE, language);
 	}
 
 	public String getLanguage() {
 		return map.get(LANGUAGE);
 	}
 
-	public void set(String key,String value) {
-		map.put(key,value);
+	public void set(String key, String value) {
+		map.put(key, value);
 	}
 
 	public Set<String> getKeySet() {

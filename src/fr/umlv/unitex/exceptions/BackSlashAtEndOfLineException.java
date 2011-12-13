@@ -18,14 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.exceptions;
 
 /**
- * This class defines an <code>Exception</code> that is thrown when the user wants to validate
- * a box content with a backslash at the end of the line.
+ * This class defines an <code>Exception</code> that is thrown when the user
+ * wants to validate a box content with a backslash at the end of the line.
+ * 
  * @author Sébastien Paumier
- *
+ * 
  */
 public class BackSlashAtEndOfLineException extends Exception {
 	// nothing to do

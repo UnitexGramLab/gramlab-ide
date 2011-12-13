@@ -30,138 +30,137 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
- *
+ * 
  * @author paumier
- *
+ * 
  */
 public class PreferencesManager {
-
 	/**
-	 * Loads a config file. If base is not null, then copies of its values are overridden
-	 * instead of overriding default values. base is not modified.
+	 * Loads a config file. If base is not null, then copies of its values are
+	 * overridden instead of overriding default values. base is not modified.
+	 * 
 	 * @param f
 	 * @param base
 	 * @return
 	 */
-	public static Preferences loadPreferences(File f,Preferences base) {
+	public static Preferences loadPreferences(File f, Preferences base) {
 		Preferences p;
-		if (base!=null) {
-			p=base.clone();
+		if (base != null) {
+			p = base.clone();
 			p.setBase(base);
-		}
-		else p=new Preferences();
-		Properties properties=loadProperties(f);
-        p.setPreferencesFromProperties(properties);
+		} else
+			p = new Preferences();
+		final Properties properties = loadProperties(f);
+		p.setPreferencesFromProperties(properties);
 		return p;
 	}
-	
-    private static Properties loadProperties(File f) {
-    	Properties languageProperties = new Properties(null);
-        FileInputStream stream = null;
-        try {
-            stream = new FileInputStream(f);
-        } catch (FileNotFoundException e) {
-            return languageProperties;
-        }
-        try {
-            languageProperties.load(stream);
-            stream.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return languageProperties;
-    }
 
-	public static void savePreferences(File f,Preferences p,String language) {
-        Properties prop = p.getOwnProperties();
-        saveProperties(f,prop);
-        firePreferencesChanged(language);
+	private static Properties loadProperties(File f) {
+		final Properties languageProperties = new Properties(null);
+		FileInputStream stream = null;
+		try {
+			stream = new FileInputStream(f);
+		} catch (final FileNotFoundException e) {
+			return languageProperties;
+		}
+		try {
+			languageProperties.load(stream);
+			stream.close();
+		} catch (final IOException e1) {
+			e1.printStackTrace();
+		}
+		return languageProperties;
 	}
-	
-    private static void saveProperties(File f,Properties prop) {
-        FileOutputStream stream = null;
-        try {
-            stream = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-        try {
-            prop.store(stream, "Unitex configuration file");
-        } catch (IOException e1) {
-            e1.printStackTrace();
-            return;
-        }
-        try {
-            stream.close();
-        } catch (IOException e2) {
-            e2.printStackTrace();
-        }
-    }
 
-    
-    static class Info {
-    	File f;
-    	long date;
-    	Preferences p;
-    }
-    
-    private static HashMap<String,Info> cache=new HashMap<String,Info>();
-    
+	public static void savePreferences(File f, Preferences p, String language) {
+		final Properties prop = p.getOwnProperties();
+		saveProperties(f, prop);
+		firePreferencesChanged(language);
+	}
 
-    /**
-     * Returns the preferences for the given language. This IS NOT A COPY,
-     * so the caller may have to clone it before any modification.
-     */
-    public static Preferences getPreferences(String language) {
-    	if (language==null) {
-    		throw new IllegalArgumentException("Unexpected null language");
-    	}
-    	Info info=cache.get(language);
-    	if (info!=null) {
-    		/* There is something in the cache. Is it still up-to-date ? */
-    		if (info.f.exists() && info.f.lastModified()<=info.date) {
-    			return info.p;
-    		}
-    		info.f=ConfigManager.getManager().getConfigFileForLanguage(language);
-    		info.date=info.f.lastModified();
-    		info.p=loadPreferences(info.f,null);
-    		return info.p;
-    	}
-    	info=new Info();
-		info.f=ConfigManager.getManager().getConfigFileForLanguage(language);
-		info.date=info.f.lastModified();
-		info.p=loadPreferences(info.f,null);
-		cache.put(language,info);
+	private static void saveProperties(File f, Properties prop) {
+		FileOutputStream stream = null;
+		try {
+			stream = new FileOutputStream(f);
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+		try {
+			prop.store(stream, "Unitex configuration file");
+		} catch (final IOException e1) {
+			e1.printStackTrace();
+			return;
+		}
+		try {
+			stream.close();
+		} catch (final IOException e2) {
+			e2.printStackTrace();
+		}
+	}
+
+	static class Info {
+		File f;
+		long date;
+		Preferences p;
+	}
+
+	private static HashMap<String, Info> cache = new HashMap<String, Info>();
+
+	/**
+	 * Returns the preferences for the given language. This IS NOT A COPY, so
+	 * the caller may have to clone it before any modification.
+	 */
+	public static Preferences getPreferences(String language) {
+		if (language == null) {
+			throw new IllegalArgumentException("Unexpected null language");
+		}
+		Info info = cache.get(language);
+		if (info != null) {
+			/* There is something in the cache. Is it still up-to-date ? */
+			if (info.f.exists() && info.f.lastModified() <= info.date) {
+				return info.p;
+			}
+			info.f = ConfigManager.getManager().getConfigFileForLanguage(
+					language);
+			info.date = info.f.lastModified();
+			info.p = loadPreferences(info.f, null);
+			return info.p;
+		}
+		info = new Info();
+		info.f = ConfigManager.getManager().getConfigFileForLanguage(language);
+		info.date = info.f.lastModified();
+		info.p = loadPreferences(info.f, null);
+		cache.put(language, info);
 		return info.p;
-    }
-    
+	}
 
-    private static ArrayList<PreferencesListener> preferencesListeners = new ArrayList<PreferencesListener>();
+	private static ArrayList<PreferencesListener> preferencesListeners = new ArrayList<PreferencesListener>();
 
-    public static void addPreferencesListener(PreferencesListener listener) {
-        preferencesListeners.add(listener);
-    }
+	public static void addPreferencesListener(PreferencesListener listener) {
+		preferencesListeners.add(listener);
+	}
 
-    private static boolean firingPreferencesChanged = false;
+	private static boolean firingPreferencesChanged = false;
 
-    public static void removePreferencesListener(PreferencesListener listener) {
-        if (firingPreferencesChanged) {
-            throw new IllegalStateException("Should not try to remove a listener while firing");
-        }
-        preferencesListeners.remove(listener);
-    }
+	public static void removePreferencesListener(PreferencesListener listener) {
+		if (firingPreferencesChanged) {
+			throw new IllegalStateException(
+					"Should not try to remove a listener while firing");
+		}
+		preferencesListeners.remove(listener);
+	}
 
-    protected static void firePreferencesChanged(String language) {
-    	if (preferencesListeners==null) return;
-        firingPreferencesChanged = true;
-        try {
-            for (PreferencesListener listener : preferencesListeners) {
-                listener.preferencesChanged(language);
-            }
-        } finally {
-            firingPreferencesChanged = false;
-        }
-    }
-
+	protected static void firePreferencesChanged(String language) {
+		if (preferencesListeners == null)
+			return;
+		firingPreferencesChanged = true;
+		try {
+			for (final PreferencesListener listener : preferencesListeners) {
+				listener.preferencesChanged(language);
+			}
+		} finally {
+			firingPreferencesChanged = false;
+		}
+	}
 }

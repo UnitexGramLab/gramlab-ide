@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process;
 
 import javax.swing.DefaultListModel;
@@ -26,18 +25,17 @@ import javax.swing.DefaultListModel;
 /**
  * This class provides a list model with a method to replace the last element.
  * It is used for console message: when a message is just ended by \r, we
- * interprete it as a line that must erase the previous one. 
+ * interprete it as a line that must erase the previous one.
+ * 
  * @author Sébastien Paumier
  */
-
 public class ProcessOutputListModel extends DefaultListModel {
-
 	public void replaceLast(Object o) {
-		int size=size();
-		if (size==0) {
+		final int size = size();
+		if (size == 0) {
 			addElement(o);
 		} else {
-			set(size-1,o);
+			set(size - 1, o);
 		}
 	}
 }

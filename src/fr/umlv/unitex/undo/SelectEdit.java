@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.undo;
 
 import java.util.ArrayList;
@@ -29,46 +28,44 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * class uses to save the state of the graph before a selection
- *
+ * 
  * @author Decreton Julien
  */
 public class SelectEdit extends AbstractUndoableEdit {
+	/**
+	 * boxes selected in the graph
+	 */
+	private final ArrayList<GenericGraphBox> selectedBoxes;
+	/**
+	 * boxes selected in the graph before adding a transition
+	 */
+	private final ArrayList<GenericGraphBox> oldSelectedBoxes;
 
-    /**
-     * boxes selected in the graph
-     */
-    private final ArrayList<GenericGraphBox> selectedBoxes;
-    /**
-     * boxes selected in the graph before adding a transition
-     */
-    private final ArrayList<GenericGraphBox> oldSelectedBoxes;
+	/**
+	 * @param selectedBoxes
+	 *            boxes selected in the graph
+	 */
+	@SuppressWarnings("unchecked")
+	public SelectEdit(ArrayList<GenericGraphBox> selectedBoxes) {
+		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
+		this.selectedBoxes = selectedBoxes;
+	}
 
-    /**
-     * @param selectedBoxes boxes selected in the graph
-     */
-    @SuppressWarnings("unchecked")
-    public SelectEdit(ArrayList<GenericGraphBox> selectedBoxes) {
-        this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
-        this.selectedBoxes = selectedBoxes;
-    }
+	@Override
+	public void redo() {
+		super.redo();
+		for (final GenericGraphBox g : oldSelectedBoxes) {
+			g.setSelected(true);
+			selectedBoxes.add(g);
+		}
+	}
 
-    @Override
-    public void redo() {
-        super.redo();
-        for (GenericGraphBox g : oldSelectedBoxes) {
-            g.setSelected(true);
-            selectedBoxes.add(g);
-        }
-    }
-
-    @Override
-    public void undo() {
-        super.undo();
-        for (GenericGraphBox g : oldSelectedBoxes) {
-            g.setSelected(false);
-            selectedBoxes.remove(g);
-        }
-
-    }
-
+	@Override
+	public void undo() {
+		super.undo();
+		for (final GenericGraphBox g : oldSelectedBoxes) {
+			g.setSelected(false);
+			selectedBoxes.remove(g);
+		}
+	}
 }

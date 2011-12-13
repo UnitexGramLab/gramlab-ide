@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -28,7 +27,6 @@ import java.io.File;
  * 
  */
 public class Txt2TfstCommand extends CommandBuilder {
-
 	public Txt2TfstCommand() {
 		super("Txt2Tfst");
 	}
@@ -39,7 +37,8 @@ public class Txt2TfstCommand extends CommandBuilder {
 	}
 
 	public Txt2TfstCommand alphabet(File alphabet) {
-		if (alphabet!=null) protectElement("-a" + alphabet.getAbsolutePath());
+		if (alphabet != null)
+			protectElement("-a" + alphabet.getAbsolutePath());
 		return this;
 	}
 

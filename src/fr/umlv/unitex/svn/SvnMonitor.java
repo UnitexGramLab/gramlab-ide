@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.svn;
 
 import java.awt.event.ActionEvent;
@@ -32,90 +31,87 @@ import javax.swing.Timer;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
 
 public class SvnMonitor {
-
-	final static DefaultListModel svnConflictModel=new DefaultListModel();
-	
-	private final static Timer timer=new Timer(5000,new ActionListener() {
+	final static DefaultListModel svnConflictModel = new DefaultListModel();
+	private final static Timer timer = new Timer(5000, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (ConfigManager.getManager().svnMonitoring(null)) {
 				monitor(true);
 			}
 		}
 	});
-	
-	
+
 	public static void monitor(boolean autoMonitoring) {
-		for (int i=svnConflictModel.size()-1;i>=0;i--) {
-			if (SvnConflict.getConflict((File) svnConflictModel.get(i))==null) {
-				/* If a previously reported conflict has been resolved, 
-				 * we remove it from our list */
+		for (int i = svnConflictModel.size() - 1; i >= 0; i--) {
+			if (SvnConflict.getConflict((File) svnConflictModel.get(i)) == null) {
+				/*
+				 * If a previously reported conflict has been resolved, we
+				 * remove it from our list
+				 */
 				svnConflictModel.remove(i);
 			}
 		}
 		monitor(Config.getCurrentGraphDir());
 		monitor(ConfigManager.getManager().getGraphRepositoryPath(null));
-		if (!autoMonitoring || svnConflictModel.size()>0) {
+		if (!autoMonitoring || svnConflictModel.size() > 0) {
 			InternalFrameManager.getManager(null).showSvnConflictsFrame();
 		}
 	}
-	
-	
+
 	/**
-	 * Looks recursively for conflicting grfs in the given directory and
-	 * reports them in the given list. We use a list in order to avoid
-	 * duplicate reports.
+	 * Looks recursively for conflicting grfs in the given directory and reports
+	 * them in the given list. We use a list in order to avoid duplicate
+	 * reports.
 	 */
 	protected static void monitor(File dir) {
-		if (dir==null || !dir.exists()) return;
+		if (dir == null || !dir.exists())
+			return;
 		if (!dir.isDirectory()) {
 			throw new IllegalArgumentException("monitor() expects a directory");
 		}
-		File svn=new File(dir,".svn");
+		final File svn = new File(dir, ".svn");
 		if (!svn.exists()) {
-			/* If the directory is not versioned with svn, there is nothing to do */
+			/*
+			 * If the directory is not versioned with svn, there is nothing to
+			 * do
+			 */
 			return;
 		}
 		/* We look for conflicts */
-		File[] files=dir.listFiles(new FilenameFilter() {
-			public boolean accept(@SuppressWarnings("hiding") File dir,String s) {
+		final File[] files = dir.listFiles(new FilenameFilter() {
+			public boolean accept(@SuppressWarnings("hiding") File dir, String s) {
 				return s.endsWith(".grf");
 			}
 		});
-		for (File candidate:files) {
-			if (SvnConflict.getConflict(candidate)!=null && !svnConflictModel.contains(candidate)) {
+		for (final File candidate : files) {
+			if (SvnConflict.getConflict(candidate) != null
+					&& !svnConflictModel.contains(candidate)) {
 				svnConflictModel.addElement(candidate);
 			}
 		}
 		/* And we explore recursively directories */
-		File[] dirs=dir.listFiles(new FilenameFilter() {
-			public boolean accept(File d,String s) {
-				File f=new File(d,s);
+		final File[] dirs = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File d, String s) {
+				final File f = new File(d, s);
 				return f.isDirectory();
 			}
 		});
-		for (File d:dirs) {
+		for (final File d : dirs) {
 			monitor(d);
 		}
 	}
-
 
 	public static void start() {
 		timer.start();
 	}
 
-
 	public static void conflictResolved(File grf) {
 		svnConflictModel.removeElement(grf);
 	}
 
-	
 	public static ListModel getSvnConflictModel() {
 		return svnConflictModel;
 	}
-	
 }

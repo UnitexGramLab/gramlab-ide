@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.xalign;
 
 import java.io.File;
@@ -29,21 +28,30 @@ import java.util.ArrayList;
 import fr.umlv.unitex.listeners.AlignmentListener;
 
 public interface XAlignModel {
-
 	public ArrayList<Integer> getAlignedSrcSequences(int sentence);
+
 	public ArrayList<Integer> getAlignedDestSequences(int sentence);
-	public ArrayList<Integer> getAlignedSequences(int sentence,boolean fromSrc);
-	
+
+	public ArrayList<Integer> getAlignedSequences(int sentence, boolean fromSrc);
+
 	public void load(File f) throws IOException;
-	public void align(int sentenceSrc,int sentenceDest,AlignmentEvent e);
-	public void unAlign(int sentenceSrc,int sentenceDest);
-	public void changeAlignment(int sentenceSrc,int sentenceDest);
-	public void dumpAlignments(File f) throws FileNotFoundException, IOException;
-	
+
+	public void align(int sentenceSrc, int sentenceDest, AlignmentEvent e);
+
+	public void unAlign(int sentenceSrc, int sentenceDest);
+
+	public void changeAlignment(int sentenceSrc, int sentenceDest);
+
+	public void dumpAlignments(File f) throws FileNotFoundException,
+			IOException;
+
 	public void addAlignmentListener(AlignmentListener l);
+
 	public void removeAlignmentListener(AlignmentListener l);
+
 	public boolean isModified();
 
 	public void reset();
+
 	public void clear();
 }

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex;
 
 import java.text.ParseException;
@@ -28,21 +27,20 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
 public class RegexFormatter extends AbstractFormatter {
-
 	@Override
 	public Object stringToValue(String s) throws ParseException {
 		try {
 			return Pattern.compile(s);
-		} catch (PatternSyntaxException e) {
-			throw new ParseException("Invalid regular expression",0);
+		} catch (final PatternSyntaxException e) {
+			throw new ParseException("Invalid regular expression", 0);
 		}
 	}
 
 	@Override
 	public String valueToString(Object value) throws ParseException {
-		if (value==null) return "";
-		Pattern p=(Pattern)value;
+		if (value == null)
+			return "";
+		final Pattern p = (Pattern) value;
 		return p.pattern();
 	}
-	
 }

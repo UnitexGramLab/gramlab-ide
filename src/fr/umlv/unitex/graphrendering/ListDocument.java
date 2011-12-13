@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.graphrendering;
 
 import java.util.StringTokenizer;
@@ -28,64 +27,65 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
 
 /*
  * This class catches text and turns it into a list if it contains \n
  *
  */
-
 /**
- * This class describes a <code>PlainDocument</code> object that detects multiple word copies.
- * If the text that must be added to the document contains carridge returns, a multiple word copy
- * is done. If not, the normal paste operation is done to add this text to the document.
- *
+ * This class describes a <code>PlainDocument</code> object that detects
+ * multiple word copies. If the text that must be added to the document contains
+ * carridge returns, a multiple word copy is done. If not, the normal paste
+ * operation is done to add this text to the document.
+ * 
  * @author Sébastien Paumier
  */
 class ListDocument extends PlainDocument {
+	static int i = 0;
 
-    static int i = 0;
-
-    /**
-     * Tries to insert a string in the document.
-     *
-     * @param offs offset to insert the string
-     * @param s    string to be inserted
-     * @param a    attribute set
-     */
-    @Override
-    public void insertString(int offs, String s, AttributeSet a)
-            throws BadLocationException {
-        if (s == null) {
-            // exits if there is nothing to do
-            return;
-        }
-        if (s.length() == 1) {
-            super.insertString(offs, s, a);
-            return;
-        }
-        if (s.startsWith("\n"))
-            s = s.substring(1);
-        if (s.endsWith("\n"))
-            s = s.substring(0, s.length() - 1);
-        if (s.indexOf("\n") == -1) {
-            // if this is a single string, we return it
-            super.insertString(offs, s, a);
-            return;
-        }
-
-        ContextsInfo info = InternalFrameManager.getManager(null).newListCopyDialog();
-        // tokenizes the text
-        StringTokenizer st = new StringTokenizer(s, "\n");
-        String res = info.left;
-        res = res.concat(st.nextToken());
-        res = res.concat(info.right);
-        while (st.hasMoreTokens()) {
-            res = res.concat("+");
-            res = res.concat(info.left);
-            res = res.concat(st.nextToken());
-            res = res.concat(info.right);
-        }
-        super.insertString(offs, res, a);
-    }
+	/**
+	 * Tries to insert a string in the document.
+	 * 
+	 * @param offs
+	 *            offset to insert the string
+	 * @param s
+	 *            string to be inserted
+	 * @param a
+	 *            attribute set
+	 */
+	@Override
+	public void insertString(int offs, String s, AttributeSet a)
+			throws BadLocationException {
+		if (s == null) {
+			// exits if there is nothing to do
+			return;
+		}
+		if (s.length() == 1) {
+			super.insertString(offs, s, a);
+			return;
+		}
+		if (s.startsWith("\n"))
+			s = s.substring(1);
+		if (s.endsWith("\n"))
+			s = s.substring(0, s.length() - 1);
+		if (s.indexOf("\n") == -1) {
+			// if this is a single string, we return it
+			super.insertString(offs, s, a);
+			return;
+		}
+		final ContextsInfo info = InternalFrameManager.getManager(null)
+				.newListCopyDialog();
+		// tokenizes the text
+		final StringTokenizer st = new StringTokenizer(s, "\n");
+		String res = info.left;
+		res = res.concat(st.nextToken());
+		res = res.concat(info.right);
+		while (st.hasMoreTokens()) {
+			res = res.concat("+");
+			res = res.concat(info.left);
+			res = res.concat(st.nextToken());
+			res = res.concat(info.right);
+		}
+		super.insertString(offs, res, a);
+	}
 }

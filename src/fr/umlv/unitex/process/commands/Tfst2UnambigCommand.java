@@ -18,30 +18,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *
+ * 
  */
 public class Tfst2UnambigCommand extends CommandBuilder {
-    
-    public Tfst2UnambigCommand() {
-    	super("Tfst2Unambig");
-    }
-    
-    public Tfst2UnambigCommand fst2(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-    }
+	public Tfst2UnambigCommand() {
+		super("Tfst2Unambig");
+	}
 
-    public Tfst2UnambigCommand output(File s) {
-        protectElement("-o"+s.getAbsolutePath());
-        return this;
-      }
+	public Tfst2UnambigCommand fst2(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
+	public Tfst2UnambigCommand output(File s) {
+		protectElement("-o" + s.getAbsolutePath());
+		return this;
+	}
 }

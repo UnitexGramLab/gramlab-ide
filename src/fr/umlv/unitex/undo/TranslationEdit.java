@@ -26,40 +26,43 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * Class used to save the state of the graph before translate a box
- *
+ * 
  * @author Decreton Julien
  */
 public class TranslationEdit extends AbstractUndoableEdit {
-    /**
-     * box to translate
-     */
-    private final GenericGraphBox boxe;
-    /**
-     * length of X, Y shift in pixels
-     */
-    private final int x;
-    private final int y;
+	/**
+	 * box to translate
+	 */
+	private final GenericGraphBox boxe;
+	/**
+	 * length of X, Y shift in pixels
+	 */
+	private final int x;
+	private final int y;
 
-    /**
-     * @param boxe the boxe to translate
-     * @param x    length of X shift in pixels
-     * @param y    length of Y shift in pixels
-     */
-    public TranslationEdit(GenericGraphBox boxe, int x, int y) {
-        this.boxe = boxe;
-        this.x = x;
-        this.y = y;
-    }
+	/**
+	 * @param boxe
+	 *            the boxe to translate
+	 * @param x
+	 *            length of X shift in pixels
+	 * @param y
+	 *            length of Y shift in pixels
+	 */
+	public TranslationEdit(GenericGraphBox boxe, int x, int y) {
+		this.boxe = boxe;
+		this.x = x;
+		this.y = y;
+	}
 
-    @Override
-    public void undo() {
-        super.undo();
-        boxe.translate(-x, -y);
-    }
+	@Override
+	public void undo() {
+		super.undo();
+		boxe.translate(-x, -y);
+	}
 
-    @Override
-    public void redo() {
-        super.redo();
-        boxe.translate(x, y);
-    }
+	@Override
+	public void redo() {
+		super.redo();
+		boxe.translate(x, y);
+	}
 }

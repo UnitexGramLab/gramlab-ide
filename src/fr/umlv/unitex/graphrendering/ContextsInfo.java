@@ -18,18 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.graphrendering;
 
-
 public class ContextsInfo {
+	public final String left;
+	public final String right;
 
-    public final String left;
-    public final String right;
-
-    public ContextsInfo(String left, String right) {
-        this.left = left;
-        this.right = right;
-    }
-
+	public ContextsInfo(String left, String right) {
+		this.left = left;
+		this.right = right;
+	}
 }

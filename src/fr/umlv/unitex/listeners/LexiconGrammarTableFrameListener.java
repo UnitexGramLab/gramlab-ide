@@ -18,12 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.listeners;
 
 public interface LexiconGrammarTableFrameListener {
-
 	public void lexiconGrammarTableFrameOpened();
-	public void lexiconGrammarTableFrameClosed();
 
+	public void lexiconGrammarTableFrameClosed();
 }

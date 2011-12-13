@@ -18,18 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class ExplodeTfstCommand extends CommandBuilder {
-
 	public ExplodeTfstCommand() {
 		super("ExplodeFst2");
 	}
@@ -39,9 +36,8 @@ public class ExplodeTfstCommand extends CommandBuilder {
 		return this;
 	}
 
-    public ExplodeTfstCommand output(File s) {
-        protectElement("-o"+s.getAbsolutePath());
-        return this;
-    }
-
+	public ExplodeTfstCommand output(File s) {
+		protectElement("-o" + s.getAbsolutePath());
+		return this;
+	}
 }
