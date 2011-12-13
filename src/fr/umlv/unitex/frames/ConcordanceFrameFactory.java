@@ -18,29 +18,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
 class ConcordanceFrameFactory {
+	private ConcordanceFrame frame;
 
-    private ConcordanceFrame frame;
+	ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
+		if (frame != null) {
+			frame.doDefaultCloseAction();
+		}
+		frame = new ConcordanceFrame(f, widthInChars);
+		return frame;
+	}
 
-    ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
-        if (frame != null) {
-            frame.doDefaultCloseAction();
-        }
-        frame = new ConcordanceFrame(f, widthInChars);
-        return frame;
-    }
-
-
-    void closeConcordanceFrame() {
-        if (frame == null) {
-            return;
-        }
-        frame.doDefaultCloseAction();
-    }
-
+	void closeConcordanceFrame() {
+		if (frame == null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
+	}
 }

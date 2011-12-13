@@ -18,28 +18,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
-
 class XAlignLocateFrameFactory {
+	private XAlignLocateFrame frame;
 
-    private XAlignLocateFrame frame;
+	XAlignLocateFrame newXAlignLocateFrame(String language) {
+		if (frame != null) {
+			frame.doDefaultCloseAction();
+		}
+		frame = new XAlignLocateFrame(language);
+		return frame;
+	}
 
-    XAlignLocateFrame newXAlignLocateFrame(String language) {
-        if (frame != null) {
-            frame.doDefaultCloseAction();
-        }
-        frame = new XAlignLocateFrame(language);
-        return frame;
-    }
-
-
-    void closeXAlignLocateFrame() {
-        if (frame == null) {
-            return;
-        }
-        frame.doDefaultCloseAction();
-    }
-
+	void closeXAlignLocateFrame() {
+		if (frame == null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
+	}
 }

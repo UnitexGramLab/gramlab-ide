@@ -18,28 +18,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
 class TextDicFrameFactory {
+	private TextDicFrame frame;
 
-    private TextDicFrame frame;
+	TextDicFrame newTextDicFrame(File sntDir) {
+		if (frame == null) {
+			frame = new TextDicFrame();
+		} else {
+			frame.hideFrame();
+		}
+		frame.loadTextDic(sntDir);
+		return frame;
+	}
 
-    TextDicFrame newTextDicFrame(File sntDir) {
-        if (frame == null) {
-            frame = new TextDicFrame();
-        } else {
-            frame.hideFrame();
-        }
-        frame.loadTextDic(sntDir);
-        return frame;
-    }
-
-
-    void closeTextDicFrame() {
-        if (frame == null) return;
-        frame.hideFrame();
-    }
+	void closeTextDicFrame() {
+		if (frame == null)
+			return;
+		frame.hideFrame();
+	}
 }

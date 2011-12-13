@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
@@ -26,17 +25,15 @@ import java.io.File;
 import fr.umlv.unitex.tfst.TagFilter;
 
 class ExportTextAsPOSListDialogFactory {
+	private ExportTextAsPOSListDialog dialog;
 
-    private ExportTextAsPOSListDialog dialog;
-
-    ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output, TagFilter filter) {
-        if (dialog == null) {
-            dialog = new ExportTextAsPOSListDialog(output, filter);
-        } else {
-            dialog.configure(output, filter);
-        }
-        return dialog;
-    }
-
-
+	ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output,
+			TagFilter filter) {
+		if (dialog == null) {
+			dialog = new ExportTextAsPOSListDialog(output, filter);
+		} else {
+			dialog.configure(output, filter);
+		}
+		return dialog;
+	}
 }

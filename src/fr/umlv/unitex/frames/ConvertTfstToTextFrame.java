@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -45,83 +44,75 @@ import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
 
 /**
  * This class describes the FST-Text to Text conversion frame.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class ConvertTfstToTextFrame extends JInternalFrame {
+	private final JTextField textName = new JTextField();
 
-    private final JTextField textName = new JTextField();
+	ConvertTfstToTextFrame() {
+		super("Convert Text Automaton to Text", false, true);
+		setContentPane(constructPanel());
+		pack();
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
 
-    ConvertTfstToTextFrame() {
-        super("Convert Text Automaton to Text", false, true);
-        setContentPane(constructPanel());
-        pack();
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-    }
+	private JPanel constructPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(new TitledBorder("Output text file:"));
+		final Action setTextAction = new AbstractAction("Set") {
+			public void actionPerformed(ActionEvent arg0) {
+				final JFileChooser fc = Config.getFst2UnambigDialogBox();
+				final int returnVal = fc.showOpenDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					// we return if the user has clicked on CANCEL
+					return;
+				}
+				textName.setText(fc.getSelectedFile().getAbsolutePath());
+			}
+		};
+		final JButton setTextButton = new JButton(setTextAction);
+		textName.setPreferredSize(new Dimension(300, 20));
+		panel.add(textName, BorderLayout.CENTER);
+		panel.add(setTextButton, BorderLayout.EAST);
+		final JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+		final JButton OK = new JButton("OK");
+		OK.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				launchFst2Unambig();
+			}
+		});
+		final JButton CANCEL = new JButton("Cancel");
+		CANCEL.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		buttonPanel.add(CANCEL);
+		buttonPanel.add(OK);
+		panel.add(buttonPanel, BorderLayout.SOUTH);
+		return panel;
+	}
 
-
-    private JPanel constructPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new TitledBorder(
-                "Output text file:"));
-        Action setTextAction = new AbstractAction("Set") {
-            public void actionPerformed(ActionEvent arg0) {
-                JFileChooser fc = Config.getFst2UnambigDialogBox();
-                int returnVal = fc.showOpenDialog(null);
-                if (returnVal != JFileChooser.APPROVE_OPTION) {
-                    // we return if the user has clicked on CANCEL
-                    return;
-                }
-                textName.setText(fc.getSelectedFile()
-                        .getAbsolutePath());
-            }
-        };
-        JButton setTextButton = new JButton(setTextAction);
-        textName.setPreferredSize(new Dimension(300, 20));
-        panel.add(textName, BorderLayout.CENTER);
-        panel.add(setTextButton, BorderLayout.EAST);
-        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
-        JButton OK = new JButton("OK");
-        OK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                launchFst2Unambig();
-            }
-        });
-        JButton CANCEL = new JButton("Cancel");
-        CANCEL.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-        buttonPanel.add(CANCEL);
-        buttonPanel.add(OK);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        return panel;
-    }
-
-
-    void launchFst2Unambig() {
-        MultiCommands commands = new MultiCommands();
-        if (textName.getText().equals("")) {
-            JOptionPane.showMessageDialog(null,
-                    "You must specify a file name", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        Tfst2UnambigCommand cmd = new Tfst2UnambigCommand();
-        File fst2 = new File(Config.getCurrentSntDir(), "text.tfst");
-        if (!fst2.exists()) {
-            JOptionPane.showMessageDialog(null,
-                    "Cannot find text automaton", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        cmd = cmd.fst2(fst2);
-        File txt = new File(textName.getText());
-        cmd.output(txt);
-        commands.addCommand(cmd);
-        setVisible(false);
-        Launcher.exec(commands, true, null, true);
-    }
-
+	void launchFst2Unambig() {
+		final MultiCommands commands = new MultiCommands();
+		if (textName.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "You must specify a file name",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		Tfst2UnambigCommand cmd = new Tfst2UnambigCommand();
+		final File fst2 = new File(Config.getCurrentSntDir(), "text.tfst");
+		if (!fst2.exists()) {
+			JOptionPane.showMessageDialog(null, "Cannot find text automaton",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		cmd = cmd.fst2(fst2);
+		final File txt = new File(textName.getText());
+		cmd.output(txt);
+		commands.addCommand(cmd);
+		setVisible(false);
+		Launcher.exec(commands, true, null, true);
+	}
 }

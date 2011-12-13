@@ -18,23 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.FontInfo;
 
-
 class FontDialogFactory {
+	private FontDialog dialog;
 
-    private FontDialog dialog;
-
-    FontDialog newFontDialog(FontInfo info) {
-        if (dialog == null) {
-            dialog = new FontDialog(info);
-        } else {
-            dialog.configureFont(info);
-        }
-        return dialog;
-    }
-
+	FontDialog newFontDialog(FontInfo info) {
+		if (dialog == null) {
+			dialog = new FontDialog(info);
+		} else {
+			dialog.configureFont(info);
+		}
+		return dialog;
+	}
 }

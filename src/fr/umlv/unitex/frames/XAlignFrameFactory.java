@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
@@ -27,32 +26,27 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 
 class XAlignFrameFactory {
+	private XAlignFrame frame;
 
-    private XAlignFrame frame;
+	XAlignFrame newXAlignFrame(File src, File dst, File alignment) {
+		if (frame != null) {
+			frame.doDefaultCloseAction();
+		}
+		try {
+			frame = new XAlignFrame(src, dst, alignment);
+		} catch (final IOException e) {
+			JOptionPane.showMessageDialog(null,
+					"I/O error while loading alignment files", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		return frame;
+	}
 
-    XAlignFrame newXAlignFrame(File src, File dst, File alignment) {
-        if (frame != null) {
-            frame.doDefaultCloseAction();
-        }
-        try {
-            frame = new XAlignFrame(src, dst, alignment);
-        } catch (IOException e) {
-            JOptionPane
-                    .showMessageDialog(
-                            null,
-                            "I/O error while loading alignment files",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-        return frame;
-    }
-
-    public void closeXAlignFrame() {
-        if (frame != null) {
-            frame.dispose();
-            frame = null;
-        }
-    }
-
+	public void closeXAlignFrame() {
+		if (frame != null) {
+			frame.dispose();
+			frame = null;
+		}
+	}
 }

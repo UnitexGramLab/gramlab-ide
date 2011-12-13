@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -50,134 +49,134 @@ import fr.umlv.unitex.process.commands.SortTxtCommand;
 /**
  * This class describes a frame that allows the user to set parameters of the
  * inflection of the current open dictionary.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class InflectFrame extends JInternalFrame {
+	private final JTextField directory = new JTextField("");
+	private final JRadioButton allWords = new JRadioButton(
+			"Allow both simple and compound words", true);
+	private final JRadioButton onlySimpleWords = new JRadioButton(
+			"Allow only simple words", false);
+	private final JRadioButton onlyCompoundWords = new JRadioButton(
+			"Allow only compound words", false);
+	private final JCheckBox factorizeInflectionalCodes = new JCheckBox(
+			"Sort and factorize inflectional codes", false);
 
-    private final JTextField directory = new JTextField("");
-    private final JRadioButton allWords = new JRadioButton("Allow both simple and compound words", true);
-    private final JRadioButton onlySimpleWords = new JRadioButton("Allow only simple words", false);
-    private final JRadioButton onlyCompoundWords = new JRadioButton("Allow only compound words", false);
-    private final JCheckBox factorizeInflectionalCodes = new JCheckBox("Sort and factorize inflectional codes", false);
+	InflectFrame() {
+		super("Inflection", false, true);
+		setContentPane(constructPanel());
+		pack();
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
 
+	private JPanel constructPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.add(constructUpPanel(), BorderLayout.CENTER);
+		panel.add(constructDownPanel(), BorderLayout.SOUTH);
+		return panel;
+	}
 
-    InflectFrame() {
-        super("Inflection", false, true);
-        setContentPane(constructPanel());
-        pack();
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-    }
+	private JPanel constructUpPanel() {
+		final JPanel upPanel = new JPanel(new GridLayout(5, 1));
+		upPanel.setBorder(new TitledBorder(
+				"Directory where inflectional FST2 are stored: "));
+		final JPanel tempPanel = new JPanel(new BorderLayout());
+		directory.setPreferredSize(new Dimension(240, 25));
+		directory.setText(new File(Config.getUserCurrentLanguageDir(),
+				"Inflection").getAbsolutePath());
+		tempPanel.add(directory, BorderLayout.CENTER);
+		final Action setDirectoryAction = new AbstractAction("Set...") {
+			public void actionPerformed(ActionEvent arg0) {
+				final int returnVal = Config.getInflectDialogBox()
+						.showOpenDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					// we return if the user has clicked on CANCEL
+					return;
+				}
+				directory.setText(Config.getInflectDialogBox()
+						.getSelectedFile().getAbsolutePath());
+			}
+		};
+		final JButton setDirectory = new JButton(setDirectoryAction);
+		tempPanel.add(setDirectory, BorderLayout.EAST);
+		upPanel.add(tempPanel);
+		final ButtonGroup bg = new ButtonGroup();
+		bg.add(allWords);
+		bg.add(onlySimpleWords);
+		bg.add(onlyCompoundWords);
+		upPanel.add(allWords);
+		upPanel.add(onlySimpleWords);
+		upPanel.add(onlyCompoundWords);
+		upPanel.add(factorizeInflectionalCodes);
+		return upPanel;
+	}
 
+	private JPanel constructDownPanel() {
+		final JPanel downPanel = new JPanel(new GridLayout(1, 2));
+		final Action cancelAction = new AbstractAction("Cancel") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		};
+		final JButton CANCEL = new JButton(cancelAction);
+		final Action goAction = new AbstractAction("Inflect Dictionary") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				inflectDELA();
+			}
+		};
+		final JButton GO = new JButton(goAction);
+		downPanel.add(CANCEL);
+		downPanel.add(GO);
+		return downPanel;
+	}
 
-    private JPanel constructPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(constructUpPanel(), BorderLayout.CENTER);
-        panel.add(constructDownPanel(), BorderLayout.SOUTH);
-        return panel;
-    }
+	/**
+	 * Launches the inflection program <code>Inflect</code>, through the
+	 * creation of a <code>ProcessInfoFrame</code> object.
+	 */
+	void inflectDELA() {
+		final File f = Config.getCurrentDELA();
+		String tmp = f.getAbsolutePath();
+		final int point = tmp.lastIndexOf('.');
+		final int separator = tmp.lastIndexOf(File.separatorChar);
+		if (separator < point) {
+			tmp = tmp.substring(0, point);
+		}
+		tmp = tmp + "flx.dic";
+		final File resultDic = new File(tmp);
+		final MultiCommands cmds = new MultiCommands();
+		MultiFlexCommand command = new MultiFlexCommand().delas(f).result(
+				resultDic).alphabet(
+				ConfigManager.getManager().getAlphabet(null)).repository().dir(
+				new File(directory.getText()));
+		if (onlySimpleWords.isSelected()) {
+			command = command.onlySimpleWords();
+		} else if (onlyCompoundWords.isSelected()) {
+			command = command.onlyCompoundWords();
+		}
+		if (ConfigManager.getManager().isKorean(null)) {
+			command = command.korean();
+		}
+		cmds.addCommand(command);
+		if (factorizeInflectionalCodes.isSelected()) {
+			final SortTxtCommand sort = new SortTxtCommand().file(resultDic)
+					.factorizeInflectionalCodes();
+			cmds.addCommand(sort);
+		}
+		Launcher.exec(cmds, true, new LoadDelaDo(resultDic));
+	}
 
-    private JPanel constructUpPanel() {
-        JPanel upPanel = new JPanel(new GridLayout(5, 1));
-        upPanel.setBorder(new TitledBorder(
-                "Directory where inflectional FST2 are stored: "));
-        JPanel tempPanel = new JPanel(new BorderLayout());
-        directory.setPreferredSize(new Dimension(240, 25));
-        directory.setText(new File(Config.getUserCurrentLanguageDir(), "Inflection").getAbsolutePath());
-        tempPanel.add(directory, BorderLayout.CENTER);
-        Action setDirectoryAction = new AbstractAction("Set...") {
-            public void actionPerformed(ActionEvent arg0) {
-                int returnVal = Config.getInflectDialogBox().showOpenDialog(null);
-                if (returnVal != JFileChooser.APPROVE_OPTION) {
-                    // we return if the user has clicked on CANCEL
-                    return;
-                }
-                directory.setText(Config.getInflectDialogBox().getSelectedFile()
-                        .getAbsolutePath());
-            }
-        };
-        JButton setDirectory = new JButton(setDirectoryAction);
-        tempPanel.add(setDirectory, BorderLayout.EAST);
-        upPanel.add(tempPanel);
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(allWords);
-        bg.add(onlySimpleWords);
-        bg.add(onlyCompoundWords);
-        upPanel.add(allWords);
-        upPanel.add(onlySimpleWords);
-        upPanel.add(onlyCompoundWords);
-        upPanel.add(factorizeInflectionalCodes);
-        return upPanel;
-    }
+	class LoadDelaDo implements ToDo {
+		File dela;
 
-    private JPanel constructDownPanel() {
-        JPanel downPanel = new JPanel(new GridLayout(1, 2));
-        Action cancelAction = new AbstractAction("Cancel") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-            }
-        };
-        JButton CANCEL = new JButton(cancelAction);
-        Action goAction = new AbstractAction("Inflect Dictionary") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                inflectDELA();
-            }
-        };
-        JButton GO = new JButton(goAction);
-        downPanel.add(CANCEL);
-        downPanel.add(GO);
-        return downPanel;
-    }
-
-    /**
-     * Launches the inflection program <code>Inflect</code>, through the
-     * creation of a <code>ProcessInfoFrame</code> object.
-     */
-    void inflectDELA() {
-        File f = Config.getCurrentDELA();
-        String tmp = f.getAbsolutePath();
-        int point = tmp.lastIndexOf('.');
-        int separator = tmp.lastIndexOf(File.separatorChar);
-        if (separator < point) {
-            tmp = tmp.substring(0, point);
-        }
-        tmp = tmp + "flx.dic";
-        File resultDic=new File(tmp);
-        MultiCommands cmds=new MultiCommands();
-        MultiFlexCommand command = new MultiFlexCommand().delas(f)
-                .result(resultDic)
-                .alphabet(ConfigManager.getManager().getAlphabet(null))
-                .repository()
-                .dir(new File(directory.getText()));
-        if (onlySimpleWords.isSelected()) {
-            command = command.onlySimpleWords();
-        } else if (onlyCompoundWords.isSelected()) {
-            command = command.onlyCompoundWords();
-        }
-        if (ConfigManager.getManager().isKorean(null)) {
-            command = command.korean();
-        }
-        cmds.addCommand(command);
-        if (factorizeInflectionalCodes.isSelected()) {
-        	SortTxtCommand sort=new SortTxtCommand().file(resultDic).factorizeInflectionalCodes();
-        	cmds.addCommand(sort);
-        }
-        Launcher.exec(cmds, true, new LoadDelaDo(resultDic));
-    }
-
-    class LoadDelaDo implements ToDo {
-
-    	File dela;
-    	
 		public LoadDelaDo(File dela) {
-			this.dela=dela;
+			this.dela = dela;
 		}
 
 		public void toDo() {
 			InternalFrameManager.getManager(dela).newDelaFrame(dela);
 		}
-    	
-    }
-    
+	}
 }

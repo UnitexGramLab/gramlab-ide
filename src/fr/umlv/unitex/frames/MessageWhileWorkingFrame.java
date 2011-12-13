@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -32,39 +31,35 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.GraphCollection;
 
-
 /**
  * This class is used to display a frame that just contains a
  * <code>JTextField</code> to display messages.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class MessageWhileWorkingFrame extends JInternalFrame {
+	private final JLabel label = new JLabel();
 
-    private final JLabel label = new JLabel();
-
-    MessageWhileWorkingFrame() {
-        super("", true, true);
-        JPanel top = new JPanel(new BorderLayout());
-        top.setBorder(new EmptyBorder(2, 2, 2, 2));
-        top.add(label);
-        setContentPane(top);
-        setBounds(100, 100, 450, 80);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-        addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                GraphCollection.stop();
-            }
-        });
-    }
-
-
-    /**
-     * @return the message label
-     */
-    public JLabel getLabel() {
-        return label;
+	MessageWhileWorkingFrame() {
+		super("", true, true);
+		final JPanel top = new JPanel(new BorderLayout());
+		top.setBorder(new EmptyBorder(2, 2, 2, 2));
+		top.add(label);
+		setContentPane(top);
+		setBounds(100, 100, 450, 80);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				GraphCollection.stop();
+			}
+		});
 	}
 
+	/**
+	 * @return the message label
+	 */
+	public JLabel getLabel() {
+		return label;
+	}
 }

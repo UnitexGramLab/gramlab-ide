@@ -18,29 +18,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
 import fr.umlv.unitex.io.GraphIO;
 
-
-class GraphFrameFactory extends MultiInstanceFrameFactory<GraphFrame,File>{
-
-    GraphFrame getGraphFrame(File grf) {
-        GraphFrame f1=getFrameIfExists(grf);
-        if (f1!=null) return f1;
-        final GraphFrame f;
-        if (grf != null) {
-            GraphIO g = GraphIO.loadGraph(grf, false, true);
-            if (g == null) return null;
-            f = new GraphFrame(g);
-        } else {
-            f = new GraphFrame(null);
-        }
-        addFrame(f);
-        return f;
-    }
-
+class GraphFrameFactory extends MultiInstanceFrameFactory<GraphFrame, File> {
+	GraphFrame getGraphFrame(File grf) {
+		final GraphFrame f1 = getFrameIfExists(grf);
+		if (f1 != null)
+			return f1;
+		final GraphFrame f;
+		if (grf != null) {
+			final GraphIO g = GraphIO.loadGraph(grf, false, true);
+			if (g == null)
+				return null;
+			f = new GraphFrame(g);
+		} else {
+			f = new GraphFrame(null);
+		}
+		addFrame(f);
+		return f;
+	}
 }
