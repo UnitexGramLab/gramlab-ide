@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -44,165 +43,162 @@ import javax.swing.border.TitledBorder;
  * This class describes a dialog box that allows the user to align the current
  * selected boxes in the the current graph. The user can also define if a grid
  * must be drawn on backend, and eventually the size of the grid's cells.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class GraphAlignmentDialog extends JDialog {
+	GridBagLayout horizGridBag = new GridBagLayout();
+	private final GridBagLayout vertGridBag = new GridBagLayout();
+	private final GridBagConstraints vertConstraints = new GridBagConstraints();
+	private final JCheckBox showGrid = new JCheckBox();
+	private final JTextField nPixels = new JTextField("30");
+	private int nPix = 30;
+	private GraphFrame f;
 
-    GridBagLayout horizGridBag = new GridBagLayout();
-    private final GridBagLayout vertGridBag = new GridBagLayout();
-    private final GridBagConstraints vertConstraints = new GridBagConstraints();
-    private final JCheckBox showGrid = new JCheckBox();
-    private final JTextField nPixels = new JTextField("30");
+	/**
+	 * Constructs a new <code>GraphAlignmentMenu</code>.
+	 * 
+	 * @param isGrid
+	 *            indicates if there is a grid in background
+	 * @param nPix
+	 *            size of the grid's cells
+	 */
+	GraphAlignmentDialog(GraphFrame f) {
+		super(UnitexFrame.mainFrame, "Alignment", true);
+		configure(f);
+		setContentPane(constructPanel());
+		pack();
+		setResizable(false);
+		nPixels.setEditable(f.graphicalZone.isGrid);
+		nPix = f.graphicalZone.nPixels;
+		nPixels.setText(nPix + "");
+		showGrid.setSelected(f.graphicalZone.isGrid);
+		setLocationRelativeTo(UnitexFrame.mainFrame);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
 
-    private int nPix = 30;
+	private JPanel constructPanel() {
+		final Action topAction = new AbstractAction("Top") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				f.HTopAlign();
+			}
+		};
+		final JButton top = new JButton(topAction);
+		final Action centerHAction = new AbstractAction("Center") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				f.HCenterAlign();
+			}
+		};
+		final JButton centerH = new JButton(centerHAction);
+		final Action bottomAction = new AbstractAction("Bottom") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				f.HBottomAlign();
+			}
+		};
+		final JButton bottom = new JButton(bottomAction);
+		final Action leftAction = new AbstractAction("Left") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				f.VLeftAlign();
+			}
+		};
+		final JButton left = new JButton(leftAction);
+		final Action centerVAction = new AbstractAction("Center") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				f.VCenterAlign();
+			}
+		};
+		final JButton centerV = new JButton(centerVAction);
+		final Action rightAction = new AbstractAction("Right") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				f.VRightAlign();
+			}
+		};
+		final JButton right = new JButton(rightAction);
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		final Action okAction = new AbstractAction("OK") {
+			public void actionPerformed(ActionEvent arg0) {
+				if (!showGrid.isSelected()) {
+					setVisible(false);
+					f.setGrid(false, -1);
+					return;
+				}
+				int n;
+				try {
+					n = Integer.parseInt(nPixels.getText());
+				} catch (final NumberFormatException e) {
+					return;
+				}
+				if (n < 10) {
+					n = 10;
+				}
+				setVisible(false);
+				f.setGrid(true, n);
+			}
+		};
+		final JButton OK = new JButton(okAction);
+		final Action cancelAction = new AbstractAction("Cancel") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		};
+		final JButton CANCEL = new JButton(cancelAction);
+		final JPanel horizontal = new JPanel(new GridLayout(3, 1));
+		horizontal.setBorder(new TitledBorder("Horizontal"));
+		horizontal.add(top);
+		horizontal.add(centerH);
+		horizontal.add(bottom);
+		final JPanel vertical = new JPanel(new GridLayout(3, 1));
+		vertical.setBorder(new TitledBorder("Vertical"));
+		final JPanel leftPanel = new JPanel(new GridLayout(1, 2));
+		leftPanel.add(new JPanel());
+		leftPanel.add(left);
+		vertical.add(leftPanel);
+		final JPanel centerPane = new JPanel(vertGridBag);
+		vertConstraints.fill = GridBagConstraints.NONE;
+		vertGridBag.setConstraints(centerV, vertConstraints);
+		centerPane.add(centerV);
+		vertical.add(centerPane);
+		final JPanel rightPanel = new JPanel(new GridLayout(1, 2));
+		rightPanel.add(right);
+		rightPanel.add(new JPanel());
+		vertical.add(rightPanel);
+		final JPanel centerPanel = new JPanel();
+		centerPanel.add(horizontal);
+		centerPanel.add(vertical);
+		final JPanel southPanel = new JPanel();
+		showGrid.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				nPixels.setEditable(showGrid.isSelected());
+			}
+		});
+		southPanel.add(showGrid);
+		southPanel.add(new JLabel("Use Grid, every"));
+		southPanel.add(nPixels);
+		southPanel.add(new JLabel("pixels"));
+		final JPanel buttonPanel = new JPanel();
+		buttonPanel.add(OK);
+		buttonPanel.add(CANCEL);
+		panel.add(centerPanel, BorderLayout.NORTH);
+		panel.add(southPanel, BorderLayout.CENTER);
+		panel.add(buttonPanel, BorderLayout.SOUTH);
+		return panel;
+	}
 
-    private GraphFrame f;
-
-    /**
-     * Constructs a new <code>GraphAlignmentMenu</code>.
-     *
-     * @param isGrid indicates if there is a grid in background
-     * @param nPix   size of the grid's cells
-     */
-    GraphAlignmentDialog(GraphFrame f) {
-        super(UnitexFrame.mainFrame, "Alignment", true);
-        configure(f);
-        setContentPane(constructPanel());
-        pack();
-        setResizable(false);
-        nPixels.setEditable(f.graphicalZone.isGrid);
-        nPix = f.graphicalZone.nPixels;
-        nPixels.setText(nPix + "");
-        showGrid.setSelected(f.graphicalZone.isGrid);
-        setLocationRelativeTo(UnitexFrame.mainFrame);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-    }
-
-
-    private JPanel constructPanel() {
-        Action topAction = new AbstractAction("Top") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                f.HTopAlign();
-            }
-        };
-        JButton top = new JButton(topAction);
-        Action centerHAction = new AbstractAction("Center") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                f.HCenterAlign();
-            }
-        };
-        JButton centerH = new JButton(centerHAction);
-        Action bottomAction = new AbstractAction("Bottom") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                f.HBottomAlign();
-            }
-        };
-        JButton bottom = new JButton(bottomAction);
-        Action leftAction = new AbstractAction("Left") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                f.VLeftAlign();
-            }
-        };
-        JButton left = new JButton(leftAction);
-        Action centerVAction = new AbstractAction("Center") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                f.VCenterAlign();
-            }
-        };
-        JButton centerV = new JButton(centerVAction);
-        Action rightAction = new AbstractAction("Right") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                f.VRightAlign();
-            }
-        };
-        JButton right = new JButton(rightAction);
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        Action okAction = new AbstractAction("OK") {
-            public void actionPerformed(ActionEvent arg0) {
-                if (!showGrid.isSelected()) {
-                    setVisible(false);
-                    f.setGrid(false, -1);
-                    return;
-                }
-                int n;
-                try {
-                    n = Integer.parseInt(nPixels.getText());
-                } catch (NumberFormatException e) {
-                    return;
-                }
-                if (n < 10) {
-                    n = 10;
-                }
-                setVisible(false);
-                f.setGrid(true, n);
-            }
-        };
-        JButton OK = new JButton(okAction);
-        Action cancelAction = new AbstractAction("Cancel") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-            }
-        };
-        JButton CANCEL = new JButton(cancelAction);
-        JPanel horizontal = new JPanel(new GridLayout(3, 1));
-        horizontal.setBorder(new TitledBorder("Horizontal"));
-        horizontal.add(top);
-        horizontal.add(centerH);
-        horizontal.add(bottom);
-        JPanel vertical = new JPanel(new GridLayout(3, 1));
-        vertical.setBorder(new TitledBorder("Vertical"));
-        JPanel leftPanel = new JPanel(new GridLayout(1, 2));
-        leftPanel.add(new JPanel());
-        leftPanel.add(left);
-        vertical.add(leftPanel);
-        JPanel centerPane = new JPanel(vertGridBag);
-        vertConstraints.fill = GridBagConstraints.NONE;
-        vertGridBag.setConstraints(centerV, vertConstraints);
-        centerPane.add(centerV);
-        vertical.add(centerPane);
-        JPanel rightPanel = new JPanel(new GridLayout(1, 2));
-        rightPanel.add(right);
-        rightPanel.add(new JPanel());
-        vertical.add(rightPanel);
-        JPanel centerPanel = new JPanel();
-        centerPanel.add(horizontal);
-        centerPanel.add(vertical);
-        JPanel southPanel = new JPanel();
-        showGrid.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                nPixels.setEditable(showGrid.isSelected());
-            }
-        });
-        southPanel.add(showGrid);
-        southPanel.add(new JLabel("Use Grid, every"));
-        southPanel.add(nPixels);
-        southPanel.add(new JLabel("pixels"));
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(OK);
-        buttonPanel.add(CANCEL);
-        panel.add(centerPanel, BorderLayout.NORTH);
-        panel.add(southPanel, BorderLayout.CENTER);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-        return panel;
-    }
-
-
-    void configure(GraphFrame frame) {
-        this.f = frame;
-        showGrid.setSelected(f.graphicalZone.isGrid);
-        nPixels.setEnabled(f.graphicalZone.isGrid);
-        int n = f.graphicalZone.nPixels;
-        if (n < 10) {
-            n = 10;
-        }
-        nPixels.setText(n + "");
-    }
+	void configure(GraphFrame frame) {
+		this.f = frame;
+		showGrid.setSelected(f.graphicalZone.isGrid);
+		nPixels.setEnabled(f.graphicalZone.isGrid);
+		int n = f.graphicalZone.nPixels;
+		if (n < 10) {
+			n = 10;
+		}
+		nPixels.setText(n + "");
+	}
 }

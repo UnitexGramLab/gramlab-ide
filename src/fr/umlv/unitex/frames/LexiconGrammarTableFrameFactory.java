@@ -18,33 +18,29 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
-
 class LexiconGrammarTableFrameFactory {
+	private LexiconGrammarTableFrame frame;
 
-    private LexiconGrammarTableFrame frame;
+	LexiconGrammarTableFrame newLexiconGrammarTableFrame(File f) {
+		if (frame != null) {
+			frame.doDefaultCloseAction();
+		}
+		frame = new LexiconGrammarTableFrame(f);
+		return frame;
+	}
 
-    LexiconGrammarTableFrame newLexiconGrammarTableFrame(File f) {
-        if (frame != null) {
-            frame.doDefaultCloseAction();
-        }
-        frame = new LexiconGrammarTableFrame(f);
-        return frame;
-    }
+	void closeLexiconGrammarTableFrame() {
+		if (frame == null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
+	}
 
-    void closeLexiconGrammarTableFrame() {
-        if (frame == null) {
-            return;
-        }
-        frame.doDefaultCloseAction();
-    }
-
-    public LexiconGrammarTableFrame getFrame() {
-        return frame;
-    }
-
+	public LexiconGrammarTableFrame getFrame() {
+		return frame;
+	}
 }

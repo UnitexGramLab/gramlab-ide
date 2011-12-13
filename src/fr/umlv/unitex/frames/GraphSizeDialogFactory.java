@@ -18,21 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
-
 class GraphSizeDialogFactory {
+	private GraphSizeDialog dialog;
 
-    private GraphSizeDialog dialog;
-
-    GraphSizeDialog newGraphSizeDialog(GraphFrame f) {
-        if (dialog == null) {
-            dialog = new GraphSizeDialog(f);
-        } else {
-            dialog.configure(f);
-        }
-        return dialog;
-    }
-
+	GraphSizeDialog newGraphSizeDialog(GraphFrame f) {
+		if (dialog == null) {
+			dialog = new GraphSizeDialog(f);
+		} else {
+			dialog.configure(f);
+		}
+		return dialog;
+	}
 }

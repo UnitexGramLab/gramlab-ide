@@ -48,151 +48,160 @@ import fr.umlv.unitex.tfst.TokenTags;
 import fr.umlv.unitex.tfst.TokensInfo;
 
 public class ExportTextAsPOSListDialog extends JDialog {
-    private File output;
-    boolean canceled = false;
-    private final JProgressBar progress = new JProgressBar();
-    private TagFilter filter;
+	private File output;
+	boolean canceled = false;
+	private final JProgressBar progress = new JProgressBar();
+	private TagFilter filter;
 
-    /**
-     * Creates a new font dialog box.
-     *
-     * @param in indicates if we select an input or an output font for graphs.
-     */
-    public ExportTextAsPOSListDialog(File output, TagFilter filter) {
-        super(UnitexFrame.mainFrame, "Export text as POS list", true);
-        configure(output, filter);
-        setContentPane(constructPanel());
-        progress.setPreferredSize(new Dimension(300, 30));
-        pack();
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                canceled = true;
-            }
-        });
-        setLocationRelativeTo(UnitexFrame.mainFrame);
-    }
+	/**
+	 * Creates a new font dialog box.
+	 * 
+	 * @param in
+	 *            indicates if we select an input or an output font for graphs.
+	 */
+	public ExportTextAsPOSListDialog(File output, TagFilter filter) {
+		super(UnitexFrame.mainFrame, "Export text as POS list", true);
+		configure(output, filter);
+		setContentPane(constructPanel());
+		progress.setPreferredSize(new Dimension(300, 30));
+		pack();
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				canceled = true;
+			}
+		});
+		setLocationRelativeTo(UnitexFrame.mainFrame);
+	}
 
-    private JPanel constructPanel() {
-        JPanel p = new JPanel();
-        p.add(progress);
-        return p;
-    }
+	private JPanel constructPanel() {
+		final JPanel p = new JPanel();
+		p.add(progress);
+		return p;
+	}
 
-    void configure(File o, TagFilter f) {
-        if (o == null) {
-            throw new IllegalArgumentException(
-                    "Cannot configure a null output file");
-        }
-        this.output = o;
-        this.filter = f;
-    }
+	void configure(File o, TagFilter f) {
+		if (o == null) {
+			throw new IllegalArgumentException(
+					"Cannot configure a null output file");
+		}
+		this.output = o;
+		this.filter = f;
+	}
 
-    public void launch() {
-        canceled = false;
-        progress.setMinimum(0);
-        final int sentenceCount = InternalFrameManager.getManager(null)
-                .getTextAutomatonFrame().getSentenceCount();
-        progress.setMaximum(sentenceCount);
-        progress.setValue(0);
-        progress.setStringPainted(true);
-        final ExportTextAsPOSListDialog dialog = this;
-        final File sntDir=Config.getCurrentSntDir();
-        final Encoding encoding=ConfigManager.getManager().getEncoding(null);
-        new Thread(new Runnable() {
-            public void run() {
-                TokensInfo.save();
-                File tfst = new File(sntDir, "text.tfst");
-                File tmpGrf = new File(sntDir, "foo.grf");
-                File sentenceText = new File(sntDir,"foo.txt");
-                File sentenceTok = new File(sntDir,"foo.tok");
-                TfstTableModel model = new TfstTableModel(filter, false);
-                try {
-                    OutputStreamWriter writer=encoding.getOutputStreamWriter(output);
-                    for (int i = 1; i <= sentenceCount; i++) {
-                        if (canceled) {
-                            break;
-                        }
-                        Tfst2GrfCommand cmd = new Tfst2GrfCommand().automaton(
-                                tfst).sentence(i).output("foo");
-                        Launcher.execWithoutTracing(cmd);
-                        String text = readSentenceText(sentenceText);
-                        try {
-                            TokensInfo.loadTokensInfo(sentenceTok, text);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
-                        model.init(g.boxes);
-                        if (model.getRowCount() == 0) {
-                            /* If the sentence automaton has been emptied, we
-                             * generate the token list, excluding spaces */
-                            for (int j = 0; j < TokensInfo.getTokenCount(); j++) {
-                                String s = TokensInfo.getTokenAsString(j);
-                                UnicodeIO.writeString(writer, s);
-                            }
-                        } else
-                            for (int j = 0; j < model.getRowCount(); j++) {
-                                TokenTags t = model.getTokenTags(j);
-                                UnicodeIO.writeString(writer, t.toString() + " ");
-                            }
-                        /* And we add a sentence delimiter */
-                        UnicodeIO.writeString(writer, "{S}\n");
-                        final int z = i;
-                        EventQueue.invokeLater(new Runnable() {
-                            public void run() {
-                                progress.setValue(z);
-                                progress.setString(z + "/" + sentenceCount);
-                            }
-                        });
-                    }
-                    writer.close();
-                } catch (IOException e1) {
-                    /* nop */
-                } finally {
-                    TokensInfo.restore();
-                    tmpGrf.delete();
-                    sentenceText.delete();
-                    sentenceTok.delete();
-                    try {
-                        /* We have to wait a little bit because if the text is too
-                         * small, we may have finished before setVisible(true) is
-                         * invoked. In that case, the JDialog made visible could never
-                         * become invisible again, blocking the user */
-                        Thread.sleep(100);
-                    } catch (InterruptedException e2) {
-                        e2.printStackTrace();
-                    }
-                    try {
-                        EventQueue.invokeAndWait(new Runnable() {
-                            public void run() {
-                                dialog.setVisible(false);
-                            }
-                        });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-    }
+	public void launch() {
+		canceled = false;
+		progress.setMinimum(0);
+		final int sentenceCount = InternalFrameManager.getManager(null)
+				.getTextAutomatonFrame().getSentenceCount();
+		progress.setMaximum(sentenceCount);
+		progress.setValue(0);
+		progress.setStringPainted(true);
+		final ExportTextAsPOSListDialog dialog = this;
+		final File sntDir = Config.getCurrentSntDir();
+		final Encoding encoding = ConfigManager.getManager().getEncoding(null);
+		new Thread(new Runnable() {
+			public void run() {
+				TokensInfo.save();
+				final File tfst = new File(sntDir, "text.tfst");
+				final File tmpGrf = new File(sntDir, "foo.grf");
+				final File sentenceText = new File(sntDir, "foo.txt");
+				final File sentenceTok = new File(sntDir, "foo.tok");
+				final TfstTableModel model = new TfstTableModel(filter, false);
+				try {
+					final OutputStreamWriter writer = encoding
+							.getOutputStreamWriter(output);
+					for (int i = 1; i <= sentenceCount; i++) {
+						if (canceled) {
+							break;
+						}
+						final Tfst2GrfCommand cmd = new Tfst2GrfCommand()
+								.automaton(tfst).sentence(i).output("foo");
+						Launcher.execWithoutTracing(cmd);
+						final String text = readSentenceText(sentenceText);
+						try {
+							TokensInfo.loadTokensInfo(sentenceTok, text);
+						} catch (final FileNotFoundException e) {
+							e.printStackTrace();
+						}
+						final GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
+						model.init(g.boxes);
+						if (model.getRowCount() == 0) {
+							/*
+							 * If the sentence automaton has been emptied, we
+							 * generate the token list, excluding spaces
+							 */
+							for (int j = 0; j < TokensInfo.getTokenCount(); j++) {
+								final String s = TokensInfo.getTokenAsString(j);
+								UnicodeIO.writeString(writer, s);
+							}
+						} else
+							for (int j = 0; j < model.getRowCount(); j++) {
+								final TokenTags t = model.getTokenTags(j);
+								UnicodeIO.writeString(writer, t.toString()
+										+ " ");
+							}
+						/* And we add a sentence delimiter */
+						UnicodeIO.writeString(writer, "{S}\n");
+						final int z = i;
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								progress.setValue(z);
+								progress.setString(z + "/" + sentenceCount);
+							}
+						});
+					}
+					writer.close();
+				} catch (final IOException e1) {
+					/* nop */
+				} finally {
+					TokensInfo.restore();
+					tmpGrf.delete();
+					sentenceText.delete();
+					sentenceTok.delete();
+					try {
+						/*
+						 * We have to wait a little bit because if the text is
+						 * too small, we may have finished before
+						 * setVisible(true) is invoked. In that case, the
+						 * JDialog made visible could never become invisible
+						 * again, blocking the user
+						 */
+						Thread.sleep(100);
+					} catch (final InterruptedException e2) {
+						e2.printStackTrace();
+					}
+					try {
+						EventQueue.invokeAndWait(new Runnable() {
+							public void run() {
+								dialog.setVisible(false);
+							}
+						});
+					} catch (final InterruptedException e) {
+						e.printStackTrace();
+					} catch (final InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+	}
 
-    String readSentenceText(File f) {
-        String s = "";
-        try {
-            InputStreamReader reader=Encoding.getInputStreamReader(f); 
-            if (reader==null) return null;
-            s = UnicodeIO.readLine(reader);
-            if (s == null || s.equals("")) {
-                return "";
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return s;
-    }
+	String readSentenceText(File f) {
+		String s = "";
+		try {
+			final InputStreamReader reader = Encoding.getInputStreamReader(f);
+			if (reader == null)
+				return null;
+			s = UnicodeIO.readLine(reader);
+			if (s == null || s.equals("")) {
+				return "";
+			}
+			reader.close();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
 }

@@ -18,29 +18,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
 class StatisticsFrameFactory {
+	private StatisticsFrame frame;
 
-    private StatisticsFrame frame;
+	StatisticsFrame newStatisticsFrame(File file, int mode) {
+		if (frame != null) {
+			frame.doDefaultCloseAction();
+		}
+		frame = new StatisticsFrame(file, mode);
+		return frame;
+	}
 
-    StatisticsFrame newStatisticsFrame(File file, int mode) {
-        if (frame != null) {
-            frame.doDefaultCloseAction();
-        }
-        frame = new StatisticsFrame(file, mode);
-        return frame;
-    }
-
-
-    void closeStatisticsFrame() {
-        if (frame == null) {
-            return;
-        }
-        frame.doDefaultCloseAction();
-    }
-
+	void closeStatisticsFrame() {
+		if (frame == null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
+	}
 }

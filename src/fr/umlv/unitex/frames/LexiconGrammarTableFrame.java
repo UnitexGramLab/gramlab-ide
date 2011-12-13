@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -37,99 +36,97 @@ import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 
 /**
  * This class is used to display a lexicon-grammar table
- *
+ * 
  * @author Sébastien Paumier
  */
 public class LexiconGrammarTableFrame extends JInternalFrame {
+	private Vector<Vector<String>> rowData;
+	private Vector<String> columnNames;
+	private final File tableFile;
 
-    private Vector<Vector<String>> rowData;
-    private Vector<String> columnNames;
-    private final File tableFile;
+	/**
+	 * Constructs a new <code>LexiconGrammarTableFrame</code>, loads a
+	 * lexicon-grammar table and shows the frame.
+	 * 
+	 * @param file
+	 *            the lexicon-grammar table file
+	 */
+	LexiconGrammarTableFrame(File file) {
+		super(file.getAbsolutePath(), true, true, true, true);
+		this.tableFile = file;
+		buildVectors(file);
+		final JPanel top = new JPanel(new BorderLayout());
+		final JTable table = new JTable(rowData, columnNames);
+		table.setFont(ConfigManager.getManager().getTextFont(null));
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		final JScrollPane scroll = new JScrollPane(table);
+		scroll
+				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		top.add(scroll, BorderLayout.CENTER);
+		setContentPane(top);
+		pack();
+		setBounds(100, 100, 800, 600);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	}
 
-    /**
-     * Constructs a new <code>LexiconGrammarTableFrame</code>, loads a
-     * lexicon-grammar table and shows the frame.
-     *
-     * @param file the lexicon-grammar table file
-     */
-    LexiconGrammarTableFrame(File file) {
-        super(file.getAbsolutePath(), true, true, true, true);
-        this.tableFile = file;
-        buildVectors(file);
-        JPanel top = new JPanel(new BorderLayout());
-        JTable table = new JTable(rowData, columnNames);
-        table.setFont(ConfigManager.getManager().getTextFont(null));
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        JScrollPane scroll = new JScrollPane(table);
-        scroll
-                .setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scroll
-                .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        top.add(scroll, BorderLayout.CENTER);
-        setContentPane(top);
-        pack();
-        setBounds(100, 100, 800, 600);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-    }
+	private void buildVectors(File f) {
+		if (!f.exists()) {
+			JOptionPane.showMessageDialog(null, "Cannot find "
+					+ f.getAbsolutePath(), "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (!f.canRead()) {
+			JOptionPane.showMessageDialog(null, "Cannot read "
+					+ f.getAbsolutePath(), "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (f.length() <= 2) {
+			JOptionPane.showMessageDialog(null, f.getAbsolutePath()
+					+ " is empty", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		final InputStreamReader source = Encoding.getInputStreamReader(f);
+		if (source == null) {
+			JOptionPane.showMessageDialog(null, f.getAbsolutePath()
+					+ " is not a Unicode Little-Endian table file", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		try {
+			rowData = new Vector<Vector<String>>();
+			// we process the column names first
+			columnNames = tokenizeToVector(UnicodeIO.readLine(source));
+			// and then the lines
+			String line;
+			while ((line = UnicodeIO.readLine(source)) != null) {
+				rowData.add(tokenizeToVector(line));
+			}
+			source.close();
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	private Vector<String> tokenizeToVector(String s) {
+		final Vector<String> res = new Vector<String>();
+		final StringTokenizer st = new StringTokenizer(s, "\t");
+		while (st.hasMoreElements()) {
+			res.add(st.nextToken());
+		}
+		return res;
+	}
 
-    private void buildVectors(File f) {
-        if (!f.exists()) {
-            JOptionPane.showMessageDialog(null, "Cannot find " + f.getAbsolutePath(), "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (!f.canRead()) {
-            JOptionPane.showMessageDialog(null, "Cannot read " + f.getAbsolutePath(), "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (f.length() <= 2) {
-            JOptionPane.showMessageDialog(null, f.getAbsolutePath() + " is empty", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        InputStreamReader source=Encoding.getInputStreamReader(f);
-        if (source==null) {
-            JOptionPane.showMessageDialog(null, f.getAbsolutePath()
-                    + " is not a Unicode Little-Endian table file", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        try {
-            rowData = new Vector<Vector<String>>();
-            // we process the column names first
-            columnNames = tokenizeToVector(UnicodeIO.readLine(source));
-            // and then the lines
-            String line;
-            while ((line=UnicodeIO.readLine(source))!=null) {
-            	rowData.add(tokenizeToVector(line));
-            }
-            source.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Vector<String> tokenizeToVector(String s) {
-        Vector<String> res = new Vector<String>();
-        StringTokenizer st = new StringTokenizer(s, "\t");
-        while (st.hasMoreElements()) {
-            res.add(st.nextToken());
-        }
-        return res;
-    }
-
-    public File getTable() {
-        return tableFile;
-    }
+	public File getTable() {
+		return tableFile;
+	}
 }

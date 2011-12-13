@@ -18,21 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
-
 class GraphAlignmentDialogFactory {
+	private GraphAlignmentDialog dialog;
 
-    private GraphAlignmentDialog dialog;
-
-    GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
-        if (dialog == null) {
-            dialog = new GraphAlignmentDialog(f);
-        } else {
-            dialog.configure(f);
-        }
-        return dialog;
-    }
-
+	GraphAlignmentDialog newGraphAlignmentDialog(GraphFrame f) {
+		if (dialog == null) {
+			dialog = new GraphAlignmentDialog(f);
+		} else {
+			dialog.configure(f);
+		}
+		return dialog;
+	}
 }

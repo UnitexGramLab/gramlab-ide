@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.util.ArrayList;
@@ -26,51 +25,48 @@ import java.util.ArrayList;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>, K> {
+	final ArrayList<F> frames = new ArrayList<F>();
 
-class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>,K> {
-
-    final ArrayList<F> frames = new ArrayList<F>();
-
-    F getFrameIfExists(K key) {
-        if (key != null) {
-            for (F f:frames) {
-                if (f.getKey().equals(key)) {
-                    return f;
-                }
-            }
-        }
-        return null;
-    }
+	F getFrameIfExists(K key) {
+		if (key != null) {
+			for (final F f : frames) {
+				if (f.getKey().equals(key)) {
+					return f;
+				}
+			}
+		}
+		return null;
+	}
 
 	void addFrame(final F f) {
 		frames.add(f);
-        f.addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosed(InternalFrameEvent e) {
-                frames.remove(f);
-            }
-        });
+		f.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				frames.remove(f);
+			}
+		});
 	}
-	
-    @SuppressWarnings("unchecked")
-    void closeAllFrames() {
-        /* We have to make a copy of the frame list because as the close
-         * action of each frame way remove it from 'frames', we could have
-         * problems
-         */
-        ArrayList<F> copy = (ArrayList<F>) frames.clone();
-        for (F f:copy) {
-            f.doDefaultCloseAction();
-        }
-    }
-    
-    @SuppressWarnings("unchecked")
-	ArrayList<F> getFrames() {
-        return (ArrayList<F>) frames.clone();
-    }
 
-    int getFrameCount() {
-    	return frames.size();
-    }
-    
+	@SuppressWarnings("unchecked")
+	void closeAllFrames() {
+		/*
+		 * We have to make a copy of the frame list because as the close action
+		 * of each frame way remove it from 'frames', we could have problems
+		 */
+		final ArrayList<F> copy = (ArrayList<F>) frames.clone();
+		for (final F f : copy) {
+			f.doDefaultCloseAction();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	ArrayList<F> getFrames() {
+		return (ArrayList<F>) frames.clone();
+	}
+
+	int getFrameCount() {
+		return frames.size();
+	}
 }

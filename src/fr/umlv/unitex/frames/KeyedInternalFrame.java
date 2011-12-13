@@ -23,10 +23,9 @@ package fr.umlv.unitex.frames;
 import javax.swing.JInternalFrame;
 
 public abstract class KeyedInternalFrame<K> extends JInternalFrame {
-	
 	public KeyedInternalFrame(String string, boolean b, boolean c, boolean d,
 			boolean e) {
-		super(string,b,c,d,e);
+		super(string, b, c, d, e);
 	}
 
 	public abstract K getKey();

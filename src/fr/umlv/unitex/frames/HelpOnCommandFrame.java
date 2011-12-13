@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -83,114 +82,90 @@ import fr.umlv.unitex.process.commands.XAlignCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
 
 public class HelpOnCommandFrame extends JInternalFrame {
+	@SuppressWarnings("unchecked")
+	private final Class[] commands = { BuildKrMwuDicCommand.class,
+			CheckDicCommand.class, CompressCommand.class, ConcordCommand.class,
+			ConcorDiffCommand.class, ConvertCommand.class, DicoCommand.class,
+			ElagCommand.class, ElagCompCommand.class, EvambCommand.class,
+			ExtractCommand.class, FlattenCommand.class, Fst2CheckCommand.class,
+			Fst2ListCommand.class, Fst2TxtCommand.class, Grf2Fst2Command.class,
+			GrfDiffCommand.class, GrfDiff3Command.class,
+			ImplodeTfstCommand.class, LocateCommand.class,
+			LocateTfstCommand.class
+			/*
+			 * This is normal that MkdirCommand is not in this list, since it's
+			 * not a Unitex command
+			 */
+			, MultiFlexCommand.class, NormalizeCommand.class,
+			PolyLexCommand.class, RebuildTfstCommand.class,
+			ReconstrucaoCommand.class, Reg2GrfCommand.class,
+			Seq2GrfCommand.class, SortTxtCommand.class, StatsCommand.class,
+			Table2GrfCommand.class, TaggerCommand.class,
+			TagsetNormTfstCommand.class, TEI2TxtCommand.class,
+			Tfst2GrfCommand.class, Tfst2UnambigCommand.class,
+			TokenizeCommand.class, TrainingTaggerCommand.class,
+			Txt2TfstCommand.class, UncompressCommand.class,
+			UntokenizeCommand.class, UnxmlizeCommand.class,
+			XAlignCommand.class, XMLizerCommand.class };
+	private boolean refreshLock = false;
 
-    @SuppressWarnings("unchecked")
-    private final
-    Class[] commands = {
-            BuildKrMwuDicCommand.class
-            , CheckDicCommand.class
-            , CompressCommand.class
-            , ConcordCommand.class
-            , ConcorDiffCommand.class
-            , ConvertCommand.class
-            , DicoCommand.class
-            , ElagCommand.class
-            , ElagCompCommand.class
-            , EvambCommand.class
-            , ExtractCommand.class
-            , FlattenCommand.class
-            , Fst2CheckCommand.class
-            , Fst2ListCommand.class
-            , Fst2TxtCommand.class
-            , Grf2Fst2Command.class
-            , GrfDiffCommand.class
-            , GrfDiff3Command.class
-            , ImplodeTfstCommand.class
-            , LocateCommand.class
-            , LocateTfstCommand.class
-            /* This is normal that MkdirCommand is not in this list,
-             * since it's not a Unitex command */
-            , MultiFlexCommand.class
-            , NormalizeCommand.class
-            , PolyLexCommand.class
-            , RebuildTfstCommand.class
-            , ReconstrucaoCommand.class
-            , Reg2GrfCommand.class
-            , Seq2GrfCommand.class
-            , SortTxtCommand.class
-            , StatsCommand.class
-            , Table2GrfCommand.class
-            , TaggerCommand.class
-            , TagsetNormTfstCommand.class
-            , TEI2TxtCommand.class
-            , Tfst2GrfCommand.class
-            , Tfst2UnambigCommand.class
-            , TokenizeCommand.class
-            , TrainingTaggerCommand.class
-            , Txt2TfstCommand.class
-            , UncompressCommand.class
-            , UntokenizeCommand.class
-            , UnxmlizeCommand.class
-            , XAlignCommand.class
-            , XMLizerCommand.class
-    };
-
-    private boolean refreshLock = false;
-
-    HelpOnCommandFrame() {
-        super("Help on commands", true, true, true, true);
-        JPanel top = new JPanel(new BorderLayout());
-        final JList list = new JList(commands);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.setCellRenderer(new DefaultListCellRenderer() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public Component getListCellRendererComponent(JList l, Object value, int index, boolean zz, boolean cellHasFocus) {
-                Class c = (Class) value;
-                String name = c.getSimpleName().substring(0, c.getSimpleName().lastIndexOf("Command"));
-                return super.getListCellRendererComponent(l, name, index, zz, cellHasFocus);
-            }
-        });
-        final ProcessOutputListModel stdout = new ProcessOutputListModel();
-        final JList stdoutList = new JList(stdout);
-        stdoutList.setCellRenderer(ProcessInfoFrame.myRenderer);
-        top.add(new JScrollPane(stdoutList));
-
-        list.addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                if (refreshLock || e.getValueIsAdjusting()) {
-                    return;
-                }
-                refreshLock = true;
-                try {
-                    Class<?> c = (Class<?>) list.getSelectedValue();
-                    if (c == null) return;
-                    CommandBuilder command = (CommandBuilder) c.newInstance();
-                    stdout.removeAllElements();
-                    final String[] comm = command.getCommandArguments();
-                    Process p = Runtime.getRuntime().exec(comm);
-                    new ProcessInfoThread(stdoutList, p
-                            .getInputStream(), false, null, false, null).start();
-                    try {
-                        p.waitFor();
-                    } catch (java.lang.InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                } catch (InstantiationException e1) {
-                    e1.printStackTrace();
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                } finally {
-                    refreshLock = false;
-                }
-            }
-        });
-        top.add(new JScrollPane(list), BorderLayout.WEST);
-        setContentPane(top);
-        setSize(600, 400);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-    }
-
+	HelpOnCommandFrame() {
+		super("Help on commands", true, true, true, true);
+		final JPanel top = new JPanel(new BorderLayout());
+		final JList list = new JList(commands);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setCellRenderer(new DefaultListCellRenderer() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Component getListCellRendererComponent(JList l,
+					Object value, int index, boolean zz, boolean cellHasFocus) {
+				final Class c = (Class) value;
+				final String name = c.getSimpleName().substring(0,
+						c.getSimpleName().lastIndexOf("Command"));
+				return super.getListCellRendererComponent(l, name, index, zz,
+						cellHasFocus);
+			}
+		});
+		final ProcessOutputListModel stdout = new ProcessOutputListModel();
+		final JList stdoutList = new JList(stdout);
+		stdoutList.setCellRenderer(ProcessInfoFrame.myRenderer);
+		top.add(new JScrollPane(stdoutList));
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (refreshLock || e.getValueIsAdjusting()) {
+					return;
+				}
+				refreshLock = true;
+				try {
+					final Class<?> c = (Class<?>) list.getSelectedValue();
+					if (c == null)
+						return;
+					final CommandBuilder command = (CommandBuilder) c
+							.newInstance();
+					stdout.removeAllElements();
+					final String[] comm = command.getCommandArguments();
+					final Process p = Runtime.getRuntime().exec(comm);
+					new ProcessInfoThread(stdoutList, p.getInputStream(),
+							false, null, false, null).start();
+					try {
+						p.waitFor();
+					} catch (final java.lang.InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				} catch (final InstantiationException e1) {
+					e1.printStackTrace();
+				} catch (final IllegalAccessException e1) {
+					e1.printStackTrace();
+				} catch (final IOException e1) {
+					e1.printStackTrace();
+				} finally {
+					refreshLock = false;
+				}
+			}
+		});
+		top.add(new JScrollPane(list), BorderLayout.WEST);
+		setContentPane(top);
+		setSize(600, 400);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
 }

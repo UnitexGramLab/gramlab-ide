@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
@@ -27,41 +26,38 @@ import java.util.ArrayList;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-
 class FileEditionTextFrameFactory {
+	private final ArrayList<FileEditionTextFrame> frames = new ArrayList<FileEditionTextFrame>();
 
-    private final ArrayList<FileEditionTextFrame> frames = new ArrayList<FileEditionTextFrame>();
+	FileEditionTextFrame getFileEditionTextFrame(File file) {
+		if (file != null) {
+			for (final FileEditionTextFrame fr : frames) {
+				if (file.equals(fr.getFile())) {
+					return fr;
+				}
+			}
+		}
+		final FileEditionTextFrame f = new FileEditionTextFrame(file);
+		frames.add(f);
+		f.addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosed(InternalFrameEvent e) {
+				frames.remove(f);
+			}
+		});
+		return f;
+	}
 
-    FileEditionTextFrame getFileEditionTextFrame(File file) {
-        if (file != null) {
-            for (FileEditionTextFrame fr : frames) {
-                if (file.equals(fr.getFile())) {
-                    return fr;
-                }
-            }
-        }
-        final FileEditionTextFrame f = new FileEditionTextFrame(file);
-        frames.add(f);
-        f.addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosed(InternalFrameEvent e) {
-                frames.remove(f);
-            }
-        });
-        return f;
-    }
-
-
-    @SuppressWarnings("unchecked")
-    void closeAllFileEditionTextFrames() {
-        /* We have to make a copy of the frame list because as the close
-           * action of each frame way remove it from 'frames', we could have
-           * problems
-           */
-        ArrayList<FileEditionTextFrame> copy = (ArrayList<FileEditionTextFrame>) frames.clone();
-        for (FileEditionTextFrame f : copy) {
-            f.doDefaultCloseAction();
-        }
-    }
-
+	@SuppressWarnings("unchecked")
+	void closeAllFileEditionTextFrames() {
+		/*
+		 * We have to make a copy of the frame list because as the close action
+		 * of each frame way remove it from 'frames', we could have problems
+		 */
+		final ArrayList<FileEditionTextFrame> copy = (ArrayList<FileEditionTextFrame>) frames
+				.clone();
+		for (final FileEditionTextFrame f : copy) {
+			f.doDefaultCloseAction();
+		}
+	}
 }

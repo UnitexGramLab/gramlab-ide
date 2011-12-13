@@ -18,9 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
-
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -44,43 +42,48 @@ import fr.umlv.unitex.text.BigTextArea;
  * license and some informations about Unitex.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class AboutUnitexFrame extends JInternalFrame {
-
 	AboutUnitexFrame() {
 		super("About Unitex", true, true);
-		JPanel top = new JPanel(new BorderLayout());
-		BigTextArea licenseLGPL=new BigTextArea(new File(Config.getApplicationDir(),"LGPL.txt"));
-		BigTextArea licenseLGPLLR=new BigTextArea(new File(Config.getApplicationDir(),"LGPLLR.txt"));
-		BigTextArea apache=new BigTextArea(new File(Config.getApplicationDir(),"Apache-1.1.txt"));
-        BigTextArea bsd=new BigTextArea(new File(Config.getApplicationDir(),"BSD_tre.txt"));
-		BigTextArea disclaimer=new BigTextArea(new File(Config.getApplicationDir(),"Disclaimer.txt"));
-		JPanel up = new JPanel(new BorderLayout());
-		JPanel image = new JPanel(new BorderLayout());
+		final JPanel top = new JPanel(new BorderLayout());
+		final BigTextArea licenseLGPL = new BigTextArea(new File(Config
+				.getApplicationDir(), "LGPL.txt"));
+		final BigTextArea licenseLGPLLR = new BigTextArea(new File(Config
+				.getApplicationDir(), "LGPLLR.txt"));
+		final BigTextArea apache = new BigTextArea(new File(Config
+				.getApplicationDir(), "Apache-1.1.txt"));
+		final BigTextArea bsd = new BigTextArea(new File(Config
+				.getApplicationDir(), "BSD_tre.txt"));
+		final BigTextArea disclaimer = new BigTextArea(new File(Config
+				.getApplicationDir(), "Disclaimer.txt"));
+		final JPanel up = new JPanel(new BorderLayout());
+		final JPanel image = new JPanel(new BorderLayout());
 		image.setBorder(new EmptyBorder(4, 3, 1, 1));
-		image.add(new JLabel(new ImageIcon(Unitex.class.getResource("Unitex.jpg"))));
+		image.add(new JLabel(new ImageIcon(Unitex.class
+				.getResource("Unitex.jpg"))));
 		up.add(image, BorderLayout.WEST);
-		JPanel info = new JPanel(new BorderLayout());
+		final JPanel info = new JPanel(new BorderLayout());
 		info.setBorder(new TitledBorder("Unitex"));
-		disclaimer.setPreferredSize(new Dimension(400,image.getHeight()));
+		disclaimer.setPreferredSize(new Dimension(400, image.getHeight()));
 		info.add(disclaimer, BorderLayout.CENTER);
-		JLabel revision=new JLabel("  Revision: "+Version.getRevisionNumberForJava()+" (Java), "
-		        +Version.getRevisionNumberForC()+" (C/C++) "
-		        +", revision date: "+Version.getRevisionDate());
-		up.add(revision,BorderLayout.NORTH);
+		final JLabel revision = new JLabel("  Revision: "
+				+ Version.getRevisionNumberForJava() + " (Java), "
+				+ Version.getRevisionNumberForC() + " (C/C++) "
+				+ ", revision date: " + Version.getRevisionDate());
+		up.add(revision, BorderLayout.NORTH);
 		up.add(info, BorderLayout.CENTER);
 		top.add(up, BorderLayout.NORTH);
-		JTabbedPane licenses = new JTabbedPane();
-		licenses.add(licenseLGPL,"LGPL");
-		licenses.add(licenseLGPLLR,"LGPLLR");
-		licenses.add(apache,"Apache");
-		licenses.add(bsd,"TRE's BSD");
+		final JTabbedPane licenses = new JTabbedPane();
+		licenses.add(licenseLGPL, "LGPL");
+		licenses.add(licenseLGPLLR, "LGPLLR");
+		licenses.add(apache, "Apache");
+		licenses.add(bsd, "TRE's BSD");
 		top.add(licenses, BorderLayout.CENTER);
 		setContentPane(top);
-		licenses.setPreferredSize(new Dimension(500,300));
+		licenses.setPreferredSize(new Dimension(500, 300));
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 	}
-
 }

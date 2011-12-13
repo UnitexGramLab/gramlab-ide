@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -37,20 +36,17 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.stats.StatisticsTableModelMode0;
 import fr.umlv.unitex.stats.StatisticsTableModelMode1;
 import fr.umlv.unitex.stats.StatisticsTableModelMode2;
 
-
 public class StatisticsFrame extends JInternalFrame {
-
-	StatisticsFrame(File file,int mode) {
+	StatisticsFrame(File file, int mode) {
 		super("Statistics", true, true, true, true);
-		JPanel top = new JPanel(new BorderLayout());
-		JTable table = createTable(file,mode);
+		final JPanel top = new JPanel(new BorderLayout());
+		final JTable table = createTable(file, mode);
 		table.setFont(ConfigManager.getManager().getTextFont(null));
-		JScrollPane scroll = new JScrollPane(table);
+		final JScrollPane scroll = new JScrollPane(table);
 		scroll
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll
@@ -60,62 +56,68 @@ public class StatisticsFrame extends JInternalFrame {
 		pack();
 	}
 
-	
-	private static final TableCellRenderer rightJustifiedRenderer=new DefaultTableCellRenderer() {
-	    @Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	        setHorizontalAlignment(SwingConstants.RIGHT);
-	        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-	    }
+	private static final TableCellRenderer rightJustifiedRenderer = new DefaultTableCellRenderer() {
+		@Override
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			setHorizontalAlignment(SwingConstants.RIGHT);
+			return super.getTableCellRendererComponent(table, value,
+					isSelected, hasFocus, row, column);
+		}
 	};
-	
-    private static final TableCellRenderer centeredRenderer=new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setHorizontalAlignment(SwingConstants.CENTER);
-            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        }
-    };
-	
-	private JTable createTable(File file, int mode) {
-	    JTable t=null;
-        switch (mode) {
-        case 0: {
-            t=new JTable(new StatisticsTableModelMode0(file));
-            t.getColumnModel().getColumn(0).setCellRenderer(rightJustifiedRenderer);
-            t.getColumnModel().getColumn(1).setCellRenderer(centeredRenderer);
-            break;
-        }
-        case 1: {
-            t=new JTable(new StatisticsTableModelMode1(file));
-            break;
-        }
-        case 2: {
-            t=new JTable(new StatisticsTableModelMode2(file));
-            break;
-        }
-        default: throw new IllegalArgumentException("Invalid mode: "+mode);
-        }
-        setColumnsToTheirPreferredWidth(t);
-        final TableRowSorter<TableModel> sorter=new TableRowSorter<TableModel>(t.getModel());
-        t.setRowSorter(sorter);
-        return t;
-    }
+	private static final TableCellRenderer centeredRenderer = new DefaultTableCellRenderer() {
+		@Override
+		public Component getTableCellRendererComponent(JTable table,
+				Object value, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			setHorizontalAlignment(SwingConstants.CENTER);
+			return super.getTableCellRendererComponent(table, value,
+					isSelected, hasFocus, row, column);
+		}
+	};
 
-	
-    private void setColumnsToTheirPreferredWidth(JTable t) {
-        for (int i=0;i<t.getColumnCount();i++) {
-            int width=75;
-            for (int j=0;j<t.getRowCount();j++) {
-                TableCellRenderer r=t.getCellRenderer(j,i);
-                Component c=r.getTableCellRendererComponent(t,t.getValueAt(j,i),false,false,j,i);
-                int w=c.getPreferredSize().width;
-                if (w>width) {
-                    width=w;
-                }
-            }
-            t.getColumnModel().getColumn(i).setPreferredWidth(width);
-        }
-    }
-    
+	private JTable createTable(File file, int mode) {
+		JTable t = null;
+		switch (mode) {
+		case 0: {
+			t = new JTable(new StatisticsTableModelMode0(file));
+			t.getColumnModel().getColumn(0).setCellRenderer(
+					rightJustifiedRenderer);
+			t.getColumnModel().getColumn(1).setCellRenderer(centeredRenderer);
+			break;
+		}
+		case 1: {
+			t = new JTable(new StatisticsTableModelMode1(file));
+			break;
+		}
+		case 2: {
+			t = new JTable(new StatisticsTableModelMode2(file));
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Invalid mode: " + mode);
+		}
+		setColumnsToTheirPreferredWidth(t);
+		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
+				t.getModel());
+		t.setRowSorter(sorter);
+		return t;
+	}
+
+	private void setColumnsToTheirPreferredWidth(JTable t) {
+		for (int i = 0; i < t.getColumnCount(); i++) {
+			int width = 75;
+			for (int j = 0; j < t.getRowCount(); j++) {
+				final TableCellRenderer r = t.getCellRenderer(j, i);
+				final Component c = r.getTableCellRendererComponent(t, t
+						.getValueAt(j, i), false, false, j, i);
+				final int w = c.getPreferredSize().width;
+				if (w > width) {
+					width = w;
+				}
+			}
+			t.getColumnModel().getColumn(i).setPreferredWidth(width);
+		}
+	}
 }

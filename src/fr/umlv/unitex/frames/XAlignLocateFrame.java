@@ -29,7 +29,6 @@ import java.awt.event.FocusEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -104,7 +103,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 	}
 
 	private JPanel constructPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
+		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		return panel;
@@ -129,15 +128,15 @@ public class XAlignLocateFrame extends JInternalFrame {
 	}
 
 	private JPanel constructPatternPanel() {
-		JPanel patternPanel = new JPanel(new BorderLayout());
+		final JPanel patternPanel = new JPanel(new BorderLayout());
 		patternPanel.setBorder(new TitledBorder(
 				"Locate pattern in the form of:"));
 		final File graphDir = new File(new File(Config.getUserDir(), language),
 				"Graphs");
-		Action setGraphAction = new AbstractAction("Set") {
+		final Action setGraphAction = new AbstractAction("Set") {
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser grfAndFst2 = getGrfAndFst2DialogBox(graphDir);
-				int returnVal = grfAndFst2.showOpenDialog(null);
+				final JFileChooser grfAndFst2 = getGrfAndFst2DialogBox(graphDir);
+				final int returnVal = grfAndFst2.showOpenDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
@@ -147,8 +146,8 @@ public class XAlignLocateFrame extends JInternalFrame {
 				graph.setSelected(true);
 			}
 		};
-		JButton setGraphButton = new JButton(setGraphAction);
-		ButtonGroup bg = new ButtonGroup();
+		final JButton setGraphButton = new JButton(setGraphAction);
+		final ButtonGroup bg = new ButtonGroup();
 		graphName.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -166,7 +165,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		patternPanel.add(regularExpression, BorderLayout.NORTH);
 		regExp.setPreferredSize(new Dimension(300, 30));
 		patternPanel.add(regExp, BorderLayout.CENTER);
-		JPanel p = new JPanel(new BorderLayout());
+		final JPanel p = new JPanel(new BorderLayout());
 		p.add(graph, BorderLayout.WEST);
 		p.add(graphName, BorderLayout.CENTER);
 		p.add(setGraphButton, BorderLayout.EAST);
@@ -175,16 +174,16 @@ public class XAlignLocateFrame extends JInternalFrame {
 	}
 
 	private JPanel constructDownPanel() {
-		JPanel downPanel = new JPanel(new BorderLayout());
-		JPanel b = new JPanel(new BorderLayout());
+		final JPanel downPanel = new JPanel(new BorderLayout());
+		final JPanel b = new JPanel(new BorderLayout());
 		b.add(constructSearchLimitationPanel(), BorderLayout.WEST);
 		final XAlignLocateFrame f = this;
-		Action searchAction = new AbstractAction("SEARCH") {
+		final Action searchAction = new AbstractAction("SEARCH") {
 			public void actionPerformed(ActionEvent arg0) {
 				f.launchLocate();
 			}
 		};
-		JButton searchButton = new JButton(searchAction);
+		final JButton searchButton = new JButton(searchAction);
 		b.add(searchButton, BorderLayout.CENTER);
 		downPanel.add(constructIndexPanel(), BorderLayout.CENTER);
 		downPanel.add(b, BorderLayout.SOUTH);
@@ -192,9 +191,9 @@ public class XAlignLocateFrame extends JInternalFrame {
 	}
 
 	private JPanel constructIndexPanel() {
-		JPanel indexPanel = new JPanel(new GridLayout(3, 1));
+		final JPanel indexPanel = new JPanel(new GridLayout(3, 1));
 		indexPanel.setBorder(new TitledBorder("Index"));
-		ButtonGroup bg = new ButtonGroup();
+		final ButtonGroup bg = new ButtonGroup();
 		bg.add(shortestMatches);
 		bg.add(longuestMatches);
 		bg.add(allMatches);
@@ -205,13 +204,13 @@ public class XAlignLocateFrame extends JInternalFrame {
 	}
 
 	private JPanel constructSearchLimitationPanel() {
-		JPanel searchLimitationPanel = new JPanel(new GridLayout(2, 1));
+		final JPanel searchLimitationPanel = new JPanel(new GridLayout(2, 1));
 		searchLimitationPanel.setBorder(new TitledBorder("Search limitation"));
-		JPanel p = new JPanel(new BorderLayout());
+		final JPanel p = new JPanel(new BorderLayout());
 		p.add(stopAfterNmatches, BorderLayout.WEST);
 		p.add(nMatches, BorderLayout.CENTER);
 		p.add(new JLabel(" matches"), BorderLayout.EAST);
-		ButtonGroup bg = new ButtonGroup();
+		final ButtonGroup bg = new ButtonGroup();
 		bg.add(stopAfterNmatches);
 		bg.add(indexAllMatches);
 		searchLimitationPanel.add(p);
@@ -220,13 +219,13 @@ public class XAlignLocateFrame extends JInternalFrame {
 	}
 
 	void launchLocate() {
-		MultiCommands commands = new MultiCommands();
+		final MultiCommands commands = new MultiCommands();
 		File fst2;
 		int n = -1;
 		if (stopAfterNmatches.isSelected()) {
 			try {
 				n = Integer.parseInt(nMatches.getText());
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				JOptionPane.showMessageDialog(null,
 						"Invalid empty search limitation value !", "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -241,14 +240,15 @@ public class XAlignLocateFrame extends JInternalFrame {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			File regexpFile = new File(new File(Config.getUserDir(), language),
-					"regexp.txt");
+			final File regexpFile = new File(new File(Config.getUserDir(),
+					language), "regexp.txt");
 			createRegExpFile(regExp.getText(), regexpFile);
-			Reg2GrfCommand reg2GrfCmd = new Reg2GrfCommand().file(regexpFile);
+			final Reg2GrfCommand reg2GrfCmd = new Reg2GrfCommand()
+					.file(regexpFile);
 			commands.addCommand(reg2GrfCmd);
-			File grf = new File(new File(Config.getUserDir(), language),
+			final File grf = new File(new File(Config.getUserDir(), language),
 					"regexp.grf");
-			Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
+			final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
 					.enableLoopAndRecursionDetection(true).tokenizationMode(
 							null, grf).repository();
 			commands.addCommand(grfCmd);
@@ -262,14 +262,14 @@ public class XAlignLocateFrame extends JInternalFrame {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			String grfName = graphName.getText();
+			final String grfName = graphName.getText();
 			if (grfName.substring(grfName.length() - 3, grfName.length())
 					.equalsIgnoreCase("grf")) {
 				// we must compile the grf
-				File grf=new File(grfName);
-				Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
+				final File grf = new File(grfName);
+				final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
 						.enableLoopAndRecursionDetection(true)
-						.tokenizationMode(null,grf).repository();
+						.tokenizationMode(null, grf).repository();
 				commands.addCommand(grfCmd);
 				String fst2Name = grfName.substring(0, grfName.length() - 3);
 				fst2Name = fst2Name + "fst2";
@@ -286,7 +286,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 				fst2 = new File(grfName);
 			}
 		}
-		File alphabet = new File(new File(Config.getUserDir(), language),
+		final File alphabet = new File(new File(Config.getUserDir(), language),
 				"Alphabet.txt");
 		LocateCommand locateCmd = new LocateCommand().snt(snt).fst2(fst2)
 				.alphabet(alphabet);
@@ -320,14 +320,14 @@ public class XAlignLocateFrame extends JInternalFrame {
 				.morphologicalDictionaries(language));
 		commands.addCommand(locateCmd);
 		String foo = FileUtil.getFileNameWithoutExtension(snt) + "_snt";
-		File indFile = new File(foo, "concord.ind");
+		final File indFile = new File(foo, "concord.ind");
 		ConcordCommand concord = null;
 		try {
 			concord = new ConcordCommand().indFile(indFile).font("NULL")
 					.fontSize(0).left(0, false).right(0, false).order(0)
 					.xalign();
 			commands.addCommand(concord);
-		} catch (InvalidConcordanceOrderException e) {
+		} catch (final InvalidConcordanceOrderException e) {
 			e.printStackTrace();
 		}
 		setVisible(false);
@@ -341,12 +341,12 @@ public class XAlignLocateFrame extends JInternalFrame {
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-			OutputStreamWriter writer = ConfigManager.getManager().getEncoding(
-					null).getOutputStreamWriter(f);
-			BufferedWriter bw = new BufferedWriter(writer);
+			final OutputStreamWriter writer = ConfigManager.getManager()
+					.getEncoding(null).getOutputStreamWriter(f);
+			final BufferedWriter bw = new BufferedWriter(writer);
 			bw.write(regExp2, 0, regExp2.length());
 			bw.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -368,9 +368,9 @@ public class XAlignLocateFrame extends JInternalFrame {
 			res = res + UnicodeIO.readLine(source) + "\n";
 			res = res + UnicodeIO.readLine(source);
 			source.close();
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			return null;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return null;
 		}
 		return res;
