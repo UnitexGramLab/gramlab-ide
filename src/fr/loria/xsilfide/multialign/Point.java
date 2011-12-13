@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 /*
  * @(#)       Point.java
  * 
@@ -31,45 +30,44 @@
  *            CRIN/CNRS & INRIA Lorraine
  *
  */
-
 package fr.loria.xsilfide.multialign;
 
+public class Point {
+	public int x;
+	public int y;
 
-public class Point
-{
-    public int x;
-    public int y;
-    
-    public Point() {
-	this(0, 0);
-    }
-  
-    public Point(Point p) {
-	this(p.x, p.y);
-    }
-    
-    public Point(int x, int y) {
-	this.x = x;
-	this.y = y;
-    }
-    
-    @Override
+	public Point() {
+		this(0, 0);
+	}
+
+	public Point(Point p) {
+		this(p.x, p.y);
+	}
+
+	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	@Override
 	public String toString() {
-	return "[x=" + x + ",y=" + y + "]";
-    }
-    public int getX(){
-	return x;
-    }
-    public int getY(){
-	return y;
-    }
-    public void setX(int a){
-	x = a;
-    }
-    public void setY(int b){
-	y = b;
-    }
+		return "[x=" + x + ",y=" + y + "]";
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setX(int a) {
+		x = a;
+	}
+
+	public void setY(int b) {
+		y = b;
+	}
 }
-
 // EOF
-

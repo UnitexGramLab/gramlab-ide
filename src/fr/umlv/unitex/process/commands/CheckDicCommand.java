@@ -37,7 +37,8 @@ public class CheckDicCommand extends CommandBuilder {
 	}
 
 	public CheckDicCommand alphabet(File s) {
-		if (s!=null) protectElement("-a" + s.getAbsolutePath());
+		if (s != null)
+			protectElement("-a" + s.getAbsolutePath());
 		return this;
 	}
 
@@ -45,7 +46,7 @@ public class CheckDicCommand extends CommandBuilder {
 		element(isDelas ? "--delas" : "--delaf");
 		return this;
 	}
-	
+
 	public CheckDicCommand no_space_warning() {
 		element("-n");
 		return this;

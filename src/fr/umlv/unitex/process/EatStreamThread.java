@@ -28,29 +28,29 @@ import java.io.OutputStream;
  * @author Olivier Blanc
  */
 public class EatStreamThread extends Thread {
-    private final InputStream in;
-    private final OutputStream out;
+	private final InputStream in;
+	private final OutputStream out;
 
-    public EatStreamThread(InputStream _in) {
-        in = _in;
-        out = new NullOutputStream();
-    }
+	public EatStreamThread(InputStream _in) {
+		in = _in;
+		out = new NullOutputStream();
+	}
 
-    public EatStreamThread(InputStream _in, OutputStream _out) {
-        in = _in;
-        out = _out;
-    }
+	public EatStreamThread(InputStream _in, OutputStream _out) {
+		in = _in;
+		out = _out;
+	}
 
-    @Override
-    public void run() {
-        try {
-            int c;
-            while ((c = in.read()) != -1) {
-                out.write(c);
-            }
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	public void run() {
+		try {
+			int c;
+			while ((c = in.read()) != -1) {
+				out.write(c);
+			}
+			out.close();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -18,19 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.editor.ui;
 
 public class TextAreaSeparatorException extends Exception {
-
-	
-
 	/**
 	 * @param arg0
 	 */
 	public TextAreaSeparatorException(String arg0) {
 		super(arg0);
-		
 	}
-	
 }

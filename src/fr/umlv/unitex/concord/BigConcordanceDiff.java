@@ -18,63 +18,59 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.concord;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.io.File;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-
 
 /**
- * This class provides a text component that can display in read-only
- * large HTML concordance files.
- *
+ * This class provides a text component that can display in read-only large HTML
+ * concordance files.
+ * 
  * @author Sébastien Paumier
  */
 public class BigConcordanceDiff extends JList {
+	private BigConcordanceDiff(ConcordanceDiffAsListModel m) {
+		super(m);
+		setFont(ConfigManager.getManager().getConcordanceFont(null));
+		setCellRenderer(new DefaultListCellRenderer() {
+			private final Color[] bg = new Color[] { new Color(210, 210, 210),
+					Color.WHITE };
 
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				final String s = (String) value;
+				final StringBuilder builder = new StringBuilder();
+				builder.append("<html><body>");
+				builder.append(s);
+				builder.append("</body></html>");
+				super.getListCellRendererComponent(list, builder.toString(),
+						index, isSelected, cellHasFocus);
+				setBackground(bg[index % 2]);
+				return this;
+			}
+		});
+	}
 
-    private BigConcordanceDiff(ConcordanceDiffAsListModel m) {
-        super(m);
-        setFont(ConfigManager.getManager().getConcordanceFont(null));
-        setCellRenderer(new DefaultListCellRenderer() {
+	public BigConcordanceDiff() {
+		this(new ConcordanceDiffAsListModel());
+	}
 
-        	private Color[] bg=new Color[] {new Color(210,210,210),Color.WHITE};
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                String s=(String)value;
-                StringBuilder builder = new StringBuilder();
-                builder.append("<html><body>");
-                builder.append(s);
-                builder.append("</body></html>");
-                super.getListCellRendererComponent(list, builder.toString(), index, isSelected, cellHasFocus);
-                setBackground(bg[index%2]);
-                return this;
-            }
-        });
-    }
+	public void load(File f) {
+		final ConcordanceDiffAsListModel model = (ConcordanceDiffAsListModel) getModel();
+		model.load(f);
+	}
 
-
-    public BigConcordanceDiff() {
-        this(new ConcordanceDiffAsListModel());
-    }
-
-    public void load(File f) {
-        ConcordanceDiffAsListModel model = (ConcordanceDiffAsListModel) getModel();
-        model.load(f);
-    }
-
-    public void reset() {
-        ConcordanceDiffAsListModel model = (ConcordanceDiffAsListModel) getModel();
-        model.reset();
-    }
-
+	public void reset() {
+		final ConcordanceDiffAsListModel model = (ConcordanceDiffAsListModel) getModel();
+		model.reset();
+	}
 }

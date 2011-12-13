@@ -28,194 +28,207 @@ import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 
 /**
- * This class is the corner stone of language configuration.
- * If a project manager has been set, all requests are transmitted
- * to it, allowing callbacks for Gramlab compatibility. Otherwise,
- * the ConfigManager object uses the unitex configuration associated 
- * to the given language. If the language is null, then the current language
- * is used.
- *
+ * This class is the corner stone of language configuration. If a project
+ * manager has been set, all requests are transmitted to it, allowing callbacks
+ * for Gramlab compatibility. Otherwise, the ConfigManager object uses the
+ * unitex configuration associated to the given language. If the language is
+ * null, then the current language is used.
+ * 
  * @author paumier
- *
+ * 
  */
 public class ConfigManager extends AbstractConfigModel {
-
 	private static ConfigModel cm;
 
 	public static ConfigModel getManager() {
 		return cm;
-		
 	}
-	
+
 	public static void setManager(ConfigModel cm) {
-		ConfigManager.cm=cm;
+		ConfigManager.cm = cm;
 	}
-	
+
 	public File getAlphabet(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
 		return new File(new File(Config.getUserDir(), language), "Alphabet.txt");
 	}
 
 	public boolean isCharByCharLanguage(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
-		Preferences p=PreferencesManager.getPreferences(language);
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.charByChar;
 	}
 
 	public File getConfigFileForLanguage(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
 		return new File(new File(Config.getUserDir(), language), "Config");
 	}
 
 	public Encoding getEncoding(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
-		Preferences p=PreferencesManager.getPreferences(language);
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.encoding;
 	}
 
 	public boolean isSemiticLanguage(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
-		Preferences p=PreferencesManager.getPreferences(language);
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.semitic;
 	}
 
 	public boolean isRightToLeftForGraphs(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
-		Preferences p=PreferencesManager.getPreferences(language);
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.rightToLeftForGraphs;
 	}
 
 	public boolean isRightToLeftForText(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
-		Preferences p=PreferencesManager.getPreferences(language);
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.rightToLeftForText;
 	}
 
 	public ArrayList<File> morphologicalDictionaries(String language) {
-		if (language==null) {
-			language=Config.getCurrentLanguage();
+		if (language == null) {
+			language = Config.getCurrentLanguage();
 		}
-		Preferences p=PreferencesManager.getPreferences(language);
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.morphologicalDic;
 	}
-	
 
-    @Override
+	@Override
 	public boolean isKorean(String language) {
-    	if (language==null) language=getCurrentLanguage();
-        return super.isKorean(language) || language.equals("KoreanJeeSun");
-    }
+		if (language == null)
+			language = getCurrentLanguage();
+		return super.isKorean(language) || language.equals("KoreanJeeSun");
+	}
 
 	public String getCurrentLanguage() {
 		return Config.getCurrentLanguage();
 	}
 
 	public boolean isMorphologicalUseOfSpaceAllowed(String language) {
-		if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.morphologicalUseOfSpace;
 	}
 
 	public boolean onlyCosmetic(String language) {
-		if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.onlyCosmetic;
 	}
 
 	public boolean svnMonitoring(String language) {
-		if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.svnMonitoring;
 	}
 
-    public GraphPresentationInfo getGraphPresentationPreferences(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+	public GraphPresentationInfo getGraphPresentationPreferences(String language) {
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.info.clone();
-    }
+	}
 
-    public File getGraphRepositoryPath(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+	public File getGraphRepositoryPath(String language) {
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.graphRepositoryPath;
-    }
+	}
 
 	public File getLogDirectory(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.loggingDir;
 	}
 
 	public boolean mustLog(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.mustLog;
 	}
 
 	public Font getInputFont(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.info.input.font;
 	}
 
 	public int getInputFontSize(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.info.input.size;
 	}
 
 	public Font getTextFont(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.textFont.font;
 	}
 
 	public Preferences getPreferences(String language) {
-    	if (language==null) language=getCurrentLanguage();
+		if (language == null)
+			language = getCurrentLanguage();
 		return PreferencesManager.getPreferences(language).clone();
 	}
-    
-	public void savePreferences(Preferences p,String language) {
-		if (language==null) language=getCurrentLanguage();
-		File f=getConfigFileForLanguage(language);
-		PreferencesManager.savePreferences(f,p,language);
+
+	public void savePreferences(Preferences p, String language) {
+		if (language == null)
+			language = getCurrentLanguage();
+		final File f = getConfigFileForLanguage(language);
+		PreferencesManager.savePreferences(f, p, language);
 	}
 
 	public File getHtmlViewer(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.htmlViewer;
 	}
 
 	public Font getConcordanceFont(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.concordanceFont.font;
 	}
 
 	public String getConcordanceFontName(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.concordanceFont.font.getName();
 	}
 
 	public int getConcordanceFontSize(String language) {
-    	if (language==null) language=getCurrentLanguage();
-		Preferences p=PreferencesManager.getPreferences(language);
+		if (language == null)
+			language = getCurrentLanguage();
+		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.concordanceFont.size;
 	}
 
@@ -238,5 +251,4 @@ public class ConfigManager extends AbstractConfigModel {
 	public File getAlphabetForGrf(String language, File grf) {
 		return getAlphabet(language);
 	}
-
 }

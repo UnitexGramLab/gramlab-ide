@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -28,7 +27,6 @@ import java.io.File;
  * 
  */
 public class Fst2CheckCommand extends CommandBuilder {
-
 	public Fst2CheckCommand() {
 		super("Fst2Check");
 	}
@@ -71,5 +69,4 @@ public class Fst2CheckCommand extends CommandBuilder {
 		element("-a");
 		return this;
 	}
-
 }

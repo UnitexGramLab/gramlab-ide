@@ -18,22 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.xalign;
 
 import java.util.List;
 
 import javax.swing.ListModel;
 
-
 /**
- * This is a model for representing a XML text file as the
- * list of its sentences. It is used for alignements.
+ * This is a model for representing a XML text file as the list of its
+ * sentences. It is used for alignements.
  * 
  * @author Sébastien Paumier
  */
 public interface XMLTextModel extends ListModel {
-
 	/**
 	 * Returns the number of sentences to be displayed.
 	 */
@@ -45,8 +42,7 @@ public interface XMLTextModel extends ListModel {
 	public String getElementAt(int i);
 
 	/**
-	 * Returns the number of the sentence corresponding to the
-	 * given Xalign ID. 
+	 * Returns the number of the sentence corresponding to the given Xalign ID.
 	 */
 	public int getIndex(String s);
 
@@ -59,7 +55,6 @@ public interface XMLTextModel extends ListModel {
 	 * Adds sentences to the model.
 	 */
 	public void addSentences(List<Sentence> sentence);
-	
+
 	public void reset();
-	
 }

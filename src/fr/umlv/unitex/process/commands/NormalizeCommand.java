@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -27,41 +26,40 @@ import fr.umlv.unitex.config.Config;
 
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class NormalizeCommand extends CommandBuilder {
-
 	public NormalizeCommand() {
 		super("Normalize");
 	}
 
 	public NormalizeCommand textWithDefaultNormalization(File s) {
 		protectElement(s.getAbsolutePath());
-		
-		File norm=new File(Config.getUserCurrentLanguageDir(),"Norm.txt");
+		final File norm = new File(Config.getUserCurrentLanguageDir(),
+				"Norm.txt");
 		if (norm.exists()) {
-		    protectElement("-r"+norm.getAbsolutePath());
+			protectElement("-r" + norm.getAbsolutePath());
 		}
 		return this;
 	}
-	
+
 	public NormalizeCommand noSeparatorNormalization() {
 		element("--no_separator_normalization");
 		return this;
 	}
-	
+
 	public NormalizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
 
 	public NormalizeCommand inputOffsets(File s) {
-		protectElement("--input_offsets="+s.getAbsolutePath());
+		protectElement("--input_offsets=" + s.getAbsolutePath());
 		return this;
 	}
 
 	public NormalizeCommand outputOffsets(File s) {
-		protectElement("--output_offsets="+s.getAbsolutePath());
+		protectElement("--output_offsets=" + s.getAbsolutePath());
 		return this;
 	}
 }

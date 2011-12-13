@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 /* 
  * @(#)       MultiAlignProperties.java
  * 
@@ -28,7 +27,6 @@
  *            UMR LORIA (Universities of Nancy, CNRS & INRIA)
  *            
  */
-
 package fr.loria.xsilfide.multialign;
 
 import java.io.FileInputStream;
@@ -38,27 +36,22 @@ import java.io.IOException;
 /**
  * @author Patrice Bonhomme
  */
+class MultiAlignProperties extends java.util.Properties {
+	private String filename;
 
-class MultiAlignProperties
-        extends java.util.Properties {
-    private String filename;
+	public MultiAlignProperties(String filename) {
+		this.filename = filename;
+	}
 
-    public MultiAlignProperties(String filename) {
-        this.filename = filename;
-    }
+	public void load(String filename1) throws FileNotFoundException,
+			IOException {
+		this.filename = filename1;
+		load();
+	}
 
-    public void load(String filename1)
-            throws FileNotFoundException, IOException {
-        this.filename = filename1;
-        load();
-    }
-
-    void load()
-            throws FileNotFoundException, IOException {
-        FileInputStream f = new FileInputStream(filename);
-        load(f);
-    }
-
+	void load() throws FileNotFoundException, IOException {
+		final FileInputStream f = new FileInputStream(filename);
+		load(f);
+	}
 }
-
 // EOF MultiAlignProperties

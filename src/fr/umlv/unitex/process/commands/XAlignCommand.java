@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -27,36 +26,35 @@ import fr.umlv.unitex.config.Config;
 
 /**
  * @author Sébastien Paumier
- *
+ * 
  */
 public class XAlignCommand extends CommandBuilder {
-    
-    public XAlignCommand() {
-    	element("java");
-    	element("-jar");
-    	protectElement(new File(Config.getApplicationDir(),"XAlign.jar").getAbsolutePath());
-    }
-    
-    public XAlignCommand source(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-    }
+	public XAlignCommand() {
+		element("java");
+		element("-jar");
+		protectElement(new File(Config.getApplicationDir(), "XAlign.jar")
+				.getAbsolutePath());
+	}
 
-    public XAlignCommand target(File s) {
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	public XAlignCommand source(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    /* We use the same properties for source and target texts */
-    public XAlignCommand properties(File s) {
-        protectElement(s.getAbsolutePath());
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	public XAlignCommand target(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public XAlignCommand alignment(File s) {
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	/* We use the same properties for source and target texts */
+	public XAlignCommand properties(File s) {
+		protectElement(s.getAbsolutePath());
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
+	public XAlignCommand alignment(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 }

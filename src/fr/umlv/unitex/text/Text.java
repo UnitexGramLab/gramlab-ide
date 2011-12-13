@@ -55,10 +55,11 @@ public class Text {
 	 *            file name
 	 */
 	public static void loadCorpus(File name, boolean taggedText) {
-		TextConversionDo toDo = new TextConversionDo(name, taggedText);
-		Encoding e = Encoding.getEncoding(name);
+		final TextConversionDo toDo = new TextConversionDo(name, taggedText);
+		final Encoding e = Encoding.getEncoding(name);
 		if (e == null) {
-			InternalFrameManager.getManager(name).newTranscodeOneFileDialog(name, toDo);
+			InternalFrameManager.getManager(name).newTranscodeOneFileDialog(
+					name, toDo);
 		} else {
 			toDo.toDo();
 		}
@@ -67,32 +68,32 @@ public class Text {
 	/**
 	 * Loads a ".txt" file. Asks for preprocessing the text.
 	 * 
-	 * Note that the .txt file may not exist yet if the original file was a 
-	 * .xml or a .html file. This is why we test cmd!=null
+	 * Note that the .txt file may not exist yet if the original file was a .xml
+	 * or a .html file. This is why we test cmd!=null
 	 * 
 	 * @param file
 	 *            file name
 	 */
 	static void loadTxt(File file, boolean taggedText, UnxmlizeCommand cmd) {
-		String name = file.getAbsolutePath();
-		if (cmd==null && !file.exists()) {
+		final String name = file.getAbsolutePath();
+		if (cmd == null && !file.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (cmd==null && !file.canRead()) {
+		if (cmd == null && !file.canRead()) {
 			JOptionPane.showMessageDialog(null, "Cannot read " + name, "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (cmd==null && file.length() <= 2) {
+		if (cmd == null && file.length() <= 2) {
 			JOptionPane.showMessageDialog(null, name + " is empty", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Encoding e=Encoding.getEncoding(file);
-		if (cmd==null && e==null) {
-		JOptionPane.showMessageDialog(null, name
+		final Encoding e = Encoding.getEncoding(file);
+		if (cmd == null && e == null) {
+			JOptionPane.showMessageDialog(null, name
 					+ " is not a Unicode Little-Endian text", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
@@ -100,7 +101,7 @@ public class Text {
 		String nomSnt = FileUtil.getFileNameWithoutExtension(name);
 		nomSnt = nomSnt + ".snt";
 		Config.setCurrentSnt(new File(nomSnt));
-		Object[] options = { "Yes", "No" };
+		final Object[] options = { "Yes", "No" };
 		if (0 == JOptionPane.showOptionDialog(UnitexFrame.mainFrame,
 				"Do you want to preprocess the text ?", "",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
@@ -111,27 +112,30 @@ public class Text {
 		}
 	}
 
-	private static void preprocessSnt(File name, File snt, boolean taggedText, UnxmlizeCommand cmd) {
-		InternalFrameManager.getManager(name)
-				.newPreprocessDialog(name, snt, taggedText, cmd);
+	private static void preprocessSnt(File name, File snt, boolean taggedText,
+			UnxmlizeCommand cmd) {
+		InternalFrameManager.getManager(name).newPreprocessDialog(name, snt,
+				taggedText, cmd);
 	}
 
-	private static void preprocessLightSnt(File name, boolean taggedText, UnxmlizeCommand cmd) {
-		File dir = Config.getCurrentSntDir();
-		MultiCommands commands = new MultiCommands();
-		if (cmd!=null) {
+	private static void preprocessLightSnt(File name, boolean taggedText,
+			UnxmlizeCommand cmd) {
+		final File dir = Config.getCurrentSntDir();
+		final MultiCommands commands = new MultiCommands();
+		if (cmd != null) {
 			commands.addCommand(cmd);
 		}
 		// NORMALIZING TEXT...
-		NormalizeCommand normalizeCmd = new NormalizeCommand()
+		final NormalizeCommand normalizeCmd = new NormalizeCommand()
 				.textWithDefaultNormalization(name);
 		commands.addCommand(normalizeCmd);
 		// creating snt dir
-		MkdirCommand mkdir = new MkdirCommand().name(dir);
+		final MkdirCommand mkdir = new MkdirCommand().name(dir);
 		commands.addCommand(mkdir);
 		// TOKENIZING...
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
-				Config.getCurrentSnt()).alphabet(ConfigManager.getManager().getAlphabet(null));
+				Config.getCurrentSnt()).alphabet(
+				ConfigManager.getManager().getAlphabet(null));
 		if (Config.getCurrentLanguage().equals("Thai")
 				|| Config.getCurrentLanguage().equals("Chinese")) {
 			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
@@ -186,8 +190,10 @@ public class Text {
 			if (FileUtil.getFileNameExtension(file).equalsIgnoreCase("snt")) {
 				Config.setCurrentSnt(file);
 				loadSnt(file, b);
-			} else if (FileUtil.getFileNameExtension(file).equalsIgnoreCase("xml")
-					|| FileUtil.getFileNameExtension(file).equalsIgnoreCase("html")) {
+			} else if (FileUtil.getFileNameExtension(file).equalsIgnoreCase(
+					"xml")
+					|| FileUtil.getFileNameExtension(file).equalsIgnoreCase(
+							"html")) {
 				loadXmlOrHtml(file);
 			} else {
 				/* txt file */
@@ -197,7 +203,7 @@ public class Text {
 	}
 
 	public static void loadXmlOrHtml(File file) {
-		String name = file.getAbsolutePath();
+		final String name = file.getAbsolutePath();
 		if (!file.exists()) {
 			JOptionPane.showMessageDialog(null, "Cannot find " + name, "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -213,8 +219,8 @@ public class Text {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		Encoding e=Encoding.getEncoding(file);
-		if (e==null) {
+		final Encoding e = Encoding.getEncoding(file);
+		if (e == null) {
 			JOptionPane.showMessageDialog(null, name
 					+ " is not a Unicode Little-Endian file", "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -222,11 +228,11 @@ public class Text {
 		}
 		UnxmlizeCommand cmd = new UnxmlizeCommand().text(file);
 		if (ConfigManager.getManager().isPRLGLanguage(null)) {
-			cmd=cmd.PRLG(new File(SntUtil.getSntDir(file),"prlg.idx"));
-			cmd=cmd.outputOffsets(new File(SntUtil.getSntDir(file),"unxmlize.out.offsets"));
+			cmd = cmd.PRLG(new File(SntUtil.getSntDir(file), "prlg.idx"));
+			cmd = cmd.outputOffsets(new File(SntUtil.getSntDir(file),
+					"unxmlize.out.offsets"));
 		}
-		String s = FileUtil.getFileNameWithoutExtension(file) + ".txt";
-		loadTxt(new File(s),false,cmd);
+		final String s = FileUtil.getFileNameWithoutExtension(file) + ".txt";
+		loadTxt(new File(s), false, cmd);
 	}
-
 }

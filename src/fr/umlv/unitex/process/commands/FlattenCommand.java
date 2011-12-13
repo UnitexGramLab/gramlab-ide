@@ -18,35 +18,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class FlattenCommand extends CommandBuilder {
-
 	public FlattenCommand() {
 		super("Flatten");
 	}
 
-    public FlattenCommand fst2(File s) {
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	public FlattenCommand fst2(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public FlattenCommand resultType(boolean fst) {
-      element(fst?"--fst":"--rtn");
-      return this;
-  }
+	public FlattenCommand resultType(boolean fst) {
+		element(fst ? "--fst" : "--rtn");
+		return this;
+	}
 
-    public FlattenCommand depth(int n) {
-      element("-d"+n);
-      return this;
-  }
-
+	public FlattenCommand depth(int n) {
+		element("-d" + n);
+		return this;
+	}
 }

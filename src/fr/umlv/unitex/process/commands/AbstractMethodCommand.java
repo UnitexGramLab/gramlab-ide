@@ -18,41 +18,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
-
 public abstract class AbstractMethodCommand extends CommandBuilder {
+	AbstractMethodCommand() {
+		type = CommandBuilder.METHOD;
+	}
 
-    AbstractMethodCommand() {
-        type = CommandBuilder.METHOD;
-    }
+	AbstractMethodCommand(String s) {
+		/*
+		 * We don't call super(s), because we want to see 'mkdir' and not
+		 * '.../Unitex/App/mkdir'
+		 */
+		element(s);
+		type = CommandBuilder.METHOD;
+	}
 
-    AbstractMethodCommand(String s) {
-        /* We don't call super(s), because we want to see 'mkdir'
-           * and not '.../Unitex/App/mkdir' */
-        element(s);
-        type = CommandBuilder.METHOD;
-    }
+	/**
+	 * The method to invoke to do the job.
+	 * 
+	 * @return false if an error occurred; true otherwise
+	 */
+	public abstract boolean execute();
 
-    /**
-     * The method to invoke to do the job.
-     *
-     * @return false if an error occurred; true otherwise
-     */
-    public abstract boolean execute();
- 
-    @Override
+	@Override
 	public String getCommandLine() {
-        String res = "";
-        for (String aList : list) {
-            res = res + aList + " ";
-        }
-        /* No additional parameter for an external command 
-         * if (getOutputEncoding()!=null) {
-        	res=res+" "+getOutputEncoding();
-        }*/
-        return res;
-    }
-
+		String res = "";
+		for (final String aList : list) {
+			res = res + aList + " ";
+		}
+		/*
+		 * No additional parameter for an external command if
+		 * (getOutputEncoding()!=null) { res=res+" "+getOutputEncoding(); }
+		 */
+		return res;
+	}
 }

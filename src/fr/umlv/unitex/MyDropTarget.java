@@ -30,8 +30,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -47,7 +45,6 @@ import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.TranscodingFrame;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.Text;
 
@@ -75,7 +72,7 @@ public class MyDropTarget {
 					"application/x-java-file-list; class=java.util.List");
 			uriDragNDropFlavor = new DataFlavor(
 					"text/uri-list; class=java.lang.String");
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		dropTargetListener = new DragNDropListener();
@@ -156,27 +153,27 @@ public class MyDropTarget {
 				}
 				if (data == null)
 					throw new NullPointerException();
-			} catch (Exception e2) {
+			} catch (final Exception e2) {
 				e2.printStackTrace();
 				e.dropComplete(false);
 				return;
 			}
 			if (data instanceof List) {
-				List<?> data2 = (List<?>) data;
+				final List<?> data2 = (List<?>) data;
 				processDropList(data2);
 				e.dropComplete(true);
 			}
 			if (data instanceof String) {
-				String data2 = (String) data;
-				Scanner s = new Scanner(data2);
-				ArrayList<File> list = new ArrayList<File>();
+				final String data2 = (String) data;
+				final Scanner s = new Scanner(data2);
+				final ArrayList<File> list = new ArrayList<File>();
 				while (s.hasNextLine()) {
-					String name = s.nextLine();
+					final String name = s.nextLine();
 					File f;
 					try {
 						f = new File(new URI(name));
 						list.add(f);
-					} catch (URISyntaxException e1) {
+					} catch (final URISyntaxException e1) {
 						e1.printStackTrace();
 					}
 				}
@@ -233,7 +230,7 @@ public class MyDropTarget {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							Encoding e = Encoding.getEncoding(dela);
+							final Encoding e = Encoding.getEncoding(dela);
 							if (e == null) {
 								JOptionPane
 										.showMessageDialog(
@@ -244,11 +241,12 @@ public class MyDropTarget {
 												JOptionPane.ERROR_MESSAGE);
 								return;
 							}
-						} catch (HeadlessException e) {
+						} catch (final HeadlessException e) {
 							e.printStackTrace();
 							return;
 						}
-						InternalFrameManager.getManager(dela).newDelaFrame(dela);
+						InternalFrameManager.getManager(dela)
+								.newDelaFrame(dela);
 					}
 				});
 				return;
@@ -266,13 +264,13 @@ public class MyDropTarget {
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						ToDo toDo = new ToDo() {
+						final ToDo toDo = new ToDo() {
 							public void toDo() {
 								InternalFrameManager.getManager(dela)
 										.newDelaFrame(dela);
 							}
 						};
-						Encoding e = Encoding.getEncoding(dela);
+						final Encoding e = Encoding.getEncoding(dela);
 						if (e == null) {
 							InternalFrameManager.getManager(dela)
 									.newTranscodeOneFileDialog(dela, toDo);
@@ -284,10 +282,12 @@ public class MyDropTarget {
 				return;
 			}
 			if (extension.compareToIgnoreCase("grf") == 0) {
-				for (Object aList : list) {
-					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase("grf") == 0) {
+				for (final Object aList : list) {
+					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase(
+							"grf") == 0) {
 						final File file = (File) aList;
-						InternalFrameManager.getManager(file).newGraphFrame(file);
+						InternalFrameManager.getManager(file).newGraphFrame(
+								file);
 					}
 				}
 			}
@@ -336,7 +336,7 @@ public class MyDropTarget {
 				data = e.getTransferable().getTransferData(dragNDropFlavor);
 				if (data == null)
 					throw new NullPointerException();
-			} catch (Exception e2) {
+			} catch (final Exception e2) {
 				e2.printStackTrace();
 				e.dropComplete(false);
 				return;
@@ -350,16 +350,16 @@ public class MyDropTarget {
 		}
 
 		private void processDropList(List<?> list) {
-			TranscodingFrame frame = InternalFrameManager.getManager(null)
-					.newTranscodingFrame();
+			final TranscodingFrame frame = InternalFrameManager
+					.getManager(null).newTranscodingFrame();
 			Object o;
-			for (Object aList : list) {
+			for (final Object aList : list) {
 				o = aList;
 				if (!(o instanceof File)) {
 					return;
 				}
-				File f = (File) o;
-				DefaultListModel model = frame.getListModel();
+				final File f = (File) o;
+				final DefaultListModel model = frame.getListModel();
 				if (!model.contains(f)) {
 					model.addElement(f);
 				}

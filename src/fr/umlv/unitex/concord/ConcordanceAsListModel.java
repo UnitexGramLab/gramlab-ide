@@ -172,10 +172,10 @@ public class ConcordanceAsListModel extends AbstractListModel {
 	String getElementReallyAt(int i) {
 		final Interval interval = getInterval(i);
 		final long start = interval.getStartInBytes() + 15; // we don't want
-															// neither the
-															// <tr><td nowrap>
+		// neither the
+		// <tr><td nowrap>
 		final long end = interval.getEndInBytes() - 12; // nor the
-														// </td></tr>\r\n
+		// </td></tr>\r\n
 		final byte[] tmp = new byte[(int) (end - start + 1)];
 		int z = 0;
 		for (long pos = start; pos <= end; pos++) {

@@ -18,17 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class TokenizeCommand extends CommandBuilder {
-
 	public TokenizeCommand() {
 		super("Tokenize");
 	}
@@ -38,24 +36,24 @@ public class TokenizeCommand extends CommandBuilder {
 		return this;
 	}
 
-    public TokenizeCommand alphabet(File f) {
-        if (f!=null) protectElement("-a"+f.getAbsolutePath());
-        return this;
-    }
+	public TokenizeCommand alphabet(File f) {
+		if (f != null)
+			protectElement("-a" + f.getAbsolutePath());
+		return this;
+	}
 
-    public TokenizeCommand tokenizeCharByChar() {
-        element("--char_by_char");
-        return this;
-    }
+	public TokenizeCommand tokenizeCharByChar() {
+		element("--char_by_char");
+		return this;
+	}
 
 	public TokenizeCommand inputOffsets(File s) {
-		protectElement("--input_offsets="+s.getAbsolutePath());
+		protectElement("--input_offsets=" + s.getAbsolutePath());
 		return this;
 	}
 
 	public TokenizeCommand outputOffsets(File s) {
-		protectElement("--output_offsets="+s.getAbsolutePath());
+		protectElement("--output_offsets=" + s.getAbsolutePath());
 		return this;
 	}
-
 }

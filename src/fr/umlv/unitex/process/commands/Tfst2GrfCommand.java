@@ -18,18 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class Tfst2GrfCommand extends CommandBuilder {
-
 	public Tfst2GrfCommand() {
 		super("Tfst2Grf");
 	}
@@ -40,28 +37,28 @@ public class Tfst2GrfCommand extends CommandBuilder {
 	}
 
 	public Tfst2GrfCommand sentence(int n) {
-		element("-s"+n);
+		element("-s" + n);
 		return this;
 	}
 
 	public Tfst2GrfCommand sentence(String n) {
 		Integer.parseInt(n);
-		element("-s"+n);
+		element("-s" + n);
 		return this;
 	}
 
 	public Tfst2GrfCommand output(String s) {
-		protectElement("-o"+s);
+		protectElement("-o" + s);
 		return this;
 	}
 
 	public Tfst2GrfCommand font(String s) {
-	    protectElement("-f"+s);
+		protectElement("-f" + s);
 		return this;
 	}
 
 	public Tfst2GrfCommand fontSize(int n) {
-	    protectElement("-z"+n);
+		protectElement("-z" + n);
 		return this;
 	}
 }

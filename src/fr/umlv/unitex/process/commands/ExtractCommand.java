@@ -18,18 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class ExtractCommand extends CommandBuilder {
-
 	public ExtractCommand() {
 		super("Extract");
 	}
@@ -45,13 +42,12 @@ public class ExtractCommand extends CommandBuilder {
 	}
 
 	public ExtractCommand ind(File s) {
-		protectElement("-i"+s.getAbsolutePath());
+		protectElement("-i" + s.getAbsolutePath());
 		return this;
 	}
 
 	public ExtractCommand result(File s) {
-		protectElement("-o"+s.getAbsolutePath());
+		protectElement("-o" + s.getAbsolutePath());
 		return this;
 	}
-
 }

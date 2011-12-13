@@ -18,34 +18,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.xalign;
 
 class Occurrence {
+	private int start;
+	private int end;
 
-    private int start;
-    private int end;
+	public Occurrence(int start, int end) {
+		setStart(start);
+		setEnd(end);
+	}
 
-    public Occurrence(int start, int end) {
-        setStart(start);
-        setEnd(end);
-    }
+	public int getEnd() {
+		return end;
+	}
 
-    public int getEnd() {
-        return end;
-    }
+	void setEnd(int end) {
+		this.end = end;
+	}
 
-    void setEnd(int end) {
-        this.end = end;
-    }
+	public int getStart() {
+		return start;
+	}
 
-    public int getStart() {
-        return start;
-    }
-
-    void setStart(int start) {
-        this.start = start;
-    }
-
-
+	void setStart(int start) {
+		this.start = start;
+	}
 }

@@ -18,45 +18,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
-
 
 /**
  * @author Sébastien Paumier
  * 
  */
 public class ElagCompCommand extends CommandBuilder {
+	public ElagCompCommand() {
+		super("ElagComp");
+	}
 
-    public ElagCompCommand() {
-        super("ElagComp");
-    }
+	public ElagCompCommand rules(boolean ruleList, File s) {
+		protectElement((ruleList ? "-r" : "-g") + s.getAbsolutePath());
+		return this;
+	}
 
-    public ElagCompCommand rules(boolean ruleList, File s) {
-        protectElement((ruleList ? "-r" : "-g") + s.getAbsolutePath());
-        return this;
-    }
+	public ElagCompCommand lang(File s) {
+		protectElement("-l" + s.getAbsolutePath());
+		return this;
+	}
 
-    public ElagCompCommand lang(File s) {
-        protectElement("-l" + s.getAbsolutePath());
-        return this;
-    }
+	public ElagCompCommand output(File s) {
+		protectElement("-o" + s.getAbsolutePath());
+		return this;
+	}
 
-    public ElagCompCommand output(File s) {
-        protectElement("-o" + s.getAbsolutePath());
-        return this;
-    }
+	public ElagCompCommand grammar(File s) {
+		protectElement("-g" + s.getAbsolutePath());
+		return this;
+	}
 
-    public ElagCompCommand grammar(File s) {
-        protectElement("-g" + s.getAbsolutePath());
-        return this;
-    }
-
-    public ElagCompCommand ruleList(File s) {
-        protectElement("-r" + s.getAbsolutePath());
-        return this;
-    }
-
+	public ElagCompCommand ruleList(File s) {
+		protectElement("-r" + s.getAbsolutePath());
+		return this;
+	}
 }

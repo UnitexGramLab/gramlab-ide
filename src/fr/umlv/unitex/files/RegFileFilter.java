@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.files;
 
 import java.io.File;
@@ -26,16 +25,15 @@ import java.io.FilenameFilter;
 import java.util.regex.Pattern;
 
 public class RegFileFilter implements FilenameFilter {
+	public String expression;
 
-    public String expression;
+	RegFileFilter(String exp) {
+		expression = exp.replaceAll("\u002C", "\\.");
+		expression = expression.replaceAll("\\*", ".*");
+		expression = expression.replaceAll("\\?", ".");
+	}
 
-    RegFileFilter(String exp) {
-        expression = exp.replaceAll("\u002C", "\\.");
-        expression = expression.replaceAll("\\*", ".*");
-        expression = expression.replaceAll("\\?", ".");
-    }
-
-    public boolean accept(File dir, String f) {
-        return Pattern.matches(expression, f);
-    }
+	public boolean accept(File dir, String f) {
+		return Pattern.matches(expression, f);
+	}
 }

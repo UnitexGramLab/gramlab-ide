@@ -18,18 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class Reg2GrfCommand extends CommandBuilder {
-
 	public Reg2GrfCommand() {
 		super("Reg2Grf");
 	}
@@ -38,5 +35,4 @@ public class Reg2GrfCommand extends CommandBuilder {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
-
 }
