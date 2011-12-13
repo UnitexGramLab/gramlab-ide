@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.Rectangle;
@@ -29,23 +28,24 @@ import javax.swing.JWindow;
 
 /**
  * This class describes a splash screen window.
+ * 
  * @author Sébastien Paumier
- *
+ * 
  */
 public class SplashScreen extends JWindow {
-   
-   /**
-    * Creates a new <code>SplashScreen</code>
-    * @param icon the image to show
-    */
-   public SplashScreen(ImageIcon icon) {
-      super();
-      JLabel splash= new JLabel(icon);
-      getContentPane().add(splash);
-      pack();
-      Rectangle screenRect= getGraphicsConfiguration().getBounds();
-      setLocation(
-         screenRect.x + screenRect.width / 2 - getSize().width / 2,
-         screenRect.y + screenRect.height / 2 - getSize().height / 2);
-   }
+	/**
+	 * Creates a new <code>SplashScreen</code>
+	 * 
+	 * @param icon
+	 *            the image to show
+	 */
+	public SplashScreen(ImageIcon icon) {
+		super();
+		final JLabel splash = new JLabel(icon);
+		getContentPane().add(splash);
+		pack();
+		final Rectangle screenRect = getGraphicsConfiguration().getBounds();
+		setLocation(screenRect.x + screenRect.width / 2 - getSize().width / 2,
+				screenRect.y + screenRect.height / 2 - getSize().height / 2);
+	}
 }

@@ -23,7 +23,6 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -46,11 +45,9 @@ import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.concord.BigConcordanceDiff;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.listeners.FontListener;
 
 /**
  * This class describes a frame that can show an HTML condordance diff file.
@@ -58,8 +55,7 @@ import fr.umlv.unitex.listeners.FontListener;
  * @author S&bastien Paumier
  */
 public class ConcordanceDiffFrame extends JInternalFrame {
-	
-	private final BigConcordanceDiff list = new BigConcordanceDiff();
+	final BigConcordanceDiff list = new BigConcordanceDiff();
 	private final JComponent invisible = new JComponent() {
 		@Override
 		protected void paintComponent(Graphics g) {
@@ -85,10 +81,10 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 	 */
 	ConcordanceDiffFrame() {
 		super("Concordance Diff", true, true, true, true);
-		JScrollPane scroll = new JScrollPane(list);
-		JPanel middle = new JPanel(new BorderLayout());
+		final JScrollPane scroll = new JScrollPane(list);
+		final JPanel middle = new JPanel(new BorderLayout());
 		middle.add(scroll, BorderLayout.CENTER);
-		JPanel top = new JPanel(new GridLayout(4, 1));
+		final JPanel top = new JPanel(new GridLayout(4, 1));
 		top.setBackground(Color.WHITE);
 		top.setBorder(new EmptyBorder(2, 2, 5, 2));
 		top
@@ -100,10 +96,12 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		top
 				.add(new JLabel(
 						"<html><body><font color=\"#008000\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
-		top.add(new JLabel("<html><body><font bgcolor=\"#D2D2D2\">Grey background=previous matches</font>&nbsp;&nbsp;White background=new matches</body></html>"));
+		top
+				.add(new JLabel(
+						"<html><body><font bgcolor=\"#D2D2D2\">Grey background=previous matches</font>&nbsp;&nbsp;White background=new matches</body></html>"));
 		middle.add(top, BorderLayout.NORTH);
 		setContentPane(middle);
-        list.setFont(ConfigManager.getManager().getConcordanceFont(null));
+		list.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		invisible.setOpaque(false);
 		invisible.setVisible(true);
 		invisible.addMouseListener(new MouseAdapter() {
@@ -116,7 +114,8 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 		});
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
 			public void preferencesChanged(String language) {
-				list.setFont(ConfigManager.getManager().getConcordanceFont(null));
+				list.setFont(ConfigManager.getManager()
+						.getConcordanceFont(null));
 			}
 		});
 		addInternalFrameListener(new InternalFrameAdapter() {
@@ -160,48 +159,52 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 	 *            context lengths
 	 */
 	void load(File concor) {
-		Dimension d = getSize();
+		final Dimension d = getSize();
 		d.setSize(800, d.height);
 		FileUtil.getHtmlPageTitle(concor);
 		list.load(concor);
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list.addListSelectionListener(new ListSelectionListener() {
-
-        	public void valueChanged(ListSelectionEvent e) {
-                TextFrame f = InternalFrameManager.getManager(null).getTextFrame();
-                String s = (String) list.getSelectedValue();
-                if (s == null || e.getValueIsAdjusting()) return;
-                int start = s.indexOf("<a href=\"") + 9;
-                int end = s.indexOf(' ', start);
-                int selectionStart = Integer.valueOf((String) s.subSequence(start, end));
-                start = end + 1;
-                end = s.indexOf(' ', start);
-                int selectionEnd = Integer.valueOf((String) s.subSequence(start, end));
-                start = end + 1;
-                end = s.indexOf(' ', start);
-                int sentenceNumber = Integer.valueOf((String) s.subSequence(start, end));
-                start = end + 1;
-                end = s.indexOf('\"', start);
-                int matchNumber = Integer.valueOf((String) s.subSequence(start, end));
-                try {
-                	if (f.isIcon()) {
-                		f.setIcon(false);
-                	}
-                    f.getText().setSelection(selectionStart, selectionEnd - 1);
-                    f.getText().scrollToSelection();
-                    f.setSelected(true);
-                } catch (PropertyVetoException e2) {
-                    e2.printStackTrace();
-                }
-                boolean iconified=true;
-                TextAutomatonFrame foo=InternalFrameManager.getManager(null).getTextAutomatonFrame();
-                if (foo!=null) {
-                	iconified=foo.isIcon();
-                }
-                InternalFrameManager.getManager(null).newTextAutomatonFrame(sentenceNumber,iconified);
-                list.clearSelection();
-            }
-        });
-
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				final TextFrame f = InternalFrameManager.getManager(null)
+						.getTextFrame();
+				final String s = (String) list.getSelectedValue();
+				if (s == null || e.getValueIsAdjusting())
+					return;
+				int start = s.indexOf("<a href=\"") + 9;
+				int end = s.indexOf(' ', start);
+				final int selectionStart = Integer.valueOf((String) s
+						.subSequence(start, end));
+				start = end + 1;
+				end = s.indexOf(' ', start);
+				final int selectionEnd = Integer.valueOf((String) s
+						.subSequence(start, end));
+				start = end + 1;
+				end = s.indexOf(' ', start);
+				final int sentenceNumber = Integer.valueOf((String) s
+						.subSequence(start, end));
+				start = end + 1;
+				end = s.indexOf('\"', start);
+				try {
+					if (f.isIcon()) {
+						f.setIcon(false);
+					}
+					f.getText().setSelection(selectionStart, selectionEnd - 1);
+					f.getText().scrollToSelection();
+					f.setSelected(true);
+				} catch (final PropertyVetoException e2) {
+					e2.printStackTrace();
+				}
+				boolean iconified = true;
+				final TextAutomatonFrame foo = InternalFrameManager.getManager(
+						null).getTextAutomatonFrame();
+				if (foo != null) {
+					iconified = foo.isIcon();
+				}
+				InternalFrameManager.getManager(null).newTextAutomatonFrame(
+						sentenceNumber, iconified);
+				list.clearSelection();
+			}
+		});
 	}
 }

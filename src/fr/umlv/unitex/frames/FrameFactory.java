@@ -18,44 +18,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import javax.swing.JInternalFrame;
 
 class FrameFactory {
+	private JInternalFrame frame;
+	private final Class<?> clazz;
 
-    private JInternalFrame frame;
-    private final Class<?> clazz;
+	FrameFactory(Class<?> clazz) {
+		this.clazz = clazz;
+	}
 
-    FrameFactory(Class<?> clazz) {
-        this.clazz = clazz;
-    }
+	JInternalFrame newFrame() {
+		return newFrame(true);
+	}
 
-    JInternalFrame newFrame() {
-        return newFrame(true);
-    }
+	JInternalFrame newFrame(boolean closeBeforeGet) {
+		if (frame == null) {
+			try {
+				frame = (JInternalFrame) clazz.newInstance();
+			} catch (final InstantiationException e) {
+				return null;
+			} catch (final IllegalAccessException e) {
+				return null;
+			}
+		}
+		if (closeBeforeGet)
+			frame.doDefaultCloseAction();
+		return frame;
+	}
 
-    JInternalFrame newFrame(boolean closeBeforeGet) {
-        if (frame == null) {
-            try {
-                frame = (JInternalFrame) clazz.newInstance();
-            } catch (InstantiationException e) {
-                return null;
-            } catch (IllegalAccessException e) {
-                return null;
-            }
-        }
-        if (closeBeforeGet) frame.doDefaultCloseAction();
-        return frame;
-    }
-
-
-    void closeFrame() {
-        if (frame == null) {
-            return;
-        }
-        frame.doDefaultCloseAction();
-    }
-
+	void closeFrame() {
+		if (frame == null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
+	}
 }

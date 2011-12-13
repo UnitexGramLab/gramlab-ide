@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -45,93 +44,92 @@ import fr.umlv.unitex.process.commands.CheckDicCommand;
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"
  * menu of Unitex. The user can select the kind of dictionary he wants to check.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class CheckDicFrame extends JInternalFrame {
+	private final JRadioButton DELAS = new JRadioButton("DELAS/DELAC");
+	private final JRadioButton DELAF = new JRadioButton("DELAF/DELACF", true);
 
-    private final JRadioButton DELAS = new JRadioButton("DELAS/DELAC");
-    private final JRadioButton DELAF = new JRadioButton("DELAF/DELACF", true);
-
-    CheckDicFrame() {
-        super("Check Dictionary Format", false, true);
-        constructPanel();
-        setContentPane(constructPanel());
-        setBounds(100, 100, 200, 100);
-        pack();
-    }
-
-    private JPanel constructPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(constructLeftPanel(), BorderLayout.WEST);
-        panel.add(constructRightPanel(), BorderLayout.CENTER);
-        return panel;
-    }
-
-    private JPanel constructLeftPanel() {
-        JPanel leftPanel = new JPanel();
-        JPanel tmp = new JPanel(new GridLayout(2, 1));
-        tmp.setBorder(new TitledBorder("Dictionary Type:"));
-        DELAS.setSelected(false);
-        DELAF.setSelected(true);
-        ButtonGroup bg = new ButtonGroup();
-        bg.add(DELAS);
-        bg.add(DELAF);
-        tmp.add(DELAS);
-        tmp.add(DELAF);
-        leftPanel.add(tmp);
-        return leftPanel;
-    }
-
-    private JPanel constructRightPanel() {
-        JPanel rightPanel = new JPanel(new GridLayout(2, 1));
-        rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
-        Action goAction = new AbstractAction("Check Dictionary") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-                checkDELA();
-            }
-        };
-        JButton GO = new JButton(goAction);
-        Action cancelAction = new AbstractAction("Cancel") {
-            public void actionPerformed(ActionEvent arg0) {
-                setVisible(false);
-            }
-        };
-        JButton CANCEL = new JButton(cancelAction);
-        rightPanel.add(GO);
-        rightPanel.add(CANCEL);
-        return rightPanel;
-    }
-
-    /**
-     * Launches the <code>CheckDic</code> verification program, through the
-     * creation of a <code>ProcessInfoFrame</code> object.
-     */
-    void checkDELA() {
-        CheckDicCommand command = new CheckDicCommand().name(
-                Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
-                		ConfigManager.getManager().getAlphabet(null));
-    	if (Config.getCurrentLanguage().equals("Chinese") ||
-    	        Config.getCurrentLanguage().equals("Mandarin")) {
-    	    command=command.no_space_warning();
-    	}
-        File tmp = new File(Config.getCurrentDELA().getParentFile(),
-                "CHECK_DIC.TXT");
-        InternalFrameManager.getManager(null).closeCheckResultFrame();
-        Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
-    }
-
-    class CheckDicDo implements ToDo {
-        final File results;
-
-        public CheckDicDo(File s) {
-            results = s;
-        }
-
-        public void toDo() {
-        	InternalFrameManager.getManager(results).newCheckResultFrame(results);
-        }
+	CheckDicFrame() {
+		super("Check Dictionary Format", false, true);
+		constructPanel();
+		setContentPane(constructPanel());
+		setBounds(100, 100, 200, 100);
+		pack();
 	}
 
+	private JPanel constructPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.add(constructLeftPanel(), BorderLayout.WEST);
+		panel.add(constructRightPanel(), BorderLayout.CENTER);
+		return panel;
+	}
+
+	private JPanel constructLeftPanel() {
+		final JPanel leftPanel = new JPanel();
+		final JPanel tmp = new JPanel(new GridLayout(2, 1));
+		tmp.setBorder(new TitledBorder("Dictionary Type:"));
+		DELAS.setSelected(false);
+		DELAF.setSelected(true);
+		final ButtonGroup bg = new ButtonGroup();
+		bg.add(DELAS);
+		bg.add(DELAF);
+		tmp.add(DELAS);
+		tmp.add(DELAF);
+		leftPanel.add(tmp);
+		return leftPanel;
+	}
+
+	private JPanel constructRightPanel() {
+		final JPanel rightPanel = new JPanel(new GridLayout(2, 1));
+		rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
+		final Action goAction = new AbstractAction("Check Dictionary") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				checkDELA();
+			}
+		};
+		final JButton GO = new JButton(goAction);
+		final Action cancelAction = new AbstractAction("Cancel") {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		};
+		final JButton CANCEL = new JButton(cancelAction);
+		rightPanel.add(GO);
+		rightPanel.add(CANCEL);
+		return rightPanel;
+	}
+
+	/**
+	 * Launches the <code>CheckDic</code> verification program, through the
+	 * creation of a <code>ProcessInfoFrame</code> object.
+	 */
+	void checkDELA() {
+		CheckDicCommand command = new CheckDicCommand().name(
+				Config.getCurrentDELA()).delaType(DELAS.isSelected()).alphabet(
+				ConfigManager.getManager().getAlphabet(null));
+		if (Config.getCurrentLanguage().equals("Chinese")
+				|| Config.getCurrentLanguage().equals("Mandarin")) {
+			command = command.no_space_warning();
+		}
+		final File tmp = new File(Config.getCurrentDELA().getParentFile(),
+				"CHECK_DIC.TXT");
+		InternalFrameManager.getManager(null).closeCheckResultFrame();
+		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
+	}
+
+	class CheckDicDo implements ToDo {
+		final File results;
+
+		public CheckDicDo(File s) {
+			results = s;
+		}
+
+		public void toDo() {
+			InternalFrameManager.getManager(results).newCheckResultFrame(
+					results);
+		}
+	}
 }

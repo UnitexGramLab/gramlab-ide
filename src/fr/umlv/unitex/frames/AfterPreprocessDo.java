@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
@@ -27,15 +26,15 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.Text;
 
 public class AfterPreprocessDo implements ToDo {
-    private final File snt;
-    private final boolean b;
+	private final File snt;
+	private final boolean b;
 
-    public AfterPreprocessDo(final File sntFile, final boolean taggedText) {
-        snt = sntFile;
-        b = taggedText;
-    }
+	public AfterPreprocessDo(final File sntFile, final boolean taggedText) {
+		snt = sntFile;
+		b = taggedText;
+	}
 
-    public void toDo() {
-        Text.loadSnt(snt,b);
-    }
+	public void toDo() {
+		Text.loadSnt(snt, b);
+	}
 }

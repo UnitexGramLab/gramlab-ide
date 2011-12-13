@@ -18,25 +18,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
 import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 
-
 class PreprocessDialogFactory {
+	private PreprocessDialog dialog;
 
-    private PreprocessDialog dialog;
-
-    PreprocessDialog newPreprocessDialog(File text, File sntFile, boolean taggedText,
-    		UnxmlizeCommand cmd) {
-        if (dialog == null) {
-            dialog = new PreprocessDialog();
-        }
-        dialog.setFiles(text, sntFile, taggedText, cmd);
-        return dialog;
-    }
-
+	PreprocessDialog newPreprocessDialog(File text, File sntFile,
+			boolean taggedText, UnxmlizeCommand cmd) {
+		if (dialog == null) {
+			dialog = new PreprocessDialog();
+		}
+		dialog.setFiles(text, sntFile, taggedText, cmd);
+		return dialog;
+	}
 }

@@ -23,7 +23,6 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -47,11 +46,9 @@ import javax.swing.event.ListDataListener;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.listeners.FontListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.Fst2ListCommand;
@@ -61,188 +58,188 @@ import fr.umlv.unitex.text.BigTextList;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.
- *
+ * 
  * @author Sébastien Paumier 11.11.2005 modified HyunGue HUH
  */
 public class GraphPathDialog extends JDialog {
-    final BigTextList textArea = new BigTextList();
-    final JTextField graphName = new JTextField();
-    private JCheckBox limit;
-    private JTextField limitSize;
-    private JRadioButton ignoreOutputs;
-    private JRadioButton separateOutputs;
-    private JRadioButton mergeOutputs;
-    private JRadioButton exploreRecursively;
-    private JRadioButton onlyPaths;
-
-    ListDataListener listListener=new ListDataListener() {
+	final BigTextList textArea = new BigTextList();
+	final JTextField graphName = new JTextField();
+	private JCheckBox limit;
+	private JTextField limitSize;
+	private JRadioButton ignoreOutputs;
+	private JRadioButton separateOutputs;
+	private JRadioButton mergeOutputs;
+	private JRadioButton exploreRecursively;
+	private JRadioButton onlyPaths;
+	ListDataListener listListener = new ListDataListener() {
 		public void intervalRemoved(ListDataEvent e) {
 			/* */
 		}
-		
+
 		public void intervalAdded(ListDataEvent e) {
-            int n=textArea.getModel().getSize();
-            setTitle(n+" line"+(n>1?"s":""));
+			final int n = textArea.getModel().getSize();
+			setTitle(n + " line" + (n > 1 ? "s" : ""));
 		}
-		
+
 		public void contentsChanged(ListDataEvent e) {
 			/* */
 		}
 	};
-    
-    GraphPathDialog() {
-        super(UnitexFrame.mainFrame, "Explore graph paths", true);
-        setContentPane(constructPanel());
-        setBounds(100, 100, 420, 400);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                close();
-            }
-        });
-        textArea.setFont(ConfigManager.getManager().getTextFont(null));
-        PreferencesManager.addPreferencesListener(new PreferencesListener() {
+
+	GraphPathDialog() {
+		super(UnitexFrame.mainFrame, "Explore graph paths", true);
+		setContentPane(constructPanel());
+		setBounds(100, 100, 420, 400);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				close();
+			}
+		});
+		textArea.setFont(ConfigManager.getManager().getTextFont(null));
+		PreferencesManager.addPreferencesListener(new PreferencesListener() {
 			public void preferencesChanged(String language) {
 				textArea.setFont(ConfigManager.getManager().getTextFont(null));
 			}
 		});
-        setLocationRelativeTo(UnitexFrame.mainFrame);
-    }
+		setLocationRelativeTo(UnitexFrame.mainFrame);
+	}
 
-    private JPanel constructPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(constructTopPanel(), BorderLayout.NORTH);
-        panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-        return panel;
-    }
+	private JPanel constructPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.add(constructTopPanel(), BorderLayout.NORTH);
+		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		return panel;
+	}
 
-    private JPanel constructTopPanel() {
-        JPanel top = new JPanel(new GridLayout(6, 1));
-        top.add(constructGraphNamePanel());
-        ButtonGroup bg = new ButtonGroup();
-        ignoreOutputs = new JRadioButton("Ignore outputs", true);
-        separateOutputs = new JRadioButton("Separate inputs and outputs");
-        mergeOutputs = new JRadioButton("Merge inputs and outputs");
-        bg.add(ignoreOutputs);
-        bg.add(separateOutputs);
-        bg.add(mergeOutputs);
-        top.add(ignoreOutputs);
-        top.add(separateOutputs);
-        top.add(mergeOutputs);
-        top.add(constructDownPanel());
-        JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        ButtonGroup pathWithSubGraph = new ButtonGroup();
-        onlyPaths = new JRadioButton("Only paths", true);
-        exploreRecursively = new JRadioButton("Do not explore subgraphs recursively");
-        pathWithSubGraph.add(onlyPaths);
-        pathWithSubGraph.add(exploreRecursively);
-        top1.add(onlyPaths);
-        top1.add(exploreRecursively);
-        top.add(top1);
-        return top;
-    }
+	private JPanel constructTopPanel() {
+		final JPanel top = new JPanel(new GridLayout(6, 1));
+		top.add(constructGraphNamePanel());
+		final ButtonGroup bg = new ButtonGroup();
+		ignoreOutputs = new JRadioButton("Ignore outputs", true);
+		separateOutputs = new JRadioButton("Separate inputs and outputs");
+		mergeOutputs = new JRadioButton("Merge inputs and outputs");
+		bg.add(ignoreOutputs);
+		bg.add(separateOutputs);
+		bg.add(mergeOutputs);
+		top.add(ignoreOutputs);
+		top.add(separateOutputs);
+		top.add(mergeOutputs);
+		top.add(constructDownPanel());
+		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		final ButtonGroup pathWithSubGraph = new ButtonGroup();
+		onlyPaths = new JRadioButton("Only paths", true);
+		exploreRecursively = new JRadioButton(
+				"Do not explore subgraphs recursively");
+		pathWithSubGraph.add(onlyPaths);
+		pathWithSubGraph.add(exploreRecursively);
+		top1.add(onlyPaths);
+		top1.add(exploreRecursively);
+		top.add(top1);
+		return top;
+	}
 
-    private JPanel constructDownPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(constructLimitPanel(), BorderLayout.CENTER);
-        JPanel buttons = new JPanel(new GridLayout(1, 2));
-        Action goAction = new AbstractAction("GO") {
-            public void actionPerformed(ActionEvent arg0) {
-                Fst2ListCommand cmd = new Fst2ListCommand();
-                Grf2Fst2Command grfCmd = new Grf2Fst2Command();
-                File fst2;
-                File list; /* output file name */
-                int n;
-                if (limit.isSelected()) {
-                    try {
-                        n = Integer.parseInt(limitSize.getText());
-                    } catch (NumberFormatException e) {
-                        JOptionPane.showMessageDialog(null,
-                                "You must specify a valid limit", "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    cmd = cmd.limit(n);
-                } else {
-                    cmd = cmd.noLimit();
-                }
-                if (ignoreOutputs.isSelected()) {
-                    cmd = cmd.ignoreOutputs();
-                } else {
-                    cmd = cmd.separateOutputs(separateOutputs.isSelected());
-                }
-                grfCmd.grf(new File(graphName.getText()))
-                        .enableLoopAndRecursionDetection(true).repository()
-                        .noEmptyGraphWarning();
-                fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
-                        .getText())
-                        + ".fst2");
-                if (onlyPaths.isSelected()) {
-                    list = new File(Config.getUserCurrentLanguageDir(),
-                            "list.txt");
-                    cmd = cmd.listOfPaths(fst2, list);
-                } else {
-                    list = new File(FileUtil.getFileNameWithoutExtension(graphName
-                            .getText())
-                            + "autolst.txt");
-                    cmd = cmd.listsOfSubgraph(fst2);
-                }
-                MultiCommands commands = new MultiCommands();
-                commands.addCommand(grfCmd);
-                commands.addCommand(cmd);
-                textArea.reset();
-                Launcher.exec(commands, true, new ShowPathsDo(list),false);
-            }
-        };
-        JButton GO = new JButton(goAction);
-        buttons.add(GO);
-        Action cancelAction = new AbstractAction("Cancel") {
-            public void actionPerformed(ActionEvent arg0) {
-                close();
-            }
-        };
-        JButton CANCEL = new JButton(cancelAction);
-        buttons.add(CANCEL);
-        panel.add(buttons, BorderLayout.EAST);
-        return panel;
-    }
+	private JPanel constructDownPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.add(constructLimitPanel(), BorderLayout.CENTER);
+		final JPanel buttons = new JPanel(new GridLayout(1, 2));
+		final Action goAction = new AbstractAction("GO") {
+			public void actionPerformed(ActionEvent arg0) {
+				Fst2ListCommand cmd = new Fst2ListCommand();
+				final Grf2Fst2Command grfCmd = new Grf2Fst2Command();
+				File fst2;
+				File list; /* output file name */
+				int n;
+				if (limit.isSelected()) {
+					try {
+						n = Integer.parseInt(limitSize.getText());
+					} catch (final NumberFormatException e) {
+						JOptionPane.showMessageDialog(null,
+								"You must specify a valid limit", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					cmd = cmd.limit(n);
+				} else {
+					cmd = cmd.noLimit();
+				}
+				if (ignoreOutputs.isSelected()) {
+					cmd = cmd.ignoreOutputs();
+				} else {
+					cmd = cmd.separateOutputs(separateOutputs.isSelected());
+				}
+				grfCmd.grf(new File(graphName.getText()))
+						.enableLoopAndRecursionDetection(true).repository()
+						.noEmptyGraphWarning();
+				fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
+						.getText())
+						+ ".fst2");
+				if (onlyPaths.isSelected()) {
+					list = new File(Config.getUserCurrentLanguageDir(),
+							"list.txt");
+					cmd = cmd.listOfPaths(fst2, list);
+				} else {
+					list = new File(FileUtil
+							.getFileNameWithoutExtension(graphName.getText())
+							+ "autolst.txt");
+					cmd = cmd.listsOfSubgraph(fst2);
+				}
+				final MultiCommands commands = new MultiCommands();
+				commands.addCommand(grfCmd);
+				commands.addCommand(cmd);
+				textArea.reset();
+				Launcher.exec(commands, true, new ShowPathsDo(list), false);
+			}
+		};
+		final JButton GO = new JButton(goAction);
+		buttons.add(GO);
+		final Action cancelAction = new AbstractAction("Cancel") {
+			public void actionPerformed(ActionEvent arg0) {
+				close();
+			}
+		};
+		final JButton CANCEL = new JButton(cancelAction);
+		buttons.add(CANCEL);
+		panel.add(buttons, BorderLayout.EAST);
+		return panel;
+	}
 
-    void close() {
-        setVisible(false);
-        textArea.reset();
-        textArea.clearSelection();
-        textArea.getModel().removeListDataListener(listListener);
-    }
+	void close() {
+		setVisible(false);
+		textArea.reset();
+		textArea.clearSelection();
+		textArea.getModel().removeListDataListener(listListener);
+	}
 
-    private JPanel constructLimitPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        limit = new JCheckBox("Maximum number of sequences: ", true);
-        limitSize = new JTextField("100");
-        limitSize.setPreferredSize(new Dimension(50, 20));
-        panel.add(limit, BorderLayout.WEST);
-        panel.add(limitSize, BorderLayout.CENTER);
-        panel.add(new JLabel("   "), BorderLayout.EAST);
-        return panel;
-    }
+	private JPanel constructLimitPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		limit = new JCheckBox("Maximum number of sequences: ", true);
+		limitSize = new JTextField("100");
+		limitSize.setPreferredSize(new Dimension(50, 20));
+		panel.add(limit, BorderLayout.WEST);
+		panel.add(limitSize, BorderLayout.CENTER);
+		panel.add(new JLabel("   "), BorderLayout.EAST);
+		return panel;
+	}
 
-    private JPanel constructGraphNamePanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel(" Graph: "), BorderLayout.WEST);
-        panel.add(graphName, BorderLayout.CENTER);
-        return panel;
-    }
+	private JPanel constructGraphNamePanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.add(new JLabel(" Graph: "), BorderLayout.WEST);
+		panel.add(graphName, BorderLayout.CENTER);
+		return panel;
+	}
 
-    class ShowPathsDo implements ToDo {
-        private final File name;
+	class ShowPathsDo implements ToDo {
+		private final File name;
 
-        ShowPathsDo(File name) {
-            this.name = name;
-        }
+		ShowPathsDo(File name) {
+			this.name = name;
+		}
 
-        public void toDo() {
-            textArea.load(name);
-            textArea.getModel().addListDataListener(listListener);
-        }
-    }
+		public void toDo() {
+			textArea.load(name);
+			textArea.getModel().addListDataListener(listListener);
+		}
+	}
 }

@@ -18,33 +18,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import javax.swing.JDialog;
 
-
 class DialogFactory {
+	private JDialog dialog;
+	private final Class<?> clazz;
 
-    private JDialog dialog;
+	DialogFactory(Class<?> clazz) {
+		this.clazz = clazz;
+	}
 
-    private final Class<?> clazz;
-
-    DialogFactory(Class<?> clazz) {
-        this.clazz = clazz;
-    }
-
-    JDialog newDialog() {
-        if (dialog == null) {
-            try {
-                dialog = (JDialog) clazz.newInstance();
-            } catch (InstantiationException e) {
-                return null;
-            } catch (IllegalAccessException e) {
-                return null;
-            }
-        }
-        return dialog;
-    }
-
+	JDialog newDialog() {
+		if (dialog == null) {
+			try {
+				dialog = (JDialog) clazz.newInstance();
+			} catch (final InstantiationException e) {
+				return null;
+			} catch (final IllegalAccessException e) {
+				return null;
+			}
+		}
+		return dialog;
+	}
 }

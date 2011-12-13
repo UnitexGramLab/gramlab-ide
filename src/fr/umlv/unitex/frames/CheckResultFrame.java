@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -32,53 +31,48 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.text.BigTextList;
-
 
 /**
  * This class describes a text frame that shows the results of dictionary
  * checkings.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class CheckResultFrame extends JInternalFrame {
+	private final BigTextList text;
 
-    private final BigTextList text;
+	CheckResultFrame() {
+		super("Check Results", true, true, true, true);
+		final JPanel top = new JPanel(new BorderLayout());
+		top.setBorder(new EmptyBorder(2, 2, 2, 2));
+		text = new BigTextList();
+		final JPanel middle = new JPanel(new BorderLayout());
+		middle.setBorder(BorderFactory.createLoweredBevelBorder());
+		middle.add(new JScrollPane(text), BorderLayout.CENTER);
+		top.add(middle, BorderLayout.CENTER);
+		setContentPane(top);
+		setBounds(100, 100, 500, 500);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				text.reset();
+				setVisible(false);
+				System.gc();
+			}
+		});
+	}
 
-
-    CheckResultFrame() {
-        super("Check Results", true, true, true, true);
-        JPanel top = new JPanel(new BorderLayout());
-        top.setBorder(new EmptyBorder(2, 2, 2, 2));
-        text = new BigTextList();
-        JPanel middle = new JPanel(new BorderLayout());
-        middle.setBorder(BorderFactory.createLoweredBevelBorder());
-        middle.add(new JScrollPane(text), BorderLayout.CENTER);
-        top.add(middle, BorderLayout.CENTER);
-        setContentPane(top);
-        setBounds(100, 100, 500, 500);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addInternalFrameListener(new InternalFrameAdapter() {
-            @Override
-            public void internalFrameClosing(InternalFrameEvent e) {
-                text.reset();
-                setVisible(false);
-                System.gc();
-            }
-        });
-    }
-
-
-    /**
-     * Loads a text file.
-     *
-     * @param f the name of the text file
-     */
-    void load(File f) {
-        text.load(f);
-        text.setFont(ConfigManager.getManager().getTextFont(null));
-    }
-
+	/**
+	 * Loads a text file.
+	 * 
+	 * @param f
+	 *            the name of the text file
+	 */
+	void load(File f) {
+		text.load(f);
+		text.setFont(ConfigManager.getManager().getTextFont(null));
+	}
 }

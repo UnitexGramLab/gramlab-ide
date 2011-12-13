@@ -18,39 +18,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 class TextAutomatonFrameFactory {
+	private TextAutomatonFrame frame;
 
-    private TextAutomatonFrame frame;
+	TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
+		if (frame == null) {
+			frame = new TextAutomatonFrame();
+		}
+		if (!frame.loadTfst()) {
+			return null;
+		}
+		frame.setVisible(true);
+		frame.loadSentenceFromConcordance(sentenceNumber);
+		return frame;
+	}
 
-    TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber) {
-    	if (frame == null) {
-            frame = new TextAutomatonFrame();
-        }
-        if (!frame.loadTfst()) {
-            return null;
-        }
-        frame.setVisible(true);
-        frame.loadSentenceFromConcordance(sentenceNumber);
-        return frame;
-    }
+	void closeTextAutomatonFrame() {
+		if (frame == null)
+			return;
+		frame.setVisible(false);
+	}
 
+	public boolean existsFrame() {
+		return frame != null;
+	}
 
-    void closeTextAutomatonFrame() {
-        if (frame == null) return;
-        frame.setVisible(false);
-    }
-
-
-    public boolean existsFrame() {
-        return frame != null;
-    }
-
-
-    public TextAutomatonFrame getFrame() {
-        return frame;
-    }
-
+	public TextAutomatonFrame getFrame() {
+		return frame;
+	}
 }

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
@@ -36,48 +35,48 @@ import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.svn.SvnMonitor;
 
-/** 
- * This class describes a frame that shows all the command lines that have been launched.
- *
+/**
+ * This class describes a frame that shows all the command lines that have been
+ * launched.
+ * 
  * @author Sébastien Paumier
  */
 public class SvnConflictsFrame extends JInternalFrame {
-
-    SvnConflictsFrame() {
-        super("", true, false, true, true);
-        final ListModel model=SvnMonitor.getSvnConflictModel();
-        final JList list=new JList(model);
-        list.addListSelectionListener(new ListSelectionListener() {
+	SvnConflictsFrame() {
+		super("", true, false, true, true);
+		final ListModel model = SvnMonitor.getSvnConflictModel();
+		final JList list = new JList(model);
+		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				Object[] files=list.getSelectedValues();
-				for (Object o:files) {
-					File f=(File)o;
+				final Object[] files = list.getSelectedValues();
+				for (final Object o : files) {
+					final File f = (File) o;
 					InternalFrameManager.getManager(f).newGraphFrame(f);
 				}
 			}
 		});
-		setClosable(model.getSize()==0);
-		setTitle(model.getSize()+" SVN conflicts detected on graphs");
-        model.addListDataListener(new ListDataListener() {
+		setClosable(model.getSize() == 0);
+		setTitle(model.getSize() + " SVN conflicts detected on graphs");
+		model.addListDataListener(new ListDataListener() {
 			public void intervalRemoved(ListDataEvent e) {
-				setTitle(model.getSize()+" SVN conflicts detected on graphs");
-				setClosable(model.getSize()==0);
+				setTitle(model.getSize() + " SVN conflicts detected on graphs");
+				setClosable(model.getSize() == 0);
 			}
-			
+
 			public void intervalAdded(ListDataEvent e) {
-				setTitle(model.getSize()+" SVN conflicts detected on graphs");
-				setClosable(model.getSize()==0);
+				setTitle(model.getSize() + " SVN conflicts detected on graphs");
+				setClosable(model.getSize() == 0);
 			}
-			
+
 			public void contentsChanged(ListDataEvent e) {
 				/* */
 			}
 		});
-        JScrollPane scroll = new JScrollPane(list);
-        getContentPane().add(scroll,BorderLayout.CENTER);
-        getContentPane().add(new JLabel("Click on a graph name to open it:"),BorderLayout.NORTH);
-        setBounds(100, 100, 600, 400);
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-    }
-
+		final JScrollPane scroll = new JScrollPane(list);
+		getContentPane().add(scroll, BorderLayout.CENTER);
+		getContentPane().add(new JLabel("Click on a graph name to open it:"),
+				BorderLayout.NORTH);
+		setBounds(100, 100, 600, 400);
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
 }

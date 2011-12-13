@@ -40,16 +40,16 @@ public class FindDialog extends JDialog {
 	 */
 	FindDialog(FileEditionTextFrame owner) {
 		super(UnitexFrame.mainFrame);
-		ActionListener closeAction = new ActionListener() {
+		final ActionListener closeAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
 		};
-		JTabbedPane tab = new JTabbedPane();
-		FindPanel p1 = new FindPanel(owner.getText());
+		final JTabbedPane tab = new JTabbedPane();
+		final FindPanel p1 = new FindPanel(owner.getText());
 		p1.addCloseAction(closeAction);
-		FindSentencePanel p2 = new FindSentencePanel(owner.getText());
-		DictionaryFindPanel p3 = new DictionaryFindPanel(owner.getText());
+		final FindSentencePanel p2 = new FindSentencePanel(owner.getText());
+		final DictionaryFindPanel p3 = new DictionaryFindPanel(owner.getText());
 		p1.addCloseAction(closeAction);
 		p2.addCloseAction(closeAction);
 		p3.addCloseAction(closeAction);

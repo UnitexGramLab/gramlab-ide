@@ -18,44 +18,39 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.frames;
 
 import java.io.File;
 
 class TextFrameFactory {
+	private TextFrame frame;
 
-    private TextFrame frame;
+	/**
+	 * We try to load the given .snt file, closing first the previous text
+	 * frame, if any.
+	 * 
+	 * @param text
+	 * @param taggedText
+	 * @return
+	 */
+	TextFrame newTextFrame(File text) {
+		if (frame != null) {
+			frame.doDefaultCloseAction();
+		}
+		frame = new TextFrame();
+		frame.loadText(text);
+		return frame;
+	}
 
-    /**
-     * We try to load the given .snt file, closing first the previous
-     * text frame, if any.
-     *
-     * @param text
-     * @param taggedText
-     * @return
-     */
-    TextFrame newTextFrame(File text) {
-        if (frame != null) {
-            frame.doDefaultCloseAction();
-        }
-        frame = new TextFrame();
-        frame.loadText(text);
-        return frame;
-    }
+	void closeTextFrame() {
+		if (frame == null) {
+			return;
+		}
+		frame.doDefaultCloseAction();
+		frame = null;
+	}
 
-
-    void closeTextFrame() {
-        if (frame == null) {
-            return;
-        }
-        frame.doDefaultCloseAction();
-        frame = null;
-    }
-
-
-    TextFrame getTextFrame() {
-        return frame;
-    }
-
+	TextFrame getTextFrame() {
+		return frame;
+	}
 }
