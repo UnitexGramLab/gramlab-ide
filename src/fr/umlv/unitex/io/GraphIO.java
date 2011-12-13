@@ -31,9 +31,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import fr.umlv.unitex.graphrendering.GraphBox;
@@ -68,7 +66,6 @@ public class GraphIO {
 	 */
 	private int nBoxes;
 	public File grf;
-	
 	public GraphMetaData metadata;
 
 	private GraphIO() {
@@ -93,7 +90,7 @@ public class GraphIO {
 	 */
 	public static GraphIO loadGraph(File grfFile, boolean isSentenceGraph,
 			boolean emitErrorMessage) {
-		GraphIO res = new GraphIO();
+		final GraphIO res = new GraphIO();
 		res.grf = grfFile;
 		InputStreamReader reader;
 		if (!grfFile.exists()) {
@@ -111,10 +108,11 @@ public class GraphIO {
 			return null;
 		}
 		try {
-			reader=Encoding.getInputStreamReader(grfFile);
-			if (reader==null) {
+			reader = Encoding.getInputStreamReader(grfFile);
+			if (reader == null) {
 				if (emitErrorMessage)
-					JOptionPane.showMessageDialog(null, grfFile.getAbsolutePath()
+					JOptionPane.showMessageDialog(null, grfFile
+							.getAbsolutePath()
 							+ " is not a Unicode graph", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				return null;
@@ -135,25 +133,28 @@ public class GraphIO {
 			res.readDirectory(reader);
 			res.readRightToLeft(reader);
 			if (isSentenceGraph) {
-				res.info.rightToLeft = ConfigManager.getManager().isRightToLeftForText(null);
+				res.info.rightToLeft = ConfigManager.getManager()
+						.isRightToLeftForText(null);
 			}
 			UnicodeIO.skipLine(reader); // ignoring DRST
 			UnicodeIO.skipLine(reader); // ignoring FITS
 			UnicodeIO.skipLine(reader); // ignoring PORIENT
 			/* Reading metadata until we find the # line */
 			String line;
-			while (!(line=UnicodeIO.readLine(reader)).equals("#")) {
-				int pos=line.indexOf("=");
-				if (pos==-1) {
+			while (!(line = UnicodeIO.readLine(reader)).equals("#")) {
+				final int pos = line.indexOf("=");
+				if (pos == -1) {
 					if (emitErrorMessage)
-						JOptionPane.showMessageDialog(null, "Invalid header line in "
-								+ grfFile.getAbsolutePath()+":\n"+line, "Error",
+						JOptionPane.showMessageDialog(null,
+								"Invalid header line in "
+										+ grfFile.getAbsolutePath() + ":\n"
+										+ line, "Error",
 								JOptionPane.ERROR_MESSAGE);
 					return null;
 				}
-				String key=line.substring(0,pos);
-				String value=line.substring(pos+1);
-				res.metadata.set(key,value);
+				final String key = line.substring(0, pos);
+				final String value = line.substring(pos + 1);
+				res.metadata.set(key, value);
 			}
 			res.readBoxNumber(reader);
 			res.boxes = new ArrayList<GenericGraphBox>();
@@ -179,19 +180,19 @@ public class GraphIO {
 					res.readGraphLine(reader, i);
 			}
 			reader.close();
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 			if (emitErrorMessage)
 				JOptionPane.showMessageDialog(null, grfFile.getAbsolutePath()
 						+ ": " + e.getMessage(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			return null;
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			if (emitErrorMessage)
 				JOptionPane.showMessageDialog(null, "Cannot open "
 						+ grfFile.getAbsolutePath(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			return null;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			if (emitErrorMessage)
 				JOptionPane.showMessageDialog(null, "Error in file "
 						+ grfFile.getAbsolutePath() + ": " + e.getMessage(),
@@ -231,12 +232,12 @@ public class GraphIO {
 			s = s + (char) z;
 		if (z == -1)
 			throw new IOException("Error while reading input font information");
-		boolean bold = ((z = UnicodeIO.readChar(r)) == 'B');
+		final boolean bold = ((z = UnicodeIO.readChar(r)) == 'B');
 		if (z != 'B' && z != ' ')
 			throw new IOException("Error while reading input font information");
 		if (z == -1)
 			throw new IOException("Error while reading input font information");
-		boolean italic = ((z = UnicodeIO.readChar(r)) == 'I');
+		final boolean italic = ((z = UnicodeIO.readChar(r)) == 'I');
 		if (z != 'I' && z != ' ')
 			throw new IOException("Error while reading input font information");
 		if (z == -1)
@@ -270,12 +271,12 @@ public class GraphIO {
 			s = s + (char) z;
 		if (z == -1)
 			throw new IOException("Error while reading output font information");
-		boolean bold = ((z = UnicodeIO.readChar(r)) == 'B');
+		final boolean bold = ((z = UnicodeIO.readChar(r)) == 'B');
 		if (z != 'B' && z != ' ')
 			throw new IOException("Error while reading output font information");
 		if (z == -1)
 			throw new IOException("Error while reading output font information");
-		boolean italic = ((z = UnicodeIO.readChar(r)) == 'I');
+		final boolean italic = ((z = UnicodeIO.readChar(r)) == 'I');
 		if (z != 'I' && z != ' ')
 			throw new IOException("Error while reading output font information");
 		if (z == -1)
@@ -434,7 +435,7 @@ public class GraphIO {
 	}
 
 	private void readGraphLine(InputStreamReader r, int n) throws IOException {
-		GenericGraphBox g = boxes.get(n);
+		final GenericGraphBox g = boxes.get(n);
 		int z;
 		if ((z = UnicodeIO.readChar(r)) == 's') {
 			// is a "s" was read, then we read the " char
@@ -450,7 +451,8 @@ public class GraphIO {
 			if (c == '\\') {
 				c = UnicodeIO.readChar(r);
 				if (c == -1)
-					throw new IOException("Error #3 while reading graph box #" + n);
+					throw new IOException("Error #3 while reading graph box #"
+							+ n);
 				if (c != '\\') {
 					// case of \: \+ and \"
 					if (c == '"')
@@ -461,8 +463,8 @@ public class GraphIO {
 					// case of \\\" that must be transformed into \"
 					c = UnicodeIO.readChar(r);
 					if (c == -1)
-						throw new IOException("Error #4 while reading graph box #"
-								+ n);
+						throw new IOException(
+								"Error #4 while reading graph box #" + n);
 					if (c == '\\') {
 						// we are in the case \\\" -> \"
 						c = UnicodeIO.readChar(r);
@@ -564,7 +566,7 @@ public class GraphIO {
 			g.addTransitionTo(boxes.get(dest));
 		}
 		// skipping the end-of-line
-		int foo=UnicodeIO.readChar(r);
+		final int foo = UnicodeIO.readChar(r);
 		if (foo != '\n')
 			throw new IOException("Error #15 while reading graph box #" + n);
 	}
@@ -585,7 +587,7 @@ public class GraphIO {
 		try {
 			if (!grfFile.exists())
 				grfFile.createNewFile();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			JOptionPane.showMessageDialog(null, "Cannot write "
 					+ grfFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -598,8 +600,8 @@ public class GraphIO {
 			return;
 		}
 		try {
-			Encoding e=ConfigManager.getManager().getEncoding(null);
-			writer=e.getOutputStreamWriter(grfFile);
+			final Encoding e = ConfigManager.getManager().getEncoding(null);
+			writer = e.getOutputStreamWriter(grfFile);
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
@@ -619,7 +621,8 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(info.input.size) + "\n");
+			UnicodeIO.writeString(writer, String.valueOf(info.input.size)
+					+ "\n");
 			UnicodeIO.writeString(writer, "OFONT " + info.output.font.getName()
 					+ ":");
 			switch (info.output.font.getStyle()) {
@@ -636,8 +639,8 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO
-					.writeString(writer, String.valueOf(info.output.size) + "\n");
+			UnicodeIO.writeString(writer, String.valueOf(info.output.size)
+					+ "\n");
 			UnicodeIO.writeString(writer, "BCOLOR "
 					+ String.valueOf(16777216 + info.backgroundColor.getRGB())
 					+ "\n");
@@ -677,23 +680,24 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "DRST n\n");
 			UnicodeIO.writeString(writer, "FITS 100\n");
 			UnicodeIO.writeString(writer, "PORIENT L\n");
-			for (String key:metadata.getKeySet()) {
-				UnicodeIO.writeString(writer,key+"="+metadata.getValue(key)+"\n");
+			for (final String key : metadata.getKeySet()) {
+				UnicodeIO.writeString(writer, key + "="
+						+ metadata.getValue(key) + "\n");
 			}
 			UnicodeIO.writeString(writer, "#\n");
 			nBoxes = boxes.size();
 			UnicodeIO.writeString(writer, String.valueOf(nBoxes) + "\n");
 			for (int i = 0; i < nBoxes; i++) {
-				GenericGraphBox g = boxes.get(i);
+				final GenericGraphBox g = boxes.get(i);
 				UnicodeIO.writeChar(writer, '"');
 				if (g.getType() != 1)
 					writeBoxContent(writer, g.getContent());
-				int N = g.getTransitions().size();
+				final int N = g.getTransitions().size();
 				UnicodeIO.writeString(writer, "\" " + String.valueOf(g.getX())
 						+ " " + String.valueOf(g.getY()) + " "
 						+ String.valueOf(N) + " ");
 				for (int j = 0; j < N; j++) {
-					GenericGraphBox tmp = g.getTransitions().get(j);
+					final GenericGraphBox tmp = g.getTransitions().get(j);
 					UnicodeIO.writeString(writer, String.valueOf(boxes
 							.indexOf(tmp))
 							+ " ");
@@ -701,15 +705,15 @@ public class GraphIO {
 				UnicodeIO.writeChar(writer, '\n');
 			}
 			writer.close();
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void writeBoxContent(OutputStreamWriter w, String s) {
-		int L = s.length();
+		final int L = s.length();
 		char c;
 		for (int i = 0; i < L; i++) {
 			c = s.charAt(i);
@@ -734,7 +738,7 @@ public class GraphIO {
 	}
 
 	private void readSentenceGraphLine(InputStreamReader r, int n) {
-		TfstGraphBox g = (TfstGraphBox) boxes.get(n);
+		final TfstGraphBox g = (TfstGraphBox) boxes.get(n);
 		if (UnicodeIO.readChar(r) == 's') {
 			// is a "s" was read, then we read the " char
 			UnicodeIO.readChar(r);
@@ -828,7 +832,7 @@ public class GraphIO {
 		try {
 			if (!file.exists())
 				file.createNewFile();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			JOptionPane.showMessageDialog(null, "Cannot write "
 					+ file.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -842,7 +846,8 @@ public class GraphIO {
 		}
 		try {
 			/* TODO: use here the language in metadata, if any */
-			writer=ConfigManager.getManager().getEncoding(null).getOutputStreamWriter(file);
+			writer = ConfigManager.getManager().getEncoding(null)
+					.getOutputStreamWriter(file);
 			UnicodeIO.writeChar(writer, (char) 0xFEFF);
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
@@ -863,7 +868,8 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(inf.input.size) + "\n");
+			UnicodeIO
+					.writeString(writer, String.valueOf(inf.input.size) + "\n");
 			UnicodeIO.writeString(writer, "OFONT " + inf.output.font.getName()
 					+ ":");
 			switch (inf.output.font.getStyle()) {
@@ -880,7 +886,8 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(inf.output.size) + "\n");
+			UnicodeIO.writeString(writer, String.valueOf(inf.output.size)
+					+ "\n");
 			UnicodeIO.writeString(writer, "BCOLOR "
 					+ String.valueOf(16777216 + inf.backgroundColor.getRGB())
 					+ "\n");
@@ -924,7 +931,7 @@ public class GraphIO {
 			nBoxes = boxes.size();
 			UnicodeIO.writeString(writer, String.valueOf(nBoxes) + "\n");
 			for (int i = 0; i < nBoxes; i++) {
-				TfstGraphBox g = (TfstGraphBox) boxes.get(i);
+				final TfstGraphBox g = (TfstGraphBox) boxes.get(i);
 				UnicodeIO.writeChar(writer, '"');
 				int N = g.getTransitions().size();
 				if (g.getType() != GenericGraphBox.FINAL) {
@@ -950,7 +957,8 @@ public class GraphIO {
 						+ " " + String.valueOf(g.getY()) + " "
 						+ String.valueOf(N) + " ");
 				for (int j = 0; j < N; j++) {
-					TfstGraphBox tmp = (TfstGraphBox) g.getTransitions().get(j);
+					final TfstGraphBox tmp = (TfstGraphBox) g.getTransitions()
+							.get(j);
 					UnicodeIO.writeString(writer, String.valueOf(boxes
 							.indexOf(tmp))
 							+ " ");
@@ -958,9 +966,9 @@ public class GraphIO {
 				UnicodeIO.writeChar(writer, '\n');
 			}
 			writer.close();
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}

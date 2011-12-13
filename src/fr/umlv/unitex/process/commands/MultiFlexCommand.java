@@ -18,66 +18,62 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-
 
 /**
  * @author Sébastien Paumier
  */
 public class MultiFlexCommand extends CommandBuilder {
+	public MultiFlexCommand() {
+		super("MultiFlex");
+	}
 
-    public MultiFlexCommand() {
-        super("MultiFlex");
-    }
+	public MultiFlexCommand delas(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public MultiFlexCommand delas(File s) {
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	public MultiFlexCommand result(File s) {
+		protectElement("-o" + s.getAbsolutePath());
+		return this;
+	}
 
-    public MultiFlexCommand result(File s) {
-        protectElement("-o" + s.getAbsolutePath());
-        return this;
-    }
+	public MultiFlexCommand alphabet(File s) {
+		if (s != null)
+			protectElement("-a" + s.getAbsolutePath());
+		return this;
+	}
 
-    public MultiFlexCommand alphabet(File s) {
-        if (s!=null) protectElement("-a" + s.getAbsolutePath());
-        return this;
-    }
+	public MultiFlexCommand dir(File s) {
+		protectElement("-d" + s.getAbsolutePath());
+		return this;
+	}
 
-    public MultiFlexCommand dir(File s) {
-        protectElement("-d" + s.getAbsolutePath());
-        return this;
-    }
+	public MultiFlexCommand onlySimpleWords() {
+		protectElement("-s");
+		return this;
+	}
 
-    public MultiFlexCommand onlySimpleWords() {
-        protectElement("-s");
-        return this;
-    }
+	public MultiFlexCommand onlyCompoundWords() {
+		protectElement("-c");
+		return this;
+	}
 
-    public MultiFlexCommand onlyCompoundWords() {
-        protectElement("-c");
-        return this;
-    }
+	public MultiFlexCommand korean() {
+		element("-K");
+		return this;
+	}
 
-    public MultiFlexCommand korean() {
-        element("-K");
-        return this;
-    }
-
-    public MultiFlexCommand repository() {
-    	File f=ConfigManager.getManager().getGraphRepositoryPath(null);
-        if (f != null) {
-            element("-p");
-            protectElement(f.getAbsolutePath());
-        }
-        return this;
-    }
-
+	public MultiFlexCommand repository() {
+		final File f = ConfigManager.getManager().getGraphRepositoryPath(null);
+		if (f != null) {
+			element("-p");
+			protectElement(f.getAbsolutePath());
+		}
+		return this;
+	}
 }

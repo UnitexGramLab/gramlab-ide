@@ -18,38 +18,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.text;
 
 import java.io.File;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.files.FileUtil;
 
 public class SntUtil {
-
 	/**
 	 * Returns a new file obtained by replacing the extension by .snt
 	 */
 	public static File getSnt(File f) {
-		return new File(FileUtil.getFileNameWithoutExtension(f)+".snt");
+		return new File(FileUtil.getFileNameWithoutExtension(f) + ".snt");
 	}
-	
+
 	public static File getSntDir(File f) {
-		return new File(FileUtil.getFileNameWithoutExtension(f)+"_snt");
+		return new File(FileUtil.getFileNameWithoutExtension(f) + "_snt");
 	}
-	
+
 	/**
-	 * This function cleans the content of the _snt dir associated to
-	 * the given file f. It also works if f is the _snt dir itself. 
+	 * This function cleans the content of the _snt dir associated to the given
+	 * file f. It also works if f is the _snt dir itself.
 	 */
 	public static void cleanSntDir(File f) {
-		if (!f.isDirectory() || ".snt".equalsIgnoreCase(FileUtil.getExtensionInLowerCase(f))) {
-			f=getSntDir(f);
+		if (!f.isDirectory()
+				|| ".snt".equalsIgnoreCase(FileUtil.getExtensionInLowerCase(f))) {
+			f = getSntDir(f);
 		}
 		if (f.exists()) {
 			FileUtil.removeFile(new File(f, "*"));
 		}
-
 	}
 }

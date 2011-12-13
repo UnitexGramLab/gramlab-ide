@@ -18,60 +18,55 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.concord;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.io.File;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-
 
 /**
- * This class provides a text component that can display in read-only
- * large HTML concordance files.
- *
+ * This class provides a text component that can display in read-only large HTML
+ * concordance files.
+ * 
  * @author Sébastien Paumier
  */
 public class BigConcordance extends JList {
+	private BigConcordance(ConcordanceAsListModel m) {
+		super(m);
+		setFont(ConfigManager.getManager().getConcordanceFont(null));
+		setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				super.getListCellRendererComponent(list, value, index,
+						isSelected, cellHasFocus);
+				final StringBuilder builder = new StringBuilder();
+				builder.append("<html><body>");
+				final String s = (String) value;
+				builder.append(s);
+				builder.append("</body></html>");
+				setText(builder.toString());
+				return this;
+			}
+		});
+	}
 
+	public BigConcordance() {
+		this(new ConcordanceAsListModel());
+	}
 
-    private BigConcordance(ConcordanceAsListModel m) {
-        super(m);
-        setFont(ConfigManager.getManager().getConcordanceFont(null));
-        setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                StringBuilder builder = new StringBuilder();
-                builder.append("<html><body>");
-                String s = (String) value;
-                builder.append(s);
-                builder.append("</body></html>");
-                setText(builder.toString());
-                return this;
-            }
-        });
-    }
+	public void load(File f) {
+		final ConcordanceAsListModel model = (ConcordanceAsListModel) getModel();
+		model.load(f);
+	}
 
-
-    public BigConcordance() {
-        this(new ConcordanceAsListModel());
-    }
-
-    public void load(File f) {
-        ConcordanceAsListModel model = (ConcordanceAsListModel) getModel();
-        model.load(f);
-    }
-
-    public void reset() {
-        ConcordanceAsListModel model = (ConcordanceAsListModel) getModel();
-        model.reset();
-    }
-
+	public void reset() {
+		final ConcordanceAsListModel model = (ConcordanceAsListModel) getModel();
+		model.reset();
+	}
 }

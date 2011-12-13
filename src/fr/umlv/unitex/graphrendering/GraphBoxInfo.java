@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.graphrendering;
 
 import java.util.Vector;
@@ -26,27 +25,25 @@ import java.util.Vector;
 /**
  * This class is used to store information on a box. It is used for doing
  * multiple box selections.
- *
+ * 
  * @author Sébastien Paumier
  */
 class GraphBoxInfo {
-    /**
-     * X coordinate of the box
-     */
-    public int X;
-
-    /**
-     * Y coordinate of the box
-     */
-    public int Y;
-
-    /**
-     * Text content of the box
-     */
-    public String content;
-
-    /**
-     * Vector containing integers that are reference to boxes that can be reached from this box
-     */
-    public Vector<Integer> reachableBoxes;
+	/**
+	 * X coordinate of the box
+	 */
+	public int X;
+	/**
+	 * Y coordinate of the box
+	 */
+	public int Y;
+	/**
+	 * Text content of the box
+	 */
+	public String content;
+	/**
+	 * Vector containing integers that are reference to boxes that can be
+	 * reached from this box
+	 */
+	public Vector<Integer> reachableBoxes;
 }

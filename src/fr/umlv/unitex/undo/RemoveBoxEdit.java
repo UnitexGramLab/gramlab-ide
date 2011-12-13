@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.undo;
 
 import java.util.ArrayList;
@@ -30,68 +29,68 @@ import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph before removing a box
- *
+ * 
  * @author Decreton Julien
  */
 public class RemoveBoxEdit extends AbstractUndoableEdit {
+	/**
+	 * List of transition to a box
+	 */
+	private final ArrayList<GenericGraphBox> transitionsToBoxe;
+	/**
+	 * boxes of the graph
+	 */
+	private final ArrayList<GenericGraphBox> boxes;
+	/**
+	 * box to remove
+	 */
+	private final GenericGraphBox box;
+	/**
+	 * zone where the graph is drawn
+	 */
+	private final GenericGraphicalZone zone;
+	/**
+	 * if the box to remove have a self transition or not
+	 */
+	private boolean itSelfTransition = false;
 
-    /**
-     * List of transition to a box
-     */
-    private final ArrayList<GenericGraphBox> transitionsToBoxe;
-    /**
-     * boxes of the graph
-     */
-    private final ArrayList<GenericGraphBox> boxes;
-    /**
-     * box to remove
-     */
-    private final GenericGraphBox box;
-    /**
-     * zone where the graph is drawn
-     */
-    private final GenericGraphicalZone zone;
-    /**
-     * if the box to remove have a self transition or not
-     */
-    private boolean itSelfTransition = false;
+	/**
+	 * @param boxe
+	 *            the box to remove
+	 * @param boxes
+	 *            the boxes of the graph
+	 * @param zone
+	 *            the zone where remove the box
+	 */
+	public RemoveBoxEdit(GenericGraphBox boxe,
+			ArrayList<GenericGraphBox> boxes, GenericGraphicalZone zone) {
+		this.boxes = boxes;
+		this.box = boxe;
+		this.zone = zone;
+		transitionsToBoxe = zone.getTransitionTo(boxe);
+		itSelfTransition = boxe.hasTransitionToItself();
+	}
 
-    /**
-     * @param boxe  the box to remove
-     * @param boxes the boxes of the graph
-     * @param zone  the zone where remove the box
-     */
-    public RemoveBoxEdit(
-            GenericGraphBox boxe,
-            ArrayList<GenericGraphBox> boxes,
-            GenericGraphicalZone zone) {
-        this.boxes = boxes;
-        this.box = boxe;
-        this.zone = zone;
-        transitionsToBoxe = zone.getTransitionTo(boxe);
-        itSelfTransition = boxe.hasTransitionToItself();
-    }
+	@Override
+	public void undo() {
+		super.undo();
+		if (box.type != GenericGraphBox.NORMAL) {
+			return;
+		}
+		boxes.add(box);
+		// add thes transition which pointed on this boxe
+		for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
+			final GenericGraphBox g = transitionsToBoxe.get(i);
+			g.addTransitionTo(box);
+		}
+		if (itSelfTransition)
+			box.addTransitionTo(box);
+	}
 
-    @Override
-    public void undo() {
-        super.undo();
-    	if (box.type!=GenericGraphBox.NORMAL) {
-    		return;
-    	}
-        boxes.add(box);
-        // add thes transition which pointed on this boxe
-        for (int i = 0; boxes != null && i < transitionsToBoxe.size(); i++) {
-        	GenericGraphBox g = transitionsToBoxe.get(i);
-        	g.addTransitionTo(box);
-        }
-        if (itSelfTransition) box.addTransitionTo(box);
-    }
-
-    @Override
-    public void redo() {
-        super.redo();
-        boxes.remove(box);
-        zone.removeTransitionTo(box);
-    }
-
+	@Override
+	public void redo() {
+		super.redo();
+		boxes.remove(box);
+		zone.removeTransitionTo(box);
+	}
 }

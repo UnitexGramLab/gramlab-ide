@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.editor.ui;
 
 import java.awt.BorderLayout;
@@ -34,39 +33,34 @@ import fr.umlv.unitex.editor.EditionTextArea;
  * @author Decreton Julien
  */
 abstract class SearchPanel extends JPanel {
+	final EditionTextArea text;
+	JButton btClose;
 
-    final EditionTextArea text;
-    JButton btClose;
+	SearchPanel(EditionTextArea text) {
+		super(new BorderLayout());
+		this.text = text;
+		// close button
+		btClose = new JButton("Close");
+		btClose.setMnemonic('c');
+	}
 
-    SearchPanel(EditionTextArea text) {
-        super(new BorderLayout());
-        this.text = text;
+	/**
+	 * Generate message dialogue box
+	 * 
+	 * @param message
+	 */
+	void warning(String message) {
+		JOptionPane.showMessageDialog(text, message, "Warning",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
 
-        //close button
-        btClose = new JButton("Close");
-        btClose.setMnemonic('c');
-    }
-
-    /**
-     * Generate message dialogue box
-     *
-     * @param message
-     */
-    void warning(String message) {
-        JOptionPane.showMessageDialog(
-                text,
-                message,
-                "Warning",
-                JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    /**
-     * Add an action to the close button
-     *
-     * @param action action to add to the pnel's close button
-     */
-    public void addCloseAction(ActionListener action) {
-        btClose.addActionListener(action);
-    }
-
+	/**
+	 * Add an action to the close button
+	 * 
+	 * @param action
+	 *            action to add to the pnel's close button
+	 */
+	public void addCloseAction(ActionListener action) {
+		btClose.addActionListener(action);
+	}
 }

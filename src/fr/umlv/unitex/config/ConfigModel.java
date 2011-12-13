@@ -28,40 +28,71 @@ import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 
 public interface ConfigModel {
-	
-    public String getCurrentLanguage();
-	public File getAlphabetForGrf(String language,File grf);
+	public String getCurrentLanguage();
+
+	public File getAlphabetForGrf(String language, File grf);
+
 	public File getAlphabet(String language);
-    public Preferences getPreferences(String language);
-    public void savePreferences(Preferences p,String language);
+
+	public Preferences getPreferences(String language);
+
+	public void savePreferences(Preferences p, String language);
+
 	public boolean isCharByCharLanguage(String language);
+
 	public File getConfigFileForLanguage(String language);
+
 	public Encoding getEncoding(String language);
-    public boolean isSemiticLanguage(String language);
-    public boolean isRightToLeftForText(String language);
-    public boolean isRightToLeftForGraphs(String language);
-    public ArrayList<File> morphologicalDictionaries(String language);
-    public boolean isMorphologicalUseOfSpaceAllowed(String language);
-    public boolean svnMonitoring(String language);
-    public boolean onlyCosmetic(String language);
-    public GraphPresentationInfo getGraphPresentationPreferences(String language);
-    public File getGraphRepositoryPath(String language);
-    public File getLogDirectory(String language);
-    public boolean mustLog(String language);
-    public File getHtmlViewer(String language);
-    public Font getTextFont(String language);
-    public Font getInputFont(String language);
-    public int getInputFontSize(String language);
-    public Font getConcordanceFont(String language);
-    public String getConcordanceFontName(String language);
-    public int getConcordanceFontSize(String language);
-    public boolean isKorean(String language);
-    public boolean isArabic(String language);
-    public boolean isPRLGLanguage(String language);
-    public boolean isValidLanguageName(String language);
-    
-    public File getMainDirectory();
-    public File getApplicationDirectory();
-    public File getUnitexToolLogger();
-    public File getCurrentGraphDirectory();
+
+	public boolean isSemiticLanguage(String language);
+
+	public boolean isRightToLeftForText(String language);
+
+	public boolean isRightToLeftForGraphs(String language);
+
+	public ArrayList<File> morphologicalDictionaries(String language);
+
+	public boolean isMorphologicalUseOfSpaceAllowed(String language);
+
+	public boolean svnMonitoring(String language);
+
+	public boolean onlyCosmetic(String language);
+
+	public GraphPresentationInfo getGraphPresentationPreferences(String language);
+
+	public File getGraphRepositoryPath(String language);
+
+	public File getLogDirectory(String language);
+
+	public boolean mustLog(String language);
+
+	public File getHtmlViewer(String language);
+
+	public Font getTextFont(String language);
+
+	public Font getInputFont(String language);
+
+	public int getInputFontSize(String language);
+
+	public Font getConcordanceFont(String language);
+
+	public String getConcordanceFontName(String language);
+
+	public int getConcordanceFontSize(String language);
+
+	public boolean isKorean(String language);
+
+	public boolean isArabic(String language);
+
+	public boolean isPRLGLanguage(String language);
+
+	public boolean isValidLanguageName(String language);
+
+	public File getMainDirectory();
+
+	public File getApplicationDirectory();
+
+	public File getUnitexToolLogger();
+
+	public File getCurrentGraphDirectory();
 }

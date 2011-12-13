@@ -332,7 +332,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		final Dimension defaultTableViewPortSize = table
 				.getPreferredScrollableViewportSize();
 		final Dimension currentTableViewPortSize = new Dimension(460,// defaultTableViewPortSize.width
-																		// * 2,
+				// * 2,
 				defaultTableViewPortSize.height);
 		table.setPreferredScrollableViewportSize(currentTableViewPortSize);
 		// TableColumn col = table.getColumnModel().getColumn(0);

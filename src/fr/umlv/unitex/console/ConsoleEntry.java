@@ -18,70 +18,70 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.console;
 
 public class ConsoleEntry {
+	private final String content;
+	private String error;
+	/* 0=no error button, 1=error down button, 2=error up button, 3=nothing */
+	private int status;
+	private final boolean systemMsg;
+	/*
+	 * The log ID associated to the command, or null if the command wasn't
+	 * logged
+	 */
+	private final String logID;
 
-    private final String content;
-    private String error;
+	public ConsoleEntry(String command, boolean isRealCommand,
+			boolean systemMsg, String logID) {
+		this.content = command;
+		this.status = isRealCommand ? 0 : 3;
+		this.systemMsg = systemMsg;
+		this.logID = logID;
+		if (logID != null && !isRealCommand) {
+			throw new IllegalArgumentException(
+					"Should not have a log ID for a non Unitex command");
+		}
+	}
 
-    /* 0=no error button, 1=error down button, 2=error up button, 3=nothing */
-    private int status;
+	public String getContent() {
+		return content;
+	}
 
-    private final boolean systemMsg;
+	public boolean isSystemMsg() {
+		return systemMsg;
+	}
 
-    /* The log ID associated to the command, or null if the command wasn't logged */
-    private final String logID;
+	public int getStatus() {
+		return status;
+	}
 
-    public ConsoleEntry(String command, boolean isRealCommand, boolean systemMsg, String logID) {
-        this.content = command;
-        this.status = isRealCommand ? 0 : 3;
-        this.systemMsg = systemMsg;
-        this.logID = logID;
-        if (logID != null && !isRealCommand) {
-            throw new IllegalArgumentException("Should not have a log ID for a non Unitex command");
-        }
-    }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public String getlogID() {
+		return logID;
+	}
 
-    public boolean isSystemMsg() {
-        return systemMsg;
-    }
+	public void addErrorMessage(String s) {
+		if (error == null) {
+			error = s;
+			status = 1;
+		} else {
+			if (!error.endsWith("\r\n") && !error.endsWith("\n")) {
+				error = error + "\n";
+			}
+			error = error + s;
+		}
+	}
 
-    public int getStatus() {
-        return status;
-    }
+	public String getErrorMessage() {
+		return error;
+	}
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getlogID() {
-        return logID;
-    }
-
-    public void addErrorMessage(String s) {
-        if (error == null) {
-            error = s;
-            status = 1;
-        } else {
-            if (!error.endsWith("\r\n") && !error.endsWith("\n")) {
-                error = error + "\n";
-            }
-            error = error + s;
-        }
-    }
-
-    public String getErrorMessage() {
-        return error;
-    }
-
-    @Override
-    public String toString() {
-        return getContent();
-    }
+	@Override
+	public String toString() {
+		return getContent();
+	}
 }

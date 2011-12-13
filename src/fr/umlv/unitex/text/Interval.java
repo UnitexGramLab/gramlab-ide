@@ -18,21 +18,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.text;
 
 public class Interval {
-
 	private final int startInBytes;
 	private final int endInBytes;
 	private final int startInChars;
 	private final int endInChars;
-	
-	public Interval(int s,int e,int s2,int e2) {
-		startInBytes=s;
-		endInBytes=e;
-		startInChars=s2;
-		endInChars=e2;
+
+	public Interval(int s, int e, int s2, int e2) {
+		startInBytes = s;
+		endInBytes = e;
+		startInChars = s2;
+		endInChars = e2;
 	}
 
 	public int getStartInBytes() {
@@ -50,5 +48,4 @@ public class Interval {
 	public int getEndInChars() {
 		return endInChars;
 	}
-
 }

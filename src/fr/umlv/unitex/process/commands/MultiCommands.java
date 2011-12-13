@@ -18,20 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.util.ArrayList;
-
 
 /**
  * This class provides facilities for build process command lines.
  * 
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class MultiCommands {
-
 	private final ArrayList<CommandBuilder> list;
 
 	public MultiCommands() {
@@ -54,5 +51,4 @@ public class MultiCommands {
 	public int numberOfCommands() {
 		return list.size();
 	}
-
 }

@@ -31,7 +31,6 @@ import java.io.OutputStreamWriter;
  * @author Sébastien Paumier
  */
 public class UnicodeIO {
-
 	/**
 	 * Reads a character from a file, considering <code>0x0D</code> and
 	 * <code>0x0A</code> as two distinct characters
@@ -39,7 +38,7 @@ public class UnicodeIO {
 	private static int readCharRawly(InputStreamReader r) {
 		try {
 			return r.read();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return -1;
 		}
 	}
@@ -71,7 +70,8 @@ public class UnicodeIO {
 		while ((c = readChar(r)) != '\n' && c != -1) {
 			s = s + (char) c;
 		}
-		if (c==-1 && s.equals("")) return null;
+		if (c == -1 && s.equals(""))
+			return null;
 		return s;
 	}
 
@@ -85,13 +85,13 @@ public class UnicodeIO {
 		if (!f.canRead()) {
 			return null;
 		}
-		InputStreamReader r = Encoding.getInputStreamReader(f);
+		final InputStreamReader r = Encoding.getInputStreamReader(f);
 		if (r == null)
 			return null;
-		String line = readLine(r);
+		final String line = readLine(r);
 		try {
 			r.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return line;
@@ -135,7 +135,7 @@ public class UnicodeIO {
 				w.write(0x0D);
 			}
 			w.write(c);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -144,11 +144,10 @@ public class UnicodeIO {
 	 * Writes a string to a file
 	 */
 	public static void writeString(OutputStreamWriter w, String s) {
-		int L = s.length();
+		final int L = s.length();
 		for (int i = 0; i < L; i++)
 			writeChar(w, s.charAt(i));
 	}
-
 	/**
 	 * @param f
 	 *            a file
@@ -156,18 +155,13 @@ public class UnicodeIO {
 	 * @throws FileNotFoundException
 	 *             if the file cannot be opened
 	 */
-	/*public static boolean isAUnicodeLittleEndianFile(File f)
-			throws FileNotFoundException {
-		FileInputStream stream = new FileInputStream(f);
-		boolean res = (UnicodeIO.readChar(stream) == 0xFEFF);
-		try {
-			stream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}*/
-
+	/*
+	 * public static boolean isAUnicodeLittleEndianFile(File f) throws
+	 * FileNotFoundException { FileInputStream stream = new FileInputStream(f);
+	 * boolean res = (UnicodeIO.readChar(stream) == 0xFEFF); try {
+	 * stream.close(); } catch (IOException e) { e.printStackTrace(); } return
+	 * res; }
+	 */
 	/**
 	 * Opens and returns a file input stream.
 	 * 
@@ -179,33 +173,26 @@ public class UnicodeIO {
 	 * @throws FileNotFoundException
 	 *             if the file cannot be opened
 	 */
-	/*public static FileInputStream openUnicodeLittleEndianFileInputStream(File f)
-			throws NotAUnicodeLittleEndianFileException, FileNotFoundException {
-		FileInputStream stream = new FileInputStream(f);
-		if (UnicodeIO.readChar(stream) != 0xFEFF) {
-			try {
-				stream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			throw new NotAUnicodeLittleEndianFileException(f);
-		}
-		return stream;
-	}
-
-	/**
-	 * Opens and returns a file output stream.
+	/*
+	 * public static FileInputStream openUnicodeLittleEndianFileInputStream(File
+	 * f) throws NotAUnicodeLittleEndianFileException, FileNotFoundException {
+	 * FileInputStream stream = new FileInputStream(f); if
+	 * (UnicodeIO.readChar(stream) != 0xFEFF) { try { stream.close(); } catch
+	 * (IOException e) { e.printStackTrace(); } throw new
+	 * NotAUnicodeLittleEndianFileException(f); } return stream; }
 	 * 
-	 * @param f
-	 *            the file
+	 * /** Opens and returns a file output stream.
+	 * 
+	 * @param f the file
+	 * 
 	 * @return the output stream
-	 * @throws FileNotFoundException
-	 *             if the file cannot be opened
+	 * 
+	 * @throws FileNotFoundException if the file cannot be opened
 	 */
-	/*public static FileOutputStream openUnicodeLittleEndianFileOutputStream(
-			File f) throws FileNotFoundException {
-		FileOutputStream stream = new FileOutputStream(f);
-		UnicodeIO.writeChar(stream, (char) 0xFEFF);
-		return stream;
-	}*/
+	/*
+	 * public static FileOutputStream openUnicodeLittleEndianFileOutputStream(
+	 * File f) throws FileNotFoundException { FileOutputStream stream = new
+	 * FileOutputStream(f); UnicodeIO.writeChar(stream, (char) 0xFEFF); return
+	 * stream; }
+	 */
 }

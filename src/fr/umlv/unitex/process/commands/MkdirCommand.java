@@ -18,32 +18,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
-
 
 /**
  * @author Sébastien Paumier
  */
 public class MkdirCommand extends AbstractMethodCommand {
+	private File dir;
 
-    private File dir;
+	public MkdirCommand() {
+		super("mkdir");
+	}
 
-    public MkdirCommand() {
-        super("mkdir");
-    }
+	public MkdirCommand name(File s) {
+		dir = s;
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public MkdirCommand name(File s) {
-        dir = s;
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
-
-    @Override
-    public boolean execute() {
-        return dir.exists() || dir.mkdir();
-    }
-
+	@Override
+	public boolean execute() {
+		return dir.exists() || dir.mkdir();
+	}
 }

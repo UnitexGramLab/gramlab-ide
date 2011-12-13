@@ -40,12 +40,12 @@ public class ConsoleTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		ConsoleEntry e = data.get(rowIndex);
+		final ConsoleEntry e = data.get(rowIndex);
 		if (columnIndex == 0) {
 			return e.getStatus();
 		}
 		if (columnIndex == 1) {
-			String s = e.getlogID();
+			final String s = e.getlogID();
 			if (s == null)
 				return "";
 			return s;
@@ -86,7 +86,8 @@ public class ConsoleTableModel extends AbstractTableModel {
 			return "Log #";
 		case 2:
 			return "Command";
-		default: throw new IllegalArgumentException("Invalid columun index: "
+		default:
+			throw new IllegalArgumentException("Invalid columun index: "
 					+ column);
 		}
 	}

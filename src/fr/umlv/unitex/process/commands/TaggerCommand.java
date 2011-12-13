@@ -18,45 +18,42 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *
+ * 
  */
 public class TaggerCommand extends CommandBuilder {
-    
-    public TaggerCommand() {
-    	super("Tagger");
-    }
-    
-    public TaggerCommand tfst(File s) {
-      protectElement(s.getAbsolutePath());
-      return this;
-    }
+	public TaggerCommand() {
+		super("Tagger");
+	}
 
-    public TaggerCommand alphabet(File s) {
-        if (s!=null) protectElement("-a"+s.getAbsolutePath());
-        return this;
-    }
-    
-    public TaggerCommand dic(File s) {
-        protectElement("-d"+s.getAbsolutePath());
-        return this;
-    }
+	public TaggerCommand tfst(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public TaggerCommand tagset(File s) {
-        protectElement("-t"+s.getAbsolutePath());
-        return this;
-    }
+	public TaggerCommand alphabet(File s) {
+		if (s != null)
+			protectElement("-a" + s.getAbsolutePath());
+		return this;
+	}
 
-    public TaggerCommand output(File s) {
-        protectElement("-o"+s.getAbsolutePath());
-        return this;
-    }
+	public TaggerCommand dic(File s) {
+		protectElement("-d" + s.getAbsolutePath());
+		return this;
+	}
 
+	public TaggerCommand tagset(File s) {
+		protectElement("-t" + s.getAbsolutePath());
+		return this;
+	}
+
+	public TaggerCommand output(File s) {
+		protectElement("-o" + s.getAbsolutePath());
+		return this;
+	}
 }

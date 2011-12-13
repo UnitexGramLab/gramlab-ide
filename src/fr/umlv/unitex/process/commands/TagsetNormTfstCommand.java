@@ -18,36 +18,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Olivier Blanc
- *  
+ * 
  */
-
 public class TagsetNormTfstCommand extends CommandBuilder {
+	public TagsetNormTfstCommand() {
+		super("TagsetNormTfst");
+	}
 
-  public TagsetNormTfstCommand() {
-    super("TagsetNormTfst");
-  }
+	public TagsetNormTfstCommand automaton(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-  public TagsetNormTfstCommand automaton(File s) {
-    protectElement(s.getAbsolutePath());
-    return this;
-  }
+	public TagsetNormTfstCommand tagset(File s) {
+		protectElement("-t" + s.getAbsolutePath());
+		return this;
+	}
 
-  public TagsetNormTfstCommand tagset(File s) {
-    protectElement("-t"+s.getAbsolutePath());
-    return this;
-  }
-
-  public TagsetNormTfstCommand output(File s) {
-      protectElement("-0"+s.getAbsolutePath());
-      return this;
-  }
+	public TagsetNormTfstCommand output(File s) {
+		protectElement("-0" + s.getAbsolutePath());
+		return this;
+	}
 }
-

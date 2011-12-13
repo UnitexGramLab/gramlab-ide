@@ -18,23 +18,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class GrfDiffCommand extends CommandBuilder {
-
 	public GrfDiffCommand() {
 		super("GrfDiff");
 	}
 
-	public GrfDiffCommand files(File base,File dest) {
+	public GrfDiffCommand files(File base, File dest) {
 		protectElement(base.getAbsolutePath());
 		protectElement(dest.getAbsolutePath());
 		return this;
@@ -45,5 +42,4 @@ public class GrfDiffCommand extends CommandBuilder {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
-
 }

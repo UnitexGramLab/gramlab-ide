@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -27,10 +26,9 @@ import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 
 /**
  * @author Sébastien Paumier
- *  
+ * 
  */
 public class PolyLexCommand extends CommandBuilder {
-
 	public PolyLexCommand() {
 		super("PolyLex");
 	}
@@ -53,12 +51,13 @@ public class PolyLexCommand extends CommandBuilder {
 	}
 
 	public PolyLexCommand alphabet(File alphabet) {
-    if (alphabet!=null) protectElement("-a"+alphabet.getAbsolutePath());
-    return this;
-}
+		if (alphabet != null)
+			protectElement("-a" + alphabet.getAbsolutePath());
+		return this;
+	}
 
 	public PolyLexCommand bin(File s) {
-		protectElement("-d"+s.getAbsolutePath());
+		protectElement("-d" + s.getAbsolutePath());
 		return this;
 	}
 
@@ -68,13 +67,12 @@ public class PolyLexCommand extends CommandBuilder {
 	}
 
 	public PolyLexCommand output(File s) {
-		protectElement("-o"+s.getAbsolutePath());
+		protectElement("-o" + s.getAbsolutePath());
 		return this;
 	}
 
 	public PolyLexCommand info(File s) {
-		protectElement("-i"+s.getAbsolutePath());
+		protectElement("-i" + s.getAbsolutePath());
 		return this;
 	}
-
 }

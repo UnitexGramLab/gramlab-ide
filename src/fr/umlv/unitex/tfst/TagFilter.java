@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.tfst;
 
 import java.util.ArrayList;
@@ -26,59 +25,61 @@ import java.util.regex.Pattern;
 
 /**
  * This class represent a regex filter to be applied on tfst tags.
- *
+ * 
  * @author paumier
  */
 public class TagFilter {
+	private Pattern pattern;
+	private boolean alwaysShowGramCode;
+	private boolean onlyShowGramCode;
 
-    private Pattern pattern;
-    private boolean alwaysShowGramCode;
-    private boolean onlyShowGramCode;
+	public void setFilter(Pattern pattern, boolean alwaysShowGramCode,
+			boolean onlyShowGramCode) {
+		this.pattern = pattern;
+		this.alwaysShowGramCode = alwaysShowGramCode;
+		this.onlyShowGramCode = onlyShowGramCode;
+		if (onlyShowGramCode && pattern != null) {
+			throw new IllegalArgumentException(
+					"Should not a non null pattern when onlyShowGramCode is true");
+		}
+		fireFilterChanged();
+	}
 
-    public void setFilter(Pattern pattern, boolean alwaysShowGramCode, boolean onlyShowGramCode) {
-        this.pattern = pattern;
-        this.alwaysShowGramCode = alwaysShowGramCode;
-        this.onlyShowGramCode = onlyShowGramCode;
-        if (onlyShowGramCode && pattern != null) {
-            throw new IllegalArgumentException("Should not a non null pattern when onlyShowGramCode is true");
-        }
-        fireFilterChanged();
-    }
+	public Pattern getPattern() {
+		return pattern;
+	}
 
-    public Pattern getPattern() {
-        return pattern;
-    }
+	public boolean alwaysShowGramCode() {
+		return alwaysShowGramCode;
+	}
 
-    public boolean alwaysShowGramCode() {
-        return alwaysShowGramCode;
-    }
+	public boolean onlyShowGramCode() {
+		return onlyShowGramCode;
+	}
 
-    public boolean onlyShowGramCode() {
-        return onlyShowGramCode;
-    }
+	private final ArrayList<FilterListener> listeners = new ArrayList<FilterListener>();
+	private boolean firing = false;
 
-    private final ArrayList<FilterListener> listeners = new ArrayList<FilterListener>();
-    private boolean firing = false;
+	public void addFilterListener(FilterListener l) {
+		listeners.add(l);
+	}
 
-    public void addFilterListener(FilterListener l) {
-        listeners.add(l);
-    }
+	public void removeFilterListener(FilterListener l) {
+		if (firing) {
+			throw new IllegalStateException(
+					"Should not remove a listener while firing");
+		}
+		listeners.remove(l);
+	}
 
-    public void removeFilterListener(FilterListener l) {
-        if (firing) {
-            throw new IllegalStateException("Should not remove a listener while firing");
-        }
-        listeners.remove(l);
-    }
-
-    void fireFilterChanged() {
-        firing = true;
-        try {
-            for (FilterListener l : listeners) {
-                l.filterChanged();
-            }
-        } finally {
-            firing = false;
-        }
-    }
+	void fireFilterChanged() {
+		firing = true;
+		try {
+			for (final FilterListener l : listeners) {
+				l.filterChanged();
+			}
+		} finally {
+			firing = false;
+		}
+	}
 }

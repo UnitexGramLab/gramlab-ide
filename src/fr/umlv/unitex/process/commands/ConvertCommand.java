@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -32,91 +31,89 @@ import fr.umlv.unitex.transcoding.Transcoder;
  * @author Sébastien Paumier
  */
 public class ConvertCommand extends CommandBuilder {
+	public ConvertCommand() {
+		super("Convert");
+	}
 
-    public ConvertCommand() {
-        super("Convert");
-    }
+	private ConvertCommand(ArrayList<String> l) {
+		super(l);
+	}
 
-    private ConvertCommand(ArrayList<String> l) {
-        super(l);
-    }
+	public ConvertCommand src(String s) throws InvalidSourceEncodingException {
+		if (Transcoder.isValidEncoding(s)) {
+			element("-s" + s);
+			return this;
+		}
+		throw new InvalidSourceEncodingException(s);
+	}
 
+	public ConvertCommand dest(String s)
+			throws InvalidDestinationEncodingException {
+		if (Transcoder.isValidEncoding(s)) {
+			element("-d" + s);
+			return this;
+		}
+		throw new InvalidDestinationEncodingException();
+	}
 
-    public ConvertCommand src(String s) throws InvalidSourceEncodingException {
-        if (Transcoder.isValidEncoding(s)) {
-            element("-s" + s);
-            return this;
-        }
-        throw new InvalidSourceEncodingException(s);
-    }
+	public ConvertCommand replace() {
+		element("-r");
+		return this;
+	}
 
-    public ConvertCommand dest(String s)
-            throws InvalidDestinationEncodingException {
-        if (Transcoder.isValidEncoding(s)) {
-            element("-d" + s);
-            return this;
-        }
-        throw new InvalidDestinationEncodingException();
-    }
+	public ConvertCommand rename(boolean addPrefix, boolean renameSource,
+			String s) {
+		final String element = "--" + (addPrefix ? "p" : "s")
+				+ (renameSource ? "s" : "d") + "=" + s;
+		protectElement(element);
+		return this;
+	}
 
-    public ConvertCommand replace() {
-        element("-r");
-        return this;
-    }
+	public ConvertCommand renameSourceWithPrefix(String s) {
+		final String element = "--ps=" + s;
+		protectElement(element);
+		return this;
+	}
 
-    public ConvertCommand rename(boolean addPrefix, boolean renameSource,
-                                 String s) {
-        String element = "--" + (addPrefix ? "p" : "s")
-                + (renameSource ? "s" : "d") + "=" + s;
-        protectElement(element);
-        return this;
-    }
+	public ConvertCommand renameSourceWithSuffix(String s) {
+		final String element = "--ss=" + s;
+		protectElement(element);
+		return this;
+	}
 
-    public ConvertCommand renameSourceWithPrefix(String s) {
-        String element = "--ps=" + s;
-        protectElement(element);
-        return this;
-    }
+	public ConvertCommand renameDestWithPrefix(String s) {
+		final String element = "--pd=" + s;
+		protectElement(element);
+		return this;
+	}
 
-    public ConvertCommand renameSourceWithSuffix(String s) {
-        String element = "--ss=" + s;
-        protectElement(element);
-        return this;
-    }
+	public ConvertCommand renameDestWithSuffix(String s) {
+		final String element = "--sd=" + s;
+		protectElement(element);
+		return this;
+	}
 
-    public ConvertCommand renameDestWithPrefix(String s) {
-        String element = "--pd=" + s;
-        protectElement(element);
-        return this;
-    }
+	public ConvertCommand file(File s) {
+		protectElement(s.getAbsolutePath());
+		return this;
+	}
 
-    public ConvertCommand renameDestWithSuffix(String s) {
-        String element = "--sd=" + s;
-        protectElement(element);
-        return this;
-    }
+	public ConvertCommand copy() {
+		return new ConvertCommand(getCopyOfList());
+	}
 
-    public ConvertCommand file(File s) {
-        protectElement(s.getAbsolutePath());
-        return this;
-    }
+	public ConvertCommand getEncodings() {
+		protectElement("--aliases");
+		return this;
+	}
 
-    public ConvertCommand copy() {
-        return new ConvertCommand(getCopyOfList());
-    }
+	public ConvertCommand delas() {
+		element("--delas");
+		return this;
+	}
 
-    public ConvertCommand getEncodings() {
-        protectElement("--aliases");
-        return this;
-    }
-
-    public ConvertCommand delas() {
-        element("--delas");
-        return this;
-    }
-
-    public ConvertCommand delaf() {
-        element("--delaf");
-        return this;
-    }
+	public ConvertCommand delaf() {
+		element("--delaf");
+		return this;
+	}
 }

@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
@@ -28,7 +27,6 @@ import java.io.File;
  * 
  */
 public class Fst2ListCommand extends CommandBuilder {
-
 	public Fst2ListCommand() {
 		super("Fst2List");
 	}
@@ -95,8 +93,6 @@ public class Fst2ListCommand extends CommandBuilder {
 		element("-o");
 		protectElement(ofile.getAbsolutePath());
 		protectElement(ifile.getAbsolutePath());
-
 		return this;
 	}
-
 }

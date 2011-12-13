@@ -18,14 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.listeners;
 
 public interface GraphListener {
-
-	/* If modified is true, then the graph should be saved again.
-	 * Otherwise, it only needs to be repaint.
+	/*
+	 * If modified is true, then the graph should be saved again. Otherwise, it
+	 * only needs to be repaint.
 	 */
 	public void graphChanged(boolean modified);
-
 }

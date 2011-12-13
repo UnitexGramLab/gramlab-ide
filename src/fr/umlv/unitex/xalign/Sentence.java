@@ -18,30 +18,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.xalign;
 
 /**
  * This class represents a sentence from a XAlign XML text file.
- *
+ * 
  * @author Sébastien Paumier
  */
 class Sentence {
+	/**
+	 * XML id of the sentence.
+	 */
+	final String ID;
+	/**
+	 * Sentence bounds as offsets in the XML file.
+	 */
+	final long start;
+	final long end;
 
-    /**
-     * XML id of the sentence.
-     */
-    final String ID;
-
-    /**
-     * Sentence bounds as offsets in the XML file.
-     */
-    final long start;
-    final long end;
-
-    Sentence(String ID, int start, int end) {
-        this.ID = ID;
-        this.start = start;
-        this.end = end;
-    }
+	Sentence(String ID, int start, int end) {
+		this.ID = ID;
+		this.start = start;
+		this.end = end;
+	}
 }

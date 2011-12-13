@@ -18,96 +18,101 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-
 package fr.umlv.unitex.cassys;
 
 /**
  * Class defining a row in the table of cassys configuration frame.
  * <p/>
- * A row is made of a <code>String</code> denoting a transducer file name and two <code>Boolean</code> fields
- * indicating whether merge mode and replace mode are selected.
- *
+ * A row is made of a <code>String</code> denoting a transducer file name and
+ * two <code>Boolean</code> fields indicating whether merge mode and replace
+ * mode are selected.
+ * 
  * @author david nott
  */
 class DataList {
-    /**
-     * Name of the transducer file
-     */
-    private String name;
+	/**
+	 * Name of the transducer file
+	 */
+	private String name;
+	/**
+	 * Whether the <code>merge</code> option sould be applied
+	 */
+	private boolean merge;
+	/**
+	 * Whether the <code>replace</code> option sould be applied
+	 */
+	private boolean replace;
 
-    /**
-     * Whether the <code>merge</code> option sould be applied
-     */
-    private boolean merge;
+	/**
+	 * Three parameters constructor
+	 * 
+	 * @param n
+	 *            the name
+	 * @param m
+	 *            whether to merge
+	 * @param r
+	 *            whether to replace
+	 */
+	public DataList(String n, boolean m, boolean r) {
+		name = n;
+		merge = m;
+		replace = r;
+	}
 
-    /**
-     * Whether the <code>replace</code> option sould be applied
-     */
-    private boolean replace;
+	/**
+	 * One constructor parameter
+	 * 
+	 * @param dl
+	 *            datalist object
+	 */
+	public DataList(DataList dl) {
+		name = dl.getName();
+		merge = dl.isMerge();
+		replace = dl.isReplace();
+	}
 
-    /**
-     * Three parameters constructor
-     *
-     * @param n the name
-     * @param m whether to merge
-     * @param r whether to replace
-     */
-    public DataList(String n, boolean m, boolean r) {
-        name = n;
-        merge = m;
-        replace = r;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * One constructor parameter
-     *
-     * @param dl datalist object
-     */
-    public DataList(DataList dl) {
-        name = dl.getName();
-        merge = dl.isMerge();
-        replace = dl.isReplace();
-    }
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the merge
+	 */
+	public boolean isMerge() {
+		return merge;
+	}
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * @param merge
+	 *            the merge to set
+	 */
+	public void setMerge(boolean merge) {
+		this.merge = merge;
+	}
 
-    /**
-     * @return the merge
-     */
-    public boolean isMerge() {
-        return merge;
-    }
+	/**
+	 * @return the replace
+	 */
+	public boolean isReplace() {
+		return replace;
+	}
 
-    /**
-     * @param merge the merge to set
-     */
-    public void setMerge(boolean merge) {
-        this.merge = merge;
-    }
-
-    /**
-     * @return the replace
-     */
-    public boolean isReplace() {
-        return replace;
-    }
-
-    /**
-     * @param replace the replace to set
-     */
-    public void setReplace(boolean replace) {
-        this.replace = replace;
-    }
+	/**
+	 * @param replace
+	 *            the replace to set
+	 */
+	public void setReplace(boolean replace) {
+		this.replace = replace;
+	}
 }
