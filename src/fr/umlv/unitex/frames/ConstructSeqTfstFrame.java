@@ -248,7 +248,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		File dir = null;
 		if (bSNT.isSelected()){
 			System.out.println(">bSNT");
-			sntFile = new File("SourceFile.getText()");
+			sntFile = new File(SourceFile.getText());
 			dir =new File (SourceFile.getText().substring(0, SourceFile.getText().length())+"_snt");
 		}
 		if(bTEI.isSelected()){
