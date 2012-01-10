@@ -172,12 +172,12 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 					return;
 				}
 				SourceFile.setText(chooser.getSelectedFile().getAbsolutePath());
-//				GRFfile.setName(SourceFile.getText().subSequence(0, SourceFile.getText().length()-4));
+				//				GRFfile.setName(SourceFile.getText().subSequence(0, SourceFile.getText().length()-4));
 				String grfFileName=SourceFile.getText();
 				if (SourceFile.getText().endsWith(".txt") ||
-						 SourceFile.getText().endsWith(".snt") ||
-						 SourceFile.getText().endsWith(".xml")
-						 ){
+						SourceFile.getText().endsWith(".snt") ||
+						SourceFile.getText().endsWith(".xml")
+						){
 					System.out.println("sourcefile = "+SourceFile.getText());
 					grfFileName=grfFileName.substring(0,SourceFile.getText().length()-4);
 					System.out.println("grfFileName = "+grfFileName);
@@ -250,116 +250,119 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 			System.out.println(">bSNT");
 			sntFile = new File(SourceFile.getText());
 			dir =new File (SourceFile.getText().substring(0, SourceFile.getText().length())+"_snt");
-		}
-		if(bTEI.isSelected()){
-			System.out.println(">bTEI ");
-			String dirName;
-			if(SourceFile.getText().endsWith(".xml")){
-				dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
-				sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
-			}else{
-				dirName=SourceFile.getText().substring(0, SourceFile.getText().length())+"_snt";
-				sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length())+".snt");
+		}else {
+			if(bTEI.isSelected()){
+				System.out.println(">bTEI ");
+				String dirName;
+				if(SourceFile.getText().endsWith(".xml")){
+					dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
+					sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
+				}else{
+					dirName=SourceFile.getText().substring(0, SourceFile.getText().length())+"_snt";
+					sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length())+".snt");
+				}
+				dir = new File (dirName);
+				if (!dir.exists()){
+					final MkdirCommand mkdir = new MkdirCommand().name(dir);
+					commands.addCommand(mkdir);
+				}
+				NormalizeCommand normalizeCmd = new NormalizeCommand()
+				.textWithDefaultNormalization(originalTextFile);
+				sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
+				sequenceGRF=new File(sequenceGRF, "Preprocessing");
+				sequenceGRF=new File(sequenceGRF, "Sentence");
+				sequenceGRF=new File(sequenceGRF, "SequenceTEI.grf");
+				//			final File dir = Config.getCurrentSntDir();
+				//			if (dir==null){
+				//				Config.setCurrentSnt(new File(""));
+				//			}
+				//			if (!dir.exists()) {
+				//				final MkdirCommand mkdir = new MkdirCommand().name(dir);
+				//				commands.addCommand(mkdir);
+				//			}
 			}
-			dir = new File (dirName);
-			if (!dir.exists()){
-				final MkdirCommand mkdir = new MkdirCommand().name(dir);
-				commands.addCommand(mkdir);
+			if (bTXT.isSelected()){
+				System.out.println(">bTXT");
+				String dirName;
+				if(SourceFile.getText().endsWith(".txt")){
+					System.out.println(SourceFile.getText()+" ends with .txt");
+					dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
+					sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
+				}else{
+					dirName=SourceFile.getText()+"_snt";
+					sntFile=new File(SourceFile.getText()+".snt");
+					System.out.println("sourcefile : "+SourceFile.getText());
+					System.out.println("sntFile : "+sntFile.getName());
+				}
+				dir = new File (dirName);
+				if (!dir.exists()){
+					final MkdirCommand mkdir = new MkdirCommand().name(dir);
+					commands.addCommand(mkdir);
+				}
+				System.out.println("UserCurrentLanguageDir : "+Config.getUserCurrentLanguageDir());
+				NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
+				commands.addCommand(normalizeCmd);
+				sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
+				sequenceGRF=new File(sequenceGRF, "Preprocessing");
+				sequenceGRF=new File(sequenceGRF, "Sentence");
+				sequenceGRF=new File(sequenceGRF, "SequenceTXT.grf");
 			}
-			NormalizeCommand normalizeCmd = new NormalizeCommand()
-			.textWithDefaultNormalization(originalTextFile);
-			sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
-			sequenceGRF=new File(sequenceGRF, "Preprocessing");
-			sequenceGRF=new File(sequenceGRF, "Sentence");
-			sequenceGRF=new File(sequenceGRF, "SequenceTEI.grf");
-//			final File dir = Config.getCurrentSntDir();
-//			if (dir==null){
-//				Config.setCurrentSnt(new File(""));
-//			}
-//			if (!dir.exists()) {
-//				final MkdirCommand mkdir = new MkdirCommand().name(dir);
-//				commands.addCommand(mkdir);
-//			}
-		}
-		if (bTXT.isSelected()){
-			System.out.println(">bTXT");
-			String dirName;
-			if(SourceFile.getText().endsWith(".txt")){
-				System.out.println(SourceFile.getText()+" ends with .txt");
-				dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
-				sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
-			}else{
-				dirName=SourceFile.getText()+"_snt";
-				sntFile=new File(SourceFile.getText()+".snt");
-				System.out.println("sourcefile : "+SourceFile.getText());
-				System.out.println("sntFile : "+sntFile.getName());
-			}
-			dir = new File (dirName);
-			if (!dir.exists()){
-				final MkdirCommand mkdir = new MkdirCommand().name(dir);
-				commands.addCommand(mkdir);
-			}
-			System.out.println("UserCurrentLanguageDir : "+Config.getUserCurrentLanguageDir());
-			NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
-			commands.addCommand(normalizeCmd);
-			sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
-			sequenceGRF=new File(sequenceGRF, "Preprocessing");
-			sequenceGRF=new File(sequenceGRF, "Sentence");
-			sequenceGRF=new File(sequenceGRF, "SequenceTXT.grf");
-		}
 
-		if (!sequenceGRF.exists()){
-			System.out.println("sequenceGRF : "+sequenceGRF.toString()+"does not exist");
-			commands.addCommand(new MessageCommand(
-					"*** WARNING: sentence delimitation skipped because the graph was not found ***\n",
-					true));
-		}else{
-			System.out.println("sequenceGRF exists");
-			final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(sequenceGRF)
-					.enableLoopAndRecursionDetection(true)
-					.tokenizationMode(null, sequenceGRF).repository();
-			commands.addCommand(grfCmd);
-			System.out.println("grfCmd added");
-			System.out.println("\tgrfCmd : "+grfCmd.getCommandLine());
-			String fst2Name = sequenceGRF.getAbsolutePath().substring(0, sequenceGRF.getAbsolutePath().length()-3);
-			System.out.println("fst2Name = "+fst2Name+"\n");
-			fst2Name = fst2Name + "fst2";
-			File fst2= new File(fst2Name);
-			final FlattenCommand flattenCmd = new FlattenCommand().fst2(
-					fst2).resultType(false).depth(5);
-			commands.addCommand(flattenCmd);
-			Fst2TxtCommand cmd = new Fst2TxtCommand().text(
-//					Config.getCurrentSnt()
+			if (sequenceGRF==null){
+				System.out.println("sequenceGRF == null");
+			}
+			else if (!sequenceGRF.exists()){
+				System.out.println("sequenceGRF : "+sequenceGRF.toString()+"does not exist");
+				commands.addCommand(new MessageCommand(
+						"*** WARNING: sentence delimitation skipped because the graph was not found ***\n",
+						true));
+			}else{
+				System.out.println("sequenceGRF exists");
+				final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(sequenceGRF)
+						.enableLoopAndRecursionDetection(true)
+						.tokenizationMode(null, sequenceGRF).repository();
+				commands.addCommand(grfCmd);
+				System.out.println("grfCmd added");
+				System.out.println("\tgrfCmd : "+grfCmd.getCommandLine());
+				String fst2Name = sequenceGRF.getAbsolutePath().substring(0, sequenceGRF.getAbsolutePath().length()-3);
+				System.out.println("fst2Name = "+fst2Name+"\n");
+				fst2Name = fst2Name + "fst2";
+				File fst2= new File(fst2Name);
+				final FlattenCommand flattenCmd = new FlattenCommand().fst2(
+						fst2).resultType(false).depth(5);
+				commands.addCommand(flattenCmd);
+				Fst2TxtCommand cmd = new Fst2TxtCommand().text(
+						//					Config.getCurrentSnt()
+						sntFile
+						).fst2(fst2).alphabet(
+								ConfigManager.getManager().getAlphabet(null)).mode(true);
+				if (ConfigManager.getManager().isCharByCharLanguage(null))
+					cmd = cmd.charByChar(ConfigManager.getManager()
+							.isMorphologicalUseOfSpaceAllowed(null));
+				commands.addCommand(cmd);
+			}
+			//		Config.setCurrentSentenceGraph(sequenceGRF);
+			//		Config.setCurrentReplaceGraph(replace);
+			dir = new File(SourceFile.getText().substring(0, SourceFile.getText().length())+"_snt");
+			if (dir==null){
+				System.out.println("Dir = null");		
+			}
+			//		if (!dir.exists()) {
+			//			/* If the directory toto_snt does not exist, we create it */
+			//			commands.addCommand(new MkdirCommand().name(dir));
+			//		}
+			/* Cleaning files */
+			Config.cleanTfstFiles(true);
+			TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
+					//				Config.getCurrentSnt()
 					sntFile
-					).fst2(fst2).alphabet(
-					ConfigManager.getManager().getAlphabet(null)).mode(true);
-			if (ConfigManager.getManager().isCharByCharLanguage(null))
-				cmd = cmd.charByChar(ConfigManager.getManager()
-						.isMorphologicalUseOfSpaceAllowed(null));
-			commands.addCommand(cmd);
+					).alphabet(
+							ConfigManager.getManager().getAlphabet(null));
+			if (ConfigManager.getManager().isCharByCharLanguage(null)) {
+				tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
+			}
+			commands.addCommand(tokenizeCmd);
 		}
-//		Config.setCurrentSentenceGraph(sequenceGRF);
-//		Config.setCurrentReplaceGraph(replace);
-		dir = new File(SourceFile.getText().substring(0, SourceFile.getText().length())+"_snt");
-		if (dir==null){
-			System.out.println("Dir = null");		
-		}
-//		if (!dir.exists()) {
-//			/* If the directory toto_snt does not exist, we create it */
-//			commands.addCommand(new MkdirCommand().name(dir));
-//		}
-		/* Cleaning files */
-		Config.cleanTfstFiles(true);
-		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
-//				Config.getCurrentSnt()
-				sntFile
-				).alphabet(
-				ConfigManager.getManager().getAlphabet(null));
-		if (ConfigManager.getManager().isCharByCharLanguage(null)) {
-			tokenizeCmd = tokenizeCmd.tokenizeCharByChar();
-		}
-		commands.addCommand(tokenizeCmd);
-		
 		final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
 				ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
 				.output(GRFfile.getText()).jokers(n_op).joker_insert(n_a)
@@ -402,8 +405,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		final JLabel delete = new JLabel("delete");
 		final int removeSuffix ;
 		if(SourceFile.getText().endsWith(".txt") ||
-								SourceFile.getText().endsWith(".snt") ||
-								SourceFile.getText().endsWith(".xml")){
+				SourceFile.getText().endsWith(".snt") ||
+				SourceFile.getText().endsWith(".xml")){
 			removeSuffix=1; 
 		}
 		else
