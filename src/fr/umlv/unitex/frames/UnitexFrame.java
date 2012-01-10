@@ -388,7 +388,7 @@ public class UnitexFrame extends JFrame {
 						.newConstructSeqTfstFrame();
 			}
 		};
-		constructSeqFst.setEnabled(false);
+		constructSeqFst.setEnabled(true);
 		textMenu.add(new JMenuItem(constructSeqFst));
 		convertFst = new AbstractAction("Convert FST-Text to Text...") {
 			public void actionPerformed(ActionEvent e) {
