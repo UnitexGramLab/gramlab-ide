@@ -75,6 +75,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 	SpinnerNumberModel sm_op, sm_r, sm_d, sm_a;
 	JRadioButton bTEI, bTXT, bSNT;
 	private File sequenceGRF;
+	private File ReplaceGRF;
 
 	/**
 	 * Creates and shows a new <code>ConstructSeqFstFrame</code>.
@@ -263,23 +264,21 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 				}
 				dir = new File (dirName);
 				if (!dir.exists()){
+					//Mkdir
 					final MkdirCommand mkdir = new MkdirCommand().name(dir);
 					commands.addCommand(mkdir);
 				}
+				//Normalize
 				NormalizeCommand normalizeCmd = new NormalizeCommand()
 				.textWithDefaultNormalization(originalTextFile);
 				sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
 				sequenceGRF=new File(sequenceGRF, "Preprocessing");
 				sequenceGRF=new File(sequenceGRF, "Sentence");
 				sequenceGRF=new File(sequenceGRF, "SequenceTEI.grf");
-				//			final File dir = Config.getCurrentSntDir();
-				//			if (dir==null){
-				//				Config.setCurrentSnt(new File(""));
-				//			}
-				//			if (!dir.exists()) {
-				//				final MkdirCommand mkdir = new MkdirCommand().name(dir);
-				//				commands.addCommand(mkdir);
-				//			}
+				ReplaceGRF =new File(Config.getUserCurrentLanguageDir(),"Graphs");
+				ReplaceGRF =new File(ReplaceGRF,"Preprocessing");
+				ReplaceGRF =new File(ReplaceGRF,"Replace");
+				ReplaceGRF =new File(ReplaceGRF,"ReplaceTEI.grf");
 			}
 			if (bTXT.isSelected()){
 				System.out.println(">bTXT");
@@ -296,10 +295,12 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 				}
 				dir = new File (dirName);
 				if (!dir.exists()){
+					//Mkdir
 					final MkdirCommand mkdir = new MkdirCommand().name(dir);
 					commands.addCommand(mkdir);
 				}
 				System.out.println("UserCurrentLanguageDir : "+Config.getUserCurrentLanguageDir());
+				//Normalize
 				NormalizeCommand normalizeCmd = new NormalizeCommand().textWithDefaultNormalization(originalTextFile);
 				commands.addCommand(normalizeCmd);
 				sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
@@ -318,6 +319,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 						true));
 			}else{
 				System.out.println("sequenceGRF exists");
+				//Grf2Fst2
 				final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(sequenceGRF)
 						.enableLoopAndRecursionDetection(true)
 						.tokenizationMode(null, sequenceGRF).repository();
@@ -328,18 +330,43 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 				System.out.println("fst2Name = "+fst2Name+"\n");
 				fst2Name = fst2Name + "fst2";
 				File fst2= new File(fst2Name);
+				//Flatten
 				final FlattenCommand flattenCmd = new FlattenCommand().fst2(
 						fst2).resultType(false).depth(5);
 				commands.addCommand(flattenCmd);
-				Fst2TxtCommand cmd = new Fst2TxtCommand().text(
+				//Fst2Txt
+				Fst2TxtCommand Fst2Txtcmd = new Fst2TxtCommand().text(
 						//					Config.getCurrentSnt()
 						sntFile
 						).fst2(fst2).alphabet(
 								ConfigManager.getManager().getAlphabet(null)).mode(true);
 				if (ConfigManager.getManager().isCharByCharLanguage(null))
-					cmd = cmd.charByChar(ConfigManager.getManager()
-							.isMorphologicalUseOfSpaceAllowed(null));
-				commands.addCommand(cmd);
+					Fst2Txtcmd = Fst2Txtcmd.charByChar(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
+				commands.addCommand(Fst2Txtcmd);
+				if(bTEI.isSelected()){
+					//grfCmd2
+					final Grf2Fst2Command grfCmd2 = new Grf2Fst2Command().grf(ReplaceGRF)
+							.enableLoopAndRecursionDetection(true)
+							.tokenizationMode(null, ReplaceGRF).repository();
+					commands.addCommand(grfCmd2);
+					String fst2Name2 = ReplaceGRF.getAbsolutePath().substring(0,ReplaceGRF.getAbsolutePath().length()-3);
+					fst2Name2= fst2Name2+ "fst2";
+					File fst22 = new File(fst2Name2);
+					//					final FlattenCommand flattenCmd2 = new FlattenCommand().fst2(fst22).resultType(false).depth(5);
+					//Fst2Txt2
+					Fst2TxtCommand Fst2Txt2 = new Fst2TxtCommand().text(
+							//					Config.getCurrentSnt()
+							sntFile
+							).fst2(fst22).alphabet(
+									ConfigManager.getManager().getAlphabet(null)).mode(false);
+
+					if (ConfigManager.getManager().isCharByCharLanguage(null)){
+						//Tokenize
+						Fst2Txt2 = Fst2Txt2.charByChar(ConfigManager.getManager()
+								.isMorphologicalUseOfSpaceAllowed(null));
+					}
+					commands.addCommand(Fst2Txt2);	
+				}
 			}
 			//		Config.setCurrentSentenceGraph(sequenceGRF);
 			//		Config.setCurrentReplaceGraph(replace);
@@ -353,6 +380,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 			//		}
 			/* Cleaning files */
 			Config.cleanTfstFiles(true);
+			//tokenizeCmd			
 			TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
 					//				Config.getCurrentSnt()
 					sntFile
@@ -363,6 +391,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 			}
 			commands.addCommand(tokenizeCmd);
 		}
+		//Seq2Grf		
 		final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
 				ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
 				.output(GRFfile.getText()).jokers(n_op).joker_insert(n_a)
