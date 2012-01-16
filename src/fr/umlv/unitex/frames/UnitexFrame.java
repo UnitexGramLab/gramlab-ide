@@ -164,7 +164,6 @@ public class UnitexFrame extends JFrame {
 						locatePattern.setEnabled(false);
 						displayLocatedSequences.setEnabled(false);
 						constructFst.setEnabled(false);
-						constructSeqFst.setEnabled(false);
 						convertFst.setEnabled(false);
 						closeText.setEnabled(false);
 						InternalFrameManager.getManager(null)
