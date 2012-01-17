@@ -161,6 +161,13 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		fileP.setBorder(new EmptyBorder(8, 8, 1, 1));
 		fileP.add(new JLabel("select the original document :"));
 		fileP2.add(SourceFile, BorderLayout.LINE_START);
+		if (Config.getCurrentSnt()!=null){
+			SourceFile.setText(Config.getCurrentSnt().getAbsolutePath());
+			bSNT.setSelected(true);
+			bTEI.setSelected(false);
+			bTXT.setSelected(false);
+			GRFfile.setText(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".grf");
+		}
 		final Action setAction = new AbstractAction("Set ...") {
 			public void actionPerformed(ActionEvent arg1) {
 				final JFileChooser chooser = Config.getFileEditionDialogBox();//getGrfAndFst2DialogBox();
@@ -271,6 +278,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 				//Normalize
 				NormalizeCommand normalizeCmd = new NormalizeCommand()
 				.textWithDefaultNormalization(originalTextFile);
+				commands.addCommand(normalizeCmd);
 				sequenceGRF=new File(Config.getUserCurrentLanguageDir(), "Graphs");
 				sequenceGRF=new File(sequenceGRF, "Preprocessing");
 				sequenceGRF=new File(sequenceGRF, "Sentence");
