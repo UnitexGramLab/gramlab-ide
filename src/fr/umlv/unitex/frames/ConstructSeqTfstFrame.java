@@ -33,6 +33,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -75,6 +76,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 	JSpinner spinner_op, spinner_r, spinner_d, spinner_a;
 	SpinnerNumberModel sm_op, sm_r, sm_d, sm_a;
 	JRadioButton bTEI, bTXT, bSNT;
+	private final JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
 	private File sequenceGRF;
 	private File ReplaceGRF;
 
@@ -483,7 +485,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 			final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
 					ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
 					.output(GRFfile.getText()).jokers(n_op).joker_insert(n_a)
-					.joker_replace(n_r).joker_delete(n_d).text(
+					.joker_replace(n_r).joker_delete(n_d).applyBeautify(applyBeautify.isSelected()?1:0).text(
 							sntFile);
 			System.out.println("seqCmd =" + seqCmd.getCommandLine());
 			commands.addCommand(seqCmd);
@@ -515,12 +517,13 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 
 	private JPanel jokersPanel() {
 		// cf TextAutomatonFrame.java line 453
-		final JPanel p = new JPanel(new GridLayout(4, 1));
+		final JPanel p = new JPanel(new GridLayout(5, 1));
 		p.setBorder(BorderFactory.createRaisedBevelBorder());
 		final JLabel jokers = new JLabel("Jokers");
 		final JLabel insert = new JLabel("insert");
 		final JLabel replace = new JLabel("replace");
 		final JLabel delete = new JLabel("delete");
+//		final JLabel beautify = new JLabel("apply Beautify");
 		sm_op = new SpinnerNumberModel(0, 0, 10, 1);
 		sm_op.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -640,7 +643,11 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		_p4.add(delete);
 		_p4.add(spinner_d);
 		p.add(_p4);
-
+		
+		JPanel _p5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+//		_p5.add(beautify);
+		_p5.add(applyBeautify);
+		p.add(_p5);
 		return p;
 	}
 
