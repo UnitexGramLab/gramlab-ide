@@ -25,7 +25,7 @@ public abstract class AbstractMethodCommand extends CommandBuilder {
 		type = CommandBuilder.METHOD;
 	}
 
-	AbstractMethodCommand(String s) {
+	protected AbstractMethodCommand(String s) {
 		/*
 		 * We don't call super(s), because we want to see 'mkdir' and not
 		 * '.../Unitex/App/mkdir'
