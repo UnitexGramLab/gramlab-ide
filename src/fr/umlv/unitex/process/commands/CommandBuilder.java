@@ -36,6 +36,7 @@ public abstract class CommandBuilder {
 	public static final int METHOD = 3;
 	protected final ArrayList<String> list;
 	int type = PROGRAM;
+	private boolean unitexProgram=true;
 
 	CommandBuilder(String programName) {
 		list = new ArrayList<String>();
@@ -53,7 +54,12 @@ public abstract class CommandBuilder {
 		element(programName);
 	}
 
-	CommandBuilder() {
+	public CommandBuilder() {
+		this(true);
+	}
+	
+	public CommandBuilder(boolean unitexProgram) {
+		this.unitexProgram=unitexProgram;
 		list = new ArrayList<String>();
 	}
 
@@ -61,15 +67,19 @@ public abstract class CommandBuilder {
 		this.list = list;
 	}
 
-	void element(String s) {
+	public void element(String s) {
 		list.add(s);
 	}
 
-	void protectElement(String s) {
+	public void protectElement(String s) {
 		element("\"" + s + "\"");
 	}
 
 	public String getOutputEncoding() {
+		if (!unitexProgram) {
+			/* This is meaningful only for Unitex programs */
+			return null;
+		}
 		switch (ConfigManager.getManager().getEncoding(null)) {
 		case UTF8:
 			return "-qutf8-no-bom";
