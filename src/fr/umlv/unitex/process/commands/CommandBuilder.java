@@ -20,16 +20,26 @@
  */
 package fr.umlv.unitex.process.commands;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.console.ConsoleEntry;
+import fr.umlv.unitex.console.Couple;
+import fr.umlv.unitex.process.EatStreamThread;
+import fr.umlv.unitex.process.ExecParameters;
+import fr.umlv.unitex.process.Log;
+import fr.umlv.unitex.process.ProcessInfoThread;
 
 /**
  * This class provides facilities for build process command lines.
  * 
  * @author Sébastien Paumier
  */
-public abstract class CommandBuilder {
+public abstract class CommandBuilder implements AbstractCommand {
 	public static final int PROGRAM = 0;
 	public static final int MESSAGE = 1;
 	public static final int ERROR_MESSAGE = 2;
@@ -128,4 +138,99 @@ public abstract class CommandBuilder {
 	public int getType() {
 		return type;
 	}
+	
+	public ConsoleEntry logIntoConsole() {
+		return Console.addCommand(
+				getCommandLine(), false, Log
+						.getCurrentLogID());
+	}
+	
+	/**
+	 * This is overrided by GrfDiffCommand
+	 */
+	public boolean isCommandSuccessful(int retValue) {
+		return retValue==0;
+	}
+	
+	/**
+	 * Executes the command, dealing with its outputs.
+	 */
+	public boolean executeCommand(final ExecParameters parameters,final ConsoleEntry entry) {
+		Process p=null;
+		boolean problem=false;
+		final CommandBuilder currentCommand=this;
+		final String[] comm=getCommandArguments();
+		try {
+			/* We create the process */
+			p = Runtime.getRuntime().exec(comm);
+			if (parameters.getStdout()==null) {
+				/* If needed, we just consume the output stream */
+				new EatStreamThread(p.getInputStream()).start();
+			} else {
+				new ProcessInfoThread(parameters.getStdout(), p
+					.getInputStream(),null)
+					.start();
+			}
+			if (parameters.getStderr()==null) {
+				/* If needed, we just consume the error stream */
+				new EatStreamThread(p.getErrorStream()).start();
+			} else {
+				new ProcessInfoThread(parameters.getStderr(), p
+					.getErrorStream(),entry)
+					.start();
+			}
+			/* Now, we just wait for the end of the process */
+			try {
+				p.waitFor();
+				if (parameters.isStopOnProblem()) {
+					/* iff we need to report a problem */
+					if (!currentCommand.isCommandSuccessful(p.exitValue())) {
+						problem=true;
+					}
+				}
+				return !problem;
+			} catch (final java.lang.InterruptedException e) {
+				/* If the process is interrupted for any reason,
+				 * like a click on a "Cancel" button
+				 */
+				if (parameters.isStopOnProblem()) {
+					try {
+						SwingUtilities
+								.invokeAndWait(new Runnable() {
+									public void run() {
+										parameters.getStderr()
+												.addLine(new Couple(
+														"The program "
+																+ comm[0]
+																+ " has been interrupted\n",
+														true));
+									}
+								});
+					} catch (final InterruptedException e1) {
+						e1.printStackTrace();
+					} catch (final InvocationTargetException e1) {
+						e1.printStackTrace();
+					}
+					problem = true;
+				}
+				return problem;
+			}
+		} catch (final java.io.IOException e) {
+			/* If the process could not be created */
+			final String programName = comm[0];
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					parameters.getStderr().addLine(new Couple(
+							"Cannot launch the program "
+									+ programName + "\n",
+							true));
+				}
+			});
+			if (parameters.isStopOnProblem()) {
+				problem = true;
+			}
+			return !problem;
+		}
+	}
+	
 }
