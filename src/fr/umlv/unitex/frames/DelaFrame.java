@@ -257,7 +257,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 			InternalFrameManager.getManager(dela1).newTranscodeOneFileDialog(
 					dela1, toDo);
 		} else {
-			toDo.toDo();
+			toDo.toDo(true);
 		}
 	}
 
@@ -290,7 +290,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 			dela = s;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			loadUnicodeDela(dela);
 		}
 	}

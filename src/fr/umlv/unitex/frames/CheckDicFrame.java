@@ -127,7 +127,7 @@ public class CheckDicFrame extends JInternalFrame {
 			results = s;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(results).newCheckResultFrame(
 					results);
 		}

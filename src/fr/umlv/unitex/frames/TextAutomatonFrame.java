@@ -956,7 +956,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			FileUtil.deleteFileByName(new File(sntDir, "sentence*.grf"));
 			File f = new File(sntDir, "currelagsentence.grf");
 			if (f.exists() && !f.delete()) {
@@ -990,7 +990,7 @@ class loadSentenceDo implements ToDo {
 		frame = f;
 	}
 
-	public void toDo() {
+	public void toDo(boolean success) {
 		frame.loadCurrSentence();
 	}
 }
@@ -1004,7 +1004,7 @@ class ImplodeDo implements ToDo {
 		fr = frame;
 	}
 
-	public void toDo() {
+	public void toDo(boolean success) {
 		fr.implodeTextAutomaton(fst);
 	}
 }

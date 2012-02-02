@@ -321,7 +321,7 @@ public class XAlignFrame extends JInternalFrame {
 				dico = null;
 			}
 			final ToDo toDo = new ToDo() {
-				public void toDo() {
+				public void toDo(boolean success) {
 					InternalFrameManager.getManager(null).newXAlignLocateFrame(
 							language, snt, concordModel);
 				}
@@ -449,7 +449,7 @@ public class XAlignFrame extends JInternalFrame {
 			this.f = f;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			try {
 				model1.load(f);
 			} catch (final IOException e) {

@@ -734,7 +734,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(sntDir).newTextDicFrame(sntDir,
 					false);
 			if (ConfigManager.getManager().isKorean(null)) {

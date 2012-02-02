@@ -42,6 +42,11 @@ public interface ToDo {
 	 * constructor
 	 * 
 	 * success will be true iff all commands returned 0.
+	 * 
+	 * NOTE: When a command sequence is executed within a ProcessInfoFrame,
+	 *       the toDo method is called only if there is no problem, so 
+	 *       'success' is always true. This parameter may be useful when
+	 *       some commands are invoked through another way.
 	 */
-	public void toDo(/*boolean success*/);
+	public void toDo(boolean success);
 }
