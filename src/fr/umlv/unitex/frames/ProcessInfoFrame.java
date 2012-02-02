@@ -40,18 +40,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Log;
-import fr.umlv.unitex.process.ProcessInfoThread;
+import fr.umlv.unitex.process.Executor;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.AbstractMethodCommand;
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.GrfDiffCommand;
-import fr.umlv.unitex.process.commands.MessageCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.list.ProcessOutputList;
 import fr.umlv.unitex.process.list.ProcessOutputListModel;
@@ -63,7 +55,6 @@ import fr.umlv.unitex.process.list.ProcessOutputListModel;
  * @author Sébastien Paumier
  */
 public class ProcessInfoFrame extends JInternalFrame {
-	Process p;
 	final ProcessOutputList stdoutList = new ProcessOutputList(new ProcessOutputListModel());
 	final ProcessOutputList stderrList = new ProcessOutputList(new ProcessOutputListModel());
 	public final static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
@@ -79,9 +70,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 		}
 	};
 	final boolean close_on_finish;
-	private final JButton ok;
-	private final JButton cancel;
+	final JButton ok;
+	final JButton cancel;
 	ExecParameters parameters;
+	Executor executor;
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -93,7 +85,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	 *            all commands
 	 * @param myDo
 	 *            object describing actions to do after the completion of all
-	 *            commands
+	 *            commands, unless a command goes wrong
 	 * @param stopIfProblem
 	 *            indicates if the failure of a command must stop all commands
 	 */
@@ -120,16 +112,12 @@ public class ProcessInfoFrame extends JInternalFrame {
 		top.add(middle, BorderLayout.CENTER);
 		final Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
-				if (p != null) {
-					try {
-						p.exitValue();
-					} catch (final IllegalThreadStateException ex) {
-						return;
-					}
+				if (!executor.hasFinished()) {
+					throw new IllegalStateException("The OK button should not be enabled");
 				}
 				dispose();
 				if (parameters.getDO() != null) {
-					parameters.getDO().toDo();
+					parameters.getDO().toDo(executor.getSuccess());
 				}
 			}
 		};
@@ -137,9 +125,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 		ok.setEnabled(false);
 		final Action cancelAction = new AbstractAction("Cancel") {
 			public void actionPerformed(ActionEvent arg0) {
-				if (p != null) {
-					p.destroy();
-				}
+				executor.interrupt();
 				dispose();
 			}
 		};
@@ -159,28 +145,19 @@ public class ProcessInfoFrame extends JInternalFrame {
 	}
 
 	void launchBuilderCommands() {
-		final MultiCommands commands=parameters.getCommands();
-		final Thread thread = new Thread() {
-			@Override
-			public void run() {
-				boolean problem = false;
-				CommandBuilder command;
-				for (int i = 0; (!problem) && i < commands.numberOfCommands(); i++) {
-					if ((command = commands.getCommand(i)) != null) {
-						ConsoleEntry entry=null;
-						if (parameters.isTraceIntoConsole()) {
-							entry=command.logIntoConsole();
-						}
-						command.executeCommand(parameters,entry);
-					} // end of if ((command = commands.getCommand(i)) != null)
-				}
+		final ToDo originalToDo=parameters.getDO();
+		ToDo myDo=new ToDo() {
+			public void toDo(final boolean success) {
+				/* This is the code to be executed after all commands
+				 * are executed
+				 */
 				final boolean cantCloseBecauseOfErrMessages = (stderrList.getModel()
 						.size() > 0);
-				final boolean PB = problem, CL = close_on_finish;
+				final boolean PB = !success, CL = close_on_finish;
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
 						public void run() {
-							ToDo DO=parameters.getDO();
+							ToDo DO=originalToDo;
 							if (PB) {
 								setTitle("ERROR");
 								DO = null;
@@ -190,13 +167,13 @@ public class ProcessInfoFrame extends JInternalFrame {
 							if (!cantCloseBecauseOfErrMessages && !PB && CL) {
 								dispose();
 								if (DO != null) {
-									DO.toDo();
+									DO.toDo(success);
 								}
 							}
 						}
 					});
 				} catch (final InterruptedException e) {
-					e.printStackTrace();
+					/* Nothing to do */
 				} catch (final InvocationTargetException e) {
 					e.printStackTrace();
 				}
@@ -204,8 +181,12 @@ public class ProcessInfoFrame extends JInternalFrame {
 				cancel.setEnabled(false);
 			}
 		};
-		thread.setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler
-				.getHandler());
-		thread.start();
+		/* We create new parameters with our custom todo */
+		executor=new Executor(new ExecParameters(
+				parameters.isStopOnProblem(),
+				parameters.getCommands(),
+				parameters.getStdout(), parameters.getStderr(),myDo,
+				parameters.isTraceIntoConsole()));
+		executor.start();
 	}
 }

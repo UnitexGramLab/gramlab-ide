@@ -385,7 +385,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 			this.concordModel1 = concordModel;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			ConcordanceLoader.load(file, concordModel1);
 		}
 	}

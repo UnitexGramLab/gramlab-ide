@@ -559,7 +559,7 @@ public class LocateFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			final String res = readInfo(new File(sntDir, "concord.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
@@ -577,7 +577,7 @@ public class LocateFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			final String res = readTfstInfo(new File(sntDir, "concord_tfst.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);

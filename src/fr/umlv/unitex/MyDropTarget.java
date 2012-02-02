@@ -265,7 +265,7 @@ public class MyDropTarget {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						final ToDo toDo = new ToDo() {
-							public void toDo() {
+							public void toDo(boolean success) {
 								InternalFrameManager.getManager(dela)
 										.newDelaFrame(dela);
 							}
@@ -275,7 +275,7 @@ public class MyDropTarget {
 							InternalFrameManager.getManager(dela)
 									.newTranscodeOneFileDialog(dela, toDo);
 						} else {
-							toDo.toDo();
+							toDo.toDo(true);
 						}
 					}
 				});

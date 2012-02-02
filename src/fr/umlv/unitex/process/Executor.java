@@ -20,6 +20,11 @@
  */
 package fr.umlv.unitex.process;
 
+import fr.umlv.unitex.console.ConsoleEntry;
+import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.process.commands.CommandBuilder;
+import fr.umlv.unitex.process.commands.MultiCommands;
+
 /**
  * This object launches a thread that will process all the given commands.
  * 
@@ -28,24 +33,63 @@ package fr.umlv.unitex.process;
  */
 public class Executor extends Thread {
 
-	private ExecParameters p;
+	private ExecParameters parameters;
 	private boolean success=true;
+	private boolean finished=false;
+	private ConsoleEntry entry=null;
 	
-	public Executor(ExecParameters p) {
-		this.p=p;
-		if (p.getCommands()==null || p.getCommands().numberOfCommands()==0) {
+	public Executor(ExecParameters parameters) {
+		this.parameters=parameters;
+		if (parameters.getCommands()==null || parameters.getCommands().numberOfCommands()==0) {
 			throw new IllegalArgumentException("Invalid null or empty MultiCommands");
 		}
+		setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
 	}
 
 	@Override
 	public void run() {
-
+		MultiCommands commands=parameters.getCommands();
+		CommandBuilder command;
+		for (int i = 0; success && i < commands.numberOfCommands(); i++) {
+			if ((command = commands.getCommand(i)) != null) {
+				entry=null;
+				if (parameters.isTraceIntoConsole()) {
+					entry=command.logIntoConsole();
+				}
+				if (!command.executeCommand(parameters,entry)) {
+					success=false;
+				}
+				entry=null;
+			}
+		}
+		ToDo DO=parameters.getDO();
+		if (DO!=null) {
+			DO.toDo(success);
+		}
+		finished=true;
 	}
 
 	
 	public boolean getSuccess() {
 		return success;
+	}
+	
+	@Override
+	public void interrupt() {
+		Process p=parameters.getProcess();
+		if (p!=null) {
+			p.destroy();
+			if (entry!=null) {
+				entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
+			}
+		}
+		success=false;
+		finished=true;
+		super.interrupt();
+	}
+
+	public boolean hasFinished() {
+		return finished;
 	}
 	
 }

@@ -282,7 +282,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 		setVisible(false);
 		InternalFrameManager.getManager(null).closeXAlignFrame();
 		final ToDo toDo = new ToDo() {
-			public void toDo() {
+			public void toDo(boolean success) {
 				InternalFrameManager.getManager(null).newXAlignFrame(
 						xmlSourceFile, xmlTargetFile, alignmentFile2);
 			}
@@ -291,7 +291,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 		if (commands.numberOfCommands() != 0) {
 			Launcher.exec(commands, true, toDo, true);
 		} else {
-			toDo.toDo();
+			toDo.toDo(true);
 		}
 	}
 

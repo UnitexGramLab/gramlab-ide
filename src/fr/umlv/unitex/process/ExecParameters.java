@@ -28,6 +28,22 @@ import fr.umlv.unitex.process.list.ProcessOutputList;
  * 
  */
 public class ExecParameters {
+	
+	/**
+	 * If not null, this represents the current running process.
+	 * This field is used to know which is the current process from
+	 * within an Executor object
+	 */
+	private Process process;
+	
+	public Process getProcess() {
+		return process;
+	}
+
+	public void setProcess(Process process) {
+		this.process = process;
+	}
+
 	public boolean isStopOnProblem() {
 		return stopOnProblem;
 	}
@@ -93,6 +109,6 @@ public class ExecParameters {
 		this.DO = DO;
 		this.traceIntoConsole=traceIntoConsole;
 	}
-
+	
 }
 

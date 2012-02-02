@@ -237,7 +237,7 @@ public class GraphPathDialog extends JDialog {
 			this.name = name;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			textArea.load(name);
 			textArea.getModel().addListDataListener(listListener);
 		}

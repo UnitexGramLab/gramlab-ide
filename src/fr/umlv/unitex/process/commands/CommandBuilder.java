@@ -146,7 +146,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 	}
 	
 	/**
-	 * This is overrided by GrfDiffCommand
+	 * This is overridden by GrfDiffCommand
 	 */
 	public boolean isCommandSuccessful(int retValue) {
 		return retValue==0;
@@ -162,7 +162,8 @@ public abstract class CommandBuilder implements AbstractCommand {
 		final String[] comm=getCommandArguments();
 		try {
 			/* We create the process */
-			p = Runtime.getRuntime().exec(comm);
+			parameters.setProcess(Runtime.getRuntime().exec(comm));
+			p=parameters.getProcess();
 			if (parameters.getStdout()==null) {
 				/* If needed, we just consume the output stream */
 				new EatStreamThread(p.getInputStream()).start();
@@ -188,6 +189,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 						problem=true;
 					}
 				}
+				parameters.setProcess(null);
 				return !problem;
 			} catch (final java.lang.InterruptedException e) {
 				/* If the process is interrupted for any reason,
@@ -213,6 +215,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 					}
 					problem = true;
 				}
+				parameters.setProcess(null);
 				return problem;
 			}
 		} catch (final java.io.IOException e) {
@@ -229,6 +232,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 			if (parameters.isStopOnProblem()) {
 				problem = true;
 			}
+			parameters.setProcess(null);
 			return !problem;
 		}
 	}

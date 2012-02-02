@@ -754,7 +754,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			this.diffResult = diffResult;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			final GraphDecorator info = GraphDecorator.loadDiffFile(diffResult);
 			if (info == null) {
 				JOptionPane.showMessageDialog(null,
