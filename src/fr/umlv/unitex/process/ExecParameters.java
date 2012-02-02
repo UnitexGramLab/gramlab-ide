@@ -1,0 +1,98 @@
+/*
+ * Unitex
+ *
+ * Copyright (C) 2001-2012 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+ *
+ */
+package fr.umlv.unitex.process;
+
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.list.ProcessOutputList;
+
+/**
+ * @author paumier
+ * 
+ */
+public class ExecParameters {
+	public boolean isStopOnProblem() {
+		return stopOnProblem;
+	}
+
+	public MultiCommands getCommands() {
+		return commands;
+	}
+
+	public ProcessOutputList getStdout() {
+		return stdout;
+	}
+
+	public ProcessOutputList getStderr() {
+		return stderr;
+	}
+
+	public ToDo getDO() {
+		return DO;
+	}
+
+	public boolean isTraceIntoConsole() {
+		return traceIntoConsole;
+	}
+	
+	/**
+	 * true means that if a command does not return 0, the
+	 * remaining commands will be skipped 
+	 */
+	private boolean stopOnProblem;
+	
+	/**
+	 * The commands to be executed, one by one
+	 */
+	private MultiCommands commands;
+	
+	/**
+	 * The models used to manage outputs. If stdxxx is null, it means
+	 * that the output should be ignored. In that case, a NullOutputStream
+	 * will be used to consume the data.
+	 */
+	private ProcessOutputList stdout,stderr;
+	
+	/**
+	 * What to execute after the command sequence has been executed.
+	 * This will be invoked in the Swing thread.
+	 */
+	private ToDo DO;
+	
+	/**
+	 * If true, the commands and their error outputs will be added
+	 * to Unitex console.
+	 */
+	private boolean traceIntoConsole;
+	
+	public ExecParameters(boolean stopOnProblem, MultiCommands commands,
+			ProcessOutputList stdout, ProcessOutputList stderr,
+			ToDo DO,boolean traceIntoConsole) {
+		super();
+		this.stopOnProblem = stopOnProblem;
+		this.commands = commands;
+		this.stdout = stdout;
+		this.stderr = stderr;
+		this.DO = DO;
+		this.traceIntoConsole=traceIntoConsole;
+	}
+
+}
+

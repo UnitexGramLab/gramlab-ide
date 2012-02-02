@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.process.ExecParameters;
@@ -31,12 +32,12 @@ import fr.umlv.unitex.process.ExecParameters;
 /**
  * @author Sébastien Paumier
  */
-public class MessageCommand extends CommandBuilder {
+public class ErrorMessageCommand extends CommandBuilder {
 	private final String message;
 
-	public MessageCommand(String mess) {
+	public ErrorMessageCommand(String mess) {
 		super("");
-		type = MESSAGE;
+		type = ERROR_MESSAGE;
 		message = mess;
 	}
 
@@ -46,18 +47,19 @@ public class MessageCommand extends CommandBuilder {
 	
 	@Override
 	public ConsoleEntry logIntoConsole() {
-		/* Nothing to log for a normal message */
-		return null;
+		return Console.addCommand(
+				"Error message emitted by the graphical interface",
+				true, null);
 	}
 	
 	@Override
 	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry) {
-		if (p.getStdout()==null) return true;
-		final MessageCommand c=this;
+		if (p.getStderr()==null) return true;
+		final ErrorMessageCommand c=this;
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
-					p.getStdout().addLine(new Couple(c.getMessage(), true));
+					p.getStderr().addLine(new Couple(c.getMessage(), true));
 				}
 			});
 		} catch (InterruptedException e) {

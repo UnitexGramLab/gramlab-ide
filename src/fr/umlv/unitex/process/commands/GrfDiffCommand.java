@@ -42,4 +42,14 @@ public class GrfDiffCommand extends CommandBuilder {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
+	
+	/**
+	 * Since GrfDiff must conform to the diff return policy, it does
+	 * not behave as the other Unitex programs.
+	 */
+	@Override
+	public boolean isCommandSuccessful(int retValue) {
+		return retValue!=2;
+	}
+	
 }

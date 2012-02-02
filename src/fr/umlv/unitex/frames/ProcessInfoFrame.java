@@ -44,15 +44,17 @@ import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.process.ExecParameters;
 import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ProcessInfoThread;
-import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.AbstractMethodCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
 import fr.umlv.unitex.process.commands.MessageCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.list.ProcessOutputList;
+import fr.umlv.unitex.process.list.ProcessOutputListModel;
 
 /**
  * This class describes a frame used to execute shell commands and display
@@ -61,11 +63,9 @@ import fr.umlv.unitex.process.commands.MultiCommands;
  * @author Sébastien Paumier
  */
 public class ProcessInfoFrame extends JInternalFrame {
-	private Process p;
-	private final ProcessOutputListModel stdoutModel = new ProcessOutputListModel();
-	private final ProcessOutputListModel stderrModel = new ProcessOutputListModel();
-	private final JList stdoutList = new JList(stdoutModel);
-	private final JList stderrList = new JList(stderrModel);
+	Process p;
+	final ProcessOutputList stdoutList = new ProcessOutputList(new ProcessOutputListModel());
+	final ProcessOutputList stderrList = new ProcessOutputList(new ProcessOutputListModel());
 	public final static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
 	final static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
 		@Override
@@ -78,12 +78,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 			return this;
 		}
 	};
-	private final boolean close_on_finish;
-	private final boolean stop_if_problem;
-	private MultiCommands commands = null;
-	ToDo DO;
+	final boolean close_on_finish;
 	private final JButton ok;
 	private final JButton cancel;
+	ExecParameters parameters;
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -102,11 +100,9 @@ public class ProcessInfoFrame extends JInternalFrame {
 	ProcessInfoFrame(MultiCommands c, boolean close, ToDo myDo,
 			boolean stopIfProblem) {
 		super("Working...", true, false, false);
-		commands = c;
 		close_on_finish = close;
-		stop_if_problem = stopIfProblem;
-		DO = myDo;
 		final JPanel top = new JPanel(new BorderLayout());
+		parameters=new ExecParameters(stopIfProblem, c, stdoutList, stderrList, myDo, true);
 		stdoutList.setCellRenderer(myRenderer);
 		stderrList.setCellRenderer(myRenderer);
 		final JScrollPane scroll = new JScrollPane(stdoutList);
@@ -132,8 +128,8 @@ public class ProcessInfoFrame extends JInternalFrame {
 					}
 				}
 				dispose();
-				if (DO != null) {
-					DO.toDo();
+				if (parameters.getDO() != null) {
+					parameters.getDO().toDo();
 				}
 			}
 		};
@@ -163,178 +159,28 @@ public class ProcessInfoFrame extends JInternalFrame {
 	}
 
 	void launchBuilderCommands() {
-		if (commands == null)
-			return;
+		final MultiCommands commands=parameters.getCommands();
 		final Thread thread = new Thread() {
 			@Override
 			public void run() {
 				boolean problem = false;
 				CommandBuilder command;
-				for (int i = 0; (!problem) && i < commands.numberOfCommands(); i++)
+				for (int i = 0; (!problem) && i < commands.numberOfCommands(); i++) {
 					if ((command = commands.getCommand(i)) != null) {
-						switch (command.getType()) {
-						case CommandBuilder.MESSAGE: {
-							try {
-								final CommandBuilder c = command;
-								SwingUtilities.invokeAndWait(new Runnable() {
-									public void run() {
-										stdoutModel.addElement(new Couple(
-												((MessageCommand) c)
-														.getMessage(), true));
-									}
-								});
-							} catch (final InterruptedException e1) {
-								e1.printStackTrace();
-							} catch (final InvocationTargetException e1) {
-								e1.printStackTrace();
-							}
-							break;
+						ConsoleEntry entry=null;
+						if (parameters.isTraceIntoConsole()) {
+							entry=command.logIntoConsole();
 						}
-						case CommandBuilder.ERROR_MESSAGE: {
-							final ConsoleEntry entry = Console
-									.addCommand(
-											"Error message emitted by the graphical interface",
-											true, null);
-							try {
-								final CommandBuilder c = command;
-								SwingUtilities.invokeAndWait(new Runnable() {
-									public void run() {
-										final String message = ((MessageCommand) c)
-												.getMessage();
-										stderrModel.addElement(new Couple(
-												message, true));
-										entry.addErrorMessage(message);
-									}
-								});
-							} catch (final InterruptedException e1) {
-								e1.printStackTrace();
-							} catch (final InvocationTargetException e1) {
-								e1.printStackTrace();
-							}
-							break;
-						}
-						case CommandBuilder.PROGRAM: {
-							final ConsoleEntry entry = Console.addCommand(
-									command.getCommandLine(), false, Log
-											.getCurrentLogID());
-							final String[] comm = command.getCommandArguments();
-							try {
-								p = Runtime.getRuntime().exec(comm);
-								new ProcessInfoThread(stdoutList, p
-										.getInputStream(), false,
-										ProcessInfoFrame.this, true, null)
-										.start();
-								new ProcessInfoThread(stderrList, p
-										.getErrorStream(), false,
-										ProcessInfoFrame.this, true, entry)
-										.start();
-								try {
-									p.waitFor();
-								} catch (final java.lang.InterruptedException e) {
-									if (stop_if_problem) {
-										try {
-											SwingUtilities
-													.invokeAndWait(new Runnable() {
-														public void run() {
-															stderrModel
-																	.addElement(new Couple(
-																			"The program "
-																					+ comm[0]
-																					+ " has been interrupted\n",
-																			true));
-															stderrList
-																	.ensureIndexIsVisible(stderrModel
-																			.getSize() - 1);
-														}
-													});
-										} catch (final InterruptedException e1) {
-											e1.printStackTrace();
-										} catch (final InvocationTargetException e1) {
-											e1.printStackTrace();
-										}
-										problem = true;
-									}
-								}
-							} catch (final java.io.IOException e) {
-								final String programName = comm[0];
-								SwingUtilities.invokeLater(new Runnable() {
-									public void run() {
-										stderrModel.addElement(new Couple(
-												"Cannot launch the program "
-														+ programName + "\n",
-												true));
-										stderrList
-												.ensureIndexIsVisible(stderrModel
-														.getSize() - 1);
-									}
-								});
-								if (stop_if_problem) {
-									problem = true;
-								}
-							}
-							try {
-								if (p == null) {
-									if (stop_if_problem) {
-										problem = true;
-									}
-								} else {
-									if (command instanceof GrfDiffCommand) {
-										/*
-										 * GrfDiff has a special return value
-										 * meaning
-										 */
-										if (stop_if_problem
-												&& p.exitValue() == 2) {
-											problem = true;
-										}
-									} else if (p.exitValue() != 0) {
-										if (stop_if_problem) {
-											problem = true;
-										}
-									}
-								}
-							} catch (final IllegalThreadStateException e) {
-								p.destroy();
-							}
-							break;
-						}// end of program command
-						case CommandBuilder.METHOD: {
-							Console.addCommand(command.getCommandLine(), false,
-									null);
-							final AbstractMethodCommand cmd = (AbstractMethodCommand) command;
-							if (!cmd.execute()) {
-								if (stop_if_problem) {
-									try {
-										final CommandBuilder c = command;
-										SwingUtilities
-												.invokeAndWait(new Runnable() {
-													public void run() {
-														stderrModel
-																.addElement(new Couple(
-																		"Command failed: "
-																				+ c
-																						.getCommandLine(),
-																		true));
-													}
-												});
-									} catch (final InterruptedException e1) {
-										e1.printStackTrace();
-									} catch (final InvocationTargetException e1) {
-										e1.printStackTrace();
-									}
-									problem = true;
-								}
-							}
-							break;
-						}// end of method command
-						} // end of switch
+						command.executeCommand(parameters,entry);
 					} // end of if ((command = commands.getCommand(i)) != null)
-				final boolean cantCloseBecauseOfErrMessages = (stderrModel
+				}
+				final boolean cantCloseBecauseOfErrMessages = (stderrList.getModel()
 						.size() > 0);
 				final boolean PB = problem, CL = close_on_finish;
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
 						public void run() {
+							ToDo DO=parameters.getDO();
 							if (PB) {
 								setTitle("ERROR");
 								DO = null;

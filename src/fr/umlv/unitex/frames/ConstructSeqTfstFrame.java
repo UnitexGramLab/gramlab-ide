@@ -51,16 +51,15 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.ErrorMessageCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2TxtCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.MessageCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.Seq2GrfCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
-import fr.umlv.unitex.text.Text;;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user
@@ -374,9 +373,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 				}
 				else if (!sequenceGRF.exists()){
 					System.out.println("sequenceGRF : "+sequenceGRF.toString()+"does not exist");
-					commands.addCommand(new MessageCommand(
-							"*** WARNING: sentence delimitation skipped because the graph was not found ***\n",
-							true));
+					commands.addCommand(new ErrorMessageCommand(
+							"*** WARNING: sentence delimitation skipped because the graph was not found ***\n"));
 				}else{
 					System.out.println("sequenceGRF exists");
 					//Grf2Fst2
