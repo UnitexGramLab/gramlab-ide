@@ -20,51 +20,20 @@
  */
 package fr.umlv.unitex.process.commands;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
-
 import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.process.ExecParameters;
 
-/**
- * @author Sébastien Paumier
- */
-public class MessageCommand extends CommandBuilder {
-	private final String message;
+public interface AbstractCommand {
 
-	public MessageCommand(String mess) {
-		super("");
-		type = MESSAGE;
-		message = mess;
-	}
-
-	public String getMessage() {
-		return message;
-	}
+	/**
+	 * Logs the command in Unitex's console
+	 */
+	public ConsoleEntry logIntoConsole();
 	
-	@Override
-	public ConsoleEntry logIntoConsole() {
-		/* Nothing to log for a normal message */
-		return null;
-	}
+	/**
+	 * Executes the command and returns true iff
+	 * the command successfully executed
+	 */
+	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry);
 	
-	@Override
-	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry) {
-		if (p.getStdout()==null) return true;
-		final MessageCommand c=this;
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-				public void run() {
-					p.getStdout().addLine(new Couple(c.getMessage(), true));
-				}
-			});
-		} catch (InterruptedException e) {
-			return false;
-		} catch (InvocationTargetException e) {
-			return false;
-		}
-		return true;
-	}
 }

@@ -34,7 +34,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.process.ProcessInfoThread;
-import fr.umlv.unitex.process.ProcessOutputListModel;
 import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;
 import fr.umlv.unitex.process.commands.CheckDicCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
@@ -80,6 +79,8 @@ import fr.umlv.unitex.process.commands.UntokenizeCommand;
 import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 import fr.umlv.unitex.process.commands.XAlignCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
+import fr.umlv.unitex.process.list.ProcessOutputList;
+import fr.umlv.unitex.process.list.ProcessOutputListModel;
 
 public class HelpOnCommandFrame extends JInternalFrame {
 	@SuppressWarnings("unchecked")
@@ -107,7 +108,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
 			Txt2TfstCommand.class, UncompressCommand.class,
 			UntokenizeCommand.class, UnxmlizeCommand.class,
 			XAlignCommand.class, XMLizerCommand.class };
-	private boolean refreshLock = false;
+	boolean refreshLock = false;
 
 	HelpOnCommandFrame() {
 		super("Help on commands", true, true, true, true);
@@ -126,8 +127,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
 						cellHasFocus);
 			}
 		});
-		final ProcessOutputListModel stdout = new ProcessOutputListModel();
-		final JList stdoutList = new JList(stdout);
+		final ProcessOutputList stdoutList = new ProcessOutputList(new ProcessOutputListModel());
 		stdoutList.setCellRenderer(ProcessInfoFrame.myRenderer);
 		top.add(new JScrollPane(stdoutList));
 		list.addListSelectionListener(new ListSelectionListener() {
@@ -142,11 +142,10 @@ public class HelpOnCommandFrame extends JInternalFrame {
 						return;
 					final CommandBuilder command = (CommandBuilder) c
 							.newInstance();
-					stdout.removeAllElements();
+					stdoutList.empty();
 					final String[] comm = command.getCommandArguments();
 					final Process p = Runtime.getRuntime().exec(comm);
-					new ProcessInfoThread(stdoutList, p.getInputStream(),
-							false, null, false, null).start();
+					new ProcessInfoThread(stdoutList, p.getInputStream(),null).start();
 					try {
 						p.waitFor();
 					} catch (final java.lang.InterruptedException e1) {

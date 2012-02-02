@@ -26,12 +26,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.frames.ProcessInfoFrame;
+import fr.umlv.unitex.process.list.ProcessOutputList;
 
 /**
  * This class is used to monitor stdout and stderr messages of external
@@ -40,18 +39,15 @@ import fr.umlv.unitex.frames.ProcessInfoFrame;
  * @author Sébastien Paumier
  */
 public class ProcessInfoThread extends Thread {
-	private final JList list;
+	final ProcessOutputList list;
 	private BufferedReader stream;
-	private final boolean close_on_finish;
-	private ProcessInfoFrame parent_frame;
-	private final boolean scrollDown;
-	private final ConsoleEntry entry;
+	final ConsoleEntry entry;
 
 	/**
 	 * Creates a new <code>ProcessInfoThread</code>
 	 * 
 	 * @param list
-	 *            the JList to display messages
+	 *            the list to display messages
 	 * @param s
 	 *            the stream to monitor
 	 * @param close
@@ -60,13 +56,8 @@ public class ProcessInfoThread extends Thread {
 	 * @param f
 	 *            parent frame
 	 */
-	public ProcessInfoThread(JList list, InputStream s, boolean close,
-			ProcessInfoFrame f, boolean scrollDown, ConsoleEntry entry) {
-		super();
+	public ProcessInfoThread(ProcessOutputList list, InputStream s, ConsoleEntry entry) {
 		this.list = list;
-		close_on_finish = close;
-		parent_frame = f;
-		this.scrollDown = scrollDown;
 		this.entry = entry;
 		try {
 			stream = new BufferedReader(new InputStreamReader(s, "UTF8"));
@@ -126,8 +117,6 @@ public class ProcessInfoThread extends Thread {
 	public void run() {
 		String s;
 		boolean fullReturn;
-		final ProcessOutputListModel model = (ProcessOutputListModel) list
-				.getModel();
 		while ((s = myReadLine(stream)) != null) {
 			if (!s.equals("")) {
 				if (s.endsWith("\r\n")) {
@@ -147,23 +136,16 @@ public class ProcessInfoThread extends Thread {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						if (ret) {
-							model.addElement(new Couple(s2, false));
+							list.addLine(new Couple(s2, false));
 						} else {
-							model.replaceLast(new Couple(s2, false));
+							list.replaceLastLine(new Couple(s2, false));
 						}
 						if (entry != null) {
 							entry.addErrorMessage(s2);
 						}
-						if (scrollDown) {
-							list.ensureIndexIsVisible(model.getSize() - 1);
-						}
 					}
 				});
 			}
-		}
-		if (close_on_finish) {
-			parent_frame.setVisible(false);
-			parent_frame = null;
 		}
 	}
 }

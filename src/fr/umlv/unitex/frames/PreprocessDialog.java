@@ -47,10 +47,10 @@ import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
+import fr.umlv.unitex.process.commands.ErrorMessageCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2TxtCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.MessageCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
@@ -321,9 +321,6 @@ public class PreprocessDialog extends JDialog {
 		if (lastOutputOffsets != null) {
 			tokenizeCmd = tokenizeCmd.inputOffsets(lastOutputOffsets);
 		}
-		if (nextOutputOffsets != null) {
-			tokenizeCmd = tokenizeCmd.outputOffsets(nextOutputOffsets);
-		}
 		commands.addCommand(tokenizeCmd);
 		InternalFrameManager.getManager(null).closeTextFrame();
 		SntUtil.cleanSntDir(Config.getCurrentSntDir());
@@ -441,9 +438,8 @@ public class PreprocessDialog extends JDialog {
 	private MultiCommands constructTextAutomaton(final MultiCommands commands) {
 		File norm = Config.getCurrentNormGraph();
 		if (!norm.exists()) {
-			commands.addCommand(new MessageCommand(
-					"*** WARNING: normalization graph was not found ***\n",
-					true));
+			commands.addCommand(new ErrorMessageCommand(
+					"*** WARNING: normalization graph was not found ***\n"));
 			norm = null;
 		} else {
 			final String grfName = norm.getAbsolutePath();
@@ -483,9 +479,8 @@ public class PreprocessDialog extends JDialog {
 		final File f = new File(replaceName.getText());
 		if (!f.exists()) {
 			commands
-					.addCommand(new MessageCommand(
-							"*** WARNING: Replace step skipped because the graph was not found ***\n",
-							true));
+					.addCommand(new ErrorMessageCommand(
+							"*** WARNING: Replace step skipped because the graph was not found ***\n"));
 		} else {
 			final String grfName = replaceName.getText();
 			File fst2;
@@ -529,9 +524,8 @@ public class PreprocessDialog extends JDialog {
 		final File sentence = new File(sentenceName.getText());
 		if (!sentence.exists()) {
 			commands
-					.addCommand(new MessageCommand(
-							"*** WARNING: sentence delimitation skipped because the graph was not found ***\n",
-							true));
+					.addCommand(new ErrorMessageCommand(
+							"*** WARNING: sentence delimitation skipped because the graph was not found ***\n"));
 		} else {
 			final String grfName = sentenceName.getText();
 			File fst2;

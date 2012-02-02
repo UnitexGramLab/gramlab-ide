@@ -20,6 +20,15 @@
  */
 package fr.umlv.unitex.process.commands;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
+import fr.umlv.unitex.console.Console;
+import fr.umlv.unitex.console.ConsoleEntry;
+import fr.umlv.unitex.console.Couple;
+import fr.umlv.unitex.process.ExecParameters;
+
 public abstract class AbstractMethodCommand extends CommandBuilder {
 	AbstractMethodCommand() {
 		type = CommandBuilder.METHOD;
@@ -53,4 +62,35 @@ public abstract class AbstractMethodCommand extends CommandBuilder {
 		 */
 		return res;
 	}
+	
+	@Override
+	public ConsoleEntry logIntoConsole() {
+		return Console.addCommand(getCommandLine(), false, null);
+	}
+	
+	@Override
+	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry) {
+		boolean ret=execute();
+		if (ret || !p.isStopOnProblem()) return true;
+		if (p.getStderr()==null) return false;
+		try {
+			final AbstractMethodCommand c = this;
+			SwingUtilities
+					.invokeAndWait(new Runnable() {
+						public void run() {
+							p.getStderr()
+									.addLine(new Couple(
+											"Command failed: "
+													+ c.getCommandLine(),
+											true));
+						}
+					});
+		} catch (final InterruptedException e1) {
+			return false;
+		} catch (final InvocationTargetException e1) {
+			return false;
+		}
+		return false;
+	}
+
 }

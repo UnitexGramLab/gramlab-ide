@@ -43,9 +43,9 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.ErrorMessageCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
-import fr.umlv.unitex.process.commands.MessageCommand;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
@@ -293,9 +293,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 			final File data = new File(tagger_data.getText());
 			if (!data.exists()) {
 				commands
-						.addCommand(new MessageCommand(
-								"*** WARNING: tagging skipped because tagger data file was not found ***\n",
-								true));
+						.addCommand(new ErrorMessageCommand(
+								"*** WARNING: tagging skipped because tagger data file was not found ***\n"));
 			} else {
 				final File tfst = new File(Config.getCurrentSntDir(),
 						"text.tfst");
