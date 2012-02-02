@@ -642,7 +642,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			htmlViewer = ConfigManager.getManager().getHtmlViewer(null);
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			if (browser && htmlViewer != null) {
 				final String[] s = new String[2];
 				s[0] = htmlViewer.getAbsolutePath();
@@ -673,7 +673,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			snt = s;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(snt).newTextFrame(snt, false);
 		}
 	}
@@ -687,7 +687,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			this.mode = mode;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(f).newStatisticsFrame(f, mode);
 		}
 	}

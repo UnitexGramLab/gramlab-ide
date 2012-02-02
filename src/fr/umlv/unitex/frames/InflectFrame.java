@@ -175,7 +175,7 @@ public class InflectFrame extends JInternalFrame {
 			this.dela = dela;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dela).newDelaFrame(dela);
 		}
 	}

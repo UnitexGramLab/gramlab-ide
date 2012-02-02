@@ -463,7 +463,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 			GrfFileName = grf;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			Config.cleanTfstFiles(true);
 			InternalFrameManager.getManager(GrfFileName).newGraphFrame(
 					GrfFileName);

@@ -32,8 +32,7 @@ public class EatStreamThread extends Thread {
 	private final OutputStream out;
 
 	public EatStreamThread(InputStream _in) {
-		in = _in;
-		out = new NullOutputStream();
+		this(_in,new NullOutputStream());
 	}
 
 	public EatStreamThread(InputStream _in, OutputStream _out) {
@@ -49,8 +48,8 @@ public class EatStreamThread extends Thread {
 				out.write(c);
 			}
 			out.close();
-		} catch (final IOException e) {
-			e.printStackTrace();
+		} catch (IOException e) {
+			/* Nothing to do */
 		}
 	}
 }

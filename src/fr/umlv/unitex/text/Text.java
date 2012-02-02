@@ -61,7 +61,7 @@ public class Text {
 			InternalFrameManager.getManager(name).newTranscodeOneFileDialog(
 					name, toDo);
 		} else {
-			toDo.toDo();
+			toDo.toDo(true);
 		}
 	}
 
@@ -172,7 +172,7 @@ public class Text {
 			b = taggedText;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			Text.loadSnt(SNT, b);
 		}
 	}
@@ -186,7 +186,7 @@ public class Text {
 			b = taggedText;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			if (FileUtil.getFileNameExtension(file).equalsIgnoreCase("snt")) {
 				Config.setCurrentSnt(file);
 				loadSnt(file, b);

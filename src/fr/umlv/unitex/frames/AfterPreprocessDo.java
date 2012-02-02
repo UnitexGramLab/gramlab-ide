@@ -34,7 +34,7 @@ public class AfterPreprocessDo implements ToDo {
 		b = taggedText;
 	}
 
-	public void toDo() {
-		Text.loadSnt(snt, b);
+	public void toDo(boolean success) {
+		Text.loadSnt(snt,b);
 	}
 }

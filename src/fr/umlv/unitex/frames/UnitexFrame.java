@@ -1165,7 +1165,7 @@ public class UnitexFrame extends JFrame {
 		}
 		final File dela = Config.getDelaDialogBox().getSelectedFile();
 		final ToDo toDo = new ToDo() {
-			public void toDo() {
+			public void toDo(boolean success) {
 				InternalFrameManager.getManager(null).newDelaFrame(dela);
 			}
 		};
@@ -1173,7 +1173,7 @@ public class UnitexFrame extends JFrame {
 			InternalFrameManager.getManager(null).newTranscodeOneFileDialog(
 					dela, toDo);
 		} else {
-			toDo.toDo();
+			toDo.toDo(true);
 		}
 	}
 
@@ -1369,7 +1369,7 @@ public class UnitexFrame extends JFrame {
 			dela = s;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dela).newDelaFrame(dela);
 		}
 	}

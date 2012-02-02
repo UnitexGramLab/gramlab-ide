@@ -160,7 +160,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 			dir = Config.getUserCurrentLanguageDir();
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dir).newConcordanceParameterFrame();
 		}
 	}

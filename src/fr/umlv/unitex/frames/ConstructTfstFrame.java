@@ -319,7 +319,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
-		public void toDo() {
+		public void toDo(boolean success) {
 			InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1,
 					false);
 			InternalFrameManager.getManager(sntDir).newTfstTagsFrame(
