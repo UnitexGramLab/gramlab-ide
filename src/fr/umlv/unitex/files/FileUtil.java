@@ -425,7 +425,7 @@ public class FileUtil {
 	}
 
 	/**
-	 * Deletes files. The source is specified by a file name that can contain *
+	 * The source is specified by a file name that can contain *
 	 * and ? jokers.
 	 * 
 	 * @param src
@@ -441,7 +441,7 @@ public class FileUtil {
 		final File files_list[] = path_src.listFiles(new RegFileFilter(
 				expression));
 		if (files_list != null) {
-			for (final File aFiles_list : files_list) {
+			for (File aFiles_list : files_list) {
 				aFiles_list.delete();
 			}
 		}
@@ -503,4 +503,19 @@ public class FileUtil {
 			return;
 		}
 	}
+	
+	
+	/**
+	 * Removes a file or a directory, even if not empty.
+	 */
+	public static void rm(File f) {
+		if (f==null || !f.exists()) return;
+		if (f.isDirectory()) {
+			for (File subFile:f.listFiles()) {
+				rm(subFile);
+			}
+		}
+		f.delete();
+	}
+
 }
