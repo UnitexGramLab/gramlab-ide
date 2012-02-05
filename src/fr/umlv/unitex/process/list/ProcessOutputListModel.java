@@ -36,7 +36,7 @@ public class ProcessOutputListModel extends DefaultListModel {
 	void replaceLastLine(Couple c) {
 		final int size = size();
 		if (size == 0) {
-			addElement(c);
+			super.addElement(c);
 		} else {
 			set(size - 1, c);
 		}
