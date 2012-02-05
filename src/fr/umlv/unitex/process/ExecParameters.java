@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.process;
 
+import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.list.ProcessOutputList;
 
@@ -109,6 +110,12 @@ public class ExecParameters {
 		this.DO = DO;
 		this.traceIntoConsole=traceIntoConsole;
 	}
+
 	
+	public ExecParameters(boolean stopOnProblem, CommandBuilder c,
+			ProcessOutputList stdout, ProcessOutputList stderr,
+			ToDo DO,boolean traceIntoConsole) {
+		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole);
+	}
 }
 
