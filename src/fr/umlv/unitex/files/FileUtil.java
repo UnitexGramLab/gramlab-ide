@@ -229,14 +229,19 @@ public class FileUtil {
 	 * parent=/tmp/grf/toto.grf file=/dst/foo.grf => ../../dst/foo.grf
 	 */
 	public static String getRelativePath(File parent, File f) {
-		String s = isAncestor(parent.getParentFile(), f.getParentFile());
+		File dir;
+		if (parent.isDirectory()) {
+			dir=parent;
+		} else {
+			dir=parent.getParentFile();
+		}
+		String s = isAncestor(dir, f.getParentFile());
 		if (s != null) {
 			/* Case 1: f is in the same dir or a child dir */
 			return s + f.getName();
 		}
 		/* Case 2: we have to find the common dir ancestor */
-		final File ancestor = commonAncestor(parent.getParentFile(), f
-				.getParentFile());
+		final File ancestor = commonAncestor(dir, f.getParentFile());
 		if (ancestor == null) {
 			/*
 			 * If files are on different drives under Windows, we have no
@@ -334,7 +339,7 @@ public class FileUtil {
 	 * Return a non null relative path if dir1 is equals to dir2 or is an
 	 * ancestor of dir2
 	 */
-	private static String isAncestor(File dir1, File dir2) {
+	public static String isAncestor(File dir1, File dir2) {
 		String s = "";
 		while (dir2 != null && !dir2.equals(dir1)) {
 			s = dir2.getName() + File.separator + s;
@@ -480,15 +485,16 @@ public class FileUtil {
 	 * @param dest
 	 *            destination file
 	 */
-	public static void copyFile(File src, File dest) {
+	public static boolean copyFile(File src, File dest) {
 		try {
 			final FileInputStream fis = new FileInputStream(src);
 			final FileOutputStream fos = new FileOutputStream(dest);
 			copyStream(fis, fos);
 			fis.close();
 			fos.close();
+			return true;
 		} catch (final IOException e) {
-			return;
+			return false;
 		}
 	}
 
