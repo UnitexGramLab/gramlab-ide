@@ -47,7 +47,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
-	private Grf2Fst2Command alphabetTokenization(File f) {
+	public Grf2Fst2Command alphabetTokenization(File f) {
 		if (f == null)
 			return this;
 		protectElement("--alphabet=" + f.getAbsolutePath());
@@ -81,4 +81,11 @@ public class Grf2Fst2Command extends CommandBuilder {
 		element("-e");
 		return this;
 	}
+	
+	public Grf2Fst2Command output(File fst2) {
+		element("-o");
+		protectElement(fst2.getAbsolutePath());
+		return this;
+	}
+	
 }
