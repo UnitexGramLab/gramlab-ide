@@ -126,7 +126,7 @@ public class FileUtil {
 	 *            the file
 	 * @return the file name, without the path
 	 */
-	private static String getFileNameWithoutFilePath(File f) {
+	public static String getFileNameWithoutFilePath(File f) {
 		return f.getName();
 	}
 
