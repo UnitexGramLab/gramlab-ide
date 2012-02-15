@@ -31,7 +31,7 @@ class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>, K> {
 	F getFrameIfExists(K key) {
 		if (key != null) {
 			for (final F f : frames) {
-				if (f.getKey().equals(key)) {
+				if (key.equals(f.getKey())) {
 					return f;
 				}
 			}
