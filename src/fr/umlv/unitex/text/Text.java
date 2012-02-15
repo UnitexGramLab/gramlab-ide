@@ -229,9 +229,9 @@ public class Text {
 		UnxmlizeCommand cmd = new UnxmlizeCommand().text(file);
 		if (ConfigManager.getManager().isPRLGLanguage(null)) {
 			cmd = cmd.PRLG(new File(SntUtil.getSntDir(file), "prlg.idx"));
-			cmd = cmd.outputOffsets(new File(SntUtil.getSntDir(file),
-					"unxmlize.out.offsets"));
+			
 		}
+		cmd = cmd.outputOffsets(new File(SntUtil.getSntDir(file),"unxmlize.out.offsets"));
 		final String s = FileUtil.getFileNameWithoutExtension(file) + ".txt";
 		loadTxt(new File(s), false, cmd);
 	}
