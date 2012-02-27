@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.AbstractAction;
@@ -620,8 +621,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            be selected.
 	 */
 	void setDefaultSelection(JList list, Vector<String> v) {
-		final int[] indices = new int[256];
-		int i = 0;
+		ArrayList<Integer> indices=new ArrayList<Integer>();
 		if (v == null)
 			return;
 		final ListModel model = list.getModel();
@@ -629,12 +629,14 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			final String s = v.remove(0);
 			final int index = getElementIndex(model, s);
 			if (index != -1) {
-				indices[i++] = index;
+				indices.add(index);
 			}
 		}
-		if (i != 0) {
-			final int[] res = new int[i];
-			System.arraycopy(indices, 0, res, 0, i);
+		if (indices.size() != 0) {
+			int[] res = new int[indices.size()];
+			for (int i=0;i<indices.size();i++) {
+				res[i]=indices.get(i);
+			}
 			list.setSelectedIndices(res);
 		}
 	}
