@@ -70,8 +70,8 @@ public class DicoCommand extends CommandBuilder {
 		return this;
 	}
 
-	public DicoCommand dictionaryList(ArrayList<File> list) {
-		for (final File aList : list) {
+	public DicoCommand dictionaryList(ArrayList<File> l) {
+		for (final File aList : l) {
 			protectElement(aList.getAbsolutePath());
 		}
 		return this;
