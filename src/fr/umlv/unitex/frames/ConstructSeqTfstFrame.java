@@ -83,7 +83,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 	 * Creates and shows a new <code>ConstructSeqFstFrame</code>.
 	 */
 	ConstructSeqTfstFrame() {
-		super("Construct the Seq FST", false);
+		super("Construct the Seq GRF", false);
 		setContentPane(constructPanel());
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
