@@ -43,7 +43,7 @@ public class Seq2GrfCommand extends CommandBuilder {
 		protectElement("-r" + r);
 		protectElement("-d" + d);
 		if (b!=0){
-			protectElement("-b" );
+			protectElement("--b" );
 		}
 	}
 
