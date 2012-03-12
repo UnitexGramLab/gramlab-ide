@@ -150,6 +150,8 @@ class Tag {
 			b.append(lemma);
 		} else {
 			b.append(inflected);
+			b.append("/");
+			b.append(lemma);
 		}
 		boolean first = true;
 		final Pattern p = (f == null) ? null : f.getPattern();
