@@ -952,9 +952,9 @@ public class InternalFrameManager {
 	}
 
 	public ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output,
-			TagFilter filter) {
+			TagFilter filter,boolean delafStyle) {
 		final ExportTextAsPOSListDialog d = exportTextAsPOSListDialogFactory
-				.newExportTextAsPOSListDialog(output, filter);
+				.newExportTextAsPOSListDialog(output, filter, delafStyle);
 		d.launch();
 		d.setVisible(true);
 		return d;
