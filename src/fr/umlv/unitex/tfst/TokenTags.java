@@ -83,9 +83,12 @@ public class TokenTags {
 			final String s = tag.toString(f, delafStyle);
 			if (s == null)
 				return null;
+			boolean isTag=(s.contains(",") && s.contains("."));
 			if (i > 0)
 				b.append(delafStyle ? " " : "+");
+			if (delafStyle && isTag) b.append("{");
 			b.append(s);
+			if (delafStyle && isTag) b.append("}");
 		}
 		return b.toString();
 	}
@@ -98,15 +101,15 @@ public class TokenTags {
 	public String toString() {
 		final StringBuilder b = new StringBuilder();
 		final int n = getInterpretationCount();
+		if (n > 1)
+			b.append("(");
 		for (int i = 0; i < n; i++) {
 			if (i > 0)
 				b.append("|");
-			if (n > 1)
-				b.append("(");
 			b.append(getInterpretation(i));
-			if (n > 1)
-				b.append(")");
 		}
+		if (n > 1)
+			b.append(")");
 		return b.toString();
 	}
 }
