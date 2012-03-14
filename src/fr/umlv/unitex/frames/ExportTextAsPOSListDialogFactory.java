@@ -28,11 +28,11 @@ class ExportTextAsPOSListDialogFactory {
 	private ExportTextAsPOSListDialog dialog;
 
 	ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output,
-			TagFilter filter) {
+			TagFilter filter,boolean delafStyle) {
 		if (dialog == null) {
-			dialog = new ExportTextAsPOSListDialog(output, filter);
+			dialog = new ExportTextAsPOSListDialog(output, filter, delafStyle);
 		} else {
-			dialog.configure(output, filter);
+			dialog.configure(output, filter, delafStyle);
 		}
 		return dialog;
 	}

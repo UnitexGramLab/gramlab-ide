@@ -155,7 +155,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		MyDropTarget.newDropTarget(this);
 		setContentPane(constructPanel());
 		pack();
-		setBounds(10, 10, 850, 600);
+		setBounds(10, 10, 900, 600);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
@@ -282,9 +282,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 				"Only POS category");
 		final JRadioButton usePattern = new JRadioButton("Use filter: ");
 		final JButton export = new JButton("Export all text as POS list");
+		final JCheckBox delafStyle = new JCheckBox("Export DELAF style",false);
 		export.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				exportTextAsTable();
+				exportTextAsTable(delafStyle.isSelected());
 			}
 		});
 		final ButtonGroup group = new ButtonGroup();
@@ -346,8 +347,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 		usePattern.addActionListener(l);
 		gbc.anchor = GridBagConstraints.WEST;
 		filterPanel.add(alwaysShowGramCode, gbc);
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		filterPanel.add(export, gbc);
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		filterPanel.add(delafStyle, gbc);
 		gbc.gridwidth = 1;
 		filterPanel.add(all, gbc);
 		filterPanel.add(onlyShowGramCode, gbc);
@@ -360,7 +362,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		return p;
 	}
 
-	void exportTextAsTable() {
+	void exportTextAsTable(boolean delafStyle) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
 				"Unicode Raw Texts"));
@@ -372,7 +374,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			return;
 		}
 		InternalFrameManager.getManager(null).newExportTextAsPOSListDialog(
-				chooser.getSelectedFile(), filter);
+				chooser.getSelectedFile(), filter, delafStyle);
 	}
 
 	void refreshTableRowHeight(JTable table) {

@@ -143,11 +143,11 @@ class Tag {
 		}
 		final StringBuilder b = new StringBuilder();
 		if (delafStyle) {
+			b.append(inflected);
+			b.append(",");
 			if (!inflected.equals(lemma)) {
-				b.append(inflected);
-				b.append(",");
+				b.append(lemma);
 			}
-			b.append(lemma);
 		} else {
 			b.append(inflected);
 			b.append("/");

@@ -52,6 +52,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 	boolean canceled = false;
 	private final JProgressBar progress = new JProgressBar();
 	private TagFilter filter;
+	private boolean delafStyle;
 
 	/**
 	 * Creates a new font dialog box.
@@ -59,9 +60,9 @@ public class ExportTextAsPOSListDialog extends JDialog {
 	 * @param in
 	 *            indicates if we select an input or an output font for graphs.
 	 */
-	public ExportTextAsPOSListDialog(File output, TagFilter filter) {
+	public ExportTextAsPOSListDialog(File output, TagFilter filter,boolean delafStyle) {
 		super(UnitexFrame.mainFrame, "Export text as POS list", true);
-		configure(output, filter);
+		configure(output, filter, delafStyle);
 		setContentPane(constructPanel());
 		progress.setPreferredSize(new Dimension(300, 30));
 		pack();
@@ -81,13 +82,14 @@ public class ExportTextAsPOSListDialog extends JDialog {
 		return p;
 	}
 
-	void configure(File o, TagFilter f) {
+	void configure(File o, TagFilter f, boolean delafStyle1) {
 		if (o == null) {
 			throw new IllegalArgumentException(
 					"Cannot configure a null output file");
 		}
 		this.output = o;
 		this.filter = f;
+		this.delafStyle=delafStyle1;
 	}
 
 	public void launch() {
@@ -108,7 +110,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 				final File tmpGrf = new File(sntDir, "foo.grf");
 				final File sentenceText = new File(sntDir, "foo.txt");
 				final File sentenceTok = new File(sntDir, "foo.tok");
-				final TfstTableModel model = new TfstTableModel(filter, false);
+				final TfstTableModel model = new TfstTableModel(filter, delafStyle);
 				try {
 					final OutputStreamWriter writer = encoding
 							.getOutputStreamWriter(output);
