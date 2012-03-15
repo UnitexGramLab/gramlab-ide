@@ -47,6 +47,10 @@ public class PolyLexCommand extends CommandBuilder {
 			element("-R");
 			return this;
 		}
+		if (s.equals("DUTCH") || s.equals("Dutch")) {
+			element("-D");
+			return this;
+		}
 		throw new InvalidPolyLexArgumentException();
 	}
 
