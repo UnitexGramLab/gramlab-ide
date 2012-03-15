@@ -189,7 +189,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 					System.out.println("sourcefile = "+SourceFile.getText());
 					System.out.println("sourcefile_sort : "+SourceFile.getText());
 					System.out.println("Config.getCurrentGraphDir() ="+Config.getCurrentGraphDir());
-			
+
 					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
 							+File.separatorChar
 							+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
@@ -501,25 +501,27 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		sm_a = new SpinnerNumberModel(0, 0, 10, 1);
 		sm_a.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				n_a = sm_a.getNumber().intValue();	
-				String rad=SourceFileShortName;
-				if (SourceFileShortName.endsWith(".txt") ||
-						SourceFileShortName.endsWith(".snt") ||
-						SourceFileShortName.endsWith(".xml")){
-					rad=rad.substring(0,SourceFileShortName.length()
-							-4); 
+				if (!SourceFileShortName.isEmpty()){
+					n_a = sm_a.getNumber().intValue();	
+					String rad=SourceFileShortName;
+					if (SourceFileShortName.endsWith(".txt") ||
+							SourceFileShortName.endsWith(".snt") ||
+							SourceFileShortName.endsWith(".xml")){
+						rad=rad.substring(0,SourceFileShortName.length()
+								-4); 
+					}
+					System.out.println("SourceFileShortName = "+SourceFileShortName);
+					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+							+File.separatorChar
+							+rad
+							+"_"
+							+n_op
+							+n_a
+							+n_r
+							+n_d
+							+".grf";
+					GRFfile.setText(GRFFileName);
 				}
-				System.out.println("SourceFileShortName = "+SourceFileShortName);
-				GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
-						+File.separatorChar
-						+rad
-						+"_"
-						+n_op
-						+n_a
-						+n_r
-						+n_d
-						+".grf";
-				GRFfile.setText(GRFFileName);
 			}
 		});
 		spinner_a = new JSpinner(sm_a);
@@ -527,47 +529,51 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		sm_d.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				n_d = sm_d.getNumber().intValue();
-				String rad=SourceFileShortName;
-				if (SourceFileShortName.endsWith(".txt") ||
-						SourceFileShortName.endsWith(".snt") ||
-						SourceFileShortName.endsWith(".xml")){
-					rad=rad.substring(0,SourceFileShortName.length()
-							-4); 
+				if (!SourceFileShortName.isEmpty()){
+					String rad=SourceFileShortName;
+					if (SourceFileShortName.endsWith(".txt") ||
+							SourceFileShortName.endsWith(".snt") ||
+							SourceFileShortName.endsWith(".xml")){
+						rad=rad.substring(0,SourceFileShortName.length()
+								-4); 
+					}
+					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+							+File.separatorChar
+							+rad
+							+"_"
+							+n_op
+							+n_a
+							+n_r
+							+n_d
+							+".grf";
+					GRFfile.setText(GRFFileName);
 				}
-				GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
-						+File.separatorChar
-						+rad
-						+"_"
-						+n_op
-						+n_a
-						+n_r
-						+n_d
-						+".grf";
-				GRFfile.setText(GRFFileName);
 			}
 		});
 		spinner_d = new JSpinner(sm_d);
 		sm_r = new SpinnerNumberModel(0, 0, 10, 1);
 		sm_r.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				n_r = sm_r.getNumber().intValue();
-				String rad=SourceFileShortName;
-				if (SourceFileShortName.endsWith(".txt") ||
-						SourceFileShortName.endsWith(".snt") ||
-						SourceFileShortName.endsWith(".xml")){
-					rad=rad.substring(0,SourceFileShortName.length()
-							-4); 
+				if (!SourceFileShortName.isEmpty()){
+					n_r = sm_r.getNumber().intValue();
+					String rad=SourceFileShortName;
+					if (SourceFileShortName.endsWith(".txt") ||
+							SourceFileShortName.endsWith(".snt") ||
+							SourceFileShortName.endsWith(".xml")){
+						rad=rad.substring(0,SourceFileShortName.length()
+								-4); 
+					}
+					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+							+File.separatorChar
+							+rad
+							+"_"
+							+n_op
+							+n_a
+							+n_r
+							+n_d
+							+".grf";
+					GRFfile.setText(GRFFileName);
 				}
-				GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
-						+File.separatorChar
-						+rad
-						+"_"
-						+n_op
-						+n_a
-						+n_r
-						+n_d
-						+".grf";
-				GRFfile.setText(GRFFileName);
 			}
 		});
 		spinner_r = new JSpinner(sm_r);
@@ -590,7 +596,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		_p4.add(delete);
 		_p4.add(spinner_d);
 		p.add(_p4);
-		
+
 		JPanel _p5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		_p5.add(applyBeautify);
 		p.add(_p5);
