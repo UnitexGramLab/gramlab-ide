@@ -168,6 +168,7 @@ public class Preferences {
 	 */
 	public Preferences() {
 		base = null;
+		setPreferencesFromProperties(defaultProperties);
 	}
 
 	/**
@@ -415,4 +416,6 @@ public class Preferences {
 		}
 		return diff;
 	}
+	
+	
 }

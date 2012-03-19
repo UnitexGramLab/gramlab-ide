@@ -48,8 +48,9 @@ public class PreferencesManager {
 		if (base != null) {
 			p = base.clone();
 			p.setBase(base);
-		} else
+		} else {
 			p = new Preferences();
+		}
 		final Properties properties = loadProperties(f);
 		p.setPreferencesFromProperties(properties);
 		return p;
