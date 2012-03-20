@@ -54,7 +54,7 @@ public class SvnMonitor {
 			}
 		}
 		monitor(Config.getCurrentGraphDir());
-		monitor(ConfigManager.getManager().getGraphRepositoryPath(null));
+		monitor(ConfigManager.getManager().getGraphRepositoryPath(null,null));
 		if (!autoMonitoring || svnConflictModel.size() > 0) {
 			InternalFrameManager.getManager(null).showSvnConflictsFrame();
 		}

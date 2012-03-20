@@ -232,6 +232,38 @@ public class GenericGraphBox {
 		return parentGraphicalZone.graphBoxes.indexOf(this);
 	}
 
+	/**
+	 * Returns a String corresponding to the graph call,
+	 * after repository resolution and replacement of ':'
+	 * by the system separator char.
+	 */
+	public static String getNormalizeGraphCall(String s) {
+		if (s.startsWith(":")) {
+			// if the graph is located in a package repository
+			String name=null;
+			if (s.startsWith(":$")) {
+				int pos=s.indexOf(':',2);
+				if (pos==-1 || (s.indexOf('/',2)!=-1 && pos>s.indexOf('/',2))) {
+					pos=s.indexOf('/',2);
+				}
+				if (pos==-1 || (s.indexOf('\\',2)!=-1 && pos>s.indexOf('\\',2))) {
+					pos=s.indexOf('\\',2);
+				}
+				if (pos!=-1) {
+					name=s.substring(2,pos);
+					s=s.substring(pos);
+				}
+			} else {
+				s=s.substring(1);
+			}
+			File repositoryDir=ConfigManager.getManager().getGraphRepositoryPath(null,name);
+			if (repositoryDir!=null) {
+				s=repositoryDir.getAbsolutePath()+File.separatorChar+s;
+			}
+		}			
+		return s.replace(':',File.separatorChar);
+	}
+	
 	private boolean existsGraph(int n) {
 		if (parentGraphicalZone.parentFrame == null) {
 			/*
@@ -243,18 +275,14 @@ public class GenericGraphBox {
 		if (!greyed.get(n))
 			throw new IllegalArgumentException(
 					"Should not be called with a normal line");
-		String s = lines.get(n);
+		String s = getNormalizeGraphCall(lines.get(n));
 		boolean endWithGrf = true;
 		if (!s.endsWith(".grf")) {
 			s = s + ".grf";
 			endWithGrf = false;
 		}
-		/* replace ':' by '/' resp. '\\' */
 		if (s.startsWith(":")) {
-			// if the graph is located in the package repository
-			s = s.replace(':', File.separatorChar);
-			if (new File(ConfigManager.getManager()
-					.getGraphRepositoryPath(null), s.substring(1)).exists()) {
+			if (new File(s).exists()) {
 				return true;
 			}
 			if (!endWithGrf) {
@@ -262,10 +290,8 @@ public class GenericGraphBox {
 				 * If there was no explicit .grf extension, we try to look for a
 				 * .fst2
 				 */
-				s = s.replace(':', File.separatorChar);
-				s = lines.get(n) + ".fst2";
-				return new File(ConfigManager.getManager()
-						.getGraphRepositoryPath(null), s.substring(1)).exists();
+				s=s+".fst2";
+				return new File(s).exists();
 			}
 			return false;
 		}
@@ -337,9 +363,7 @@ public class GenericGraphBox {
 			/* replace ':' by '/' resp. '\\' */
 			if (s.startsWith(":")) {
 				// if the graph is located in the package repository
-				s = s.replace(':', File.separatorChar);
-				return new File(ConfigManager.getManager()
-						.getGraphRepositoryPath(null), s.substring(1));
+				return new File(getNormalizeGraphCall(s));
 			}
 			// otherwise
 			File f = new File(s);

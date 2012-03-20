@@ -69,7 +69,7 @@ public class MultiFlexCommand extends CommandBuilder {
 	}
 
 	public MultiFlexCommand repository() {
-		final File f = ConfigManager.getManager().getGraphRepositoryPath(null);
+		final File f = ConfigManager.getManager().getGraphRepositoryPath(null,null);
 		if (f != null) {
 			element("-p");
 			protectElement(f.getAbsolutePath());
