@@ -149,10 +149,11 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.info.clone();
 	}
 
-	public File getGraphRepositoryPath(String language) {
+	public File getGraphRepositoryPath(String language,String repositoryName) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
+		/* In Unitex, we ignore repository names */
 		return p.graphRepositoryPath;
 	}
 

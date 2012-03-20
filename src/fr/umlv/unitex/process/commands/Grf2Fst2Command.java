@@ -64,7 +64,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 	}
 
 	public Grf2Fst2Command repository() {
-		final File f = ConfigManager.getManager().getGraphRepositoryPath(null);
+		final File f = ConfigManager.getManager().getGraphRepositoryPath(null,null);
 		if (f != null) {
 			element("-d");
 			protectElement(f.getAbsolutePath());

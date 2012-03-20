@@ -225,23 +225,7 @@ public class Dependancies {
 		/* replace ':' by '/' resp. '\\' */
 		if (s.startsWith(":")) {
 			// if the graph is located in the package repository
-			s = s.replace(':', File.separatorChar);
-			final File repository = ConfigManager.getManager()
-					.getGraphRepositoryPath(null);
-			if (repository == null) {
-				if (emitErrorMessages)
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"In graph "
-											+ parent.getAbsolutePath()
-											+ ":\ncannot resolve relative graph path:\n\n"
-											+ s
-											+ "\n\nbecause the location of the graph  repository is\n"
-											+ "not defined.", "Error",
-									JOptionPane.ERROR_MESSAGE);
-				return null;
-			}
+			final File repository = new File(GenericGraphBox.getNormalizeGraphCall(s));
 			return new File(repository, s.substring(1));
 		}
 		// otherwise
