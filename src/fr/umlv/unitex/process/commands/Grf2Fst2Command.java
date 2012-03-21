@@ -100,7 +100,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 	}
 	
 	public Grf2Fst2Command emitEmptyGraphWarning() {
-		return emitEmptyGraphWarning(ConfigManager.getManager().emitEmptyGraphWarning());
+		return emitEmptyGraphWarning(ConfigManager.getManager().emitEmptyGraphWarning(null));
 	}
 	
 	public Grf2Fst2Command displayGraphNames(boolean b) {
@@ -111,7 +111,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 	}
 	
 	public Grf2Fst2Command displayGraphNames() {
-		return displayGraphNames(ConfigManager.getManager().displayGraphNames());
+		return displayGraphNames(ConfigManager.getManager().displayGraphNames(null));
 	}
 
 	public Grf2Fst2Command output(File fst2) {
