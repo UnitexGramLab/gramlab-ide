@@ -72,6 +72,11 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
+	public Grf2Fst2Command namedRepository(String name,File repository) {
+		protectElement("-r"+name+"="+repository.getAbsolutePath());
+		return this;
+	}
+	
 	public Grf2Fst2Command debug() {
 		element("--debug");
 		return this;
