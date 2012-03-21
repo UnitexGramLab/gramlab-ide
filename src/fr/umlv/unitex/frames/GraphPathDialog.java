@@ -170,7 +170,7 @@ public class GraphPathDialog extends JDialog {
 					cmd = cmd.separateOutputs(separateOutputs.isSelected());
 				}
 				grfCmd.grf(new File(graphName.getText()))
-						.enableLoopAndRecursionDetection(true).repository()
+						.enableLoopAndRecursionDetection(true).repositories()
 						.noEmptyGraphWarning();
 				fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
 						.getText())

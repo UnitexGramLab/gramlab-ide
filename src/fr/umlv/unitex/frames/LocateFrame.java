@@ -324,7 +324,7 @@ public class LocateFrame extends JInternalFrame {
 					"regexp.grf");
 			Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
 					.enableLoopAndRecursionDetection(true).tokenizationMode(
-							null, grf).repository();
+							null, grf).repositories();
 			if (debug.isSelected())
 				grfCmd = grfCmd.debug();
 			commands.addCommand(grfCmd);
@@ -345,7 +345,7 @@ public class LocateFrame extends JInternalFrame {
 				final File grf = new File(grfName);
 				Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
 						.enableLoopAndRecursionDetection(true)
-						.tokenizationMode(null, grf).repository();
+						.tokenizationMode(null, grf).repositories();
 				if (debug.isSelected())
 					grfCmd = grfCmd.debug();
 				commands.addCommand(grfCmd);

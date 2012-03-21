@@ -60,8 +60,12 @@ public interface ConfigModel {
 
 	public GraphPresentationInfo getGraphPresentationPreferences(String language);
 
+	public File getDefaultGraphRepositoryPath(String language);
+	
 	/* name==null -> default repository */
 	public File getGraphRepositoryPath(String language,String repositoryName);
+	
+	public ArrayList<NamedRepository> getNamedRepositories(String language);
 
 	public File getLogDirectory(String language);
 

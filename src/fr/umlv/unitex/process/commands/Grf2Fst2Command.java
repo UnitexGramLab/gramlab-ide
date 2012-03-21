@@ -21,8 +21,10 @@
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.NamedRepository;
 
 /**
  * @author Sébastien Paumier
@@ -63,8 +65,12 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return alphabetTokenization(alphabet);
 	}
 
-	public Grf2Fst2Command repository() {
-		final File f = ConfigManager.getManager().getGraphRepositoryPath(null,null);
+	public Grf2Fst2Command repositories() {
+		return repository().namedRepositories();
+	}
+
+	private Grf2Fst2Command repository() {
+		final File f = ConfigManager.getManager().getDefaultGraphRepositoryPath(null);
 		if (f != null) {
 			element("-d");
 			protectElement(f.getAbsolutePath());
@@ -72,8 +78,12 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
-	public Grf2Fst2Command namedRepository(String name,File repository) {
-		protectElement("-r"+name+"="+repository.getAbsolutePath());
+	private Grf2Fst2Command namedRepositories() {
+		ArrayList<NamedRepository> l=ConfigManager.getManager().getNamedRepositories(null);
+		if (l==null) return this;
+		for (NamedRepository n:l) {
+			protectElement("-r"+n.getName()+"="+n.getFile().getAbsolutePath());
+		}
 		return this;
 	}
 	
@@ -92,5 +102,5 @@ public class Grf2Fst2Command extends CommandBuilder {
 		protectElement(fst2.getAbsolutePath());
 		return this;
 	}
-	
+
 }
