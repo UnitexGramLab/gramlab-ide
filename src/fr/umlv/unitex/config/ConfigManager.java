@@ -256,4 +256,13 @@ public class ConfigManager extends AbstractConfigModel {
 	public File getAlphabetForGrf(String language, File grf) {
 		return getAlphabet(language);
 	}
+
+	public boolean displayGraphNames() {
+		return false;
+	}
+
+	public boolean emitEmptyGraphWarning() {
+		return true;
+	}
+	
 }
