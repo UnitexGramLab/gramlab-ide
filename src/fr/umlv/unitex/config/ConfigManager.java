@@ -257,11 +257,11 @@ public class ConfigManager extends AbstractConfigModel {
 		return getAlphabet(language);
 	}
 
-	public boolean displayGraphNames() {
+	public boolean displayGraphNames(String language) {
 		return false;
 	}
 
-	public boolean emitEmptyGraphWarning() {
+	public boolean emitEmptyGraphWarning(String language) {
 		return true;
 	}
 	
