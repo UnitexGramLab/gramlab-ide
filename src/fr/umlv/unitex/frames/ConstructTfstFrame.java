@@ -244,7 +244,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 			commands.addCommand(reconstrucaoCmd);
 			final File grf = new File(normalizationDir, "Norm.grf");
 			final Grf2Fst2Command grfCommand = new Grf2Fst2Command().grf(grf)
-					.tokenizationMode(null, grf).repositories();
+					.tokenizationMode(null, grf).repositories()
+					.emitEmptyGraphWarning().displayGraphNames();
 			commands.addCommand(grfCommand);
 		}
 		Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
@@ -264,7 +265,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 				normGrfFile = new File(grfName);
 				final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
 						normGrfFile).enableLoopAndRecursionDetection(true)
-						.tokenizationMode(null, normGrfFile);
+						.tokenizationMode(null, normGrfFile)
+						.emitEmptyGraphWarning().displayGraphNames();
 				commands.addCommand(grfCmd);
 				String fst2Name = grfName.substring(0, grfName.length() - 3);
 				fst2Name = fst2Name + "fst2";

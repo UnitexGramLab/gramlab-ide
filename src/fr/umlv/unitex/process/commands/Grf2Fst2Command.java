@@ -92,11 +92,28 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
-	public Grf2Fst2Command noEmptyGraphWarning() {
-		element("-e");
+	public Grf2Fst2Command emitEmptyGraphWarning(boolean b) {
+		if (!b) {
+			element("-e");
+		}
 		return this;
 	}
 	
+	public Grf2Fst2Command emitEmptyGraphWarning() {
+		return emitEmptyGraphWarning(ConfigManager.getManager().emitEmptyGraphWarning());
+	}
+	
+	public Grf2Fst2Command displayGraphNames(boolean b) {
+		if (!b) {
+			element("-s");
+		}
+		return this;
+	}
+	
+	public Grf2Fst2Command displayGraphNames() {
+		return displayGraphNames(ConfigManager.getManager().displayGraphNames());
+	}
+
 	public Grf2Fst2Command output(File fst2) {
 		element("-o");
 		protectElement(fst2.getAbsolutePath());

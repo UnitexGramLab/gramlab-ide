@@ -100,4 +100,9 @@ public interface ConfigModel {
 	public File getUnitexToolLogger();
 
 	public File getCurrentGraphDirectory();
+
+	public boolean emitEmptyGraphWarning();
+
+	public boolean displayGraphNames();
+	
 }
