@@ -380,7 +380,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 					//Grf2Fst2
 					final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(sequenceGRF)
 							.enableLoopAndRecursionDetection(true)
-							.tokenizationMode(null, sequenceGRF).repository();
+							.tokenizationMode(null, sequenceGRF).repositories();
 					commands.addCommand(grfCmd);
 					System.out.println("grfCmd added");
 					System.out.println("\tgrfCmd : "+grfCmd.getCommandLine());
@@ -404,7 +404,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 						//grfCmd2
 						final Grf2Fst2Command grfCmd2 = new Grf2Fst2Command().grf(ReplaceGRF)
 								.enableLoopAndRecursionDetection(true)
-								.tokenizationMode(null, ReplaceGRF).repository();
+								.tokenizationMode(null, ReplaceGRF).repositories();
 						commands.addCommand(grfCmd2);
 						String fst2Name2 = ReplaceGRF.getAbsolutePath().substring(0,ReplaceGRF.getAbsolutePath().length()-3);
 						fst2Name2= fst2Name2+ "fst2";
