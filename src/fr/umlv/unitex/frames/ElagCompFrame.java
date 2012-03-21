@@ -359,7 +359,7 @@ public class ElagCompFrame extends JInternalFrame {
 						/* We have to compile the .grf into a .elg */
 						commands.addCommand(new Grf2Fst2Command().grf(grf)
 								.enableLoopAndRecursionDetection(true)
-								.tokenizationMode(null, grf).repository());
+								.tokenizationMode(null, grf).repositories());
 						commands.addCommand(new FlattenCommand().fst2(fst2)
 								.resultType(true));
 						final ElagCompCommand elagCompCmd = new ElagCompCommand()

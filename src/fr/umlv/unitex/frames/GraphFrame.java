@@ -1173,7 +1173,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final Grf2Fst2Command command = new Grf2Fst2Command().grf(getGraph())
 				.enableLoopAndRecursionDetection(true).tokenizationMode(
 						graphicalZone.getMetadata().getLanguage(), getGraph())
-				.repository();
+				.repositories();
 		Launcher.exec(command, false);
 	}
 

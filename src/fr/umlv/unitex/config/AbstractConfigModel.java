@@ -20,6 +20,9 @@
  */
 package fr.umlv.unitex.config;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public abstract class AbstractConfigModel implements ConfigModel {
 	public boolean isKorean(String language) {
 		if (language == null)
@@ -51,4 +54,20 @@ public abstract class AbstractConfigModel implements ConfigModel {
 				|| language.equals("Src") || language.equals("XAlign") || language
 				.startsWith("."));
 	}
+
+
+	public File getGraphRepositoryPath(String language,String name) {
+		if (name==null) {
+			return getDefaultGraphRepositoryPath(language);
+		}
+		ArrayList<NamedRepository> list=getNamedRepositories(name);
+		if (list==null) return null;
+		for (NamedRepository n:list) {
+			if (n.getName().equals(name)) {
+				return n.getFile();
+			}
+		}
+		return null;
+	}
+
 }

@@ -244,7 +244,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 			commands.addCommand(reconstrucaoCmd);
 			final File grf = new File(normalizationDir, "Norm.grf");
 			final Grf2Fst2Command grfCommand = new Grf2Fst2Command().grf(grf)
-					.tokenizationMode(null, grf).repository();
+					.tokenizationMode(null, grf).repositories();
 			commands.addCommand(grfCommand);
 		}
 		Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
