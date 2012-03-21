@@ -101,8 +101,8 @@ public interface ConfigModel {
 
 	public File getCurrentGraphDirectory();
 
-	public boolean emitEmptyGraphWarning();
+	public boolean emitEmptyGraphWarning(String language);
 
-	public boolean displayGraphNames();
+	public boolean displayGraphNames(String language);
 	
 }
