@@ -258,7 +258,7 @@ public class ConfigManager extends AbstractConfigModel {
 	}
 
 	public boolean displayGraphNames(String language) {
-		return false;
+		return true;
 	}
 
 	public boolean emitEmptyGraphWarning(String language) {
