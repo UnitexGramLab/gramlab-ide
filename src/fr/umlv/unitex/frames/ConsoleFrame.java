@@ -52,7 +52,7 @@ import fr.umlv.unitex.console.ConsoleTransferHandler;
  * 
  * @author Sébastien Paumier
  */
-public class ConsoleFrame extends JInternalFrame {
+public class ConsoleFrame extends TabbableInternalFrame {
 	private final ConsoleTableModel model;
 	private final JTable table;
 	private int longestCommandWidth = 80;
@@ -201,5 +201,10 @@ public class ConsoleFrame extends JInternalFrame {
 	public ConsoleEntry addCommand(String command, boolean systemMsg,
 			String logID) {
 		return addCommand(command, true, -1, systemMsg, logID);
+	}
+
+	@Override
+	public String getTabName() {
+		return "Console";
 	}
 }

@@ -20,12 +20,19 @@
  */
 package fr.umlv.unitex.frames;
 
+import javax.swing.JInternalFrame;
 
-public abstract class KeyedInternalFrame<K> extends TabbableInternalFrame {
-	public KeyedInternalFrame(String string, boolean b, boolean c, boolean d,
-			boolean e) {
-		super(string, b, c, d, e);
+public abstract class TabbableInternalFrame extends JInternalFrame {
+	
+	public TabbableInternalFrame(String string, boolean b, boolean c,
+			boolean d, boolean e) {
+		super(string,b,c,d,e);
 	}
 
-	public abstract K getKey();
+	public TabbableInternalFrame(String string, boolean b, boolean c) {
+		super(string,b,c);
+	}
+
+	public abstract String getTabName();
+	
 }

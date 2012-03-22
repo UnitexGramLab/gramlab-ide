@@ -32,7 +32,6 @@ import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -57,7 +56,7 @@ import fr.umlv.unitex.text.BigTextList;
  * 
  * @author Sébastien Paumier
  */
-public class TextDicFrame extends JInternalFrame {
+public class TextDicFrame extends TabbableInternalFrame {
 	private final BigTextList dlf = new BigTextList(true);
 	private final BigTextList dlc = new BigTextList(true);
 	private final BigTextList err = new BigTextList();
@@ -348,5 +347,10 @@ public class TextDicFrame extends JInternalFrame {
 		err.reset();
 		setVisible(false);
 		System.gc();
+	}
+
+	@Override
+	public String getTabName() {
+		return "Word Lists";
 	}
 }
