@@ -81,7 +81,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	private final JTextField textFont = new JTextField("");
 	private final JTextField concordanceFont = new JTextField("");
 	private final JTextField htmlViewer = new JTextField("");
-	JTextField morphologicalDicViewer = new JTextField("");
 	private final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
 			"Right to left rendering for text");
 	private final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
