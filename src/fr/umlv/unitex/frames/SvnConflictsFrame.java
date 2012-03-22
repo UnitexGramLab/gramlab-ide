@@ -23,7 +23,6 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.io.File;
 
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -41,7 +40,7 @@ import fr.umlv.unitex.svn.SvnMonitor;
  * 
  * @author Sébastien Paumier
  */
-public class SvnConflictsFrame extends JInternalFrame {
+public class SvnConflictsFrame extends TabbableInternalFrame {
 	SvnConflictsFrame() {
 		super("", true, false, true, true);
 		final ListModel model = SvnMonitor.getSvnConflictModel();
@@ -78,5 +77,10 @@ public class SvnConflictsFrame extends JInternalFrame {
 				BorderLayout.NORTH);
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+	}
+
+	@Override
+	public String getTabName() {
+		return "SVN conflicts";
 	}
 }

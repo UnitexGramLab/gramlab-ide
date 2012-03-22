@@ -24,7 +24,6 @@ import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
@@ -40,7 +39,7 @@ import fr.umlv.unitex.text.BigTextList;
  * 
  * @author Sébastien Paumier
  */
-public class CheckResultFrame extends JInternalFrame {
+public class CheckResultFrame extends TabbableInternalFrame {
 	private final BigTextList text;
 
 	CheckResultFrame() {
@@ -74,5 +73,10 @@ public class CheckResultFrame extends JInternalFrame {
 	void load(File f) {
 		text.load(f);
 		text.setFont(ConfigManager.getManager().getTextFont(null));
+	}
+
+	@Override
+	public String getTabName() {
+		return "CheckDic results";
 	}
 }

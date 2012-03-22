@@ -54,7 +54,8 @@ import fr.umlv.unitex.files.FileUtil;
  * 
  * @author S&bastien Paumier
  */
-public class ConcordanceDiffFrame extends JInternalFrame {
+public class ConcordanceDiffFrame extends TabbableInternalFrame {
+	
 	final BigConcordanceDiff list = new BigConcordanceDiff();
 	private final JComponent invisible = new JComponent() {
 		@Override
@@ -206,5 +207,10 @@ public class ConcordanceDiffFrame extends JInternalFrame {
 				list.clearSelection();
 			}
 		});
+	}
+
+	@Override
+	public String getTabName() {
+		return "Concordance diff";
 	}
 }

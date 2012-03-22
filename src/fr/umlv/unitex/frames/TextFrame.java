@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -50,7 +49,7 @@ import fr.umlv.unitex.text.BigTextArea;
  * 
  * @author Sébastien Paumier
  */
-public class TextFrame extends JInternalFrame {
+public class TextFrame extends TabbableInternalFrame {
 	final BigTextArea text = new BigTextArea();
 	private final JLabel ligne1 = new JLabel("");
 	private final JLabel ligne2 = new JLabel("");
@@ -181,5 +180,12 @@ public class TextFrame extends JInternalFrame {
 
 	public BigTextArea getText() {
 		return text;
+	}
+	
+	@Override
+	public String getTabName() {
+		String t=getTitle();
+		if (t.equals("")) return "Text";
+		return new File(t).getName();
 	}
 }

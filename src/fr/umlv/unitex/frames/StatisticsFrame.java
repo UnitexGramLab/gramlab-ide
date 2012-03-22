@@ -40,7 +40,7 @@ import fr.umlv.unitex.stats.StatisticsTableModelMode0;
 import fr.umlv.unitex.stats.StatisticsTableModelMode1;
 import fr.umlv.unitex.stats.StatisticsTableModelMode2;
 
-public class StatisticsFrame extends JInternalFrame {
+public class StatisticsFrame extends TabbableInternalFrame {
 	StatisticsFrame(File file, int mode) {
 		super("Statistics", true, true, true, true);
 		final JPanel top = new JPanel(new BorderLayout());
@@ -119,5 +119,10 @@ public class StatisticsFrame extends JInternalFrame {
 			}
 			t.getColumnModel().getColumn(i).setPreferredWidth(width);
 		}
+	}
+
+	@Override
+	public String getTabName() {
+		return "Statistics";
 	}
 }
