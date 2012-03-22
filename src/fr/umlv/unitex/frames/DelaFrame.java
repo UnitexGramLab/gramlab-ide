@@ -299,4 +299,9 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 	public File getKey() {
 		return dela;
 	}
+
+	@Override
+	public String getTabName() {
+		return dela.getName();
+	}
 }
