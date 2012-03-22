@@ -23,6 +23,7 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -79,12 +80,16 @@ class GraphPresentationDialog extends JDialog {
 	private final JRadioButton noneRadioBox = new JRadioButton("None");
 	private GraphPresentationInfo info;
 
-	/**
-	 * Constructs a new <code>GraphPresentationMenu</code>
-	 */
 	public GraphPresentationDialog(GraphPresentationInfo i,
 			boolean showRightToLeftCheckBox) {
-		super(UnitexFrame.mainFrame, "Presentation", true);
+		this(UnitexFrame.mainFrame,i,showRightToLeftCheckBox);
+	}
+		/**
+	 * Constructs a new <code>GraphPresentationMenu</code>
+	 */
+	public GraphPresentationDialog(Frame owner,GraphPresentationInfo i,
+			boolean showRightToLeftCheckBox) {
+		super(owner, "Graph presentation", true);
 		setContentPane(constructPanel());
 		configure(i.clone(), showRightToLeftCheckBox);
 		pack();
@@ -95,7 +100,7 @@ class GraphPresentationDialog extends JDialog {
 				info = null;
 			}
 		});
-		setLocationRelativeTo(UnitexFrame.mainFrame);
+		setLocationRelativeTo(owner);
 	}
 
 	private JPanel constructPanel() {
