@@ -36,6 +36,12 @@ public abstract class AbstractConfigModel implements ConfigModel {
 		return language.equals("Arabic");
 	}
 
+	public boolean isThai(String language) {
+		if (language == null)
+			language = getCurrentLanguage();
+		return language.equals("Thai");
+	}
+
 	public boolean isPRLGLanguage(String language) {
 		return true;
 		/*

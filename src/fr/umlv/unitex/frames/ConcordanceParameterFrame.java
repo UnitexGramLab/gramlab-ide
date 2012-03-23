@@ -560,8 +560,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 									null)).left(leftContext,
 							leftCtxStopAtEOS.isSelected()).right(rightContext,
 							rightCtxStopAtEOS.isSelected()).html()
-					.sortAlphabet().thai(
-							Config.getCurrentLanguage().equals("Thai"));
+					.sortAlphabet().thai(ConfigManager.getManager().isThai(null));
 			if (onlyAmbiguous) {
 				command = command.onlyAmbiguous();
 			} else {

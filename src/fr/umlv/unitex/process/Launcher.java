@@ -83,4 +83,12 @@ public class Launcher {
 		}
 		return 1;
 	}
+
+	public static void execExternalCommand(String... cmd) {
+		try {
+			Runtime.getRuntime().exec(cmd);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -89,6 +89,8 @@ public interface ConfigModel {
 
 	public boolean isArabic(String language);
 
+	public boolean isThai(String language);
+
 	public boolean isPRLGLanguage(String language);
 
 	public boolean isValidLanguageName(String language);
