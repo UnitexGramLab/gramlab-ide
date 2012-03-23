@@ -124,6 +124,11 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand onlyMatches(boolean b) {
+		if (b) element("--only_matches");
+		return this;
+	}
+
 	public ConcordCommand PRLG(File prlgIndex, File offsets) {
 		protectElement("--PRLG=" + prlgIndex.getAbsolutePath() + ","
 				+ offsets.getAbsolutePath());
