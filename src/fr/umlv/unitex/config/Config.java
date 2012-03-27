@@ -1059,6 +1059,10 @@ public class Config {
 	 *            name of the corpus file
 	 */
 	private static void setCurrentSntDir(File s) {
+		if (s==null) {
+			currentSntDir=null;
+			return;
+		}
 		final String path = FileUtil.getFileNameWithoutExtension(s
 				.getAbsolutePath());
 		currentSntDir = new File(path + "_snt");

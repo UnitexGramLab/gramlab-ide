@@ -55,11 +55,6 @@ public enum Encoding {
 		}
 
 		@Override
-		public boolean isValidEncoding(File f) {
-			return false;
-		}
-
-		@Override
 		public char readChar(ByteBuffer parseBuffer) {
 			final int b = 0xFF & parseBuffer.get();
 			final int a = 0xFF & parseBuffer.get();
