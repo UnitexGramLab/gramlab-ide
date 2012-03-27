@@ -67,6 +67,11 @@ public class TextFrame extends TabbableInternalFrame {
 		final PreferencesListener preferencesListener = new PreferencesListener() {
 			public void preferencesChanged(String language) {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
+				text.setComponentOrientation(ConfigManager.getManager()
+						.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
+				text.revalidate();
+				text.repaint();
 			}
 		};
 		PreferencesManager.addPreferencesListener(preferencesListener);
