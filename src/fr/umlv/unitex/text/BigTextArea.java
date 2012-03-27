@@ -265,4 +265,9 @@ public class BigTextArea extends JPanel {
 	public void reset() {
 		model.reset();
 	}
+	
+	@Override
+	public void setComponentOrientation(ComponentOrientation o) {
+		area.setComponentOrientation(o);
+	}
 }
