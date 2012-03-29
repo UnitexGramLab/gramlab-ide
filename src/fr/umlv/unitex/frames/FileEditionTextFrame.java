@@ -112,6 +112,7 @@ public class FileEditionTextFrame extends JInternalFrame {
 			this.setTitle("New File");
 		} else {
 			this.setTitle(file.getAbsolutePath());
+			FileManager.load(file,text);
 		}
 		init();
 	}
