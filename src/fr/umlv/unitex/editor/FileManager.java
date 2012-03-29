@@ -155,7 +155,7 @@ public class FileManager {
 	 * @param textArea
 	 *            aera where put the text
 	 */
-	Document load(File file, final EditionTextArea textArea)
+	public static Document load(File file, final EditionTextArea textArea)
 			throws IllegalArgumentException {
 		final StringContent content = new StringContent();
 		final PlainDocument document = new PlainDocument(content);

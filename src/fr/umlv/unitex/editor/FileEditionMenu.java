@@ -95,4 +95,5 @@ public class FileEditionMenu extends JMenu {
 	void newFile() {
 		fileManager.newFile();
 	}
+	
 }
