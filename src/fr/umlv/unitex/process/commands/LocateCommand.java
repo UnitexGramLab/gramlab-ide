@@ -149,4 +149,9 @@ public class LocateCommand extends CommandBuilder {
 		element("-K");
 		return this;
 	}
+
+	public LocateCommand time() {
+		element("--time");
+		return this;
+	}
 }
