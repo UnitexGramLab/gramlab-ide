@@ -524,4 +524,17 @@ public class FileUtil {
 		f.delete();
 	}
 
+	
+	public static File getSntDir(File f) {
+		return new File(getFileNameWithoutExtension(f)+"_snt");
+	}
+
+	public static File getSnt(File txt) {
+		return new File(getFileNameWithoutExtension(txt)+".snt");
+	}
+
+	public static File getTxt(File snt) {
+		return new File(getFileNameWithoutExtension(snt)+".txt");
+	}
+
 }

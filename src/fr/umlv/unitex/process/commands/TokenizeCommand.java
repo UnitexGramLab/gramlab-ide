@@ -47,6 +47,13 @@ public class TokenizeCommand extends CommandBuilder {
 		return this;
 	}
 
+	public TokenizeCommand tokenizeCharByChar(boolean b) {
+		if (b) {
+			element("--char_by_char");
+		}
+		return this;
+	}
+
 	public TokenizeCommand inputOffsets(File s) {
 		protectElement("--input_offsets=" + s.getAbsolutePath());
 		return this;
