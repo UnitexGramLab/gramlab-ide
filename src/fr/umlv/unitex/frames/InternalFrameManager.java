@@ -377,9 +377,9 @@ public class InternalFrameManager {
 		}
 	}
 
-	public TokensFrame newTokensFrame(File tokens) {
+	public TokensFrame newTokensFrame(File tokens,boolean iconify) {
 		return (TokensFrame) setup(tokensFrameFactory.newTokensFrame(tokens),
-				false, true);
+				false, iconify);
 	}
 
 	public void closeTokensFrame() {

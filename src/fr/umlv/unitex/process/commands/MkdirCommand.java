@@ -40,6 +40,6 @@ public class MkdirCommand extends AbstractMethodCommand {
 
 	@Override
 	public boolean execute() {
-		return dir.exists() || dir.mkdir();
+		return dir.exists() || dir.mkdirs();
 	}
 }

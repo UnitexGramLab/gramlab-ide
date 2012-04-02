@@ -42,12 +42,27 @@ public class NormalizeCommand extends CommandBuilder {
 		}
 		return this;
 	}
+	
+	public NormalizeCommand normFile(File norm) {
+		if (norm!=null && norm.exists()) {
+			protectElement("-r" + norm.getAbsolutePath());
+		}
+		return this;
+	}
+	
 
 	public NormalizeCommand noSeparatorNormalization() {
 		element("--no_separator_normalization");
 		return this;
 	}
 
+	public NormalizeCommand separatorNormalization(boolean b) {
+		if (!b) {
+			return noSeparatorNormalization();
+		}
+		return this;
+	}
+	
 	public NormalizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;

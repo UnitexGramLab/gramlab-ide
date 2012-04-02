@@ -147,7 +147,7 @@ public class UnitexFrame extends JFrame {
 						closeText.setEnabled(true);
 						InternalFrameManager.getManager(null).newTokensFrame(
 								new File(Config.getCurrentSntDir(),
-										"tok_by_freq.txt"));
+										"tok_by_freq.txt"),true);
 						InternalFrameManager.getManager(null).newTfstTagsFrame(
 								new File(Config.getCurrentSntDir(),
 										"tfst_tags_by_freq.txt"));
