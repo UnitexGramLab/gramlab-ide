@@ -1250,6 +1250,6 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	@Override
 	public String getTabName() {
-		return (grf==null)?"(unsaved grf)":grf.getName();
+		return (grf==null)?"(unsaved grf)":((modified?"*":"")+grf.getName());
 	}
 }
