@@ -264,5 +264,9 @@ public class ConfigManager extends AbstractConfigModel {
 	public boolean emitEmptyGraphWarning(String language) {
 		return true;
 	}
+
+	public boolean maximizeGraphFrames() {
+		return false;
+	}
 	
 }

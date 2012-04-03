@@ -32,6 +32,7 @@ import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
@@ -214,7 +215,15 @@ public class InternalFrameManager {
 	 * @return
 	 */
 	public GraphFrame newGraphFrame(File grf) {
-		return (GraphFrame) setup(graphFrameFactory.getGraphFrame(grf), true);
+		GraphFrame g=(GraphFrame) setup(graphFrameFactory.getGraphFrame(grf), true);
+		if (ConfigManager.getManager().maximizeGraphFrames()) {
+			try {
+				g.setMaximum(true);
+			} catch (PropertyVetoException e1) {
+				/* */
+			}
+		}
+		return g;
 	}
 
 	public void closeAllGraphFrames() {
