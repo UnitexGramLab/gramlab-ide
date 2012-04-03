@@ -106,5 +106,7 @@ public interface ConfigModel {
 	public boolean emitEmptyGraphWarning(String language);
 
 	public boolean displayGraphNames(String language);
+
+	public boolean maximizeGraphFrames();
 	
 }
