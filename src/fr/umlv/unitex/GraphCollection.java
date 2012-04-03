@@ -115,7 +115,6 @@ public class GraphCollection {
 		}
 		writer = ConfigManager.getManager().getEncoding(null)
 				.getOutputStreamWriter(destGraph);
-		UnicodeIO.writeChar(writer, (char) 0xFEFF);
 		UnicodeIO.writeString(writer, "#Unigraph\n");
 		UnicodeIO.writeString(writer, "SIZE 1188 840\n");
 		UnicodeIO.writeString(writer, "FONT Times New Roman:  10\n");
