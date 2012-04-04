@@ -94,13 +94,6 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 
-	public LocateCommand dynamicSntDir(File dir) {
-		// the dynamicSntDir parameter is supposed to end
-		// with the file separator
-		protectElement("-d" + dir.getAbsolutePath() + File.separator);
-		return this;
-	}
-
 	public LocateCommand charByChar() {
 		element("-c");
 		return this;
