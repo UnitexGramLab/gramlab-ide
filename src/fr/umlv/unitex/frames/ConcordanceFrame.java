@@ -240,6 +240,12 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 			public void valueChanged(ListSelectionEvent e) {
 				final TextFrame f = InternalFrameManager.getManager(null)
 						.getTextFrame();
+				if (f==null) {
+					/* In Gramlab, a concordance may be open while the text 
+					 * frame is not
+					 */
+					return;
+				}
 				final String s = (String) list.getSelectedValue();
 				if (s == null || e.getValueIsAdjusting())
 					return;

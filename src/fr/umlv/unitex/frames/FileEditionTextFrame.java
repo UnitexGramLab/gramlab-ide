@@ -60,7 +60,7 @@ import fr.umlv.unitex.editor.FileManager;
  * This class is used to display the text
  *  
  */
-public class FileEditionTextFrame extends JInternalFrame {
+public class FileEditionTextFrame extends TabbableInternalFrame {
 	/**
 	 * Area where the text is stored and can be edited
 	 */
@@ -315,5 +315,11 @@ public class FileEditionTextFrame extends JInternalFrame {
 
 	File getFile() {
 		return file;
+	}
+
+	@Override
+	public String getTabName() {
+		if (file==null) return "(unsaved)";
+		return file.getName();
 	}
 }
