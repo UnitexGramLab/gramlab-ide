@@ -108,5 +108,7 @@ public interface ConfigModel {
 	public boolean displayGraphNames(String language);
 
 	public boolean maximizeGraphFrames();
+
+	public File getCurrentSnt(String language);
 	
 }
