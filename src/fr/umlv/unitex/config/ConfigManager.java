@@ -268,5 +268,9 @@ public class ConfigManager extends AbstractConfigModel {
 	public boolean maximizeGraphFrames() {
 		return false;
 	}
+
+	public File getCurrentSnt(String language) {
+		return Config.getCurrentSnt();
+	}
 	
 }

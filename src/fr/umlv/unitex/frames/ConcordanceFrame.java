@@ -33,7 +33,6 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -238,14 +237,16 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				final TextFrame f = InternalFrameManager.getManager(null)
+				TextFrame fTmp = InternalFrameManager.getManager(null)
 						.getTextFrame();
-				if (f==null) {
+				if (fTmp==null) {
 					/* In Gramlab, a concordance may be open while the text 
 					 * frame is not
 					 */
-					return;
+					fTmp=InternalFrameManager.getManager(null)
+					.newTextFrame(ConfigManager.getManager().getCurrentSnt(null),false);
 				}
+				final TextFrame f=fTmp;
 				final String s = (String) list.getSelectedValue();
 				if (s == null || e.getValueIsAdjusting())
 					return;
