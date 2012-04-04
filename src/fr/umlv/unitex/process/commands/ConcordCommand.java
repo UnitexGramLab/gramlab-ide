@@ -96,8 +96,29 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand text(File output) {
+		protectElement("--text"+((output!=null)?"="+output.getAbsolutePath():""));
+		
+		return this;
+	}
+
 	public ConcordCommand xalign() {
 		element("--xalign");
+		return this;
+	}
+
+	public ConcordCommand axis() {
+		element("--axis");
+		return this;
+	}
+
+	public ConcordCommand index() {
+		element("--index");
+		return this;
+	}
+
+	public ConcordCommand xml() {
+		element("--xml-with-header");
 		return this;
 	}
 

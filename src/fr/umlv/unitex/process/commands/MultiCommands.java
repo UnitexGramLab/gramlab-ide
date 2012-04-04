@@ -44,7 +44,7 @@ public class MultiCommands {
 		list.add(builder);
 	}
 
-	public void addCommands(MultiCommands cmds) {
+	public void addCommand(MultiCommands cmds) {
 		for (int i=0;i<cmds.numberOfCommands();i++) {
 			list.add(cmds.getCommand(i));
 		}
