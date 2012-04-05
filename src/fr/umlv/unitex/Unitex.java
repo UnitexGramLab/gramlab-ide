@@ -39,6 +39,7 @@ import javax.swing.plaf.metal.OceanTheme;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.frames.GraphDiffFrame;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.svn.SvnMonitor;
