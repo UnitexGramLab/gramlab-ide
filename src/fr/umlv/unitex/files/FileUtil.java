@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.io.Encoding;
 
 /**
  * This class provides methods to get information about files, like path, file
@@ -212,8 +213,9 @@ public class FileUtil {
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-			final OutputStreamWriter writer = ConfigManager.getManager()
-					.getEncoding(null).getOutputStreamWriter(f);
+			Encoding e=ConfigManager.getManager().getEncoding(null);
+			if (e==null) e=Encoding.UTF8;
+			final OutputStreamWriter writer = e.getOutputStreamWriter(f);
 			writer.write(s, 0, s.length());
 			writer.close();
 		} catch (final IOException e) {
