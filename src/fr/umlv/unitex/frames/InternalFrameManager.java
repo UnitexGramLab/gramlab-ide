@@ -279,7 +279,13 @@ public class InternalFrameManager {
 			GraphIO base, GraphIO dest, GraphDecorator diff) {
 		final GraphDiffFrame f = new GraphDiffFrame(fbase, fdest, base, dest,
 				diff);
-		return (GraphDiffFrame) setup(f, true);
+		setup(f,true);
+		try {
+			f.setMaximum(true);
+		} catch (PropertyVetoException e) {
+			/* */
+		}
+		return f;
 	}
 
 	private final ArrayList<TextFrameListener> textFrameListeners = new ArrayList<TextFrameListener>();

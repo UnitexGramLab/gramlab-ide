@@ -25,16 +25,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.io.File;
 
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JInternalFrame;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import fr.umlv.unitex.MyDropTarget;
@@ -44,20 +42,17 @@ import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.io.GraphIO;
 
-public class GraphDiffFrame extends JInternalFrame {
-	JScrollPane basePane;
-	JScrollPane destPane;
-	JPanel main;
-
+public class GraphDiffFrame extends TabbableInternalFrame {
 	public GraphDiffFrame(File fbase, File fdest, GraphIO base, GraphIO dest,
 			GraphDecorator diff) {
 		super("Graph Diff", true, true, true, true);
 		MyDropTarget.newDropTarget(this);
-		main = new JPanel(new BorderLayout());
+		JPanel main = new JPanel(new BorderLayout());
 		main.add(constructTopPanel(fbase, fdest, diff), BorderLayout.NORTH);
-		basePane = createPane(base, diff);
-		destPane = createPane(dest, diff.clone(false));
-		main.add(basePane);
+		GraphicalZone basePane=new GraphicalZone(base,new TextField(0, null), null, diff);
+		GraphicalZone destPane=new GraphicalZone(dest,new TextField(0, null), null, diff.clone(false));
+		JPanel p=buildSynchronizedScrollPanes(basePane,destPane);
+		main.add(p);
 		setContentPane(main);
 		setSize(850, 550);
 	}
@@ -72,40 +67,48 @@ public class GraphDiffFrame extends JInternalFrame {
 		return scroll;
 	}
 
+	private static JPanel buildSynchronizedScrollPanes(JComponent c1,JComponent c2) {
+		JPanel p=new JPanel(new GridLayout(1,2));
+		final JScrollPane p1=new JScrollPane(c1);
+		final JScrollPane p2=new JScrollPane(c2);
+		p1.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				if (!e.getValueIsAdjusting()) return;
+				double ratio=p1.getHorizontalScrollBar().getValue()/(double)p1.getHorizontalScrollBar().getMaximum();
+				p2.getHorizontalScrollBar().setValue((int)(p2.getHorizontalScrollBar().getMaximum()*ratio));
+			}
+		});
+		p2.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				if (!e.getValueIsAdjusting()) return;
+				double ratio=p2.getHorizontalScrollBar().getValue()/(double)p2.getHorizontalScrollBar().getMaximum();
+				p1.getHorizontalScrollBar().setValue((int)(p1.getHorizontalScrollBar().getMaximum()*ratio));
+			}
+		});
+		p1.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				if (!e.getValueIsAdjusting()) return;
+				double ratio=p1.getVerticalScrollBar().getValue()/(double)p1.getVerticalScrollBar().getMaximum();
+				p2.getVerticalScrollBar().setValue((int)(p2.getVerticalScrollBar().getMaximum()*ratio));
+			}
+		});
+		p2.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				if (!e.getValueIsAdjusting()) return;
+				double ratio=p2.getVerticalScrollBar().getValue()/(double)p2.getVerticalScrollBar().getMaximum();
+				p1.getVerticalScrollBar().setValue((int)(p1.getVerticalScrollBar().getMaximum()*ratio));
+			}
+		});
+		p.add(p1);
+		p.add(p2);
+		return p;
+	}
+
 	private Component constructTopPanel(File fbase, File fdest,
 			GraphDecorator diff) {
 		final boolean propertyChanges = diff.propertyOps.size() != 0;
 		final JPanel p = new JPanel(new GridLayout(
 				3 + (propertyChanges ? 1 : 0), 1));
-		final ButtonGroup bg = new ButtonGroup();
-		final JRadioButton base = new JRadioButton(fbase.getAbsolutePath(),
-				true);
-		final JRadioButton dest = new JRadioButton(fdest.getAbsolutePath(),
-				false);
-		base.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (base.isSelected()) {
-					main.remove(destPane);
-					main.add(basePane);
-					main.revalidate();
-					main.repaint();
-				}
-			}
-		});
-		dest.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (dest.isSelected()) {
-					main.remove(basePane);
-					main.add(destPane);
-					main.revalidate();
-					main.repaint();
-				}
-			}
-		});
-		bg.add(base);
-		bg.add(dest);
-		p.add(base);
-		p.add(dest);
 		final JPanel p2 = new JPanel(null);
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
 		p2.add(new JLabel(" "));
@@ -133,5 +136,10 @@ public class GraphDiffFrame extends JInternalFrame {
 		l.setOpaque(true);
 		l.setBackground(c);
 		return l;
+	}
+
+	@Override
+	public String getTabName() {
+		return "Graph diff";
 	}
 }
