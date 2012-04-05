@@ -32,7 +32,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -681,8 +680,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				final File file = fc.getSelectedFile();
 				if (file == null || !file.exists())
 					return;
-				final File diffResult = new File(Config
-						.getUserCurrentLanguageDir(), "diff");
+				final File diffResult = new File(grf.getParent(), "diff");
 				final GrfDiffCommand cmd = new GrfDiffCommand()
 						.files(grf, file).output(diffResult);
 				Launcher.exec(cmd, true, new ShowDiffDo(grf, file, diffResult));
