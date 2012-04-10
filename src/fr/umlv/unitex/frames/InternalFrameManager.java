@@ -141,7 +141,7 @@ public class InternalFrameManager {
 	 * will.
 	 */
 	public InternalFrameManager getSubManager(
-			@SuppressWarnings("unused") File resource) {
+			@SuppressWarnings("unused") File resource,boolean weShallOpenTheProject) {
 		return this;
 	}
 
@@ -149,10 +149,14 @@ public class InternalFrameManager {
 	 * Here we have a static access to the main frame manager. This getter is
 	 * designed for compatibility with Gramlab.
 	 */
-	public static InternalFrameManager getManager(File resource) {
-		return manager.getSubManager(resource);
+	public static InternalFrameManager getManager(File resource,boolean weShallOpenTheProject) {
+		return manager.getSubManager(resource,weShallOpenTheProject);
 	}
 
+	public static InternalFrameManager getManager(File resource) {
+		return getManager(resource,true);
+	}
+	
 	public static void setManager(InternalFrameManager m) {
 		manager = m;
 	}
