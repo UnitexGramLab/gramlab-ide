@@ -32,6 +32,7 @@ public class GraphDecoratorConfig {
 	public static final Color MOVED = new Color(0xC4, 0x4F, 0xD0);
 	public static final Color CONTENT_CHANGED = Color.ORANGE;
 	public static final Color DEBUG_HIGHLIGHT = Color.GREEN;
+	public static final Color OUTPUT_HIGHLIGHTED = DEBUG_HIGHLIGHT;
 	/* Values used for tagging the text automaton */
 	public static final float SHADE_ALPHA = 0.2f;
 	public static final Color SHADED = new Color(0f, 0f, 0f, SHADE_ALPHA);

@@ -25,6 +25,7 @@ import java.io.File;
 import fr.umlv.unitex.io.GraphIO;
 
 class GraphFrameFactory extends MultiInstanceFrameFactory<GraphFrame, File> {
+	
 	GraphFrame getGraphFrame(File grf) {
 		final GraphFrame f1 = getFrameIfExists(grf);
 		if (f1 != null)
@@ -40,5 +41,11 @@ class GraphFrameFactory extends MultiInstanceFrameFactory<GraphFrame, File> {
 		}
 		addFrame(f);
 		return f;
+	}
+
+	public void saveAllFrames() {
+		for (GraphFrame f:frames) {
+			f.saveGraph();
+		}
 	}
 }
