@@ -583,6 +583,12 @@ public class GraphIO {
 			throw new IllegalStateException(
 					"Should not save a graph with null graph information");
 		}
+		if (grfFile.exists() && !grfFile.canWrite()) {
+			JOptionPane.showMessageDialog(null, "Cannot write "
+				+ grfFile.getAbsolutePath()+"\nbecause it is a read-only file!", "Error",
+				JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		OutputStreamWriter writer;
 		try {
 			if (!grfFile.exists())
