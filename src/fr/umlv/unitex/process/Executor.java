@@ -59,6 +59,8 @@ public class Executor extends Thread {
 				if (!command.executeCommand(parameters,entry)) {
 					success=false;
 				}
+				Runnable r=command.getWhatToDoOnceCompleted();
+				if (r!=null) r.run();
 				entry=null;
 			}
 		}
