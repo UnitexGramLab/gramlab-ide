@@ -22,6 +22,11 @@ package fr.umlv.unitex.process;
 
 import fr.umlv.unitex.console.ConsoleEntry;
 
+/**
+ * See comments in the 'ToDo' interface
+ * @author paumier
+ *
+ */
 public interface ToDoAfterSingleCommand {
 
 	public void toDo(boolean success,ConsoleEntry entry);
