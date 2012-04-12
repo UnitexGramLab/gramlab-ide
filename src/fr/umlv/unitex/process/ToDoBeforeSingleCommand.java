@@ -18,30 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process.commands;
+package fr.umlv.unitex.process;
 
 import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.ToDoAfterSingleCommand;
-import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
 
-public interface AbstractCommand {
+/**
+ * See comments in the 'ToDo' interface
+ * @author paumier
+ *
+ */
+public interface ToDoBeforeSingleCommand {
 
-	/**
-	 * Logs the command in Unitex's console
-	 */
-	public ConsoleEntry logIntoConsole();
-	
-	/**
-	 * Executes the command and returns true iff
-	 * the command successfully executed
-	 */
-	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry);
-	
-	public void setWhatToDoBefore(ToDoBeforeSingleCommand r);
-	public ToDoBeforeSingleCommand  getWhatToDoBefore();
-
-	public void setWhatToDoOnceCompleted(ToDoAfterSingleCommand r);
-	public ToDoAfterSingleCommand getWhatToDoOnceCompleted();
+	public void toDo(ConsoleEntry entry);
 
 }
