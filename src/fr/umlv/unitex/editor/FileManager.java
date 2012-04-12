@@ -115,6 +115,12 @@ public class FileManager {
 	 *            the absolute path of the file
 	 */
 	public void save(String absolutePath) {
+		File file=new File(absolutePath);
+		if (file.exists() && !file.canWrite()) {
+			JOptionPane.showMessageDialog(null, "Unable to save "
+					+ absolutePath+"\nbecause it is a read-only file! ","Error",JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		try {
 			final FileEditionTextFrame fetf = InternalFrameManager.getManager(
 					null).getSelectedFileEditionTextFrame();
@@ -122,8 +128,7 @@ public class FileManager {
 				return;
 			final EditionTextArea t = fetf.getText();
 			final OutputStreamWriter osr = ConfigManager.getManager()
-					.getEncoding(null).getOutputStreamWriter(
-							new File(absolutePath));
+					.getEncoding(null).getOutputStreamWriter(file);
 			final String content = t.getText();
 			final int l = content.length();
 			for (int i = 0; i < l; i++) {
