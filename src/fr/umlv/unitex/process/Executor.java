@@ -56,11 +56,12 @@ public class Executor extends Thread {
 				if (parameters.isTraceIntoConsole()) {
 					entry=command.logIntoConsole();
 				}
-				if (!command.executeCommand(parameters,entry)) {
+				boolean commandSuccessful=command.executeCommand(parameters,entry);
+				if (!commandSuccessful) {
 					success=false;
 				}
-				Runnable r=command.getWhatToDoOnceCompleted();
-				if (r!=null) r.run();
+				ToDoAfterSingleCommand toDo=command.getWhatToDoOnceCompleted();
+				if (toDo!=null) toDo.toDo(commandSuccessful,entry);
 				entry=null;
 			}
 		}

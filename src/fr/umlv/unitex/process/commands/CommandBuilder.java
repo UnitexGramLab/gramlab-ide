@@ -33,6 +33,7 @@ import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.ExecParameters;
 import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ProcessInfoThread;
+import fr.umlv.unitex.process.ToDoAfterSingleCommand;
 
 /**
  * This class provides facilities for build process command lines.
@@ -237,13 +238,13 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 	}
 
-	private Runnable toDo=null;
+	private ToDoAfterSingleCommand toDo=null;
 	
-	public void setWhatToDoOnceCompleted(Runnable r) {
+	public void setWhatToDoOnceCompleted(ToDoAfterSingleCommand r) {
 		this.toDo=r;
 	}
 	
-	public Runnable getWhatToDoOnceCompleted() {
+	public ToDoAfterSingleCommand getWhatToDoOnceCompleted() {
 		return toDo;
 	}
 }
