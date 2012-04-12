@@ -36,4 +36,7 @@ public interface AbstractCommand {
 	 */
 	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry);
 	
+	public void setWhatToDoOnceCompleted(Runnable r);
+	public Runnable getWhatToDoOnceCompleted();
+
 }
