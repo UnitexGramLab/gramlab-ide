@@ -539,4 +539,28 @@ public class FileUtil {
 		return new File(getFileNameWithoutExtension(snt)+".txt");
 	}
 
+	public static void setRecursivelyReadOnly(File f) {
+		if (f==null || !f.exists()) return;
+		f.setReadOnly();
+		if (f.isDirectory()) {
+			File[] files=f.listFiles();
+			if (files==null) return;
+			for (File tmp:files) {
+				setRecursivelyReadOnly(tmp);
+			}
+		}
+	}
+
+	public static void setRecursivelyWritable(File f) {
+		if (f==null || !f.exists()) return;
+		f.setWritable(true);
+		if (f.isDirectory()) {
+			File[] files=f.listFiles();
+			if (files==null) return;
+			for (File tmp:files) {
+				setRecursivelyWritable(tmp);
+			}
+		}
+	}
+
 }
