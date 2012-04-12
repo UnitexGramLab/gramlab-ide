@@ -236,5 +236,14 @@ public abstract class CommandBuilder implements AbstractCommand {
 			return !problem;
 		}
 	}
+
+	private Runnable toDo=null;
 	
+	public void setWhatToDoOnceCompleted(Runnable r) {
+		this.toDo=r;
+	}
+	
+	public Runnable getWhatToDoOnceCompleted() {
+		return toDo;
+	}
 }
