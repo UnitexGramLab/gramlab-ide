@@ -126,7 +126,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	private final UndoManager manager;
 	private JButton redoButton;
 	private JButton undoButton;
-	private final JScrollPane scroll;
+	public final JScrollPane scroll;
 	private boolean nonEmptyGraph = false;
 
 	public boolean isNonEmptyGraph() {
@@ -894,6 +894,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	 *            <code>false</code> otherwise
 	 */
 	void setModified(boolean b) {
+		graphicalZone.setHighlight(false);
 		modified = b;
 		if (grf != null) {
 			if (modified)
@@ -1249,5 +1250,13 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	@Override
 	public String getTabName() {
 		return (grf==null)?"(unsaved grf)":((modified?"*":"")+grf.getName());
+	}
+
+	public boolean find(String text) {
+		return graphicalZone.find(text);
+	}
+
+	public boolean findNext(String text) {
+		return graphicalZone.findNext(text);
 	}
 }

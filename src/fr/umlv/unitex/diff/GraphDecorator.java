@@ -275,6 +275,14 @@ public class GraphDecorator {
 		return c;
 	}
 
+	public Color getBoxOutputColor(int boxNumber, Color c) {
+		if (contentChanged(boxNumber))
+			return GraphDecoratorConfig.CONTENT_CHANGED;
+		if (boxNumber==currentBox && currentLine==-2)
+			return GraphDecoratorConfig.OUTPUT_HIGHLIGHTED;
+		return c;
+	}
+
 	public void clear() {
 		propertyOps.clear();
 		boxAdded.clear();
@@ -321,4 +329,5 @@ public class GraphDecorator {
 	public void setCoverage(Coverage c) {
 		coverage = c;
 	}
+	
 }

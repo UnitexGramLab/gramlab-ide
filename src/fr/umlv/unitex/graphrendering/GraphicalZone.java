@@ -24,6 +24,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -44,6 +46,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
@@ -1251,5 +1255,80 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);
 		}
 		return Printable.PAGE_EXISTS;
+	}
+
+	
+	private int currentFindBox=0;
+	private int currentFindLine=0;
+
+	public boolean find(String pattern) {
+		currentFindBox=0;
+		currentFindLine=0;
+		return findNext(pattern);
+	}
+
+	public boolean findNext(String pattern) {
+		while (currentFindBox<graphBoxes.size()) {
+			GraphBox box=(GraphBox) graphBoxes.get(currentFindBox);
+			while (currentFindLine<box.lines.size()) {
+				String line=box.lines.get(currentFindLine);
+				if (line.contains(pattern)) {
+					setHighlight(true);
+					currentFindLine++;
+					return true;
+				}
+				currentFindLine++;
+			}
+			if (box.transduction!=null && box.transduction.contains(pattern)) {
+				currentFindLine=-2;
+				setHighlight(true);
+				currentFindLine=0;
+				currentFindBox++;
+				return true;
+			}
+			currentFindBox++;
+			currentFindLine=0;
+		}
+		return false;
+	}
+
+	public void setHighlight(boolean highlight) {
+		if (!highlight) {
+			setDecorator(null);
+			repaint();
+			return;
+		}
+		GraphDecorator d=new GraphDecorator(null);
+		d.highlightBoxLine(-1,currentFindBox,currentFindLine);
+		setDecorator(d);
+		revalidate();
+		repaint();
+		GraphBox b=(GraphBox)graphBoxes.get(currentFindBox);
+		JViewport viewport=((GraphFrame)parentFrame).scroll.getViewport();
+		Rectangle visibleRect = viewport.getViewRect();
+		if (visibleRect.width == 0 && visibleRect.height == 0) {
+			/*
+			 * If the view port has not been given a size, we consider the panel
+			 * area as default
+			 */
+			visibleRect = new Rectangle(0, 0, getWidth(), getHeight());
+		}
+		/*
+		 * If necessary, we adjust the scrolling so that the middle of the box
+		 * will be visible
+		 */
+		int newX = visibleRect.x;
+		if (b.X < visibleRect.x + 50) {
+			newX = b.X1 - 50;
+		} else if ((b.X1 + b.Width) > (visibleRect.x + visibleRect.width)) {
+			newX = b.X1 - 50;
+		}
+		int newY = visibleRect.y;
+		if (b.Y < visibleRect.y + 50) {
+			newY = b.Y1 - 50;
+		} else if ((b.Y1 + b.Height) > (visibleRect.y + visibleRect.height)) {
+			newY = b.Y1 - 50;
+		}
+		viewport.setViewPosition(new Point(newX, newY));
 	}
 }
