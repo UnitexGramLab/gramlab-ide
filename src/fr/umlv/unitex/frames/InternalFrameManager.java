@@ -230,6 +230,10 @@ public class InternalFrameManager {
 		return g;
 	}
 
+	public void saveAllGraphFrames() {
+		graphFrameFactory.saveAllFrames();
+	}
+
 	public void closeAllGraphFrames() {
 		graphFrameFactory.closeAllFrames();
 	}

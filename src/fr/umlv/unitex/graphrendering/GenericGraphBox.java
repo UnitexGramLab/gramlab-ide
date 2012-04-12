@@ -896,16 +896,27 @@ public class GenericGraphBox {
 		for (i = 0; i < n_lines; i++) {
 			is_greyed = greyed.get(i);
 			l = lines.get(i);
-			if (is_greyed) {
-				g.setColor(parentGraphicalZone.info.subgraphColor);
+			
+			Color c=null;
+			
+			if (n_lines > 1
+					&& parentGraphicalZone.decorator != null
+					&& parentGraphicalZone.decorator.isBoxLineHighlighted(
+							boxNumber, i)) {
+				c=GraphDecoratorConfig.DEBUG_HIGHLIGHT;
+			} else if (is_greyed) {
+				c=parentGraphicalZone.info.subgraphColor;
 				if (l.startsWith(":")) {
 					// if we have a subgraph within a package
-					g.setColor(parentGraphicalZone.info.packageColor);
+					c=parentGraphicalZone.info.packageColor;
 				}
 				if (!existsGraph(i)) {
 					/* We use a special color to mark non existing graphs */
-					g.setColor(parentGraphicalZone.info.unreachableGraphColor);
+					c=parentGraphicalZone.info.unreachableGraphColor;
 				}
+			}
+			if (c!=null) {
+				g.setColor(c);
 				GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne,
 						Width - 4, h_ligne);
 			}
@@ -922,6 +933,9 @@ public class GenericGraphBox {
 			}
 		}
 		// prints the transduction, if exists
+		if (parentGraphicalZone.decorator!=null) {
+			g.setColor(parentGraphicalZone.decorator.getBoxOutputColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+		}
 		g.setColor(parentGraphicalZone.info.foregroundColor);
 		final String output = getNonRangeOutput(transduction);
 		if (!output.equals("")) {
@@ -994,11 +1008,16 @@ public class GenericGraphBox {
 	}
 
 	private void drawVariable(Graphics2D g) {
+		Color c;
 		if (!outputVariable) {
-			g.setColor(parentGraphicalZone.info.commentColor);
+			c=parentGraphicalZone.info.commentColor;
 		} else {
-			g.setColor(parentGraphicalZone.info.outputVariableColor);
+			c=parentGraphicalZone.info.outputVariableColor;
 		}
+		if (parentGraphicalZone.decorator!=null) {
+			c=parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),c);
+		}
+		g.setColor(c);
 		g.setFont(variableFont);
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
@@ -1008,7 +1027,11 @@ public class GenericGraphBox {
 	}
 
 	private void drawVariableSelected(Graphics2D g) {
-		g.setColor(parentGraphicalZone.info.selectedColor);
+		Color c=parentGraphicalZone.info.selectedColor;
+		if (parentGraphicalZone.decorator!=null) {
+			c=parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),c);
+		}
+		g.setColor(c);
 		GraphicalToolBox.fillRect(g, X1, Y1, Width, Height);
 		g.setColor(parentGraphicalZone.info.commentColor);
 		g.setFont(variableFont);
@@ -1193,7 +1216,7 @@ public class GenericGraphBox {
 		if (parentGraphicalZone.decorator == null) {
 			g.setColor(parentGraphicalZone.info.foregroundColor);
 		} else {
-			g.setColor(parentGraphicalZone.decorator.getBoxFillColor(boxNumber,
+			g.setColor(parentGraphicalZone.decorator.getBoxOutputColor(boxNumber,
 					parentGraphicalZone.info.foregroundColor));
 		}
 		final String output = getNonRangeOutput(transduction);
