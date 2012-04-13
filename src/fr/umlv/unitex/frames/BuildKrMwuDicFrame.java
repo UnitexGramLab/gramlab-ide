@@ -52,10 +52,10 @@ import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;
  * @author Sébastien Paumier
  */
 public class BuildKrMwuDicFrame extends JInternalFrame {
-	private final JTextField mwuDic = new JTextField();
-	private final JTextField inflectionDir = new JTextField();
-	private final JTextField binaryDic = new JTextField();
-	private final JTextField outputName = new JTextField();
+	final JTextField mwuDic = new JTextField();
+	final JTextField inflectionDir = new JTextField();
+	final JTextField binaryDic = new JTextField();
+	final JTextField outputName = new JTextField();
 
 	BuildKrMwuDicFrame() {
 		super("Generate MWU dictionary graph", false, true);

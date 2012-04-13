@@ -58,13 +58,13 @@ public class BigTextArea extends JPanel {
 	private static final int PREFIX_SELECTED = 2;
 	private static final int INFIX_SELECTED = 3;
 	private static final int SUFFIX_SELECTED = 4;
-	private final TextAsListModelImpl model;
-	private final JTextPane area;
-	private final JScrollBar scrollBar;
-	private final StyledDocument document;
-	private final Style normal;
-	private final Style highlighted;
-	private final StringBuilder builder = new StringBuilder(10000);
+	final TextAsListModelImpl model;
+	final JTextPane area;
+	final JScrollBar scrollBar;
+	final StyledDocument document;
+	final Style normal;
+	final Style highlighted;
+	final StringBuilder builder = new StringBuilder(10000);
 
 	private BigTextArea(TextAsListModelImpl m) {
 		super(new BorderLayout());

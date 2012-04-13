@@ -57,7 +57,7 @@ public class TextField extends GraphTextField {
 	/**
 	 * Indicates if the text field content has been modified
 	 */
-	private boolean modified = false;
+	boolean modified = false;
 	/**
 	 * <code>TextAction</code> that defines what to do for a "paste" operation
 	 */
@@ -302,7 +302,9 @@ public class TextField extends GraphTextField {
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			/* */
 		}
+
 	}
 
 	@Override
@@ -343,7 +345,7 @@ public class TextField extends GraphTextField {
 		return false;
 	}
 
-	private class MyKeyListener extends KeyAdapter {
+	class MyKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.isControlDown() || e.isAltDown()) {

@@ -30,7 +30,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -667,11 +666,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			e1.printStackTrace();
 		}
 		final String text = readSentenceText();
-		try {
-			TokensInfo.loadTokensInfo(sentence_tok, text);
-		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		TokensInfo.loadTokensInfo(sentence_tok, text);
 		final File f = new File(sentence_modified + String.valueOf(z) + ".grf");
 		final boolean isSentenceModified = f.exists();
 		if (isSentenceModified) {

@@ -45,9 +45,9 @@ import fr.umlv.unitex.graphrendering.ContextsInfo;
  * @author Sébastien Paumier
  */
 class ListCopyDialog extends JDialog {
-	private ContextsInfo info;
-	private final JTextField left;
-	private final JTextField right;
+	ContextsInfo info;
+	final JTextField left;
+	final JTextField right;
 
 	/**
 	 * Constructs a new empty <code>ListCopyDialog</code>

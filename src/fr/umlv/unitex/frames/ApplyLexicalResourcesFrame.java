@@ -89,9 +89,9 @@ import fr.umlv.unitex.text.BigTextArea;
  * @author Sébastien Paumier
  */
 public class ApplyLexicalResourcesFrame extends JInternalFrame {
-	private JList userDicList;
-	private JList systemDicList;
-	private BigTextArea credits;
+	JList userDicList;
+	JList systemDicList;
+	BigTextArea credits;
 	private final String noCreditMessage = "No available description for the dictionary \"";
 
 	// final String lexicalDir = getLexicalDir();

@@ -46,11 +46,11 @@ import fr.umlv.unitex.transcoding.Transcoder;
  * @author Sébastien Paumier
  */
 public class TranscodeOneFileDialog extends JDialog {
-	private final JRadioButton replace = new JRadioButton("Replace", true);
-	private final JLabel line1 = new JLabel();
-	private final JLabel line2 = new JLabel();
-	private File file;
-	private ToDo toDo;
+	final JRadioButton replace = new JRadioButton("Replace", true);
+	final JLabel line1 = new JLabel();
+	final JLabel line2 = new JLabel();
+	File file;
+	ToDo toDo;
 
 	TranscodeOneFileDialog() {
 		super(UnitexFrame.mainFrame, "Transcoding", true);

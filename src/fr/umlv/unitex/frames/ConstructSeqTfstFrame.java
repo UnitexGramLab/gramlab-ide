@@ -24,7 +24,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -67,15 +66,15 @@ import fr.umlv.unitex.process.commands.TokenizeCommand;
  * 
  * @author Sébastien Paumier
  */
-public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListener{
-	private final JTextField GRFfile = new JTextField(20);
-	private final JTextField SourceFile = new JTextField(20);
-	private String SourceFileName,SourceFileShortName, GRFFileName;
-	private int n_op = 0, n_r = 0, n_d = 0, n_a = 0;
+public class ConstructSeqTfstFrame extends JInternalFrame {
+	final JTextField GRFfile = new JTextField(20);
+	final JTextField SourceFile = new JTextField(20);
+	String SourceFileName,SourceFileShortName, GRFFileName;
+	int n_op = 0, n_r = 0, n_d = 0, n_a = 0;
 	JSpinner spinner_op, spinner_r, spinner_d, spinner_a;
 	SpinnerNumberModel sm_op, sm_r, sm_d, sm_a;
 	JRadioButton bTEI, bTXT, bSNT;
-	private final JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
+	final JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
 	private File sequenceGRF;
 	private File ReplaceGRF;
 
@@ -147,9 +146,6 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		group.add(bTEI);
 		group.add(bTXT);								
 		group.add(bSNT);
-		bTEI.addActionListener(this);
-		bTXT.addActionListener(this);
-		bSNT.addActionListener(this);
 		fileP.add(bTEI);
 		fileP.add(bTXT);
 		fileP.add(bSNT);
@@ -177,7 +173,6 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 					SourceFileName=chooser.getSelectedFile().getCanonicalPath();
 					SourceFileShortName=chooser.getSelectedFile().getName();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				SourceFile.setText(SourceFileName);
@@ -605,7 +600,4 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		return p;
 	}
 
-	public void actionPerformed(ActionEvent arg0) {
-
-	}
 }

@@ -190,7 +190,7 @@ public class LoadAndPrepareTexts {
 		savePreparedTexts(outfile);
 	}
 
-	public LoadAndPrepareTexts(String sfile, String tfile, String ps, String pt) {
+	public LoadAndPrepareTexts(String sfile, String tfile, String ps, @SuppressWarnings("unused") String pt) {
 		psource = ps;
 		uriSource = sfile;
 		uriTarget = tfile;
@@ -198,7 +198,7 @@ public class LoadAndPrepareTexts {
 	}
 
 	public LoadAndPrepareTexts(String sfile, String tfile, String ps,
-			String pt, String idEnglobantSource, String idEnglobantCible) {
+			@SuppressWarnings("unused") String pt, String idEnglobantSource, String idEnglobantCible) {
 		psource = ps;
 		uriSource = sfile;
 		uriTarget = tfile;

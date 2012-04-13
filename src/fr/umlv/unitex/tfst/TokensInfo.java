@@ -21,7 +21,6 @@
 package fr.umlv.unitex.tfst;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,8 +38,7 @@ public class TokensInfo {
 		return info[2 * n + 1];
 	}
 
-	public static void loadTokensInfo(File f, String sentence)
-			throws FileNotFoundException {
+	public static void loadTokensInfo(File f, String sentence) {
 		final Scanner scanner = Encoding.getScanner(f);
 		final ArrayList<Integer> l = new ArrayList<Integer>();
 		tokens.clear();

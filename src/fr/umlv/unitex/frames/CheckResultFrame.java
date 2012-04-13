@@ -40,7 +40,7 @@ import fr.umlv.unitex.text.BigTextList;
  * @author Sébastien Paumier
  */
 public class CheckResultFrame extends TabbableInternalFrame {
-	private final BigTextList text;
+	final BigTextList text;
 
 	CheckResultFrame() {
 		super("Check Results", true, true, true, true);

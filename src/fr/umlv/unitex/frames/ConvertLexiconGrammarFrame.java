@@ -46,9 +46,9 @@ import fr.umlv.unitex.process.commands.Table2GrfCommand;
  * @author Sébastien Paumier
  */
 public class ConvertLexiconGrammarFrame extends JInternalFrame {
-	private final JTextField grfName = new JTextField();
-	private final JTextField resultName = new JTextField();
-	private final JTextField subgraphName = new JTextField();
+	final JTextField grfName = new JTextField();
+	final JTextField resultName = new JTextField();
+	final JTextField subgraphName = new JTextField();
 	private File table;
 
 	ConvertLexiconGrammarFrame() {

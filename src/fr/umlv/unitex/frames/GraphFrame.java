@@ -779,8 +779,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			InternalFrameManager.getManager(base).newGraphDiffFrame(base, dest,
-					baseGrf, destGrf, info);
+			InternalFrameManager.getManager(base).newGraphDiffFrame(baseGrf, destGrf, info);
 		}
 	}
 

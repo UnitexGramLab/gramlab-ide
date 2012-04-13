@@ -74,8 +74,8 @@ import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.text.BigTextList;
 
 public class DicLookupFrame extends JInternalFrame {
-	private JList userDicList;
-	private JList systemDicList;
+	JList userDicList;
+	JList systemDicList;
 	final BigTextList text = new BigTextList(true);
 	final JTextField inputText = new JTextField();
 
@@ -114,8 +114,7 @@ public class DicLookupFrame extends JInternalFrame {
 	private JPanel constructInfoPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		final JLabel text = new JLabel("Select dictionaries to look up into:");
-		panel.add(text, BorderLayout.CENTER);
+		panel.add(new JLabel("Select dictionaries to look up into:"), BorderLayout.CENTER);
 		return panel;
 	}
 

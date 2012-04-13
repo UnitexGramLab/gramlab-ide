@@ -35,8 +35,8 @@ import fr.umlv.unitex.frames.TextAutomatonFrame;
  * @author Sébastien Paumier
  */
 public class TfstTextField extends GraphTextField {
-	private final TextAutomatonFrame parent;
-	private boolean modified = false;
+	final TextAutomatonFrame parent;
+	boolean modified = false;
 
 	/**
 	 * Constructs a new empty <code>FstTextField</code>.
@@ -97,7 +97,7 @@ public class TfstTextField extends GraphTextField {
 		return false;
 	}
 
-	private class MyKeyListener extends KeyAdapter {
+	class MyKeyListener extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == 10)

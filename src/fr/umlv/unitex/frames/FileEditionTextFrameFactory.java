@@ -27,7 +27,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 class FileEditionTextFrameFactory {
-	private final ArrayList<FileEditionTextFrame> frames = new ArrayList<FileEditionTextFrame>();
+	final ArrayList<FileEditionTextFrame> frames = new ArrayList<FileEditionTextFrame>();
 
 	FileEditionTextFrame getFileEditionTextFrame(File file) {
 		if (file != null) {

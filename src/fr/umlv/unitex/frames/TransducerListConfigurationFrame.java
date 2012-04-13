@@ -172,7 +172,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * Used to display an <code>unsaved</code> symbol next to the transducer
 	 * name and to query the user to save before leaving.
 	 */
-	private boolean configurationHasChanged;
+	boolean configurationHasChanged;
 	/**
 	 * Whether edited file has comments.
 	 * <p/>
