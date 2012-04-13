@@ -428,6 +428,13 @@ class GraphPresentationDialog extends JDialog {
 		final JButton DEFAULT = new JButton(defaultAction);
 		final Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
+				info.filename=filenameCheckBox.isSelected();
+				info.frame=frameCheckBox.isSelected();
+				info.date=dateCheckBox.isSelected();
+				if (rightToLeftCheckBox.isVisible()) {
+					info.rightToLeft=rightToLeftCheckBox.isSelected();
+				}
+				info.pathname=pathnameCheckBox.isSelected();
 				setVisible(false);
 			}
 		};
