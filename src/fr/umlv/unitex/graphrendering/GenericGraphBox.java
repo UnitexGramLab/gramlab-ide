@@ -402,24 +402,34 @@ public class GenericGraphBox {
 	}
 
 	/**
-	 * Adds a transition to a box. If there is allready a transition to this
+	 * Adds a transition to a box. If there is already a transition to this
 	 * box, it is removed.
 	 * 
 	 * @param g
 	 *            the destination box
 	 */
-	public void addTransitionTo(GenericGraphBox g) {
+	public boolean addTransitionTo(GenericGraphBox g) {
 		if (this.type == FINAL) {
 			// if it is the final, we don't allow parent.pref.output transitions
-			return;
+			return false;
 		}
 		if (commentBox || g.commentBox) {
 			/* We never add any transition from or to a comment box */
-			return;
+			return false;
 		}
 		final int i = transitions.indexOf(g);
 		if (i == -1) {
 			// if the transition to g does not exist, we create it
+			// but we check first if it is a loop transition on a box containing
+			// an interval loop
+			if (g==this && !getRangeOutput(transduction).equals("")) {
+				int res=JOptionPane.showConfirmDialog(parentGraphicalZone.parentFrame,
+						"Setting a loop on a box containing a range definition may\n"
+						+"not be a good idea. Are you sure ?","Warning",JOptionPane.YES_NO_OPTION);
+				if (res!=JOptionPane.YES_OPTION) {
+					return false;
+				}
+			}
 			transitions.add(g);
 			g.hasIncomingTransitions++;
 		} else {
@@ -430,10 +440,11 @@ public class GenericGraphBox {
 		hasOutgoingTransitions = !transitions.isEmpty();
 		standaloneBox = (!hasOutgoingTransitions && hasIncomingTransitions == 0);
 		g.standaloneBox = (!g.hasOutgoingTransitions && g.hasIncomingTransitions == 0);
+		return true;
 	}
 
 	/**
-	 * Adds a transition to a box. If there is allready a transition to this
+	 * Adds a transition to a box. If there is already a transition to this
 	 * box, it is not removed.
 	 * 
 	 * @param g
