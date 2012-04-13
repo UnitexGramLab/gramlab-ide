@@ -45,6 +45,7 @@ import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.tfst.Bounds;
 import fr.umlv.unitex.tfst.tagging.TaggingModel;
+import fr.umlv.unitex.undo.SelectEdit;
 
 /**
  * This class describes a component on which a sentence graph can be drawn.
@@ -146,6 +147,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					} else {
 						// if not, we just select this one
 						b.setSelected(true);
+						postEdit(new SelectEdit(selectedBoxes));
 						selectedBoxes.add(b);
 						fireGraphTextChanged(b.getContent());
 					}

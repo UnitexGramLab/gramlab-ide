@@ -147,8 +147,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				}
 				// then, the only selected box is the new one
 				unSelectAllBoxes();
-				b.selected = true;
+				b.setSelected(true);
 				selectedBoxes.add(b);
+				postEdit(new SelectEdit(selectedBoxes));
 				fireGraphTextChanged(b.content);
 				fireGraphChanged(true);
 				fireBoxSelectionChanged();
@@ -892,8 +893,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							// if we click on a box while there is no box
 							// selected in REVERSE_LINK_BOXES mode,
 							// we select it
-							b.selected = true;
+							b.setSelected(true);
 							selectedBoxes.add(b);
+							postEdit(new SelectEdit(selectedBoxes));
 							fireBoxSelectionChanged();
 							fireGraphTextChanged(b.content);
 						}
@@ -911,7 +913,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				}
 				// then, the only selected box is the new one
 				unSelectAllBoxes();
-				b.selected = true;
+				b.setSelected(true);
 				selectedBoxes.add(b);
 				fireGraphTextChanged(b.content); /* Should be "<E>" */
 				fireGraphChanged(true);
@@ -941,7 +943,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					boxSelected = getSelectedBox(x_tmp, y_tmp);
 					if (boxSelected != -1) {
 						b = (GraphBox) graphBoxes.get(boxSelected);
-						b.selected = true;
+						b.setSelected(true);
 						selectedBoxes.add(b);
 						removeSelected();
 					}
@@ -952,11 +954,11 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				if (boxSelected != -1) {
 					// if we click on a box
 					b = (GraphBox) graphBoxes.get(boxSelected);
-					if (!b.selected) {
-						b.selected = true;
+					if (!b.isSelected()) {
+						b.setSelected(true);
 						selectedBoxes.add(b);
 					} else {
-						b.selected = false;
+						b.setSelected(false);
 						selectedBoxes.remove(b);
 					}
 					fireGraphChanged(false);
@@ -980,8 +982,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							// if not, we just select this one, but only if we
 							// are not clicking
 							// on final state in LINK_BOXES mode
-							b.selected = true;
+							b.setSelected(true);
 							selectedBoxes.add(b);
+							postEdit(new SelectEdit(selectedBoxes));
 							fireGraphTextChanged(b.content);
 							fireBoxSelectionChanged();
 						}
@@ -1021,7 +1024,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// if we start dragging a box
 				singleDraggedBox = graphBoxes.get(selectedBox);
 				fireGraphTextChanged(singleDraggedBox.content);
-				if (!singleDraggedBox.selected) {
+				if (!singleDraggedBox.isSelected()) {
 					/*
 					 * Dragging a selected box is handled below with the general
 					 * multiple box draggind case
