@@ -62,7 +62,7 @@ public class GraphCollection {
 				final MessageWhileWorkingFrame f = InternalFrameManager
 						.getManager(null).newMessageWhileWorkingFrame(
 								"Building graph collection");
-				stop = false;
+				setStop(false);
 				buildGraphCollection(srcDir, destGraph, copy, f.getLabel());
 				InternalFrameManager.getManager(null)
 						.closeMessageWhileWorkingFrame();
@@ -82,9 +82,9 @@ public class GraphCollection {
 	 * @param copy
 	 *            indicates if subgraphs must be copied or not
 	 */
-	private static void buildGraphCollection(File srcDir, File destGraph,
+	static void buildGraphCollection(File srcDir, File destGraph,
 			boolean copy, JLabel txt) {
-		if (stop) {
+		if (isStop()) {
 			return;
 		}
 		if (!srcDir.isDirectory()) {
@@ -98,7 +98,7 @@ public class GraphCollection {
 		} else {
 			System.out.println("Scanning dir " + srcDir);
 		}
-		if (stop) {
+		if (isStop()) {
 			return;
 		}
 		final File destinationDir = destGraph.getParentFile();
@@ -141,7 +141,7 @@ public class GraphCollection {
 				"\"Grammars corresponding+to sub-directories:\" 34 186 0 \n");
 		UnicodeIO.writeString(writer,
 				"\"Grammars corresponding to graphs:\" 180 348 0 \n");
-		if (stop) {
+		if (isStop()) {
 			try {
 				writer.close();
 			} catch (final IOException e) {
@@ -155,7 +155,7 @@ public class GraphCollection {
 		String graphLine = "\"";
 		for (final File aFiles_list1 : files_list) {
 			final String fileName = aFiles_list1.getName();
-			if (stop) {
+			if (isStop()) {
 				try {
 					writer.close();
 				} catch (final IOException e) {
@@ -190,7 +190,7 @@ public class GraphCollection {
 		graphLine = "\"";
 		for (final File aFiles_list : files_list) {
 			final String fileName = aFiles_list.getName();
-			if (stop) {
+			if (isStop()) {
 				try {
 					writer.close();
 				} catch (final IOException e) {
@@ -222,7 +222,7 @@ public class GraphCollection {
 			graphLine = graphLine + "\" 416 372 1 1 \n";
 		}
 		UnicodeIO.writeString(writer, graphLine);
-		if (stop) {
+		if (isStop()) {
 			try {
 				writer.close();
 			} catch (final IOException e) {
@@ -238,6 +238,14 @@ public class GraphCollection {
 	}
 
 	public static void stop() {
-		stop = true;
+		setStop(true);
+	}
+
+	public static void setStop(boolean stop) {
+		GraphCollection.stop = stop;
+	}
+
+	public static boolean isStop() {
+		return stop;
 	}
 }
