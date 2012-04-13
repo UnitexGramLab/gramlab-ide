@@ -1260,14 +1260,20 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	
 	private int currentFindBox=0;
 	private int currentFindLine=0;
+	private String lastPattern=null;
 
-	public boolean find(String pattern) {
-		currentFindBox=0;
-		currentFindLine=0;
-		return findNext(pattern);
-	}
+	private static final int NOT_FOUND = 0;
+	private static final int NO_MORE_MATCHES = 1;
+	private static final int FOUND = 2;
 
-	public boolean findNext(String pattern) {
+	public int find(String pattern) {
+		boolean firstFind=false;
+		if (lastPattern==null || !pattern.equals(lastPattern)) {
+			firstFind=true;
+			lastPattern=pattern;
+			currentFindBox=0;
+			currentFindLine=0;
+		}
 		while (currentFindBox<graphBoxes.size()) {
 			GraphBox box=(GraphBox) graphBoxes.get(currentFindBox);
 			while (currentFindLine<box.lines.size()) {
@@ -1275,7 +1281,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				if (line.contains(pattern)) {
 					setHighlight(true);
 					currentFindLine++;
-					return true;
+					return FOUND;
 				}
 				currentFindLine++;
 			}
@@ -1284,12 +1290,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				setHighlight(true);
 				currentFindLine=0;
 				currentFindBox++;
-				return true;
+				return FOUND;
 			}
 			currentFindBox++;
 			currentFindLine=0;
 		}
-		return false;
+		lastPattern=null;
+		currentFindBox=0;
+		currentFindLine=0;
+		if (firstFind) {
+			return NOT_FOUND;
+		}
+		return NO_MORE_MATCHES;
 	}
 
 	public void setHighlight(boolean highlight) {

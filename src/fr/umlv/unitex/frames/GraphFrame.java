@@ -1252,11 +1252,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		return (grf==null)?"(unsaved grf)":((modified?"*":"")+grf.getName());
 	}
 
-	public boolean find(String text) {
+	public int find(String text) {
 		return graphicalZone.find(text);
 	}
 
-	public boolean findNext(String text) {
-		return graphicalZone.findNext(text);
-	}
 }
