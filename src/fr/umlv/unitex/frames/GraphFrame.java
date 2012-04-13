@@ -68,8 +68,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.MyDropTarget;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
@@ -186,7 +186,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	 */
 	GraphFrame(GraphIO g) {
 		super("", true, true, true, true);
-		MyDropTarget.newDropTarget(this);
+		DropTargetManager.getDropTarget().newDropTarget(this);
 		openFrameCount++;
 		setTitle("Graph");
 		actualMainPanel = new JPanel(new BorderLayout());

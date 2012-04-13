@@ -32,7 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -43,7 +43,7 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 	public GraphDiffFrame(GraphIO base, GraphIO dest,
 			GraphDecorator diff) {
 		super("Graph Diff", true, true, true, true);
-		MyDropTarget.newDropTarget(this);
+		DropTargetManager.getDropTarget().newDropTarget(this);
 		JPanel main = new JPanel(new BorderLayout());
 		main.add(constructTopPanel(diff), BorderLayout.NORTH);
 		GraphicalZone basePane=new GraphicalZone(base,new TextField(0, null), null, diff);

@@ -73,7 +73,7 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 
-import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -151,7 +151,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
-		MyDropTarget.newDropTarget(this);
+		DropTargetManager.getDropTarget().newDropTarget(this);
 		setContentPane(constructPanel());
 		pack();
 		setBounds(10, 10, 900, 600);

@@ -35,7 +35,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -56,7 +56,7 @@ public class TextFrame extends TabbableInternalFrame {
 
 	TextFrame() {
 		super("", true, false, true, true);
-		MyDropTarget.newDropTarget(this);
+		DropTargetManager.getDropTarget().newDropTarget(this);
 		final JPanel top = new JPanel(new BorderLayout());
 		top.setOpaque(true);
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
