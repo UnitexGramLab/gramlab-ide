@@ -82,7 +82,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Graph's rendering properties
 	 */
-	GraphPresentationInfo info;
+	private GraphPresentationInfo graphPresentationInfo;
 	GraphMetaData metadata;
 	/**
 	 * <code>JInternalFrame</code> that contains this component
@@ -131,16 +131,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public void refresh(GraphIO g) {
 		text.setText("");
 		if (g != null) {
-			info = g.info;
+			graphPresentationInfo=g.getInfo();
 			metadata = g.metadata;
 			final Dimension d = new Dimension(g.width, g.height);
 			setSize(d);
 			setPreferredSize(new Dimension(d));
-			graphBoxes = g.boxes;
+			graphBoxes = g.getBoxes();
 		} else {
 			/* Default graphical zone */
 			graphBoxes = new ArrayList<GenericGraphBox>();
-			info = ConfigManager.getManager().getGraphPresentationPreferences(
+			graphPresentationInfo=ConfigManager.getManager().getGraphPresentationPreferences(
 					null);
 			metadata = new GraphMetaData();
 			initializeEmptyGraph();
@@ -610,7 +610,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		if (!isGrid)
 			return;
 		int x, y;
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		final int W = getWidth();
 		final int H = getHeight();
 		for (x = 10; x < W - 20; x = x + nPixels)
@@ -831,7 +831,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	}
 
 	public GraphPresentationInfo getGraphPresentationInfo() {
-		return info;
+		return graphPresentationInfo;
 	}
 
 	public void setGraphPresentationInfo(GraphPresentationInfo i) {
@@ -839,17 +839,17 @@ public abstract class GenericGraphicalZone extends JComponent {
 			throw new IllegalArgumentException(
 					"Cannot set null graph presentation info");
 		}
-		this.info = i;
+		this.graphPresentationInfo = i;
 		updateAllBoxes();
 	}
 
 	public void setAntialiasing(boolean a) {
-		info.antialiasing = a;
+		getGraphPresentationInfo().antialiasing = a;
 		fireGraphChanged(false);
 	}
 
 	public boolean getAntialiasing() {
-		return info.antialiasing;
+		return getGraphPresentationInfo().antialiasing;
 	}
 
 	private final ArrayList<GraphListener> graphListeners = new ArrayList<GraphListener>();
@@ -947,4 +947,5 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public GraphMetaData getMetadata() {
 		return metadata;
 	}
+
 }

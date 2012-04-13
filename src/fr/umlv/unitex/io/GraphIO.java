@@ -48,11 +48,11 @@ public class GraphIO {
 	/**
 	 * Boxes of a graph
 	 */
-	public ArrayList<GenericGraphBox> boxes;
+	private ArrayList<GenericGraphBox> boxes;
 	/**
 	 * Rendering properties of a graph
 	 */
-	public final GraphPresentationInfo info;
+	private final GraphPresentationInfo info;
 	/**
 	 * Width of a graph
 	 */
@@ -69,7 +69,7 @@ public class GraphIO {
 	public GraphMetaData metadata;
 
 	private GraphIO() {
-		info = ConfigManager.getManager().getGraphPresentationPreferences(null);
+		info = ConfigManager.getManager().getGraphPresentationPreferences(null).clone();
 		metadata = new GraphMetaData();
 	}
 
@@ -374,7 +374,7 @@ public class GraphIO {
 	private void readDrawFrame(InputStreamReader r) throws IOException {
 		UnicodeIO.skipChars(r, 7);
 		int z;
-		info.frame = ((z = UnicodeIO.readChar(r)) == 'y');
+		info.setFrame((z = UnicodeIO.readChar(r)) == 'y');
 		if (z != 'y' && z != 'n')
 			throw new IOException("Error while reading frame information");
 		if (-1 == UnicodeIO.readChar(r))
@@ -663,7 +663,7 @@ public class GraphIO {
 					+ String.valueOf(16777216 + info.selectedColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "DBOXES y\n");
-			if (info.frame)
+			if (info.isFrame())
 				UnicodeIO.writeString(writer, "DFRAME y\n");
 			else
 				UnicodeIO.writeString(writer, "DFRAME n\n");
@@ -851,7 +851,6 @@ public class GraphIO {
 			return;
 		}
 		try {
-			/* TODO: use here the language in metadata, if any */
 			writer = ConfigManager.getManager().getEncoding(null)
 					.getOutputStreamWriter(file);
 			UnicodeIO.writeChar(writer, (char) 0xFEFF);
@@ -910,7 +909,7 @@ public class GraphIO {
 					+ String.valueOf(16777216 + inf.selectedColor.getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "DBOXES y\n");
-			if (inf.frame)
+			if (inf.isFrame())
 				UnicodeIO.writeString(writer, "DFRAME y\n");
 			else
 				UnicodeIO.writeString(writer, "DFRAME n\n");
@@ -979,7 +978,12 @@ public class GraphIO {
 		}
 	}
 
-	public GraphPresentationInfo getGraphPresentationInfo() {
+	public GraphPresentationInfo getInfo() {
 		return info;
 	}
+
+	public ArrayList<GenericGraphBox> getBoxes() {
+		return boxes;
+	}
+
 }

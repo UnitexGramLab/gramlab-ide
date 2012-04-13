@@ -542,15 +542,15 @@ public class GenericGraphBox {
 		final int destNumber = dest.getBoxNumber();
 		final Stroke oldStroke = g.getStroke();
 		if (parentGraphicalZone.decorator == null) {
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		} else {
 			g.setColor(parentGraphicalZone.decorator.getTransitionColor(
 					boxNumber, destNumber,
-					parentGraphicalZone.info.foregroundColor));
+					parentGraphicalZone.getGraphPresentationInfo().foregroundColor));
 			g.setStroke(parentGraphicalZone.decorator.getTransitionStroke(
 					boxNumber, destNumber, oldStroke));
 		}
-		if (!parentGraphicalZone.info.rightToLeft) {
+		if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 			if (dest.X_in > this.X_out) {
 				// easiest case: drawing a line
 				GraphicalToolBox.drawLine(g, this.X_out, this.Y_out, dest.X_in,
@@ -747,13 +747,13 @@ public class GenericGraphBox {
 
 	void drawOtherSingleDrag(Graphics2D g) {
 		if (standaloneBox)
-			g.setColor(parentGraphicalZone.info.commentColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().commentColor);
 		else
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		// drawing the box
 		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
-			if (!parentGraphicalZone.info.rightToLeft)
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft)
 				GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1
 						+ Height);
 			else
@@ -763,7 +763,7 @@ public class GenericGraphBox {
 		}
 		// and the triangle if necessary
 		if (hasOutgoingTransitions || type == INITIAL) {
-			if (!parentGraphicalZone.info.rightToLeft) {
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 				GraphicalToolBox.drawLine(g, X_out, Y_out, X1 + Width, Y1);
 				GraphicalToolBox.drawLine(g, X1 + Width, Y1, X1 + Width, Y1
 						+ Height);
@@ -778,7 +778,7 @@ public class GenericGraphBox {
 	}
 
 	private void drawInitialSingleDrag(Graphics2D g) {
-		g.setColor(parentGraphicalZone.info.foregroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		// drawing the box
 		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
@@ -786,13 +786,13 @@ public class GenericGraphBox {
 			GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
 		}
 		// drawing the entry line
-		if (!parentGraphicalZone.info.rightToLeft)
+		if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft)
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in - 10, Y_in);
 		else
 			GraphicalToolBox.drawLine(g, X_out - 5, Y_out, X_out + 5, Y_out);
 		// and the triangle if necessary
 		if (hasOutgoingTransitions || type == INITIAL) {
-			if (!parentGraphicalZone.info.rightToLeft) {
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 				GraphicalToolBox.drawLine(g, X_out, Y_out, X1 + Width, Y1);
 				GraphicalToolBox.drawLine(g, X1 + Width, Y1, X1 + Width, Y1
 						+ Height);
@@ -818,7 +818,7 @@ public class GenericGraphBox {
 		if (range.equals(""))
 			return;
 		final TextLayout textlayout = new TextLayout(range,
-				parentGraphicalZone.info.input.font, g.getFontRenderContext());
+				parentGraphicalZone.getGraphPresentationInfo().input.font, g.getFontRenderContext());
 		g.setColor(rangeColor);
 		g.setFont(rangeFont);
 		textlayout.draw(g, X1 + 2, Y1 - 5);
@@ -829,7 +829,7 @@ public class GenericGraphBox {
 		if (range.equals(""))
 			return 0;
 		final TextLayout textlayout = new TextLayout(range,
-				parentGraphicalZone.info.input.font, g.getFontRenderContext());
+				parentGraphicalZone.getGraphPresentationInfo().input.font, g.getFontRenderContext());
 		return (int) (textlayout.getBounds().getWidth() + 10);
 	}
 
@@ -842,13 +842,13 @@ public class GenericGraphBox {
 				&& parentGraphicalZone.decorator
 						.requiresSpecialLineDrawing(boxNumber)) {
 			g.setColor(parentGraphicalZone.decorator.getBoxShapeColor(
-					boxNumber, parentGraphicalZone.info.foregroundColor));
+					boxNumber, parentGraphicalZone.getGraphPresentationInfo().foregroundColor));
 			final Stroke old = g.getStroke();
 			g.setStroke(parentGraphicalZone.decorator.getBoxStroke(boxNumber,
 					old));
 			GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
 			if (hasOutgoingTransitions || type == INITIAL) {
-				if (!parentGraphicalZone.info.rightToLeft) {
+				if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 					final int a = X1 + Width;
 					final int b = Y1 + Height;
 					GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
@@ -862,7 +862,7 @@ public class GenericGraphBox {
 				}
 			}
 			g.setStroke(old);
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		}
 		if (variable) {
 			drawVariableStandalone(g);
@@ -872,22 +872,22 @@ public class GenericGraphBox {
 			drawContextMarkStandalone(g);
 			return;
 		}
-		g.setColor(parentGraphicalZone.info.commentColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().commentColor);
 		if (commentBox) {
 			g.setColor(Color.GREEN.darker());
 		}
 		// print lines if the box is empty
 		if (n_lines == 0) {
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
-			if (!parentGraphicalZone.info.rightToLeft)
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft)
 				GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1
 						+ Height);
 			else
 				GraphicalToolBox.drawLine(g, X_in, Y1, X_in, Y1 + Height);
 		} else {
-			g.setColor(parentGraphicalZone.info.backgroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
 			GraphicalToolBox.fillRect(g, X1 + 1, Y1 + 1, Width - 2, Height - 2);
-			g.setColor(parentGraphicalZone.info.commentColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().commentColor);
 			if (commentBox) {
 				g.setColor(Color.GREEN.darker());
 			}
@@ -905,14 +905,14 @@ public class GenericGraphBox {
 							boxNumber, i)) {
 				c=GraphDecoratorConfig.DEBUG_HIGHLIGHT;
 			} else if (is_greyed) {
-				c=parentGraphicalZone.info.subgraphColor;
+				c=parentGraphicalZone.getGraphPresentationInfo().subgraphColor;
 				if (l.startsWith(":")) {
 					// if we have a subgraph within a package
-					c=parentGraphicalZone.info.packageColor;
+					c=parentGraphicalZone.getGraphPresentationInfo().packageColor;
 				}
 				if (!existsGraph(i)) {
 					/* We use a special color to mark non existing graphs */
-					c=parentGraphicalZone.info.unreachableGraphColor;
+					c=parentGraphicalZone.getGraphPresentationInfo().unreachableGraphColor;
 				}
 			}
 			if (c!=null) {
@@ -920,13 +920,13 @@ public class GenericGraphBox {
 				GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne,
 						Width - 4, h_ligne);
 			}
-			g.setColor(parentGraphicalZone.info.commentColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().commentColor);
 			if (commentBox) {
 				g.setColor(Color.GREEN.darker());
 			}
 			if (!l.equals("")) {
 				final TextLayout textlayout = new TextLayout(l,
-						parentGraphicalZone.info.input.font, g
+						parentGraphicalZone.getGraphPresentationInfo().input.font, g
 								.getFontRenderContext());
 				textlayout
 						.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
@@ -934,12 +934,12 @@ public class GenericGraphBox {
 		}
 		// prints the transduction, if exists
 		if (parentGraphicalZone.decorator!=null) {
-			g.setColor(parentGraphicalZone.decorator.getBoxOutputColor(boxNumber,parentGraphicalZone.info.foregroundColor));
+			g.setColor(parentGraphicalZone.decorator.getBoxOutputColor(boxNumber,parentGraphicalZone.getGraphPresentationInfo().foregroundColor));
 		}
-		g.setColor(parentGraphicalZone.info.foregroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		final String output = getNonRangeOutput(transduction);
 		if (!output.equals("")) {
-			g.setFont(parentGraphicalZone.info.output.font);
+			g.setFont(parentGraphicalZone.getGraphPresentationInfo().output.font);
 			g.drawString(output, X1 + 5, Y1 + Height
 					+ g.getFontMetrics().getHeight());
 		}
@@ -973,25 +973,25 @@ public class GenericGraphBox {
 	}
 
 	private void drawFinal(Graphics2D g) {
-		g.setColor(parentGraphicalZone.info.backgroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
 		GraphicalToolBox.fillEllipse(g, X, Y - 10, 21, 21);
 		final Stroke old = g.getStroke();
 		if (parentGraphicalZone.decorator == null) {
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		} else {
 			final int boxNumber = getBoxNumber();
 			final JLabel r = parentGraphicalZone.decorator
 					.getCoverageInfoLabel(boxNumber);
 			if (r != null) {
 				final TextLayout textlayout = new TextLayout(r.getText(),
-						parentGraphicalZone.info.input.font, g
+						parentGraphicalZone.getGraphPresentationInfo().input.font, g
 								.getFontRenderContext());
 				g.setColor(r.getForeground());
 				g.setFont(r.getFont());
 				textlayout.draw(g, X1 + 2 + getRangeShift(g), Y1 - 5);
 			}
 			g.setColor(parentGraphicalZone.decorator.getBoxShapeColor(
-					boxNumber, parentGraphicalZone.info.foregroundColor));
+					boxNumber, parentGraphicalZone.getGraphPresentationInfo().foregroundColor));
 			g.setStroke(parentGraphicalZone.decorator.getBoxStroke(boxNumber,
 					old));
 		}
@@ -1001,18 +1001,18 @@ public class GenericGraphBox {
 	}
 
 	private void drawFinalSelected(Graphics2D g) {
-		g.setColor(parentGraphicalZone.info.selectedColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().selectedColor);
 		GraphicalToolBox.fillEllipse(g, X, Y - 10, 21, 21);
-		g.setColor(parentGraphicalZone.info.backgroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
 		GraphicalToolBox.drawRect(g, X + 5, Y - 5, 10, 10);
 	}
 
 	private void drawVariable(Graphics2D g) {
 		Color c;
 		if (!outputVariable) {
-			c=parentGraphicalZone.info.commentColor;
+			c=parentGraphicalZone.getGraphPresentationInfo().commentColor;
 		} else {
-			c=parentGraphicalZone.info.outputVariableColor;
+			c=parentGraphicalZone.getGraphPresentationInfo().outputVariableColor;
 		}
 		if (parentGraphicalZone.decorator!=null) {
 			c=parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),c);
@@ -1021,30 +1021,30 @@ public class GenericGraphBox {
 		g.setFont(variableFont);
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
-		g.setFont(parentGraphicalZone.info.output.font);
+		g.setFont(parentGraphicalZone.getGraphPresentationInfo().output.font);
 		g.drawString(transduction, X1 + 10, Y1 + Height
 				+ g.getFontMetrics().getHeight());
 	}
 
 	private void drawVariableSelected(Graphics2D g) {
-		Color c=parentGraphicalZone.info.selectedColor;
+		Color c=parentGraphicalZone.getGraphPresentationInfo().selectedColor;
 		if (parentGraphicalZone.decorator!=null) {
 			c=parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),c);
 		}
 		g.setColor(c);
 		GraphicalToolBox.fillRect(g, X1, Y1, Width, Height);
-		g.setColor(parentGraphicalZone.info.commentColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().commentColor);
 		g.setFont(variableFont);
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
-		g.setColor(parentGraphicalZone.info.selectedColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().selectedColor);
 		GraphicalToolBox.fillRect(g, X1 + 5, Y1 + Height
 				+ g.getFontMetrics().getDescent(),
-				g.getFontMetrics(parentGraphicalZone.info.output.font)
+				g.getFontMetrics(parentGraphicalZone.getGraphPresentationInfo().output.font)
 						.stringWidth(transduction), g.getFontMetrics(
-						parentGraphicalZone.info.output.font).getHeight() + 1);
-		g.setColor(parentGraphicalZone.info.backgroundColor);
-		g.setFont(parentGraphicalZone.info.output.font);
+						parentGraphicalZone.getGraphPresentationInfo().output.font).getHeight() + 1);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
+		g.setFont(parentGraphicalZone.getGraphPresentationInfo().output.font);
 		g.drawString(transduction, X1 + 5, Y1 + Height
 				+ g.getFontMetrics().getHeight());
 	}
@@ -1054,7 +1054,7 @@ public class GenericGraphBox {
 	}
 
 	private void drawContextMark(Graphics2D g) {
-		g.setColor(parentGraphicalZone.info.contextColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().contextColor);
 		g.setFont(variableFont);
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
@@ -1069,7 +1069,7 @@ public class GenericGraphBox {
 	}
 
 	private void drawMorphologicalModeMark(Graphics2D g) {
-		g.setColor(parentGraphicalZone.info.morphologicalModeColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().morphologicalModeColor);
 		g.setFont(variableFont);
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
@@ -1089,13 +1089,13 @@ public class GenericGraphBox {
 				&& parentGraphicalZone.decorator
 						.requiresSpecialLineDrawing(boxNumber)) {
 			g.setColor(parentGraphicalZone.decorator.getBoxShapeColor(
-					boxNumber, parentGraphicalZone.info.foregroundColor));
+					boxNumber, parentGraphicalZone.getGraphPresentationInfo().foregroundColor));
 			final Stroke old = g.getStroke();
 			g.setStroke(parentGraphicalZone.decorator.getBoxStroke(boxNumber,
 					old));
 			GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
 			if (hasOutgoingTransitions || type == INITIAL) {
-				if (!parentGraphicalZone.info.rightToLeft) {
+				if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 					final int a = X1 + Width;
 					final int b = Y1 + Height;
 					GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
@@ -1109,7 +1109,7 @@ public class GenericGraphBox {
 				}
 			}
 			g.setStroke(old);
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 			boxDrawn = true;
 		}
 		if (parentGraphicalZone.decorator != null) {
@@ -1117,7 +1117,7 @@ public class GenericGraphBox {
 					.getCoverageInfoLabel(boxNumber);
 			if (r != null) {
 				final TextLayout textlayout = new TextLayout(r.getText(),
-						parentGraphicalZone.info.input.font, g
+						parentGraphicalZone.getGraphPresentationInfo().input.font, g
 								.getFontRenderContext());
 				g.setColor(r.getForeground());
 				g.setFont(r.getFont());
@@ -1136,7 +1136,7 @@ public class GenericGraphBox {
 			drawMorphologicalModeMark(g);
 			return;
 		}
-		g.setColor(parentGraphicalZone.info.foregroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		// drawing the box
 		if (n_lines == 0) {
 			if (parentGraphicalZone.decorator != null
@@ -1144,21 +1144,21 @@ public class GenericGraphBox {
 				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
 			}
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
-			if (!parentGraphicalZone.info.rightToLeft)
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft)
 				GraphicalToolBox.drawLine(g, X_in + 15, Y1, X_in + 15, Y1
 						+ Height);
 			else
 				GraphicalToolBox.drawLine(g, X_in, Y1, X_in, Y1 + Height);
 		} else {
 			if (parentGraphicalZone.decorator == null) {
-				g.setColor(parentGraphicalZone.info.backgroundColor);
+				g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
 			} else {
 				g.setColor(parentGraphicalZone.decorator.getBoxFillColor(
-						boxNumber, parentGraphicalZone.info.backgroundColor));
+						boxNumber, parentGraphicalZone.getGraphPresentationInfo().backgroundColor));
 			}
 			GraphicalToolBox.fillRect(g, X1 + 1, Y1 + 1, Width - 2, Height - 2);
 			if (!boxDrawn) {
-				g.setColor(parentGraphicalZone.info.foregroundColor);
+				g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 				GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
 			}
 		}
@@ -1167,10 +1167,10 @@ public class GenericGraphBox {
 				&& parentGraphicalZone.decorator.isLinearTfst()) {
 			g.setColor(GraphDecoratorConfig.LINEAR_TFST);
 		} else {
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		}
 		if (!boxDrawn && (hasOutgoingTransitions || type == INITIAL)) {
-			if (!parentGraphicalZone.info.rightToLeft) {
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 				final int a = X1 + Width;
 				final int b = Y1 + Height;
 				GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
@@ -1187,13 +1187,13 @@ public class GenericGraphBox {
 			is_greyed = greyed.get(i);
 			l = lines.get(i);
 			if (is_greyed) {
-				g.setColor(parentGraphicalZone.info.subgraphColor);
+				g.setColor(parentGraphicalZone.getGraphPresentationInfo().subgraphColor);
 				if (l.startsWith(":")) {
 					// if we have a subgraph within a package
-					g.setColor(parentGraphicalZone.info.packageColor);
+					g.setColor(parentGraphicalZone.getGraphPresentationInfo().packageColor);
 				}
 				if (!existsGraph(i)) {
-					g.setColor(parentGraphicalZone.info.unreachableGraphColor);
+					g.setColor(parentGraphicalZone.getGraphPresentationInfo().unreachableGraphColor);
 				}
 				GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne,
 						Width - 4, h_ligne);
@@ -1206,22 +1206,22 @@ public class GenericGraphBox {
 				GraphicalToolBox.fillRect(g, X1 + 3, Y1 + 4 + (i) * h_ligne,
 						Width - 4, h_ligne);
 			}
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 			final TextLayout textlayout = new TextLayout(l,
-					parentGraphicalZone.info.input.font, g
+					parentGraphicalZone.getGraphPresentationInfo().input.font, g
 							.getFontRenderContext());
 			textlayout.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
 		}
 		// prints the output, if any
 		if (parentGraphicalZone.decorator == null) {
-			g.setColor(parentGraphicalZone.info.foregroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		} else {
 			g.setColor(parentGraphicalZone.decorator.getBoxOutputColor(boxNumber,
-					parentGraphicalZone.info.foregroundColor));
+					parentGraphicalZone.getGraphPresentationInfo().foregroundColor));
 		}
 		final String output = getNonRangeOutput(transduction);
 		if (!output.equals("")) {
-			g.setFont(parentGraphicalZone.info.output.font);
+			g.setFont(parentGraphicalZone.getGraphPresentationInfo().output.font);
 			g.drawString(output, X1 + 5, Y1 + Height
 					+ g.getFontMetrics().getHeight());
 		}
@@ -1243,21 +1243,21 @@ public class GenericGraphBox {
 			drawMorphologicalModeMarkSelected(g);
 			return;
 		}
-		g.setColor(parentGraphicalZone.info.foregroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
 		// drawing the box
 		if (n_lines == 0) {
-			g.setColor(parentGraphicalZone.info.selectedColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().selectedColor);
 			GraphicalToolBox.fillRect(g, X_in, Y_in - 10, 15, 20);
-			g.setColor(parentGraphicalZone.info.backgroundColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 		} else {
-			g.setColor(parentGraphicalZone.info.selectedColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().selectedColor);
 			GraphicalToolBox.fillRect(g, X1, Y1, Width, Height);
 		}
 		// and the triangle if necessary
 		if (hasOutgoingTransitions || type == INITIAL) {
-			g.setColor(parentGraphicalZone.info.foregroundColor);
-			if (!parentGraphicalZone.info.rightToLeft) {
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
+			if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft) {
 				GraphicalToolBox.drawLine(g, X_out, Y_out, X1 + Width, Y1);
 				GraphicalToolBox.drawLine(g, X1 + Width, Y1, X1 + Width, Y1
 						+ Height);
@@ -1270,12 +1270,12 @@ public class GenericGraphBox {
 			}
 		}
 		// prints the lines of the box
-		g.setColor(parentGraphicalZone.info.backgroundColor);
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
 		for (i = 0; i < n_lines; i++) {
 			l = lines.get(i);
 			if (!l.equals("")) {
 				final TextLayout textlayout = new TextLayout(l,
-						parentGraphicalZone.info.input.font, g
+						parentGraphicalZone.getGraphPresentationInfo().input.font, g
 								.getFontRenderContext());
 				textlayout
 						.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
@@ -1284,14 +1284,14 @@ public class GenericGraphBox {
 		// prints the transduction, if exists
 		final String output = getNonRangeOutput(transduction);
 		if (!output.equals("")) {
-			g.setColor(parentGraphicalZone.info.selectedColor);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().selectedColor);
 			GraphicalToolBox.fillRect(g, X1 + 5, Y1 + Height
 					+ g.getFontMetrics().getDescent(), g.getFontMetrics(
-					parentGraphicalZone.info.output.font).stringWidth(output),
-					g.getFontMetrics(parentGraphicalZone.info.output.font)
+					parentGraphicalZone.getGraphPresentationInfo().output.font).stringWidth(output),
+					g.getFontMetrics(parentGraphicalZone.getGraphPresentationInfo().output.font)
 							.getHeight() + 1);
-			g.setColor(parentGraphicalZone.info.backgroundColor);
-			g.setFont(parentGraphicalZone.info.output.font);
+			g.setColor(parentGraphicalZone.getGraphPresentationInfo().backgroundColor);
+			g.setFont(parentGraphicalZone.getGraphPresentationInfo().output.font);
 			g.drawString(output, X1 + 5, Y1 + Height
 					+ g.getFontMetrics().getHeight());
 		}
@@ -1305,7 +1305,7 @@ public class GenericGraphBox {
 				&& parentGraphicalZone.decorator.isLinearTfst()) {
 			g.setColor(GraphDecoratorConfig.LINEAR_TFST);
 		}
-		if (!parentGraphicalZone.info.rightToLeft)
+		if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft)
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in - 10, Y_in);
 		else
 			GraphicalToolBox.drawLine(g, X_out - 5, Y_out, X_out + 5, Y_out);
@@ -1314,8 +1314,8 @@ public class GenericGraphBox {
 
 	private void drawInitialSelected(Graphics2D g) {
 		drawOtherSelected(g);
-		g.setColor(parentGraphicalZone.info.foregroundColor);
-		if (!parentGraphicalZone.info.rightToLeft)
+		g.setColor(parentGraphicalZone.getGraphPresentationInfo().foregroundColor);
+		if (!parentGraphicalZone.getGraphPresentationInfo().rightToLeft)
 			GraphicalToolBox.drawLine(g, X_in - 1, Y_in, X_in - 10, Y_in);
 		else
 			GraphicalToolBox.drawLine(g, X_out - 5, Y_out, X_out + 5, Y_out);
@@ -1329,7 +1329,7 @@ public class GenericGraphBox {
 	 */
 	public void draw(Graphics2D g) {
 		updateWithContext(g);
-		g.setFont(parentGraphicalZone.info.input.font);
+		g.setFont(parentGraphicalZone.getGraphPresentationInfo().input.font);
 		h_ligne = g.getFontMetrics().getHeight();
 		descent = g.getFontMetrics().getDescent();
 		if (singleDragging) {
@@ -1377,7 +1377,7 @@ public class GenericGraphBox {
 		if (context == null) {
 			return 0;
 		}
-		context.setFont(parentGraphicalZone.info.input.font);
+		context.setFont(parentGraphicalZone.getGraphPresentationInfo().input.font);
 		return context.getFontMetrics().getHeight();
 	}
 
@@ -1407,7 +1407,7 @@ public class GenericGraphBox {
 		String s;
 		max = 0;
 		final FontMetrics f = context
-				.getFontMetrics(parentGraphicalZone.info.input.font);
+				.getFontMetrics(parentGraphicalZone.getGraphPresentationInfo().input.font);
 		for (i = 0; i < n_lines; i++) {
 			s = lines.get(i);
 			if (max < f.stringWidth(s))

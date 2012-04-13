@@ -26,10 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import javax.swing.JOptionPane;
-
 import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.io.GraphIO;
 
@@ -117,22 +114,22 @@ public class Dependancies {
 			return null;
 		}
 		final ArrayList<GraphCall> subgraphs = new ArrayList<GraphCall>();
-		final boolean[] accessible = new boolean[io.boxes.size()];
-		final int[] coaccessible = new int[io.boxes.size()];
+		final boolean[] accessible = new boolean[io.getBoxes().size()];
+		final int[] coaccessible = new int[io.getBoxes().size()];
 		for (int i = 0; i < coaccessible.length; i++)
 			coaccessible[i] = UNTESTED;
-		markAccessibleBoxes(io.boxes, accessible, 0);
-		for (int i = 0; i < io.boxes.size(); i++) {
-			if (isCoaccessibleBoxes(io.boxes, coaccessible, i)) {
+		markAccessibleBoxes(io.getBoxes(), accessible, 0);
+		for (int i = 0; i < io.getBoxes().size(); i++) {
+			if (isCoaccessibleBoxes(io.getBoxes(), coaccessible, i)) {
 				coaccessible[i] = TESTED_TRUE;
 			} else {
 				coaccessible[i] = TESTED_FALSE;
 			}
 		}
-		for (int i = 0; i < io.boxes.size(); i++) {
+		for (int i = 0; i < io.getBoxes().size(); i++) {
 			final boolean useful = accessible[i]
 					&& coaccessible[i] == TESTED_TRUE;
-			addSubgraphs(subgraphs, io.boxes.get(i), grf, emitErrorMessages,
+			addSubgraphs(subgraphs, io.getBoxes().get(i), grf, emitErrorMessages,
 					useful, main, whoCallsMode);
 		}
 		return subgraphs;
@@ -218,7 +215,7 @@ public class Dependancies {
 	}
 
 	private static File getSubgraph(String s, File parent,
-			boolean emitErrorMessages) {
+			@SuppressWarnings("unused") boolean emitErrorMessages) {
 		if (!s.endsWith(".grf")) {
 			s = s + ".grf";
 		}

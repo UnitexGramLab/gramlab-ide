@@ -143,7 +143,7 @@ public class DebugInfos {
 		final GraphIO gio = getGraphIO(graph);
 		if (gio == null)
 			return -1;
-		final GenericGraphBox box = gio.boxes.get(0);
+		final GenericGraphBox box = gio.getBoxes().get(0);
 		return box.lines.indexOf("<E>");
 	}
 
@@ -260,8 +260,8 @@ public class DebugInfos {
 			if (gio == null) {
 				return false;
 			}
-			final GenericGraphBox srcBox = gio.boxes.get(src.box);
-			final GenericGraphBox dstBox = gio.boxes.get(dst.box);
+			final GenericGraphBox srcBox = gio.getBoxes().get(src.box);
+			final GenericGraphBox dstBox = gio.getBoxes().get(dst.box);
 			if (srcBox.transitions.contains(dstBox)) {
 				/* Nothing to do if there is a transition */
 				continue;
@@ -287,7 +287,7 @@ public class DebugInfos {
 			}
 			final ArrayList<GenericGraphBox> visited = new ArrayList<GenericGraphBox>();
 			final ArrayList<Integer> path = new ArrayList<Integer>();
-			if (!findEpsilonPath(0, srcBox, dstBox, visited, path, gio.boxes)) {
+			if (!findEpsilonPath(0, srcBox, dstBox, visited, path, gio.getBoxes())) {
 				JOptionPane.showMessageDialog(null,
 						"Cannot find <E> path between box " + src.box + " and "
 								+ dst.box + " in graph " + f.getAbsolutePath(),

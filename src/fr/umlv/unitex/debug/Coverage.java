@@ -35,7 +35,7 @@ public class Coverage {
 			 * +1 because the store in cell #0 the total number of matched box
 			 * for the graph
 			 */
-			final int n = (gio == null) ? 0 : gio.boxes.size() + 1;
+			final int n = (gio == null) ? 0 : gio.getBoxes().size() + 1;
 			infos[i] = new int[n];
 		}
 	}

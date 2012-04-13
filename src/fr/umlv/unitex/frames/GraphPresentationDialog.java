@@ -429,7 +429,7 @@ class GraphPresentationDialog extends JDialog {
 		final Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
 				info.filename=filenameCheckBox.isSelected();
-				info.frame=frameCheckBox.isSelected();
+				info.setFrame(frameCheckBox.isSelected());
 				info.date=dateCheckBox.isSelected();
 				if (rightToLeftCheckBox.isVisible()) {
 					info.rightToLeft=rightToLeftCheckBox.isSelected();
@@ -471,7 +471,7 @@ class GraphPresentationDialog extends JDialog {
 		dateCheckBox.setSelected(info.date);
 		filenameCheckBox.setSelected(info.filename);
 		pathnameCheckBox.setSelected(info.pathname);
-		frameCheckBox.setSelected(info.frame);
+		frameCheckBox.setSelected(info.isFrame());
 		rightToLeftCheckBox.setSelected(info.rightToLeft);
 		rightToLeftCheckBox.setVisible(showRightToLeftCheckBox);
 		rightToLeftLabel.setVisible(showRightToLeftCheckBox);
