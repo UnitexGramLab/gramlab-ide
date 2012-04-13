@@ -64,8 +64,8 @@ import fr.umlv.unitex.text.Text;
 public class MyDropTarget {
 	private static final DropTargetListener dropTargetListener;
 	private static final DropTargetListener transcodeDropTargetListener;
-	private static DataFlavor dragNDropFlavor;
-	private static DataFlavor uriDragNDropFlavor;
+	static DataFlavor dragNDropFlavor;
+	static DataFlavor uriDragNDropFlavor;
 	static {
 		try {
 			dragNDropFlavor = new DataFlavor(
