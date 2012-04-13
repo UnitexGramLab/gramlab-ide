@@ -194,7 +194,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		final JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
-		graphicalZone = new GraphicalZone(g, boxContentEditor, this, null);
+		graphicalZone = new GraphicalZone(g, getBoxContentEditor(), this, null);
 		graphicalZone.addGraphListener(new GraphListener() {
 			public void graphChanged(boolean m) {
 				repaint();
@@ -203,30 +203,30 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		manager = new UndoManager();
-		manager.setLimit(30);
-		graphicalZone.addUndoableEditListener(manager);
+		getManager().setLimit(30);
+		graphicalZone.addUndoableEditListener(getManager());
 		final GraphPresentationInfo info = getGraphPresentationInfo();
 		scroll = new JScrollPane(graphicalZone);
 		scroll.getHorizontalScrollBar().setUnitIncrement(20);
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		scroll.setPreferredSize(new Dimension(1188, 840));
 		top.add(scroll, BorderLayout.CENTER);
-		boxContentEditor.setFont(info.input.font);
+		getBoxContentEditor().setFont(info.input.font);
 		createToolBar(info.iconBarPosition);
 		if (!(info.iconBarPosition.equals(Preferences.NO_ICON_BAR))) {
 			mainPanel.add(myToolBar, info.iconBarPosition);
 		}
 		mainPanel.add(top, BorderLayout.CENTER);
-		actualMainPanel.add(mainPanel, BorderLayout.CENTER);
-		setContentPane(actualMainPanel);
+		getActualMainPanel().add(mainPanel, BorderLayout.CENTER);
+		setContentPane(getActualMainPanel());
 		pack();
 		addInternalFrameListener(new MyInternalFrameListener());
 		setBounds(offset * (openFrameCount % 6), offset * (openFrameCount % 6),
 				1000, 550);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		boxContentEditor.setFont(info.input.font);
+		getBoxContentEditor().setFont(info.input.font);
 		if (g != null) {
-			setGraph(g.grf);
+			setGraph(g.getGrf());
 		}
 		/*
 		 * Some loading operations may have set the modified flag, so we reset
@@ -281,9 +281,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		closeButton.setFocusPainted(false);
 		closeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				actualMainPanel.remove(grfListPanel);
-				actualMainPanel.revalidate();
-				actualMainPanel.repaint();
+				getActualMainPanel().remove(grfListPanel);
+				getActualMainPanel().revalidate();
+				getActualMainPanel().repaint();
 			}
 		});
 		up.add(closeButton, BorderLayout.EAST);
@@ -291,8 +291,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		grfListPanel.add(up, BorderLayout.NORTH);
 		grfListPanel.add(grfListScroll, BorderLayout.CENTER);
 		grfListPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		autoRefresh.setInitialDelay(5);
-		autoRefresh.start();
+		getAutoRefresh().setInitialDelay(5);
+		getAutoRefresh().start();
 	}
 
 	protected void handleSvnConflict(final SvnConflict conflict, final Timer t) {
@@ -300,24 +300,24 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = GraphIO.loadGraph(conflict.mine, false, false);
 		graphicalZone.refresh(g);
 		setModified(false);
-		svnPanel = createSvnPanel(conflict);
-		actualMainPanel.add(svnPanel, BorderLayout.NORTH);
+		setSvnPanel(createSvnPanel(conflict));
+		getActualMainPanel().add(getSvnPanel(), BorderLayout.NORTH);
 		conflict.addConflictSolvedListener(new ConflictSolvedListener() {
 			public void conflictSolved() {
-				actualMainPanel.remove(svnPanel);
-				svnPanel = null;
+				getActualMainPanel().remove(getSvnPanel());
+				setSvnPanel(null);
 				setGraph(conflict.grf);
-				final GraphIO g = GraphIO.loadGraph(conflict.grf, false, false);
-				graphicalZone.refresh(g);
+				final GraphIO g2 = GraphIO.loadGraph(conflict.grf, false, false);
+				graphicalZone.refresh(g2);
 				setModified(false);
 				lastModification = grf.lastModified();
-				actualMainPanel.revalidate();
-				actualMainPanel.repaint();
+				getActualMainPanel().revalidate();
+				getActualMainPanel().repaint();
 				t.start();
 			}
 		});
-		actualMainPanel.revalidate();
-		actualMainPanel.repaint();
+		getActualMainPanel().revalidate();
+		getActualMainPanel().repaint();
 	}
 
 	private JPanel createSvnPanel(final SvnConflict conflict) {
@@ -804,29 +804,29 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		for (final GraphCall c : files) {
 			grfListModel.addElement(c);
 		}
-		if (!actualMainPanel.isAncestorOf(grfListPanel)) {
-			actualMainPanel.add(grfListPanel, BorderLayout.EAST);
+		if (!getActualMainPanel().isAncestorOf(grfListPanel)) {
+			getActualMainPanel().add(grfListPanel, BorderLayout.EAST);
 		}
-		actualMainPanel.revalidate();
-		actualMainPanel.repaint();
+		getActualMainPanel().revalidate();
+		getActualMainPanel().repaint();
 	}
 
 	private JPanel buildTextPanel() {
 		final JPanel p = new JPanel(new BorderLayout());
-		boxContentEditor = new TextField(25, this);
-		boxContentEditor
+		setBoxContentEditor(new TextField(25, this));
+		getBoxContentEditor()
 				.setComponentOrientation(ConfigManager.getManager()
 						.isRightToLeftForGraphs(null) ? ComponentOrientation.RIGHT_TO_LEFT
 						: ComponentOrientation.LEFT_TO_RIGHT);
-		p.add(boxContentEditor);
+		p.add(getBoxContentEditor());
 		return p;
 	}
 
-	private class MyInternalFrameListener extends InternalFrameAdapter {
+	class MyInternalFrameListener extends InternalFrameAdapter {
 		@Override
 		public void internalFrameActivated(InternalFrameEvent e) {
-			boxContentEditor.requestFocus();
-			boxContentEditor.getCaret().setVisible(true);
+			getBoxContentEditor().requestFocus();
+			getBoxContentEditor().getCaret().setVisible(true);
 		}
 
 		@Override
@@ -860,13 +860,13 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 						return;
 				}
 				if (n != 2) {
-					autoRefresh.stop();
+					getAutoRefresh().stop();
 					dispose();
 					return;
 				}
 				return;
 			}
-			autoRefresh.stop();
+			getAutoRefresh().stop();
 			dispose();
 		}
 	}
@@ -935,7 +935,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			g.sortNodeLabel();
 		}
 		graphicalZone.unSelectAllBoxes();
-		boxContentEditor.setContent("");
+		getBoxContentEditor().setContent("");
 		graphicalZone.repaint();
 	}
 
@@ -953,15 +953,15 @@ public class GraphFrame extends KeyedInternalFrame<File> {
      */
 	private void updateDoUndoButtons() {
 		if (undoButton != null && redoButton != null) {
-			undoButton.setEnabled(manager.canUndo());
-			redoButton.setEnabled(manager.canRedo());
+			undoButton.setEnabled(getManager().canUndo());
+			redoButton.setEnabled(getManager().canRedo());
 		}
 	}
 
-	private class UndoIt implements ActionListener {
+	class UndoIt implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 			try {
-				manager.undo();
+				getManager().undo();
 			} catch (final CannotUndoException ex) {
 				ex.printStackTrace();
 			} finally {
@@ -970,10 +970,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		}
 	}
 
-	private class RedoIt implements ActionListener {
+	class RedoIt implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
 			try {
-				manager.redo();
+				getManager().redo();
 			} catch (final CannotRedoException ex) {
 				ex.printStackTrace();
 			} finally {
@@ -1252,6 +1252,34 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	public int find(String text) {
 		return graphicalZone.find(text);
+	}
+
+	public void setBoxContentEditor(TextField boxContentEditor) {
+		this.boxContentEditor = boxContentEditor;
+	}
+
+	public TextField getBoxContentEditor() {
+		return boxContentEditor;
+	}
+
+	public Timer getAutoRefresh() {
+		return autoRefresh;
+	}
+
+	public UndoManager getManager() {
+		return manager;
+	}
+
+	public JPanel getActualMainPanel() {
+		return actualMainPanel;
+	}
+
+	public void setSvnPanel(JPanel svnPanel) {
+		this.svnPanel = svnPanel;
+	}
+
+	public JPanel getSvnPanel() {
+		return svnPanel;
 	}
 
 }
