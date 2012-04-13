@@ -188,7 +188,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			tmp = aV;
 			g = createBox(tmp.X + 20 * m.n, tmp.Y + 20 * m.n);
 			g.setContent(tmp.content);
-			g.selected = true;
+			g.setSelected(true);
 			selectedBoxes.add(g);
 		}
 		for (int i = 0; i < selectedBoxes.size(); i++) {
@@ -378,7 +378,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final boolean someBoxesWereSelected = !selectedBoxes.isEmpty();
 		while (!selectedBoxes.isEmpty()) {
 			g = selectedBoxes.get(0);
-			g.selected = false;
+			g.setSelected(true);
 			selectedBoxes.remove(0);
 		}
 		fireGraphTextChanged(null);
@@ -394,7 +394,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final int L = graphBoxes.size();
 		for (int i = 0; i < L; i++) {
 			final GenericGraphBox g = graphBoxes.get(i);
-			g.selected = true;
+			g.setSelected(true);
 			selectedBoxes.add(g);
 		}
 		fireGraphTextChanged("");
@@ -423,7 +423,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
 			if (g.isSelectedByRectangle(x, y, w, h)) {
-				g.selected = true;
+				g.setSelected(true);
 				selectedBoxes.add(g);
 				if (s == null) {
 					s = g.content;
