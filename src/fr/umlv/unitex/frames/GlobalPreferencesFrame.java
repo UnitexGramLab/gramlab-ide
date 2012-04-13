@@ -163,7 +163,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			encodingButtons[i].addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e3) {
 					if (encodingButtons[j].isSelected()) {
-						getPref().encoding = e2;
+						getPref().setEncoding(e2);
 					}
 				}
 			});
@@ -185,24 +185,24 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
-				getPref().svnMonitoring = svnMonitoring.isSelected();
-				getPref().onlyCosmetic = onlyCosmetic.isSelected();
-				getPref().semitic = semiticCheckBox.isSelected();
-				getPref().rightToLeftForText = rightToLeftForCorpusCheckBox
-						.isSelected();
-				getPref().rightToLeftForGraphs = rightToLeftForGraphsCheckBox
-						.isSelected();
-				getPref().getInfo().setRightToLeft(getPref().rightToLeftForGraphs);
+				getPref().setSvnMonitoring(svnMonitoring.isSelected());
+				getPref().setOnlyCosmetic(onlyCosmetic.isSelected());
+				getPref().setSemitic(semiticCheckBox.isSelected());
+				getPref().setRightToLeftForText(rightToLeftForCorpusCheckBox
+						.isSelected());
+				getPref().setRightToLeftForGraphs(rightToLeftForGraphsCheckBox
+						.isSelected());
+				getPref().getInfo().setRightToLeft(getPref().isRightToLeftForGraphs());
 				if (htmlViewer.getText().equals(""))
-					getPref().htmlViewer = null;
+					getPref().setHtmlViewer(null);
 				else
-					getPref().htmlViewer = new File(htmlViewer.getText());
-				getPref().morphologicalDic = getFileList(morphoDicListModel);
-				getPref().charByChar = charByCharCheckBox.isSelected();
-				getPref().morphologicalUseOfSpace = morphologicalUseOfSpaceCheckBox
-						.isSelected();
+					getPref().setHtmlViewer(new File(htmlViewer.getText()));
+				getPref().setMorphologicalDic(getFileList(morphoDicListModel));
+				getPref().setCharByChar(charByCharCheckBox.isSelected());
+				getPref().setMorphologicalUseOfSpace(morphologicalUseOfSpaceCheckBox
+						.isSelected());
 				if (packageDirectory.getText().equals(""))
-					getPref().graphRepositoryPath = null;
+					getPref().setGraphRepositoryPath(null);
 				else {
 					final File f = new File(packageDirectory.getText());
 					if (!f.exists()) {
@@ -219,7 +219,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 										"Error", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					getPref().graphRepositoryPath = f;
+					getPref().setGraphRepositoryPath(f);
 				}
 				if (loggingDirectory.getText().equals("")
 						&& mustLogCheckBox.isSelected()) {
@@ -241,8 +241,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 				if (!f.exists()) {
 					f.mkdir();
 				}
-				getPref().mustLog = mustLogCheckBox.isSelected();
-				getPref().loggingDir = f;
+				getPref().setMustLog(mustLogCheckBox.isSelected());
+				getPref().setLoggingDir(f);
 				ConfigManager.getManager().savePreferences(getPref(), null);
 				/* We save the user directory */
 				if (!privateDirectory.getText().equals("")) {
@@ -450,9 +450,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action textFontAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
-						.newFontDialog(getPref().textFont);
+						.newFontDialog(getPref().getTextFont());
 				if (i != null) {
-					getPref().textFont = i;
+					getPref().setTextFont(i);
 					textFont
 							.setText(" " + i.getFont().getFontName() + "  " + i.getSize());
 				}
@@ -470,9 +470,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action concord = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
-						.newFontDialog(getPref().concordanceFont);
+						.newFontDialog(getPref().getConcordanceFont());
 				if (i != null) {
-					getPref().concordanceFont = i;
+					getPref().setConcordanceFont(i);
 					concordanceFont.setText(" " + i.getFont().getFontName() + "  "
 							+ i.getSize());
 				}
@@ -524,32 +524,32 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 * Refreshes the frame.
 	 */
 	void refresh() {
-		textFont.setText("" + getPref().textFont.getFont().getFontName() + "  "
-				+ getPref().textFont.getSize() + "");
-		concordanceFont.setText("" + getPref().concordanceFont.getFont().getName() + "  "
-				+ getPref().concordanceFont.getSize() + "");
-		if (getPref().htmlViewer == null) {
+		textFont.setText("" + getPref().getTextFont().getFont().getFontName() + "  "
+				+ getPref().getTextFont().getSize() + "");
+		concordanceFont.setText("" + getPref().getConcordanceFont().getFont().getName() + "  "
+				+ getPref().getConcordanceFont().getSize() + "");
+		if (getPref().getHtmlViewer() == null) {
 			htmlViewer.setText("");
 		} else {
-			htmlViewer.setText(getPref().htmlViewer.getAbsolutePath());
+			htmlViewer.setText(getPref().getHtmlViewer().getAbsolutePath());
 		}
-		semiticCheckBox.setSelected(getPref().semitic);
-		rightToLeftForCorpusCheckBox.setSelected(getPref().rightToLeftForText);
-		rightToLeftForGraphsCheckBox.setSelected(getPref().rightToLeftForGraphs);
-		charByCharCheckBox.setSelected(getPref().charByChar);
+		semiticCheckBox.setSelected(getPref().isSemitic());
+		rightToLeftForCorpusCheckBox.setSelected(getPref().isRightToLeftForText());
+		rightToLeftForGraphsCheckBox.setSelected(getPref().isRightToLeftForGraphs());
+		charByCharCheckBox.setSelected(getPref().isCharByChar());
 		morphologicalUseOfSpaceCheckBox
-				.setSelected(getPref().morphologicalUseOfSpace);
-		if (getPref().graphRepositoryPath == null) {
+				.setSelected(getPref().isMorphologicalUseOfSpace());
+		if (getPref().getGraphRepositoryPath() == null) {
 			packageDirectory.setText("");
 		} else {
 			packageDirectory
-					.setText(getPref().graphRepositoryPath.getAbsolutePath());
+					.setText(getPref().getGraphRepositoryPath().getAbsolutePath());
 		}
-		mustLogCheckBox.setSelected(getPref().mustLog);
-		if (getPref().loggingDir == null) {
+		mustLogCheckBox.setSelected(getPref().isMustLog());
+		if (getPref().getLoggingDir() == null) {
 			loggingDirectory.setText("");
 		} else {
-			loggingDirectory.setText(getPref().loggingDir.getAbsolutePath());
+			loggingDirectory.setText(getPref().getLoggingDir().getAbsolutePath());
 		}
 		morphoDicListModel.clear();
 		final ArrayList<File> dictionaries = ConfigManager.getManager()
@@ -561,7 +561,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		}
 		for (int i = 0; i < Encoding.values().length; i++) {
 			encodingButtons[i]
-					.setSelected(getPref().encoding == Encoding.values()[i]);
+					.setSelected(getPref().getEncoding() == Encoding.values()[i]);
 		}
 	}
 
