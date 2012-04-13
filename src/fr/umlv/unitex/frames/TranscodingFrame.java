@@ -45,7 +45,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
@@ -169,7 +169,7 @@ public class TranscodingFrame extends JInternalFrame {
 		final JPanel fileListPanel = new JPanel(new BorderLayout());
 		fileListPanel.setBorder(new TitledBorder("Selected files:"));
 		fileListPanel.add(new JScrollPane(fileList), BorderLayout.CENTER);
-		MyDropTarget.newTranscodeDropTarget(fileList);
+		DropTargetManager.getDropTarget().newTranscodeDropTarget(fileList);
 		return fileListPanel;
 	}
 

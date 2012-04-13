@@ -61,7 +61,7 @@ import fr.umlv.unitex.text.Text;
  * 
  * @author Sébastien Paumier
  */
-public class MyDropTarget {
+public class MyDropTarget implements UnitexDropTarget {
 	private static final DropTargetListener dropTargetListener;
 	private static final DropTargetListener transcodeDropTargetListener;
 	static DataFlavor dragNDropFlavor;
@@ -87,7 +87,7 @@ public class MyDropTarget {
 	 *            the component that will be the drop target
 	 * @return the <code>DropTarget</code> object
 	 */
-	public static DropTarget newDropTarget(Component c) {
+	public DropTarget newDropTarget(Component c) {
 		return new DropTarget(c, DnDConstants.ACTION_COPY_OR_MOVE,
 				dropTargetListener, true);
 	}
@@ -100,7 +100,7 @@ public class MyDropTarget {
 	 *            the component that will be the drop target
 	 * @return the <code>DropTarget</code> object
 	 */
-	public static DropTarget newTranscodeDropTarget(Component c) {
+	public DropTarget newTranscodeDropTarget(Component c) {
 		return new DropTarget(c, DnDConstants.ACTION_COPY_OR_MOVE,
 				transcodeDropTargetListener, true);
 	}
