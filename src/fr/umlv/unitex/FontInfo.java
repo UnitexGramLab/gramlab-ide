@@ -23,8 +23,8 @@ package fr.umlv.unitex;
 import java.awt.Font;
 
 public class FontInfo {
-	public Font font;
-	public int size;
+	private Font font;
+	private int size;
 
 	/**
 	 * We have to store the size that will be displayed to the user, because
@@ -39,5 +39,21 @@ public class FontInfo {
 	@Override
 	public FontInfo clone() {
 		return new FontInfo(font, size);
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 }

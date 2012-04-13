@@ -211,10 +211,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		scroll.getVerticalScrollBar().setUnitIncrement(20);
 		scroll.setPreferredSize(new Dimension(1188, 840));
 		top.add(scroll, BorderLayout.CENTER);
-		getBoxContentEditor().setFont(info.input.font);
-		createToolBar(info.iconBarPosition);
-		if (!(info.iconBarPosition.equals(Preferences.NO_ICON_BAR))) {
-			mainPanel.add(myToolBar, info.iconBarPosition);
+		getBoxContentEditor().setFont(info.getInput().getFont());
+		createToolBar(info.getIconBarPosition());
+		if (!(info.getIconBarPosition().equals(Preferences.NO_ICON_BAR))) {
+			mainPanel.add(myToolBar, info.getIconBarPosition());
 		}
 		mainPanel.add(top, BorderLayout.CENTER);
 		getActualMainPanel().add(mainPanel, BorderLayout.CENTER);
@@ -224,7 +224,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		setBounds(offset * (openFrameCount % 6), offset * (openFrameCount % 6),
 				1000, 550);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		getBoxContentEditor().setFont(info.input.font);
+		getBoxContentEditor().setFont(info.getInput().getFont());
 		if (g != null) {
 			setGraph(g.getGrf());
 		}
@@ -943,7 +943,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	 */
 	public void changeAntialiasingValue() {
 		final GraphPresentationInfo info = getGraphPresentationInfo();
-		info.antialiasing = !info.antialiasing;
+		info.setAntialiasing(!info.isAntialiasing());
 		graphicalZone.repaint();
 	}
 
@@ -1068,7 +1068,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	public void setGraphPresentationInfo(GraphPresentationInfo info) {
-		updateToolBar(info.iconBarPosition);
+		updateToolBar(info.getIconBarPosition());
 		graphicalZone.setGraphPresentationInfo(info);
 		setModified(true);
 	}

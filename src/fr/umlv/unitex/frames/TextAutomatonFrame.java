@@ -754,7 +754,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (g == null) {
 			return false;
 		}
-		textfield.setFont(g.getInfo().input.font);
+		textfield.setFont(g.getInfo().getInput().getFont());
 		graphicalZone.setup(g);
 		tfstTableModel.init(g.getBoxes());
 		final Timer t = new Timer(300, new ActionListener() {

@@ -179,21 +179,21 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.getInfo().input.font;
+		return p.getInfo().getInput().getFont();
 	}
 
 	public int getInputFontSize(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.getInfo().input.size;
+		return p.getInfo().getInput().getSize();
 	}
 
 	public Font getTextFont(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.textFont.font;
+		return p.textFont.getFont();
 	}
 
 	public Preferences getPreferences(String language) {
@@ -220,21 +220,21 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.concordanceFont.font;
+		return p.concordanceFont.getFont();
 	}
 
 	public String getConcordanceFontName(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.concordanceFont.font.getName();
+		return p.concordanceFont.getFont().getName();
 	}
 
 	public int getConcordanceFontSize(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.concordanceFont.size;
+		return p.concordanceFont.getSize();
 	}
 
 	public File getUnitexToolLogger() {
