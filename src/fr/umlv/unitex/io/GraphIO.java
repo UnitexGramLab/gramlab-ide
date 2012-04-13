@@ -56,17 +56,17 @@ public class GraphIO {
 	/**
 	 * Width of a graph
 	 */
-	public int width;
+	private int width;
 	/**
 	 * Height of a graph
 	 */
-	public int height;
+	private int height;
 	/**
 	 * Number of boxes of a graph
 	 */
 	private int nBoxes;
-	public File grf;
-	public GraphMetaData metadata;
+	private File grf;
+	private GraphMetaData metadata;
 
 	private GraphIO() {
 		info = ConfigManager.getManager().getGraphPresentationPreferences(null).clone();
@@ -984,6 +984,26 @@ public class GraphIO {
 
 	public ArrayList<GenericGraphBox> getBoxes() {
 		return boxes;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getnBoxes() {
+		return nBoxes;
+	}
+
+	public File getGrf() {
+		return grf;
+	}
+
+	public GraphMetaData getMetadata() {
+		return metadata;
 	}
 
 }

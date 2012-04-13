@@ -393,7 +393,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	}
 
 	public void setup(GraphIO g) {
-		final Dimension d = new Dimension(g.width, g.height);
+		final Dimension d = new Dimension(g.getWidth(), g.getHeight());
 		setSize(d);
 		setPreferredSize(d);
 		graphBoxes = g.getBoxes();
