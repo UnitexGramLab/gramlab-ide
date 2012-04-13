@@ -132,8 +132,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 		text.setText("");
 		if (g != null) {
 			graphPresentationInfo=g.getInfo();
-			metadata = g.metadata;
-			final Dimension d = new Dimension(g.width, g.height);
+			metadata = g.getMetadata();
+			final Dimension d = new Dimension(g.getWidth(), g.getHeight());
 			setSize(d);
 			setPreferredSize(new Dimension(d));
 			graphBoxes = g.getBoxes();
