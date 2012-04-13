@@ -133,8 +133,8 @@ public class GraphIO {
 			res.readDirectory(reader);
 			res.readRightToLeft(reader);
 			if (isSentenceGraph) {
-				res.info.rightToLeft = ConfigManager.getManager()
-						.isRightToLeftForText(null);
+				res.info.setRightToLeft(ConfigManager.getManager()
+						.isRightToLeftForText(null));
 			}
 			UnicodeIO.skipLine(reader); // ignoring DRST
 			UnicodeIO.skipLine(reader); // ignoring FITS
@@ -249,7 +249,7 @@ public class GraphIO {
 			size = size * 10 + (c - '0');
 		if (z == -1)
 			throw new IOException("Error while reading input font information");
-		info.input.size = size;
+		info.getInput().setSize(size);
 		int style;
 		if (bold && italic)
 			style = Font.BOLD | Font.ITALIC;
@@ -259,7 +259,7 @@ public class GraphIO {
 			style = Font.ITALIC;
 		else
 			style = Font.PLAIN;
-		info.input.font = new Font(s, style, (int) (size / 0.72));
+		info.getInput().setFont(new Font(s, style, (int) (size / 0.72)));
 	}
 
 	private void readOutputFont(InputStreamReader r) throws IOException {
@@ -288,7 +288,7 @@ public class GraphIO {
 			size = size * 10 + (c - '0');
 		if (z == -1)
 			throw new IOException("Error while reading output font information");
-		info.output.size = size;
+		info.getOutput().setSize(size);
 		int style;
 		if (bold && italic)
 			style = Font.BOLD | Font.ITALIC;
@@ -298,7 +298,7 @@ public class GraphIO {
 			style = Font.ITALIC;
 		else
 			style = Font.PLAIN;
-		info.output.font = new Font(s, style, (int) (size / 0.72));
+		info.getOutput().setFont(new Font(s, style, (int) (size / 0.72)));
 	}
 
 	private void readBackgroundColor(InputStreamReader r) throws IOException {
@@ -312,7 +312,7 @@ public class GraphIO {
 		if (z == -1)
 			throw new IOException(
 					"Error while reading background color information");
-		info.backgroundColor = new Color(n);
+		info.setBackgroundColor(new Color(n));
 	}
 
 	private void readForegroundColor(InputStreamReader r) throws IOException {
@@ -326,7 +326,7 @@ public class GraphIO {
 		if (z == -1)
 			throw new IOException(
 					"Error while reading foreground color information");
-		info.foregroundColor = new Color(n);
+		info.setForegroundColor(new Color(n));
 	}
 
 	private void readSubgraphColor(InputStreamReader r) throws IOException {
@@ -340,7 +340,7 @@ public class GraphIO {
 		if (z == -1)
 			throw new IOException(
 					"Error while reading subgraph color information");
-		info.subgraphColor = new Color(n);
+		info.setSubgraphColor(new Color(n));
 	}
 
 	private void readSelectedColor(InputStreamReader r) throws IOException {
@@ -354,7 +354,7 @@ public class GraphIO {
 		if (z == -1)
 			throw new IOException(
 					"Error while reading selected color information");
-		info.selectedColor = new Color(n);
+		info.setSelectedColor(new Color(n));
 	}
 
 	private void readCommentColor(InputStreamReader r) throws IOException {
@@ -368,7 +368,7 @@ public class GraphIO {
 		if (z == -1)
 			throw new IOException(
 					"Error while reading comment color information");
-		info.commentColor = new Color(n);
+		info.setCommentColor(new Color(n));
 	}
 
 	private void readDrawFrame(InputStreamReader r) throws IOException {
@@ -384,7 +384,7 @@ public class GraphIO {
 	private void readDate(InputStreamReader r) throws IOException {
 		UnicodeIO.skipChars(r, 6);
 		int z;
-		info.date = ((z = UnicodeIO.readChar(r)) == 'y');
+		info.setDate((z = UnicodeIO.readChar(r)) == 'y');
 		if (z != 'y' && z != 'n')
 			throw new IOException("Error while reading date information");
 		if (-1 == UnicodeIO.readChar(r))
@@ -394,7 +394,7 @@ public class GraphIO {
 	private void readFile(InputStreamReader r) throws IOException {
 		UnicodeIO.skipChars(r, 6);
 		int z;
-		info.filename = ((z = UnicodeIO.readChar(r)) == 'y');
+		info.setFilename((z = UnicodeIO.readChar(r)) == 'y');
 		if (z != 'y' && z != 'n')
 			throw new IOException("Error while reading file name information");
 		if (-1 == UnicodeIO.readChar(r))
@@ -404,7 +404,7 @@ public class GraphIO {
 	private void readDirectory(InputStreamReader r) throws IOException {
 		UnicodeIO.skipChars(r, 5);
 		int z;
-		info.pathname = ((z = UnicodeIO.readChar(r)) == 'y');
+		info.setPathname((z = UnicodeIO.readChar(r)) == 'y');
 		if (z != 'y' && z != 'n')
 			throw new IOException("Error while reading path name information");
 		if (-1 == UnicodeIO.readChar(r))
@@ -414,7 +414,7 @@ public class GraphIO {
 	private void readRightToLeft(InputStreamReader r) throws IOException {
 		UnicodeIO.skipChars(r, 5);
 		int z;
-		info.rightToLeft = ((z = UnicodeIO.readChar(r)) == 'y');
+		info.setRightToLeft((z = UnicodeIO.readChar(r)) == 'y');
 		if (z != 'y' && z != 'n')
 			throw new IOException(
 					"Error while reading right to left information");
@@ -611,9 +611,9 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(writer, "FONT " + info.input.font.getName()
+			UnicodeIO.writeString(writer, "FONT " + info.getInput().getFont().getName()
 					+ ":");
-			switch (info.input.font.getStyle()) {
+			switch (info.getInput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
 				break;
@@ -627,11 +627,11 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(info.input.size)
+			UnicodeIO.writeString(writer, String.valueOf(info.getInput().getSize())
 					+ "\n");
-			UnicodeIO.writeString(writer, "OFONT " + info.output.font.getName()
+			UnicodeIO.writeString(writer, "OFONT " + info.getOutput().getFont().getName()
 					+ ":");
-			switch (info.output.font.getStyle()) {
+			switch (info.getOutput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
 				break;
@@ -645,41 +645,41 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(info.output.size)
+			UnicodeIO.writeString(writer, String.valueOf(info.getOutput().getSize())
 					+ "\n");
 			UnicodeIO.writeString(writer, "BCOLOR "
-					+ String.valueOf(16777216 + info.backgroundColor.getRGB())
+					+ String.valueOf(16777216 + info.getBackgroundColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "FCOLOR "
-					+ String.valueOf(16777216 + info.foregroundColor.getRGB())
+					+ String.valueOf(16777216 + info.getForegroundColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "ACOLOR "
-					+ String.valueOf(16777216 + info.subgraphColor.getRGB())
+					+ String.valueOf(16777216 + info.getSubgraphColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "SCOLOR "
-					+ String.valueOf(16777216 + info.commentColor.getRGB())
+					+ String.valueOf(16777216 + info.getCommentColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "CCOLOR "
-					+ String.valueOf(16777216 + info.selectedColor.getRGB())
+					+ String.valueOf(16777216 + info.getSelectedColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "DBOXES y\n");
 			if (info.isFrame())
 				UnicodeIO.writeString(writer, "DFRAME y\n");
 			else
 				UnicodeIO.writeString(writer, "DFRAME n\n");
-			if (info.date)
+			if (info.isDate())
 				UnicodeIO.writeString(writer, "DDATE y\n");
 			else
 				UnicodeIO.writeString(writer, "DDATE n\n");
-			if (info.filename)
+			if (info.isFilename())
 				UnicodeIO.writeString(writer, "DFILE y\n");
 			else
 				UnicodeIO.writeString(writer, "DFILE n\n");
-			if (info.pathname)
+			if (info.isPathname())
 				UnicodeIO.writeString(writer, "DDIR y\n");
 			else
 				UnicodeIO.writeString(writer, "DDIR n\n");
-			if (info.rightToLeft)
+			if (info.isRightToLeft())
 				UnicodeIO.writeString(writer, "DRIG y\n");
 			else
 				UnicodeIO.writeString(writer, "DRIG n\n");
@@ -785,9 +785,9 @@ public class GraphIO {
 		int y = 0;
 		while (UnicodeIO.isDigit((c = (char) UnicodeIO.readChar(r))))
 			y = y * 10 + (c - '0');
-		if (ConfigManager.getManager().getGraphPresentationPreferences(null).rightToLeft
-				|| info.rightToLeft) {
-			info.rightToLeft = true;
+		if (ConfigManager.getManager().getGraphPresentationPreferences(null).isRightToLeft()
+				|| info.isRightToLeft()) {
+			info.setRightToLeft(true);
 			g.setX(width - x);
 		} else {
 			g.setX(x);
@@ -857,9 +857,9 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(writer, "FONT " + inf.input.font.getName()
+			UnicodeIO.writeString(writer, "FONT " + inf.getInput().getFont().getName()
 					+ ":");
-			switch (inf.input.font.getStyle()) {
+			switch (inf.getInput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
 				break;
@@ -874,10 +874,10 @@ public class GraphIO {
 				break;
 			}
 			UnicodeIO
-					.writeString(writer, String.valueOf(inf.input.size) + "\n");
-			UnicodeIO.writeString(writer, "OFONT " + inf.output.font.getName()
+					.writeString(writer, String.valueOf(inf.getInput().getSize()) + "\n");
+			UnicodeIO.writeString(writer, "OFONT " + inf.getOutput().getFont().getName()
 					+ ":");
-			switch (inf.output.font.getStyle()) {
+			switch (inf.getOutput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
 				break;
@@ -891,41 +891,41 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(inf.output.size)
+			UnicodeIO.writeString(writer, String.valueOf(inf.getOutput().getSize())
 					+ "\n");
 			UnicodeIO.writeString(writer, "BCOLOR "
-					+ String.valueOf(16777216 + inf.backgroundColor.getRGB())
+					+ String.valueOf(16777216 + inf.getBackgroundColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "FCOLOR "
-					+ String.valueOf(16777216 + inf.foregroundColor.getRGB())
+					+ String.valueOf(16777216 + inf.getForegroundColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "ACOLOR "
-					+ String.valueOf(16777216 + inf.subgraphColor.getRGB())
+					+ String.valueOf(16777216 + inf.getSubgraphColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "SCOLOR "
-					+ String.valueOf(16777216 + inf.commentColor.getRGB())
+					+ String.valueOf(16777216 + inf.getCommentColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "CCOLOR "
-					+ String.valueOf(16777216 + inf.selectedColor.getRGB())
+					+ String.valueOf(16777216 + inf.getSelectedColor().getRGB())
 					+ "\n");
 			UnicodeIO.writeString(writer, "DBOXES y\n");
 			if (inf.isFrame())
 				UnicodeIO.writeString(writer, "DFRAME y\n");
 			else
 				UnicodeIO.writeString(writer, "DFRAME n\n");
-			if (inf.date)
+			if (inf.isDate())
 				UnicodeIO.writeString(writer, "DDATE y\n");
 			else
 				UnicodeIO.writeString(writer, "DDATE n\n");
-			if (inf.filename)
+			if (inf.isFilename())
 				UnicodeIO.writeString(writer, "DFILE y\n");
 			else
 				UnicodeIO.writeString(writer, "DFILE n\n");
-			if (inf.pathname)
+			if (inf.isPathname())
 				UnicodeIO.writeString(writer, "DDIR y\n");
 			else
 				UnicodeIO.writeString(writer, "DDIR n\n");
-			if (inf.rightToLeft)
+			if (inf.isRightToLeft())
 				UnicodeIO.writeString(writer, "DRIG y\n");
 			else
 				UnicodeIO.writeString(writer, "DRIG n\n");

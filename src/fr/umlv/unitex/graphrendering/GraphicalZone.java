@@ -1152,7 +1152,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		setClipZone(f_old.getClipBounds());
 		final Graphics2D f = (Graphics2D) f_old;
 		f.scale(scaleFactor, scaleFactor);
-		if (getGraphPresentationInfo().antialiasing) {
+		if (getGraphPresentationInfo().isAntialiasing()) {
 			f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 		} else {
@@ -1161,18 +1161,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().backgroundColor);
+		f.setColor(getGraphPresentationInfo().getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
 		if (getGraphPresentationInfo().isFrame()) {
-			f.setColor(getGraphPresentationInfo().foregroundColor);
+			f.setColor(getGraphPresentationInfo().getForegroundColor());
 			f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 			f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
 		}
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		if (decorator == null) {
 			final File file = ((GraphFrame) parentFrame).getGraph();
-			if (getGraphPresentationInfo().filename) {
-				if (getGraphPresentationInfo().pathname)
+			if (getGraphPresentationInfo().isFilename()) {
+				if (getGraphPresentationInfo().isPathname())
 					f.drawString((file != null) ? file.getAbsolutePath() : "",
 							20, getHeight() - 45);
 				else
@@ -1180,7 +1180,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							getHeight() - 45);
 			}
 		}
-		if (getGraphPresentationInfo().date)
+		if (getGraphPresentationInfo().isDate())
 			f.drawString(new Date().toString(), 20, getHeight() - 25);
 		drawGrid(f);
 		if (mouseInGraphicalZone && !selectedBoxes.isEmpty()) {
@@ -1194,7 +1194,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		drawAllBoxes(f);
 		if (selecting) {
 			// here we draw the selection rectangle
-			f.setColor(getGraphPresentationInfo().foregroundColor);
+			f.setColor(getGraphPresentationInfo().getForegroundColor());
 			f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);
 		}
 	}
@@ -1225,26 +1225,26 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-		f.setColor(getGraphPresentationInfo().backgroundColor);
+		f.setColor(getGraphPresentationInfo().getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
 		if (getGraphPresentationInfo().isFrame()) {
-			f.setColor(getGraphPresentationInfo().foregroundColor);
+			f.setColor(getGraphPresentationInfo().getForegroundColor());
 			final Stroke oldStroke = f.getStroke();
 			f.setStroke(GraphicalToolBox.frameStroke);
 			f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 			f.setStroke(oldStroke);
 		}
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		final File file = ((GraphFrame) parentFrame).getGraph();
-		if (getGraphPresentationInfo().filename) {
-			if (getGraphPresentationInfo().pathname)
+		if (getGraphPresentationInfo().isFilename()) {
+			if (getGraphPresentationInfo().isPathname())
 				f.drawString((file != null) ? file.getAbsolutePath() : "", 20,
 						getHeight() - 45);
 			else
 				f.drawString((file != null) ? file.getName() : "", 20,
 						getHeight() - 45);
 		}
-		if (getGraphPresentationInfo().date)
+		if (getGraphPresentationInfo().isDate())
 			f.drawString(new Date().toString(), 20, getHeight() - 25);
 		drawGrid(f);
 		drawAllTransitions(f);
