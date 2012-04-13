@@ -192,7 +192,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 						.isSelected();
 				getPref().rightToLeftForGraphs = rightToLeftForGraphsCheckBox
 						.isSelected();
-				getPref().getInfo().rightToLeft = getPref().rightToLeftForGraphs;
+				getPref().getInfo().setRightToLeft(getPref().rightToLeftForGraphs);
 				if (htmlViewer.getText().equals(""))
 					getPref().htmlViewer = null;
 				else
@@ -375,30 +375,6 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		page1.add(setPackageDirectory, gbc);
-		// /////////////////////
-		/*
-		 * JLabel lexicalRepositoryLabel = new JLabel("Lexical repository:");
-		 * lexicalPackageDirectory.setBackground(Color.WHITE); Action
-		 * lexicalDirAction = new AbstractAction("Set...") { public void
-		 * actionPerformed(ActionEvent arg0) { JFileChooser f = new
-		 * JFileChooser();
-		 * f.setDialogTitle("Choose your lexical package directory");
-		 * f.setDialogType(JFileChooser.OPEN_DIALOG);
-		 * f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); if
-		 * (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) { return; }
-		 * lexicalPackageDirectory
-		 * .setText(f.getSelectedFile().getAbsolutePath()); } }; JButton
-		 * setLexicalPackageDirectory = new JButton(lexicalDirAction);
-		 * gbc.insets = new Insets(20, 2, 2, 2); gbc.anchor =
-		 * GridBagConstraints.WEST; gbc.gridwidth =
-		 * GridBagConstraints.REMAINDER; gbc.fill = GridBagConstraints.NONE;
-		 * page1.add(lexicalRepositoryLabel, gbc); gbc.insets = new Insets(2, 2,
-		 * 2, 2); gbc.gridwidth = 1; gbc.weightx = 1; gbc.fill =
-		 * GridBagConstraints.HORIZONTAL; page1.add(lexicalPackageDirectory,
-		 * gbc); gbc.weightx = 0; gbc.fill = GridBagConstraints.NONE;
-		 * gbc.gridwidth = GridBagConstraints.REMAINDER;
-		 * page1.add(setLexicalPackageDirectory, gbc);
-		 */
 		loggingDirectory.setEditable(false);
 		loggingDirectory.setBackground(Color.WHITE);
 		final Action loggingDirAction = new AbstractAction("Set...") {
@@ -478,7 +454,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 				if (i != null) {
 					getPref().textFont = i;
 					textFont
-							.setText(" " + i.font.getFontName() + "  " + i.size);
+							.setText(" " + i.getFont().getFontName() + "  " + i.getSize());
 				}
 			}
 		};
@@ -497,8 +473,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 						.newFontDialog(getPref().concordanceFont);
 				if (i != null) {
 					getPref().concordanceFont = i;
-					concordanceFont.setText(" " + i.font.getFontName() + "  "
-							+ i.size);
+					concordanceFont.setText(" " + i.getFont().getFontName() + "  "
+							+ i.getSize());
 				}
 			}
 		};
@@ -548,10 +524,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 * Refreshes the frame.
 	 */
 	void refresh() {
-		textFont.setText("" + getPref().textFont.font.getFontName() + "  "
-				+ getPref().textFont.size + "");
-		concordanceFont.setText("" + getPref().concordanceFont.font.getName() + "  "
-				+ getPref().concordanceFont.size + "");
+		textFont.setText("" + getPref().textFont.getFont().getFontName() + "  "
+				+ getPref().textFont.getSize() + "");
+		concordanceFont.setText("" + getPref().concordanceFont.getFont().getName() + "  "
+				+ getPref().concordanceFont.getSize() + "");
 		if (getPref().htmlViewer == null) {
 			htmlViewer.setText("");
 		} else {

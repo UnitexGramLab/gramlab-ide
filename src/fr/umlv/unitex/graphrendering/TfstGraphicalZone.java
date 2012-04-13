@@ -286,29 +286,29 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	public void paintComponent(Graphics f_old) {
 		final Graphics2D f = (Graphics2D) f_old;
 		f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				getGraphPresentationInfo().antialiasing ? RenderingHints.VALUE_ANTIALIAS_ON
+				getGraphPresentationInfo().isAntialiasing() ? RenderingHints.VALUE_ANTIALIAS_ON
 						: RenderingHints.VALUE_ANTIALIAS_OFF);
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().backgroundColor);
+		f.setColor(getGraphPresentationInfo().getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		if (graphBoxes.size() == 0 || graphBoxes.isEmpty()) {
 			return;
 		}
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().backgroundColor);
+		f.setColor(getGraphPresentationInfo().getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		final Stroke oldStroke = f.getStroke();
 		f.setStroke(GraphicalToolBox.frameStroke);
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.setStroke(oldStroke);
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		drawAllTransitions(f);
 		drawAllBoxes(f);
 	}
@@ -340,12 +340,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-		f.setColor(getGraphPresentationInfo().backgroundColor);
+		f.setColor(getGraphPresentationInfo().getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		drawAllTransitions(f);
 		drawAllBoxes(f);
 		return Printable.PAGE_EXISTS;

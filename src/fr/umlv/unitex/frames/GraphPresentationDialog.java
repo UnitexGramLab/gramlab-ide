@@ -123,7 +123,7 @@ class GraphPresentationDialog extends JDialog {
 		temp.setBorder(new TitledBorder("Antialiasing"));
 		antialiasingCheckBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				info.antialiasing = antialiasingCheckBox.isSelected();
+				info.setAntialiasing(antialiasingCheckBox.isSelected());
 			}
 		});
 		temp.add(antialiasingCheckBox, BorderLayout.CENTER);
@@ -132,7 +132,7 @@ class GraphPresentationDialog extends JDialog {
 		westRadioBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (westRadioBox.isSelected()) {
-					info.iconBarPosition = Preferences.ICON_BAR_WEST;
+					info.setIconBarPosition(Preferences.ICON_BAR_WEST);
 				}
 			}
 		});
@@ -140,7 +140,7 @@ class GraphPresentationDialog extends JDialog {
 		eastRadioBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (eastRadioBox.isSelected()) {
-					info.iconBarPosition = Preferences.ICON_BAR_EAST;
+					info.setIconBarPosition(Preferences.ICON_BAR_EAST);
 				}
 			}
 		});
@@ -148,7 +148,7 @@ class GraphPresentationDialog extends JDialog {
 		northRadioBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (northRadioBox.isSelected()) {
-					info.iconBarPosition = Preferences.ICON_BAR_NORTH;
+					info.setIconBarPosition(Preferences.ICON_BAR_NORTH);
 				}
 			}
 		});
@@ -156,7 +156,7 @@ class GraphPresentationDialog extends JDialog {
 		southRadioBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (southRadioBox.isSelected()) {
-					info.iconBarPosition = Preferences.ICON_BAR_SOUTH;
+					info.setIconBarPosition(Preferences.ICON_BAR_SOUTH);
 				}
 			}
 		});
@@ -164,7 +164,7 @@ class GraphPresentationDialog extends JDialog {
 		noneRadioBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (noneRadioBox.isSelected()) {
-					info.iconBarPosition = Preferences.NO_ICON_BAR;
+					info.setIconBarPosition(Preferences.NO_ICON_BAR);
 				}
 			}
 		});
@@ -238,9 +238,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action backgroundAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
-						"Background Color", info.backgroundColor);
+						"Background Color", info.getBackgroundColor());
 				if (c != null) {
-					info.backgroundColor = c;
+					info.setBackgroundColor(c);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -249,9 +249,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action foregroundAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
-						"Foreground Color", info.foregroundColor);
+						"Foreground Color", info.getForegroundColor());
 				if (c != null) {
-					info.foregroundColor = c;
+					info.setForegroundColor(c);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -260,9 +260,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action subgraphAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
-						"Auxiliary Nodes Color", info.subgraphColor);
+						"Auxiliary Nodes Color", info.getSubgraphColor());
 				if (c != null) {
-					info.subgraphColor = c;
+					info.setSubgraphColor(c);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -271,9 +271,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action selectedAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
-						"Selected Nodes Color", info.selectedColor);
+						"Selected Nodes Color", info.getSelectedColor());
 				if (c != null) {
-					info.selectedColor = c;
+					info.setSelectedColor(c);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -282,9 +282,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action commentAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
-						"Comment Nodes Color", info.commentColor);
+						"Comment Nodes Color", info.getCommentColor());
 				if (c != null) {
-					info.commentColor = c;
+					info.setCommentColor(c);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -374,9 +374,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action inputAction = new AbstractAction("Input") {
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
-						.newFontDialog(info.input);
+						.newFontDialog(info.getInput());
 				if (i != null) {
-					info.input = i;
+					info.setInput(i);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -385,9 +385,9 @@ class GraphPresentationDialog extends JDialog {
 		final Action outputAction = new AbstractAction("Output") {
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
-						.newFontDialog(info.output);
+						.newFontDialog(info.getOutput());
 				if (i != null) {
-					info.output = i;
+					info.setOutput(i);
 					configure(info, rightToLeftCheckBox.isVisible());
 				}
 			}
@@ -428,13 +428,13 @@ class GraphPresentationDialog extends JDialog {
 		final JButton DEFAULT = new JButton(defaultAction);
 		final Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
-				info.filename=filenameCheckBox.isSelected();
+				info.setFilename(filenameCheckBox.isSelected());
 				info.setFrame(frameCheckBox.isSelected());
-				info.date=dateCheckBox.isSelected();
+				info.setDate(dateCheckBox.isSelected());
 				if (rightToLeftCheckBox.isVisible()) {
-					info.rightToLeft=rightToLeftCheckBox.isSelected();
+					info.setRightToLeft(rightToLeftCheckBox.isSelected());
 				}
-				info.pathname=pathnameCheckBox.isSelected();
+				info.setPathname(pathnameCheckBox.isSelected());
 				setVisible(false);
 			}
 		};
@@ -459,30 +459,30 @@ class GraphPresentationDialog extends JDialog {
 	 */
 	void configure(GraphPresentationInfo i, boolean showRightToLeftCheckBox) {
 		this.info = i;
-		color1.setBackground(info.backgroundColor);
-		color2.setBackground(info.foregroundColor);
-		color3.setBackground(info.subgraphColor);
-		color4.setBackground(info.selectedColor);
-		color5.setBackground(info.commentColor);
-		inputLabel.setText("  " + info.input.font.getFontName() + "  "
-				+ info.input.size + "  ");
-		outputLabel.setText("  " + info.output.font.getFontName() + "  "
-				+ info.output.size + "  ");
-		dateCheckBox.setSelected(info.date);
-		filenameCheckBox.setSelected(info.filename);
-		pathnameCheckBox.setSelected(info.pathname);
+		color1.setBackground(info.getBackgroundColor());
+		color2.setBackground(info.getForegroundColor());
+		color3.setBackground(info.getSubgraphColor());
+		color4.setBackground(info.getSelectedColor());
+		color5.setBackground(info.getCommentColor());
+		inputLabel.setText("  " + info.getInput().getFont().getFontName() + "  "
+				+ info.getInput().getSize() + "  ");
+		outputLabel.setText("  " + info.getOutput().getFont().getFontName() + "  "
+				+ info.getOutput().getSize() + "  ");
+		dateCheckBox.setSelected(info.isDate());
+		filenameCheckBox.setSelected(info.isFilename());
+		pathnameCheckBox.setSelected(info.isPathname());
 		frameCheckBox.setSelected(info.isFrame());
-		rightToLeftCheckBox.setSelected(info.rightToLeft);
+		rightToLeftCheckBox.setSelected(info.isRightToLeft());
 		rightToLeftCheckBox.setVisible(showRightToLeftCheckBox);
 		rightToLeftLabel.setVisible(showRightToLeftCheckBox);
-		antialiasingCheckBox.setSelected(i.antialiasing);
-		if (i.iconBarPosition.equals(Preferences.ICON_BAR_WEST)) {
+		antialiasingCheckBox.setSelected(i.isAntialiasing());
+		if (i.getIconBarPosition().equals(Preferences.ICON_BAR_WEST)) {
 			westRadioBox.setSelected(true);
-		} else if (i.iconBarPosition.equals(Preferences.ICON_BAR_EAST)) {
+		} else if (i.getIconBarPosition().equals(Preferences.ICON_BAR_EAST)) {
 			eastRadioBox.setSelected(true);
-		} else if (i.iconBarPosition.equals(Preferences.ICON_BAR_NORTH)) {
+		} else if (i.getIconBarPosition().equals(Preferences.ICON_BAR_NORTH)) {
 			northRadioBox.setSelected(true);
-		} else if (i.iconBarPosition.equals(Preferences.ICON_BAR_SOUTH)) {
+		} else if (i.getIconBarPosition().equals(Preferences.ICON_BAR_SOUTH)) {
 			southRadioBox.setSelected(true);
 		} else {
 			noneRadioBox.setSelected(true);

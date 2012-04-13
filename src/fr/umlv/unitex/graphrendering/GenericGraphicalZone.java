@@ -610,7 +610,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		if (!isGrid)
 			return;
 		int x, y;
-		f.setColor(getGraphPresentationInfo().foregroundColor);
+		f.setColor(getGraphPresentationInfo().getForegroundColor());
 		final int W = getWidth();
 		final int H = getHeight();
 		for (x = 10; x < W - 20; x = x + nPixels)
@@ -844,12 +844,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 	}
 
 	public void setAntialiasing(boolean a) {
-		getGraphPresentationInfo().antialiasing = a;
+		getGraphPresentationInfo().setAntialiasing(a);
 		fireGraphChanged(false);
 	}
 
 	public boolean getAntialiasing() {
-		return getGraphPresentationInfo().antialiasing;
+		return getGraphPresentationInfo().isAntialiasing();
 	}
 
 	private final ArrayList<GraphListener> graphListeners = new ArrayList<GraphListener>();

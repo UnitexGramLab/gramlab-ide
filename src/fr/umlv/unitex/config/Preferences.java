@@ -283,58 +283,58 @@ public class Preferences {
 
 	public Properties setPropertiesFromPreferences() {
 		final Properties prop = new Properties();
-		prop.setProperty("TEXT FONT NAME", textFont.font.getName());
-		prop.setProperty("TEXT FONT STYLE", "" + textFont.font.getStyle());
-		prop.setProperty("TEXT FONT SIZE", "" + textFont.size);
-		prop.setProperty("CONCORDANCE FONT NAME", concordanceFont.font
+		prop.setProperty("TEXT FONT NAME", textFont.getFont().getName());
+		prop.setProperty("TEXT FONT STYLE", "" + textFont.getFont().getStyle());
+		prop.setProperty("TEXT FONT SIZE", "" + textFont.getSize());
+		prop.setProperty("CONCORDANCE FONT NAME", concordanceFont.getFont()
 				.getName());
 		prop.setProperty("CONCORDANCE FONT HTML SIZE", ""
-				+ concordanceFont.size);
-		prop.setProperty("INPUT FONT NAME", info.input.font.getName());
-		prop.setProperty("INPUT FONT STYLE", "" + info.input.font.getStyle());
-		prop.setProperty("INPUT FONT SIZE", "" + info.input.size);
-		prop.setProperty("OUTPUT FONT NAME", info.output.font.getName());
-		prop.setProperty("OUTPUT FONT STYLE", "" + info.output.font.getStyle());
-		prop.setProperty("OUTPUT FONT SIZE", "" + info.output.size);
-		prop.setProperty("DATE", "" + info.date);
-		prop.setProperty("FILE NAME", "" + info.filename);
-		prop.setProperty("PATH NAME", "" + info.pathname);
+				+ concordanceFont.getSize());
+		prop.setProperty("INPUT FONT NAME", info.getInput().getFont().getName());
+		prop.setProperty("INPUT FONT STYLE", "" + info.getInput().getFont().getStyle());
+		prop.setProperty("INPUT FONT SIZE", "" + info.getInput().getSize());
+		prop.setProperty("OUTPUT FONT NAME", info.getOutput().getFont().getName());
+		prop.setProperty("OUTPUT FONT STYLE", "" + info.getOutput().getFont().getStyle());
+		prop.setProperty("OUTPUT FONT SIZE", "" + info.getOutput().getSize());
+		prop.setProperty("DATE", "" + info.isDate());
+		prop.setProperty("FILE NAME", "" + info.isFilename());
+		prop.setProperty("PATH NAME", "" + info.isPathname());
 		prop.setProperty("FRAME", "" + info.isFrame());
 		prop.setProperty("RIGHT TO LEFT FOR TEXT", "" + rightToLeftForText);
 		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", "" + rightToLeftForGraphs);
 		prop.setProperty("SEMITIC", "" + semitic);
 		prop
 				.setProperty("BACKGROUND COLOR", ""
-						+ info.backgroundColor.getRGB());
+						+ info.getBackgroundColor().getRGB());
 		prop
 				.setProperty("FOREGROUND COLOR", ""
-						+ info.foregroundColor.getRGB());
+						+ info.getForegroundColor().getRGB());
 		prop.setProperty("AUXILIARY NODES COLOR", ""
-				+ info.subgraphColor.getRGB());
+				+ info.getSubgraphColor().getRGB());
 		prop
 				.setProperty("COMMENT NODES COLOR", ""
-						+ info.commentColor.getRGB());
+						+ info.getCommentColor().getRGB());
 		prop.setProperty("SELECTED NODES COLOR", ""
-				+ info.selectedColor.getRGB());
+				+ info.getSelectedColor().getRGB());
 		prop
 				.setProperty("PACKAGE NODES COLOR", ""
-						+ info.packageColor.getRGB());
+						+ info.getPackageColor().getRGB());
 		prop
 				.setProperty("CONTEXT NODES COLOR", ""
-						+ info.contextColor.getRGB());
+						+ info.getContextColor().getRGB());
 		prop.setProperty("MORPHOLOGICAL NODES COLOR", ""
-				+ info.morphologicalModeColor.getRGB());
+				+ info.getMorphologicalModeColor().getRGB());
 		prop.setProperty("OUTPUT VARIABLE COLOR", ""
-				+ info.outputVariableColor.getRGB());
+				+ info.getOutputVariableColor().getRGB());
 		prop.setProperty("UNREACHABLE GRAPH COLOR", ""
-				+ info.unreachableGraphColor.getRGB());
-		prop.setProperty("ANTIALIASING", "" + info.antialiasing);
+				+ info.getUnreachableGraphColor().getRGB());
+		prop.setProperty("ANTIALIASING", "" + info.isAntialiasing());
 		prop.setProperty("HTML VIEWER", (htmlViewer == null) ? "" : htmlViewer
 				.getAbsolutePath());
 		prop.setProperty("MORPHOLOGICAL DICTIONARY",
 				getMorphologicalDicListAsString(morphologicalDic));
 		prop.setProperty("MAX TEXT FILE SIZE", "" + MAX_TEXT_FILE_SIZE);
-		prop.setProperty("ICON BAR POSITION", info.iconBarPosition);
+		prop.setProperty("ICON BAR POSITION", info.getIconBarPosition());
 		prop.setProperty("CHAR BY CHAR", "" + charByChar);
 		prop.setProperty("MORPHOLOGICAL USE OF SPACE", ""
 				+ morphologicalUseOfSpace);

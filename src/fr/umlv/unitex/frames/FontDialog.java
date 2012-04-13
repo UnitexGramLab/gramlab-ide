@@ -103,9 +103,9 @@ class FontDialog extends JDialog {
 					"Cannot configure a null font info");
 		}
 		info = i.clone();
-		name.setText(i.font.getName());
-		style.setText("" + i.font.getStyle());
-		size.setText("" + i.size);
+		name.setText(i.getFont().getName());
+		style.setText("" + i.getFont().getStyle());
+		size.setText("" + i.getSize());
 		fontList.clearSelection();
 		styleList.clearSelection();
 		sizeList.clearSelection();
@@ -118,7 +118,7 @@ class FontDialog extends JDialog {
 		if (s != null) {
 			name.setText(s);
 		}/* style */
-		int fontStyle = info.font.getStyle();
+		int fontStyle = info.getFont().getStyle();
 		/*
 		 * We can use getSelectedIndex() instead of getSelectedValue() because
 		 * style values are 0 1 2 3
@@ -131,12 +131,12 @@ class FontDialog extends JDialog {
 		final Integer j = (Integer) (sizeList.getSelectedValue());
 		if (j != null) {
 			size.setText(j + "");
-			info.size = j;
+			info.setSize(j);
 		}
 		/* updating font */
-		info.font = new Font(name.getText(), fontStyle,
-				(int) (info.size / 0.72));
-		example.setFont(info.font);
+		info.setFont(new Font(name.getText(), fontStyle,
+				(int) (info.getSize() / 0.72)));
+		example.setFont(info.getFont());
 	}
 
 	public FontInfo getFontInfo() {
