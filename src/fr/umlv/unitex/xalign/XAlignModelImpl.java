@@ -39,14 +39,15 @@ import javax.swing.SwingWorker;
 import fr.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignModelImpl implements XAlignModel {
-	private final XMLTextModel src;
-	private final XMLTextModel dest;
-	private final ArrayList<Couple> alignments;
-	private HashMap<String, ArrayList<String>> group;
-	private String sourceFile;
-	private String destFile;
-	private int startPosition = -1;
-	private boolean modified = false;
+	
+	final XMLTextModel src;
+	final XMLTextModel dest;
+	final ArrayList<Couple> alignments;
+	HashMap<String, ArrayList<String>> group;
+	String sourceFile;
+	String destFile;
+	int startPosition = -1;
+	boolean modified = false;
 
 	class Couple {
 		final int srcSentence;
@@ -106,11 +107,11 @@ public class XAlignModelImpl implements XAlignModel {
 		if (f == null) {
 			return;
 		}
-		dataLength = (int) file.length();
+		setDataLength((int) file.length());
 		group = new HashMap<String, ArrayList<String>>();
 		stream = new FileInputStream(file);
 		channel = stream.getChannel();
-		buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, dataLength);
+		setBuffer(channel.map(FileChannel.MapMode.READ_ONLY, 0, getDataLength()));
 		worker = new SwingWorker<Void, PublishInfo>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -119,73 +120,73 @@ public class XAlignModelImpl implements XAlignModel {
 				 * First, we look for the description of the source and targets
 				 * files
 				 */
-				for (pos = 0; pos < dataLength; pos = pos + 1) {
-					if (buffer.get(pos) == '<'
-							&& buffer.get(pos + 1) == 'p'
-							&& buffer.get(pos + 2) == 't'
-							&& buffer.get(pos + 3) == 'r'
-							&& (buffer.get(pos + 4) == ' '
-									|| buffer.get(pos + 4) == '\n'
-									|| buffer.get(pos + 4) == '\r' || buffer
+				for (pos = 0; pos < getDataLength(); pos = pos + 1) {
+					if (getBuffer().get(pos) == '<'
+							&& getBuffer().get(pos + 1) == 'p'
+							&& getBuffer().get(pos + 2) == 't'
+							&& getBuffer().get(pos + 3) == 'r'
+							&& (getBuffer().get(pos + 4) == ' '
+									|| getBuffer().get(pos + 4) == '\n'
+									|| getBuffer().get(pos + 4) == '\r' || getBuffer()
 									.get(pos + 4) == '\t')) {
 						/* If we have a ptr tag, we read its target */
 						do {
 							pos++;
-						} while (!(buffer.get(pos) == '"'
-								&& buffer.get(pos - 1) == '='
-								&& buffer.get(pos - 2) == 't'
-								&& buffer.get(pos - 3) == 'e'
-								&& buffer.get(pos - 4) == 'g'
-								&& buffer.get(pos - 5) == 'r'
-								&& buffer.get(pos - 6) == 'a' && buffer
+						} while (!(getBuffer().get(pos) == '"'
+								&& getBuffer().get(pos - 1) == '='
+								&& getBuffer().get(pos - 2) == 't'
+								&& getBuffer().get(pos - 3) == 'e'
+								&& getBuffer().get(pos - 4) == 'g'
+								&& getBuffer().get(pos - 5) == 'r'
+								&& getBuffer().get(pos - 6) == 'a' && getBuffer()
 								.get(pos - 7) == 't'));
 						String target = "";
 						pos++;
 						do {
-							target = target + (char) buffer.get(pos);
+							target = target + (char) getBuffer().get(pos);
 							pos++;
-						} while (buffer.get(pos) != '"');
+						} while (getBuffer().get(pos) != '"');
 						/*
 						 * Then we check if it was the source or destination
 						 * file
 						 */
 						do {
 							pos++;
-						} while (!((buffer.get(pos) == 'e'
-								&& buffer.get(pos - 1) == 'c'
-								&& buffer.get(pos - 2) == 'r'
-								&& buffer.get(pos - 3) == 'u'
-								&& buffer.get(pos - 4) == 'o' && buffer
-								.get(pos - 5) == 's') || (buffer.get(pos) == 'n'
-								&& buffer.get(pos - 1) == 'o'
-								&& buffer.get(pos - 2) == 'i'
-								&& buffer.get(pos - 3) == 't'
-								&& buffer.get(pos - 4) == 'a'
-								&& buffer.get(pos - 5) == 'l'
-								&& buffer.get(pos - 6) == 's'
-								&& buffer.get(pos - 7) == 'n'
-								&& buffer.get(pos - 8) == 'a'
-								&& buffer.get(pos - 9) == 'r' && buffer
+						} while (!((getBuffer().get(pos) == 'e'
+								&& getBuffer().get(pos - 1) == 'c'
+								&& getBuffer().get(pos - 2) == 'r'
+								&& getBuffer().get(pos - 3) == 'u'
+								&& getBuffer().get(pos - 4) == 'o' && getBuffer()
+								.get(pos - 5) == 's') || (getBuffer().get(pos) == 'n'
+								&& getBuffer().get(pos - 1) == 'o'
+								&& getBuffer().get(pos - 2) == 'i'
+								&& getBuffer().get(pos - 3) == 't'
+								&& getBuffer().get(pos - 4) == 'a'
+								&& getBuffer().get(pos - 5) == 'l'
+								&& getBuffer().get(pos - 6) == 's'
+								&& getBuffer().get(pos - 7) == 'n'
+								&& getBuffer().get(pos - 8) == 'a'
+								&& getBuffer().get(pos - 9) == 'r' && getBuffer()
 								.get(pos - 10) == 't')));
-						if (buffer.get(pos) == 'e') {
+						if (getBuffer().get(pos) == 'e') {
 							sourceFile = target;
 						} else {
 							destFile = target;
 						}
-					} else if (buffer.get(pos) == '"'
-							&& buffer.get(pos + 1) == 'r'
-							&& buffer.get(pos + 2) == 'e'
-							&& buffer.get(pos + 3) == 's'
-							&& buffer.get(pos + 4) == 'u'
-							&& buffer.get(pos + 5) == 'l'
-							&& buffer.get(pos + 6) == 't'
-							&& buffer.get(pos + 7) == 'X'
-							&& buffer.get(pos + 8) == 'A'
-							&& buffer.get(pos + 9) == 'l'
-							&& buffer.get(pos + 10) == 'i'
-							&& buffer.get(pos + 11) == 'g'
-							&& buffer.get(pos + 12) == 'n'
-							&& buffer.get(pos + 13) == '"') {
+					} else if (getBuffer().get(pos) == '"'
+							&& getBuffer().get(pos + 1) == 'r'
+							&& getBuffer().get(pos + 2) == 'e'
+							&& getBuffer().get(pos + 3) == 's'
+							&& getBuffer().get(pos + 4) == 'u'
+							&& getBuffer().get(pos + 5) == 'l'
+							&& getBuffer().get(pos + 6) == 't'
+							&& getBuffer().get(pos + 7) == 'X'
+							&& getBuffer().get(pos + 8) == 'A'
+							&& getBuffer().get(pos + 9) == 'l'
+							&& getBuffer().get(pos + 10) == 'i'
+							&& getBuffer().get(pos + 11) == 'g'
+							&& getBuffer().get(pos + 12) == 'n'
+							&& getBuffer().get(pos + 13) == '"') {
 						/*
 						 * If we are at the beginning of the aligment
 						 * declarations, we note the current position and we
@@ -196,61 +197,61 @@ public class XAlignModelImpl implements XAlignModel {
 						break;
 					}
 				}
-				for (; pos < dataLength; pos = pos + 1) {
-					if (buffer.get(pos) == '<' && buffer.get(pos + 1) == '!'
-							&& buffer.get(pos + 2) == '-'
-							&& buffer.get(pos + 3) == '-') {
+				for (; pos < getDataLength(); pos = pos + 1) {
+					if (getBuffer().get(pos) == '<' && getBuffer().get(pos + 1) == '!'
+							&& getBuffer().get(pos + 2) == '-'
+							&& getBuffer().get(pos + 3) == '-') {
 						/* If we have a XML comment, we skip it */
 						pos = pos + 4;
 						do {
 							pos++;
-						} while (!(buffer.get(pos) == '>'
-								&& buffer.get(pos - 1) == '-' && buffer
+						} while (!(getBuffer().get(pos) == '>'
+								&& getBuffer().get(pos - 1) == '-' && getBuffer()
 								.get(pos - 2) == '-'));
 						continue;
 					}
-					if (buffer.get(pos) == '<'
-							&& buffer.get(pos + 1) == 'l'
-							&& buffer.get(pos + 2) == 'i'
-							&& buffer.get(pos + 3) == 'n'
-							&& buffer.get(pos + 4) == 'k'
-							&& (buffer.get(pos + 5) == ' '
-									|| buffer.get(pos + 5) == '\n'
-									|| buffer.get(pos + 5) == '\r' || buffer
+					if (getBuffer().get(pos) == '<'
+							&& getBuffer().get(pos + 1) == 'l'
+							&& getBuffer().get(pos + 2) == 'i'
+							&& getBuffer().get(pos + 3) == 'n'
+							&& getBuffer().get(pos + 4) == 'k'
+							&& (getBuffer().get(pos + 5) == ' '
+									|| getBuffer().get(pos + 5) == '\n'
+									|| getBuffer().get(pos + 5) == '\r' || getBuffer()
 									.get(pos + 5) == '\t')) {
 						/* If we have a link tag, we read its targets */
 						do {
 							pos++;
-						} while (!(buffer.get(pos) == '"'
-								&& buffer.get(pos - 1) == '='
-								&& buffer.get(pos - 2) == 's'
-								&& buffer.get(pos - 3) == 't'
-								&& buffer.get(pos - 4) == 'e'
-								&& buffer.get(pos - 5) == 'g'
-								&& buffer.get(pos - 6) == 'r'
-								&& buffer.get(pos - 7) == 'a' && buffer
+						} while (!(getBuffer().get(pos) == '"'
+								&& getBuffer().get(pos - 1) == '='
+								&& getBuffer().get(pos - 2) == 's'
+								&& getBuffer().get(pos - 3) == 't'
+								&& getBuffer().get(pos - 4) == 'e'
+								&& getBuffer().get(pos - 5) == 'g'
+								&& getBuffer().get(pos - 6) == 'r'
+								&& getBuffer().get(pos - 7) == 'a' && getBuffer()
 								.get(pos - 8) == 't'));
 						String targets = "";
 						pos++;
 						do {
-							targets = targets + (char) buffer.get(pos);
+							targets = targets + (char) getBuffer().get(pos);
 							pos++;
-						} while (buffer.get(pos) != '"');
+						} while (getBuffer().get(pos) != '"');
 						/* Then we read the link type */
 						do {
 							pos++;
-						} while (!(buffer.get(pos) == '"'
-								&& buffer.get(pos - 1) == '='
-								&& buffer.get(pos - 2) == 'e'
-								&& buffer.get(pos - 3) == 'p'
-								&& buffer.get(pos - 4) == 'y' && buffer
+						} while (!(getBuffer().get(pos) == '"'
+								&& getBuffer().get(pos - 1) == '='
+								&& getBuffer().get(pos - 2) == 'e'
+								&& getBuffer().get(pos - 3) == 'p'
+								&& getBuffer().get(pos - 4) == 'y' && getBuffer()
 								.get(pos - 5) == 't'));
 						String type = "";
 						pos++;
 						do {
-							type = type + (char) buffer.get(pos);
+							type = type + (char) getBuffer().get(pos);
 							pos++;
-						} while (buffer.get(pos) != '"');
+						} while (getBuffer().get(pos) != '"');
 						final ArrayList<String> l = split(targets);
 						if (type.equals("alignment")) {
 							/* If we have an alignement */
@@ -268,31 +269,31 @@ public class XAlignModelImpl implements XAlignModel {
 							 */
 							do {
 								pos++;
-							} while (!(buffer.get(pos) == '"'
-									&& buffer.get(pos - 1) == '='
-									&& buffer.get(pos - 2) == 'd'
-									&& buffer.get(pos - 3) == 'i'
-									&& buffer.get(pos - 4) == ':'
-									&& buffer.get(pos - 5) == 'l'
-									&& buffer.get(pos - 6) == 'm' && buffer
+							} while (!(getBuffer().get(pos) == '"'
+									&& getBuffer().get(pos - 1) == '='
+									&& getBuffer().get(pos - 2) == 'd'
+									&& getBuffer().get(pos - 3) == 'i'
+									&& getBuffer().get(pos - 4) == ':'
+									&& getBuffer().get(pos - 5) == 'l'
+									&& getBuffer().get(pos - 6) == 'm' && getBuffer()
 									.get(pos - 7) == 'x'));
 							String id = "";
 							pos++;
 							do {
-								id = id + (char) buffer.get(pos);
+								id = id + (char) getBuffer().get(pos);
 								pos++;
-							} while (buffer.get(pos) != '"');
+							} while (getBuffer().get(pos) != '"');
 							publish(new PublishInfo(id, null, l));
 						}
 						/* Then we look for the end of the tag */
-						while (buffer.get(pos - 1) != '>') {
+						while (getBuffer().get(pos - 1) != '>') {
 							pos++;
 						}
-						setProgress((int) (100. * pos / dataLength));
+						setProgress((int) (100. * pos / getDataLength()));
 					}
 				}
 				setProgress(100);
-				buffer = null;
+				setBuffer(null);
 				System.gc();
 				return null;
 			}
@@ -659,13 +660,29 @@ public class XAlignModelImpl implements XAlignModel {
 	}
 
 	public void reset() {
-		if (buffer != null)
-			buffer = null;
+		if (getBuffer() != null)
+			setBuffer(null);
 		System.gc();
 	}
 
 	public void clear() {
 		alignments.clear();
 		fireAlignmentChanged(AlignmentEvent.CLEAR);
+	}
+
+	public void setDataLength(int dataLength) {
+		this.dataLength = dataLength;
+	}
+
+	public int getDataLength() {
+		return dataLength;
+	}
+
+	public void setBuffer(MappedByteBuffer buffer) {
+		this.buffer = buffer;
+	}
+
+	public MappedByteBuffer getBuffer() {
+		return buffer;
 	}
 }

@@ -48,7 +48,7 @@ import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
  * @author Sébastien Paumier
  */
 public class ConvertTfstToTextFrame extends JInternalFrame {
-	private final JTextField textName = new JTextField();
+	final JTextField textName = new JTextField();
 
 	ConvertTfstToTextFrame() {
 		super("Convert Text Automaton to Text", false, true);

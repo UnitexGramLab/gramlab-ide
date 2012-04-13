@@ -32,7 +32,6 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -57,7 +56,7 @@ import fr.umlv.unitex.files.FileUtil;
 public class ConcordanceDiffFrame extends TabbableInternalFrame {
 	
 	final BigConcordanceDiff list = new BigConcordanceDiff();
-	private final JComponent invisible = new JComponent() {
+	final JComponent invisible = new JComponent() {
 		@Override
 		protected void paintComponent(Graphics g) {
 			/*

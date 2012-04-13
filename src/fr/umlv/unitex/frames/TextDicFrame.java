@@ -57,15 +57,15 @@ import fr.umlv.unitex.text.BigTextList;
  * @author Sébastien Paumier
  */
 public class TextDicFrame extends TabbableInternalFrame {
-	private final BigTextList dlf = new BigTextList(true);
-	private final BigTextList dlc = new BigTextList(true);
-	private final BigTextList err = new BigTextList();
+	final BigTextList dlf = new BigTextList(true);
+	final BigTextList dlc = new BigTextList(true);
+	final BigTextList err = new BigTextList();
 	private final JLabel dlfLabel = new JLabel("");
 	private final JLabel dlcLabel = new JLabel("");
 	private final JLabel errLabel = new JLabel("");
-	private JScrollBar dlfScrollbar;
-	private JScrollBar dlcScrollbar;
-	private JScrollBar errScrollbar;
+	JScrollBar dlfScrollbar;
+	JScrollBar dlcScrollbar;
+	JScrollBar errScrollbar;
 	private JScrollPane dlfScroll;
 	private JScrollPane dlcScroll;
 	private JScrollPane errScroll;
@@ -119,16 +119,16 @@ public class TextDicFrame extends TabbableInternalFrame {
 				dlf.setFont(font);
 				dlc.setFont(font);
 				err.setFont(font);
-				final boolean rightToLeftForText = ConfigManager.getManager()
+				final boolean rightToLeftForText2 = ConfigManager.getManager()
 						.isRightToLeftForText(null);
 				dlf
-						.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+						.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 				dlc
-						.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+						.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 				err
-						.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+						.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 			}
 		});

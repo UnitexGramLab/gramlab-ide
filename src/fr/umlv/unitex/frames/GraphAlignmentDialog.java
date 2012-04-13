@@ -48,12 +48,12 @@ import javax.swing.border.TitledBorder;
  */
 public class GraphAlignmentDialog extends JDialog {
 	GridBagLayout horizGridBag = new GridBagLayout();
-	private final GridBagLayout vertGridBag = new GridBagLayout();
-	private final GridBagConstraints vertConstraints = new GridBagConstraints();
-	private final JCheckBox showGrid = new JCheckBox();
-	private final JTextField nPixels = new JTextField("30");
-	private int nPix = 30;
-	private GraphFrame f;
+	final GridBagLayout vertGridBag = new GridBagLayout();
+	final GridBagConstraints vertConstraints = new GridBagConstraints();
+	final JCheckBox showGrid = new JCheckBox();
+	final JTextField nPixels = new JTextField("30");
+	int nPix = 30;
+	GraphFrame f;
 
 	/**
 	 * Constructs a new <code>GraphAlignmentMenu</code>.

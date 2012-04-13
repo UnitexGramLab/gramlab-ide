@@ -89,13 +89,13 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 		final ActionListener findAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (modelBegin.isSelected())
-						bgS.setSelected(modelDown, true);
+					if (getModelBegin().isSelected())
+						bgS.setSelected(getModelDown(), true);
 					final String key = docFind.getText(0, docFind.getLength());
-					text.dictionaryFindNext(modelUp.isSelected(), (modelGram
-							.isSelected() || modelFlCode.isSelected()),
-							modelGram.isSelected(), modelFl.isSelected(),
-							modelCano.isSelected(), key);
+					text.dictionaryFindNext(getModelUp().isSelected(), (getModelGram()
+							.isSelected() || getModelFlCode().isSelected()),
+							getModelGram().isSelected(), getModelFl().isSelected(),
+							getModelCano().isSelected(), key);
 				} catch (final BadLocationException ex) {
 					warning("Bad Location Exception:\n" + ex.getMessage());
 				} catch (final KeyErrorException ex) {
@@ -122,15 +122,15 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 					final String replacement = docReplace.getText(0, docReplace
 							.getLength());
 					// replace
-					text.setSelection(start, end, modelUp.isSelected());
+					text.setSelection(start, end, getModelUp().isSelected());
 					text.replaceSelection(replacement);
 					text.setSelection(start, start + replacement.length(),
-							modelUp.isSelected());
+							getModelUp().isSelected());
 					final String key = docFind.getText(0, docFind.getLength());
-					text.dictionaryFindNext(modelUp.isSelected(), (modelGram
-							.isSelected() || modelFlCode.isSelected()),
-							modelGram.isSelected(), modelFl.isSelected(),
-							modelCano.isSelected(), key);
+					text.dictionaryFindNext(getModelUp().isSelected(), (getModelGram()
+							.isSelected() || getModelFlCode().isSelected()),
+							getModelGram().isSelected(), getModelFl().isSelected(),
+							getModelCano().isSelected(), key);
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception\n" + ble.getMessage());
 				} catch (final KeyErrorException ex) {
@@ -148,10 +148,10 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 					final String replacement = docReplace.getText(0, docReplace
 							.getLength());
 					// replace
-					text.setSelection(start, end, modelUp.isSelected());
+					text.setSelection(start, end, getModelUp().isSelected());
 					text.replaceSelection(replacement);
 					text.setSelection(start, start + replacement.length(),
-							modelUp.isSelected());
+							getModelUp().isSelected());
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception:\n" + ble.getMessage());
 				}
@@ -162,8 +162,8 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					final String key = docFind.getText(0, docFind.getLength());
-					count.setText(Integer.toString(text.countAll(key, modelUp
-							.isSelected(), modelGram.isSelected(), modelGram
+					count.setText(Integer.toString(text.countAll(key, getModelUp()
+							.isSelected(), getModelGram().isSelected(), getModelGram()
 							.isSelected())));
 				} catch (final BadLocationException e) {
 					warning("Bad Location Exception:\n" + e.getMessage());
@@ -179,9 +179,9 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 					final String key = docFind.getText(0, docFind.getLength());
 					final String rkey = docReplace.getText(0, docFind
 							.getLength());
-					text.replaceAll(key, rkey, modelUp.isSelected(), (modelGram
-							.isSelected() || modelFlCode.isSelected()),
-							modelGram.isSelected());
+					text.replaceAll(key, rkey, getModelUp().isSelected(), (getModelGram()
+							.isSelected() || getModelFlCode().isSelected()),
+							getModelGram().isSelected());
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception:\n" + ble.getMessage());
 				} catch (final TargetException te) {
@@ -203,5 +203,33 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 	protected void warning(String message) {
 		JOptionPane.showMessageDialog(text, message, "Warning",
 				JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public ButtonModel getModelBegin() {
+		return modelBegin;
+	}
+
+	public ButtonModel getModelDown() {
+		return modelDown;
+	}
+
+	public ButtonModel getModelGram() {
+		return modelGram;
+	}
+
+	public ButtonModel getModelUp() {
+		return modelUp;
+	}
+
+	public ButtonModel getModelFlCode() {
+		return modelFlCode;
+	}
+
+	public ButtonModel getModelFl() {
+		return modelFl;
+	}
+
+	public ButtonModel getModelCano() {
+		return modelCano;
 	}
 }

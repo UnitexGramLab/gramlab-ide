@@ -68,14 +68,15 @@ import javax.swing.text.html.HTMLEditorKit;
 import fr.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignPane extends JPanel {
-	private final JList list1;
-	private final JList list2;
-	private final MyBean bean1;
-	private final MyBean bean2;
-	private final JComponent middle;
-	private final JScrollPane scrollPane1;
-	private final JScrollPane scrollPane2;
-	private final XAlignModel alignmentModel;
+	
+	final JList list1;
+	final JList list2;
+	final MyBean bean1;
+	final MyBean bean2;
+	final JComponent middle;
+	final JScrollPane scrollPane1;
+	final JScrollPane scrollPane2;
+	final XAlignModel alignmentModel;
 
 	public XAlignPane(final ConcordanceModel model1,
 			final ConcordanceModel model2, XAlignModel model, Font sourceFont,

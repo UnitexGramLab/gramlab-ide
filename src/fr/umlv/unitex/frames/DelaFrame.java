@@ -65,10 +65,10 @@ import fr.umlv.unitex.text.TextAsListModelImpl;
  * @author Sébastien Paumier
  */
 public class DelaFrame extends KeyedInternalFrame<File> {
-	private final JPanel middle;
-	private final BigTextList text = new BigTextList(true);
-	private final JScrollBar scrollBar;
-	private File dela;
+	final JPanel middle;
+	final BigTextList text = new BigTextList(true);
+	final JScrollBar scrollBar;
+	File dela;
 
 	DelaFrame() {
 		super("", true, true, true, true);
@@ -284,14 +284,14 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 	}
 
 	class LoadDelaDo implements ToDo {
-		final File dela;
+		final File dela_;
 
 		LoadDelaDo(File s) {
-			dela = s;
+			dela_ = s;
 		}
 
 		public void toDo(boolean success) {
-			loadUnicodeDela(dela);
+			loadUnicodeDela(dela_);
 		}
 	}
 

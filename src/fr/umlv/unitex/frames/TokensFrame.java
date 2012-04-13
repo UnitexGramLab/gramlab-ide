@@ -46,7 +46,7 @@ import fr.umlv.unitex.text.BigTextList;
  * @author Sébastien Paumier
  */
 public class TokensFrame extends TabbableInternalFrame {
-	private final BigTextList text = new BigTextList(false);
+	final BigTextList text = new BigTextList(false);
 
 	TokensFrame() {
 		super("Token list", true, true, true, true);

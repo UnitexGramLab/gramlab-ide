@@ -63,10 +63,10 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	/**
 	 * Area where the text is stored and can be edited
 	 */
-	private final EditionTextArea text;
-	private FileManager fileManager;
-	private File file;
-	private final Action saveAction = new AbstractAction("Save",
+	final EditionTextArea text;
+	FileManager fileManager;
+	File file;
+	final Action saveAction = new AbstractAction("Save",
 			MyCursors.saveIcon) {
 		public void actionPerformed(ActionEvent e) {
 			saveFile(file);

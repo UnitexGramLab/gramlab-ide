@@ -83,22 +83,22 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	private final JCheckBox leftCtxStopAtEOS = new JCheckBox("", false);
 	private final JCheckBox rightCtxStopAtEOS = new JCheckBox("", false);
 	private JComboBox sortBox;
-	private final JCheckBox openWithBrowser = new JCheckBox(
+	final JCheckBox openWithBrowser = new JCheckBox(
 			"Use a web browser to view the concordance");
-	private final JTextField modifiedTxtFile = new JTextField("");
-	private final JTextField extractFile = new JTextField("");
-	private boolean useWebBrowser;
+	final JTextField modifiedTxtFile = new JTextField("");
+	final JTextField extractFile = new JTextField("");
+	boolean useWebBrowser;
 	private JButton diffButton;
 	private JButton ambiguousOutputsButton;
 	private final JRadioButton mode0 = new JRadioButton(
 			"collocates by z-score", true);
-	private final JRadioButton mode1 = new JRadioButton(
+	final JRadioButton mode1 = new JRadioButton(
 			"collocates by frequency", false);
-	private final JRadioButton mode2 = new JRadioButton(
+	final JRadioButton mode2 = new JRadioButton(
 			"contexts by frequency", false);
-	private final JTextField leftContextForStats = new JTextField("1");
-	private final JTextField rightContextForStats = new JTextField("1");
-	private final JRadioButton caseSensitive = new JRadioButton(
+	final JTextField leftContextForStats = new JTextField("1");
+	final JTextField rightContextForStats = new JTextField("1");
+	final JRadioButton caseSensitive = new JRadioButton(
 			"case sensitive", true);
 	private final JRadioButton caseInsensitive = new JRadioButton(
 			"case insensitive", false);

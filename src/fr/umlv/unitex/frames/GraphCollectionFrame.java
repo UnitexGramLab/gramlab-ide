@@ -46,8 +46,8 @@ import fr.umlv.unitex.config.Config;
  * @author Sébastien Paumier
  */
 public class GraphCollectionFrame extends JInternalFrame {
-	private final JTextField srcDir = new JTextField();
-	private final JTextField resultGrf = new JTextField();
+	final JTextField srcDir = new JTextField();
+	final JTextField resultGrf = new JTextField();
 
 	/**
 	 * Constructs a new <code>GraphCollectionDialog</code>.

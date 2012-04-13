@@ -110,7 +110,7 @@ public class InternalFrameManager {
 	private final FrameFactory xAlignConfigFrameFactory = new FrameFactory(
 			XAlignConfigFrame.class);
 	private final GraphFrameFactory graphFrameFactory = new GraphFrameFactory();
-	private final MultiInstanceFrameFactory<DelaFrame, File> delaFrameFactory = new MultiInstanceFrameFactory<DelaFrame, File>();
+	final MultiInstanceFrameFactory<DelaFrame, File> delaFrameFactory = new MultiInstanceFrameFactory<DelaFrame, File>();
 	private final TextFrameFactory textFrameFactory = new TextFrameFactory();
 	private final TokensFrameFactory tokensFrameFactory = new TokensFrameFactory();
 	private final TfstTagsFrameFactory tfstTagsFrameFactory = new TfstTagsFrameFactory();
@@ -141,7 +141,7 @@ public class InternalFrameManager {
 	 * will.
 	 */
 	public InternalFrameManager getSubManager(
-			@SuppressWarnings("unused") File resource,boolean weShallOpenTheProject) {
+			@SuppressWarnings("unused") File resource,@SuppressWarnings("unused") boolean weShallOpenTheProject) {
 		return this;
 	}
 
@@ -283,9 +283,8 @@ public class InternalFrameManager {
 		return textFrameFactory.getTextFrame();
 	}
 
-	public GraphDiffFrame newGraphDiffFrame(File fbase, File fdest,
-			GraphIO base, GraphIO dest, GraphDecorator diff) {
-		final GraphDiffFrame f = new GraphDiffFrame(fbase, fdest, base, dest,
+	public GraphDiffFrame newGraphDiffFrame(GraphIO base, GraphIO dest, GraphDecorator diff) {
+		final GraphDiffFrame f = new GraphDiffFrame(base, dest,
 				diff);
 		setup(f,true);
 		try {

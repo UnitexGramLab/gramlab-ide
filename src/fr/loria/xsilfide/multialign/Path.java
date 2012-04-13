@@ -38,7 +38,7 @@ import java.util.Vector;
 public class Path {
 	private final Vector path; // set of points
 
-	public Path(int x, int y, int size) {
+	public Path(@SuppressWarnings("unused") int x, @SuppressWarnings("unused") int y, int size) {
 		path = new Vector(size);
 	}
 
