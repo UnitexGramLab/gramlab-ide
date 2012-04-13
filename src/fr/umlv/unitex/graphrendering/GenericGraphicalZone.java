@@ -496,14 +496,15 @@ public abstract class GenericGraphicalZone extends JComponent {
 		if (selectedBoxes.isEmpty())
 			return;
 		L = selectedBoxes.size();
-		if (save) {
-			final UndoableEdit edit = new TransitionGroupEdit(selectedBoxes,
-					dest, this);
-			postEdit(edit);
-		}
+		ArrayList<GenericGraphBox> editBoxes=new ArrayList<GenericGraphBox>();
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
-			g.addTransitionTo(dest);
+			if (g.addTransitionTo(dest)) editBoxes.add(g);
+		}
+		if (save && !editBoxes.isEmpty()) {
+			final UndoableEdit edit = new TransitionGroupEdit(editBoxes,
+					dest, this);
+			postEdit(edit);
 		}
 	}
 
@@ -522,8 +523,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
 			final UndoableEdit edit = new TransitionEdit(src, g);
-			postEdit(edit);
-			src.addTransitionTo(g);
+			if (src.addTransitionTo(g)) postEdit(edit);
 		}
 	}
 
