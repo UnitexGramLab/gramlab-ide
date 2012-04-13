@@ -128,7 +128,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 							e.printStackTrace();
 						}
 						final GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
-						model.init(g.boxes);
+						model.init(g.getBoxes());
 						if (model.getRowCount() == 0) {
 							/*
 							 * If the sentence automaton has been emptied, we

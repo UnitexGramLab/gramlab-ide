@@ -99,7 +99,7 @@ public class Preferences {
 	public static String ICON_BAR_SOUTH = BorderLayout.SOUTH;
 	public static String NO_ICON_BAR = "NONE";
 	public static String ICON_BAR_DEFAULT = ICON_BAR_NORTH;
-	public GraphPresentationInfo info;
+	private GraphPresentationInfo info;
 	public Encoding encoding;
 	/**
 	 * Properties for current language
@@ -299,7 +299,7 @@ public class Preferences {
 		prop.setProperty("DATE", "" + info.date);
 		prop.setProperty("FILE NAME", "" + info.filename);
 		prop.setProperty("PATH NAME", "" + info.pathname);
-		prop.setProperty("FRAME", "" + info.frame);
+		prop.setProperty("FRAME", "" + info.isFrame());
 		prop.setProperty("RIGHT TO LEFT FOR TEXT", "" + rightToLeftForText);
 		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", "" + rightToLeftForGraphs);
 		prop.setProperty("SEMITIC", "" + semitic);
@@ -415,6 +415,14 @@ public class Preferences {
 			}
 		}
 		return diff;
+	}
+
+	public GraphPresentationInfo getInfo() {
+		return info;
+	}
+
+	public void setInfo(GraphPresentationInfo info) {
+		this.info = info;
 	}
 
 }

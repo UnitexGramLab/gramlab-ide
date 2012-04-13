@@ -286,29 +286,29 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	public void paintComponent(Graphics f_old) {
 		final Graphics2D f = (Graphics2D) f_old;
 		f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				info.antialiasing ? RenderingHints.VALUE_ANTIALIAS_ON
+				getGraphPresentationInfo().antialiasing ? RenderingHints.VALUE_ANTIALIAS_ON
 						: RenderingHints.VALUE_ANTIALIAS_OFF);
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(info.backgroundColor);
+		f.setColor(getGraphPresentationInfo().backgroundColor);
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		if (graphBoxes.size() == 0 || graphBoxes.isEmpty()) {
 			return;
 		}
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(info.backgroundColor);
+		f.setColor(getGraphPresentationInfo().backgroundColor);
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		final Stroke oldStroke = f.getStroke();
 		f.setStroke(GraphicalToolBox.frameStroke);
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.setStroke(oldStroke);
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		drawAllTransitions(f);
 		drawAllBoxes(f);
 	}
@@ -340,12 +340,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-		f.setColor(info.backgroundColor);
+		f.setColor(getGraphPresentationInfo().backgroundColor);
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
-		f.setColor(info.foregroundColor);
+		f.setColor(getGraphPresentationInfo().foregroundColor);
 		drawAllTransitions(f);
 		drawAllBoxes(f);
 		return Printable.PAGE_EXISTS;
@@ -396,13 +396,13 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		final Dimension d = new Dimension(g.width, g.height);
 		setSize(d);
 		setPreferredSize(d);
-		graphBoxes = g.boxes;
+		graphBoxes = g.getBoxes();
 		for (final GenericGraphBox b : graphBoxes) {
 			b.context = (Graphics2D) this.getGraphics();
 			b.parentGraphicalZone = this;
 			b.update();
 		}
-		setGraphPresentationInfo(g.info);
+		setGraphPresentationInfo(g.getInfo());
 		revalidate();
 		repaint();
 		fireActionPerformed();

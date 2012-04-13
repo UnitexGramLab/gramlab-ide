@@ -75,7 +75,7 @@ public class SVG {
 		fillRect(0, 0, graphicalZone.getWidth(), graphicalZone.getHeight(),
 				info.backgroundColor);
 		// if necessary, we draw the frame
-		if (info.frame) {
+		if (info.isFrame()) {
 			drawRect(10, 10, graphicalZone.getWidth() - 20, graphicalZone
 					.getHeight() - 20, info.foregroundColor, 2);
 		}
