@@ -25,7 +25,6 @@ import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -48,11 +47,11 @@ import fr.umlv.unitex.tfst.TokenTags;
 import fr.umlv.unitex.tfst.TokensInfo;
 
 public class ExportTextAsPOSListDialog extends JDialog {
-	private File output;
+	File output;
 	boolean canceled = false;
-	private final JProgressBar progress = new JProgressBar();
-	private TagFilter filter;
-	private boolean delafStyle;
+	final JProgressBar progress = new JProgressBar();
+	TagFilter filter;
+	boolean delafStyle;
 
 	/**
 	 * Creates a new font dialog box.
@@ -122,11 +121,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 								.automaton(tfst).sentence(i).output("foo");
 						Launcher.execWithoutTracing(cmd);
 						final String text = readSentenceText(sentenceText);
-						try {
-							TokensInfo.loadTokensInfo(sentenceTok, text);
-						} catch (final FileNotFoundException e) {
-							e.printStackTrace();
-						}
+						TokensInfo.loadTokensInfo(sentenceTok, text);
 						final GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
 						model.init(g.getBoxes());
 						if (model.getRowCount() == 0) {

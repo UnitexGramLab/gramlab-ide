@@ -28,7 +28,6 @@ import java.awt.EventQueue;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -57,7 +56,7 @@ public class ConsoleFrame extends TabbableInternalFrame {
 	private final JTable table;
 	private int longestCommandWidth = 80;
 	private int longestIDWidth = 50;
-	private static final ImageIcon statusOK = new ImageIcon(Console.class
+	static final ImageIcon statusOK = new ImageIcon(Console.class
 			.getResource("OK.png"));
 	public static final ImageIcon statusErrorDown = new ImageIcon(Console.class
 			.getResource("error1.png"));

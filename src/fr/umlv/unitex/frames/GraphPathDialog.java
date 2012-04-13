@@ -64,13 +64,13 @@ import fr.umlv.unitex.text.BigTextList;
 public class GraphPathDialog extends JDialog {
 	final BigTextList textArea = new BigTextList();
 	final JTextField graphName = new JTextField();
-	private JCheckBox limit;
-	private JTextField limitSize;
-	private JRadioButton ignoreOutputs;
-	private JRadioButton separateOutputs;
-	private JRadioButton mergeOutputs;
-	private JRadioButton exploreRecursively;
-	private JRadioButton onlyPaths;
+	JCheckBox limit;
+	JTextField limitSize;
+	JRadioButton ignoreOutputs;
+	JRadioButton separateOutputs;
+	JRadioButton mergeOutputs;
+	JRadioButton exploreRecursively;
+	JRadioButton onlyPaths;
 	ListDataListener listListener = new ListDataListener() {
 		public void intervalRemoved(ListDataEvent e) {
 			/* */

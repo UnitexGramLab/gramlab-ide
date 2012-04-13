@@ -48,7 +48,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	 * The real type of occurrenceArray is List<Occurrence>[], but we can't
 	 * declare such a thing.
 	 */
-	private Object[] occurrenceArray;
+	Object[] occurrenceArray;
 	private final XAlignModel xAlignModel;
 
 	public ConcordanceModelImpl(XMLTextModel model, boolean source,

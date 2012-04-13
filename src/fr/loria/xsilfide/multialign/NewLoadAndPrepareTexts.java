@@ -238,6 +238,7 @@ class NewLoadAndPrepareTexts {
 			/* nothing to do */
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void startElement(String uri, String name, String qname,
 				Attributes attrs) {
@@ -347,6 +348,7 @@ class NewLoadAndPrepareTexts {
 			}
 		}
 
+		@SuppressWarnings("synthetic-access")
 		@Override
 		public void endElement(String uri, String name, String qName) {
 			if (name.equals("div") && inCognates) {

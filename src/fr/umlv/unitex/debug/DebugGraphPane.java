@@ -56,8 +56,8 @@ public class DebugGraphPane extends JPanel {
 		this.listener = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2 && currentGraph != -1) {
-					final File f = infos.graphs.get(currentGraph - 1);
+				if (e.getClickCount() == 2 && getCurrentGraph() != -1) {
+					final File f = infos.graphs.get(getCurrentGraph() - 1);
 					InternalFrameManager.getManager(f).newGraphFrame(f);
 				}
 			}
@@ -67,10 +67,10 @@ public class DebugGraphPane extends JPanel {
 
 	public void clear() {
 		if (scroll != null) {
-			scrollPreferences.put(infos.graphs.get(currentGraph - 1), scroll
+			scrollPreferences.put(infos.graphs.get(getCurrentGraph() - 1), scroll
 					.getViewport().getViewPosition());
 		}
-		currentGraph = -1;
+		setCurrentGraph(-1);
 		scroll = null;
 		if (graphicalZone != null) {
 			graphicalZone.removeMouseListener(listener);
@@ -82,14 +82,14 @@ public class DebugGraphPane extends JPanel {
 	}
 
 	public void setDisplay(int graph, int box, int line) {
-		if (currentGraph != graph) {
+		if (getCurrentGraph() != graph) {
 			removeAll();
 			final File f = infos.graphs.get(graph - 1);
 			if (scroll != null) {
-				scrollPreferences.put(infos.graphs.get(currentGraph - 1),
+				scrollPreferences.put(infos.graphs.get(getCurrentGraph() - 1),
 						scroll.getViewport().getViewPosition());
 			}
-			this.currentGraph = graph;
+			this.setCurrentGraph(graph);
 			final GraphIO gio = infos.getGraphIO(graph);
 			if (gio == null) {
 				throw new IllegalStateException(
@@ -140,5 +140,13 @@ public class DebugGraphPane extends JPanel {
 			newY = b.Y1 - 50;
 		}
 		scroll.getViewport().setViewPosition(new Point(newX, newY));
+	}
+
+	public void setCurrentGraph(int currentGraph) {
+		this.currentGraph = currentGraph;
+	}
+
+	public int getCurrentGraph() {
+		return currentGraph;
 	}
 }

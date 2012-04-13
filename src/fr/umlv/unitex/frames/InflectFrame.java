@@ -53,7 +53,7 @@ import fr.umlv.unitex.process.commands.SortTxtCommand;
  * @author Sébastien Paumier
  */
 public class InflectFrame extends JInternalFrame {
-	private final JTextField directory = new JTextField("");
+	final JTextField directory = new JTextField("");
 	private final JRadioButton allWords = new JRadioButton(
 			"Allow both simple and compound words", true);
 	private final JRadioButton onlySimpleWords = new JRadioButton(

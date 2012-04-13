@@ -58,27 +58,27 @@ import fr.umlv.unitex.grf.GraphPresentationInfo;
  * @author Sébastien Paumier
  */
 class GraphPresentationDialog extends JDialog {
-	private final JCheckBox dateCheckBox = new JCheckBox();
-	private final JCheckBox filenameCheckBox = new JCheckBox();
-	private final JCheckBox pathnameCheckBox = new JCheckBox();
-	private final JCheckBox frameCheckBox = new JCheckBox();
-	private final JLabel rightToLeftLabel = new JLabel("Right to Left  ");
-	private final JCheckBox rightToLeftCheckBox = new JCheckBox();
-	private final JCheckBox antialiasingCheckBox = new JCheckBox(
+	final JCheckBox dateCheckBox = new JCheckBox();
+	final JCheckBox filenameCheckBox = new JCheckBox();
+	final JCheckBox pathnameCheckBox = new JCheckBox();
+	final JCheckBox frameCheckBox = new JCheckBox();
+	final JLabel rightToLeftLabel = new JLabel("Right to Left  ");
+	final JCheckBox rightToLeftCheckBox = new JCheckBox();
+	final JCheckBox antialiasingCheckBox = new JCheckBox(
 			"Enable antialising for rendering graphs");
-	private final JPanel color1 = getColorRectangle();
-	private final JPanel color2 = getColorRectangle();
-	private final JPanel color3 = getColorRectangle();
-	private final JPanel color4 = getColorRectangle();
-	private final JPanel color5 = getColorRectangle();
-	private final JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
-	private final JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
-	private final JRadioButton westRadioBox = new JRadioButton("West");
-	private final JRadioButton eastRadioBox = new JRadioButton("East");
-	private final JRadioButton northRadioBox = new JRadioButton("North");
-	private final JRadioButton southRadioBox = new JRadioButton("South");
-	private final JRadioButton noneRadioBox = new JRadioButton("None");
-	private GraphPresentationInfo info;
+	final JPanel color1 = getColorRectangle();
+	final JPanel color2 = getColorRectangle();
+	final JPanel color3 = getColorRectangle();
+	final JPanel color4 = getColorRectangle();
+	final JPanel color5 = getColorRectangle();
+	final JLabel inputLabel = new JLabel("", SwingConstants.LEFT);
+	final JLabel outputLabel = new JLabel("", SwingConstants.LEFT);
+	final JRadioButton westRadioBox = new JRadioButton("West");
+	final JRadioButton eastRadioBox = new JRadioButton("East");
+	final JRadioButton northRadioBox = new JRadioButton("North");
+	final JRadioButton southRadioBox = new JRadioButton("South");
+	final JRadioButton noneRadioBox = new JRadioButton("None");
+	GraphPresentationInfo info;
 
 	public GraphPresentationDialog(GraphPresentationInfo i,
 			boolean showRightToLeftCheckBox) {

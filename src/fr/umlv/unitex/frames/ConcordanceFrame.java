@@ -63,9 +63,9 @@ import fr.umlv.unitex.files.FileUtil;
  * @author Sébastien Paumier
  */
 public class ConcordanceFrame extends TabbableInternalFrame {
-	private final BigConcordance list;
+	final BigConcordance list;
 	private final JLabel numberOfMatches = new JLabel("");
-	private final JComponent invisible = new JComponent() {
+	final JComponent invisible = new JComponent() {
 		@Override
 		protected void paintComponent(Graphics g) {
 			/*

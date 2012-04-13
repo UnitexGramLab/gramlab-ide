@@ -61,28 +61,28 @@ import fr.umlv.unitex.transcoding.Transcoder;
  * @author Sébastien Paumier
  */
 public class TranscodingFrame extends JInternalFrame {
-	private final JList srcEncodingList = new JList(Transcoder
+	final JList srcEncodingList = new JList(Transcoder
 			.getAvailableEncodings());
-	private final JList destEncodingList = new JList(Transcoder
+	final JList destEncodingList = new JList(Transcoder
 			.getAvailableEncodings());
-	private final JRadioButton replace = new JRadioButton("Replace");
-	private final JRadioButton renameSourceWithPrefix = new JRadioButton(
+	final JRadioButton replace = new JRadioButton("Replace");
+	final JRadioButton renameSourceWithPrefix = new JRadioButton(
 			"Rename source with prefix");
-	private final JRadioButton renameSourceWithSuffix = new JRadioButton(
+	final JRadioButton renameSourceWithSuffix = new JRadioButton(
 			"Rename source with suffix");
-	private final JRadioButton nameDestWithPrefix = new JRadioButton(
+	final JRadioButton nameDestWithPrefix = new JRadioButton(
 			"Name destination with prefix");
-	private final JRadioButton nameDestWithSuffix = new JRadioButton(
+	final JRadioButton nameDestWithSuffix = new JRadioButton(
 			"Name destination with suffix");
-	private final JTextField prefixSuffix = new JTextField("");
-	private final DefaultListModel listModel = new DefaultListModel();
-	private final JList fileList = new JList(listModel);
-	private final JButton addFiles = new JButton("Add Files");
-	private final JButton removeFiles = new JButton("Remove Files");
-	private final JButton transcode = new JButton("Transcode");
-	private final JButton cancel = new JButton("Cancel");
-	private ToDo toDo;
-	private boolean closeAfterWork = false;
+	final JTextField prefixSuffix = new JTextField("");
+	final DefaultListModel listModel = new DefaultListModel();
+	final JList fileList = new JList(listModel);
+	final JButton addFiles = new JButton("Add Files");
+	final JButton removeFiles = new JButton("Remove Files");
+	final JButton transcode = new JButton("Transcode");
+	final JButton cancel = new JButton("Cancel");
+	ToDo toDo;
+	boolean closeAfterWork = false;
 
 	TranscodingFrame() {
 		super("Transcode Files", true, true);
@@ -279,9 +279,9 @@ public class TranscodingFrame extends JInternalFrame {
 		return listModel;
 	}
 
-	void configure(File file, ToDo toDo1, boolean closeAfterWork) {
+	void configure(File file, ToDo toDo1, boolean closeAfterWork2) {
 		listModel.removeAllElements();
-		this.closeAfterWork = closeAfterWork;
+		this.closeAfterWork = closeAfterWork2;
 		this.toDo = toDo1;
 		if (toDo1 != null) {
 			listModel.addElement(file);

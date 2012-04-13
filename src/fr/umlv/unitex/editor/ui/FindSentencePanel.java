@@ -51,7 +51,7 @@ public class FindSentencePanel extends SearchPanel {
 		pf.setBorder(new EmptyBorder(8, 5, 8, 0));
 		pf.add(new JLabel("Sentence Number:"));
 		sentenceNumber = new JTextField();
-		pf.add(sentenceNumber);
+		pf.add(getSentenceNumber());
 		final JPanel p01 = new JPanel(new FlowLayout());
 		final JPanel p = new JPanel(new GridLayout(2, 1));
 		final JButton btFind = new JButton("Find");
@@ -61,7 +61,7 @@ public class FindSentencePanel extends SearchPanel {
 		class findSentence implements ActionListener {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					final Document docFind = sentenceNumber.getDocument();
+					final Document docFind = getSentenceNumber().getDocument();
 					final String key = docFind.getText(0, docFind.getLength());
 					final int number = Integer.parseInt(key);
 					text.findSentence(number);
@@ -79,7 +79,7 @@ public class FindSentencePanel extends SearchPanel {
 		final findSentence findSentenceAction = new findSentence();
 		btFind.addActionListener(findSentenceAction);
 		// find next when enter is pressed
-		sentenceNumber.addKeyListener(new KeyAdapter() {
+		getSentenceNumber().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -92,5 +92,9 @@ public class FindSentencePanel extends SearchPanel {
 		p01.add(p);
 		add(p01, BorderLayout.EAST);
 		add(pf, BorderLayout.CENTER);
+	}
+
+	public JTextField getSentenceNumber() {
+		return sentenceNumber;
 	}
 }

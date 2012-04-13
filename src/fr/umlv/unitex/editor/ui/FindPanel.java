@@ -112,12 +112,12 @@ public class FindPanel extends AbstractFindpanel {
 		final ActionListener findAction = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (modelBegin.isSelected())
-						bgS.setSelected(modelDown, true);
+					if (getModelBegin().isSelected())
+						bgS.setSelected(getModelDown(), true);
 					final String key = docFind.getText(0, docFind.getLength());
-					text.findNext(modelUp.isSelected(), modelCase.isSelected(),
-							modelWord.isSelected(), modelPrefixe.isSelected(),
-							modelSuffixe.isSelected(), modelRadical
+					text.findNext(getModelUp().isSelected(), getModelCase().isSelected(),
+							getModelWord().isSelected(), getModelPrefixe().isSelected(),
+							getModelSuffixe().isSelected(), getModelRadical()
 									.isSelected(), key);
 				} catch (final BadLocationException ex) {
 					warning("Bad Location Exception:\n" + ex.getMessage());
@@ -150,9 +150,9 @@ public class FindPanel extends AbstractFindpanel {
 					text.setSelection(start, start + replacement.length(), rdUp
 							.isSelected());
 					final String key = docFind.getText(0, docFind.getLength());
-					text.findNext(modelUp.isSelected(), modelCase.isSelected(),
-							modelWord.isSelected(), modelPrefixe.isSelected(),
-							modelSuffixe.isSelected(), modelRadical
+					text.findNext(getModelUp().isSelected(), getModelCase().isSelected(),
+							getModelWord().isSelected(), getModelPrefixe().isSelected(),
+							getModelSuffixe().isSelected(), getModelRadical()
 									.isSelected(), key);
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception\n" + ble.getMessage());
@@ -186,8 +186,8 @@ public class FindPanel extends AbstractFindpanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					final String key = docFind.getText(0, docFind.getLength());
-					count.setText(Integer.toString(text.countAll(key, modelUp
-							.isSelected(), modelWord.isSelected(), modelCase
+					count.setText(Integer.toString(text.countAll(key, getModelUp()
+							.isSelected(), getModelWord().isSelected(), getModelCase()
 							.isSelected())));
 				} catch (final BadLocationException e) {
 					warning("Bad Location Exception:\n" + e.getMessage());
@@ -203,8 +203,8 @@ public class FindPanel extends AbstractFindpanel {
 					final String key = docFind.getText(0, docFind.getLength());
 					final String rkey = docReplace.getText(0, docFind
 							.getLength());
-					text.replaceAll(key, rkey, modelUp.isSelected(), modelCase
-							.isSelected(), modelWord.isSelected());
+					text.replaceAll(key, rkey, getModelUp().isSelected(), getModelCase()
+							.isSelected(), getModelWord().isSelected());
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception:\n" + ble.getMessage());
 				} catch (final TargetException te) {
@@ -215,5 +215,37 @@ public class FindPanel extends AbstractFindpanel {
 			}
 		};
 		btReplaceAll.addActionListener(replaceAll);
+	}
+
+	public ButtonModel getModelBegin() {
+		return modelBegin;
+	}
+
+	public ButtonModel getModelDown() {
+		return modelDown;
+	}
+
+	public ButtonModel getModelCase() {
+		return modelCase;
+	}
+
+	public ButtonModel getModelUp() {
+		return modelUp;
+	}
+
+	public ButtonModel getModelPrefixe() {
+		return modelPrefixe;
+	}
+
+	public ButtonModel getModelWord() {
+		return modelWord;
+	}
+
+	public ButtonModel getModelRadical() {
+		return modelRadical;
+	}
+
+	public ButtonModel getModelSuffixe() {
+		return modelSuffixe;
 	}
 }

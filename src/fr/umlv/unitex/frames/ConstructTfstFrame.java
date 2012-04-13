@@ -66,10 +66,10 @@ public class ConstructTfstFrame extends JInternalFrame {
 	private final JCheckBox cleanFst = new JCheckBox("Clean Text FST");
 	private final JCheckBox elagFst = new JCheckBox(
 			"Normalize according to Elag tagset.def");
-	private final JTextField normGrf = new JTextField(Config
+	final JTextField normGrf = new JTextField(Config
 			.getCurrentNormGraph().getAbsolutePath());
 	private final JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
-	private final JTextField tagger_data = new JTextField(new File(new File(
+	final JTextField tagger_data = new JTextField(new File(new File(
 			Config.getUserCurrentLanguageDir(), "Dela"), "tagger_data_cat.bin")
 			.getAbsolutePath());
 

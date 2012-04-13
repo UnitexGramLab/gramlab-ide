@@ -1,5 +1,4 @@
 /*
- * Unitex
  *
  * Copyright (C) 2001-2012 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
@@ -23,11 +22,9 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -43,28 +40,18 @@ import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.io.GraphIO;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
-	public GraphDiffFrame(File fbase, File fdest, GraphIO base, GraphIO dest,
+	public GraphDiffFrame(GraphIO base, GraphIO dest,
 			GraphDecorator diff) {
 		super("Graph Diff", true, true, true, true);
 		MyDropTarget.newDropTarget(this);
 		JPanel main = new JPanel(new BorderLayout());
-		main.add(constructTopPanel(fbase, fdest, diff), BorderLayout.NORTH);
+		main.add(constructTopPanel(diff), BorderLayout.NORTH);
 		GraphicalZone basePane=new GraphicalZone(base,new TextField(0, null), null, diff);
 		GraphicalZone destPane=new GraphicalZone(dest,new TextField(0, null), null, diff.clone(false));
 		JPanel p=buildSynchronizedScrollPanes(basePane,destPane);
 		main.add(p);
 		setContentPane(main);
 		setSize(850, 550);
-	}
-
-	private JScrollPane createPane(GraphIO gio, GraphDecorator diff) {
-		final GraphicalZone graphicalZone = new GraphicalZone(gio,
-				new TextField(0, null), null, diff);
-		final JScrollPane scroll = new JScrollPane(graphicalZone);
-		scroll.getHorizontalScrollBar().setUnitIncrement(20);
-		scroll.getVerticalScrollBar().setUnitIncrement(20);
-		scroll.setPreferredSize(new Dimension(1188, 840));
-		return scroll;
 	}
 
 	private static JPanel buildSynchronizedScrollPanes(JComponent c1,JComponent c2) {
@@ -104,8 +91,7 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 		return p;
 	}
 
-	private Component constructTopPanel(File fbase, File fdest,
-			GraphDecorator diff) {
+	private Component constructTopPanel(GraphDecorator diff) {
 		final boolean propertyChanges = diff.propertyOps.size() != 0;
 		final JPanel p = new JPanel(new GridLayout(
 				3 + (propertyChanges ? 1 : 0), 1));

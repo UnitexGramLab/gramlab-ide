@@ -35,8 +35,9 @@ import javax.swing.SwingWorker;
  * @author Sébastien Paumier
  */
 public class XMLTextLoader {
-	private final XMLTextModel model;
-	private final MappedByteBuffer buffer;
+	
+	final XMLTextModel model;
+	final MappedByteBuffer buffer;
 
 	public XMLTextLoader(XMLTextModel model, MappedByteBuffer buffer) {
 		this.model = model;

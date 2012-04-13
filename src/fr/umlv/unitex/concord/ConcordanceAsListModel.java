@@ -63,7 +63,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 
 	public void load(File f) {
 		this.file = f;
-		dataLength = (int) file.length();
+		setDataLength((int) file.length());
 		endOfLines = new int[0];
 		numberOfEOL = 0;
 		try {
@@ -74,7 +74,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 		}
 		channel = stream.getChannel();
 		try {
-			buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, dataLength);
+			buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, getDataLength());
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return;
@@ -83,17 +83,17 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			@Override
 			protected Void doInBackground() throws Exception {
 				int lastStart = 0;
-				for (int pos = 0; pos < dataLength; pos = pos + 1) {
+				for (int pos = 0; pos < getDataLength(); pos = pos + 1) {
 					final int a = 0xFF & buffer.get(pos);
 					if (a == '\n') {
 						// if we have an end-of-line
 						publish(pos);
-						setProgress(100 * pos / dataLength);
+						setProgress(100 * pos / getDataLength());
 						lastStart = pos + 1;
 					}
 				}
-				if (lastStart < (dataLength - 1)) {
-					publish(dataLength - 1);
+				if (lastStart < (getDataLength() - 1)) {
+					publish(getDataLength() - 1);
 					setProgress(100);
 				}
 				/*
@@ -225,5 +225,13 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			}
 			stream = null;
 		}
+	}
+
+	public void setDataLength(int dataLength) {
+		this.dataLength = dataLength;
+	}
+
+	public int getDataLength() {
+		return dataLength;
 	}
 }

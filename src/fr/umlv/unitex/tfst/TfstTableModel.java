@@ -33,10 +33,11 @@ import fr.umlv.unitex.graphrendering.TfstGraphBox;
  * @author paumier
  */
 public class TfstTableModel extends AbstractTableModel {
-	private int nColumns;
-	private final ArrayList<TokenTags> lines = new ArrayList<TokenTags>();
-	private final TagFilter filter;
-	private final boolean delafStyle;
+	
+	int nColumns;
+	final ArrayList<TokenTags> lines = new ArrayList<TokenTags>();
+	final TagFilter filter;
+	final boolean delafStyle;
 
 	public TfstTableModel(TagFilter f, final boolean delafStyle) {
 		filter = f;

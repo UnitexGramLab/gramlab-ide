@@ -73,14 +73,14 @@ import fr.umlv.unitex.xalign.XMLTextModel;
 import fr.umlv.unitex.xalign.XMLTextModelImpl;
 
 public class XAlignFrame extends JInternalFrame {
-	private Font sourceFont;
-	private Font targetFont;
-	private File alignementFile;
-	private final XMLTextModel text1;
-	private final XMLTextModel text2;
-	private final XAlignModel model;
-	private final ConcordanceModel concordModel1;
-	private final ConcordanceModel concordModel2;
+	Font sourceFont;
+	Font targetFont;
+	File alignementFile;
+	final XMLTextModel text1;
+	final XMLTextModel text2;
+	final XAlignModel model;
+	final ConcordanceModel concordModel1;
+	final ConcordanceModel concordModel2;
 
 	XAlignFrame(final File f1, final File f2, final File align)
 			throws IOException {
