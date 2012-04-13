@@ -79,7 +79,7 @@ public class GenericGraphBox {
 	/**
 	 * Indicates if the box is currently selected
 	 */
-	boolean selected;
+	private boolean selected;
 	/**
 	 * Indicates if the box is isolated (no input/output transition)
 	 */
