@@ -60,7 +60,7 @@ public class ConfigManager extends AbstractConfigModel {
 			language = Config.getCurrentLanguage();
 		}
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.charByChar;
+		return p.isCharByChar();
 	}
 
 	public File getConfigFileForLanguage(String language) {
@@ -75,7 +75,7 @@ public class ConfigManager extends AbstractConfigModel {
 			language = Config.getCurrentLanguage();
 		}
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.encoding;
+		return p.getEncoding();
 	}
 
 	public boolean isSemiticLanguage(String language) {
@@ -83,7 +83,7 @@ public class ConfigManager extends AbstractConfigModel {
 			language = Config.getCurrentLanguage();
 		}
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.semitic;
+		return p.isSemitic();
 	}
 
 	public boolean isRightToLeftForGraphs(String language) {
@@ -91,7 +91,7 @@ public class ConfigManager extends AbstractConfigModel {
 			language = Config.getCurrentLanguage();
 		}
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.rightToLeftForGraphs;
+		return p.isRightToLeftForGraphs();
 	}
 
 	public boolean isRightToLeftForText(String language) {
@@ -99,7 +99,7 @@ public class ConfigManager extends AbstractConfigModel {
 			language = Config.getCurrentLanguage();
 		}
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.rightToLeftForText;
+		return p.isRightToLeftForText();
 	}
 
 	public ArrayList<File> morphologicalDictionaries(String language) {
@@ -107,7 +107,7 @@ public class ConfigManager extends AbstractConfigModel {
 			language = Config.getCurrentLanguage();
 		}
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.morphologicalDic;
+		return p.getMorphologicalDic();
 	}
 
 	@Override
@@ -125,21 +125,21 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.morphologicalUseOfSpace;
+		return p.isMorphologicalUseOfSpace();
 	}
 
 	public boolean onlyCosmetic(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.onlyCosmetic;
+		return p.isOnlyCosmetic();
 	}
 
 	public boolean svnMonitoring(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.svnMonitoring;
+		return p.isSvnMonitoring();
 	}
 
 	public GraphPresentationInfo getGraphPresentationPreferences(String language) {
@@ -153,7 +153,7 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.graphRepositoryPath;
+		return p.getGraphRepositoryPath();
 	}	
 		
 	public ArrayList<NamedRepository> getNamedRepositories(String language) {
@@ -165,14 +165,14 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.loggingDir;
+		return p.getLoggingDir();
 	}
 
 	public boolean mustLog(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.mustLog;
+		return p.isMustLog();
 	}
 
 	public Font getInputFont(String language) {
@@ -193,7 +193,7 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.textFont.getFont();
+		return p.getTextFont().getFont();
 	}
 
 	public Preferences getPreferences(String language) {
@@ -213,28 +213,28 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.htmlViewer;
+		return p.getHtmlViewer();
 	}
 
 	public Font getConcordanceFont(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.concordanceFont.getFont();
+		return p.getConcordanceFont().getFont();
 	}
 
 	public String getConcordanceFontName(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.concordanceFont.getFont().getName();
+		return p.getConcordanceFont().getFont().getName();
 	}
 
 	public int getConcordanceFontSize(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.concordanceFont.getSize();
+		return p.getConcordanceFont().getSize();
 	}
 
 	public File getUnitexToolLogger() {
