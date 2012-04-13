@@ -146,7 +146,7 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.info.clone();
+		return p.getInfo().clone();
 	}
 
 	public File getDefaultGraphRepositoryPath(String language) {
@@ -179,14 +179,14 @@ public class ConfigManager extends AbstractConfigModel {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.info.input.font;
+		return p.getInfo().input.font;
 	}
 
 	public int getInputFontSize(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
-		return p.info.input.size;
+		return p.getInfo().input.size;
 	}
 
 	public Font getTextFont(String language) {

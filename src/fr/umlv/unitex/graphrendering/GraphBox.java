@@ -481,12 +481,12 @@ public class GraphBox extends GenericGraphBox {
 			super.drawOtherStandalone(g);
 			return;
 		}
-		final Color old = parentGraphicalZone.info.foregroundColor;
+		final Color old = parentGraphicalZone.getGraphPresentationInfo().foregroundColor;
 		try {
-			parentGraphicalZone.info.foregroundColor = Color.BLUE;
+			parentGraphicalZone.getGraphPresentationInfo().foregroundColor = Color.BLUE;
 			drawOther(g);
 		} finally {
-			parentGraphicalZone.info.foregroundColor = old;
+			parentGraphicalZone.getGraphPresentationInfo().foregroundColor = old;
 		}
 	}
 }

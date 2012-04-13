@@ -191,7 +191,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 						.isSelected();
 				pref.rightToLeftForGraphs = rightToLeftForGraphsCheckBox
 						.isSelected();
-				pref.info.rightToLeft = pref.rightToLeftForGraphs;
+				pref.getInfo().rightToLeft = pref.rightToLeftForGraphs;
 				if (htmlViewer.getText().equals(""))
 					pref.htmlViewer = null;
 				else
@@ -531,10 +531,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		graphConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final GraphPresentationInfo i = InternalFrameManager
-						.getManager(null).newGraphPresentationDialog(pref.info,
+						.getManager(null).newGraphPresentationDialog(pref.getInfo(),
 								false);
 				if (i != null) {
-					pref.info = i;
+					pref.setInfo(i);
 				}
 			}
 		});
