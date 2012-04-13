@@ -60,7 +60,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.MyDropTarget;
+import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
@@ -92,7 +92,7 @@ public class UnitexFrame extends JFrame {
 	 * This object is used to enable drag-and-drop, so that the user can pick up
 	 * texts, graphs and dictionaries from a file explorer.
 	 */
-	public DropTarget dropTarget = MyDropTarget.newDropTarget(this);
+	public DropTarget dropTarget = DropTargetManager.getDropTarget().newDropTarget(this);
 	/**
 	 * The desktop of the frame.
 	 */
