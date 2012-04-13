@@ -46,48 +46,48 @@ public class Preferences {
 	 * A null value indicates that we inherits from the default preferences.
 	 */
 	private Preferences base;
-	public FontInfo textFont;
-	public FontInfo concordanceFont;
+	private FontInfo textFont;
+	private FontInfo concordanceFont;
 	/**
 	 * Name of the external program to use to view HTML concordances. If
 	 * <code>null</code>, concordances will be shown in a Unitex frame
 	 */
-	public File htmlViewer;
+	private File htmlViewer;
 	/**
 	 * .bin dictionaries to be used in Locate's morphological mode
 	 */
-	public ArrayList<File> morphologicalDic;
+	private ArrayList<File> morphologicalDic;
 	/**
 	 * Indicates if the language must be processed char by char or not
 	 */
-	public boolean charByChar;
+	private boolean charByChar;
 	/**
 	 * Indicates if the language must be processed allowing morphological use of
 	 * spaces.
 	 */
-	public boolean morphologicalUseOfSpace;
+	private boolean morphologicalUseOfSpace;
 	/**
 	 * Indicates if the language must be read from right to left or not
 	 */
-	public boolean rightToLeftForText;
-	public boolean rightToLeftForGraphs;
+	private boolean rightToLeftForText;
+	private boolean rightToLeftForGraphs;
 	/**
 	 * Indicates if the language is a semitic one, according to the consonant
 	 * skeleton model
 	 */
-	public boolean semitic;
+	private boolean semitic;
 	/**
 	 * Path of the graph package repository
 	 */
-	public File graphRepositoryPath;
+	private File graphRepositoryPath;
 	// public File lexicalPackagePath;
 	/**
 	 * Path of the logging directory
 	 */
-	public File loggingDir;
-	public boolean mustLog = false;
-	public boolean svnMonitoring = true;
-	public boolean onlyCosmetic = false;
+	private File loggingDir;
+	private boolean mustLog = false;
+	private boolean svnMonitoring = true;
+	private boolean onlyCosmetic = false;
 	/**
 	 * Maximum size in bytes of text files. If a file is bigger than this limit,
 	 * it won't be loaded.
@@ -100,7 +100,8 @@ public class Preferences {
 	public static String NO_ICON_BAR = "NONE";
 	public static String ICON_BAR_DEFAULT = ICON_BAR_NORTH;
 	private GraphPresentationInfo info;
-	public Encoding encoding;
+	private Encoding encoding;
+	
 	/**
 	 * Properties for current language
 	 */
@@ -188,11 +189,11 @@ public class Preferences {
 		int style = Integer.parseInt(prop.getProperty("TEXT FONT STYLE"));
 		Font font = new Font(prop.getProperty("TEXT FONT NAME"), style,
 				(int) (size / 0.72));
-		textFont = new FontInfo(font, size);
+		setTextFont(new FontInfo(font, size));
 		size = Integer.parseInt(prop.getProperty("CONCORDANCE FONT HTML SIZE"));
 		font = new Font(prop.getProperty("CONCORDANCE FONT NAME"), Font.PLAIN,
 				(int) (size / 0.72));
-		concordanceFont = new FontInfo(font, size);
+		setConcordanceFont(new FontInfo(font, size));
 		size = Integer.parseInt(prop.getProperty("INPUT FONT SIZE"));
 		style = Integer.parseInt(prop.getProperty("INPUT FONT STYLE"));
 		font = new Font(prop.getProperty("INPUT FONT NAME"), style,
@@ -230,43 +231,43 @@ public class Preferences {
 		final boolean antialiasing = Boolean.valueOf(prop
 				.getProperty("ANTIALIASING"));
 		final String iconBarPosition = prop.getProperty("TOOLBAR POSITION");
-		rightToLeftForText = Boolean.valueOf(prop
-				.getProperty("RIGHT TO LEFT FOR TEXT"));
-		rightToLeftForGraphs = Boolean.valueOf(prop
-				.getProperty("RIGHT TO LEFT FOR GRAPHS"));
-		semitic = Boolean.valueOf(prop.getProperty("SEMITIC"));
+		setRightToLeftForText(Boolean.valueOf(prop
+				.getProperty("RIGHT TO LEFT FOR TEXT")));
+		setRightToLeftForGraphs(Boolean.valueOf(prop
+				.getProperty("RIGHT TO LEFT FOR GRAPHS")));
+		setSemitic(Boolean.valueOf(prop.getProperty("SEMITIC")));
 		info = new GraphPresentationInfo(backgroundColor, foregroundColor,
 				subgraphColor, selectedColor, commentColor,
 				outputVariableColor, packageColor, contextColor,
 				morphologicalModeColor, unreachableGraphColor, input, output,
-				date, filename, pathname, frame, rightToLeftForGraphs,
+				date, filename, pathname, frame, isRightToLeftForGraphs(),
 				antialiasing, iconBarPosition);
 		String s = prop.getProperty("HTML VIEWER");
-		htmlViewer = (s == null || s.equals("")) ? null : new File(s);
-		morphologicalDic = tokenizeMorphologicalDicList(prop
-				.getProperty("MORPHOLOGICAL DICTIONARY"));
-		charByChar = Boolean.valueOf(prop.getProperty("CHAR BY CHAR"));
-		morphologicalUseOfSpace = Boolean.valueOf(prop
-				.getProperty("MORPHOLOGICAL USE OF SPACE"));
+		setHtmlViewer((s == null || s.equals("")) ? null : new File(s));
+		setMorphologicalDic(tokenizeMorphologicalDicList(prop
+				.getProperty("MORPHOLOGICAL DICTIONARY")));
+		setCharByChar(Boolean.valueOf(prop.getProperty("CHAR BY CHAR")));
+		setMorphologicalUseOfSpace(Boolean.valueOf(prop
+				.getProperty("MORPHOLOGICAL USE OF SPACE")));
 		s = prop.getProperty("PACKAGE PATH");
-		graphRepositoryPath = (s == null || s.equals("")) ? null : new File(s);
+		setGraphRepositoryPath((s == null || s.equals("")) ? null : new File(s));
 		/*
 		 * s = prop.getProperty("LEXICAL PACKAGE PATH"); lexicalPackagePath = (s
 		 * == null || s.equals("")) ? null : new File(s);
 		 */
 		s = prop.getProperty("LOGGING DIR");
-		loggingDir = (s == null || s.equals("")) ? null : new File(s);
-		mustLog = Boolean.valueOf(prop.getProperty("MUST LOG"));
-		if (mustLog && loggingDir == null) {
+		setLoggingDir((s == null || s.equals("")) ? null : new File(s));
+		setMustLog(Boolean.valueOf(prop.getProperty("MUST LOG")));
+		if (isMustLog() && getLoggingDir() == null) {
 			/* Should not happen */
-			mustLog = false;
+			setMustLog(false);
 		}
-		svnMonitoring = Boolean.valueOf(prop.getProperty("SVN MONITORING"));
-		onlyCosmetic = Boolean.valueOf(prop.getProperty("ONLY COSMETIC"));
+		setSvnMonitoring(Boolean.valueOf(prop.getProperty("SVN MONITORING")));
+		setOnlyCosmetic(Boolean.valueOf(prop.getProperty("ONLY COSMETIC")));
 		try {
-			encoding = Encoding.valueOf(prop.getProperty("ENCODING"));
+			setEncoding(Encoding.valueOf(prop.getProperty("ENCODING")));
 		} catch (final Exception e) {
-			encoding = Encoding.UTF16LE;
+			setEncoding(Encoding.UTF16LE);
 		}
 	}
 
@@ -283,13 +284,13 @@ public class Preferences {
 
 	public Properties setPropertiesFromPreferences() {
 		final Properties prop = new Properties();
-		prop.setProperty("TEXT FONT NAME", textFont.getFont().getName());
-		prop.setProperty("TEXT FONT STYLE", "" + textFont.getFont().getStyle());
-		prop.setProperty("TEXT FONT SIZE", "" + textFont.getSize());
-		prop.setProperty("CONCORDANCE FONT NAME", concordanceFont.getFont()
+		prop.setProperty("TEXT FONT NAME", getTextFont().getFont().getName());
+		prop.setProperty("TEXT FONT STYLE", "" + getTextFont().getFont().getStyle());
+		prop.setProperty("TEXT FONT SIZE", "" + getTextFont().getSize());
+		prop.setProperty("CONCORDANCE FONT NAME", getConcordanceFont().getFont()
 				.getName());
 		prop.setProperty("CONCORDANCE FONT HTML SIZE", ""
-				+ concordanceFont.getSize());
+				+ getConcordanceFont().getSize());
 		prop.setProperty("INPUT FONT NAME", info.getInput().getFont().getName());
 		prop.setProperty("INPUT FONT STYLE", "" + info.getInput().getFont().getStyle());
 		prop.setProperty("INPUT FONT SIZE", "" + info.getInput().getSize());
@@ -300,9 +301,9 @@ public class Preferences {
 		prop.setProperty("FILE NAME", "" + info.isFilename());
 		prop.setProperty("PATH NAME", "" + info.isPathname());
 		prop.setProperty("FRAME", "" + info.isFrame());
-		prop.setProperty("RIGHT TO LEFT FOR TEXT", "" + rightToLeftForText);
-		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", "" + rightToLeftForGraphs);
-		prop.setProperty("SEMITIC", "" + semitic);
+		prop.setProperty("RIGHT TO LEFT FOR TEXT", "" + isRightToLeftForText());
+		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", "" + isRightToLeftForGraphs());
+		prop.setProperty("SEMITIC", "" + isSemitic());
 		prop
 				.setProperty("BACKGROUND COLOR", ""
 						+ info.getBackgroundColor().getRGB());
@@ -329,25 +330,25 @@ public class Preferences {
 		prop.setProperty("UNREACHABLE GRAPH COLOR", ""
 				+ info.getUnreachableGraphColor().getRGB());
 		prop.setProperty("ANTIALIASING", "" + info.isAntialiasing());
-		prop.setProperty("HTML VIEWER", (htmlViewer == null) ? "" : htmlViewer
+		prop.setProperty("HTML VIEWER", (getHtmlViewer() == null) ? "" : getHtmlViewer()
 				.getAbsolutePath());
 		prop.setProperty("MORPHOLOGICAL DICTIONARY",
-				getMorphologicalDicListAsString(morphologicalDic));
+				getMorphologicalDicListAsString(getMorphologicalDic()));
 		prop.setProperty("MAX TEXT FILE SIZE", "" + MAX_TEXT_FILE_SIZE);
 		prop.setProperty("ICON BAR POSITION", info.getIconBarPosition());
-		prop.setProperty("CHAR BY CHAR", "" + charByChar);
+		prop.setProperty("CHAR BY CHAR", "" + isCharByChar());
 		prop.setProperty("MORPHOLOGICAL USE OF SPACE", ""
-				+ morphologicalUseOfSpace);
-		prop.setProperty("PACKAGE PATH", (graphRepositoryPath == null) ? ""
-				: graphRepositoryPath.getAbsolutePath());
+				+ isMorphologicalUseOfSpace());
+		prop.setProperty("PACKAGE PATH", (getGraphRepositoryPath() == null) ? ""
+				: getGraphRepositoryPath().getAbsolutePath());
 		// prop.setProperty("LEXICAL PACKAGE PATH", (lexicalPackagePath == null)
 		// ? "" : lexicalPackagePath.getAbsolutePath());
-		prop.setProperty("LOGGING DIR", (loggingDir == null) ? "" : loggingDir
+		prop.setProperty("LOGGING DIR", (getLoggingDir() == null) ? "" : getLoggingDir()
 				.getAbsolutePath());
-		prop.setProperty("MUST LOG", "" + mustLog);
-		prop.setProperty("SVN MONITORING", "" + svnMonitoring);
-		prop.setProperty("ONLY COSMETIC", "" + onlyCosmetic);
-		prop.setProperty("ENCODING", encoding.toString());
+		prop.setProperty("MUST LOG", "" + isMustLog());
+		prop.setProperty("SVN MONITORING", "" + isSvnMonitoring());
+		prop.setProperty("ONLY COSMETIC", "" + isOnlyCosmetic());
+		prop.setProperty("ENCODING", getEncoding().toString());
 		return prop;
 	}
 
@@ -370,23 +371,23 @@ public class Preferences {
 	public Preferences clone() {
 		final Preferences p = new Preferences();
 		p.base = base;
-		p.textFont = textFont;
-		p.concordanceFont = concordanceFont;
-		p.htmlViewer = htmlViewer;
-		p.morphologicalDic = (morphologicalDic == null) ? null
-				: (ArrayList<File>) morphologicalDic.clone();
-		p.charByChar = charByChar;
-		p.morphologicalUseOfSpace = morphologicalUseOfSpace;
-		p.rightToLeftForText = rightToLeftForText;
-		p.rightToLeftForGraphs = rightToLeftForGraphs;
-		p.semitic = semitic;
-		p.graphRepositoryPath = graphRepositoryPath;
-		p.loggingDir = loggingDir;
-		p.mustLog = mustLog;
-		p.svnMonitoring = svnMonitoring;
-		p.onlyCosmetic = onlyCosmetic;
+		p.setTextFont(textFont);
+		p.setConcordanceFont(concordanceFont);
+		p.setHtmlViewer(htmlViewer);
+		p.setMorphologicalDic((getMorphologicalDic() == null) ? null
+				: (ArrayList<File>) getMorphologicalDic().clone());
+		p.setCharByChar(charByChar);
+		p.setMorphologicalUseOfSpace(morphologicalUseOfSpace);
+		p.setRightToLeftForText(rightToLeftForText);
+		p.setRightToLeftForGraphs(rightToLeftForGraphs);
+		p.setSemitic(semitic);
+		p.setGraphRepositoryPath(graphRepositoryPath);
+		p.setLoggingDir(loggingDir);
+		p.setMustLog(mustLog);
+		p.setSvnMonitoring(svnMonitoring);
+		p.setOnlyCosmetic(onlyCosmetic);
 		p.info = (info == null) ? null : info.clone();
-		p.encoding = encoding;
+		p.setEncoding(encoding);
 		return p;
 	}
 
@@ -423,6 +424,126 @@ public class Preferences {
 
 	public void setInfo(GraphPresentationInfo info) {
 		this.info = info;
+	}
+
+	public void setCharByChar(boolean charByChar) {
+		this.charByChar = charByChar;
+	}
+
+	public boolean isCharByChar() {
+		return charByChar;
+	}
+
+	public void setEncoding(Encoding encoding) {
+		this.encoding = encoding;
+	}
+
+	public Encoding getEncoding() {
+		return encoding;
+	}
+
+	public void setSemitic(boolean semitic) {
+		this.semitic = semitic;
+	}
+
+	public boolean isSemitic() {
+		return semitic;
+	}
+
+	public void setRightToLeftForGraphs(boolean rightToLeftForGraphs) {
+		this.rightToLeftForGraphs = rightToLeftForGraphs;
+	}
+
+	public boolean isRightToLeftForGraphs() {
+		return rightToLeftForGraphs;
+	}
+
+	public void setRightToLeftForText(boolean rightToLeftForText) {
+		this.rightToLeftForText = rightToLeftForText;
+	}
+
+	public boolean isRightToLeftForText() {
+		return rightToLeftForText;
+	}
+
+	public void setMorphologicalDic(ArrayList<File> morphologicalDic) {
+		this.morphologicalDic = morphologicalDic;
+	}
+
+	public ArrayList<File> getMorphologicalDic() {
+		return morphologicalDic;
+	}
+
+	public void setMorphologicalUseOfSpace(boolean morphologicalUseOfSpace) {
+		this.morphologicalUseOfSpace = morphologicalUseOfSpace;
+	}
+
+	public boolean isMorphologicalUseOfSpace() {
+		return morphologicalUseOfSpace;
+	}
+
+	public void setOnlyCosmetic(boolean onlyCosmetic) {
+		this.onlyCosmetic = onlyCosmetic;
+	}
+
+	public boolean isOnlyCosmetic() {
+		return onlyCosmetic;
+	}
+
+	public void setSvnMonitoring(boolean svnMonitoring) {
+		this.svnMonitoring = svnMonitoring;
+	}
+
+	public boolean isSvnMonitoring() {
+		return svnMonitoring;
+	}
+
+	public void setGraphRepositoryPath(File graphRepositoryPath) {
+		this.graphRepositoryPath = graphRepositoryPath;
+	}
+
+	public File getGraphRepositoryPath() {
+		return graphRepositoryPath;
+	}
+
+	public void setLoggingDir(File loggingDir) {
+		this.loggingDir = loggingDir;
+	}
+
+	public File getLoggingDir() {
+		return loggingDir;
+	}
+
+	public void setMustLog(boolean mustLog) {
+		this.mustLog = mustLog;
+	}
+
+	public boolean isMustLog() {
+		return mustLog;
+	}
+
+	public void setTextFont(FontInfo textFont) {
+		this.textFont = textFont;
+	}
+
+	public FontInfo getTextFont() {
+		return textFont;
+	}
+
+	public void setHtmlViewer(File htmlViewer) {
+		this.htmlViewer = htmlViewer;
+	}
+
+	public File getHtmlViewer() {
+		return htmlViewer;
+	}
+
+	public void setConcordanceFont(FontInfo concordanceFont) {
+		this.concordanceFont = concordanceFont;
+	}
+
+	public FontInfo getConcordanceFont() {
+		return concordanceFont;
 	}
 
 }
