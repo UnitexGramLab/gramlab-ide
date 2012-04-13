@@ -77,31 +77,32 @@ import fr.umlv.unitex.listeners.LanguageListener;
  * @author Sébastien Paumier
  */
 public class GlobalPreferencesFrame extends JInternalFrame {
-	private final JTextField privateDirectory = new JTextField("");
-	private final JTextField textFont = new JTextField("");
-	private final JTextField concordanceFont = new JTextField("");
-	private final JTextField htmlViewer = new JTextField("");
-	private final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
+	
+	final JTextField privateDirectory = new JTextField("");
+	final JTextField textFont = new JTextField("");
+	final JTextField concordanceFont = new JTextField("");
+	final JTextField htmlViewer = new JTextField("");
+	final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
 			"Right to left rendering for text");
-	private final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
+	final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
 			"Right to left rendering for graphs");
-	private final JCheckBox semiticCheckBox = new JCheckBox("Semitic language");
-	private final JCheckBox charByCharCheckBox = new JCheckBox(
+	final JCheckBox semiticCheckBox = new JCheckBox("Semitic language");
+	final JCheckBox charByCharCheckBox = new JCheckBox(
 			"Analyze this language char by char");
-	private final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
+	final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
 			"Enable morphological use of space");
-	private final JTextField packageDirectory = new JTextField("");
+	final JTextField packageDirectory = new JTextField("");
 	final JTextField lexicalPackageDirectory = new JTextField("");
-	private final DefaultListModel morphoDicListModel = new DefaultListModel();
+	final DefaultListModel morphoDicListModel = new DefaultListModel();
 	private Preferences pref;
-	private final JCheckBox mustLogCheckBox = new JCheckBox(
+	final JCheckBox mustLogCheckBox = new JCheckBox(
 			"Produce log information in directory:");
-	private final JTextField loggingDirectory = new JTextField("");
-	private final JCheckBox svnMonitoring = new JCheckBox(
+	final JTextField loggingDirectory = new JTextField("");
+	final JCheckBox svnMonitoring = new JCheckBox(
 			"Auto-monitor graphs for SVN conflicts", true);
-	private final JCheckBox onlyCosmetic = new JCheckBox(
+	final JCheckBox onlyCosmetic = new JCheckBox(
 			"Use --only-cosmetic option for GrfDiff3", false);
-	private final JRadioButton[] encodingButtons = new JRadioButton[Encoding
+	final JRadioButton[] encodingButtons = new JRadioButton[Encoding
 			.values().length];
 
 	GlobalPreferencesFrame() {
@@ -160,9 +161,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			final Encoding e2 = e;
 			final int j = i;
 			encodingButtons[i].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e3) {
 					if (encodingButtons[j].isSelected()) {
-						pref.encoding = e2;
+						getPref().encoding = e2;
 					}
 				}
 			});
@@ -184,24 +185,24 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final Action okAction = new AbstractAction("OK") {
 			public void actionPerformed(ActionEvent arg0) {
-				pref.svnMonitoring = svnMonitoring.isSelected();
-				pref.onlyCosmetic = onlyCosmetic.isSelected();
-				pref.semitic = semiticCheckBox.isSelected();
-				pref.rightToLeftForText = rightToLeftForCorpusCheckBox
+				getPref().svnMonitoring = svnMonitoring.isSelected();
+				getPref().onlyCosmetic = onlyCosmetic.isSelected();
+				getPref().semitic = semiticCheckBox.isSelected();
+				getPref().rightToLeftForText = rightToLeftForCorpusCheckBox
 						.isSelected();
-				pref.rightToLeftForGraphs = rightToLeftForGraphsCheckBox
+				getPref().rightToLeftForGraphs = rightToLeftForGraphsCheckBox
 						.isSelected();
-				pref.getInfo().rightToLeft = pref.rightToLeftForGraphs;
+				getPref().getInfo().rightToLeft = getPref().rightToLeftForGraphs;
 				if (htmlViewer.getText().equals(""))
-					pref.htmlViewer = null;
+					getPref().htmlViewer = null;
 				else
-					pref.htmlViewer = new File(htmlViewer.getText());
-				pref.morphologicalDic = getFileList(morphoDicListModel);
-				pref.charByChar = charByCharCheckBox.isSelected();
-				pref.morphologicalUseOfSpace = morphologicalUseOfSpaceCheckBox
+					getPref().htmlViewer = new File(htmlViewer.getText());
+				getPref().morphologicalDic = getFileList(morphoDicListModel);
+				getPref().charByChar = charByCharCheckBox.isSelected();
+				getPref().morphologicalUseOfSpace = morphologicalUseOfSpaceCheckBox
 						.isSelected();
 				if (packageDirectory.getText().equals(""))
-					pref.graphRepositoryPath = null;
+					getPref().graphRepositoryPath = null;
 				else {
 					final File f = new File(packageDirectory.getText());
 					if (!f.exists()) {
@@ -218,7 +219,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 										"Error", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
-					pref.graphRepositoryPath = f;
+					getPref().graphRepositoryPath = f;
 				}
 				if (loggingDirectory.getText().equals("")
 						&& mustLogCheckBox.isSelected()) {
@@ -240,9 +241,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 				if (!f.exists()) {
 					f.mkdir();
 				}
-				pref.mustLog = mustLogCheckBox.isSelected();
-				pref.loggingDir = f;
-				ConfigManager.getManager().savePreferences(pref, null);
+				getPref().mustLog = mustLogCheckBox.isSelected();
+				getPref().loggingDir = f;
+				ConfigManager.getManager().savePreferences(getPref(), null);
 				/* We save the user directory */
 				if (!privateDirectory.getText().equals("")) {
 					final File rep = new File(privateDirectory.getText());
@@ -473,9 +474,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action textFontAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
-						.newFontDialog(pref.textFont);
+						.newFontDialog(getPref().textFont);
 				if (i != null) {
-					pref.textFont = i;
+					getPref().textFont = i;
 					textFont
 							.setText(" " + i.font.getFontName() + "  " + i.size);
 				}
@@ -493,9 +494,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action concord = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
-						.newFontDialog(pref.concordanceFont);
+						.newFontDialog(getPref().concordanceFont);
 				if (i != null) {
-					pref.concordanceFont = i;
+					getPref().concordanceFont = i;
 					concordanceFont.setText(" " + i.font.getFontName() + "  "
 							+ i.size);
 				}
@@ -531,10 +532,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		graphConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final GraphPresentationInfo i = InternalFrameManager
-						.getManager(null).newGraphPresentationDialog(pref.getInfo(),
+						.getManager(null).newGraphPresentationDialog(getPref().getInfo(),
 								false);
 				if (i != null) {
-					pref.setInfo(i);
+					getPref().setInfo(i);
 				}
 			}
 		});
@@ -547,32 +548,32 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 * Refreshes the frame.
 	 */
 	void refresh() {
-		textFont.setText("" + pref.textFont.font.getFontName() + "  "
-				+ pref.textFont.size + "");
-		concordanceFont.setText("" + pref.concordanceFont.font.getName() + "  "
-				+ pref.concordanceFont.size + "");
-		if (pref.htmlViewer == null) {
+		textFont.setText("" + getPref().textFont.font.getFontName() + "  "
+				+ getPref().textFont.size + "");
+		concordanceFont.setText("" + getPref().concordanceFont.font.getName() + "  "
+				+ getPref().concordanceFont.size + "");
+		if (getPref().htmlViewer == null) {
 			htmlViewer.setText("");
 		} else {
-			htmlViewer.setText(pref.htmlViewer.getAbsolutePath());
+			htmlViewer.setText(getPref().htmlViewer.getAbsolutePath());
 		}
-		semiticCheckBox.setSelected(pref.semitic);
-		rightToLeftForCorpusCheckBox.setSelected(pref.rightToLeftForText);
-		rightToLeftForGraphsCheckBox.setSelected(pref.rightToLeftForGraphs);
-		charByCharCheckBox.setSelected(pref.charByChar);
+		semiticCheckBox.setSelected(getPref().semitic);
+		rightToLeftForCorpusCheckBox.setSelected(getPref().rightToLeftForText);
+		rightToLeftForGraphsCheckBox.setSelected(getPref().rightToLeftForGraphs);
+		charByCharCheckBox.setSelected(getPref().charByChar);
 		morphologicalUseOfSpaceCheckBox
-				.setSelected(pref.morphologicalUseOfSpace);
-		if (pref.graphRepositoryPath == null) {
+				.setSelected(getPref().morphologicalUseOfSpace);
+		if (getPref().graphRepositoryPath == null) {
 			packageDirectory.setText("");
 		} else {
 			packageDirectory
-					.setText(pref.graphRepositoryPath.getAbsolutePath());
+					.setText(getPref().graphRepositoryPath.getAbsolutePath());
 		}
-		mustLogCheckBox.setSelected(pref.mustLog);
-		if (pref.loggingDir == null) {
+		mustLogCheckBox.setSelected(getPref().mustLog);
+		if (getPref().loggingDir == null) {
 			loggingDirectory.setText("");
 		} else {
-			loggingDirectory.setText(pref.loggingDir.getAbsolutePath());
+			loggingDirectory.setText(getPref().loggingDir.getAbsolutePath());
 		}
 		morphoDicListModel.clear();
 		final ArrayList<File> dictionaries = ConfigManager.getManager()
@@ -584,7 +585,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		}
 		for (int i = 0; i < Encoding.values().length; i++) {
 			encodingButtons[i]
-					.setSelected(pref.encoding == Encoding.values()[i]);
+					.setSelected(getPref().encoding == Encoding.values()[i]);
 		}
 	}
 
@@ -670,9 +671,17 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	}
 
 	void reset() {
-		pref = ConfigManager.getManager().getPreferences(null);
+		setPref(ConfigManager.getManager().getPreferences(null));
 		setTitle("Preferences for " + Config.getCurrentLanguage());
 		privateDirectory.setText(Config.getUserDir().getAbsolutePath());
 		refresh();
+	}
+
+	public void setPref(Preferences pref) {
+		this.pref = pref;
+	}
+
+	public Preferences getPref() {
+		return pref;
 	}
 }
