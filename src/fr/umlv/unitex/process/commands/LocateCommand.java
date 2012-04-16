@@ -34,11 +34,13 @@ public class LocateCommand extends CommandBuilder {
 
 	public LocateCommand snt(File s) {
 		protectElement("-t" + s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 
 	public LocateCommand fst2(File s) {
 		protectElement(s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 

@@ -33,11 +33,13 @@ public class Fst2TxtCommand extends CommandBuilder {
 
 	public Fst2TxtCommand text(File s) {
 		protectElement("-t" + s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 
 	public Fst2TxtCommand fst2(File s) {
 		protectElement(s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 
