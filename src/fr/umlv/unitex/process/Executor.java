@@ -20,6 +20,9 @@
  */
 package fr.umlv.unitex.process;
 
+import java.awt.EventQueue;
+import java.lang.reflect.InvocationTargetException;
+
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.process.commands.CommandBuilder;
@@ -36,7 +39,7 @@ public class Executor extends Thread {
 	private ExecParameters parameters;
 	private boolean success=true;
 	private boolean finished=false;
-	private ConsoleEntry entry=null;
+	ConsoleEntry entry=null;
 	
 	public Executor(ExecParameters parameters) {
 		this.parameters=parameters;
@@ -63,6 +66,11 @@ public class Executor extends Thread {
 				if (!commandSuccessful) {
 					success=false;
 				}
+				if (entry!=null && command.getType()==CommandBuilder.PROGRAM) {
+					while (!entry.isErrorStreamEnded()) {
+						/* We wait for the end of the stderr reading thread */
+					}
+				}
 				ToDoAfterSingleCommand toDoAfter=command.getWhatToDoOnceCompleted();
 				if (toDoAfter!=null) toDoAfter.toDo(commandSuccessful,entry);
 				entry=null;
@@ -86,7 +94,17 @@ public class Executor extends Thread {
 		if (p!=null) {
 			p.destroy();
 			if (entry!=null) {
-				entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
+				try {
+					EventQueue.invokeAndWait(new Runnable() {
+						public void run() {
+							entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
+						}
+					});
+				} catch (InterruptedException e) {
+					/* */
+				} catch (InvocationTargetException e) {
+					/* */
+				}
 			}
 		}
 		success=false;

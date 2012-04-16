@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
@@ -132,19 +133,28 @@ public class ProcessInfoThread extends Thread {
 				}
 				final String s2 = s;
 				final boolean ret = fullReturn;
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						if (ret) {
-							list.addLine(new Couple(s2, false));
-						} else {
-							list.replaceLastLine(new Couple(s2, false));
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						public void run() {
+							if (ret) {
+								list.addLine(new Couple(s2, false));
+							} else {
+								list.replaceLastLine(new Couple(s2, false));
+							}
+							if (entry != null) {
+								entry.addErrorMessage(s2);
+							}
 						}
-						if (entry != null) {
-							entry.addErrorMessage(s2);
-						}
-					}
-				});
+					});
+				} catch (InterruptedException e) {
+					/* */
+				} catch (InvocationTargetException e) {
+					/* */
+				}
 			}
+		}
+		if (entry!=null) {
+			entry.setErrorStreamEnded(true);
 		}
 	}
 }

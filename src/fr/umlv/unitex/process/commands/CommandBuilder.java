@@ -48,12 +48,14 @@ public abstract class CommandBuilder implements AbstractCommand {
 	public static final int ERROR_MESSAGE = 2;
 	public static final int METHOD = 3;
 	protected final ArrayList<String> list;
+	protected final ArrayList<String> ultraSimplifiedList;
 	int type = PROGRAM;
 	private boolean unitexProgram=true;
 	private int programNamePosition;
 
 	CommandBuilder(String programName) {
 		list = new ArrayList<String>();
+		ultraSimplifiedList=new ArrayList<String>();
 		protectElement(ConfigManager.getManager().getUnitexToolLogger()
 				.getAbsolutePath());
 		if (ConfigManager.getManager().mustLog(null)) {
@@ -67,6 +69,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 		programNamePosition=list.size();
 		element(programName);
+		ultraSimplifiedList.add(programName);
 	}
 
 	public CommandBuilder() {
@@ -76,10 +79,12 @@ public abstract class CommandBuilder implements AbstractCommand {
 	public CommandBuilder(boolean unitexProgram) {
 		this.unitexProgram=unitexProgram;
 		list = new ArrayList<String>();
+		ultraSimplifiedList=new ArrayList<String>();
 	}
 
 	CommandBuilder(ArrayList<String> list) {
 		this.list = list;
+		this.ultraSimplifiedList=new ArrayList<String>();
 	}
 
 	public void element(String s) {
@@ -91,7 +96,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 	}
 
 	public String getOutputEncoding() {
-		if (!unitexProgram) {
+		if (!unitexProgram || getType()!=PROGRAM) {
 			/* This is meaningful only for Unitex programs */
 			return null;
 		}
@@ -131,6 +136,14 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 		if (getOutputEncoding() != null) {
 			res = res + getOutputEncoding();
+		}
+		return res;
+	}
+
+	public String getUltraSimplifiedCommandLine() {
+		String res = "";
+		for (String s:ultraSimplifiedList) {
+			res = res + s + " ";
 		}
 		return res;
 	}

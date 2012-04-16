@@ -40,6 +40,7 @@ public class NormalizeCommand extends CommandBuilder {
 		if (norm.exists()) {
 			protectElement("-r" + norm.getAbsolutePath());
 		}
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 	
@@ -65,6 +66,7 @@ public class NormalizeCommand extends CommandBuilder {
 	
 	public NormalizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 

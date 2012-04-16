@@ -35,6 +35,7 @@ public class DicoCommand extends CommandBuilder {
 
 	public DicoCommand snt(File s) {
 		protectElement("-t" + s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 
@@ -55,6 +56,7 @@ public class DicoCommand extends CommandBuilder {
 
 	DicoCommand dictionary(File s) {
 		protectElement(s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 
@@ -73,6 +75,7 @@ public class DicoCommand extends CommandBuilder {
 	public DicoCommand dictionaryList(ArrayList<File> l) {
 		for (final File aList : l) {
 			protectElement(aList.getAbsolutePath());
+			ultraSimplifiedList.add(aList.getName());
 		}
 		return this;
 	}
