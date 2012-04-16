@@ -378,7 +378,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final boolean someBoxesWereSelected = !selectedBoxes.isEmpty();
 		while (!selectedBoxes.isEmpty()) {
 			g = selectedBoxes.get(0);
-			g.setSelected(true);
+			g.setSelected(false);
 			selectedBoxes.remove(0);
 		}
 		fireGraphTextChanged(null);
