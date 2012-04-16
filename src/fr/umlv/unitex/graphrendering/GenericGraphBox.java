@@ -422,7 +422,8 @@ public class GenericGraphBox {
 			// if the transition to g does not exist, we create it
 			// but we check first if it is a loop transition on a box containing
 			// an interval loop
-			if (g==this && !getRangeOutput(transduction).equals("")) {
+			if (g==this && !getRangeOutput(transduction).equals("") 
+					&& parentGraphicalZone!=null) {
 				int res=JOptionPane.showConfirmDialog(parentGraphicalZone.parentFrame,
 						"Setting a loop on a box containing a range definition may\n"
 						+"not be a good idea. Are you sure ?","Warning",JOptionPane.YES_NO_OPTION);
