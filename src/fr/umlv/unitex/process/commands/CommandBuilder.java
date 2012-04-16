@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.process.commands;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 	protected final ArrayList<String> list;
 	int type = PROGRAM;
 	private boolean unitexProgram=true;
+	private int programNamePosition;
 
 	CommandBuilder(String programName) {
 		list = new ArrayList<String>();
@@ -63,6 +65,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 			element("-u");
 			element("}");
 		}
+		programNamePosition=list.size();
 		element(programName);
 	}
 
@@ -103,17 +106,36 @@ public abstract class CommandBuilder implements AbstractCommand {
 		return null;
 	}
 
+	public void time(File f) {
+		list.add(programNamePosition,"\"--time=" + f.getAbsolutePath() + "\"");
+		programNamePosition++;
+	}
+
+	
 	public String getCommandLine() {
 		String res = "";
 		for (final String aList : list) {
 			res = res + aList + " ";
 		}
 		if (getOutputEncoding() != null) {
-			res = res + " " + getOutputEncoding();
+			res = res + getOutputEncoding();
 		}
 		return res;
 	}
 
+
+	public String getSimplifiedCommandLine() {
+		String res = "";
+		for (int i=programNamePosition;i<list.size();i++) {
+			res = res + list.get(i) + " ";
+		}
+		if (getOutputEncoding() != null) {
+			res = res + getOutputEncoding();
+		}
+		return res;
+	}
+
+	
 	public String[] getCommandArguments() {
 		final String encoding = getOutputEncoding();
 		final String[] res = list.toArray(new String[list.size()

@@ -204,6 +204,6 @@ public class ConsoleFrame extends TabbableInternalFrame {
 
 	@Override
 	public String getTabName() {
-		return "Console";
+		return "Unitex Console";
 	}
 }
