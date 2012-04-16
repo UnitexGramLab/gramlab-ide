@@ -424,12 +424,12 @@ public class GenericGraphBox {
 			// an interval loop
 			if (g==this && !getRangeOutput(transduction).equals("") 
 					&& parentGraphicalZone!=null) {
-				int res=JOptionPane.showConfirmDialog(parentGraphicalZone.parentFrame,
-						"Setting a loop on a box containing a range definition may\n"
-						+"not be a good idea. Are you sure ?","Warning",JOptionPane.YES_NO_OPTION);
-				if (res!=JOptionPane.YES_OPTION) {
-					return false;
-				}
+				JOptionPane
+				.showMessageDialog(
+						null,
+						"Setting a loop on a box containing a range definition is not allowed.",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return false;
 			}
 			transitions.add(g);
 			g.hasIncomingTransitions++;
