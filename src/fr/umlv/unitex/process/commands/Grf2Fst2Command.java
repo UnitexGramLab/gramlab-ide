@@ -36,6 +36,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 
 	public Grf2Fst2Command grf(File s) {
 		protectElement(s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 

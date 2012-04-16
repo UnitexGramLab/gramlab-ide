@@ -84,4 +84,21 @@ public class ConsoleEntry {
 	public String toString() {
 		return getContent();
 	}
+	
+	private boolean errorStreamEnded=false;
+
+	private Object lock=new Object();
+	
+	public boolean isErrorStreamEnded() {
+		synchronized (lock) {
+			return errorStreamEnded;
+		}
+	}
+
+	public void setErrorStreamEnded(boolean errorStreamEnded) {
+		synchronized (lock) {
+			this.errorStreamEnded = errorStreamEnded;
+		}
+	}
+	
 }

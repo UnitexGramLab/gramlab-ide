@@ -33,6 +33,7 @@ public class TokenizeCommand extends CommandBuilder {
 
 	public TokenizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
+		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
 
