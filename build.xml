@@ -61,7 +61,7 @@
         <copy file="${dist}/XAlign.jar" todir="${appdir}"/>
         <copy file="${lib}/xercesImpl.jar" todir="${appdir}"/>
         <copy file="${lib}/xml-apis.jar" todir="${appdir}"/>
-        <copy file="${dist}/svnkitclient.jar" todir="${appdir}"/>
+        <copy file="${lib}/svnkitclient.jar" todir="${appdir}"/>
     </target>
 
     <target name="clean" description="clean up">
