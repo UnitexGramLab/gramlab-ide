@@ -91,4 +91,19 @@ public class Launcher {
 			e.printStackTrace();
 		}
 	}
+
+	public static int execAsExternalCommand(CommandBuilder cmd) {
+		try {
+			Process p=Runtime.getRuntime().exec(cmd.getCommandArguments());
+			new EatStreamThread(p.getErrorStream(),System.err).start();
+			new EatStreamThread(p.getInputStream(),System.out).start();
+			
+			return p.waitFor();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			return -1;
+		}
+		return -1;
+	}
 }

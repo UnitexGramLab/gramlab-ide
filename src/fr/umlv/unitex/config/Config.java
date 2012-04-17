@@ -204,8 +204,7 @@ public class Config {
 		determineWhichSystemIsRunning();
 		determineUnitexDir(appPath);
 		determineCurrentUser();
-		chooseInitialLanguage(); // TODO set&save a default start-up language in
-									// settings/preferences?
+		chooseInitialLanguage();
 		setDefaultPreprocessingGraphs();
 	}
 
