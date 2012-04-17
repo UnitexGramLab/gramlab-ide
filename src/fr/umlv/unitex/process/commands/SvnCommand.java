@@ -22,7 +22,6 @@ package fr.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 
 /**
@@ -67,8 +66,26 @@ public class SvnCommand extends CommandBuilder {
 		element("commit");
 		element("-m");
 		protectElement(message);
-		protectElement(path.getAbsolutePath());
+		if (path!=null) {
+			protectElement(path.getAbsolutePath());
+		}
 		return this;
 	}
 	
+	public SvnCommand update(File path) {
+		element("update");
+		if (path!=null) {
+			protectElement(path.getAbsolutePath());
+		}
+		return this;
+	}
+
+
+	public SvnCommand info(File f,boolean recursive) {
+		element("info");
+		if (recursive) element("-R");
+		protectElement(f.getAbsolutePath());
+		return this;
+	}
+
 }
