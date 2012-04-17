@@ -23,39 +23,52 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 
 /**
  * @author Sébastien Paumier
  * 
  */
-public class XAlignCommand extends CommandBuilder {
-	public XAlignCommand() {
+public class SvnCommand extends CommandBuilder {
+	
+	public SvnCommand() {
 		super(false);
 		element("java");
 		element("-jar");
-		protectElement(new File(Config.getApplicationDir(), "XAlign.jar")
+		protectElement(new File(ConfigManager.getManager().getApplicationDirectory(), "svnkitclient.jar")
 				.getAbsolutePath());
+		element("--non-interactive");
+		element("--trust-server-cert");
 	}
 
-	public XAlignCommand source(File s) {
-		protectElement(s.getAbsolutePath());
+	
+	public SvnCommand auth(String login,String passwd) {
+		if (login!=null) {
+			element("--username");
+			protectElement(login);
+		}
+		if (passwd!=null) {
+			element("--password");
+			protectElement(passwd);
+		}
+		return this;
+	}
+	
+	
+	public SvnCommand checkout(String url,File destPath) {
+		element("checkout");
+		element("--force");
+		protectElement(url);
+		protectElement(destPath.getAbsolutePath());
 		return this;
 	}
 
-	public XAlignCommand target(File s) {
-		protectElement(s.getAbsolutePath());
+	public SvnCommand commit(String message,File path) {
+		element("commit");
+		element("-m");
+		protectElement(message);
+		protectElement(path.getAbsolutePath());
 		return this;
 	}
-
-	/* We use the same properties for source and target texts */
-	public XAlignCommand properties(File s) {
-		protectElement(s.getAbsolutePath());
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
-
-	public XAlignCommand alignment(File s) {
-		protectElement(s.getAbsolutePath());
-		return this;
-	}
+	
 }

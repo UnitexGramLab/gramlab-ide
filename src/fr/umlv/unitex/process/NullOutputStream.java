@@ -25,7 +25,7 @@ import java.io.OutputStream;
 /**
  * @author Olivier Blanc
  */
-class NullOutputStream extends OutputStream {
+public class NullOutputStream extends OutputStream {
 	@Override
 	public void close() {
 		// nothing to do
