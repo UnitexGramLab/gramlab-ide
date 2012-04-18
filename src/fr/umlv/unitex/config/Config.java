@@ -515,8 +515,20 @@ public class Config {
 			if (!directory.exists()) {
 				directory.mkdir();
 			}
-			final File userFile = new File(new File(getUnitexDir(), "Users"),
+			File userFile = new File(new File(getUnitexDir(), "Users"),
 					userName + ".cfg");
+			if (!userFile.exists() || !userFile.getParentFile().canWrite()) {
+				/* Windows 7 forbids writing in Users if Unitex is in 'Program Files',
+				 * so we try to look for a home dir
+				 */
+				if (System.getProperty("user.home")!=null) {
+					userFile = new File(System.getProperty("user.home"), ".unitex.cfg");
+				} else {
+					JOptionPane.showMessageDialog(null, "Unable to find a consistent writable location\nto store your configuration file", "Welcome",
+							JOptionPane.PLAIN_MESSAGE);
+					System.exit(1);
+				}
+			}
 			if (!userFile.exists()) {
 				try {
 					chooseNewUserDir();
