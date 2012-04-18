@@ -258,7 +258,8 @@ public class GenericGraphBox {
 			}
 			File repositoryDir=ConfigManager.getManager().getGraphRepositoryPath(null,name);
 			if (repositoryDir!=null) {
-				s=repositoryDir.getAbsolutePath()+File.separatorChar+s;
+				s=repositoryDir.getAbsolutePath()+File.separatorChar+s.replace(':',File.separatorChar);
+				return s;
 			}
 		}			
 		return s.replace(':',File.separatorChar);
