@@ -106,4 +106,17 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 	
+	public SvnCommand import_(File path,String url,String message) {
+		element("-m");
+		protectElement(message);
+		element("--auto-props");
+		element("--config-option");
+		protectElement("config:auto-props:*.grf = svn:mime-type=application/octet-stream");
+		element("--config-option");
+		protectElement("config:miscellany:global-ignores = ..* .svn ");
+		protectElement(path.getAbsolutePath());
+		protectElement(url);
+		return this;
+	}
+
 }
