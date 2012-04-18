@@ -53,7 +53,13 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 	
-	
+	/**
+	 * WARNING: every call to 'svn checkout' should be followed
+	 *          by a call to 'svn propset' on all .grf files in order
+	 *          to make them appear as binary files, so that svn
+	 *          won't try to merge them which might happen for UTF8
+	 *          .grf files
+	 */
 	public SvnCommand checkout(String url,File destPath) {
 		element("checkout");
 		element("--force");
@@ -72,6 +78,9 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 	
+	/**
+	 * See comment above 'checkout'
+	 */
 	public SvnCommand update(File path) {
 		element("update");
 		if (path!=null) {
@@ -88,4 +97,13 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
+	public SvnCommand add(File f) {
+		element("--parents");
+		element("--auto-props");
+		element("--config-option");
+		protectElement("config:auto-props:*.grf = svn:mime-type=application/octet-stream");
+		protectElement(f.getAbsolutePath());
+		return this;
+	}
+	
 }
