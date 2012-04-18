@@ -37,6 +37,9 @@ public class EatStreamThread extends Thread {
 
 	public EatStreamThread(InputStream _in, OutputStream _out) {
 		in = _in;
+		if (_out==null) {
+			_out=new NullOutputStream();
+		}
 		out = _out;
 	}
 
@@ -47,7 +50,9 @@ public class EatStreamThread extends Thread {
 			while ((c = in.read()) != -1) {
 				out.write(c);
 			}
-			out.close();
+			if (!out.equals(System.out) && !out.equals(System.err)) {
+				out.close();
+			}
 		} catch (IOException e) {
 			/* Nothing to do */
 		}
