@@ -220,6 +220,7 @@ public class InternalFrameManager {
 	 */
 	public GraphFrame newGraphFrame(File grf) {
 		GraphFrame g=(GraphFrame) setup(graphFrameFactory.getGraphFrame(grf), true);
+		if (g==null) return null;
 		if (ConfigManager.getManager().maximizeGraphFrames()) {
 			try {
 				g.setMaximum(true);
