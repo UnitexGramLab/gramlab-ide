@@ -102,18 +102,22 @@ public class SvnCommand extends CommandBuilder {
 		element("--auto-props");
 		element("--config-option");
 		protectElement("config:auto-props:*.grf = svn:mime-type=application/octet-stream");
-		protectElement(f.getAbsolutePath());
+		element("--config-option");
+		protectElement("config:miscellany:global-ignores = ..*");
+	protectElement(f.getAbsolutePath());
 		return this;
 	}
 	
-	public SvnCommand import_(File path,String url,String message) {
+	public SvnCommand importEmpty(File path,String url) {
+		element("--depth");
+		element("empty");
 		element("-m");
-		protectElement(message);
+		protectElement("Initial import");
 		element("--auto-props");
 		element("--config-option");
 		protectElement("config:auto-props:*.grf = svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores = ..* .svn ");
+		protectElement("config:miscellany:global-ignores = ..*");
 		protectElement(path.getAbsolutePath());
 		protectElement(url);
 		return this;
