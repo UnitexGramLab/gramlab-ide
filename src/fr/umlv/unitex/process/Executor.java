@@ -95,7 +95,9 @@ public class Executor extends Thread {
 			p.destroy();
 			if (entry!=null) {
 				try {
-					EventQueue.invokeAndWait(new Runnable() {
+					if (EventQueue.isDispatchThread()) {
+						entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
+					} else EventQueue.invokeAndWait(new Runnable() {
 						public void run() {
 							entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
 						}
