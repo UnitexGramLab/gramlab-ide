@@ -25,6 +25,8 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
@@ -40,14 +42,30 @@ import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.io.GraphIO;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
-	public GraphDiffFrame(GraphIO base, GraphIO dest,
+	public GraphDiffFrame(final GraphIO base,final GraphIO dest,
 			GraphDecorator diff) {
 		super("Graph Diff", true, true, true, true);
 		DropTargetManager.getDropTarget().newDropTarget(this);
 		JPanel main = new JPanel(new BorderLayout());
 		main.add(constructTopPanel(diff), BorderLayout.NORTH);
-		GraphicalZone basePane=new GraphicalZone(base,new TextField(0, null), null, diff);
-		GraphicalZone destPane=new GraphicalZone(dest,new TextField(0, null), null, diff.clone(false));
+		final GraphicalZone basePane=new GraphicalZone(base,new TextField(0, null), null, diff);
+		final GraphicalZone destPane=new GraphicalZone(dest,new TextField(0, null), null, diff.clone(false));
+		basePane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount()==2) {
+					InternalFrameManager.getManager(base.getGrf()).newGraphFrame(base.getGrf());
+				}
+			}
+		});
+		destPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount()==2) {
+					InternalFrameManager.getManager(dest.getGrf()).newGraphFrame(dest.getGrf());
+				}
+			}
+		});
 		JPanel p=buildSynchronizedScrollPanes(basePane,destPane);
 		main.add(p);
 		setContentPane(main);
