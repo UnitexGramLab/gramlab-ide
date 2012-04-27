@@ -61,16 +61,21 @@ public class DebugInfos {
 			scanner.nextLine();
 			final Pattern normalDelimiter = scanner.delimiter();
 			while (n > 0) {
-				scanner.useDelimiter("" + (char) 1);
-				String s = scanner.next();
+				String line=scanner.nextLine();
+				String s="";
+				int pos=line.indexOf((char) 1);
+				if (pos!=-1) {
+					s=line.substring(0,pos);
+					pos++;
+				} else {
+					pos=0;
+				}
+				line=line.substring(pos);
 				infos.graphNames.add(s);
-				scanner.useDelimiter(normalDelimiter);
-				/* We skip the delimiter char # 1 */
-				s = scanner.nextLine().substring(1);
 				if (s.equals(""))
 					infos.graphs.add(null);
 				else
-					infos.graphs.add(new File(s));
+					infos.graphs.add(new File(line));
 				n--;
 			}
 			/* We skip the #[IMR] line */
@@ -112,7 +117,7 @@ public class DebugInfos {
 				/*
 				 * If f is null, it is because it was indicated as not to be
 				 * being loaded in concord.ind because it was an empty graph in
-				 * the fst2
+				 * the fst2, or a graph that was part of a precompiled fst2
 				 */
 				return null;
 			}
