@@ -38,6 +38,7 @@ import fr.umlv.unitex.io.Encoding;
  * 
  */
 public class ConfigManager extends AbstractConfigModel {
+	
 	private static ConfigModel cm;
 
 	public static ConfigModel getManager() {
@@ -271,6 +272,10 @@ public class ConfigManager extends AbstractConfigModel {
 
 	public File getCurrentSnt(String language) {
 		return Config.getCurrentSnt();
+	}
+
+	public File getCurrentLanguageDir() {
+		return Config.getUserCurrentLanguageDir();
 	}
 	
 }
