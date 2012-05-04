@@ -656,7 +656,7 @@ public class Config {
 	 */
 	public static File getApplicationDir() {
 		if (applicationDir == null) {
-			System.err.println("ERROR");
+			System.err.println("ERROR in getApplicationDir()");
 		}
 		return applicationDir;
 	}
@@ -690,7 +690,7 @@ public class Config {
 	 */
 	public static File getUnitexDir() {
 		if (unitexDir == null) {
-			System.err.println("ERROR");
+			System.err.println("ERROR in getUnitexDir()");
 		}
 		return unitexDir;
 	}
@@ -710,7 +710,7 @@ public class Config {
 	 */
 	public static File getUserDir() {
 		if (userDir == null) {
-			System.err.println("ERROR");
+			System.err.println("ERROR in getUserDir()");
 		}
 		return userDir;
 	}
@@ -738,7 +738,7 @@ public class Config {
 	 */
 	public static String getCurrentLanguage() {
 		if (currentLanguage == null) {
-			System.err.println("ERROR");
+			System.err.println("ERROR in getCurrentLanguage()");
 		}
 		return currentLanguage;
 	}
@@ -794,7 +794,7 @@ public class Config {
 	 */
 	public static String getCurrentLanguageForTitleBar() {
 		if (currentLanguage == null) {
-			System.err.println("ERROR");
+			System.err.println("ERROR in getCurrentLanguageForTitleBar()");
 			return null;
 		}
 		/* The following is a private joke */

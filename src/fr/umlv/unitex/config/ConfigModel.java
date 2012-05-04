@@ -30,6 +30,8 @@ import fr.umlv.unitex.io.Encoding;
 public interface ConfigModel {
 	public String getCurrentLanguage();
 
+	public File getCurrentLanguageDir();
+
 	public File getAlphabetForGrf(String language, File grf);
 
 	public File getAlphabet(String language);

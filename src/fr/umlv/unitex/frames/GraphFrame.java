@@ -795,8 +795,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			files = Dependancies.getAllSubgraphs(getGraph());
 			grfListLabel.setText("Called graphs:");
 		} else {
-			files = Dependancies.whoCalls(getGraph(), Config
-					.getUserCurrentLanguageDir());
+			files = Dependancies.whoCalls(getGraph(), ConfigManager.getManager().getCurrentLanguageDir());
 			grfListLabel.setText("Caller graphs:");
 		}
 		grfListModel.clear();
