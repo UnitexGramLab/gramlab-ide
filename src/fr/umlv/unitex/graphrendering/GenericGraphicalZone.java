@@ -30,6 +30,7 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
+import javax.swing.JViewport;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
@@ -184,9 +185,29 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		GraphBoxInfo tmp;
 		unSelectAllBoxes();
+		int adjustX=0,adjustY=0;
+		int minTmpX=-1,minTmpY=-1;
+		for (GraphBoxInfo aV : v) {
+			if (minTmpX==-1 || aV.X<minTmpX) {
+				minTmpX=aV.X;
+			}
+			if (minTmpY==-1 || aV.Y<minTmpY) {
+				minTmpY=aV.Y;
+			}
+		}
+		if (minTmpX==-1) minTmpX=0;
+		if (minTmpY==-1) minTmpY=0;
+		try {
+			JViewport viewport=(JViewport) getParent();
+			Rectangle r=viewport.getViewRect();
+			adjustX=r.x+r.width/2-100-minTmpX;
+			adjustY=r.y+r.height/2-100-minTmpY;
+		} catch (ClassCastException e) {
+			/* */
+		}
 		for (final GraphBoxInfo aV : v) {
 			tmp = aV;
-			g = createBox(tmp.X + 20 * m.n, tmp.Y + 20 * m.n);
+			g = createBox(adjustX+tmp.X + 20 * m.getN(),adjustY+tmp.Y + 20 * m.getN());
 			g.setContent(tmp.content);
 			g.setSelected(true);
 			selectedBoxes.add(g);
