@@ -499,8 +499,10 @@ public class InternalFrameManager {
 		transducerListConfigurationFrameFactory.closeFrame();
 	}
 
-	public CheckDicFrame newCheckDicFrame() {
-		return (CheckDicFrame) setup(checkDicFrameFactory.newFrame());
+	public CheckDicFrame newCheckDicFrame(File dela) {
+		CheckDicFrame f=(CheckDicFrame) setup(checkDicFrameFactory.newFrame());
+		f.setDela(dela);
+		return f;
 	}
 
 	public void closeCheckDicFrame() {
