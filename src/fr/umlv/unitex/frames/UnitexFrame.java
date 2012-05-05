@@ -440,7 +440,13 @@ public class UnitexFrame extends JFrame {
 		delaMenu.addSeparator();
 		checkDelaFormat = new AbstractAction("Check Format...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newCheckDicFrame();
+				File f=Config.getCurrentDELA();
+				if (f==null) {
+					JOptionPane.showMessageDialog(null, "No dictionary is selected!",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				InternalFrameManager.getManager(null).newCheckDicFrame(f);
 			}
 		};
 		checkDelaFormat.setEnabled(false);
