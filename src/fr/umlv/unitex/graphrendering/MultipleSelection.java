@@ -30,7 +30,12 @@ import java.util.Vector;
  * @author Sébastien Paumier
  */
 public class MultipleSelection {
-	int n = 0;
+	/**
+	 * This field is used to avoid accidental multiple paste at the same position.
+	 */
+	private int n = 0;
+	
+	
 	ArrayList<GraphBoxInfo> elem;
 
 	/**
@@ -127,5 +132,13 @@ public class MultipleSelection {
 			final TfstGraphBox g = (TfstGraphBox) v.get(i);
 			g.identificationNumber = -1;
 		}
+	}
+
+	public void setN(int n) {
+		this.n = n;
+	}
+
+	public int getN() {
+		return n;
 	}
 }
