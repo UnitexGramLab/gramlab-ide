@@ -40,7 +40,7 @@ public class GraphPresentationInfo {
 	private boolean date;
 	private boolean filename;
 	private boolean pathname;
-	private boolean frame_;
+	private boolean frame;
 	private boolean rightToLeft;
 	private boolean antialiasing;
 	private String iconBarPosition;
@@ -67,7 +67,7 @@ public class GraphPresentationInfo {
 		this.date = date;
 		this.filename = filename;
 		this.pathname = pathname;
-		this.frame_ = frame;
+		this.frame = frame;
 		this.rightToLeft = rightToLeft;
 		this.antialiasing = antialiasing;
 		this.iconBarPosition = iconBarPosition;
@@ -79,16 +79,16 @@ public class GraphPresentationInfo {
 				subgraphColor, selectedColor, commentColor,
 				outputVariableColor, packageColor, contextColor,
 				morphologicalModeColor, unreachableGraphColor, input.clone(),
-				output.clone(), date, filename, pathname, frame_, rightToLeft,
+				output.clone(), date, filename, pathname, frame, rightToLeft,
 				antialiasing, iconBarPosition);
 	}
 
 	public boolean isFrame() {
-		return frame_;
+		return frame;
 	}
 
 	public void setFrame(boolean frame) {
-		this.frame_ = frame;
+		this.frame = frame;
 	}
 
 	public Color getBackgroundColor() {
@@ -169,14 +169,6 @@ public class GraphPresentationInfo {
 
 	public void setPathname(boolean pathname) {
 		this.pathname = pathname;
-	}
-
-	public boolean isFrame_() {
-		return frame_;
-	}
-
-	public void setFrame_(boolean frame) {
-		frame_ = frame;
 	}
 
 	public boolean isRightToLeft() {

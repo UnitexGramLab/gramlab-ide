@@ -368,6 +368,15 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				box.addTransitionTo(zone.graphBoxes.get(1));
 			}
 		}
+		box = zone.graphBoxes.get(1);
+		Dimension d=zone.getSize();
+		if (d.width<box.Y+50) {
+			d.width=box.Y+50;
+		}
+		if (d.height<maxY-minY+50) {
+			d.height=maxY-minY+50;
+		}
+		f.reSizeGraphicalZone(d.width,d.height);
 	}
 
 	/**
