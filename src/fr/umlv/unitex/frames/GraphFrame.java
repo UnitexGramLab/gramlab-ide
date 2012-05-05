@@ -203,7 +203,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		manager = new UndoManager();
-		getManager().setLimit(30);
+		getManager().setLimit(-1);
 		graphicalZone.addUndoableEditListener(getManager());
 		final GraphPresentationInfo info = getGraphPresentationInfo();
 		scroll = new JScrollPane(graphicalZone);
