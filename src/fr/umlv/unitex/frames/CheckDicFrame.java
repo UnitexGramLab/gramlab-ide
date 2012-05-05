@@ -35,7 +35,6 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
