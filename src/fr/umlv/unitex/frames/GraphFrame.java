@@ -743,7 +743,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		myToolBar.add(negative);
 	}
 
-	class ShowDiffDo implements ToDo {
+	public static class ShowDiffDo implements ToDo {
 		File base, dest, diffResult;
 
 		public ShowDiffDo(File base, File dest, File diffResult) {
