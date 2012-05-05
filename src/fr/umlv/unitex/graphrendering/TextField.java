@@ -252,7 +252,7 @@ public class TextField extends GraphTextField {
 				paste();
 				return;
 			}
-			res.n++;
+			res.setN(res.getN() + 1);
 			parent.pasteSelection(res);
 		}
 	}
