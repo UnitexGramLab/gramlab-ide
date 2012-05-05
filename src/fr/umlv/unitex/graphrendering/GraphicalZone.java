@@ -774,29 +774,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		}
 		for (final GenericGraphBox ggb : selection) {
-			if (!accessible.contains(ggb) && !inputBoxes.contains(ggb)
-					&& ggb.type == GenericGraphBox.NORMAL) {
-				/*
-				 * By convention, we consider that boxes with no incoming
-				 * transitions are input boxes
-				 */
-				inputBoxes.add(ggb);
-			}
-			if (ggb.transitions.isEmpty()) {
-				/*
-				 * By convention, we consider that boxes with no outgoing
-				 * transitions are output boxes
-				 */
-				if (!outputBoxes.contains(ggb)
-						&& ggb.type == GenericGraphBox.NORMAL)
+			for (final GenericGraphBox dest : ggb.transitions) {
+				if (selection.contains(dest))
+					continue;
+				if (!outputBoxes.contains(ggb) 
+						&& ggb.type == GenericGraphBox.NORMAL) {
 					outputBoxes.add(ggb);
-			} else {
-				for (final GenericGraphBox dest : ggb.transitions) {
-					if (selection.contains(dest))
-						continue;
-					if (!outputBoxes.contains(ggb)
-							&& ggb.type == GenericGraphBox.NORMAL)
-						outputBoxes.add(ggb);
 				}
 			}
 		}
