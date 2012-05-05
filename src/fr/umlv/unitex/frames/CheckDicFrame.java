@@ -119,8 +119,9 @@ public class CheckDicFrame extends JInternalFrame {
 		CheckDicCommand command = new CheckDicCommand().name(dela)
 			.delaType(DELAS.isSelected()).alphabet(
 				ConfigManager.getManager().getAlphabet(null));
-		if (Config.getCurrentLanguage().equals("Chinese")
-				|| Config.getCurrentLanguage().equals("Mandarin")) {
+		String language=ConfigManager.getManager().getCurrentLanguage();
+		if (language.equals("Chinese")
+				|| language.equals("Mandarin")) {
 			command = command.no_space_warning();
 		}
 		final File tmp = new File(dela.getParentFile(),
