@@ -134,8 +134,25 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	private final Timer autoRefresh = new Timer(2000, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if (grf == null)
+			if (grf == null) {
 				return;
+			}
+			if (!grf.exists()) {
+				/* Case of a graph that has been removed */
+				final Timer t = (Timer) e.getSource();
+				t.stop();
+				final String[] options = { "Yes", "No" };
+				final int n = JOptionPane.showOptionDialog(GraphFrame.this,
+						"The file "+grf.getAbsolutePath()+" does\n"
+						+"not exist anymore on disk. Do you want to close the frame?", "", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if (n == 1) {
+					return;
+				}
+				setModified(false);
+				doDefaultCloseAction();
+				return;
+			}
 			final SvnConflict conflict = SvnConflict.getConflict(grf);
 			if (conflict != null) {
 				final Timer t = (Timer) e.getSource();
