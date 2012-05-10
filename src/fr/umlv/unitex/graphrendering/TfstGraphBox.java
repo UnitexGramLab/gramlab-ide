@@ -254,7 +254,10 @@ public class TfstGraphBox extends GenericGraphBox {
 			if (box.bounds.getStart_in_chars() != 0
 					|| box.bounds.getStart_in_letters() != 0
 					|| box.content.startsWith("{<E>,")
-					|| box.bounds.equals(bounds)) {
+					|| box.bounds.equals(bounds)
+					|| (content.startsWith("{<E>,") 
+							&& bounds.getEnd_in_tokens()==box.bounds.getStart_in_tokens()
+							&& bounds.getEnd_in_chars()==box.bounds.getStart_in_chars())) {
 				return true;
 			}
 		}
