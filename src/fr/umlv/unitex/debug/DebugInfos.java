@@ -271,23 +271,33 @@ public class DebugInfos {
 				/* Nothing to do if there is a transition */
 				continue;
 			}
-			if (src.box == dst.box && src.line == dst.line) {
-				/*
-				 * If we are in the same line of the same box, it may be because
-				 * there is only one tag in the line and a loop on the box, but
-				 * it may also be because the line contains several tokens
-				 */
-				final String line = srcBox.lines.get(src.line);
-				int pos = line.indexOf(src.tag);
-				pos = line.indexOf(dst.tag, pos + src.tag.length());
-				if (pos != -1) {
-					/* We are in the same line, nothing to do */
-					continue;
-				}
-				/* It may also be because the box contains a range indication */
-				if (srcBox.transduction != null
-						&& srcBox.transduction.startsWith("$[")) {
-					continue;
+			
+			if (src.box == dst.box) {
+				if (src.line == dst.line) {
+					/*
+					 * If we are in the same line of the same box, it may be because
+					 * there is only one tag in the line and a loop on the box, but
+					 * it may also be because the line contains several tokens
+					 */
+					final String line = srcBox.lines.get(src.line);
+					int pos = line.indexOf(src.tag);
+					pos = line.indexOf(dst.tag, pos + src.tag.length());
+					if (pos != -1) {
+						/* We are in the same line, nothing to do */
+						continue;
+					}
+					/* It may also be because the box contains a range indication */
+					if (srcBox.transduction != null
+							&& srcBox.transduction.startsWith("$[")) {
+						continue;
+					}
+				} else {
+					/* Not in the same line. It must be because tha box
+					 * contains a range indication */
+					if (srcBox.transduction != null
+							&& srcBox.transduction.startsWith("$[")) {
+						continue;
+					}
 				}
 			}
 			final ArrayList<GenericGraphBox> visited = new ArrayList<GenericGraphBox>();
