@@ -1088,7 +1088,7 @@ public class UnitexFrame extends JFrame {
 	 * the user clicks on the "OK" button, the compilation process is launched
 	 * through the creation of a <code>ProcessInfoFrame</code> object.
 	 */
-	void compileAndFlattenGraph() {
+	public static void compileAndFlattenGraph() {
 		final GraphFrame currentFrame = InternalFrameManager.getManager(null)
 				.getCurrentFocusedGraphFrame();
 		if (currentFrame == null)
