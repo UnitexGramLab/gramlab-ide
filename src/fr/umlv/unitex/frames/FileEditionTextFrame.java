@@ -43,6 +43,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
@@ -66,6 +67,49 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	final EditionTextArea text;
 	FileManager fileManager;
 	File file;
+	long lastModification;
+
+	final Timer autoRefresh = new Timer(2000, new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			if (file == null) {
+				return;
+			}
+			if (!file.exists()) {
+				/* Case of a file that has been removed */
+				final Timer t = (Timer) e.getSource();
+				t.stop();
+				final String[] options = { "Yes", "No" };
+				final int n = JOptionPane.showOptionDialog(FileEditionTextFrame.this,
+						"The file "+file.getAbsolutePath()+" does\n"
+						+"not exist anymore on disk. Do you want to close the frame?", "", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if (n == 1) {
+					return;
+				}
+				doDefaultCloseAction();
+				return;
+			}
+			if (file.lastModified() > lastModification) {
+				final int ret = JOptionPane
+						.showConfirmDialog(
+								FileEditionTextFrame.this,
+								"File has changed on disk. Do you want to reload it ?",
+								"", JOptionPane.YES_NO_OPTION);
+				if (ret == JOptionPane.YES_OPTION) {
+					lastModification = file.lastModified();
+					FileManager.load(file,text);					
+				} else {
+					/*
+					 * We don't want to be asked again until another
+					 * modification
+					 */
+					lastModification = file.lastModified();
+				}
+			}
+		}
+	});
+
+	
 	final Action saveAction = new AbstractAction("Save",
 			MyCursors.saveIcon) {
 		public void actionPerformed(ActionEvent e) {
@@ -111,9 +155,12 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 			this.setTitle("New File");
 		} else {
 			this.setTitle(file.getAbsolutePath());
+			this.lastModification = file.lastModified();
 			FileManager.load(file,text);
 		}
 		init();
+		autoRefresh.setInitialDelay(5);
+		autoRefresh.start();
 	}
 
 	private void init() {
@@ -159,20 +206,24 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 										JOptionPane.QUESTION_MESSAGE, null,
 										normal_options, normal_options[0]);
 					}
-					if (n == JOptionPane.CLOSED_OPTION)
+					if (n == JOptionPane.CLOSED_OPTION) {
 						return;
+					}
 					if (n == 0) {
 						saveFile(file);
 						dispose();
+						autoRefresh.stop();
 						return;
 					}
 					if (n != 2) {
 						dispose();
+						autoRefresh.stop();
 						return;
 					}
 					return;
 				}
 				dispose();
+				autoRefresh.stop();
 			}
 		});
 	}
