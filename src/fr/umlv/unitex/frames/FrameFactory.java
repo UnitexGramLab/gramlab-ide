@@ -22,15 +22,15 @@ package fr.umlv.unitex.frames;
 
 import javax.swing.JInternalFrame;
 
-class FrameFactory {
+public class FrameFactory {
 	private JInternalFrame frame;
 	private final Class<?> clazz;
 
-	FrameFactory(Class<?> clazz) {
+	public FrameFactory(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
-	JInternalFrame newFrame() {
+	public JInternalFrame newFrame() {
 		return newFrame(true);
 	}
 
