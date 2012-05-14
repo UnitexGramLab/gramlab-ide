@@ -29,6 +29,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -68,10 +69,11 @@ public class AboutUnitexFrame extends JInternalFrame {
 		info.setBorder(new TitledBorder("Unitex"));
 		disclaimer.setPreferredSize(new Dimension(400, image.getHeight()));
 		info.add(disclaimer, BorderLayout.CENTER);
-		final JLabel revision = new JLabel("  Revision: "
+		final JTextField revision = new JTextField("  Revision: "
 				+ Version.getRevisionNumberForJava() + " (Java), "
 				+ Version.getRevisionNumberForC() + " (C/C++) "
 				+ ", revision date: " + Version.getRevisionDate());
+		revision.setEditable(false);
 		up.add(revision, BorderLayout.NORTH);
 		up.add(info, BorderLayout.CENTER);
 		top.add(up, BorderLayout.NORTH);
