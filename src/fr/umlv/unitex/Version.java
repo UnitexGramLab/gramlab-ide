@@ -170,4 +170,27 @@ public class Version {
 			}
 		}
 	}
+
+	public static String getRevisionNumberForGramlab() {
+		File f = new File(ConfigManager.getManager().getMainDirectory(), "Src");
+		f = new File(f, "log_svn_Gramlab.txt");
+		Scanner s = null;
+		try {
+			s = new Scanner(f, "UTF8");
+			if (!s.hasNextLine()) {
+				return null;
+			}
+			s.nextLine();
+			if (!s.hasNext()) {
+				return null;
+			}
+			return s.next();
+		} catch (final FileNotFoundException e) {
+			return null;
+		} finally {
+			if (s != null) {
+				s.close();
+			}
+		}
+	}
 }

@@ -187,7 +187,7 @@ public class InternalFrameManager {
 		desktop.add(f, LAYER);
 	}
 
-	JInternalFrame setup(JInternalFrame f) {
+	protected JInternalFrame setup(JInternalFrame f) {
 		return setup(f, false, false);
 	}
 
