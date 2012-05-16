@@ -22,31 +22,39 @@ package fr.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
@@ -54,7 +62,11 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.print.PrintManager;
+import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
 import fr.umlv.unitex.undo.MultipleEdit;
@@ -286,6 +298,241 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				newGraphAction.setEnabled(selected);
 			}
 		});
+		popup.addSeparator();
+		Action save = new AbstractAction("Save") {
+			public void actionPerformed(ActionEvent e) {
+				GraphFrame f=(GraphFrame) parentFrame;
+				f.saveGraph();
+			}
+		};
+		popup.add(new JMenuItem(save));
+		Action saveAs = new AbstractAction("Save as...") {
+			public void actionPerformed(ActionEvent e) {
+				GraphFrame f=(GraphFrame) parentFrame;
+				f.saveAsGraph();
+			}
+		};
+		popup.add(new JMenuItem(saveAs));
+		Action setup = new AbstractAction("Page Setup") {
+			public void actionPerformed(ActionEvent e) {
+				PrintManager.pageSetup();
+			}
+		};
+		popup.add(new JMenuItem(setup));
+		Action print = new AbstractAction("Print...") {
+			public void actionPerformed(ActionEvent e) {
+				PrintManager.print(parentFrame);
+			}
+		};
+		popup.add(new JMenuItem(print));
+		popup.addSeparator();
+		final JMenu tools = new JMenu("Tools");
+		final JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
+		sortNodeLabel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.sortNodeLabel();
+			}
+		});
+		final JMenuItem explorePaths = new JMenuItem("Explore graph paths");
+		explorePaths.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					parentFrame.setSelected(true);
+				} catch (PropertyVetoException e1) {
+					/* */
+				}
+				InternalFrameManager.getManager(null).newGraphPathDialog();
+			}
+		});
+		final JMenuItem compileFST = new JMenuItem("Compile FST2");
+		compileFST.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.compileGraph();
+			}
+		});
+		final JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
+		flatten.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UnitexFrame.compileAndFlattenGraph();
+			}
+		});
+		final JMenuItem graphCollection = new JMenuItem(
+				"Build Graph Collection");
+		graphCollection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				InternalFrameManager.getManager(null).newGraphCollectionFrame();
+			}
+		});
+		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
+		svn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SvnMonitor.monitor(false);
+			}
+		});
+		tools.add(sortNodeLabel);
+		tools.add(explorePaths);
+		tools.addSeparator();
+		tools.add(compileFST);
+		tools.add(flatten);
+		tools.addSeparator();
+		tools.add(graphCollection);
+		tools.addSeparator();
+		tools.add(svn);
+		final JMenu format = new JMenu("Format");
+		final JMenuItem alignment = new JMenuItem("Alignment...");
+		alignment.setAccelerator(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
+		alignment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				InternalFrameManager.getManager(null)
+							.newGraphAlignmentDialog(f);
+			}
+		});
+		final JMenuItem antialiasing = new JMenuItem("Antialiasing...");
+		antialiasing.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				GraphFrame f = (GraphFrame) parentFrame;
+				f.changeAntialiasingValue();
+			}
+		});
+		final JMenuItem presentation = new JMenuItem("Presentation...");
+		presentation.setAccelerator(KeyStroke
+				.getKeyStroke('R', Event.CTRL_MASK));
+		presentation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				final GraphPresentationInfo info = InternalFrameManager
+							.getManager(null).newGraphPresentationDialog(
+									f.getGraphPresentationInfo(), true);
+				if (info != null) {
+					f.setGraphPresentationInfo(info);
+				}
+			}
+		});
+		final JMenuItem graphSize = new JMenuItem("Graph Size...");
+		graphSize.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				InternalFrameManager.getManager(null).newGraphSizeDialog(f);
+			}
+		});
+		format.add(antialiasing);
+		format.addSeparator();
+		format.add(alignment);
+		format.add(presentation);
+		format.add(graphSize);
+		final JMenu zoom = new JMenu("Zoom");
+		final ButtonGroup groupe = new ButtonGroup();
+		final JRadioButtonMenuItem fitInScreen = new JRadioButtonMenuItem(
+				"Fit in screen");
+		final JRadioButtonMenuItem fitInWindow = new JRadioButtonMenuItem(
+				"Fit in window");
+		final JRadioButtonMenuItem fit60 = new JRadioButtonMenuItem("60%");
+		final JRadioButtonMenuItem fit80 = new JRadioButtonMenuItem("80%");
+		final JRadioButtonMenuItem fit100 = new JRadioButtonMenuItem("100%");
+		final JRadioButtonMenuItem fit120 = new JRadioButtonMenuItem("120%");
+		final JRadioButtonMenuItem fit140 = new JRadioButtonMenuItem("140%");
+		groupe.add(fitInScreen);
+		groupe.add(fitInWindow);
+		groupe.add(fit60);
+		groupe.add(fit80);
+		groupe.add(fit100);
+		fit100.setSelected(true);
+		groupe.add(fit120);
+		groupe.add(fit140);
+		fitInScreen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.removeComponentListener(f.compListener);
+				Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
+				final double scale_x = screenSize.width
+						/ (double) f.getGraphicalZone().getWidth();
+				final double scale_y = screenSize.height
+						/ (double) f.getGraphicalZone().getHeight();
+				if (scale_x < scale_y)
+					f.setScaleFactor(scale_x);
+				else
+					f.setScaleFactor(scale_y);
+			}
+		});
+		fitInWindow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				final Dimension d = f.getScroll().getSize();
+				final double scale_x = (d.width - 3)
+						/ (double) f.getGraphicalZone().getWidth();
+				final double scale_y = (d.height - 3)
+						/ (double) f.getGraphicalZone().getHeight();
+				if (scale_x < scale_y)
+					f.setScaleFactor(scale_x);
+				else
+					f.setScaleFactor(scale_y);
+				f.compListener = new ComponentAdapter() {
+					@Override
+					public void componentResized(ComponentEvent e2) {
+						final Dimension d2 = f.getScroll().getSize();
+						final double scale_x2 = (d2.width - 3)
+								/ (double) f.getGraphicalZone().getWidth();
+						final double scale_y2 = (d2.height - 3)
+								/ (double) f.getGraphicalZone().getHeight();
+						if (scale_x2 < scale_y2)
+							f.setScaleFactor(scale_x2);
+						else
+							f.setScaleFactor(scale_y2);
+					}
+				};
+				f.addComponentListener(f.compListener);
+			}
+		});
+		fit60.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.removeComponentListener(f.compListener);
+				f.setScaleFactor(0.6);
+			}
+		});
+		fit80.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.removeComponentListener(f.compListener);
+				f.setScaleFactor(0.8);
+			}
+		});
+		fit100.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.removeComponentListener(f.compListener);
+				f.setScaleFactor(1.0);
+			}
+		});
+		fit120.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.removeComponentListener(f.compListener);
+				f.setScaleFactor(1.2);
+			}
+		});
+		fit140.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final GraphFrame f = (GraphFrame) parentFrame;
+				f.removeComponentListener(f.compListener);
+				f.setScaleFactor(1.4);
+			}
+		});
+		zoom.add(fitInScreen);
+		zoom.add(fitInWindow);
+		zoom.add(fit60);
+		zoom.add(fit80);
+		zoom.add(fit100);
+		zoom.add(fit120);
+		zoom.add(fit140);
+		popup.add(tools);
+		popup.add(format);
+		popup.add(zoom);
+
+		
 		addMouseListener(new MouseAdapter() {
 			void show(MouseEvent e) {
 				if (e.isPopupTrigger()) {
