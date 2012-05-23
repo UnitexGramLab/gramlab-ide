@@ -120,5 +120,12 @@ public class Grf2Fst2Command extends CommandBuilder {
 		protectElement(fst2.getAbsolutePath());
 		return this;
 	}
+	
+	public Grf2Fst2Command checkVariables(boolean b) {
+		if (b) {
+			element("-v");
+		}
+		return this;
+	}
 
 }
