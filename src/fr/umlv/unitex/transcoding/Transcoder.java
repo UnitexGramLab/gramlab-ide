@@ -89,7 +89,7 @@ public class Transcoder {
 			return encodings;
 		}
 		final ConvertCommand cmd = new ConvertCommand().getEncodings();
-		final String[] comm = cmd.getCommandArguments();
+		final String[] comm = cmd.getCommandArguments(true);
 		final ArrayList<String> lines = new ArrayList<String>();
 		try {
 			final Process p = Runtime.getRuntime().exec(comm);
