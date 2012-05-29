@@ -103,10 +103,12 @@ public class ProcessInfoThread extends Thread {
 				}
 			}
 		} catch (final IOException e) {
+			e.printStackTrace();
 			return null;
 		}
-		if ("".equals(result))
+		if ("".equals(result)) {
 			return null;
+		}
 		return result;
 	}
 

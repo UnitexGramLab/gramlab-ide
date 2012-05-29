@@ -143,7 +143,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
 					final CommandBuilder command = (CommandBuilder) c
 							.newInstance();
 					stdoutList.empty();
-					final String[] comm = command.getCommandArguments();
+					final String[] comm = command.getCommandArguments(false);
 					final Process p = Runtime.getRuntime().exec(comm);
 					new ProcessInfoThread(stdoutList, p.getInputStream(),null).start();
 					try {

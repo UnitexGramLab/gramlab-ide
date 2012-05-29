@@ -652,7 +652,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		Console.addCommand(cmd.getCommandLine(), false, Log.getCurrentLogID());
 		Process p;
 		try {
-			p = Runtime.getRuntime().exec(cmd.getCommandArguments());
+			p = Runtime.getRuntime().exec(cmd.getCommandArguments(true));
 			final BufferedInputStream in = new BufferedInputStream(p
 					.getInputStream());
 			final BufferedInputStream err = new BufferedInputStream(p
@@ -703,7 +703,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		Console.addCommand(cmd.getCommandLine(), false, Log.getCurrentLogID());
 		try {
 			final Process p = Runtime.getRuntime().exec(
-					cmd.getCommandArguments());
+					cmd.getCommandArguments(true));
 			final BufferedInputStream in = new BufferedInputStream(p
 					.getInputStream());
 			final BufferedInputStream err = new BufferedInputStream(p

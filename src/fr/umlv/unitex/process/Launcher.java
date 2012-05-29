@@ -68,7 +68,7 @@ public class Launcher {
 	public static int execWithoutTracing(CommandBuilder b) {
 		try {
 			final Process p = Runtime.getRuntime()
-					.exec(b.getCommandArguments());
+					.exec(b.getCommandArguments(true));
 			final BufferedInputStream in = new BufferedInputStream(p
 					.getInputStream());
 			final BufferedInputStream err = new BufferedInputStream(p
@@ -94,7 +94,7 @@ public class Launcher {
 
 	public static int execAsExternalCommand(CommandBuilder cmd) {
 		try {
-			Process p=Runtime.getRuntime().exec(cmd.getCommandArguments());
+			Process p=Runtime.getRuntime().exec(cmd.getCommandArguments(true));
 			new EatStreamThread(p.getErrorStream(),System.err).start();
 			new EatStreamThread(p.getInputStream(),System.out).start();
 			
