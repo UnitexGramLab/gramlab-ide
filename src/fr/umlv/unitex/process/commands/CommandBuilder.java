@@ -148,6 +148,10 @@ public abstract class CommandBuilder implements AbstractCommand {
 		return res;
 	}
 
+	public String[] getCommandArguments() {
+		return getCommandArguments(true);
+	}
+
 	public String[] getCommandArguments(boolean setEncoding) {
 		String encoding=null;
 		if (setEncoding) {
