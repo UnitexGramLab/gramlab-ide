@@ -101,10 +101,10 @@ public class SvnCommand extends CommandBuilder {
 		element("--parents");
 		element("--auto-props");
 		element("--config-option");
-		protectElement("config:auto-props:*.grf = svn:mime-type=application/octet-stream");
+		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores = ..*");
-	protectElement(f.getAbsolutePath());
+		protectElement("config:miscellany:global-ignores=..* *.fst");
+		protectElement(f.getAbsolutePath());
 		return this;
 	}
 	
