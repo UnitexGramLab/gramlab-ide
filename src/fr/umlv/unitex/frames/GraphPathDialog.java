@@ -44,7 +44,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -176,7 +175,7 @@ public class GraphPathDialog extends JDialog {
 						.getText())
 						+ ".fst2");
 				if (onlyPaths.isSelected()) {
-					list = new File(Config.getUserCurrentLanguageDir(),
+					list = new File(ConfigManager.getManager().getCurrentLanguageDir(),
 							"list.txt");
 					cmd = cmd.listOfPaths(fst2, list);
 				} else {
