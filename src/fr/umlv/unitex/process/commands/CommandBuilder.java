@@ -148,9 +148,11 @@ public abstract class CommandBuilder implements AbstractCommand {
 		return res;
 	}
 
-	
-	public String[] getCommandArguments() {
-		final String encoding = getOutputEncoding();
+	public String[] getCommandArguments(boolean setEncoding) {
+		String encoding=null;
+		if (setEncoding) {
+			encoding=getOutputEncoding();
+		}
 		final String[] res = list.toArray(new String[list.size()
 				+ ((encoding != null) ? 1 : 0)]);
 		for (int i = 0; i < list.size(); i++) {
@@ -159,7 +161,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 			}
 		}
 		if (encoding != null)
-			res[res.length - 1] = getOutputEncoding();
+			res[res.length - 1] = encoding;
 		return res;
 	}
 
@@ -196,7 +198,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 		Process p=null;
 		boolean problem=false;
 		final CommandBuilder currentCommand=this;
-		final String[] comm=getCommandArguments();
+		final String[] comm=getCommandArguments(true);
 		try {
 			/* We create the process */
 			parameters.setProcess(Runtime.getRuntime().exec(comm));
