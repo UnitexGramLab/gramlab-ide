@@ -41,7 +41,7 @@ public class SvnCommand extends CommandBuilder {
 	}
 
 	
-	public SvnCommand auth(String login,String passwd) {
+	public SvnCommand auth(String login,char[] passwd) {
 		if (login!=null) {
 			element("--username");
 			protectElement(login);
@@ -68,6 +68,7 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
+	
 	public SvnCommand commit(String message,File path) {
 		element("commit");
 		element("-m");
@@ -98,26 +99,27 @@ public class SvnCommand extends CommandBuilder {
 	}
 
 	public SvnCommand add(File f) {
+		element("add");
 		element("--parents");
 		element("--auto-props");
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf");
 		protectElement(f.getAbsolutePath());
 		return this;
 	}
 	
-	public SvnCommand importEmpty(File path,String url) {
-		element("--depth");
-		element("empty");
+	
+	public SvnCommand initialImport(File path,String url) {
+		element("import");
 		element("-m");
 		protectElement("Initial import");
 		element("--auto-props");
 		element("--config-option");
-		protectElement("config:auto-props:*.grf = svn:mime-type=application/octet-stream");
+		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores = ..*");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config");
 		protectElement(path.getAbsolutePath());
 		protectElement(url);
 		return this;

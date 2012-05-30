@@ -51,11 +51,6 @@ public class ProcessInfoThread extends Thread {
 	 *            the list to display messages
 	 * @param s
 	 *            the stream to monitor
-	 * @param close
-	 *            indicate if the parent frame must be closed after the
-	 *            completion of the process
-	 * @param f
-	 *            parent frame
 	 */
 	public ProcessInfoThread(ProcessOutputList list, InputStream s, ConsoleEntry entry) {
 		this.list = list;

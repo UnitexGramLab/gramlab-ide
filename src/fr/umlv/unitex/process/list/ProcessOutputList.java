@@ -20,6 +20,9 @@
  */
 package fr.umlv.unitex.process.list;
 
+import java.awt.Component;
+
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListModel;
 
@@ -43,6 +46,16 @@ public class ProcessOutputList extends JList {
 	public ProcessOutputList(ProcessOutputListModel model,boolean autoscroll) {
 		super(model);
 		this.autoscroll=autoscroll;
+		setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Couple c=(Couple)value;
+				return super.getListCellRendererComponent(list, c.getString(), index, isSelected,
+						cellHasFocus);
+			}
+		});
 	}
 	
 	public ProcessOutputList(ProcessOutputListModel model) {
