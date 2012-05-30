@@ -45,7 +45,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
-	private Grf2Fst2Command charByCharTokenization() {
+	public Grf2Fst2Command charByCharTokenization() {
 		element("--char_by_char");
 		return this;
 	}
