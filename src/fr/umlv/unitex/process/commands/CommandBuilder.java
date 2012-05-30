@@ -91,8 +91,16 @@ public abstract class CommandBuilder implements AbstractCommand {
 		list.add(s);
 	}
 
+	public void element(char[] s) {
+		list.add(new String(s));
+	}
+
 	public void protectElement(String s) {
 		element("\"" + s + "\"");
+	}
+
+	public void protectElement(char[] s) {
+		element("\"" + new String(s) + "\"");
 	}
 
 	public String getOutputEncoding() {
