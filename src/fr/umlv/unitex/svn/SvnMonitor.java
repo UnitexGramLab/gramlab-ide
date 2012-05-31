@@ -71,11 +71,14 @@ public class SvnMonitor {
 		if (unitexMode) {
 			monitor(Config.getCurrentGraphDir());
 			monitor(ConfigManager.getManager().getGraphRepositoryPath(null,null));
+			if (!autoMonitoring || svnConflictModel.size() > 0) {
+				InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
+			}
 		} else {
 			monitor(rootDir);
-		}
-		if (!autoMonitoring || svnConflictModel.size() > 0) {
-			InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
+			if (svnConflictModel.size() > 0) {
+				InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
+			}
 		}
 	}
 
@@ -91,10 +94,10 @@ public class SvnMonitor {
 			throw new IllegalArgumentException("monitor() expects a directory");
 		}
 		final File svn = new File(dir, ".svn");
-		if (!svn.exists()) {
-			/*
-			 * If the directory is not versioned with svn, there is nothing to
-			 * do
+		if (unitexMode && !svn.exists()) {
+			/* If the directory is not versioned with svn, there is nothing to
+			 * do. Note that we don't apply this criterion in Gramlab, since
+			 * we know for sure that we are in a versioned directory.
 			 */
 			return;
 		}
