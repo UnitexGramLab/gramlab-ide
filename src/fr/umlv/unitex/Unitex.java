@@ -41,7 +41,6 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.svn.SvnMonitor;
 
 /**
  * This is the main class of the Unitex system.
@@ -117,7 +116,7 @@ public class Unitex {
 								frame.setIconImages(Arrays.asList(img16x16,
 										img32x32, img48x48));
 								frame.setVisible(true);
-								SvnMonitor.start();
+								ConfigManager.getManager().getSvnMonitor(null).start();
 							}
 						});
 						timer.stop();

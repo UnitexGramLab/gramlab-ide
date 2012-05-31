@@ -46,7 +46,7 @@ public class SvnConflict {
 		this.otherNumber = otherNumber;
 		addConflictSolvedListener(new ConflictSolvedListener() {
 			public void conflictSolved() {
-				SvnMonitor.conflictResolved(grf);
+				ConfigManager.getManager().getSvnMonitor(grf).conflictResolved(grf);
 			}
 		});
 	}

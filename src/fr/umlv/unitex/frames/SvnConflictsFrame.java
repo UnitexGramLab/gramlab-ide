@@ -41,9 +41,11 @@ import fr.umlv.unitex.svn.SvnMonitor;
  * @author Sébastien Paumier
  */
 public class SvnConflictsFrame extends TabbableInternalFrame {
-	SvnConflictsFrame() {
+	
+	
+	SvnConflictsFrame(SvnMonitor monitor) {
 		super("", true, false, true, true);
-		final ListModel model = SvnMonitor.getSvnConflictModel();
+		final ListModel model = monitor.getSvnConflictModel();
 		final JList list = new JList(model);
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {

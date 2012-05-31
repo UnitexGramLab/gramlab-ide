@@ -368,8 +368,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				+ conflict.otherNumber);
 		diff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final File diffResult = new File(Config
-						.getUserCurrentLanguageDir(), "diff");
+				final File diffResult = new File(ConfigManager.getManager().getCurrentLanguageDir(), "diff");
 				final GrfDiffCommand cmd = new GrfDiffCommand().files(
 						conflict.mine, conflict.other).output(diffResult);
 				Launcher.exec(cmd, true, new ShowDiffDo(conflict.mine,

@@ -34,8 +34,23 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 public class SvnMonitor {
-	final static DefaultListModel svnConflictModel = new DefaultListModel();
-	private final static Timer timer = new Timer(5000, new ActionListener() {
+	
+	private File rootDir;
+	private boolean unitexMode;
+	
+	/**
+	 * Under Unitex, we always monitor the current graph directory
+	 * as well as the graph repository, and so, 'dir' is ignored. 
+	 * Under gramlab, we just monitor 'dir' which would then be the 'src'
+	 * directory, because in Gramlab, if a repository is not in src, 
+	 */
+	public SvnMonitor(File dir,boolean unitexMode) {
+		this.rootDir=dir;
+		this.unitexMode=unitexMode;
+	}
+	
+	final DefaultListModel svnConflictModel = new DefaultListModel();
+	private final Timer timer = new Timer(5000, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (ConfigManager.getManager().svnMonitoring(null)) {
 				monitor(true);
@@ -43,7 +58,7 @@ public class SvnMonitor {
 		}
 	});
 
-	public static void monitor(boolean autoMonitoring) {
+	public void monitor(boolean autoMonitoring) {
 		for (int i = svnConflictModel.size() - 1; i >= 0; i--) {
 			if (SvnConflict.getConflict((File) svnConflictModel.get(i)) == null) {
 				/*
@@ -53,10 +68,14 @@ public class SvnMonitor {
 				svnConflictModel.remove(i);
 			}
 		}
-		monitor(Config.getCurrentGraphDir());
-		monitor(ConfigManager.getManager().getGraphRepositoryPath(null,null));
+		if (unitexMode) {
+			monitor(Config.getCurrentGraphDir());
+			monitor(ConfigManager.getManager().getGraphRepositoryPath(null,null));
+		} else {
+			monitor(rootDir);
+		}
 		if (!autoMonitoring || svnConflictModel.size() > 0) {
-			InternalFrameManager.getManager(null).showSvnConflictsFrame();
+			InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
 		}
 	}
 
@@ -65,7 +84,7 @@ public class SvnMonitor {
 	 * them in the given list. We use a list in order to avoid duplicate
 	 * reports.
 	 */
-	protected static void monitor(File dir) {
+	protected void monitor(File dir) {
 		if (dir == null || !dir.exists())
 			return;
 		if (!dir.isDirectory()) {
@@ -103,15 +122,15 @@ public class SvnMonitor {
 		}
 	}
 
-	public static void start() {
+	public void start() {
 		timer.start();
 	}
 
-	public static void conflictResolved(File grf) {
+	public void conflictResolved(File grf) {
 		svnConflictModel.removeElement(grf);
 	}
 
-	public static ListModel getSvnConflictModel() {
+	public ListModel getSvnConflictModel() {
 		return svnConflictModel;
 	}
 }

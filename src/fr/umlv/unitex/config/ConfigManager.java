@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
+import fr.umlv.unitex.svn.SvnMonitor;
 
 /**
  * This class is the corner stone of language configuration. If a project
@@ -276,6 +277,10 @@ public class ConfigManager extends AbstractConfigModel {
 
 	public File getCurrentLanguageDir() {
 		return Config.getUserCurrentLanguageDir();
+	}
+
+	public SvnMonitor getSvnMonitor(File f) {
+		return Config.getSvnMonitor();
 	}
 	
 }

@@ -59,6 +59,7 @@ import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
@@ -66,7 +67,6 @@ import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.print.PrintManager;
-import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.undo.AddBoxEdit;
 import fr.umlv.unitex.undo.BoxTextEdit;
 import fr.umlv.unitex.undo.MultipleEdit;
@@ -368,7 +368,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
 		svn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SvnMonitor.monitor(false);
+				ConfigManager.getManager().getSvnMonitor(null).monitor(false);
 			}
 		});
 		tools.add(sortNodeLabel);
