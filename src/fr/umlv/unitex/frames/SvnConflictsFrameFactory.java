@@ -26,10 +26,9 @@ class SvnConflictsFrameFactory {
 	private SvnConflictsFrame frame;
 
 	SvnConflictsFrame newSvnConflictsFrameFactory(SvnMonitor monitor) {
-		if (frame != null) {
-			frame.doDefaultCloseAction();
+		if (frame == null) {
+			frame = new SvnConflictsFrame(monitor);
 		}
-		frame = new SvnConflictsFrame(monitor);
 		return frame;
 	}
 
