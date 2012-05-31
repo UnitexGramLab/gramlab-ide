@@ -79,7 +79,6 @@ import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.text.Text;
 
 /**
@@ -620,7 +619,7 @@ public class UnitexFrame extends JFrame {
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
 		svn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SvnMonitor.monitor(false);
+				ConfigManager.getManager().getSvnMonitor(null).monitor(false);
 			}
 		});
 		tools.add(sortNodeLabel);
