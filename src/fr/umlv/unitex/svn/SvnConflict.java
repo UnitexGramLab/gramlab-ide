@@ -96,6 +96,11 @@ public class SvnConflict {
 			 * file in that case
 			 */
 			FileUtil.copyFile(grf, mine);
+		} else {
+			/* If the original grf is modified, we restore it from .mine so
+			 * that the user can still open it in the graph editor
+			 */
+			FileUtil.copyFile(mine, grf);
 		}
 		return new SvnConflict(grf, mine, base, other, baseNumber, otherNumber);
 	}
