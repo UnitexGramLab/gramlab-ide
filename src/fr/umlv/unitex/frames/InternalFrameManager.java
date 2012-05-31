@@ -43,6 +43,7 @@ import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.UnxmlizeCommand;
+import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.xalign.ConcordanceModel;
 
@@ -100,8 +101,7 @@ public class InternalFrameManager {
 	private final FrameFactory consoleFrameFactory = new FrameFactory(
 			ConsoleFrame.class);
 	private final XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
-	private final FrameFactory svnConflictsFrameFactory = new FrameFactory(
-			SvnConflictsFrame.class);
+	private final SvnConflictsFrameFactory svnConflictsFrameFactory = new SvnConflictsFrameFactory();
 	private final FrameFactory cassysFrameFactory = new FrameFactory(
 			CassysFrame.class);
 	private final FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(
@@ -841,21 +841,25 @@ public class InternalFrameManager {
 		}
 	}
 
-	public SvnConflictsFrame getSvnConflictsFrame() {
-		return newSvnConflictsFrame();
+	public SvnConflictsFrame getSvnConflictsFrame(SvnMonitor monitor) {
+		return newSvnConflictsFrame(monitor);
 	}
 
-	private SvnConflictsFrame newSvnConflictsFrame() {
-		final SvnConflictsFrame f = (SvnConflictsFrame) svnConflictsFrameFactory
-				.newFrame(false);
+	/**
+	 * rootDir will be the user current language dir in Unitex,
+	 * and the project dir in Gramlab
+	 */
+	private SvnConflictsFrame newSvnConflictsFrame(SvnMonitor monitor) {
+		final SvnConflictsFrame f = svnConflictsFrameFactory
+				.newSvnConflictsFrameFactory(monitor);
 		if (f == null)
 			return null;
 		addToDesktopIfNecessary(f, false);
 		return f;
 	}
 
-	public void showSvnConflictsFrame() {
-		final SvnConflictsFrame f = getSvnConflictsFrame();
+	public void showSvnConflictsFrame(SvnMonitor monitor) {
+		final SvnConflictsFrame f = getSvnConflictsFrame(monitor);
 		f.setVisible(true);
 	}
 

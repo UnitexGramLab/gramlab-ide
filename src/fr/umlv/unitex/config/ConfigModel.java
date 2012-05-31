@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
+import fr.umlv.unitex.svn.SvnMonitor;
 
 public interface ConfigModel {
 	public String getCurrentLanguage();
@@ -112,5 +113,7 @@ public interface ConfigModel {
 	public boolean maximizeGraphFrames();
 
 	public File getCurrentSnt(String language);
+	
+	public SvnMonitor getSvnMonitor(File f);
 	
 }

@@ -45,6 +45,7 @@ import javax.swing.JPanel;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.listeners.LanguageListener;
+import fr.umlv.unitex.svn.SvnMonitor;
 
 /**
  * This class contains general configuration information. It contains constants
@@ -1301,5 +1302,13 @@ public class Config {
 				"tfst_tags_by_freq.txt"));
 		FileUtil.deleteFileByName(new File(Config.getCurrentSntDir(),
 				"tfst_tags_by_alph.txt"));
+	}
+
+	private static SvnMonitor monitor;
+	public static SvnMonitor getSvnMonitor() {
+		if (monitor==null) {
+			monitor=new SvnMonitor(null,true);
+		}
+		return monitor;
 	}
 }
