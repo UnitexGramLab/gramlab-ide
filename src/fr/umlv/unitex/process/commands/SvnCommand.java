@@ -105,7 +105,7 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf diff");
 		protectElement(f.getAbsolutePath());
 		return this;
 	}
@@ -119,10 +119,30 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
 		protectElement(path.getAbsolutePath());
 		protectElement(url);
 		return this;
 	}
 
+	public SvnCommand status() {
+		element("status");
+		element("--config-option");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		return this;
+	}
+
+	
+	public SvnCommand commit(File path,String message) {
+		element("commit");
+		element("-m");
+		protectElement(message);
+		element("--config-option");
+		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
+		element("--config-option");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		protectElement(path.getAbsolutePath());
+		return this;
+	}
+	
 }
