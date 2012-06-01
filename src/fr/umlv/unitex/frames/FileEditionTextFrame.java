@@ -352,6 +352,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		this.file = f;
 		setTitle(f.getAbsolutePath());
 		fileManager.save(f.getAbsolutePath());
+		lastModification = file.lastModified();
 	}
 
 	/**
