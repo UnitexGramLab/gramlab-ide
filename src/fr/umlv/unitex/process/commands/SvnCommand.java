@@ -113,6 +113,15 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 	
+
+	public SvnCommand delete(File targetList) {
+		element("delete");
+		element("--force");
+		element("--targets");
+		protectElement(targetList.getAbsolutePath());
+		return this;
+	}
+
 	
 	public SvnCommand initialImport(File path,String url) {
 		element("import");
