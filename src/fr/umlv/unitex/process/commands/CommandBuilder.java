@@ -213,7 +213,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 		final String[] comm=getCommandArguments(true);
 		try {
 			/* We create the process */
-			parameters.setProcess(Runtime.getRuntime().exec(comm));
+			parameters.setProcess(Runtime.getRuntime().exec(comm,null,parameters.getWorkingDirectory()));
 			p=parameters.getProcess();
 			if (parameters.getStdout()==null) {
 				/* If needed, we just consume the output stream */
