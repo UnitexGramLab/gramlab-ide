@@ -20,6 +20,8 @@
  */
 package fr.umlv.unitex.process;
 
+import java.io.File;
+
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.list.ProcessOutputList;
@@ -69,6 +71,10 @@ public class ExecParameters {
 		return traceIntoConsole;
 	}
 	
+	public File getWorkingDirectory() {
+		return workingDirectory;
+	}
+	
 	/**
 	 * true means that if a command does not return 0, the
 	 * remaining commands will be skipped 
@@ -99,9 +105,11 @@ public class ExecParameters {
 	 */
 	private boolean traceIntoConsole;
 	
+	private File workingDirectory;
+	
 	public ExecParameters(boolean stopOnProblem, MultiCommands commands,
 			ProcessOutputList stdout, ProcessOutputList stderr,
-			ToDo DO,boolean traceIntoConsole) {
+			ToDo DO,boolean traceIntoConsole,File workingDirectory) {
 		super();
 		this.stopOnProblem = stopOnProblem;
 		this.commands = commands;
@@ -109,13 +117,21 @@ public class ExecParameters {
 		this.stderr = stderr;
 		this.DO = DO;
 		this.traceIntoConsole=traceIntoConsole;
+		this.workingDirectory=workingDirectory;
 	}
 
 	
 	public ExecParameters(boolean stopOnProblem, CommandBuilder c,
 			ProcessOutputList stdout, ProcessOutputList stderr,
+			ToDo DO,boolean traceIntoConsole,File workingDirectory) {
+		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole,workingDirectory);
+	}
+
+
+	public ExecParameters(boolean stopOnProblem, CommandBuilder c,
+			ProcessOutputList stdout, ProcessOutputList stderr,
 			ToDo DO,boolean traceIntoConsole) {
-		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole);
+		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole,null);
 	}
 }
 

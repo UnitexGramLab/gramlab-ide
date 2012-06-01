@@ -98,7 +98,7 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SvnCommand add(File f) {
+	public SvnCommand add(File targetList) {
 		element("add");
 		element("--parents");
 		element("--auto-props");
@@ -106,7 +106,8 @@ public class SvnCommand extends CommandBuilder {
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
 		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf diff");
-		protectElement(f.getAbsolutePath());
+		element("--targets");
+		protectElement(targetList.getAbsolutePath());
 		return this;
 	}
 	
@@ -133,7 +134,7 @@ public class SvnCommand extends CommandBuilder {
 	}
 
 	
-	public SvnCommand commit(File path,String message) {
+	public SvnCommand commit(File targetList,String message) {
 		element("commit");
 		element("-m");
 		protectElement(message);
@@ -141,8 +142,22 @@ public class SvnCommand extends CommandBuilder {
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
 		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
-		protectElement(path.getAbsolutePath());
+		element("--targets");
+		protectElement(targetList.getAbsolutePath());
 		return this;
 	}
-	
+
+	public SvnCommand commit(File targetList,File logFile) {
+		element("commit");
+		element("-F");
+		protectElement(logFile.getAbsolutePath());
+		element("--config-option");
+		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
+		element("--config-option");
+		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		element("--targets");
+		protectElement(targetList.getAbsolutePath());
+		return this;
+	}
+
 }

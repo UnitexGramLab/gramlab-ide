@@ -94,7 +94,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 		super("Working...", true, false, false);
 		close_on_finish = close;
 		final JPanel top = new JPanel(new BorderLayout());
-		parameters=new ExecParameters(stopIfProblem, c, stdoutList, stderrList, myDo, true);
+		parameters=new ExecParameters(stopIfProblem, c, stdoutList, stderrList, myDo, true, null);
 		stdoutList.setCellRenderer(myRenderer);
 		stderrList.setCellRenderer(myRenderer);
 		final JScrollPane scroll = new JScrollPane(stdoutList);
@@ -186,7 +186,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 				parameters.isStopOnProblem(),
 				parameters.getCommands(),
 				parameters.getStdout(), parameters.getStderr(),myDo,
-				parameters.isTraceIntoConsole()));
+				parameters.isTraceIntoConsole(),null));
 		executor.start();
 	}
 }
