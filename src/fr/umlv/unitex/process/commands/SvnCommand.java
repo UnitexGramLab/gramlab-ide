@@ -30,6 +30,8 @@ import fr.umlv.unitex.config.ConfigManager;
  */
 public class SvnCommand extends CommandBuilder {
 	
+	private static final String GLOBAL_IGNORES = "config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target dep build project.local_config diff";
+
 	public SvnCommand() {
 		super(false);
 		element("java");
@@ -105,7 +107,7 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf diff");
+		protectElement(GLOBAL_IGNORES);
 		element("--targets");
 		protectElement(targetList.getAbsolutePath());
 		return this;
@@ -120,7 +122,7 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		protectElement(GLOBAL_IGNORES);
 		protectElement(path.getAbsolutePath());
 		protectElement(url);
 		return this;
@@ -129,7 +131,7 @@ public class SvnCommand extends CommandBuilder {
 	public SvnCommand status() {
 		element("status");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		protectElement(GLOBAL_IGNORES);
 		return this;
 	}
 
@@ -141,7 +143,7 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		protectElement(GLOBAL_IGNORES);
 		element("--targets");
 		protectElement(targetList.getAbsolutePath());
 		return this;
@@ -154,7 +156,7 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement("config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target build project.local_config diff");
+		protectElement(GLOBAL_IGNORES);
 		element("--targets");
 		protectElement(targetList.getAbsolutePath());
 		return this;
