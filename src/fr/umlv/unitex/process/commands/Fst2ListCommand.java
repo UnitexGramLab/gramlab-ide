@@ -95,4 +95,16 @@ public class Fst2ListCommand extends CommandBuilder {
 		protectElement(ifile.getAbsolutePath());
 		return this;
 	}
+	
+	/**
+	 * Since Fst2List is a piece of $%*! it does not parse properly its
+	 * arguments with getopt. So, you cannot provide options after the 
+	 * name of the .fst2, and as the encoding option is added after everything
+	 * else, it is a problem. However, as Unitex/Gramlab can read the output list.txt
+	 * file no matter its encoding, it is not a big problem.
+	 */
+	@Override
+	public String getOutputEncoding() {
+		return null;
+	}
 }
