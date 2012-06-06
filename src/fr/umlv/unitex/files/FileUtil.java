@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -223,6 +224,24 @@ public class FileUtil {
 		}
 	}
 
+	public static void write(ArrayList<String> lines, File f) {
+		try {
+			if (!f.exists()) {
+				f.createNewFile();
+			}
+			Encoding e=ConfigManager.getManager().getEncoding(null);
+			if (e==null) e=Encoding.UTF8;
+			final OutputStreamWriter writer = e.getOutputStreamWriter(f);
+			for (String s:lines) {
+				s=s+"\n";
+				writer.write(s, 0, s.length());
+			}
+			writer.close();
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Creates a description of f relative to parent. For instance:
 	 * 
