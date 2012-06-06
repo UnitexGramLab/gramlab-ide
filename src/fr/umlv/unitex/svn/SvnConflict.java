@@ -54,16 +54,16 @@ public class SvnConflict {
 	/**
 	 * Tests if there is a svn conflict on the given file.
 	 * 
-	 * @param grf
+	 * @param file
 	 * @return
 	 */
-	public static SvnConflict getConflict(File grf) {
-		if (!grf.exists()) {
+	public static SvnConflict getConflict(File file) {
+		if (!file.exists()) {
 			/* May happen if a temp file has been detected before being deleted */
 			return null;
 		}
-		final String name = grf.getName();
-		final File[] list = grf.getParentFile().listFiles(new FilenameFilter() {
+		final String name = file.getName();
+		final File[] list = file.getParentFile().listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String s) {
 				if (!s.startsWith(name + ".r"))
 					return false;
@@ -75,7 +75,7 @@ public class SvnConflict {
 			return null;
 		if (list.length != 2) {
 			throw new IllegalStateException(list.length + " file(s) named "
-					+ grf.getAbsolutePath() + ".rXXXX while there should be 2");
+					+ file.getAbsolutePath() + ".rXXXX while there should be 2");
 		}
 		int baseNumber = getRevisionNumber(list[0]);
 		int otherNumber = getRevisionNumber(list[1]);
@@ -88,21 +88,21 @@ public class SvnConflict {
 			baseNumber = otherNumber;
 			otherNumber = tmp;
 		}
-		final File mine = new File(grf.getAbsolutePath() + ".mine");
+		final File mine = new File(file.getAbsolutePath() + ".mine");
 		if (!mine.exists()) {
 			/*
 			 * Some svn clients do not produce a .mine file: they just let the
 			 * original file untouched. To deal with that, we create a .mine
 			 * file in that case
 			 */
-			FileUtil.copyFile(grf, mine);
+			FileUtil.copyFile(file, mine);
 		} else {
 			/* If the original grf is modified, we restore it from .mine so
 			 * that the user can still open it in the graph editor
 			 */
-			FileUtil.copyFile(mine, grf);
+			FileUtil.copyFile(mine, file);
 		}
-		return new SvnConflict(grf, mine, base, other, baseNumber, otherNumber);
+		return new SvnConflict(file, mine, base, other, baseNumber, otherNumber);
 	}
 
 	private static int getRevisionNumber(File file) {
