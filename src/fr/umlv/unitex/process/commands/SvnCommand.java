@@ -171,4 +171,28 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
+	public SvnCommand resolve(File file,ResolveOp op) {
+		element("resolve");
+		element(op.getOption());
+		protectElement(file.getAbsolutePath());
+		return this;
+	}
+	
+	public enum ResolveOp {
+		ACCEPT_WORKING("--accept=working"),
+		ACCEPT_MINE("--accept=mine-full"),
+		ACCEPT_BASE("--accept=base"),
+		ACCEPT_OTHER("--accept=theirs-full");
+		
+		private ResolveOp(String o) {
+			this.option=o;
+		}
+		
+		private String option;
+		String getOption() {
+			return option;
+		}
+		
+	}
+	
 }

@@ -258,7 +258,7 @@ public class InternalFrameManager {
 	 * Creates a TextFrame for the given text file. If the text is not loadable,
 	 * the function does nothing and returns null.
 	 * 
-	 * @param grf
+	 * @param fileInConflict
 	 * @return
 	 */
 	public TextFrame newTextFrame(File text, boolean taggedText) {
