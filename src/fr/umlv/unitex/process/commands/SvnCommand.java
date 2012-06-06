@@ -194,5 +194,21 @@ public class SvnCommand extends CommandBuilder {
 		}
 		
 	}
-	
+
+	public SvnCommand getIgnoreList(File dir) {
+		element("propget");
+		element("svn:ignore");
+		protectElement(dir.getAbsolutePath());
+		return this;
+	}
+
+	public SvnCommand setIgnoreList(File dir,File list) {
+		element("propset");
+		element("svn:ignore");
+		element("-F");
+		protectElement(list.getAbsolutePath());
+		protectElement(dir.getAbsolutePath());
+		return this;
+	}
+
 }
