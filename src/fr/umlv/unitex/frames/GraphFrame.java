@@ -323,8 +323,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			public void conflictSolved() {
 				getActualMainPanel().remove(getSvnPanel());
 				setSvnPanel(null);
-				setGraph(conflict.grf);
-				final GraphIO g2 = GraphIO.loadGraph(conflict.grf, false, false);
+				setGraph(conflict.fileInConflict);
+				final GraphIO g2 = GraphIO.loadGraph(conflict.fileInConflict, false, false);
 				graphicalZone.refresh(g2);
 				setModified(false);
 				lastModification = grf.lastModified();
@@ -341,7 +341,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final JPanel main = new JPanel(new GridLayout(2, 1));
 		final TitledBorder border = BorderFactory
 				.createTitledBorder("Svn conflict detected on graph "
-						+ conflict.grf.getAbsolutePath());
+						+ conflict.fileInConflict.getAbsolutePath());
 		border.setTitleColor(Color.RED);
 		main.setBorder(border);
 		final JPanel p = new JPanel(null);

@@ -33,12 +33,12 @@ import fr.umlv.unitex.process.commands.GrfDiff3Command;
 
 public class SvnConflict {
 	static Pattern pattern = Pattern.compile("r([0-9]+)");
-	public File grf, mine, base, other;
+	public File fileInConflict, mine, base, other;
 	public int baseNumber, otherNumber;
 
-	public SvnConflict(final File grf, File mine, File base, File other,
+	public SvnConflict(final File fileInConflict, File mine, File base, File other,
 			int baseNumber, int otherNumber) {
-		this.grf = grf;
+		this.fileInConflict = fileInConflict;
 		this.mine = mine;
 		this.base = base;
 		this.other = other;
@@ -46,7 +46,7 @@ public class SvnConflict {
 		this.otherNumber = otherNumber;
 		addConflictSolvedListener(new ConflictSolvedListener() {
 			public void conflictSolved() {
-				ConfigManager.getManager().getSvnMonitor(grf).conflictResolved(grf);
+				ConfigManager.getManager().getSvnMonitor(fileInConflict).conflictResolved(fileInConflict);
 			}
 		});
 	}
@@ -143,10 +143,10 @@ public class SvnConflict {
 	 * Solve the conflict by using 'mine' version
 	 */
 	public void useMine() {
-		grf.delete();
+		fileInConflict.delete();
 		other.delete();
 		base.delete();
-		mine.renameTo(grf);
+		mine.renameTo(fileInConflict);
 		fireConflictSolved();
 	}
 
@@ -154,10 +154,10 @@ public class SvnConflict {
 	 * Solve the conflict by using 'other' version
 	 */
 	public void useOther() {
-		grf.delete();
+		fileInConflict.delete();
 		mine.delete();
 		base.delete();
-		other.renameTo(grf);
+		other.renameTo(fileInConflict);
 		fireConflictSolved();
 	}
 
@@ -167,7 +167,7 @@ public class SvnConflict {
 	 */
 	public boolean merge() {
 		final GrfDiff3Command diff3 = new GrfDiff3Command().files(mine, base,
-				other).output(grf).onlyCosmetic(
+				other).output(fileInConflict).onlyCosmetic(
 				ConfigManager.getManager().onlyCosmetic(null));
 		final int res = Launcher.execWithoutTracing(diff3);
 		if (res != 0)
