@@ -129,7 +129,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		final JButton setMwuDicName = new JButton(setMwuDicAction);
 		final Action setInflectionDirAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				final JFileChooser dialogBox = Config.getInflectDialogBox();
+				final JFileChooser dialogBox = Config.getInflectDialogBox(null);
 				final int returnVal = dialogBox.showOpenDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL

@@ -642,8 +642,10 @@ public class InternalFrameManager {
 		graphCollectionFrameFactory.closeFrame();
 	}
 
-	public InflectFrame newInflectFrame() {
-		return (InflectFrame) setup(inflectFrameFactory.newFrame());
+	public InflectFrame newInflectFrame(File dela) {
+		InflectFrame f=(InflectFrame) setup(inflectFrameFactory.newFrame());
+		f.setDela(dela);
+		return f;
 	}
 
 	public void closeInflectFrame() {
