@@ -282,5 +282,9 @@ public class ConfigManager extends AbstractConfigModel {
 	public SvnMonitor getSvnMonitor(File f) {
 		return Config.getSvnMonitor();
 	}
+
+	public void userRefusedClosingFrame() {
+		/* Do nothing */
+	}
 	
 }
