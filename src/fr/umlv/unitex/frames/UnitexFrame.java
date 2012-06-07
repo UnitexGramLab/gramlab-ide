@@ -468,7 +468,9 @@ public class UnitexFrame extends JFrame {
 		delaMenu.add(new JMenuItem(sortDictionary));
 		inflect = new AbstractAction("Inflect...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newInflectFrame();
+				File dela=Config.getCurrentDELA();
+				if (dela==null) return;
+				InternalFrameManager.getManager(null).newInflectFrame(dela);
 			}
 		};
 		inflect.setEnabled(false);

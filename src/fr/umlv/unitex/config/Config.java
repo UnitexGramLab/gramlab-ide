@@ -381,15 +381,17 @@ public class Config {
 		return corpusDialogBox;
 	}
 
-	public static JFileChooser getInflectDialogBox() {
+	public static JFileChooser getInflectDialogBox(File dir) {
 		if (inflectDialogBox != null)
 			return inflectDialogBox;
 		inflectDialogBox = new JFileChooser();
 		inflectDialogBox.setDialogTitle("Choose the inflection directory");
 		inflectDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
 		inflectDialogBox.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		inflectDialogBox.setCurrentDirectory(new File(Config
-				.getUserCurrentLanguageDir(), "Inflection"));
+		if (dir==null) {
+			dir=ConfigManager.getManager().getInflectionDir();
+		}
+		inflectDialogBox.setCurrentDirectory(dir);
 		return inflectDialogBox;
 	}
 

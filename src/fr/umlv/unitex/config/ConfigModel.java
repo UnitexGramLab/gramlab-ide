@@ -114,6 +114,8 @@ public interface ConfigModel {
 
 	public File getCurrentSnt(String language);
 	
+	public File getInflectionDir();
+	
 	public SvnMonitor getSvnMonitor(File f);
 
 	public void userRefusedClosingFrame();

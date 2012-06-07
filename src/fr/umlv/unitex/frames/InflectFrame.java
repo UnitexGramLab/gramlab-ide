@@ -53,6 +53,9 @@ import fr.umlv.unitex.process.commands.SortTxtCommand;
  * @author Sébastien Paumier
  */
 public class InflectFrame extends JInternalFrame {
+	
+	private File dela;
+	
 	final JTextField directory = new JTextField("");
 	private final JRadioButton allWords = new JRadioButton(
 			"Allow both simple and compound words", true);
@@ -83,18 +86,18 @@ public class InflectFrame extends JInternalFrame {
 				"Directory where inflectional FST2 are stored: "));
 		final JPanel tempPanel = new JPanel(new BorderLayout());
 		directory.setPreferredSize(new Dimension(240, 25));
-		directory.setText(new File(Config.getUserCurrentLanguageDir(),
-				"Inflection").getAbsolutePath());
+		final File inflectionDir=ConfigManager.getManager().getInflectionDir();
+		directory.setText(inflectionDir.getAbsolutePath());
 		tempPanel.add(directory, BorderLayout.CENTER);
 		final Action setDirectoryAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				final int returnVal = Config.getInflectDialogBox()
+				final int returnVal = Config.getInflectDialogBox(inflectionDir)
 						.showOpenDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {
 					// we return if the user has clicked on CANCEL
 					return;
 				}
-				directory.setText(Config.getInflectDialogBox()
+				directory.setText(Config.getInflectDialogBox(inflectionDir)
 						.getSelectedFile().getAbsolutePath());
 			}
 		};
@@ -137,7 +140,7 @@ public class InflectFrame extends JInternalFrame {
 	 * creation of a <code>ProcessInfoFrame</code> object.
 	 */
 	void inflectDELA() {
-		final File f = Config.getCurrentDELA();
+		final File f = dela;
 		String tmp = f.getAbsolutePath();
 		final int point = tmp.lastIndexOf('.');
 		final int separator = tmp.lastIndexOf(File.separatorChar);
@@ -169,14 +172,18 @@ public class InflectFrame extends JInternalFrame {
 	}
 
 	class LoadDelaDo implements ToDo {
-		File dela;
+		File dela1;
 
 		public LoadDelaDo(File dela) {
-			this.dela = dela;
+			this.dela1 = dela;
 		}
 
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(dela).newDelaFrame(dela);
+			InternalFrameManager.getManager(dela1).newDelaFrame(dela1);
 		}
+	}
+
+	public void setDela(File dela) {
+		this.dela=dela;
 	}
 }

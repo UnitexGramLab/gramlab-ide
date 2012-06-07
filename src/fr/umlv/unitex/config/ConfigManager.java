@@ -279,6 +279,10 @@ public class ConfigManager extends AbstractConfigModel {
 		return Config.getUserCurrentLanguageDir();
 	}
 
+	public File getInflectionDir() {
+		return new File(Config.getUserCurrentLanguageDir(),"Inflection");
+	}
+	
 	public SvnMonitor getSvnMonitor(File f) {
 		return Config.getSvnMonitor();
 	}

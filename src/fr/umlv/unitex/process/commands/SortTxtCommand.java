@@ -47,7 +47,9 @@ public class SortTxtCommand extends CommandBuilder {
 	}
 
 	public SortTxtCommand sortAlphabet(File alphabet) {
-		protectElement("-o" + alphabet.getAbsolutePath());
+		if (alphabet!=null) {
+			protectElement("-o" + alphabet.getAbsolutePath());
+		}
 		return this;
 	}
 
