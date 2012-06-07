@@ -50,7 +50,6 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
@@ -340,7 +339,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	void saveFile(File f) {
 		if (f == null) {
 			final JFileChooser chooser = new JFileChooser();
-			chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
+			chooser.setCurrentDirectory(ConfigManager.getManager().getCurrentLanguageDir());
 			chooser.setMultiSelectionEnabled(false);
 			chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 			final int returnVal = chooser.showSaveDialog(this);
