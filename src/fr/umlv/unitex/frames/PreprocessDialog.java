@@ -642,7 +642,7 @@ public class PreprocessDialog extends JDialog {
 			commands = constructTextAutomaton(commands);
 		}
 		InternalFrameManager.getManager(null).closeTextFrame();
-		SntUtil.cleanSntDir(Config.getCurrentSntDir());
+		SntUtil.cleanSntDir(sntDir);
 		Launcher.exec(commands, true,
 				new AfterPreprocessDo(sntFile, taggedText));
 	}
