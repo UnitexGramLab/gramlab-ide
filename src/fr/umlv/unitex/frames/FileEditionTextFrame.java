@@ -206,7 +206,8 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 										JOptionPane.QUESTION_MESSAGE, null,
 										normal_options, normal_options[0]);
 					}
-					if (n == JOptionPane.CLOSED_OPTION) {
+					if (n == JOptionPane.CLOSED_OPTION ||  n==2) {
+						ConfigManager.getManager().userRefusedClosingFrame();
 						return;
 					}
 					if (n == 0) {
