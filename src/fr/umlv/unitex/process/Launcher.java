@@ -77,9 +77,9 @@ public class Launcher {
 			new EatStreamThread(err).start();
 			return p.waitFor();
 		} catch (final IOException e1) {
-			e1.printStackTrace();
+			/* */
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			/* */
 		}
 		return 1;
 	}
