@@ -34,6 +34,7 @@ import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.exceptions.UserRefusedFrameClosingError;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
@@ -958,10 +959,15 @@ public class InternalFrameManager {
 		return d;
 	}
 
-	public void closeAllFrames() {
+	public boolean closeAllFrames() {
 		for (final JInternalFrame f : desktop.getAllFrames()) {
-			f.doDefaultCloseAction();
+			try {
+				f.doDefaultCloseAction();
+			} catch (UserRefusedFrameClosingError e) {
+				return false;
+			}
 		}
+		return true;
 	}
 
 	public ContextsInfo newListCopyDialog() {
