@@ -218,17 +218,19 @@ public abstract class CommandBuilder implements AbstractCommand {
 			if (parameters.getStdout()==null) {
 				/* If needed, we just consume the output stream */
 				new EatStreamThread(p.getInputStream()).start();
+				entry.setNormalStreamEnded(true);
 			} else {
 				new ProcessInfoThread(parameters.getStdout(), p
-					.getInputStream(),null)
+					.getInputStream(),entry,false)
 					.start();
 			}
 			if (parameters.getStderr()==null) {
 				/* If needed, we just consume the error stream */
 				new EatStreamThread(p.getErrorStream()).start();
+				entry.setErrorStreamEnded(true);
 			} else {
 				new ProcessInfoThread(parameters.getStderr(), p
-					.getErrorStream(),entry)
+					.getErrorStream(),entry,true)
 					.start();
 			}
 			/* Now, we just wait for the end of the process */

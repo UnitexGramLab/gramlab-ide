@@ -43,6 +43,7 @@ public class ProcessInfoThread extends Thread {
 	final ProcessOutputList list;
 	private BufferedReader stream;
 	final ConsoleEntry entry;
+	boolean readingErrorStream;
 
 	/**
 	 * Creates a new <code>ProcessInfoThread</code>
@@ -52,9 +53,11 @@ public class ProcessInfoThread extends Thread {
 	 * @param s
 	 *            the stream to monitor
 	 */
-	public ProcessInfoThread(ProcessOutputList list, InputStream s, ConsoleEntry entry) {
+	public ProcessInfoThread(ProcessOutputList list, InputStream s, ConsoleEntry entry,
+			boolean errorStream) {
 		this.list = list;
 		this.entry = entry;
+		this.readingErrorStream=errorStream;
 		try {
 			stream = new BufferedReader(new InputStreamReader(s, "UTF8"));
 		} catch (final UnsupportedEncodingException e) {
@@ -136,9 +139,9 @@ public class ProcessInfoThread extends Thread {
 							if (ret) {
 								list.addLine(new Couple(s2, false));
 							} else {
-								list.replaceLastLine(new Couple(s2, false));
+								list.addReplacableLine(new Couple(s2, false));
 							}
-							if (entry != null) {
+							if (entry != null && readingErrorStream) {
 								entry.addErrorMessage(s2);
 							}
 						}
@@ -151,7 +154,11 @@ public class ProcessInfoThread extends Thread {
 			}
 		}
 		if (entry!=null) {
-			entry.setErrorStreamEnded(true);
+			if (readingErrorStream) {
+				entry.setErrorStreamEnded(true);
+			} else {
+				entry.setNormalStreamEnded(true);
+			}
 		}
 	}
 }

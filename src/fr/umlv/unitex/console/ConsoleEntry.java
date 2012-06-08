@@ -86,6 +86,7 @@ public class ConsoleEntry {
 	}
 	
 	private boolean errorStreamEnded=false;
+	private boolean normalStreamEnded=false;
 
 	private Object lock=new Object();
 	
@@ -98,6 +99,18 @@ public class ConsoleEntry {
 	public void setErrorStreamEnded(boolean errorStreamEnded) {
 		synchronized (lock) {
 			this.errorStreamEnded = errorStreamEnded;
+		}
+	}
+	
+	public boolean isNormalStreamEnded() {
+		synchronized (lock) {
+			return normalStreamEnded;
+		}
+	}
+
+	public void setNormalStreamEnded(boolean normalStreamEnded) {
+		synchronized (lock) {
+			this.normalStreamEnded = normalStreamEnded;
 		}
 	}
 	
