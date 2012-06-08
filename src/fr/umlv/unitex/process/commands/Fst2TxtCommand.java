@@ -54,12 +54,21 @@ public class Fst2TxtCommand extends CommandBuilder {
 		return this;
 	}
 
-	public Fst2TxtCommand charByChar(boolean morphologicalUseOfSpace) {
-		if (morphologicalUseOfSpace)
-			element("--start_on_space");
-		element("--char_by_char");
+	public Fst2TxtCommand charByChar(boolean b) {
+		if (b) {
+			element("--char_by_char");
+		}
 		return this;
 	}
+	
+	
+	public Fst2TxtCommand morphologicalUseOfSpace(boolean b) {
+		if (b) {
+			element("--start_on_space");
+		}
+		return this;
+	}
+	
 
 	public Fst2TxtCommand inputOffsets(File s) {
 		protectElement("--input_offsets=" + s.getAbsolutePath());
