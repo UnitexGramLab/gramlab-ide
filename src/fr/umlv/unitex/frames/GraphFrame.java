@@ -161,7 +161,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				handleSvnConflict(conflict, t);
 				return;
 			}
-			if (grf.lastModified() > lastModification) {
+			if (grf.lastModified() != lastModification) {
 				final int ret = JOptionPane
 						.showConfirmDialog(
 								GraphFrame.this,
