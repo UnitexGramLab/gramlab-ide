@@ -355,6 +355,10 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		lastModification = file.lastModified();
 	}
 
+	public void saveFile() {
+		saveFile(file);
+	}
+	
 	/**
 	 * Returns the text.
 	 * 
