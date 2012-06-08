@@ -976,28 +976,40 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	class UndoIt implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
-			try {
-				getManager().undo();
-			} catch (final CannotUndoException ex) {
-				ex.printStackTrace();
-			} finally {
-				repaint();
-			}
+			undo();
 		}
 	}
 
+	public void undo() {
+		try {
+			if (getManager().canUndo()) {
+				getManager().undo();
+			}
+		} catch (final CannotUndoException ex) {
+			ex.printStackTrace();
+		} finally {
+			repaint();
+		}	
+	}
+	
 	class RedoIt implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
-			try {
-				getManager().redo();
-			} catch (final CannotRedoException ex) {
-				ex.printStackTrace();
-			} finally {
-				repaint();
-			}
+			redo();
 		}
 	}
 
+	public void redo() {
+		try {
+			if (getManager().canRedo()) {
+				getManager().redo();
+			}
+		} catch (final CannotRedoException ex) {
+			/* */
+		} finally {
+			repaint();
+		}
+	}
+	
 	@Override
 	public void repaint() {
 		super.repaint();
