@@ -507,8 +507,8 @@ public class PreprocessDialog extends JDialog {
 			Fst2TxtCommand cmd = new Fst2TxtCommand().text(
 					Config.getCurrentSnt()).fst2(fst2).alphabet(
 					ConfigManager.getManager().getAlphabet(null)).mode(false);
-			if (ConfigManager.getManager().isCharByCharLanguage(null))
-				cmd = cmd.charByChar(ConfigManager.getManager()
+			cmd = cmd.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
+			cmd=cmd.morphologicalUseOfSpace(ConfigManager.getManager()
 						.isMorphologicalUseOfSpaceAllowed(null));
 			if (inputOffsets != null) {
 				cmd = cmd.inputOffsets(inputOffsets);
@@ -558,8 +558,8 @@ public class PreprocessDialog extends JDialog {
 			Fst2TxtCommand cmd = new Fst2TxtCommand().text(
 					Config.getCurrentSnt()).fst2(fst2).alphabet(
 					ConfigManager.getManager().getAlphabet(null)).mode(true);
-			if (ConfigManager.getManager().isCharByCharLanguage(null))
-				cmd = cmd.charByChar(ConfigManager.getManager()
+			cmd = cmd.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
+			cmd = cmd.morphologicalUseOfSpace(ConfigManager.getManager()
 						.isMorphologicalUseOfSpaceAllowed(null));
 			if (inputOffsets != null) {
 				cmd = cmd.inputOffsets(inputOffsets);
