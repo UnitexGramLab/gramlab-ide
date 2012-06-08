@@ -527,10 +527,17 @@ public class UnitexFrame extends JFrame {
 		graphMenu.add(new JMenuItem(open));
 		final Action save = new AbstractAction("Save") {
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
-						.getCurrentFocusedGraphFrame();
-				if (f != null)
+				GraphFrame f=InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
+				if (f!=null) {
 					f.saveGraph();
+					return;
+				}
+				/* Evil hack to allow save with ctrl+S in the internal text editor */
+				JInternalFrame frame=InternalFrameManager.getManager(null).getSelectedFrame();
+				if (frame instanceof FileEditionTextFrame) {
+					((FileEditionTextFrame)frame).saveFile();
+					return;
+				}
 			}
 		};
 		save.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
