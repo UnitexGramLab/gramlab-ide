@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -850,11 +851,23 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				final Object[] normal_options = { "Save", "Don't save",
 						"Cancel" };
 				int n;
+				String message;
+				if (grf==null) {
+					message="This graph has never been saved. Do you want to save it ?";
+				} else {
+					message="The graph "+grf.getAbsolutePath()+"\n"+
+						"has been modified. Do you want to save it ?";
+				}
+				try {
+					GraphFrame.this.setSelected(true);
+				} catch (PropertyVetoException e1) {
+					/* */
+				}
 				if (UnitexFrame.closing) {
 					n = JOptionPane
 							.showOptionDialog(
 									GraphFrame.this,
-									"Graph has been modified. Do you want to save it ?",
+									message,
 									"", JOptionPane.YES_NO_CANCEL_OPTION,
 									JOptionPane.QUESTION_MESSAGE, null,
 									options_on_exit, options_on_exit[0]);
@@ -862,7 +875,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 					n = JOptionPane
 							.showOptionDialog(
 									GraphFrame.this,
-									"Graph has been modified. Do you want to save it ?",
+									message,
 									"", JOptionPane.YES_NO_CANCEL_OPTION,
 									JOptionPane.QUESTION_MESSAGE, null,
 									normal_options, normal_options[0]);

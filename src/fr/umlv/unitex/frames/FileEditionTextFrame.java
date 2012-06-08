@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.AbstractAction;
@@ -68,11 +69,17 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	File file;
 	long lastModification;
 
-	final Timer autoRefresh = new Timer(2000, new ActionListener() {
+	final Timer autoRefresh = new Timer(1000, new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			if (file == null) {
+			if (file==null) {
+				setTitle(text.isModified()?"(unsaved)":"");
 				return;
 			}
+			String title1="";
+			if (text.isModified()) {
+				title1="(modified) ";
+			}
+			setTitle(title1+file.getAbsolutePath());
 			if (!file.exists()) {
 				/* Case of a file that has been removed */
 				final Timer t = (Timer) e.getSource();
@@ -188,11 +195,23 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 					final Object[] normal_options = { "Save", "Don't save",
 							"Cancel" };
 					int n;
+					String message;
+					if (file==null) {
+						message="This file has never been saved. Do you want to save it ?";
+					} else {
+						message="The file "+file.getAbsolutePath()+"\n"+
+							"has been modified. Do you want to save it ?";
+					}
+					try {
+						FileEditionTextFrame.this.setSelected(true);
+					} catch (PropertyVetoException e1) {
+						/* */
+					}
 					if (UnitexFrame.closing) {
 						n = JOptionPane
 								.showOptionDialog(
 										FileEditionTextFrame.this,
-										"Text has been modified. Do you want to save it ?",
+										message,
 										"", JOptionPane.YES_NO_CANCEL_OPTION,
 										JOptionPane.QUESTION_MESSAGE, null,
 										options_on_exit, options_on_exit[0]);
