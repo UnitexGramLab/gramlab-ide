@@ -145,7 +145,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
 					stdoutList.empty();
 					final String[] comm = command.getCommandArguments(false);
 					final Process p = Runtime.getRuntime().exec(comm);
-					new ProcessInfoThread(stdoutList, p.getInputStream(),null).start();
+					new ProcessInfoThread(stdoutList, p.getInputStream(),null,false).start();
 					try {
 						p.waitFor();
 					} catch (final java.lang.InterruptedException e1) {

@@ -67,8 +67,10 @@ public class Executor extends Thread {
 					success=false;
 				}
 				if (entry!=null && command.getType()==CommandBuilder.PROGRAM) {
-					while (!entry.isErrorStreamEnded()) {
-						/* We wait for the end of the stderr reading thread */
+					while (!entry.isNormalStreamEnded() || !entry.isErrorStreamEnded()) {
+						/* We wait for the end of the stdout and stderr reading threads */
+						//System.err.println("stdout ended: "+entry.isNormalStreamEnded());
+						//System.err.println("stderr ended: "+entry.isErrorStreamEnded());
 					}
 				}
 				ToDoAfterSingleCommand toDoAfter=command.getWhatToDoOnceCompleted();

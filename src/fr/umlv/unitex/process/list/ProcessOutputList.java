@@ -80,9 +80,9 @@ public class ProcessOutputList extends JList {
 		}
 	}
 
-	public void replaceLastLine(Couple c) {
+	public void addReplacableLine(Couple c) {
 		ProcessOutputListModel model=getModel();
-		model.replaceLastLine(c);
+		model.addReplacableLine(c);
 		if (autoscroll) {
 			ensureIndexIsVisible(model.getSize() - 1);
 		}

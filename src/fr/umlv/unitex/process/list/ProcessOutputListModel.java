@@ -33,13 +33,15 @@ import fr.umlv.unitex.console.Couple;
  */
 public class ProcessOutputListModel extends DefaultListModel {
 	
-	void replaceLastLine(Couple c) {
-		final int size = size();
-		if (size == 0) {
-			super.addElement(c);
+	boolean lastLineReplacable=false;
+	
+	void addReplacableLine(Couple c) {
+		if (lastLineReplacable) {
+			replaceLastLine(c);
 		} else {
-			set(size - 1, c);
+			super.addElement(c);
 		}
+		lastLineReplacable=true;
 	}
 	
 	@Override
@@ -48,6 +50,20 @@ public class ProcessOutputListModel extends DefaultListModel {
 	}
 	
 	void addLine(Couple c) {
-		super.addElement(c);
+		if (lastLineReplacable) {
+			replaceLastLine(c);
+		} else {
+			super.addElement(c);
+		}
+		lastLineReplacable=false;
+	}
+	
+	private void replaceLastLine(Couple c) {
+		final int size = size();
+		if (size == 0) {
+			super.addElement(c);
+		} else {
+			set(size - 1, c);
+		}
 	}
 }
