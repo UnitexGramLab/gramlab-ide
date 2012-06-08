@@ -83,9 +83,14 @@ public class SvnCommand extends CommandBuilder {
 	
 	/**
 	 * See comment above 'checkout'
+	 * revision==-1 means update to head
 	 */
-	public SvnCommand update(File path) {
+	public SvnCommand update(int revision,File path) {
 		element("update");
+		if (revision!=-1) {
+			element("-r");
+			element(""+revision);
+		}
 		if (path!=null) {
 			protectElement(path.getAbsolutePath());
 		}
