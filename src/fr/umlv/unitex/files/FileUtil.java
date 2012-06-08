@@ -582,4 +582,13 @@ public class FileUtil {
 		}
 	}
 
+	public static boolean hasExtension(File file, String extension) {
+		if (file==null) {
+			throw new IllegalArgumentException();
+		}
+		if (extension==null) return true;
+		String s=getExtensionInLowerCase(file);
+		return extension.equals(s);
+	}
+
 }
