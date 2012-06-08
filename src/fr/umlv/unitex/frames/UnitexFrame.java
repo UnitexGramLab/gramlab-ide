@@ -581,6 +581,31 @@ public class UnitexFrame extends JFrame {
 		};
 		graphMenu.add(new JMenuItem(printAll));
 		graphMenu.addSeparator();
+		final Action undo = new AbstractAction("Undo") {
+			public void actionPerformed(ActionEvent e) {
+				GraphFrame f=InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
+				if (f!=null) {
+					f.undo();
+					return;
+				}
+			}
+		};
+		undo.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+				KeyEvent.VK_Z, Event.CTRL_MASK));
+		graphMenu.add(new JMenuItem(undo));
+		final Action redo = new AbstractAction("Redo") {
+			public void actionPerformed(ActionEvent e) {
+				GraphFrame f=InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
+				if (f!=null) {
+					f.redo();
+					return;
+				}
+			}
+		};
+		redo.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+				KeyEvent.VK_Y, Event.CTRL_MASK));
+		graphMenu.add(new JMenuItem(redo));
+		graphMenu.addSeparator();
 		final JMenu tools = new JMenu("Tools");
 		final JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
 		sortNodeLabel.addActionListener(new ActionListener() {
