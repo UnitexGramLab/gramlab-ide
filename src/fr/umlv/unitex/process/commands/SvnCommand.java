@@ -84,12 +84,24 @@ public class SvnCommand extends CommandBuilder {
 	/**
 	 * See comment above 'checkout'
 	 * revision==-1 means update to head
+	 * revision==-2 means update to base
+	 * if forceAccept==true, we want to force the accept in case of conflict
 	 */
-	public SvnCommand update(int revision,File path) {
+	public SvnCommand update(int revision,File path,boolean forceAccept) {
 		element("update");
-		if (revision!=-1) {
+		if (revision==-2) {
+			element("-r");
+			element("BASE");
+		} else if (revision!=-1) {
 			element("-r");
 			element(""+revision);
+		}
+		if (forceAccept) {
+			if (revision==-2) {
+				element("--accept=base");
+			} else {
+				element("--accept=theirs-full");
+			}
 		}
 		if (path!=null) {
 			protectElement(path.getAbsolutePath());
