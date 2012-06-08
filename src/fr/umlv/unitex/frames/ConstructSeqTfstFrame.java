@@ -393,8 +393,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 																	.fst2(fst2)
 																	.alphabet(ConfigManager.getManager().getAlphabet(null))
 																	.mode(true);
-					if (ConfigManager.getManager().isCharByCharLanguage(null))
-						Fst2Txtcmd = Fst2Txtcmd.charByChar(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
+					Fst2Txtcmd = Fst2Txtcmd.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
+					Fst2Txtcmd=Fst2Txtcmd.morphologicalUseOfSpace(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
 					commands.addCommand(Fst2Txtcmd);
 					if(bTEI.isSelected()){
 						//grfCmd2
@@ -412,11 +412,10 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 								).fst2(fst22).alphabet(
 										ConfigManager.getManager().getAlphabet(null)).mode(false);
 
-						if (ConfigManager.getManager().isCharByCharLanguage(null)){
-							//Tokenize
-							Fst2Txt2 = Fst2Txt2.charByChar(ConfigManager.getManager()
+						//Tokenize
+						Fst2Txt2 = Fst2Txt2.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
+						Fst2Txt2=Fst2Txt2.morphologicalUseOfSpace(ConfigManager.getManager()
 									.isMorphologicalUseOfSpaceAllowed(null));
-						}
 						commands.addCommand(Fst2Txt2);	
 					}
 				}
