@@ -79,4 +79,15 @@ public class Fst2TxtCommand extends CommandBuilder {
 		protectElement("--output_offsets=" + s.getAbsolutePath());
 		return this;
 	}
+
+	File srcGrfPath=null;
+	
+	public File getSrcGrfPath() {
+		return srcGrfPath;
+	}
+	
+	public void setSrcGrfPath(File dir) {
+		srcGrfPath=dir;
+	}
+	
 }
