@@ -140,7 +140,7 @@ public class SvnCommand extends CommandBuilder {
 	}
 
 	
-	public SvnCommand initialImport(File path,String url) {
+	public SvnCommand initialImport(File path,String url,String extraIgnores) {
 		element("import");
 		element("-m");
 		protectElement("Initial import");
@@ -148,7 +148,11 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		protectElement(GLOBAL_IGNORES);
+		if (extraIgnores==null) {
+			protectElement(GLOBAL_IGNORES+extraIgnores);
+		} else {
+			protectElement(GLOBAL_IGNORES+" "+extraIgnores);
+		}
 		protectElement(path.getAbsolutePath());
 		protectElement(url);
 		return this;
