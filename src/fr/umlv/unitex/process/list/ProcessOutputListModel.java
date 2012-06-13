@@ -36,6 +36,7 @@ public class ProcessOutputListModel extends DefaultListModel {
 	boolean lastLineReplacable=false;
 	
 	void addReplacableLine(Couple c) {
+		//System.err.println("\nadd replacable line: "+c.getString());
 		if (lastLineReplacable) {
 			replaceLastLine(c);
 		} else {
@@ -50,6 +51,19 @@ public class ProcessOutputListModel extends DefaultListModel {
 	}
 	
 	void addLine(Couple c) {
+		//System.err.println("\nadd line: "+c.getString());
+		if (c.getString().equals("")) {
+			/* There is a special case for empty lines: an empty
+			 * line printed after a replacable line must be ignored, and
+			 * we just have to update lastLineReplacable to false so that 
+			 * the next printed line will not replace the current last one */
+			if (lastLineReplacable) {
+				lastLineReplacable=false;
+			} else {
+				super.addElement(c);
+			}
+			return;
+		}
 		if (lastLineReplacable) {
 			replaceLastLine(c);
 		} else {
@@ -60,10 +74,11 @@ public class ProcessOutputListModel extends DefaultListModel {
 	
 	private void replaceLastLine(Couple c) {
 		final int size = size();
-		if (size == 0) {
+		if (size==0) {
 			super.addElement(c);
 		} else {
-			set(size - 1, c);
+			set(size-1,c);
+			fireContentsChanged(this,size-1,size-1);
 		}
 	}
 }
