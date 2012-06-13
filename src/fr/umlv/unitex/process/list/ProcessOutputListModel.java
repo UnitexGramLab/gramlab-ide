@@ -36,7 +36,6 @@ public class ProcessOutputListModel extends DefaultListModel {
 	boolean lastLineReplacable=false;
 	
 	void addReplacableLine(Couple c) {
-		//System.err.println("\nadd replacable line: "+c.getString());
 		if (lastLineReplacable) {
 			replaceLastLine(c);
 		} else {
@@ -51,7 +50,6 @@ public class ProcessOutputListModel extends DefaultListModel {
 	}
 	
 	void addLine(Couple c) {
-		//System.err.println("\nadd line: "+c.getString());
 		if (c.getString().equals("")) {
 			/* There is a special case for empty lines: an empty
 			 * line printed after a replacable line must be ignored, and
