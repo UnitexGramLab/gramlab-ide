@@ -1225,7 +1225,7 @@ public class UnitexFrame extends JFrame {
 		final File dela = Config.getCurrentDELA();
 		SortTxtCommand command = new SortTxtCommand().file(dela);
 		if (Config.getCurrentLanguage().equals("Thai")) {
-			command = command.thai();
+			command = command.thai(true);
 		} else {
 			command = command.sortAlphabet(new File(Config
 					.getUserCurrentLanguageDir(), "Alphabet_sort.txt"));
