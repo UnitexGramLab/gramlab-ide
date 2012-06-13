@@ -386,7 +386,7 @@ public class PreprocessDialog extends JDialog {
 					.saveNumberOfLines(
 							new File(Config.getCurrentSntDir(), "dlf.n"));
 			if (Config.getCurrentLanguage().equals("Thai")) {
-				sortCmd = sortCmd.thai();
+				sortCmd = sortCmd.thai(true);
 			} else {
 				sortCmd = sortCmd.sortAlphabet(alph);
 			}
@@ -397,7 +397,7 @@ public class PreprocessDialog extends JDialog {
 					.saveNumberOfLines(
 							new File(Config.getCurrentSntDir(), "dlc.n"));
 			if (Config.getCurrentLanguage().equals("Thai")) {
-				sortCmd2 = sortCmd2.thai();
+				sortCmd2 = sortCmd2.thai(true);
 			} else {
 				sortCmd2 = sortCmd2.sortAlphabet(alph);
 			}
@@ -408,7 +408,7 @@ public class PreprocessDialog extends JDialog {
 					.saveNumberOfLines(
 							new File(Config.getCurrentSntDir(), "err.n"));
 			if (Config.getCurrentLanguage().equals("Thai")) {
-				sortCmd3 = sortCmd3.thai();
+				sortCmd3 = sortCmd3.thai(true);
 			} else {
 				sortCmd3 = sortCmd3.sortAlphabet(alph);
 			}
@@ -419,7 +419,7 @@ public class PreprocessDialog extends JDialog {
 					.saveNumberOfLines(
 							new File(Config.getCurrentSntDir(), "tags_err.n"));
 			if (Config.getCurrentLanguage().equals("Thai")) {
-				sortCmd4 = sortCmd4.thai();
+				sortCmd4 = sortCmd4.thai(true);
 			} else {
 				sortCmd4 = sortCmd4.sortAlphabet(alph);
 			}
