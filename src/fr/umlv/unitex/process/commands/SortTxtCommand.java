@@ -58,8 +58,10 @@ public class SortTxtCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SortTxtCommand thai() {
-		element("--thai");
+	public SortTxtCommand thai(boolean b) {
+		if (b) {
+			element("--thai");
+		}
 		return this;
 	}
 

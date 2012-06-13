@@ -57,6 +57,7 @@ import fr.umlv.unitex.xalign.ConcordanceModel;
 public class InternalFrameManager {
 	final JDesktopPane desktop;
 	private final static Integer LAYER = 1;
+	private final static Integer CONSOLE_LAYER = 10;
 	private final FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(
 			BuildKrMwuDicFrame.class);
 	private final FrameFactory aboutUnitexFrameFactory = new FrameFactory(
@@ -185,7 +186,11 @@ public class InternalFrameManager {
 				}
 			});
 		}
-		desktop.add(f, LAYER);
+		if (f instanceof ProcessInfoFrame) {
+			desktop.add(f, CONSOLE_LAYER);
+		} else {
+			desktop.add(f, LAYER);
+		}
 	}
 
 	protected JInternalFrame setup(JInternalFrame f) {
