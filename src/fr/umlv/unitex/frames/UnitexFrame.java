@@ -65,6 +65,7 @@ import fr.umlv.unitex.Version;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.FileEditionMenu;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.DelaFrameListener;
@@ -144,14 +145,12 @@ public class UnitexFrame extends JFrame {
 						constructSeqFst.setEnabled(true);
 						convertFst.setEnabled(true);
 						closeText.setEnabled(true);
+						File sntDir=FileUtil.getSntDir(ConfigManager.getManager().getCurrentSnt(null));
 						InternalFrameManager.getManager(null).newTokensFrame(
-								new File(Config.getCurrentSntDir(),
-										"tok_by_freq.txt"),true);
+								new File(sntDir,"tok_by_freq.txt"),true);
 						InternalFrameManager.getManager(null).newTfstTagsFrame(
-								new File(Config.getCurrentSntDir(),
-										"tfst_tags_by_freq.txt"));
-						InternalFrameManager.getManager(null).newTextDicFrame(
-								Config.getCurrentSntDir(), true);
+								new File(sntDir,"tfst_tags_by_freq.txt"));
+						InternalFrameManager.getManager(null).newTextDicFrame(sntDir, true);
 						InternalFrameManager.getManager(null)
 								.newTextAutomatonFrame(1, true);
 					}
