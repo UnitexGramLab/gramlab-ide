@@ -431,7 +431,8 @@ public class FileUtil {
 	 *            destination directory
 	 */
 	public static void copyDirRec(File src, File dest) {
-		if (!src.exists() || !src.isDirectory()) {
+		if (!src.exists() || !src.isDirectory()
+				|| src.getName().equals(".svn")) {
 			return;
 		}
 		if (!dest.exists()) {
