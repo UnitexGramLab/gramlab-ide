@@ -133,5 +133,11 @@ public class ExecParameters {
 			ToDo DO,boolean traceIntoConsole) {
 		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole,null);
 	}
+
+	public ExecParameters(boolean stopOnProblem, MultiCommands c,
+			ProcessOutputList stdout, ProcessOutputList stderr,
+			ToDo DO,boolean traceIntoConsole) {
+		this(stopOnProblem,c,stdout,stderr,DO,traceIntoConsole,null);
+	}
 }
 
