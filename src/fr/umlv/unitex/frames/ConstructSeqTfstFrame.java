@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -66,15 +67,15 @@ import fr.umlv.unitex.process.commands.TokenizeCommand;
  * 
  * @author Sébastien Paumier
  */
-public class ConstructSeqTfstFrame extends JInternalFrame {
-	final JTextField GRFfile = new JTextField(20);
-	final JTextField SourceFile = new JTextField(20);
-	String SourceFileName,SourceFileShortName, GRFFileName;
-	int n_op = 0, n_r = 0, n_d = 0, n_a = 0;
-	JSpinner spinner_op, spinner_r, spinner_d, spinner_a;
-	SpinnerNumberModel sm_op, sm_r, sm_d, sm_a;
+public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListener{
+	private final JTextField GRFfile = new JTextField(20);
+	private final JTextField SourceFile = new JTextField(20);
+	private String SourceFileName,SourceFileShortName, GRFFileName;
+	private int n_w = 0, n_r = 0, n_d = 0, n_a = 0;
+	JSpinner spinner_w, spinner_r, spinner_d, spinner_a;
+	SpinnerNumberModel sm_w, sm_r, sm_d, sm_a;
 	JRadioButton bTEI, bTXT, bSNT;
-	final JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
+	private final JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
 	private File sequenceGRF;
 	private File ReplaceGRF;
 
@@ -98,7 +99,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 		FilePanel.add(SourceFilePanel(),BorderLayout.NORTH);
 		FilePanel.add(outputFilePanel(), BorderLayout.SOUTH);
 		top.add(FilePanel);
-		top.add(jokersPanel(), BorderLayout.EAST);
+		top.add(wildcardsPanel(), BorderLayout.EAST);
 		panel.add(top, BorderLayout.CENTER);
 		return panel;
 	}
@@ -146,6 +147,9 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 		group.add(bTEI);
 		group.add(bTXT);								
 		group.add(bSNT);
+		bTEI.addActionListener(this);
+		bTXT.addActionListener(this);
+		bSNT.addActionListener(this);
 		fileP.add(bTEI);
 		fileP.add(bTXT);
 		fileP.add(bSNT);
@@ -189,7 +193,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 							+File.separatorChar
 							+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
 							+"_"
-							+n_op
+							+n_w
 							+n_a
 							+n_r
 							+n_d
@@ -226,7 +230,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 								+File.separatorChar
 								+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
 								+"_"
-								+n_op
+								+n_w
 								+n_a
 								+n_r
 								+n_d
@@ -238,7 +242,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 								+File.separatorChar
 								+SourceFileShortName
 								+"_"
-								+n_op
+								+n_w
 								+n_a
 								+n_r
 								+n_d
@@ -435,8 +439,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 			//Seq2Grf		
 			final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
 					ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
-					.output(GRFfile.getText()).jokers(n_op).joker_insert(n_a)
-					.joker_replace(n_r).joker_delete(n_d).applyBeautify(applyBeautify.isSelected()?1:0).text(
+					.output(GRFfile.getText()).wildcards(n_w).wildcard_insert(n_a)
+					.wildcard_replace(n_r).wildcard_delete(n_d).applyBeautify(applyBeautify.isSelected()).text(
 							sntFile);
 			System.out.println("seqCmd =" + seqCmd.getCommandLine());
 			commands.addCommand(seqCmd);
@@ -466,17 +470,17 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 		}
 	}
 
-	private JPanel jokersPanel() {
+	private JPanel wildcardsPanel() {
 		final JPanel p = new JPanel(new GridLayout(5, 1));
 		p.setBorder(BorderFactory.createRaisedBevelBorder());
-		final JLabel jokers = new JLabel("Jokers");
+		final JLabel wildcards = new JLabel("wildcards");
 		final JLabel insert = new JLabel("insert");
 		final JLabel replace = new JLabel("replace");
 		final JLabel delete = new JLabel("delete");
-		sm_op = new SpinnerNumberModel(0, 0, 10, 1);
-		sm_op.addChangeListener(new ChangeListener() {
+		sm_w = new SpinnerNumberModel(0, 0, 10, 1);
+		sm_w.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				n_op = sm_op.getNumber().intValue();
+				n_w = sm_w.getNumber().intValue();
 				String rad=SourceFileShortName;
 				if (SourceFileShortName.endsWith(".txt") ||
 						SourceFileShortName.endsWith(".snt") ||
@@ -489,11 +493,11 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 						+File.separatorChar
 						+rad
 						+"_"
-						+n_op+n_a+n_r+n_d+".grf";
+						+n_w+n_a+n_r+n_d+".grf";
 				GRFfile.setText(GRFFileName);
 			}
 		});
-		spinner_op = new JSpinner(sm_op);
+		spinner_w = new JSpinner(sm_w);
 		sm_a = new SpinnerNumberModel(0, 0, 10, 1);
 		sm_a.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -511,7 +515,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 							+File.separatorChar
 							+rad
 							+"_"
-							+n_op
+							+n_w
 							+n_a
 							+n_r
 							+n_d
@@ -537,7 +541,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 							+File.separatorChar
 							+rad
 							+"_"
-							+n_op
+							+n_w
 							+n_a
 							+n_r
 							+n_d
@@ -563,7 +567,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 							+File.separatorChar
 							+rad
 							+"_"
-							+n_op
+							+n_w
 							+n_a
 							+n_r
 							+n_d
@@ -574,8 +578,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 		});
 		spinner_r = new JSpinner(sm_r);
 		JPanel _p1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		_p1.add(jokers);
-		_p1.add(spinner_op);
+		_p1.add(wildcards);
+		_p1.add(spinner_w);
 		p.add(_p1);
 
 		JPanel _p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -599,4 +603,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame {
 		return p;
 	}
 
+	public void actionPerformed(ActionEvent arg0) {
+
+	}
 }

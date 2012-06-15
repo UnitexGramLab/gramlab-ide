@@ -33,12 +33,12 @@ public class Seq2GrfCommand extends CommandBuilder {
 		protectElement("-o" + outputfile.getAbsolutePath());
 	}
 
-	public Seq2GrfCommand(File alphabet, File outputfile, int j, int i, int r,
+	public Seq2GrfCommand(File alphabet, File outputfile, int w, int i, int r,
 			int d, int b) {
 		super("Seq2Grf");
 		protectElement("-a" + alphabet.getAbsolutePath());
 		protectElement("-o" + outputfile.getAbsolutePath());
-		protectElement("-j" + j);
+		protectElement("-w" + w);
 		protectElement("-i" + i);
 		protectElement("-r" + r);
 		protectElement("-d" + d);
@@ -67,27 +67,27 @@ public class Seq2GrfCommand extends CommandBuilder {
 		return this;
 	}
 
-	public Seq2GrfCommand jokers(int j) {
-		element("-j" + j);
+	public Seq2GrfCommand wildcards(int w) {
+		element("-w" + w);
 		return this;
 	}
 
-	public Seq2GrfCommand joker_insert(int i) {
+	public Seq2GrfCommand wildcard_insert(int i) {
 		element("-i" + i);
 		return this;
 	}
 
-	public Seq2GrfCommand joker_replace(int r) {
+	public Seq2GrfCommand wildcard_replace(int r) {
 		element("-r" + r);
 		return this;
 	}
 
-	public Seq2GrfCommand joker_delete(int d) {
+	public Seq2GrfCommand wildcard_delete(int d) {
 		element("-d" + d);
 		return this;
 	}
-	public Seq2GrfCommand applyBeautify(int b){
-		if (b>0){
+	public Seq2GrfCommand applyBeautify(boolean b){
+		if (b){
 			element("--b");
 		}
 		return this;
@@ -97,6 +97,13 @@ public class Seq2GrfCommand extends CommandBuilder {
 		element("-a" + a);
 		return this;
 	}
+ 	
+ 	public Seq2GrfCommand morpho(boolean morpho){
+ 		if (morpho){
+ 			element("--morpho");
+ 		}
+ 		return this;
+ 	}
 
 	public Seq2GrfCommand alphabet(File alphabet) {
 		protectElement("-a" + alphabet.getAbsolutePath());
