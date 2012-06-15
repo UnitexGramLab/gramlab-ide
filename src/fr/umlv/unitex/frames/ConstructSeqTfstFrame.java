@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -51,6 +52,7 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.ErrorMessageCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2TxtCommand;
@@ -59,23 +61,31 @@ import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.Seq2GrfCommand;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 
-/**
- * This class describes the "Construct Text FST" frame that offers to the user
- * to build the text automaton.
- * 
- * @author Sébastien Paumier
- */
-public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListener{
+public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionListener*/{
 	private final JTextField GRFfile = new JTextField(20);
 	private final JTextField SourceFile = new JTextField(20);
-	private String SourceFileName,SourceFileShortName, GRFFileName;
-	private int n_w = 0, n_r = 0, n_d = 0, n_a = 0;
-	JSpinner spinner_w, spinner_r, spinner_d, spinner_a;
-	SpinnerNumberModel sm_w, sm_r, sm_d, sm_a;
+	private final JTextField DicoFile = new JTextField(20);
+	private String SourceFileName,SourceFileShortName, GRFFileName, GRFSuffix;//,
+	private String DicoFileName;
+	private ArrayList<File> DicoFilesNames;
+	private int n_w = 0, n_r = 0, n_d = 0, n_i = 0;
+
+	JCheckBox r_cb =new JCheckBox("replace", false);
+	JCheckBox d_cb =new JCheckBox("delete", false);
+	JCheckBox i_cb =new JCheckBox("insert", false);
+	JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
+	JCheckBox applyDictionaries = new JCheckBox("Apply Dictionnaries ", false);
+	JButton DicosetButton;
+	JSpinner spinner_w;
+	JSpinner spinner_r, spinner_d, spinner_i;
+	SpinnerNumberModel sm_w;
+	SpinnerNumberModel sm_r, sm_d, sm_i;
+
 	JRadioButton bTEI, bTXT, bSNT;
-	private final JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
+
 	private File sequenceGRF;
 	private File ReplaceGRF;
 
@@ -92,13 +102,10 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 	private JPanel constructPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
 		final JPanel top = new JPanel(new FlowLayout());
-		final JPanel FilePanel = new JPanel(new BorderLayout());
+		final JPanel FilePanel = new JPanel(new GridLayout(4,1));
 		panel.add(textPanel(), BorderLayout.CENTER);
 		panel.add(constructButtonsPanel(), BorderLayout.SOUTH);
-		FilePanel.add(FileFormatPanel(), BorderLayout.CENTER);
-		FilePanel.add(SourceFilePanel(),BorderLayout.NORTH);
-		FilePanel.add(outputFilePanel(), BorderLayout.SOUTH);
-		top.add(FilePanel);
+		top.add(filesPanel(),BorderLayout.WEST);
 		top.add(wildcardsPanel(), BorderLayout.EAST);
 		panel.add(top, BorderLayout.CENTER);
 		return panel;
@@ -134,169 +141,6 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		return textP;
 	}
 
-	private JPanel FileFormatPanel(){
-		final JPanel fileP = new JPanel(new GridLayout(1,3));
-		bTEI = new JRadioButton("TEILite");
-		bTEI.setMnemonic(1);
-		bTXT = new JRadioButton("TXT");
-		bTXT.setMnemonic(2);
-		bSNT = new JRadioButton("SNT");
-		bSNT.setMnemonic(3);
-
-		ButtonGroup group = new ButtonGroup();
-		group.add(bTEI);
-		group.add(bTXT);								
-		group.add(bSNT);
-		bTEI.addActionListener(this);
-		bTXT.addActionListener(this);
-		bSNT.addActionListener(this);
-		fileP.add(bTEI);
-		fileP.add(bTXT);
-		fileP.add(bSNT);
-
-		return fileP;
-	}
-	private JPanel SourceFilePanel() {
-		final JPanel fileP = new JPanel(new GridLayout(2, 1));
-		final JPanel fileP2 = new JPanel(new FlowLayout());
-		fileP.setBorder(new EmptyBorder(8, 8, 1, 1));
-		fileP.add(new JLabel("select the Sequence Corpus :"));
-		fileP2.add(SourceFile, BorderLayout.LINE_START);
-		final Action setAction = new AbstractAction("Set ...") {
-			public void actionPerformed(ActionEvent arg1) {
-				final JFileChooser chooser = Config.getFileEditionDialogBox();
-				System.out.println("chooser dir : "
-						+ chooser.getCurrentDirectory());
-				chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
-				final int returnVal = chooser.showOpenDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					// we return if the user has clicked on CANCEL
-					return;
-				}
-				try {
-					SourceFileName=chooser.getSelectedFile().getCanonicalPath();
-					SourceFileShortName=chooser.getSelectedFile().getName();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				SourceFile.setText(SourceFileName);
-
-				if (SourceFile.getText().endsWith(".txt") ||
-						SourceFile.getText().endsWith(".snt") ||
-						SourceFile.getText().endsWith(".xml")
-						){
-					System.out.println("sourcefile = "+SourceFile.getText());
-					System.out.println("sourcefile_sort : "+SourceFile.getText());
-					System.out.println("Config.getCurrentGraphDir() ="+Config.getCurrentGraphDir());
-
-					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
-							+File.separatorChar
-							+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
-							+"_"
-							+n_w
-							+n_a
-							+n_r
-							+n_d
-							+".grf";
-					System.out.println("grfFileName = "+GRFFileName);
-				}
-				if (SourceFile.getText().endsWith(".snt")){
-					bSNT.setSelected(true);
-					bTEI.setSelected(false);
-					bTXT.setSelected(false);
-					Config.setCurrentSnt(new File(SourceFileName));
-					System.out.println("selected : SNT");
-				}
-				else if (SourceFile.getText().endsWith(".xml")){
-					bTEI.setSelected(true);
-					bTXT.setSelected(false);
-					bSNT.setSelected(false);
-					System.out.println("selected : TEI");
-				}
-				else {
-					bTXT.setSelected(true);
-					bTEI.setSelected(false);
-					bSNT.setSelected(false);
-					System.out.println("selected : TXT");
-				}		
-				try {
-					if (SourceFile.getText().endsWith(".txt") ||
-							SourceFile.getText().endsWith(".snt") ||
-							SourceFile.getText().endsWith(".xml")
-							){
-						GRFFileName=Config.getUserCurrentLanguageDir().getCanonicalPath()
-								+File.separatorChar
-								+"Graphs"
-								+File.separatorChar
-								+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
-								+"_"
-								+n_w
-								+n_a
-								+n_r
-								+n_d
-								+".grf";
-					}else{
-						GRFFileName=Config.getUserCurrentLanguageDir().getCanonicalPath()
-								+File.separatorChar
-								+"Graphs"
-								+File.separatorChar
-								+SourceFileShortName
-								+"_"
-								+n_w
-								+n_a
-								+n_r
-								+n_d
-								+".grf";
-					}
-					GRFfile.setText(
-							GRFFileName
-							);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		final JButton setButton = new JButton(setAction);
-		setButton.setSize(4, 1);
-		fileP2.add(setButton);
-		fileP.add(fileP2);
-		return fileP;
-	}
-	private JPanel outputFilePanel() {
-		final JPanel fileP = new JPanel(new GridLayout(2, 1));
-		JPanel fileP2= new JPanel(new FlowLayout());
-		fileP.setBorder(new EmptyBorder(8, 8, 1, 1));
-		fileP.add(new JLabel("choose the name of the resulting grf file"));
-		fileP2.add(GRFfile, BorderLayout.LINE_START);
-		final Action setAction = new AbstractAction("Set ...") {
-			public void actionPerformed(ActionEvent arg1) {
-				final JFileChooser chooser = Config.getGrfAndFst2DialogBox();
-				System.out.println("GRFFileName = "+GRFFileName);
-				File f = new File(GRFFileName);
-				chooser.setSelectedFile(f);
-				System.out.println("chooser dir : "
-						+ chooser.getCurrentDirectory());
-				chooser.setCurrentDirectory(Config.getCurrentGraphDir());
-				final int returnVal = chooser.showOpenDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					// we return if the user has clicked on CANCEL
-					return;
-				}
-				try {
-					GRFFileName=chooser.getSelectedFile().getCanonicalPath();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				GRFfile.setText(GRFFileName);
-			}
-		};
-		final JButton setButton = new JButton(setAction);
-		setButton.setSize(4, 1);
-		fileP2.add(setButton);
-		fileP.add(fileP2);
-		return fileP;
-	}
-
 	void constructSeqTfst(){
 		File originalTextFile =new File(SourceFile.getText());
 		if (originalTextFile.exists()){
@@ -304,14 +148,42 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 			System.out.println("HELLO");
 			File sntFile = null;
 			File dir = null;
+
+			String dirName;
+			/////////////////
 			if (bSNT.isSelected()){
 				System.out.println(">bSNT");
 				sntFile = new File(SourceFile.getText());
-				dir =new File (SourceFile.getText()+"_snt");
+				dirName=SourceFile.getText()+"_snt";
+				dir =new File (dirName);
+			}else if (bTEI.isSelected()){
+				if(SourceFile.getText().endsWith(".xml")||SourceFile.getText().endsWith(".snt")){
+					dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
+					sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
+				}else{
+					dirName=SourceFile.getText()+"_snt";
+					sntFile=new File(SourceFile.getText()+".snt");
+				}
+			}
+			else if(SourceFile.getText().endsWith(".txt")){
+				System.out.println(SourceFile.getText()+" ends with .txt");
+				dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
+				sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
+			}else{
+				dirName=SourceFile.getText()+"_snt";
+				sntFile=new File(SourceFile.getText()+".snt");
+				System.out.println("sourcefile : "+SourceFile.getText());
+				System.out.println("sntFile : "+sntFile.getName());
+			}
+			/////////////////
+			if (bSNT.isSelected()){
+				System.out.println(">bSNT");
+				sntFile = new File(SourceFile.getText());
+				dirName=SourceFile.getText()+"_snt";
+				dir =new File (dirName);
 			}else {
 				if(bTEI.isSelected()){
 					System.out.println(">bTEI ");
-					String dirName;
 					if(SourceFile.getText().endsWith(".xml")){
 						dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
 						sntFile=new File(SourceFile.getText().substring(0, SourceFile.getText().length()-4)+".snt");
@@ -338,9 +210,8 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 					ReplaceGRF =new File(ReplaceGRF,"Replace");
 					ReplaceGRF =new File(ReplaceGRF,"ReplaceTEI.grf");
 				}
-				if (bTXT.isSelected()){
+				else if (bTXT.isSelected()){
 					System.out.println(">bTXT");
-					String dirName;
 					if(SourceFile.getText().endsWith(".txt")){
 						System.out.println(SourceFile.getText()+" ends with .txt");
 						dirName=SourceFile.getText().substring(0, SourceFile.getText().length()-4)+"_snt";
@@ -394,11 +265,11 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 					commands.addCommand(flattenCmd);
 					//Fst2Txt
 					Fst2TxtCommand Fst2Txtcmd = new Fst2TxtCommand().text(sntFile)
-																	.fst2(fst2)
-																	.alphabet(ConfigManager.getManager().getAlphabet(null))
-																	.mode(true);
-					Fst2Txtcmd = Fst2Txtcmd.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
-					Fst2Txtcmd=Fst2Txtcmd.morphologicalUseOfSpace(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
+							.fst2(fst2)
+							.alphabet(ConfigManager.getManager().getAlphabet(null))
+							.mode(true);
+					if (ConfigManager.getManager().isCharByCharLanguage(null))
+						Fst2Txtcmd = Fst2Txtcmd.charByChar(ConfigManager.getManager().isMorphologicalUseOfSpaceAllowed(null));
 					commands.addCommand(Fst2Txtcmd);
 					if(bTEI.isSelected()){
 						//grfCmd2
@@ -416,10 +287,11 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 								).fst2(fst22).alphabet(
 										ConfigManager.getManager().getAlphabet(null)).mode(false);
 
-						//Tokenize
-						Fst2Txt2 = Fst2Txt2.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
-						Fst2Txt2=Fst2Txt2.morphologicalUseOfSpace(ConfigManager.getManager()
+						if (ConfigManager.getManager().isCharByCharLanguage(null)){
+							//Tokenize
+							Fst2Txt2 = Fst2Txt2.charByChar(ConfigManager.getManager()
 									.isMorphologicalUseOfSpaceAllowed(null));
+						}
 						commands.addCommand(Fst2Txt2);	
 					}
 				}
@@ -436,12 +308,59 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 				}
 				commands.addCommand(tokenizeCmd);
 			}
+			if (applyDictionaries.isSelected()){
+				//Dico
+				ArrayList<File> DicoFileList = new ArrayList<File>();
+				if (DicoFileName!=null){
+					DicoFileList.add(new File(DicoFileName));
+				}
+				final DicoCommand dicoCmd = new DicoCommand()
+				.snt(sntFile)
+				.alphabet(new File(ConfigManager.getManager()
+						.getAlphabet(null).getAbsolutePath()))
+						.dictionaryList(DicoFileList);
+				commands.addCommand(dicoCmd);
+				//SortTxt
+				File dlf= new File(dirName+File.separator+"dlf");
+				File dlc= new File(dirName+File.separator+"dlc");
+				File err= new File(dirName+File.separator+"err");
+				File tags_err= new File(dirName+File.separator+"tags_err");
+				final SortTxtCommand SortTxtCommand1 = new SortTxtCommand();
+				SortTxtCommand1.file(dlf);
+				SortTxtCommand1.element("-l"+dirName+File.separator+"dlf.n" );
+				SortTxtCommand1.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
+				//				SortTxtCommand1.element("-o"+)
+				//				;
+								commands.addCommand(SortTxtCommand1);
+				final SortTxtCommand SortTxtCommand2 = new SortTxtCommand();
+				SortTxtCommand2.file(dlc);
+				SortTxtCommand2.element("-l"+dirName+File.separator+"dlc.n");
+				SortTxtCommand2.element("-o"+ConfigManager.getManager().getCurrentLanguage());
+				SortTxtCommand2.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
+				commands.addCommand(SortTxtCommand2);
+				final SortTxtCommand SortTxtCommand3 = new SortTxtCommand();
+				SortTxtCommand3.file(err);
+				SortTxtCommand3.element("-l"+dirName+File.separator+"err.n");
+				SortTxtCommand3.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
+//			 SortTxtCommand SortTxtCommand3 = new SortTxtCommand()
+//				.file(err)
+//				.element("-l",)
+//				.element("-o",)
+//				;
+				commands.addCommand(SortTxtCommand3);
+				final SortTxtCommand SortTxtCommand4 = new SortTxtCommand();
+				SortTxtCommand4.file(tags_err);
+				SortTxtCommand4.element("-l"+dirName+File.separator+"tags_err.n");
+				SortTxtCommand4.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
+								commands.addCommand(SortTxtCommand4);
+			}
 			//Seq2Grf		
 			final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
 					ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
-					.output(GRFfile.getText()).wildcards(n_w).wildcard_insert(n_a)
+					.output(GRFfile.getText()).wildcards(n_w).wildcard_insert(n_i)
 					.wildcard_replace(n_r).wildcard_delete(n_d).applyBeautify(applyBeautify.isSelected()).text(
-							sntFile);
+							sntFile).morpho(applyDictionaries.isSelected());
+
 			System.out.println("seqCmd =" + seqCmd.getCommandLine());
 			commands.addCommand(seqCmd);
 			InternalFrameManager.getManager(null).closeTextAutomatonFrame();
@@ -458,7 +377,6 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 
 	class ConstructTfstDo implements ToDo {
 		File GrfFileName;
-
 		ConstructTfstDo(File grf) {
 			GrfFileName = grf;
 		}
@@ -472,37 +390,15 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 
 	private JPanel wildcardsPanel() {
 		final JPanel p = new JPanel(new GridLayout(5, 1));
-		p.setBorder(BorderFactory.createRaisedBevelBorder());
 		final JLabel wildcards = new JLabel("wildcards");
-		final JLabel insert = new JLabel("insert");
-		final JLabel replace = new JLabel("replace");
-		final JLabel delete = new JLabel("delete");
-		sm_w = new SpinnerNumberModel(0, 0, 10, 1);
+		sm_w = new SpinnerNumberModel(0, 0, 3, 1); //10
 		sm_w.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				n_w = sm_w.getNumber().intValue();
-				String rad=SourceFileShortName;
-				if (SourceFileShortName.endsWith(".txt") ||
-						SourceFileShortName.endsWith(".snt") ||
-						SourceFileShortName.endsWith(".xml")){
-					rad=rad.substring(0,SourceFileShortName.length()
-							-4); 
-				}
-				System.out.println("SourceFileShortName = "+SourceFileShortName);
-				GRFFileName = Config.getCurrentGraphDir().getAbsolutePath()
-						+File.separatorChar
-						+rad
-						+"_"
-						+n_w+n_a+n_r+n_d+".grf";
-				GRFfile.setText(GRFFileName);
-			}
-		});
-		spinner_w = new JSpinner(sm_w);
-		sm_a = new SpinnerNumberModel(0, 0, 10, 1);
-		sm_a.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if (!SourceFileShortName.isEmpty()){
-					n_a = sm_a.getNumber().intValue();	
+				n_i = n_w*(i_cb.isSelected()?1:0);
+				n_r = n_w*(r_cb.isSelected()?1:0);
+				n_d = n_w*(d_cb.isSelected()?1:0);
+				if (SourceFileShortName!=null){
 					String rad=SourceFileShortName;
 					if (SourceFileShortName.endsWith(".txt") ||
 							SourceFileShortName.endsWith(".snt") ||
@@ -511,90 +407,132 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 								-4); 
 					}
 					System.out.println("SourceFileShortName = "+SourceFileShortName);
-					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+					GRFFileName = Config.getCurrentGraphDir().getAbsolutePath()
 							+File.separatorChar
 							+rad
-							+"_"
-							+n_w
-							+n_a
-							+n_r
-							+n_d
-							+".grf";
-					GRFfile.setText(GRFFileName);
+							+"_";
+					if (applyDictionaries.isSelected()){
+						GRFSuffix="dic.grf";
+					}else{
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+					}
+					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
 			}
 		});
-		spinner_a = new JSpinner(sm_a);
-		sm_d = new SpinnerNumberModel(0, 0, 10, 1);
-		sm_d.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				n_d = sm_d.getNumber().intValue();
-				if (!SourceFileShortName.isEmpty()){
+		spinner_w = new JSpinner(sm_w);
+
+		i_cb.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				n_w = sm_w.getNumber().intValue();
+				if (i_cb.isSelected()) {
+					n_i=n_w;
+				}else{
+					n_i=0;
+				}
+				if (SourceFileShortName!=null){
 					String rad=SourceFileShortName;
-					if (SourceFileShortName.endsWith(".txt") ||
-							SourceFileShortName.endsWith(".snt") ||
-							SourceFileShortName.endsWith(".xml")){
+					if (rad != null && (rad.endsWith(".txt") ||
+							rad.endsWith(".snt") ||
+							rad.endsWith(".xml"))){
+						rad=rad.substring(0,rad.length()
+								-4); 
+					}
+					System.out.println("SourceFileShortName = "+SourceFileShortName);
+					GRFFileName = Config.getCurrentGraphDir().getAbsolutePath()
+							+File.separatorChar
+							+rad
+							+"_";
+					if (applyDictionaries.isSelected()){
+						GRFSuffix="dic.grf";
+					}else{
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+					}
+					GRFfile.setText(GRFFileName+GRFSuffix);
+				}
+			}
+		});	
+		r_cb.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				n_w = sm_w.getNumber().intValue();
+				if (r_cb.isSelected()) {
+					n_r=n_w;
+				}else{
+					n_r=0;
+				}
+				if (SourceFileShortName!=null){
+					String rad=SourceFileShortName;
+					if (rad!=null && (rad.endsWith(".txt") ||
+							rad.endsWith(".snt") ||
+							rad.endsWith(".xml"))){
 						rad=rad.substring(0,SourceFileShortName.length()
 								-4); 
 					}
-					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+					System.out.println("SourceFileShortName = "+SourceFileShortName);
+					GRFFileName = Config.getCurrentGraphDir().getAbsolutePath()
 							+File.separatorChar
 							+rad
-							+"_"
-							+n_w
-							+n_a
-							+n_r
-							+n_d
-							+".grf";
-					GRFfile.setText(GRFFileName);
+							+"_";
+					if (applyDictionaries.isSelected()){
+						GRFSuffix="dic.grf";
+					}else{
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+					}
+					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
+
 			}
 		});
-		spinner_d = new JSpinner(sm_d);
-		sm_r = new SpinnerNumberModel(0, 0, 10, 1);
-		sm_r.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				if (!SourceFileShortName.isEmpty()){
-					n_r = sm_r.getNumber().intValue();
+		d_cb.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				n_w = sm_w.getNumber().intValue();
+				if (d_cb.isSelected()) {
+					n_d=n_w;
+				}else{
+					n_d=0;
+				}
+				if (SourceFileShortName!=null){
 					String rad=SourceFileShortName;
-					if (SourceFileShortName.endsWith(".txt") ||
+					if (SourceFileShortName!=null && (SourceFileShortName.endsWith(".txt") ||
 							SourceFileShortName.endsWith(".snt") ||
-							SourceFileShortName.endsWith(".xml")){
+							SourceFileShortName.endsWith(".xml"))){
 						rad=rad.substring(0,SourceFileShortName.length()
 								-4); 
 					}
-					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+					System.out.println("SourceFileShortName = "+SourceFileShortName);
+					GRFFileName = Config.getCurrentGraphDir().getAbsolutePath()
 							+File.separatorChar
 							+rad
-							+"_"
-							+n_w
-							+n_a
-							+n_r
-							+n_d
-							+".grf";
-					GRFfile.setText(GRFFileName);
+							+"_";
+
+					if (applyDictionaries.isSelected()){
+						GRFSuffix="dic.grf";
+					}else{
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+					}
+					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
 			}
 		});
-		spinner_r = new JSpinner(sm_r);
-		JPanel _p1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+		JPanel _p1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		_p1.add(wildcards);
 		_p1.add(spinner_w);
 		p.add(_p1);
 
-		JPanel _p2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		_p2.add(insert);
-		_p2.add(spinner_a);
+		JPanel _p2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		_p2.add(i_cb);
 		p.add(_p2);
 
-		JPanel _p3 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		_p3.add(replace);
-		_p3.add(spinner_r);
+		JPanel _p3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		_p3.add(r_cb);
 		p.add(_p3);
 
-		JPanel _p4 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		_p4.add(delete);
-		_p4.add(spinner_d);
+		JPanel _p4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		_p4.add(d_cb);
 		p.add(_p4);
 
 		JPanel _p5 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -603,7 +541,209 @@ public class ConstructSeqTfstFrame extends JInternalFrame implements ActionListe
 		return p;
 	}
 
-	public void actionPerformed(ActionEvent arg0) {
+	private JPanel filesPanel(){
 
+		final JCheckBox foo = new JCheckBox("");
+		JPanel p =new JPanel(new GridLayout(7, 1));
+
+		JLabel SequenceCorpus = new JLabel("Select the sequence Corpus :");
+
+		JPanel corpusPanel = new JPanel(new FlowLayout());
+		corpusPanel.setBorder(BorderFactory.createEmptyBorder(0, foo
+				.getPreferredSize().width, 0, 0));
+		corpusPanel.add(SourceFile);
+		final Action SRCsetAction = new AbstractAction("Set..."){
+			public void actionPerformed(ActionEvent arg1) {
+				final JFileChooser chooser = Config.getFileEditionDialogBox();
+				System.out.println("chooser dir : "
+						+ chooser.getCurrentDirectory());
+				chooser.setCurrentDirectory(Config.getCurrentCorpusDir());
+				final int returnVal = chooser.showOpenDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					// we return if the user has clicked on CANCEL
+					return;
+				}
+				try {
+					SourceFileName=chooser.getSelectedFile().getCanonicalPath();
+					SourceFileShortName=chooser.getSelectedFile().getName();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				SourceFile.setText(SourceFileName);
+
+				if (SourceFile.getText().endsWith(".txt") ||
+						SourceFile.getText().endsWith(".snt") ||
+						SourceFile.getText().endsWith(".xml")
+						){
+					System.out.println("sourcefile = "+SourceFile.getText());
+					System.out.println("sourcefile_sort : "+SourceFile.getText());
+					System.out.println("Config.getCurrentGraphDir() ="+Config.getCurrentGraphDir());
+
+					GRFFileName=Config.getCurrentGraphDir().getAbsolutePath()
+							+File.separatorChar
+							+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
+							+"_";
+					if (applyDictionaries.isSelected()){
+						GRFSuffix="dic.grf";
+					}else{
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+					}
+					GRFfile.setText(GRFFileName+GRFSuffix);
+							
+					System.out.println("grfFileName = "+GRFFileName);
+				}
+				bSNT.setSelected(SourceFile.getText().endsWith(".snt"));
+				bTEI.setSelected(SourceFile.getText().endsWith(".xml"));
+				bTXT.setSelected(	!(SourceFile.getText().endsWith(".snt")		||	SourceFile.getText().endsWith(".xml")							)
+						);
+				try {
+					if (SourceFile.getText().endsWith(".txt") ||	SourceFile.getText().endsWith(".snt") ||SourceFile.getText().endsWith(".xml")
+							){
+						GRFFileName=Config.getUserCurrentLanguageDir().getCanonicalPath()
+								+File.separatorChar
+								+"Graphs"
+								+File.separatorChar
+								+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
+								+"_";
+
+						if (applyDictionaries.isSelected()){
+							GRFSuffix="dic.grf";
+						}else{
+							GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+						}
+						GRFfile.setText(GRFFileName+GRFSuffix);
+					}else{
+						GRFFileName=Config.getUserCurrentLanguageDir().getCanonicalPath()
+								+File.separatorChar
+								+"Graphs"
+								+File.separatorChar
+								+SourceFileShortName
+								+"_";
+
+						if (applyDictionaries.isSelected()){
+							GRFSuffix="dic.grf";
+						}else{
+							GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+						}
+						GRFfile.setText(GRFFileName+GRFSuffix);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		final JButton setCorpus = new JButton(SRCsetAction);
+		corpusPanel.add(setCorpus);
+
+		final JPanel fileP = new JPanel(new GridLayout(1,3));
+		bTEI = new JRadioButton("TEILite");
+		bTEI.setMnemonic(1);
+		bTXT = new JRadioButton("TXT");
+		bTXT.setMnemonic(2);
+		bSNT = new JRadioButton("SNT");
+		bSNT.setMnemonic(3);
+
+		ButtonGroup group = new ButtonGroup();
+		group.add(bTEI);
+		group.add(bTXT);								
+		group.add(bSNT);
+		fileP.add(bTEI);
+		fileP.add(bTXT);
+		fileP.add(bSNT);
+
+		JLabel sequenceGRF = new JLabel("choose the name of the resulting grf file");
+
+		JPanel GRFPanel = new JPanel(new FlowLayout());
+		GRFPanel.setBorder(BorderFactory.createEmptyBorder(0, foo
+				.getPreferredSize().width, 0, 0));
+		GRFPanel.add(GRFfile);
+		final Action GRFsetAction = new AbstractAction("Set ...") {
+			public void actionPerformed(ActionEvent arg1) {
+				final JFileChooser chooser = Config.getGrfAndFst2DialogBox();
+				System.out.println("GRFFileName = "+GRFFileName);
+				File f = new File(GRFFileName);
+				chooser.setSelectedFile(f);
+				System.out.println("chooser dir : "
+						+ chooser.getCurrentDirectory());
+				chooser.setCurrentDirectory(Config.getCurrentGraphDir());
+				final int returnVal = chooser.showOpenDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					// we return if the user has clicked on CANCEL
+					return;
+				}
+				try {
+					GRFFileName=chooser.getSelectedFile().getCanonicalPath();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				GRFfile.setText(GRFFileName);
+			}
+		};
+		final JButton setGRF = new JButton(GRFsetAction);
+		GRFPanel.add(setGRF);
+
+		final JPanel dicoP = new JPanel(new FlowLayout());
+		dicoP.setBorder(BorderFactory.createEmptyBorder(0, foo
+				.getPreferredSize().width, 0, 0));
+		final Action setAction = new AbstractAction("Set ...") {
+			public void actionPerformed(ActionEvent arg1) {
+				final JFileChooser chooser = Config.getFileEditionDialogBox();
+				chooser.setMultiSelectionEnabled(false);
+				chooser.setCurrentDirectory(
+						new File(Config.getUserCurrentLanguageDir(),"Dela"));
+				System.out.println("chooser dir : "+ chooser.getCurrentDirectory());
+				final int returnVal = chooser.showOpenDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					return;
+				}
+				try {
+					DicoFileName=chooser.getSelectedFile().getCanonicalPath();
+					DicoFile.setText(DicoFileName);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		DicosetButton = new JButton(setAction);
+		DicosetButton.setEnabled(applyDictionaries.isSelected());
+		DicoFile.setEnabled(applyDictionaries.isSelected());
+		dicoP.setBorder(BorderFactory.createEmptyBorder(0, foo
+				.getPreferredSize().width, 0, 0));
+		dicoP.add(DicoFile);
+		dicoP.add(DicosetButton);
+
+		/// ajouter code pour griser champs txt pour dico si dico pas coché
+		///
+		applyDictionaries.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				r_cb.setEnabled(!applyDictionaries.isSelected());
+				i_cb.setEnabled(!applyDictionaries.isSelected());
+				d_cb.setEnabled(!applyDictionaries.isSelected());
+				spinner_w.setEnabled(!applyDictionaries.isSelected());
+				DicoFile.setEnabled(applyDictionaries.isSelected());
+				DicosetButton.setEnabled(applyDictionaries.isSelected());
+				if (applyDictionaries.isSelected()){
+					GRFSuffix="dic.grf";
+				}else{
+					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
+				}
+				if(GRFFileName!=null){
+					GRFfile.setText(GRFFileName+GRFSuffix);
+				}
+			};
+		}
+				);
+		p.add(SequenceCorpus);
+		p.add(corpusPanel);
+		p.add(fileP);
+		p.add(sequenceGRF);
+		p.add(GRFPanel);
+		p.add(applyDictionaries);
+		p.add(dicoP);
+
+		JLabel outputFile = new JLabel("Choose the name of the resulting graph file :");
+
+		return p;
 	}
 }
