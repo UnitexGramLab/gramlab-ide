@@ -232,5 +232,13 @@ public class SvnCommand extends CommandBuilder {
 		protectElement(dir.getAbsolutePath());
 		return this;
 	}
+	
+	
+	public SvnCommand revert(File targetList) {
+		element("revert");
+		element("--targets");
+		protectElement(targetList.getAbsolutePath());
+		return this;
+	}
 
 }
