@@ -23,6 +23,8 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
+import fr.umlv.unitex.config.InjectedVariable;
+
 /**
  * @author Sébastien Paumier
  * 
@@ -147,6 +149,16 @@ public class LocateCommand extends CommandBuilder {
 
 	public LocateCommand time() {
 		element("--time");
+		return this;
+	}
+
+	public LocateCommand setInjectedVariables(
+			ArrayList<InjectedVariable> vars) {
+		if (vars==null) return this;
+		for (InjectedVariable v:vars) {
+			element("-v");
+			protectElement(v.getName()+"="+v.getValue());
+		}
 		return this;
 	}
 }
