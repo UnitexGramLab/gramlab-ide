@@ -356,21 +356,16 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 			}
 			//Seq2Grf		
 			final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
-					ConfigManager.getManager().getAlphabet(null).getAbsolutePath())
+					ConfigManager.getManager().getAlphabet(null))
 					.output(GRFfile.getText()).wildcards(n_w).wildcard_insert(n_i)
 					.wildcard_replace(n_r).wildcard_delete(n_d).applyBeautify(applyBeautify.isSelected()).text(
-							sntFile).morpho(applyDictionaries.isSelected());
-
-			System.out.println("seqCmd =" + seqCmd.getCommandLine());
+							sntFile);
 			commands.addCommand(seqCmd);
 			InternalFrameManager.getManager(null).closeTextAutomatonFrame();
 			InternalFrameManager.getManager(null).closeTfstTagsFrame();
 			/* We also have to rebuild the text automaton */
 			Config.cleanTfstFiles(true);
 			final File GRF = new File(GRFfile.getText());
-			for( int i=0;i<commands.numberOfCommands();i++){
-				System.out.println(i+" : "+commands.getCommand(i).getCommandLine());
-			}
 			Launcher.exec(commands, true, new ConstructTfstDo(GRF), false);
 		}
 	}
