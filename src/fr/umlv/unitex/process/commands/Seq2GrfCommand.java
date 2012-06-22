@@ -33,20 +33,6 @@ public class Seq2GrfCommand extends CommandBuilder {
 		protectElement("-o" + outputfile.getAbsolutePath());
 	}
 
-	public Seq2GrfCommand(File alphabet, File outputfile, int w, int i, int r,
-			int d, int b) {
-		super("Seq2Grf");
-		protectElement("-a" + alphabet.getAbsolutePath());
-		protectElement("-o" + outputfile.getAbsolutePath());
-		protectElement("-w" + w);
-		protectElement("-i" + i);
-		protectElement("-r" + r);
-		protectElement("-d" + d);
-		if (b!=0){
-			protectElement("--b" );
-		}
-	}
-
 	public Seq2GrfCommand automaton(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
@@ -93,32 +79,9 @@ public class Seq2GrfCommand extends CommandBuilder {
 		return this;
 	}
 
- 	public Seq2GrfCommand alphabet(String a) {
-		element("-a" + a);
-		return this;
-	}
- 	
- 	public Seq2GrfCommand morpho(boolean morpho){
- 		if (morpho){
- 			element("--morpho");
- 		}
- 		return this;
- 	}
-
 	public Seq2GrfCommand alphabet(File alphabet) {
 		protectElement("-a" + alphabet.getAbsolutePath());
 		return this;
 	}
 
-	public Seq2GrfCommand clean(boolean clean) {
-		if (clean) {
-			element("--clean");
-		}
-		return this;
-	}
-
-	public Seq2GrfCommand fst2(File s) {
-		protectElement("-n" + s.getAbsolutePath());
-		return this;
-	}
 }
