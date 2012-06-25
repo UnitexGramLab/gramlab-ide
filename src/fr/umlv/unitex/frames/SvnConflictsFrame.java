@@ -21,6 +21,8 @@
 package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.JLabel;
@@ -29,8 +31,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.svn.SvnMonitor;
 
@@ -47,11 +47,13 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 		super("", true, false, true, true);
 		final ListModel model = monitor.getSvnConflictModel();
 		final JList list = new JList(model);
-		list.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				final Object[] files = list.getSelectedValues();
-				for (final Object o : files) {
-					final File f = (File) o;
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount()<2) return;
+				int index=list.locationToIndex(e.getPoint());
+				if (index!=-1) {
+					File f=(File) list.getModel().getElementAt(index);
 					InternalFrameManager.getManager(f).newGraphFrame(f);
 				}
 			}
@@ -75,7 +77,7 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 		});
 		final JScrollPane scroll = new JScrollPane(list);
 		getContentPane().add(scroll, BorderLayout.CENTER);
-		getContentPane().add(new JLabel("Click on a graph name to open it:"),
+		getContentPane().add(new JLabel("Double-click on a graph name to open it:"),
 				BorderLayout.NORTH);
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
