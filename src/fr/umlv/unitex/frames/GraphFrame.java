@@ -195,6 +195,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	 * The frame's tool bar that contains icons
 	 */
 	private JToolBar myToolBar;
+	private File key;
 
 	/**
 	 * Constructs a new <code>GraphFrame</code>
@@ -244,7 +245,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		getBoxContentEditor().setFont(info.getInput().getFont());
 		if (g != null) {
-			setGraph(g.getGrf());
+			setGraph(g.getGrf(),g.getGrf());
 		}
 		/*
 		 * Some loading operations may have set the modified flag, so we reset
@@ -314,7 +315,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	protected void handleSvnConflict(final SvnConflict conflict, final Timer t) {
-		setGraph(conflict.mine);
+		setGraph(conflict.mine,grf);
 		final GraphIO g = GraphIO.loadGraph(conflict.mine, false, false);
 		graphicalZone.refresh(g);
 		setModified(false);
@@ -324,7 +325,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			public void conflictSolved() {
 				getActualMainPanel().remove(getSvnPanel());
 				setSvnPanel(null);
-				setGraph(conflict.fileInConflict);
+				setGraph(conflict.fileInConflict,grf);
 				final GraphIO g2 = GraphIO.loadGraph(conflict.fileInConflict, false, false);
 				graphicalZone.refresh(g2);
 				setModified(false);
@@ -1041,9 +1042,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		return grf;
 	}
 
-	public void setGraph(File grf) {
+	public void setGraph(File grf,File key) {
 		this.lastModification = grf.lastModified();
 		this.grf = grf;
+		this.key=key;
 		this.nonEmptyGraph = true;
 		this.setTitle(grf.getName() + " (" + grf.getParent() + ")");
 	}
@@ -1224,7 +1226,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = new GraphIO(graphicalZone);
 		modified = false;
 		g.saveGraph(file);
-		setGraph(file);
+		setGraph(file,file);
 		return true;
 	}
 
@@ -1277,13 +1279,13 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		}
 		modified = false;
 		g.saveGraph(file);
-		setGraph(file);
+		setGraph(file,file);
 		return true;
 	}
 
 	@Override
 	public File getKey() {
-		return grf;
+		return key;
 	}
 
 	@Override
