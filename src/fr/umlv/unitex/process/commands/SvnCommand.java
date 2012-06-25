@@ -245,6 +245,8 @@ public class SvnCommand extends CommandBuilder {
 	
 	public SvnCommand revert(File targetList) {
 		element("revert");
+		element("--depth");
+		element("infinity");
 		element("--targets");
 		protectElement(targetList.getAbsolutePath());
 		return this;
