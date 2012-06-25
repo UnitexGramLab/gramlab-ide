@@ -110,11 +110,19 @@ public class SvnCommand extends CommandBuilder {
 	}
 
 
-	public SvnCommand info(File f,boolean recursive) {
+	public SvnCommand info(File f,boolean recursive,boolean headRevision) {
 		element("info");
 		if (recursive) element("-R");
+		if (headRevision) {
+			element("-r");
+			element("HEAD");
+		}
 		protectElement(f.getAbsolutePath());
 		return this;
+	}
+
+	public SvnCommand info(File f,boolean recursive) {
+		return info(f,recursive,false);
 	}
 
 	public SvnCommand add(File targetList) {
