@@ -147,6 +147,14 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
+	public SvnCommand delete(String url,String message) {
+		element("delete");
+		element("--force");
+		element("-m");
+		protectElement(message);
+		protectElement(url);
+		return this;
+	}
 	
 	public SvnCommand initialImport(File path,String url,String extraIgnores) {
 		element("import");
