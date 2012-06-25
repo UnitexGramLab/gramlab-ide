@@ -77,7 +77,7 @@ public class SvnMonitor {
 		} else {
 			monitor(rootDir);
 			if (svnConflictModel.size() > 0) {
-				InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
+				InternalFrameManager.getManager(rootDir).showSvnConflictsFrame(this);
 			}
 		}
 	}
