@@ -188,6 +188,7 @@ public class SvnCommand extends CommandBuilder {
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
 		protectElement(GLOBAL_IGNORES);
+		element("--depth=files");
 		element("--targets");
 		protectElement(targetList.getAbsolutePath());
 		return this;
