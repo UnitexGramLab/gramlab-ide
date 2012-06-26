@@ -127,6 +127,7 @@ public class SvnCommand extends CommandBuilder {
 
 	public SvnCommand add(File targetList) {
 		element("add");
+		element("--force");
 		element("--parents");
 		element("--auto-props");
 		element("--config-option");
