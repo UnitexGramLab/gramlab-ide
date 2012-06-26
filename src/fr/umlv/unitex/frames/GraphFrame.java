@@ -396,8 +396,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		p2.add(useOther);
-		final JButton merge = new JButton("Try to merge");
-		merge.addActionListener(new ActionListener() {
+		final JButton mergeOnlyCosmetic = new JButton("Try to merge (only cosmetic)");
+		mergeOnlyCosmetic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (modified) {
 					JOptionPane.showMessageDialog(null,
@@ -405,7 +405,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				if (!conflict.merge()) {
+				if (!conflict.merge(true)) {
 					JOptionPane.showMessageDialog(null,
 							"Conflicts remain, cannot merge files",
 							"Merge failed", JOptionPane.ERROR_MESSAGE);
@@ -415,7 +415,27 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				}
 			}
 		});
-		p2.add(merge);
+		p2.add(mergeOnlyCosmetic);
+		final JButton fullMerge = new JButton("Try to merge (full)");
+		fullMerge.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (modified) {
+					JOptionPane.showMessageDialog(null,
+							"Save graph before trying to merge", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (!conflict.merge(false)) {
+					JOptionPane.showMessageDialog(null,
+							"Conflicts remain, cannot merge files",
+							"Merge failed", JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "Merge successed", "",
+							JOptionPane.PLAIN_MESSAGE);
+				}
+			}
+		});
+		p2.add(fullMerge);
 		main.add(p2);
 		return main;
 	}
