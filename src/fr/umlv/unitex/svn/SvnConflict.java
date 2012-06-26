@@ -200,10 +200,10 @@ public class SvnConflict {
 		}
 		FileUtil.copyFileByName(tmp,fileInConflict);
 		tmp.delete();
-		mine.delete();
+		/*mine.delete();
 		base.delete();
 		other.delete();
-		fireConflictSolved();
+		fireConflictSolved();*/
 		return true;
 	}
 }
