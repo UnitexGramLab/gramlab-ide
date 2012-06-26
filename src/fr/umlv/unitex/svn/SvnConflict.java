@@ -165,13 +165,16 @@ public class SvnConflict {
 	 * Tries to invoke GrfDiff3 to merge the files. Returns true on success;
 	 * false otherwise.
 	 */
-	public boolean merge() {
+	public boolean merge(boolean onlyCosmetic) {
+		final File tmp=new File(fileInConflict.getAbsolutePath()+".tmp");
 		final GrfDiff3Command diff3 = new GrfDiff3Command().files(mine, base,
-				other).output(fileInConflict).onlyCosmetic(
-				ConfigManager.getManager().onlyCosmetic(null));
+				other).output(tmp).onlyCosmetic(onlyCosmetic);
 		final int res = Launcher.execWithoutTracing(diff3);
-		if (res != 0)
+		if (res != 0) {
+			tmp.delete();
 			return false;
+		}
+		FileUtil.copyFileByName(tmp,fileInConflict);
 		mine.delete();
 		base.delete();
 		other.delete();
