@@ -218,6 +218,12 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 	
+	public SvnCommand resolved(File file) {
+		element("resolved");
+		protectElement(file.getAbsolutePath());
+		return this;
+	}
+	
 	public enum ResolveOp {
 		ACCEPT_WORKING("--accept=working"),
 		ACCEPT_MINE("--accept=mine-full"),

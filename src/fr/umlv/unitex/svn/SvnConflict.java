@@ -30,6 +30,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.GrfDiff3Command;
+import fr.umlv.unitex.process.commands.SvnCommand;
 
 public class SvnConflict {
 	static Pattern pattern = Pattern.compile("r([0-9]+)");
@@ -147,6 +148,8 @@ public class SvnConflict {
 		other.delete();
 		base.delete();
 		mine.renameTo(fileInConflict);
+		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
 	}
 
@@ -158,6 +161,27 @@ public class SvnConflict {
 		mine.delete();
 		base.delete();
 		other.renameTo(fileInConflict);
+		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		Launcher.execWithoutTracing(cmd);
+		fireConflictSolved();
+	}
+	
+	public void useBase() {
+		fileInConflict.delete();
+		other.delete();
+		mine.delete();
+		base.renameTo(fileInConflict);
+		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		Launcher.execWithoutTracing(cmd);
+		fireConflictSolved();
+	}
+
+	public void useWorking() {
+		other.delete();
+		mine.delete();
+		base.delete();
+		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
 	}
 
