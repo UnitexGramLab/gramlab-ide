@@ -175,6 +175,7 @@ public class SvnConflict {
 			return false;
 		}
 		FileUtil.copyFileByName(tmp,fileInConflict);
+		tmp.delete();
 		mine.delete();
 		base.delete();
 		other.delete();
