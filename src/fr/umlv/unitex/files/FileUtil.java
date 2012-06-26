@@ -543,7 +543,9 @@ public class FileUtil {
 				rm(subFile);
 			}
 		}
-		f.delete();
+		if (!f.delete()) {
+			System.err.println("Cannot delete "+f.getAbsolutePath());
+		}
 	}
 
 	
