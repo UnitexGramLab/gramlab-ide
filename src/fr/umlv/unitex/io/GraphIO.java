@@ -1014,10 +1014,10 @@ public class GraphIO {
 	private static GraphIO createEmptyGraphIO() {
 		GraphIO gio=new GraphIO();
 		gio.boxes=new ArrayList<GenericGraphBox>();
-		GraphBox b=new GraphBox(300, 200, 0, null);
+		GraphBox b=new GraphBox(70, 200, 0, null);
 		b.setContent("<E>");
 		gio.boxes.add(b);
-		b=new GraphBox(70, 200, 1, null);
+		b=new GraphBox(300, 200, 1, null);
 		b.setContent("");
 		gio.boxes.add(b);
 		return gio;
