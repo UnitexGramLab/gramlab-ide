@@ -382,7 +382,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final JPanel p2 = new JPanel(null);
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
 		p2.add(new JLabel("Conflict resolution:  "));
-		final JButton useBase = new JButton("Use base");
+		final JButton useBase = new JButton("Use base (r"+conflict.baseNumber+")");
 		useBase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				conflict.useBase();
@@ -403,7 +403,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		p2.add(useMine);
-		final JButton useOther = new JButton("Use other");
+		final JButton useOther = new JButton("Use other (r"+conflict.otherNumber+")");
 		useOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				conflict.useOther();
