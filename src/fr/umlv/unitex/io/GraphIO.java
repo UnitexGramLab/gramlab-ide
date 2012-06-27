@@ -1013,6 +1013,8 @@ public class GraphIO {
 
 	private static GraphIO createEmptyGraphIO() {
 		GraphIO gio=new GraphIO();
+		gio.width=1188;
+		gio.height=840;
 		gio.boxes=new ArrayList<GenericGraphBox>();
 		GraphBox b=new GraphBox(70, 200, 0, null);
 		b.setContent("<E>");
