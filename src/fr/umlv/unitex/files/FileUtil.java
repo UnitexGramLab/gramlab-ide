@@ -536,16 +536,20 @@ public class FileUtil {
 	/**
 	 * Removes a file or a directory, even if not empty.
 	 */
-	public static void rm(File f) {
-		if (f==null || !f.exists()) return;
+	public static boolean rm(File f) {
+		if (f==null || !f.exists()) return true;
+		boolean ok=true;
 		if (f.isDirectory()) {
 			for (File subFile:f.listFiles()) {
-				rm(subFile);
+				if (!rm(subFile)) {
+					ok=false;
+				}
 			}
 		}
 		if (!f.delete()) {
-			System.err.println("Cannot delete "+f.getAbsolutePath());
+			ok=false;
 		}
+		return ok;
 	}
 
 	
