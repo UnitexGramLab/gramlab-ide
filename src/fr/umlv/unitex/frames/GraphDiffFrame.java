@@ -23,8 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -33,6 +31,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.diff.GraphDecorator;
@@ -72,36 +72,59 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 		setSize(850, 550);
 	}
 
-	private static JPanel buildSynchronizedScrollPanes(JComponent c1,JComponent c2) {
+	boolean p1Moving=false;
+	boolean p2Moving=false;
+	
+	private JPanel buildSynchronizedScrollPanes(JComponent c1,JComponent c2) {
 		JPanel p=new JPanel(new GridLayout(1,2));
 		final JScrollPane p1=new JScrollPane(c1);
 		final JScrollPane p2=new JScrollPane(c2);
-		p1.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (!e.getValueIsAdjusting()) return;
-				double ratio=p1.getHorizontalScrollBar().getValue()/(double)p1.getHorizontalScrollBar().getMaximum();
-				p2.getHorizontalScrollBar().setValue((int)(p2.getHorizontalScrollBar().getMaximum()*ratio));
+		p1.getHorizontalScrollBar().getModel().addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (p1Moving) return;
+				p1Moving=true;
+				try {
+					double ratio=p1.getHorizontalScrollBar().getValue()/(double)p1.getHorizontalScrollBar().getMaximum();
+					p2.getHorizontalScrollBar().setValue((int)(p2.getHorizontalScrollBar().getMaximum()*ratio));
+				} finally {
+					p1Moving=false;
+				}
 			}
 		});
-		p2.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (!e.getValueIsAdjusting()) return;
-				double ratio=p2.getHorizontalScrollBar().getValue()/(double)p2.getHorizontalScrollBar().getMaximum();
-				p1.getHorizontalScrollBar().setValue((int)(p1.getHorizontalScrollBar().getMaximum()*ratio));
+		p2.getHorizontalScrollBar().getModel().addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (p2Moving) return;
+				p2Moving=true;
+				try {
+					double ratio=p2.getHorizontalScrollBar().getValue()/(double)p2.getHorizontalScrollBar().getMaximum();
+					p1.getHorizontalScrollBar().setValue((int)(p1.getHorizontalScrollBar().getMaximum()*ratio));
+				} finally {
+					p2Moving=false;
+				}
 			}
 		});
-		p1.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (!e.getValueIsAdjusting()) return;
-				double ratio=p1.getVerticalScrollBar().getValue()/(double)p1.getVerticalScrollBar().getMaximum();
-				p2.getVerticalScrollBar().setValue((int)(p2.getVerticalScrollBar().getMaximum()*ratio));
+		p1.getVerticalScrollBar().getModel().addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (p1Moving) return;
+				p1Moving=true;
+				try {
+					double ratio=p1.getVerticalScrollBar().getValue()/(double)p1.getVerticalScrollBar().getMaximum();
+					p2.getVerticalScrollBar().setValue((int)(p2.getVerticalScrollBar().getMaximum()*ratio));
+				} finally {
+					p1Moving=false;
+				}
 			}
 		});
-		p2.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				if (!e.getValueIsAdjusting()) return;
-				double ratio=p2.getVerticalScrollBar().getValue()/(double)p2.getVerticalScrollBar().getMaximum();
-				p1.getVerticalScrollBar().setValue((int)(p1.getVerticalScrollBar().getMaximum()*ratio));
+		p2.getVerticalScrollBar().getModel().addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				if (p2Moving) return;
+				p2Moving=true;
+				try {
+					double ratio=p2.getVerticalScrollBar().getValue()/(double)p2.getVerticalScrollBar().getMaximum();
+					p1.getVerticalScrollBar().setValue((int)(p1.getVerticalScrollBar().getMaximum()*ratio));
+				} finally {
+					p2Moving=false;
+				}
 			}
 		});
 		p.add(p1);
