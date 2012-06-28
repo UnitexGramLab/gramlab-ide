@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -52,7 +51,6 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.ErrorMessageCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2TxtCommand;
@@ -61,23 +59,24 @@ import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.Seq2GrfCommand;
-import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
 
-public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionListener*/{
-	private final JTextField GRFfile = new JTextField(20);
-	private final JTextField SourceFile = new JTextField(20);
-	private final JTextField DicoFile = new JTextField(20);
-	private String SourceFileName,SourceFileShortName, GRFFileName, GRFSuffix;//,
-	private String DicoFileName;
-	private ArrayList<File> DicoFilesNames;
-	private int n_w = 0, n_r = 0, n_d = 0, n_i = 0;
+public class ConstructSeqTfstFrame extends JInternalFrame {
+	final JTextField GRFfile = new JTextField(20);
+	final JTextField SourceFile = new JTextField(20);
+	String SourceFileName;//,
+	String SourceFileShortName;
+	String GRFFileName;
+	String GRFSuffix;
+	int n_w = 0;
+	int n_r = 0;
+	int n_d = 0;
+	int n_i = 0;
 
 	JCheckBox r_cb =new JCheckBox("replace", false);
 	JCheckBox d_cb =new JCheckBox("delete", false);
 	JCheckBox i_cb =new JCheckBox("insert", false);
-	JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",true);
-	JCheckBox applyDictionaries = new JCheckBox("Apply Dictionnaries ", false);
+	JCheckBox applyBeautify= new JCheckBox("Apply Beautify ",false);
 	JButton DicosetButton;
 	JSpinner spinner_w;
 	JSpinner spinner_r, spinner_d, spinner_i;
@@ -102,7 +101,6 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 	private JPanel constructPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
 		final JPanel top = new JPanel(new FlowLayout());
-		final JPanel FilePanel = new JPanel(new GridLayout(4,1));
 		panel.add(textPanel(), BorderLayout.CENTER);
 		panel.add(constructButtonsPanel(), BorderLayout.SOUTH);
 		top.add(filesPanel(),BorderLayout.WEST);
@@ -308,52 +306,6 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 				}
 				commands.addCommand(tokenizeCmd);
 			}
-			if (applyDictionaries.isSelected()){
-				//Dico
-				ArrayList<File> DicoFileList = new ArrayList<File>();
-				if (DicoFileName!=null){
-					DicoFileList.add(new File(DicoFileName));
-				}
-				final DicoCommand dicoCmd = new DicoCommand()
-				.snt(sntFile)
-				.alphabet(new File(ConfigManager.getManager()
-						.getAlphabet(null).getAbsolutePath()))
-						.dictionaryList(DicoFileList);
-				commands.addCommand(dicoCmd);
-				//SortTxt
-				File dlf= new File(dirName+File.separator+"dlf");
-				File dlc= new File(dirName+File.separator+"dlc");
-				File err= new File(dirName+File.separator+"err");
-				File tags_err= new File(dirName+File.separator+"tags_err");
-				final SortTxtCommand SortTxtCommand1 = new SortTxtCommand();
-				SortTxtCommand1.file(dlf);
-				SortTxtCommand1.element("-l"+dirName+File.separator+"dlf.n" );
-				SortTxtCommand1.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
-				//				SortTxtCommand1.element("-o"+)
-				//				;
-								commands.addCommand(SortTxtCommand1);
-				final SortTxtCommand SortTxtCommand2 = new SortTxtCommand();
-				SortTxtCommand2.file(dlc);
-				SortTxtCommand2.element("-l"+dirName+File.separator+"dlc.n");
-				SortTxtCommand2.element("-o"+ConfigManager.getManager().getCurrentLanguage());
-				SortTxtCommand2.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
-				commands.addCommand(SortTxtCommand2);
-				final SortTxtCommand SortTxtCommand3 = new SortTxtCommand();
-				SortTxtCommand3.file(err);
-				SortTxtCommand3.element("-l"+dirName+File.separator+"err.n");
-				SortTxtCommand3.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
-//			 SortTxtCommand SortTxtCommand3 = new SortTxtCommand()
-//				.file(err)
-//				.element("-l",)
-//				.element("-o",)
-//				;
-				commands.addCommand(SortTxtCommand3);
-				final SortTxtCommand SortTxtCommand4 = new SortTxtCommand();
-				SortTxtCommand4.file(tags_err);
-				SortTxtCommand4.element("-l"+dirName+File.separator+"tags_err.n");
-				SortTxtCommand4.element("-o"+ConfigManager.getManager().getAlphabet(null).getAbsolutePath());
-								commands.addCommand(SortTxtCommand4);
-			}
 			//Seq2Grf		
 			final Seq2GrfCommand seqCmd = new Seq2GrfCommand().alphabet(
 					ConfigManager.getManager().getAlphabet(null))
@@ -406,11 +358,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 							+File.separatorChar
 							+rad
 							+"_";
-					if (applyDictionaries.isSelected()){
-						GRFSuffix="dic.grf";
-					}else{
-						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-					}
+					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
 			}
@@ -439,11 +387,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 							+File.separatorChar
 							+rad
 							+"_";
-					if (applyDictionaries.isSelected()){
-						GRFSuffix="dic.grf";
-					}else{
-						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-					}
+					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
 			}
@@ -470,11 +414,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 							+File.separatorChar
 							+rad
 							+"_";
-					if (applyDictionaries.isSelected()){
-						GRFSuffix="dic.grf";
-					}else{
-						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-					}
+					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
 
@@ -503,11 +443,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 							+rad
 							+"_";
 
-					if (applyDictionaries.isSelected()){
-						GRFSuffix="dic.grf";
-					}else{
-						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-					}
+					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 					GRFfile.setText(GRFFileName+GRFSuffix);
 				}
 			}
@@ -578,11 +514,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 							+File.separatorChar
 							+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
 							+"_";
-					if (applyDictionaries.isSelected()){
-						GRFSuffix="dic.grf";
-					}else{
-						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-					}
+					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 					GRFfile.setText(GRFFileName+GRFSuffix);
 							
 					System.out.println("grfFileName = "+GRFFileName);
@@ -601,11 +533,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 								+SourceFileShortName.substring(0,SourceFileShortName.length()-4)
 								+"_";
 
-						if (applyDictionaries.isSelected()){
-							GRFSuffix="dic.grf";
-						}else{
-							GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-						}
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 						GRFfile.setText(GRFFileName+GRFSuffix);
 					}else{
 						GRFFileName=Config.getUserCurrentLanguageDir().getCanonicalPath()
@@ -615,11 +543,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 								+SourceFileShortName
 								+"_";
 
-						if (applyDictionaries.isSelected()){
-							GRFSuffix="dic.grf";
-						}else{
-							GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-						}
+						GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
 						GRFfile.setText(GRFFileName+GRFSuffix);
 					}
 				} catch (IOException e) {
@@ -646,7 +570,7 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 		fileP.add(bTXT);
 		fileP.add(bSNT);
 
-		JLabel sequenceGRF = new JLabel("choose the name of the resulting grf file");
+		JLabel sequenceGRF1 = new JLabel("choose the name of the resulting grf file");
 
 		JPanel GRFPanel = new JPanel(new FlowLayout());
 		GRFPanel.setBorder(BorderFactory.createEmptyBorder(0, foo
@@ -676,69 +600,11 @@ public class ConstructSeqTfstFrame extends JInternalFrame/* implements ActionLis
 		};
 		final JButton setGRF = new JButton(GRFsetAction);
 		GRFPanel.add(setGRF);
-
-		final JPanel dicoP = new JPanel(new FlowLayout());
-		dicoP.setBorder(BorderFactory.createEmptyBorder(0, foo
-				.getPreferredSize().width, 0, 0));
-		final Action setAction = new AbstractAction("Set ...") {
-			public void actionPerformed(ActionEvent arg1) {
-				final JFileChooser chooser = Config.getFileEditionDialogBox();
-				chooser.setMultiSelectionEnabled(false);
-				chooser.setCurrentDirectory(
-						new File(Config.getUserCurrentLanguageDir(),"Dela"));
-				System.out.println("chooser dir : "+ chooser.getCurrentDirectory());
-				final int returnVal = chooser.showOpenDialog(null);
-				if (returnVal != JFileChooser.APPROVE_OPTION) {
-					return;
-				}
-				try {
-					DicoFileName=chooser.getSelectedFile().getCanonicalPath();
-					DicoFile.setText(DicoFileName);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		};
-		DicosetButton = new JButton(setAction);
-		DicosetButton.setEnabled(applyDictionaries.isSelected());
-		DicoFile.setEnabled(applyDictionaries.isSelected());
-		dicoP.setBorder(BorderFactory.createEmptyBorder(0, foo
-				.getPreferredSize().width, 0, 0));
-		dicoP.add(DicoFile);
-		dicoP.add(DicosetButton);
-
-		/// ajouter code pour griser champs txt pour dico si dico pas coché
-		///
-		applyDictionaries.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				r_cb.setEnabled(!applyDictionaries.isSelected());
-				i_cb.setEnabled(!applyDictionaries.isSelected());
-				d_cb.setEnabled(!applyDictionaries.isSelected());
-				spinner_w.setEnabled(!applyDictionaries.isSelected());
-				DicoFile.setEnabled(applyDictionaries.isSelected());
-				DicosetButton.setEnabled(applyDictionaries.isSelected());
-				if (applyDictionaries.isSelected()){
-					GRFSuffix="dic.grf";
-				}else{
-					GRFSuffix=""+n_w+n_i+n_r+n_d+".grf";
-				}
-				if(GRFFileName!=null){
-					GRFfile.setText(GRFFileName+GRFSuffix);
-				}
-			};
-		}
-				);
 		p.add(SequenceCorpus);
 		p.add(corpusPanel);
 		p.add(fileP);
-		p.add(sequenceGRF);
+		p.add(sequenceGRF1);
 		p.add(GRFPanel);
-		p.add(applyDictionaries);
-		p.add(dicoP);
-
-		JLabel outputFile = new JLabel("Choose the name of the resulting graph file :");
-
 		return p;
 	}
 }
