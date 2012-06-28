@@ -721,7 +721,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				final File file = fc.getSelectedFile();
 				if (file == null || !file.exists())
 					return;
-				final File diffResult = new File(grf.getParent(), "diff");
+				final File diffResult = new File(grf.getParent(), "..diff");
 				final GrfDiffCommand cmd = new GrfDiffCommand()
 						.files(grf, file).output(diffResult);
 				Launcher.exec(cmd, true, new ShowDiffDo(grf, file, diffResult));
