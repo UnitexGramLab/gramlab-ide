@@ -1030,7 +1030,15 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		}
 		for (final GenericGraphBox ggb : selection) {
-			for (final GenericGraphBox dest : ggb.transitions) {
+			if (ggb.transitions.isEmpty()) {
+				/* A selected box with no outgoing transition is 
+				 * considered an output box
+				 */
+				if (!outputBoxes.contains(ggb) 
+						&& ggb.type == GenericGraphBox.NORMAL) {
+					outputBoxes.add(ggb);
+				}
+			} else for (final GenericGraphBox dest : ggb.transitions) {
 				if (selection.contains(dest))
 					continue;
 				if (!outputBoxes.contains(ggb) 
@@ -1039,6 +1047,23 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				}
 			}
 		}
+		/* A selected box with no incoming transition is 
+		 * considered an input box
+		 */
+		for (final GenericGraphBox selected : selection) {
+			if (inputBoxes.contains(selected)) continue;
+			boolean add=true;
+			for (GenericGraphBox box : graphBoxes) {
+				if (box.transitions.contains(selected)) {
+					add=false;
+					break;
+				}
+			}
+			if (add) {
+				inputBoxes.add(selected);
+			}
+		}
+		
 	}
 
 	@Override
