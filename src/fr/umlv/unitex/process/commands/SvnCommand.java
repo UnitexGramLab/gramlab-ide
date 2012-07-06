@@ -267,4 +267,11 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
+
+	public SvnCommand cleanup(File dir) {
+		element("cleanup");
+		protectElement(dir.getAbsolutePath());
+		return this;
+	}
+
 }
