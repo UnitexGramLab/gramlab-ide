@@ -34,12 +34,13 @@ import fr.umlv.unitex.process.commands.SvnCommand;
 
 public class SvnConflict {
 	static Pattern pattern = Pattern.compile("r([0-9]+)");
-	public File fileInConflict, mine, base, other;
+	public File fileInConflict, mine, base, other, merged;
 	public int baseNumber, otherNumber;
 
 	public SvnConflict(final File fileInConflict, File mine, File base, File other,
 			int baseNumber, int otherNumber) {
 		this.fileInConflict = fileInConflict;
+		this.merged=new File(fileInConflict.getAbsolutePath()+".merged");
 		this.mine = mine;
 		this.base = base;
 		this.other = other;
@@ -147,6 +148,7 @@ public class SvnConflict {
 		fileInConflict.delete();
 		other.delete();
 		base.delete();
+		merged.delete();
 		mine.renameTo(fileInConflict);
 		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
@@ -160,6 +162,7 @@ public class SvnConflict {
 		fileInConflict.delete();
 		mine.delete();
 		base.delete();
+		merged.delete();
 		other.renameTo(fileInConflict);
 		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
@@ -170,6 +173,7 @@ public class SvnConflict {
 		fileInConflict.delete();
 		other.delete();
 		mine.delete();
+		merged.delete();
 		base.renameTo(fileInConflict);
 		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
@@ -180,6 +184,7 @@ public class SvnConflict {
 		other.delete();
 		mine.delete();
 		base.delete();
+		merged.delete();
 		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
@@ -190,16 +195,13 @@ public class SvnConflict {
 	 * false otherwise.
 	 */
 	public boolean merge(boolean onlyCosmetic) {
-		final File tmp=new File(fileInConflict.getAbsolutePath()+".tmp");
 		final GrfDiff3Command diff3 = new GrfDiff3Command().files(mine, base,
-				other).output(tmp).onlyCosmetic(onlyCosmetic);
+				other).output(merged).onlyCosmetic(onlyCosmetic);
 		final int res = Launcher.execWithoutTracing(diff3);
 		if (res != 0) {
-			tmp.delete();
+			merged.delete();
 			return false;
 		}
-		FileUtil.copyFileByName(tmp,fileInConflict);
-		tmp.delete();
 		/*mine.delete();
 		base.delete();
 		other.delete();
