@@ -47,6 +47,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -245,7 +246,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		getBoxContentEditor().setFont(info.getInput().getFont());
 		if (g != null) {
-			setGraph(g.getGrf(),g.getGrf());
+			setGraph(g.getGrf(),g.getGrf(),false);
 		}
 		/*
 		 * Some loading operations may have set the modified flag, so we reset
@@ -316,20 +317,13 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	protected void handleSvnConflict(final SvnConflict conflict, final Timer t) {
 		setGraph(conflict.mine,grf);
-		final GraphIO g = GraphIO.loadGraph(conflict.mine, false, false);
-		graphicalZone.refresh(g);
-		setModified(false);
 		setSvnPanel(createSvnPanel(conflict));
 		getActualMainPanel().add(getSvnPanel(), BorderLayout.NORTH);
 		conflict.addConflictSolvedListener(new ConflictSolvedListener() {
 			public void conflictSolved() {
 				getActualMainPanel().remove(getSvnPanel());
 				setSvnPanel(null);
-				setGraph(conflict.fileInConflict,grf);
-				final GraphIO g2 = GraphIO.loadGraph(conflict.fileInConflict, false, false);
-				graphicalZone.refresh(g2);
-				setModified(false);
-				lastModification = grf.lastModified();
+				setGraph(conflict.fileInConflict,conflict.fileInConflict);
 				getActualMainPanel().revalidate();
 				getActualMainPanel().repaint();
 				t.start();
@@ -340,7 +334,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	private JPanel createSvnPanel(final SvnConflict conflict) {
-		final JPanel main = new JPanel(new GridLayout(2, 1));
+		final JPanel main = new JPanel(new GridLayout(3, 1));
 		final TitledBorder border = BorderFactory
 				.createTitledBorder("Svn conflict detected on graph "
 						+ conflict.fileInConflict.getAbsolutePath());
@@ -348,12 +342,18 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		main.setBorder(border);
 		final JPanel p = new JPanel(null);
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+		final JButton showMine = new JButton("Show mine");
+		showMine.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setGraph(conflict.mine,conflict.fileInConflict);
+			}
+		});
+		p.add(showMine);
 		final JButton showBase = new JButton("Show base (r"
 				+ conflict.baseNumber + ")");
 		showBase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(conflict.base).newGraphFrame(
-						conflict.base);
+				setGraph(conflict.base,conflict.fileInConflict);
 			}
 		});
 		p.add(showBase);
@@ -361,8 +361,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				+ conflict.otherNumber + ")");
 		showOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(conflict.other).newGraphFrame(
-						conflict.other);
+				setGraph(conflict.other,conflict.fileInConflict);
 			}
 		});
 		p.add(showOther);
@@ -381,46 +380,56 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		main.add(p);
 		final JPanel p2 = new JPanel(null);
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
-		p2.add(new JLabel("Conflict resolution:  "));
+		final JButton merge = new JButton("Show merged graph");
+		JCheckBox allowNonCosmeticChange=new JCheckBox("Authorize merge on non-cosmetic changes",true);
+		merge.addActionListener(createMergeListener(conflict,allowNonCosmeticChange));
+		p2.add(merge);
+		p2.add(allowNonCosmeticChange);
+		main.add(p2);
+		final JPanel p3 = new JPanel(null);
+		p3.setLayout(new BoxLayout(p3, BoxLayout.X_AXIS));
+		p3.add(new JLabel("Conflict resolution:  "));
 		final JButton useBase = new JButton("Use base (r"+conflict.baseNumber+")");
 		useBase.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				conflict.useBase();
 			}
 		});
-		p2.add(useBase);
-		final JButton useWorking = new JButton("Use working");
+		p3.add(useBase);
+		final JButton useWorking = new JButton("Use merged graph");
 		useWorking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (!conflict.merged.exists()) {
+					JOptionPane.showMessageDialog(null,
+							"File "+conflict.merged.getAbsolutePath()+" does not exist!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				FileUtil.copyFile(conflict.merged,conflict.fileInConflict);
+				conflict.merged.delete();
 				conflict.useWorking();
 			}
 		});
-		p2.add(useWorking);
+		p3.add(useWorking);
 		final JButton useMine = new JButton("Use mine");
 		useMine.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				conflict.useMine();
 			}
 		});
-		p2.add(useMine);
+		p3.add(useMine);
 		final JButton useOther = new JButton("Use other (r"+conflict.otherNumber+")");
 		useOther.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				conflict.useOther();
 			}
 		});
-		p2.add(useOther);
-		final JButton mergeOnlyCosmetic = new JButton("Try to merge (only cosmetic)");
-		mergeOnlyCosmetic.addActionListener(createMergeListener(conflict,true));
-		p2.add(mergeOnlyCosmetic);
-		final JButton fullMerge = new JButton("Try to merge (full)");
-		fullMerge.addActionListener(createMergeListener(conflict,false));
-		p2.add(fullMerge);
-		main.add(p2);
+		p3.add(useOther);
+		main.add(p3);
 		return main;
 	}
 
-	private ActionListener createMergeListener(final SvnConflict conflict,final boolean onlyCosmetic) {
+	private ActionListener createMergeListener(final SvnConflict conflict,final JCheckBox allowNonCosmeticChange) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (modified) {
@@ -429,16 +438,16 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				if (!conflict.merge(onlyCosmetic)) {
+				if (!conflict.merge(!allowNonCosmeticChange.isSelected())) {
 					JOptionPane.showMessageDialog(null,
 							"Conflicts remain, cannot merge files",
 							"Merge failed", JOptionPane.ERROR_MESSAGE);
 				} else {
 					JOptionPane.showMessageDialog(null, 
-							"The merge operation has succeeded. If you want to validate\n"+
-							"this result, resolve the conflict using the working copy.", 
-							"Merge successed",
+							"The merge operation has succeeded.", 
+							"Merge",
 							JOptionPane.PLAIN_MESSAGE);
+					setGraph(conflict.merged,conflict.fileInConflict);
 				}
 			}
 		};
@@ -1066,12 +1075,22 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		return grf;
 	}
 
+	
 	public void setGraph(File grf,File key) {
+		setGraph(grf,key,true);
+	}
+	
+	public void setGraph(File grf,File key,boolean reloadGraph) {
 		this.lastModification = grf.lastModified();
 		this.grf = grf;
 		this.key=key;
 		this.nonEmptyGraph = true;
 		this.setTitle(grf.getName() + " (" + grf.getParent() + ")");
+		if (reloadGraph) {
+			GraphIO g = GraphIO.loadGraph(grf, false, false);
+			graphicalZone.refresh(g);
+			setModified(false);
+		}
 	}
 
 	public void saveGraphAsAnImage(File output) {
@@ -1250,7 +1269,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = new GraphIO(graphicalZone);
 		modified = false;
 		g.saveGraph(file);
-		setGraph(file,file);
+		setGraph(file,file,false);
 		return true;
 	}
 
@@ -1303,7 +1322,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		}
 		modified = false;
 		g.saveGraph(file);
-		setGraph(file,file);
+		setGraph(file,file,false);
 		return true;
 	}
 
