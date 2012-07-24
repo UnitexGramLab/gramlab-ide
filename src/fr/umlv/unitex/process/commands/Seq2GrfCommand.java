@@ -27,29 +27,13 @@ public class Seq2GrfCommand extends CommandBuilder {
 		super("Seq2Grf");
 	}
 
-	public Seq2GrfCommand(File alphabet, File outputfile) {
-		super("Seq2Grf");
-		protectElement("-a" + alphabet.getAbsolutePath());
-		protectElement("-o" + outputfile.getAbsolutePath());
-	}
-
-	public Seq2GrfCommand automaton(File s) {
-		protectElement(s.getAbsolutePath());
+	public Seq2GrfCommand output(File f) {
+		protectElement("-o" + f.getAbsolutePath());
 		return this;
 	}
 
-	public Seq2GrfCommand output(String o) {
-		element("-o" + o);
-		return this;
-	}
-
-	public Seq2GrfCommand help(String h) {
-		protectElement("-h" + h);
-		return this;
-	}
-
-	public Seq2GrfCommand text(File s) {
-		protectElement(s.getAbsolutePath());
+	public Seq2GrfCommand text(File f) {
+		protectElement(f.getAbsolutePath());
 		return this;
 	}
 
@@ -58,17 +42,17 @@ public class Seq2GrfCommand extends CommandBuilder {
 		return this;
 	}
 
-	public Seq2GrfCommand wildcard_insert(int i) {
+	public Seq2GrfCommand wildcardInsert(int i) {
 		element("-i" + i);
 		return this;
 	}
 
-	public Seq2GrfCommand wildcard_replace(int r) {
+	public Seq2GrfCommand wildcardReplace(int r) {
 		element("-r" + r);
 		return this;
 	}
 
-	public Seq2GrfCommand wildcard_delete(int d) {
+	public Seq2GrfCommand wildcardDelete(int d) {
 		element("-d" + d);
 		return this;
 	}
@@ -82,6 +66,15 @@ public class Seq2GrfCommand extends CommandBuilder {
 
 	public Seq2GrfCommand alphabet(File alphabet) {
 		protectElement("-a" + alphabet.getAbsolutePath());
+		return this;
+	}
+
+	public Seq2GrfCommand exactCaseMatching(boolean b) {
+		if (b) {
+			element("--case-sensitive");
+		} else {
+			element("--case-insensitive");
+		}
 		return this;
 	}
 
