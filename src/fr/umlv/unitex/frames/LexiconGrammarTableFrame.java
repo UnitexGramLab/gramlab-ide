@@ -66,10 +66,8 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		final JScrollPane scroll = new JScrollPane(table);
-		scroll
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroll
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		top.add(scroll, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
@@ -79,13 +77,15 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 
 	private void buildVectors(File f) {
 		if (!f.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ f.getAbsolutePath(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Cannot find " + f.getAbsolutePath(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!f.canRead()) {
-			JOptionPane.showMessageDialog(null, "Cannot read "
-					+ f.getAbsolutePath(), "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Cannot read " + f.getAbsolutePath(), "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (f.length() <= 2) {

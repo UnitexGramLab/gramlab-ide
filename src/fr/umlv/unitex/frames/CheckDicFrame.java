@@ -51,7 +51,7 @@ public class CheckDicFrame extends JInternalFrame {
 	private final JRadioButton DELAF = new JRadioButton("DELAF/DELACF", true);
 
 	File dela;
-	
+
 	CheckDicFrame() {
 		super("Check Dictionary Format", false, true);
 		constructPanel();
@@ -61,9 +61,9 @@ public class CheckDicFrame extends JInternalFrame {
 	}
 
 	public void setDela(File dela) {
-		this.dela=dela;
+		this.dela = dela;
 	}
-	
+
 	private JPanel constructPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructLeftPanel(), BorderLayout.WEST);
@@ -90,6 +90,7 @@ public class CheckDicFrame extends JInternalFrame {
 		final JPanel rightPanel = new JPanel(new GridLayout(2, 1));
 		rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
 		final Action goAction = new AbstractAction("Check Dictionary") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				checkDELA();
@@ -97,6 +98,7 @@ public class CheckDicFrame extends JInternalFrame {
 		};
 		final JButton GO = new JButton(goAction);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
@@ -112,19 +114,18 @@ public class CheckDicFrame extends JInternalFrame {
 	 * creation of a <code>ProcessInfoFrame</code> object.
 	 */
 	void checkDELA() {
-		if (dela==null) {
-			throw new IllegalStateException("dela should have been set before invoking this method");
+		if (dela == null) {
+			throw new IllegalStateException(
+					"dela should have been set before invoking this method");
 		}
 		CheckDicCommand command = new CheckDicCommand().name(dela)
-			.delaType(DELAS.isSelected()).alphabet(
-				ConfigManager.getManager().getAlphabet(null));
-		String language=ConfigManager.getManager().getCurrentLanguage();
-		if (language.equals("Chinese")
-				|| language.equals("Mandarin")) {
+				.delaType(DELAS.isSelected())
+				.alphabet(ConfigManager.getManager().getAlphabet(null));
+		final String language = ConfigManager.getManager().getCurrentLanguage();
+		if (language.equals("Chinese") || language.equals("Mandarin")) {
 			command = command.no_space_warning();
 		}
-		final File tmp = new File(dela.getParentFile(),
-				"CHECK_DIC.TXT");
+		final File tmp = new File(dela.getParentFile(), "CHECK_DIC.TXT");
 		InternalFrameManager.getManager(null).closeCheckResultFrame();
 		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
@@ -136,6 +137,7 @@ public class CheckDicFrame extends JInternalFrame {
 			results = s;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(results).newCheckResultFrame(
 					results);

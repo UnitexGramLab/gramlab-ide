@@ -49,16 +49,16 @@ public class AboutUnitexFrame extends JInternalFrame {
 	AboutUnitexFrame() {
 		super("About Unitex", true, true);
 		final JPanel top = new JPanel(new BorderLayout());
-		final BigTextArea licenseLGPL = new BigTextArea(new File(Config
-				.getApplicationDir(), "LGPL.txt"));
-		final BigTextArea licenseLGPLLR = new BigTextArea(new File(Config
-				.getApplicationDir(), "LGPLLR.txt"));
-		final BigTextArea apache = new BigTextArea(new File(Config
-				.getApplicationDir(), "Apache-1.1.txt"));
-		final BigTextArea bsd = new BigTextArea(new File(Config
-				.getApplicationDir(), "BSD_tre.txt"));
-		final BigTextArea disclaimer = new BigTextArea(new File(Config
-				.getApplicationDir(), "Disclaimer.txt"));
+		final BigTextArea licenseLGPL = new BigTextArea(new File(
+				Config.getApplicationDir(), "LGPL.txt"));
+		final BigTextArea licenseLGPLLR = new BigTextArea(new File(
+				Config.getApplicationDir(), "LGPLLR.txt"));
+		final BigTextArea apache = new BigTextArea(new File(
+				Config.getApplicationDir(), "Apache-1.1.txt"));
+		final BigTextArea bsd = new BigTextArea(new File(
+				Config.getApplicationDir(), "BSD_tre.txt"));
+		final BigTextArea disclaimer = new BigTextArea(new File(
+				Config.getApplicationDir(), "Disclaimer.txt"));
 		final JPanel up = new JPanel(new BorderLayout());
 		final JPanel image = new JPanel(new BorderLayout());
 		image.setBorder(new EmptyBorder(4, 3, 1, 1));

@@ -34,11 +34,13 @@ public interface XMLTextModel extends ListModel {
 	/**
 	 * Returns the number of sentences to be displayed.
 	 */
+	@Override
 	public int getSize();
 
 	/**
 	 * Returns the text corresponding to the sentence #i.
 	 */
+	@Override
 	public String getElementAt(int i);
 
 	/**

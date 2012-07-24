@@ -31,14 +31,17 @@ public class ConsoleTableModel extends AbstractTableModel {
 		data = new ArrayList<ConsoleEntry>();
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 3;
 	}
 
+	@Override
 	public int getRowCount() {
 		return data.size();
 	}
 
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		final ConsoleEntry e = data.get(rowIndex);
 		if (columnIndex == 0) {

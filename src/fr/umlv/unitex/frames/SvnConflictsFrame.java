@@ -41,8 +41,7 @@ import fr.umlv.unitex.svn.SvnMonitor;
  * @author Sébastien Paumier
  */
 public class SvnConflictsFrame extends TabbableInternalFrame {
-	
-	
+
 	SvnConflictsFrame(SvnMonitor monitor) {
 		super("", true, false, true, true);
 		final ListModel model = monitor.getSvnConflictModel();
@@ -50,10 +49,11 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount()<2) return;
-				int index=list.locationToIndex(e.getPoint());
-				if (index!=-1) {
-					File f=(File) list.getModel().getElementAt(index);
+				if (e.getClickCount() < 2)
+					return;
+				final int index = list.locationToIndex(e.getPoint());
+				if (index != -1) {
+					final File f = (File) list.getModel().getElementAt(index);
 					InternalFrameManager.getManager(f).newGraphFrame(f);
 				}
 			}
@@ -61,23 +61,27 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 		setClosable(model.getSize() == 0);
 		setTitle(model.getSize() + " SVN conflicts detected on graphs");
 		model.addListDataListener(new ListDataListener() {
+			@Override
 			public void intervalRemoved(ListDataEvent e) {
 				setTitle(model.getSize() + " SVN conflicts detected on graphs");
 				setClosable(model.getSize() == 0);
 			}
 
+			@Override
 			public void intervalAdded(ListDataEvent e) {
 				setTitle(model.getSize() + " SVN conflicts detected on graphs");
 				setClosable(model.getSize() == 0);
 			}
 
+			@Override
 			public void contentsChanged(ListDataEvent e) {
 				/* */
 			}
 		});
 		final JScrollPane scroll = new JScrollPane(list);
 		getContentPane().add(scroll, BorderLayout.CENTER);
-		getContentPane().add(new JLabel("Double-click on a graph name to open it:"),
+		getContentPane().add(
+				new JLabel("Double-click on a graph name to open it:"),
 				BorderLayout.NORTH);
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);

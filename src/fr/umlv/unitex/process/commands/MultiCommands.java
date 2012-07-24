@@ -41,13 +41,15 @@ public class MultiCommands {
 	}
 
 	public void addCommand(CommandBuilder builder) {
-		if (builder==null) return;
+		if (builder == null)
+			return;
 		list.add(builder);
 	}
 
 	public void addCommand(MultiCommands cmds) {
-		if (cmds==null) return;
-		for (int i=0;i<cmds.numberOfCommands();i++) {
+		if (cmds == null)
+			return;
+		for (int i = 0; i < cmds.numberOfCommands(); i++) {
 			list.add(cmds.getCommand(i));
 		}
 	}

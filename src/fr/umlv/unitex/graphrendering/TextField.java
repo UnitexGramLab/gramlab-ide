@@ -170,6 +170,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			final ArrayList<GenericGraphBox> boxes = parent.getSelectedBoxes();
 			if (boxes.size() < 2) {
@@ -182,6 +183,7 @@ public class TextField extends GraphTextField {
 					new MultipleSelection(boxes, true)), this);
 		}
 
+		@Override
 		public void lostOwnership(Clipboard c, Transferable d) {
 			// nothing to do
 		}
@@ -192,6 +194,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			final ArrayList<GenericGraphBox> boxes = parent.getSelectedBoxes();
 			if (boxes.size() == 1) {
@@ -201,6 +204,7 @@ public class TextField extends GraphTextField {
 			}
 		}
 
+		@Override
 		public void lostOwnership(Clipboard c, Transferable d) {
 			// nothing
 		}
@@ -211,6 +215,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			final ArrayList<GenericGraphBox> boxes = parent.getSelectedBoxes();
 			if (boxes.size() == 1) {
@@ -223,6 +228,7 @@ public class TextField extends GraphTextField {
 			}
 		}
 
+		@Override
 		public void lostOwnership(Clipboard c, Transferable d) {
 			// nothing to do
 		}
@@ -233,6 +239,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			Transferable data;
 			MultipleSelection res = null;
@@ -262,6 +269,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			final GraphFrame f = InternalFrameManager.getManager(null)
 					.getCurrentFocusedGraphFrame();
@@ -281,6 +289,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			UnitexFrame.mainFrame.openGraph();
 		}
@@ -291,6 +300,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			parent.saveGraph();
 		}
@@ -301,6 +311,7 @@ public class TextField extends GraphTextField {
 			super(s);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			/* */
 		}

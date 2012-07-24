@@ -53,6 +53,7 @@ public class UnitexUncaughtExceptionHandler implements UncaughtExceptionHandler 
 		/* This should not be called from the outside */
 	}
 
+	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		final Box b = new Box(BoxLayout.Y_AXIS);
 		b.add(new JLabel(e.toString()));

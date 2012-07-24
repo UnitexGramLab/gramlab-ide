@@ -30,10 +30,10 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
-import fr.umlv.unitex.cassys.DataListFileNameRenderer;
-import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
+import fr.umlv.unitex.cassys.DataListFileNameRenderer;
+import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.config.Config;
 
 /**
@@ -424,29 +424,25 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		up.addActionListener(this);
 		up.setMaximumSize(defaultButtonDimension);
 		up.setAlignmentX(Component.CENTER_ALIGNMENT);
-		up
-				.setToolTipText("Exchange the selected transducer with the transducer immediately above in the list");
+		up.setToolTipText("Exchange the selected transducer with the transducer immediately above in the list");
 		button_panel.add(up);
 		down = new JButton("Down");
 		down.addActionListener(this);
 		down.setMaximumSize(defaultButtonDimension);
 		down.setAlignmentX(Component.CENTER_ALIGNMENT);
-		down
-				.setToolTipText("Exchange the selected transducer with the transducer immediately below in the list");
+		down.setToolTipText("Exchange the selected transducer with the transducer immediately below in the list");
 		button_panel.add(down);
 		top = new JButton("Top");
 		top.addActionListener(this);
 		top.setMaximumSize(defaultButtonDimension);
 		top.setAlignmentX(Component.CENTER_ALIGNMENT);
-		top
-				.setToolTipText("Move the selected transducer to the top of the list");
+		top.setToolTipText("Move the selected transducer to the top of the list");
 		button_panel.add(top);
 		bottom = new JButton("Bottom");
 		bottom.addActionListener(this);
 		bottom.setMaximumSize(defaultButtonDimension);
 		bottom.setAlignmentX(Component.CENTER_ALIGNMENT);
-		bottom
-				.setToolTipText("Move the selected transducer to the bottom of the list");
+		bottom.setToolTipText("Move the selected transducer to the bottom of the list");
 		button_panel.add(bottom);
 		button_panel.add(Box.createRigidArea(new Dimension(150, 20)));
 		delete_ = new JButton("Delete");
@@ -500,6 +496,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * @param a
 	 *            Action event notified to this class.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent a) {
 		if (up == a.getSource()) {
 			final int selected_row = table.getSelectedRow();
@@ -693,8 +690,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 	void saveListToFile() {
 		try {
-			final BufferedWriter fw = new BufferedWriter(new FileWriter(Config
-					.getCurrentTransducerList()));
+			final BufferedWriter fw = new BufferedWriter(new FileWriter(
+					Config.getCurrentTransducerList()));
 			for (int i = 0; i < table.getModel().getRowCount(); i++) {
 				final String fileName = (String) table.getValueAt(i, 0);
 				fw.write("\"" + fileName + "\" ");

@@ -172,6 +172,7 @@ public class Text {
 			b = taggedText;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			Text.loadSnt(SNT, b);
 		}
@@ -186,6 +187,7 @@ public class Text {
 			b = taggedText;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			if (FileUtil.getFileNameExtension(file).equalsIgnoreCase("snt")) {
 				Config.setCurrentSnt(file);
@@ -229,9 +231,10 @@ public class Text {
 		UnxmlizeCommand cmd = new UnxmlizeCommand().text(file);
 		if (ConfigManager.getManager().isPRLGLanguage(null)) {
 			cmd = cmd.PRLG(new File(SntUtil.getSntDir(file), "prlg.idx"));
-			
+
 		}
-		cmd = cmd.outputOffsets(new File(SntUtil.getSntDir(file),"unxmlize.out.offsets"));
+		cmd = cmd.outputOffsets(new File(SntUtil.getSntDir(file),
+				"unxmlize.out.offsets"));
 		final String s = FileUtil.getFileNameWithoutExtension(file) + ".txt";
 		loadTxt(new File(s), false, cmd);
 	}

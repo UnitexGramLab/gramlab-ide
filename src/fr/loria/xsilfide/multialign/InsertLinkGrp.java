@@ -45,9 +45,10 @@ import org.w3c.dom.NodeList;
 
 import fr.loria.nguyen.mytools.XMLTools;
 
-@SuppressWarnings("unchecked")
 class InsertLinkGrp {
+	@SuppressWarnings("rawtypes")
 	private final Hashtable idSrc;
+	@SuppressWarnings("rawtypes")
 	private final Hashtable idTar; // idSrc and idTar establish
 
 	// the link between ids internal to xalign
@@ -58,7 +59,7 @@ class InsertLinkGrp {
 	// et ecrit dans le document :
 	// <xptr from="ID (idDanstarget)" id="x1">
 	// Le pb est que on a chang� la forme du r�sultat !
-	public ElementImpl CreateXptr(DocumentImpl xdoc, Vector xp) {
+	public ElementImpl CreateXptr(DocumentImpl xdoc, Vector<?> xp) {
 		final ElementImpl elt = new ElementImpl(xdoc, "xptr");
 		final String xptr = xp.elementAt(0).toString();
 		// setAttribute(new QName("from"),"ID ("+tarId+")");
@@ -69,7 +70,7 @@ class InsertLinkGrp {
 		return elt;
 	}
 
-	public ElementImpl CreateLinking(DocumentImpl xdoc, Vector linking) {
+	public ElementImpl CreateLinking(DocumentImpl xdoc, Vector<?> linking) {
 		// Creation of an element "linking",
 		// given the identity of linking and the string of
 		// real identities in the document.
@@ -110,7 +111,7 @@ class InsertLinkGrp {
 	// [d1p1s1, x1]
 	// nous, on ne veut pas de x1.
 	// il faut donc passer par stcTar...
-	public ElementImpl CreateConcord(DocumentImpl xdoc, Vector concord) {
+	public ElementImpl CreateConcord(DocumentImpl xdoc, Vector<?> concord) {
 		// creation of an element "link" (concordance),
 		// given the string of identities.
 		String src = concord.elementAt(0).toString();
@@ -119,9 +120,7 @@ class InsertLinkGrp {
 		if (src == null || src.equals(""))
 			return null;
 		final ElementImpl elt = new ElementImpl(xdoc, "link");
-		elt
-				.setAttribute("targets", src + " "
-						+ concord.elementAt(1).toString());
+		elt.setAttribute("targets", src + " " + concord.elementAt(1).toString());
 		return elt;
 	}
 
@@ -134,10 +133,12 @@ class InsertLinkGrp {
 	// Ajout d'un bool�en addingMode qui vaut faux si on
 	// fabrique un r�sultat � partir de rien (ancien comportement)
 	// et vrai si on ajoute dans un fichier pr�-existant.
-	@SuppressWarnings( { "unused", "null" })
+	@SuppressWarnings({ "unused", "null" })
 	public InsertLinkGrp(String fileName, String sLang, String tLang,
-			String srcName, String tarName, Vector stcTar, Vector Linking,
-			Vector Links, Hashtable idSrc, Hashtable idTar, boolean addingMode) {
+			String srcName, String tarName, Vector<?> stcTar,
+			Vector<?> Linking, Vector<?> Links,
+			@SuppressWarnings("rawtypes") Hashtable idSrc,
+			@SuppressWarnings("rawtypes") Hashtable idTar, boolean addingMode) {
 		this.idSrc = idSrc;
 		this.idTar = idTar;
 		DocumentImpl xdoc = null;

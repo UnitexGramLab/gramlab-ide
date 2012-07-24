@@ -53,11 +53,13 @@ public class TaggingModel {
 	public TaggingModel(TfstGraphicalZone zone) {
 		this.zone = zone;
 		zone.addActionListner(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetModel();
 			}
 		});
 		zone.addGraphListener(new GraphListener() {
+			@Override
 			public void graphChanged(boolean modified) {
 				updateModel();
 			}

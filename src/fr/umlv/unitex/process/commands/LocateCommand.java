@@ -152,12 +152,12 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 
-	public LocateCommand setInjectedVariables(
-			ArrayList<InjectedVariable> vars) {
-		if (vars==null) return this;
-		for (InjectedVariable v:vars) {
+	public LocateCommand setInjectedVariables(ArrayList<InjectedVariable> vars) {
+		if (vars == null)
+			return this;
+		for (final InjectedVariable v : vars) {
 			element("-v");
-			protectElement(v.getName()+"="+v.getValue());
+			protectElement(v.getName() + "=" + v.getValue());
 		}
 		return this;
 	}

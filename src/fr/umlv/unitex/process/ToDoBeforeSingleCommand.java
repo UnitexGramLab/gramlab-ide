@@ -24,8 +24,9 @@ import fr.umlv.unitex.console.ConsoleEntry;
 
 /**
  * See comments in the 'ToDo' interface
+ * 
  * @author paumier
- *
+ * 
  */
 public interface ToDoBeforeSingleCommand {
 

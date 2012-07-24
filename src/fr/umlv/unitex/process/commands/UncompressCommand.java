@@ -30,10 +30,10 @@ public class UncompressCommand extends CommandBuilder {
 	public UncompressCommand() {
 		super("Uncompress");
 	}
-	
+
 	public UncompressCommand bin(File bin) {
 		protectElement(bin.getAbsolutePath());
 		return this;
 	}
-	
+
 }

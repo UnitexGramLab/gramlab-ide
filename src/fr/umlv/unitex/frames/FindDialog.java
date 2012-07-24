@@ -41,6 +41,7 @@ public class FindDialog extends JDialog {
 	FindDialog(FileEditionTextFrame owner) {
 		super(UnitexFrame.mainFrame);
 		final ActionListener closeAction = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}

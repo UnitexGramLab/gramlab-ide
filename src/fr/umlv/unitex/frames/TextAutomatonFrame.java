@@ -122,6 +122,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 	TfstGraphicalZone graphicalZone;
 	public JScrollPane scrollPane;
 	private final GraphListener listener = new GraphListener() {
+		@Override
 		public void graphChanged(boolean m) {
 			if (m)
 				setModified(true);
@@ -169,6 +170,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		textfield.setEditable(false);
 		closeElagFrame();
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				sentenceTextArea.setFont(ConfigManager.getManager()
 						.getTextFont(null));
@@ -193,6 +195,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		final JPanel p = new JPanel(new GridLayout(3, 1));
 		JButton button = new JButton("Explode");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				explodeTextAutomaton(text_tfst);
 			}
@@ -200,6 +203,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(button);
 		button = new JButton("Implode");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				implodeTextAutomaton(text_tfst);
 			}
@@ -207,6 +211,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(button);
 		button = new JButton("Apply Elag Rule");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				elagDialog();
 			}
@@ -239,6 +244,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		table.setFont(ConfigManager.getManager().getTextFont(null));
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				table.setFont(ConfigManager.getManager().getTextFont(null));
 				refreshTableColumnWidths(table);
@@ -247,22 +253,27 @@ public class TextAutomatonFrame extends JInternalFrame {
 		});
 		table.getColumnModel().addColumnModelListener(
 				new TableColumnModelListener() {
+					@Override
 					public void columnSelectionChanged(ListSelectionEvent e) {
 						/* nop */
 					}
 
+					@Override
 					public void columnRemoved(TableColumnModelEvent e) {
 						refreshTableColumnWidths(table);
 					}
 
+					@Override
 					public void columnMoved(TableColumnModelEvent e) {
 						/* nop */
 					}
 
+					@Override
 					public void columnMarginChanged(ChangeEvent e) {
 						/* nop */
 					}
 
+					@Override
 					public void columnAdded(TableColumnModelEvent e) {
 						refreshTableColumnWidths(table);
 					}
@@ -281,8 +292,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 				"Only POS category");
 		final JRadioButton usePattern = new JRadioButton("Use filter: ");
 		final JButton export = new JButton("Export all text as POS list");
-		final JCheckBox delafStyle = new JCheckBox("Export DELAF style",false);
+		final JCheckBox delafStyle = new JCheckBox("Export DELAF style", false);
 		export.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				exportTextAsTable(delafStyle.isSelected());
 			}
@@ -320,6 +332,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 					}
 				});
 		final ActionListener l = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final boolean onlyGramCode = onlyShowGramCode.isSelected();
 				final boolean alwaysGramCode = alwaysShowGramCode.isSelected();
@@ -330,6 +343,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			}
 		};
 		filterField.addCaretListener(new CaretListener() {
+			@Override
 			public void caretUpdate(CaretEvent e) {
 				try {
 					filterField.commitEdit();
@@ -420,6 +434,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		final JPanel p = new JPanel(new GridLayout(3, 1));
 		JButton button = new JButton("Explode");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				exploseElagFst();
 			}
@@ -427,6 +442,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(button);
 		button = new JButton("Implode");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				implodeElagFst();
 			}
@@ -434,6 +450,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		p.add(button);
 		button = new JButton("Replace");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).closeTfstTagsFrame();
 				replaceElagFst();
@@ -477,6 +494,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		middle.add(new JLabel(" Sentence # "), BorderLayout.WEST);
 		spinnerModel = new SpinnerNumberModel(1, 1, 1, 1);
 		spinnerModel.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				loadSentence(spinnerModel.getNumber().intValue());
 			}
@@ -486,6 +504,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		cornerPanel.add(middle);
 		final Action resetSentenceAction = new AbstractAction(
 				"Reset Sentence Graph") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int n = spinnerModel.getNumber().intValue();
 				final File f2 = new File(sentence_modified.getAbsolutePath()
@@ -499,6 +518,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		resetSentenceGraph.setVisible(false);
 		cornerPanel.add(resetSentenceGraph);
 		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				InternalFrameManager.getManager(null).closeTextAutomatonFrame();
 				InternalFrameManager.getManager(null).closeTfstTagsFrame();
@@ -506,14 +526,15 @@ public class TextAutomatonFrame extends JInternalFrame {
 				final RebuildTfstCommand command = new RebuildTfstCommand()
 						.automaton(new File(Config.getCurrentSntDir(),
 								"text.tfst"));
-				Launcher.exec(command, true, new RebuildTextAutomatonDo(Config
-						.getCurrentSntDir()));
+				Launcher.exec(command, true,
+						new RebuildTextAutomatonDo(Config.getCurrentSntDir()));
 			}
 		};
 		final JButton rebuildTfstButton = new JButton(rebuildAction);
 		cornerPanel.add(rebuildTfstButton);
 		final JButton elagButton = new JButton("Elag Frame");
 		elagButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				toggleElagFrame();
 				if (elagON) {
@@ -526,6 +547,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		cornerPanel.add(elagButton);
 		final JButton deleteStates = new JButton("Remove greyed states");
 		deleteStates.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
 				for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
@@ -653,10 +675,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 		Process p;
 		try {
 			p = Runtime.getRuntime().exec(cmd.getCommandArguments(true));
-			final BufferedInputStream in = new BufferedInputStream(p
-					.getInputStream());
-			final BufferedInputStream err = new BufferedInputStream(p
-					.getErrorStream());
+			final BufferedInputStream in = new BufferedInputStream(
+					p.getInputStream());
+			final BufferedInputStream err = new BufferedInputStream(
+					p.getErrorStream());
 			new EatStreamThread(in).start();
 			new EatStreamThread(err).start();
 			p.waitFor();
@@ -704,10 +726,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 		try {
 			final Process p = Runtime.getRuntime().exec(
 					cmd.getCommandArguments(true));
-			final BufferedInputStream in = new BufferedInputStream(p
-					.getInputStream());
-			final BufferedInputStream err = new BufferedInputStream(p
-					.getErrorStream());
+			final BufferedInputStream in = new BufferedInputStream(
+					p.getInputStream());
+			final BufferedInputStream err = new BufferedInputStream(
+					p.getErrorStream());
 			new EatStreamThread(in).start();
 			new EatStreamThread(err).start();
 			p.waitFor();
@@ -758,6 +780,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		graphicalZone.setup(g);
 		tfstTableModel.init(g.getBoxes());
 		final Timer t = new Timer(300, new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (ConfigManager.getManager().isRightToLeftForGraphs(null)) {
 					tfstScrollbar.setValue(tfstScrollbar.getMaximum());
@@ -807,6 +830,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		ruleslabel.setBorder(new LineBorder(Color.black, 1, true));
 		final JButton button = new JButton("Browse");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
 				fc.setCurrentDirectory(elagrules.getParentFile());
@@ -837,9 +861,9 @@ public class TextAutomatonFrame extends JInternalFrame {
 				JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final ElagCommand elagcmd = new ElagCommand().lang(
-				new File(Config.getCurrentElagDir(), "tagset.def")).rules(
-				elagrules).output(elag_tfst).automaton(text_tfst);
+		final ElagCommand elagcmd = new ElagCommand()
+				.lang(new File(Config.getCurrentElagDir(), "tagset.def"))
+				.rules(elagrules).output(elag_tfst).automaton(text_tfst);
 		if (implodeCheckBox.isSelected()) {
 			Launcher.exec(elagcmd, false, new ImplodeDo(this, elag_tfst));
 		} else {
@@ -953,6 +977,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			FileUtil.deleteFileByName(new File(sntDir, "sentence*.grf"));
 			File f = new File(sntDir, "currelagsentence.grf");
@@ -987,6 +1012,7 @@ class loadSentenceDo implements ToDo {
 		frame = f;
 	}
 
+	@Override
 	public void toDo(boolean success) {
 		frame.loadCurrSentence();
 	}
@@ -1001,6 +1027,7 @@ class ImplodeDo implements ToDo {
 		fr = frame;
 	}
 
+	@Override
 	public void toDo(boolean success) {
 		fr.implodeTextAutomaton(fst);
 	}

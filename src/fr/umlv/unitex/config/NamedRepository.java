@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 public class NamedRepository {
-	private String name;
+	private final String name;
+
 	public String getName() {
 		return name;
 	}
@@ -13,18 +14,18 @@ public class NamedRepository {
 		return file;
 	}
 
-	private File file;
-	
-	public NamedRepository(String n,File f) {
+	private final File file;
+
+	public NamedRepository(String n, File f) {
 		if (!isValidName(n)) {
-			throw new IllegalArgumentException("Invalid repository name: "+n);
+			throw new IllegalArgumentException("Invalid repository name: " + n);
 		}
-		this.name=n;
-		this.file=f;
+		this.name = n;
+		this.file = f;
 	}
-	
+
 	public static boolean isValidName(String s) {
-		return Pattern.matches("^[a-zA-Z0-9_]+$",s);
+		return Pattern.matches("^[a-zA-Z0-9_]+$", s);
 	}
-	
+
 }

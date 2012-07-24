@@ -188,7 +188,7 @@ public class GraphDecorator {
 		return propertyOps.size() == 0 && boxAdded.size() == 0
 				&& boxRemoved.size() == 0 && boxContentChanged.size() == 0
 				&& transitionAdded.size() == 0 && transitionRemoved.size() == 0
-				&& boxMoved.size()==0;
+				&& boxMoved.size() == 0;
 	}
 
 	public Color getTransitionColor(int boxNumber, int destNumber, Color c) {
@@ -279,7 +279,7 @@ public class GraphDecorator {
 	public Color getBoxOutputColor(int boxNumber, Color c) {
 		if (contentChanged(boxNumber))
 			return GraphDecoratorConfig.CONTENT_CHANGED;
-		if (boxNumber==currentBox && currentLine==-2)
+		if (boxNumber == currentBox && currentLine == -2)
 			return GraphDecoratorConfig.OUTPUT_HIGHLIGHTED;
 		return c;
 	}
@@ -330,5 +330,5 @@ public class GraphDecorator {
 	public void setCoverage(Coverage c) {
 		coverage = c;
 	}
-	
+
 }

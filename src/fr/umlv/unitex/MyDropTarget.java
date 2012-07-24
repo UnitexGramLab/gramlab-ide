@@ -87,6 +87,7 @@ public class MyDropTarget implements UnitexDropTarget {
 	 *            the component that will be the drop target
 	 * @return the <code>DropTarget</code> object
 	 */
+	@Override
 	public DropTarget newDropTarget(Component c) {
 		return new DropTarget(c, DnDConstants.ACTION_COPY_OR_MOVE,
 				dropTargetListener, true);
@@ -100,6 +101,7 @@ public class MyDropTarget implements UnitexDropTarget {
 	 *            the component that will be the drop target
 	 * @return the <code>DropTarget</code> object
 	 */
+	@Override
 	public DropTarget newTranscodeDropTarget(Component c) {
 		return new DropTarget(c, DnDConstants.ACTION_COPY_OR_MOVE,
 				transcodeDropTargetListener, true);
@@ -112,6 +114,7 @@ public class MyDropTarget implements UnitexDropTarget {
 					&& ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
 		}
 
+		@Override
 		public void dragEnter(DropTargetDragEvent e) {
 			if (!weCanDrag(e)) {
 				e.rejectDrag();
@@ -120,6 +123,7 @@ public class MyDropTarget implements UnitexDropTarget {
 			e.acceptDrag(e.getDropAction());
 		}
 
+		@Override
 		public void dragOver(DropTargetDragEvent e) {
 			if (!weCanDrag(e)) {
 				e.rejectDrag();
@@ -128,6 +132,7 @@ public class MyDropTarget implements UnitexDropTarget {
 			e.acceptDrag(e.getDropAction());
 		}
 
+		@Override
 		public void dropActionChanged(DropTargetDragEvent e) {
 			if (!weCanDrag(e)) {
 				e.rejectDrag();
@@ -136,11 +141,12 @@ public class MyDropTarget implements UnitexDropTarget {
 			e.acceptDrag(e.getDropAction());
 		}
 
+		@Override
 		public void dragExit(DropTargetEvent e) {
 			// nothing to do
 		}
 
-		@SuppressWarnings("unchecked")
+		@Override
 		public void drop(DropTargetDropEvent e) {
 			Object data = null;
 			try {
@@ -209,6 +215,7 @@ public class MyDropTarget implements UnitexDropTarget {
 				final File F = f;
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						Text.loadCorpus(F);
 					}
@@ -228,17 +235,16 @@ public class MyDropTarget implements UnitexDropTarget {
 				final File dela = f;
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						try {
 							final Encoding e = Encoding.getEncoding(dela);
 							if (e == null) {
-								JOptionPane
-										.showMessageDialog(
-												UnitexFrame.mainFrame,
-												dela.getAbsolutePath()
-														+ " is not a Unicode dictionary",
-												"Error",
-												JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(
+										UnitexFrame.mainFrame,
+										dela.getAbsolutePath()
+												+ " is not a Unicode dictionary",
+										"Error", JOptionPane.ERROR_MESSAGE);
 								return;
 							}
 						} catch (final HeadlessException e) {
@@ -263,8 +269,10 @@ public class MyDropTarget implements UnitexDropTarget {
 				final File dela = f;
 				// post pone code
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						final ToDo toDo = new ToDo() {
+							@Override
 							public void toDo(boolean success) {
 								InternalFrameManager.getManager(dela)
 										.newDelaFrame(dela);
@@ -301,6 +309,7 @@ public class MyDropTarget implements UnitexDropTarget {
 					&& ((e.getDropAction() & DnDConstants.ACTION_COPY_OR_MOVE) != 0);
 		}
 
+		@Override
 		public void dragEnter(DropTargetDragEvent e) {
 			if (!weCanDrag(e)) {
 				e.rejectDrag();
@@ -309,6 +318,7 @@ public class MyDropTarget implements UnitexDropTarget {
 			e.acceptDrag(e.getDropAction());
 		}
 
+		@Override
 		public void dragOver(DropTargetDragEvent e) {
 			if (!weCanDrag(e)) {
 				e.rejectDrag();
@@ -317,6 +327,7 @@ public class MyDropTarget implements UnitexDropTarget {
 			e.acceptDrag(e.getDropAction());
 		}
 
+		@Override
 		public void dropActionChanged(DropTargetDragEvent e) {
 			if (!weCanDrag(e)) {
 				e.rejectDrag();
@@ -325,10 +336,12 @@ public class MyDropTarget implements UnitexDropTarget {
 			e.acceptDrag(e.getDropAction());
 		}
 
+		@Override
 		public void dragExit(DropTargetEvent e) {
 			// nothing to do
 		}
 
+		@Override
 		public void drop(DropTargetDropEvent e) {
 			Object data = null;
 			try {

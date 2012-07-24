@@ -68,8 +68,9 @@ class ContraintesPoint {
 @SuppressWarnings("unchecked")
 public class ContraintesChemin {
 	private final int[][] coutsForces;
-	private final Vector[][] cheminsForces; // c'est un ou logique entre ces
-											// chemins...
+	private final Vector<Object>[][] cheminsForces; // c'est un ou logique entre
+													// ces
+	// chemins...
 	private final Point[][] cheminSpecial; // un seul possible.
 	// private Hashtable table;
 	private final ContraintesPoint[][] table;
@@ -172,7 +173,7 @@ public class ContraintesChemin {
 			System.exit(1);
 		}
 		if (cheminsForces[i][j] == null) {
-			cheminsForces[i][j] = new Vector();
+			cheminsForces[i][j] = new Vector<Object>();
 		}
 		cheminsForces[i][j].addElement(typeCh);
 		// Attention : les chemins forcés ne valent que si le meilleur chemin
@@ -238,7 +239,7 @@ public class ContraintesChemin {
 			System.exit(1);
 		}
 		if (cheminsForces[i][j] == null) {
-			cheminsForces[i][j] = new Vector();
+			cheminsForces[i][j] = new Vector<Object>();
 			cheminsForces[i][j].addElement(Align.DESTRUCTION);
 			cheminsForces[i][j].addElement(Align.SUBSTITUTION);
 			cheminsForces[i][j].addElement(Align.INSERTION);
@@ -271,14 +272,14 @@ public class ContraintesChemin {
 	 * 
 	 * };
 	 */
-	public void setCheminsForces(int i, int j, Vector v) {
-		for (final Enumeration e = v.elements(); e.hasMoreElements();) {
+	public void setCheminsForces(int i, int j, Vector<Object> v) {
+		for (final Enumeration<Object> e = v.elements(); e.hasMoreElements();) {
 			addCheminForce(i, j, (Integer) e.nextElement());
 		}
 	}
 
-	private boolean member(int x, Vector v) {
-		for (final Enumeration e = v.elements(); e.hasMoreElements();) {
+	private boolean member(int x, Vector<Object> v) {
+		for (final Enumeration<Object> e = v.elements(); e.hasMoreElements();) {
 			if (x == (Integer) e.nextElement()) {
 				return true;
 			}
@@ -289,7 +290,7 @@ public class ContraintesChemin {
 	public boolean destructionAutorisee(int i, int j) {
 		return ((cheminsForces[i][j] == null)
 				|| (cheminsForces[i][j].size() == 0) || member(
-				Align.DESTRUCTION, cheminsForces[i][j]));
+					Align.DESTRUCTION, cheminsForces[i][j]));
 	}
 
 	/*
@@ -302,7 +303,7 @@ public class ContraintesChemin {
 	public boolean substitutionAutorisee(int i, int j) {
 		return ((cheminsForces[i][j] == null)
 				|| (cheminsForces[i][j].size() == 0) || member(
-				Align.SUBSTITUTION, cheminsForces[i][j]));
+					Align.SUBSTITUTION, cheminsForces[i][j]));
 	}
 
 	/*
@@ -313,7 +314,7 @@ public class ContraintesChemin {
 	public boolean insertionAutorisee(int i, int j) {
 		return ((cheminsForces[i][j] == null)
 				|| (cheminsForces[i][j].size() == 0) || member(Align.INSERTION,
-				cheminsForces[i][j]));
+					cheminsForces[i][j]));
 	}
 
 	/*
@@ -334,7 +335,7 @@ public class ContraintesChemin {
 	public boolean melangeAutorise(int i, int j) {
 		return ((cheminsForces[i][j] == null)
 				|| (cheminsForces[i][j].size() == 0) || member(Align.MELANGE,
-				cheminsForces[i][j]));
+					cheminsForces[i][j]));
 	}
 
 	/*
@@ -345,7 +346,7 @@ public class ContraintesChemin {
 	public boolean expansionAutorisee(int i, int j) {
 		return ((cheminsForces[i][j] == null)
 				|| (cheminsForces[i][j].size() == 0) || member(Align.EXPANSION,
-				cheminsForces[i][j]));
+					cheminsForces[i][j]));
 	}
 
 	/*
@@ -361,7 +362,7 @@ public class ContraintesChemin {
 		ignorerDansCible[j] = true;
 	}
 
-	public Vector getCheminsForces(int i, int j) {
+	public Vector<Object> getCheminsForces(int i, int j) {
 		return cheminsForces[i][j];
 	}
 

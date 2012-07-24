@@ -23,7 +23,7 @@ package fr.umlv.unitex.graphtools;
 import java.io.File;
 
 public class GraphCall implements Comparable<GraphCall> {
-	
+
 	private final File grf;
 	/*
 	 * useful is true when the graph call is in a graph box that is both
@@ -58,6 +58,7 @@ public class GraphCall implements Comparable<GraphCall> {
 		return direct;
 	}
 
+	@Override
 	public int compareTo(GraphCall c) {
 		if (c == null)
 			return -1;
@@ -91,5 +92,5 @@ public class GraphCall implements Comparable<GraphCall> {
 	public int hashCode() {
 		return super.hashCode();
 	}
-	
+
 }

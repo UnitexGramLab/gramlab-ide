@@ -32,8 +32,7 @@
 // LoadAndPrepareTexts.
 package fr.loria.xsilfide.multialign;
 
-@SuppressWarnings("unchecked")
-class XmlId implements Comparable {
+class XmlId implements Comparable<XmlId> {
 	private static LoadAndPrepareTexts lpt = null;
 	private final String uri;
 	private String localName;
@@ -85,8 +84,9 @@ class XmlId implements Comparable {
 
 	// on veut ici l'ordre d'apparition dans le texte.
 	// il n'y a que lpt qui connaisse cet ordre
-	public int compareTo(Object o) {
-		final XmlId xo = (XmlId) o;
+	@Override
+	public int compareTo(XmlId o) {
+		final XmlId xo = o;
 		if (lpt == null) {
 			return -1;
 		}

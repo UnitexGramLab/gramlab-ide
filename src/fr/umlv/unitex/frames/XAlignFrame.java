@@ -109,6 +109,7 @@ public class XAlignFrame extends JInternalFrame {
 		concordModel2 = new ConcordanceModelImpl(text2, false, model);
 		model.load(align);
 		model.addAlignmentListener(new AlignmentListener() {
+			@Override
 			public void alignmentChanged(AlignmentEvent e) {
 				if (AlignmentEvent.MANUAL_EDIT.equals(e)) {
 					setTitle(((alignementFile != null) ? (alignementFile
@@ -182,6 +183,7 @@ public class XAlignFrame extends JInternalFrame {
 				concordModel1, false);
 		final JButton clearButton = new JButton("Clear alignment");
 		clearButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int choice = JOptionPane
 						.showConfirmDialog(
@@ -196,6 +198,7 @@ public class XAlignFrame extends JInternalFrame {
 		});
 		final JButton alignButton = new JButton("Align");
 		alignButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAlignment(model);
 				if (alignementFile == null || model.isModified()) {
@@ -212,12 +215,14 @@ public class XAlignFrame extends JInternalFrame {
 		});
 		final JButton saveButton = new JButton("Save alignment");
 		saveButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAlignment(model);
 			}
 		});
 		final JButton saveAsButton = new JButton("Save alignment as...");
 		saveAsButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAlignmentAs(model);
 			}
@@ -247,6 +252,7 @@ public class XAlignFrame extends JInternalFrame {
 			final ConcordanceModel concordModel) {
 		final JButton button = new JButton("Locate...");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				launchLocate(file, concordModel);
 			}
@@ -302,7 +308,9 @@ public class XAlignFrame extends JInternalFrame {
 			final TokenizeCommand tokenize = new TokenizeCommand().text(snt)
 					.alphabet(alphabet);
 			commands.addCommand(tokenize);
-			DicoCommand dico = new DicoCommand().snt(snt).alphabet(alphabet)
+			DicoCommand dico = new DicoCommand()
+					.snt(snt)
+					.alphabet(alphabet)
 					.morphologicalDic(
 							ConfigManager.getManager()
 									.morphologicalDictionaries(language));
@@ -321,6 +329,7 @@ public class XAlignFrame extends JInternalFrame {
 				dico = null;
 			}
 			final ToDo toDo = new ToDo() {
+				@Override
 				public void toDo(boolean success) {
 					InternalFrameManager.getManager(null).newXAlignLocateFrame(
 							language, snt, concordModel);
@@ -420,11 +429,11 @@ public class XAlignFrame extends JInternalFrame {
 			final JRadioButton button = new JRadioButton(captions[i], i == 0);
 			if (!left) {
 				button.setHorizontalTextPosition(SwingConstants.LEFT);
-				button
-						.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+				button.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 			}
 			final DisplayMode mode = modes[i];
 			button.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (button.isSelected()) {
 						model1.setMode(mode, model2);
@@ -449,6 +458,7 @@ public class XAlignFrame extends JInternalFrame {
 			this.f = f;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			try {
 				model1.load(f);

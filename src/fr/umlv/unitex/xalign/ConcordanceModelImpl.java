@@ -59,6 +59,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		matchedSentences = new ArrayList<Integer>();
 		occurrenceArray = new Object[model.getSize()];
 		model.addListDataListener(new ListDataListener() {
+			@Override
 			public void intervalAdded(ListDataEvent e) {
 				final int oldSize = e.getIndex0();
 				final int newSize = e.getIndex1() + 1;
@@ -66,14 +67,17 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 				fireIntervalAdded(this, oldSize, newSize);
 			}
 
+			@Override
 			public void intervalRemoved(ListDataEvent e) {/* nothing to do */
 			}
 
+			@Override
 			public void contentsChanged(ListDataEvent e) {/* nothing to do */
 			}
 		});
 	}
 
+	@Override
 	public int getSize() {
 		if (getMode() == DisplayMode.ALIGNED) {
 			return alignedModeSentences.size();
@@ -83,10 +87,12 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		return matchedSentences.size();
 	}
 
+	@Override
 	public int getNumberOfSentences() {
 		return model.getSize();
 	}
 
+	@Override
 	public int getSentence(int index) {
 		if (index == -1)
 			return -1;
@@ -107,6 +113,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	 * visible index of the given sentence. -1 means that the sentence is not
 	 * visible.
 	 */
+	@Override
 	public int getSentenceIndex(int sentence) {
 		if (getMode() != DisplayMode.MATCHES
 				&& getMode() != DisplayMode.ALIGNED)
@@ -137,6 +144,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	/**
 	 * Returns true if there is at least one match for the given sentence.
 	 */
+	@Override
 	public boolean isMatchedSentenceNumber(int sentence) {
 		return (occurrenceArray[sentence] != null);
 	}
@@ -144,6 +152,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	/**
 	 * Returns true if there is at least one match for the given sentence.
 	 */
+	@Override
 	public boolean isMatchedSentenceIndex(int index) {
 		final int sentence = getSentence(index);
 		return (occurrenceArray[sentence] != null);
@@ -152,6 +161,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	/**
 	 * Adds a new match to the model.
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public void addMatch(int sentence, Occurrence match) {
 		if (sentence >= model.getSize()) {
@@ -232,6 +242,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	 * Returns the given sentence in plain text, or in HTML if 1) it's a matched
 	 * sentence 2) we are not in TEXT mode
 	 */
+	@Override
 	public String getElementAt(int index) {
 		int sentence = index;
 		if (getMode() == DisplayMode.MATCHES
@@ -340,10 +351,12 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 
 	private final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
+	@Override
 	public void addListDataListener(ListDataListener l) {
 		listeners.add(l);
 	}
 
+	@Override
 	public void removeListDataListener(ListDataListener l) {
 		listeners.remove(l);
 	}
@@ -426,24 +439,28 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 	 * DisplayMode.ALIGNED mode that requires to know which sentences of the
 	 * other text are matched.
 	 */
+	@Override
 	public void setMode(DisplayMode mode, final ConcordanceModel otherModel) {
 		final int oldSize = getSize();
 		if (mode == DisplayMode.ALIGNED) {
 			/* If we must look at the matched sentence of the other text */
 			computeAlignedWithMatched(otherModel);
 			alignModeDataLister = new ListDataListener() {
+				@Override
 				public void intervalAdded(ListDataEvent e) {
 					final int oldSize1 = getSize();
 					computeAlignedWithMatched(otherModel);
 					update(oldSize1, getSize());
 				}
 
+				@Override
 				public void intervalRemoved(ListDataEvent e) {
 					final int oldSize1 = getSize();
 					computeAlignedWithMatched(otherModel);
 					update(oldSize1, getSize());
 				}
 
+				@Override
 				public void contentsChanged(ListDataEvent e) {
 					final int oldSize1 = getSize();
 					computeAlignedWithMatched(otherModel);
@@ -475,22 +492,27 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		fireContentChanged(this, 0, newSize - 1);
 	}
 
+	@Override
 	public void setMode(DisplayMode mode) {
 		setMode(mode, null);
 	}
 
+	@Override
 	public DisplayMode getMode() {
 		return mode;
 	}
 
+	@Override
 	public XMLTextModel getModel() {
 		return model;
 	}
 
+	@Override
 	public void refresh() {
 		fireContentChanged(this, 0, getSize() - 1);
 	}
 
+	@Override
 	public void clear() {
 		final int size = getSize();
 		for (int i = 0; i < occurrenceArray.length; i++) {
@@ -500,6 +522,7 @@ public class ConcordanceModelImpl implements ConcordanceModel {
 		fireContentChanged(this, 0, size - 1);
 	}
 
+	@Override
 	public ArrayList<Integer> getMatchedSentences() {
 		if (matchedSentences == null)
 			return null;

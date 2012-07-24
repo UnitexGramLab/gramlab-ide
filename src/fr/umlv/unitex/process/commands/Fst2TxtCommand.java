@@ -60,15 +60,13 @@ public class Fst2TxtCommand extends CommandBuilder {
 		}
 		return this;
 	}
-	
-	
+
 	public Fst2TxtCommand morphologicalUseOfSpace(boolean b) {
 		if (b) {
 			element("--start_on_space");
 		}
 		return this;
 	}
-	
 
 	public Fst2TxtCommand inputOffsets(File s) {
 		protectElement("--input_offsets=" + s.getAbsolutePath());
@@ -80,14 +78,14 @@ public class Fst2TxtCommand extends CommandBuilder {
 		return this;
 	}
 
-	File srcGrfPath=null;
-	
+	File srcGrfPath = null;
+
 	public File getSrcGrfPath() {
 		return srcGrfPath;
 	}
-	
+
 	public void setSrcGrfPath(File dir) {
-		srcGrfPath=dir;
+		srcGrfPath = dir;
 	}
-	
+
 }

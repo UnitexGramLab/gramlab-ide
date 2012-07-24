@@ -55,8 +55,10 @@ import fr.umlv.unitex.process.list.ProcessOutputListModel;
  * @author Sébastien Paumier
  */
 public class ProcessInfoFrame extends JInternalFrame {
-	final ProcessOutputList stdoutList = new ProcessOutputList(new ProcessOutputListModel());
-	final ProcessOutputList stderrList = new ProcessOutputList(new ProcessOutputListModel());
+	final ProcessOutputList stdoutList = new ProcessOutputList(
+			new ProcessOutputListModel());
+	final ProcessOutputList stderrList = new ProcessOutputList(
+			new ProcessOutputListModel());
 	public final static Color systemColor = new Color(0xF0, 0xCB, 0xAA);
 	final static DefaultListCellRenderer myRenderer = new DefaultListCellRenderer() {
 		@Override
@@ -94,7 +96,8 @@ public class ProcessInfoFrame extends JInternalFrame {
 		super("Working...", true, false, false);
 		close_on_finish = close;
 		final JPanel top = new JPanel(new BorderLayout());
-		parameters=new ExecParameters(stopIfProblem, c, stdoutList, stderrList, myDo, true, null);
+		parameters = new ExecParameters(stopIfProblem, c, stdoutList,
+				stderrList, myDo, true, null);
 		stdoutList.setCellRenderer(myRenderer);
 		stderrList.setCellRenderer(myRenderer);
 		final JScrollPane scroll = new JScrollPane(stdoutList);
@@ -111,9 +114,11 @@ public class ProcessInfoFrame extends JInternalFrame {
 		middle.setDividerLocation(250);
 		top.add(middle, BorderLayout.CENTER);
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!executor.hasFinished()) {
-					throw new IllegalStateException("The OK button should not be enabled");
+					throw new IllegalStateException(
+							"The OK button should not be enabled");
 				}
 				dispose();
 				if (parameters.getDO() != null) {
@@ -124,6 +129,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 		ok = new JButton(okAction);
 		ok.setEnabled(false);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				executor.interrupt();
 				dispose();
@@ -145,19 +151,22 @@ public class ProcessInfoFrame extends JInternalFrame {
 	}
 
 	void launchBuilderCommands() {
-		final ToDo originalToDo=parameters.getDO();
-		ToDo myDo=new ToDo() {
+		final ToDo originalToDo = parameters.getDO();
+		final ToDo myDo = new ToDo() {
+			@Override
 			public void toDo(final boolean success) {
-				/* This is the code to be executed after all commands
-				 * are executed
+				/*
+				 * This is the code to be executed after all commands are
+				 * executed
 				 */
-				final boolean cantCloseBecauseOfErrMessages = (stderrList.getModel()
-						.size() > 0);
+				final boolean cantCloseBecauseOfErrMessages = (stderrList
+						.getModel().size() > 0);
 				final boolean PB = !success, CL = close_on_finish;
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
 						public void run() {
-							ToDo DO=originalToDo;
+							ToDo DO = originalToDo;
 							if (PB) {
 								setTitle("ERROR");
 								DO = null;
@@ -182,11 +191,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 			}
 		};
 		/* We create new parameters with our custom todo */
-		executor=new Executor(new ExecParameters(
-				parameters.isStopOnProblem(),
-				parameters.getCommands(),
-				parameters.getStdout(), parameters.getStderr(),myDo,
-				parameters.isTraceIntoConsole(),null));
+		executor = new Executor(new ExecParameters(
+				parameters.isStopOnProblem(), parameters.getCommands(),
+				parameters.getStdout(), parameters.getStderr(), myDo,
+				parameters.isTraceIntoConsole(), null));
 		executor.start();
 	}
 }

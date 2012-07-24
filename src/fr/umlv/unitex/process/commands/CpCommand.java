@@ -36,9 +36,9 @@ public class CpCommand extends AbstractMethodCommand {
 		super("cp");
 	}
 
-	public CpCommand copy(File s,File d) {
-		this.src=s;
-		this.dst=d;
+	public CpCommand copy(File s, File d) {
+		this.src = s;
+		this.dst = d;
 		protectElement(src.getAbsolutePath());
 		protectElement(dst.getAbsolutePath());
 		return this;
@@ -46,7 +46,7 @@ public class CpCommand extends AbstractMethodCommand {
 
 	@Override
 	public boolean execute() {
-		return FileUtil.copyFile(src,dst);
+		return FileUtil.copyFile(src, dst);
 	}
 
 }

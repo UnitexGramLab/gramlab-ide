@@ -143,7 +143,8 @@ public class InternalFrameManager {
 	 * will.
 	 */
 	public InternalFrameManager getSubManager(
-			@SuppressWarnings("unused") File resource,@SuppressWarnings("unused") boolean weShallOpenTheProject) {
+			@SuppressWarnings("unused") File resource,
+			@SuppressWarnings("unused") boolean weShallOpenTheProject) {
 		return this;
 	}
 
@@ -151,14 +152,15 @@ public class InternalFrameManager {
 	 * Here we have a static access to the main frame manager. This getter is
 	 * designed for compatibility with Gramlab.
 	 */
-	public static InternalFrameManager getManager(File resource,boolean weShallOpenTheProject) {
-		return manager.getSubManager(resource,weShallOpenTheProject);
+	public static InternalFrameManager getManager(File resource,
+			boolean weShallOpenTheProject) {
+		return manager.getSubManager(resource, weShallOpenTheProject);
 	}
 
 	public static InternalFrameManager getManager(File resource) {
-		return getManager(resource,true);
+		return getManager(resource, true);
 	}
-	
+
 	public static void setManager(InternalFrameManager m) {
 		manager = m;
 	}
@@ -225,12 +227,14 @@ public class InternalFrameManager {
 	 * @return
 	 */
 	public GraphFrame newGraphFrame(File grf) {
-		GraphFrame g=(GraphFrame) setup(graphFrameFactory.getGraphFrame(grf), true);
-		if (g==null) return null;
+		final GraphFrame g = (GraphFrame) setup(
+				graphFrameFactory.getGraphFrame(grf), true);
+		if (g == null)
+			return null;
 		if (ConfigManager.getManager().maximizeGraphFrames()) {
 			try {
 				g.setMaximum(true);
-			} catch (PropertyVetoException e1) {
+			} catch (final PropertyVetoException e1) {
 				/* */
 			}
 		}
@@ -290,13 +294,13 @@ public class InternalFrameManager {
 		return textFrameFactory.getTextFrame();
 	}
 
-	public GraphDiffFrame newGraphDiffFrame(GraphIO base, GraphIO dest, GraphDecorator diff) {
-		final GraphDiffFrame f = new GraphDiffFrame(base, dest,
-				diff);
-		setup(f,true);
+	public GraphDiffFrame newGraphDiffFrame(GraphIO base, GraphIO dest,
+			GraphDecorator diff) {
+		final GraphDiffFrame f = new GraphDiffFrame(base, dest, diff);
+		setup(f, true);
 		try {
 			f.setMaximum(true);
-		} catch (PropertyVetoException e) {
+		} catch (final PropertyVetoException e) {
 			/* */
 		}
 		return f;
@@ -406,7 +410,7 @@ public class InternalFrameManager {
 		}
 	}
 
-	public TokensFrame newTokensFrame(File tokens,boolean iconify) {
+	public TokensFrame newTokensFrame(File tokens, boolean iconify) {
 		return (TokensFrame) setup(tokensFrameFactory.newTokensFrame(tokens),
 				false, iconify);
 	}
@@ -416,8 +420,8 @@ public class InternalFrameManager {
 	}
 
 	public TfstTagsFrame newTfstTagsFrame(File tags) {
-		return (TfstTagsFrame) setup(tfstTagsFrameFactory
-				.newTfstTagsFrame(tags), false, true);
+		return (TfstTagsFrame) setup(
+				tfstTagsFrameFactory.newTfstTagsFrame(tags), false, true);
 	}
 
 	public void closeTfstTagsFrame() {
@@ -435,8 +439,9 @@ public class InternalFrameManager {
 
 	public TextAutomatonFrame newTextAutomatonFrame(int sentenceNumber,
 			boolean iconify) {
-		return (TextAutomatonFrame) setup(textAutomatonFrameFactory
-				.newTextAutomatonFrame(sentenceNumber), false, iconify);
+		return (TextAutomatonFrame) setup(
+				textAutomatonFrameFactory.newTextAutomatonFrame(sentenceNumber),
+				false, iconify);
 	}
 
 	public void closeTextAutomatonFrame() {
@@ -506,7 +511,8 @@ public class InternalFrameManager {
 	}
 
 	public CheckDicFrame newCheckDicFrame(File dela) {
-		CheckDicFrame f=(CheckDicFrame) setup(checkDicFrameFactory.newFrame());
+		final CheckDicFrame f = (CheckDicFrame) setup(checkDicFrameFactory
+				.newFrame());
 		f.setDela(dela);
 		return f;
 	}
@@ -553,8 +559,9 @@ public class InternalFrameManager {
 	}
 
 	public ConcordanceFrame newConcordanceFrame(File file, int widthInChars) {
-		return (ConcordanceFrame) setup(concordanceFrameFactory
-				.newConcordanceFrame(file, widthInChars), true);
+		return (ConcordanceFrame) setup(
+				concordanceFrameFactory.newConcordanceFrame(file, widthInChars),
+				true);
 	}
 
 	public void closeConcordanceFrame() {
@@ -648,7 +655,8 @@ public class InternalFrameManager {
 	}
 
 	public InflectFrame newInflectFrame(File dela) {
-		InflectFrame f=(InflectFrame) setup(inflectFrameFactory.newFrame());
+		final InflectFrame f = (InflectFrame) setup(inflectFrameFactory
+				.newFrame());
 		f.setDela(dela);
 		return f;
 	}
@@ -720,7 +728,8 @@ public class InternalFrameManager {
 	public LexiconGrammarTableFrame newLexiconGrammarTableFrame(File file) {
 		final LexiconGrammarTableFrame f = (LexiconGrammarTableFrame) setup(
 				lexiconGrammarTableFrameFactory
-						.newLexiconGrammarTableFrame(file), true);
+						.newLexiconGrammarTableFrame(file),
+				true);
 		/* We don't want the same listener to be added twice */
 		f.removeInternalFrameListener(lgTableFrameListener);
 		f.addInternalFrameListener(lgTableFrameListener);
@@ -786,8 +795,8 @@ public class InternalFrameManager {
 	}
 
 	public StatisticsFrame newStatisticsFrame(File file, int mode) {
-		return (StatisticsFrame) setup(statisticsFrameFactory
-				.newStatisticsFrame(file, mode), true);
+		return (StatisticsFrame) setup(
+				statisticsFrameFactory.newStatisticsFrame(file, mode), true);
 	}
 
 	public void closeStatisticsFrame() {
@@ -854,8 +863,8 @@ public class InternalFrameManager {
 	}
 
 	/**
-	 * rootDir will be the user current language dir in Unitex,
-	 * and the project dir in Gramlab
+	 * rootDir will be the user current language dir in Unitex, and the project
+	 * dir in Gramlab
 	 */
 	private SvnConflictsFrame newSvnConflictsFrame(SvnMonitor monitor) {
 		final SvnConflictsFrame f = svnConflictsFrameFactory
@@ -872,8 +881,8 @@ public class InternalFrameManager {
 	}
 
 	public FileEditionTextFrame newFileEditionTextFrame(File file) {
-		return (FileEditionTextFrame) setup(fileEditionTextFrameFactory
-				.getFileEditionTextFrame(file), true);
+		return (FileEditionTextFrame) setup(
+				fileEditionTextFrameFactory.getFileEditionTextFrame(file), true);
 	}
 
 	public void closeAllFileEditionTextFrames() {
@@ -902,8 +911,8 @@ public class InternalFrameManager {
 	}
 
 	public XAlignFrame newXAlignFrame(File src, File dst, File alignment) {
-		return (XAlignFrame) setup(xAlignFrameFactory.newXAlignFrame(src, dst,
-				alignment), true);
+		return (XAlignFrame) setup(
+				xAlignFrameFactory.newXAlignFrame(src, dst, alignment), true);
 	}
 
 	public void closeXAlignFrame() {
@@ -970,7 +979,7 @@ public class InternalFrameManager {
 		for (final JInternalFrame f : desktop.getAllFrames()) {
 			try {
 				f.doDefaultCloseAction();
-			} catch (UserRefusedFrameClosingError e) {
+			} catch (final UserRefusedFrameClosingError e) {
 				return false;
 			}
 		}
@@ -994,7 +1003,7 @@ public class InternalFrameManager {
 	}
 
 	public ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output,
-			TagFilter filter,boolean delafStyle) {
+			TagFilter filter, boolean delafStyle) {
 		final ExportTextAsPOSListDialog d = exportTextAsPOSListDialogFactory
 				.newExportTextAsPOSListDialog(output, filter, delafStyle);
 		d.launch();

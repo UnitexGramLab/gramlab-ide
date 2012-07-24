@@ -37,6 +37,7 @@ public class DebugTableModel extends AbstractTableModel {
 		return DebugDetails.fields[column];
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 3;
 	}
@@ -46,10 +47,12 @@ public class DebugTableModel extends AbstractTableModel {
 		return String.class;
 	}
 
+	@Override
 	public int getRowCount() {
 		return details.size();
 	}
 
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		final DebugDetails d = details.get(rowIndex);
 		if (d == null)

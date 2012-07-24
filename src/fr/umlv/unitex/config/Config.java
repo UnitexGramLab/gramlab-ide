@@ -388,8 +388,8 @@ public class Config {
 		inflectDialogBox.setDialogTitle("Choose the inflection directory");
 		inflectDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
 		inflectDialogBox.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		if (dir==null) {
-			dir=ConfigManager.getManager().getInflectionDir();
+		if (dir == null) {
+			dir = ConfigManager.getManager().getInflectionDir();
 		}
 		inflectDialogBox.setCurrentDirectory(dir);
 		return inflectDialogBox;
@@ -521,14 +521,19 @@ public class Config {
 			File userFile = new File(new File(getUnitexDir(), "Users"),
 					userName + ".cfg");
 			if (!userFile.exists() || !userFile.getParentFile().canWrite()) {
-				/* Windows 7 forbids writing in Users if Unitex is in 'Program Files',
-				 * so we try to look for a home dir
+				/*
+				 * Windows 7 forbids writing in Users if Unitex is in 'Program
+				 * Files', so we try to look for a home dir
 				 */
-				if (System.getProperty("user.home")!=null) {
-					userFile = new File(System.getProperty("user.home"), ".unitex.cfg");
+				if (System.getProperty("user.home") != null) {
+					userFile = new File(System.getProperty("user.home"),
+							".unitex.cfg");
 				} else {
-					JOptionPane.showMessageDialog(null, "Unable to find a consistent writable location\nto store your configuration file", "Welcome",
-							JOptionPane.PLAIN_MESSAGE);
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Unable to find a consistent writable location\nto store your configuration file",
+									"Welcome", JOptionPane.PLAIN_MESSAGE);
 					System.exit(1);
 				}
 			}
@@ -931,8 +936,8 @@ public class Config {
 		f.setDialogType(JFileChooser.OPEN_DIALOG);
 		f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		while (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION || /*
-																		 * areIdenticalDirectories(
-																		 * f.
+																		 * areIdenticalDirectories
+																		 * ( f.
 																		 * getSelectedFile
 																		 * ().
 																		 * getAbsolutePath
@@ -982,6 +987,7 @@ public class Config {
 
 	private static void collectLanguage(File directory, Set<String> languages) {
 		final File[] fileList = directory.listFiles(new FileFilter() {
+			@Override
 			public boolean accept(File file) {
 				return file.isDirectory()
 						&& ConfigManager.getManager().isValidLanguageName(
@@ -1073,8 +1079,8 @@ public class Config {
 	 *            name of the corpus file
 	 */
 	private static void setCurrentSntDir(File s) {
-		if (s==null) {
-			currentSntDir=null;
+		if (s == null) {
+			currentSntDir = null;
 			return;
 		}
 		final String path = FileUtil.getFileNameWithoutExtension(s
@@ -1204,7 +1210,8 @@ public class Config {
 					new File(Config.getUnitexDir(), "XAlign"),
 					"multialign.properties");
 			if (!tmp.exists()) {
-				JOptionPane.showMessageDialog(null,
+				JOptionPane.showMessageDialog(
+						null,
 						"Cannot find XAlign configuration file "
 								+ tmp.getAbsolutePath(), "Error",
 						JOptionPane.ERROR_MESSAGE);
@@ -1307,9 +1314,10 @@ public class Config {
 	}
 
 	private static SvnMonitor monitor;
+
 	public static SvnMonitor getSvnMonitor() {
-		if (monitor==null) {
-			monitor=new SvnMonitor(null,true);
+		if (monitor == null) {
+			monitor = new SvnMonitor(null, true);
 		}
 		return monitor;
 	}

@@ -58,13 +58,14 @@ public class FileManager {
 			return;
 		}
 		if (!file.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ file.getAbsolutePath(), "Error", ImageObserver.ERROR);
+			JOptionPane.showMessageDialog(null,
+					"Cannot find " + file.getAbsolutePath(), "Error",
+					ImageObserver.ERROR);
 			return;
 		}
 		if (!file.canRead()) {
-			JOptionPane.showMessageDialog(null, "Cannot read "
-					+ file.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot read " + file.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -115,10 +116,11 @@ public class FileManager {
 	 *            the absolute path of the file
 	 */
 	public void save(String absolutePath) {
-		File file=new File(absolutePath);
+		final File file = new File(absolutePath);
 		if (file.exists() && !file.canWrite()) {
 			JOptionPane.showMessageDialog(null, "Unable to save "
-					+ absolutePath+"\nbecause it is a read-only file! ","Error",JOptionPane.ERROR_MESSAGE);
+					+ absolutePath + "\nbecause it is a read-only file! ",
+					"Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		try {

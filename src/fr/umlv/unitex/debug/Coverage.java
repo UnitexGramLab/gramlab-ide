@@ -54,9 +54,10 @@ public class Coverage {
 			}
 			for (final DebugDetails item : details) {
 				if (item.tag.startsWith(">> ")) {
-					/* We don't want to count twice a subgraph call, and
-					 * it will already be counted once when the graph is called.
-					 * So, when we have a return from a graph call, we do nothing
+					/*
+					 * We don't want to count twice a subgraph call, and it will
+					 * already be counted once when the graph is called. So,
+					 * when we have a return from a graph call, we do nothing
 					 */
 					continue;
 				}

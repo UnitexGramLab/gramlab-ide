@@ -50,12 +50,12 @@ public abstract class CommandBuilder implements AbstractCommand {
 	protected final ArrayList<String> list;
 	protected final ArrayList<String> ultraSimplifiedList;
 	int type = PROGRAM;
-	private boolean unitexProgram=true;
+	private boolean unitexProgram = true;
 	private int programNamePosition;
 
 	CommandBuilder(String programName) {
 		list = new ArrayList<String>();
-		ultraSimplifiedList=new ArrayList<String>();
+		ultraSimplifiedList = new ArrayList<String>();
 		protectElement(ConfigManager.getManager().getUnitexToolLogger()
 				.getAbsolutePath());
 		if (ConfigManager.getManager().mustLog(null)) {
@@ -67,7 +67,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 			element("-u");
 			element("}");
 		}
-		programNamePosition=list.size();
+		programNamePosition = list.size();
 		element(programName);
 		ultraSimplifiedList.add(programName);
 	}
@@ -75,16 +75,16 @@ public abstract class CommandBuilder implements AbstractCommand {
 	public CommandBuilder() {
 		this(true);
 	}
-	
+
 	public CommandBuilder(boolean unitexProgram) {
-		this.unitexProgram=unitexProgram;
+		this.unitexProgram = unitexProgram;
 		list = new ArrayList<String>();
-		ultraSimplifiedList=new ArrayList<String>();
+		ultraSimplifiedList = new ArrayList<String>();
 	}
 
 	CommandBuilder(ArrayList<String> list) {
 		this.list = list;
-		this.ultraSimplifiedList=new ArrayList<String>();
+		this.ultraSimplifiedList = new ArrayList<String>();
 	}
 
 	public void element(String s) {
@@ -104,7 +104,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 	}
 
 	public String getOutputEncoding() {
-		if (!unitexProgram || getType()!=PROGRAM) {
+		if (!unitexProgram || getType() != PROGRAM) {
 			/* This is meaningful only for Unitex programs */
 			return null;
 		}
@@ -120,11 +120,10 @@ public abstract class CommandBuilder implements AbstractCommand {
 	}
 
 	public void time(File f) {
-		list.add(programNamePosition,"\"--time=" + f.getAbsolutePath() + "\"");
+		list.add(programNamePosition, "\"--time=" + f.getAbsolutePath() + "\"");
 		programNamePosition++;
 	}
 
-	
 	public String getCommandLine() {
 		String res = "";
 		for (final String aList : list) {
@@ -136,10 +135,9 @@ public abstract class CommandBuilder implements AbstractCommand {
 		return res;
 	}
 
-
 	public String getSimplifiedCommandLine() {
 		String res = "";
-		for (int i=programNamePosition;i<list.size();i++) {
+		for (int i = programNamePosition; i < list.size(); i++) {
 			res = res + list.get(i) + " ";
 		}
 		if (getOutputEncoding() != null) {
@@ -150,7 +148,7 @@ public abstract class CommandBuilder implements AbstractCommand {
 
 	public String getUltraSimplifiedCommandLine() {
 		String res = "";
-		for (String s:ultraSimplifiedList) {
+		for (final String s : ultraSimplifiedList) {
 			res = res + s + " ";
 		}
 		return res;
@@ -161,9 +159,9 @@ public abstract class CommandBuilder implements AbstractCommand {
 	}
 
 	public String[] getCommandArguments(boolean setEncoding) {
-		String encoding=null;
+		String encoding = null;
 		if (setEncoding) {
-			encoding=getOutputEncoding();
+			encoding = getOutputEncoding();
 		}
 		final String[] res = list.toArray(new String[list.size()
 				+ ((encoding != null) ? 1 : 0)]);
@@ -189,49 +187,50 @@ public abstract class CommandBuilder implements AbstractCommand {
 	public int getType() {
 		return type;
 	}
-	
+
+	@Override
 	public ConsoleEntry logIntoConsole() {
-		return Console.addCommand(
-				getCommandLine(), false, Log
-						.getCurrentLogID());
+		return Console.addCommand(getCommandLine(), false,
+				Log.getCurrentLogID());
 	}
-	
+
 	/**
 	 * This is overridden by GrfDiffCommand
 	 */
 	public boolean isCommandSuccessful(int retValue) {
-		return retValue==0;
+		return retValue == 0;
 	}
-	
+
 	/**
 	 * Executes the command, dealing with its outputs.
 	 */
-	public boolean executeCommand(final ExecParameters parameters,final ConsoleEntry entry) {
-		Process p=null;
-		boolean problem=false;
-		final CommandBuilder currentCommand=this;
-		final String[] comm=getCommandArguments(true);
+	@Override
+	public boolean executeCommand(final ExecParameters parameters,
+			final ConsoleEntry entry) {
+		Process p = null;
+		boolean problem = false;
+		final CommandBuilder currentCommand = this;
+		final String[] comm = getCommandArguments(true);
 		try {
 			/* We create the process */
-			parameters.setProcess(Runtime.getRuntime().exec(comm,null,parameters.getWorkingDirectory()));
-			p=parameters.getProcess();
-			if (parameters.getStdout()==null) {
+			parameters.setProcess(Runtime.getRuntime().exec(comm, null,
+					parameters.getWorkingDirectory()));
+			p = parameters.getProcess();
+			if (parameters.getStdout() == null) {
 				/* If needed, we just consume the output stream */
 				new EatStreamThread(p.getInputStream()).start();
 				entry.setNormalStreamEnded(true);
 			} else {
-				new ProcessInfoThread(parameters.getStdout(), p
-					.getInputStream(),entry,false)
-					.start();
+				new ProcessInfoThread(parameters.getStdout(),
+						p.getInputStream(), entry, false).start();
 			}
-			if (parameters.getStderr()==null) {
+			if (parameters.getStderr() == null) {
 				/* If needed, we just consume the error stream */
 				new EatStreamThread(p.getErrorStream()).start();
 				entry.setErrorStreamEnded(true);
 			} else {
-				new ProcessInfoThread(parameters.getStderr(), p
-					.getErrorStream(),entry,true)
-					.start();
+				new ProcessInfoThread(parameters.getStderr(),
+						p.getErrorStream(), entry, true).start();
 			}
 			/* Now, we just wait for the end of the process */
 			try {
@@ -239,28 +238,27 @@ public abstract class CommandBuilder implements AbstractCommand {
 				if (parameters.isStopOnProblem()) {
 					/* iff we need to report a problem */
 					if (!currentCommand.isCommandSuccessful(p.exitValue())) {
-						problem=true;
+						problem = true;
 					}
 				}
 				parameters.setProcess(null);
 				return !problem;
 			} catch (final java.lang.InterruptedException e) {
-				/* If the process is interrupted for any reason,
-				 * like a click on a "Cancel" button
+				/*
+				 * If the process is interrupted for any reason, like a click on
+				 * a "Cancel" button
 				 */
 				if (parameters.isStopOnProblem()) {
 					try {
-						SwingUtilities
-								.invokeAndWait(new Runnable() {
-									public void run() {
-										parameters.getStderr()
-												.addLine(new Couple(
-														"The program "
-																+ comm[0]
-																+ " has been interrupted\n",
-														true));
-									}
-								});
+						SwingUtilities.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+								parameters.getStderr().addLine(
+										new Couple("The program " + comm[0]
+												+ " has been interrupted\n",
+												true));
+							}
+						});
 					} catch (final InterruptedException e1) {
 						e1.printStackTrace();
 					} catch (final InvocationTargetException e1) {
@@ -275,11 +273,11 @@ public abstract class CommandBuilder implements AbstractCommand {
 			/* If the process could not be created */
 			final String programName = comm[0];
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
-					parameters.getStderr().addLine(new Couple(
-							"Cannot launch the program "
-									+ programName + "\n",
-							true));
+					parameters.getStderr().addLine(
+							new Couple("Cannot launch the program "
+									+ programName + "\n", true));
 				}
 			});
 			if (parameters.isStopOnProblem()) {
@@ -290,21 +288,25 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 	}
 
-	private ToDoBeforeSingleCommand toDoBefore=null;
-	private ToDoAfterSingleCommand toDoAfter=null;
-	
+	private ToDoBeforeSingleCommand toDoBefore = null;
+	private ToDoAfterSingleCommand toDoAfter = null;
+
+	@Override
 	public void setWhatToDoBefore(ToDoBeforeSingleCommand r) {
-		this.toDoBefore=r;
+		this.toDoBefore = r;
 	}
-	
-	public ToDoBeforeSingleCommand  getWhatToDoBefore() {
+
+	@Override
+	public ToDoBeforeSingleCommand getWhatToDoBefore() {
 		return toDoBefore;
 	}
 
+	@Override
 	public void setWhatToDoOnceCompleted(ToDoAfterSingleCommand r) {
-		this.toDoAfter=r;
+		this.toDoAfter = r;
 	}
-	
+
+	@Override
 	public ToDoAfterSingleCommand getWhatToDoOnceCompleted() {
 		return toDoAfter;
 	}

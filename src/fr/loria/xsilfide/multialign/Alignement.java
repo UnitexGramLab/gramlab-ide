@@ -29,8 +29,7 @@
  */
 package fr.loria.xsilfide.multialign;
 
-@SuppressWarnings("unchecked")
-class Alignement implements Comparable {
+class Alignement implements Comparable<Alignement> {
 	private final XmlId pSource;
 	private final XmlId pCible;
 	private Alignement generatedFrom; // the alignement as specified
@@ -101,8 +100,9 @@ class Alignement implements Comparable {
 
 	// the alignments are sorted according to the order in which their
 	// pSource appears in the source text.
-	public int compareTo(Object other) {
-		return pSource.compareTo(((Alignement) other).getXmlIdSource());
+	@Override
+	public int compareTo(Alignement other) {
+		return pSource.compareTo(other.getXmlIdSource());
 	}
 
 	public void setGeneratedFrom(Alignement a) {

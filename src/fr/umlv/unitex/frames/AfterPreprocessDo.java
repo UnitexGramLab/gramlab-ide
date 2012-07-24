@@ -34,7 +34,8 @@ public class AfterPreprocessDo implements ToDo {
 		b = taggedText;
 	}
 
+	@Override
 	public void toDo(boolean success) {
-		Text.loadSnt(snt,b);
+		Text.loadSnt(snt, b);
 	}
 }

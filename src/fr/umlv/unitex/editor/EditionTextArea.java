@@ -201,8 +201,8 @@ public class EditionTextArea extends JTextArea {
 			this.setSelection(index + searchIndex - 1, index + searchIndex
 					+ key.length(), searchUp);
 		} else {
-			setSelection(index + searchIndex, index + searchIndex
-					+ key.length(), searchUp);
+			setSelection(index + searchIndex,
+					index + searchIndex + key.length(), searchUp);
 		}
 	}
 
@@ -272,8 +272,8 @@ public class EditionTextArea extends JTextArea {
 						context2 = " "
 								+ data.substring(0, index + key.length() + 2);
 					else
-						context2 = data.substring(index - 1, index
-								+ key.length() + 2);
+						context2 = data.substring(index - 1,
+								index + key.length() + 2);
 				}
 				if (index == 0)
 					context = "\n"
@@ -309,8 +309,8 @@ public class EditionTextArea extends JTextArea {
 			this.setSelection(index + searchIndex - 1, index + searchIndex
 					+ key.length(), searchUp);
 		} else {
-			setSelection(index + searchIndex, index + searchIndex
-					+ key.length(), searchUp);
+			setSelection(index + searchIndex,
+					index + searchIndex + key.length(), searchUp);
 		}
 	}
 
@@ -641,8 +641,8 @@ public class EditionTextArea extends JTextArea {
 				}
 			}
 		} catch (final BadLocationException e) {
-			JOptionPane.showMessageDialog(this, "Bad location exception"
-					+ e.getMessage(), "Warning",
+			JOptionPane.showMessageDialog(this,
+					"Bad location exception" + e.getMessage(), "Warning",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}

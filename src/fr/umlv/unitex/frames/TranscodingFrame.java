@@ -61,10 +61,8 @@ import fr.umlv.unitex.transcoding.Transcoder;
  * @author Sébastien Paumier
  */
 public class TranscodingFrame extends JInternalFrame {
-	final JList srcEncodingList = new JList(Transcoder
-			.getAvailableEncodings());
-	final JList destEncodingList = new JList(Transcoder
-			.getAvailableEncodings());
+	final JList srcEncodingList = new JList(Transcoder.getAvailableEncodings());
+	final JList destEncodingList = new JList(Transcoder.getAvailableEncodings());
 	final JRadioButton replace = new JRadioButton("Replace");
 	final JRadioButton renameSourceWithPrefix = new JRadioButton(
 			"Rename source with prefix");
@@ -89,9 +87,11 @@ public class TranscodingFrame extends JInternalFrame {
 		setContentPane(constructPanel());
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		srcEncodingList.setSelectedValue(Transcoder
-				.getEncodingForLanguage(Config.getCurrentLanguage()), true);
+		srcEncodingList.setSelectedValue(
+				Transcoder.getEncodingForLanguage(Config.getCurrentLanguage()),
+				true);
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				srcEncodingList.setSelectedValue(Transcoder
 						.getEncodingForLanguage(Config.getCurrentLanguage()),
@@ -176,6 +176,7 @@ public class TranscodingFrame extends JInternalFrame {
 	private JPanel constructButtonPanel() {
 		final TranscodingFrame zis = this;
 		addFiles.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int returnVal = Config.getTranscodeDialogBox()
 						.showOpenDialog(zis);
@@ -193,6 +194,7 @@ public class TranscodingFrame extends JInternalFrame {
 			}
 		});
 		removeFiles.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Object[] graphs = fileList.getSelectedValues();
 				for (final Object graph : graphs) {
@@ -201,6 +203,7 @@ public class TranscodingFrame extends JInternalFrame {
 			}
 		});
 		transcode.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final String src = (String) srcEncodingList.getSelectedValue();
 				if (src == null) {
@@ -257,6 +260,7 @@ public class TranscodingFrame extends JInternalFrame {
 			}
 		});
 		cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				doDefaultCloseAction();
 			}

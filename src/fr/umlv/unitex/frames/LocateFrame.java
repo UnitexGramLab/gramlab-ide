@@ -114,11 +114,13 @@ public class LocateFrame extends JInternalFrame {
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				regExp.setFont(ConfigManager.getManager().getTextFont(null));
 			}
 		});
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				regExp.setText("");
 				graphName.setText("");
@@ -179,6 +181,7 @@ public class LocateFrame extends JInternalFrame {
 		patternPanel.setBorder(new TitledBorder(
 				"Locate pattern in the form of:"));
 		final Action setGraphAction = new AbstractAction("Set") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser grfAndFst2 = Config.getGrfAndFst2DialogBox();
 				final int returnVal = grfAndFst2.showOpenDialog(null);
@@ -228,6 +231,7 @@ public class LocateFrame extends JInternalFrame {
 		a.add(constructOutputPanel(), BorderLayout.CENTER);
 		b.add(constructSearchLimitationPanel(), BorderLayout.WEST);
 		final Action searchAction = new AbstractAction("SEARCH") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				launchLocate();
 			}
@@ -323,8 +327,9 @@ public class LocateFrame extends JInternalFrame {
 			final File grf = new File(Config.getUserCurrentLanguageDir(),
 					"regexp.grf");
 			Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
-					.enableLoopAndRecursionDetection(true).tokenizationMode(
-							null, grf).repositories().emitEmptyGraphWarning().displayGraphNames();
+					.enableLoopAndRecursionDetection(true)
+					.tokenizationMode(null, grf).repositories()
+					.emitEmptyGraphWarning().displayGraphNames();
 			if (debug.isSelected())
 				grfCmd = grfCmd.debug();
 			commands.addCommand(grfCmd);
@@ -355,8 +360,8 @@ public class LocateFrame extends JInternalFrame {
 				fst2 = new File(fst2Name);
 			} else {
 				if (grfName.length() > 4
-						&& !(grfName.substring(grfName.length() - 4, grfName
-								.length()).equalsIgnoreCase("fst2"))) {
+						&& !(grfName.substring(grfName.length() - 4,
+								grfName.length()).equalsIgnoreCase("fst2"))) {
 					JOptionPane.showMessageDialog(null,
 							"Invalid graph name extension !", "Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -376,9 +381,9 @@ public class LocateFrame extends JInternalFrame {
 		ToDo toDo;
 		if (locateOnSnt.isSelected()) {
 			/* Locate on .snt text */
-			LocateCommand locateCmd = new LocateCommand().snt(
-					Config.getCurrentSnt()).fst2(fst2).alphabet(
-					ConfigManager.getManager().getAlphabet(null));
+			LocateCommand locateCmd = new LocateCommand()
+					.snt(Config.getCurrentSnt()).fst2(fst2)
+					.alphabet(ConfigManager.getManager().getAlphabet(null));
 			if (shortestMatches.isSelected())
 				locateCmd = locateCmd.shortestMatches();
 			else if (longuestMatches.isSelected())
@@ -442,8 +447,8 @@ public class LocateFrame extends JInternalFrame {
 				return;
 			}
 			LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(tfst)
-					.fst2(fst2).alphabet(
-							ConfigManager.getManager().getAlphabet(null));
+					.fst2(fst2)
+					.alphabet(ConfigManager.getManager().getAlphabet(null));
 			if (shortestMatches.isSelected())
 				locateCmd = locateCmd.shortestMatches();
 			else if (longuestMatches.isSelected())
@@ -560,6 +565,7 @@ public class LocateFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			final String res = readInfo(new File(sntDir, "concord.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",
@@ -578,6 +584,7 @@ public class LocateFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			final String res = readTfstInfo(new File(sntDir, "concord_tfst.n"));
 			JOptionPane.showMessageDialog(null, res, "Result Info",

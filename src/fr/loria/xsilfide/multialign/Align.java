@@ -80,8 +80,8 @@ class Align {
 	}
 
 	public static Path getPath(Dist x, Dist y) {
-		return getPath(x, y, false, new ContraintesChemin(x.getSize(), y
-				.getSize()));
+		return getPath(x, y, false,
+				new ContraintesChemin(x.getSize(), y.getSize()));
 	}
 
 	public static Path getPath(Dist x, Dist y, boolean para_level,
@@ -137,9 +137,7 @@ class Align {
 						&& contraintes.getCheminSpecial(i, j) != null) {
 					final Point p = contraintes.getCheminSpecial(i, j);
 					// ca ne coûte rien de reprendre la distance !
-					dist
-							.setElem(i, j, dist.getElem(i - p.getX(), j
-									- p.getY()));
+					dist.setElem(i, j, dist.getElem(i - p.getX(), j - p.getY()));
 					pathX[i][j] = i - p.getX();
 					pathY[i][j] = j - p.getY();
 				} else { // chemin special
@@ -164,8 +162,8 @@ class Align {
 								&& (dist.getElem(i - 1, j - 1) != Integer.MAX_VALUE) ?
 						// substitution
 						dist.getElem(i - 1, j - 1)
-								+ Dist.TwoSideDistance(x.getDistAt(i - 1), y
-										.getDistAt(j - 1), 0, 0)
+								+ Dist.TwoSideDistance(x.getDistAt(i - 1),
+										y.getDistAt(j - 1), 0, 0)
 								: Integer.MAX_VALUE;
 						d2 = i > 0
 								&& ((contraintes == null) || contraintes
@@ -192,8 +190,8 @@ class Align {
 								&& (dist.getElem(i - 2, j - 1) != Integer.MAX_VALUE) ?
 						// contraction
 						dist.getElem(i - 2, j - 1)
-								+ Dist.TwoSideDistance(x.getDistAt(i - 2), y
-										.getDistAt(j - 1), x.getDistAt(i - 1),
+								+ Dist.TwoSideDistance(x.getDistAt(i - 2),
+										y.getDistAt(j - 1), x.getDistAt(i - 1),
 										0)
 								: Integer.MAX_VALUE;
 						d5 = i > 0
@@ -203,9 +201,9 @@ class Align {
 								&& (dist.getElem(i - 1, j - 2) != Integer.MAX_VALUE) ?
 						// expansion
 						dist.getElem(i - 1, j - 2)
-								+ Dist.TwoSideDistance(x.getDistAt(i - 1), y
-										.getDistAt(j - 2), 0, y
-										.getDistAt(j - 1))
+								+ Dist.TwoSideDistance(x.getDistAt(i - 1),
+										y.getDistAt(j - 2), 0,
+										y.getDistAt(j - 1))
 								: Integer.MAX_VALUE;
 						d6 = i > 1
 								&& j > 1
@@ -214,8 +212,8 @@ class Align {
 								&& (dist.getElem(i - 2, j - 2) != Integer.MAX_VALUE) ?
 						// melding
 						dist.getElem(i - 2, j - 2)
-								+ Dist.TwoSideDistance(x.getDistAt(i - 2), y
-										.getDistAt(j - 2), x.getDistAt(i - 1),
+								+ Dist.TwoSideDistance(x.getDistAt(i - 2),
+										y.getDistAt(j - 2), x.getDistAt(i - 1),
 										y.getDistAt(j - 1))
 								: Integer.MAX_VALUE;
 						dmin = d1;

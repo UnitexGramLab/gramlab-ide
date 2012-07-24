@@ -135,6 +135,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	private final Timer autoRefresh = new Timer(2000, new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (grf == null) {
 				return;
@@ -144,9 +145,13 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				final Timer t = (Timer) e.getSource();
 				t.stop();
 				final String[] options = { "Yes", "No" };
-				final int n = JOptionPane.showOptionDialog(GraphFrame.this,
-						"The file "+grf.getAbsolutePath()+" does\n"
-						+"not exist anymore on disk. Do you want to close the frame?", "", JOptionPane.YES_NO_OPTION,
+				final int n = JOptionPane.showOptionDialog(
+						GraphFrame.this,
+						"The file "
+								+ grf.getAbsolutePath()
+								+ " does\n"
+								+ "not exist anymore on disk. Do you want to close the frame?",
+						"", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 				if (n == 1) {
 					return;
@@ -216,6 +221,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		top.add(buildTextPanel(), BorderLayout.NORTH);
 		graphicalZone = new GraphicalZone(g, getBoxContentEditor(), this, null);
 		graphicalZone.addGraphListener(new GraphListener() {
+			@Override
 			public void graphChanged(boolean m) {
 				repaint();
 				if (m)
@@ -246,7 +252,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		getBoxContentEditor().setFont(info.getInput().getFont());
 		if (g != null) {
-			setGraph(g.getGrf(),g.getGrf(),false);
+			setGraph(g.getGrf(), g.getGrf(), false);
 		}
 		/*
 		 * Some loading operations may have set the modified flag, so we reset
@@ -280,6 +286,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		});
 		grfList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		grfList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				final int n = grfList.getSelectedIndex();
 				if (n == -1)
@@ -300,6 +307,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		closeButton.setContentAreaFilled(false);
 		closeButton.setFocusPainted(false);
 		closeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				getActualMainPanel().remove(grfListPanel);
 				getActualMainPanel().revalidate();
@@ -316,14 +324,15 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	protected void handleSvnConflict(final SvnConflict conflict, final Timer t) {
-		setGraph(conflict.mine,grf);
+		setGraph(conflict.mine, grf);
 		setSvnPanel(createSvnPanel(conflict));
 		getActualMainPanel().add(getSvnPanel(), BorderLayout.NORTH);
 		conflict.addConflictSolvedListener(new ConflictSolvedListener() {
+			@Override
 			public void conflictSolved() {
 				getActualMainPanel().remove(getSvnPanel());
 				setSvnPanel(null);
-				setGraph(conflict.fileInConflict,conflict.fileInConflict);
+				setGraph(conflict.fileInConflict, conflict.fileInConflict);
 				getActualMainPanel().revalidate();
 				getActualMainPanel().repaint();
 				t.start();
@@ -344,32 +353,37 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		final JButton showMine = new JButton("Show mine");
 		showMine.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				setGraph(conflict.mine,conflict.fileInConflict);
+				setGraph(conflict.mine, conflict.fileInConflict);
 			}
 		});
 		p.add(showMine);
 		final JButton showBase = new JButton("Show base (r"
 				+ conflict.baseNumber + ")");
 		showBase.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				setGraph(conflict.base,conflict.fileInConflict);
+				setGraph(conflict.base, conflict.fileInConflict);
 			}
 		});
 		p.add(showBase);
 		final JButton showOther = new JButton("Show conflicting grf (r"
 				+ conflict.otherNumber + ")");
 		showOther.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				setGraph(conflict.other,conflict.fileInConflict);
+				setGraph(conflict.other, conflict.fileInConflict);
 			}
 		});
 		p.add(showOther);
 		final JButton diff = new JButton("Show diff with r"
 				+ conflict.otherNumber);
 		diff.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				final File diffResult = new File(ConfigManager.getManager().getCurrentLanguageDir(), "..diff");
+				final File diffResult = new File(ConfigManager.getManager()
+						.getCurrentLanguageDir(), "..diff");
 				final GrfDiffCommand cmd = new GrfDiffCommand().files(
 						conflict.mine, conflict.other).output(diffResult);
 				Launcher.exec(cmd, true, new ShowDiffDo(conflict.mine,
@@ -381,16 +395,20 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final JPanel p2 = new JPanel(null);
 		p2.setLayout(new BoxLayout(p2, BoxLayout.X_AXIS));
 		final JButton merge = new JButton("Show merged graph");
-		JCheckBox allowNonCosmeticChange=new JCheckBox("Authorize merge on non-cosmetic changes",true);
-		merge.addActionListener(createMergeListener(conflict,allowNonCosmeticChange));
+		final JCheckBox allowNonCosmeticChange = new JCheckBox(
+				"Authorize merge on non-cosmetic changes", true);
+		merge.addActionListener(createMergeListener(conflict,
+				allowNonCosmeticChange));
 		p2.add(merge);
 		p2.add(allowNonCosmeticChange);
 		main.add(p2);
 		final JPanel p3 = new JPanel(null);
 		p3.setLayout(new BoxLayout(p3, BoxLayout.X_AXIS));
 		p3.add(new JLabel("Conflict resolution:  "));
-		final JButton useBase = new JButton("Use base (r"+conflict.baseNumber+")");
+		final JButton useBase = new JButton("Use base (r" + conflict.baseNumber
+				+ ")");
 		useBase.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				conflict.useBase();
 			}
@@ -398,14 +416,16 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		p3.add(useBase);
 		final JButton useWorking = new JButton("Use merged graph");
 		useWorking.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (!conflict.merged.exists()) {
-					JOptionPane.showMessageDialog(null,
-							"File "+conflict.merged.getAbsolutePath()+" does not exist!", "Error",
+					JOptionPane.showMessageDialog(null, "File "
+							+ conflict.merged.getAbsolutePath()
+							+ " does not exist!", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				FileUtil.copyFile(conflict.merged,conflict.fileInConflict);
+				FileUtil.copyFile(conflict.merged, conflict.fileInConflict);
 				conflict.merged.delete();
 				conflict.useWorking();
 			}
@@ -413,13 +433,16 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		p3.add(useWorking);
 		final JButton useMine = new JButton("Use mine");
 		useMine.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				conflict.useMine();
 			}
 		});
 		p3.add(useMine);
-		final JButton useOther = new JButton("Use other (r"+conflict.otherNumber+")");
+		final JButton useOther = new JButton("Use other (r"
+				+ conflict.otherNumber + ")");
 		useOther.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				conflict.useOther();
 			}
@@ -429,8 +452,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		return main;
 	}
 
-	private ActionListener createMergeListener(final SvnConflict conflict,final JCheckBox allowNonCosmeticChange) {
+	private ActionListener createMergeListener(final SvnConflict conflict,
+			final JCheckBox allowNonCosmeticChange) {
 		return new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (modified) {
 					JOptionPane.showMessageDialog(null,
@@ -443,11 +468,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 							"Conflicts remain, cannot merge files",
 							"Merge failed", JOptionPane.ERROR_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, 
-							"The merge operation has succeeded.", 
-							"Merge",
+					JOptionPane.showMessageDialog(null,
+							"The merge operation has succeeded.", "Merge",
 							JOptionPane.PLAIN_MESSAGE);
-					setGraph(conflict.merged,conflict.fileInConflict);
+					setGraph(conflict.merged, conflict.fileInConflict);
 				}
 			}
 		};
@@ -538,13 +562,16 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		openSubgraph.setToolTipText("Open a sub-graph");
 		configuration.setToolTipText("Graph configuration");
 		save.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveGraph();
 			}
 		});
 		compile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						compileGraph();
 					}
@@ -552,9 +579,11 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		copy.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						((TextField) graphicalZone.text).getSpecialCopy()
 								.actionPerformed(E);
@@ -564,9 +593,11 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		cut.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						((TextField) graphicalZone.text).getCut()
 								.actionPerformed(E);
@@ -576,9 +607,11 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		paste.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final ActionEvent E = e;
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						((TextField) graphicalZone.text).getSpecialPaste()
 								.actionPerformed(E);
@@ -588,6 +621,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		normal.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.normalCursor);
 				graphicalZone.EDITING_MODE = MyCursors.NORMAL;
@@ -595,6 +629,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		create.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.createBoxesCursor);
 				graphicalZone.EDITING_MODE = MyCursors.CREATE_BOXES;
@@ -602,6 +637,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		kill.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.killBoxesCursor);
 				graphicalZone.EDITING_MODE = MyCursors.KILL_BOXES;
@@ -610,6 +646,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		link.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.linkBoxesCursor);
 				graphicalZone.EDITING_MODE = MyCursors.LINK_BOXES;
@@ -617,6 +654,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		reverseLink.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.reverseLinkBoxesCursor);
 				graphicalZone.EDITING_MODE = MyCursors.REVERSE_LINK_BOXES;
@@ -624,6 +662,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		openSubgraph.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.openSubgraphCursor);
 				graphicalZone.EDITING_MODE = MyCursors.OPEN_SUBGRAPH;
@@ -631,8 +670,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		configuration.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						final GraphPresentationInfo info = InternalFrameManager
 								.getManager(grf).newGraphPresentationDialog(
@@ -678,6 +719,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		calledGrf.setPreferredSize(new Dimension(36, 36));
 		calledGrf.setToolTipText("Subgraphs called from this one");
 		calledGrf.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				showGraphDependencies(true);
 			}
@@ -689,6 +731,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		callersGrf.setPreferredSize(new Dimension(36, 36));
 		callersGrf.setToolTipText("Graphs that call this one");
 		callersGrf.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				showGraphDependencies(false);
 			}
@@ -700,6 +743,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		refresh.setPreferredSize(new Dimension(36, 36));
 		refresh.setToolTipText("Reload graph from disk");
 		refresh.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphIO g = GraphIO.loadGraph(getGraph(), false, false);
 				graphicalZone.refresh(g);
@@ -713,6 +757,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		diff.setPreferredSize(new Dimension(36, 36));
 		diff.setToolTipText("Compare with another graph");
 		diff.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (grf == null) {
 					JOptionPane
@@ -738,8 +783,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		});
 		myToolBar.add(diff);
 		myToolBar.addSeparator();
-		final JButton inputVar = new JButton(graphicalZone
-				.getSurroundWithInputVarAction());
+		final JButton inputVar = new JButton(
+				graphicalZone.getSurroundWithInputVarAction());
 		inputVar.setHideActionText(true);
 		inputVar.setText("( )");
 		inputVar.setMaximumSize(new Dimension(36, 36));
@@ -747,8 +792,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		inputVar.setPreferredSize(new Dimension(36, 36));
 		inputVar.setForeground(Color.RED);
 		myToolBar.add(inputVar);
-		final JButton outputVar = new JButton(graphicalZone
-				.getSurroundWithOutputVarAction());
+		final JButton outputVar = new JButton(
+				graphicalZone.getSurroundWithOutputVarAction());
 		outputVar.setHideActionText(true);
 		outputVar.setText("( )");
 		outputVar.setMaximumSize(new Dimension(36, 36));
@@ -756,8 +801,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		outputVar.setPreferredSize(new Dimension(36, 36));
 		outputVar.setForeground(Color.BLUE);
 		myToolBar.add(outputVar);
-		final JButton morpho = new JButton(graphicalZone
-				.getSurroundWithMorphologicalModeAction());
+		final JButton morpho = new JButton(
+				graphicalZone.getSurroundWithMorphologicalModeAction());
 		morpho.setHideActionText(true);
 		morpho.setText("< >");
 		morpho.setMaximumSize(new Dimension(36, 36));
@@ -765,8 +810,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		morpho.setPreferredSize(new Dimension(36, 36));
 		morpho.setForeground(new Color(0xC4, 0x4F, 0xD0));
 		myToolBar.add(morpho);
-		final JButton left = new JButton(graphicalZone
-				.getSurroundWithLeftContextAction());
+		final JButton left = new JButton(
+				graphicalZone.getSurroundWithLeftContextAction());
 		left.setHideActionText(true);
 		left.setText("$*");
 		left.setMaximumSize(new Dimension(36, 36));
@@ -774,8 +819,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		left.setPreferredSize(new Dimension(36, 36));
 		left.setForeground(Color.GREEN);
 		myToolBar.add(left);
-		final JButton right = new JButton(graphicalZone
-				.getSurroundWithRightContextAction());
+		final JButton right = new JButton(
+				graphicalZone.getSurroundWithRightContextAction());
 		right.setHideActionText(true);
 		right.setText("$[");
 		right.setMaximumSize(new Dimension(36, 36));
@@ -783,8 +828,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		right.setPreferredSize(new Dimension(36, 36));
 		right.setForeground(Color.GREEN);
 		myToolBar.add(right);
-		final JButton negative = new JButton(graphicalZone
-				.getSurroundWithNegativeRightContextAction());
+		final JButton negative = new JButton(
+				graphicalZone.getSurroundWithNegativeRightContextAction());
 		negative.setHideActionText(true);
 		negative.setText("$![");
 		negative.setMaximumSize(new Dimension(36, 36));
@@ -803,6 +848,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			this.diffResult = diffResult;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			final GraphDecorator info = GraphDecorator.loadDiffFile(diffResult);
 			if (info == null) {
@@ -830,7 +876,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			InternalFrameManager.getManager(base).newGraphDiffFrame(baseGrf, destGrf, info);
+			InternalFrameManager.getManager(base).newGraphDiffFrame(baseGrf,
+					destGrf, info);
 		}
 	}
 
@@ -846,7 +893,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			files = Dependancies.getAllSubgraphs(getGraph());
 			grfListLabel.setText("Called graphs:");
 		} else {
-			files = Dependancies.whoCalls(getGraph(), ConfigManager.getManager().getCurrentLanguageDir());
+			files = Dependancies.whoCalls(getGraph(), ConfigManager
+					.getManager().getCurrentLanguageDir());
 			grfListLabel.setText("Caller graphs:");
 		}
 		grfListModel.clear();
@@ -864,9 +912,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final JPanel p = new JPanel(new BorderLayout());
 		setBoxContentEditor(new TextField(25, this));
 		getBoxContentEditor()
-				.setComponentOrientation(ConfigManager.getManager()
-						.isRightToLeftForGraphs(null) ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
+				.setComponentOrientation(
+						ConfigManager.getManager().isRightToLeftForGraphs(null) ? ComponentOrientation.RIGHT_TO_LEFT
+								: ComponentOrientation.LEFT_TO_RIGHT);
 		p.add(getBoxContentEditor());
 		return p;
 	}
@@ -886,35 +934,29 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 						"Cancel" };
 				int n;
 				String message;
-				if (grf==null) {
-					message="This graph has never been saved. Do you want to save it ?";
+				if (grf == null) {
+					message = "This graph has never been saved. Do you want to save it ?";
 				} else {
-					message="The graph "+grf.getAbsolutePath()+"\n"+
-						"has been modified. Do you want to save it ?";
+					message = "The graph " + grf.getAbsolutePath() + "\n"
+							+ "has been modified. Do you want to save it ?";
 				}
 				try {
 					GraphFrame.this.setSelected(true);
-				} catch (PropertyVetoException e1) {
+				} catch (final PropertyVetoException e1) {
 					/* */
 				}
 				if (UnitexFrame.closing) {
-					n = JOptionPane
-							.showOptionDialog(
-									GraphFrame.this,
-									message,
-									"", JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									options_on_exit, options_on_exit[0]);
+					n = JOptionPane.showOptionDialog(GraphFrame.this, message,
+							"", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null,
+							options_on_exit, options_on_exit[0]);
 				} else {
-					n = JOptionPane
-							.showOptionDialog(
-									GraphFrame.this,
-									message,
-									"", JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null,
-									normal_options, normal_options[0]);
+					n = JOptionPane.showOptionDialog(GraphFrame.this, message,
+							"", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, normal_options,
+							normal_options[0]);
 				}
-				if (n == JOptionPane.CLOSED_OPTION || n==2) {
+				if (n == JOptionPane.CLOSED_OPTION || n == 2) {
 					ConfigManager.getManager().userRefusedClosingFrame();
 					return;
 				}
@@ -1022,6 +1064,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	class UndoIt implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent ev) {
 			undo();
 		}
@@ -1036,10 +1079,11 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			ex.printStackTrace();
 		} finally {
 			repaint();
-		}	
+		}
 	}
-	
+
 	class RedoIt implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent ev) {
 			redo();
 		}
@@ -1056,7 +1100,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			repaint();
 		}
 	}
-	
+
 	@Override
 	public void repaint() {
 		super.repaint();
@@ -1075,19 +1119,18 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		return grf;
 	}
 
-	
-	public void setGraph(File grf,File key) {
-		setGraph(grf,key,true);
+	public void setGraph(File grf, File key) {
+		setGraph(grf, key, true);
 	}
-	
-	public void setGraph(File grf,File key,boolean reloadGraph) {
+
+	public void setGraph(File grf, File key, boolean reloadGraph) {
 		this.lastModification = grf.lastModified();
 		this.grf = grf;
-		this.key=key;
+		this.key = key;
 		this.nonEmptyGraph = true;
 		this.setTitle(grf.getName() + " (" + grf.getParent() + ")");
 		if (reloadGraph) {
-			GraphIO g = GraphIO.loadGraph(grf, false, false);
+			final GraphIO g = GraphIO.loadGraph(grf, false, false);
 			graphicalZone.refresh(g);
 			setModified(false);
 		}
@@ -1122,14 +1165,14 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			if (!file.exists())
 				file.createNewFile();
 		} catch (final IOException e) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-					+ file.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + file.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!file.canWrite()) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-					+ file.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + file.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -1254,10 +1297,12 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		final Grf2Fst2Command command = new Grf2Fst2Command().grf(getGraph())
-				.enableLoopAndRecursionDetection(true).tokenizationMode(
-						graphicalZone.getMetadata().getLanguage(), getGraph())
-				.repositories().emitEmptyGraphWarning().displayGraphNames();
+		final Grf2Fst2Command command = new Grf2Fst2Command()
+				.grf(getGraph())
+				.enableLoopAndRecursionDetection(true)
+				.tokenizationMode(graphicalZone.getMetadata().getLanguage(),
+						getGraph()).repositories().emitEmptyGraphWarning()
+				.displayGraphNames();
 		Launcher.exec(command, false);
 	}
 
@@ -1269,7 +1314,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = new GraphIO(graphicalZone);
 		modified = false;
 		g.saveGraph(file);
-		setGraph(file,file,false);
+		setGraph(file, file, false);
 		return true;
 	}
 
@@ -1322,7 +1367,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		}
 		modified = false;
 		g.saveGraph(file);
-		setGraph(file,file,false);
+		setGraph(file, file, false);
 		return true;
 	}
 
@@ -1333,7 +1378,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	@Override
 	public String getTabName() {
-		return (grf==null)?"(unsaved grf)":((modified?"*":"")+grf.getName());
+		return (grf == null) ? "(unsaved grf)" : ((modified ? "*" : "") + grf
+				.getName());
 	}
 
 	public int find(String text) {

@@ -158,8 +158,7 @@ class Tag {
 		for (int i = 0; i < gramCodes.size(); i++) {
 			final String code = gramCodes.get(i);
 			if ((i == 0 && (f != null && (f.alwaysShowGramCode() || f
-					.onlyShowGramCode())))
-					|| matches(code, p)) {
+					.onlyShowGramCode()))) || matches(code, p)) {
 				if (delafStyle) {
 					if (first) {
 						b.append(".");

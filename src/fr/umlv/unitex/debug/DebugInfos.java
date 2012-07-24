@@ -61,16 +61,16 @@ public class DebugInfos {
 			scanner.nextLine();
 			final Pattern normalDelimiter = scanner.delimiter();
 			while (n > 0) {
-				String line=scanner.nextLine();
-				String s="";
-				int pos=line.indexOf((char) 1);
-				if (pos!=-1) {
-					s=line.substring(0,pos);
+				String line = scanner.nextLine();
+				String s = "";
+				int pos = line.indexOf((char) 1);
+				if (pos != -1) {
+					s = line.substring(0, pos);
 					pos++;
 				} else {
-					pos=0;
+					pos = 0;
 				}
-				line=line.substring(pos);
+				line = line.substring(pos);
 				infos.graphNames.add(s);
 				if (s.equals(""))
 					infos.graphs.add(null);
@@ -134,8 +134,8 @@ public class DebugInfos {
 			}
 			gio = GraphIO.loadGraph(f, false, false);
 			if (gio == null) {
-				JOptionPane.showMessageDialog(null, "Cannot load graph "
-						+ f.getAbsolutePath(), "Error",
+				JOptionPane.showMessageDialog(null,
+						"Cannot load graph " + f.getAbsolutePath(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
@@ -172,9 +172,7 @@ public class DebugInfos {
 			final String tag = scanner.next().substring(1);
 			scanner.useDelimiter("" + (char) 1);
 			final String matched = scanner.next().substring(1);
-			d
-					.add(new DebugDetails(tag, output, matched, graph, box,
-							line, this));
+			d.add(new DebugDetails(tag, output, matched, graph, box, line, this));
 			scanner.useDelimiter("" + (char) 2);
 		}
 		scanner.close();
@@ -271,13 +269,14 @@ public class DebugInfos {
 				/* Nothing to do if there is a transition */
 				continue;
 			}
-			
+
 			if (src.box == dst.box) {
 				if (src.line == dst.line) {
 					/*
-					 * If we are in the same line of the same box, it may be because
-					 * there is only one tag in the line and a loop on the box, but
-					 * it may also be because the line contains several tokens
+					 * If we are in the same line of the same box, it may be
+					 * because there is only one tag in the line and a loop on
+					 * the box, but it may also be because the line contains
+					 * several tokens
 					 */
 					final String line = srcBox.lines.get(src.line);
 					int pos = line.indexOf(src.tag);
@@ -286,14 +285,19 @@ public class DebugInfos {
 						/* We are in the same line, nothing to do */
 						continue;
 					}
-					/* It may also be because the box contains a range indication */
+					/*
+					 * It may also be because the box contains a range
+					 * indication
+					 */
 					if (srcBox.transduction != null
 							&& srcBox.transduction.startsWith("$[")) {
 						continue;
 					}
 				} else {
-					/* Not in the same line. It must be because tha box
-					 * contains a range indication */
+					/*
+					 * Not in the same line. It must be because tha box contains
+					 * a range indication
+					 */
 					if (srcBox.transduction != null
 							&& srcBox.transduction.startsWith("$[")) {
 						continue;
@@ -302,7 +306,8 @@ public class DebugInfos {
 			}
 			final ArrayList<GenericGraphBox> visited = new ArrayList<GenericGraphBox>();
 			final ArrayList<Integer> path = new ArrayList<Integer>();
-			if (!findEpsilonPath(0, srcBox, dstBox, visited, path, gio.getBoxes())) {
+			if (!findEpsilonPath(0, srcBox, dstBox, visited, path,
+					gio.getBoxes())) {
 				JOptionPane.showMessageDialog(null,
 						"Cannot find <E> path between box " + src.box + " and "
 								+ dst.box + " in graph " + f.getAbsolutePath(),

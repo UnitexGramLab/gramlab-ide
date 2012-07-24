@@ -43,14 +43,13 @@ public class NormalizeCommand extends CommandBuilder {
 		ultraSimplifiedList.add(s.getName());
 		return this;
 	}
-	
+
 	public NormalizeCommand normFile(File norm) {
-		if (norm!=null && norm.exists()) {
+		if (norm != null && norm.exists()) {
 			protectElement("-r" + norm.getAbsolutePath());
 		}
 		return this;
 	}
-	
 
 	public NormalizeCommand noSeparatorNormalization() {
 		element("--no_separator_normalization");
@@ -63,7 +62,7 @@ public class NormalizeCommand extends CommandBuilder {
 		}
 		return this;
 	}
-	
+
 	public NormalizeCommand text(File s) {
 		protectElement(s.getAbsolutePath());
 		ultraSimplifiedList.add(s.getName());

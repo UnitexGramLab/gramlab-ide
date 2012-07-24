@@ -56,6 +56,7 @@ class VariableInsertionDialog extends JDialog {
 		p.add(new JLabel("(valid characters=[a-zA-Z0-9_])"));
 		name = new JTextField(30);
 		name.addCaretListener(new CaretListener() {
+			@Override
 			public void caretUpdate(CaretEvent e) {
 				if (pattern.matcher(name.getText()).matches()) {
 					name.setForeground(Color.BLACK);
@@ -77,6 +78,7 @@ class VariableInsertionDialog extends JDialog {
 		p.add(name);
 		final JButton ok = new JButton("OK");
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (pattern.matcher(name.getText()).matches()) {
 					setVisible(false);

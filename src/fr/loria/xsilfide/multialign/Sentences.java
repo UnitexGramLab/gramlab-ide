@@ -37,9 +37,9 @@ import java.util.Vector;
 @SuppressWarnings("unchecked")
 class Sentences {
 	private Dist srcLengths, tarLengths; // lengths of sentences of two texts
-	public static final Vector Linking = new Vector(); // links of sentences
+	public static final Vector<Object> Linking = new Vector<Object>(); // links of sentences
 	// within a text
-	public static final Vector Links = new Vector(); // links of the two texts
+	public static final Vector<Object> Links = new Vector<Object>(); // links of the two texts
 	private static int nbLink = 0;
 	private static int nbPaquet = 0;
 	private static final Cognates xalignResults = new Cognates();
@@ -47,7 +47,7 @@ class Sentences {
 	// B.G. the results of the alignment
 	// process are of the exact same type
 	// as the cognates.
-	public Sentences(Vector srcPara, Vector tarPara, Cognates cogn,
+	public Sentences(Vector<Object> srcPara, Vector<Object> tarPara, Cognates cogn,
 			LoadAndPrepareTexts lpt) {
 		getLengths(srcPara, tarPara); // get lengths of sentences in the src &
 										// tar
@@ -59,11 +59,11 @@ class Sentences {
 		final Path path = Align.getPath(srcLengths, tarLengths, false, cc);
 		// System.out.println(path.toString());
 		createLinks(srcPara, tarPara, path);
-		createAlignementResults(srcPara, tarPara, cogn.getUriSource(), cogn
-				.getUriTarget(), lpt, path);
+		createAlignementResults(srcPara, tarPara, cogn.getUriSource(),
+				cogn.getUriTarget(), lpt, path);
 	}
 
-	void getLengths(Vector srcSentences, Vector tarSentences) {
+	void getLengths(Vector<Object> srcSentences, Vector<Object> tarSentences) {
 		final int ns = srcSentences.size();
 		final int nt = tarSentences.size();
 		srcLengths = new Dist(ns);
@@ -71,17 +71,21 @@ class Sentences {
 		// System.out.println(ns);
 		// System.out.println(nt);
 		for (int i = 0; i < ns; i++) {
-			srcLengths.setDistAt(i, (Integer) ((Vector) srcSentences
-					.elementAt(i)).elementAt(1));
+			srcLengths
+					.setDistAt(i,
+							(Integer) ((Vector<Object>) srcSentences.elementAt(i))
+									.elementAt(1));
 		}
 		for (int i = 0; i < nt; i++) {
-			tarLengths.setDistAt(i, (Integer) ((Vector) tarSentences
-					.elementAt(i)).elementAt(2));
+			tarLengths
+					.setDistAt(i,
+							(Integer) ((Vector<Object>) tarSentences.elementAt(i))
+									.elementAt(2));
 		}
 	}
 
 	// computation of the results in the new format
-	void createAlignementResults(Vector srcId, Vector tarId, String uriSrc,
+	void createAlignementResults(Vector<Object> srcId, Vector<Object> tarId, String uriSrc,
 			String uriTar, LoadAndPrepareTexts lpt, Path path) {
 		Point pt;
 		int whereInSrc, whereInTar;
@@ -94,14 +98,14 @@ class Sentences {
 		// System.out.println("tarId = "+tarId);
 		whereInSrc = 0;
 		if (whereInSrc < srcId.size()) {
-			currentIdSrc = (String) ((Vector) srcId.elementAt(whereInSrc))
+			currentIdSrc = (String) ((Vector<Object>) srcId.elementAt(whereInSrc))
 					.elementAt(0);
 			currentXmlIdSrc = new XmlId(uriSrc, currentIdSrc, lpt);
 			whereInSrc++;
 		}
 		whereInTar = 0;
 		if (whereInTar < tarId.size()) {
-			currentIdTar = (String) ((Vector) tarId.elementAt(whereInTar))
+			currentIdTar = (String) ((Vector<Object>) tarId.elementAt(whereInTar))
 					.elementAt(1);
 			currentXmlIdTar = new XmlId(uriTar, currentIdTar, lpt);
 			whereInTar++;
@@ -116,7 +120,7 @@ class Sentences {
 				contentOfpaquet = new ArrayList<XmlId>();
 				contentOfpaquet.add(currentXmlIdSrc);
 				for (int x = 1; x < pt.x; x++) {
-					currentIdSrc = (String) ((Vector) srcId
+					currentIdSrc = (String) ((Vector<Object>) srcId
 							.elementAt(whereInSrc)).elementAt(0);
 					currentXmlIdSrc = new XmlId(uriSrc, currentIdSrc, lpt);
 					contentOfpaquet.add(currentXmlIdSrc);
@@ -131,7 +135,7 @@ class Sentences {
 				contentOfpaquet = new ArrayList<XmlId>();
 				contentOfpaquet.add(currentXmlIdTar);
 				for (int y = 1; y < pt.y; y++) {
-					currentIdTar = (String) ((Vector) tarId
+					currentIdTar = (String) ((Vector<Object>) tarId
 							.elementAt(whereInTar)).elementAt(1);
 					currentXmlIdTar = new XmlId(uriTar, currentIdTar, lpt);
 					contentOfpaquet.add(currentXmlIdTar);
@@ -155,14 +159,14 @@ class Sentences {
 			}
 			if ((pt.x != 0) && (whereInSrc < srcId.size())) {
 				// we read in src
-				currentIdSrc = (String) ((Vector) srcId.elementAt(whereInSrc))
+				currentIdSrc = (String) ((Vector<Object>) srcId.elementAt(whereInSrc))
 						.elementAt(0);
 				currentXmlIdSrc = new XmlId(uriSrc, currentIdSrc, lpt);
 				whereInSrc++;
 			}
 			if ((pt.y != 0) && (whereInTar < tarId.size())) {
 				// we read in target
-				currentIdTar = (String) ((Vector) tarId.elementAt(whereInTar))
+				currentIdTar = (String) ((Vector<Object>) tarId.elementAt(whereInTar))
 						.elementAt(1);
 				currentXmlIdTar = new XmlId(uriTar, currentIdTar, lpt);
 				whereInTar++;
@@ -171,23 +175,23 @@ class Sentences {
 		}
 	}
 
-	void createLinks(Vector srcId, Vector Xptr, Path path) {
+	void createLinks(Vector<Object> srcId, Vector<Object> Xptr, Path path) {
 		// nbLink: Number of links within a text
 		int srcCpt = 0, tarCpt = 0; // counter for vectors srcId & tarId
 		for (int i = 0; i < path.getNumberOfPoint(); i++) {
 			final Point pt = path.getPointAt(i);
-			final Vector snewLink = new Vector(), tnewLink = new Vector();
+			final Vector<Object> snewLink = new Vector<Object>(), tnewLink = new Vector<Object>();
 			if (pt.x > 1) {
 				nbLink++;
 				final String linkName = "l" + nbLink;
 				snewLink.addElement(linkName);
 				// IDVAL: assumes no spaces in id.
-				String linkIds = ((Vector) srcId.elementAt(srcCpt))
+				String linkIds = ((Vector<Object>) srcId.elementAt(srcCpt))
 						.elementAt(0).toString();
 				for (int j = 2; j <= pt.x; j++)
 					linkIds = linkIds
 							+ " "
-							+ ((Vector) srcId.elementAt(srcCpt + j - 1))
+							+ ((Vector<Object>) srcId.elementAt(srcCpt + j - 1))
 									.elementAt(0).toString();
 				snewLink.addElement(linkIds);
 				Linking.addElement(snewLink);
@@ -196,29 +200,29 @@ class Sentences {
 				nbLink++;
 				final String linkName = "l" + nbLink;
 				tnewLink.addElement(linkName);
-				String linkIds = ((Vector) Xptr.elementAt(tarCpt)).elementAt(0)
+				String linkIds = ((Vector<Object>) Xptr.elementAt(tarCpt)).elementAt(0)
 						.toString();
 				// IDVAL: assumes no space in id
 				for (int j = 2; j <= pt.y; j++)
 					linkIds = linkIds
 							+ " "
-							+ ((Vector) Xptr.elementAt(tarCpt + j - 1))
+							+ ((Vector<Object>) Xptr.elementAt(tarCpt + j - 1))
 									.elementAt(0).toString();
 				tnewLink.addElement(linkIds);
 				Linking.addElement(tnewLink);
 			}
-			final Vector link = new Vector();
+			final Vector<Object> link = new Vector<Object>();
 			if (pt.x == 0)
 				link.addElement("");
 			else if (pt.x == 1)
-				link.addElement(((Vector) srcId.elementAt(srcCpt)).elementAt(0)
+				link.addElement(((Vector<Object>) srcId.elementAt(srcCpt)).elementAt(0)
 						.toString());
 			else
 				link.addElement(snewLink.elementAt(0).toString());
 			if (pt.y == 0)
 				link.addElement("");
 			else if (pt.y == 1)
-				link.addElement(((Vector) Xptr.elementAt(tarCpt)).elementAt(0)
+				link.addElement(((Vector<Object>) Xptr.elementAt(tarCpt)).elementAt(0)
 						.toString());
 			else
 				link.addElement(tnewLink.elementAt(0).toString());

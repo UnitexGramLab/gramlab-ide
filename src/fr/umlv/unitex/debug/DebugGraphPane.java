@@ -67,8 +67,8 @@ public class DebugGraphPane extends JPanel {
 
 	public void clear() {
 		if (scroll != null) {
-			scrollPreferences.put(infos.graphs.get(getCurrentGraph() - 1), scroll
-					.getViewport().getViewPosition());
+			scrollPreferences.put(infos.graphs.get(getCurrentGraph() - 1),
+					scroll.getViewport().getViewPosition());
 		}
 		setCurrentGraph(-1);
 		scroll = null;

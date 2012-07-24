@@ -67,12 +67,12 @@ public class Launcher {
 	 */
 	public static int execWithoutTracing(CommandBuilder b) {
 		try {
-			final Process p = Runtime.getRuntime()
-					.exec(b.getCommandArguments(true));
-			final BufferedInputStream in = new BufferedInputStream(p
-					.getInputStream());
-			final BufferedInputStream err = new BufferedInputStream(p
-					.getErrorStream());
+			final Process p = Runtime.getRuntime().exec(
+					b.getCommandArguments(true));
+			final BufferedInputStream in = new BufferedInputStream(
+					p.getInputStream());
+			final BufferedInputStream err = new BufferedInputStream(
+					p.getErrorStream());
 			new EatStreamThread(in).start();
 			new EatStreamThread(err).start();
 			return p.waitFor();
@@ -94,14 +94,15 @@ public class Launcher {
 
 	public static int execAsExternalCommand(CommandBuilder cmd) {
 		try {
-			Process p=Runtime.getRuntime().exec(cmd.getCommandArguments(true));
-			new EatStreamThread(p.getErrorStream(),System.err).start();
-			new EatStreamThread(p.getInputStream(),System.out).start();
-			
+			final Process p = Runtime.getRuntime().exec(
+					cmd.getCommandArguments(true));
+			new EatStreamThread(p.getErrorStream(), System.err).start();
+			new EatStreamThread(p.getInputStream(), System.out).start();
+
 			return p.waitFor();
 		} catch (final IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			return -1;
 		}
 		return -1;

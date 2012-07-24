@@ -214,8 +214,9 @@ public class FileUtil {
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-			Encoding e=ConfigManager.getManager().getEncoding(null);
-			if (e==null) e=Encoding.UTF8;
+			Encoding e = ConfigManager.getManager().getEncoding(null);
+			if (e == null)
+				e = Encoding.UTF8;
 			final OutputStreamWriter writer = e.getOutputStreamWriter(f);
 			writer.write(s, 0, s.length());
 			writer.close();
@@ -229,11 +230,12 @@ public class FileUtil {
 			if (!f.exists()) {
 				f.createNewFile();
 			}
-			Encoding e=ConfigManager.getManager().getEncoding(null);
-			if (e==null) e=Encoding.UTF8;
+			Encoding e = ConfigManager.getManager().getEncoding(null);
+			if (e == null)
+				e = Encoding.UTF8;
 			final OutputStreamWriter writer = e.getOutputStreamWriter(f);
-			for (String s:lines) {
-				s=s+"\n";
+			for (String s : lines) {
+				s = s + "\n";
 				writer.write(s, 0, s.length());
 			}
 			writer.close();
@@ -241,7 +243,7 @@ public class FileUtil {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Creates a description of f relative to parent. For instance:
 	 * 
@@ -252,9 +254,9 @@ public class FileUtil {
 	public static String getRelativePath(File parent, File f) {
 		File dir;
 		if (parent.isDirectory()) {
-			dir=parent;
+			dir = parent;
 		} else {
-			dir=parent.getParentFile();
+			dir = parent.getParentFile();
 		}
 		String s = isAncestor(dir, f.getParentFile());
 		if (s != null) {
@@ -431,8 +433,7 @@ public class FileUtil {
 	 *            destination directory
 	 */
 	public static void copyDirRec(File src, File dest) {
-		if (!src.exists() || !src.isDirectory()
-				|| src.getName().equals(".svn")) {
+		if (!src.exists() || !src.isDirectory() || src.getName().equals(".svn")) {
 			return;
 		}
 		if (!dest.exists()) {
@@ -452,8 +453,7 @@ public class FileUtil {
 	}
 
 	/**
-	 * The source is specified by a file name that can contain *
-	 * and ? jokers.
+	 * The source is specified by a file name that can contain * and ? jokers.
 	 * 
 	 * @param src
 	 *            source
@@ -468,7 +468,7 @@ public class FileUtil {
 		final File files_list[] = path_src.listFiles(new RegFileFilter(
 				expression));
 		if (files_list != null) {
-			for (File aFiles_list : files_list) {
+			for (final File aFiles_list : files_list) {
 				aFiles_list.delete();
 			}
 		}
@@ -531,70 +531,74 @@ public class FileUtil {
 			return;
 		}
 	}
-	
-	
+
 	/**
 	 * Removes a file or a directory, even if not empty.
 	 */
 	public static boolean rm(File f) {
-		if (f==null || !f.exists()) return true;
-		boolean ok=true;
+		if (f == null || !f.exists())
+			return true;
+		boolean ok = true;
 		if (f.isDirectory()) {
-			for (File subFile:f.listFiles()) {
+			for (final File subFile : f.listFiles()) {
 				if (!rm(subFile)) {
-					ok=false;
+					ok = false;
 				}
 			}
 		}
 		if (!f.delete()) {
-			ok=false;
+			ok = false;
 		}
 		return ok;
 	}
 
-	
 	public static File getSntDir(File f) {
-		return new File(getFileNameWithoutExtension(f)+"_snt");
+		return new File(getFileNameWithoutExtension(f) + "_snt");
 	}
 
 	public static File getSnt(File txt) {
-		return new File(getFileNameWithoutExtension(txt)+".snt");
+		return new File(getFileNameWithoutExtension(txt) + ".snt");
 	}
 
 	public static File getTxt(File snt) {
-		return new File(getFileNameWithoutExtension(snt)+".txt");
+		return new File(getFileNameWithoutExtension(snt) + ".txt");
 	}
 
 	public static void setRecursivelyReadOnly(File f) {
-		if (f==null || !f.exists()) return;
+		if (f == null || !f.exists())
+			return;
 		f.setReadOnly();
 		if (f.isDirectory()) {
-			File[] files=f.listFiles();
-			if (files==null) return;
-			for (File tmp:files) {
+			final File[] files = f.listFiles();
+			if (files == null)
+				return;
+			for (final File tmp : files) {
 				setRecursivelyReadOnly(tmp);
 			}
 		}
 	}
 
 	public static void setRecursivelyWritable(File f) {
-		if (f==null || !f.exists()) return;
+		if (f == null || !f.exists())
+			return;
 		f.setWritable(true);
 		if (f.isDirectory()) {
-			File[] files=f.listFiles();
-			if (files==null) return;
-			for (File tmp:files) {
+			final File[] files = f.listFiles();
+			if (files == null)
+				return;
+			for (final File tmp : files) {
 				setRecursivelyWritable(tmp);
 			}
 		}
 	}
 
 	public static boolean hasExtension(File file, String extension) {
-		if (file==null) {
+		if (file == null) {
 			throw new IllegalArgumentException();
 		}
-		if (extension==null) return true;
-		String s=getExtensionInLowerCase(file);
+		if (extension == null)
+			return true;
+		final String s = getExtensionInLowerCase(file);
 		return extension.equals(s);
 	}
 

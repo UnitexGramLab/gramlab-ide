@@ -77,7 +77,7 @@ import fr.umlv.unitex.listeners.LanguageListener;
  * @author Sébastien Paumier
  */
 public class GlobalPreferencesFrame extends JInternalFrame {
-	
+
 	final JTextField privateDirectory = new JTextField("");
 	final JTextField textFont = new JTextField("");
 	final JTextField concordanceFont = new JTextField("");
@@ -102,8 +102,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			"Auto-monitor graphs for SVN conflicts", true);
 	final JCheckBox onlyCosmetic = new JCheckBox(
 			"Use --only-cosmetic option for GrfDiff3", false);
-	final JRadioButton[] encodingButtons = new JRadioButton[Encoding
-			.values().length];
+	final JRadioButton[] encodingButtons = new JRadioButton[Encoding.values().length];
 
 	GlobalPreferencesFrame() {
 		super("", true, true, false, false);
@@ -111,6 +110,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				reset();
 			}
@@ -161,6 +161,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			final Encoding e2 = e;
 			final int j = i;
 			encodingButtons[i].addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e3) {
 					if (encodingButtons[j].isSelected()) {
 						getPref().setEncoding(e2);
@@ -184,23 +185,25 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getPref().setSvnMonitoring(svnMonitoring.isSelected());
 				getPref().setOnlyCosmetic(onlyCosmetic.isSelected());
 				getPref().setSemitic(semiticCheckBox.isSelected());
-				getPref().setRightToLeftForText(rightToLeftForCorpusCheckBox
-						.isSelected());
-				getPref().setRightToLeftForGraphs(rightToLeftForGraphsCheckBox
-						.isSelected());
-				getPref().getInfo().setRightToLeft(getPref().isRightToLeftForGraphs());
+				getPref().setRightToLeftForText(
+						rightToLeftForCorpusCheckBox.isSelected());
+				getPref().setRightToLeftForGraphs(
+						rightToLeftForGraphsCheckBox.isSelected());
+				getPref().getInfo().setRightToLeft(
+						getPref().isRightToLeftForGraphs());
 				if (htmlViewer.getText().equals(""))
 					getPref().setHtmlViewer(null);
 				else
 					getPref().setHtmlViewer(new File(htmlViewer.getText()));
 				getPref().setMorphologicalDic(getFileList(morphoDicListModel));
 				getPref().setCharByChar(charByCharCheckBox.isSelected());
-				getPref().setMorphologicalUseOfSpace(morphologicalUseOfSpaceCheckBox
-						.isSelected());
+				getPref().setMorphologicalUseOfSpace(
+						morphologicalUseOfSpaceCheckBox.isSelected());
 				if (packageDirectory.getText().equals(""))
 					getPref().setGraphRepositoryPath(null);
 				else {
@@ -264,9 +267,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 							userFile.createNewFile();
 							final FileOutputStream stream = new FileOutputStream(
 									userFile);
-							stream
-									.write(rep.getAbsolutePath().getBytes(
-											"UTF8"));
+							stream.write(rep.getAbsolutePath().getBytes("UTF8"));
 							stream.close();
 						} catch (final IOException e2) {
 							e2.printStackTrace();
@@ -283,6 +284,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			}
 		};
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
@@ -313,6 +315,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		privateDirectory.setEditable(false);
 		privateDirectory.setBackground(Color.WHITE);
 		final Action privateDirAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
 				f.setDialogTitle("Choose your private directory");
@@ -349,6 +352,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JLabel label2 = new JLabel("Graph repository:");
 		packageDirectory.setBackground(Color.WHITE);
 		final Action packageDirAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
 				f.setDialogTitle("Choose your graph package directory");
@@ -378,6 +382,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		loggingDirectory.setEditable(false);
 		loggingDirectory.setBackground(Color.WHITE);
 		final Action loggingDirAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
 				f.setDialogTitle("Choose your logging directory");
@@ -405,6 +410,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		page1.add(setLoggingDirectory, gbc);
 		final JButton clearLogs = new JButton("Clear all logs");
 		clearLogs.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (loggingDirectory.getText().equals("")) {
 					return;
@@ -448,13 +454,14 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp2.add(textFont, BorderLayout.CENTER);
 		final Action textFontAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
 						.newFontDialog(getPref().getTextFont());
 				if (i != null) {
 					getPref().setTextFont(i);
-					textFont
-							.setText(" " + i.getFont().getFontName() + "  " + i.getSize());
+					textFont.setText(" " + i.getFont().getFontName() + "  "
+							+ i.getSize());
 				}
 			}
 		};
@@ -468,13 +475,14 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JPanel tmp2_ = new JPanel(new BorderLayout());
 		tmp2_.add(concordanceFont, BorderLayout.CENTER);
 		final Action concord = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
 						.newFontDialog(getPref().getConcordanceFont());
 				if (i != null) {
 					getPref().setConcordanceFont(i);
-					concordanceFont.setText(" " + i.getFont().getFontName() + "  "
-							+ i.getSize());
+					concordanceFont.setText(" " + i.getFont().getFontName()
+							+ "  " + i.getSize());
 				}
 			}
 		};
@@ -487,6 +495,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		htmlViewerPanel.add(new JLabel("Html Viewer:"));
 		final JPanel tmp3_ = new JPanel(new BorderLayout());
 		final Action html = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
 				f.setDialogTitle("Choose your html viewer");
@@ -506,10 +515,11 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		l.setAlignment(FlowLayout.LEFT);
 		final JButton graphConfig = new JButton("Graph configuration");
 		graphConfig.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphPresentationInfo i = InternalFrameManager
-						.getManager(null).newGraphPresentationDialog(getPref().getInfo(),
-								false);
+						.getManager(null).newGraphPresentationDialog(
+								getPref().getInfo(), false);
 				if (i != null) {
 					getPref().setInfo(i);
 				}
@@ -524,9 +534,10 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 * Refreshes the frame.
 	 */
 	void refresh() {
-		textFont.setText("" + getPref().getTextFont().getFont().getFontName() + "  "
-				+ getPref().getTextFont().getSize() + "");
-		concordanceFont.setText("" + getPref().getConcordanceFont().getFont().getName() + "  "
+		textFont.setText("" + getPref().getTextFont().getFont().getFontName()
+				+ "  " + getPref().getTextFont().getSize() + "");
+		concordanceFont.setText(""
+				+ getPref().getConcordanceFont().getFont().getName() + "  "
 				+ getPref().getConcordanceFont().getSize() + "");
 		if (getPref().getHtmlViewer() == null) {
 			htmlViewer.setText("");
@@ -534,22 +545,25 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			htmlViewer.setText(getPref().getHtmlViewer().getAbsolutePath());
 		}
 		semiticCheckBox.setSelected(getPref().isSemitic());
-		rightToLeftForCorpusCheckBox.setSelected(getPref().isRightToLeftForText());
-		rightToLeftForGraphsCheckBox.setSelected(getPref().isRightToLeftForGraphs());
+		rightToLeftForCorpusCheckBox.setSelected(getPref()
+				.isRightToLeftForText());
+		rightToLeftForGraphsCheckBox.setSelected(getPref()
+				.isRightToLeftForGraphs());
 		charByCharCheckBox.setSelected(getPref().isCharByChar());
-		morphologicalUseOfSpaceCheckBox
-				.setSelected(getPref().isMorphologicalUseOfSpace());
+		morphologicalUseOfSpaceCheckBox.setSelected(getPref()
+				.isMorphologicalUseOfSpace());
 		if (getPref().getGraphRepositoryPath() == null) {
 			packageDirectory.setText("");
 		} else {
-			packageDirectory
-					.setText(getPref().getGraphRepositoryPath().getAbsolutePath());
+			packageDirectory.setText(getPref().getGraphRepositoryPath()
+					.getAbsolutePath());
 		}
 		mustLogCheckBox.setSelected(getPref().isMustLog());
 		if (getPref().getLoggingDir() == null) {
 			loggingDirectory.setText("");
 		} else {
-			loggingDirectory.setText(getPref().getLoggingDir().getAbsolutePath());
+			loggingDirectory.setText(getPref().getLoggingDir()
+					.getAbsolutePath());
 		}
 		morphoDicListModel.clear();
 		final ArrayList<File> dictionaries = ConfigManager.getManager()
@@ -560,8 +574,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			}
 		}
 		for (int i = 0; i < Encoding.values().length; i++) {
-			encodingButtons[i]
-					.setSelected(getPref().getEncoding() == Encoding.values()[i]);
+			encodingButtons[i].setSelected(getPref().getEncoding() == Encoding
+					.values()[i]);
 		}
 	}
 
@@ -570,9 +584,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
 		p.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JPanel p_ = new JPanel(new GridLayout(2, 1));
-		p_
-				.add(new JLabel(
-						"Choose the .bin dictionaries to use in Locate's morphological"));
+		p_.add(new JLabel(
+				"Choose the .bin dictionaries to use in Locate's morphological"));
 		p_.add(new JLabel("mode:"));
 		p.add(p_);
 		final JPanel p2 = new JPanel(new BorderLayout());
@@ -592,8 +605,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 					Object value, int index, boolean isSelected1,
 					boolean cellHasFocus) {
 				final File f = (File) value;
-				return super.getListCellRendererComponent(l, f
-						.getAbsolutePath(), index, isSelected1, cellHasFocus);
+				return super.getListCellRendererComponent(l,
+						f.getAbsolutePath(), index, isSelected1, cellHasFocus);
 			}
 		});
 		final JScrollPane scroll = new JScrollPane(list,
@@ -608,6 +621,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp1.setBorder(new EmptyBorder(5, 5, 5, 5));
 		tmp2.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final Action addAction = new AbstractAction("Add") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
 				f.setMultiSelectionEnabled(true);
@@ -627,6 +641,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			}
 		};
 		final Action removeAction = new AbstractAction("Remove") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int[] indices = list.getSelectedIndices();
 				for (int i = indices.length - 1; i >= 0; i--) {

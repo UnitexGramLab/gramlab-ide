@@ -50,6 +50,7 @@ import fr.umlv.unitex.frames.UnitexFrame;
 public class Unitex {
 	public static void main(final String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				launchUnitex(args);
 			}
@@ -89,16 +90,18 @@ public class Unitex {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		final SplashScreen splash = new SplashScreen(new ImageIcon(Unitex.class
-				.getResource("Unitex.jpg")));
+		final SplashScreen splash = new SplashScreen(new ImageIcon(
+				Unitex.class.getResource("Unitex.jpg")));
 		splash.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				final Timer timer = new Timer(1500, null);
 				timer.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e1) {
 						splash.dispose();
 						EventQueue.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								ConfigManager.setManager(new ConfigManager());
 								Config.initConfig(args.length == 1 ? args[0]
@@ -116,7 +119,8 @@ public class Unitex {
 								frame.setIconImages(Arrays.asList(img16x16,
 										img32x32, img48x48));
 								frame.setVisible(true);
-								ConfigManager.getManager().getSvnMonitor(null).start();
+								ConfigManager.getManager().getSvnMonitor(null)
+										.start();
 							}
 						});
 						timer.stop();

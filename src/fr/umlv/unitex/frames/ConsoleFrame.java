@@ -56,12 +56,12 @@ public class ConsoleFrame extends TabbableInternalFrame {
 	private final JTable table;
 	private int longestCommandWidth = 80;
 	private int longestIDWidth = 50;
-	static final ImageIcon statusOK = new ImageIcon(Console.class
-			.getResource("OK.png"));
-	public static final ImageIcon statusErrorDown = new ImageIcon(Console.class
-			.getResource("error1.png"));
-	public static final ImageIcon statusErrorUp = new ImageIcon(Console.class
-			.getResource("error2.png"));
+	static final ImageIcon statusOK = new ImageIcon(
+			Console.class.getResource("OK.png"));
+	public static final ImageIcon statusErrorDown = new ImageIcon(
+			Console.class.getResource("error1.png"));
+	public static final ImageIcon statusErrorUp = new ImageIcon(
+			Console.class.getResource("error2.png"));
 
 	ConsoleFrame() {
 		super("Console", true, true);
@@ -135,6 +135,7 @@ public class ConsoleFrame extends TabbableInternalFrame {
 							if (t.getRowHeight(row) < h) {
 								/* If necessary, we resize the row */
 								EventQueue.invokeLater(new Runnable() {
+									@Override
 									public void run() {
 										t2.setRowHeight(r, h);
 									}
@@ -148,9 +149,7 @@ public class ConsoleFrame extends TabbableInternalFrame {
 						}
 					}
 				});
-		table
-				.setDefaultEditor(Integer.class, new ConsoleTableCellEditor(
-						model));
+		table.setDefaultEditor(Integer.class, new ConsoleTableCellEditor(model));
 		table.setDefaultEditor(ConsoleEntry.class, new DefaultCellEditor(
 				new JTextField()));
 		final JScrollPane scroll = new JScrollPane(table);
@@ -179,8 +178,8 @@ public class ConsoleFrame extends TabbableInternalFrame {
 		model.addConsoleEntry(n, e);
 		/* Now, we update the width of the last two columns */
 		TableCellRenderer renderer = table.getCellRenderer(n, 1);
-		Component c = renderer.getTableCellRendererComponent(table, e
-				.getlogID(), false, false, n, 1);
+		Component c = renderer.getTableCellRendererComponent(table,
+				e.getlogID(), false, false, n, 1);
 		if (c.getPreferredSize().width > longestIDWidth) {
 			longestIDWidth = c.getPreferredSize().width + 50;
 			table.getColumnModel().getColumn(1).setMinWidth(longestIDWidth);

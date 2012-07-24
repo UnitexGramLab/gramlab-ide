@@ -149,6 +149,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	private void createPopup() {
 		final JPopupMenu popup = new JPopupMenu();
 		final Action newBox = new AbstractAction("Create box") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphBox b = (GraphBox) createBox(
 						(int) (popupX / scaleFactor),
@@ -173,14 +174,16 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		popup.addSeparator();
 		submenu = new JMenu("Surround with...");
 		surroundWithInputVar = new AbstractAction("Input variable") {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
 				final String name = InternalFrameManager.getManager(null)
 						.newVariableInsertionDialog(true);
 				if (name == null || name.equals(""))
 					return;
-				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes
-						.clone(), "$" + name + "(", "$" + name + ")");
+				surroundWithBoxes(
+						(ArrayList<GenericGraphBox>) selectedBoxes.clone(), "$"
+								+ name + "(", "$" + name + ")");
 			}
 		};
 		surroundWithInputVar.setEnabled(false);
@@ -188,14 +191,16 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				"Surround box selection with an input variable");
 		submenu.add(new JMenuItem(surroundWithInputVar));
 		surroundWithOutputVar = new AbstractAction("Output variable") {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
 				final String name = InternalFrameManager.getManager(null)
 						.newVariableInsertionDialog(false);
 				if (name == null || name.equals(""))
 					return;
-				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes
-						.clone(), "$|" + name + "(", "$|" + name + ")");
+				surroundWithBoxes(
+						(ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$|" + name + "(", "$|" + name + ")");
 			}
 		};
 		surroundWithOutputVar.setEnabled(false);
@@ -204,10 +209,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		submenu.add(new JMenuItem(surroundWithOutputVar));
 		submenu.addSeparator();
 		surroundWithMorphologicalMode = new AbstractAction("Morphological mode") {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes
-						.clone(), "$<", "$>");
+				surroundWithBoxes(
+						(ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$<", "$>");
 			}
 		};
 		surroundWithMorphologicalMode.setEnabled(false);
@@ -216,10 +223,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		submenu.add(new JMenuItem(surroundWithMorphologicalMode));
 		submenu.addSeparator();
 		surroundWithLeftContext = new AbstractAction("Left context") {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes
-						.clone(), "$*", null);
+				surroundWithBoxes(
+						(ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$*", null);
 			}
 		};
 		surroundWithLeftContext.setEnabled(false);
@@ -227,10 +236,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				"Inserts left context mark before box selection");
 		submenu.add(new JMenuItem(surroundWithLeftContext));
 		surroundWithRightContext = new AbstractAction("Right context") {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes
-						.clone(), "$[", "$]");
+				surroundWithBoxes(
+						(ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$[", "$]");
 			}
 		};
 		surroundWithRightContext.setEnabled(false);
@@ -239,10 +250,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		submenu.add(new JMenuItem(surroundWithRightContext));
 		surroundWithNegativeRightContext = new AbstractAction(
 				"Negative right context") {
+			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				surroundWithBoxes((ArrayList<GenericGraphBox>) selectedBoxes
-						.clone(), "$![", "$]");
+				surroundWithBoxes(
+						(ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+						"$![", "$]");
 			}
 		};
 		surroundWithNegativeRightContext.setEnabled(false);
@@ -251,6 +264,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		submenu.add(new JMenuItem(surroundWithNegativeRightContext));
 		popup.add(submenu);
 		final Action mergeBoxesAction = new AbstractAction("Merge boxes") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				mergeSelectedBoxes();
 			}
@@ -261,6 +275,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		final JMenuItem mergeBoxes = new JMenuItem(mergeBoxesAction);
 		popup.add(mergeBoxes);
 		final Action newGraphAction = new AbstractAction("Export as new graph") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final MultipleSelection selection = new MultipleSelection(
 						selectedBoxes, true);
@@ -285,6 +300,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		final JMenuItem newGraph = new JMenuItem(newGraphAction);
 		popup.add(newGraph);
 		addBoxSelectionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final boolean selected = selectedBoxes.size() != 0;
 				submenu.setEnabled(selected);
@@ -299,27 +315,31 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		popup.addSeparator();
-		Action save = new AbstractAction("Save") {
+		final Action save = new AbstractAction("Save") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f=(GraphFrame) parentFrame;
+				final GraphFrame f = (GraphFrame) parentFrame;
 				f.saveGraph();
 			}
 		};
 		popup.add(new JMenuItem(save));
-		Action saveAs = new AbstractAction("Save as...") {
+		final Action saveAs = new AbstractAction("Save as...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f=(GraphFrame) parentFrame;
+				final GraphFrame f = (GraphFrame) parentFrame;
 				f.saveAsGraph();
 			}
 		};
 		popup.add(new JMenuItem(saveAs));
-		Action setup = new AbstractAction("Page Setup") {
+		final Action setup = new AbstractAction("Page Setup") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				PrintManager.pageSetup();
 			}
 		};
 		popup.add(new JMenuItem(setup));
-		Action print = new AbstractAction("Print...") {
+		final Action print = new AbstractAction("Print...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				PrintManager.print(parentFrame);
 			}
@@ -329,6 +349,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		final JMenu tools = new JMenu("Tools");
 		final JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
 		sortNodeLabel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.sortNodeLabel();
@@ -336,10 +357,11 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		});
 		final JMenuItem explorePaths = new JMenuItem("Explore graph paths");
 		explorePaths.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					parentFrame.setSelected(true);
-				} catch (PropertyVetoException e1) {
+				} catch (final PropertyVetoException e1) {
 					/* */
 				}
 				InternalFrameManager.getManager(null).newGraphPathDialog();
@@ -347,6 +369,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		});
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
 		compileFST.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.compileGraph();
@@ -354,6 +377,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		});
 		final JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
 		flatten.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				UnitexFrame.compileAndFlattenGraph();
 			}
@@ -361,12 +385,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		final JMenuItem graphCollection = new JMenuItem(
 				"Build Graph Collection");
 		graphCollection.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newGraphCollectionFrame();
 			}
 		});
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
 		svn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConfigManager.getManager().getSvnMonitor(null).monitor(false);
 			}
@@ -384,16 +410,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		final JMenuItem alignment = new JMenuItem("Alignment...");
 		alignment.setAccelerator(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
 		alignment.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				InternalFrameManager.getManager(null)
-							.newGraphAlignmentDialog(f);
+						.newGraphAlignmentDialog(f);
 			}
 		});
 		final JMenuItem antialiasing = new JMenuItem("Antialiasing...");
 		antialiasing.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f = (GraphFrame) parentFrame;
+				final GraphFrame f = (GraphFrame) parentFrame;
 				f.changeAntialiasingValue();
 			}
 		});
@@ -401,11 +429,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		presentation.setAccelerator(KeyStroke
 				.getKeyStroke('R', Event.CTRL_MASK));
 		presentation.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				final GraphPresentationInfo info = InternalFrameManager
-							.getManager(null).newGraphPresentationDialog(
-									f.getGraphPresentationInfo(), true);
+						.getManager(null).newGraphPresentationDialog(
+								f.getGraphPresentationInfo(), true);
 				if (info != null) {
 					f.setGraphPresentationInfo(info);
 				}
@@ -413,6 +442,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		});
 		final JMenuItem graphSize = new JMenuItem("Graph Size...");
 		graphSize.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				InternalFrameManager.getManager(null).newGraphSizeDialog(f);
@@ -443,10 +473,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		groupe.add(fit120);
 		groupe.add(fit140);
 		fitInScreen.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.removeComponentListener(f.compListener);
-				Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
+				final Dimension screenSize = Toolkit.getDefaultToolkit()
+						.getScreenSize();
 				final double scale_x = screenSize.width
 						/ (double) f.getGraphicalZone().getWidth();
 				final double scale_y = screenSize.height
@@ -458,6 +490,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		fitInWindow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				final Dimension d = f.getScroll().getSize();
@@ -487,6 +520,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		fit60.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.removeComponentListener(f.compListener);
@@ -494,6 +528,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		fit80.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.removeComponentListener(f.compListener);
@@ -501,6 +536,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		fit100.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.removeComponentListener(f.compListener);
@@ -508,6 +544,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		fit120.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.removeComponentListener(f.compListener);
@@ -515,6 +552,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		});
 		fit140.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
 				f.removeComponentListener(f.compListener);
@@ -532,7 +570,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		popup.add(format);
 		popup.add(zoom);
 
-		
 		addMouseListener(new MouseAdapter() {
 			void show(MouseEvent e) {
 				if (e.isPopupTrigger()) {
@@ -616,14 +653,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		}
 		box = zone.graphBoxes.get(1);
-		Dimension d=zone.getSize();
-		if (d.width<box.Y+50) {
-			d.width=box.Y+50;
+		final Dimension d = zone.getSize();
+		if (d.width < box.Y + 50) {
+			d.width = box.Y + 50;
 		}
-		if (d.height<maxY-minY+50) {
-			d.height=maxY-minY+50;
+		if (d.height < maxY - minY + 50) {
+			d.height = maxY - minY + 50;
 		}
-		f.reSizeGraphicalZone(d.width,d.height);
+		f.reSizeGraphicalZone(d.width, d.height);
 	}
 
 	/**
@@ -1031,31 +1068,34 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		for (final GenericGraphBox ggb : selection) {
 			if (ggb.transitions.isEmpty()) {
-				/* A selected box with no outgoing transition is 
-				 * considered an output box
+				/*
+				 * A selected box with no outgoing transition is considered an
+				 * output box
 				 */
-				if (!outputBoxes.contains(ggb) 
+				if (!outputBoxes.contains(ggb)
 						&& ggb.type == GenericGraphBox.NORMAL) {
 					outputBoxes.add(ggb);
 				}
-			} else for (final GenericGraphBox dest : ggb.transitions) {
-				if (selection.contains(dest))
-					continue;
-				if (!outputBoxes.contains(ggb) 
-						&& ggb.type == GenericGraphBox.NORMAL) {
-					outputBoxes.add(ggb);
+			} else
+				for (final GenericGraphBox dest : ggb.transitions) {
+					if (selection.contains(dest))
+						continue;
+					if (!outputBoxes.contains(ggb)
+							&& ggb.type == GenericGraphBox.NORMAL) {
+						outputBoxes.add(ggb);
+					}
 				}
-			}
 		}
-		/* A selected box with no incoming transition is 
-		 * considered an input box
+		/*
+		 * A selected box with no incoming transition is considered an input box
 		 */
 		for (final GenericGraphBox selected : selection) {
-			if (inputBoxes.contains(selected)) continue;
-			boolean add=true;
-			for (GenericGraphBox box : graphBoxes) {
+			if (inputBoxes.contains(selected))
+				continue;
+			boolean add = true;
+			for (final GenericGraphBox box : graphBoxes) {
 				if (box.transitions.contains(selected)) {
-					add=false;
+					add = false;
 					break;
 				}
 			}
@@ -1063,7 +1103,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				inputBoxes.add(selected);
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -1136,6 +1176,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					.isShiftDown());
 		}
 
+		@Override
 		public void mouseClicked(MouseEvent e) {
 			int boxSelected;
 			GraphBox b;
@@ -1262,6 +1303,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			fireGraphChanged(false);
 		}
 
+		@Override
 		public void mousePressed(MouseEvent e) {
 			int selectedBox;
 			if (e.isPopupTrigger()
@@ -1313,6 +1355,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			}
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			if (e.isShiftDown() || e.isAltDown() || e.isControlDown())
 				return;
@@ -1346,11 +1389,13 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			fireGraphChanged(false);
 		}
 
+		@Override
 		public void mouseEntered(MouseEvent e) {
 			mouseInGraphicalZone = true;
 			fireGraphChanged(false);
 		}
 
+		@Override
 		public void mouseExited(MouseEvent e) {
 			mouseInGraphicalZone = false;
 			fireGraphChanged(false);
@@ -1358,6 +1403,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	}
 
 	class MyMouseMotionListener implements MouseMotionListener {
+		@Override
 		public void mouseDragged(MouseEvent e) {
 			final int Xtmp = X_end_drag;
 			final int Ytmp = Y_end_drag;
@@ -1397,6 +1443,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			fireGraphChanged(false);
 		}
 
+		@Override
 		public void mouseMoved(MouseEvent e) {
 			Xmouse = (int) (e.getX() / scaleFactor);
 			Ymouse = (int) (e.getY() / scaleFactor);
@@ -1476,6 +1523,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * @param pageIndex
 	 *            the page index
 	 */
+	@Override
 	public int print(Graphics g, PageFormat p, int pageIndex) {
 		if (pageIndex != 0)
 			return Printable.NO_SUCH_PAGE;
@@ -1523,27 +1571,26 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return Printable.PAGE_EXISTS;
 	}
 
-	
-	private int currentFindBox=0;
-	private int currentFindLine=0;
-	private String lastPattern=null;
+	private int currentFindBox = 0;
+	private int currentFindLine = 0;
+	private String lastPattern = null;
 
 	private static final int NOT_FOUND = 0;
 	private static final int NO_MORE_MATCHES = 1;
 	private static final int FOUND = 2;
 
 	public int find(String pattern) {
-		boolean firstFind=false;
-		if (lastPattern==null || !pattern.equals(lastPattern)) {
-			firstFind=true;
-			lastPattern=pattern;
-			currentFindBox=0;
-			currentFindLine=0;
+		boolean firstFind = false;
+		if (lastPattern == null || !pattern.equals(lastPattern)) {
+			firstFind = true;
+			lastPattern = pattern;
+			currentFindBox = 0;
+			currentFindLine = 0;
 		}
-		while (currentFindBox<graphBoxes.size()) {
-			GraphBox box=(GraphBox) graphBoxes.get(currentFindBox);
-			while (currentFindLine<box.lines.size()) {
-				String line=box.lines.get(currentFindLine);
+		while (currentFindBox < graphBoxes.size()) {
+			final GraphBox box = (GraphBox) graphBoxes.get(currentFindBox);
+			while (currentFindLine < box.lines.size()) {
+				final String line = box.lines.get(currentFindLine);
 				if (line.contains(pattern)) {
 					setHighlight(true);
 					currentFindLine++;
@@ -1551,19 +1598,19 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				}
 				currentFindLine++;
 			}
-			if (box.transduction!=null && box.transduction.contains(pattern)) {
-				currentFindLine=-2;
+			if (box.transduction != null && box.transduction.contains(pattern)) {
+				currentFindLine = -2;
 				setHighlight(true);
-				currentFindLine=0;
+				currentFindLine = 0;
 				currentFindBox++;
 				return FOUND;
 			}
 			currentFindBox++;
-			currentFindLine=0;
+			currentFindLine = 0;
 		}
-		lastPattern=null;
-		currentFindBox=0;
-		currentFindLine=0;
+		lastPattern = null;
+		currentFindBox = 0;
+		currentFindLine = 0;
 		if (firstFind) {
 			return NOT_FOUND;
 		}
@@ -1576,13 +1623,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			repaint();
 			return;
 		}
-		GraphDecorator d=new GraphDecorator(null);
-		d.highlightBoxLine(-1,currentFindBox,currentFindLine);
+		final GraphDecorator d = new GraphDecorator(null);
+		d.highlightBoxLine(-1, currentFindBox, currentFindLine);
 		setDecorator(d);
 		revalidate();
 		repaint();
-		GraphBox b=(GraphBox)graphBoxes.get(currentFindBox);
-		JViewport viewport=((GraphFrame)parentFrame).scroll.getViewport();
+		final GraphBox b = (GraphBox) graphBoxes.get(currentFindBox);
+		final JViewport viewport = ((GraphFrame) parentFrame).scroll
+				.getViewport();
 		Rectangle visibleRect = viewport.getViewRect();
 		if (visibleRect.width == 0 && visibleRect.height == 0) {
 			/*

@@ -61,6 +61,7 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new TitledBorder("Output text file:"));
 		final Action setTextAction = new AbstractAction("Set") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser fc = Config.getFst2UnambigDialogBox();
 				final int returnVal = fc.showOpenDialog(null);
@@ -78,12 +79,14 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		final JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
 		final JButton OK = new JButton("OK");
 		OK.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				launchFst2Unambig();
 			}
 		});
 		final JButton CANCEL = new JButton("Cancel");
 		CANCEL.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}

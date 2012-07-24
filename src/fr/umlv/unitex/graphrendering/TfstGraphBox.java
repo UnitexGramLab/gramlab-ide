@@ -255,9 +255,11 @@ public class TfstGraphBox extends GenericGraphBox {
 					|| box.bounds.getStart_in_letters() != 0
 					|| box.content.startsWith("{<E>,")
 					|| box.bounds.equals(bounds)
-					|| (content.startsWith("{<E>,") 
-							&& bounds.getEnd_in_tokens()==box.bounds.getStart_in_tokens()
-							&& bounds.getEnd_in_chars()==box.bounds.getStart_in_chars())) {
+					|| (content.startsWith("{<E>,")
+							&& bounds.getEnd_in_tokens() == box.bounds
+									.getStart_in_tokens() && bounds
+							.getEnd_in_chars() == box.bounds
+							.getStart_in_chars())) {
 				return true;
 			}
 		}
@@ -269,10 +271,12 @@ public class TfstGraphBox extends GenericGraphBox {
 
 	@Override
 	void drawOther(Graphics2D g) {
-		final Color old = parentGraphicalZone.getGraphPresentationInfo().getBackgroundColor();
+		final Color old = parentGraphicalZone.getGraphPresentationInfo()
+				.getBackgroundColor();
 		if (ConfigManager.getManager().isKorean(null)
 				&& isKoreanUntaggedToken(content)) {
-			parentGraphicalZone.getGraphPresentationInfo().setBackgroundColor(koreanUntaggedTokenColor);
+			parentGraphicalZone.getGraphPresentationInfo().setBackgroundColor(
+					koreanUntaggedTokenColor);
 		}
 		final Composite c = g.getComposite();
 		if (parentGraphicalZone.decorator != null) {

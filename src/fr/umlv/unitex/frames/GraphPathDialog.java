@@ -71,15 +71,18 @@ public class GraphPathDialog extends JDialog {
 	JRadioButton exploreRecursively;
 	JRadioButton onlyPaths;
 	ListDataListener listListener = new ListDataListener() {
+		@Override
 		public void intervalRemoved(ListDataEvent e) {
 			/* */
 		}
 
+		@Override
 		public void intervalAdded(ListDataEvent e) {
 			final int n = textArea.getModel().getSize();
 			setTitle(n + " line" + (n > 1 ? "s" : ""));
 		}
 
+		@Override
 		public void contentsChanged(ListDataEvent e) {
 			/* */
 		}
@@ -98,6 +101,7 @@ public class GraphPathDialog extends JDialog {
 		});
 		textArea.setFont(ConfigManager.getManager().getTextFont(null));
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				textArea.setFont(ConfigManager.getManager().getTextFont(null));
 			}
@@ -144,6 +148,7 @@ public class GraphPathDialog extends JDialog {
 		panel.add(constructLimitPanel(), BorderLayout.CENTER);
 		final JPanel buttons = new JPanel(new GridLayout(1, 2));
 		final Action goAction = new AbstractAction("GO") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Fst2ListCommand cmd = new Fst2ListCommand();
 				final Grf2Fst2Command grfCmd = new Grf2Fst2Command();
@@ -172,16 +177,15 @@ public class GraphPathDialog extends JDialog {
 						.enableLoopAndRecursionDetection(true).repositories()
 						.emitEmptyGraphWarning().displayGraphNames();
 				fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
-						.getText())
-						+ ".fst2");
+						.getText()) + ".fst2");
 				if (onlyPaths.isSelected()) {
-					list = new File(ConfigManager.getManager().getCurrentLanguageDir(),
-							"list.txt");
+					list = new File(ConfigManager.getManager()
+							.getCurrentLanguageDir(), "list.txt");
 					cmd = cmd.listOfPaths(fst2, list);
 				} else {
-					list = new File(FileUtil
-							.getFileNameWithoutExtension(graphName.getText())
-							+ "autolst.txt");
+					list = new File(
+							FileUtil.getFileNameWithoutExtension(graphName
+									.getText()) + "autolst.txt");
 					cmd = cmd.listsOfSubgraph(fst2);
 				}
 				final MultiCommands commands = new MultiCommands();
@@ -194,6 +198,7 @@ public class GraphPathDialog extends JDialog {
 		final JButton GO = new JButton(goAction);
 		buttons.add(GO);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				close();
 			}
@@ -236,6 +241,7 @@ public class GraphPathDialog extends JDialog {
 			this.name = name;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			textArea.load(name);
 			textArea.getModel().addListDataListener(listListener);

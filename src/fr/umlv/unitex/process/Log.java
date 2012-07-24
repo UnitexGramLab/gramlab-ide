@@ -47,7 +47,8 @@ public class Log {
 					"Should not have a null logging directory when mustLog is true");
 		}
 		if (!logDir.exists()) {
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(
+					null,
 					"Log directory does not exist: \n\n"
 							+ logDir.getAbsolutePath()
 							+ "\n\nSet it properly or deactivate logging",

@@ -79,6 +79,7 @@ public class GraphAlignmentDialog extends JDialog {
 
 	private JPanel constructPanel() {
 		final Action topAction = new AbstractAction("Top") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				f.HTopAlign();
@@ -86,6 +87,7 @@ public class GraphAlignmentDialog extends JDialog {
 		};
 		final JButton top = new JButton(topAction);
 		final Action centerHAction = new AbstractAction("Center") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				f.HCenterAlign();
@@ -93,6 +95,7 @@ public class GraphAlignmentDialog extends JDialog {
 		};
 		final JButton centerH = new JButton(centerHAction);
 		final Action bottomAction = new AbstractAction("Bottom") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				f.HBottomAlign();
@@ -100,6 +103,7 @@ public class GraphAlignmentDialog extends JDialog {
 		};
 		final JButton bottom = new JButton(bottomAction);
 		final Action leftAction = new AbstractAction("Left") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				f.VLeftAlign();
@@ -107,6 +111,7 @@ public class GraphAlignmentDialog extends JDialog {
 		};
 		final JButton left = new JButton(leftAction);
 		final Action centerVAction = new AbstractAction("Center") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				f.VCenterAlign();
@@ -114,6 +119,7 @@ public class GraphAlignmentDialog extends JDialog {
 		};
 		final JButton centerV = new JButton(centerVAction);
 		final Action rightAction = new AbstractAction("Right") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				f.VRightAlign();
@@ -123,6 +129,7 @@ public class GraphAlignmentDialog extends JDialog {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (!showGrid.isSelected()) {
 					setVisible(false);
@@ -144,6 +151,7 @@ public class GraphAlignmentDialog extends JDialog {
 		};
 		final JButton OK = new JButton(okAction);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
@@ -174,6 +182,7 @@ public class GraphAlignmentDialog extends JDialog {
 		centerPanel.add(vertical);
 		final JPanel southPanel = new JPanel();
 		showGrid.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(ItemEvent e) {
 				nPixels.setEditable(showGrid.isSelected());
 			}

@@ -34,12 +34,12 @@ package fr.loria.xsilfide.multialign;
 
 import java.util.Vector;
 
-@SuppressWarnings("unchecked")
 public class Path {
-	private final Vector path; // set of points
+	private final Vector<Object> path; // set of points
 
-	public Path(@SuppressWarnings("unused") int x, @SuppressWarnings("unused") int y, int size) {
-		path = new Vector(size);
+	public Path(@SuppressWarnings("unused") int x,
+			@SuppressWarnings("unused") int y, int size) {
+		path = new Vector<Object>(size);
 	}
 
 	public int getNumberOfPoint() {

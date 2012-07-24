@@ -63,6 +63,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		inflectionDir.setText(new File(Config.getUserCurrentLanguageDir(),
 				"Inflection").getAbsolutePath());
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				inflectionDir.setText(new File(Config
 						.getUserCurrentLanguageDir(), "Inflection")
@@ -99,6 +100,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		binaryDic.setPreferredSize(new Dimension(280, 20));
 		outputName.setPreferredSize(new Dimension(280, 20));
 		final Action setMwuDicAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getDelaDialogBox();
 				dialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -128,6 +130,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		};
 		final JButton setMwuDicName = new JButton(setMwuDicAction);
 		final Action setInflectionDirAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getInflectDialogBox(null);
 				final int returnVal = dialogBox.showOpenDialog(null);
@@ -141,6 +144,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		};
 		final JButton setInflectionDirName = new JButton(setInflectionDirAction);
 		final Action setBinaryDicAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getDelaDialogBox();
 				dialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -168,6 +172,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		};
 		final JButton setBinaryDicName = new JButton(setBinaryDicAction);
 		final Action setOutputAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -206,12 +211,14 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 	private JPanel constructDownPanel() {
 		final JPanel downPanel = new JPanel(new GridLayout(1, 2));
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				doDefaultCloseAction();
 			}
 		};
 		final JButton CANCEL = new JButton(cancelAction);
 		final Action okAction = new AbstractAction("Generate") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				generateMwuDic();
 			}
@@ -253,12 +260,12 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		final BuildKrMwuDicCommand command = new BuildKrMwuDicCommand().output(
-				new File(outputName.getText())).alphabet(
-				ConfigManager.getManager().getAlphabet(null)).binaryDic(
-				new File(binaryDic.getText())).inflectionDir(
-				new File(inflectionDir.getText())).input(
-				new File(mwuDic.getText()));
+		final BuildKrMwuDicCommand command = new BuildKrMwuDicCommand()
+				.output(new File(outputName.getText()))
+				.alphabet(ConfigManager.getManager().getAlphabet(null))
+				.binaryDic(new File(binaryDic.getText()))
+				.inflectionDir(new File(inflectionDir.getText()))
+				.input(new File(mwuDic.getText()));
 		setVisible(false);
 		Launcher.exec(command, false, null);
 	}

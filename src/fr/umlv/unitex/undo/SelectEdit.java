@@ -47,7 +47,8 @@ public class SelectEdit extends AbstractUndoableEdit {
 	 */
 	@SuppressWarnings("unchecked")
 	public SelectEdit(ArrayList<GenericGraphBox> selectedBoxes) {
-		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
+		this.oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes
+				.clone();
 		this.selectedBoxes = selectedBoxes;
 	}
 

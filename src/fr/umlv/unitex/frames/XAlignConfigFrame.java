@@ -63,9 +63,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 
 	private JFileChooser textChooser() {
 		final JFileChooser chooser = new JFileChooser();
-		chooser
-				.addChoosableFileFilter(new PersonalFileFilter("xml",
-						"TEI text"));
+		chooser.addChoosableFileFilter(new PersonalFileFilter("xml", "TEI text"));
 		chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
 				"Raw text file"));
 		chooser.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -86,9 +84,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 
 	JFileChooser saveXMLChooser() {
 		final JFileChooser chooser = new JFileChooser();
-		chooser
-				.addChoosableFileFilter(new PersonalFileFilter("xml",
-						"TEI text"));
+		chooser.addChoosableFileFilter(new PersonalFileFilter("xml", "TEI text"));
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		chooser.setCurrentDirectory(Config.getUserDir());
 		chooser.setMultiSelectionEnabled(false);
@@ -114,12 +110,14 @@ public class XAlignConfigFrame extends JInternalFrame {
 		p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
 		final JButton ok = new JButton("OK");
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				loadFiles();
 			}
 		});
 		final JButton cancel = new JButton("Cancel");
 		cancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
@@ -282,6 +280,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 		setVisible(false);
 		InternalFrameManager.getManager(null).closeXAlignFrame();
 		final ToDo toDo = new ToDo() {
+			@Override
 			public void toDo(boolean success) {
 				InternalFrameManager.getManager(null).newXAlignFrame(
 						xmlSourceFile, xmlTargetFile, alignmentFile2);
@@ -303,6 +302,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 		p.add(text, BorderLayout.CENTER);
 		final JButton button = new JButton("set");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int returnVal = chooser.showOpenDialog(null);
 				if (returnVal != JFileChooser.APPROVE_OPTION) {

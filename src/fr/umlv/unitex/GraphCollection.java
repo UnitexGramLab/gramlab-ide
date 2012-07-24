@@ -58,6 +58,7 @@ public class GraphCollection {
 	public static void build(final File srcDir, final File destGraph,
 			final boolean copy) {
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				final MessageWhileWorkingFrame f = InternalFrameManager
 						.getManager(null).newMessageWhileWorkingFrame(
@@ -82,8 +83,8 @@ public class GraphCollection {
 	 * @param copy
 	 *            indicates if subgraphs must be copied or not
 	 */
-	static void buildGraphCollection(File srcDir, File destGraph,
-			boolean copy, JLabel txt) {
+	static void buildGraphCollection(File srcDir, File destGraph, boolean copy,
+			JLabel txt) {
 		if (isStop()) {
 			return;
 		}

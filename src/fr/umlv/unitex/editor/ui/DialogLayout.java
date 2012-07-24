@@ -36,14 +36,17 @@ class DialogLayout implements LayoutManager {
 		m_vGap = vGap;
 	}
 
+	@Override
 	public void addLayoutComponent(String name, Component comp) {
 		// nothing to do
 	}
 
+	@Override
 	public void removeLayoutComponent(Component comp) {
 		// nothing to do
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container parent) {
 		final int divider = getDivider(parent);
 		int w = 0;
@@ -60,10 +63,12 @@ class DialogLayout implements LayoutManager {
 				+ insets.top + insets.bottom);
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container parent) {
 		return preferredLayoutSize(parent);
 	}
 
+	@Override
 	public void layoutContainer(Container parent) {
 		final int divider = getDivider(parent);
 		final Insets insets = parent.getInsets();

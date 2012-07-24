@@ -83,6 +83,7 @@ public class GraphCollectionFrame extends JInternalFrame {
 		srcDir.setPreferredSize(new Dimension(280, 20));
 		resultGrf.setPreferredSize(new Dimension(280, 20));
 		final Action setSrcAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
 				f.setDialogTitle("Choose source directory");
@@ -97,6 +98,7 @@ public class GraphCollectionFrame extends JInternalFrame {
 		};
 		final JButton setSrcDir = new JButton(setSrcAction);
 		final Action setResultAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -128,6 +130,7 @@ public class GraphCollectionFrame extends JInternalFrame {
 	private JPanel constructDownPanel() {
 		final JPanel downPanel = new JPanel(new GridLayout(1, 2));
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				GraphCollection.build(new File(srcDir.getText()), new File(
@@ -136,6 +139,7 @@ public class GraphCollectionFrame extends JInternalFrame {
 		};
 		final JButton OK = new JButton(okAction);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}

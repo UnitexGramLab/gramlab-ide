@@ -39,7 +39,7 @@ import javax.swing.SwingWorker;
 import fr.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignModelImpl implements XAlignModel {
-	
+
 	final XMLTextModel src;
 	final XMLTextModel dest;
 	final ArrayList<Couple> alignments;
@@ -102,6 +102,7 @@ public class XAlignModelImpl implements XAlignModel {
 	private File file;
 	Charset utf8 = Charset.forName("UTF-8");
 
+	@Override
 	public void load(File f) throws IOException {
 		this.file = f;
 		if (f == null) {
@@ -111,7 +112,8 @@ public class XAlignModelImpl implements XAlignModel {
 		group = new HashMap<String, ArrayList<String>>();
 		stream = new FileInputStream(file);
 		channel = stream.getChannel();
-		setBuffer(channel.map(FileChannel.MapMode.READ_ONLY, 0, getDataLength()));
+		setBuffer(channel
+				.map(FileChannel.MapMode.READ_ONLY, 0, getDataLength()));
 		worker = new SwingWorker<Void, PublishInfo>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -198,7 +200,8 @@ public class XAlignModelImpl implements XAlignModel {
 					}
 				}
 				for (; pos < getDataLength(); pos = pos + 1) {
-					if (getBuffer().get(pos) == '<' && getBuffer().get(pos + 1) == '!'
+					if (getBuffer().get(pos) == '<'
+							&& getBuffer().get(pos + 1) == '!'
 							&& getBuffer().get(pos + 2) == '-'
 							&& getBuffer().get(pos + 3) == '-') {
 						/* If we have a XML comment, we skip it */
@@ -331,10 +334,12 @@ public class XAlignModelImpl implements XAlignModel {
 		}
 	}
 
+	@Override
 	public void addAlignmentListener(AlignmentListener l) {
 		listeners.add(l);
 	}
 
+	@Override
 	public void removeAlignmentListener(AlignmentListener l) {
 		listeners.remove(l);
 	}
@@ -389,6 +394,7 @@ public class XAlignModelImpl implements XAlignModel {
 		return l;
 	}
 
+	@Override
 	public ArrayList<Integer> getAlignedSrcSequences(int sentence) {
 		final ArrayList<Integer> result = new ArrayList<Integer>();
 		if (alignments == null)
@@ -400,6 +406,7 @@ public class XAlignModelImpl implements XAlignModel {
 		return result;
 	}
 
+	@Override
 	public ArrayList<Integer> getAlignedDestSequences(int sentence) {
 		final ArrayList<Integer> result = new ArrayList<Integer>();
 		for (final Couple c : alignments) {
@@ -409,6 +416,7 @@ public class XAlignModelImpl implements XAlignModel {
 		return result;
 	}
 
+	@Override
 	public void align(int sentenceSrc, int sentenceDest, AlignmentEvent e) {
 		final Couple c = new Couple(sentenceSrc, sentenceDest);
 		if (alignments.contains(c))
@@ -417,12 +425,14 @@ public class XAlignModelImpl implements XAlignModel {
 		fireAlignmentChanged(e);
 	}
 
+	@Override
 	public void unAlign(int sentenceSrc, int sentenceDest) {
 		final Couple c = new Couple(sentenceSrc, sentenceDest);
 		alignments.remove(c);
 		fireAlignmentChanged(AlignmentEvent.MANUAL_EDIT);
 	}
 
+	@Override
 	public void changeAlignment(int sentenceSrc, int sentenceDest) {
 		final Couple c = new Couple(sentenceSrc, sentenceDest);
 		if (alignments.contains(c))
@@ -432,6 +442,7 @@ public class XAlignModelImpl implements XAlignModel {
 		fireAlignmentChanged(AlignmentEvent.MANUAL_EDIT);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void dumpAlignments(File f) throws IOException {
 		if (f == null) {
@@ -593,43 +604,40 @@ public class XAlignModelImpl implements XAlignModel {
 	}
 
 	private void writeHeader(OutputStreamWriter writer) throws IOException {
-		writer
-				.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-						+ "<TEI>\n" + "   <teiHeader>\n" + "      <fileDesc>\n"
-						+ "         <titleStmt>\n" + "            <title/>\n"
-						+ "         </titleStmt>\n"
-						+ "         <publicationStmt>\n" + "            <p/>\n"
-						+ "         </publicationStmt>\n"
-						+ "         <sourceDesc>\n" + "            <bibl>\n"
-						+ "               <ref>\n"
-						+ "                  <ptr target=\""
-						+ sourceFile
-						+ "\"/>\n"
-						+ "                  <note type=\"status\">source</note>\n"
-						+ "               </ref>\n"
-						+ "            </bibl>\n"
-						+ "            <bibl>\n"
-						+ "               <ref>\n"
-						+ "                  <ptr target=\""
-						+ destFile
-						+ "\"/>\n"
-						+ "                  <note type=\"status\">translation</note>\n"
-						+ "               </ref>\n"
-						+ "            </bibl>\n"
-						+ "         </sourceDesc>\n"
-						+ "      </fileDesc>\n"
-						+ "   </teiHeader>\n"
-						+ "   <text>\n"
-						+ "      <body>\n"
-						+ "         <linkGrp type=\"alignmentCognates\">\n"
-						+ "            <link\n"
-						+ "               targets=\""
-						+ sourceFile
-						+ " "
-						+ destFile
-						+ "\" type=\"alignmentDomain\"/>\n"
-						+ "         </linkGrp>\n"
-						+ "         <div type=\"resultXAlign\">\n");
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<TEI>\n"
+				+ "   <teiHeader>\n" + "      <fileDesc>\n"
+				+ "         <titleStmt>\n" + "            <title/>\n"
+				+ "         </titleStmt>\n" + "         <publicationStmt>\n"
+				+ "            <p/>\n" + "         </publicationStmt>\n"
+				+ "         <sourceDesc>\n" + "            <bibl>\n"
+				+ "               <ref>\n" + "                  <ptr target=\""
+				+ sourceFile
+				+ "\"/>\n"
+				+ "                  <note type=\"status\">source</note>\n"
+				+ "               </ref>\n"
+				+ "            </bibl>\n"
+				+ "            <bibl>\n"
+				+ "               <ref>\n"
+				+ "                  <ptr target=\""
+				+ destFile
+				+ "\"/>\n"
+				+ "                  <note type=\"status\">translation</note>\n"
+				+ "               </ref>\n"
+				+ "            </bibl>\n"
+				+ "         </sourceDesc>\n"
+				+ "      </fileDesc>\n"
+				+ "   </teiHeader>\n"
+				+ "   <text>\n"
+				+ "      <body>\n"
+				+ "         <linkGrp type=\"alignmentCognates\">\n"
+				+ "            <link\n"
+				+ "               targets=\""
+				+ sourceFile
+				+ " "
+				+ destFile
+				+ "\" type=\"alignmentDomain\"/>\n"
+				+ "         </linkGrp>\n"
+				+ "         <div type=\"resultXAlign\">\n");
 	}
 
 	private final StringBuilder builder = new StringBuilder();
@@ -644,27 +652,31 @@ public class XAlignModelImpl implements XAlignModel {
 			builder.append(source ? src.getID(i) : dest.getID(i)).append(" ");
 		}
 		builder.append("\"\n");
-		builder.append("                  type=\"linking\" xml:id=\"").append(
-				groupID).append("\"/>");
+		builder.append("                  type=\"linking\" xml:id=\"")
+				.append(groupID).append("\"/>");
 		return builder.toString();
 	}
 
+	@Override
 	public ArrayList<Integer> getAlignedSequences(int sentence, boolean fromSrc) {
 		if (fromSrc)
 			return getAlignedSrcSequences(sentence);
 		return getAlignedDestSequences(sentence);
 	}
 
+	@Override
 	public boolean isModified() {
 		return modified;
 	}
 
+	@Override
 	public void reset() {
 		if (getBuffer() != null)
 			setBuffer(null);
 		System.gc();
 	}
 
+	@Override
 	public void clear() {
 		alignments.clear();
 		fireAlignmentChanged(AlignmentEvent.CLEAR);

@@ -101,7 +101,7 @@ public class Preferences {
 	public static String ICON_BAR_DEFAULT = ICON_BAR_NORTH;
 	private GraphPresentationInfo info;
 	private Encoding encoding;
-	
+
 	/**
 	 * Properties for current language
 	 */
@@ -128,26 +128,26 @@ public class Preferences {
 		defaultProperties.setProperty("RIGHT TO LEFT FOR TEXT", "false");
 		defaultProperties.setProperty("RIGHT TO LEFT FOR GRAPHS", "false");
 		defaultProperties.setProperty("SEMITIC", "false");
-		defaultProperties.setProperty("BACKGROUND COLOR", ""
-				+ Color.WHITE.getRGB());
-		defaultProperties.setProperty("FOREGROUND COLOR", ""
-				+ Color.BLACK.getRGB());
+		defaultProperties.setProperty("BACKGROUND COLOR",
+				"" + Color.WHITE.getRGB());
+		defaultProperties.setProperty("FOREGROUND COLOR",
+				"" + Color.BLACK.getRGB());
 		defaultProperties.setProperty("AUXILIARY NODES COLOR", ""
 				+ (new Color(205, 205, 205)).getRGB());// 13487565);
-		defaultProperties.setProperty("COMMENT NODES COLOR", ""
-				+ Color.RED.getRGB());// 16711680");
-		defaultProperties.setProperty("OUTPUT VARIABLE COLOR", ""
-				+ Color.BLUE.getRGB());
+		defaultProperties.setProperty("COMMENT NODES COLOR",
+				"" + Color.RED.getRGB());// 16711680");
+		defaultProperties.setProperty("OUTPUT VARIABLE COLOR",
+				"" + Color.BLUE.getRGB());
 		defaultProperties.setProperty("PACKAGE NODES COLOR", ""
 				+ (new Color(220, 220, 0)).getRGB());// 16711680");
-		defaultProperties.setProperty("CONTEXT NODES COLOR", ""
-				+ Color.GREEN.getRGB());
+		defaultProperties.setProperty("CONTEXT NODES COLOR",
+				"" + Color.GREEN.getRGB());
 		defaultProperties.setProperty("MORPHOLOGICAL NODES COLOR", ""
 				+ new Color(0xC4, 0x4F, 0xD0).getRGB());
-		defaultProperties.setProperty("UNREACHABLE GRAPH COLOR", ""
-				+ Color.RED.getRGB());
-		defaultProperties.setProperty("SELECTED NODES COLOR", ""
-				+ Color.BLUE.getRGB());// 255");
+		defaultProperties.setProperty("UNREACHABLE GRAPH COLOR",
+				"" + Color.RED.getRGB());
+		defaultProperties.setProperty("SELECTED NODES COLOR",
+				"" + Color.BLUE.getRGB());// 255");
 		defaultProperties.setProperty("ANTIALIASING", "false");
 		defaultProperties.setProperty("HTML VIEWER", "");
 		defaultProperties.setProperty("MORPHOLOGICAL DICTIONARY", "");
@@ -285,44 +285,44 @@ public class Preferences {
 	public Properties setPropertiesFromPreferences() {
 		final Properties prop = new Properties();
 		prop.setProperty("TEXT FONT NAME", getTextFont().getFont().getName());
-		prop.setProperty("TEXT FONT STYLE", "" + getTextFont().getFont().getStyle());
+		prop.setProperty("TEXT FONT STYLE", ""
+				+ getTextFont().getFont().getStyle());
 		prop.setProperty("TEXT FONT SIZE", "" + getTextFont().getSize());
-		prop.setProperty("CONCORDANCE FONT NAME", getConcordanceFont().getFont()
-				.getName());
+		prop.setProperty("CONCORDANCE FONT NAME", getConcordanceFont()
+				.getFont().getName());
 		prop.setProperty("CONCORDANCE FONT HTML SIZE", ""
 				+ getConcordanceFont().getSize());
 		prop.setProperty("INPUT FONT NAME", info.getInput().getFont().getName());
-		prop.setProperty("INPUT FONT STYLE", "" + info.getInput().getFont().getStyle());
+		prop.setProperty("INPUT FONT STYLE", ""
+				+ info.getInput().getFont().getStyle());
 		prop.setProperty("INPUT FONT SIZE", "" + info.getInput().getSize());
-		prop.setProperty("OUTPUT FONT NAME", info.getOutput().getFont().getName());
-		prop.setProperty("OUTPUT FONT STYLE", "" + info.getOutput().getFont().getStyle());
+		prop.setProperty("OUTPUT FONT NAME", info.getOutput().getFont()
+				.getName());
+		prop.setProperty("OUTPUT FONT STYLE", ""
+				+ info.getOutput().getFont().getStyle());
 		prop.setProperty("OUTPUT FONT SIZE", "" + info.getOutput().getSize());
 		prop.setProperty("DATE", "" + info.isDate());
 		prop.setProperty("FILE NAME", "" + info.isFilename());
 		prop.setProperty("PATH NAME", "" + info.isPathname());
 		prop.setProperty("FRAME", "" + info.isFrame());
 		prop.setProperty("RIGHT TO LEFT FOR TEXT", "" + isRightToLeftForText());
-		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", "" + isRightToLeftForGraphs());
+		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", ""
+				+ isRightToLeftForGraphs());
 		prop.setProperty("SEMITIC", "" + isSemitic());
-		prop
-				.setProperty("BACKGROUND COLOR", ""
-						+ info.getBackgroundColor().getRGB());
-		prop
-				.setProperty("FOREGROUND COLOR", ""
-						+ info.getForegroundColor().getRGB());
+		prop.setProperty("BACKGROUND COLOR", ""
+				+ info.getBackgroundColor().getRGB());
+		prop.setProperty("FOREGROUND COLOR", ""
+				+ info.getForegroundColor().getRGB());
 		prop.setProperty("AUXILIARY NODES COLOR", ""
 				+ info.getSubgraphColor().getRGB());
-		prop
-				.setProperty("COMMENT NODES COLOR", ""
-						+ info.getCommentColor().getRGB());
+		prop.setProperty("COMMENT NODES COLOR", ""
+				+ info.getCommentColor().getRGB());
 		prop.setProperty("SELECTED NODES COLOR", ""
 				+ info.getSelectedColor().getRGB());
-		prop
-				.setProperty("PACKAGE NODES COLOR", ""
-						+ info.getPackageColor().getRGB());
-		prop
-				.setProperty("CONTEXT NODES COLOR", ""
-						+ info.getContextColor().getRGB());
+		prop.setProperty("PACKAGE NODES COLOR", ""
+				+ info.getPackageColor().getRGB());
+		prop.setProperty("CONTEXT NODES COLOR", ""
+				+ info.getContextColor().getRGB());
 		prop.setProperty("MORPHOLOGICAL NODES COLOR", ""
 				+ info.getMorphologicalModeColor().getRGB());
 		prop.setProperty("OUTPUT VARIABLE COLOR", ""
@@ -330,8 +330,8 @@ public class Preferences {
 		prop.setProperty("UNREACHABLE GRAPH COLOR", ""
 				+ info.getUnreachableGraphColor().getRGB());
 		prop.setProperty("ANTIALIASING", "" + info.isAntialiasing());
-		prop.setProperty("HTML VIEWER", (getHtmlViewer() == null) ? "" : getHtmlViewer()
-				.getAbsolutePath());
+		prop.setProperty("HTML VIEWER", (getHtmlViewer() == null) ? ""
+				: getHtmlViewer().getAbsolutePath());
 		prop.setProperty("MORPHOLOGICAL DICTIONARY",
 				getMorphologicalDicListAsString(getMorphologicalDic()));
 		prop.setProperty("MAX TEXT FILE SIZE", "" + MAX_TEXT_FILE_SIZE);
@@ -339,12 +339,13 @@ public class Preferences {
 		prop.setProperty("CHAR BY CHAR", "" + isCharByChar());
 		prop.setProperty("MORPHOLOGICAL USE OF SPACE", ""
 				+ isMorphologicalUseOfSpace());
-		prop.setProperty("PACKAGE PATH", (getGraphRepositoryPath() == null) ? ""
-				: getGraphRepositoryPath().getAbsolutePath());
+		prop.setProperty("PACKAGE PATH",
+				(getGraphRepositoryPath() == null) ? ""
+						: getGraphRepositoryPath().getAbsolutePath());
 		// prop.setProperty("LEXICAL PACKAGE PATH", (lexicalPackagePath == null)
 		// ? "" : lexicalPackagePath.getAbsolutePath());
-		prop.setProperty("LOGGING DIR", (getLoggingDir() == null) ? "" : getLoggingDir()
-				.getAbsolutePath());
+		prop.setProperty("LOGGING DIR", (getLoggingDir() == null) ? ""
+				: getLoggingDir().getAbsolutePath());
 		prop.setProperty("MUST LOG", "" + isMustLog());
 		prop.setProperty("SVN MONITORING", "" + isSvnMonitoring());
 		prop.setProperty("ONLY COSMETIC", "" + isOnlyCosmetic());

@@ -68,6 +68,7 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 		modelBegin = rdBegin.getModel();
 		bgS.add(rdBegin);
 		rdBegin.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				text.setCaretPosition(0);
 			}
@@ -87,15 +88,18 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 		po.add(rdDown);
 		// find
 		final ActionListener findAction = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if (getModelBegin().isSelected())
 						bgS.setSelected(getModelDown(), true);
 					final String key = docFind.getText(0, docFind.getLength());
-					text.dictionaryFindNext(getModelUp().isSelected(), (getModelGram()
-							.isSelected() || getModelFlCode().isSelected()),
-							getModelGram().isSelected(), getModelFl().isSelected(),
-							getModelCano().isSelected(), key);
+					text.dictionaryFindNext(getModelUp().isSelected(),
+							(getModelGram().isSelected() || getModelFlCode()
+									.isSelected()),
+							getModelGram().isSelected(), getModelFl()
+									.isSelected(), getModelCano().isSelected(),
+							key);
 				} catch (final BadLocationException ex) {
 					warning("Bad Location Exception:\n" + ex.getMessage());
 				} catch (final KeyErrorException ex) {
@@ -113,24 +117,27 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 			}
 		});
 		btRplNext.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int start = text.getSelectionStart();
 				final int end = text.getSelectionEnd();
 				// int selectionSize = end - start;
 				try {
 					// get the replament word
-					final String replacement = docReplace.getText(0, docReplace
-							.getLength());
+					final String replacement = docReplace.getText(0,
+							docReplace.getLength());
 					// replace
 					text.setSelection(start, end, getModelUp().isSelected());
 					text.replaceSelection(replacement);
 					text.setSelection(start, start + replacement.length(),
 							getModelUp().isSelected());
 					final String key = docFind.getText(0, docFind.getLength());
-					text.dictionaryFindNext(getModelUp().isSelected(), (getModelGram()
-							.isSelected() || getModelFlCode().isSelected()),
-							getModelGram().isSelected(), getModelFl().isSelected(),
-							getModelCano().isSelected(), key);
+					text.dictionaryFindNext(getModelUp().isSelected(),
+							(getModelGram().isSelected() || getModelFlCode()
+									.isSelected()),
+							getModelGram().isSelected(), getModelFl()
+									.isSelected(), getModelCano().isSelected(),
+							key);
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception\n" + ble.getMessage());
 				} catch (final KeyErrorException ex) {
@@ -139,14 +146,15 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 			}
 		});
 		final ActionListener replaceAction = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int start = text.getSelectionStart();
 				final int end = text.getSelectionEnd();
 				// int selectionSize = end - start;
 				try {
 					// get the replament word
-					final String replacement = docReplace.getText(0, docReplace
-							.getLength());
+					final String replacement = docReplace.getText(0,
+							docReplace.getLength());
 					// replace
 					text.setSelection(start, end, getModelUp().isSelected());
 					text.replaceSelection(replacement);
@@ -159,12 +167,13 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 		};
 		btReplace.addActionListener(replaceAction);
 		btcntO.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					final String key = docFind.getText(0, docFind.getLength());
-					count.setText(Integer.toString(text.countAll(key, getModelUp()
-							.isSelected(), getModelGram().isSelected(), getModelGram()
-							.isSelected())));
+					count.setText(Integer.toString(text.countAll(key,
+							getModelUp().isSelected(), getModelGram()
+									.isSelected(), getModelGram().isSelected())));
 				} catch (final BadLocationException e) {
 					warning("Bad Location Exception:\n" + e.getMessage());
 				} catch (final KeyErrorException e) {
@@ -174,14 +183,15 @@ public class DictionaryFindPanel extends AbstractFindpanel {
 		});
 		// replace all
 		final ActionListener replaceAll = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					final String key = docFind.getText(0, docFind.getLength());
-					final String rkey = docReplace.getText(0, docFind
-							.getLength());
-					text.replaceAll(key, rkey, getModelUp().isSelected(), (getModelGram()
-							.isSelected() || getModelFlCode().isSelected()),
-							getModelGram().isSelected());
+					final String rkey = docReplace.getText(0,
+							docFind.getLength());
+					text.replaceAll(key, rkey, getModelUp().isSelected(),
+							(getModelGram().isSelected() || getModelFlCode()
+									.isSelected()), getModelGram().isSelected());
 				} catch (final BadLocationException ble) {
 					warning("Bad Location Exception:\n" + ble.getMessage());
 				} catch (final TargetException te) {

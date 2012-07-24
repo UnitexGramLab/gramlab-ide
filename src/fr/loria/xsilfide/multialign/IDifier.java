@@ -64,10 +64,10 @@ import fr.loria.nguyen.mytools.XMLTools;
 // IDifier -- add id's to all PHRASE elements in a document.  Useful
 // when aligning a document which has no ID's on its PHRASE elements.
 // IDifier will not destroy ID's which already exist.
-@SuppressWarnings( { "unchecked", "deprecation" })
+@SuppressWarnings({ "deprecation" })
 public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 	private XMLReader parser;
-	private final Hashtable types;
+	private final Hashtable<Object, Object> types;
 	private OutputStream out;
 	private PrintStream sysout;
 	private DocumentImpl doc;
@@ -75,7 +75,7 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 	private int n;
 	private final boolean force;
 
-	private IDifier(Hashtable t, boolean force) {
+	private IDifier(Hashtable<Object, Object> t, boolean force) {
 		types = t;
 		this.force = force;
 		try {
@@ -217,7 +217,7 @@ public class IDifier extends org.xml.sax.helpers.DefaultHandler {
 			throws SAXException {
 		if ("".equals(uri))
 			name = qName;
-		// XXX: I assume we have a legal document, i.e. all elements are nested.
+		// I assume we have a legal document, i.e. all elements are nested.
 		curNode = (NodeImpl) curNode.getParentNode();
 	}
 
