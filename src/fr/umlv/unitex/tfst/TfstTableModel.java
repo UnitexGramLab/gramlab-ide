@@ -33,7 +33,7 @@ import fr.umlv.unitex.graphrendering.TfstGraphBox;
  * @author paumier
  */
 public class TfstTableModel extends AbstractTableModel {
-	
+
 	int nColumns;
 	final ArrayList<TokenTags> lines = new ArrayList<TokenTags>();
 	final TagFilter filter;
@@ -43,6 +43,7 @@ public class TfstTableModel extends AbstractTableModel {
 		filter = f;
 		this.delafStyle = delafStyle;
 		filter.addFilterListener(new FilterListener() {
+			@Override
 			public void filterChanged() {
 				nColumns = 1;
 				for (final TokenTags t : lines) {
@@ -57,10 +58,12 @@ public class TfstTableModel extends AbstractTableModel {
 		});
 	}
 
+	@Override
 	public int getColumnCount() {
 		return nColumns;
 	}
 
+	@Override
 	public int getRowCount() {
 		return lines.size();
 	}
@@ -70,6 +73,7 @@ public class TfstTableModel extends AbstractTableModel {
 		return (column == 0) ? "Form" : ("POS sequence #" + column);
 	}
 
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		final TokenTags t = lines.get(rowIndex);
 		if (columnIndex == 0)
@@ -123,8 +127,8 @@ public class TfstTableModel extends AbstractTableModel {
 	private boolean emptySentenceGraph(ArrayList<GenericGraphBox> boxes) {
 		if (boxes.size() != 3)
 			return false;
-		return boxes.get(2).getContent().equals(
-				"THIS SENTENCE AUTOMATON HAS BEEN EMPTIED");
+		return boxes.get(2).getContent()
+				.equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED");
 	}
 
 	/**

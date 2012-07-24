@@ -43,26 +43,29 @@ public class MessageCommand extends CommandBuilder {
 	public String getMessage() {
 		return message;
 	}
-	
+
 	@Override
 	public ConsoleEntry logIntoConsole() {
 		/* Nothing to log for a normal message */
 		return null;
 	}
-	
+
 	@Override
-	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry) {
-		if (p.getStdout()==null) return true;
-		final MessageCommand c=this;
+	public boolean executeCommand(final ExecParameters p,
+			final ConsoleEntry entry) {
+		if (p.getStdout() == null)
+			return true;
+		final MessageCommand c = this;
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
 				public void run() {
 					p.getStdout().addLine(new Couple(c.getMessage(), true));
 				}
 			});
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			return false;
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			return false;
 		}
 		return true;

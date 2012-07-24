@@ -66,12 +66,12 @@ public class ConstructTfstFrame extends JInternalFrame {
 	private final JCheckBox cleanFst = new JCheckBox("Clean Text FST");
 	private final JCheckBox elagFst = new JCheckBox(
 			"Normalize according to Elag tagset.def");
-	final JTextField normGrf = new JTextField(Config
-			.getCurrentNormGraph().getAbsolutePath());
-	private final JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
-	final JTextField tagger_data = new JTextField(new File(new File(
-			Config.getUserCurrentLanguageDir(), "Dela"), "tagger_data_cat.bin")
+	final JTextField normGrf = new JTextField(Config.getCurrentNormGraph()
 			.getAbsolutePath());
+	private final JCheckBox tagger = new JCheckBox("Linearize with the Tagger");
+	final JTextField tagger_data = new JTextField(
+			new File(new File(Config.getUserCurrentLanguageDir(), "Dela"),
+					"tagger_data_cat.bin").getAbsolutePath());
 
 	/**
 	 * Creates and shows a new <code>ConstructFstFrame</code>.
@@ -110,10 +110,11 @@ public class ConstructTfstFrame extends JInternalFrame {
 		normalizationPanel.add(normFst);
 		final JCheckBox foo = new JCheckBox("");
 		final JPanel norm = new JPanel(new BorderLayout());
-		norm.setBorder(BorderFactory.createEmptyBorder(0, foo
-				.getPreferredSize().width, 0, 0));
+		norm.setBorder(BorderFactory.createEmptyBorder(0,
+				foo.getPreferredSize().width, 0, 0));
 		norm.add(normGrf, BorderLayout.CENTER);
 		final Action setAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser chooser = Config.getNormDialogBox();
 				final int returnVal = chooser.showOpenDialog(null);
@@ -135,6 +136,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 				foo.getPreferredSize().width, 0, 0));
 		tag.add(tagger_data, BorderLayout.CENTER);
 		final Action setTaggerDataAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser chooser = Config.getTaggerDataDialogBox();
 				final int returnVal = chooser.showOpenDialog(null);
@@ -156,9 +158,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 		final JPanel dicPanel = new JPanel(new GridLayout(2, 1));
 		dicPanel.setBorder(new TitledBorder(
 				"Use Following Dictionaries previously constructed:"));
-		dicPanel
-				.add(new JLabel(
-						"The program will construct the text FST according to the DLF, DLC and tags.ind files"));
+		dicPanel.add(new JLabel(
+				"The program will construct the text FST according to the DLF, DLC and tags.ind files"));
 		dicPanel.add(new JLabel(
 				"previously built by the Dico program for the current text."));
 		return dicPanel;
@@ -168,12 +169,14 @@ public class ConstructTfstFrame extends JInternalFrame {
 		final JPanel buttons = new JPanel(new GridLayout(1, 2));
 		buttons.setBorder(new EmptyBorder(8, 8, 2, 2));
 		final Action okAction = new AbstractAction("Construct FST") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				constructTfst();
 			}
 		};
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
@@ -218,9 +221,9 @@ public class ConstructTfstFrame extends JInternalFrame {
 			// files for the
 			// Reconstrucao program exist, we launch the
 			// construction of this grammar
-			LocateCommand locateCmd = new LocateCommand().snt(
-					Config.getCurrentSnt()).fst2(vProSuf).alphabet(
-					ConfigManager.getManager().getAlphabet(null))
+			LocateCommand locateCmd = new LocateCommand()
+					.snt(Config.getCurrentSnt()).fst2(vProSuf)
+					.alphabet(ConfigManager.getManager().getAlphabet(null))
 					.longestMatches().mergeOutputs().noLimit();
 			if (ConfigManager.getManager().isArabic(null)) {
 				locateCmd = locateCmd.arabic(new File(Config
@@ -237,9 +240,9 @@ public class ConstructTfstFrame extends JInternalFrame {
 			final ReconstrucaoCommand reconstrucaoCmd = new ReconstrucaoCommand()
 					.alphabet(ConfigManager.getManager().getAlphabet(null))
 					.ind(new File(Config.getCurrentSntDir(), "concord.ind"))
-					.rootDic(raizBin).dic(futuroCondicionalBin).fst2(
-							normalizePronouns).nasalFst2(
-							new File(graphDir, "NasalSuffixPronouns.fst2"))
+					.rootDic(raizBin).dic(futuroCondicionalBin)
+					.fst2(normalizePronouns)
+					.nasalFst2(new File(graphDir, "NasalSuffixPronouns.fst2"))
 					.output(new File(normalizationDir, "Norm.grf"));
 			commands.addCommand(reconstrucaoCmd);
 			final File grf = new File(normalizationDir, "Norm.grf");
@@ -248,10 +251,10 @@ public class ConstructTfstFrame extends JInternalFrame {
 					.emitEmptyGraphWarning().displayGraphNames();
 			commands.addCommand(grfCommand);
 		}
-		Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
-				Config.getCurrentSnt()).alphabet(
-				ConfigManager.getManager().getAlphabet(null)).clean(
-				cleanFst.isSelected());
+		Txt2TfstCommand txtCmd = new Txt2TfstCommand()
+				.text(Config.getCurrentSnt())
+				.alphabet(ConfigManager.getManager().getAlphabet(null))
+				.clean(cleanFst.isSelected());
 		if (ConfigManager.getManager().isKorean(null)) {
 			txtCmd = txtCmd.korean();
 		}
@@ -263,8 +266,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 					.equalsIgnoreCase("grf")) {
 				/* We must compile the grf */
 				normGrfFile = new File(grfName);
-				final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(
-						normGrfFile).enableLoopAndRecursionDetection(true)
+				final Grf2Fst2Command grfCmd = new Grf2Fst2Command()
+						.grf(normGrfFile).enableLoopAndRecursionDetection(true)
 						.tokenizationMode(null, normGrfFile)
 						.emitEmptyGraphWarning().displayGraphNames();
 				commands.addCommand(grfCmd);
@@ -294,15 +297,14 @@ public class ConstructTfstFrame extends JInternalFrame {
 		if (tagger.isSelected()) {
 			final File data = new File(tagger_data.getText());
 			if (!data.exists()) {
-				commands
-						.addCommand(new ErrorMessageCommand(
-								"*** WARNING: tagging skipped because tagger data file was not found ***\n"));
+				commands.addCommand(new ErrorMessageCommand(
+						"*** WARNING: tagging skipped because tagger data file was not found ***\n"));
 			} else {
 				final File tfst = new File(Config.getCurrentSntDir(),
 						"text.tfst");
 				final TaggerCommand taggerCmd = new TaggerCommand().tfst(tfst)
-						.dic(data).tagset(elag_tagset).alphabet(
-								ConfigManager.getManager().getAlphabet(null));
+						.dic(data).tagset(elag_tagset)
+						.alphabet(ConfigManager.getManager().getAlphabet(null));
 				commands.addCommand(taggerCmd);
 			}
 		}
@@ -310,8 +312,8 @@ public class ConstructTfstFrame extends JInternalFrame {
 		InternalFrameManager.getManager(null).closeTfstTagsFrame();
 		/* We also have to rebuild the text automaton */
 		Config.cleanTfstFiles(true);
-		Launcher.exec(commands, true, new ConstructTfstDo(Config
-				.getCurrentSntDir()), false);
+		Launcher.exec(commands, true,
+				new ConstructTfstDo(Config.getCurrentSntDir()), false);
 	}
 
 	class ConstructTfstDo implements ToDo {
@@ -321,6 +323,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1,
 					false);

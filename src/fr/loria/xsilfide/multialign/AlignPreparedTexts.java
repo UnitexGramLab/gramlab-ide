@@ -69,7 +69,7 @@ class AlignPreparedTexts {
 		final String pT = properties.getProperty("paraTar");
 		final String sS = properties.getProperty("stcSrc");
 		final String sT = properties.getProperty("stcTar");
-		final Vector dSrc = new Vector();
+		final Vector<Object> dSrc = new Vector<Object>();
 		int count = 0;
 		while (count < dS.length() - 1) {
 			final int d = dS.indexOf("]]", count);
@@ -77,7 +77,7 @@ class AlignPreparedTexts {
 			dSrc.addElement(getVector(divBuf.trim()));
 			count = d + 2;
 		}
-		final Vector dTar = new Vector();
+		final Vector<Object> dTar = new Vector<Object>();
 		count = 0;
 		while (count < dT.length() - 1) {
 			final int d = dT.indexOf("]]", count);
@@ -86,31 +86,31 @@ class AlignPreparedTexts {
 			count = d + 2;
 		}
 		for (int i = 0; i < dSrc.size(); i++) {
-			final Vector buf = (Vector) dSrc.elementAt(i);
+			final Vector<Object> buf = (Vector<Object>) dSrc.elementAt(i);
 			for (int j = 0; j < buf.size(); j++) {
-				final Vector buf1 = (Vector) buf.elementAt(j);
+				final Vector<Object> buf1 = (Vector<Object>) buf.elementAt(j);
 				final Integer lg = new Integer(buf1.elementAt(1).toString());
 				buf1.setElementAt(lg, 1);
 			}
 		}
 		for (int i = 0; i < dTar.size(); i++) {
-			final Vector buf = (Vector) dTar.elementAt(i);
+			final Vector<Object> buf = (Vector<Object>) dTar.elementAt(i);
 			for (int j = 0; j < buf.size(); j++) {
-				final Vector buf1 = (Vector) buf.elementAt(j);
+				final Vector<Object> buf1 = (Vector<Object>) buf.elementAt(j);
 				final Integer lg = new Integer(buf1.elementAt(1).toString());
 				buf1.setElementAt(lg, 1);
 			}
 		}
-		final Vector pSrc = getVector(pS.trim());
-		final Vector pTar = getVector(pT.trim());
-		final Vector sSrc = getVector(sS.trim());
-		final Vector sTar = getVector(sT.trim());
+		final Vector<Object> pSrc = getVector(pS.trim());
+		final Vector<Object> pTar = getVector(pT.trim());
+		final Vector<Object> sSrc = getVector(sS.trim());
+		final Vector<Object> sTar = getVector(sT.trim());
 		String tmp = "";
 		int divNbSrc = 0, divNbTar = 0;
 		for (int i = 0; i < pSrc.size(); i++) {
-			final Vector buf = (Vector) pSrc.elementAt(i);
+			final Vector<String> buf = (Vector<String>) pSrc.elementAt(i);
 			final Integer lg = new Integer(buf.elementAt(1).toString());
-			buf.setElementAt(lg, 1);
+			buf.setElementAt(lg+"", 1);
 			String s = buf.elementAt(0).toString();
 			int idx = s.indexOf('p');
 			if (idx < 0)
@@ -123,9 +123,9 @@ class AlignPreparedTexts {
 		}
 		tmp = "";
 		for (int i = 0; i < pTar.size(); i++) {
-			final Vector buf = (Vector) pTar.elementAt(i);
+			final Vector<String> buf = (Vector<String>) pTar.elementAt(i);
 			final Integer lg = new Integer(buf.elementAt(1).toString());
-			buf.setElementAt(lg, 1);
+			buf.setElementAt(lg+"", 1);
 			String s = buf.elementAt(0).toString();
 			int idx = s.indexOf('p');
 			if (idx < 0)
@@ -138,12 +138,12 @@ class AlignPreparedTexts {
 		}
 		MultiAlign.debug("Src: " + divNbSrc + " Tar: " + divNbTar);
 		for (int i = 0; i < sSrc.size(); i++) {
-			final Vector buf = (Vector) sSrc.elementAt(i);
-			buf.setElementAt(new Integer(buf.elementAt(1).toString()), 1);
+			final Vector<String> buf = (Vector<String>) sSrc.elementAt(i);
+			buf.setElementAt(""+new Integer(buf.elementAt(1).toString()), 1);
 		}
 		for (int i = 0; i < sTar.size(); i++) {
-			final Vector buf = (Vector) sTar.elementAt(i);
-			buf.setElementAt(new Integer(buf.elementAt(2).toString()), 2);
+			final Vector<String> buf = (Vector<String>) sTar.elementAt(i);
+			buf.setElementAt(""+new Integer(buf.elementAt(2).toString()), 2);
 		}
 		final LoadAndPrepareTexts lpt = new LoadAndPrepareTexts(dSrc, pSrc,
 				sSrc, dTar, pTar, sTar, sfile, tfile);
@@ -154,24 +154,23 @@ class AlignPreparedTexts {
 		pSrc.removeAllElements();
 		pTar.removeAllElements();
 		sSrc.removeAllElements();
-		new InsertLinkGrp(lgfile, slang, tlang, sfile, tfile, sTar, divs
-				.getLinking(), divs.getLinks(), null, null, false);
+		new InsertLinkGrp(lgfile, slang, tlang, sfile, tfile, sTar,
+				divs.getLinking(), divs.getLinks(), null, null, false);
 	}
 
-	@SuppressWarnings("unchecked")
-	private static Vector<Vector<String>> getVector(String s) {
-		final Vector<Vector<String>> grd_buf = new Vector<Vector<String>>(); // big
+	private static Vector<Object> getVector(String s) {
+		final Vector<Object> grd_buf = new Vector<Object>(); // big
 																				// buffer
 		final Vector<String> ptit_buf = new Vector<String>(); // small buffer
 		final StringBuilder tmp = new StringBuilder();
 		for (int i = 1; i < s.length(); i++) {
 			final char c = s.charAt(i);
 			if ((c == '[') && (i > 1)) {
-				grd_buf.addElement((Vector<String>) ptit_buf.clone());
+				grd_buf.addElement(ptit_buf.clone());
 				ptit_buf.removeAllElements();
 				tmp.setLength(0);
 			} else if ((c == ']') && (s.charAt(i - 1) == ']')) {
-				grd_buf.addElement((Vector<String>) ptit_buf.clone());
+				grd_buf.addElement(ptit_buf.clone());
 			} else if ((c != ',') && (c != '[') && (c != ']'))
 				tmp.append(c);
 			else {

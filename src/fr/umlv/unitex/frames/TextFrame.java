@@ -65,6 +65,7 @@ public class TextFrame extends TabbableInternalFrame {
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(text);
 		final PreferencesListener preferencesListener = new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
 				text.setComponentOrientation(ConfigManager.getManager()
@@ -172,10 +173,9 @@ public class TextFrame extends TabbableInternalFrame {
 	void loadText(File sntFile) {
 		loadStatistics();
 		text.setFont(ConfigManager.getManager().getTextFont(null));
-		text
-				.setComponentOrientation(ConfigManager.getManager()
-						.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
+		text.setComponentOrientation(ConfigManager.getManager()
+				.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
 		if (sntFile.length() <= 2) {
 			text.setText(Config.EMPTY_FILE_MESSAGE);
 		} else {
@@ -187,11 +187,12 @@ public class TextFrame extends TabbableInternalFrame {
 	public BigTextArea getText() {
 		return text;
 	}
-	
+
 	@Override
 	public String getTabName() {
-		String t=getTitle();
-		if (t.equals("")) return "Text";
+		final String t = getTitle();
+		if (t.equals(""))
+			return "Text";
 		return new File(t).getName();
 	}
 }

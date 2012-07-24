@@ -42,91 +42,127 @@ import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.io.GraphIO;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
-	public GraphDiffFrame(final GraphIO base,final GraphIO dest,
+	public GraphDiffFrame(final GraphIO base, final GraphIO dest,
 			GraphDecorator diff) {
 		super("Graph Diff", true, true, true, true);
 		DropTargetManager.getDropTarget().newDropTarget(this);
-		JPanel main = new JPanel(new BorderLayout());
+		final JPanel main = new JPanel(new BorderLayout());
 		main.add(constructTopPanel(diff), BorderLayout.NORTH);
-		final GraphicalZone basePane=new GraphicalZone(base,new TextField(0, null), null, diff);
-		final GraphicalZone destPane=new GraphicalZone(dest,new TextField(0, null), null, diff.clone(false));
+		final GraphicalZone basePane = new GraphicalZone(base, new TextField(0,
+				null), null, diff);
+		final GraphicalZone destPane = new GraphicalZone(dest, new TextField(0,
+				null), null, diff.clone(false));
 		basePane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount()==2) {
-					InternalFrameManager.getManager(base.getGrf()).newGraphFrame(base.getGrf());
+				if (e.getClickCount() == 2) {
+					InternalFrameManager.getManager(base.getGrf())
+							.newGraphFrame(base.getGrf());
 				}
 			}
 		});
 		destPane.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount()==2) {
-					InternalFrameManager.getManager(dest.getGrf()).newGraphFrame(dest.getGrf());
+				if (e.getClickCount() == 2) {
+					InternalFrameManager.getManager(dest.getGrf())
+							.newGraphFrame(dest.getGrf());
 				}
 			}
 		});
-		JPanel p=buildSynchronizedScrollPanes(basePane,destPane);
+		final JPanel p = buildSynchronizedScrollPanes(basePane, destPane);
 		main.add(p);
 		setContentPane(main);
 		setSize(850, 550);
 	}
 
-	boolean p1Moving=false;
-	boolean p2Moving=false;
-	
-	private JPanel buildSynchronizedScrollPanes(JComponent c1,JComponent c2) {
-		JPanel p=new JPanel(new GridLayout(1,2));
-		final JScrollPane p1=new JScrollPane(c1);
-		final JScrollPane p2=new JScrollPane(c2);
-		p1.getHorizontalScrollBar().getModel().addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (p1Moving) return;
-				p1Moving=true;
-				try {
-					double ratio=p1.getHorizontalScrollBar().getValue()/(double)p1.getHorizontalScrollBar().getMaximum();
-					p2.getHorizontalScrollBar().setValue((int)(p2.getHorizontalScrollBar().getMaximum()*ratio));
-				} finally {
-					p1Moving=false;
-				}
-			}
-		});
-		p2.getHorizontalScrollBar().getModel().addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (p2Moving) return;
-				p2Moving=true;
-				try {
-					double ratio=p2.getHorizontalScrollBar().getValue()/(double)p2.getHorizontalScrollBar().getMaximum();
-					p1.getHorizontalScrollBar().setValue((int)(p1.getHorizontalScrollBar().getMaximum()*ratio));
-				} finally {
-					p2Moving=false;
-				}
-			}
-		});
-		p1.getVerticalScrollBar().getModel().addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (p1Moving) return;
-				p1Moving=true;
-				try {
-					double ratio=p1.getVerticalScrollBar().getValue()/(double)p1.getVerticalScrollBar().getMaximum();
-					p2.getVerticalScrollBar().setValue((int)(p2.getVerticalScrollBar().getMaximum()*ratio));
-				} finally {
-					p1Moving=false;
-				}
-			}
-		});
-		p2.getVerticalScrollBar().getModel().addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				if (p2Moving) return;
-				p2Moving=true;
-				try {
-					double ratio=p2.getVerticalScrollBar().getValue()/(double)p2.getVerticalScrollBar().getMaximum();
-					p1.getVerticalScrollBar().setValue((int)(p1.getVerticalScrollBar().getMaximum()*ratio));
-				} finally {
-					p2Moving=false;
-				}
-			}
-		});
+	boolean p1Moving = false;
+	boolean p2Moving = false;
+
+	private JPanel buildSynchronizedScrollPanes(JComponent c1, JComponent c2) {
+		final JPanel p = new JPanel(new GridLayout(1, 2));
+		final JScrollPane p1 = new JScrollPane(c1);
+		final JScrollPane p2 = new JScrollPane(c2);
+		p1.getHorizontalScrollBar().getModel()
+				.addChangeListener(new ChangeListener() {
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						if (p1Moving)
+							return;
+						p1Moving = true;
+						try {
+							final double ratio = p1.getHorizontalScrollBar()
+									.getValue()
+									/ (double) p1.getHorizontalScrollBar()
+											.getMaximum();
+							p2.getHorizontalScrollBar().setValue(
+									(int) (p2.getHorizontalScrollBar()
+											.getMaximum() * ratio));
+						} finally {
+							p1Moving = false;
+						}
+					}
+				});
+		p2.getHorizontalScrollBar().getModel()
+				.addChangeListener(new ChangeListener() {
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						if (p2Moving)
+							return;
+						p2Moving = true;
+						try {
+							final double ratio = p2.getHorizontalScrollBar()
+									.getValue()
+									/ (double) p2.getHorizontalScrollBar()
+											.getMaximum();
+							p1.getHorizontalScrollBar().setValue(
+									(int) (p1.getHorizontalScrollBar()
+											.getMaximum() * ratio));
+						} finally {
+							p2Moving = false;
+						}
+					}
+				});
+		p1.getVerticalScrollBar().getModel()
+				.addChangeListener(new ChangeListener() {
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						if (p1Moving)
+							return;
+						p1Moving = true;
+						try {
+							final double ratio = p1.getVerticalScrollBar()
+									.getValue()
+									/ (double) p1.getVerticalScrollBar()
+											.getMaximum();
+							p2.getVerticalScrollBar().setValue(
+									(int) (p2.getVerticalScrollBar()
+											.getMaximum() * ratio));
+						} finally {
+							p1Moving = false;
+						}
+					}
+				});
+		p2.getVerticalScrollBar().getModel()
+				.addChangeListener(new ChangeListener() {
+					@Override
+					public void stateChanged(ChangeEvent e) {
+						if (p2Moving)
+							return;
+						p2Moving = true;
+						try {
+							final double ratio = p2.getVerticalScrollBar()
+									.getValue()
+									/ (double) p2.getVerticalScrollBar()
+											.getMaximum();
+							p1.getVerticalScrollBar().setValue(
+									(int) (p1.getVerticalScrollBar()
+											.getMaximum() * ratio));
+						} finally {
+							p2Moving = false;
+						}
+					}
+				});
 		p.add(p1);
 		p.add(p2);
 		return p;

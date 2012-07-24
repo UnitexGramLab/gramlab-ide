@@ -120,6 +120,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	 * @param a
 	 *            the action listened by the frame
 	 */
+	@Override
 	public void actionPerformed(ActionEvent a) {
 		if (a.getSource() == _new) {
 			Config.setCurrentTransducerList(null);
@@ -138,9 +139,9 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						null);
 				final File f_transducer = fc.getSelectedFile();
 				final File f_target = Config.getCurrentSnt();
-				final CassysCommand com = new CassysCommand().alphabet(
-						f_alphabet).targetText(f_target).transducerList(
-						f_transducer);
+				final CassysCommand com = new CassysCommand()
+						.alphabet(f_alphabet).targetText(f_target)
+						.transducerList(f_transducer);
 				cassysCommand.addCommand(com);
 				// new ProcessInfoFrame(com, true, new CassysDo());
 				Launcher.exec(cassysCommand, true, new CassysDo());
@@ -160,6 +161,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 			dir = Config.getUserCurrentLanguageDir();
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dir).newConcordanceParameterFrame();
 		}

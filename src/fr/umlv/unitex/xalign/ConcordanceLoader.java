@@ -59,6 +59,7 @@ public class ConcordanceLoader {
 			@Override
 			protected Void doInBackground() throws Exception {
 				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
 					public void run() {
 						model.clear();
 					}

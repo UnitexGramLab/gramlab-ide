@@ -20,18 +20,16 @@
  */
 package fr.umlv.unitex;
 
-
 public class DropTargetManager {
 
-	private static UnitexDropTarget target=new MyDropTarget();
-	
+	private static UnitexDropTarget target = new MyDropTarget();
+
 	public static void setDropTarget(UnitexDropTarget t) {
-		target=t;
+		target = t;
 	}
-	
+
 	public static UnitexDropTarget getDropTarget() {
 		return target;
 	}
-	
-}
 
+}

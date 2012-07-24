@@ -97,8 +97,9 @@ public class ConcordCommand extends CommandBuilder {
 	}
 
 	public ConcordCommand text(File output) {
-		protectElement("--text"+((output!=null)?"="+output.getAbsolutePath():""));
-		
+		protectElement("--text"
+				+ ((output != null) ? "=" + output.getAbsolutePath() : ""));
+
 		return this;
 	}
 
@@ -146,7 +147,8 @@ public class ConcordCommand extends CommandBuilder {
 	}
 
 	public ConcordCommand onlyMatches(boolean b) {
-		if (b) element("--only_matches");
+		if (b)
+			element("--only_matches");
 		return this;
 	}
 

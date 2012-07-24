@@ -20,7 +20,6 @@
  */
 package fr.umlv.unitex.frames;
 
-
 public abstract class KeyedInternalFrame<K> extends TabbableInternalFrame {
 	public KeyedInternalFrame(String string, boolean b, boolean c, boolean d,
 			boolean e) {

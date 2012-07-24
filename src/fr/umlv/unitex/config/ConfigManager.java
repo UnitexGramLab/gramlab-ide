@@ -39,7 +39,7 @@ import fr.umlv.unitex.svn.SvnMonitor;
  * 
  */
 public class ConfigManager extends AbstractConfigModel {
-	
+
 	private static ConfigModel cm;
 
 	public static ConfigModel getManager() {
@@ -50,6 +50,7 @@ public class ConfigManager extends AbstractConfigModel {
 		ConfigManager.cm = cm;
 	}
 
+	@Override
 	public File getAlphabet(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -57,6 +58,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return new File(new File(Config.getUserDir(), language), "Alphabet.txt");
 	}
 
+	@Override
 	public boolean isCharByCharLanguage(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -65,6 +67,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isCharByChar();
 	}
 
+	@Override
 	public File getConfigFileForLanguage(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -72,6 +75,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return new File(new File(Config.getUserDir(), language), "Config");
 	}
 
+	@Override
 	public Encoding getEncoding(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -80,6 +84,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getEncoding();
 	}
 
+	@Override
 	public boolean isSemiticLanguage(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -88,6 +93,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isSemitic();
 	}
 
+	@Override
 	public boolean isRightToLeftForGraphs(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -96,6 +102,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isRightToLeftForGraphs();
 	}
 
+	@Override
 	public boolean isRightToLeftForText(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -104,6 +111,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isRightToLeftForText();
 	}
 
+	@Override
 	public ArrayList<File> morphologicalDictionaries(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();
@@ -119,10 +127,12 @@ public class ConfigManager extends AbstractConfigModel {
 		return super.isKorean(language) || language.equals("KoreanJeeSun");
 	}
 
+	@Override
 	public String getCurrentLanguage() {
 		return Config.getCurrentLanguage();
 	}
 
+	@Override
 	public boolean isMorphologicalUseOfSpaceAllowed(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -130,6 +140,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isMorphologicalUseOfSpace();
 	}
 
+	@Override
 	public boolean onlyCosmetic(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -137,6 +148,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isOnlyCosmetic();
 	}
 
+	@Override
 	public boolean svnMonitoring(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -144,6 +156,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isSvnMonitoring();
 	}
 
+	@Override
 	public GraphPresentationInfo getGraphPresentationPreferences(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -151,18 +164,21 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getInfo().clone();
 	}
 
+	@Override
 	public File getDefaultGraphRepositoryPath(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		final Preferences p = PreferencesManager.getPreferences(language);
 		return p.getGraphRepositoryPath();
-	}	
-		
+	}
+
+	@Override
 	public ArrayList<NamedRepository> getNamedRepositories(String language) {
 		/* In Unitex, we ignore repository names */
 		return null;
 	}
 
+	@Override
 	public File getLogDirectory(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -170,6 +186,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getLoggingDir();
 	}
 
+	@Override
 	public boolean mustLog(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -177,6 +194,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.isMustLog();
 	}
 
+	@Override
 	public Font getInputFont(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -184,6 +202,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getInfo().getInput().getFont();
 	}
 
+	@Override
 	public int getInputFontSize(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -191,6 +210,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getInfo().getInput().getSize();
 	}
 
+	@Override
 	public Font getTextFont(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -198,12 +218,14 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getTextFont().getFont();
 	}
 
+	@Override
 	public Preferences getPreferences(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		return PreferencesManager.getPreferences(language).clone();
 	}
 
+	@Override
 	public void savePreferences(Preferences p, String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -211,6 +233,7 @@ public class ConfigManager extends AbstractConfigModel {
 		PreferencesManager.savePreferences(f, p, language);
 	}
 
+	@Override
 	public File getHtmlViewer(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -218,6 +241,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getHtmlViewer();
 	}
 
+	@Override
 	public Font getConcordanceFont(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -225,6 +249,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getConcordanceFont().getFont();
 	}
 
+	@Override
 	public String getConcordanceFontName(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -232,6 +257,7 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getConcordanceFont().getFont().getName();
 	}
 
+	@Override
 	public int getConcordanceFontSize(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
@@ -239,56 +265,69 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getConcordanceFont().getSize();
 	}
 
+	@Override
 	public File getUnitexToolLogger() {
 		return Config.getUnitexToolLogger();
 	}
 
+	@Override
 	public File getMainDirectory() {
 		return Config.getUnitexDir();
 	}
 
+	@Override
 	public File getApplicationDirectory() {
 		return Config.getApplicationDir();
 	}
 
+	@Override
 	public File getCurrentGraphDirectory() {
 		return Config.getCurrentGraphDir();
 	}
 
+	@Override
 	public File getAlphabetForGrf(String language, File grf) {
 		return getAlphabet(language);
 	}
 
+	@Override
 	public boolean displayGraphNames(String language) {
 		return true;
 	}
 
+	@Override
 	public boolean emitEmptyGraphWarning(String language) {
 		return true;
 	}
 
+	@Override
 	public boolean maximizeGraphFrames() {
 		return false;
 	}
 
+	@Override
 	public File getCurrentSnt(String language) {
 		return Config.getCurrentSnt();
 	}
 
+	@Override
 	public File getCurrentLanguageDir() {
 		return Config.getUserCurrentLanguageDir();
 	}
 
+	@Override
 	public File getInflectionDir() {
-		return new File(Config.getUserCurrentLanguageDir(),"Inflection");
+		return new File(Config.getUserCurrentLanguageDir(), "Inflection");
 	}
-	
+
+	@Override
 	public SvnMonitor getSvnMonitor(File f) {
 		return Config.getSvnMonitor();
 	}
 
+	@Override
 	public void userRefusedClosingFrame() {
 		/* Do nothing */
 	}
-	
+
 }

@@ -23,16 +23,16 @@ package fr.umlv.unitex.frames;
 import javax.swing.JInternalFrame;
 
 public abstract class TabbableInternalFrame extends JInternalFrame {
-	
+
 	public TabbableInternalFrame(String string, boolean b, boolean c,
 			boolean d, boolean e) {
-		super(string,b,c,d,e);
+		super(string, b, c, d, e);
 	}
 
 	public TabbableInternalFrame(String string, boolean b, boolean c) {
-		super(string,b,c);
+		super(string, b, c);
 	}
 
 	public abstract String getTabName();
-	
+
 }

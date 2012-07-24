@@ -146,6 +146,7 @@ public class GraphSizeDialog extends JDialog {
 		final JComboBox unitList = new JComboBox(new String[] { "Pixels",
 				"Inches", "Cm" });
 		unitList.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int newUnit = unitList.getSelectedIndex();
 				if (newUnit == -1)
@@ -179,6 +180,7 @@ public class GraphSizeDialog extends JDialog {
 		unitList.setSelectedIndex(0);
 		panel2.add(unitList);
 		final Action a4Action = new AbstractAction("Set to A4") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				X = (float) ((29.7 * resolutionDPI) / 2.4);
 				Y = (float) ((21 * resolutionDPI) / 2.4);
@@ -198,6 +200,7 @@ public class GraphSizeDialog extends JDialog {
 		panel3.add(new JLabel("Orientation :"));
 		final Action orientationAction = new AbstractAction(
 				"Portrait/Landscape") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				float tmp;
 				tmp = X;
@@ -216,6 +219,7 @@ public class GraphSizeDialog extends JDialog {
 	private JPanel constructButtonPanel() {
 		final JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				float x, y;
 				try {
@@ -242,6 +246,7 @@ public class GraphSizeDialog extends JDialog {
 		};
 		final JButton OK = new JButton(okAction);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}

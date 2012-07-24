@@ -113,11 +113,11 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		});
 		final boolean rightToLeftForText = ConfigManager.getManager()
 				.isRightToLeftForText(null);
-		text
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
+		text.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
 		scrollBar = scrollText.getHorizontalScrollBar();
 		final Timer t = new Timer(400, new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				scrollBar.setValue(0);
 			}
@@ -128,17 +128,18 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
 						: ComponentOrientation.LEFT_TO_RIGHT);
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
-				text
-						.setComponentOrientation(ConfigManager.getManager()
-								.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
-								: ComponentOrientation.LEFT_TO_RIGHT);
+				text.setComponentOrientation(ConfigManager.getManager()
+						.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
 				scrollText
 						.setComponentOrientation(ConfigManager.getManager()
 								.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 				final Timer t2 = new Timer(400, new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						scrollBar.setValue(0);
 					}
@@ -156,6 +157,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		final JFormattedTextField pattern = new JFormattedTextField(
 				new RegexFormatter());
 		pattern.addCaretListener(new CaretListener() {
+			@Override
 			public void caretUpdate(CaretEvent e) {
 				try {
 					pattern.commitEdit();
@@ -184,17 +186,20 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		text.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		find.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveToMatchedElement(pattern.getText(), -1, true);
 			}
 		});
 		next.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveToMatchedElement(pattern.getText(),
 						text.getSelectedIndex(), true);
 			}
 		});
 		previous.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				moveToMatchedElement(pattern.getText(),
 						text.getSelectedIndex(), false);
@@ -269,6 +274,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		setTitle(dela1.getAbsolutePath());
 		setVisible(true);
 		final Timer t = new Timer(400, new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				scrollBar.setValue(0);
 			}
@@ -290,6 +296,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 			dela_ = s;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			loadUnicodeDela(dela_);
 		}

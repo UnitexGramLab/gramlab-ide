@@ -32,48 +32,49 @@ import fr.umlv.unitex.console.Couple;
  * This class describes a list to be used to display command outputs.
  * 
  * @author paumier
- *
+ * 
  */
 public class ProcessOutputList extends JList {
 
 	private boolean autoscroll;
-	
+
 	/**
-	 * If autoscroll is true, then the list will make sure to make every
-	 * added element visible. This is deactivated when invoked from
-	 * the HelpOnCommandFrame.
+	 * If autoscroll is true, then the list will make sure to make every added
+	 * element visible. This is deactivated when invoked from the
+	 * HelpOnCommandFrame.
 	 */
-	public ProcessOutputList(ProcessOutputListModel model,boolean autoscroll) {
+	public ProcessOutputList(ProcessOutputListModel model, boolean autoscroll) {
 		super(model);
-		this.autoscroll=autoscroll;
+		this.autoscroll = autoscroll;
 		setCellRenderer(new DefaultListCellRenderer() {
 			@Override
 			public Component getListCellRendererComponent(JList list,
 					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
-				Couple c=(Couple)value;
-				return super.getListCellRendererComponent(list, c.getString(), index, isSelected,
-						cellHasFocus);
+				final Couple c = (Couple) value;
+				return super.getListCellRendererComponent(list, c.getString(),
+						index, isSelected, cellHasFocus);
 			}
 		});
 	}
-	
+
 	public ProcessOutputList(ProcessOutputListModel model) {
-		this(model,true);
+		this(model, true);
 	}
-	
+
 	@Override
 	public ProcessOutputListModel getModel() {
 		return (ProcessOutputListModel) super.getModel();
 	}
-	
+
 	@Override
 	public void setModel(ListModel model) {
-		throw new UnsupportedOperationException("Cannot set model on a ProcessOutputList");
+		throw new UnsupportedOperationException(
+				"Cannot set model on a ProcessOutputList");
 	}
-	
+
 	public void addLine(Couple c) {
-		ProcessOutputListModel model=getModel();
+		final ProcessOutputListModel model = getModel();
 		model.addLine(c);
 		if (autoscroll) {
 			ensureIndexIsVisible(model.getSize() - 1);
@@ -81,7 +82,7 @@ public class ProcessOutputList extends JList {
 	}
 
 	public void addReplacableLine(Couple c) {
-		ProcessOutputListModel model=getModel();
+		final ProcessOutputListModel model = getModel();
 		model.addReplacableLine(c);
 		if (autoscroll) {
 			ensureIndexIsVisible(model.getSize() - 1);
@@ -91,5 +92,5 @@ public class ProcessOutputList extends JList {
 	public void empty() {
 		getModel().removeAllElements();
 	}
-	
+
 }

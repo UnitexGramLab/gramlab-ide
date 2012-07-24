@@ -153,8 +153,8 @@ public class FileIO {
 		InputStream is;
 		try {
 			final URL u = new URL(name);
-			is = new ProgressMonitorInputStream(null, "Reading" + " " + name, u
-					.openStream());
+			is = new ProgressMonitorInputStream(null, "Reading" + " " + name,
+					u.openStream());
 		} catch (final MalformedURLException e) {
 			is = new ProgressMonitorInputStream(null, "Reading" + " " + name,
 					new FileInputStream(name));

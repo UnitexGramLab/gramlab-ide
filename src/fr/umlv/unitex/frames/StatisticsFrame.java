@@ -46,10 +46,8 @@ public class StatisticsFrame extends TabbableInternalFrame {
 		final JTable table = createTable(file, mode);
 		table.setFont(ConfigManager.getManager().getTextFont(null));
 		final JScrollPane scroll = new JScrollPane(table);
-		scroll
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroll
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		top.add(scroll, BorderLayout.CENTER);
 		setContentPane(top);
 		pack();
@@ -81,8 +79,8 @@ public class StatisticsFrame extends TabbableInternalFrame {
 		switch (mode) {
 		case 0: {
 			t = new JTable(new StatisticsTableModelMode0(file));
-			t.getColumnModel().getColumn(0).setCellRenderer(
-					rightJustifiedRenderer);
+			t.getColumnModel().getColumn(0)
+					.setCellRenderer(rightJustifiedRenderer);
 			t.getColumnModel().getColumn(1).setCellRenderer(centeredRenderer);
 			break;
 		}
@@ -109,8 +107,8 @@ public class StatisticsFrame extends TabbableInternalFrame {
 			int width = 75;
 			for (int j = 0; j < t.getRowCount(); j++) {
 				final TableCellRenderer r = t.getCellRenderer(j, i);
-				final Component c = r.getTableCellRendererComponent(t, t
-						.getValueAt(j, i), false, false, j, i);
+				final Component c = r.getTableCellRendererComponent(t,
+						t.getValueAt(j, i), false, false, j, i);
 				final int w = c.getPreferredSize().width;
 				if (w > width) {
 					width = w;

@@ -70,12 +70,13 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 	 *            the zone where the graph is drawn
 	 */
 	@SuppressWarnings("unchecked")
-	public DeleteBoxGroupEdit(ArrayList selectedBoxes, ArrayList graphBoxes,
-			GenericGraphicalZone zone) {
+	public DeleteBoxGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
+			ArrayList<GenericGraphBox> graphBoxes, GenericGraphicalZone zone) {
 		selectedBoxesAndTransitionsTo = new HashMap<GenericGraphBox, ArrayList<GenericGraphBox>>();
 		selectedBoxesAndTransitionsFrom = new HashMap<GenericGraphBox, ArrayList<GenericGraphBox>>();
 		this.selectedBoxes = selectedBoxes;
-		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
+		this.oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes
+				.clone();
 		this.boxes = graphBoxes;
 		this.zone = zone;
 		// get, for each deleted boxes the box which have transition to it
@@ -84,7 +85,7 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 			g = (GenericGraphBox) selectedBoxe;
 			final ArrayList<GenericGraphBox> boxeTransitionsTo = zone
 					.getTransitionTo(g);
-			final ArrayList<GenericGraphBox> boxeTransitionsFrom = (ArrayList) g
+			final ArrayList<GenericGraphBox> boxeTransitionsFrom = (ArrayList<GenericGraphBox>) g
 					.getTransitions().clone();
 			selectedBoxesAndTransitionsTo.put(g, boxeTransitionsTo);
 			selectedBoxesAndTransitionsFrom.put(g, boxeTransitionsFrom);

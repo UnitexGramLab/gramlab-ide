@@ -63,9 +63,7 @@ public class TranscodeOneFileDialog extends JDialog {
 		final JPanel panel = new JPanel(new GridLayout(5, 1));
 		panel.setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
 		panel.add(line1);
-		panel
-				.add(new JLabel(
-						"is not a Unicode Little-Endian one. Do you want"));
+		panel.add(new JLabel("is not a Unicode Little-Endian one. Do you want"));
 		panel.add(line2);
 		panel.add(replace);
 		panel.add(renameSource);
@@ -73,6 +71,7 @@ public class TranscodeOneFileDialog extends JDialog {
 		final JPanel buttons = new JPanel();
 		final JButton transcode = new JButton("Transcode");
 		transcode.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				ConvertCommand cmd = new ConvertCommand();
@@ -97,12 +96,14 @@ public class TranscodeOneFileDialog extends JDialog {
 		});
 		final JButton ignore = new JButton("Ignore file");
 		ignore.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 			}
 		});
 		final JButton more = new JButton("More options...");
 		more.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				InternalFrameManager.getManager(null).newTranscodingFrame(file,
@@ -124,8 +125,7 @@ public class TranscodeOneFileDialog extends JDialog {
 		this.toDo = toDo1;
 		line1.setText(f.getAbsolutePath());
 		line2.setText("to transcode it from "
-				+ Transcoder
-						.getEncodingForLanguage(Config.getCurrentLanguage())
+				+ Transcoder.getEncodingForLanguage(Config.getCurrentLanguage())
 				+ " to Unicode Little-Endian ?");
 		pack();
 	}

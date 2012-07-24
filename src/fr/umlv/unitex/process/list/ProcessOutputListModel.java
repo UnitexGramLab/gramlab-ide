@@ -32,31 +32,34 @@ import fr.umlv.unitex.console.Couple;
  * @author Sébastien Paumier
  */
 public class ProcessOutputListModel extends DefaultListModel {
-	
-	boolean lastLineReplacable=false;
-	
+
+	boolean lastLineReplacable = false;
+
 	void addReplacableLine(Couple c) {
 		if (lastLineReplacable) {
 			replaceLastLine(c);
 		} else {
 			super.addElement(c);
 		}
-		lastLineReplacable=true;
+		lastLineReplacable = true;
 	}
-	
+
 	@Override
 	public void addElement(Object obj) {
-		throw new UnsupportedOperationException("You should not invoke this method. Please use addLine and replaceLastLine from ProcessOutputList");
+		throw new UnsupportedOperationException(
+				"You should not invoke this method. Please use addLine and replaceLastLine from ProcessOutputList");
 	}
-	
+
 	void addLine(Couple c) {
 		if (c.getString().equals("")) {
-			/* There is a special case for empty lines: an empty
-			 * line printed after a replacable line must be ignored, and
-			 * we just have to update lastLineReplacable to false so that 
-			 * the next printed line will not replace the current last one */
+			/*
+			 * There is a special case for empty lines: an empty line printed
+			 * after a replacable line must be ignored, and we just have to
+			 * update lastLineReplacable to false so that the next printed line
+			 * will not replace the current last one
+			 */
 			if (lastLineReplacable) {
-				lastLineReplacable=false;
+				lastLineReplacable = false;
 			} else {
 				super.addElement(c);
 			}
@@ -67,16 +70,16 @@ public class ProcessOutputListModel extends DefaultListModel {
 		} else {
 			super.addElement(c);
 		}
-		lastLineReplacable=false;
+		lastLineReplacable = false;
 	}
-	
+
 	private void replaceLastLine(Couple c) {
 		final int size = size();
-		if (size==0) {
+		if (size == 0) {
 			super.addElement(c);
 		} else {
-			set(size-1,c);
-			fireContentsChanged(this,size-1,size-1);
+			set(size - 1, c);
+			fireContentsChanged(this, size - 1, size - 1);
 		}
 	}
 }

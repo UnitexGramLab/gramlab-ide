@@ -71,7 +71,8 @@ public class Grf2Fst2Command extends CommandBuilder {
 	}
 
 	private Grf2Fst2Command repository() {
-		final File f = ConfigManager.getManager().getDefaultGraphRepositoryPath(null);
+		final File f = ConfigManager.getManager()
+				.getDefaultGraphRepositoryPath(null);
 		if (f != null) {
 			element("-d");
 			protectElement(f.getAbsolutePath());
@@ -80,14 +81,17 @@ public class Grf2Fst2Command extends CommandBuilder {
 	}
 
 	private Grf2Fst2Command namedRepositories() {
-		ArrayList<NamedRepository> l=ConfigManager.getManager().getNamedRepositories(null);
-		if (l==null) return this;
-		for (NamedRepository n:l) {
-			protectElement("-r"+n.getName()+"="+n.getFile().getAbsolutePath());
+		final ArrayList<NamedRepository> l = ConfigManager.getManager()
+				.getNamedRepositories(null);
+		if (l == null)
+			return this;
+		for (final NamedRepository n : l) {
+			protectElement("-r" + n.getName() + "="
+					+ n.getFile().getAbsolutePath());
 		}
 		return this;
 	}
-	
+
 	public Grf2Fst2Command debug() {
 		element("--debug");
 		return this;
@@ -99,20 +103,22 @@ public class Grf2Fst2Command extends CommandBuilder {
 		}
 		return this;
 	}
-	
+
 	public Grf2Fst2Command emitEmptyGraphWarning() {
-		return emitEmptyGraphWarning(ConfigManager.getManager().emitEmptyGraphWarning(null));
+		return emitEmptyGraphWarning(ConfigManager.getManager()
+				.emitEmptyGraphWarning(null));
 	}
-	
+
 	public Grf2Fst2Command displayGraphNames(boolean b) {
 		if (!b) {
 			element("-s");
 		}
 		return this;
 	}
-	
+
 	public Grf2Fst2Command displayGraphNames() {
-		return displayGraphNames(ConfigManager.getManager().displayGraphNames(null));
+		return displayGraphNames(ConfigManager.getManager().displayGraphNames(
+				null));
 	}
 
 	public Grf2Fst2Command output(File fst2) {
@@ -120,7 +126,7 @@ public class Grf2Fst2Command extends CommandBuilder {
 		protectElement(fst2.getAbsolutePath());
 		return this;
 	}
-	
+
 	public Grf2Fst2Command checkVariables(boolean b) {
 		if (b) {
 			element("-v");

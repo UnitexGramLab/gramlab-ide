@@ -83,20 +83,23 @@ public class LoadAndPrepareTexts {
 	 * les id "internes" de XAlign mais également les id originaux tirés des
 	 * fichiers source, respectivement target
 	 */
-	class MyVectorSrc extends Vector {
+	class MyVectorSrc extends Vector<Object> {
 		@Override
 		public synchronized String toString() {
 			String res = "[";
 			Object cour;
 			String sRes;
+			@SuppressWarnings("rawtypes")
 			final Vector bidon = new Vector();
 			MyVectorSrc temp;
 			// Ok, c'est une horreur !
-			for (final Enumeration e = this.elements(); e.hasMoreElements();) {
+			for (@SuppressWarnings("rawtypes")
+			final Enumeration e = this.elements(); e.hasMoreElements();) {
 				cour = e.nextElement();
 				if (cour.getClass() == bidon.getClass()) {
 					temp = new MyVectorSrc();
-					for (final Enumeration e2 = ((Vector) cour).elements(); e2
+					for (@SuppressWarnings("rawtypes")
+					final Enumeration e2 = ((Vector) cour).elements(); e2
 							.hasMoreElements();) {
 						temp.addElement(e2.nextElement());
 					}
@@ -117,20 +120,23 @@ public class LoadAndPrepareTexts {
 		}
 	}
 
-	class MyVectorTar extends Vector {
+	class MyVectorTar extends Vector<Object> {
 		@Override
 		public synchronized String toString() {
 			String res = "[";
 			Object cour;
 			String sRes;
+			@SuppressWarnings("rawtypes")
 			final Vector bidon = new Vector();
 			MyVectorTar temp;
 			// Ok, c'est une horreur !
-			for (final Enumeration e = this.elements(); e.hasMoreElements();) {
+			for (@SuppressWarnings("rawtypes")
+			final Enumeration e = this.elements(); e.hasMoreElements();) {
 				cour = e.nextElement();
 				if (cour.getClass() == bidon.getClass()) {
 					temp = new MyVectorTar();
-					for (final Enumeration e2 = ((Vector) cour).elements(); e2
+					for (@SuppressWarnings("rawtypes")
+					final Enumeration e2 = ((Vector) cour).elements(); e2
 							.hasMoreElements();) {
 						temp.addElement(e2.nextElement());
 					}
@@ -152,14 +158,16 @@ public class LoadAndPrepareTexts {
 	}
 
 	// Big block of public ugliness to return things:
-	public Vector stcSrc = new MyVectorSrc(), stcTar = new MyVectorTar(); // for
+	public Vector<Object> stcSrc = new MyVectorSrc(), stcTar = new MyVectorTar(); // for
 																			// sentences
-	public Vector paraSrc = new MyVectorSrc(), paraTar = new MyVectorTar();// for
+	public Vector<Object> paraSrc = new MyVectorSrc(), paraTar = new MyVectorTar();// for
 																			// paragraphs
-	public Vector divSrc = new MyVectorSrc(), divTar = new MyVectorTar();// for
+	public Vector<Object> divSrc = new MyVectorSrc(), divTar = new MyVectorTar();// for
 																			// division
 	// SEAN: ID remapping.
+	@SuppressWarnings("rawtypes")
 	public final Hashtable idSrc = new Hashtable();
+	@SuppressWarnings("rawtypes")
 	public final Hashtable idTar = new Hashtable();
 	public String lsource = "";
 	public final String ltarget = "";
@@ -170,8 +178,9 @@ public class LoadAndPrepareTexts {
 	private String psource;
 	Properties prop; // variable containing properties saved in a file
 
-	public LoadAndPrepareTexts(Vector dSrc, Vector parSrc, Vector senSrc,
-			Vector dTar, Vector parTar, Vector senTar, String uSrc, String uTar) {
+	public LoadAndPrepareTexts(Vector<Object> dSrc, Vector<Object> parSrc,
+			Vector<Object> senSrc, Vector<Object> dTar, Vector<Object> parTar,
+			Vector<Object> senTar, String uSrc, String uTar) {
 		stcSrc = senSrc;
 		stcTar = senTar;
 		paraSrc = parSrc;
@@ -190,7 +199,8 @@ public class LoadAndPrepareTexts {
 		savePreparedTexts(outfile);
 	}
 
-	public LoadAndPrepareTexts(String sfile, String tfile, String ps, @SuppressWarnings("unused") String pt) {
+	public LoadAndPrepareTexts(String sfile, String tfile, String ps,
+			@SuppressWarnings("unused") String pt) {
 		psource = ps;
 		uriSource = sfile;
 		uriTarget = tfile;
@@ -198,7 +208,8 @@ public class LoadAndPrepareTexts {
 	}
 
 	public LoadAndPrepareTexts(String sfile, String tfile, String ps,
-			@SuppressWarnings("unused") String pt, String idEnglobantSource, String idEnglobantCible) {
+			@SuppressWarnings("unused") String pt, String idEnglobantSource,
+			String idEnglobantCible) {
 		psource = ps;
 		uriSource = sfile;
 		uriTarget = tfile;
@@ -222,8 +233,9 @@ public class LoadAndPrepareTexts {
 	 */
 	@SuppressWarnings("null")
 	private ArrayList<String> loadAndPrepareAText(String fileName,
-			Vector sentences, Vector paragraphs, Vector divisions,
-			Hashtable ids, String idEnglobant, boolean withProperties) {
+			Vector<Object> sentences, Vector<Object> paragraphs,
+			Vector<Object> divisions, Hashtable<String, String> ids,
+			String idEnglobant, boolean withProperties) {
 		XMLReader parser = null;
 		final ArrayList<String> res = new ArrayList<String>();
 		System.out.println("Preparing " + fileName + " with idEnglobant = "
@@ -243,8 +255,8 @@ public class LoadAndPrepareTexts {
 		parser.setContentHandler(handler);
 		System.out.println("Parsing '" + fileName + "'...");
 		try {
-			final InputSource is = new InputSource(FileIO
-					.openLargeInput(fileName));
+			final InputSource is = new InputSource(
+					FileIO.openLargeInput(fileName));
 			is.setEncoding("UTF-8");
 			if (withProperties) {
 				initXMLProperties(psource);
@@ -275,26 +287,26 @@ public class LoadAndPrepareTexts {
 				idTar, idEnglobantCible, withProperties);
 		// add the xYYY's for xptrs:
 		int i = 1;
-		for (final Enumeration e = stcTar.elements(); e.hasMoreElements();) {
-			final Vector v = (Vector) e.nextElement();
+		for (final Enumeration<?> e = stcTar.elements(); e.hasMoreElements();) {
+			final Vector<String> v = (Vector<String>) e.nextElement();
 			v.insertElementAt("x" + i++, 0);
 		}
 		if (divSrc.size() == 0) {
 			System.err.println("No divisions in  source file?\nBye.\n");
 			System.exit(1);
 		}
-		String divsize = "" + ((Vector) divSrc.elementAt(0)).size();
+		String divsize = "" + ((Vector<?>) divSrc.elementAt(0)).size();
 		for (i = 1; i < divSrc.size(); i++)
-			divsize += ", " + ((Vector) divSrc.elementAt(i)).size();
+			divsize += ", " + ((Vector<?>) divSrc.elementAt(i)).size();
 		MultiAlign.debug("Source: [" + divsize + "] divs, " + paraSrc.size()
 				+ " paras, " + stcSrc.size() + " stcs.");
 		if (divTar.size() == 0) {
 			System.err.println("No divisions in  target file?\nBye.\n");
 			System.exit(1);
 		}
-		divsize = "" + ((Vector) divTar.elementAt(0)).size();
+		divsize = "" + ((Vector<?>) divTar.elementAt(0)).size();
 		for (i = 1; i < divTar.size(); i++)
-			divsize += ", " + ((Vector) divTar.elementAt(i)).size();
+			divsize += ", " + ((Vector<?>) divTar.elementAt(i)).size();
 		MultiAlign.debug("Target: [" + divsize + "] divs, " + paraTar.size()
 				+ " paras, " + stcTar.size() + " stcs.");
 	}
@@ -372,12 +384,13 @@ public class LoadAndPrepareTexts {
 		private int divLevel = 0; // for the deep level of current division
 		private short context; // the current context showing the current
 								// element
-		private final Vector vstc;
-		private final Vector vpara;
-		private final Vector vdiv;
-		private final Hashtable ids;
+		private final Vector<Object> vstc;
+		private final Vector<Object> vpara;
+		private final Vector<Object> vdiv;
+		private final Hashtable<String, String> ids;
 		public String lang; // language gleaned from TEIHeader (if any).
-		public final Vector nospec; // Tags for which a type wasn't defined.
+		public final Vector<Object> nospec; // Tags for which a type wasn't
+											// defined.
 		private String curdiv, curpar;
 		private int d = 0, p = 0, s = 0; // counter for generating ids if it
 											// does not exist
@@ -391,13 +404,14 @@ public class LoadAndPrepareTexts {
 												 */
 		private final ArrayList<String> allIds;
 
-		public MAHandler(Vector stcs, Vector paras, Vector divs, Hashtable ids,
+		public MAHandler(Vector<Object> stcs, Vector<Object> paras,
+				Vector<Object> divs, Hashtable<String, String> ids,
 				String idEnglobant, ArrayList<String> Ids) {
 			this.vstc = stcs;
 			this.vpara = paras;
 			this.vdiv = divs;
 			this.ids = ids;
-			nospec = new Vector();
+			nospec = new Vector<Object>();
 			idEnglob = idEnglobant;
 			allIds = Ids;
 			inPartOfDocumentToWorkOn = idEnglobant.equals("");
@@ -460,7 +474,7 @@ public class LoadAndPrepareTexts {
 							if (nignore > 0)
 								break;
 							divLevel++;
-							final Vector divTmp = new Vector();
+							final Vector<Object> divTmp = new Vector<Object>();
 							/*
 							 * B.G. 12/12/2006 fakeid = "d" + (++d);
 							 */
@@ -483,12 +497,12 @@ public class LoadAndPrepareTexts {
 							s = 0;
 							if (divLevel > vdiv.size()) {
 								// division du niveau courant
-								final Vector tmp = new Vector();
+								final Vector<Object> tmp = new Vector<Object>();
 								tmp.addElement(divTmp);
 								vdiv.addElement(tmp);
 							} else {
 								// sous-division d'une division.
-								final Vector tmp = (Vector) vdiv
+								final Vector<Object> tmp = (Vector<Object>) vdiv
 										.elementAt(divLevel - 1);
 								tmp.addElement(divTmp);
 							}
@@ -542,7 +556,7 @@ public class LoadAndPrepareTexts {
 						case PHRASE:
 							if (nignore > 0)
 								break;
-							final Vector elt = new Vector();
+							final Vector<Object> elt = new Vector<Object>();
 							elt.addElement(idBuf.pop());
 							elt.addElement(stcLength);
 							vstc.addElement(elt);
@@ -552,7 +566,7 @@ public class LoadAndPrepareTexts {
 								break;
 							s = 0; // reset number of id for sentences
 							para = false;
-							final Vector vp = new Vector();
+							final Vector<Object> vp = new Vector<Object>();
 							vp.addElement(idBuf.pop());
 							vp.addElement(paraLength);
 							vpara.addElement(vp);
@@ -572,20 +586,20 @@ public class LoadAndPrepareTexts {
 							/* B.G 12/12/2006 */
 							d = (Integer) divStack.pop();
 							curdiv = (String) divStack.pop();
-							final Vector tmp = (Vector) ((Vector) vdiv
+							final Vector<Object> tmp = (Vector<Object>) ((Vector<Object>) vdiv
 									.elementAt(divLevel - 1)).lastElement();
 							if (divLength > 0) {
 								// it's the case we're at the last level of
 								// division tree
 								tmp.setElementAt(divLength, 1);
 								if (divLevel > 1) {
-									final Vector v = (Vector) ((Vector) vdiv
+									final Vector<Object> v = (Vector<Object>) ((Vector<Object>) vdiv
 											.elementAt(divLevel - 2))
 											.lastElement();
 									v.setElementAt(divLength, 1);
 								}
 							} else if (divLevel > 1) {
-								final Vector v = (Vector) ((Vector) vdiv
+								final Vector<Object> v = (Vector<Object>) ((Vector<Object>) vdiv
 										.elementAt(divLevel - 2)).lastElement();
 								v.setElementAt(divLength, 1);
 							}
@@ -632,15 +646,15 @@ public class LoadAndPrepareTexts {
 	// id tel qu'apparaissant dans le fichier source.
 	// si inSource alors c'est relatif au fichier source, sinon, c'est relatif
 	// au fichier cible.
-	Vector containsId(String id, boolean inSource) {
+	Vector<Object> containsId(String id, boolean inSource) {
 		String internalId;
-		final Vector res = new Vector();
-		Vector cour;
+		final Vector<Object> res = new Vector<Object>();
+		Vector<Object> cour;
 		String idCour;
-		Vector sent;
-		Vector divs;
-		Vector para;
-		Vector level;
+		Vector<Object> sent;
+		Vector<Object> divs;
+		Vector<Object> para;
+		Vector<Object> level;
 		if (inSource) {
 			internalId = (String) idSrc.get(id);
 			sent = stcSrc;
@@ -657,8 +671,9 @@ public class LoadAndPrepareTexts {
 		} else if (isIdOfParagraph(internalId)) {
 			// On cherche toutes les sentences de src qui commencent
 			// par id.
-			for (final Enumeration e = sent.elements(); e.hasMoreElements();) {
-				cour = (Vector) e.nextElement();
+			for (final Enumeration<Object> e = sent.elements(); e
+					.hasMoreElements();) {
+				cour = (Vector<Object>) e.nextElement();
 				idCour = (String) cour.elementAt(0);
 				if (idCour.startsWith(internalId)) {
 					res.addElement(idCour);
@@ -669,26 +684,29 @@ public class LoadAndPrepareTexts {
 			// On peut aussi avoir des div inclus dans des div...
 			// Il faut donc chercher l'internalId initial, puis
 			// renvoyer les div incluses.
-			for (final Enumeration e = divs.elements(); e.hasMoreElements();) {
-				level = (Vector) e.nextElement();
-				for (final Enumeration e2 = level.elements(); e2
+			for (final Enumeration<Object> e = divs.elements(); e
+					.hasMoreElements();) {
+				level = (Vector<Object>) e.nextElement();
+				for (final Enumeration<Object> e2 = level.elements(); e2
 						.hasMoreElements();) {
-					cour = (Vector) e2.nextElement();
+					cour = (Vector<Object>) e2.nextElement();
 					idCour = (String) cour.elementAt(0);
 					if (idCour.startsWith(internalId)) {
 						res.addElement(idCour);
 					}
 				}
 			}
-			for (final Enumeration e = para.elements(); e.hasMoreElements();) {
-				cour = (Vector) e.nextElement();
+			for (final Enumeration<Object> e = para.elements(); e
+					.hasMoreElements();) {
+				cour = (Vector<Object>) e.nextElement();
 				idCour = (String) cour.elementAt(0);
 				if (idCour.startsWith(internalId)) {
 					res.addElement(idCour);
 				}
 			}
-			for (final Enumeration e = sent.elements(); e.hasMoreElements();) {
-				cour = (Vector) e.nextElement();
+			for (final Enumeration<Object> e = sent.elements(); e
+					.hasMoreElements();) {
+				cour = (Vector<Object>) e.nextElement();
 				idCour = (String) cour.elementAt(0);
 				if (idCour.startsWith(internalId)) {
 					res.addElement(idCour);
@@ -732,14 +750,14 @@ public class LoadAndPrepareTexts {
 	// internes à Xalign (ceux qui s'appelent des "fakeid" dans
 	// LoadAndPrepareTexts).
 	// on les veux de haut en bas dans le résultat...
-	public Vector includedInto(String id, boolean inSource) {
+	public Vector<Object> includedInto(String id, boolean inSource) {
 		String internalId;
-		final Vector res = new Vector();
-		Vector cour;
+		final Vector<Object> res = new Vector<Object>();
+		Vector<Object> cour;
 		String idCour;
-		Vector divs;
-		Vector para;
-		Vector level;
+		Vector<Object> divs;
+		Vector<Object> para;
+		Vector<Object> level;
 		// System.out.println("includedInto("+id+", "+inSource+")\n");
 		if (inSource) {
 			internalId = reverseSearch(idSrc, id);
@@ -757,10 +775,11 @@ public class LoadAndPrepareTexts {
 		// ou, en termes java, les id tels que internalId.startsWith(id).
 		// No ! That's false !!! for instance d1d4p1 is not
 		// includedInto d1d4p10.
-		for (final Enumeration e = divs.elements(); e.hasMoreElements();) {
-			level = (Vector) e.nextElement();
-			for (final Enumeration e2 = level.elements(); e2.hasMoreElements();) {
-				cour = (Vector) e2.nextElement();
+		for (final Enumeration<Object> e = divs.elements(); e.hasMoreElements();) {
+			level = (Vector<Object>) e.nextElement();
+			for (final Enumeration<Object> e2 = level.elements(); e2
+					.hasMoreElements();) {
+				cour = (Vector<Object>) e2.nextElement();
 				idCour = (String) cour.elementAt(0);
 				// if (internalId.startsWith(idCour)){
 				if (containsAsInternalId(idCour, internalId)) {
@@ -768,8 +787,8 @@ public class LoadAndPrepareTexts {
 				}
 			}
 		}
-		for (final Enumeration e = para.elements(); e.hasMoreElements();) {
-			cour = (Vector) e.nextElement();
+		for (final Enumeration<Object> e = para.elements(); e.hasMoreElements();) {
+			cour = (Vector<Object>) e.nextElement();
 			idCour = (String) cour.elementAt(0);
 			// if (internalId.startsWith(idCour)){
 			if (containsAsInternalId(idCour, internalId)) {
@@ -802,6 +821,7 @@ public class LoadAndPrepareTexts {
 		return containsChar(id, 's');
 	}
 
+	@SuppressWarnings("rawtypes")
 	private String reverseSearch(Hashtable ta, String val) {
 		String clef;
 		for (final Enumeration k = ta.keys(); k.hasMoreElements();) {

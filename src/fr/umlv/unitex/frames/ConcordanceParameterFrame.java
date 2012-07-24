@@ -92,14 +92,12 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	private JButton ambiguousOutputsButton;
 	private final JRadioButton mode0 = new JRadioButton(
 			"collocates by z-score", true);
-	final JRadioButton mode1 = new JRadioButton(
-			"collocates by frequency", false);
-	final JRadioButton mode2 = new JRadioButton(
-			"contexts by frequency", false);
+	final JRadioButton mode1 = new JRadioButton("collocates by frequency",
+			false);
+	final JRadioButton mode2 = new JRadioButton("contexts by frequency", false);
 	final JTextField leftContextForStats = new JTextField("1");
 	final JTextField rightContextForStats = new JTextField("1");
-	final JRadioButton caseSensitive = new JRadioButton(
-			"case sensitive", true);
+	final JRadioButton caseSensitive = new JRadioButton("case sensitive", true);
 	private final JRadioButton caseInsensitive = new JRadioButton(
 			"case insensitive", false);
 
@@ -174,6 +172,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		g.weighty = 0;
 		final JButton button = new JButton("Compute statistics");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final File indFile = new File(Config.getCurrentSntDir(),
 						"concord.ind");
@@ -206,9 +205,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				final File output = new File(indFile.getParentFile(),
 						"statistics.txt");
 				StatsCommand cmd = new StatsCommand();
-				cmd = cmd.concord(indFile).alphabet(
-						ConfigManager.getManager().getAlphabet(null)).left(
-						leftContext).right(rightContext).output(output)
+				cmd = cmd.concord(indFile)
+						.alphabet(ConfigManager.getManager().getAlphabet(null))
+						.left(leftContext).right(rightContext).output(output)
 						.caseSensitive(caseSensitive.isSelected());
 				int mode;
 				if (mode2.isSelected())
@@ -258,6 +257,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		a.add(extractFile, BorderLayout.CENTER);
 		final JPanel b = new JPanel(new GridLayout(1, 2));
 		final Action setAction = new AbstractAction("Set File: ") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser chooser = new JFileChooser();
 				chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
@@ -277,6 +277,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		a.add(setSntFile, BorderLayout.WEST);
 		final Action matchingAction = new AbstractAction(
 				"Extract matching units") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				extractUnits(true);
 			}
@@ -284,6 +285,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final JButton matching = new JButton(matchingAction);
 		final Action unmatchingAction = new AbstractAction(
 				"Extract unmatching units") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				extractUnits(false);
 			}
@@ -301,6 +303,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		panel.setBorder(new TitledBorder(""));
 		final Action diffAction = new AbstractAction(
 				"Show differences with previous concordance") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				buildDiffConcordance();
 			}
@@ -308,6 +311,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		diffButton = new JButton(diffAction);
 		panel.add(diffButton);
 		final Action ambiguous = new AbstractAction("Show ambiguous outputs") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				buildConcordance(true);
 			}
@@ -325,6 +329,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		a.add(modifiedTxtFile, BorderLayout.CENTER);
 		final JPanel b = new JPanel(new GridLayout(1, 2));
 		final Action setAction = new AbstractAction("Set File") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser chooser = new JFileChooser();
 				chooser.addChoosableFileFilter(new PersonalFileFilter("txt",
@@ -357,6 +362,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final JButton setModifiedTextFile = new JButton(setAction);
 		b.add(setModifiedTextFile);
 		final Action goAction = new AbstractAction("GO") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				modifyText();
 			}
@@ -372,6 +378,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final JPanel middlePanel = new JPanel(new BorderLayout());
 		middlePanel.setBorder(new TitledBorder("Concordance presentation"));
 		openWithBrowser.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				useWebBrowser = openWithBrowser.isSelected();
 				setTitle("" + useWebBrowser);
@@ -429,6 +436,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final JPanel tmp_right = new JPanel(new GridLayout(2, 1, 0, 5));
 		tmp_right.add(sortAccTo);
 		final Action buildAction = new AbstractAction("Build concordance") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				buildConcordance(false);
 			}
@@ -451,24 +459,23 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			 * If the text field contains a file name without path, we append
 			 * the corpus path
 			 */
-			txt = new File(Config.getCurrentCorpusDir(), modifiedTxtFile
-					.getText());
+			txt = new File(Config.getCurrentCorpusDir(),
+					modifiedTxtFile.getText());
 		} else {
 			txt = new File(modifiedTxtFile.getText());
 		}
 		ConcordCommand modifyCommand = new ConcordCommand();
 		final File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
 		if (!indFile.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ indFile.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot find " + indFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		modifyCommand = modifyCommand.indFile(indFile).outputModifiedTxtFile(
 				txt);
 		final String sntDir = FileUtil.getFileNameWithoutExtension(txt
-				.getAbsolutePath())
-				+ "_snt";
+				.getAbsolutePath()) + "_snt";
 		final File tmp = new File(sntDir);
 		ModifyTextDo toDo = null;
 		final String sntName = FileUtil.getFileNameWithoutExtension(txt)
@@ -503,18 +510,17 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		ExtractCommand command = new ExtractCommand().extract(matching);
 		final File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
 		if (!indFile.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ indFile.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot find " + indFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		final File result = new File(extractFile.getText());
-		command = command.snt(Config.getCurrentSnt()).ind(indFile).result(
-				result);
+		command = command.snt(Config.getCurrentSnt()).ind(indFile)
+				.result(result);
 		final MultiCommands builder = new MultiCommands();
 		final String sntDir = FileUtil.getFileNameWithoutExtension(result
-				.getAbsolutePath())
-				+ "_snt";
+				.getAbsolutePath()) + "_snt";
 		final File tmp = new File(sntDir);
 		if (!tmp.exists()) {
 			final MkdirCommand c = new MkdirCommand().name(tmp);
@@ -546,21 +552,24 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		final File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
 		if (!indFile.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ indFile.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot find " + indFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		ConcordCommand command;
 		try {
-			command = new ConcordCommand().indFile(indFile).font(
-					ConfigManager.getManager().getConcordanceFontName(null))
+			command = new ConcordCommand()
+					.indFile(indFile)
+					.font(ConfigManager.getManager().getConcordanceFontName(
+							null))
 					.fontSize(
 							ConfigManager.getManager().getConcordanceFontSize(
-									null)).left(leftContext,
-							leftCtxStopAtEOS.isSelected()).right(rightContext,
-							rightCtxStopAtEOS.isSelected()).html()
-					.sortAlphabet().thai(ConfigManager.getManager().isThai(null));
+									null))
+					.left(leftContext, leftCtxStopAtEOS.isSelected())
+					.right(rightContext, rightCtxStopAtEOS.isSelected()).html()
+					.sortAlphabet()
+					.thai(ConfigManager.getManager().isThai(null));
 			if (onlyAmbiguous) {
 				command = command.onlyAmbiguous();
 			} else {
@@ -585,9 +594,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			width = 40;
 		}
 		InternalFrameManager.getManager(null).closeConcordanceFrame();
-		Launcher.exec(command, true, new ConcordanceDo(false, new File(Config
-				.getCurrentSntDir(), "concord.html"), openWithBrowser
-				.isSelected(), width));
+		Launcher.exec(command, true,
+				new ConcordanceDo(false, new File(Config.getCurrentSntDir(),
+						"concord.html"), openWithBrowser.isSelected(), width));
 	}
 
 	void buildDiffConcordance() {
@@ -595,8 +604,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				"previous-concord.ind");
 		final File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
 		if (!indFile.exists()) {
-			JOptionPane.showMessageDialog(null, "Cannot find "
-					+ indFile.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot find " + indFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -641,6 +650,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			htmlViewer = ConfigManager.getManager().getHtmlViewer(null);
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			if (browser && htmlViewer != null) {
 				final String[] s = new String[2];
@@ -672,6 +682,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			snt = s;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(snt).newTextFrame(snt, false);
 		}
@@ -686,6 +697,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			this.mode = mode;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(f).newStatisticsFrame(f, mode);
 		}

@@ -92,7 +92,8 @@ public class UnitexFrame extends JFrame {
 	 * This object is used to enable drag-and-drop, so that the user can pick up
 	 * texts, graphs and dictionaries from a file explorer.
 	 */
-	public DropTarget dropTarget = DropTargetManager.getDropTarget().newDropTarget(this);
+	public DropTarget dropTarget = DropTargetManager.getDropTarget()
+			.newDropTarget(this);
 	/**
 	 * The desktop of the frame.
 	 */
@@ -135,6 +136,7 @@ public class UnitexFrame extends JFrame {
 				+ Config.getCurrentLanguageForTitleBar());
 		InternalFrameManager.getManager(null).addTextFrameListener(
 				new TextFrameListener() {
+					@Override
 					public void textFrameOpened(boolean taggedText) {
 						preprocessText.setEnabled(!taggedText);
 						cassys.setEnabled(true);
@@ -145,16 +147,19 @@ public class UnitexFrame extends JFrame {
 						constructSeqFst.setEnabled(true);
 						convertFst.setEnabled(true);
 						closeText.setEnabled(true);
-						File sntDir=FileUtil.getSntDir(ConfigManager.getManager().getCurrentSnt(null));
+						final File sntDir = FileUtil.getSntDir(ConfigManager
+								.getManager().getCurrentSnt(null));
 						InternalFrameManager.getManager(null).newTokensFrame(
-								new File(sntDir,"tok_by_freq.txt"),true);
+								new File(sntDir, "tok_by_freq.txt"), true);
 						InternalFrameManager.getManager(null).newTfstTagsFrame(
-								new File(sntDir,"tfst_tags_by_freq.txt"));
-						InternalFrameManager.getManager(null).newTextDicFrame(sntDir, true);
+								new File(sntDir, "tfst_tags_by_freq.txt"));
+						InternalFrameManager.getManager(null).newTextDicFrame(
+								sntDir, true);
 						InternalFrameManager.getManager(null)
 								.newTextAutomatonFrame(1, true);
 					}
 
+					@Override
 					public void textFrameClosed() {
 						cassys.setEnabled(false);
 						preprocessText.setEnabled(false);
@@ -192,6 +197,7 @@ public class UnitexFrame extends JFrame {
 				});
 		InternalFrameManager.getManager(null).addDelaFrameListener(
 				new DelaFrameListener() {
+					@Override
 					public void delaFrameOpened() {
 						checkDelaFormat.setEnabled(true);
 						transliterate.setEnabled(true);
@@ -201,6 +207,7 @@ public class UnitexFrame extends JFrame {
 						closeDela.setEnabled(true);
 					}
 
+					@Override
 					public void delaFrameClosed(int remainingFrames) {
 						InternalFrameManager.getManager(null)
 								.closeCheckDicFrame();
@@ -223,17 +230,20 @@ public class UnitexFrame extends JFrame {
 		InternalFrameManager.getManager(null)
 				.addLexiconGrammarTableFrameListener(
 						new LexiconGrammarTableFrameListener() {
+							@Override
 							public void lexiconGrammarTableFrameOpened() {
 								compileLexiconGrammar.setEnabled(true);
 								closeLexiconGrammar.setEnabled(true);
 							}
 
+							@Override
 							public void lexiconGrammarTableFrameClosed() {
 								compileLexiconGrammar.setEnabled(false);
 								closeLexiconGrammar.setEnabled(false);
 							}
 						});
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				setTitle(Version.version + " - current language is "
 						+ Config.getCurrentLanguageForTitleBar());
@@ -294,20 +304,23 @@ public class UnitexFrame extends JFrame {
 	JMenu buildTextMenu() {
 		final JMenu textMenu = new JMenu("Text");
 		openText = new AbstractAction("Open...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				openText();
 			}
 		};
-		openText.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_N, Event.CTRL_MASK));
+		openText.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, Event.CTRL_MASK));
 		textMenu.add(new JMenuItem(openText));
 		openTaggedText = new AbstractAction("Open Tagged Text...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				openTaggedText();
 			}
 		};
 		textMenu.add(new JMenuItem(openTaggedText));
 		preprocessText = new AbstractAction("Preprocess Text...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				String txt = Config.getCurrentSnt().getAbsolutePath();
 				txt = txt.substring(0, txt.length() - 3);
@@ -316,12 +329,13 @@ public class UnitexFrame extends JFrame {
 						new File(txt), Config.getCurrentSnt());
 			}
 		};
-		preprocessText.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_E, Event.CTRL_MASK));
+		preprocessText.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
 		preprocessText.setEnabled(false);
 		textMenu.add(new JMenuItem(preprocessText));
 		textMenu.addSeparator();
 		changeLang = new AbstractAction("Change Language...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				Config.changeLanguage();
 			}
@@ -329,26 +343,29 @@ public class UnitexFrame extends JFrame {
 		textMenu.add(new JMenuItem(changeLang));
 		textMenu.addSeparator();
 		applyLexicalResources = new AbstractAction("Apply Lexical Resources...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.newApplyLexicalResourcesFrame();
 			}
 		};
-		applyLexicalResources.putValue(Action.ACCELERATOR_KEY, KeyStroke
-				.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK));
+		applyLexicalResources.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK));
 		applyLexicalResources.setEnabled(false);
 		textMenu.add(new JMenuItem(applyLexicalResources));
 		textMenu.addSeparator();
 		locatePattern = new AbstractAction("Locate Pattern...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newLocateFrame();
 			}
 		};
 		locatePattern.setEnabled(false);
-		locatePattern.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_L, Event.CTRL_MASK));
+		locatePattern.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
 		textMenu.add(new JMenuItem(locatePattern));
 		cassys = new AbstractAction("Apply CasSys Cascade...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newCassysFrame();
 			}
@@ -357,6 +374,7 @@ public class UnitexFrame extends JFrame {
 		final JMenuItem cassysItem = new JMenuItem(cassys);
 		textMenu.add(cassysItem);
 		displayLocatedSequences = new AbstractAction("Located Sequences...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.newConcordanceParameterFrame();
@@ -366,6 +384,7 @@ public class UnitexFrame extends JFrame {
 		textMenu.add(new JMenuItem(displayLocatedSequences));
 		textMenu.addSeparator();
 		elagComp = new AbstractAction("Compile Elag Grammars") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newElagCompFrame();
 			}
@@ -373,6 +392,7 @@ public class UnitexFrame extends JFrame {
 		textMenu.add(new JMenuItem(elagComp));
 		textMenu.addSeparator();
 		constructFst = new AbstractAction("Construct FST-Text...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newConstructTfstFrame();
 			}
@@ -380,6 +400,7 @@ public class UnitexFrame extends JFrame {
 		constructFst.setEnabled(false);
 		textMenu.add(new JMenuItem(constructFst));
 		constructSeqFst = new AbstractAction("Construct Sequences Automaton") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.newConstructSeqTfstFrame();
@@ -388,6 +409,7 @@ public class UnitexFrame extends JFrame {
 		constructSeqFst.setEnabled(true);
 		textMenu.add(new JMenuItem(constructSeqFst));
 		convertFst = new AbstractAction("Convert FST-Text to Text...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.newConvertTfstToTextFrame();
@@ -397,6 +419,7 @@ public class UnitexFrame extends JFrame {
 		textMenu.add(new JMenuItem(convertFst));
 		textMenu.addSeparator();
 		closeText = new AbstractAction("Close Text...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).closeTextFrame();
 			}
@@ -404,6 +427,7 @@ public class UnitexFrame extends JFrame {
 		closeText.setEnabled(false);
 		textMenu.add(new JMenuItem(closeText));
 		quitUnitex = new AbstractAction("Quit Unitex") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				quit();
 			}
@@ -423,6 +447,7 @@ public class UnitexFrame extends JFrame {
 		final JMenu delaMenu = new JMenu("DELA");
 		final JMenuItem open2 = new JMenuItem("Open...");
 		open2.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				openDELA();
 			}
@@ -430,6 +455,7 @@ public class UnitexFrame extends JFrame {
 		delaMenu.add(open2);
 		final JMenuItem lookup = new JMenuItem("Lookup...");
 		lookup.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newDicLookupFrame();
 			}
@@ -437,21 +463,24 @@ public class UnitexFrame extends JFrame {
 		delaMenu.add(lookup);
 		delaMenu.addSeparator();
 		checkDelaFormat = new AbstractAction("Check Format...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				File f=Config.getCurrentDELA();
-				if (f==null) {
-					JOptionPane.showMessageDialog(null, "No dictionary is selected!",
-							"Error", JOptionPane.ERROR_MESSAGE);
+				final File f = Config.getCurrentDELA();
+				if (f == null) {
+					JOptionPane.showMessageDialog(null,
+							"No dictionary is selected!", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				InternalFrameManager.getManager(null).newCheckDicFrame(f);
 			}
 		};
 		checkDelaFormat.setEnabled(false);
-		checkDelaFormat.putValue(Action.ACCELERATOR_KEY, KeyStroke
-				.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK));
+		checkDelaFormat.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_K, Event.CTRL_MASK));
 		delaMenu.add(new JMenuItem(checkDelaFormat));
 		transliterate = new AbstractAction("Transliterate...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newTransliterationFrame();
 			}
@@ -459,6 +488,7 @@ public class UnitexFrame extends JFrame {
 		transliterate.setEnabled(false);
 		delaMenu.add(new JMenuItem(transliterate));
 		sortDictionary = new AbstractAction("Sort Dictionary") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				sortDELA();
 			}
@@ -466,15 +496,18 @@ public class UnitexFrame extends JFrame {
 		sortDictionary.setEnabled(false);
 		delaMenu.add(new JMenuItem(sortDictionary));
 		inflect = new AbstractAction("Inflect...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				File dela=Config.getCurrentDELA();
-				if (dela==null) return;
+				final File dela = Config.getCurrentDELA();
+				if (dela == null)
+					return;
 				InternalFrameManager.getManager(null).newInflectFrame(dela);
 			}
 		};
 		inflect.setEnabled(false);
 		delaMenu.add(new JMenuItem(inflect));
 		compressIntoFST = new AbstractAction("Compress into FST") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				compressDELA();
 			}
@@ -484,6 +517,7 @@ public class UnitexFrame extends JFrame {
 		delaMenu.addSeparator();
 		final AbstractAction buildKrMwuDic = new AbstractAction(
 				"Build Korean MWU dic graph...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newBuildKrMwuDicFrame();
 			}
@@ -491,6 +525,7 @@ public class UnitexFrame extends JFrame {
 		buildKrMwuDic.setEnabled(ConfigManager.getManager().isKorean(null));
 		delaMenu.add(new JMenuItem(buildKrMwuDic));
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				buildKrMwuDic.setEnabled(ConfigManager.getManager().isKorean(
 						null));
@@ -498,6 +533,7 @@ public class UnitexFrame extends JFrame {
 		});
 		delaMenu.addSeparator();
 		closeDela = new AbstractAction("Close") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).closeCurrentDelaFrame();
 			}
@@ -511,38 +547,47 @@ public class UnitexFrame extends JFrame {
 		final JMenu graphMenu = new JMenu("FSGraph");
 		final JMenuItem newGraph = new JMenuItem("New");
 		newGraph.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newGraphFrame(null);
 			}
 		});
 		graphMenu.add(newGraph);
 		final Action open = new AbstractAction("Open...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				openGraph();
 			}
 		};
-		open.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_O, Event.CTRL_MASK));
+		open.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
 		graphMenu.add(new JMenuItem(open));
 		final Action save = new AbstractAction("Save") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f=InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
-				if (f!=null) {
+				final GraphFrame f = InternalFrameManager.getManager(null)
+						.getCurrentFocusedGraphFrame();
+				if (f != null) {
 					f.saveGraph();
 					return;
 				}
-				/* Evil hack to allow save with ctrl+S in the internal text editor */
-				JInternalFrame frame=InternalFrameManager.getManager(null).getSelectedFrame();
+				/*
+				 * Evil hack to allow save with ctrl+S in the internal text
+				 * editor
+				 */
+				final JInternalFrame frame = InternalFrameManager.getManager(
+						null).getSelectedFrame();
 				if (frame instanceof FileEditionTextFrame) {
-					((FileEditionTextFrame)frame).saveFile();
+					((FileEditionTextFrame) frame).saveFile();
 					return;
 				}
 			}
 		};
-		save.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_S, Event.CTRL_MASK));
+		save.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 		graphMenu.add(new JMenuItem(save));
 		final Action saveAs = new AbstractAction("Save as...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -552,27 +597,31 @@ public class UnitexFrame extends JFrame {
 		};
 		graphMenu.add(new JMenuItem(saveAs));
 		final Action saveAll = new AbstractAction("Save All") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveAllGraphs();
 			}
 		};
 		graphMenu.add(new JMenuItem(saveAll));
 		final Action setup = new AbstractAction("Page Setup") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				PrintManager.pageSetup();
 			}
 		};
 		graphMenu.add(new JMenuItem(setup));
 		final Action print = new AbstractAction("Print...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				PrintManager.print(InternalFrameManager.getManager(null)
 						.getSelectedFrame());
 			}
 		};
-		print.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke('P',
-				Event.CTRL_MASK));
+		print.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke('P', Event.CTRL_MASK));
 		graphMenu.add(new JMenuItem(print));
 		final Action printAll = new AbstractAction("Print All...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				PrintManager.printAllGraphs(InternalFrameManager.getManager(
 						null).getGraphFrames());
@@ -581,33 +630,38 @@ public class UnitexFrame extends JFrame {
 		graphMenu.add(new JMenuItem(printAll));
 		graphMenu.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f=InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
-				if (f!=null) {
+				final GraphFrame f = InternalFrameManager.getManager(null)
+						.getCurrentFocusedGraphFrame();
+				if (f != null) {
 					f.undo();
 					return;
 				}
 			}
 		};
-		undo.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_Z, Event.CTRL_MASK));
+		undo.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK));
 		graphMenu.add(new JMenuItem(undo));
 		final Action redo = new AbstractAction("Redo") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				GraphFrame f=InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
-				if (f!=null) {
+				final GraphFrame f = InternalFrameManager.getManager(null)
+						.getCurrentFocusedGraphFrame();
+				if (f != null) {
 					f.redo();
 					return;
 				}
 			}
 		};
-		redo.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-				KeyEvent.VK_Y, Event.CTRL_MASK));
+		redo.putValue(Action.ACCELERATOR_KEY,
+				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK));
 		graphMenu.add(new JMenuItem(redo));
 		graphMenu.addSeparator();
 		final JMenu tools = new JMenu("Tools");
 		final JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
 		sortNodeLabel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -618,6 +672,7 @@ public class UnitexFrame extends JFrame {
 		});
 		final JMenuItem explorePaths = new JMenuItem("Explore graph paths");
 		explorePaths.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -628,6 +683,7 @@ public class UnitexFrame extends JFrame {
 		});
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
 		compileFST.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame currentFrame = InternalFrameManager
 						.getManager(null).getCurrentFocusedGraphFrame();
@@ -638,6 +694,7 @@ public class UnitexFrame extends JFrame {
 		});
 		final JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
 		flatten.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				compileAndFlattenGraph();
 			}
@@ -645,12 +702,14 @@ public class UnitexFrame extends JFrame {
 		final JMenuItem graphCollection = new JMenuItem(
 				"Build Graph Collection");
 		graphCollection.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newGraphCollectionFrame();
 			}
 		});
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
 		svn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConfigManager.getManager().getSvnMonitor(null).monitor(false);
 			}
@@ -669,6 +728,7 @@ public class UnitexFrame extends JFrame {
 		final JMenuItem alignment = new JMenuItem("Alignment...");
 		alignment.setAccelerator(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
 		alignment.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -680,6 +740,7 @@ public class UnitexFrame extends JFrame {
 		});
 		final JMenuItem antialiasing = new JMenuItem("Antialiasing...");
 		antialiasing.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JInternalFrame f = InternalFrameManager.getManager(null)
 						.getSelectedFrame();
@@ -700,6 +761,7 @@ public class UnitexFrame extends JFrame {
 		presentation.setAccelerator(KeyStroke
 				.getKeyStroke('R', Event.CTRL_MASK));
 		presentation.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -715,6 +777,7 @@ public class UnitexFrame extends JFrame {
 		});
 		final JMenuItem graphSize = new JMenuItem("Graph Size...");
 		graphSize.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -748,6 +811,7 @@ public class UnitexFrame extends JFrame {
 		groupe.add(fit120);
 		groupe.add(fit140);
 		fitInScreen.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -765,6 +829,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		fitInWindow.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -797,6 +862,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		fit60.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -807,6 +873,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		fit80.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -817,6 +884,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		fit100.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -827,6 +895,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		fit120.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -837,6 +906,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		fit140.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
@@ -855,6 +925,7 @@ public class UnitexFrame extends JFrame {
 		zoom.add(fit140);
 		final JMenuItem closeAll = new JMenuItem("Close all");
 		closeAll.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).closeAllGraphFrames();
 			}
@@ -874,6 +945,7 @@ public class UnitexFrame extends JFrame {
 	JMenu buildLexiconGrammarMenu() {
 		final JMenu lexiconGrammar = new JMenu("Lexicon-Grammar");
 		openLexiconGrammar = new AbstractAction("Open...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				openLexiconGrammarTable();
 			}
@@ -881,6 +953,7 @@ public class UnitexFrame extends JFrame {
 		openLexiconGrammar.setEnabled(true);
 		lexiconGrammar.add(new JMenuItem(openLexiconGrammar));
 		compileLexiconGrammar = new AbstractAction("Compile to GRF...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final LexiconGrammarTableFrame f = InternalFrameManager
 						.getManager(null).getLexiconGrammarTableFrame();
@@ -894,6 +967,7 @@ public class UnitexFrame extends JFrame {
 		compileLexiconGrammar.setEnabled(false);
 		lexiconGrammar.add(new JMenuItem(compileLexiconGrammar));
 		closeLexiconGrammar = new AbstractAction("Close") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.closeLexiconGrammarTableFrame();
@@ -908,6 +982,7 @@ public class UnitexFrame extends JFrame {
 		final JMenu menu = new JMenu("XAlign");
 		final JMenuItem open = new JMenuItem("Open files...");
 		open.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newXAlignConfigFrame();
 			}
@@ -921,18 +996,21 @@ public class UnitexFrame extends JFrame {
 		final JMenuItem tile = new JMenuItem("Tile");
 		tile.setEnabled(true);
 		tile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				tileFrames();
 			}
 		});
 		final JMenuItem cascade = new JMenuItem("Cascade");
 		cascade.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				cascadeFrames();
 			}
 		});
 		final JMenuItem arrangeIcons = new JMenuItem("Arrange Icons");
 		arrangeIcons.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				arrangeIcons();
 			}
@@ -947,18 +1025,21 @@ public class UnitexFrame extends JFrame {
 		final JMenu info = new JMenu("Info");
 		final JMenuItem aboutUnitex = new JMenuItem("About Unitex...");
 		aboutUnitex.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newAboutUnitexFrame();
 			}
 		});
 		final JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
 		helpOnCommands.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).newHelpOnCommandFrame();
 			}
 		});
 		final JMenuItem preferences = new JMenuItem("Preferences...");
 		preferences.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.newGlobalPreferencesFrame();
@@ -966,6 +1047,7 @@ public class UnitexFrame extends JFrame {
 		});
 		final JMenuItem console = new JMenuItem("Console");
 		console.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null).showConsoleFrame();
 			}
@@ -1056,9 +1138,10 @@ public class UnitexFrame extends JFrame {
 				s = s + ".grf";
 				graphs[i] = new File(s);
 				if (!graphs[i].exists()) {
-					JOptionPane.showMessageDialog(null, "File "
-							+ graphs[i].getAbsolutePath() + " does not exist",
-							"Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"File " + graphs[i].getAbsolutePath()
+									+ " does not exist", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					continue;
 				}
 			}
@@ -1181,9 +1264,9 @@ public class UnitexFrame extends JFrame {
 			name_fst2 = name_fst2 + ".fst2";
 			final MultiCommands commands = new MultiCommands();
 			commands.addCommand(new Grf2Fst2Command().grf(grf)
-					.enableLoopAndRecursionDetection(true).tokenizationMode(
-							null, grf).repositories()
-							.emitEmptyGraphWarning().displayGraphNames());
+					.enableLoopAndRecursionDetection(true)
+					.tokenizationMode(null, grf).repositories()
+					.emitEmptyGraphWarning().displayGraphNames());
 			commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
 					.resultType(!rtn.isSelected()).depth(depthValue));
 			Launcher.exec(commands, false);
@@ -1204,6 +1287,7 @@ public class UnitexFrame extends JFrame {
 		}
 		final File dela = Config.getDelaDialogBox().getSelectedFile();
 		final ToDo toDo = new ToDo() {
+			@Override
 			public void toDo(boolean success) {
 				InternalFrameManager.getManager(null).newDelaFrame(dela);
 			}
@@ -1408,6 +1492,7 @@ public class UnitexFrame extends JFrame {
 			dela = s;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dela).newDelaFrame(dela);
 		}

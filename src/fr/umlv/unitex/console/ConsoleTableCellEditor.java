@@ -46,6 +46,7 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements
 		button.setContentAreaFilled(false);
 		button.setFocusPainted(false);
 		button.addActionListener(new ActionListener() {
+			@Override
 			@SuppressWarnings("synthetic-access")
 			public void actionPerformed(ActionEvent e) {
 				if (button.getIcon() == ConsoleFrame.statusErrorDown) {
@@ -70,6 +71,7 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements
 		});
 	}
 
+	@Override
 	public Component getTableCellEditorComponent(JTable t, Object value,
 			boolean isSelected, int row, int column) {
 		final Integer i = (Integer) value;
@@ -87,6 +89,7 @@ public class ConsoleTableCellEditor extends AbstractCellEditor implements
 		return button;
 	}
 
+	@Override
 	public Object getCellEditorValue() {
 		return null;
 	}

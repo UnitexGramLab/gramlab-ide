@@ -122,6 +122,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		selectedBoxes = new ArrayList<GenericGraphBox>();
 		setBackground(Color.white);
 		addGraphTextListener(new GraphTextListener() {
+			@Override
 			public void graphTextChanged(GraphTextEvent e) {
 				initText(e.getContent());
 			}
@@ -132,7 +133,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public void refresh(GraphIO g) {
 		text.setText("");
 		if (g != null) {
-			graphPresentationInfo=g.getInfo();
+			graphPresentationInfo = g.getInfo();
 			metadata = g.getMetadata();
 			final Dimension d = new Dimension(g.getWidth(), g.getHeight());
 			setSize(d);
@@ -141,8 +142,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 		} else {
 			/* Default graphical zone */
 			graphBoxes = new ArrayList<GenericGraphBox>();
-			graphPresentationInfo=ConfigManager.getManager().getGraphPresentationPreferences(
-					null);
+			graphPresentationInfo = ConfigManager.getManager()
+					.getGraphPresentationPreferences(null);
 			metadata = new GraphMetaData();
 			initializeEmptyGraph();
 		}
@@ -185,29 +186,32 @@ public abstract class GenericGraphicalZone extends JComponent {
 		GenericGraphBox g;
 		GraphBoxInfo tmp;
 		unSelectAllBoxes();
-		int adjustX=0,adjustY=0;
-		int minTmpX=-1,minTmpY=-1;
-		for (GraphBoxInfo aV : v) {
-			if (minTmpX==-1 || aV.X<minTmpX) {
-				minTmpX=aV.X;
+		int adjustX = 0, adjustY = 0;
+		int minTmpX = -1, minTmpY = -1;
+		for (final GraphBoxInfo aV : v) {
+			if (minTmpX == -1 || aV.X < minTmpX) {
+				minTmpX = aV.X;
 			}
-			if (minTmpY==-1 || aV.Y<minTmpY) {
-				minTmpY=aV.Y;
+			if (minTmpY == -1 || aV.Y < minTmpY) {
+				minTmpY = aV.Y;
 			}
 		}
-		if (minTmpX==-1) minTmpX=0;
-		if (minTmpY==-1) minTmpY=0;
+		if (minTmpX == -1)
+			minTmpX = 0;
+		if (minTmpY == -1)
+			minTmpY = 0;
 		try {
-			JViewport viewport=(JViewport) getParent();
-			Rectangle r=viewport.getViewRect();
-			adjustX=r.x+r.width/2-100-minTmpX;
-			adjustY=r.y+r.height/2-100-minTmpY;
-		} catch (ClassCastException e) {
+			final JViewport viewport = (JViewport) getParent();
+			final Rectangle r = viewport.getViewRect();
+			adjustX = r.x + r.width / 2 - 100 - minTmpX;
+			adjustY = r.y + r.height / 2 - 100 - minTmpY;
+		} catch (final ClassCastException e) {
 			/* */
 		}
 		for (final GraphBoxInfo aV : v) {
 			tmp = aV;
-			g = createBox(adjustX+tmp.X + 20 * m.getN(),adjustY+tmp.Y + 20 * m.getN());
+			g = createBox(adjustX + tmp.X + 20 * m.getN(), adjustY + tmp.Y + 20
+					* m.getN());
 			g.setContent(tmp.content);
 			g.setSelected(true);
 			selectedBoxes.add(g);
@@ -517,14 +521,15 @@ public abstract class GenericGraphicalZone extends JComponent {
 		if (selectedBoxes.isEmpty())
 			return;
 		L = selectedBoxes.size();
-		ArrayList<GenericGraphBox> editBoxes=new ArrayList<GenericGraphBox>();
+		final ArrayList<GenericGraphBox> editBoxes = new ArrayList<GenericGraphBox>();
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
-			if (g.addTransitionTo(dest)) editBoxes.add(g);
+			if (g.addTransitionTo(dest))
+				editBoxes.add(g);
 		}
 		if (save && !editBoxes.isEmpty()) {
-			final UndoableEdit edit = new TransitionGroupEdit(editBoxes,
-					dest, this);
+			final UndoableEdit edit = new TransitionGroupEdit(editBoxes, dest,
+					this);
 			postEdit(edit);
 		}
 	}
@@ -544,7 +549,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
 			final UndoableEdit edit = new TransitionEdit(src, g);
-			if (src.addTransitionTo(g)) postEdit(edit);
+			if (src.addTransitionTo(g))
+				postEdit(edit);
 		}
 	}
 

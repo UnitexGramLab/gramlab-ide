@@ -119,6 +119,7 @@ public class ElagCompFrame extends JInternalFrame {
 		JButton button = new JButton("Browse");
 		button.setPreferredSize(btndim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser f = new JFileChooser();
 				f.setCurrentDirectory(currdir);
@@ -150,6 +151,7 @@ public class ElagCompFrame extends JInternalFrame {
 		button = new JButton("Save");
 		button.setPreferredSize(btndim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveLstFile();
 			}
@@ -182,6 +184,7 @@ public class ElagCompFrame extends JInternalFrame {
 		button = new JButton(">>");
 		button.setPreferredSize(btn2dim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final File f = fc.getSelectedFile();
 				if (f != null && f.isFile()) {
@@ -198,6 +201,7 @@ public class ElagCompFrame extends JInternalFrame {
 		button = new JButton("<<");
 		button.setPreferredSize(btn2dim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				int idx = list.getSelectedIndex();
 				if (idx < 0 || idx >= rules.size()) {
@@ -219,6 +223,7 @@ public class ElagCompFrame extends JInternalFrame {
 		button = new JButton("View");
 		button.setPreferredSize(btn2dim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int idx = list.getSelectedIndex();
 				if (idx < 0 || idx >= rules.size()) {
@@ -254,6 +259,7 @@ public class ElagCompFrame extends JInternalFrame {
 		button = new JButton("Locate");
 		button.setPreferredSize(btn2dim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int idx = list.getSelectedIndex();
 				if (idx < 0 || idx >= rules.size()) {
@@ -317,13 +323,14 @@ public class ElagCompFrame extends JInternalFrame {
 		button = new JButton("Compile");
 		button.setPreferredSize(btndim);
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveLstFile();
 				final File tagset = new File(elagDir, "tagset.def");
 				if (!tagset.exists()) {
 					JOptionPane.showInternalMessageDialog(
-							UnitexFrame.mainFrame, "File "
-									+ tagset.getAbsolutePath()
+							UnitexFrame.mainFrame,
+							"File " + tagset.getAbsolutePath()
 									+ " doesn't exist.\n", "ERROR",
 							JOptionPane.ERROR_MESSAGE);
 					return;
@@ -344,8 +351,8 @@ public class ElagCompFrame extends JInternalFrame {
 					}
 					if (!grf.exists()) {
 						JOptionPane.showInternalMessageDialog(
-								UnitexFrame.mainFrame, "Grammar "
-										+ grf.getAbsolutePath()
+								UnitexFrame.mainFrame,
+								"Grammar " + grf.getAbsolutePath()
 										+ " doesn't seem to exist", "ERROR",
 								JOptionPane.ERROR_MESSAGE);
 						return;
@@ -368,8 +375,8 @@ public class ElagCompFrame extends JInternalFrame {
 						commands.addCommand(elagCompCmd);
 					}
 				}
-				final ElagCompCommand elagCompCmd = new ElagCompCommand().lang(
-						tagset).output(outputfile).ruleList(lstfile);
+				final ElagCompCommand elagCompCmd = new ElagCompCommand()
+						.lang(tagset).output(outputfile).ruleList(lstfile);
 				commands.addCommand(elagCompCmd);
 				Launcher.exec(commands, false);
 			}
@@ -383,6 +390,7 @@ public class ElagCompFrame extends JInternalFrame {
 		panel.add(button, c);
 		button = new JButton("Cancel compilation");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveLstFile();
 				doDefaultCloseAction();

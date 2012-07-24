@@ -37,18 +37,20 @@ public class SvnConflict {
 	public File fileInConflict, mine, base, other, merged;
 	public int baseNumber, otherNumber;
 
-	public SvnConflict(final File fileInConflict, File mine, File base, File other,
-			int baseNumber, int otherNumber) {
+	public SvnConflict(final File fileInConflict, File mine, File base,
+			File other, int baseNumber, int otherNumber) {
 		this.fileInConflict = fileInConflict;
-		this.merged=new File(fileInConflict.getAbsolutePath()+".merged");
+		this.merged = new File(fileInConflict.getAbsolutePath() + ".merged");
 		this.mine = mine;
 		this.base = base;
 		this.other = other;
 		this.baseNumber = baseNumber;
 		this.otherNumber = otherNumber;
 		addConflictSolvedListener(new ConflictSolvedListener() {
+			@Override
 			public void conflictSolved() {
-				ConfigManager.getManager().getSvnMonitor(fileInConflict).conflictResolved(fileInConflict);
+				ConfigManager.getManager().getSvnMonitor(fileInConflict)
+						.conflictResolved(fileInConflict);
 			}
 		});
 	}
@@ -65,14 +67,16 @@ public class SvnConflict {
 			return null;
 		}
 		final String name = file.getName();
-		final File[] list = file.getParentFile().listFiles(new FilenameFilter() {
-			public boolean accept(File dir, String s) {
-				if (!s.startsWith(name + ".r"))
-					return false;
-				final String end = s.substring(s.lastIndexOf(".") + 1);
-				return pattern.matcher(end).matches();
-			}
-		});
+		final File[] list = file.getParentFile().listFiles(
+				new FilenameFilter() {
+					@Override
+					public boolean accept(File dir, String s) {
+						if (!s.startsWith(name + ".r"))
+							return false;
+						final String end = s.substring(s.lastIndexOf(".") + 1);
+						return pattern.matcher(end).matches();
+					}
+				});
 		if (list.length == 0)
 			return null;
 		if (list.length != 2) {
@@ -99,8 +103,9 @@ public class SvnConflict {
 			 */
 			FileUtil.copyFile(file, mine);
 		} else {
-			/* If the original grf is modified, we restore it from .mine so
-			 * that the user can still open it in the graph editor
+			/*
+			 * If the original grf is modified, we restore it from .mine so that
+			 * the user can still open it in the graph editor
 			 */
 			FileUtil.copyFile(mine, file);
 		}
@@ -150,7 +155,7 @@ public class SvnConflict {
 		base.delete();
 		merged.delete();
 		mine.renameTo(fileInConflict);
-		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		final SvnCommand cmd = new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
 	}
@@ -164,18 +169,18 @@ public class SvnConflict {
 		base.delete();
 		merged.delete();
 		other.renameTo(fileInConflict);
-		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		final SvnCommand cmd = new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
 	}
-	
+
 	public void useBase() {
 		fileInConflict.delete();
 		other.delete();
 		mine.delete();
 		merged.delete();
 		base.renameTo(fileInConflict);
-		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		final SvnCommand cmd = new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
 	}
@@ -185,7 +190,7 @@ public class SvnConflict {
 		mine.delete();
 		base.delete();
 		merged.delete();
-		SvnCommand cmd=new SvnCommand().resolved(fileInConflict);
+		final SvnCommand cmd = new SvnCommand().resolved(fileInConflict);
 		Launcher.execWithoutTracing(cmd);
 		fireConflictSolved();
 	}
@@ -195,17 +200,17 @@ public class SvnConflict {
 	 * false otherwise.
 	 */
 	public boolean merge(boolean onlyCosmetic) {
-		final GrfDiff3Command diff3 = new GrfDiff3Command().files(mine, base,
-				other).output(merged).onlyCosmetic(onlyCosmetic);
+		final GrfDiff3Command diff3 = new GrfDiff3Command()
+				.files(mine, base, other).output(merged)
+				.onlyCosmetic(onlyCosmetic);
 		final int res = Launcher.execWithoutTracing(diff3);
 		if (res != 0) {
 			merged.delete();
 			return false;
 		}
-		/*mine.delete();
-		base.delete();
-		other.delete();
-		fireConflictSolved();*/
+		/*
+		 * mine.delete(); base.delete(); other.delete(); fireConflictSolved();
+		 */
 		return true;
 	}
 }

@@ -82,12 +82,13 @@ class GraphPresentationDialog extends JDialog {
 
 	public GraphPresentationDialog(GraphPresentationInfo i,
 			boolean showRightToLeftCheckBox) {
-		this(UnitexFrame.mainFrame,i,showRightToLeftCheckBox);
+		this(UnitexFrame.mainFrame, i, showRightToLeftCheckBox);
 	}
-		/**
+
+	/**
 	 * Constructs a new <code>GraphPresentationMenu</code>
 	 */
-	public GraphPresentationDialog(Frame owner,GraphPresentationInfo i,
+	public GraphPresentationDialog(Frame owner, GraphPresentationInfo i,
 			boolean showRightToLeftCheckBox) {
 		super(owner, "Graph presentation", true);
 		setContentPane(constructPanel());
@@ -122,6 +123,7 @@ class GraphPresentationDialog extends JDialog {
 		final JPanel temp = new JPanel(new BorderLayout());
 		temp.setBorder(new TitledBorder("Antialiasing"));
 		antialiasingCheckBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				info.setAntialiasing(antialiasingCheckBox.isSelected());
 			}
@@ -130,6 +132,7 @@ class GraphPresentationDialog extends JDialog {
 		final JPanel temp2 = new JPanel(new GridLayout(1, 5));
 		final ButtonGroup g = new ButtonGroup();
 		westRadioBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (westRadioBox.isSelected()) {
 					info.setIconBarPosition(Preferences.ICON_BAR_WEST);
@@ -138,6 +141,7 @@ class GraphPresentationDialog extends JDialog {
 		});
 		g.add(westRadioBox);
 		eastRadioBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (eastRadioBox.isSelected()) {
 					info.setIconBarPosition(Preferences.ICON_BAR_EAST);
@@ -146,6 +150,7 @@ class GraphPresentationDialog extends JDialog {
 		});
 		g.add(eastRadioBox);
 		northRadioBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (northRadioBox.isSelected()) {
 					info.setIconBarPosition(Preferences.ICON_BAR_NORTH);
@@ -154,6 +159,7 @@ class GraphPresentationDialog extends JDialog {
 		});
 		g.add(northRadioBox);
 		southRadioBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (southRadioBox.isSelected()) {
 					info.setIconBarPosition(Preferences.ICON_BAR_SOUTH);
@@ -162,6 +168,7 @@ class GraphPresentationDialog extends JDialog {
 		});
 		g.add(southRadioBox);
 		noneRadioBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (noneRadioBox.isSelected()) {
 					info.setIconBarPosition(Preferences.NO_ICON_BAR);
@@ -236,6 +243,7 @@ class GraphPresentationDialog extends JDialog {
 		final JPanel colorPanel = new JPanel(g);
 		colorPanel.setBorder(new TitledBorder("Colors"));
 		final Action backgroundAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
 						"Background Color", info.getBackgroundColor());
@@ -247,6 +255,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton background = new JButton(backgroundAction);
 		final Action foregroundAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
 						"Foreground Color", info.getForegroundColor());
@@ -258,6 +267,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton foreground = new JButton(foregroundAction);
 		final Action subgraphAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
 						"Auxiliary Nodes Color", info.getSubgraphColor());
@@ -269,6 +279,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton subgraph = new JButton(subgraphAction);
 		final Action selectedAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
 						"Selected Nodes Color", info.getSelectedColor());
@@ -280,6 +291,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton selected = new JButton(selectedAction);
 		final Action commentAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Color c = JColorChooser.showDialog(UnitexFrame.mainFrame,
 						"Comment Nodes Color", info.getCommentColor());
@@ -372,6 +384,7 @@ class GraphPresentationDialog extends JDialog {
 		fontPanel.setBorder(new TitledBorder("Fonts"));
 		final GridBagConstraints gbc = new GridBagConstraints();
 		final Action inputAction = new AbstractAction("Input") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
 						.newFontDialog(info.getInput());
@@ -383,6 +396,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton input = new JButton(inputAction);
 		final Action outputAction = new AbstractAction("Output") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final FontInfo i = InternalFrameManager.getManager(null)
 						.newFontDialog(info.getOutput());
@@ -416,6 +430,7 @@ class GraphPresentationDialog extends JDialog {
 		final JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
 		buttonPanel.setBorder(new EmptyBorder(5, 5, 0, 0));
 		final Action defaultAction = new AbstractAction("Default") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame() == null)
@@ -427,6 +442,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton DEFAULT = new JButton(defaultAction);
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				info.setFilename(filenameCheckBox.isSelected());
 				info.setFrame(frameCheckBox.isSelected());
@@ -440,6 +456,7 @@ class GraphPresentationDialog extends JDialog {
 		};
 		final JButton OK = new JButton(okAction);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				info = null;
 				setVisible(false);
@@ -464,10 +481,10 @@ class GraphPresentationDialog extends JDialog {
 		color3.setBackground(info.getSubgraphColor());
 		color4.setBackground(info.getSelectedColor());
 		color5.setBackground(info.getCommentColor());
-		inputLabel.setText("  " + info.getInput().getFont().getFontName() + "  "
-				+ info.getInput().getSize() + "  ");
-		outputLabel.setText("  " + info.getOutput().getFont().getFontName() + "  "
-				+ info.getOutput().getSize() + "  ");
+		inputLabel.setText("  " + info.getInput().getFont().getFontName()
+				+ "  " + info.getInput().getSize() + "  ");
+		outputLabel.setText("  " + info.getOutput().getFont().getFontName()
+				+ "  " + info.getOutput().getSize() + "  ");
 		dateCheckBox.setSelected(info.isDate());
 		filenameCheckBox.setSelected(info.isFilename());
 		pathnameCheckBox.setSelected(info.isPathname());

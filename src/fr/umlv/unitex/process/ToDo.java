@@ -25,7 +25,7 @@ package fr.umlv.unitex.process;
  * used to define what must be done after a sequence of command lines in the
  * <code>ProcessInfoFrame.launchCommand()</code> method: after all processes
  * have been completed, a <code>toDo()</code> method is called to execute some
- * actions. 
+ * actions.
  * 
  * All classes or methods that create <code>ProcessInfoFrame</code> objects
  * should create their own object, extending the <code>DoAbstract</code> class.
@@ -43,10 +43,10 @@ public interface ToDo {
 	 * 
 	 * success will be true iff all commands returned 0.
 	 * 
-	 * NOTE: When a command sequence is executed within a ProcessInfoFrame,
-	 *       the toDo method is called only if there is no problem, so 
-	 *       'success' is always true. This parameter may be useful when
-	 *       some commands are invoked through another way.
+	 * NOTE: When a command sequence is executed within a ProcessInfoFrame, the
+	 * toDo method is called only if there is no problem, so 'success' is always
+	 * true. This parameter may be useful when some commands are invoked through
+	 * another way.
 	 */
 	public void toDo(boolean success);
 }

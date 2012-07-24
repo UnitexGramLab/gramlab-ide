@@ -80,6 +80,7 @@ public class TfstTagsFrame extends JInternalFrame {
 			}
 		});
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
 			}
@@ -91,6 +92,7 @@ public class TfstTagsFrame extends JInternalFrame {
 		final JPanel top2 = new JPanel(new BorderLayout());
 		top2.add(new JLabel("Regex filter: "), BorderLayout.WEST);
 		pattern.addCaretListener(new CaretListener() {
+			@Override
 			public void caretUpdate(CaretEvent e) {
 				try {
 					pattern.commitEdit();
@@ -104,6 +106,7 @@ public class TfstTagsFrame extends JInternalFrame {
 		top.add(top2);
 		final JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
 		final Action frequenceAction = new AbstractAction("By Frequence") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadTokens(new File(Config.getCurrentSntDir(),
 						"tfst_tags_by_freq.txt"));
@@ -117,6 +120,7 @@ public class TfstTagsFrame extends JInternalFrame {
 		};
 		final JButton byFrequence = new JButton(frequenceAction);
 		final Action orderAction = new AbstractAction("By Char Order") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadTokens(new File(Config.getCurrentSntDir(),
 						"tfst_tags_by_alph.txt"));

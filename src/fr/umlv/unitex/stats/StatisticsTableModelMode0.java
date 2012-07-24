@@ -87,14 +87,17 @@ public class StatisticsTableModelMode0 extends AbstractTableModel {
 		}
 	}
 
+	@Override
 	public int getColumnCount() {
 		return columnNames.length;
 	}
 
+	@Override
 	public int getRowCount() {
 		return data.size();
 	}
 
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		final Mode0Data d = data.get(rowIndex);
 		switch (columnIndex) {

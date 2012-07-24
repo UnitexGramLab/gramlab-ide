@@ -92,6 +92,7 @@ public class TextDicFrame extends TabbableInternalFrame {
 			@Override
 			public void internalFrameDeiconified(InternalFrameEvent e) {
 				final Timer t = new Timer(400, new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e2) {
 						dlfScrollbar.setValue(0);
 						dlcScrollbar.setValue(0);
@@ -104,16 +105,14 @@ public class TextDicFrame extends TabbableInternalFrame {
 		});
 		final boolean rightToLeftForText = ConfigManager.getManager()
 				.isRightToLeftForText(null);
-		dlf
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
-		dlc
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
-		err
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
+		dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
+		dlc.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
+		err.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				final Font font = ConfigManager.getManager().getTextFont(null);
 				dlf.setFont(font);
@@ -121,15 +120,12 @@ public class TextDicFrame extends TabbableInternalFrame {
 				err.setFont(font);
 				final boolean rightToLeftForText2 = ConfigManager.getManager()
 						.isRightToLeftForText(null);
-				dlf
-						.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
-								: ComponentOrientation.LEFT_TO_RIGHT);
-				dlc
-						.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
-								: ComponentOrientation.LEFT_TO_RIGHT);
-				err
-						.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
-								: ComponentOrientation.LEFT_TO_RIGHT);
+				dlf.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
+				dlc.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
+				err.setComponentOrientation(rightToLeftForText2 ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
 			}
 		});
 	}
@@ -217,6 +213,7 @@ public class TextDicFrame extends TabbableInternalFrame {
 		p.add(errLabel);
 		p.add(tags_err);
 		tags_err.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				err.reset();
 				loadERR();
@@ -308,15 +305,12 @@ public class TextDicFrame extends TabbableInternalFrame {
 		setTitle("Word Lists in " + text_dir);
 		final boolean rightToLeftForText = ConfigManager.getManager()
 				.isRightToLeftForText(null);
-		dlf
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
-		dlc
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
-		err
-				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
+		dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
+		dlc.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
+		err.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
 		dlfScroll
 				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
 						: ComponentOrientation.LEFT_TO_RIGHT);
@@ -327,6 +321,7 @@ public class TextDicFrame extends TabbableInternalFrame {
 				.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
 						: ComponentOrientation.LEFT_TO_RIGHT);
 		final Timer t = new Timer(400, new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dlfScrollbar.setValue(0);
 				dlcScrollbar.setValue(0);

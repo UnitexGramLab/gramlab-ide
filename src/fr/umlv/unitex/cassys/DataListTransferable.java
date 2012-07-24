@@ -73,6 +73,7 @@ class DataListTransferable implements Transferable {
 	 * @throws <code>UnsupportedFlavorException</code> if <code>flavor</code> is
 	 *         unsupported
 	 */
+	@Override
 	public Object getTransferData(DataFlavor flavor)
 			throws UnsupportedFlavorException, IOException {
 		if (flavor == null) {
@@ -92,6 +93,7 @@ class DataListTransferable implements Transferable {
 	 * 
 	 * @return a sorted array of <code>dataFlavor</code> supported
 	 */
+	@Override
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { DataListFlavor, DataFlavor.stringFlavor };
 	}
@@ -103,6 +105,7 @@ class DataListTransferable implements Transferable {
 	 *            the flavor to test
 	 * @return true if <code>flavor</code> is supported
 	 */
+	@Override
 	public boolean isDataFlavorSupported(DataFlavor flavor) {
 		return (flavor.equals(DataListFlavor) || flavor
 				.equals(DataFlavor.stringFlavor));

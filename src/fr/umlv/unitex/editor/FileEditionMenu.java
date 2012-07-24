@@ -44,6 +44,7 @@ public class FileEditionMenu extends JMenu {
 		fileManager = new FileManager();
 		final JMenuItem open = new JMenuItem("Open...");
 		open.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				openFile();
 				// save.setEnabled(true);
@@ -51,6 +52,7 @@ public class FileEditionMenu extends JMenu {
 		});
 		final JMenuItem newFile = new JMenuItem("New File");
 		newFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				newFile();
 				// save.setEnabled(true);
@@ -59,12 +61,14 @@ public class FileEditionMenu extends JMenu {
 		// conversion menu
 		final JMenuItem convert = new JMenuItem("Transcode Files");
 		convert.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				InternalFrameManager.getManager(null).newTranscodingFrame();
 			}
 		});
 		final JMenuItem closeAll = new JMenuItem("Close All");
 		closeAll.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager.getManager(null)
 						.closeAllFileEditionTextFrames();
@@ -95,5 +99,5 @@ public class FileEditionMenu extends JMenu {
 	void newFile() {
 		fileManager.newFile();
 	}
-	
+
 }

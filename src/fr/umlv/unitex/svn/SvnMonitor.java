@@ -34,23 +34,24 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 public class SvnMonitor {
-	
-	private File rootDir;
-	private boolean unitexMode;
-	
+
+	private final File rootDir;
+	private final boolean unitexMode;
+
 	/**
-	 * Under Unitex, we always monitor the current graph directory
-	 * as well as the graph repository, and so, 'dir' is ignored. 
-	 * Under gramlab, we just monitor 'dir' which would then be the 'src'
-	 * directory, because in Gramlab, if a repository is not in src, 
+	 * Under Unitex, we always monitor the current graph directory as well as
+	 * the graph repository, and so, 'dir' is ignored. Under gramlab, we just
+	 * monitor 'dir' which would then be the 'src' directory, because in
+	 * Gramlab, if a repository is not in src,
 	 */
-	public SvnMonitor(File dir,boolean unitexMode) {
-		this.rootDir=dir;
-		this.unitexMode=unitexMode;
+	public SvnMonitor(File dir, boolean unitexMode) {
+		this.rootDir = dir;
+		this.unitexMode = unitexMode;
 	}
-	
+
 	final DefaultListModel svnConflictModel = new DefaultListModel();
 	private final Timer timer = new Timer(5000, new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (ConfigManager.getManager().svnMonitoring(null)) {
 				monitor(true);
@@ -70,14 +71,17 @@ public class SvnMonitor {
 		}
 		if (unitexMode) {
 			monitor(Config.getCurrentGraphDir());
-			monitor(ConfigManager.getManager().getGraphRepositoryPath(null,null));
+			monitor(ConfigManager.getManager().getGraphRepositoryPath(null,
+					null));
 			if (!autoMonitoring || svnConflictModel.size() > 0) {
-				InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
+				InternalFrameManager.getManager(null).showSvnConflictsFrame(
+						this);
 			}
 		} else {
 			monitor(rootDir);
 			if (!autoMonitoring || svnConflictModel.size() > 0) {
-				InternalFrameManager.getManager(null).showSvnConflictsFrame(this);
+				InternalFrameManager.getManager(null).showSvnConflictsFrame(
+						this);
 			}
 		}
 	}
@@ -95,14 +99,16 @@ public class SvnMonitor {
 		}
 		final File svn = new File(dir, ".svn");
 		if (unitexMode && !svn.exists()) {
-			/* If the directory is not versioned with svn, there is nothing to
-			 * do. Note that we don't apply this criterion in Gramlab, since
-			 * we know for sure that we are in a versioned directory.
+			/*
+			 * If the directory is not versioned with svn, there is nothing to
+			 * do. Note that we don't apply this criterion in Gramlab, since we
+			 * know for sure that we are in a versioned directory.
 			 */
 			return;
 		}
 		/* We look for conflicts */
 		final File[] files = dir.listFiles(new FilenameFilter() {
+			@Override
 			public boolean accept(@SuppressWarnings("hiding") File dir, String s) {
 				return s.endsWith(".grf");
 			}
@@ -115,6 +121,7 @@ public class SvnMonitor {
 		}
 		/* And we explore recursively directories */
 		final File[] dirs = dir.listFiles(new FilenameFilter() {
+			@Override
 			public boolean accept(File d, String s) {
 				final File f = new File(d, s);
 				return f.isDirectory();

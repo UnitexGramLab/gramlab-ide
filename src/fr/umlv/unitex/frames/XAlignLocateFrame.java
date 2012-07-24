@@ -134,6 +134,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		final File graphDir = new File(new File(Config.getUserDir(), language),
 				"Graphs");
 		final Action setGraphAction = new AbstractAction("Set") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser grfAndFst2 = getGrfAndFst2DialogBox(graphDir);
 				final int returnVal = grfAndFst2.showOpenDialog(null);
@@ -179,6 +180,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		b.add(constructSearchLimitationPanel(), BorderLayout.WEST);
 		final XAlignLocateFrame f = this;
 		final Action searchAction = new AbstractAction("SEARCH") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				f.launchLocate();
 			}
@@ -249,8 +251,9 @@ public class XAlignLocateFrame extends JInternalFrame {
 			final File grf = new File(new File(Config.getUserDir(), language),
 					"regexp.grf");
 			final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
-					.enableLoopAndRecursionDetection(true).tokenizationMode(
-							null, grf).repositories().emitEmptyGraphWarning().displayGraphNames();
+					.enableLoopAndRecursionDetection(true)
+					.tokenizationMode(null, grf).repositories()
+					.emitEmptyGraphWarning().displayGraphNames();
 			commands.addCommand(grfCmd);
 			fst2 = new File(new File(Config.getUserDir(), language),
 					"regexp.fst2");
@@ -386,6 +389,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 			this.concordModel1 = concordModel;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			ConcordanceLoader.load(file, concordModel1);
 		}

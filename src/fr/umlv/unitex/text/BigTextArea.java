@@ -70,10 +70,9 @@ public class BigTextArea extends JPanel {
 		super(new BorderLayout());
 		model = m;
 		area = new JTextPane();
-		area
-				.setComponentOrientation(ConfigManager.getManager()
-						.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
-						: ComponentOrientation.LEFT_TO_RIGHT);
+		area.setComponentOrientation(ConfigManager.getManager()
+				.isRightToLeftForText(null) ? ComponentOrientation.RIGHT_TO_LEFT
+				: ComponentOrientation.LEFT_TO_RIGHT);
 		document = area.getStyledDocument();
 		normal = StyleContext.getDefaultStyleContext().getStyle(
 				StyleContext.DEFAULT_STYLE);
@@ -84,6 +83,7 @@ public class BigTextArea extends JPanel {
 		add(area);
 		add(scrollBar, BorderLayout.EAST);
 		area.addMouseWheelListener(new MouseWheelListener() {
+			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				final int scrollUnits = scrollBar.getBlockIncrement()
 						* e.getUnitsToScroll();
@@ -97,6 +97,7 @@ public class BigTextArea extends JPanel {
 			}
 		});
 		model.addListDataListener(new ListDataListener() {
+			@Override
 			public void intervalAdded(ListDataEvent e) {
 				final int oldMaximum = scrollBar.getMaximum();
 				scrollBar.setMaximum(model.getSize() - 1);
@@ -112,15 +113,18 @@ public class BigTextArea extends JPanel {
 				}
 			}
 
+			@Override
 			public void intervalRemoved(ListDataEvent e) {
 				// nothing to do
 			}
 
+			@Override
 			public void contentsChanged(ListDataEvent e) {
 				refresh();
 			}
 		});
 		scrollBar.addAdjustmentListener(new AdjustmentListener() {
+			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				refresh();
 			}
@@ -265,7 +269,7 @@ public class BigTextArea extends JPanel {
 	public void reset() {
 		model.reset();
 	}
-	
+
 	@Override
 	public void setComponentOrientation(ComponentOrientation o) {
 		area.setComponentOrientation(o);

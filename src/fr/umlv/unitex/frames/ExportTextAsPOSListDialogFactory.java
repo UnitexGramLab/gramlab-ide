@@ -28,7 +28,7 @@ class ExportTextAsPOSListDialogFactory {
 	private ExportTextAsPOSListDialog dialog;
 
 	ExportTextAsPOSListDialog newExportTextAsPOSListDialog(File output,
-			TagFilter filter,boolean delafStyle) {
+			TagFilter filter, boolean delafStyle) {
 		if (dialog == null) {
 			dialog = new ExportTextAsPOSListDialog(output, filter, delafStyle);
 		} else {

@@ -84,12 +84,12 @@ public class ConsoleEntry {
 	public String toString() {
 		return getContent();
 	}
-	
-	private boolean errorStreamEnded=false;
-	private boolean normalStreamEnded=false;
 
-	private Object lock=new Object();
-	
+	private boolean errorStreamEnded = false;
+	private boolean normalStreamEnded = false;
+
+	private final Object lock = new Object();
+
 	public boolean isErrorStreamEnded() {
 		synchronized (lock) {
 			return errorStreamEnded;
@@ -101,7 +101,7 @@ public class ConsoleEntry {
 			this.errorStreamEnded = errorStreamEnded;
 		}
 	}
-	
+
 	public boolean isNormalStreamEnded() {
 		synchronized (lock) {
 			return normalStreamEnded;
@@ -113,5 +113,5 @@ public class ConsoleEntry {
 			this.normalStreamEnded = normalStreamEnded;
 		}
 	}
-	
+
 }

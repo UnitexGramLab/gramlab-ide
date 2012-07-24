@@ -83,12 +83,14 @@ public class TokenTags {
 			final String s = tag.toString(f, delafStyle);
 			if (s == null)
 				return null;
-			boolean isTag=(s.contains(",") && s.contains("."));
+			final boolean isTag = (s.contains(",") && s.contains("."));
 			if (i > 0)
 				b.append(delafStyle ? " " : "+");
-			if (delafStyle && isTag) b.append("{");
+			if (delafStyle && isTag)
+				b.append("{");
 			b.append(s);
-			if (delafStyle && isTag) b.append("}");
+			if (delafStyle && isTag)
+				b.append("}");
 		}
 		return b.toString();
 	}

@@ -62,29 +62,30 @@ public abstract class AbstractMethodCommand extends CommandBuilder {
 		 */
 		return res;
 	}
-	
+
 	@Override
 	public ConsoleEntry logIntoConsole() {
 		return Console.addCommand(getCommandLine(), false, null);
 	}
-	
+
 	@Override
-	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry) {
-		boolean ret=execute();
-		if (ret || !p.isStopOnProblem()) return true;
-		if (p.getStderr()==null) return false;
+	public boolean executeCommand(final ExecParameters p,
+			final ConsoleEntry entry) {
+		final boolean ret = execute();
+		if (ret || !p.isStopOnProblem())
+			return true;
+		if (p.getStderr() == null)
+			return false;
 		try {
 			final AbstractMethodCommand c = this;
-			SwingUtilities
-					.invokeAndWait(new Runnable() {
-						public void run() {
-							p.getStderr()
-									.addLine(new Couple(
-											"Command failed: "
-													+ c.getCommandLine(),
-											true));
-						}
-					});
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					p.getStderr().addLine(
+							new Couple("Command failed: " + c.getCommandLine(),
+									true));
+				}
+			});
 		} catch (final InterruptedException e1) {
 			return false;
 		} catch (final InvocationTargetException e1) {

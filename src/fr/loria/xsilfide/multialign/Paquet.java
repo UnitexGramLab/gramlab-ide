@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-@SuppressWarnings("unchecked")
 class Paquet {
 	private String id;
 	private TreeSet<XmlId> contenu;
@@ -63,7 +62,7 @@ class Paquet {
 	}
 
 	private void setContent(Collection<XmlId> cont) {
-		contenu = new TreeSet(cont);
+		contenu = new TreeSet<XmlId>(cont);
 	}
 
 	public void translateIds(LoadAndPrepareTexts lpt, boolean inSource) {
@@ -100,7 +99,7 @@ class Paquet {
 	// présents dans le paquet.
 	public ArrayList<String> containedInPaquet(Collection<String> ids) {
 		String idP;
-		Iterator eP;
+		Iterator<XmlId> eP;
 		boolean trouve;
 		XmlId cour;
 		final ArrayList<String> res = new ArrayList<String>();
@@ -109,7 +108,7 @@ class Paquet {
 			eP = getContent().iterator();
 			trouve = false;
 			while (eP.hasNext() && !trouve) {
-				cour = (XmlId) eP.next();
+				cour = eP.next();
 				idP = cour.getLocalName();
 				trouve = idP.equals(id);
 			}

@@ -32,92 +32,105 @@ import fr.umlv.unitex.process.commands.MultiCommands;
  * This object launches a thread that will process all the given commands.
  * 
  * @author paumier
- *
+ * 
  */
 public class Executor extends Thread {
 
-	private ExecParameters parameters;
-	private boolean success=true;
-	private boolean finished=false;
-	ConsoleEntry entry=null;
-	
+	private final ExecParameters parameters;
+	private boolean success = true;
+	private boolean finished = false;
+	ConsoleEntry entry = null;
+
 	public Executor(ExecParameters parameters) {
-		this.parameters=parameters;
-		if (parameters.getCommands()==null || parameters.getCommands().numberOfCommands()==0) {
-			throw new IllegalArgumentException("Invalid null or empty MultiCommands");
+		this.parameters = parameters;
+		if (parameters.getCommands() == null
+				|| parameters.getCommands().numberOfCommands() == 0) {
+			throw new IllegalArgumentException(
+					"Invalid null or empty MultiCommands");
 		}
 		setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
 	}
 
 	@Override
 	public void run() {
-		MultiCommands commands=parameters.getCommands();
+		final MultiCommands commands = parameters.getCommands();
 		CommandBuilder command;
 		for (int i = 0; success && i < commands.numberOfCommands(); i++) {
 			if ((command = commands.getCommand(i)) != null) {
-				entry=null;
+				entry = null;
 				if (parameters.isTraceIntoConsole()) {
-					entry=command.logIntoConsole();
+					entry = command.logIntoConsole();
 				}
-				ToDoBeforeSingleCommand toDoBefore=command.getWhatToDoBefore();
-				if (toDoBefore!=null) toDoBefore.toDo(entry);
-				
-				boolean commandSuccessful=command.executeCommand(parameters,entry);
+				final ToDoBeforeSingleCommand toDoBefore = command
+						.getWhatToDoBefore();
+				if (toDoBefore != null)
+					toDoBefore.toDo(entry);
+
+				final boolean commandSuccessful = command.executeCommand(
+						parameters, entry);
 				if (!commandSuccessful) {
-					success=false;
+					success = false;
 				}
-				if (entry!=null && command.getType()==CommandBuilder.PROGRAM) {
-					while (!entry.isNormalStreamEnded() || !entry.isErrorStreamEnded()) {
-						/* We wait for the end of the stdout and stderr reading threads */
-						//System.err.println("stdout ended: "+entry.isNormalStreamEnded());
-						//System.err.println("stderr ended: "+entry.isErrorStreamEnded());
+				if (entry != null
+						&& command.getType() == CommandBuilder.PROGRAM) {
+					while (!entry.isNormalStreamEnded()
+							|| !entry.isErrorStreamEnded()) {
+						/*
+						 * We wait for the end of the stdout and stderr reading
+						 * threads
+						 */
+						// System.err.println("stdout ended: "+entry.isNormalStreamEnded());
+						// System.err.println("stderr ended: "+entry.isErrorStreamEnded());
 					}
 				}
-				ToDoAfterSingleCommand toDoAfter=command.getWhatToDoOnceCompleted();
-				if (toDoAfter!=null) toDoAfter.toDo(commandSuccessful,entry);
-				entry=null;
+				final ToDoAfterSingleCommand toDoAfter = command
+						.getWhatToDoOnceCompleted();
+				if (toDoAfter != null)
+					toDoAfter.toDo(commandSuccessful, entry);
+				entry = null;
 			}
 		}
-		ToDo DO=parameters.getDO();
-		if (DO!=null) {
+		final ToDo DO = parameters.getDO();
+		if (DO != null) {
 			DO.toDo(success);
 		}
-		finished=true;
+		finished = true;
 	}
 
-	
 	public boolean getSuccess() {
 		return success;
 	}
-	
+
 	@Override
 	public void interrupt() {
-		Process p=parameters.getProcess();
-		if (p!=null) {
+		final Process p = parameters.getProcess();
+		if (p != null) {
 			p.destroy();
-			if (entry!=null) {
+			if (entry != null) {
 				try {
 					if (EventQueue.isDispatchThread()) {
 						entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
-					} else EventQueue.invokeAndWait(new Runnable() {
-						public void run() {
-							entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
-						}
-					});
-				} catch (InterruptedException e) {
+					} else
+						EventQueue.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+								entry.addErrorMessage("*** COMMAND CANCELED BY USER ***");
+							}
+						});
+				} catch (final InterruptedException e) {
 					/* */
-				} catch (InvocationTargetException e) {
+				} catch (final InvocationTargetException e) {
 					/* */
 				}
 			}
 		}
-		success=false;
-		finished=true;
+		success = false;
+		finished = true;
 		super.interrupt();
 	}
 
 	public boolean hasFinished() {
 		return finished;
 	}
-	
+
 }

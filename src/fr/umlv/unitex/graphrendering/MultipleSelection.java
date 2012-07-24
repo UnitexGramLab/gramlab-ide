@@ -31,11 +31,11 @@ import java.util.Vector;
  */
 public class MultipleSelection {
 	/**
-	 * This field is used to avoid accidental multiple paste at the same position.
+	 * This field is used to avoid accidental multiple paste at the same
+	 * position.
 	 */
 	private int n = 0;
-	
-	
+
 	ArrayList<GraphBoxInfo> elem;
 
 	/**

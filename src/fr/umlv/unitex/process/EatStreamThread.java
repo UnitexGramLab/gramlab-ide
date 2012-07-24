@@ -32,13 +32,13 @@ public class EatStreamThread extends Thread {
 	private final OutputStream out;
 
 	public EatStreamThread(InputStream _in) {
-		this(_in,new NullOutputStream());
+		this(_in, new NullOutputStream());
 	}
 
 	public EatStreamThread(InputStream _in, OutputStream _out) {
 		in = _in;
-		if (_out==null) {
-			_out=new NullOutputStream();
+		if (_out == null) {
+			_out = new NullOutputStream();
 		}
 		out = _out;
 	}
@@ -53,7 +53,7 @@ public class EatStreamThread extends Thread {
 			if (!out.equals(System.out) && !out.equals(System.err)) {
 				out.close();
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			/* Nothing to do */
 		}
 	}

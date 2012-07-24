@@ -59,6 +59,7 @@ public class FindSentencePanel extends SearchPanel {
 		btFind.setPreferredSize(new JButton("Count occurrences")
 				.getPreferredSize());
 		class findSentence implements ActionListener {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					final Document docFind = getSentenceNumber().getDocument();

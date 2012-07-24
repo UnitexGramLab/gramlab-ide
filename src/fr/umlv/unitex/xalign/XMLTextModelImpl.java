@@ -47,10 +47,12 @@ public class XMLTextModelImpl implements XMLTextModel {
 		id = new HashMap<String, Integer>();
 	}
 
+	@Override
 	public int getSize() {
 		return sentences.size();
 	}
 
+	@Override
 	public String getElementAt(int i) {
 		if (i < 0 || i >= getSize()) {
 			throw new IndexOutOfBoundsException();
@@ -88,6 +90,7 @@ public class XMLTextModelImpl implements XMLTextModel {
 		return new String(tmp, 0, z, utf8);
 	}
 
+	@Override
 	public int getIndex(String s) {
 		final Integer i = id.get(s);
 		if (i == null) {
@@ -98,16 +101,19 @@ public class XMLTextModelImpl implements XMLTextModel {
 		return i;
 	}
 
+	@Override
 	public String getID(int index) {
 		return sentences.get(index).ID;
 	}
 
 	private final ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
+	@Override
 	public void addListDataListener(ListDataListener l) {
 		listeners.add(l);
 	}
 
+	@Override
 	public void removeListDataListener(ListDataListener l) {
 		listeners.remove(l);
 	}
@@ -118,6 +124,7 @@ public class XMLTextModelImpl implements XMLTextModel {
 		id.put(s.ID, n);
 	}
 
+	@Override
 	public void addSentences(List<Sentence> sentence) {
 		final int start = getSize();
 		for (final Sentence s : sentence) {
@@ -135,6 +142,7 @@ public class XMLTextModelImpl implements XMLTextModel {
 		}
 	}
 
+	@Override
 	public void reset() {
 		if (buffer != null)
 			buffer = null;
