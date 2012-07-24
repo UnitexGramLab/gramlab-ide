@@ -77,7 +77,7 @@ public class InternalFrameManager {
 	private final FrameFactory constructTfstFrameFactory = new FrameFactory(
 			ConstructTfstFrame.class);
 	private final FrameFactory constructSeqTfstFrameFactory = new FrameFactory(
-			ConstructSeqTfstFrame.class);
+			Seq2GrfFrame.class);
 	private final FrameFactory convertTfstToTextFrameFactory = new FrameFactory(
 			ConvertTfstToTextFrame.class);
 	private final FrameFactory dicLookupFrameFactory = new FrameFactory(
@@ -590,8 +590,8 @@ public class InternalFrameManager {
 		constructTfstFrameFactory.closeFrame();
 	}
 
-	public ConstructSeqTfstFrame newConstructSeqTfstFrame() {
-		return (ConstructSeqTfstFrame) setup(constructSeqTfstFrameFactory
+	public Seq2GrfFrame newConstructSeqTfstFrame() {
+		return (Seq2GrfFrame) setup(constructSeqTfstFrameFactory
 				.newFrame());
 	}
 
