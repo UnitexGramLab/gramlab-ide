@@ -57,13 +57,11 @@ public class SVG {
 
 	private void header() throws IOException {
 		writer.write("<?xml version=\"1.0\" standalone=\"yes\"?>\n");
-		writer
-				.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
+		writer.write("<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n");
 		writer.write("<svg width=\"" + graphicalZone.getWidth()
 				+ "\" height=\"" + graphicalZone.getHeight()
 				+ "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n");
-		writer
-				.write("<desc>\n\tThis SVG file was created by Unitex (http://igm.univ-mlv.fr/~unitex).\n");
+		writer.write("<desc>\n\tThis SVG file was created by Unitex (http://igm.univ-mlv.fr/~unitex).\n");
 		writer.write("\tIt represents the graph named: "
 				+ frame.getGraph().getAbsolutePath() + "\n</desc>\n");
 	}
@@ -76,8 +74,9 @@ public class SVG {
 				info.getBackgroundColor());
 		// if necessary, we draw the frame
 		if (info.isFrame()) {
-			drawRect(10, 10, graphicalZone.getWidth() - 20, graphicalZone
-					.getHeight() - 20, info.getForegroundColor(), 2);
+			drawRect(10, 10, graphicalZone.getWidth() - 20,
+					graphicalZone.getHeight() - 20, info.getForegroundColor(),
+					2);
 		}
 		// if necessary, we print the file name
 		final Font defaultFont = graphicalZone.getFont();
@@ -85,8 +84,8 @@ public class SVG {
 			if (info.isPathname())
 				drawText((frame.getGraph() != null) ? frame.getGraph()
 						.getAbsolutePath() : "", 20,
-						graphicalZone.getHeight() - 45, info.getForegroundColor(),
-						defaultFont);
+						graphicalZone.getHeight() - 45,
+						info.getForegroundColor(), defaultFont);
 			else
 				drawText((frame.getGraph() != null) ? frame.getGraph()
 						.getName() : "", 20, graphicalZone.getHeight() - 45,
@@ -145,7 +144,8 @@ public class SVG {
 	private void drawInitial(GenericGraphBox g) throws IOException {
 		drawOther(g);
 		if (!info.isRightToLeft())
-			drawLine(g.X_in, g.Y_in, g.X_in - 10, g.Y_in, info.getForegroundColor());
+			drawLine(g.X_in, g.Y_in, g.X_in - 10, g.Y_in,
+					info.getForegroundColor());
 		else
 			drawLine(g.X_out - 5, g.Y_out, g.X_out + 5, g.Y_out,
 					info.getForegroundColor());
@@ -278,8 +278,8 @@ public class SVG {
 				GenericGraphBox.variableFont);
 		graphics.setFont(info.getOutput().getFont());
 		drawText(g.transduction, g.X1 + 10, g.Y1 + g.Height
-				+ graphics.getFontMetrics().getHeight(), color,
-				info.getOutput().getFont());
+				+ graphics.getFontMetrics().getHeight(), color, info
+				.getOutput().getFont());
 	}
 
 	private void drawFinal(GenericGraphBox g) throws IOException {

@@ -146,7 +146,7 @@ public class XMLTools {
 			break;
 		}
 		}// end of switch
-		// recurse
+			// recurse
 		for (Node child = node.getFirstChild(); child != null; child = child
 				.getNextSibling()) {
 			walk(child);

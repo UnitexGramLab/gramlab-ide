@@ -50,6 +50,7 @@ class MultipleBoxesSelection implements Transferable {
 	 *            dataflavor identifying the data contained in the clipboard
 	 * @return the data, or <code>null</code> if the data type is invalid
 	 */
+	@Override
 	public Object getTransferData(DataFlavor f) {
 		if (f.getHumanPresentableName().equals("Unitex dataflavor"))
 			return content;
@@ -61,6 +62,7 @@ class MultipleBoxesSelection implements Transferable {
 	 * 
 	 * @return an array containing the dataflavor
 	 */
+	@Override
 	public DataFlavor[] getTransferDataFlavors() {
 		final DataFlavor t[] = new DataFlavor[2];
 		t[0] = new DataFlavor("unitex/boxes", "Unitex dataflavor");
@@ -76,6 +78,7 @@ class MultipleBoxesSelection implements Transferable {
 	 * @return <code>true</code> if the dataflavor is equal to the Unitex
 	 *         multiple box selection one, <code>false</code> otherwise
 	 */
+	@Override
 	public boolean isDataFlavorSupported(DataFlavor f) {
 		return f.getHumanPresentableName().equals("Unitex dataflavor");
 	}

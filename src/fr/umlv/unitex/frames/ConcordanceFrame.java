@@ -111,10 +111,8 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 			}
 		});
 		final JScrollPane scroll = new JScrollPane(list);
-		scroll
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scroll
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		final JPanel middle = new JPanel(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(scroll, BorderLayout.CENTER);
@@ -190,6 +188,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		selectionModel = table.getSelectionModel();
 		selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		selectionModel.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				final int n = selectionModel.getMinSelectionIndex();
 				if (n == -1) {
@@ -228,6 +227,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		setSize(d);
 		FileUtil.getHtmlPageTitle(concor);
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				list.setFont(ConfigManager.getManager()
 						.getConcordanceFont(null));
@@ -236,17 +236,20 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		list.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				TextFrame fTmp = InternalFrameManager.getManager(null)
 						.getTextFrame();
-				if (fTmp==null) {
-					/* In Gramlab, a concordance may be open while the text 
+				if (fTmp == null) {
+					/*
+					 * In Gramlab, a concordance may be open while the text
 					 * frame is not
 					 */
-					fTmp=InternalFrameManager.getManager(null)
-					.newTextFrame(ConfigManager.getManager().getCurrentSnt(null),false);
+					fTmp = InternalFrameManager.getManager(null).newTextFrame(
+							ConfigManager.getManager().getCurrentSnt(null),
+							false);
 				}
-				final TextFrame f=fTmp;
+				final TextFrame f = fTmp;
 				final String s = (String) list.getSelectedValue();
 				if (s == null || e.getValueIsAdjusting())
 					return;

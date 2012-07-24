@@ -102,6 +102,7 @@ public class PreprocessDialog extends JDialog {
 		setContentPane(preprocessingParent = constructPanel());
 		refreshOnLanguageChange();
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				refreshOnLanguageChange();
 			}
@@ -190,6 +191,7 @@ public class PreprocessDialog extends JDialog {
 				.getPreferredSize().height));
 		panel.add(textField, BorderLayout.CENTER);
 		final Action setAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser chooser = Config.getReplaceDialogBox();
 				final int returnVal = chooser.showOpenDialog(null);
@@ -239,6 +241,7 @@ public class PreprocessDialog extends JDialog {
 		final JPanel buttons = new JPanel(new GridLayout(3, 1));
 		buttons.setBorder(new EmptyBorder(8, 8, 2, 2));
 		final Action goAction = new AbstractAction("GO!") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				preprocess();
@@ -248,6 +251,7 @@ public class PreprocessDialog extends JDialog {
 		goButton.setMnemonic(KeyEvent.VK_G);
 		final Action cancelButIndexAction = new AbstractAction(
 				"Cancel but tokenize text") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// if the user has clicked on cancel but tokenize, we must
 				// tokenize anyway
@@ -258,6 +262,7 @@ public class PreprocessDialog extends JDialog {
 		final JButton cancelButIndex = new JButton(cancelButIndexAction);
 		cancelButIndex.setMnemonic(KeyEvent.VK_T);
 		final Action cancelAction = new AbstractAction("Cancel and close text") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// if the user has clicked on cancel, we do nothing
 				setVisible(false);
@@ -330,9 +335,12 @@ public class PreprocessDialog extends JDialog {
 
 	private MultiCommands applyDefaultDictionaries(final MultiCommands commands) {
 		DicoCommand dicoCmd;
-		dicoCmd = new DicoCommand().snt(Config.getCurrentSnt()).alphabet(
-				ConfigManager.getManager().getAlphabet(null)).morphologicalDic(
-				ConfigManager.getManager().morphologicalDictionaries(null));
+		dicoCmd = new DicoCommand()
+				.snt(Config.getCurrentSnt())
+				.alphabet(ConfigManager.getManager().getAlphabet(null))
+				.morphologicalDic(
+						ConfigManager.getManager().morphologicalDictionaries(
+								null));
 		if (ConfigManager.getManager().isKorean(null)) {
 			dicoCmd = dicoCmd.korean();
 		}
@@ -449,8 +457,8 @@ public class PreprocessDialog extends JDialog {
 				final File grf = new File(grfName);
 				final Grf2Fst2Command grfCmd = new Grf2Fst2Command().grf(grf)
 						.enableLoopAndRecursionDetection(true)
-						.tokenizationMode(null, grf)
-						.emitEmptyGraphWarning().displayGraphNames().repositories();
+						.tokenizationMode(null, grf).emitEmptyGraphWarning()
+						.displayGraphNames().repositories();
 				commands.addCommand(grfCmd);
 				String fst2Name = grfName.substring(0, grfName.length() - 3);
 				fst2Name = fst2Name + "fst2";
@@ -462,9 +470,10 @@ public class PreprocessDialog extends JDialog {
 				}
 			}
 		}
-		Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
-				Config.getCurrentSnt()).alphabet(
-				ConfigManager.getManager().getAlphabet(null)).clean(true);
+		Txt2TfstCommand txtCmd = new Txt2TfstCommand()
+				.text(Config.getCurrentSnt())
+				.alphabet(ConfigManager.getManager().getAlphabet(null))
+				.clean(true);
 		if (ConfigManager.getManager().isKorean(null)) {
 			txtCmd = txtCmd.korean();
 		}
@@ -479,9 +488,8 @@ public class PreprocessDialog extends JDialog {
 			File inputOffsets, File outputOffsets) {
 		final File f = new File(replaceName.getText());
 		if (!f.exists()) {
-			commands
-					.addCommand(new ErrorMessageCommand(
-							"*** WARNING: Replace step skipped because the graph was not found ***\n"));
+			commands.addCommand(new ErrorMessageCommand(
+					"*** WARNING: Replace step skipped because the graph was not found ***\n"));
 		} else {
 			final String grfName = replaceName.getText();
 			File fst2;
@@ -504,12 +512,14 @@ public class PreprocessDialog extends JDialog {
 				}
 				fst2 = new File(grfName);
 			}
-			Fst2TxtCommand cmd = new Fst2TxtCommand().text(
-					Config.getCurrentSnt()).fst2(fst2).alphabet(
-					ConfigManager.getManager().getAlphabet(null)).mode(false);
-			cmd = cmd.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
-			cmd=cmd.morphologicalUseOfSpace(ConfigManager.getManager()
-						.isMorphologicalUseOfSpaceAllowed(null));
+			Fst2TxtCommand cmd = new Fst2TxtCommand()
+					.text(Config.getCurrentSnt()).fst2(fst2)
+					.alphabet(ConfigManager.getManager().getAlphabet(null))
+					.mode(false);
+			cmd = cmd.charByChar(ConfigManager.getManager()
+					.isCharByCharLanguage(null));
+			cmd = cmd.morphologicalUseOfSpace(ConfigManager.getManager()
+					.isMorphologicalUseOfSpaceAllowed(null));
 			if (inputOffsets != null) {
 				cmd = cmd.inputOffsets(inputOffsets);
 			}
@@ -525,9 +535,8 @@ public class PreprocessDialog extends JDialog {
 			File inputOffsets, File outputOffsets) {
 		final File sentence = new File(sentenceName.getText());
 		if (!sentence.exists()) {
-			commands
-					.addCommand(new ErrorMessageCommand(
-							"*** WARNING: sentence delimitation skipped because the graph was not found ***\n"));
+			commands.addCommand(new ErrorMessageCommand(
+					"*** WARNING: sentence delimitation skipped because the graph was not found ***\n"));
 		} else {
 			final String grfName = sentenceName.getText();
 			File fst2;
@@ -545,8 +554,8 @@ public class PreprocessDialog extends JDialog {
 				fst2 = new File(fst2Name);
 				// and flatten it for better performance
 				// (Fst2Txt is slow with complex graphs)
-				final FlattenCommand flattenCmd = new FlattenCommand().fst2(
-						fst2).resultType(false).depth(5);
+				final FlattenCommand flattenCmd = new FlattenCommand()
+						.fst2(fst2).resultType(false).depth(5);
 				commands.addCommand(flattenCmd);
 			} else {
 				if (!(grfName.substring(grfName.length() - 4, grfName.length())
@@ -555,12 +564,14 @@ public class PreprocessDialog extends JDialog {
 				}
 				fst2 = new File(grfName);
 			}
-			Fst2TxtCommand cmd = new Fst2TxtCommand().text(
-					Config.getCurrentSnt()).fst2(fst2).alphabet(
-					ConfigManager.getManager().getAlphabet(null)).mode(true);
-			cmd = cmd.charByChar(ConfigManager.getManager().isCharByCharLanguage(null));
+			Fst2TxtCommand cmd = new Fst2TxtCommand()
+					.text(Config.getCurrentSnt()).fst2(fst2)
+					.alphabet(ConfigManager.getManager().getAlphabet(null))
+					.mode(true);
+			cmd = cmd.charByChar(ConfigManager.getManager()
+					.isCharByCharLanguage(null));
 			cmd = cmd.morphologicalUseOfSpace(ConfigManager.getManager()
-						.isMorphologicalUseOfSpaceAllowed(null));
+					.isMorphologicalUseOfSpaceAllowed(null));
 			if (inputOffsets != null) {
 				cmd = cmd.inputOffsets(inputOffsets);
 			}

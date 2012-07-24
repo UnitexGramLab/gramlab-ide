@@ -64,10 +64,10 @@ public interface ConfigModel {
 	public GraphPresentationInfo getGraphPresentationPreferences(String language);
 
 	public File getDefaultGraphRepositoryPath(String language);
-	
+
 	/* name==null -> default repository */
-	public File getGraphRepositoryPath(String language,String repositoryName);
-	
+	public File getGraphRepositoryPath(String language, String repositoryName);
+
 	public ArrayList<NamedRepository> getNamedRepositories(String language);
 
 	public File getLogDirectory(String language);
@@ -113,11 +113,11 @@ public interface ConfigModel {
 	public boolean maximizeGraphFrames();
 
 	public File getCurrentSnt(String language);
-	
+
 	public File getInflectionDir();
-	
+
 	public SvnMonitor getSvnMonitor(File f);
 
 	public void userRefusedClosingFrame();
-	
+
 }

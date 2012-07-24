@@ -83,6 +83,7 @@ public class Dependancies {
 	private static void getAllGraphDependencies(File rootDir,
 			HashMap<File, ArrayList<GraphCall>> map) {
 		final File[] files = rootDir.listFiles(new FilenameFilter() {
+			@Override
 			public boolean accept(File dir, String name) {
 				final File tmp = new File(dir, name);
 				return name.endsWith(".grf") || tmp.isDirectory();
@@ -129,8 +130,8 @@ public class Dependancies {
 		for (int i = 0; i < io.getBoxes().size(); i++) {
 			final boolean useful = accessible[i]
 					&& coaccessible[i] == TESTED_TRUE;
-			addSubgraphs(subgraphs, io.getBoxes().get(i), grf, emitErrorMessages,
-					useful, main, whoCallsMode);
+			addSubgraphs(subgraphs, io.getBoxes().get(i), grf,
+					emitErrorMessages, useful, main, whoCallsMode);
 		}
 		return subgraphs;
 	}
@@ -222,7 +223,8 @@ public class Dependancies {
 		/* replace ':' by '/' resp. '\\' */
 		if (s.startsWith(":")) {
 			// if the graph is located in the package repository
-			final File repository = new File(GenericGraphBox.getNormalizeGraphCall(s));
+			final File repository = new File(
+					GenericGraphBox.getNormalizeGraphCall(s));
 			return new File(repository, s.substring(1));
 		}
 		// otherwise

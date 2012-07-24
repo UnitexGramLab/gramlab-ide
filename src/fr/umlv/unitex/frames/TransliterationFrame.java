@@ -118,6 +118,7 @@ public class TransliterationFrame extends JInternalFrame {
 		final JPanel rightPanel = new JPanel(new GridLayout(2, 1));
 		rightPanel.setBorder(new EmptyBorder(12, 5, 5, 7));
 		final Action goAction = new AbstractAction("Transliterate") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				transliterate();
@@ -125,6 +126,7 @@ public class TransliterationFrame extends JInternalFrame {
 		};
 		final JButton GO = new JButton(goAction);
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
@@ -167,8 +169,8 @@ public class TransliterationFrame extends JInternalFrame {
 			e.printStackTrace();
 		}
 		setVisible(false);
-		Launcher.exec(command.getBuilder(), true, new ReloadDicDo(Config
-				.getCurrentDELA()));
+		Launcher.exec(command.getBuilder(), true,
+				new ReloadDicDo(Config.getCurrentDELA()));
 	}
 
 	class ReloadDicDo implements ToDo {
@@ -178,6 +180,7 @@ public class TransliterationFrame extends JInternalFrame {
 			this.dela = dela;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dela).newDelaFrame(dela);
 		}

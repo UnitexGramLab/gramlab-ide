@@ -74,7 +74,8 @@ public class ConcordanceAsListModel extends AbstractListModel {
 		}
 		channel = stream.getChannel();
 		try {
-			buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, getDataLength());
+			buffer = channel.map(FileChannel.MapMode.READ_ONLY, 0,
+					getDataLength());
 		} catch (final IOException e) {
 			e.printStackTrace();
 			return;
@@ -159,6 +160,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 		this.HTML_CONTROL_LINES = HTML_START_LINES + HTML_END_LINES;
 	}
 
+	@Override
 	public int getSize() {
 		final int size = numberOfEOL - HTML_CONTROL_LINES;
 		if (size < 0)
@@ -193,6 +195,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 	/**
 	 * Returns the text corresponding to the concordance line #i.
 	 */
+	@Override
 	public Object getElementAt(int i) {
 		final int realIndex = i + HTML_START_LINES;
 		return getElementReallyAt(realIndex);

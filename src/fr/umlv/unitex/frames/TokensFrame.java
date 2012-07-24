@@ -68,6 +68,7 @@ public class TokensFrame extends TabbableInternalFrame {
 			}
 		});
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
 			}
@@ -77,6 +78,7 @@ public class TokensFrame extends TabbableInternalFrame {
 	private JPanel constructButtonsPanel() {
 		final JPanel buttonsPanel = new JPanel(new GridLayout(1, 2));
 		final Action frequenceAction = new AbstractAction("By Frequence") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadTokens(new File(Config.getCurrentSntDir(),
 						"tok_by_freq.txt"));
@@ -90,6 +92,7 @@ public class TokensFrame extends TabbableInternalFrame {
 		};
 		final JButton byFrequence = new JButton(frequenceAction);
 		final Action orderAction = new AbstractAction("By Char Order") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadTokens(new File(Config.getCurrentSntDir(),
 						"tok_by_alph.txt"));

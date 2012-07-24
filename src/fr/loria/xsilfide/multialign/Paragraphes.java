@@ -36,15 +36,15 @@ import java.util.Vector;
 @SuppressWarnings("unchecked")
 class Paragraphes {
 	private Dist srcLengths, tarLengths; // lengths of paragraphs
-	public static Vector Linking = new Vector(); // links of sentences within a
+	public static Vector<Object> Linking = new Vector<Object>(); // links of sentences within a
 													// test
-	public static Vector Links = new Vector(); // links of the two texts
+	public static Vector<Object> Links = new Vector<Object>(); // links of the two texts
 	// csSrc,csTar: counter for marking current position in sentence's vectors
 	private static int csSrc = 0;
 	private static int csTar = 0;
 
-	public Paragraphes(Vector paraSrc, Vector paraTar, Vector stceSrc,
-			Vector stceTar, int sMax, int tMax, Cognates cogn,
+	public Paragraphes(Vector<Object> paraSrc, Vector<Object> paraTar, Vector<Object> stceSrc,
+			Vector<Object> stceTar, int sMax, int tMax, Cognates cogn,
 			LoadAndPrepareTexts lpt) {
 		final int nbSrc = paraSrc.size();
 		final int nbTar = paraTar.size();
@@ -54,26 +54,26 @@ class Paragraphes {
 			int cSrc = 0, cTar = 0;
 			int lgSrc = 0, lgTar = 0;
 			for (int i = 0; i < nbSrc; i++) {
-				lgSrc += (Integer) (((Vector) paraSrc.elementAt(i))
+				lgSrc += (Integer) (((Vector<Object>) paraSrc.elementAt(i))
 						.elementAt(1));
 			}
 			for (int i = 0; i < nbTar; i++) {
-				lgTar += (Integer) (((Vector) paraTar.elementAt(i))
+				lgTar += (Integer) (((Vector<Object>) paraTar.elementAt(i))
 						.elementAt(1));
 			}
 			final int ratioSrc = lgSrc / ratio, ratioTar = lgTar / ratio;
 			while (true) {
-				final Vector tmpSrc = new Vector();
-				final Vector tmpTar = new Vector();
+				final Vector<Object> tmpSrc = new Vector<Object>();
+				final Vector<Object> tmpTar = new Vector<Object>();
 				int tmpLgSrc = 0, tmpLgTar = 0;
 				while ((cSrc < nbSrc) && (tmpLgSrc < ratioSrc)) {
-					final Vector buf = (Vector) paraSrc.elementAt(cSrc);
+					final Vector<Object> buf = (Vector<Object>) paraSrc.elementAt(cSrc);
 					cSrc++;
 					tmpLgSrc += (Integer) buf.elementAt(1);
 					tmpSrc.addElement(buf);
 				}
 				while ((cTar < nbTar) && (tmpLgTar < ratioTar)) {
-					final Vector buf = (Vector) paraTar.elementAt(cTar);
+					final Vector<Object> buf = (Vector<Object>) paraTar.elementAt(cTar);
 					cTar++;
 					tmpLgTar += (Integer) buf.elementAt(1);
 					tmpTar.addElement(buf);
@@ -123,22 +123,24 @@ class Paragraphes {
 		}
 	}
 
-	void getLengths(Vector paraSrc, Vector paraTar) {
+	void getLengths(Vector<Object> paraSrc, Vector<Object> paraTar) {
 		final int ns = paraSrc.size(), nt = paraTar.size();
 		srcLengths = new Dist(ns);
 		tarLengths = new Dist(nt);
 		for (int i = 0; i < ns; i++) {
-			srcLengths.setDistAt(i, (Integer) ((Vector) paraSrc.elementAt(i))
-					.elementAt(1) / 10);
+			srcLengths
+					.setDistAt(i, (Integer) ((Vector<Object>) paraSrc.elementAt(i))
+							.elementAt(1) / 10);
 		}
 		for (int i = 0; i < nt; i++) {
-			tarLengths.setDistAt(i, (Integer) ((Vector) paraTar.elementAt(i))
-					.elementAt(1) / 10);
+			tarLengths
+					.setDistAt(i, (Integer) ((Vector<Object>) paraTar.elementAt(i))
+							.elementAt(1) / 10);
 		}
 	}
 
-	void alignSentences(Vector srcParas, Vector tarParas, Path path,
-			Vector srcSentences, Vector tarSentences, int sMax, int tMax,
+	void alignSentences(Vector<Object> srcParas, Vector<Object> tarParas, Path path,
+			Vector<Object> srcSentences, Vector<Object> tarSentences, int sMax, int tMax,
 			Cognates cogn, LoadAndPrepareTexts lpt) {
 		// csSrc,csTar: counter for marking current position in sentence's
 		// vectors
@@ -152,21 +154,21 @@ class Paragraphes {
 						.println("\nWarning: A paragraph may be without segment in the source document");
 				break;
 			}
-			final Vector Src = new Vector(), Tar = new Vector();
+			final Vector<Object> Src = new Vector<Object>(), Tar = new Vector<Object>();
 			final Point pt = path.getPointAt(i);
 			// get sentences in the source
 			for (int j = 0; j < pt.x; j++) {
-				final Vector para = (Vector) srcParas.elementAt(cpSrc);
+				final Vector<Object> para = (Vector<Object>) srcParas.elementAt(cpSrc);
 				final String id = para.elementAt(0).toString();
 				if ((Integer) para.elementAt(1) > 0) {
-					while (!((Vector) srcSentences.elementAt(csSrc)).elementAt(
-							0).toString().startsWith(id)) {
+					while (!((Vector<Object>) srcSentences.elementAt(csSrc))
+							.elementAt(0).toString().startsWith(id)) {
 						csSrc++;
 						if (csSrc == sMax)
 							break;
 					}
 					if (csSrc < sMax)
-						while (((Vector) srcSentences.elementAt(csSrc))
+						while (((Vector<Object>) srcSentences.elementAt(csSrc))
 								.elementAt(0).toString().startsWith(id)) {
 							Src.addElement(srcSentences.elementAt(csSrc));
 							csSrc++;
@@ -176,24 +178,24 @@ class Paragraphes {
 				}
 				cpSrc++;
 			} // endfor source
-			// get sentences in the target
+				// get sentences in the target
 			for (int j = 0; j < pt.y; j++) {
 				if (csTar == tMax) {
 					System.err
 							.println("\nWarning: A paragraph may be without segment in the target document");
 					break;
 				}
-				final Vector para = (Vector) tarParas.elementAt(cpTar);
+				final Vector<Object> para = (Vector<Object>) tarParas.elementAt(cpTar);
 				final String id = para.elementAt(0).toString();
 				if ((Integer) para.elementAt(1) > 0) {
-					while (!((Vector) tarSentences.elementAt(csTar)).elementAt(
-							1).toString().startsWith(id)) {
+					while (!((Vector<Object>) tarSentences.elementAt(csTar))
+							.elementAt(1).toString().startsWith(id)) {
 						csTar++;
 						if (csTar == tMax)
 							break;
 					}
 					if (csTar < tMax)
-						while (((Vector) tarSentences.elementAt(csTar))
+						while (((Vector<Object>) tarSentences.elementAt(csTar))
 								.elementAt(1).toString().startsWith(id)) {
 							Tar.addElement(tarSentences.elementAt(csTar));
 							csTar++;
@@ -203,7 +205,7 @@ class Paragraphes {
 				}
 				cpTar++;
 			} // enfor target
-			// align Src and Tar
+				// align Src and Tar
 			new Sentences(Src, Tar, cogn, lpt);
 			// System.out.println(stc.Links.toString());
 			// System.out.println(stc.Linking.toString());

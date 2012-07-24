@@ -287,7 +287,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	@Override
 	public void paintComponent(Graphics f_old) {
 		final Graphics2D f = (Graphics2D) f_old;
-		f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		f.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
 				getGraphPresentationInfo().isAntialiasing() ? RenderingHints.VALUE_ANTIALIAS_ON
 						: RenderingHints.VALUE_ANTIALIAS_OFF);
 		f.setColor(new Color(205, 205, 205));
@@ -325,6 +326,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	 * @param pageIndex
 	 *            the page index
 	 */
+	@Override
 	public int print(Graphics g, PageFormat p, int pageIndex) {
 		if (pageIndex != 0)
 			return Printable.NO_SUCH_PAGE;

@@ -35,8 +35,8 @@ import java.util.Vector;
 
 @SuppressWarnings("unchecked")
 class Div {
-	private Vector Linking = new Vector(); // links of sentences within a text
-	private Vector Links = new Vector(); // links of the two texts
+	private Vector<Object> Linking = new Vector<Object>(); // links of sentences within a text
+	private Vector<Object> Links = new Vector<Object>(); // links of the two texts
 	private final int spMax;
 	private final int tpMax;
 	private int cpSrc = 0;
@@ -44,8 +44,8 @@ class Div {
 	private int level = 0; // counter for saving the current level
 	private Dist srcLengths, tarLengths; // lengths of divisions to align
 
-	public Div(Vector divSrc, Vector divTar, Vector paraSrc, Vector paraTar,
-			Vector stceSrc, Vector stceTar, Cognates cogn,
+	public Div(Vector<Object> divSrc, Vector<Object> divTar, Vector<Object> paraSrc, Vector<Object> paraTar,
+			Vector<Object> stceSrc, Vector<Object> stceTar, Cognates cogn,
 			LoadAndPrepareTexts lpt) {
 		// B.G : normalement, divSrc, divTar, paraSrc, paraTar, stceSrc
 		// stceTar sont des vecteurs contenant à la fois les id et les
@@ -64,25 +64,25 @@ class Div {
 		 * des cognates. Cela signfie qu'il faut traduire les cognates
 		 * concernant ce niveau de structures en contraintes de chemin.
 		 */
-		final Vector Src_Tar = new Vector(); // vector of pairs of src and tar
+		final Vector<Object> Src_Tar = new Vector<Object>(); // vector of pairs of src and tar
 												// div to align
-		Vector src = (Vector) divSrc.elementAt(0);
-		Vector tar = (Vector) divTar.elementAt(0);
-		final Vector tmp = new Vector();
+		Vector<Object> src = (Vector<Object>) divSrc.elementAt(0);
+		Vector<Object> tar = (Vector<Object>) divTar.elementAt(0);
+		final Vector<Object> tmp = new Vector<Object>();
 		tmp.addElement(src);
 		tmp.addElement(tar);
 		Src_Tar.addElement(tmp);
 		while ((level < nb1 - 1) || (level < nb2 - 1)) { // repeat for each
 															// internal level
-			Vector nextSrc = new Vector();
-			Vector nextTar = new Vector();
+			Vector<Object> nextSrc = new Vector<Object>();
+			Vector<Object> nextTar = new Vector<Object>();
 			// MultiAlign.debug.println("au cours:"+Src_Tar.toString());
 			final int size = Src_Tar.size();
 			// get divisions at the next level in the src and the tar
 			if (level < nb1 - 1)
-				nextSrc = (Vector) divSrc.elementAt(level + 1);
+				nextSrc = (Vector<Object>) divSrc.elementAt(level + 1);
 			if (level < nb2 - 1)
-				nextTar = (Vector) divTar.elementAt(level + 1);
+				nextTar = (Vector<Object>) divTar.elementAt(level + 1);
 			int cNextSrc = 0, cNextTar = 0; // repere in the next level
 			System.out
 					.println("\r                                                               ");
@@ -92,30 +92,30 @@ class Div {
 			for (int count = 0; count < size; count++) {
 				if (count % mod == 0)
 					System.out.print(".");
-				final Vector buf = (Vector) Src_Tar.elementAt(0);
+				final Vector<Object> buf = (Vector<Object>) Src_Tar.elementAt(0);
 				Src_Tar.removeElementAt(0);
-				src = (Vector) buf.elementAt(0);
-				tar = (Vector) buf.elementAt(1);
+				src = (Vector<Object>) buf.elementAt(0);
+				tar = (Vector<Object>) buf.elementAt(1);
 				final Path cur_path = alignDiv(src, tar, cogn);
 				// MultiAlign.debug.println("Niveau "+level+":"+cur_path.toString());
 				int cSrc = 0, cTar = 0; // counter for passing the src and tar
 										// following the path
 				for (int i = 0; i < cur_path.getNumberOfPoint(); i++) {
 					final Point p = cur_path.getPointAt(i);
-					final Vector newSrc = new Vector(), newTar = new Vector();
+					final Vector<Object> newSrc = new Vector<Object>(), newTar = new Vector<Object>();
 					// get divisions in the next level to align
 					// In the source:
 					for (int j = 0; j < p.x; j++) {
 						// get the div contained in this point of path
-						final Vector current_div = (Vector) src.elementAt(cSrc
+						final Vector<Object> current_div = (Vector<Object>) src.elementAt(cSrc
 								+ j);
 						final String idOfDiv = current_div.elementAt(0)
 								.toString();
-						int index = new Integer(idOfDiv.substring(1, idOfDiv
-								.length()));
+						int index = new Integer(idOfDiv.substring(1,
+								idOfDiv.length()));
 						while (cNextSrc < nextSrc.size()) {
 							// search children of current_div in the next level
-							final Vector sdiv = (Vector) nextSrc
+							final Vector<Object> sdiv = (Vector<Object>) nextSrc
 									.elementAt(cNextSrc);
 							final String id = sdiv.elementAt(0).toString();
 							// B.G. C'est évidemment faux !
@@ -134,15 +134,15 @@ class Div {
 					// In the target:
 					for (int j = 0; j < p.y; j++) {
 						// get the div contained in this point of path
-						final Vector current_div = (Vector) tar.elementAt(cTar
+						final Vector<Object> current_div = (Vector<Object>) tar.elementAt(cTar
 								+ j);
 						final String idOfDiv = current_div.elementAt(0)
 								.toString();
-						int index = new Integer(idOfDiv.substring(1, idOfDiv
-								.length()));
+						int index = new Integer(idOfDiv.substring(1,
+								idOfDiv.length()));
 						while (cNextTar < nextTar.size()) {
 							// search children of current_div in the next level
-							final Vector sdiv = (Vector) nextTar
+							final Vector<Object> sdiv = (Vector<Object>) nextTar
 									.elementAt(cNextTar);
 							final String id = sdiv.elementAt(0).toString();
 							// B.G. C'est évidemment faux ici aussi !
@@ -158,7 +158,7 @@ class Div {
 																	// not child
 							newTar.addElement(current_div);
 					}
-					final Vector src_tar = new Vector();
+					final Vector<Object> src_tar = new Vector<Object>();
 					src_tar.addElement(newSrc);
 					src_tar.addElement(newTar);
 					Src_Tar.addElement(src_tar);
@@ -169,8 +169,8 @@ class Div {
 			System.out.println();
 			level++;
 		} // end while level
-		// MultiAlign.debug.println("Dernier niveau:"+Src_Tar.toString());
-		// System.exit(1);
+			// MultiAlign.debug.println("Dernier niveau:"+Src_Tar.toString());
+			// System.exit(1);
 		spMax = paraSrc.size();
 		tpMax = paraTar.size();
 		// now we align the last level of division and step by paragraph level
@@ -181,10 +181,10 @@ class Div {
 			System.out.print("\rAligning div's (" + (count + 1) + "/" + size
 					+ "): ");
 			// align each pair of division's vector
-			final Vector src_tar = (Vector) Src_Tar.elementAt(count);
+			final Vector<Object> src_tar = (Vector<Object>) Src_Tar.elementAt(count);
 			// get source divisions and target divisions
-			src = (Vector) src_tar.elementAt(0);
-			tar = (Vector) src_tar.elementAt(1);
+			src = (Vector<Object>) src_tar.elementAt(0);
+			tar = (Vector<Object>) src_tar.elementAt(1);
 			// MultiAlign.debug.println(src_tar.toString());
 			// MultiAlign.debug.println(src.toString()+"\n"+tar.toString());
 			// align them
@@ -197,17 +197,17 @@ class Div {
 				// MultiAlign.debug.println(p.toString());
 				// get the coresponding group of divisions
 				// In the source:
-				final Vector idSrcDiv = new Vector();
+				final Vector<Object> idSrcDiv = new Vector<Object>();
 				for (int j = 0; j < p.x; j++) {
-					final Vector buf = (Vector) src.elementAt(cSrc);
+					final Vector<Object> buf = (Vector<Object>) src.elementAt(cSrc);
 					final String idSrc = buf.elementAt(0).toString();
 					idSrcDiv.addElement(idSrc);
 					cSrc++;
 				}
 				// In the target:
-				final Vector idTarDiv = new Vector();
+				final Vector<Object> idTarDiv = new Vector<Object>();
 				for (int j = 0; j < p.y; j++) {
-					final Vector buf = (Vector) tar.elementAt(cTar);
+					final Vector<Object> buf = (Vector<Object>) tar.elementAt(cTar);
 					final String idTar = buf.elementAt(0).toString();
 					idTarDiv.addElement(idTar);
 					cTar++;
@@ -231,12 +231,12 @@ class Div {
 	// elle reçoit en entrée des trucs qui contiennent à la fois les id et
 	// les longueurs.
 	// Dans srcLength et tarLength on n'a plus que les longueurs.
-	void getLengths(Vector Src, Vector Tar) {
+	void getLengths(Vector<Object> Src, Vector<Object> Tar) {
 		final int ns = Src.size(), nt = Tar.size();
 		srcLengths = new Dist(ns);
 		tarLengths = new Dist(nt);
 		for (int i = 0; i < ns; i++) {
-			int t = (Integer) ((Vector) Src.elementAt(i)).elementAt(1);
+			int t = (Integer) ((Vector<Object>) Src.elementAt(i)).elementAt(1);
 			if (level == 0)
 				t /= 1000;
 			else
@@ -244,7 +244,7 @@ class Div {
 			srcLengths.setDistAt(i, t);
 		}
 		for (int i = 0; i < nt; i++) {
-			int t = (Integer) ((Vector) Tar.elementAt(i)).elementAt(1);
+			int t = (Integer) ((Vector<Object>) Tar.elementAt(i)).elementAt(1);
 			if (level == 0)
 				t /= 1000;
 			else
@@ -254,7 +254,7 @@ class Div {
 	}
 
 	// B.G : normalement, Src et Tar contiennent des id et des longueurs.
-	Path alignDiv(Vector Src, Vector Tar, Cognates cogn) {
+	Path alignDiv(Vector<Object> Src, Vector<Object> Tar, Cognates cogn) {
 		Path path;
 		final ContraintesChemin cc = cogn.cognates2Chemins(Src, Tar);
 		MultiAlign.debug("div source:" + Src.toString());
@@ -266,18 +266,18 @@ class Div {
 		return path;
 	}
 
-	void alignParas(Vector idSrcDiv, Vector idTarDiv, Vector parSrc,
-			Vector parTar, Vector stcSrc, Vector stcTar, Cognates cogn,
+	void alignParas(Vector<Object> idSrcDiv, Vector<Object> idTarDiv, Vector<Object> parSrc,
+			Vector<Object> parTar, Vector<Object> stcSrc, Vector<Object> stcTar, Cognates cogn,
 			LoadAndPrepareTexts lpt) {
 		// MultiAlign.debug.println(idSrcDiv.toString()+"\n"+idTarDiv.toString());
 		// MultiAlign.debug.println("here");
 		final int ssMax = stcSrc.size(), tsMax = stcTar.size();
-		final Vector pSource = new Vector(), pTarget = new Vector();
-		Vector paraSrc = new Vector(), paraTar = new Vector();
+		final Vector<Object> pSource = new Vector<Object>(), pTarget = new Vector<Object>();
+		Vector<Object> paraSrc = new Vector<Object>(), paraTar = new Vector<Object>();
 		for (int i = 0; i < idSrcDiv.size(); i++) {
 			final String idSrc = idSrcDiv.elementAt(i).toString();
 			while (cpSrc < spMax) {
-				if (!((Vector) parSrc.elementAt(cpSrc)).elementAt(0).toString()
+				if (!((Vector<Object>) parSrc.elementAt(cpSrc)).elementAt(0).toString()
 						.startsWith(idSrc)) {
 					paraSrc.addElement(parSrc.elementAt(cpSrc));
 					cpSrc++;
@@ -287,7 +287,7 @@ class Div {
 			pSource.addElement(paraSrc.clone());
 			paraSrc.removeAllElements();
 			while (cpSrc < spMax) {
-				if (((Vector) parSrc.elementAt(cpSrc)).elementAt(0).toString()
+				if (((Vector<Object>) parSrc.elementAt(cpSrc)).elementAt(0).toString()
 						.startsWith(idSrc)) {
 					paraSrc.addElement(parSrc.elementAt(cpSrc));
 					cpSrc++;
@@ -300,7 +300,7 @@ class Div {
 		for (int i = 0; i < idTarDiv.size(); i++) {
 			final String idTar = idTarDiv.elementAt(i).toString();
 			while (cpTar < tpMax) {
-				if (!((Vector) parTar.elementAt(cpTar)).elementAt(0).toString()
+				if (!((Vector<Object>) parTar.elementAt(cpTar)).elementAt(0).toString()
 						.startsWith(idTar)) {
 					paraTar.addElement(parTar.elementAt(cpTar));
 					cpTar++;
@@ -310,7 +310,7 @@ class Div {
 			pTarget.addElement(paraTar.clone());
 			paraTar.removeAllElements();
 			while (cpTar < tpMax) {
-				if (((Vector) parTar.elementAt(cpTar)).elementAt(0).toString()
+				if (((Vector<Object>) parTar.elementAt(cpTar)).elementAt(0).toString()
 						.startsWith(idTar)) {
 					paraTar.addElement(parTar.elementAt(cpTar));
 					cpTar++;
@@ -324,8 +324,8 @@ class Div {
 		// MultiAlign.debug.println(paraTar.toString());
 		if (pSource.size() == pTarget.size()) {
 			for (int i = 0; i < pSource.size(); i++) {
-				paraSrc = (Vector) pSource.elementAt(i);
-				paraTar = (Vector) pTarget.elementAt(i);
+				paraSrc = (Vector<Object>) pSource.elementAt(i);
+				paraTar = (Vector<Object>) pTarget.elementAt(i);
 				new Paragraphes(paraSrc, paraTar, stcSrc, stcTar, ssMax, tsMax,
 						cogn, lpt);
 				// MultiAlign.debug.println("Links: " + prgph.Links.toString());
@@ -336,13 +336,13 @@ class Div {
 			}
 		} else {
 			for (int i = 0; i < pSource.size(); i++) {
-				final Vector tmp = (Vector) pSource.elementAt(i);
+				final Vector<Object> tmp = (Vector<Object>) pSource.elementAt(i);
 				for (int j = 0; j < tmp.size(); j++) {
 					paraSrc.addElement(tmp.elementAt(j));
 				}
 			}
 			for (int i = 0; i < pTarget.size(); i++) {
-				final Vector tmp = (Vector) pTarget.elementAt(i);
+				final Vector<Object> tmp = (Vector<Object>) pTarget.elementAt(i);
 				for (int j = 0; j < tmp.size(); j++) {
 					paraTar.addElement(tmp.elementAt(j));
 				}
@@ -357,11 +357,11 @@ class Div {
 		}
 	}
 
-	public Vector getLinking() {
+	public Vector<Object> getLinking() {
 		return Linking;
 	}
 
-	public Vector getLinks() {
+	public Vector<Object> getLinks() {
 		return Links;
 	}
 }

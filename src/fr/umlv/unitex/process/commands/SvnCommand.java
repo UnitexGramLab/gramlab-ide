@@ -29,40 +29,39 @@ import fr.umlv.unitex.config.ConfigManager;
  * 
  */
 public class SvnCommand extends CommandBuilder {
-	
+
 	private static final String GLOBAL_IGNORES = "config:miscellany:global-ignores=..* *.fst2 *.bin *.inf target dep build project.local_config diff";
 
 	public SvnCommand() {
 		super(false);
 		element("java");
 		element("-jar");
-		protectElement(new File(ConfigManager.getManager().getApplicationDirectory(), "svnkitclient.jar")
+		protectElement(new File(ConfigManager.getManager()
+				.getApplicationDirectory(), "svnkitclient.jar")
 				.getAbsolutePath());
 		element("--non-interactive");
 		element("--trust-server-cert");
 	}
 
-	
-	public SvnCommand auth(String login,char[] passwd) {
-		if (login!=null) {
+	public SvnCommand auth(String login, char[] passwd) {
+		if (login != null) {
 			element("--username");
 			protectElement(login);
 		}
-		if (passwd!=null) {
+		if (passwd != null) {
 			element("--password");
 			protectElement(passwd);
 		}
 		return this;
 	}
-	
+
 	/**
-	 * WARNING: every call to 'svn checkout' should be followed
-	 *          by a call to 'svn propset' on all .grf files in order
-	 *          to make them appear as binary files, so that svn
-	 *          won't try to merge them which might happen for UTF8
-	 *          .grf files
+	 * WARNING: every call to 'svn checkout' should be followed by a call to
+	 * 'svn propset' on all .grf files in order to make them appear as binary
+	 * files, so that svn won't try to merge them which might happen for UTF8
+	 * .grf files
 	 */
-	public SvnCommand checkout(String url,File destPath) {
+	public SvnCommand checkout(String url, File destPath) {
 		element("checkout");
 		element("--force");
 		protectElement(url);
@@ -70,49 +69,47 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	
-	public SvnCommand commit(String message,File path) {
+	public SvnCommand commit(String message, File path) {
 		element("commit");
 		element("-m");
 		protectElement(message);
-		if (path!=null) {
+		if (path != null) {
 			protectElement(path.getAbsolutePath());
 		}
 		return this;
 	}
-	
+
 	/**
-	 * See comment above 'checkout'
-	 * revision==-1 means update to head
-	 * revision==-2 means update to base
-	 * if forceAccept==true, we want to force the accept in case of conflict
+	 * See comment above 'checkout' revision==-1 means update to head
+	 * revision==-2 means update to base if forceAccept==true, we want to force
+	 * the accept in case of conflict
 	 */
-	public SvnCommand update(int revision,File path,boolean forceAccept) {
+	public SvnCommand update(int revision, File path, boolean forceAccept) {
 		element("update");
-		if (revision==-2) {
+		if (revision == -2) {
 			element("-r");
 			element("BASE");
-		} else if (revision!=-1) {
+		} else if (revision != -1) {
 			element("-r");
-			element(""+revision);
+			element("" + revision);
 		}
 		if (forceAccept) {
-			if (revision==-2) {
+			if (revision == -2) {
 				element("--accept=base");
 			} else {
 				element("--accept=theirs-full");
 			}
 		}
-		if (path!=null) {
+		if (path != null) {
 			protectElement(path.getAbsolutePath());
 		}
 		return this;
 	}
 
-
-	public SvnCommand info(File f,boolean recursive,boolean headRevision) {
+	public SvnCommand info(File f, boolean recursive, boolean headRevision) {
 		element("info");
-		if (recursive) element("-R");
+		if (recursive)
+			element("-R");
 		if (headRevision) {
 			element("-r");
 			element("HEAD");
@@ -121,8 +118,8 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SvnCommand info(File f,boolean recursive) {
-		return info(f,recursive,false);
+	public SvnCommand info(File f, boolean recursive) {
+		return info(f, recursive, false);
 	}
 
 	public SvnCommand add(File targetList) {
@@ -138,7 +135,6 @@ public class SvnCommand extends CommandBuilder {
 		protectElement(targetList.getAbsolutePath());
 		return this;
 	}
-	
 
 	public SvnCommand delete(File targetList) {
 		element("delete");
@@ -148,7 +144,7 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SvnCommand delete(String url,String message) {
+	public SvnCommand delete(String url, String message) {
 		element("delete");
 		element("--force");
 		element("-m");
@@ -156,8 +152,8 @@ public class SvnCommand extends CommandBuilder {
 		protectElement(url);
 		return this;
 	}
-	
-	public SvnCommand initialImport(File path,String url,String extraIgnores) {
+
+	public SvnCommand initialImport(File path, String url, String extraIgnores) {
 		element("import");
 		element("-m");
 		protectElement("Initial import");
@@ -165,10 +161,10 @@ public class SvnCommand extends CommandBuilder {
 		element("--config-option");
 		protectElement("config:auto-props:*.grf=svn:mime-type=application/octet-stream");
 		element("--config-option");
-		if (extraIgnores==null) {
-			protectElement(GLOBAL_IGNORES+extraIgnores);
+		if (extraIgnores == null) {
+			protectElement(GLOBAL_IGNORES + extraIgnores);
 		} else {
-			protectElement(GLOBAL_IGNORES+" "+extraIgnores);
+			protectElement(GLOBAL_IGNORES + " " + extraIgnores);
 		}
 		protectElement(path.getAbsolutePath());
 		protectElement(url);
@@ -182,8 +178,7 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	
-	public SvnCommand commit(File targetList,String message) {
+	public SvnCommand commit(File targetList, String message) {
 		element("commit");
 		element("-m");
 		protectElement(message);
@@ -197,7 +192,7 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SvnCommand commit(File targetList,File logFile) {
+	public SvnCommand commit(File targetList, File logFile) {
 		element("commit");
 		element("-F");
 		protectElement(logFile.getAbsolutePath());
@@ -211,34 +206,33 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SvnCommand resolve(File file,ResolveOp op) {
+	public SvnCommand resolve(File file, ResolveOp op) {
 		element("resolve");
 		element(op.getOption());
 		protectElement(file.getAbsolutePath());
 		return this;
 	}
-	
+
 	public SvnCommand resolved(File file) {
 		element("resolved");
 		protectElement(file.getAbsolutePath());
 		return this;
 	}
-	
+
 	public enum ResolveOp {
-		ACCEPT_WORKING("--accept=working"),
-		ACCEPT_MINE("--accept=mine-full"),
-		ACCEPT_BASE("--accept=base"),
-		ACCEPT_OTHER("--accept=theirs-full");
-		
+		ACCEPT_WORKING("--accept=working"), ACCEPT_MINE("--accept=mine-full"), ACCEPT_BASE(
+				"--accept=base"), ACCEPT_OTHER("--accept=theirs-full");
+
 		private ResolveOp(String o) {
-			this.option=o;
+			this.option = o;
 		}
-		
+
 		private String option;
+
 		String getOption() {
 			return option;
 		}
-		
+
 	}
 
 	public SvnCommand getIgnoreList(File dir) {
@@ -248,7 +242,7 @@ public class SvnCommand extends CommandBuilder {
 		return this;
 	}
 
-	public SvnCommand setIgnoreList(File dir,File list) {
+	public SvnCommand setIgnoreList(File dir, File list) {
 		element("propset");
 		element("svn:ignore");
 		element("-F");
@@ -256,8 +250,7 @@ public class SvnCommand extends CommandBuilder {
 		protectElement(dir.getAbsolutePath());
 		return this;
 	}
-	
-	
+
 	public SvnCommand revert(File targetList) {
 		element("revert");
 		element("--depth");
@@ -266,7 +259,6 @@ public class SvnCommand extends CommandBuilder {
 		protectElement(targetList.getAbsolutePath());
 		return this;
 	}
-
 
 	public SvnCommand cleanup(File dir) {
 		element("cleanup");

@@ -86,6 +86,7 @@ public class DicLookupFrame extends JInternalFrame {
 		pack();
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		Config.addLanguageListener(new LanguageListener() {
+			@Override
 			public void languageChanged() {
 				refreshDicLists();
 				setVisible(false);
@@ -114,7 +115,8 @@ public class DicLookupFrame extends JInternalFrame {
 	private JPanel constructInfoPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		panel.add(new JLabel("Select dictionaries to look up into:"), BorderLayout.CENTER);
+		panel.add(new JLabel("Select dictionaries to look up into:"),
+				BorderLayout.CENTER);
 		return panel;
 	}
 
@@ -122,10 +124,10 @@ public class DicLookupFrame extends JInternalFrame {
 	 * Refreshes the two dictionary lists.
 	 */
 	void refreshDicLists() {
-		final Vector<String> userDicOnDisk = getDicList(new File(Config
-				.getUserCurrentLanguageDir(), "Dela"));
-		final Vector<String> systemDicOnDisk = getDicList(new File(Config
-				.getUnitexCurrentLanguageDir(), "Dela"));
+		final Vector<String> userDicOnDisk = getDicList(new File(
+				Config.getUserCurrentLanguageDir(), "Dela"));
+		final Vector<String> systemDicOnDisk = getDicList(new File(
+				Config.getUnitexCurrentLanguageDir(), "Dela"));
 		setContent(userDicList, userDicOnDisk);
 		setContent(systemDicList, systemDicOnDisk);
 		userDicList.clearSelection();
@@ -152,15 +154,11 @@ public class DicLookupFrame extends JInternalFrame {
 		userPanel.setBorder(new TitledBorder("User resources"));
 		systemPanel.setBorder(new TitledBorder("System resources"));
 		final JScrollPane scroll_1 = new JScrollPane(userDicList);
-		scroll_1
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroll_1
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		final JScrollPane scroll_2 = new JScrollPane(systemDicList);
-		scroll_2
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroll_2
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		userPanel.add(scroll_1, BorderLayout.CENTER);
 		systemPanel.add(scroll_2, BorderLayout.CENTER);
 		dicListPanel.add(userPanel);
@@ -179,6 +177,7 @@ public class DicLookupFrame extends JInternalFrame {
 		inputText.setFont(font);
 		text.setFixedCellHeight(inputText.getPreferredSize().height);
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				final Font f = ConfigManager.getManager().getTextFont(null);
 				text.setFont(f);
@@ -186,14 +185,14 @@ public class DicLookupFrame extends JInternalFrame {
 				text.setFixedCellHeight(inputText.getPreferredSize().height);
 				final boolean rightToLeftForText = ConfigManager.getManager()
 						.isRightToLeftForText(null);
-				text
-						.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
-								: ComponentOrientation.LEFT_TO_RIGHT);
+				text.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
+						: ComponentOrientation.LEFT_TO_RIGHT);
 				scrollText
 						.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
 								: ComponentOrientation.LEFT_TO_RIGHT);
 				text.repaint();
 				final Timer t2 = new Timer(400, new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						scrollBar.setValue(0);
 					}
@@ -207,6 +206,7 @@ public class DicLookupFrame extends JInternalFrame {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(2, 2, 2, 2);
 		final Action clearAction = new AbstractAction("Clear selection") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				userDicList.clearSelection();
 				systemDicList.clearSelection();
@@ -215,6 +215,7 @@ public class DicLookupFrame extends JInternalFrame {
 		final JButton clearButton = new JButton(clearAction);
 		p.add(clearButton, gbc);
 		final Action refreshAction = new AbstractAction("Refresh lists") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				refreshDicLists();
 			}
@@ -226,6 +227,7 @@ public class DicLookupFrame extends JInternalFrame {
 		gbc.weightx = 1;
 		p.add(inputText, gbc);
 		final Action lookupAction = new AbstractAction("Lookup") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				text.reset();
 				final String s = inputText.getText();
@@ -247,6 +249,7 @@ public class DicLookupFrame extends JInternalFrame {
 		final Timer timer = new Timer(500, lookupAction);
 		timer.setRepeats(false);
 		inputText.addCaretListener(new CaretListener() {
+			@Override
 			public void caretUpdate(CaretEvent e) {
 				if (timer.isRunning())
 					timer.stop();
@@ -255,6 +258,7 @@ public class DicLookupFrame extends JInternalFrame {
 		});
 		inputText.setEnabled(false);
 		final ListSelectionListener listener = new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				inputText
 						.setEnabled((userDicList.getSelectedIndex() != -1 || systemDicList
@@ -407,10 +411,10 @@ public class DicLookupFrame extends JInternalFrame {
 	 * <code>(user dir)/(current language dir)/system_dic.def</code>.
 	 */
 	void saveDefaultDicLists() {
-		saveSelectionToFile(userDicList, new File(Config
-				.getUserCurrentLanguageDir(), "user_dic.def"));
-		saveSelectionToFile(systemDicList, new File(Config
-				.getUserCurrentLanguageDir(), "system_dic.def"));
+		saveSelectionToFile(userDicList,
+				new File(Config.getUserCurrentLanguageDir(), "user_dic.def"));
+		saveSelectionToFile(systemDicList,
+				new File(Config.getUserCurrentLanguageDir(), "system_dic.def"));
 	}
 
 	/**

@@ -131,12 +131,13 @@ public class Cognates {
 		XmlId tmp;
 		// Vector contenuP;
 		ArrayList<XmlId> contenuP;
-		Vector paquetVect;
+		Vector<Object> paquetVect;
 		Paquet p;
 		// System.out.println("addPaquet("+paquet+", "+paquetId+")\n");
 		paquetVect = segmentOnWhiteSpaces(paquet);
 		contenuP = new ArrayList<XmlId>();
-		for (final Enumeration e = paquetVect.elements(); e.hasMoreElements();) {
+		for (final Enumeration<Object> e = paquetVect.elements(); e
+				.hasMoreElements();) {
 			sCour = (String) e.nextElement();
 			// tmp = segmentOnChar(sCour, '#');
 			tmp = decodePointer(sCour, lpt);
@@ -170,7 +171,7 @@ public class Cognates {
 	}
 
 	public void addAlignment(String lnks, LoadAndPrepareTexts lpt) {
-		Vector linkVect;
+		Vector<Object> linkVect;
 		Alignement a;
 		linkVect = segmentOnWhiteSpaces(lnks);
 		a = new Alignement(decodePointer((String) linkVect.elementAt(0), lpt),
@@ -196,7 +197,7 @@ public class Cognates {
 	}
 
 	public Alignement addFuzzyAlign(String fzA, LoadAndPrepareTexts lpt) {
-		Vector linkVect;
+		Vector<Object> linkVect;
 		Alignement a;
 		linkVect = segmentOnWhiteSpaces(fzA);
 		a = new Alignement(decodePointer((String) linkVect.elementAt(0), lpt),
@@ -235,15 +236,15 @@ public class Cognates {
 	}
 
 	private XmlId decodePointer(String s, LoadAndPrepareTexts lpt) {
-		final Vector v = segmentOnChar(s, '#');
+		final Vector<Object> v = segmentOnChar(s, '#');
 		if (v.size() == 1) {
 			return new XmlId("", (String) v.elementAt(0), lpt);
 		}
 		return new XmlId((String) v.elementAt(0), (String) v.elementAt(1), lpt);
 	}
 
-	private Vector segmentOnChar(String s, char cs) {
-		final Vector result = new Vector();
+	private Vector<Object> segmentOnChar(String s, char cs) {
+		final Vector<Object> result = new Vector<Object>();
 		int finMot;
 		int debutMot;
 		char c;
@@ -265,8 +266,8 @@ public class Cognates {
 		return result;
 	}
 
-	private Vector segmentOnWhiteSpaces(String s) {
-		final Vector result = new Vector();
+	private Vector<Object> segmentOnWhiteSpaces(String s) {
+		final Vector<Object> result = new Vector<Object>();
 		int finMot;
 		int debutMot;
 		char c;
@@ -303,15 +304,16 @@ public class Cognates {
 		Alignement cour;
 		String idSource, idTarget;
 		Collection<String> vIdSource, vIdCible;
-		Vector contenantsSource, contenantsCible;
-		Vector tmp;
+		Vector<Object> contenantsSource, contenantsCible;
+		Vector<Object> tmp;
 		final ArrayList<Alignement> oldFuzzy = (ArrayList<Alignement>) fuzzyAlignments
 				.clone();
 		final ArrayList<Alignement> oldAlign = (ArrayList<Alignement>) alignements
 				.clone();
 		// contraints that are yielded from the alignments :
-		for (final Iterator e = doubleIterator(oldFuzzy, oldAlign); e.hasNext();) {
-			cour = (Alignement) e.next();
+		for (final Iterator<Alignement> e = doubleIterator(oldFuzzy, oldAlign); e
+				.hasNext();) {
+			cour = e.next();
 			// System.out.println("cour = "+cour+"\n");
 			idSource = cour.getIdSource();
 			idTarget = cour.getIdCible();
@@ -322,7 +324,7 @@ public class Cognates {
 			// System.out.println("vIdCible = "+vIdCible+"\n");
 			// on veut maintenant tous les contenant d'un élement de vIdSource
 			// et tous les contenant d'un élément de vIdTarget
-			contenantsSource = new Vector();
+			contenantsSource = new Vector<Object>();
 			for (final Object aVIdSource : vIdSource) {
 				// tmp = (Vector)eSource.nextElement();
 				// idSource = (String)tmp.elementAt(1);
@@ -332,7 +334,7 @@ public class Cognates {
 				contenantsSource = fusionOrdonneeContenants(contenantsSource,
 						tmp);
 			}
-			contenantsCible = new Vector();
+			contenantsCible = new Vector<Object>();
 			for (final Object aVIdCible : vIdCible) {
 				// tmp = (Vector)eCible.nextElement();
 				// idTarget = (String)tmp.elementAt(1);
@@ -348,8 +350,8 @@ public class Cognates {
 			// cible.
 			// System.out.println("Contenants source = "+contenantsSource+"\n");
 			// System.out.println("Contenants cible = "+contenantsCible+"\n");
-			final Enumeration eSource = contenantsSource.elements();
-			final Enumeration eCible = contenantsCible.elements();
+			final Enumeration<Object> eSource = contenantsSource.elements();
+			final Enumeration<Object> eCible = contenantsCible.elements();
 			String iSource, iCible;
 			boolean pasFini;
 			Alignement newFuzzy;
@@ -476,8 +478,8 @@ public class Cognates {
 	 * s'intéresse à l'alignement de segsSource avec segsTarget.
 	 */
 	@SuppressWarnings("null")
-	public ContraintesChemin cognates2Chemins(Vector segsSource,
-			Vector segsTarget) {
+	public ContraintesChemin cognates2Chemins(Vector<Object> segsSource,
+			Vector<Object> segsTarget) {
 		int i = 0;
 		int j = 0;
 		BiPoint biCour;
@@ -490,15 +492,15 @@ public class Cognates {
 		 */
 		// System.out.println("cognates2Chemins("+segsSource+", "+
 		// segsTarget+")\n");
-		Iterator iA = interAlignements(segsSource, segsTarget, alignements)
-				.iterator();
+		Iterator<Cognates.BiPoint> iA = interAlignements(segsSource,
+				segsTarget, alignements).iterator();
 		if (iA.hasNext()) {
-			res = new ContraintesChemin(segsSource.size() + 1, segsTarget
-					.size() + 1);
+			res = new ContraintesChemin(segsSource.size() + 1,
+					segsTarget.size() + 1);
 			contraintesCheminCree = true;
 		}
 		for (; iA.hasNext();) {
-			biCour = (BiPoint) iA.next();
+			biCour = iA.next();
 			minSource = biCour.get1();
 			maxSource = biCour.get2();
 			minTarget = biCour.get3();
@@ -568,12 +570,12 @@ public class Cognates {
 		iA = interAlignements(segsSource, segsTarget, fuzzyAlignments)
 				.iterator();
 		if (iA.hasNext() && (!contraintesCheminCree)) {
-			res = new ContraintesChemin(segsSource.size() + 1, segsTarget
-					.size() + 1);
+			res = new ContraintesChemin(segsSource.size() + 1,
+					segsTarget.size() + 1);
 			contraintesCheminCree = true;
 		}
 		for (; iA.hasNext();) {
-			biCour = (BiPoint) iA.next();
+			biCour = iA.next();
 			i = biCour.get1() + 1;
 			j = biCour.get3() + 1;
 			for (int i1 = 1; i1 < i; i1++) {
@@ -597,14 +599,14 @@ public class Cognates {
 		ArrayList<Integer> indNoCorresp = interNoCorresp(segsSource,
 				noCorrespSource, true);
 		int i1;
-		Iterator iInd = indNoCorresp.iterator();
+		Iterator<Integer> iInd = indNoCorresp.iterator();
 		if (iInd.hasNext() && (!contraintesCheminCree)) {
-			res = new ContraintesChemin(segsSource.size() + 1, segsTarget
-					.size() + 1);
+			res = new ContraintesChemin(segsSource.size() + 1,
+					segsTarget.size() + 1);
 			contraintesCheminCree = true;
 		}
 		for (; iInd.hasNext();) {
-			i1 = (Integer) iInd.next();
+			i1 = iInd.next();
 			res.setIgnoreSource(i1 + 1);
 			// Il faut, là encore empêcher le meilleur chemin de sauter par
 			// dessus
@@ -622,12 +624,12 @@ public class Cognates {
 		indNoCorresp = interNoCorresp(segsTarget, noCorrespCible, false);
 		iInd = indNoCorresp.iterator();
 		if (iInd.hasNext() && (!contraintesCheminCree)) {
-			res = new ContraintesChemin(segsSource.size() + 1, segsTarget
-					.size() + 1);
+			res = new ContraintesChemin(segsSource.size() + 1,
+					segsTarget.size() + 1);
 			contraintesCheminCree = true;
 		}
 		for (; iInd.hasNext();) {
-			i1 = (Integer) iInd.next();
+			i1 = iInd.next();
 			res.setIgnoreTarget(i1 + 1);
 			// Il faut, là encore empêcher le meilleur chemin de sauter par
 			// dessus
@@ -699,8 +701,8 @@ public class Cognates {
 		}
 	}
 
-	private ArrayList<BiPoint> interAlignements(Vector segsSource,
-			Vector segsTarget, ArrayList<Alignement> aligns) {
+	private ArrayList<BiPoint> interAlignements(Vector<Object> segsSource,
+			Vector<Object> segsTarget, ArrayList<Alignement> aligns) {
 		// we look for the alignements that are present in segsSource and
 		// segtarget
 		// we suppose that the alignements are ordered.
@@ -709,13 +711,13 @@ public class Cognates {
 		// on suppose que les alignements sont ordonnés (ils ne peuvent pas se
 		// croiser)
 		final ArrayList<BiPoint> res = new ArrayList<BiPoint>();
-		final Enumeration eS = segsSource.elements();
-		final Enumeration eT = segsTarget.elements();
-		final Iterator iAlign = aligns.iterator();
+		final Enumeration<Object> eS = segsSource.elements();
+		final Enumeration<Object> eT = segsTarget.elements();
+		final Iterator<Alignement> iAlign = aligns.iterator();
 		String idSegSourceCour;
 		String idTargetCour;
 		Alignement aCour = null;
-		Vector vcour;
+		Vector<Object> vcour;
 		ArrayList<String> temp;
 		String idDebutAlignSource, idFinAlignSource, idDebutAlignTarget, idFinAlignTarget;
 		int indiceSegSource, indiceSegTarget;
@@ -728,7 +730,7 @@ public class Cognates {
 		indiceSegSource = 0;
 		indiceSegTarget = 0;
 		if (eS.hasMoreElements()) {
-			vcour = (Vector) eS.nextElement();
+			vcour = (Vector<Object>) eS.nextElement();
 			if (vcour.size() == 3) {
 				idSegSourceCour = (String) vcour.elementAt(1);
 			} else {
@@ -739,7 +741,7 @@ public class Cognates {
 		}
 		finiEs = false;
 		if (eT.hasMoreElements()) {
-			vcour = (Vector) eT.nextElement();
+			vcour = (Vector<Object>) eT.nextElement();
 			if (vcour.size() == 3) {
 				idTargetCour = (String) vcour.elementAt(1);
 			} else {
@@ -750,7 +752,7 @@ public class Cognates {
 		}
 		finiEt = false;
 		if (iAlign.hasNext()) {
-			aCour = (Alignement) iAlign.next();
+			aCour = iAlign.next();
 		} else {
 			return res;
 		}
@@ -776,7 +778,7 @@ public class Cognates {
 				biCour.set1(indiceSegSource);
 				// on cherche maintenant idFinAlignSource
 				while (!idFinAlignSource.equals(idSegSourceCour)) {
-					vcour = (Vector) eS.nextElement();
+					vcour = (Vector<Object>) eS.nextElement();
 					indiceSegSource++;
 					if (vcour.size() == 3) {
 						idSegSourceCour = (String) vcour.elementAt(1);
@@ -800,7 +802,7 @@ public class Cognates {
 					// System.out.println("idTargetCour = |"+idTargetCour+"|");
 					// System.out.println("idDebutAlignTarget = |"+idDebutAlignTarget+"|");
 					try {
-						vcour = (Vector) eT.nextElement();
+						vcour = (Vector<Object>) eT.nextElement();
 					} catch (final java.util.NoSuchElementException exp) {
 						System.err
 								.println("Unable to find "
@@ -819,7 +821,7 @@ public class Cognates {
 				biCour.set3(indiceSegTarget);
 				while (!idFinAlignTarget.equals(idTargetCour)) {
 					try {
-						vcour = (Vector) eT.nextElement();
+						vcour = (Vector<Object>) eT.nextElement();
 					} catch (final java.util.NoSuchElementException exp) {
 						System.err
 								.println("Unable to find "
@@ -840,14 +842,14 @@ public class Cognates {
 				// we go on with the next alignment...
 				// il faut maintenant qu'on passe à l'alignement suivant
 				if (iAlign.hasNext()) {
-					aCour = (Alignement) iAlign.next();
+					aCour = iAlign.next();
 				} else {
 					finiAlign = true;
 				}
 			} else if (XmlId.ordreDansTexte(idSegSourceCour,
 					idDebutAlignSource, true) >= 0) {
 				if (iAlign.hasNext()) {
-					aCour = (Alignement) iAlign.next();
+					aCour = iAlign.next();
 					if (aCour.getXmlIdSource().getUri().equals("")) { // paquet
 						// on veut ce paquet
 						temp = paquetOf(aCour.getIdSource(), true);
@@ -863,7 +865,7 @@ public class Cognates {
 			} else {
 				// System.out.println("On avance dans segsSource...");
 				if (eS.hasMoreElements()) {
-					vcour = (Vector) eS.nextElement();
+					vcour = (Vector<Object>) eS.nextElement();
 					indiceSegSource++;
 					if (vcour.size() == 3) {
 						idSegSourceCour = (String) vcour.elementAt(1);
@@ -882,17 +884,17 @@ public class Cognates {
 	// on renvoie une liste des ids de ceux qui sont présents dans segs.
 	// on profite du fait que nocorresp est ordonnée de la même façon que
 	// segs.
-	private ArrayList<Integer> interNoCorresp(Vector segs,
+	private ArrayList<Integer> interNoCorresp(Vector<Object> segs,
 			ArrayList<XmlId> nocorresp, boolean inSource) {
 		final ArrayList<Integer> res = new ArrayList<Integer>();
-		Enumeration e = segs.elements();
-		Iterator i = nocorresp.iterator();
+		Enumeration<Object> e = segs.elements();
+		Iterator<XmlId> i = nocorresp.iterator();
 		String iCourSegs;
 		String iCourCorresp;
 		int indiceCour;
-		Vector vcour;
+		Vector<Object> vcour;
 		if (e.hasMoreElements()) {
-			vcour = (Vector) e.nextElement();
+			vcour = (Vector<Object>) e.nextElement();
 			if (vcour.size() == 3) {
 				iCourSegs = (String) vcour.elementAt(1);
 			} else {
@@ -902,7 +904,7 @@ public class Cognates {
 			return res;
 		}
 		if (i.hasNext()) {
-			iCourCorresp = ((XmlId) i.next()).getLocalName();
+			iCourCorresp = i.next().getLocalName();
 		} else {
 			return res;
 		}
@@ -917,7 +919,7 @@ public class Cognates {
 				res.add(indiceCour);
 				// on avance sur les deux :
 				if (e.hasMoreElements()) {
-					vcour = (Vector) e.nextElement();
+					vcour = (Vector<Object>) e.nextElement();
 					indiceCour++;
 					if (vcour.size() == 3) {
 						iCourSegs = (String) vcour.elementAt(1);
@@ -926,12 +928,12 @@ public class Cognates {
 					}
 				}
 				if (i.hasNext()) {
-					iCourCorresp = ((XmlId) i.next()).getLocalName();
+					iCourCorresp = i.next().getLocalName();
 				}
 			} else {
 				if (XmlId.ordreDansTexte(iCourSegs, iCourCorresp, inSource) <= 0) {
 					if (e.hasMoreElements()) {
-						vcour = (Vector) e.nextElement();
+						vcour = (Vector<Object>) e.nextElement();
 						indiceCour++;
 						if (vcour.size() == 3) {
 							iCourSegs = (String) vcour.elementAt(1);
@@ -941,7 +943,7 @@ public class Cognates {
 					}
 				} else {
 					if (i.hasNext()) {
-						iCourCorresp = ((XmlId) i.next()).getLocalName();
+						iCourCorresp = i.next().getLocalName();
 					}
 				}
 			}
@@ -977,11 +979,12 @@ public class Cognates {
 	// fusion de vecteurs de contenants :
 	// on veut que le résultat soit ordonné des plus englobants
 	// aux plus englobés.
-	private Vector fusionOrdonneeContenants(Vector v1, Vector v2) {
-		final Vector res = new Vector();
+	private Vector<Object> fusionOrdonneeContenants(Vector<Object> v1,
+			Vector<Object> v2) {
+		final Vector<Object> res = new Vector<Object>();
 		String id1, id2;
-		final Enumeration e1 = v1.elements();
-		final Enumeration e2 = v2.elements();
+		final Enumeration<Object> e1 = v1.elements();
+		final Enumeration<Object> e2 = v2.elements();
 		if (e1.hasMoreElements()) {
 			id1 = (String) e1.nextElement();
 		} else {
@@ -1033,31 +1036,35 @@ public class Cognates {
 	 * (id1.compareTo(id2) <= 0); };
 	 */
 	// pour énumérer sur deux vecteurs
-	class myIterator implements Iterator {
-		private final Iterator e1;
-		private final Iterator e2;
+	class myIterator<T> implements Iterator<T> {
+		private final Iterator<T> e1;
+		private final Iterator<T> e2;
 
-		public myIterator(Iterator en1, Iterator en2) {
+		public myIterator(Iterator<T> en1, Iterator<T> en2) {
 			e1 = en1;
 			e2 = en2;
 		}
 
+		@Override
 		public boolean hasNext() {
 			return (e1.hasNext() || e2.hasNext());
 		}
 
-		public Object next() {
+		@Override
+		public T next() {
 			if (e1.hasNext()) {
 				return e1.next();
 			}
 			return e2.next();
 		}
 
+		@Override
 		public void remove() {/* */
 		}
 	}
 
-	private Iterator doubleIterator(Collection v1, Collection v2) {
-		return new myIterator(v1.iterator(), v2.iterator());
+	private Iterator<Alignement> doubleIterator(Collection<Alignement> v1,
+			Collection<Alignement> v2) {
+		return new myIterator<Alignement>(v1.iterator(), v2.iterator());
 	}
 }

@@ -31,14 +31,13 @@ import fr.umlv.unitex.process.list.ProcessOutputList;
  * 
  */
 public class ExecParameters {
-	
+
 	/**
-	 * If not null, this represents the current running process.
-	 * This field is used to know which is the current process from
-	 * within an Executor object
+	 * If not null, this represents the current running process. This field is
+	 * used to know which is the current process from within an Executor object
 	 */
 	private Process process;
-	
+
 	public Process getProcess() {
 		return process;
 	}
@@ -70,74 +69,73 @@ public class ExecParameters {
 	public boolean isTraceIntoConsole() {
 		return traceIntoConsole;
 	}
-	
+
 	public File getWorkingDirectory() {
 		return workingDirectory;
 	}
-	
+
 	/**
-	 * true means that if a command does not return 0, the
-	 * remaining commands will be skipped 
+	 * true means that if a command does not return 0, the remaining commands
+	 * will be skipped
 	 */
-	private boolean stopOnProblem;
-	
+	private final boolean stopOnProblem;
+
 	/**
 	 * The commands to be executed, one by one
 	 */
-	private MultiCommands commands;
-	
+	private final MultiCommands commands;
+
 	/**
-	 * The models used to manage outputs. If stdxxx is null, it means
-	 * that the output should be ignored. In that case, a NullOutputStream
-	 * will be used to consume the data.
+	 * The models used to manage outputs. If stdxxx is null, it means that the
+	 * output should be ignored. In that case, a NullOutputStream will be used
+	 * to consume the data.
 	 */
-	private ProcessOutputList stdout,stderr;
-	
+	private final ProcessOutputList stdout, stderr;
+
 	/**
-	 * What to execute after the command sequence has been executed.
-	 * This will be invoked in the Swing thread.
+	 * What to execute after the command sequence has been executed. This will
+	 * be invoked in the Swing thread.
 	 */
-	private ToDo DO;
-	
+	private final ToDo DO;
+
 	/**
-	 * If true, the commands and their error outputs will be added
-	 * to Unitex console.
+	 * If true, the commands and their error outputs will be added to Unitex
+	 * console.
 	 */
-	private boolean traceIntoConsole;
-	
-	private File workingDirectory;
-	
+	private final boolean traceIntoConsole;
+
+	private final File workingDirectory;
+
 	public ExecParameters(boolean stopOnProblem, MultiCommands commands,
-			ProcessOutputList stdout, ProcessOutputList stderr,
-			ToDo DO,boolean traceIntoConsole,File workingDirectory) {
+			ProcessOutputList stdout, ProcessOutputList stderr, ToDo DO,
+			boolean traceIntoConsole, File workingDirectory) {
 		super();
 		this.stopOnProblem = stopOnProblem;
 		this.commands = commands;
 		this.stdout = stdout;
 		this.stderr = stderr;
 		this.DO = DO;
-		this.traceIntoConsole=traceIntoConsole;
-		this.workingDirectory=workingDirectory;
+		this.traceIntoConsole = traceIntoConsole;
+		this.workingDirectory = workingDirectory;
 	}
 
-	
 	public ExecParameters(boolean stopOnProblem, CommandBuilder c,
-			ProcessOutputList stdout, ProcessOutputList stderr,
-			ToDo DO,boolean traceIntoConsole,File workingDirectory) {
-		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole,workingDirectory);
+			ProcessOutputList stdout, ProcessOutputList stderr, ToDo DO,
+			boolean traceIntoConsole, File workingDirectory) {
+		this(stopOnProblem, new MultiCommands(c), stdout, stderr, DO,
+				traceIntoConsole, workingDirectory);
 	}
 
-
 	public ExecParameters(boolean stopOnProblem, CommandBuilder c,
-			ProcessOutputList stdout, ProcessOutputList stderr,
-			ToDo DO,boolean traceIntoConsole) {
-		this(stopOnProblem,new MultiCommands(c),stdout,stderr,DO,traceIntoConsole,null);
+			ProcessOutputList stdout, ProcessOutputList stderr, ToDo DO,
+			boolean traceIntoConsole) {
+		this(stopOnProblem, new MultiCommands(c), stdout, stderr, DO,
+				traceIntoConsole, null);
 	}
 
 	public ExecParameters(boolean stopOnProblem, MultiCommands c,
-			ProcessOutputList stdout, ProcessOutputList stderr,
-			ToDo DO,boolean traceIntoConsole) {
-		this(stopOnProblem,c,stdout,stderr,DO,traceIntoConsole,null);
+			ProcessOutputList stdout, ProcessOutputList stderr, ToDo DO,
+			boolean traceIntoConsole) {
+		this(stopOnProblem, c, stdout, stderr, DO, traceIntoConsole, null);
 	}
 }
-

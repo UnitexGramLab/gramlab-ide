@@ -72,8 +72,9 @@ public class Seq2GrfCommand extends CommandBuilder {
 		element("-d" + d);
 		return this;
 	}
-	public Seq2GrfCommand applyBeautify(boolean b){
-		if (b){
+
+	public Seq2GrfCommand applyBeautify(boolean b) {
+		if (b) {
 			element("--b");
 		}
 		return this;

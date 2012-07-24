@@ -68,7 +68,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import fr.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignPane extends JPanel {
-	
+
 	final JList list1;
 	final JList list2;
 	final MyBean bean1;
@@ -121,32 +121,39 @@ public class XAlignPane extends JPanel {
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		add(scrollPane2, gbc);
 		alignmentModel.addAlignmentListener(new AlignmentListener() {
+			@Override
 			public void alignmentChanged(AlignmentEvent e) {
 				refresh();
 			}
 		});
 		model1.addListDataListener(new ListDataListener() {
+			@Override
 			public void intervalAdded(ListDataEvent e) {
 				refresh();
 			}
 
+			@Override
 			public void intervalRemoved(ListDataEvent e) {
 				refresh();
 			}
 
+			@Override
 			public void contentsChanged(ListDataEvent e) {
 				refresh();
 			}
 		});
 		model2.addListDataListener(new ListDataListener() {
+			@Override
 			public void intervalAdded(ListDataEvent e) {
 				refresh();
 			}
 
+			@Override
 			public void intervalRemoved(ListDataEvent e) {
 				refresh();
 			}
 
+			@Override
 			public void contentsChanged(ListDataEvent e) {
 				refresh();
 			}
@@ -170,8 +177,7 @@ public class XAlignPane extends JPanel {
 					final int newSentenceNumber1 = ((ConcordanceModel) l1
 							.getModel()).getSentence(newIndex1);
 					if (newSentenceNumber1 != oldSentenceNumber1) {
-						b1
-								.setCurrentFlownOverSentenceNumber(newSentenceNumber1);
+						b1.setCurrentFlownOverSentenceNumber(newSentenceNumber1);
 						l1.paintImmediately(l1.getCellBounds(oldIndex1,
 								oldIndex1));
 						l1.paintImmediately(l1.getCellBounds(newIndex1,
@@ -281,6 +287,7 @@ public class XAlignPane extends JPanel {
 			final MyBean b2, final JList l1, final JList l2,
 			final boolean fromSrc) {
 		return new AdjustmentListener() {
+			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
 				if (b1.isScrollAdjusting())
 					return;
@@ -299,9 +306,7 @@ public class XAlignPane extends JPanel {
 							final int v = getMinimumVisibleIndex(l, model2);
 							// System.out.println("pour phrase "+val+", plus petit="+v);
 							if (v != -1) {
-								l2
-										.ensureIndexIsVisible(l2.getModel()
-												.getSize() - 1);
+								l2.ensureIndexIsVisible(l2.getModel().getSize() - 1);
 								l2.ensureIndexIsVisible(v);
 								break;
 							}
@@ -483,14 +488,12 @@ public class XAlignPane extends JPanel {
 							final Rectangle srcBounds = list1.getCellBounds(
 									srcIndex, srcIndex);
 							final int srcY = (int) (srcBounds.getY() + srcBounds
-									.getHeight() / 2)
-									- srcHeightOrigin;
+									.getHeight() / 2) - srcHeightOrigin;
 							final int srcX = 10;
 							final Rectangle destBounds = list2.getCellBounds(
 									destIndex, destIndex);
 							final int destY = (int) (destBounds.getY() + destBounds
-									.getHeight() / 2)
-									- destHeightOrigin;
+									.getHeight() / 2) - destHeightOrigin;
 							final Line2D.Double line = new Line2D.Double(srcX,
 									srcY, getWidth() - 10, destY);
 							alignments.add(new Alignment(line, srcIndex,
@@ -539,12 +542,10 @@ public class XAlignPane extends JPanel {
 				g2.setComposite(composite);
 				final Rectangle srcBounds = list1.getCellBounds(A, A);
 				final int srcY = (int) (srcBounds.getY() + srcBounds
-						.getHeight() / 2)
-						- srcHeightOrigin;
+						.getHeight() / 2) - srcHeightOrigin;
 				final Rectangle destBounds = list2.getCellBounds(B, B);
 				final int destY = (int) (destBounds.getY() + destBounds
-						.getHeight() / 2)
-						- destHeightOrigin;
+						.getHeight() / 2) - destHeightOrigin;
 				g2.drawLine(10, srcY, getWidth() - 10, destY);
 				g2.setComposite(old);
 			}
@@ -570,6 +571,7 @@ public class XAlignPane extends JPanel {
 			}
 		};
 		list.setCellRenderer(new ListCellRenderer() {
+			@Override
 			public Component getListCellRendererComponent(JList l,
 					Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {

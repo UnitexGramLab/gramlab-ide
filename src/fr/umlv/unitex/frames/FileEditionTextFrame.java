@@ -70,24 +70,29 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	long lastModification;
 
 	final Timer autoRefresh = new Timer(1000, new ActionListener() {
+		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (file==null) {
-				setTitle(text.isModified()?"(unsaved)":"");
+			if (file == null) {
+				setTitle(text.isModified() ? "(unsaved)" : "");
 				return;
 			}
-			String title1="";
+			String title1 = "";
 			if (text.isModified()) {
-				title1="(modified) ";
+				title1 = "(modified) ";
 			}
-			setTitle(title1+file.getAbsolutePath());
+			setTitle(title1 + file.getAbsolutePath());
 			if (!file.exists()) {
 				/* Case of a file that has been removed */
 				final Timer t = (Timer) e.getSource();
 				t.stop();
 				final String[] options = { "Yes", "No" };
-				final int n = JOptionPane.showOptionDialog(FileEditionTextFrame.this,
-						"The file "+file.getAbsolutePath()+" does\n"
-						+"not exist anymore on disk. Do you want to close the frame?", "", JOptionPane.YES_NO_OPTION,
+				final int n = JOptionPane.showOptionDialog(
+						FileEditionTextFrame.this,
+						"The file "
+								+ file.getAbsolutePath()
+								+ " does\n"
+								+ "not exist anymore on disk. Do you want to close the frame?",
+						"", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 				if (n == 1) {
 					return;
@@ -96,14 +101,13 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 				return;
 			}
 			if (file.lastModified() > lastModification) {
-				final int ret = JOptionPane
-						.showConfirmDialog(
-								FileEditionTextFrame.this,
-								"File has changed on disk. Do you want to reload it ?",
-								"", JOptionPane.YES_NO_OPTION);
+				final int ret = JOptionPane.showConfirmDialog(
+						FileEditionTextFrame.this,
+						"File has changed on disk. Do you want to reload it ?",
+						"", JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.YES_OPTION) {
 					lastModification = file.lastModified();
-					FileManager.load(file,text);					
+					FileManager.load(file, text);
 				} else {
 					/*
 					 * We don't want to be asked again until another
@@ -115,38 +119,42 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		}
 	});
 
-	
-	final Action saveAction = new AbstractAction("Save",
-			MyCursors.saveIcon) {
+	final Action saveAction = new AbstractAction("Save", MyCursors.saveIcon) {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			saveFile(file);
 		}
 	};
 	Action saveAsAction = new AbstractAction("Save as...") {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			saveFile(null);
 		}
 	};
 	private final Action cutAction = new AbstractAction("Cut",
 			MyCursors.cutIcon) {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			text.cut();
 		}
 	};
 	private final Action copyAction = new AbstractAction("Copy",
 			MyCursors.copyIcon) {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			text.copy();
 		}
 	};
 	private final Action pasteAction = new AbstractAction("Paste",
 			MyCursors.pasteIcon) {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			text.paste();
 		}
 	};
 	private final Action findAction = new AbstractAction("Find",
 			MyCursors.findIcon) {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			InternalFrameManager.getManager(null).newFindDialog(
 					FileEditionTextFrame.this);
@@ -162,7 +170,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		} else {
 			this.setTitle(file.getAbsolutePath());
 			this.lastModification = file.lastModified();
-			FileManager.load(file,text);
+			FileManager.load(file, text);
 		}
 		init();
 		autoRefresh.setInitialDelay(5);
@@ -174,8 +182,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		final JPanel top = new JPanel(new BorderLayout());
 		top.setBorder(new EmptyBorder(2, 2, 2, 2));
 		final JScrollPane scroll = new JScrollPane(text);
-		scroll
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		final JPanel middle = new JPanel(new BorderLayout());
 		middle.setBorder(BorderFactory.createLoweredBevelBorder());
 		middle.add(scroll);
@@ -196,25 +203,23 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 							"Cancel" };
 					int n;
 					String message;
-					if (file==null) {
-						message="This file has never been saved. Do you want to save it ?";
+					if (file == null) {
+						message = "This file has never been saved. Do you want to save it ?";
 					} else {
-						message="The file "+file.getAbsolutePath()+"\n"+
-							"has been modified. Do you want to save it ?";
+						message = "The file " + file.getAbsolutePath() + "\n"
+								+ "has been modified. Do you want to save it ?";
 					}
 					try {
 						FileEditionTextFrame.this.setSelected(true);
-					} catch (PropertyVetoException e1) {
+					} catch (final PropertyVetoException e1) {
 						/* */
 					}
 					if (UnitexFrame.closing) {
-						n = JOptionPane
-								.showOptionDialog(
-										FileEditionTextFrame.this,
-										message,
-										"", JOptionPane.YES_NO_CANCEL_OPTION,
-										JOptionPane.QUESTION_MESSAGE, null,
-										options_on_exit, options_on_exit[0]);
+						n = JOptionPane.showOptionDialog(
+								FileEditionTextFrame.this, message, "",
+								JOptionPane.YES_NO_CANCEL_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null,
+								options_on_exit, options_on_exit[0]);
 					} else {
 						n = JOptionPane
 								.showOptionDialog(
@@ -224,7 +229,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 										JOptionPane.QUESTION_MESSAGE, null,
 										normal_options, normal_options[0]);
 					}
-					if (n == JOptionPane.CLOSED_OPTION ||  n==2) {
+					if (n == JOptionPane.CLOSED_OPTION || n == 2) {
 						ConfigManager.getManager().userRefusedClosingFrame();
 						return;
 					}
@@ -252,30 +257,35 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		final JMenu fileMenu = new JMenu("File");
 		final JMenuItem newFrame = new JMenuItem("New");
 		newFrame.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				fileManager.newFile();
 			}
 		});
 		final JMenuItem open = new JMenuItem("Open...");
 		open.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				FileEditionMenu.openFile();
 			}
 		});
 		final JMenuItem close = new JMenuItem("Close");
 		close.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
 		});
 		final JMenuItem save = new JMenuItem("Save");
 		save.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveFile(file);
 			}
 		});
 		final JMenuItem saveAs = new JMenuItem("Save As...");
 		saveAs.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveFile(null);
 			}
@@ -358,7 +368,8 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	void saveFile(File f) {
 		if (f == null) {
 			final JFileChooser chooser = new JFileChooser();
-			chooser.setCurrentDirectory(ConfigManager.getManager().getCurrentLanguageDir());
+			chooser.setCurrentDirectory(ConfigManager.getManager()
+					.getCurrentLanguageDir());
 			chooser.setMultiSelectionEnabled(false);
 			chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 			final int returnVal = chooser.showSaveDialog(this);
@@ -377,7 +388,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	public void saveFile() {
 		saveFile(file);
 	}
-	
+
 	/**
 	 * Returns the text.
 	 * 
@@ -393,7 +404,8 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 
 	@Override
 	public String getTabName() {
-		if (file==null) return "(unsaved)";
+		if (file == null)
+			return "(unsaved)";
 		return file.getName();
 	}
 }

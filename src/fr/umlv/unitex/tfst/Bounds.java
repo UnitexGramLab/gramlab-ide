@@ -133,7 +133,8 @@ public class Bounds {
 		 * global_end_in_chars--; }
 		 */
 		/*
-		 * System.out.println(start_in_tokens+"."+start_in_chars+"."+start_in_letters
+		 * System.out.println(start_in_tokens+"."+start_in_chars+"."+
+		 * start_in_letters
 		 * +" "+end_in_tokens+"."+end_in_chars+"."+end_in_letters+"  =>  "+
 		 * global_start_in_chars+"-"+global_end_in_chars);
 		 */

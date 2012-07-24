@@ -54,7 +54,7 @@ import fr.umlv.unitex.files.FileUtil;
  * @author S&bastien Paumier
  */
 public class ConcordanceDiffFrame extends TabbableInternalFrame {
-	
+
 	final BigConcordanceDiff list = new BigConcordanceDiff();
 	final JComponent invisible = new JComponent() {
 		@Override
@@ -87,18 +87,14 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 		final JPanel top = new JPanel(new GridLayout(4, 1));
 		top.setBackground(Color.WHITE);
 		top.setBorder(new EmptyBorder(2, 2, 5, 2));
-		top
-				.add(new JLabel(
-						"<html><body><font color=\"#800080\">Violet:</font>&nbsp;identical sequences with different outputs</body></html>"));
-		top
-				.add(new JLabel(
-						"<html><body><font color=\"#FF0000\">Red:</font>&nbsp;similar but different sequences</body></html>"));
-		top
-				.add(new JLabel(
-						"<html><body><font color=\"#008000\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
-		top
-				.add(new JLabel(
-						"<html><body><font bgcolor=\"#D2D2D2\">Grey background=previous matches</font>&nbsp;&nbsp;White background=new matches</body></html>"));
+		top.add(new JLabel(
+				"<html><body><font color=\"#800080\">Violet:</font>&nbsp;identical sequences with different outputs</body></html>"));
+		top.add(new JLabel(
+				"<html><body><font color=\"#FF0000\">Red:</font>&nbsp;similar but different sequences</body></html>"));
+		top.add(new JLabel(
+				"<html><body><font color=\"#008000\">Green:</font>&nbsp;sequences that occur in only one of the two concordances</body></html>"));
+		top.add(new JLabel(
+				"<html><body><font bgcolor=\"#D2D2D2\">Grey background=previous matches</font>&nbsp;&nbsp;White background=new matches</body></html>"));
 		middle.add(top, BorderLayout.NORTH);
 		setContentPane(middle);
 		list.setFont(ConfigManager.getManager().getConcordanceFont(null));
@@ -113,6 +109,7 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 			}
 		});
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				list.setFont(ConfigManager.getManager()
 						.getConcordanceFont(null));
@@ -165,17 +162,20 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 		list.load(concor);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				TextFrame fTmp = InternalFrameManager.getManager(null)
 						.getTextFrame();
-				if (fTmp==null) {
-					/* In Gramlab, a concordance may be open while the text 
+				if (fTmp == null) {
+					/*
+					 * In Gramlab, a concordance may be open while the text
 					 * frame is not
 					 */
-					fTmp=InternalFrameManager.getManager(null)
-					.newTextFrame(ConfigManager.getManager().getCurrentSnt(null),false);
+					fTmp = InternalFrameManager.getManager(null).newTextFrame(
+							ConfigManager.getManager().getCurrentSnt(null),
+							false);
 				}
-				final TextFrame f=fTmp;
+				final TextFrame f = fTmp;
 				final String s = (String) list.getSelectedValue();
 				if (s == null || e.getValueIsAdjusting())
 					return;

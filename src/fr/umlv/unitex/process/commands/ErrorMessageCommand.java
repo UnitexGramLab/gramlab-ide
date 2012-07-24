@@ -44,27 +44,29 @@ public class ErrorMessageCommand extends CommandBuilder {
 	public String getMessage() {
 		return message;
 	}
-	
+
 	@Override
 	public ConsoleEntry logIntoConsole() {
 		return Console.addCommand(
-				"Error message emitted by the graphical interface",
-				true, null);
+				"Error message emitted by the graphical interface", true, null);
 	}
-	
+
 	@Override
-	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry) {
-		if (p.getStderr()==null) return true;
-		final ErrorMessageCommand c=this;
+	public boolean executeCommand(final ExecParameters p,
+			final ConsoleEntry entry) {
+		if (p.getStderr() == null)
+			return true;
+		final ErrorMessageCommand c = this;
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
 				public void run() {
 					p.getStderr().addLine(new Couple(c.getMessage(), true));
 				}
 			});
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			return false;
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			return false;
 		}
 		return true;

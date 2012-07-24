@@ -31,17 +31,20 @@ public interface AbstractCommand {
 	 * Logs the command in Unitex's console
 	 */
 	public ConsoleEntry logIntoConsole();
-	
+
 	/**
-	 * Executes the command and returns true iff
-	 * the command successfully executed
+	 * Executes the command and returns true iff the command successfully
+	 * executed
 	 */
-	public boolean executeCommand(final ExecParameters p,final ConsoleEntry entry);
-	
+	public boolean executeCommand(final ExecParameters p,
+			final ConsoleEntry entry);
+
 	public void setWhatToDoBefore(ToDoBeforeSingleCommand r);
-	public ToDoBeforeSingleCommand  getWhatToDoBefore();
+
+	public ToDoBeforeSingleCommand getWhatToDoBefore();
 
 	public void setWhatToDoOnceCompleted(ToDoAfterSingleCommand r);
+
 	public ToDoAfterSingleCommand getWhatToDoOnceCompleted();
 
 }

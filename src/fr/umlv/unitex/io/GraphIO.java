@@ -66,10 +66,11 @@ public class GraphIO {
 	 */
 	private int nBoxes;
 	private File grf;
-	private GraphMetaData metadata;
+	private final GraphMetaData metadata;
 
 	private GraphIO() {
-		info = ConfigManager.getManager().getGraphPresentationPreferences(null).clone();
+		info = ConfigManager.getManager().getGraphPresentationPreferences(null)
+				.clone();
 		metadata = new GraphMetaData();
 	}
 
@@ -95,15 +96,15 @@ public class GraphIO {
 		InputStreamReader reader;
 		if (!grfFile.exists()) {
 			if (emitErrorMessage)
-				JOptionPane.showMessageDialog(null, "Cannot find "
-						+ grfFile.getAbsolutePath(), "Error",
+				JOptionPane.showMessageDialog(null,
+						"Cannot find " + grfFile.getAbsolutePath(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		if (!grfFile.canRead()) {
 			if (emitErrorMessage)
-				JOptionPane.showMessageDialog(null, "Cannot read "
-						+ grfFile.getAbsolutePath(), "Error",
+				JOptionPane.showMessageDialog(null,
+						"Cannot read " + grfFile.getAbsolutePath(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
@@ -111,9 +112,9 @@ public class GraphIO {
 			reader = Encoding.getInputStreamReader(grfFile);
 			if (reader == null) {
 				if (emitErrorMessage)
-					JOptionPane.showMessageDialog(null, grfFile
-							.getAbsolutePath()
-							+ " is not a Unicode graph", "Error",
+					JOptionPane.showMessageDialog(null,
+							grfFile.getAbsolutePath()
+									+ " is not a Unicode graph", "Error",
 							JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
@@ -145,7 +146,8 @@ public class GraphIO {
 				final int pos = line.indexOf("=");
 				if (pos == -1) {
 					if (emitErrorMessage)
-						JOptionPane.showMessageDialog(null,
+						JOptionPane.showMessageDialog(
+								null,
 								"Invalid header line in "
 										+ grfFile.getAbsolutePath() + ":\n"
 										+ line, "Error",
@@ -188,15 +190,17 @@ public class GraphIO {
 			return null;
 		} catch (final FileNotFoundException e) {
 			if (emitErrorMessage)
-				JOptionPane.showMessageDialog(null, "Cannot open "
-						+ grfFile.getAbsolutePath(), "Error",
+				JOptionPane.showMessageDialog(null,
+						"Cannot open " + grfFile.getAbsolutePath(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			return null;
 		} catch (final IOException e) {
 			if (emitErrorMessage)
-				JOptionPane.showMessageDialog(null, "Error in file "
-						+ grfFile.getAbsolutePath() + ": " + e.getMessage(),
-						"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(
+						null,
+						"Error in file " + grfFile.getAbsolutePath() + ": "
+								+ e.getMessage(), "Error",
+						JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
 		return res;
@@ -584,9 +588,10 @@ public class GraphIO {
 					"Should not save a graph with null graph information");
 		}
 		if (grfFile.exists() && !grfFile.canWrite()) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-				+ grfFile.getAbsolutePath()+"\nbecause it is a read-only file!", "Error",
-				JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + grfFile.getAbsolutePath()
+							+ "\nbecause it is a read-only file!", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		OutputStreamWriter writer;
@@ -594,14 +599,14 @@ public class GraphIO {
 			if (!grfFile.exists())
 				grfFile.createNewFile();
 		} catch (final IOException e) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-					+ grfFile.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + grfFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!grfFile.canWrite()) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-					+ grfFile.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + grfFile.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -611,8 +616,8 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(writer, "FONT " + info.getInput().getFont().getName()
-					+ ":");
+			UnicodeIO.writeString(writer, "FONT "
+					+ info.getInput().getFont().getName() + ":");
 			switch (info.getInput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
@@ -627,10 +632,10 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(info.getInput().getSize())
-					+ "\n");
-			UnicodeIO.writeString(writer, "OFONT " + info.getOutput().getFont().getName()
-					+ ":");
+			UnicodeIO.writeString(writer,
+					String.valueOf(info.getInput().getSize()) + "\n");
+			UnicodeIO.writeString(writer, "OFONT "
+					+ info.getOutput().getFont().getName() + ":");
 			switch (info.getOutput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
@@ -645,23 +650,33 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(info.getOutput().getSize())
-					+ "\n");
-			UnicodeIO.writeString(writer, "BCOLOR "
-					+ String.valueOf(16777216 + info.getBackgroundColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "FCOLOR "
-					+ String.valueOf(16777216 + info.getForegroundColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "ACOLOR "
-					+ String.valueOf(16777216 + info.getSubgraphColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "SCOLOR "
-					+ String.valueOf(16777216 + info.getCommentColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "CCOLOR "
-					+ String.valueOf(16777216 + info.getSelectedColor().getRGB())
-					+ "\n");
+			UnicodeIO.writeString(writer,
+					String.valueOf(info.getOutput().getSize()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"BCOLOR "
+							+ String.valueOf(16777216 + info
+									.getBackgroundColor().getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"FCOLOR "
+							+ String.valueOf(16777216 + info
+									.getForegroundColor().getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"ACOLOR "
+							+ String.valueOf(16777216 + info.getSubgraphColor()
+									.getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"SCOLOR "
+							+ String.valueOf(16777216 + info.getCommentColor()
+									.getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"CCOLOR "
+							+ String.valueOf(16777216 + info.getSelectedColor()
+									.getRGB()) + "\n");
 			UnicodeIO.writeString(writer, "DBOXES y\n");
 			if (info.isFrame())
 				UnicodeIO.writeString(writer, "DFRAME y\n");
@@ -687,8 +702,8 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "FITS 100\n");
 			UnicodeIO.writeString(writer, "PORIENT L\n");
 			for (final String key : metadata.getKeySet()) {
-				UnicodeIO.writeString(writer, key + "="
-						+ metadata.getValue(key) + "\n");
+				UnicodeIO.writeString(writer,
+						key + "=" + metadata.getValue(key) + "\n");
 			}
 			UnicodeIO.writeString(writer, "#\n");
 			nBoxes = boxes.size();
@@ -699,14 +714,15 @@ public class GraphIO {
 				if (g.getType() != 1)
 					writeBoxContent(writer, g.getContent());
 				final int N = g.getTransitions().size();
-				UnicodeIO.writeString(writer, "\" " + String.valueOf(g.getX())
-						+ " " + String.valueOf(g.getY()) + " "
-						+ String.valueOf(N) + " ");
+				UnicodeIO.writeString(
+						writer,
+						"\" " + String.valueOf(g.getX()) + " "
+								+ String.valueOf(g.getY()) + " "
+								+ String.valueOf(N) + " ");
 				for (int j = 0; j < N; j++) {
 					final GenericGraphBox tmp = g.getTransitions().get(j);
-					UnicodeIO.writeString(writer, String.valueOf(boxes
-							.indexOf(tmp))
-							+ " ");
+					UnicodeIO.writeString(writer,
+							String.valueOf(boxes.indexOf(tmp)) + " ");
 				}
 				UnicodeIO.writeChar(writer, '\n');
 			}
@@ -785,7 +801,8 @@ public class GraphIO {
 		int y = 0;
 		while (UnicodeIO.isDigit((c = (char) UnicodeIO.readChar(r))))
 			y = y * 10 + (c - '0');
-		if (ConfigManager.getManager().getGraphPresentationPreferences(null).isRightToLeft()
+		if (ConfigManager.getManager().getGraphPresentationPreferences(null)
+				.isRightToLeft()
 				|| info.isRightToLeft()) {
 			info.setRightToLeft(true);
 			g.setX(width - x);
@@ -839,14 +856,14 @@ public class GraphIO {
 			if (!file.exists())
 				file.createNewFile();
 		} catch (final IOException e) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-					+ file.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + file.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		if (!file.canWrite()) {
-			JOptionPane.showMessageDialog(null, "Cannot write "
-					+ file.getAbsolutePath(), "Error",
+			JOptionPane.showMessageDialog(null,
+					"Cannot write " + file.getAbsolutePath(), "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -857,8 +874,8 @@ public class GraphIO {
 			UnicodeIO.writeString(writer, "#Unigraph\n");
 			UnicodeIO.writeString(writer, "SIZE " + String.valueOf(width) + " "
 					+ String.valueOf(height) + "\n");
-			UnicodeIO.writeString(writer, "FONT " + inf.getInput().getFont().getName()
-					+ ":");
+			UnicodeIO.writeString(writer, "FONT "
+					+ inf.getInput().getFont().getName() + ":");
 			switch (inf.getInput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
@@ -873,10 +890,10 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO
-					.writeString(writer, String.valueOf(inf.getInput().getSize()) + "\n");
-			UnicodeIO.writeString(writer, "OFONT " + inf.getOutput().getFont().getName()
-					+ ":");
+			UnicodeIO.writeString(writer,
+					String.valueOf(inf.getInput().getSize()) + "\n");
+			UnicodeIO.writeString(writer, "OFONT "
+					+ inf.getOutput().getFont().getName() + ":");
 			switch (inf.getOutput().getFont().getStyle()) {
 			case Font.PLAIN:
 				UnicodeIO.writeString(writer, "  ");
@@ -891,23 +908,33 @@ public class GraphIO {
 				UnicodeIO.writeString(writer, "BI");
 				break;
 			}
-			UnicodeIO.writeString(writer, String.valueOf(inf.getOutput().getSize())
-					+ "\n");
-			UnicodeIO.writeString(writer, "BCOLOR "
-					+ String.valueOf(16777216 + inf.getBackgroundColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "FCOLOR "
-					+ String.valueOf(16777216 + inf.getForegroundColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "ACOLOR "
-					+ String.valueOf(16777216 + inf.getSubgraphColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "SCOLOR "
-					+ String.valueOf(16777216 + inf.getCommentColor().getRGB())
-					+ "\n");
-			UnicodeIO.writeString(writer, "CCOLOR "
-					+ String.valueOf(16777216 + inf.getSelectedColor().getRGB())
-					+ "\n");
+			UnicodeIO.writeString(writer,
+					String.valueOf(inf.getOutput().getSize()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"BCOLOR "
+							+ String.valueOf(16777216 + inf
+									.getBackgroundColor().getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"FCOLOR "
+							+ String.valueOf(16777216 + inf
+									.getForegroundColor().getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"ACOLOR "
+							+ String.valueOf(16777216 + inf.getSubgraphColor()
+									.getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"SCOLOR "
+							+ String.valueOf(16777216 + inf.getCommentColor()
+									.getRGB()) + "\n");
+			UnicodeIO.writeString(
+					writer,
+					"CCOLOR "
+							+ String.valueOf(16777216 + inf.getSelectedColor()
+									.getRGB()) + "\n");
 			UnicodeIO.writeString(writer, "DBOXES y\n");
 			if (inf.isFrame())
 				UnicodeIO.writeString(writer, "DFRAME y\n");
@@ -942,8 +969,7 @@ public class GraphIO {
 				if (g.getType() != GenericGraphBox.FINAL) {
 					String foo = g.getContent();
 					if (i == 2
-							&& foo
-									.equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED")) {
+							&& foo.equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED")) {
 						foo = "<E>";
 						N = 0;
 					}
@@ -958,15 +984,16 @@ public class GraphIO {
 					}
 					writeBoxContent(writer, foo);
 				}
-				UnicodeIO.writeString(writer, "\" " + String.valueOf(g.getX())
-						+ " " + String.valueOf(g.getY()) + " "
-						+ String.valueOf(N) + " ");
+				UnicodeIO.writeString(
+						writer,
+						"\" " + String.valueOf(g.getX()) + " "
+								+ String.valueOf(g.getY()) + " "
+								+ String.valueOf(N) + " ");
 				for (int j = 0; j < N; j++) {
 					final TfstGraphBox tmp = (TfstGraphBox) g.getTransitions()
 							.get(j);
-					UnicodeIO.writeString(writer, String.valueOf(boxes
-							.indexOf(tmp))
-							+ " ");
+					UnicodeIO.writeString(writer,
+							String.valueOf(boxes.indexOf(tmp)) + " ");
 				}
 				UnicodeIO.writeChar(writer, '\n');
 			}
@@ -1007,19 +1034,19 @@ public class GraphIO {
 	}
 
 	public static void createNewGrf(File f) {
-		GraphIO gio=createEmptyGraphIO();
+		final GraphIO gio = createEmptyGraphIO();
 		gio.saveGraph(f);
 	}
 
 	private static GraphIO createEmptyGraphIO() {
-		GraphIO gio=new GraphIO();
-		gio.width=1188;
-		gio.height=840;
-		gio.boxes=new ArrayList<GenericGraphBox>();
-		GraphBox b=new GraphBox(70, 200, 0, null);
+		final GraphIO gio = new GraphIO();
+		gio.width = 1188;
+		gio.height = 840;
+		gio.boxes = new ArrayList<GenericGraphBox>();
+		GraphBox b = new GraphBox(70, 200, 0, null);
 		b.setContent("<E>");
 		gio.boxes.add(b);
-		b=new GraphBox(300, 200, 1, null);
+		b = new GraphBox(300, 200, 1, null);
 		b.setContent("");
 		gio.boxes.add(b);
 		return gio;

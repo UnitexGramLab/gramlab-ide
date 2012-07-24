@@ -178,13 +178,13 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				Config.getUserCurrentLanguageDir(), "system_dic.def"));
 		userList = loadDicList(new File(Config.getUserCurrentLanguageDir(),
 				"user_dic_list.txt"));
-		final Vector<String> userDicOnDisk = getDicList(new File(Config
-				.getUserCurrentLanguageDir(), "Dela" /* lexicalDir */));
+		final Vector<String> userDicOnDisk = getDicList(new File(
+				Config.getUserCurrentLanguageDir(), "Dela" /* lexicalDir */));
 		userList = merge(userList, userDicOnDisk);
 		systemList = loadDicList(new File(Config.getUserCurrentLanguageDir(),
 				"system_dic_list.txt"));
-		final Vector<String> systemDicOnDisk = getDicList(new File(Config
-				.getUnitexCurrentLanguageDir(), "Dela" /* lexicalDir */));
+		final Vector<String> systemDicOnDisk = getDicList(new File(
+				Config.getUnitexCurrentLanguageDir(), "Dela" /* lexicalDir */));
 		systemList = merge(systemList, systemDicOnDisk);
 		setContent(userDicList, userList);
 		setContent(systemDicList, systemList);
@@ -202,6 +202,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				BorderLayout.NORTH);
 		credits = new BigTextArea();
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
+			@Override
 			public void preferencesChanged(String language) {
 				credits.setFont(ConfigManager.getManager().getTextFont(null));
 			}
@@ -234,6 +235,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		final JButton userUpButton = new JButton("\u25B2");
 		userUpButton.setEnabled(false);
 		userUpButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int index = userDicList.getSelectedIndex();
 				if (index <= 0) {
@@ -244,13 +246,15 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				final Object o = model.remove(index);
 				model.insertElementAt(o, index - 1);
 				userDicList.setSelectedIndex(index - 1);
-				saveListToFile(userDicList, new File(Config
-						.getUserCurrentLanguageDir(), "user_dic_list.txt"));
+				saveListToFile(userDicList,
+						new File(Config.getUserCurrentLanguageDir(),
+								"user_dic_list.txt"));
 			}
 		});
 		final JButton userDownButton = new JButton("\u25BC");
 		userDownButton.setEnabled(false);
 		userDownButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int index = userDicList.getSelectedIndex();
 				if (index == -1
@@ -262,14 +266,16 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				final Object o = model.remove(index);
 				model.insertElementAt(o, index + 1);
 				userDicList.setSelectedIndex(index + 1);
-				saveListToFile(userDicList, new File(Config
-						.getUserCurrentLanguageDir(), "user_dic_list.txt"));
+				saveListToFile(userDicList,
+						new File(Config.getUserCurrentLanguageDir(),
+								"user_dic_list.txt"));
 			}
 		});
 		userButtonsPanel.add(userUpButton);
 		userButtonsPanel.add(userDownButton);
 		userDicList = new JList();
 		userDicList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				final int min = userDicList.getMinSelectionIndex();
 				final int max = userDicList.getMaxSelectionIndex();
@@ -312,6 +318,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		final JButton systemUpButton = new JButton("\u25B2");
 		systemUpButton.setEnabled(false);
 		systemUpButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int index = systemDicList.getSelectedIndex();
 				if (index <= 0) {
@@ -322,13 +329,15 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				final Object o = model.remove(index);
 				model.insertElementAt(o, index - 1);
 				systemDicList.setSelectedIndex(index - 1);
-				saveListToFile(systemDicList, new File(Config
-						.getUserCurrentLanguageDir(), "system_dic_list.txt"));
+				saveListToFile(systemDicList,
+						new File(Config.getUserCurrentLanguageDir(),
+								"system_dic_list.txt"));
 			}
 		});
 		final JButton systemDownButton = new JButton("\u25BC");
 		systemDownButton.setEnabled(false);
 		systemDownButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				final int index = systemDicList.getSelectedIndex();
 				if (index == -1
@@ -340,14 +349,16 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 				final Object o = model.remove(index);
 				model.insertElementAt(o, index + 1);
 				systemDicList.setSelectedIndex(index + 1);
-				saveListToFile(systemDicList, new File(Config
-						.getUserCurrentLanguageDir(), "system_dic_list.txt"));
+				saveListToFile(systemDicList,
+						new File(Config.getUserCurrentLanguageDir(),
+								"system_dic_list.txt"));
 			}
 		});
 		systemButtonsPanel.add(systemUpButton);
 		systemButtonsPanel.add(systemDownButton);
 		systemDicList = new JList(new DefaultListModel());
 		systemDicList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				final int min = systemDicList.getMinSelectionIndex();
 				final int max = systemDicList.getMaxSelectionIndex();
@@ -392,15 +403,11 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		userPanel.setBorder(new TitledBorder("User resources"));
 		systemPanel.setBorder(new TitledBorder("System resources"));
 		final JScrollPane scroll_1 = new JScrollPane(userDicList);
-		scroll_1
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroll_1
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		final JScrollPane scroll_2 = new JScrollPane(systemDicList);
-		scroll_2
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scroll_2
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scroll_2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scroll_2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		userPanel.add(scroll_1, BorderLayout.CENTER);
 		userPanel.add(userButtonsPanel, BorderLayout.EAST);
 		systemPanel.add(scroll_2, BorderLayout.CENTER);
@@ -413,6 +420,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	private JPanel constructButtonsPanel() {
 		final JPanel buttons = new JPanel(new GridLayout(1, 4));
 		final Action clearAction = new AbstractAction("Clear") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				userDicList.clearSelection();
 				systemDicList.clearSelection();
@@ -421,6 +429,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		};
 		final JButton clearButton = new JButton(clearAction);
 		final Action defaultAction = new AbstractAction("Default") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				refreshDicLists();
 				credits.setText("");
@@ -428,6 +437,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		};
 		final JButton defaultButton = new JButton(defaultAction);
 		final Action setDefaultAction = new AbstractAction("Set Default") {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				saveDefaultDicLists();
 			}
@@ -442,6 +452,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 	private JButton constructGoButton() {
 		final Action goAction = new AbstractAction("Apply") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				InternalFrameManager.getManager(null).closeTextDicFrame();
@@ -459,10 +470,12 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 					InternalFrameManager.getManager(null).closeTfstTagsFrame();
 					/* We also have to rebuild the text automaton */
 					Config.cleanTfstFiles(true);
-					final Txt2TfstCommand txtCmd = new Txt2TfstCommand().text(
-							Config.getCurrentSnt()).alphabet(
-							ConfigManager.getManager().getAlphabet(null))
-							.clean(true).korean();
+					final Txt2TfstCommand txtCmd = new Txt2TfstCommand()
+							.text(Config.getCurrentSnt())
+							.alphabet(
+									ConfigManager.getManager()
+											.getAlphabet(null)).clean(true)
+							.korean();
 					commands.addCommand(txtCmd);
 				}
 				Launcher.exec(commands, true, new ApplyLexicalResourcesDo(
@@ -488,7 +501,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			/* If there is no dictionary selected, we do nothing */
 			return commands;
 		}
-		DicoCommand cmd = new DicoCommand().snt(Config.getCurrentSnt())
+		DicoCommand cmd = new DicoCommand()
+				.snt(Config.getCurrentSnt())
 				.alphabet(ConfigManager.getManager().getAlphabet(null))
 				.morphologicalDic(
 						ConfigManager.getManager().morphologicalDictionaries(
@@ -621,7 +635,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 *            be selected.
 	 */
 	void setDefaultSelection(JList list, Vector<String> v) {
-		ArrayList<Integer> indices=new ArrayList<Integer>();
+		final ArrayList<Integer> indices = new ArrayList<Integer>();
 		if (v == null)
 			return;
 		final ListModel model = list.getModel();
@@ -633,9 +647,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			}
 		}
 		if (indices.size() != 0) {
-			int[] res = new int[indices.size()];
-			for (int i=0;i<indices.size();i++) {
-				res[i]=indices.get(i);
+			final int[] res = new int[indices.size()];
+			for (int i = 0; i < indices.size(); i++) {
+				res[i] = indices.get(i);
 			}
 			list.setSelectedIndices(res);
 		}
@@ -670,10 +684,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	 * <code>(user dir)/(current language dir)/system_dic.def</code>.
 	 */
 	void saveDefaultDicLists() {
-		saveSelectionToFile(userDicList, new File(Config
-				.getUserCurrentLanguageDir(), "user_dic.def"));
-		saveSelectionToFile(systemDicList, new File(Config
-				.getUserCurrentLanguageDir(), "system_dic.def"));
+		saveSelectionToFile(userDicList,
+				new File(Config.getUserCurrentLanguageDir(), "user_dic.def"));
+		saveSelectionToFile(systemDicList,
+				new File(Config.getUserCurrentLanguageDir(), "system_dic.def"));
 	}
 
 	/**
@@ -736,6 +750,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			this.sntDir = sntDir;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(sntDir).newTextDicFrame(sntDir,
 					false);

@@ -35,7 +35,7 @@ import javax.swing.SwingWorker;
  * @author Sébastien Paumier
  */
 public class XMLTextLoader {
-	
+
 	final XMLTextModel model;
 	final MappedByteBuffer buffer;
 
@@ -111,7 +111,11 @@ public class XMLTextLoader {
 	 */
 	public static MappedByteBuffer buildMappedByteBuffer(File file)
 			throws IOException {
-		final FileChannel channel = new FileInputStream(file).getChannel();
-		return channel.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+		final FileInputStream fileInputStream = new FileInputStream(file);
+		final FileChannel channel = fileInputStream.getChannel();
+		final MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_ONLY,
+				0, file.length());
+		fileInputStream.close();
+		return map;
 	}
 }

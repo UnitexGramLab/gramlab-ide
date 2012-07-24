@@ -26,6 +26,7 @@ import java.awt.dnd.DropTarget;
 public interface UnitexDropTarget {
 
 	public DropTarget newDropTarget(Component c);
+
 	public DropTarget newTranscodeDropTarget(Component c);
 
 }

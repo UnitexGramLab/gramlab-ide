@@ -24,51 +24,55 @@ import java.io.File;
 import java.util.ArrayList;
 
 public abstract class AbstractConfigModel implements ConfigModel {
+	@Override
 	public boolean isKorean(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		return language.equals("Korean");
 	}
 
+	@Override
 	public boolean isArabic(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		return language.equals("Arabic");
 	}
 
+	@Override
 	public boolean isThai(String language) {
 		if (language == null)
 			language = getCurrentLanguage();
 		return language.equals("Thai");
 	}
 
+	@Override
 	public boolean isPRLGLanguage(String language) {
 		return true;
 		/*
-		if (language == null)
-			language = getCurrentLanguage();
-		return language.equals("Greek (Ancient)")
-				|| language.equals("Arabic (Middle Arabic)")
-				|| language.equals("Armenian (Ancient)")
-				|| language.equals("Georgian (Ancient)")
-				|| language.equals("Latin");
-				*/
+		 * if (language == null) language = getCurrentLanguage(); return
+		 * language.equals("Greek (Ancient)") ||
+		 * language.equals("Arabic (Middle Arabic)") ||
+		 * language.equals("Armenian (Ancient)") ||
+		 * language.equals("Georgian (Ancient)") || language.equals("Latin");
+		 */
 	}
 
+	@Override
 	public boolean isValidLanguageName(String language) {
 		return !(language.equals("App") || language.equals("Users")
 				|| language.equals("Src") || language.equals("XAlign") || language
-				.startsWith("."));
+					.startsWith("."));
 	}
 
-
-	public File getGraphRepositoryPath(String language,String name) {
-		if (name==null) {
+	@Override
+	public File getGraphRepositoryPath(String language, String name) {
+		if (name == null) {
 			return getDefaultGraphRepositoryPath(language);
 		}
-		ArrayList<NamedRepository> list=getNamedRepositories(name);
-		if (list==null) return null;
-		for (NamedRepository n:list) {
+		final ArrayList<NamedRepository> list = getNamedRepositories(name);
+		if (list == null)
+			return null;
+		for (final NamedRepository n : list) {
 			if (n.getName().equals(name)) {
 				return n.getFile();
 			}

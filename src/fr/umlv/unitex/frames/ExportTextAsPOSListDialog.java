@@ -59,7 +59,8 @@ public class ExportTextAsPOSListDialog extends JDialog {
 	 * @param in
 	 *            indicates if we select an input or an output font for graphs.
 	 */
-	public ExportTextAsPOSListDialog(File output, TagFilter filter,boolean delafStyle) {
+	public ExportTextAsPOSListDialog(File output, TagFilter filter,
+			boolean delafStyle) {
 		super(UnitexFrame.mainFrame, "Export text as POS list", true);
 		configure(output, filter, delafStyle);
 		setContentPane(constructPanel());
@@ -88,7 +89,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 		}
 		this.output = o;
 		this.filter = f;
-		this.delafStyle=delafStyle1;
+		this.delafStyle = delafStyle1;
 	}
 
 	public void launch() {
@@ -103,13 +104,15 @@ public class ExportTextAsPOSListDialog extends JDialog {
 		final File sntDir = Config.getCurrentSntDir();
 		final Encoding encoding = ConfigManager.getManager().getEncoding(null);
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				TokensInfo.save();
 				final File tfst = new File(sntDir, "text.tfst");
 				final File tmpGrf = new File(sntDir, "foo.grf");
 				final File sentenceText = new File(sntDir, "foo.txt");
 				final File sentenceTok = new File(sntDir, "foo.tok");
-				final TfstTableModel model = new TfstTableModel(filter, delafStyle);
+				final TfstTableModel model = new TfstTableModel(filter,
+						delafStyle);
 				try {
 					final OutputStreamWriter writer = encoding
 							.getOutputStreamWriter(output);
@@ -143,6 +146,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 						UnicodeIO.writeString(writer, "{S}\n");
 						final int z = i;
 						EventQueue.invokeLater(new Runnable() {
+							@Override
 							public void run() {
 								progress.setValue(z);
 								progress.setString(z + "/" + sentenceCount);
@@ -171,6 +175,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 					}
 					try {
 						EventQueue.invokeAndWait(new Runnable() {
+							@Override
 							public void run() {
 								dialog.setVisible(false);
 							}

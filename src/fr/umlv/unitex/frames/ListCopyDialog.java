@@ -68,6 +68,7 @@ class ListCopyDialog extends JDialog {
 		p.add(inputPanel);
 		final JButton ok = new JButton("OK");
 		ok.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				info = new ContextsInfo(left.getText(), right.getText());
 				setVisible(false);

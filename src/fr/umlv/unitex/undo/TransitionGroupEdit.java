@@ -62,7 +62,8 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	public TransitionGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
 			GenericGraphBox dst, GenericGraphicalZone zone) {
 		this.selectedBoxes = selectedBoxes;
-		this.oldSelectedBoxes = (ArrayList) selectedBoxes.clone();
+		this.oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes
+				.clone();
 		this.dst = dst;
 		this.zone = zone;
 	}

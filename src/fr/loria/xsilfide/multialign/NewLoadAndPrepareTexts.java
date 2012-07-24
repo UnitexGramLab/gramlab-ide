@@ -43,13 +43,12 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import fr.loria.nguyen.mytools.FileIO;
 import fr.loria.nguyen.mytools.XMLTools;
 
-@SuppressWarnings("unchecked")
 class NewLoadAndPrepareTexts {
 	private String sourceName;
 	private String targetName;
 	private String idSource;
 	private String idTarget;
-	Vector filesPlusId;
+	Vector<Object> filesPlusId;
 	private final LoadAndPrepareTexts lpt;
 	private Cognates cogn;
 	private final Properties prop = new Properties();
@@ -120,8 +119,8 @@ class NewLoadAndPrepareTexts {
 		// Reading the source XML text
 		System.out.print("Parsing '" + fileName + "'...");
 		try {
-			final InputSource is = new InputSource(FileIO
-					.openLargeInput(fileName));
+			final InputSource is = new InputSource(
+					FileIO.openLargeInput(fileName));
 			is.setEncoding("UTF-8");
 			is.setSystemId(fileName);
 			parser.parse(is);
@@ -154,7 +153,7 @@ class NewLoadAndPrepareTexts {
 		 */
 		lpt = new LoadAndPrepareTexts(sourceName, targetName,
 		// System.getProperty("user.dir")+"/Properties/multialign.properties",
-				// System.getProperty("user.dir")+"/Properties/multialign.properties",
+		// System.getProperty("user.dir")+"/Properties/multialign.properties",
 				idSource, idTarget, prop);
 		System.out.println("Properties : " + lpt.prop);
 		// Le problème maintenant, c'est de saturer les cognates
@@ -188,8 +187,8 @@ class NewLoadAndPrepareTexts {
 		return cogn;
 	}
 
-	Vector segmentOnChar(String s, char cs) {
-		final Vector result = new Vector();
+	Vector<Object> segmentOnChar(String s, char cs) {
+		final Vector<Object> result = new Vector<Object>();
 		int finMot;
 		int debutMot;
 		char c;
@@ -282,8 +281,8 @@ class NewLoadAndPrepareTexts {
 					System.out.println("id = " + attrs.getValue("xml:id")
 							+ "\n");
 					System.out.println("cognates = " + cogn + "\n");
-					cogn.addPaquet(attrs.getValue("targets"), attrs
-							.getValue("xml:id"), lpt);
+					cogn.addPaquet(attrs.getValue("targets"),
+							attrs.getValue("xml:id"), lpt);
 				}
 				if (inAlign) {
 					cogn.addAlignment(attrs.getValue("targets"), lpt);
@@ -341,8 +340,8 @@ class NewLoadAndPrepareTexts {
 				key = attrs.getValue("key");
 				// the key is of the form :
 				// Xalign.EMPTY or Xalign.PHRASE or ...
-				thePropVal = key.substring(key.lastIndexOf('.') + 1, key
-						.length());
+				thePropVal = key.substring(key.lastIndexOf('.') + 1,
+						key.length());
 				prop.setProperty(curElem, thePropVal);
 				System.out.println(curElem + " = " + thePropVal);
 			}
@@ -370,14 +369,14 @@ class NewLoadAndPrepareTexts {
 				/* we also have curFileName */
 				if (fileNameStatus.equals("source")) {
 					sourceName = curFileName;
-					final Vector tmpSrc = segmentOnChar(curFileName, '#');
+					final Vector<Object> tmpSrc = segmentOnChar(curFileName, '#');
 					sourceName = (String) tmpSrc.elementAt(0);
 					if (tmpSrc.size() > 1) {
 						idSource = (String) tmpSrc.elementAt(1);
 					} else
 						idSource = "";
 				} else {
-					final Vector tmpTar = segmentOnChar(curFileName, '#');
+					final Vector<Object> tmpTar = segmentOnChar(curFileName, '#');
 					targetName = (String) tmpTar.elementAt(0);
 					if (tmpTar.size() > 1) {
 						idTarget = (String) tmpTar.elementAt(1);

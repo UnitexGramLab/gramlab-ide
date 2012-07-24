@@ -83,6 +83,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		resultName.setPreferredSize(new Dimension(280, 20));
 		subgraphName.setPreferredSize(new Dimension(280, 20));
 		final Action setGrfAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -96,6 +97,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		};
 		final JButton setGrfName = new JButton(setGrfAction);
 		final Action setResultAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -112,6 +114,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		};
 		final JButton setResultName = new JButton(setResultAction);
 		final Action setSubgraphAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser dialogBox = Config.getGraphDialogBox(false);
 				dialogBox.setDialogType(JFileChooser.SAVE_DIALOG);
@@ -142,12 +145,14 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 	private JPanel constructDownPanel() {
 		final JPanel downPanel = new JPanel(new GridLayout(1, 2));
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				doDefaultCloseAction();
 			}
 		};
 		final JButton CANCEL = new JButton(cancelAction);
 		final Action okAction = new AbstractAction("Compile") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				compileLGTable();
 			}

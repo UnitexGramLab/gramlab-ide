@@ -129,8 +129,8 @@ public class TextAsListModelImpl extends AbstractListModel {
 					}
 				}
 				if (lastStartInBytes < parseBuffer.capacity()) {
-					publish(new Interval(lastStartInBytes, parseBuffer
-							.position(), lastStartInChars, pos - 1));
+					publish(new Interval(lastStartInBytes,
+							parseBuffer.position(), lastStartInChars, pos - 1));
 					setProgress(100);
 				}
 				return null;
@@ -164,6 +164,7 @@ public class TextAsListModelImpl extends AbstractListModel {
 		fireIntervalAdded(this, 0, 0);
 	}
 
+	@Override
 	public int getSize() {
 		if (content != null)
 			return 1;
@@ -175,6 +176,7 @@ public class TextAsListModelImpl extends AbstractListModel {
 	/**
 	 * Returns the text corresponding to the paragraph #i.
 	 */
+	@Override
 	public String getElementAt(int i) {
 		if (!dataFromFile)
 			return content;

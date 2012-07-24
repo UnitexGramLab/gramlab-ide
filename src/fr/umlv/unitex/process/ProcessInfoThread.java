@@ -53,11 +53,11 @@ public class ProcessInfoThread extends Thread {
 	 * @param s
 	 *            the stream to monitor
 	 */
-	public ProcessInfoThread(ProcessOutputList list, InputStream s, ConsoleEntry entry,
-			boolean errorStream) {
+	public ProcessInfoThread(ProcessOutputList list, InputStream s,
+			ConsoleEntry entry, boolean errorStream) {
 		this.list = list;
 		this.entry = entry;
-		this.readingErrorStream=errorStream;
+		this.readingErrorStream = errorStream;
 		try {
 			stream = new BufferedReader(new InputStreamReader(s, "UTF8"));
 		} catch (final UnsupportedEncodingException e) {
@@ -135,6 +135,7 @@ public class ProcessInfoThread extends Thread {
 				final boolean ret = fullReturn;
 				try {
 					SwingUtilities.invokeAndWait(new Runnable() {
+						@Override
 						public void run() {
 							if (ret) {
 								list.addLine(new Couple(s2, false));
@@ -146,14 +147,14 @@ public class ProcessInfoThread extends Thread {
 							}
 						}
 					});
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 					/* */
-				} catch (InvocationTargetException e) {
+				} catch (final InvocationTargetException e) {
 					/* */
 				}
 			}
 		}
-		if (entry!=null) {
+		if (entry != null) {
 			if (readingErrorStream) {
 				entry.setErrorStreamEnded(true);
 			} else {

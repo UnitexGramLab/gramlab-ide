@@ -53,9 +53,9 @@ import fr.umlv.unitex.process.commands.SortTxtCommand;
  * @author Sébastien Paumier
  */
 public class InflectFrame extends JInternalFrame {
-	
+
 	private File dela;
-	
+
 	final JTextField directory = new JTextField("");
 	private final JRadioButton allWords = new JRadioButton(
 			"Allow both simple and compound words", true);
@@ -86,10 +86,12 @@ public class InflectFrame extends JInternalFrame {
 				"Directory where inflectional FST2 are stored: "));
 		final JPanel tempPanel = new JPanel(new BorderLayout());
 		directory.setPreferredSize(new Dimension(240, 25));
-		final File inflectionDir=ConfigManager.getManager().getInflectionDir();
+		final File inflectionDir = ConfigManager.getManager()
+				.getInflectionDir();
 		directory.setText(inflectionDir.getAbsolutePath());
 		tempPanel.add(directory, BorderLayout.CENTER);
 		final Action setDirectoryAction = new AbstractAction("Set...") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int returnVal = Config.getInflectDialogBox(inflectionDir)
 						.showOpenDialog(null);
@@ -118,12 +120,14 @@ public class InflectFrame extends JInternalFrame {
 	private JPanel constructDownPanel() {
 		final JPanel downPanel = new JPanel(new GridLayout(1, 2));
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
 		};
 		final JButton CANCEL = new JButton(cancelAction);
 		final Action goAction = new AbstractAction("Inflect Dictionary") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				inflectDELA();
@@ -150,10 +154,10 @@ public class InflectFrame extends JInternalFrame {
 		tmp = tmp + "flx.dic";
 		final File resultDic = new File(tmp);
 		final MultiCommands cmds = new MultiCommands();
-		MultiFlexCommand command = new MultiFlexCommand().delas(f).result(
-				resultDic).alphabet(
-				ConfigManager.getManager().getAlphabet(null)).repository().dir(
-				new File(directory.getText()));
+		MultiFlexCommand command = new MultiFlexCommand().delas(f)
+				.result(resultDic)
+				.alphabet(ConfigManager.getManager().getAlphabet(null))
+				.repository().dir(new File(directory.getText()));
 		if (onlySimpleWords.isSelected()) {
 			command = command.onlySimpleWords();
 		} else if (onlyCompoundWords.isSelected()) {
@@ -178,12 +182,13 @@ public class InflectFrame extends JInternalFrame {
 			this.dela1 = dela;
 		}
 
+		@Override
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dela1).newDelaFrame(dela1);
 		}
 	}
 
 	public void setDela(File dela) {
-		this.dela=dela;
+		this.dela = dela;
 	}
 }

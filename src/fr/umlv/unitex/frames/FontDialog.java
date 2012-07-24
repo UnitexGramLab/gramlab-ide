@@ -233,11 +233,13 @@ class FontDialog extends JDialog {
 	private JPanel constructButtonPanel() {
 		final JPanel buttonPanel = new JPanel();
 		final Action okAction = new AbstractAction("OK") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
 		};
 		final Action cancelAction = new AbstractAction("Cancel") {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				/*
 				 * After cancelling, a call to getFontInfo() return null
@@ -290,6 +292,7 @@ class FontDialog extends JDialog {
 				.getLocalGraphicsEnvironment();
 		fontList = new JList(ge.getAvailableFontFamilyNames());
 		fontList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				refresh();
 			}
@@ -297,6 +300,7 @@ class FontDialog extends JDialog {
 		styleList = new JList(new String[] { "Plain", "Bold", "Italic",
 				"Bold Italic" });
 		styleList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				refresh();
 			}
@@ -304,6 +308,7 @@ class FontDialog extends JDialog {
 		sizeList = new JList(new Integer[] { 8, 9, 10, 11, 12, 14, 16, 18, 20,
 				22, 24, 28, 36, 48, 72 });
 		sizeList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				refresh();
 			}
@@ -312,6 +317,7 @@ class FontDialog extends JDialog {
 				"Arabic", "Thai", "Georgian", "Hiragana", "Katakana", "Hangul",
 				"Kanji" });
 		scriptList.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				final String s = (String) (scriptList.getSelectedValue());
 				if (s == null)
