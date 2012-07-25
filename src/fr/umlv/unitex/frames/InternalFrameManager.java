@@ -76,7 +76,7 @@ public class InternalFrameManager {
 			ConcordanceParameterFrame.class);
 	private final FrameFactory constructTfstFrameFactory = new FrameFactory(
 			ConstructTfstFrame.class);
-	private final FrameFactory constructSeqTfstFrameFactory = new FrameFactory(
+	private final FrameFactory seq2GrfFrameFactory = new FrameFactory(
 			Seq2GrfFrame.class);
 	private final FrameFactory convertTfstToTextFrameFactory = new FrameFactory(
 			ConvertTfstToTextFrame.class);
@@ -591,12 +591,12 @@ public class InternalFrameManager {
 	}
 
 	public Seq2GrfFrame newConstructSeqTfstFrame() {
-		return (Seq2GrfFrame) setup(constructSeqTfstFrameFactory
+		return (Seq2GrfFrame) setup(seq2GrfFrameFactory
 				.newFrame());
 	}
 
 	public void closeConstructSeqTfstFrame() {
-		constructSeqTfstFrameFactory.closeFrame();
+		seq2GrfFrameFactory.closeFrame();
 	}
 
 	public ConvertTfstToTextFrame newConvertTfstToTextFrame() {
@@ -1017,5 +1017,17 @@ public class InternalFrameManager {
 
 	public BuildKrMwuDicFrame newBuildKrMwuDicFrame() {
 		return (BuildKrMwuDicFrame) setup(buildKrMwuDicFrameFactory.newFrame());
+	}
+
+	public Seq2GrfFrame getSeq2GrfFrame() {
+		final Seq2GrfFrame f = (Seq2GrfFrame) seq2GrfFrameFactory.newFrame();
+		f.setVisible(true);
+		setup(f);
+		try {
+			f.setSelected(true);
+		} catch (final PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		return f;
 	}
 }
