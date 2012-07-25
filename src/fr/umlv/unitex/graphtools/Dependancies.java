@@ -223,9 +223,8 @@ public class Dependancies {
 		/* replace ':' by '/' resp. '\\' */
 		if (s.startsWith(":")) {
 			// if the graph is located in the package repository
-			final File repository = new File(
+			return new File(
 					GenericGraphBox.getNormalizeGraphCall(s));
-			return new File(repository, s.substring(1));
 		}
 		// otherwise
 		File f = new File(s);
