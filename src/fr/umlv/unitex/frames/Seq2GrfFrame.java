@@ -49,6 +49,9 @@ import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.Fst2TxtCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.Seq2GrfCommand;
 
 public class Seq2GrfFrame extends JInternalFrame {
@@ -261,6 +264,32 @@ public class Seq2GrfFrame extends JInternalFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		MultiCommands cmds=new MultiCommands();
+		if (FileUtil.getExtensionInLowerCase(f).equals("xml")) {
+			/* TEI files must receive a special treatment */
+			File sequenceTEI=getSequenceTeiFst2();
+			if (!sequenceTEI.exists()) {
+				JOptionPane.showMessageDialog(null, "Graph "+sequenceTEI.getAbsolutePath()+" is missing.\n"+
+						"No xml sequence file can be processed without it. If you have a SequenceTEI.grf file,\n"+
+						"make sure you have compiled it properly.",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			File replaceTEI=getReplaceTeiFst2();
+			if (!replaceTEI.exists()) {
+				JOptionPane.showMessageDialog(null, "Graph "+replaceTEI.getAbsolutePath()+" is missing.\n"+
+						"No xml sequence file can be processed without it. If you have a ReplaceTEI.grf file,\n"+
+						"make sure you have compiled it properly.",
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			File xml=f;
+			String foo=FileUtil.getFileNameWithoutExtension(f);
+			f=new File(foo+".snt");
+			addTeiPreprocessingCommands(cmds,xml,f,sequenceTEI,replaceTEI);
+		}
 		if (textOutputDir.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "You must specify an output directory!",
 					"Error",
@@ -300,7 +329,8 @@ public class Seq2GrfFrame extends JInternalFrame {
 					.wildcardReplace(nReplace)
 					.wildcardInsert(nInsert);
 		}
-		Launcher.exec(cmd,true,new ToDo() {
+		cmds.addCommand(cmd);
+		Launcher.exec(cmds,true,new ToDo() {
 
 			@Override
 			public void toDo(boolean success) {
@@ -310,7 +340,30 @@ public class Seq2GrfFrame extends JInternalFrame {
 			
 		});
 	}
-	
 
+	private void addTeiPreprocessingCommands(MultiCommands cmds, File xml,
+			File snt, File sequenceTEI, File replaceTEI) {
+		NormalizeCommand norm=new NormalizeCommand().text(xml).noSeparatorNormalization();
+		cmds.addCommand(norm);
+		File alphabet=ConfigManager.getManager().getAlphabet(null);
+		Fst2TxtCommand foo1=new Fst2TxtCommand().text(snt).fst2(sequenceTEI).mode(true).alphabet(alphabet);
+		cmds.addCommand(foo1);
+		Fst2TxtCommand foo2=new Fst2TxtCommand().text(snt).fst2(replaceTEI).mode(false).alphabet(alphabet);
+		cmds.addCommand(foo2);
+	}
+
+	private File getSequenceTeiFst2() {
+		File dir=new File(ConfigManager.getManager().getCurrentLanguageDir(),"Graphs");
+		File preprocessing=new File(dir,"Preprocessing");
+		File sentence=new File(preprocessing,"Sentence");
+		return new File(sentence,"SequenceTEI.fst2");
+	}
+	
+	private File getReplaceTeiFst2() {
+		File dir=new File(ConfigManager.getManager().getCurrentLanguageDir(),"Graphs");
+		File preprocessing=new File(dir,"Preprocessing");
+		File sentence=new File(preprocessing,"Replace");
+		return new File(sentence,"ReplaceTEI.fst2");
+	}
 	
 }
