@@ -134,4 +134,11 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
+	public Grf2Fst2Command strictTokenization(boolean b) {
+		if (b) {
+			element("-S");
+		}
+		return this;
+	}
+
 }
