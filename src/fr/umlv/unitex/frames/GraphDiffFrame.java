@@ -71,7 +71,13 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 			}
 		});
 		final JPanel p = buildSynchronizedScrollPanes(basePane, destPane);
-		main.add(p);
+		JPanel foo=new JPanel(new BorderLayout());
+		JPanel names=new JPanel(new GridLayout(1,2));
+		names.add(new JLabel(base.getGrf().getAbsolutePath()));
+		names.add(new JLabel(dest.getGrf().getAbsolutePath()));
+		foo.add(names,BorderLayout.NORTH);
+		foo.add(p,BorderLayout.CENTER);
+		main.add(foo,BorderLayout.CENTER);
 		setContentPane(main);
 		setSize(850, 550);
 	}
