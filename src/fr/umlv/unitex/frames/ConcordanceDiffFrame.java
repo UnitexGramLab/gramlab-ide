@@ -164,6 +164,10 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
+				final String s = (String) list.getSelectedValue();
+				if (s == null || e.getValueIsAdjusting())
+					return;
+				if (!s.contains("<a href=\"")) return;
 				TextFrame fTmp = InternalFrameManager.getManager(null)
 						.getTextFrame();
 				if (fTmp == null) {
@@ -176,9 +180,6 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 							false);
 				}
 				final TextFrame f = fTmp;
-				final String s = (String) list.getSelectedValue();
-				if (s == null || e.getValueIsAdjusting())
-					return;
 				int start = s.indexOf("<a href=\"") + 9;
 				int end = s.indexOf(' ', start);
 				final int selectionStart = Integer.valueOf((String) s
