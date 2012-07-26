@@ -41,6 +41,7 @@ public class SntUtil {
 	 * file f. It also works if f is the _snt dir itself.
 	 */
 	public static void cleanSntDir(File f) {
+		if (f==null) return;
 		if (!f.isDirectory()
 				|| ".snt".equalsIgnoreCase(FileUtil.getExtensionInLowerCase(f))) {
 			f = getSntDir(f);
