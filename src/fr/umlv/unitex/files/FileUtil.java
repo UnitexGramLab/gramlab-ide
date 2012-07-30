@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -602,4 +603,28 @@ public class FileUtil {
 		return extension.equals(s);
 	}
 
+	/**
+	 * Returns a sorted list containing all files contained in
+	 * the given directory.
+	 */
+	public static ArrayList<File> getFileList(File dir) {
+		ArrayList<File> list=new ArrayList<File>();
+		getFileList(dir,list);
+		Collections.sort(list);
+		return list;
+	}
+
+	private static void getFileList(File dir, ArrayList<File> list) {
+		if (dir==null || !dir.exists()) return;
+		list.add(dir);
+		if (dir.isFile()) {
+			return;
+		}
+		File[] files=dir.listFiles();
+		if (files==null) return;
+		for (File f:files) {
+			getFileList(f,list);
+		}
+	}
+	
 }
