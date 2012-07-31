@@ -48,7 +48,12 @@ public abstract class CommandBuilder implements AbstractCommand {
 	public static final int ERROR_MESSAGE = 2;
 	public static final int METHOD = 3;
 	protected final ArrayList<String> list;
+	
+	/** 
+	 * Used for a very compact display in Gramlab's console
+	 */
 	protected final ArrayList<String> ultraSimplifiedList;
+	
 	int type = PROGRAM;
 	private boolean unitexProgram = true;
 	private int programNamePosition;

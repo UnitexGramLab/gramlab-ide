@@ -40,9 +40,12 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 
+	private File fst2Path=null;
+	
 	public LocateCommand fst2(File s) {
 		protectElement(s.getAbsolutePath());
 		ultraSimplifiedList.add(s.getName());
+		fst2Path=s.getParentFile();
 		return this;
 	}
 
@@ -160,5 +163,9 @@ public class LocateCommand extends CommandBuilder {
 			protectElement(v.getName() + "=" + v.getValue());
 		}
 		return this;
+	}
+	
+	public File getFst2Path() {
+		return fst2Path;
 	}
 }
