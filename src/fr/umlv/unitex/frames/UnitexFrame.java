@@ -1322,7 +1322,7 @@ public class UnitexFrame extends JFrame {
 	 * called through the creation of a <code>ProcessInfoFrame</code> object.
 	 */
 	void compressDELA() {
-		CompressCommand command = new CompressCommand().name(Config
+		CompressCommand command = new CompressCommand().dic(Config
 				.getCurrentDELA());
 		if (ConfigManager.getManager().isSemiticLanguage(null)) {
 			command = command.semitic();

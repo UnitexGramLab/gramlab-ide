@@ -31,7 +31,7 @@ public class CompressCommand extends CommandBuilder {
 		super("Compress");
 	}
 
-	public CompressCommand name(File s) {
+	public CompressCommand dic(File s) {
 		protectElement(s.getAbsolutePath());
 		return this;
 	}
@@ -43,6 +43,12 @@ public class CompressCommand extends CommandBuilder {
 
 	public CompressCommand semitic() {
 		element("--semitic");
+		return this;
+	}
+
+	public CompressCommand output(File f) {
+		element("-o");
+		protectElement(f.getAbsolutePath());
 		return this;
 	}
 }
