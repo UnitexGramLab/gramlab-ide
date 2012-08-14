@@ -266,8 +266,7 @@ public class TfstGraphBox extends GenericGraphBox {
 		return false;
 	}
 
-	private static final Color koreanUntaggedTokenColor = new Color(204, 255,
-			51);
+	private static final Color koreanUntaggedTokenColor = new Color(0xE9, 0xFF, 0x5B);
 
 	@Override
 	void drawOther(Graphics2D g) {
