@@ -38,6 +38,6 @@ public class GraphDecoratorConfig {
 	public static final Color SHADED = new Color(0f, 0f, 0f, SHADE_ALPHA);
 	public static final Composite SHADE_COMPOSITE = AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, SHADE_ALPHA);
-	public static final Color LINEAR_TFST = Color.GREEN;
+	public static final Color LINEAR_TFST = new Color(0xFC, 0xE4, 0x00);
 	public static final Stroke STROKE = new BasicStroke(3);
 }
