@@ -713,7 +713,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 
 	private void updateShowAmbiguousOutputsButton() {
 		final File f = new File(Config.getCurrentSntDir(), "concord.ind");
-		ambiguousOutputsButton.setEnabled(false);
+		ambiguousOutputsButton.setEnabled(true);
 		if (!f.exists()) {
 			/* Should not happen */
 			System.err.println(f.getAbsolutePath() + " does not exist!");
