@@ -297,16 +297,19 @@ public class Seq2GrfFrame extends JInternalFrame {
 			return;
 		}
 		File dir=new File(textOutputDir.getText());
-		String name;
 		int nJokers=(Integer) totalModel.getValue();
 		int nInsert=checkboxInsert.isSelected()?nJokers:0;
 		int nReplace=checkboxReplace.isSelected()?nJokers:0;
 		int nDelete=checkboxDelete.isSelected()?nJokers:0;
+		String name="auto-";
+		if (exactCaseMatching.isSelected()) {
+			name=name+"ex-";
+		}
 		if (nJokers!=0) {
-			name="seq2grf-"+FileUtil.getFileNameWithoutExtension(f.getName())+
+			name=name+FileUtil.getFileNameWithoutExtension(f.getName())+
 					"_"+nJokers+nInsert+nReplace+nDelete+".grf";
 		} else {
-			name="seq2grf-"+FileUtil.getFileNameWithoutExtension(f.getName())+".grf";
+			name=name+FileUtil.getFileNameWithoutExtension(f.getName())+".grf";
 		}
 		final File output=new File(dir,name);
 		if (output.exists()) {
