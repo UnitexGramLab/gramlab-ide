@@ -36,6 +36,8 @@ class TextFrameFactory {
 	TextFrame newTextFrame(File text) {
 		if (frame != null) {
 			frame.doDefaultCloseAction();
+			frame.text.reset();
+			System.gc();
 		}
 		frame = new TextFrame();
 		frame.loadText(text);

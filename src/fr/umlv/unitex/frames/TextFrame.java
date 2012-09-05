@@ -90,9 +90,6 @@ public class TextFrame extends TabbableInternalFrame {
 			public void internalFrameClosed(InternalFrameEvent e) {
 				PreferencesManager
 						.removePreferencesListener(preferencesListener);
-				text.reset();
-				Config.setCurrentSnt(null);
-				System.gc();
 			}
 		});
 	}

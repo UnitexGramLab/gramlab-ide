@@ -147,8 +147,9 @@ public class UnitexFrame extends JFrame {
 						constructSeqFst.setEnabled(true);
 						convertFst.setEnabled(true);
 						closeText.setEnabled(true);
-						final File sntDir = FileUtil.getSntDir(ConfigManager
-								.getManager().getCurrentSnt(null));
+						File snt=ConfigManager
+								.getManager().getCurrentSnt(null);
+						final File sntDir = FileUtil.getSntDir(snt);
 						InternalFrameManager.getManager(null).newTokensFrame(
 								new File(sntDir, "tok_by_freq.txt"), true);
 						InternalFrameManager.getManager(null).newTfstTagsFrame(
