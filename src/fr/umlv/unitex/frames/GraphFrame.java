@@ -1322,6 +1322,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = new GraphIO(graphicalZone);
 		final JFileChooser fc = Config.getGraphDialogBox(true);
 		fc.setMultiSelectionEnabled(false);
+		if (grf!=null) {
+			fc.setCurrentDirectory(grf.getParentFile());
+		}
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
 		File file = null;
 		for (;;) {
