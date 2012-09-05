@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.listeners.LanguageListener;
@@ -222,8 +223,10 @@ public class Config {
 
 	public static JFileChooser getGraphDialogBox(boolean allowImageFormats) {
 		if (graphDialogBox != null) {
-			graphDialogBox.setCurrentDirectory(ConfigManager.getManager()
+			if (!Unitex.isRunning()) {
+				graphDialogBox.setCurrentDirectory(ConfigManager.getManager()
 					.getCurrentGraphDirectory());
+			}
 			updateGraphFileFilters(allowImageFormats);
 			return graphDialogBox;
 		}
@@ -459,8 +462,9 @@ public class Config {
 	 * the user changes of working language.
 	 */
 	private static void updateOpenSaveDialogBoxes() {
-		if (graphDialogBox != null)
+		if (graphDialogBox != null) {
 			graphDialogBox.setCurrentDirectory(Config.getCurrentGraphDir());
+		}
 		if (grfAndFst2DialogBox != null)
 			grfAndFst2DialogBox
 					.setCurrentDirectory(Config.getCurrentGraphDir());

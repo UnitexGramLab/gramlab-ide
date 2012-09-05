@@ -48,7 +48,18 @@ import fr.umlv.unitex.frames.UnitexFrame;
  * @author Sébastien Paumier
  */
 public class Unitex {
+	
+	/**
+	 * This is used to know whether Unitex code is called from Unitex or from Gramlab 
+	 */
+	private static boolean running=false;
+	
+	public static boolean isRunning() {
+		return running;
+	}
+	
 	public static void main(final String[] args) {
+		running=true;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
