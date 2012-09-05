@@ -368,8 +368,12 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	void saveFile(File f) {
 		if (f == null) {
 			final JFileChooser chooser = new JFileChooser();
-			chooser.setCurrentDirectory(ConfigManager.getManager()
-					.getCurrentLanguageDir());
+			if (file!=null) {
+				chooser.setCurrentDirectory(file.getParentFile());
+			} else {
+				chooser.setCurrentDirectory(ConfigManager.getManager()
+						.getCurrentLanguageDir());
+			}
 			chooser.setMultiSelectionEnabled(false);
 			chooser.setDialogType(JFileChooser.SAVE_DIALOG);
 			final int returnVal = chooser.showSaveDialog(this);
