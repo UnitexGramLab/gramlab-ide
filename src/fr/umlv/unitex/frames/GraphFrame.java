@@ -171,7 +171,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				final int ret = JOptionPane
 						.showConfirmDialog(
 								GraphFrame.this,
-								"Graph has changed on disk. Do you want to reload it ?",
+								"Graph "+grf.getAbsolutePath()+" has changed on disk.\nDo you want to reload it ?",
 								"", JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.YES_OPTION) {
 					final GraphIO g = GraphIO.loadGraph(getGraph(), false,
