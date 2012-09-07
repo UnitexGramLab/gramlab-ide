@@ -440,4 +440,9 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	public boolean isBoxToBeRemoved(TfstGraphBox box) {
 		return model.isToBeRemoved(box);
 	}
+
+	public void clearStateSelection(int n) {
+		stateSelection.put(n,null);
+		model.resetModel();
+	}
 }
