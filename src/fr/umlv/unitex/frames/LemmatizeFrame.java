@@ -231,7 +231,9 @@ public class LemmatizeFrame extends TfstFrame {
 				 * right click
 				 */
 				int index=getBoxToSelectIndex(lemma,matchStartInTokens);
-				
+				graphicalZone.getTaggingModel().selectBox(index);
+				graphicalZone.repaint();
+				graphicalZone.unsureBoxIsVisible(index);
 			}
 
 			private int getBoxToSelectIndex(String lemma,int matchStartInTokens) {
