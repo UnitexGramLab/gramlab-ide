@@ -485,4 +485,9 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		}
 		viewport.setViewPosition(new Point(newX, newY));
 	}
+
+	public void resetAllStateSelections() {
+		stateSelection.clear();
+	}
+	
 }
