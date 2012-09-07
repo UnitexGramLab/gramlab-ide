@@ -723,7 +723,7 @@ public class LemmatizeFrame extends TfstFrame {
 			return false;
 		}
 		textfield.setFont(g.getInfo().getInput().getFont());
-		graphicalZone.setup(g);
+		graphicalZone.setup(g,sentence);
 		final Timer t = new Timer(300, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

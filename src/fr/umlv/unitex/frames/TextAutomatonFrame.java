@@ -776,7 +776,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			return false;
 		}
 		textfield.setFont(g.getInfo().getInput().getFont());
-		graphicalZone.setup(g);
+		graphicalZone.setup(g,sentence);
 		tfstTableModel.init(g.getBoxes());
 		final Timer t = new Timer(300, new ActionListener() {
 			@Override
@@ -798,7 +798,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		final GraphIO g = GraphIO.loadGraph(file, true, true);
 		if (g == null)
 			return false;
-		elaggraph.setup(g);
+		elaggraph.setup(g,-1);
 		return true;
 	}
 
