@@ -95,7 +95,14 @@ public class TaggingModel {
 		if (zone.graphBoxes.size() == 0) {
 			//resetModel();
 		} else {
-			updateFactorizationNodes();
+			if (boxes.length!=0 && zone.graphBoxes.size()!=boxes.length) {
+				/* If the number of boxes has changed, then we must recompute
+				 * eveything
+				 */
+				resetModel();
+			} else {
+				updateFactorizationNodes();
+			}
 		}
 	}
 
@@ -611,8 +618,7 @@ public class TaggingModel {
 	
 	public void setTaggingStates(TaggingState[] selection) {
 		if (selection!=null && taggingStates.length!=selection.length) {
-			throw new IllegalStateException("Array size inconsistency in setTaggingStates: "
-					+taggingStates.length+" vs "+selection.length);
+			return;
 		}
 		taggingStates=selection;
 	}

@@ -549,7 +549,7 @@ public class LemmatizeFrame extends TfstFrame {
 	
 	private JPanel constructSentenceNavigationPanel() {
 		final JPanel p = new JPanel(new GridLayout(5, 1));
-		p.setBorder(BorderFactory.createTitledBorder("Sentence navigation"));
+		p.setBorder(BorderFactory.createTitledBorder("Navigation"));
 		p.add(sentence_count_label);
 		final JPanel middle = new JPanel(new BorderLayout());
 		middle.add(new JLabel(" Sentence # "), BorderLayout.WEST);
@@ -565,14 +565,18 @@ public class LemmatizeFrame extends TfstFrame {
 		middle.setPreferredSize(new Dimension(150,20));
 		p.add(middle);
 		final Action resetSentenceAction = new AbstractAction(
-				"Reset Sentence Graph") {
+				"Cancel pending modifications") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final int n = spinnerModel.getNumber().intValue();
-				final File f2 = new File(sentence_modified.getAbsolutePath()
-						+ n + ".grf");
-				if (f2.exists())
-					f2.delete();
+				int n = spinnerModel.getNumber().intValue();
+				for (int i=1;i<sentence_count;i++) {
+					File f2 = new File(sentence_modified.getAbsolutePath()
+						+ i + ".grf");
+					if (f2.exists()) {
+						f2.delete();
+					}
+				}
+				graphicalZone.resetAllStateSelections();
 				loadSentence(n);
 			}
 		};
