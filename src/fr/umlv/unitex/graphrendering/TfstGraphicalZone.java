@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -42,6 +43,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.frames.TfstFrame;
 import fr.umlv.unitex.io.GraphIO;
@@ -444,5 +446,40 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	public void clearStateSelection(int n) {
 		stateSelection.put(n,null);
 		model.resetModel();
+	}
+	
+	public TaggingModel getTaggingModel() {
+		return model;
+	}
+
+	public void unsureBoxIsVisible(int index) {
+		final TfstGraphBox b = (TfstGraphBox) graphBoxes.get(index);
+		final JViewport viewport = ((TfstFrame) parentFrame).getTfstScrollPane()
+				.getViewport();
+		Rectangle visibleRect = viewport.getViewRect();
+		if (visibleRect.width == 0 && visibleRect.height == 0) {
+			/*
+			 * If the view port has not been given a size, we consider the panel
+			 * area as default
+			 */
+			visibleRect = new Rectangle(0, 0, getWidth(), getHeight());
+		}
+		/*
+		 * If necessary, we adjust the scrolling so that the middle of the box
+		 * will be visible
+		 */
+		int newX = visibleRect.x;
+		if (b.X < visibleRect.x + 50) {
+			newX = b.X1 - 50;
+		} else if ((b.X1 + b.Width) > (visibleRect.x + visibleRect.width)) {
+			newX = b.X1 - 50;
+		}
+		int newY = visibleRect.y;
+		if (b.Y < visibleRect.y + 50) {
+			newY = b.Y1 - 50;
+		} else if ((b.Y1 + b.Height) > (visibleRect.y + visibleRect.height)) {
+			newY = b.Y1 - 50;
+		}
+		viewport.setViewPosition(new Point(newX, newY));
 	}
 }
