@@ -43,7 +43,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
 import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.frames.TfstFrame;
 import fr.umlv.unitex.io.GraphIO;
@@ -446,6 +445,10 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	public void clearStateSelection(int n) {
 		stateSelection.put(n,null);
 		model.resetModel();
+	}
+	
+	public void saveStateSelection(int n) {
+		stateSelection.put(n,model.getTaggingStates());
 	}
 	
 	public TaggingModel getTaggingModel() {
