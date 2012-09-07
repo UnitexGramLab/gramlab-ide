@@ -506,6 +506,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int n = spinnerModel.getNumber().intValue();
+				graphicalZone.clearStateSelection(n);
 				final File f2 = new File(sentence_modified.getAbsolutePath()
 						+ n + ".grf");
 				if (f2.exists())
