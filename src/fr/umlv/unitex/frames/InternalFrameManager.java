@@ -100,7 +100,7 @@ public class InternalFrameManager {
 			HelpOnCommandFrame.class);
 	private final FrameFactory transcodingFrameFactory = new FrameFactory(
 			TranscodingFrame.class);
-	private final FrameFactory lemmatizeFrameFactory=new FrameFactory(LemmatizeFrame.class);
+	private final LemmatizeFrameFactory lemmatizeFrameFactory=new LemmatizeFrameFactory();
 	private final FrameFactory consoleFrameFactory = new FrameFactory(
 			ConsoleFrame.class);
 	private final XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
@@ -1033,7 +1033,7 @@ public class InternalFrameManager {
 	}
 
 	public LemmatizeFrame newLemmatizeFrame() {
-		final LemmatizeFrame f = (LemmatizeFrame) lemmatizeFrameFactory.newFrame();
+		final LemmatizeFrame f = lemmatizeFrameFactory.newFrame();
 		f.setVisible(true);
 		setup(f);
 		try {

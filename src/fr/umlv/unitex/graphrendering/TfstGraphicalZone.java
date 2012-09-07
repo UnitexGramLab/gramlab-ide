@@ -37,6 +37,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import javax.swing.JScrollPane;
@@ -488,6 +489,13 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 
 	public void resetAllStateSelections() {
 		stateSelection.clear();
+	}
+	
+	public Integer[] getModifiedSentenceIndices() {
+		Integer[] tab=new Integer[stateSelection.keySet().size()];
+		stateSelection.keySet().toArray(tab);
+		Arrays.sort(tab);
+		return tab;
 	}
 	
 }

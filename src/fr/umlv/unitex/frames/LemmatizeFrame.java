@@ -136,7 +136,7 @@ public class LemmatizeFrame extends TfstFrame {
 	File text_tfst;
 	boolean isAcurrentLoadingThread = false;
 	JSplitPane superpanel;
-	JButton resetSentenceGraph;
+	JButton resetSentenceGraphs;
 
 	LemmatizeFrame() {
 		super("Lemmatization", true, true, true, true);
@@ -144,17 +144,7 @@ public class LemmatizeFrame extends TfstFrame {
 		setContentPane(constructPanel());
 		pack();
 		setBounds(10, 10, 900, 600);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addInternalFrameListener(new InternalFrameAdapter() {
-			@Override
-			public void internalFrameClosing(InternalFrameEvent e) {
-				try {
-					setIcon(true);
-				} catch (final java.beans.PropertyVetoException e2) {
-					e2.printStackTrace();
-				}
-			}
-		});
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		textfield.setEditable(false);
 	}
 
@@ -257,6 +247,7 @@ public class LemmatizeFrame extends TfstFrame {
 							"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				int currentSentence=(Integer) spinnerModel.getValue();
 				/* We look for compatible lemma in all matches */
 				for (int i=0;i<list.getModel().getSize();i++) {
 					String cellValue=(String) list.getModel().getElementAt(i);
@@ -265,6 +256,7 @@ public class LemmatizeFrame extends TfstFrame {
 						continue;
 					}
 					int[] res=getHrefInfos(cellValue);
+					spinner.setValue(res[2]);
 					loadSentence(res[2]);
 					int offsetInTokens=getOffsetInTokens();
 					int matchStartInTokens=res[3]-offsetInTokens;
@@ -273,11 +265,19 @@ public class LemmatizeFrame extends TfstFrame {
 					 * right click
 					 */
 					int index=getBoxToSelectIndex(lemma,matchStartInTokens);
+					if (index==-1) {
+						/* This can happen when a box exists in the .tfst but not in
+						 * the .grf because the .grf was manually edited
+						 */
+						return;
+					}
 					graphicalZone.getTaggingModel().selectBox(index);
 					graphicalZone.saveStateSelection(res[2]);
 					graphicalZone.repaint();
 					graphicalZone.unsureBoxIsVisible(index);
 				}
+				spinner.setValue(currentSentence);
+				loadSentence(currentSentence);
 			}
 		});
 		p.add(validateOne);
@@ -565,7 +565,7 @@ public class LemmatizeFrame extends TfstFrame {
 		middle.setPreferredSize(new Dimension(150,20));
 		p.add(middle);
 		final Action resetSentenceAction = new AbstractAction(
-				"Cancel pending modifications") {
+				"Restore graphs from TFST") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int n = spinnerModel.getNumber().intValue();
@@ -580,9 +580,9 @@ public class LemmatizeFrame extends TfstFrame {
 				loadSentence(n);
 			}
 		};
-		resetSentenceGraph = new JButton(resetSentenceAction);
-		p.add(resetSentenceGraph);
-		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
+		resetSentenceGraphs = new JButton(resetSentenceAction);
+		p.add(resetSentenceGraphs);
+		final Action rebuildAction = new AbstractAction("Apply modifications to TFST") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				InternalFrameManager.getManager(null).closeTextAutomatonFrame();
@@ -596,21 +596,34 @@ public class LemmatizeFrame extends TfstFrame {
 			}
 		};
 		final JButton rebuildTfstButton = new JButton(rebuildAction);
-		p.add(rebuildTfstButton);
 		final JButton deleteStates = new JButton("Remove greyed states");
 		deleteStates.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
-				for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
-					if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
-						boxes.add(gb);
+				int currentSentence=(Integer) spinnerModel.getValue();
+				Integer[] modifiedSentences=graphicalZone.getModifiedSentenceIndices();
+				for (int i=0;i<modifiedSentences.length;i++) {
+					int n=modifiedSentences[i];
+					spinner.setValue(n);
+					loadSentence(n);
+					final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
+					for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
+						if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
+							boxes.add(gb);
+						}
 					}
+					graphicalZone.removeBoxes(boxes);
+					/* And we save the modified graph */
+					final GraphIO g = new GraphIO(graphicalZone);
+					File f=new File(Config.getCurrentSntDir(),"sentence"+n+".grf");
+					g.saveSentenceGraph(f,graphicalZone.getGraphPresentationInfo());
 				}
-				graphicalZone.removeBoxes(boxes);
+				spinner.setValue(currentSentence);
+				loadSentence(currentSentence);
 			}
 		});
 		p.add(deleteStates);
+		p.add(rebuildTfstButton);
 		return p;
 	}
 
@@ -646,7 +659,7 @@ public class LemmatizeFrame extends TfstFrame {
 	 */
 	void setModified(boolean b) {
 		repaint();
-		resetSentenceGraph.setVisible(b);
+		resetSentenceGraphs.setVisible(b);
 		final int n = spinnerModel.getNumber().intValue();
 		if (b && !isAcurrentLoadingThread && n != 0) {
 			/*
