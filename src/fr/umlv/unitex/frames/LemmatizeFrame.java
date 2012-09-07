@@ -210,7 +210,7 @@ public class LemmatizeFrame extends TfstFrame {
 		p.setBorder(BorderFactory.createTitledBorder("Lemma selection"));
 		lemmaCombo.setMinimumSize(new Dimension(200,lemmaCombo.getPreferredSize().height));
 		p.add(lemmaCombo);
-		JButton validateOne=new JButton("Validate for selected item");
+		JButton validateOne=new JButton("Lemmatize selected item");
 		validateOne.addActionListener(new ActionListener() {
 			
 			@Override
@@ -236,30 +236,74 @@ public class LemmatizeFrame extends TfstFrame {
 				graphicalZone.unsureBoxIsVisible(index);
 			}
 
-			private int getBoxToSelectIndex(String lemma,int matchStartInTokens) {
-				ArrayList<GenericGraphBox> boxes=graphicalZone.getBoxes();
-				for (int i=0;i<boxes.size();i++) {
-					TfstGraphBox b=(TfstGraphBox)boxes.get(i);
-					if (b.getBounds()==null) continue;
-					if (b.getBounds().getStart_in_tokens()!=matchStartInTokens) continue;
-					String boxLemma;
-					if (b.lines.size()==2) {
-						boxLemma=b.lines.get(1)+"."+b.transduction;
-					} else {
-						boxLemma=b.lines.get(0)+"."+b.transduction;
-					}
-				if (!boxLemma.equals(lemma)) continue;
-					return i;
+		});
+		JButton validateAll=new JButton("Apply lemma to all items");
+		validateAll.addActionListener(new ActionListener() {
+			
+			boolean contains(ComboBoxModel lemmas,String lemma) {
+				for (int i=0;i<lemmas.getSize();i++) {
+					if (lemmas.getElementAt(i).equals(lemma)) return true;
 				}
-				return -1;
+				return false;
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String s=(String) list.getSelectedValue();
+				if (s==null) return;
+				String lemma=(String)lemmaCombo.getSelectedItem();
+				if (lemma==null) {
+					JOptionPane.showMessageDialog(null, "You must select a lemma!",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				/* We look for compatible lemma in all matches */
+				for (int i=0;i<list.getModel().getSize();i++) {
+					String cellValue=(String) list.getModel().getElementAt(i);
+					ComboBoxModel lemmas=getLemmaModel(cellValue);
+					if (!contains(lemmas,lemma)) {
+						continue;
+					}
+					int[] res=getHrefInfos(cellValue);
+					loadSentence(res[2]);
+					int offsetInTokens=getOffsetInTokens();
+					int matchStartInTokens=res[3]-offsetInTokens;
+					/* Now that we have the lemma information and the start position
+					 * of the match, we can locate the graph box to select as if with a
+					 * right click
+					 */
+					int index=getBoxToSelectIndex(lemma,matchStartInTokens);
+					graphicalZone.getTaggingModel().selectBox(index);
+					graphicalZone.saveStateSelection(res[2]);
+					graphicalZone.repaint();
+					graphicalZone.unsureBoxIsVisible(index);
+				}
 			}
 		});
-		JButton validateAll=new JButton("Global update");
 		p.add(validateOne);
 		p.add(validateAll);
 		return p;
 	}
+	
 
+	public int getBoxToSelectIndex(String lemma,int matchStartInTokens) {
+		ArrayList<GenericGraphBox> boxes=graphicalZone.getBoxes();
+		for (int i=0;i<boxes.size();i++) {
+			TfstGraphBox b=(TfstGraphBox)boxes.get(i);
+			if (b.getBounds()==null) continue;
+			if (b.getBounds().getStart_in_tokens()!=matchStartInTokens) continue;
+			String boxLemma;
+			if (b.lines.size()==2) {
+				boxLemma=b.lines.get(1)+"."+b.transduction;
+			} else {
+				boxLemma=b.lines.get(0)+"."+b.transduction;
+			}
+		if (!boxLemma.equals(lemma)) continue;
+			return i;
+		}
+		return -1;
+	}
+	
 	
 	protected int getOffsetInTokens() {
 		File start=new File(Config.getCurrentSntDir(),"cursentence.start");
@@ -486,22 +530,22 @@ public class LemmatizeFrame extends TfstFrame {
 				lemmaCombo.repaint();
 			}
 
-			private ComboBoxModel getLemmaModel(String s) {
-				Vector<String> vector=new Vector<String>();
-				int start=s.indexOf("<!--")+4;
-				int end=s.indexOf("-->",start);
-				int n=Integer.parseInt(""+s.subSequence(start,end));
-				for (int i=0;i<n;i++) {
-					start=s.indexOf("<!--",end)+4;
-					end=s.indexOf("-->",start);
-					vector.add(""+s.subSequence(start,end));
-				}
-				return new DefaultComboBoxModel(vector);
-			}
 		});
 		list.load(html);
 	}
 
+	public ComboBoxModel getLemmaModel(String s) {
+		Vector<String> vector=new Vector<String>();
+		int start=s.indexOf("<!--")+4;
+		int end=s.indexOf("-->",start);
+		int n=Integer.parseInt(""+s.subSequence(start,end));
+		for (int i=0;i<n;i++) {
+			start=s.indexOf("<!--",end)+4;
+			end=s.indexOf("-->",start);
+			vector.add(""+s.subSequence(start,end));
+		}
+		return new DefaultComboBoxModel(vector);
+	}
 	
 	private JPanel constructSentenceNavigationPanel() {
 		final JPanel p = new JPanel(new GridLayout(5, 1));
