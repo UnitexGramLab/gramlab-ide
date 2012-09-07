@@ -116,4 +116,9 @@ public class LocateTfstCommand extends CommandBuilder {
 		element("-Z");
 		return this;
 	}
+	
+	public LocateTfstCommand singleTagsOnly() {
+		element("--single_tags_only");
+		return this;
+	}
 }

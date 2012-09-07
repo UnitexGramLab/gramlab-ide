@@ -37,6 +37,7 @@ import fr.umlv.unitex.listeners.GraphListener;
  */
 public class TaggingModel {
 	TfstGraphicalZone zone;
+
 	/*
 	 * We use an array that is a copy of zone's boxes, because we want to keep
 	 * constant indices, even if some boxes are removed
@@ -49,23 +50,41 @@ public class TaggingModel {
 	int initialState;
 	int finalState;
 	private boolean linearTfst;
+	
+	ActionListener actionListener=new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			resetModel();
+		}
+	};
+	
+	GraphListener graphListener=new GraphListener() {
+		@Override
+		public void graphChanged(boolean modified) {
+			updateModel();
+		}
+	};
+	
+	
 
 	public TaggingModel(TfstGraphicalZone zone) {
 		this.zone = zone;
-		zone.addActionListner(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				resetModel();
-			}
-		});
-		zone.addGraphListener(new GraphListener() {
-			@Override
-			public void graphChanged(boolean modified) {
-				updateModel();
-			}
-		});
+		registerListeners();
+		resetModel();
 	}
 
+	
+	public void registerListeners() {
+		zone.addActionListner(actionListener);
+		zone.addGraphListener(graphListener);		
+	}
+	
+	public void unregisterListeners() {
+		zone.removeActionListner(actionListener);
+		zone.removeGraphListener(graphListener);		
+	}
+	
+	
 	/**
 	 * This method must be called when the sentence automaton has been modified,
 	 * either by a box removal, or by a transition added or removed.

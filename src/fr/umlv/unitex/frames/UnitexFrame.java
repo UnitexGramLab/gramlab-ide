@@ -144,6 +144,7 @@ public class UnitexFrame extends JFrame {
 						locatePattern.setEnabled(true);
 						displayLocatedSequences.setEnabled(true);
 						constructFst.setEnabled(true);
+						lemmatize.setEnabled(true);
 						constructSeqFst.setEnabled(true);
 						convertFst.setEnabled(true);
 						closeText.setEnabled(true);
@@ -168,6 +169,7 @@ public class UnitexFrame extends JFrame {
 						locatePattern.setEnabled(false);
 						displayLocatedSequences.setEnabled(false);
 						constructFst.setEnabled(false);
+						lemmatize.setEnabled(false);
 						convertFst.setEnabled(false);
 						closeText.setEnabled(false);
 						InternalFrameManager.getManager(null)
@@ -188,6 +190,8 @@ public class UnitexFrame extends JFrame {
 								.closeConcordanceParameterFrame();
 						InternalFrameManager.getManager(null)
 								.closeConstructTfstFrame();
+						InternalFrameManager.getManager(null)
+							.closeLemmatizeFrame();
 						InternalFrameManager.getManager(null)
 								.closeConvertTfstToTextFrame();
 						InternalFrameManager.getManager(null)
@@ -290,6 +294,7 @@ public class UnitexFrame extends JFrame {
 	Action openText;
 	Action openTaggedText;
 	Action preprocessText;
+	Action lemmatize;
 	Action changeLang;
 	Action applyLexicalResources;
 	Action locatePattern;
@@ -400,6 +405,21 @@ public class UnitexFrame extends JFrame {
 		};
 		constructFst.setEnabled(false);
 		textMenu.add(new JMenuItem(constructFst));
+		lemmatize = new AbstractAction("Lemmatize") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File text_tfst = new File(Config.getCurrentSntDir(), "text.tfst");
+				if (!text_tfst.exists()) {
+					JOptionPane.showMessageDialog(null,
+							"You must construct the text automaton before lemmatizing!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				InternalFrameManager.getManager(null).newLemmatizeFrame();
+			}
+		};
+		lemmatize.setEnabled(false);
+		textMenu.add(new JMenuItem(lemmatize));
 		constructSeqFst = new AbstractAction("Construct Sequences Automaton") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
