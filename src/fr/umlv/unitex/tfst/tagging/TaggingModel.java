@@ -298,11 +298,17 @@ public class TaggingModel {
 		return sortedNodes[pos];
 	}
 
+	
+	
 	public void selectBox(TfstGraphBox b) {
 		final int n = getBoxIndex(b);
 		if (n == -1)
 			throw new IllegalStateException(
 					"Should not be selecting an unknown box");
+		selectBox(n);
+	}
+	
+	public void selectBox(int n) {
 		if (taggingStates[n] == TaggingState.USELESS) {
 			/*
 			 * There is no point in selecting a box that cannot be part the
