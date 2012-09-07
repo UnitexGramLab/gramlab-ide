@@ -36,6 +36,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
@@ -46,6 +47,7 @@ import fr.umlv.unitex.frames.TfstFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.tfst.Bounds;
 import fr.umlv.unitex.tfst.tagging.TaggingModel;
+import fr.umlv.unitex.tfst.tagging.TaggingState;
 import fr.umlv.unitex.undo.SelectEdit;
 
 /**
@@ -55,7 +57,9 @@ import fr.umlv.unitex.undo.SelectEdit;
  */
 public class TfstGraphicalZone extends GenericGraphicalZone implements
 		Printable {
+	
 	TaggingModel model;
+	int sentence=-1;
 
 	/**
 	 * Constructs a new <code>TfstGraphicalZone</code>.
@@ -397,7 +401,16 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		}
 	}
 
-	public void setup(GraphIO g) {
+	
+	private HashMap<Integer,TaggingState[]> stateSelection=new HashMap<Integer,TaggingState[]>();
+	
+	public void setup(GraphIO g,int sentence) {
+		/* First, we save the previous state selection if any */
+		if (this.sentence!=-1) {
+			if (model.getTaggingStates()!=null && model.getTaggingStates().length!=0) {
+				stateSelection.put(this.sentence,model.getTaggingStates());
+			}
+		}
 		final Dimension d = new Dimension(g.getWidth(), g.getHeight());
 		setSize(d);
 		setPreferredSize(d);
@@ -407,10 +420,21 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			b.parentGraphicalZone = this;
 			b.update();
 		}
+		this.sentence=sentence;
 		setGraphPresentationInfo(g.getInfo());
+		fireActionPerformed();
+		/* Now that anyone is aware of the change, we just have to replace
+		 * the state selection by the previous one, if any
+		 */
+		if (sentence!=-1) {
+			TaggingState[] selection=stateSelection.get(sentence);
+			if (selection!=null) {
+				model.setTaggingStates(selection);
+				model.updateAutomatonLinearity();
+			}
+		}
 		revalidate();
 		repaint();
-		fireActionPerformed();
 	}
 
 	public boolean isBoxToBeRemoved(TfstGraphBox box) {

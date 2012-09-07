@@ -93,7 +93,7 @@ public class TaggingModel {
 		if (factorization == null)
 			return;
 		if (zone.graphBoxes.size() == 0) {
-			resetModel();
+			//resetModel();
 		} else {
 			updateFactorizationNodes();
 		}
@@ -559,6 +559,10 @@ public class TaggingModel {
 		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
 	}
 
+	public void updateAutomatonLinearity() {
+		linearTfst=isLinearAutomaton();
+	}
+	
 	private boolean isLinearAutomaton() {
 		int current = initialState;
 		while (current != finalState) {
@@ -594,4 +598,17 @@ public class TaggingModel {
 	public boolean isLinearTfst() {
 		return linearTfst;
 	}
+	
+	public TaggingState[] getTaggingStates() {
+		return taggingStates;
+	}
+	
+	public void setTaggingStates(TaggingState[] selection) {
+		if (taggingStates.length!=selection.length) {
+			throw new IllegalStateException("Array size inconsistency in setTaggingStates: "
+					+taggingStates.length+" vs "+selection.length);
+		}
+		taggingStates=selection;
+	}
+	
 }
