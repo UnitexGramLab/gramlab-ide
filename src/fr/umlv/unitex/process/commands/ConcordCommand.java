@@ -96,6 +96,11 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand lemmatize() {
+		element("--lemmatize");
+		return this;
+	}
+
 	public ConcordCommand text(File output) {
 		protectElement("--text"
 				+ ((output != null) ? "=" + output.getAbsolutePath() : ""));

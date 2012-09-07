@@ -64,6 +64,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * Text field in which the content of boxes can be edited.
 	 */
 	public final GraphTextField text;
+	
 	/**
 	 * ArrayList containing the current selected boxes
 	 */
