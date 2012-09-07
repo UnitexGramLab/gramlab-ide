@@ -102,7 +102,7 @@ public class TaggingModel {
 	/**
 	 * This method must be called when a new sentence automaton has been loaded.
 	 */
-	protected void resetModel() {
+	public void resetModel() {
 		final int n = zone.graphBoxes.size();
 		boxes = new TfstGraphBox[n];
 		taggingStates = new TaggingState[n];
@@ -604,7 +604,7 @@ public class TaggingModel {
 	}
 	
 	public void setTaggingStates(TaggingState[] selection) {
-		if (taggingStates.length!=selection.length) {
+		if (selection!=null && taggingStates.length!=selection.length) {
 			throw new IllegalStateException("Array size inconsistency in setTaggingStates: "
 					+taggingStates.length+" vs "+selection.length);
 		}
