@@ -45,7 +45,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -107,7 +106,7 @@ import fr.umlv.unitex.tfst.TokensInfo;
  * 
  * @author Sébastien Paumier
  */
-public class TextAutomatonFrame extends JInternalFrame {
+public class TextAutomatonFrame extends TfstFrame {
 	final TagFilter filter = new TagFilter();
 	final TfstTableModel tfstTableModel = new TfstTableModel(filter, true);
 	final JTextArea sentenceTextArea = new JTextArea();
@@ -693,10 +692,10 @@ public class TextAutomatonFrame extends JInternalFrame {
 		final boolean isSentenceModified = f.exists();
 		if (isSentenceModified) {
 			loadSentenceGraph(new File(sentence_modified.getAbsolutePath()
-					+ String.valueOf(z) + ".grf"));
+					+ String.valueOf(z) + ".grf"),n);
 			setModified(isSentenceModified);
 		} else {
-			loadSentenceGraph(sentence_grf);
+			loadSentenceGraph(sentence_grf,n);
 		}
 		isAcurrentLoadingThread = false;
 		loadElagSentence(z);
@@ -770,7 +769,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		return s;
 	}
 
-	boolean loadSentenceGraph(File file) {
+	boolean loadSentenceGraph(File file,int sentence) {
 		setModified(false);
 		final GraphIO g = GraphIO.loadGraph(file, true, true);
 		if (g == null) {
@@ -867,7 +866,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (implodeCheckBox.isSelected()) {
 			Launcher.exec(elagcmd, false, new ImplodeDo(this, elag_tfst));
 		} else {
-			Launcher.exec(elagcmd, false, new loadSentenceDo(this));
+			Launcher.exec(elagcmd, false, new LoadSentenceDo1(this));
 		}
 	}
 
@@ -941,7 +940,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		final TagsetNormTfstCommand tagsetcmd = new TagsetNormTfstCommand()
 				.tagset(new File(Config.getCurrentElagDir(), "tagset.def"))
 				.automaton(f);
-		Launcher.exec(tagsetcmd, true, new loadSentenceDo(this));
+		Launcher.exec(tagsetcmd, true, new LoadSentenceDo1(this));
 		return true;
 	}
 
@@ -951,7 +950,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		}
 		final ImplodeTfstCommand imploseCmd = new ImplodeTfstCommand()
 				.automaton(f);
-		Launcher.exec(imploseCmd, true, new loadSentenceDo(this));
+		Launcher.exec(imploseCmd, true, new LoadSentenceDo1(this));
 		return true;
 	}
 
@@ -966,7 +965,7 @@ public class TextAutomatonFrame extends JInternalFrame {
 		if (implode) {
 			Launcher.exec(tagsetcmd, false, new ImplodeDo(this, text_tfst));
 		} else {
-			Launcher.exec(tagsetcmd, false, new loadSentenceDo(this));
+			Launcher.exec(tagsetcmd, false, new LoadSentenceDo1(this));
 		}
 	}
 
@@ -1003,12 +1002,23 @@ public class TextAutomatonFrame extends JInternalFrame {
 	public int getSentenceCount() {
 		return (Integer) spinnerModel.getMaximum();
 	}
+
+	@Override
+	public JScrollPane getTfstScrollPane() {
+		return scrollPane;
+	}
+
+	@Override
+	public TfstGraphicalZone getTfstGraphicalZone() {
+		return graphicalZone;
+	}
+	
 }
 
-class loadSentenceDo implements ToDo {
+class LoadSentenceDo1 implements ToDo {
 	private final TextAutomatonFrame frame;
 
-	loadSentenceDo(TextAutomatonFrame f) {
+	LoadSentenceDo1(TextAutomatonFrame f) {
 		frame = f;
 	}
 

@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.frames.TfstFrame;
 
 /**
  * This class describes the text field used to get the box text in a sentence
@@ -35,7 +35,7 @@ import fr.umlv.unitex.frames.TextAutomatonFrame;
  * @author Sébastien Paumier
  */
 public class TfstTextField extends GraphTextField {
-	final TextAutomatonFrame parent;
+	final TfstFrame parent;
 	boolean modified = false;
 
 	/**
@@ -46,7 +46,7 @@ public class TfstTextField extends GraphTextField {
 	 * @param p
 	 *            frame that contains this component
 	 */
-	public TfstTextField(int n, TextAutomatonFrame p) {
+	public TfstTextField(int n, TfstFrame p) {
 		super(n);
 		setEditable(false);
 		modified = false;
@@ -90,8 +90,8 @@ public class TfstTextField extends GraphTextField {
 			return true;
 		}
 		if (isGoodText(getText())) {
-			parent.getGraphicalZone().setTextForSelected(getText());
-			parent.getGraphicalZone().unSelectAllBoxes();
+			parent.getTfstGraphicalZone().setTextForSelected(getText());
+			parent.getTfstGraphicalZone().unSelectAllBoxes();
 			return true;
 		}
 		return false;

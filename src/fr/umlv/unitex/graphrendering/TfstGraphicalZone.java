@@ -42,6 +42,7 @@ import javax.swing.JViewport;
 
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.frames.TfstFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.tfst.Bounds;
 import fr.umlv.unitex.tfst.tagging.TaggingModel;
@@ -67,7 +68,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	 *            indicates if mouse listeners must be added to the component
 	 */
 	public TfstGraphicalZone(GraphIO gio, TfstTextField t,
-			TextAutomatonFrame p, boolean listeners) {
+			TfstFrame p, boolean listeners) {
 		super(gio, t, p, null);
 		model = new TaggingModel(this);
 		setDecorator(new GraphDecorator(model));

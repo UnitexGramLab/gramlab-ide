@@ -290,4 +290,5 @@ public class TfstGraphBox extends GenericGraphBox {
 	private boolean isKoreanUntaggedToken(String s) {
 		return !s.equals("<E>") && s.charAt(0) != '{';
 	}
+	
 }
