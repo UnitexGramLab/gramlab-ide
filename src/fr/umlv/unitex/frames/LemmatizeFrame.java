@@ -455,11 +455,10 @@ public class LemmatizeFrame extends TfstFrame {
 							.right(rightCtx, false)
 							.lemmatize()
 							.sortAlphabet()
-							.thai(ConfigManager.getManager().isThai(null));
+							.thai(ConfigManager.getManager().isThai(null))
+							.order(sortBox.getSelectedIndex());
 					if (unresolved.isSelected()) {
 						cmd2 = cmd2.onlyAmbiguous();
-					} else {
-						cmd2 = cmd2.order(sortBox.getSelectedIndex());
 					}
 					if (ConfigManager.getManager().isPRLGLanguage(null)) {
 						final File prlgIndex = new File(Config.getCurrentSntDir(),
@@ -500,10 +499,16 @@ public class LemmatizeFrame extends TfstFrame {
 					writer.write("-1 biniou\n");
 					writer.write(": 1 1 \n");
 					writer.write(": 2 2 \n");
+					writer.write(": 3 3 \n");
+					writer.write(": 4 4 \n");
+					writer.write(": 5 5 \n");
 					writer.write("t \n");
 					writer.write("f \n");
 					writer.write("%<E>\n");
-					writer.write("%"+s+"/$:x$\n");
+					writer.write("%$[0\n");
+					writer.write("%"+s+"\n");
+					writer.write("%$]\n");
+					writer.write("%<DIC>/$:x$\n");
 					writer.write("%<E>//$x.LEMMA$.$x.CODE$\n");
 					writer.write("f\n");
 					writer.close();
