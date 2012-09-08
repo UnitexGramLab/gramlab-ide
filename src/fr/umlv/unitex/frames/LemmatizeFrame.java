@@ -59,6 +59,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -144,6 +146,12 @@ public class LemmatizeFrame extends TfstFrame {
 		setBounds(10, 10, 900, 600);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		textfield.setEditable(false);
+		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+				list.reset();
+			}
+		});
 	}
 
 	private JPanel constructPanel() {
@@ -476,6 +484,9 @@ public class LemmatizeFrame extends TfstFrame {
 					}
 
 				};
+				if (list!=null) {
+					list.reset();
+				}
 				concordancePanel.removeAll();
 				Launcher.exec(commands,true,after);
 			}
