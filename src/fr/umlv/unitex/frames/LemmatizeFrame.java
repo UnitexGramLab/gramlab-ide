@@ -205,6 +205,7 @@ public class LemmatizeFrame extends TfstFrame {
 		JPanel p = new JPanel(new GridLayout(3,1));
 		p.setBorder(BorderFactory.createTitledBorder("Lemma selection"));
 		lemmaCombo.setMinimumSize(new Dimension(200,lemmaCombo.getPreferredSize().height));
+		lemmaCombo.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		p.add(lemmaCombo);
 		JButton validateOne=new JButton("Lemmatize selected item");
 		validateOne.addActionListener(new ActionListener() {
@@ -324,6 +325,7 @@ public class LemmatizeFrame extends TfstFrame {
 		JPanel p2=new JPanel(new BorderLayout());
 		p2.add(new JLabel("Pattern: "),BorderLayout.WEST);
 		final JTextField pattern=new JTextField();
+		pattern.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		p2.add(pattern,BorderLayout.CENTER);
 		JButton GO=new JButton("GO");
 		p2.add(GO,BorderLayout.EAST);
