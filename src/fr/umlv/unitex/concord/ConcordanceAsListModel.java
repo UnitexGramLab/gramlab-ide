@@ -228,6 +228,7 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			}
 			stream = null;
 		}
+		System.gc();
 	}
 
 	public void setDataLength(int dataLength) {

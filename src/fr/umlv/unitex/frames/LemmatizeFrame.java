@@ -22,6 +22,7 @@ package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -426,7 +427,7 @@ public class LemmatizeFrame extends TfstFrame {
 				}
 				final File fst2=new File(ConfigManager.getManager().getCurrentLanguageDir(),"lemmatize.fst2");
 				createLemmatizeFst2(fst2,s);
-				MultiCommands commands=new MultiCommands();
+				final MultiCommands commands=new MultiCommands();
 				LocateTfstCommand cmd1=new LocateTfstCommand().allowAmbiguousOutputs()
 						.alphabet(ConfigManager.getManager().getAlphabet(null))
 						.mergeOutputs()
@@ -475,7 +476,7 @@ public class LemmatizeFrame extends TfstFrame {
 				}
 				commands.addCommand(cmd2);
 				final File html=new File(Config.getCurrentSntDir(),"concord.html");
-				ToDo after=new ToDo() {
+				final ToDo after=new ToDo() {
 					
 					@Override
 					public void toDo(boolean success) {
@@ -489,7 +490,19 @@ public class LemmatizeFrame extends TfstFrame {
 					list.reset();
 				}
 				concordancePanel.removeAll();
-				Launcher.exec(commands,true,after);
+				EventQueue.invokeLater(new Runnable() {
+					
+					@Override
+					public void run() {
+						/* The list.reset() operation may take some time, so 
+						 * it may be better to post an event rather than to 
+						 * try to do the job now, because concord.html may
+						 * not have been unmapped by the system, especially
+						 * if the system name starts with a W.
+						 */
+						Launcher.exec(commands,true,after);
+					}
+				});
 			}
 
 			private void createLemmatizeFst2(File fst2,String s) {
