@@ -343,7 +343,7 @@ public class LemmatizeFrame extends TfstFrame {
 		gbc.gridwidth=1;
 		final JTextField left=new JTextField("40");
 		final JTextField right=new JTextField("55");
-		final JTextField limit=new JTextField("200");
+		final JTextField limit=new JTextField("");
 		left.setPreferredSize(new Dimension(50,15));
 		right.setPreferredSize(new Dimension(50,15));
 		limit.setPreferredSize(new Dimension(50,15));
@@ -360,7 +360,7 @@ public class LemmatizeFrame extends TfstFrame {
 		items[5] = "Right, Left";
 		items[6] = "Right, Center";
 		final JComboBox sortBox = new JComboBox(items);
-		sortBox.setSelectedIndex(3);
+		sortBox.setSelectedIndex(4);
 		p3.add(sortBox,gbc);
 		gbc.gridwidth=1;
 		p3.add(new JLabel("Right: "),gbc);
