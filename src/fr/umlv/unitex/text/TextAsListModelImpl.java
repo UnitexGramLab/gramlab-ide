@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -254,8 +256,15 @@ public class TextAsListModelImpl extends AbstractListModel {
 			worker.cancel(true);
 			worker = null;
 		}
-		if (mappedBuffer != null)
+		if (mappedBuffer != null) {
+			ReferenceQueue<MappedByteBuffer> queue=new ReferenceQueue<MappedByteBuffer>();
+			new PhantomReference<MappedByteBuffer>(mappedBuffer,queue);
 			mappedBuffer = null;
+			while (queue.poll()!=null) {
+				System.gc();
+				Thread.yield();
+			}
+		}
 		if (parseBuffer != null)
 			parseBuffer = null;
 		System.gc();
