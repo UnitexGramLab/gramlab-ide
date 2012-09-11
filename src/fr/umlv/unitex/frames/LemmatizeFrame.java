@@ -62,6 +62,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -102,7 +104,7 @@ public class LemmatizeFrame extends TfstFrame {
 	BigConcordance list;
 	JComboBox lemmaCombo=new JComboBox();
 	
-	final JLabel sentence_count_label = new JLabel(" 0 sentence");
+	final JLabel sentenceCountLabel = new JLabel(" 0 sentence");
 	JSpinner spinner;
 	SpinnerNumberModel spinnerModel;
 	JScrollBar tfstScrollbar;
@@ -138,6 +140,7 @@ public class LemmatizeFrame extends TfstFrame {
 	boolean isAcurrentLoadingThread = false;
 	JSplitPane superpanel;
 	JButton resetSentenceGraphs;
+	JLabel nMatches=new JLabel("0 match");
 
 	LemmatizeFrame() {
 		super("Lemmatization", true, true, true, true);
@@ -150,7 +153,9 @@ public class LemmatizeFrame extends TfstFrame {
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-				list.reset();
+				if (list!=null) {
+					list.reset();
+				}
 			}
 		});
 	}
@@ -492,6 +497,7 @@ public class LemmatizeFrame extends TfstFrame {
 					list.reset();
 				}
 				concordancePanel.removeAll();
+				nMatches.setText("0 match");
 				EventQueue.invokeLater(new Runnable() {
 					
 					@Override
@@ -542,6 +548,28 @@ public class LemmatizeFrame extends TfstFrame {
 		}
 		concordancePanel.removeAll();
 		list=new BigConcordance();
+		list.getModel().addListDataListener(new ListDataListener() {
+			
+			void updateLabel() {
+				int size=list.getModel().getSize();
+				nMatches.setText(size+" match"+((size>1)?"es":""));
+			}
+			
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+				updateLabel();
+			}
+			
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+				updateLabel();
+			}
+			
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				updateLabel();
+			}
+		});
 		concordancePanel.add(list,BorderLayout.CENTER);
 		concordancePanel.revalidate();
 		concordancePanel.repaint();
@@ -563,6 +591,7 @@ public class LemmatizeFrame extends TfstFrame {
 
 		});
 		list.load(html);
+		
 	}
 
 	public ComboBoxModel getLemmaModel(String s) {
@@ -579,9 +608,10 @@ public class LemmatizeFrame extends TfstFrame {
 	}
 	
 	private JPanel constructSentenceNavigationPanel() {
-		final JPanel p = new JPanel(new GridLayout(5, 1));
+		final JPanel p = new JPanel(new GridLayout(6, 1));
 		p.setBorder(BorderFactory.createTitledBorder("Navigation"));
-		p.add(sentence_count_label);
+		p.add(nMatches);
+		p.add(sentenceCountLabel);
 		final JPanel middle = new JPanel(new BorderLayout());
 		middle.add(new JLabel(" Sentence # "), BorderLayout.WEST);
 		spinnerModel = new SpinnerNumberModel(0,0,0,1);
@@ -675,7 +705,7 @@ public class LemmatizeFrame extends TfstFrame {
 		s = s + " sentence";
 		if (sentence_count > 1)
 			s = s + "s";
-		sentence_count_label.setText(s);
+		sentenceCountLabel.setText(s);
 		spinnerModel.setMaximum(sentence_count);
 		spinnerModel.setMinimum(1);
 		return true;
