@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -208,10 +210,17 @@ public class ConcordanceAsListModel extends AbstractListModel {
 		fireContentsChanged(this, 0, getSize());
 	}
 
+	
 	public void reset() {
-		if (buffer != null)
+		if (buffer != null) {
+			ReferenceQueue<MappedByteBuffer> queue=new ReferenceQueue<MappedByteBuffer>();
+			new PhantomReference<MappedByteBuffer>(buffer,queue);
 			buffer = null;
-		System.gc();
+			while (queue.poll()!=null) {
+				System.gc();
+				Thread.yield();
+			}
+		}
 		if (channel != null) {
 			try {
 				channel.close();
