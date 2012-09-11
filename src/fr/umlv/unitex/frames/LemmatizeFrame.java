@@ -22,7 +22,6 @@ package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -482,7 +481,7 @@ public class LemmatizeFrame extends TfstFrame {
 					return;
 				}
 				commands.addCommand(cmd2);
-				final File html=new File(Config.getCurrentSntDir(),"concord.html");
+				final File html=new File(Config.getCurrentSntDir(),"lemmatize.html");
 				final ToDo after=new ToDo() {
 					
 					@Override
@@ -498,19 +497,7 @@ public class LemmatizeFrame extends TfstFrame {
 				}
 				concordancePanel.removeAll();
 				nMatches.setText("0 match");
-				EventQueue.invokeLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						/* The list.reset() operation may take some time, so 
-						 * it may be better to post an event rather than to 
-						 * try to do the job now, because concord.html may
-						 * not have been unmapped by the system, especially
-						 * if the system name starts with a W.
-						 */
-						Launcher.exec(commands,true,after);
-					}
-				});
+				Launcher.exec(commands,true,after);
 			}
 
 			private void createLemmatizeFst2(File fst2,String s) {
