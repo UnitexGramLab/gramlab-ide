@@ -144,7 +144,7 @@ public class LemmatizeFrame extends TfstFrame {
 		DropTargetManager.getDropTarget().newDropTarget(this);
 		setContentPane(constructPanel());
 		pack();
-		setBounds(10, 10, 900, 600);
+		setBounds(10, 10, 1000, 600);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		textfield.setEditable(false);
 		addInternalFrameListener(new InternalFrameAdapter() {
@@ -205,7 +205,9 @@ public class LemmatizeFrame extends TfstFrame {
 	private JPanel constructLemmaPanel() {
 		JPanel p = new JPanel(new GridLayout(3,1));
 		p.setBorder(BorderFactory.createTitledBorder("Lemma selection"));
-		lemmaCombo.setMinimumSize(new Dimension(200,lemmaCombo.getPreferredSize().height));
+		lemmaCombo.setMinimumSize(new Dimension(400,lemmaCombo.getPreferredSize().height));
+		lemmaCombo.setPreferredSize(new Dimension(400,lemmaCombo.getPreferredSize().height));
+		lemmaCombo.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		lemmaCombo.setFont(ConfigManager.getManager().getConcordanceFont(null));
 		p.add(lemmaCombo);
 		JButton validateOne=new JButton("Lemmatize selected item");

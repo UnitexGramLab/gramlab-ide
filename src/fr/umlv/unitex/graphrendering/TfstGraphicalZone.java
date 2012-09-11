@@ -44,7 +44,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
 import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.frames.TextAutomatonFrame;
 import fr.umlv.unitex.frames.TfstFrame;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.tfst.Bounds;
@@ -174,7 +173,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 				scrollingWhileTagging = true;
 				X_start_scrolling = (int) (e.getX() / scaleFactor);
 				Y_start_scrolling = (int) (e.getY() / scaleFactor);
-				final JScrollPane scroll = ((TextAutomatonFrame) parentFrame).scrollPane;
+				final JScrollPane scroll = ((TfstFrame) parentFrame).getTfstScrollPane();
 				final JViewport view = scroll.getViewport();
 				originalViewPoint = view.getViewPosition();
 				return;
@@ -245,7 +244,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 				final int Y_current_scrolling = (int) (e.getY() / scaleFactor);
 				final int shiftX = X_current_scrolling - X_start_scrolling;
 				final int shiftY = Y_current_scrolling - Y_start_scrolling;
-				final JScrollPane scroll = ((TextAutomatonFrame) parentFrame).scrollPane;
+				final JScrollPane scroll = ((TfstFrame) parentFrame).getTfstScrollPane();
 				final JViewport view = scroll.getViewport();
 				int newX = view.getViewPosition().x - shiftX;
 				int newY = view.getViewPosition().y - shiftY;
