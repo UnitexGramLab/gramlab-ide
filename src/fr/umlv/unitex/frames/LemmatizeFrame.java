@@ -439,7 +439,6 @@ public class LemmatizeFrame extends TfstFrame {
 						.mergeOutputs()
 						.tfst(new File(Config.getCurrentSntDir(),"text.tfst"))
 						.fst2(fst2)
-						.allMatches()
 						.backtrackOnVariableErrors()
 						.singleTagsOnly();
 				if (limitCtx==-2) cmd1=cmd1.allMatches();

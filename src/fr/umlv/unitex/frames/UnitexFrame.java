@@ -39,6 +39,7 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -76,8 +77,10 @@ import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CompressCommand;
+import fr.umlv.unitex.process.commands.ConcordCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.LocateTfstCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.text.Text;
@@ -147,6 +150,7 @@ public class UnitexFrame extends JFrame {
 						lemmatize.setEnabled(true);
 						constructSeqFst.setEnabled(true);
 						convertFst.setEnabled(true);
+						exportTfstAsCsv.setEnabled(true);
 						closeText.setEnabled(true);
 						File snt=ConfigManager
 								.getManager().getCurrentSnt(null);
@@ -171,6 +175,7 @@ public class UnitexFrame extends JFrame {
 						constructFst.setEnabled(false);
 						lemmatize.setEnabled(false);
 						convertFst.setEnabled(false);
+						exportTfstAsCsv.setEnabled(false);
 						closeText.setEnabled(false);
 						InternalFrameManager.getManager(null)
 								.closeTokensFrame();
@@ -303,6 +308,7 @@ public class UnitexFrame extends JFrame {
 	AbstractAction constructFst;
 	AbstractAction constructSeqFst;
 	AbstractAction convertFst;
+	AbstractAction exportTfstAsCsv;
 	AbstractAction closeText;
 	AbstractAction quitUnitex;
 	AbstractAction cassys;
@@ -438,6 +444,14 @@ public class UnitexFrame extends JFrame {
 		};
 		convertFst.setEnabled(false);
 		textMenu.add(new JMenuItem(convertFst));
+		exportTfstAsCsv = new AbstractAction("Export FST-Text as CSV") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exportAsCsv();
+			}
+		};
+		exportTfstAsCsv.setEnabled(false);
+		textMenu.add(new JMenuItem(exportTfstAsCsv));
 		textMenu.addSeparator();
 		closeText = new AbstractAction("Close Text...") {
 			@Override
@@ -1522,4 +1536,73 @@ public class UnitexFrame extends JFrame {
 	public static JInternalFrame getCurrentFocusedFrame() {
 		return mainFrame.desktop.getSelectedFrame();
 	}
+	
+	
+	private void createExportFst2(File fst2) {
+		OutputStreamWriter writer=Encoding.UTF8.getOutputStreamWriter(fst2);
+		try {
+			writer.write("0000000001\n");
+			writer.write("-1 export_csv\n");
+			writer.write(": 4 2 3 2 1 1 \n");
+			writer.write(": 2 2 \n");
+			writer.write("t \n");
+			writer.write("f \n");
+			writer.write("%<E>\n");
+			writer.write("%<DIC>/$:x$\n");
+			writer.write("%<E>//$x.LEMMA$.$x.CODE$\n");
+			writer.write("%<!MOT>\n");
+			writer.write("@ \n");
+			writer.write("f\n");
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	public void exportAsCsv() {
+		final File fst2=new File(ConfigManager.getManager().getCurrentLanguageDir(),"export_csv.fst2");
+		createExportFst2(fst2);
+		final MultiCommands commands=new MultiCommands();
+		LocateTfstCommand cmd1=new LocateTfstCommand().allowAmbiguousOutputs()
+				.alphabet(ConfigManager.getManager().getAlphabet(null))
+				.mergeOutputs()
+				.tfst(new File(Config.getCurrentSntDir(),"text.tfst"))
+				.fst2(fst2)
+				.allMatches()
+				.backtrackOnVariableErrors()
+				.singleTagsOnly();
+		if (ConfigManager.getManager().isKorean(null)) {
+			cmd1=cmd1.korean();
+		}
+		commands.addCommand(cmd1);
+		ConcordCommand cmd2;
+		File indFile=new File(Config.getCurrentSntDir(),"concord.ind");
+		cmd2 = new ConcordCommand()
+				.indFile(indFile)
+				.exportAsCsv();
+		if (ConfigManager.getManager().isPRLGLanguage(null)) {
+			final File prlgIndex = new File(Config.getCurrentSntDir(),
+					"prlg.idx");
+			final File offsets = new File(Config.getCurrentSntDir(),
+					"tokenize.out.offsets");
+			if (prlgIndex.exists() && offsets.exists()) {
+				cmd2 = cmd2.PRLG(prlgIndex, offsets);
+			}
+		}
+		commands.addCommand(cmd2);
+		final File csv=new File(Config.getCurrentSntDir(),"export.csv");
+		final ToDo after=new ToDo() {
+			
+			@Override
+			public void toDo(boolean success) {
+				fst2.delete();
+				JOptionPane.showMessageDialog(UnitexFrame.mainFrame,"The text automaton was successfully exported as:\n"+
+				"\n"+csv.getAbsolutePath());
+			}
+
+		};
+		Launcher.exec(commands,true,after);
+	}
+
 }

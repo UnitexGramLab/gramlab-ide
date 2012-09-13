@@ -101,6 +101,11 @@ public class ConcordCommand extends CommandBuilder {
 		return this;
 	}
 
+	public ConcordCommand exportAsCsv() {
+		element("--export_csv");
+		return this;
+	}
+
 	public ConcordCommand text(File output) {
 		protectElement("--text"
 				+ ((output != null) ? "=" + output.getAbsolutePath() : ""));
