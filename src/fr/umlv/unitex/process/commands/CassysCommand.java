@@ -1,6 +1,7 @@
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class CassysCommand extends CommandBuilder {
 	public CassysCommand() {
@@ -20,6 +21,15 @@ public class CassysCommand extends CommandBuilder {
 
 	public CassysCommand transducerList(File s) {
 		protectElement("-l" + s.getAbsolutePath());
+		return this;
+	}
+	
+	public CassysCommand morphologicalDic(ArrayList<File> dicList) {
+		if (dicList != null && !dicList.isEmpty()) {
+			for (final File f : dicList) {
+				protectElement("-w" + f.getAbsolutePath());
+			}
+		}
 		return this;
 	}
 }
