@@ -6,16 +6,21 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import fr.umlv.unitex.cassys.ShareTransducerList;
+import fr.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
+import fr.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -68,6 +73,21 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	 * This class is listenning to it
 	 */
 	private final JButton edit;
+	
+	/**
+	 * The <code>import transducer file</code> button.
+	 * <p/>
+	 * This class is listenning to it
+	 */
+	private final JButton _import;
+	
+	/**
+	 * The <code>export transducer file</code> button.
+	 * <p/>
+	 * This class is listenning to it
+	 */
+	private final JButton export;
+	
 
 	/**
 	 * The <code>CassysFrame</code> constructor
@@ -91,7 +111,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		final JPanel jpan = new JPanel();
 		jpan.setLayout(new BoxLayout(jpan, BoxLayout.Y_AXIS));
 		final Dimension defaultButtonDimension = new Dimension(110, 28);
-		jpan.add(Box.createRigidArea(new Dimension(150, 80)));
+		jpan.add(Box.createRigidArea(new Dimension(150, 40)));
 		_new = new JButton("New");
 		_new.setMaximumSize(defaultButtonDimension);
 		_new.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -102,12 +122,24 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		edit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		edit.addActionListener(this);
 		jpan.add(edit);
-		jpan.add(Box.createRigidArea(new Dimension(150, 150)));
+		jpan.add(Box.createRigidArea(new Dimension(150, 60)));
 		launch = new JButton("Launch");
 		launch.setMaximumSize(defaultButtonDimension);
 		launch.setAlignmentX(Component.CENTER_ALIGNMENT);
 		launch.addActionListener(this);
 		jpan.add(launch);
+		jpan.add(Box.createRigidArea(new Dimension(150, 60)));
+		_import = new JButton("Import");
+		_import.setMaximumSize(defaultButtonDimension);
+		_import.setAlignmentX(Component.CENTER_ALIGNMENT);
+		_import.addActionListener(this);
+		jpan.add(_import);
+		export = new JButton("Export");
+		export.setMaximumSize(defaultButtonDimension);
+		export.setAlignmentX(Component.CENTER_ALIGNMENT);
+		export.addActionListener(this);
+		jpan.add(export);
+		jpan.add(Box.createRigidArea(new Dimension(150, 40)));
 		this.getContentPane().add(jpan, BorderLayout.EAST);
 		this.pack();
 		this.setVisible(true);
@@ -139,12 +171,65 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						null);
 				final File f_transducer = fc.getSelectedFile();
 				final File f_target = Config.getCurrentSnt();
+				
 				final CassysCommand com = new CassysCommand()
-						.alphabet(f_alphabet).targetText(f_target)
-						.transducerList(f_transducer);
+						.alphabet(f_alphabet)
+						.targetText(f_target)
+						.transducerList(f_transducer)
+						.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
+				
+				
 				cassysCommand.addCommand(com);
+				
+				//System.out.println(com.getCommandLine());
+				
 				// new ProcessInfoFrame(com, true, new CassysDo());
 				Launcher.exec(cassysCommand, true, new CassysDo());
+			}
+		}
+		if (a.getSource() == _import){
+			ShareTransducerList stl = new ShareTransducerList();
+			try {
+				File importFile = stl.importList(fc.getSelectedFile());
+				
+				final String message = new String ("The imported file is stored in " + importFile.getPath());
+				
+				JOptionPane.showMessageDialog(this, message, "Success",
+						JOptionPane.INFORMATION_MESSAGE);
+				
+				
+			} catch (IOException e) {
+				final String title = "I/O Error";
+				JOptionPane.showMessageDialog(this, e.getMessage(), title,
+						JOptionPane.ERROR_MESSAGE);
+			} catch (FormatFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		if (a.getSource() == export){
+			ShareTransducerList stl = new ShareTransducerList();
+			try {
+				File exportFile = stl.exportList(fc.getSelectedFile());
+				
+				final String message = new String ("The exported file is stored in " + exportFile.getPath());
+				
+				JOptionPane.showMessageDialog(this, message, "Success",
+						JOptionPane.INFORMATION_MESSAGE);
+				
+			} catch (IOException e) {
+				final String t = "I/O Error";
+				JOptionPane.showMessageDialog(this, e.getMessage(), t,
+						JOptionPane.ERROR_MESSAGE);
+			} catch (FormatFileException e) {
+				final String t = "Format file Error";
+				JOptionPane.showMessageDialog(this, e.getMessage(), t,
+						JOptionPane.ERROR_MESSAGE);
+			} catch (RequiredDirectoryNotExist e){
+				final String t = "Required directory not found";
+				JOptionPane.showMessageDialog(this, e.getMessage(), t,
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
