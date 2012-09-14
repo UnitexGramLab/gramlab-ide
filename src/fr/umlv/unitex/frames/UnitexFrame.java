@@ -1543,7 +1543,7 @@ public class UnitexFrame extends JFrame {
 		try {
 			writer.write("0000000001\n");
 			writer.write("-1 export_csv\n");
-			writer.write(": 4 2 3 2 1 1 \n");
+			writer.write(": 5 2 4 2 3 2 1 1 \n");
 			writer.write(": 2 2 \n");
 			writer.write("t \n");
 			writer.write("f \n");
@@ -1552,6 +1552,7 @@ public class UnitexFrame extends JFrame {
 			writer.write("%<E>//$x.LEMMA$.$x.CODE$\n");
 			writer.write("%<!MOT>\n");
 			writer.write("@ \n");
+			writer.write("%<!DIC>\n");
 			writer.write("f\n");
 			writer.close();
 		} catch (IOException e) {
