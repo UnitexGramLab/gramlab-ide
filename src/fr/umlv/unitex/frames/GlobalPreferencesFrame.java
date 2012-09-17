@@ -579,6 +579,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		}
 	}
 
+	JFileChooser morphoBinJFC=null;
+	
 	private JPanel constructPage4() {
 		final JPanel p = new JPanel(null);
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -623,16 +625,18 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action addAction = new AbstractAction("Add") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final JFileChooser f = new JFileChooser();
-				f.setMultiSelectionEnabled(true);
-				f.addChoosableFileFilter(new PersonalFileFilter("bin",
+				if (morphoBinJFC==null) {
+					morphoBinJFC = new JFileChooser();
+					morphoBinJFC.setMultiSelectionEnabled(true);
+					morphoBinJFC.addChoosableFileFilter(new PersonalFileFilter("bin",
 						"Binary dictionary"));
-				f.setDialogTitle("Choose your morphological dictionaries");
-				f.setDialogType(JFileChooser.OPEN_DIALOG);
-				if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+					morphoBinJFC.setDialogTitle("Choose your morphological dictionaries");
+					morphoBinJFC.setDialogType(JFileChooser.OPEN_DIALOG);
+				}
+				if (morphoBinJFC.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
 					return;
 				}
-				final File[] files = f.getSelectedFiles();
+				final File[] files = morphoBinJFC.getSelectedFiles();
 				if (files == null)
 					return;
 				for (final File file : files) {
