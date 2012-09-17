@@ -12,6 +12,17 @@ import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
 import fr.umlv.unitex.config.Config;
 
+
+
+/**
+ * This ShareTransducerList class provides the ability to easily share transducer files between users. The
+ * feature is obtained by translating absolute path used by unitex to relative path (export action) and 
+ * by translating relative path to absolute path (import action).
+ * 
+ * 
+ * @author dnott
+ *
+ */
 public class ShareTransducerList {
 	
 	private final String shareDirectoryName;
@@ -23,6 +34,19 @@ public class ShareTransducerList {
 		relativeRootDirectory= Config.getCurrentGraphDir().getPath();
 	}
 	
+	
+	/**
+	 * Export <em>absoluteTransducerList</em> file. 
+	 * The exported file is copied in the <em>shareDirectoryName</em> file. The relative root directory
+	 * is <em>relativeRootDirectory</em>.
+	 *
+	 * 
+	 * @param absoluteTransducerList
+	 * @return the file containing the export
+	 * @throws IOException
+	 * @throws FormatFileException
+	 * @throws RequiredDirectoryNotExist
+	 */
 	public File exportList(File absoluteTransducerList) throws IOException, FormatFileException,RequiredDirectoryNotExist {
 		
 		// test whether the Share directory exists
@@ -39,6 +63,19 @@ public class ShareTransducerList {
 		
 	}
 	
+	
+	/**
+	 * Import <em>absoluteTransducerList</em> file. 
+	 * The imported file is copied from the <em>shareDirectoryName</em> file. The relative root directory
+	 * is <em>relativeRootDirectory</em>.
+	 *
+	 * 
+	 * @param absoluteTransducerList
+	 * @return the file containing the export
+	 * @throws IOException
+	 * @throws FormatFileException
+	 * @throws RequiredDirectoryNotExist
+	 */
 	public File importList(File shareFile) throws IOException, FormatFileException  {
 		
 		final File transducerListFile = new File(Config.getCassysDir(),shareFile.getName());
@@ -50,7 +87,17 @@ public class ShareTransducerList {
 	}
 	
 	
-	
+	/**
+	 * This method read each file name path in <em>source</em>, 
+	 * absolutize it or relativize it according to the <em>is_export</em> value and copy it to
+	 * <em>target</em>
+	 * 
+	 * @param source the source file
+	 * @param target the target file
+	 * @param is_export 
+	 * @throws IOException
+	 * @throws FormatFileException
+	 */
 	private void portList(File source, File target, boolean is_export) throws IOException, FormatFileException{
 		
 		final BufferedWriter fw = new BufferedWriter(new FileWriter(target));
@@ -120,7 +167,13 @@ public class ShareTransducerList {
 	}
 	
 	
-	
+	/**
+	 * Converts an absolute path into a relative path
+	 * 
+	 * @param fileName
+	 * @return an absolute path name file
+	 * @throws NotAnAbsolutePathException
+	 */
 	private String relativize(String fileName) throws NotAnAbsolutePathException{
 		
 		// check whether the file is absolute
@@ -163,7 +216,15 @@ public class ShareTransducerList {
 	}
 	
 	
-	
+	/**
+	 * Converts an relative path into an absolute path
+	 * 
+	 * 
+	 * @param fileName a file name path
+	 * @return a relative path name file
+	 * @throws IOException 
+	 * @throws AlreadyAbsolutePathException
+	 */
 	private String absolutize(String fileName) throws IOException, AlreadyAbsolutePathException{
 		
 		final File file = new File(fileName);
