@@ -2,7 +2,6 @@ package fr.umlv.unitex.cassys;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -174,7 +173,7 @@ public class ShareTransducerList {
 	 * @return an absolute path name file
 	 * @throws NotAnAbsolutePathException
 	 */
-	private String relativize(String fileName) throws NotAnAbsolutePathException{
+	public String relativize(String fileName) throws NotAnAbsolutePathException{
 		
 		// check whether the file is absolute
 		final File file = new File(fileName);
@@ -184,8 +183,20 @@ public class ShareTransducerList {
 		
 		String relativePath = new String();
 		
-		String filePath[]= fileName.split(File.separator);
-		String rootDirectoryPath[] = relativeRootDirectory.split(File.separator);
+		
+		String file_separator;
+		if(Config.getSystem() == Config.WINDOWS_SYSTEM){
+			// The windows file separator char is also char protected in regex java class !
+			// So we need to protect it
+			file_separator = "\\"+File.separator;
+		} else {
+			file_separator=File.separator;
+		}
+		
+		String filePath[]= fileName.split(file_separator);
+		String rootDirectoryPath[] = relativeRootDirectory.split(file_separator);
+		
+		
 		
 		int level = 1;
 		if(Config.getCurrentSystem() == Config.LINUX_SYSTEM){
@@ -225,7 +236,7 @@ public class ShareTransducerList {
 	 * @throws IOException 
 	 * @throws AlreadyAbsolutePathException
 	 */
-	private String absolutize(String fileName) throws IOException, AlreadyAbsolutePathException{
+	public String absolutize(String fileName) throws IOException, AlreadyAbsolutePathException{
 		
 		final File file = new File(fileName);
 		if(file.isAbsolute()){
