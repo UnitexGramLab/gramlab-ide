@@ -71,12 +71,13 @@ public class DataListFileNameRenderer extends JLabel implements
 			setText("<html><i><font color = red>" + str + "</red></i></html>");
 			setToolTipText("File does not exist");
 		} else {
-			setText(f.getName());
+			setText(row + " . " + f.getName());
 			setToolTipText(str);
 		}
 		// set color selection
 		if (isSelected) {
 			setBackground(table.getSelectionBackground());
+			
 		} else {
 			setBackground(table.getBackground());
 		}
