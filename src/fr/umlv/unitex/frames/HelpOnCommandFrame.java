@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.process.ProcessInfoThread;
 import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;
+import fr.umlv.unitex.process.commands.CassysCommand;
 import fr.umlv.unitex.process.commands.CheckDicCommand;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.CompressCommand;
@@ -83,7 +84,7 @@ import fr.umlv.unitex.process.list.ProcessOutputList;
 import fr.umlv.unitex.process.list.ProcessOutputListModel;
 
 public class HelpOnCommandFrame extends JInternalFrame {
-	private final Class<?>[] commands = { BuildKrMwuDicCommand.class,
+	private final Class<?>[] commands = { BuildKrMwuDicCommand.class, CassysCommand.class,
 			CheckDicCommand.class, CompressCommand.class, ConcordCommand.class,
 			ConcorDiffCommand.class, ConvertCommand.class, DicoCommand.class,
 			ElagCommand.class, ElagCompCommand.class, EvambCommand.class,
