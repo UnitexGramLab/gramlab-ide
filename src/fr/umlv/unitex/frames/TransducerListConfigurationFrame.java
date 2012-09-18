@@ -35,6 +35,10 @@ import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
 import fr.umlv.unitex.cassys.DataListFileNameRenderer;
 import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.MultiCommands;
 
 /**
  * User Configuration frame for Cassys.
@@ -97,7 +101,7 @@ import fr.umlv.unitex.config.Config;
  */
 public class TransducerListConfigurationFrame extends JInternalFrame implements
 		ActionListener {
-	static TransducerListConfigurationFrame frame;
+	
 	/**
 	 * Table storing the sorted list of transducer files to be applied.
 	 * <p/>
@@ -150,6 +154,14 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * The <code>close</code> button. This class is listening to it.
 	 */
 	private JButton close;
+	/**
+	 * The <code>recompile graphs button</code> button.
+	 * <p/>
+	 * This class is listenning to it
+	 */
+	private JButton recompile_graphs;
+
+	
 	/**
 	 * The system file explorer.
 	 * <p/>
@@ -475,6 +487,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		saveAs.setMaximumSize(defaultButtonDimension);
 		saveAs.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button_panel.add(saveAs);
+		recompile_graphs = new JButton("Compile");
+		recompile_graphs.setToolTipText("Recompile all graphs");
+		recompile_graphs.setMaximumSize(defaultButtonDimension);
+		recompile_graphs.setAlignmentX(Component.CENTER_ALIGNMENT);
+		recompile_graphs.addActionListener(this);
+		button_panel.add(recompile_graphs);
 		button_panel.add(Box.createRigidArea(new Dimension(50, 20)));
 		close = new JButton("Close");
 		close.addActionListener(this);
@@ -648,6 +666,54 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				}
 			}
 		}
+		if (recompile_graphs == a.getSource()) {
+			final DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+			
+			MultiCommands commands = new MultiCommands();
+			String ErrorList = "";
+			
+			for (int i = 0; i < dtm.getRowCount(); i++) {
+
+				final File f_alphabet = ConfigManager.getManager().getAlphabet(
+						null);
+				final String graphFileName = (String) dtm.getValueAt(i, 0);
+				File graphFile = new File(graphFileName);
+				
+				
+
+				if (!graphFile.exists()) {
+					ErrorList = ErrorList.concat(graphFileName
+							+ " does not exist\n");
+				} else {
+					if (!graphFileName.endsWith("fst2")) {
+						ErrorList = ErrorList.concat(graphFileName
+								+ " has not the fst2 extension\n");
+					} else {
+
+						graphFile = getGrfFromFst2(graphFile);
+
+						commands.addCommand(new Grf2Fst2Command()
+								.grf(graphFile)
+								.enableLoopAndRecursionDetection(true)
+								.alphabetTokenization(f_alphabet));
+
+					}
+					
+				}
+			}
+			if(!ErrorList.equals("")){
+				final String t = "Recompile Graph Error";
+				final String message = ErrorList;
+				JOptionPane.showMessageDialog(this, message, t,
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
+			Launcher.exec(commands, false);
+
+		}
+		
+		
+		
 		if (close == a.getSource()) {
 			quit_asked();
 		}
@@ -731,11 +797,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			grf = f;
 		}
 		if (f.getName().endsWith(".fst2")) {
-			final String nameWithoutExtension = f.getPath().substring(0,
-					f.getPath().lastIndexOf("."));
-			final String nameWithExtension = nameWithoutExtension
-					.concat(".grf");
-			grf = new File(nameWithExtension);
+			grf = getGrfFromFst2(f);
 		}
 		if (grf != null) {
 			InternalFrameManager.getManager(grf).newGraphFrame(grf);
@@ -746,6 +808,17 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	public File getGrfFromFst2(File f){
+		final String nameWithoutExtension = f.getPath().substring(0,
+				f.getPath().lastIndexOf("."));
+		final String nameWithExtension = nameWithoutExtension
+				.concat(".grf");
+		final File grf = new File(nameWithExtension);
+		return grf;
+	}
+	
+	
 
 	public void setConfigurationHasChanged(Boolean b) {
 		configurationHasChanged = b;
