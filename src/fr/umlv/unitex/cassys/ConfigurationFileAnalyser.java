@@ -24,6 +24,7 @@ public class ConfigurationFileAnalyser {
 	private String fileName;
 	private boolean mergeMode;
 	private boolean replaceMode;
+	private boolean disabled;
 	private boolean commentFound;
 
 	/**
@@ -53,6 +54,16 @@ public class ConfigurationFileAnalyser {
 	public boolean isCommentFound() {
 		return commentFound;
 	}
+	
+	
+	/**
+	 * 
+	 * @return disabled
+	 */
+	public boolean isDisabled(){
+		return disabled;
+	}
+	
 
 	public ConfigurationFileAnalyser(String line) throws EmptyLineException,
 			InvalidLineException {
@@ -88,6 +99,16 @@ public class ConfigurationFileAnalyser {
 			throw new InvalidLineException(
 					lineSubstring[0]
 							+ " --> FileName should be followed by a white space and Merge or Replace\n");
+		}
+		if(lineCore.length>2){
+			if(lineCore[2].equals("Disabled")||lineCore[2].equals("Disabled")){
+				disabled = true;
+			} else {
+				throw new InvalidLineException(lineSubstring[0]
+				                     						+ " --> Third argument should be Disabled\n");
+			}
+		} else {
+			disabled = false;
 		}
 	}
 
