@@ -42,6 +42,10 @@ class DataList {
 	 * Whether the <code>replace</code> option sould be applied
 	 */
 	private boolean replace;
+	/**
+	 * Whether the transducer should be applied
+	 */
+	private boolean disabled;
 
 	/**
 	 * Three parameters constructor
@@ -57,8 +61,28 @@ class DataList {
 		name = n;
 		merge = m;
 		replace = r;
+		disabled = false;
 	}
 
+	/**
+	 * Four parameters constructor
+	 * 
+	 * @param n
+	 *            the name
+	 * @param m
+	 *            whether to merge
+	 * @param r
+	 *            whether to replace
+	 */
+	public DataList(String n, boolean m, boolean r, boolean d) {
+		name = n;
+		merge = m;
+		replace = r;
+		disabled = d;
+	}
+	
+	
+	
 	/**
 	 * One constructor parameter
 	 * 
@@ -69,6 +93,7 @@ class DataList {
 		name = dl.getName();
 		merge = dl.isMerge();
 		replace = dl.isReplace();
+		disabled = dl.isDisabled();
 	}
 
 	/**
@@ -115,4 +140,21 @@ class DataList {
 	public void setReplace(boolean replace) {
 		this.replace = replace;
 	}
+	
+	/**
+	 * 
+	 * @return disabled
+	 */
+	public boolean isDisabled(){
+		return disabled;
+	}
+	
+	/**
+	 * 
+	 * @param disabled the disabled to set
+	 */
+	public void setDisabled(boolean disabled){
+		this.disabled = disabled;
+	}
+	
 }
