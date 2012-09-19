@@ -288,6 +288,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		tableModel.addColumn("Name");
 		tableModel.addColumn("Merge");
 		tableModel.addColumn("Replace");
+		tableModel.addColumn("Disabled");
 		table = new JTable(tableModel) {
 			/**
 			 * Redefinition of the tableChanged method to ensure integrity data
@@ -343,15 +344,16 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.setTransferHandler(new ListDataTransfertHandler());
 		final Dimension defaultTableViewPortSize = table
 				.getPreferredScrollableViewportSize();
-		final Dimension currentTableViewPortSize = new Dimension(460,// defaultTableViewPortSize.width
+		final Dimension currentTableViewPortSize = new Dimension(580,// defaultTableViewPortSize.width
 				// * 2,
 				defaultTableViewPortSize.height);
 		table.setPreferredScrollableViewportSize(currentTableViewPortSize);
 		// TableColumn col = table.getColumnModel().getColumn(0);
 		// col.setPreferredWidth(600);
 		table.getColumnModel().getColumn(0).setPreferredWidth(340);
-		table.getColumnModel().getColumn(1).setPreferredWidth(60);
-		table.getColumnModel().getColumn(2).setPreferredWidth(60);
+		table.getColumnModel().getColumn(1).setPreferredWidth(80);
+		table.getColumnModel().getColumn(2).setPreferredWidth(80);
+		table.getColumnModel().getColumn(3).setPreferredWidth(80);
 	}
 
 	void fill_table(File f) {
@@ -369,7 +371,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 							final ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
 									line);
 							final Object[] o = { cfa.getFileName(),
-									cfa.isMergeMode(), cfa.isReplaceMode() };
+									cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled() };
 							tableModel.addRow(o);
 							if (cfa.isCommentFound()) {
 								editedFileHasCommentOrError = true;
@@ -765,6 +767,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 					fw.write("Merge");
 				} else {
 					fw.write("Replace");
+				}
+				if((Boolean) table.getValueAt(i, 3)) {
+					fw.write(" Disabled");
 				}
 				fw.newLine();
 			}
