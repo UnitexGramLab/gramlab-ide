@@ -177,14 +177,14 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * <p/>
 	 * Used to allow a refresh this file explorer when a new file is added
 	 */
-	JFileChooser parent;
+	private JFileChooser parent;
 	/**
 	 * Whether transducers list has changed.
 	 * <p/>
 	 * Used to display an <code>unsaved</code> symbol next to the transducer
 	 * name and to query the user to save before leaving.
 	 */
-	boolean configurationHasChanged;
+	private boolean configurationHasChanged;
 	/**
 	 * Whether edited file has comments.
 	 * <p/>
@@ -307,9 +307,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 									&& !((Boolean) getValueAt(i, 2))) {
 								setValueAt(Boolean.TRUE, i, 2);
 							}
-							// make sure that custom renderer repaint all the
-							// changed value
-							repaint();
+							
 						}
 					}
 				}
@@ -324,12 +322,13 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 									&& !((Boolean) getValueAt(i, 1))) {
 								setValueAt(Boolean.TRUE, i, 1);
 							}
-							// make sure that custom renderer repaint all the
-							// changed value
-							repaint();
 						}
 					}
 				}
+				// make sure that custom renderer repaint all the
+				// changed value
+				repaint();
+				
 				configurationHasChanged = true;
 				setFrameTitle();
 				super.tableChanged(e);
@@ -729,6 +728,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				showSaveFrame();
 			} else if (return_val == JOptionPane.NO_OPTION) {
 				quit();
+			} else { //return_val == JOptionPane.CANCEL_OPTION
+				// DO NOTHING
 			}
 		} else {
 			quit();
@@ -755,6 +756,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			saveListToFile();
 		}
 	}
+	
+	
 
 	void saveListToFile() {
 		try {
@@ -829,7 +832,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		configurationHasChanged = b;
 	}
 
-	public Boolean getConfigurationHasChanged() {
+	public Boolean isConfigurationHasChanged() {
 		return configurationHasChanged;
 	}
 }
