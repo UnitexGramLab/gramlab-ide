@@ -154,15 +154,28 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent a) {
-		if (a.getSource() == _new) {
-			Config.setCurrentTransducerList(null);
-			InternalFrameManager.getManager(null)
-					.newTransducerListConfigurationFrame(null);
-		}
+		
+		File selected_file = null;
+		
 		if (a.getSource() == edit) {
-			Config.setCurrentTransducerList(fc.getSelectedFile());
-			InternalFrameManager.getManager(null)
-					.newTransducerListConfigurationFrame(fc.getSelectedFile());
+			selected_file = fc.getSelectedFile();
+		}
+		
+		if (a.getSource() == edit || a.getSource() == _new) {
+			TransducerListConfigurationFrame t = InternalFrameManager
+					.getManager(null).getTransducerListConfigurationFrame();
+			
+			// If save has to be done. Do it first
+			if (t != null && t.isConfigurationHasChanged()) {
+				t.quit_asked();
+			} else { // Open
+				if (t != null) {
+					t.quit();
+				}
+				Config.setCurrentTransducerList(selected_file);
+				InternalFrameManager.getManager(null)
+						.newTransducerListConfigurationFrame(selected_file);
+			}
 		}
 		if (a.getSource() == launch) {
 			if (fc.getSelectedFile() != null) {

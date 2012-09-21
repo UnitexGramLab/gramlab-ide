@@ -107,8 +107,8 @@ public class InternalFrameManager {
 	private final SvnConflictsFrameFactory svnConflictsFrameFactory = new SvnConflictsFrameFactory();
 	private final FrameFactory cassysFrameFactory = new FrameFactory(
 			CassysFrame.class);
-	private final FrameFactory transducerListConfigurationFrameFactory = new FrameFactory(
-			TransducerListConfigurationFrame.class);
+	private final TransducerListConfigurationFrameFactory transducerListConfigurationFrameFactory = 
+			new TransducerListConfigurationFrameFactory();
 	private final FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
 	private final FrameFactory xAlignConfigFrameFactory = new FrameFactory(
 			XAlignConfigFrame.class);
@@ -491,26 +491,27 @@ public class InternalFrameManager {
 	public void closeCassysFrame() {
 		cassysFrameFactory.closeFrame();
 	}
-
-	public TransducerListConfigurationFrame newTransducerListConfigurationFrame(
-			File file) {
-		final TransducerListConfigurationFrame f = (TransducerListConfigurationFrame) transducerListConfigurationFrameFactory
-				.newFrame();
-		if (f == null)
-			return null;
-		f.setConfigurationHasChanged(false);
-		f.setFrameTitle();
-		if (file != null) {
-			f.fill_table(file);
-		}
-		setup(f);
-		return f;
+	
+	public TransducerListConfigurationFrame newTransducerListConfigurationFrame(File f){
+		return (TransducerListConfigurationFrame) setup(
+				transducerListConfigurationFrameFactory.newTransducerListConfigurationFrame(f),
+				false, false);
+		
 	}
-
-	public void closeTransducerListConfigurationFrame() {
+	
+	public boolean isTransducerListConfigurationExist(){
+		return transducerListConfigurationFrameFactory.existsFrame();
+	}
+	
+	
+	public TransducerListConfigurationFrame getTransducerListConfigurationFrame(){
+		return transducerListConfigurationFrameFactory.getFrame();
+	}
+	
+	public void closeTransducerListConfigurationFrame(){
 		transducerListConfigurationFrameFactory.closeFrame();
 	}
-
+	
 	public CheckDicFrame newCheckDicFrame(File dela) {
 		final CheckDicFrame f = (CheckDicFrame) setup(checkDicFrameFactory
 				.newFrame());
