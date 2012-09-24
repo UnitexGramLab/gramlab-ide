@@ -218,6 +218,11 @@ public class ConcordanceAsListModel extends AbstractListModel {
 			buffer = null;
 			while (queue.poll()!=null) {
 				System.gc();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					/* do nothing */
+				}
 				Thread.yield();
 			}
 		}
