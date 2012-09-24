@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,6 +35,7 @@ import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
 import fr.umlv.unitex.cassys.DataListFileNameRenderer;
 import fr.umlv.unitex.cassys.ListDataTransfertHandler;
+import fr.umlv.unitex.cassys.TransducerListTable;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -100,7 +102,7 @@ import fr.umlv.unitex.process.commands.MultiCommands;
  * @author David Nott
  */
 public class TransducerListConfigurationFrame extends JInternalFrame implements
-		ActionListener {
+		ActionListener, TableModelListener {
 	
 	/**
 	 * Table storing the sorted list of transducer files to be applied.
@@ -113,7 +115,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * been redefined.
 	 * </P>
 	 */
-	private JTable table;
+	private TransducerListTable table;
 	/**
 	 * The <code>up</code> button. This class is listening to it.
 	 */
@@ -289,51 +291,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		tableModel.addColumn("Merge");
 		tableModel.addColumn("Replace");
 		tableModel.addColumn("Disabled");
-		table = new JTable(tableModel) {
-			/**
-			 * Redefinition of the tableChanged method to ensure integrity data
-			 * (ie both merge an replace cannot be set at true)
-			 */
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				if (e.getColumn() == 1) {
-					if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
-						for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-							if ((Boolean) getValueAt(i, 1)
-									&& (Boolean) getValueAt(i, 2)) {
-								setValueAt(Boolean.FALSE, i, 2);
-							}
-							if (!((Boolean) getValueAt(i, 1))
-									&& !((Boolean) getValueAt(i, 2))) {
-								setValueAt(Boolean.TRUE, i, 2);
-							}
-							
-						}
-					}
-				}
-				if (e.getColumn() == 2) {
-					if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
-						for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-							if ((Boolean) getValueAt(i, 2)
-									&& (Boolean) getValueAt(i, 1)) {
-								setValueAt(Boolean.FALSE, i, 1);
-							}
-							if (!((Boolean) getValueAt(i, 2))
-									&& !((Boolean) getValueAt(i, 1))) {
-								setValueAt(Boolean.TRUE, i, 1);
-							}
-						}
-					}
-				}
-				// make sure that custom renderer repaint all the
-				// changed value
-				repaint();
-				
-				configurationHasChanged = true;
-				setFrameTitle();
-				super.tableChanged(e);
-			}
-		};
+		tableModel.addTableModelListener(this);
+		
+		table = new TransducerListTable(tableModel);
 		// ensure that empty table is visible
 		table.setFillsViewportHeight(true);
 		table.setDragEnabled(true);
@@ -343,16 +303,17 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.setTransferHandler(new ListDataTransfertHandler());
 		final Dimension defaultTableViewPortSize = table
 				.getPreferredScrollableViewportSize();
-		final Dimension currentTableViewPortSize = new Dimension(580,// defaultTableViewPortSize.width
-				// * 2,
+		final Dimension currentTableViewPortSize = new Dimension(580,
 				defaultTableViewPortSize.height);
 		table.setPreferredScrollableViewportSize(currentTableViewPortSize);
-		// TableColumn col = table.getColumnModel().getColumn(0);
-		// col.setPreferredWidth(600);
+		table.getTableHeader().setReorderingAllowed(false);
+		
 		table.getColumnModel().getColumn(0).setPreferredWidth(340);
 		table.getColumnModel().getColumn(1).setPreferredWidth(80);
 		table.getColumnModel().getColumn(2).setPreferredWidth(80);
 		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+		
+		
 	}
 
 	void fill_table(File f) {
@@ -834,5 +795,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 	public Boolean isConfigurationHasChanged() {
 		return configurationHasChanged;
+	}
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		//Modify the frame title and mark configuration as changed
+		setConfigurationHasChanged(true);
+		setFrameTitle();
 	}
 }

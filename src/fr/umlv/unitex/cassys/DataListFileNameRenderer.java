@@ -66,15 +66,18 @@ public class DataListFileNameRenderer extends JLabel implements
 			boolean isSelected, boolean hasFocus, int row, int column) {
 		final String str = (String) value;
 		final File f = new File(str);
+		TransducerListTable my_table = (TransducerListTable)table;
 		// Write in red and italic if the file does not exist
 		if (!f.exists()) {
 			setText("<html><i><font color = red>" + str + "</red></i></html>");
 			setToolTipText("File does not exist");
 		} else {
 			if((Boolean) table.getValueAt(row, 3) == true){
-				setText("<html><font color = gray><strike>" + row + " . " + f.getName()+"</strike></gray></html>");
+				setText("<html><font color = gray><strike>" + f.getName()+"</strike></gray></html>");
 			} else {
-				setText(row + " . " + f.getName());
+				int rank = row - my_table.getDisabledCount(row);
+				
+				setText(rank + " . " + f.getName());
 			}
 			
 			setToolTipText(str);
