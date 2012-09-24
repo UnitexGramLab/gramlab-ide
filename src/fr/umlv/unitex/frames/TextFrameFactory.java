@@ -49,6 +49,8 @@ class TextFrameFactory {
 			return;
 		}
 		frame.doDefaultCloseAction();
+		frame.text.reset();
+		System.gc();
 		frame = null;
 	}
 
