@@ -260,8 +260,14 @@ public class TextAsListModelImpl extends AbstractListModel {
 			ReferenceQueue<MappedByteBuffer> queue=new ReferenceQueue<MappedByteBuffer>();
 			new PhantomReference<MappedByteBuffer>(mappedBuffer,queue);
 			mappedBuffer = null;
+			System.gc();
 			while (queue.poll()!=null) {
 				System.gc();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					/* do nothing */
+				}
 				Thread.yield();
 			}
 		}
