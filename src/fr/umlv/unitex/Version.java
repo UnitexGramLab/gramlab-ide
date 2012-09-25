@@ -42,8 +42,7 @@ public class Version {
 	/**
 	 * The string that contains the version number, and the date of the release.
 	 */
-	//public final static String version = "Unitex 3.0beta " + getRevisionDate();
-	public final static String version = "Unitex 3.0";
+	public final static String version = "Unitex 3.1beta " + getRevisionDate();
 	
 	/**
 	 * @return a <code>String</code> representing the date of the .jar file that
