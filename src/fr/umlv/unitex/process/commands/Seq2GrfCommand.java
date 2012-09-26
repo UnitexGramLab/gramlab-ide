@@ -65,7 +65,9 @@ public class Seq2GrfCommand extends CommandBuilder {
 	}
 
 	public Seq2GrfCommand alphabet(File alphabet) {
-		protectElement("-a" + alphabet.getAbsolutePath());
+		if (alphabet!=null) {
+			protectElement("-a" + alphabet.getAbsolutePath());
+		}
 		return this;
 	}
 
