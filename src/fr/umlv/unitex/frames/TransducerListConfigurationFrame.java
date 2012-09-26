@@ -567,7 +567,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			final File selected_file = fileBrowse.getSelectedFile();
 			if (selected_file != null) {
 				try {
-					final Object[] row = { selected_file.getPath(), true, false };
+					final Object[] row = { selected_file.getPath(), true, false,false };
 					if (selected_row == -1) {
 						selected_row = dtm.getRowCount();
 					}
