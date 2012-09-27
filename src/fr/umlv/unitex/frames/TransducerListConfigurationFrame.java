@@ -33,7 +33,9 @@ import javax.swing.table.DefaultTableModel;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
+import fr.umlv.unitex.cassys.DataList;
 import fr.umlv.unitex.cassys.DataListFileNameRenderer;
+import fr.umlv.unitex.cassys.DataListFileRankRenderer;
 import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.cassys.TransducerListTable;
 import fr.umlv.unitex.config.Config;
@@ -287,6 +289,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				return getValueAt(0, c).getClass();
 			}
 		};
+		tableModel.addColumn("#");
 		tableModel.addColumn("Name");
 		tableModel.addColumn("Merge");
 		tableModel.addColumn("Replace");
@@ -299,7 +302,10 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.setDragEnabled(true);
 		table.setDropMode(DropMode.INSERT_ROWS);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		table.setDefaultRenderer(String.class, new DataListFileNameRenderer());
+		table.setDefaultRenderer(Integer.class, new DataListFileRankRenderer());
+		
 		table.setTransferHandler(new ListDataTransfertHandler());
 		final Dimension defaultTableViewPortSize = table
 				.getPreferredScrollableViewportSize();
@@ -308,10 +314,11 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.setPreferredScrollableViewportSize(currentTableViewPortSize);
 		table.getTableHeader().setReorderingAllowed(false);
 		
-		table.getColumnModel().getColumn(0).setPreferredWidth(340);
-		table.getColumnModel().getColumn(1).setPreferredWidth(80);
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(340);
 		table.getColumnModel().getColumn(2).setPreferredWidth(80);
 		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+		table.getColumnModel().getColumn(4).setPreferredWidth(80);
 		
 		
 	}
@@ -330,7 +337,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 						try {
 							final ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
 									line);
-							final Object[] o = { cfa.getFileName(),
+							final Object[] o = { DataList.UNRANKED, cfa.getFileName(), 
 									cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled() };
 							tableModel.addRow(o);
 							if (cfa.isCommentFound()) {
@@ -567,7 +574,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			final File selected_file = fileBrowse.getSelectedFile();
 			if (selected_file != null) {
 				try {
-					final Object[] row = { selected_file.getPath(), true, false,false };
+					final Object[] row = { DataList.UNRANKED, selected_file.getPath(), true, false,false };
 					if (selected_row == -1) {
 						selected_row = dtm.getRowCount();
 					}
@@ -589,7 +596,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (open == a.getSource()) {
 			if (table.getSelectedRow() != -1) {
 				final File graph = new File((String) table.getModel()
-						.getValueAt(table.getSelectedRow(), 0));
+						.getValueAt(table.getSelectedRow(), 1));
 				viewGraph(graph);
 			} else {
 				JOptionPane
@@ -638,7 +645,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 				final File f_alphabet = ConfigManager.getManager().getAlphabet(
 						null);
-				final String graphFileName = (String) dtm.getValueAt(i, 0);
+				final String graphFileName = (String) dtm.getValueAt(i, 1);
 				File graphFile = new File(graphFileName);
 				
 				
