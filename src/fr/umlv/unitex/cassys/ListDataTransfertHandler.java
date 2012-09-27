@@ -97,7 +97,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 				final DataList dlf = (DataList) support.getTransferable()
 						.getTransferData(DataListTransferable.DataListFlavor);
 				final JTable table = (JTable) support.getComponent();
-				final Object o[] = { dlf.getName(), dlf.isMerge(),
+				final Object o[] = { dlf.getRank(), dlf.getName(), dlf.isMerge(),
 						dlf.isReplace(),dlf.isDisabled() };
 				((DefaultTableModel) table.getModel()).insertRow(row, o);
 				return true;
@@ -115,7 +115,7 @@ public class ListDataTransfertHandler extends TransferHandler {
 				final String data = (String) support.getTransferable()
 						.getTransferData(DataFlavor.stringFlavor);
 				final JTable table = (JTable) support.getComponent();
-				final Object[] rowData = { data, true, false, false };
+				final Object[] rowData = { DataList.UNRANKED, data, true, false, false };
 				((DefaultTableModel) table.getModel()).insertRow(row, rowData);
 				return true;
 			} catch (final IOException e) {
@@ -151,10 +151,11 @@ public class ListDataTransfertHandler extends TransferHandler {
 		final JTable jt = (JTable) c;
 		final int row_selected = jt.getSelectedRow();
 		final Object[] o = {
-				(String) jt.getModel().getValueAt(row_selected, 0),
-				(Boolean) jt.getModel().getValueAt(row_selected, 1),
+				(Integer) jt.getModel().getValueAt(row_selected, 0),
+				(String) jt.getModel().getValueAt(row_selected, 1),
 				(Boolean) jt.getModel().getValueAt(row_selected, 2),
 				(Boolean) jt.getModel().getValueAt(row_selected, 3),
+				(Boolean) jt.getModel().getValueAt(row_selected, 4),
 				};
 		return new DataListTransferable(o);
 	}
