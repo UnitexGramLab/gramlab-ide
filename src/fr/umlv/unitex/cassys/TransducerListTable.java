@@ -57,8 +57,6 @@ public class TransducerListTable extends JTable {
 		int rank = 0;
 		for (int row = 0; row < getRowCount(); row++) {
 			
-			System.out.println("row = "+ row + " out of " + getRowCount());
-			
 			if((Boolean) getValueAt(row, 4) == false){
 				// test used to avoid dataChanged method fired
 				if((Integer)getValueAt(row,0) != rank){
@@ -71,8 +69,6 @@ public class TransducerListTable extends JTable {
 				}
 			}
 		}
-		
-		System.out.println("end for");
 		
 		// make sure that custom renderer repaint all the
 		// changed value
