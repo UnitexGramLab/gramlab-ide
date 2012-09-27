@@ -64,20 +64,23 @@ public class DataListFileNameRenderer extends JLabel implements
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
 			boolean isSelected, boolean hasFocus, int row, int column) {
+
+		
 		final String str = (String) value;
 		final File f = new File(str);
 		TransducerListTable my_table = (TransducerListTable)table;
 		// Write in red and italic if the file does not exist
+		
+		
 		if (!f.exists()) {
 			setText("<html><i><font color = red>" + str + "</red></i></html>");
 			setToolTipText("File does not exist");
 		} else {
-			if((Boolean) table.getValueAt(row, 3) == true){
+			if((Boolean) table.getValueAt(row, 4) == true){
 				setText("<html><font color = gray><strike>" + f.getName()+"</strike></gray></html>");
 			} else {
-				int rank = row - my_table.getDisabledCount(row);
 				
-				setText(rank + " . " + f.getName());
+				setText( f.getName());
 			}
 			
 			setToolTipText(str);

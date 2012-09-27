@@ -29,7 +29,12 @@ package fr.umlv.unitex.cassys;
  * 
  * @author david nott
  */
-class DataList {
+public class DataList {
+	
+	/**
+	 * Rank of transducer file
+	 */
+	private int rank; // -1 states for unranked
 	/**
 	 * Name of the transducer file
 	 */
@@ -47,6 +52,9 @@ class DataList {
 	 */
 	private boolean disabled;
 
+	
+	public static int UNRANKED = -1;
+	
 	/**
 	 * Three parameters constructor
 	 * 
@@ -62,6 +70,7 @@ class DataList {
 		merge = m;
 		replace = r;
 		disabled = false;
+		rank = UNRANKED;
 	}
 
 	/**
@@ -79,6 +88,7 @@ class DataList {
 		merge = m;
 		replace = r;
 		disabled = d;
+		rank = UNRANKED;
 	}
 	
 	
@@ -94,6 +104,7 @@ class DataList {
 		merge = dl.isMerge();
 		replace = dl.isReplace();
 		disabled = dl.isDisabled();
+		rank = dl.rank;
 	}
 
 	/**
@@ -156,5 +167,14 @@ class DataList {
 	public void setDisabled(boolean disabled){
 		this.disabled = disabled;
 	}
+	
+	public int getRank(){
+		return this.rank;
+	}
+	
+	public void setRank(int rank){
+		this.rank = rank;
+	}
+	
 	
 }
