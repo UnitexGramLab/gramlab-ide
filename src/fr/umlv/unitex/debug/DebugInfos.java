@@ -285,6 +285,14 @@ public class DebugInfos {
 						/* We are in the same line, nothing to do */
 						continue;
 					}
+					/* We may also have extra # or " " tags that have been added
+					 * by the strict tokenization option of Grf2Fst2.
+					 */
+					if (src.tag.equals("#") || src.tag.equals(" ")
+							|| dst.tag.equals("#") || dst.tag.equals(" ")) {
+						continue;
+					}
+					
 					/*
 					 * It may also be because the box contains a range
 					 * indication
@@ -295,7 +303,7 @@ public class DebugInfos {
 					}
 				} else {
 					/*
-					 * Not in the same line. It must be because tha box contains
+					 * Not in the same line. It must be because the box contains
 					 * a range indication
 					 */
 					if (srcBox.transduction != null
