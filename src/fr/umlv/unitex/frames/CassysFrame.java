@@ -23,8 +23,11 @@ import fr.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
 import fr.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.console.ConsoleEntry;
+import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
 import fr.umlv.unitex.process.commands.CassysCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
@@ -185,12 +188,13 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				final File f_transducer = fc.getSelectedFile();
 				final File f_target = Config.getCurrentSnt();
 				
-				final CassysCommand com = new CassysCommand()
+				CassysCommand com = new CassysCommand()
 						.alphabet(f_alphabet)
 						.targetText(f_target)
 						.transducerList(f_transducer)
 						.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
 				
+				com.setWhatToDoBefore(new BeforeCassysDo(f_target.getAbsolutePath()));
 				
 				cassysCommand.addCommand(com);
 				
@@ -263,5 +267,39 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		public void toDo(boolean success) {
 			InternalFrameManager.getManager(dir).newConcordanceParameterFrame();
 		}
+	}
+	
+	/**
+	 * Defines the action to take before the cassys command
+	 * @author dnott
+	 *
+	 */
+	class BeforeCassysDo implements ToDoBeforeSingleCommand{
+
+		private String targetSntFile;
+		
+		
+		public BeforeCassysDo(String targetSntFile){
+			
+			this.targetSntFile = targetSntFile;
+		}
+		
+
+
+		@Override
+		public void toDo(ConsoleEntry entry) {
+			
+			File CorpusDir = new File(FileUtil.getFileNameWithoutExtension(targetSntFile)+"_csc");
+			if (CorpusDir.exists()) {
+				FileUtil.rm(CorpusDir);
+			}
+			CorpusDir.mkdir();
+			
+		}
+		
+		
+		
+		
+		
 	}
 }
