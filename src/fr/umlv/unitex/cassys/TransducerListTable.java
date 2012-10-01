@@ -1,21 +1,16 @@
 package fr.umlv.unitex.cassys;
 
-import java.awt.Dimension;
-
-import javax.swing.DropMode;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
-import javax.swing.table.DefaultTableModel;
 
 public class TransducerListTable extends JTable {
 
 	
-	public TransducerListTable(DefaultTableModel m){
+	public TransducerListTable(TransducerListTableModel m){
 		super(m);
 		
-		
 	}
+	
 	
 	/**
 	 * Redefinition of the tableChanged method to ensure integrity data
@@ -23,16 +18,19 @@ public class TransducerListTable extends JTable {
 	 */
 	@Override
 	public void tableChanged(TableModelEvent e) {
+		
+		TransducerListTableModel model = (TransducerListTableModel) getModel();
+		
 		if (e.getColumn() == 2) {
 			if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
 				for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-					if ((Boolean) getValueAt(i, 2)
-							&& (Boolean) getValueAt(i, 3)) {
-						setValueAt(Boolean.FALSE, i, 3);
+					if ((Boolean) getValueAt(i, model.getMergeIndex())
+							&& (Boolean) getValueAt(i, model.getReplaceIndex())) {
+						setValueAt(Boolean.FALSE, i, model.getReplaceIndex());
 					}
-					if (!((Boolean) getValueAt(i, 2))
-							&& !((Boolean) getValueAt(i, 3))) {
-						setValueAt(Boolean.TRUE, i, 3);
+					if (!((Boolean) getValueAt(i, model.getMergeIndex()))
+							&& !((Boolean) getValueAt(i, model.getReplaceIndex()))) {
+						setValueAt(Boolean.TRUE, i, model.getReplaceIndex());
 					}
 					
 				}
@@ -41,13 +39,13 @@ public class TransducerListTable extends JTable {
 		if (e.getColumn() == 3) {
 			if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
 				for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
-					if ((Boolean) getValueAt(i, 3)
-							&& (Boolean) getValueAt(i, 2)) {
-						setValueAt(Boolean.FALSE, i, 2);
+					if ((Boolean) getValueAt(i, model.getReplaceIndex())
+							&& (Boolean) getValueAt(i, model.getMergeIndex())) {
+						setValueAt(Boolean.FALSE, i, model.getMergeIndex());
 					}
-					if (!((Boolean) getValueAt(i, 3))
-							&& !((Boolean) getValueAt(i, 2))) {
-						setValueAt(Boolean.TRUE, i, 2);
+					if (!((Boolean) getValueAt(i, model.getReplaceIndex()))
+							&& !((Boolean) getValueAt(i, model.getMergeIndex()))) {
+						setValueAt(Boolean.TRUE, i, model.getMergeIndex());
 					}
 				}
 			}
@@ -57,15 +55,15 @@ public class TransducerListTable extends JTable {
 		int rank = 0;
 		for (int row = 0; row < getRowCount(); row++) {
 			
-			if((Boolean) getValueAt(row, 4) == false){
-				// test used to avoid dataChanged method fired
-				if((Integer)getValueAt(row,0) != rank){
-					setValueAt(rank,row,0);
+			if((Boolean) getValueAt(row, model.getDisabledIndex()) == false){
+				// test used to avoid dataChanged method fired in infinite loop
+				if((Integer)getValueAt(row, model.getRankIndex()) != rank){
+					setValueAt(rank,row, model.getRankIndex());
 				}
 				rank++;
 			} else {
-				if((Integer)getValueAt(row,0) != DataList.UNRANKED){
-					setValueAt(DataList.UNRANKED,row,0);
+				if((Integer)getValueAt(row, model.getRankIndex()) != DataList.UNRANKED){
+					setValueAt(DataList.UNRANKED,row, model.getRankIndex());
 				}
 			}
 		}
