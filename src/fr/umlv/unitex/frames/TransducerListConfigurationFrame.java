@@ -732,14 +732,14 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			final BufferedWriter fw = new BufferedWriter(new FileWriter(
 					Config.getCurrentTransducerList()));
 			for (int i = 0; i < table.getModel().getRowCount(); i++) {
-				final String fileName = (String) table.getValueAt(i, 0);
+				final String fileName = (String) table.getValueAt(i, 1);
 				fw.write("\"" + fileName + "\" ");
-				if ((Boolean) table.getValueAt(i, 1)) {
+				if ((Boolean) table.getValueAt(i, 2)) {
 					fw.write("Merge");
 				} else {
 					fw.write("Replace");
 				}
-				if((Boolean) table.getValueAt(i, 3)) {
+				if((Boolean) table.getValueAt(i, 4)) {
 					fw.write(" Disabled");
 				}
 				fw.newLine();
