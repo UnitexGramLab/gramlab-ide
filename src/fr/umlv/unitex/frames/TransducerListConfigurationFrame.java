@@ -28,8 +28,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.DefaultTableModel;
-
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
@@ -38,6 +36,7 @@ import fr.umlv.unitex.cassys.DataListFileNameRenderer;
 import fr.umlv.unitex.cassys.DataListFileRankRenderer;
 import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.cassys.TransducerListTable;
+import fr.umlv.unitex.cassys.TransducerListTableModel;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -279,21 +278,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * </ul>
 	 */
 	void create_table() {
-		final DefaultTableModel tableModel = new DefaultTableModel() {
-			/**
-			 * Redefinition of the getColumnClass method in order to provide a
-			 * check box for boolean values
-			 */
-			@Override
-			public Class<?> getColumnClass(int c) {
-				return getValueAt(0, c).getClass();
-			}
-		};
-		tableModel.addColumn("#");
-		tableModel.addColumn("Name");
-		tableModel.addColumn("Merge");
-		tableModel.addColumn("Replace");
-		tableModel.addColumn("Disabled");
+		final TransducerListTableModel tableModel = new TransducerListTableModel();
+		
 		tableModel.addTableModelListener(this);
 		
 		table = new TransducerListTable(tableModel);
@@ -324,7 +310,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	}
 
 	void fill_table(File f) {
-		final DefaultTableModel tableModel = (DefaultTableModel) table
+		final TransducerListTableModel tableModel = (TransducerListTableModel) table
 				.getModel();
 		if (f != null) {
 			String FormatErrorLine = "";
@@ -380,7 +366,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	}
 
 	void void_table() {
-		final DefaultTableModel tableModel = (DefaultTableModel) table
+		final TransducerListTableModel tableModel = (TransducerListTableModel) table
 				.getModel();
 		while (tableModel.getRowCount() > 0) {
 			tableModel.removeRow(0);
@@ -485,10 +471,11 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 */
 	@Override
 	public void actionPerformed(ActionEvent a) {
+		
 		if (up == a.getSource()) {
 			final int selected_row = table.getSelectedRow();
 			if (selected_row > 0) {
-				final DefaultTableModel dtm = (DefaultTableModel) table
+				final TransducerListTableModel dtm = (TransducerListTableModel) table
 						.getModel();
 				try {
 					dtm.moveRow(selected_row, selected_row, selected_row - 1);
@@ -504,7 +491,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (down == a.getSource()) {
 			final int selected_row = table.getSelectedRow();
 			if (selected_row != -1 && selected_row < table.getRowCount() - 1) {
-				final DefaultTableModel dtm = (DefaultTableModel) table
+				final TransducerListTableModel dtm = (TransducerListTableModel) table
 						.getModel();
 				try {
 					dtm.moveRow(selected_row, selected_row, selected_row + 1);
@@ -520,7 +507,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (top == a.getSource()) {
 			final int selected_row = table.getSelectedRow();
 			if (selected_row != -1) {
-				final DefaultTableModel dtm = (DefaultTableModel) table
+				final TransducerListTableModel dtm = (TransducerListTableModel) table
 						.getModel();
 				try {
 					dtm.moveRow(selected_row, selected_row, 0);
@@ -535,7 +522,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (bottom == a.getSource()) {
 			final int selected_row = table.getSelectedRow();
 			if (selected_row != -1) {
-				final DefaultTableModel dtm = (DefaultTableModel) table
+				final TransducerListTableModel dtm = (TransducerListTableModel) table
 						.getModel();
 				try {
 					dtm.moveRow(selected_row, selected_row,
@@ -552,7 +539,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (delete_ == a.getSource()) {
 			final int selected_row = table.getSelectedRow();
 			if (selected_row != -1) {
-				final DefaultTableModel dtm = (DefaultTableModel) table
+				final TransducerListTableModel dtm = (TransducerListTableModel) table
 						.getModel();
 				try {
 					dtm.removeRow(selected_row);
@@ -570,7 +557,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		}
 		if (add_below == a.getSource()) {
 			int selected_row = table.getSelectedRow();
-			final DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
 			final File selected_file = fileBrowse.getSelectedFile();
 			if (selected_file != null) {
 				try {
@@ -595,8 +582,10 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		}
 		if (open == a.getSource()) {
 			if (table.getSelectedRow() != -1) {
-				final File graph = new File((String) table.getModel()
-						.getValueAt(table.getSelectedRow(), 1));
+				final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
+				final File graph = new File((String) model.getValueAt(
+							table.getSelectedRow(), 
+							model.getNameIndex()));
 				viewGraph(graph);
 			} else {
 				JOptionPane
@@ -607,6 +596,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 								JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		
+		
 		if (saveAs == a.getSource()) {
 			showSaveFrame();
 		}
@@ -636,16 +627,16 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			}
 		}
 		if (recompile_graphs == a.getSource()) {
-			final DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
 			
 			MultiCommands commands = new MultiCommands();
 			String ErrorList = "";
 			
 			for (int i = 0; i < dtm.getRowCount(); i++) {
-
+				final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
 				final File f_alphabet = ConfigManager.getManager().getAlphabet(
 						null);
-				final String graphFileName = (String) dtm.getValueAt(i, 1);
+				final String graphFileName = (String) dtm.getValueAt(i, model.getNameIndex());
 				File graphFile = new File(graphFileName);
 				
 				
@@ -732,14 +723,15 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			final BufferedWriter fw = new BufferedWriter(new FileWriter(
 					Config.getCurrentTransducerList()));
 			for (int i = 0; i < table.getModel().getRowCount(); i++) {
-				final String fileName = (String) table.getValueAt(i, 1);
+				final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
+				final String fileName = (String) table.getValueAt(i, model.getNameIndex());
 				fw.write("\"" + fileName + "\" ");
-				if ((Boolean) table.getValueAt(i, 2)) {
+				if ((Boolean) table.getValueAt(i, model.getMergeIndex())) {
 					fw.write("Merge");
 				} else {
 					fw.write("Replace");
 				}
-				if((Boolean) table.getValueAt(i, 4)) {
+				if((Boolean) table.getValueAt(i, model.getDisabledIndex())) {
 					fw.write(" Disabled");
 				}
 				fw.newLine();
