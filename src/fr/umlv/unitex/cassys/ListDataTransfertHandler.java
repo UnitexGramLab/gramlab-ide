@@ -149,13 +149,14 @@ public class ListDataTransfertHandler extends TransferHandler {
 	@Override
 	protected Transferable createTransferable(JComponent c) {
 		final JTable jt = (JTable) c;
+		final TransducerListTableModel model = (TransducerListTableModel) jt.getModel();
 		final int row_selected = jt.getSelectedRow();
 		final Object[] o = {
-				(Integer) jt.getModel().getValueAt(row_selected, 0),
-				(String) jt.getModel().getValueAt(row_selected, 1),
-				(Boolean) jt.getModel().getValueAt(row_selected, 2),
-				(Boolean) jt.getModel().getValueAt(row_selected, 3),
-				(Boolean) jt.getModel().getValueAt(row_selected, 4),
+				(Integer) jt.getModel().getValueAt(row_selected, model.getRankIndex()),
+				(String) jt.getModel().getValueAt(row_selected, model.getNameIndex()),
+				(Boolean) jt.getModel().getValueAt(row_selected, model.getMergeIndex()),
+				(Boolean) jt.getModel().getValueAt(row_selected, model.getReplaceIndex()),
+				(Boolean) jt.getModel().getValueAt(row_selected, model.getDisabledIndex()),
 				};
 		return new DataListTransferable(o);
 	}

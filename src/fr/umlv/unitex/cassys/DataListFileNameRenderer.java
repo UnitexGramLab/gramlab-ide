@@ -76,7 +76,8 @@ public class DataListFileNameRenderer extends JLabel implements
 			setText("<html><i><font color = red>" + str + "</red></i></html>");
 			setToolTipText("File does not exist");
 		} else {
-			if((Boolean) table.getValueAt(row, 4) == true){
+			final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
+			if((Boolean) table.getValueAt(row, model.getDisabledIndex()) == true){
 				setText("<html><font color = gray><strike>" + f.getName()+"</strike></gray></html>");
 			} else {
 				
