@@ -201,7 +201,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				//System.out.println(com.getCommandLine());
 				
 				// new ProcessInfoFrame(com, true, new CassysDo());
-				Launcher.exec(cassysCommand, true, new CassysDo());
+				Launcher.exec(cassysCommand, true, new CassysDo(Config.getUserCurrentLanguageDir()));
 			}
 		}
 		if (a.getSource() == _import){
@@ -259,8 +259,8 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	class CassysDo implements ToDo {
 		File dir;
 
-		public CassysDo() {
-			dir = Config.getUserCurrentLanguageDir();
+		public CassysDo(File languageDir) {
+			dir = languageDir;
 		}
 
 		@Override
