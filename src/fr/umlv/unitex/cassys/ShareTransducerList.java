@@ -19,7 +19,7 @@ import fr.umlv.unitex.config.Config;
  * by translating relative path to absolute path (import action).
  * 
  * 
- * @author dnott
+ * @author David Nott, Nathalie Friburger (nathalie.friburger@univ-tours.fr)
  *
  */
 public class ShareTransducerList {
