@@ -958,6 +958,24 @@ public class UnitexFrame extends JFrame {
 		zoom.add(fit100);
 		zoom.add(fit120);
 		zoom.add(fit140);
+		
+		final JMenuItem newCascade = new JMenuItem("New Cascade");
+		newCascade.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openCascade(null);
+			}
+		});
+		
+		final JMenuItem editCascade = new JMenuItem("Edit Cascade ...");
+		editCascade.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editCascade();
+			}
+		});
+		
+		
 		final JMenuItem closeAll = new JMenuItem("Close all");
 		closeAll.addActionListener(new ActionListener() {
 			@Override
@@ -969,6 +987,11 @@ public class UnitexFrame extends JFrame {
 		graphMenu.add(format);
 		graphMenu.add(zoom);
 		graphMenu.addSeparator();
+		
+		graphMenu.add(newCascade);
+		graphMenu.add(editCascade);
+		graphMenu.addSeparator();
+		
 		graphMenu.add(closeAll);
 		return graphMenu;
 	}
@@ -1604,6 +1627,52 @@ public class UnitexFrame extends JFrame {
 
 		};
 		Launcher.exec(commands,true,after);
+	}
+	
+	/**
+	 * Open Cassys Configuration <em>selected_file<\em>. If <em>selected_file<\em> is empty, open
+	 * an empty configuration file
+	 * 
+	 * 
+	 * @param selected_file
+	 */
+	void openCascade(File selected_file) {
+		TransducerListConfigurationFrame t = InternalFrameManager.getManager(
+				null).getTransducerListConfigurationFrame();
+
+		// If save has to be done. Do it first
+		if (t != null && t.isConfigurationHasChanged()) {
+			t.quit_asked();
+		} else { // Open
+			if (t != null) {
+				t.quit();
+			}
+			Config.setCurrentTransducerList(selected_file);
+			InternalFrameManager.getManager(null)
+					.newTransducerListConfigurationFrame(selected_file);
+		}
+	}
+	
+	/**
+	 * Opens a JFile Chooser in order to select a file. Then open the Cassys Configuration frame with 
+	 * the selected file
+	 */
+	void editCascade() {
+		Config.getTransducerListDialogBox().setControlButtonsAreShown(true);
+		Config.getTransducerListDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
+		final int returnVal = Config.getTransducerListDialogBox().showOpenDialog(
+				this);
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			// we return if the user has clicked on CANCEL
+			return;
+		}
+		final File f = Config.getTransducerListDialogBox().getSelectedFile();
+		if (!f.exists()) {
+			JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
+					+ " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		openCascade(f);
 	}
 
 }
