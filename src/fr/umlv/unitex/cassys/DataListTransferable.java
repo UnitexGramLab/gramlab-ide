@@ -31,7 +31,7 @@ import java.io.IOException;
  * Drag and drop gesture is currently supported with {@link String} and
  * {@link DataList}.
  * 
- * @author dnott
+ * @author David Nott, Nathalie Friburger (nathalie.friburger@univ-tours.fr)
  */
 class DataListTransferable implements Transferable {
 	/**
