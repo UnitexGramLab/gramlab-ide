@@ -173,15 +173,6 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 */
 	private final JFileChooser fileBrowse;
 	/**
-	 * The name of transducers list file name
-	 */
-	/**
-	 * The file explorer of the frame constructing this class.
-	 * <p/>
-	 * Used to allow a refresh this file explorer when a new file is added
-	 */
-	private JFileChooser parent;
-	/**
 	 * Whether transducers list has changed.
 	 * <p/>
 	 * Used to display an <code>unsaved</code> symbol next to the transducer

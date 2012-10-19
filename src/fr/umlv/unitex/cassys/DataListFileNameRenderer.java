@@ -68,7 +68,6 @@ public class DataListFileNameRenderer extends JLabel implements
 		
 		final String str = (String) value;
 		final File f = new File(str);
-		TransducerListTable my_table = (TransducerListTable)table;
 		// Write in red and italic if the file does not exist
 		
 		
