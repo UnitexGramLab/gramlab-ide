@@ -216,8 +216,8 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				
 				
 			} catch (IOException e) {
-				final String title = "I/O Error";
-				JOptionPane.showMessageDialog(this, e.getMessage(), title,
+				final String t = "I/O Error";
+				JOptionPane.showMessageDialog(this, e.getMessage(), t,
 						JOptionPane.ERROR_MESSAGE);
 			} catch (FormatFileException e) {
 				// TODO Auto-generated catch block
