@@ -201,7 +201,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				//System.out.println(com.getCommandLine());
 				
 				// new ProcessInfoFrame(com, true, new CassysDo());
-				Launcher.exec(cassysCommand, true, new CassysDo(Config.getUserCurrentLanguageDir()));
+				Launcher.exec(cassysCommand, true, new CassysDo(Config.getUserCurrentLanguageDir(), f_target));
 			}
 		}
 		if (a.getSource() == _import){
@@ -257,21 +257,26 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	 * @author David Nott
 	 */
 	class CassysDo implements ToDo {
-		File dir;
+		File languageDirectory;
+		File resultFile;
 
-		public CassysDo(File languageDir) {
-			dir = languageDir;
+		public CassysDo(File languageDir, File targetSntFile) {
+			languageDirectory = languageDir;
+			resultFile = new File(FileUtil.getFileNameWithoutExtension(targetSntFile) + "_csc.txt");
+				
 		}
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(dir).newConcordanceParameterFrame();
+			
+			
+			InternalFrameManager.getManager(languageDirectory).newConcordanceParameterFrame();
 		}
 	}
 	
 	/**
 	 * Defines the action to take before the cassys command
-	 * @author dnott
+	 * @author David Nott, Nathalie Friburger (nathalie.friburger@univ-tours.fr)
 	 *
 	 */
 	class BeforeCassysDo implements ToDoBeforeSingleCommand{
