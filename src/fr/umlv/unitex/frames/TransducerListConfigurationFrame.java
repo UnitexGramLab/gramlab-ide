@@ -296,7 +296,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.getColumnModel().getColumn(2).setPreferredWidth(80);
 		table.getColumnModel().getColumn(3).setPreferredWidth(80);
 		table.getColumnModel().getColumn(4).setPreferredWidth(80);
-		
+		table.getColumnModel().getColumn(5).setPreferredWidth(80);
 		
 	}
 
@@ -315,7 +315,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 							final ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
 									line);
 							final Object[] o = { DataList.UNRANKED, cfa.getFileName(), 
-									cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled() };
+									cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled(), cfa.isStar() };
 							tableModel.addRow(o);
 							if (cfa.isCommentFound()) {
 								editedFileHasCommentOrError = true;
@@ -724,6 +724,13 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				}
 				if((Boolean) table.getValueAt(i, model.getDisabledIndex())) {
 					fw.write(" Disabled");
+				} else {
+					fw.write(" Enabled");
+				}
+				if((Boolean) table.getValueAt(i, model.getStarIndex())) {
+					fw.write(" *");
+				} else {
+					fw.write(" 1");
 				}
 				fw.newLine();
 			}
