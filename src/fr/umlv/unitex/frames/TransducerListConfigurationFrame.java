@@ -166,6 +166,21 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 	
 	/**
+	 * The <code>enable_all</code> button.
+	 * <p/>
+	 * This class is listenning to it
+	 */
+	private JButton enable_all;
+	/**
+	 * The <code>disable_all</code> button.
+	 * <p/>
+	 * This class is listenning to it
+	 */
+	private JButton disable_all;
+	
+	
+	
+	/**
 	 * The system file explorer.
 	 * <p/>
 	 * User may use it to select file. Buttons of this frame interacts with
@@ -440,6 +455,19 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		recompile_graphs.addActionListener(this);
 		button_panel.add(recompile_graphs);
 		button_panel.add(Box.createRigidArea(new Dimension(50, 20)));
+		disable_all = new JButton("Disable all");
+		disable_all.addActionListener(this);
+		disable_all.setToolTipText("Disable all graphs");
+		disable_all.setAlignmentX(Component.CENTER_ALIGNMENT);
+		disable_all.setMaximumSize(defaultButtonDimension);
+		button_panel.add(disable_all);
+		enable_all = new JButton("Enable all");
+		enable_all.addActionListener(this);
+		enable_all.setToolTipText("Enable all graphs");
+		enable_all.setAlignmentX(Component.CENTER_ALIGNMENT);
+		enable_all.setMaximumSize(defaultButtonDimension);
+		button_panel.add(enable_all);
+		button_panel.add(Box.createRigidArea(new Dimension(50, 20)));
 		close = new JButton("Close");
 		close.addActionListener(this);
 		close.setMaximumSize(defaultButtonDimension);
@@ -663,7 +691,21 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 		}
 		
+		if(disable_all == a.getSource()){
+			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
+			
+			for (int i = 0; i < dtm.getRowCount(); i++) {
+				dtm.setValueAt((Boolean)true, i, dtm.getDisabledIndex());
+			}
+		}
 		
+		if(enable_all == a.getSource()){
+			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
+			
+			for (int i = 0; i < dtm.getRowCount(); i++) {
+				dtm.setValueAt((Boolean)false, i, dtm.getDisabledIndex());
+			}
+		}
 		
 		if (close == a.getSource()) {
 			quit_asked();
