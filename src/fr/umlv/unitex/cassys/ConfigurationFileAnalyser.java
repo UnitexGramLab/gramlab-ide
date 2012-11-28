@@ -25,6 +25,7 @@ public class ConfigurationFileAnalyser {
 	private boolean mergeMode;
 	private boolean replaceMode;
 	private boolean disabled;
+	private boolean star;
 	private boolean commentFound;
 
 	/**
@@ -62,6 +63,10 @@ public class ConfigurationFileAnalyser {
 	 */
 	public boolean isDisabled(){
 		return disabled;
+	}
+	
+	public boolean isStar(){
+		return star;
 	}
 	
 
@@ -103,12 +108,27 @@ public class ConfigurationFileAnalyser {
 		if(lineCore.length>2){
 			if(lineCore[2].equals("Disabled")||lineCore[2].equals("Disabled")){
 				disabled = true;
+			} else if(lineCore[2].equals("Enabled")){
+				disabled = false;
 			} else {
 				throw new InvalidLineException(lineSubstring[0]
-				                     						+ " --> Third argument should be Disabled\n");
+				                     						+ " --> Third argument should be Disabled or Enabled\n");
+			}
+			if(lineCore.length>3){
+				if(lineCore[3].equals("*")){
+					star = true;
+				} else if(lineCore[3].equals("1")){
+					star = false;
+				} else {
+					throw new InvalidLineException(lineSubstring[0]
+						                     						+ " --> Fourth argument should be 1 or *\n");
+				}
+			} else {
+				star = false;
 			}
 		} else {
 			disabled = false;
+			star = false;
 		}
 	}
 

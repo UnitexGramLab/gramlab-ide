@@ -11,7 +11,7 @@ public class TransducerListTableModel extends DefaultTableModel {
 	private int mergeIndex;
 	private int replaceIndex;
 	private int disabledIndex;
-	
+	private int starIndex;
 	
 	
 	public TransducerListTableModel(){
@@ -20,6 +20,7 @@ public class TransducerListTableModel extends DefaultTableModel {
 		addColumn("Merge"); mergeIndex =2;
 		addColumn("Replace"); replaceIndex =3;
 		addColumn("Disabled"); disabledIndex=4;
+		addColumn("Star"); starIndex=5;
 	}
 	
 	
@@ -50,6 +51,10 @@ public class TransducerListTableModel extends DefaultTableModel {
 
 	public int getReplaceIndex() {
 		return replaceIndex;
+	}
+	
+	public int getStarIndex(){
+		return starIndex;
 	}
 
 
