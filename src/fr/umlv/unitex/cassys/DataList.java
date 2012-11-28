@@ -51,7 +51,10 @@ public class DataList {
 	 * Whether the transducer should be applied
 	 */
 	private boolean disabled;
-
+	/**
+	 * Whether the transducer should be stared
+	 */
+	private boolean star;
 	
 	public static int UNRANKED = -1;
 	
@@ -71,6 +74,7 @@ public class DataList {
 		replace = r;
 		disabled = false;
 		rank = UNRANKED;
+		star = false;
 	}
 
 	/**
@@ -89,9 +93,17 @@ public class DataList {
 		replace = r;
 		disabled = d;
 		rank = UNRANKED;
+		star = false;
 	}
 	
-	
+	public DataList(String n, boolean m, boolean r, boolean d, boolean s) {
+		name = n;
+		merge = m;
+		replace = r;
+		disabled = d;
+		rank = UNRANKED;
+		star = s;
+	}
 	
 	/**
 	 * One constructor parameter
@@ -105,6 +117,7 @@ public class DataList {
 		replace = dl.isReplace();
 		disabled = dl.isDisabled();
 		rank = dl.rank;
+		star = dl.star;
 	}
 
 	/**
@@ -176,5 +189,13 @@ public class DataList {
 		this.rank = rank;
 	}
 	
+	
+	public boolean isStar(){
+		return this.star;
+	}
+	
+	public void setStar(boolean s){
+		this.star = s;
+	}
 	
 }

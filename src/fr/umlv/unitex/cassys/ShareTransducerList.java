@@ -143,6 +143,11 @@ public class ShareTransducerList {
 				} else {
 					fw.write("Replace");
 				}
+				if(cfa.isStar()){
+					fw.write(" *");
+				} else {
+					fw.write(" 1");
+				}
 				fw.newLine();
 				
 			} catch (final EmptyLineException e) {
