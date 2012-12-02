@@ -695,7 +695,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
 			
 			for (int i = 0; i < dtm.getRowCount(); i++) {
-				dtm.setValueAt((Boolean)true, i, dtm.getDisabledIndex());
+				dtm.setValueAt(true, i, dtm.getDisabledIndex());
 			}
 		}
 		
@@ -703,7 +703,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
 			
 			for (int i = 0; i < dtm.getRowCount(); i++) {
-				dtm.setValueAt((Boolean)false, i, dtm.getDisabledIndex());
+				dtm.setValueAt(false, i, dtm.getDisabledIndex());
 			}
 		}
 		
