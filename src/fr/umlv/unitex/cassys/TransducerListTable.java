@@ -52,7 +52,7 @@ public class TransducerListTable extends JTable {
 		}
 		
 		// Update all rank columns.
-		int rank = 0;
+		int rank = 1;
 		for (int row = 0; row < getRowCount(); row++) {
 			
 			if((Boolean) getValueAt(row, model.getDisabledIndex()) == false){
