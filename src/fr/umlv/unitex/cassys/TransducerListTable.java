@@ -21,7 +21,9 @@ public class TransducerListTable extends JTable {
 		
 		TransducerListTableModel model = (TransducerListTableModel) getModel();
 		
-		if (e.getColumn() == 2) {
+	   // if (e.getColumn() == 2) {
+	   if (e.getColumn() == 3) {
+		
 			if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
 				for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
 					if ((Boolean) getValueAt(i, model.getMergeIndex())
@@ -36,7 +38,9 @@ public class TransducerListTable extends JTable {
 				}
 			}
 		}
-		if (e.getColumn() == 3) {
+		
+		//if (e.getColumn() == 3) {
+		    if (e.getColumn() == 4) {	
 			if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
 				for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
 					if ((Boolean) getValueAt(i, model.getReplaceIndex())
@@ -54,9 +58,10 @@ public class TransducerListTable extends JTable {
 		// Update all rank columns.
 		int rank = 1;
 		for (int row = 0; row < getRowCount(); row++) {
-			
-			if((Boolean) getValueAt(row, model.getDisabledIndex()) == false){
-				// test used to avoid dataChanged method fired in infinite loop
+	
+		    if((Boolean) getValueAt(row, model.getDisabledIndex()) == false){
+				
+			    	// test used to avoid dataChanged method fired in infinite loop
 				if((Integer)getValueAt(row, model.getRankIndex()) != rank){
 					setValueAt(rank,row, model.getRankIndex());
 				}

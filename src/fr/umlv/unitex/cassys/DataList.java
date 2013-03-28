@@ -40,11 +40,11 @@ public class DataList {
 	 */
 	private String name;
 	/**
-	 * Whether the <code>merge</code> option sould be applied
+	 * Whether the <code>merge</code> option should be applied
 	 */
 	private boolean merge;
 	/**
-	 * Whether the <code>replace</code> option sould be applied
+	 * Whether the <code>replace</code> option should be applied
 	 */
 	private boolean replace;
 	/**

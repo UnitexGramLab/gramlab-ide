@@ -306,12 +306,19 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.setPreferredScrollableViewportSize(currentTableViewPortSize);
 		table.getTableHeader().setReorderingAllowed(false);
 		
-		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		/* *** table.getColumnModel().getColumn(0).setPreferredWidth(40);
 		table.getColumnModel().getColumn(1).setPreferredWidth(340);
 		table.getColumnModel().getColumn(2).setPreferredWidth(80);
 		table.getColumnModel().getColumn(3).setPreferredWidth(80);
 		table.getColumnModel().getColumn(4).setPreferredWidth(80);
 		table.getColumnModel().getColumn(5).setPreferredWidth(80);
+		*/
+		table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		table.getColumnModel().getColumn(1).setPreferredWidth(90);
+		table.getColumnModel().getColumn(2).setPreferredWidth(340);
+		table.getColumnModel().getColumn(3).setPreferredWidth(80);
+		table.getColumnModel().getColumn(4).setPreferredWidth(80);
+		table.getColumnModel().getColumn(5).setPreferredWidth(40);
 		
 	}
 
@@ -329,8 +336,10 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 						try {
 							final ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
 									line);
-							final Object[] o = { DataList.UNRANKED, cfa.getFileName(), 
-									cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled(), cfa.isStar() };
+							// ***final Object[] o = { DataList.UNRANKED, cfa.getFileName(), 
+							// ***		cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled(), cfa.isStar() };
+							final Object[] o = { DataList.UNRANKED, cfa.isDisabled(), cfa.getFileName(), 
+										cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isStar() };
 							tableModel.addRow(o);
 							if (cfa.isCommentFound()) {
 								editedFileHasCommentOrError = true;
