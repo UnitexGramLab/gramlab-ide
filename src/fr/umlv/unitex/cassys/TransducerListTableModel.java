@@ -29,7 +29,7 @@ public class TransducerListTableModel extends DefaultTableModel {
 		addColumn("Name");nameIndex=2;
 		addColumn("Merge"); mergeIndex =3;
 		addColumn("Replace"); replaceIndex =4;
-		addColumn("Iter"); starIndex=5;
+		addColumn("Star"); starIndex=5;
 	}
 	
 	/**

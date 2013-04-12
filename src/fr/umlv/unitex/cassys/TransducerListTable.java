@@ -14,7 +14,7 @@ public class TransducerListTable extends JTable {
 	
 	/**
 	 * Redefinition of the tableChanged method to ensure integrity data
-	 * (ie both merge an replace cannot be set at true)
+	 * (ie both merge and replace cannot be set at true)
 	 */
 	@Override
 	public void tableChanged(TableModelEvent e) {
