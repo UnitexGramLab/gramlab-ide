@@ -143,6 +143,11 @@ public class ShareTransducerList {
 				} else {
 					fw.write("Replace");
 				}
+				if (cfa.isDisabled()) {
+					fw.write(" Enabled");
+				} else {
+					fw.write(" Disabled");
+				}
 				if(cfa.isStar()){
 					fw.write(" *");
 				} else {
