@@ -213,6 +213,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		fileBrowse = new JFileChooser(Config.getCurrentGraphDir());
 		fileBrowse.setDragEnabled(true);
 		fileBrowse.setControlButtonsAreShown(false);
+		//fileBrowse.setMinimumSize(new Dimension(350, 370));
 		final FileFilter filter_fst2 = new FileFilter() {
 			@Override
 			public String getDescription() {
@@ -250,7 +251,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		bp_constraints.gridx = 1;
 		layout.setConstraints(button_panel, bp_constraints);
 		final GridBagConstraints ts_constraints = new GridBagConstraints();
-		tableScroller.setMinimumSize(new Dimension(450, 364));
+		tableScroller.setMinimumSize(new Dimension(620, 370));
 		ts_constraints.gridwidth = 1;
 		ts_constraints.gridx = 2;
 		ts_constraints.fill = GridBagConstraints.BOTH;
@@ -301,7 +302,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.setTransferHandler(new ListDataTransfertHandler());
 		final Dimension defaultTableViewPortSize = table
 				.getPreferredScrollableViewportSize();
-		final Dimension currentTableViewPortSize = new Dimension(580,
+		final Dimension currentTableViewPortSize = new Dimension(630,
 				defaultTableViewPortSize.height);
 		table.setPreferredScrollableViewportSize(currentTableViewPortSize);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -313,12 +314,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.getColumnModel().getColumn(4).setPreferredWidth(80);
 		table.getColumnModel().getColumn(5).setPreferredWidth(80);
 		*/
-		table.getColumnModel().getColumn(0).setPreferredWidth(40);
-		table.getColumnModel().getColumn(1).setPreferredWidth(90);
+		table.getColumnModel().getColumn(0).setPreferredWidth(30);
+		table.getColumnModel().getColumn(1).setPreferredWidth(70);
 		table.getColumnModel().getColumn(2).setPreferredWidth(340);
-		table.getColumnModel().getColumn(3).setPreferredWidth(80);
-		table.getColumnModel().getColumn(4).setPreferredWidth(80);
-		table.getColumnModel().getColumn(5).setPreferredWidth(40);
+		table.getColumnModel().getColumn(3).setPreferredWidth(70);
+		table.getColumnModel().getColumn(4).setPreferredWidth(70);
+		table.getColumnModel().getColumn(5).setPreferredWidth(90);
 		
 	}
 
@@ -398,10 +399,10 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * @return the panel with all the buttons
 	 */
 	JPanel create_panel() {
-		final Dimension defaultButtonDimension = new Dimension(110, 28);
+		final Dimension defaultButtonDimension = new Dimension(80, 28);
 		button_panel = new JPanel();
 		button_panel.setLayout(new BoxLayout(button_panel, BoxLayout.Y_AXIS));
-		button_panel.add(Box.createRigidArea(new Dimension(150, 20)));
+		button_panel.add(Box.createRigidArea(new Dimension(90, 20)));
 		up = new JButton("Up");
 		up.addActionListener(this);
 		up.setMaximumSize(defaultButtonDimension);
@@ -426,7 +427,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		bottom.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bottom.setToolTipText("Move the selected transducer to the bottom of the list");
 		button_panel.add(bottom);
-		button_panel.add(Box.createRigidArea(new Dimension(150, 20)));
+		button_panel.add(Box.createRigidArea(new Dimension(90, 20)));
 		delete_ = new JButton("Delete");
 		delete_.addActionListener(this);
 		delete_.setMaximumSize(defaultButtonDimension);
