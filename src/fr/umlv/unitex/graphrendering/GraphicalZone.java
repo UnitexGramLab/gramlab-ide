@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.graphrendering;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Event;
@@ -87,6 +88,13 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	int popupX = -1, popupY = -1;
 	JMenu submenu;
 
+	final int dragTreshold = 3;
+	boolean dragTresholdReached = false;
+	int X_pressed_raw;
+	int Y_pressed_raw;
+
+	GenericGraphBox rolloveredBox = null;
+
 	/**
 	 * Constructs a new <code>GraphicalZone</code>.
 	 * 
@@ -104,8 +112,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		super(gio, t, p, diff);
 		if (diff == null) {
 			/* No need to have mouse listeners on a read-only diff display */
-			addMouseListener(new MyMouseListener());
-			addMouseMotionListener(new MyMouseMotionListener());
+			MyMouseListener m = new MyMouseListener();
+			addMouseListener(m);
+			addMouseMotionListener(m);
 		}
 		createPopup();
 	}
@@ -1137,7 +1146,48 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return new GraphBox(x, y, type, (GraphicalZone) p);
 	}
 
-	class MyMouseListener implements MouseListener {
+	/**
+	 * Method updates the rollover status. Returns true if rollover status has
+	 * changed, otherwise returns false.
+	 */
+	public boolean updateRollover(MouseEvent e) {
+		int i = getSelectedBox((int) (e.getX() / scaleFactor),
+				(int) (e.getY() / scaleFactor));
+		GenericGraphBox box;
+
+		if (i == -1)
+			box = null;
+		else
+			box = graphBoxes.get(i);
+
+		if (box != rolloveredBox) {
+			rolloveredBox = box;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Method clears the rollover status. Returns true if rollover status has
+	 * changed, otherwise returns false.
+	 */
+	public boolean clearRollover() {
+		if (rolloveredBox == null)
+			return false;
+		rolloveredBox = null;
+		return true;
+	}
+
+	public void drawRollover(Graphics2D g) {
+		if (rolloveredBox != null) {
+			g.setColor(getGraphPresentationInfo().getForegroundColor());
+			g.setStroke(new BasicStroke((float)(2.1/scaleFactor)));
+			GraphicalToolBox.drawRect(g, rolloveredBox.X1, rolloveredBox.Y1,
+					rolloveredBox.Width, rolloveredBox.Height);
+		}
+	}
+
+	class MyMouseListener implements MouseListener, MouseMotionListener {
 		/**
 		 * Thanks to Steve f*$%!# Jobs, Meta replaces Ctrl on mac os
 		 */
@@ -1178,9 +1228,23 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			// We have implemented custom logic to decide when a mouse release
+			// should be considered as a mouse click, and in appropriate
+			// circumstances
+			// customMouseClicked will be called.
+		}
+
+		/**
+		 * Method should be called from the mouseRelease() event handler when
+		 * the event is not an end of dragging, but should be considered as a
+		 * mouse click
+		 */
+		public void customMouseClicked(MouseEvent e) {
 			int boxSelected;
 			GraphBox b;
 			int x_tmp, y_tmp;
+			if (e.getButton() != MouseEvent.BUTTON1)
+				return;
 			if (isReverseTransitionClick(e)) {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
 						(int) (e.getY() / scaleFactor));
@@ -1305,6 +1369,18 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if (clearRollover())
+				fireGraphChanged(false);
+			X_pressed_raw = e.getX();
+			Y_pressed_raw = e.getY();
+			dragTresholdReached = false;
+		}
+
+		/**
+		 * Method should be called when mouse is dragging add dragging threshold
+		 * is just reached.
+		 */
+		public void initiateDragging(MouseEvent e) {
 			int selectedBox;
 			if (e.isPopupTrigger()
 					|| (EDITING_MODE == MyCursors.NORMAL && (e.isShiftDown()
@@ -1314,8 +1390,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				return;
 			}
 			validateContent();
-			X_start_drag = (int) (e.getX() / scaleFactor);
-			Y_start_drag = (int) (e.getY() / scaleFactor);
+			X_start_drag = (int) (X_pressed_raw / scaleFactor);
+			Y_start_drag = (int) (Y_pressed_raw / scaleFactor);
 			X_end_drag = X_start_drag;
 			Y_end_drag = Y_start_drag;
 			X_drag = X_start_drag;
@@ -1357,6 +1433,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			updateRollover(e);
+			if (!dragTresholdReached)
+				customMouseClicked(e);
+			else
+				mouseDragFinished(e);
+		}
+
+		public void mouseDragFinished(MouseEvent e) {
 			if (e.isShiftDown() || e.isAltDown() || e.isControlDown())
 				return;
 			final int dx = X_end_drag - X_start_drag;
@@ -1397,18 +1481,29 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 		@Override
 		public void mouseExited(MouseEvent e) {
+			clearRollover();
 			mouseInGraphicalZone = false;
 			fireGraphChanged(false);
 		}
-	}
 
-	class MyMouseMotionListener implements MouseMotionListener {
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			int X_raw = e.getX();
+			int Y_raw = e.getY();
+			if (!dragTresholdReached) {
+				if ((X_raw - X_pressed_raw) * (X_raw - X_pressed_raw)
+						+ (Y_raw - Y_pressed_raw) * (Y_raw - Y_pressed_raw) < dragTreshold
+						* dragTreshold) {
+					return;
+				}
+				dragTresholdReached = true;
+				initiateDragging(e);
+			}
+
 			final int Xtmp = X_end_drag;
 			final int Ytmp = Y_end_drag;
-			X_end_drag = (int) (e.getX() / scaleFactor);
-			Y_end_drag = (int) (e.getY() / scaleFactor);
+			X_end_drag = (int) (X_raw / scaleFactor);
+			Y_end_drag = (int) (Y_raw / scaleFactor);
 			final int dx = X_end_drag - Xtmp;
 			final int dy = Y_end_drag - Ytmp;
 			dX += dx;
@@ -1447,10 +1542,15 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		public void mouseMoved(MouseEvent e) {
 			Xmouse = (int) (e.getX() / scaleFactor);
 			Ymouse = (int) (e.getY() / scaleFactor);
+			boolean graphChanged = false;
 			if ((EDITING_MODE == MyCursors.REVERSE_LINK_BOXES || EDITING_MODE == MyCursors.LINK_BOXES)
 					&& !selectedBoxes.isEmpty()) {
-				fireGraphChanged(false);
+				graphChanged = true;
 			}
+			if (updateRollover(e))
+				graphChanged = true;
+			if (graphChanged)
+				fireGraphChanged(false);
 		}
 	}
 
@@ -1506,6 +1606,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		drawAllTransitions(f);
 		drawAllBoxes(f);
+		drawRollover(f);
 		if (selecting) {
 			// here we draw the selection rectangle
 			f.setColor(getGraphPresentationInfo().getForegroundColor());
