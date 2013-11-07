@@ -1078,6 +1078,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		} catch (final CannotUndoException ex) {
 			ex.printStackTrace();
 		} finally {
+			graphicalZone.unSelectAllBoxes();
 			repaint();
 		}
 	}
