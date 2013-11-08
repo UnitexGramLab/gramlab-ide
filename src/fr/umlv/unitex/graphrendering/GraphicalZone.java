@@ -1178,10 +1178,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		return true;
 	}
 
+	private final Stroke rolloverStroke = new BasicStroke((float)(2.1/scaleFactor));
+	
 	public void drawRollover(Graphics2D g) {
 		if (rolloveredBox != null) {
 			g.setColor(getGraphPresentationInfo().getForegroundColor());
-			g.setStroke(new BasicStroke((float)(2.1/scaleFactor)));
+			g.setStroke(rolloverStroke);
 			GraphicalToolBox.drawRect(g, rolloveredBox.X1, rolloveredBox.Y1,
 					rolloveredBox.Width, rolloveredBox.Height);
 		}
@@ -1243,7 +1245,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			int boxSelected;
 			GraphBox b;
 			int x_tmp, y_tmp;
-			if (e.getButton() != MouseEvent.BUTTON1)
+			if (e.getButton() == MouseEvent.BUTTON3)
 				return;
 			if (isReverseTransitionClick(e)) {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
