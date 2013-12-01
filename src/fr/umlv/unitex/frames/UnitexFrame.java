@@ -1127,7 +1127,7 @@ public class UnitexFrame extends JFrame {
 		final int n = JOptionPane.showOptionDialog(this,
 				"Do you really want to quit ?", "", JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		if (n == 1) {
+		if (n != 0) {
 			return;
 		}
 		UnitexFrame.closing = true;
