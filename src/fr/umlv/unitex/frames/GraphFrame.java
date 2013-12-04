@@ -31,6 +31,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -127,6 +129,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	private final UndoManager manager;
 	private JButton redoButton;
 	private JButton undoButton;
+	protected JToggleButton normalButton;
 	public final JScrollPane scroll;
 	private boolean nonEmptyGraph = false;
 
@@ -226,6 +229,14 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				repaint();
 				if (m)
 					setModified(true);
+			}
+		});
+		graphicalZone.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(e.getButton() == MouseEvent.BUTTON3) {
+					normalButton.doClick();
+				}
 			}
 		});
 		manager = new UndoManager();
@@ -518,10 +529,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		undoButton.setMaximumSize(new Dimension(36, 36));
 		undoButton.setMinimumSize(new Dimension(36, 36));
 		undoButton.setPreferredSize(new Dimension(36, 36));
-		final JToggleButton normal = new JToggleButton(MyCursors.arrowIcon);
-		normal.setMaximumSize(new Dimension(36, 36));
-		normal.setMinimumSize(new Dimension(36, 36));
-		normal.setPreferredSize(new Dimension(36, 36));
+		normalButton = new JToggleButton(MyCursors.arrowIcon);
+		normalButton.setMaximumSize(new Dimension(36, 36));
+		normalButton.setMinimumSize(new Dimension(36, 36));
+		normalButton.setPreferredSize(new Dimension(36, 36));
 		final JToggleButton create = new JToggleButton(
 				MyCursors.createBoxesIcon);
 		create.setMaximumSize(new Dimension(36, 36));
@@ -554,7 +565,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		copy.setToolTipText("Copy");
 		cut.setToolTipText("Cut");
 		paste.setToolTipText("Paste");
-		normal.setToolTipText("Normal editing mode");
+		normalButton.setToolTipText("Normal editing mode");
 		create.setToolTipText("Create a new box");
 		kill.setToolTipText("Remove a box");
 		link.setToolTipText("Link boxes");
@@ -620,7 +631,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				});
 			}
 		});
-		normal.addActionListener(new ActionListener() {
+		normalButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				graphicalZone.setCursor(MyCursors.normalCursor);
@@ -686,13 +697,13 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			}
 		});
 		final ButtonGroup bg = new ButtonGroup();
-		bg.add(normal);
+		bg.add(normalButton);
 		bg.add(create);
 		bg.add(kill);
 		bg.add(link);
 		bg.add(reverseLink);
 		bg.add(openSubgraph);
-		normal.setSelected(true);
+		normalButton.setSelected(true);
 		myToolBar.add(save);
 		myToolBar.add(compile);
 		myToolBar.addSeparator();
@@ -704,7 +715,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		myToolBar.add(undoButton);
 		myToolBar.addSeparator();
 		myToolBar.addSeparator();
-		myToolBar.add(normal);
+		myToolBar.add(normalButton);
 		myToolBar.add(create);
 		myToolBar.add(kill);
 		myToolBar.add(link);
