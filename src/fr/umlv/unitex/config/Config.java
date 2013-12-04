@@ -133,9 +133,14 @@ public class Config {
 	 * Dialog box used to open or save graphs
 	 */
 	private static JFileChooser graphDialogBox;
-	private static PersonalFileFilter pngFileFilter;
-	private static PersonalFileFilter svgFileFilter;
-	private static PersonalFileFilter grfFileFilter;
+	
+	private static final PersonalFileFilter pngFileFilter =
+			new PersonalFileFilter("png", "PNG Image");
+	private static final PersonalFileFilter svgFileFilter = 
+			new PersonalFileFilter("svg", "Scalable Vector Graphics");
+	private static final PersonalFileFilter grfFileFilter = 
+			new PersonalFileFilter("grf", "Unicode Graphs");
+	
 	private static JFileChooser graphDiffDialogBox;
 	/**
 	 * Dialog box used to choose a ".grf" or ".fst2" graph to be used in pattern
@@ -219,6 +224,7 @@ public class Config {
 		} else {
 			graphDialogBox.addChoosableFileFilter(grfFileFilter);
 		}
+		graphDialogBox.setFileFilter(grfFileFilter);
 	}
 
 	public static JFileChooser getGraphDialogBox(boolean allowImageFormats) {
@@ -231,15 +237,12 @@ public class Config {
 			return graphDialogBox;
 		}
 		graphDialogBox = new JFileChooser();
-		pngFileFilter = new PersonalFileFilter("png", "PNG Image");
-		svgFileFilter = new PersonalFileFilter("svg",
-				"Scalable Vector Graphics");
-		grfFileFilter = new PersonalFileFilter("grf", "Unicode Graphs");
 		if (allowImageFormats) {
 			graphDialogBox.addChoosableFileFilter(pngFileFilter);
 			graphDialogBox.addChoosableFileFilter(svgFileFilter);
 		}
 		graphDialogBox.addChoosableFileFilter(grfFileFilter);
+		graphDialogBox.setFileFilter(grfFileFilter);
 		graphDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
 		graphDialogBox.setCurrentDirectory(ConfigManager.getManager()
 				.getCurrentGraphDirectory());
@@ -250,11 +253,11 @@ public class Config {
 	public static JFileChooser getGraphDiffDialogBox(File base) {
 		if (graphDiffDialogBox == null) {
 			graphDiffDialogBox = new JFileChooser();
-			grfFileFilter = new PersonalFileFilter("grf", "Unicode Graphs");
 			graphDiffDialogBox.addChoosableFileFilter(grfFileFilter);
 			graphDiffDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
 			graphDiffDialogBox.setMultiSelectionEnabled(false);
 		}
+		graphDiffDialogBox.setFileFilter(grfFileFilter);
 		graphDiffDialogBox.setCurrentDirectory(base.getParentFile());
 		return graphDiffDialogBox;
 	}
