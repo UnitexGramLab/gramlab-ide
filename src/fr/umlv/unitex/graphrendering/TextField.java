@@ -28,7 +28,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,6 +82,8 @@ public class TextField extends GraphTextField {
 	 * <code>TextAction</code> that saves the current graph
 	 */
 	private final Save SAVE;
+
+	final String validationErrorMessageCaption = "Error in the box content you are editing";
 
 	/**
 	 * Constructs a new <code>TextField</code>
@@ -162,7 +163,7 @@ public class TextField extends GraphTextField {
 		k.addActionForKeyStroke(KeyStroke.getKeyStroke(' ', Event.CTRL_MASK),
 				completion);
 		this.setKeymap(k);
-		addKeyListener(new MyKeyListener());
+
 	}
 
 	public class SpecialCopy extends TextAction implements ClipboardOwner {
@@ -353,21 +354,29 @@ public class TextField extends GraphTextField {
 			parent.unSelectAllBoxes();
 			return true;
 		}
+		requestFocus();
 		return false;
 	}
 
-	class MyKeyListener extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.isControlDown() || e.isAltDown()) {
-				// if the control key or alt key is pressed, we do nothing: the
-				// event we be caught by the ActionListeners
-				return;
-			}
-			if (e.getKeyCode() == 10)
+	@Override
+	protected void processKeyEvent(KeyEvent e) {
+		String t = getText();
+		if (e.getID() == KeyEvent.KEY_PRESSED) {
+			if (e.getKeyCode() == 10) {
 				validateContent();
-			modified = true;
+				return;
+			} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+				parent.unSelectAllBoxes();
+			} else if ((e.getKeyCode() == KeyEvent.VK_DELETE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE ) 
+					&& t.isEmpty()) {
+				modified = true;
+			}
 		}
+
+		
+		super.processKeyEvent(e);
+		if (!t.equals(getText()))
+			modified = true;
 	}
 
 	/**
@@ -378,6 +387,11 @@ public class TextField extends GraphTextField {
 	 */
 	boolean hasChangedTextField() {
 		return modified;
+	}
+
+	@Override
+	public boolean isModified() {
+		return hasChangedTextField();
 	}
 
 	private int test_transduction(char s[], int i) {
@@ -402,14 +416,14 @@ public class TextField extends GraphTextField {
 		final char ligne[] = s.toCharArray();
 		if (ligne[0] == '+') {
 			JOptionPane.showMessageDialog(null,
-					"Unexpected \"+\" as first character of the line", "Error",
-					JOptionPane.ERROR_MESSAGE);
+					"Unexpected \"+\" as first character of the line",
+					validationErrorMessageCaption, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		if (L >= 2 && ligne[L - 1] == '+' && ligne[L - 2] != '\\') {
 			JOptionPane.showMessageDialog(null,
-					"Unexpected \"+\" as last character of the line", "Error",
-					JOptionPane.ERROR_MESSAGE);
+					"Unexpected \"+\" as last character of the line",
+					validationErrorMessageCaption, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		while (i < L) {
@@ -423,7 +437,8 @@ public class TextField extends GraphTextField {
 						if (i >= L) {
 							JOptionPane.showMessageDialog(null,
 									"Unexpected \"\\\" at end of line",
-									"Error", JOptionPane.ERROR_MESSAGE);
+									validationErrorMessageCaption,
+									JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
 					}
@@ -431,7 +446,8 @@ public class TextField extends GraphTextField {
 				}
 				if (tmp.length() == 0) {
 					JOptionPane.showMessageDialog(null,
-							"Missing graph name after \":\"", "Error",
+							"Missing graph name after \":\"",
+							validationErrorMessageCaption,
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
@@ -441,7 +457,8 @@ public class TextField extends GraphTextField {
 				if (ligne[i] == '+') {
 					// if we find a + just after a + it is an error
 					JOptionPane.showMessageDialog(null,
-							"Empty line error: \"++\"", "Error",
+							"Empty line error: \"++\"",
+							validationErrorMessageCaption,
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
@@ -455,7 +472,8 @@ public class TextField extends GraphTextField {
 								if (i >= L) {
 									JOptionPane.showMessageDialog(null,
 											"Unexpected \"\\\" at end of line",
-											"Error", JOptionPane.ERROR_MESSAGE);
+											validationErrorMessageCaption,
+											JOptionPane.ERROR_MESSAGE);
 									return false;
 								}
 							}
@@ -463,7 +481,8 @@ public class TextField extends GraphTextField {
 						}
 						if (i >= L) {
 							JOptionPane.showMessageDialog(null,
-									"No closing \"", "Error",
+									"No closing \"",
+									validationErrorMessageCaption,
 									JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
@@ -477,7 +496,8 @@ public class TextField extends GraphTextField {
 								if (i >= L) {
 									JOptionPane.showMessageDialog(null,
 											"Unexpected \"\\\" at end of line",
-											"Error", JOptionPane.ERROR_MESSAGE);
+											validationErrorMessageCaption,
+											JOptionPane.ERROR_MESSAGE);
 									return false;
 								}
 							}
@@ -485,7 +505,8 @@ public class TextField extends GraphTextField {
 						}
 						if (i >= L) {
 							JOptionPane.showMessageDialog(null,
-									"No closing \">\"", "Error",
+									"No closing \">\"",
+									validationErrorMessageCaption,
 									JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
@@ -499,7 +520,8 @@ public class TextField extends GraphTextField {
 								if (i >= L) {
 									JOptionPane.showMessageDialog(null,
 											"Unexpected \"\\\" at end of line",
-											"Error", JOptionPane.ERROR_MESSAGE);
+											validationErrorMessageCaption,
+											JOptionPane.ERROR_MESSAGE);
 									return false;
 								}
 							}
@@ -507,7 +529,8 @@ public class TextField extends GraphTextField {
 						}
 						if (i >= L) {
 							JOptionPane.showMessageDialog(null,
-									"No closing \"}\"", "Error",
+									"No closing \"}\"",
+									validationErrorMessageCaption,
 									JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
@@ -518,7 +541,8 @@ public class TextField extends GraphTextField {
 							if (i >= L) {
 								JOptionPane.showMessageDialog(null,
 										"Unexpected \"\\\" at end of line",
-										"Error", JOptionPane.ERROR_MESSAGE);
+										validationErrorMessageCaption,
+										JOptionPane.ERROR_MESSAGE);
 								return false;
 							}
 						}
@@ -544,14 +568,15 @@ public class TextField extends GraphTextField {
 			return true;
 		if (s.equals("/")) {
 			JOptionPane.showMessageDialog(null, "Invalid empty comment box",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					validationErrorMessageCaption, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		if (s.startsWith("/")) {
 			if (s.startsWith("/+")) {
 				JOptionPane.showMessageDialog(null,
 						"Invalid comment box: content should not start with +",
-						"Error", JOptionPane.ERROR_MESSAGE);
+						validationErrorMessageCaption,
+						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
 			if (GraphBox.tokenizeCommentBox(s, null)) {
@@ -559,7 +584,7 @@ public class TextField extends GraphTextField {
 			}
 			JOptionPane.showMessageDialog(null,
 					"Invalid comment box: content should not end with \\ or +",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					validationErrorMessageCaption, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		char ligne[];
@@ -571,7 +596,7 @@ public class TextField extends GraphTextField {
 		if (L == 2 && ligne[0] == '$' && (ligne[1] == '(' || ligne[1] == ')')) {
 			JOptionPane.showMessageDialog(null,
 					"You must indicate a variable name between $ and ( or )",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					validationErrorMessageCaption, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		if (L == 3 && ligne[0] == '$' && ligne[1] == '|'
@@ -580,14 +605,15 @@ public class TextField extends GraphTextField {
 					.showMessageDialog(
 							null,
 							"You must indicate an output variable name between $| and ( or )",
-							"Error", JOptionPane.ERROR_MESSAGE);
+							validationErrorMessageCaption,
+							JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		while ((i != L) && (test_transduction(ligne, i) == 0))
 			tmp = tmp.concat(String.valueOf(ligne[i++]));
 		if ((i != L) && (i == 0)) {
 			JOptionPane.showMessageDialog(null, "Empty text before \"/\"",
-					"Error", JOptionPane.ERROR_MESSAGE);
+					validationErrorMessageCaption, JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		if (L > 2 && ligne[0] == '$'
@@ -607,7 +633,8 @@ public class TextField extends GraphTextField {
 							.showMessageDialog(
 									null,
 									"A variable name can only contain the following characters:\nA..Z,a..z,0..9 and the underscore '_'",
-									"Error", JOptionPane.ERROR_MESSAGE);
+									validationErrorMessageCaption,
+									JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			return true;

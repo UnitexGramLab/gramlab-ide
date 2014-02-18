@@ -1319,9 +1319,12 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	public boolean saveGraph() {
+		if(graphicalZone.text.isModified())
+			if(!graphicalZone.text.validateContent()) 
+				return false;
 		final File file = getGraph();
 		if (file == null) {
-			return saveAsGraph();
+			return saveAsGraph(true);
 		}
 		final GraphIO g = new GraphIO(graphicalZone);
 		modified = false;
@@ -1331,6 +1334,15 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	}
 
 	public boolean saveAsGraph() {
+		return saveAsGraph(false);
+	}
+	
+	private boolean saveAsGraph(boolean validated) {
+		if(!validated) {
+			if(graphicalZone.text.isModified())
+				if(!graphicalZone.text.validateContent())
+					return false;
+		}
 		final GraphIO g = new GraphIO(graphicalZone);
 		final JFileChooser fc = Config.getGraphDialogBox(true);
 		fc.setMultiSelectionEnabled(false);
