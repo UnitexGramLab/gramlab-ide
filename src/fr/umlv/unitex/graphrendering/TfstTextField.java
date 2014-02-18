@@ -116,6 +116,11 @@ public class TfstTextField extends GraphTextField {
 		return modified;
 	}
 
+	@Override
+	public boolean isModified() {
+		return hasChangedTextField();
+	}
+	
 	/**
 	 * Tests if a content is a valid content for a sentence graph box.
 	 * 

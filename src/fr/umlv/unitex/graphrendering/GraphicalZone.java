@@ -90,6 +90,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 	final int dragTreshold = 3;
 	boolean dragTresholdReached = false;
+	boolean textFieldWasModified = false;
+	boolean ignoreThisMouseAction = false;
 	int X_pressed_raw;
 	int Y_pressed_raw;
 
@@ -1373,6 +1375,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		public void mousePressed(MouseEvent e) {
 			if (clearRollover())
 				fireGraphChanged(false);
+			textFieldWasModified= text.isModified(); 
+			ignoreThisMouseAction = false;
+			if(textFieldWasModified) {
+				if(!text.validateContent())
+					ignoreThisMouseAction = true;
+				else
+					unSelectAllBoxes();
+			}
 			X_pressed_raw = e.getX();
 			Y_pressed_raw = e.getY();
 			dragTresholdReached = false;
@@ -1391,7 +1401,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					|| (EDITING_MODE == MyCursors.KILL_BOXES)) {
 				return;
 			}
-			validateContent();
 			X_start_drag = (int) (X_pressed_raw / scaleFactor);
 			Y_start_drag = (int) (Y_pressed_raw / scaleFactor);
 			X_end_drag = X_start_drag;
@@ -1407,7 +1416,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			if (selectedBox != -1) {
 				// if we start dragging a box
 				singleDraggedBox = graphBoxes.get(selectedBox);
-				fireGraphTextChanged(singleDraggedBox.content);
 				if (!singleDraggedBox.isSelected()) {
 					/*
 					 * Dragging a selected box is handled below with the general
@@ -1435,6 +1443,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			if(ignoreThisMouseAction)
+				return;
 			updateRollover(e);
 			if (!dragTresholdReached)
 				customMouseClicked(e);
@@ -1490,6 +1500,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			if(ignoreThisMouseAction)
+				return;
 			int X_raw = e.getX();
 			int Y_raw = e.getY();
 			if (!dragTresholdReached) {

@@ -39,6 +39,16 @@ public abstract class GraphTextField extends JTextField {
 	 * @param s
 	 */
 	public abstract void setContent(String s);
+	
+	
+	/**
+	 * Tests if the content of the text editor is modified
+	 * (contributed by Nebojsa Vasiljevic)
+	 * 
+	 * @return <code>true</code> if the content is modified,
+	 *         <code>false</code> otherwise
+	 */
+	public abstract boolean isModified();
 
 	/**
 	 * Tests if the current content is valid and if so, validates it by
