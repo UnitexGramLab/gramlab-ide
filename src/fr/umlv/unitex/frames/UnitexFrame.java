@@ -60,6 +60,8 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.Version;
@@ -993,6 +995,60 @@ public class UnitexFrame extends JFrame {
 		graphMenu.addSeparator();
 		
 		graphMenu.add(closeAll);
+		
+		graphMenu.addMenuListener(new MenuListener() {
+			
+			@Override
+			public void menuSelected(MenuEvent e) {
+				final GraphFrame f = InternalFrameManager.getManager(null)
+						.getCurrentFocusedGraphFrame();
+				if(f==null) {
+					save.setEnabled(false);
+					saveAs.setEnabled(false);
+					print.setEnabled(false);
+					undo.setEnabled(false);
+					redo.setEnabled(false);
+					tools.setEnabled(false);
+					format.setEnabled(false);
+					zoom.setEnabled(false);
+					if(InternalFrameManager.getManager(null).getGraphFrames().size() == 0) {
+						saveAll.setEnabled(false);
+						printAll.setEnabled(false);
+						setup.setEnabled(false);
+					} else {
+						saveAll.setEnabled(true);
+						printAll.setEnabled(true);
+						setup.setEnabled(true);
+					}
+				}
+				else {
+					save.setEnabled(true);
+					saveAs.setEnabled(true);
+					print.setEnabled(true);
+					undo.setEnabled(true);
+					redo.setEnabled(true);
+					tools.setEnabled(true);
+					format.setEnabled(true);
+					zoom.setEnabled(true);
+					saveAll.setEnabled(true);
+					printAll.setEnabled(true);
+					setup.setEnabled(true);
+				}
+				
+			}
+			
+			@Override
+			public void menuDeselected(MenuEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void menuCanceled(MenuEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		return graphMenu;
 	}
 
