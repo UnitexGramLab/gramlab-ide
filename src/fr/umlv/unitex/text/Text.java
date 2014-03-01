@@ -26,6 +26,8 @@ import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
@@ -161,6 +163,8 @@ public class Text {
 	public static void loadSnt(File snt, boolean taggedText) {
 		Config.setCurrentSnt(snt);
 		InternalFrameManager.getManager(snt).newTextFrame(snt, taggedText);
+		PreferencesManager.getUserPreferences().addRecentText(new SntFileEntry(Config.getCurrentLanguage(),
+				snt));
 	}
 
 	static class TextDo implements ToDo {

@@ -781,7 +781,7 @@ public class Config {
      * @param s
      *            language's name
      */
-    private static void setCurrentLanguage(String s) {
+    public static void setCurrentLanguage(String s) {
         currentLanguage = s;
         setUserCurrentLanguageDir(new File(getUserDir(), currentLanguage));
         setDefaultPreprocessingGraphs();
@@ -1008,7 +1008,7 @@ public class Config {
         setUserDir(f.getSelectedFile());
     }
 
-    private static void collectLanguage(File directory, Set<String> languages) {
+    public static void collectLanguage(File directory, Set<String> languages) {
         final File[] fileList = directory.listFiles(new FileFilter() {
             @Override
             public boolean accept(File file) {
@@ -1033,7 +1033,19 @@ public class Config {
         final TreeSet<String> languages = new TreeSet<String>();
         collectLanguage(getUnitexDir(), languages);
         collectLanguage(getUserDir(), languages);
-        final JComboBox langList = new JComboBox(languages.toArray());
+        
+        String [] langArr = languages.toArray(new String[0]);
+        int defaultLangIndex = -1;
+        String preferedLanguage = PreferencesManager.getUserPreferences().getPreferedLanguage();
+        if(preferedLanguage != null)
+        	for(int i=0; i<langArr.length &&  defaultLangIndex == -1; i++)
+        		if(preferedLanguage.equals(langArr[i]))
+        				defaultLangIndex = i;
+        		
+        final JComboBox<String> langList = new JComboBox<String>(langArr);
+        if(defaultLangIndex != -1)
+        	langList.setSelectedIndex(defaultLangIndex);
+        
         p.add(new JLabel("User: " + getUserName()));
         p.add(new JLabel("Choose the language you want"));
         p.add(new JLabel("to work on:"));
@@ -1044,7 +1056,10 @@ public class Config {
                 options, options[0])) {
             System.exit(0);
         }
-        setCurrentLanguage((String) (langList.getSelectedItem()));
+        String selectedItem = (String) (langList.getSelectedItem());
+        setCurrentLanguage(selectedItem);
+        PreferencesManager.getUserPreferences().setPreferedLanguage(selectedItem);
+        
     }
 
     /**

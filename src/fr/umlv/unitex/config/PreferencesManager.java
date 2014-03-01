@@ -135,6 +135,17 @@ public class PreferencesManager {
 		cache.put(language, info);
 		return info.p;
 	}
+	
+	private static UserPreferences userPreferences = null;
+	/**
+	 * Returns the user level preferences. 
+	 * 
+	 */
+	public static UserPreferences getUserPreferences() {
+		if(userPreferences == null)
+			userPreferences = new UserPreferences();
+		return userPreferences;
+	}
 
 	private static ArrayList<PreferencesListener> preferencesListeners = new ArrayList<PreferencesListener>();
 
