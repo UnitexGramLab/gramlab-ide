@@ -40,6 +40,11 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -67,6 +72,8 @@ import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
@@ -102,7 +109,7 @@ public class UnitexFrame extends JFrame {
 	/**
 	 * The desktop of the frame.
 	 */
-	private final JDesktopPane desktop;
+	protected final JDesktopPane desktop;
 	/**
 	 * The clipboard used to copy and paste text and graph box selections.
 	 */
@@ -154,8 +161,8 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(true);
 						exportTfstAsCsv.setEnabled(true);
 						closeText.setEnabled(true);
-						File snt=ConfigManager
-								.getManager().getCurrentSnt(null);
+						File snt = ConfigManager.getManager().getCurrentSnt(
+								null);
 						final File sntDir = FileUtil.getSntDir(snt);
 						InternalFrameManager.getManager(null).newTokensFrame(
 								new File(sntDir, "tok_by_freq.txt"), true);
@@ -198,7 +205,7 @@ public class UnitexFrame extends JFrame {
 						InternalFrameManager.getManager(null)
 								.closeConstructTfstFrame();
 						InternalFrameManager.getManager(null)
-							.closeLemmatizeFrame();
+								.closeLemmatizeFrame();
 						InternalFrameManager.getManager(null)
 								.closeConvertTfstToTextFrame();
 						InternalFrameManager.getManager(null)
@@ -333,6 +340,59 @@ public class UnitexFrame extends JFrame {
 			}
 		};
 		textMenu.add(new JMenuItem(openTaggedText));
+
+		final JMenu openRecent = new JMenu("Open Recent");
+		openRecent.addMenuListener(new MenuAdapter() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				List<SntFileEntry> l = PreferencesManager.getUserPreferences()
+						.getRecentTexts();
+				if (l == null)
+					return;
+				openRecent.removeAll();
+				for (final SntFileEntry sfe : l) {
+					String caption = "(" + sfe.getLanguage() + ") "
+							+ sfe.getFile().getPath();
+					final JMenuItem item = new JMenuItem(caption);
+					item.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (!sfe.getFile().exists()) {
+								JOptionPane.showMessageDialog(null, "File "
+										+ sfe.getFile().getAbsolutePath()
+										+ " does not exist", "Error",
+										JOptionPane.ERROR_MESSAGE);
+								PreferencesManager.getUserPreferences()
+										.removeRecentText(sfe);
+							} else {
+								boolean lngErr = false;
+					            if (!Config.getCurrentLanguage().equals(sfe.getLanguage())) {
+					            	final TreeSet<String> languages = new TreeSet<String>();
+					                Config.collectLanguage(Config.getUnitexDir(), languages);
+					                Config.collectLanguage(Config.getUserDir(), languages);
+					                if(languages.contains(sfe.getLanguage()))
+					                	Config.setCurrentLanguage(sfe.getLanguage());
+					                else {
+					                	lngErr = true;
+					                	JOptionPane.showMessageDialog(null, "Folder for language "
+												+ sfe.getLanguage()
+												+ " does not exist", "Error",
+												JOptionPane.ERROR_MESSAGE);
+										PreferencesManager.getUserPreferences()
+												.removeRecentText(sfe);		
+					                }
+					            }
+					            if(!lngErr)
+					            	Text.loadCorpus(sfe.getFile(), true);
+							}
+						}
+					});
+					openRecent.add(item);
+				}
+			}
+		});
+		textMenu.add(openRecent);
+
 		preprocessText = new AbstractAction("Preprocess Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -416,11 +476,14 @@ public class UnitexFrame extends JFrame {
 		lemmatize = new AbstractAction("Lemmatize") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				File text_tfst = new File(Config.getCurrentSntDir(), "text.tfst");
+				File text_tfst = new File(Config.getCurrentSntDir(),
+						"text.tfst");
 				if (!text_tfst.exists()) {
-					JOptionPane.showMessageDialog(null,
-							"You must construct the text automaton before lemmatizing!", "Error",
-							JOptionPane.ERROR_MESSAGE);
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"You must construct the text automaton before lemmatizing!",
+									"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				InternalFrameManager.getManager(null).newLemmatizeFrame();
@@ -470,6 +533,15 @@ public class UnitexFrame extends JFrame {
 			}
 		};
 		textMenu.add(new JMenuItem(quitUnitex));
+		
+		textMenu.addMenuListener(new MenuAdapter() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				List<SntFileEntry> l = PreferencesManager.getUserPreferences()
+						.getRecentTexts();
+				openRecent.setEnabled(l != null && l.size() > 0);
+			}
+		});
 		return textMenu;
 	}
 
@@ -596,9 +668,46 @@ public class UnitexFrame extends JFrame {
 				openGraph();
 			}
 		};
+
 		open.putValue(Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+
 		graphMenu.add(new JMenuItem(open));
+
+		final JMenu openRecent = new JMenu("Open Recent");
+		openRecent.addMenuListener(new MenuAdapter() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				List<File> l = PreferencesManager.getUserPreferences()
+						.getRecentGraphs();
+				if (l == null)
+					return;
+				openRecent.removeAll();
+				for (final File f : l) {
+					final JMenuItem item = new JMenuItem(f.getPath());
+					item.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent event) {
+							if (!f.exists()) {
+								JOptionPane.showMessageDialog(null,
+										"File " + f.getAbsolutePath()
+												+ " does not exist", "Error",
+										JOptionPane.ERROR_MESSAGE);
+								PreferencesManager.getUserPreferences()
+										.removeRecentGraph(f);
+							} else {
+								InternalFrameManager.getManager(null)
+										.newGraphFrame(f);
+							}
+						}
+					});
+					openRecent.add(item);
+				}
+
+			}
+		});
+		graphMenu.add(openRecent);
+
 		final Action save = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -960,7 +1069,7 @@ public class UnitexFrame extends JFrame {
 		zoom.add(fit100);
 		zoom.add(fit120);
 		zoom.add(fit140);
-		
+
 		final JMenuItem newCascade = new JMenuItem("New Cascade");
 		newCascade.addActionListener(new ActionListener() {
 			@Override
@@ -968,7 +1077,7 @@ public class UnitexFrame extends JFrame {
 				openCascade(null);
 			}
 		});
-		
+
 		final JMenuItem editCascade = new JMenuItem("Edit Cascade ...");
 		editCascade.addActionListener(new ActionListener() {
 			@Override
@@ -976,8 +1085,7 @@ public class UnitexFrame extends JFrame {
 				editCascade();
 			}
 		});
-		
-		
+
 		final JMenuItem closeAll = new JMenuItem("Close all");
 		closeAll.addActionListener(new ActionListener() {
 			@Override
@@ -989,20 +1097,19 @@ public class UnitexFrame extends JFrame {
 		graphMenu.add(format);
 		graphMenu.add(zoom);
 		graphMenu.addSeparator();
-		
+
 		graphMenu.add(newCascade);
 		graphMenu.add(editCascade);
 		graphMenu.addSeparator();
-		
+
 		graphMenu.add(closeAll);
-		
-		graphMenu.addMenuListener(new MenuListener() {
-			
+
+		graphMenu.addMenuListener(new MenuAdapter() {
 			@Override
 			public void menuSelected(MenuEvent e) {
 				final GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
-				if(f==null) {
+				if (f == null) {
 					save.setEnabled(false);
 					saveAs.setEnabled(false);
 					print.setEnabled(false);
@@ -1011,7 +1118,8 @@ public class UnitexFrame extends JFrame {
 					tools.setEnabled(false);
 					format.setEnabled(false);
 					zoom.setEnabled(false);
-					if(InternalFrameManager.getManager(null).getGraphFrames().size() == 0) {
+					if (InternalFrameManager.getManager(null).getGraphFrames()
+							.size() == 0) {
 						saveAll.setEnabled(false);
 						printAll.setEnabled(false);
 						setup.setEnabled(false);
@@ -1020,8 +1128,7 @@ public class UnitexFrame extends JFrame {
 						printAll.setEnabled(true);
 						setup.setEnabled(true);
 					}
-				}
-				else {
+				} else {
 					save.setEnabled(true);
 					saveAs.setEnabled(true);
 					print.setEnabled(true);
@@ -1034,19 +1141,11 @@ public class UnitexFrame extends JFrame {
 					printAll.setEnabled(true);
 					setup.setEnabled(true);
 				}
-				
-			}
-			
-			@Override
-			public void menuDeselected(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void menuCanceled(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
+
+				List<File> l = PreferencesManager.getUserPreferences()
+						.getRecentGraphs();
+				openRecent.setEnabled(l != null && l.size() > 0);
+
 			}
 		});
 		return graphMenu;
@@ -1108,6 +1207,7 @@ public class UnitexFrame extends JFrame {
 	JMenu buildWindowsMenu() {
 		final JMenu windows = new JMenu("Windows");
 		final JMenuItem tile = new JMenuItem("Tile");
+		final List<JMenuItem> frameItems = new ArrayList<JMenuItem>();
 		tile.setEnabled(true);
 		tile.addActionListener(new ActionListener() {
 			@Override
@@ -1132,6 +1232,63 @@ public class UnitexFrame extends JFrame {
 		windows.add(tile);
 		windows.add(cascade);
 		windows.add(arrangeIcons);
+		windows.addSeparator();
+
+		windows.addMenuListener(new MenuAdapter() {
+			protected int frameClassPrec(JInternalFrame frame) {
+				if (frame instanceof TextFrame)
+					return 1;
+				if (frame instanceof GraphFrame)
+					return 2;
+				if (frame instanceof TextDicFrame)
+					return 4;
+				if (frame instanceof TokensFrame)
+					return 5;
+				return 6;
+			}
+
+			class JFrameComparator implements Comparator<JInternalFrame> {
+				@Override
+				public int compare(JInternalFrame f1, JInternalFrame f2) {
+					int c = frameClassPrec(f1) - frameClassPrec(f2);
+					if (c != 0)
+						return c;
+					return f1.getTitle().compareTo(f2.getTitle());
+				}
+			}
+
+			protected JFrameComparator jFrameComparator = new JFrameComparator();
+
+			@Override
+			public void menuSelected(MenuEvent e) {
+				for (JMenuItem item : frameItems)
+					windows.remove(item);
+				final JInternalFrame[] frames = desktop.getAllFrames();
+				Arrays.sort(frames, jFrameComparator);
+				for (final JInternalFrame f : frames) {
+					if (f.isVisible()) {
+						final JMenuItem fItem = new JMenuItem(f.getTitle());
+						fItem.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent event) {
+								try {
+									if (f.isIcon()) {
+										f.setIcon(false);
+									}
+									f.setSelected(true);
+									f.toFront();
+								} catch (PropertyVetoException ex) {
+									return;
+								}
+							}
+						});
+						frameItems.add(fItem);
+						windows.add(fItem);
+					}
+				}
+			}
+
+		});
 		return windows;
 	}
 
@@ -1615,10 +1772,9 @@ public class UnitexFrame extends JFrame {
 	public static JInternalFrame getCurrentFocusedFrame() {
 		return mainFrame.desktop.getSelectedFrame();
 	}
-	
-	
+
 	private void createExportFst2(File fst2) {
-		OutputStreamWriter writer=Encoding.UTF8.getOutputStreamWriter(fst2);
+		OutputStreamWriter writer = Encoding.UTF8.getOutputStreamWriter(fst2);
 		try {
 			writer.write("0000000001\n");
 			writer.write("-1 export_csv\n");
@@ -1639,28 +1795,25 @@ public class UnitexFrame extends JFrame {
 		}
 	}
 
-	
 	public void exportAsCsv() {
-		final File fst2=new File(ConfigManager.getManager().getCurrentLanguageDir(),"export_csv.fst2");
+		final File fst2 = new File(ConfigManager.getManager()
+				.getCurrentLanguageDir(), "export_csv.fst2");
 		createExportFst2(fst2);
-		final MultiCommands commands=new MultiCommands();
-		LocateTfstCommand cmd1=new LocateTfstCommand().allowAmbiguousOutputs()
+		final MultiCommands commands = new MultiCommands();
+		LocateTfstCommand cmd1 = new LocateTfstCommand()
+				.allowAmbiguousOutputs()
 				.alphabet(ConfigManager.getManager().getAlphabet(null))
 				.mergeOutputs()
-				.tfst(new File(Config.getCurrentSntDir(),"text.tfst"))
-				.fst2(fst2)
-				.allMatches()
-				.backtrackOnVariableErrors()
+				.tfst(new File(Config.getCurrentSntDir(), "text.tfst"))
+				.fst2(fst2).allMatches().backtrackOnVariableErrors()
 				.singleTagsOnly();
 		if (ConfigManager.getManager().isKorean(null)) {
-			cmd1=cmd1.korean();
+			cmd1 = cmd1.korean();
 		}
 		commands.addCommand(cmd1);
 		ConcordCommand cmd2;
-		File indFile=new File(Config.getCurrentSntDir(),"concord.ind");
-		cmd2 = new ConcordCommand()
-				.indFile(indFile)
-				.exportAsCsv();
+		File indFile = new File(Config.getCurrentSntDir(), "concord.ind");
+		cmd2 = new ConcordCommand().indFile(indFile).exportAsCsv();
 		if (ConfigManager.getManager().isPRLGLanguage(null)) {
 			final File prlgIndex = new File(Config.getCurrentSntDir(),
 					"prlg.idx");
@@ -1671,22 +1824,24 @@ public class UnitexFrame extends JFrame {
 			}
 		}
 		commands.addCommand(cmd2);
-		final File csv=new File(Config.getCurrentSntDir(),"export.csv");
-		final ToDo after=new ToDo() {
-			
+		final File csv = new File(Config.getCurrentSntDir(), "export.csv");
+		final ToDo after = new ToDo() {
+
 			@Override
 			public void toDo(boolean success) {
 				fst2.delete();
-				JOptionPane.showMessageDialog(UnitexFrame.mainFrame,"The text automaton was successfully exported as:\n"+
-				"\n"+csv.getAbsolutePath());
+				JOptionPane.showMessageDialog(UnitexFrame.mainFrame,
+						"The text automaton was successfully exported as:\n"
+								+ "\n" + csv.getAbsolutePath());
 			}
 
 		};
-		Launcher.exec(commands,true,after);
+		Launcher.exec(commands, true, after);
 	}
-	
+
 	/**
-	 * Open Cassys Configuration <em>selected_file<\em>. If <em>selected_file<\em> is empty, open
+	 * Open Cassys Configuration
+	 * <em>selected_file<\em>. If <em>selected_file<\em> is empty, open
 	 * an empty configuration file
 	 * 
 	 * 
@@ -1708,16 +1863,17 @@ public class UnitexFrame extends JFrame {
 					.newTransducerListConfigurationFrame(selected_file);
 		}
 	}
-	
+
 	/**
-	 * Opens a JFile Chooser in order to select a file. Then open the Cassys Configuration frame with 
-	 * the selected file
+	 * Opens a JFile Chooser in order to select a file. Then open the Cassys
+	 * Configuration frame with the selected file
 	 */
 	void editCascade() {
 		Config.getTransducerListDialogBox().setControlButtonsAreShown(true);
-		Config.getTransducerListDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
-		final int returnVal = Config.getTransducerListDialogBox().showOpenDialog(
-				this);
+		Config.getTransducerListDialogBox().setDialogType(
+				JFileChooser.OPEN_DIALOG);
+		final int returnVal = Config.getTransducerListDialogBox()
+				.showOpenDialog(this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			// we return if the user has clicked on CANCEL
 			return;

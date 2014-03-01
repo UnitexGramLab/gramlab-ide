@@ -178,7 +178,7 @@ public class TextFrame extends TabbableInternalFrame {
 		} else {
 			text.load(sntFile);
 		}
-		setTitle(sntFile.getAbsolutePath());
+		setTitle(sntFile.getName() + " (" + sntFile.getParent() + ")");
 	}
 
 	public BigTextArea getText() {
