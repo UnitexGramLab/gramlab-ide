@@ -33,6 +33,7 @@ import javax.swing.event.InternalFrameListener;
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.exceptions.UserRefusedFrameClosingError;
 import fr.umlv.unitex.graphrendering.ContextsInfo;
@@ -239,6 +240,7 @@ public class InternalFrameManager {
 				/* */
 			}
 		}
+		PreferencesManager.getUserPreferences().addRecentGraph(grf);
 		return g;
 	}
 

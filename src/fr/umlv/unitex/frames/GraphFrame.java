@@ -77,6 +77,7 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
@@ -1329,6 +1330,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = new GraphIO(graphicalZone);
 		modified = false;
 		g.saveGraph(file);
+		PreferencesManager.getUserPreferences().addRecentGraph(file);
 		setGraph(file, file, false);
 		return true;
 	}

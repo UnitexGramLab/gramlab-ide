@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import fr.umlv.unitex.graphrendering.GraphBox;
@@ -610,6 +611,7 @@ public class GraphIO {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		PreferencesManager.getUserPreferences().addRecentGraph(grfFile);
 		try {
 			final Encoding e = ConfigManager.getManager().getEncoding(null);
 			writer = e.getOutputStreamWriter(grfFile);
