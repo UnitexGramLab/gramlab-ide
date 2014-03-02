@@ -366,27 +366,57 @@ public class UnitexFrame extends JFrame {
 										.removeRecentText(sfe);
 							} else {
 								boolean lngErr = false;
-					            if (!Config.getCurrentLanguage().equals(sfe.getLanguage())) {
-					            	final TreeSet<String> languages = new TreeSet<String>();
-					                Config.collectLanguage(Config.getUnitexDir(), languages);
-					                Config.collectLanguage(Config.getUserDir(), languages);
-					                if(languages.contains(sfe.getLanguage()))
-					                	Config.setCurrentLanguage(sfe.getLanguage());
-					                else {
-					                	lngErr = true;
-					                	JOptionPane.showMessageDialog(null, "Folder for language "
-												+ sfe.getLanguage()
-												+ " does not exist", "Error",
+								if (!Config.getCurrentLanguage().equals(
+										sfe.getLanguage())) {
+									final TreeSet<String> languages = new TreeSet<String>();
+									Config.collectLanguage(
+											Config.getUnitexDir(), languages);
+									Config.collectLanguage(Config.getUserDir(),
+											languages);
+									if (languages.contains(sfe.getLanguage()))
+										Config.setCurrentLanguage(sfe
+												.getLanguage());
+									else {
+										lngErr = true;
+										JOptionPane.showMessageDialog(
+												UnitexFrame.this,
+												"Folder for language "
+														+ sfe.getLanguage()
+														+ " does not exist",
+												"Error",
 												JOptionPane.ERROR_MESSAGE);
 										PreferencesManager.getUserPreferences()
-												.removeRecentText(sfe);		
-					                }
-					            }
-					            if(!lngErr)
-					            	Text.loadCorpus(sfe.getFile(), true);
+												.removeRecentText(sfe);
+									}
+								}
+								if (!lngErr)
+									Text.loadCorpus(sfe.getFile(), true);
 							}
 						}
 					});
+					openRecent.add(item);
+				}
+				if (!l.isEmpty()) {
+					final JMenuItem item = new JMenuItem(
+							"Clear Recent Texts List");
+					item.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent event) {
+							final String[] options = { "Yes", "No" };
+							final int n = JOptionPane
+									.showOptionDialog(
+											UnitexFrame.this,
+											"Do you really want to clear the Recent Texts List?",
+											"", JOptionPane.YES_NO_OPTION,
+											JOptionPane.QUESTION_MESSAGE, null,
+											options, options[0]);
+							if (n == 0) {
+								PreferencesManager.getUserPreferences()
+										.clearRecentTexts();
+							}
+						}
+					});
+					openRecent.addSeparator();
 					openRecent.add(item);
 				}
 			}
@@ -533,7 +563,7 @@ public class UnitexFrame extends JFrame {
 			}
 		};
 		textMenu.add(new JMenuItem(quitUnitex));
-		
+
 		textMenu.addMenuListener(new MenuAdapter() {
 			@Override
 			public void menuSelected(MenuEvent e) {
@@ -701,6 +731,29 @@ public class UnitexFrame extends JFrame {
 							}
 						}
 					});
+					openRecent.add(item);
+				}
+				if (!l.isEmpty()) {
+					final JMenuItem item = new JMenuItem(
+							"Clear Recent Graphs List");
+					item.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent event) {
+							final String[] options = { "Yes", "No" };
+							final int n = JOptionPane
+									.showOptionDialog(
+											UnitexFrame.this,
+											"Do you really want to clear the Recent Graphs List?",
+											"", JOptionPane.YES_NO_OPTION,
+											JOptionPane.QUESTION_MESSAGE, null,
+											options, options[0]);
+							if (n == 0) {
+								PreferencesManager.getUserPreferences()
+										.clearRecentGraphs();
+							}
+						}
+					});
+					openRecent.addSeparator();
 					openRecent.add(item);
 				}
 

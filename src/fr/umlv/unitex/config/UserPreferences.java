@@ -131,6 +131,10 @@ public class UserPreferences {
 		}
 		return true;
 	}
+	
+	public boolean clearRecentGraphs() {
+		return setRecentGraphs(new ArrayList<File>());
+	}
 
 	public boolean addRecentGraph(File nf) {
 		if (nf == null)
@@ -274,6 +278,10 @@ public class UserPreferences {
 		return true;
 	}
 
+	public boolean clearRecentTexts() {
+		return setRecentTexts(new ArrayList<SntFileEntry>());
+	}
+	
 	public boolean setUserDir(String dir) {
 		if (prefs == null)
 			return false;
