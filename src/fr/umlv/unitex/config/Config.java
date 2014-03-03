@@ -1042,7 +1042,7 @@ public class Config {
         		if(preferedLanguage.equals(langArr[i]))
         				defaultLangIndex = i;
         		
-        final JComboBox<String> langList = new JComboBox<String>(langArr);
+        final JComboBox langList = new JComboBox(langArr);
         if(defaultLangIndex != -1)
         	langList.setSelectedIndex(defaultLangIndex);
         
