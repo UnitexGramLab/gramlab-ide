@@ -31,6 +31,7 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -240,7 +241,9 @@ public class InternalFrameManager {
 				/* */
 			}
 		}
-		PreferencesManager.getUserPreferences().addRecentGraph(grf);
+		if(Unitex.isRunning()) {
+			PreferencesManager.getUserPreferences().addRecentGraph(grf);
+		}
 		return g;
 	}
 

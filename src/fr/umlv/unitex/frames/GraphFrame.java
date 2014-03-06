@@ -74,6 +74,7 @@ import javax.swing.undo.UndoManager;
 
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
@@ -1330,7 +1331,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		final GraphIO g = new GraphIO(graphicalZone);
 		modified = false;
 		g.saveGraph(file);
-		PreferencesManager.getUserPreferences().addRecentGraph(file);
+		if(Unitex.isRunning()) {
+			PreferencesManager.getUserPreferences().addRecentGraph(file);
+		}
 		setGraph(file, file, false);
 		return true;
 	}
