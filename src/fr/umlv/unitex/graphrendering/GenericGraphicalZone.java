@@ -86,6 +86,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	private GraphPresentationInfo graphPresentationInfo;
 	GraphMetaData metadata;
+	private static DrawGraphParams exportBitmapParams;
+	
 	/**
 	 * <code>JInternalFrame</code> that contains this component
 	 */
@@ -93,6 +95,17 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	public JInternalFrame getParentFrame() {
 		return parentFrame;
+	}
+	
+	public DrawGraphParams getExportBitmapParams() {
+		synchronized(GenericGraphicalZone.class) {
+			if(exportBitmapParams == null) {
+				exportBitmapParams = defaultDrawParams();
+				exportBitmapParams.setAntialiasing(true);
+				exportBitmapParams.setCrop(true);
+			}
+		}
+		return exportBitmapParams;
 	}
 
 	private final UndoableEditSupport support = new UndoableEditSupport();
@@ -552,13 +565,41 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 	}
 
+	public DrawGraphParams defaultDrawParams() {
+		DrawGraphParams params = new DrawGraphParams();
+		params.setScaleFactor(scaleFactor);
+		params.setDpi(DrawGraphParams.BASE_DPI); 
+		params.setCompressionQuality(0.95f);
+		params.setAntialiasing(getGraphPresentationInfo().isAntialiasing());
+		params.setBackgroundColor(getGraphPresentationInfo().getBackgroundColor());
+		params.setForegroundColor(getGraphPresentationInfo().getForegroundColor());
+		params.setCommentColor(getGraphPresentationInfo().getCommentColor());
+		params.setSelectedColor(getGraphPresentationInfo().getSelectedColor());
+		params.setSubgraphColor(getGraphPresentationInfo().getSubgraphColor());
+		params.setPackageColor(getGraphPresentationInfo().getPackageColor());
+		params.setUnreachableGraphColor(getGraphPresentationInfo().getUnreachableGraphColor());
+		params.setOutputVariableColor(getGraphPresentationInfo().getOutputVariableColor());
+		params.setContextColor(getGraphPresentationInfo().getContextColor());
+		params.setMorphologicalModeColor(getGraphPresentationInfo().getMorphologicalModeColor());
+		params.setFrame(getGraphPresentationInfo().isFrame());
+		params.setFilename(getGraphPresentationInfo().isFilename());
+		params.setPathname(getGraphPresentationInfo().isPathname());
+		params.setDate(getGraphPresentationInfo().isDate());
+		params.setCrop(false); 
+		params.setCropMarginW(0);
+		params.setCropMarginH(0);
+		return params;
+	}
+	
+	abstract public void drawGraph(Graphics2D f, DrawGraphParams params);
+	
 	/**
 	 * Draws all graph's transitions
 	 * 
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawAllTransitions(Graphics2D gr) {
+	void drawAllTransitions(Graphics2D gr, DrawGraphParams params) {
 		int i, L;
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())
@@ -566,7 +607,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
-			g.drawTransitions(gr);
+			g.drawTransitions(gr, params);
 		}
 	}
 
@@ -576,7 +617,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawTransitionsFromMousePointerToSelectedBoxes(Graphics2D gr) {
+	void drawTransitionsFromMousePointerToSelectedBoxes(Graphics2D gr, DrawGraphParams params) {
 		final GenericGraphBox temp = newBox(Xmouse, Ymouse, 2, this);
 		GenericGraphBox g;
 		temp.X_out = Xmouse;
@@ -584,7 +625,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final int L = selectedBoxes.size();
 		for (int i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
-			temp.drawTransition(gr, g);
+			temp.drawTransition(gr, g, params);
 		}
 	}
 
@@ -594,7 +635,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawTransitionsFromSelectedBoxesToMousePointer(Graphics2D gr) {
+	void drawTransitionsFromSelectedBoxesToMousePointer(Graphics2D gr, DrawGraphParams params) {
 		final GenericGraphBox temp = newBox(Xmouse, Ymouse, 2, this);
 		GenericGraphBox g;
 		temp.X_out = Xmouse;
@@ -602,7 +643,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final int L = selectedBoxes.size();
 		for (int i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
-			g.drawTransition(gr, temp);
+			g.drawTransition(gr, temp, params);
 		}
 	}
 
@@ -612,7 +653,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawAllBoxes(Graphics2D gr) {
+	void drawAllBoxes(Graphics2D gr, DrawGraphParams params) {
 		int i, L;
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())
@@ -620,7 +661,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
-			g.draw(gr);
+			g.draw(gr, params);
 		}
 	}
 
@@ -631,11 +672,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param f
 	 *            the graphical context
 	 */
-	void drawGrid(Graphics2D f) {
+	void drawGrid(Graphics2D f, DrawGraphParams params) {
 		if (!isGrid)
 			return;
 		int x, y;
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		final int W = getWidth();
 		final int H = getHeight();
 		for (x = 10; x < W - 20; x = x + nPixels)

@@ -62,6 +62,7 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.frames.GraphExportDialog;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
@@ -341,7 +342,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				f.saveAsGraph();
 			}
 		};
+		
 		popup.add(new JMenuItem(saveAs));
+		
+		final JMenu exportMenu = GraphMenuBuilder.createExportMenu(this); 
+		popup.add(exportMenu);
+		
 		final Action setup = new AbstractAction("Page Setup") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -607,13 +613,14 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		});
 	}
 
+	
 	/**
 	 * We create a new graph from a box selection.
 	 * 
 	 * @param outputBox
 	 * @param inputBox
 	 */
-	protected void createNewGraph(MultipleSelection selection,
+ 	protected void createNewGraph(MultipleSelection selection,
 			boolean[] inputBox, boolean[] outputBox) {
 		final GraphFrame f = InternalFrameManager.getManager(null)
 				.newGraphFrame(null);
@@ -1182,9 +1189,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 	private final Stroke rolloverStroke = new BasicStroke((float)(2.1/scaleFactor));
 	
-	public void drawRollover(Graphics2D g) {
+	public void drawRollover(Graphics2D g, DrawGraphParams params) {
 		if (rolloveredBox != null) {
-			g.setColor(getGraphPresentationInfo().getForegroundColor());
+			g.setColor(params.getForegroundColor());
 			g.setStroke(rolloverStroke);
 			GraphicalToolBox.drawRect(g, rolloveredBox.X1, rolloveredBox.Y1,
 					rolloveredBox.Width, rolloveredBox.Height);
@@ -1568,6 +1575,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 	}
 
+	
+
 	/**
 	 * Draws the graph. This method should only be called by the virtual
 	 * machine.
@@ -1579,28 +1588,34 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	public void paintComponent(Graphics f_old) {
 		setClipZone(f_old.getClipBounds());
 		final Graphics2D f = (Graphics2D) f_old;
-		f.scale(scaleFactor, scaleFactor);
-		if (getGraphPresentationInfo().isAntialiasing()) {
+		DrawGraphParams params = defaultDrawParams();
+		drawGraph(f, params);
+	}
+	
+	@Override
+	public void drawGraph(Graphics2D f, DrawGraphParams params) {
+		f.scale(params.getTotalScale(), params.getTotalScale());
+		if (params.isAntialiasing()) {
 			f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 		} else {
 			f.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
-		f.setColor(new Color(205, 205, 205));
+		//f.setColor(new Color(205, 205, 205));
+		//f.fillRect(0, 0, getWidth(), getHeight());
+		f.setColor(params.getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().getBackgroundColor());
-		f.fillRect(0, 0, getWidth(), getHeight());
-		if (getGraphPresentationInfo().isFrame()) {
-			f.setColor(getGraphPresentationInfo().getForegroundColor());
+		if (params.isFrame()) {
+			f.setColor(params.getForegroundColor());
 			f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 			f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
 		}
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		if (decorator == null) {
 			final File file = ((GraphFrame) parentFrame).getGraph();
-			if (getGraphPresentationInfo().isFilename()) {
-				if (getGraphPresentationInfo().isPathname())
+			if (params.isFilename()) {
+				if (params.isPathname())
 					f.drawString((file != null) ? file.getAbsolutePath() : "",
 							20, getHeight() - 45);
 				else
@@ -1608,22 +1623,22 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							getHeight() - 45);
 			}
 		}
-		if (getGraphPresentationInfo().isDate())
+		if (params.isDate())
 			f.drawString(new Date().toString(), 20, getHeight() - 25);
-		drawGrid(f);
+		drawGrid(f, params);
 		if (mouseInGraphicalZone && !selectedBoxes.isEmpty()) {
 			if (EDITING_MODE == MyCursors.REVERSE_LINK_BOXES) {
-				drawTransitionsFromMousePointerToSelectedBoxes(f);
+				drawTransitionsFromMousePointerToSelectedBoxes(f, params);
 			} else if (EDITING_MODE == MyCursors.LINK_BOXES) {
-				drawTransitionsFromSelectedBoxesToMousePointer(f);
+				drawTransitionsFromSelectedBoxesToMousePointer(f, params);
 			}
 		}
-		drawAllTransitions(f);
-		drawAllBoxes(f);
-		drawRollover(f);
+		drawAllTransitions(f,params);
+		drawAllBoxes(f,params);
+		drawRollover(f,params);
 		if (selecting) {
 			// here we draw the selection rectangle
-			f.setColor(getGraphPresentationInfo().getForegroundColor());
+			f.setColor(params.getForegroundColor());
 			f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);
 		}
 	}
@@ -1643,6 +1658,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		if (pageIndex != 0)
 			return Printable.NO_SUCH_PAGE;
 		final Graphics2D f = (Graphics2D) g;
+		DrawGraphParams params = defaultDrawParams();
+		
 		final double DPI = 96.0;
 		final double WidthInInches = p.getImageableWidth() / 72;
 		final double realWidthInInches = (getWidth() / DPI);
@@ -1655,16 +1672,16 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-		f.setColor(getGraphPresentationInfo().getBackgroundColor());
+		f.setColor(params.getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		if (getGraphPresentationInfo().isFrame()) {
-			f.setColor(getGraphPresentationInfo().getForegroundColor());
+		if (params.isFrame()) {
+			f.setColor(params.getForegroundColor());
 			final Stroke oldStroke = f.getStroke();
 			f.setStroke(GraphicalToolBox.frameStroke);
 			f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 			f.setStroke(oldStroke);
 		}
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		final File file = ((GraphFrame) parentFrame).getGraph();
 		if (getGraphPresentationInfo().isFilename()) {
 			if (getGraphPresentationInfo().isPathname())
@@ -1674,11 +1691,11 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				f.drawString((file != null) ? file.getName() : "", 20,
 						getHeight() - 45);
 		}
-		if (getGraphPresentationInfo().isDate())
+		if (params.isDate())
 			f.drawString(new Date().toString(), 20, getHeight() - 25);
-		drawGrid(f);
-		drawAllTransitions(f);
-		drawAllBoxes(f);
+		drawGrid(f,params);
+		drawAllTransitions(f,params);
+		drawAllBoxes(f,params);
 		if (selecting) {
 			// here we draw the selection rectangle
 			f.drawRect(X_drag, Y_drag, dragWidth, dragHeight);

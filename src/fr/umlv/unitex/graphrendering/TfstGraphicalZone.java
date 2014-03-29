@@ -293,33 +293,39 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	@Override
 	public void paintComponent(Graphics f_old) {
 		final Graphics2D f = (Graphics2D) f_old;
+		DrawGraphParams params = defaultDrawParams();
+		drawGraph(f,params);
+	}
+		
+	@Override
+	public void drawGraph(Graphics2D f, DrawGraphParams params) {
 		f.setRenderingHint(
 				RenderingHints.KEY_ANTIALIASING,
 				getGraphPresentationInfo().isAntialiasing() ? RenderingHints.VALUE_ANTIALIAS_ON
 						: RenderingHints.VALUE_ANTIALIAS_OFF);
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().getBackgroundColor());
+		f.setColor(params.getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		if (graphBoxes.size() == 0 || graphBoxes.isEmpty()) {
 			return;
 		}
 		f.setColor(new Color(205, 205, 205));
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().getBackgroundColor());
+		f.setColor(params.getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		final Stroke oldStroke = f.getStroke();
 		f.setStroke(GraphicalToolBox.frameStroke);
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.setStroke(oldStroke);
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
-		drawAllTransitions(f);
-		drawAllBoxes(f);
+		f.setColor(params.getForegroundColor());
+		drawAllTransitions(f, params);
+		drawAllBoxes(f, params);
 	}
 
 	/**
@@ -337,6 +343,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		if (pageIndex != 0)
 			return Printable.NO_SUCH_PAGE;
 		final Graphics2D f = (Graphics2D) g;
+		DrawGraphParams params = defaultDrawParams();
 		final double DPI = 96.0;
 		// (double)Toolkit.getDefaultToolkit().getScreenResolution();
 		final double WidthInInches = p.getImageableWidth() / 72;
@@ -350,14 +357,14 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			f.scale(0.99 * 0.72 * scale_x, 0.99 * 0.72 * scale_x);
 		else
 			f.scale(0.99 * 0.72 * scale_y, 0.99 * 0.72 * scale_y);
-		f.setColor(getGraphPresentationInfo().getBackgroundColor());
+		f.setColor(params.getBackgroundColor());
 		f.fillRect(0, 0, getWidth(), getHeight());
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
+		f.setColor(params.getForegroundColor());
 		f.drawRect(10, 10, getWidth() - 20, getHeight() - 20);
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
-		f.setColor(getGraphPresentationInfo().getForegroundColor());
-		drawAllTransitions(f);
-		drawAllBoxes(f);
+		f.setColor(params.getForegroundColor());
+		drawAllTransitions(f,params);
+		drawAllBoxes(f,params);
 		return Printable.PAGE_EXISTS;
 	}
 

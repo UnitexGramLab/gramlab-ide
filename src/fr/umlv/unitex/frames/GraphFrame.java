@@ -81,6 +81,7 @@ import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.graphrendering.DrawGraphParams;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -1040,6 +1041,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				.getHeight() * graphicalZone.scaleFactor)));
 		graphicalZone.revalidate();
 		graphicalZone.repaint();
+
 	}
 
 	/**
@@ -1401,6 +1403,20 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		g.saveGraph(file);
 		setGraph(file, file, false);
 		return true;
+	}
+	
+	public void exportPng()
+	{
+		GraphExportDialog.openDialog(getGraphicalZone(), GraphExportDialog.FORMAT_PNG);
+	}
+	
+	public void exportJpeg()
+	{
+		GraphExportDialog.openDialog(getGraphicalZone(), GraphExportDialog.FORMAT_JPEG);
+	}
+	
+	public void exportSvg() {
+		GraphExportDialog.openDialog(getGraphicalZone(), GraphExportDialog.FORMAT_SVG);
 	}
 
 	@Override
