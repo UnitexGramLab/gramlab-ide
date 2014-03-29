@@ -129,7 +129,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.addTab("Directories", constructPage1());
 		tabbedPane.addTab("Language & Presentation", constructPage2());
-		tabbedPane.addTab("Morphological dictionaries", constructPage4());
+		tabbedPane.addTab("Morphological-mode dictionaries", constructPage4());
 		tabbedPane.addTab("SVN", constructSvnPage());
 		tabbedPane.addTab("Encoding", constructEncodingPage());
 		upPanel.add(tabbedPane);
@@ -630,7 +630,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 					morphoBinJFC.setMultiSelectionEnabled(true);
 					morphoBinJFC.addChoosableFileFilter(new PersonalFileFilter("bin",
 						"Binary dictionary"));
-					morphoBinJFC.setDialogTitle("Choose your morphological dictionaries");
+					morphoBinJFC.setDialogTitle("Choose your morphological-mode dictionaries");
 					morphoBinJFC.setDialogType(JFileChooser.OPEN_DIALOG);
 				}
 				if (morphoBinJFC.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {

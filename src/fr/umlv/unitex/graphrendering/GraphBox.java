@@ -476,17 +476,16 @@ public class GraphBox extends GenericGraphBox {
 	}
 
 	@Override
-	void drawOtherStandalone(Graphics2D g) {
+	void drawOtherStandalone(Graphics2D g, DrawGraphParams params) {
 		if (!isUnitTestBox()) {
-			super.drawOtherStandalone(g);
+			super.drawOtherStandalone(g, params);
 			return;
 		}
-		final Color old = parentGraphicalZone.getGraphPresentationInfo()
-				.getForegroundColor();
+		final Color old = params.getForegroundColor();
 		try {
 			parentGraphicalZone.getGraphPresentationInfo().setForegroundColor(
 					Color.BLUE);
-			drawOther(g);
+			drawOther(g, params);
 		} finally {
 			parentGraphicalZone.getGraphPresentationInfo().setForegroundColor(
 					old);

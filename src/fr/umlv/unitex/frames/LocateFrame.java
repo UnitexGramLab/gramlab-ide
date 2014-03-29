@@ -90,7 +90,7 @@ public class LocateFrame extends JInternalFrame {
 	private final JRadioButton stopAfterNmatches = new JRadioButton(
 			"Stop after ", true);
 	private final JRadioButton indexAllMatches = new JRadioButton(
-			"Index all utterances in text");
+			"Index all occurrences in text");
 	private final JTextField nMatches = new JTextField("200");
 	private final JRadioButton locateOnSnt = new JRadioButton(
 			"Paumier 2003, working on text (quicker)", true);
