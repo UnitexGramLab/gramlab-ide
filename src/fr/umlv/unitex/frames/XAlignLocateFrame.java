@@ -82,7 +82,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 	private final JRadioButton stopAfterNmatches = new JRadioButton(
 			"Stop after ", true);
 	private final JRadioButton indexAllMatches = new JRadioButton(
-			"Index all utterances in text");
+			"Index all occurrences in text");
 	private final JTextField nMatches = new JTextField("200");
 	private String language;
 	private File snt;

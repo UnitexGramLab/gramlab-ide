@@ -76,6 +76,7 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.DelaFrameListener;
@@ -801,6 +802,7 @@ public class UnitexFrame extends JFrame {
 				saveAllGraphs();
 			}
 		};
+
 		graphMenu.add(new JMenuItem(saveAll));
 		final Action setup = new AbstractAction("Page Setup") {
 			@Override
@@ -808,6 +810,10 @@ public class UnitexFrame extends JFrame {
 				PrintManager.pageSetup();
 			}
 		};
+
+		final JMenu exportMenu = GraphMenuBuilder.createExportMenu();
+		graphMenu.add(exportMenu);
+		
 		graphMenu.add(new JMenuItem(setup));
 		final Action print = new AbstractAction("Print...") {
 			@Override
@@ -1160,43 +1166,29 @@ public class UnitexFrame extends JFrame {
 		graphMenu.addMenuListener(new MenuAdapter() {
 			@Override
 			public void menuSelected(MenuEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				GraphFrame f = InternalFrameManager.getManager(null)
 						.getCurrentFocusedGraphFrame();
-				if (f == null) {
-					save.setEnabled(false);
-					saveAs.setEnabled(false);
-					print.setEnabled(false);
-					undo.setEnabled(false);
-					redo.setEnabled(false);
-					tools.setEnabled(false);
-					format.setEnabled(false);
-					zoom.setEnabled(false);
-					if (InternalFrameManager.getManager(null).getGraphFrames()
-							.size() == 0) {
-						saveAll.setEnabled(false);
-						printAll.setEnabled(false);
-						setup.setEnabled(false);
-					} else {
-						saveAll.setEnabled(true);
-						printAll.setEnabled(true);
-						setup.setEnabled(true);
-					}
-				} else {
-					save.setEnabled(true);
-					saveAs.setEnabled(true);
-					print.setEnabled(true);
-					undo.setEnabled(true);
-					redo.setEnabled(true);
-					tools.setEnabled(true);
-					format.setEnabled(true);
-					zoom.setEnabled(true);
-					saveAll.setEnabled(true);
-					printAll.setEnabled(true);
-					setup.setEnabled(true);
-				}
+
+				boolean existsFocusedGrFrame = f != null;
+				boolean existsAnyGrFrame = InternalFrameManager
+						.getManager(null).getGraphFrames().size() != 0;
+
+				save.setEnabled(existsFocusedGrFrame);
+				saveAs.setEnabled(existsFocusedGrFrame);
+				saveAll.setEnabled(existsAnyGrFrame);
+				exportMenu.setEnabled(existsFocusedGrFrame);
+				setup.setEnabled(existsAnyGrFrame);
+				print.setEnabled(existsFocusedGrFrame);
+				printAll.setEnabled(existsAnyGrFrame);
+				undo.setEnabled(existsFocusedGrFrame);
+				redo.setEnabled(existsFocusedGrFrame);
+				tools.setEnabled(existsFocusedGrFrame);
+				format.setEnabled(existsFocusedGrFrame);
+				zoom.setEnabled(existsFocusedGrFrame);
 
 				List<File> l = PreferencesManager.getUserPreferences()
 						.getRecentGraphs();
+				
 				openRecent.setEnabled(l != null && l.size() > 0);
 
 			}

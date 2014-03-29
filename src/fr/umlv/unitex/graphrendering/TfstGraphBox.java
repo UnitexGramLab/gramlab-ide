@@ -233,15 +233,15 @@ public class TfstGraphBox extends GenericGraphBox {
 	 *            the graphical context
 	 */
 	@Override
-	public void drawTransition(Graphics2D g, GenericGraphBox dest) {
+	public void drawTransition(Graphics2D g, GenericGraphBox dest, DrawGraphParams params) {
 		final TfstGraphBox box = (TfstGraphBox) dest;
 		if (isNextBoxInSameToken(box)) {
 			final Stroke old = g.getStroke();
 			g.setStroke(morphologicalStroke);
-			super.drawTransition(g, dest);
+			super.drawTransition(g, dest, params);
 			g.setStroke(old);
 		} else {
-			super.drawTransition(g, dest);
+			super.drawTransition(g, dest, params);
 		}
 	}
 
@@ -269,9 +269,8 @@ public class TfstGraphBox extends GenericGraphBox {
 	private static final Color koreanUntaggedTokenColor = new Color(0xE9, 0xFF, 0x5B);
 
 	@Override
-	void drawOther(Graphics2D g) {
-		final Color old = parentGraphicalZone.getGraphPresentationInfo()
-				.getBackgroundColor();
+	void drawOther(Graphics2D g, DrawGraphParams params) {
+		final Color old = params.getBackgroundColor();
 		if (ConfigManager.getManager().isKorean(null)
 				&& isKoreanUntaggedToken(content)) {
 			parentGraphicalZone.getGraphPresentationInfo().setBackgroundColor(
@@ -282,7 +281,7 @@ public class TfstGraphBox extends GenericGraphBox {
 			g.setComposite(parentGraphicalZone.decorator.getBoxComposite(
 					getBoxNumber(), c));
 		}
-		super.drawOther(g);
+		super.drawOther(g, params);
 		g.setComposite(c);
 		parentGraphicalZone.getGraphPresentationInfo().setBackgroundColor(old);
 	}
