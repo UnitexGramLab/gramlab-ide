@@ -81,7 +81,6 @@ import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.graphrendering.DrawGraphParams;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
