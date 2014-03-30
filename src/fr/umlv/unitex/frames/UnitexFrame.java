@@ -66,8 +66,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.config.Config;
@@ -357,7 +355,7 @@ public class UnitexFrame extends JFrame {
 					final JMenuItem item = new JMenuItem(caption);
 					item.addActionListener(new ActionListener() {
 						@Override
-						public void actionPerformed(ActionEvent e) {
+						public void actionPerformed(ActionEvent ev) {
 							if (!sfe.getFile().exists()) {
 								JOptionPane.showMessageDialog(null, "File "
 										+ sfe.getFile().getAbsolutePath()
