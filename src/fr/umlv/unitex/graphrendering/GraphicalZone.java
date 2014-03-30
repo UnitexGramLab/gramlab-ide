@@ -21,7 +21,6 @@
 package fr.umlv.unitex.graphrendering;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Graphics;
@@ -62,7 +61,6 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.frames.GraphExportDialog;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
