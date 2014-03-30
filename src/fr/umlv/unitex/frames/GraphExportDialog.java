@@ -437,6 +437,8 @@ public class GraphExportDialog extends JDialog {
 		final BufferedImage image = new BufferedImage(w, h,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = image.createGraphics();
+		g.setBackground(params.getBackgroundColor());
+		g.clearRect(0, 0, w, h);
 		grZone.drawGraph(g, params);
 		BufferedImage cropedImage = image;
 		if (params.isCrop()) {
