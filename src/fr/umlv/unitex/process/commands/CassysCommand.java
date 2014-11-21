@@ -32,4 +32,22 @@ public class CassysCommand extends CommandBuilder {
 		}
 		return this;
 	}
+
+	public CassysCommand separatorsToSystem() {
+		element("-v");
+		return this;
+	}
+
+	public CassysCommand transducerDir(File s) {
+		if (s != null) {
+			protectElement("-r" + s.getAbsolutePath() + File.separator );
+		}  
+		return this;
+	} 
+
+	public CassysCommand cleanupIntermediateFiles() {
+		element("-b");
+		return this;
+	}
+
 }
