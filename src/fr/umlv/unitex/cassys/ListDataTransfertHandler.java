@@ -23,12 +23,14 @@ package fr.umlv.unitex.cassys;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import fr.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableModel;
+import fr.umlv.unitex.cassys.ShareTransducerList;
 
 /**
  * Class specifying how drag and drop transfer from and to the table are done.
@@ -115,7 +117,8 @@ public class ListDataTransfertHandler extends TransferHandler {
 				final String data = (String) support.getTransferable()
 						.getTransferData(DataFlavor.stringFlavor);
 				final JTable table = (JTable) support.getComponent();
-				final Object[] rowData = { DataList.UNRANKED, false, data, true, false, false };
+				ShareTransducerList stl = new ShareTransducerList();
+				final Object[] rowData = { DataList.UNRANKED, false, stl.relativize(data), true, false, false };
 				((DefaultTableModel) table.getModel()).insertRow(row, rowData);
 				return true;
 			} catch (final IOException e) {
@@ -123,6 +126,10 @@ public class ListDataTransfertHandler extends TransferHandler {
 				return false;
 			} catch (final UnsupportedFlavorException e) {
 				e.printStackTrace();
+				return false;
+			}
+			catch (final NotAnAbsolutePathException e1) {
+				e1.printStackTrace();
 				return false;
 			}
 		}

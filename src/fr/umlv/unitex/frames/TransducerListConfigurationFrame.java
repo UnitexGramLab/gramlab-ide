@@ -28,15 +28,18 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
+import fr.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 import fr.umlv.unitex.cassys.DataList;
 import fr.umlv.unitex.cassys.DataListFileNameRenderer;
 import fr.umlv.unitex.cassys.DataListFileRankRenderer;
 import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.cassys.TransducerListTable;
 import fr.umlv.unitex.cassys.TransducerListTableModel;
+import fr.umlv.unitex.cassys.ShareTransducerList;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -587,10 +590,15 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (add_below == a.getSource()) {
 			int selected_row = table.getSelectedRow();
 			final TransducerListTableModel dtm = (TransducerListTableModel) table.getModel();
+			
 			final File selected_file = fileBrowse.getSelectedFile();
+			
+						
+			
 			if (selected_file != null) {
 				try {
-					final Object[] row = { DataList.UNRANKED, false, selected_file.getPath(), true, false,false };
+					ShareTransducerList stl = new ShareTransducerList();
+					final Object[] row = { DataList.UNRANKED, false, stl.relativize(selected_file.getAbsolutePath()), true, false,false };
 					if (selected_row == -1) {
 						selected_row = dtm.getRowCount();
 					}
@@ -602,6 +610,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				} catch (final ArrayIndexOutOfBoundsException e) {
 					e.printStackTrace();
 				}
+				catch (NotAnAbsolutePathException e1) {
+					e1.printStackTrace();
+				}
 			} else {
 				final String t = "No graph selected";
 				final String message = "Please select in the file explorer the graph to be added";
@@ -612,7 +623,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		if (open == a.getSource()) {
 			if (table.getSelectedRow() != -1) {
 				final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
-				final File graph = new File((String) model.getValueAt(
+				final File graph = new File(Config.getCurrentGraphDir(),(String) model.getValueAt(
 							table.getSelectedRow(), 
 							model.getNameIndex()));
 				viewGraph(graph);
@@ -666,7 +677,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				final File f_alphabet = ConfigManager.getManager().getAlphabet(
 						null);
 				final String graphFileName = (String) dtm.getValueAt(i, model.getNameIndex());
-				File graphFile = new File(graphFileName);
+				File graphFile = new File(Config.getCurrentGraphDir(),graphFileName);
 				
 				
 
@@ -811,6 +822,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 	void viewGraph(File f) {
 		File grf = null;
+		System.out.println(f);
 		if (f.getName().endsWith(".grf")) {
 			grf = f;
 		}
