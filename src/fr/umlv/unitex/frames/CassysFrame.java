@@ -31,6 +31,8 @@ import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
 import fr.umlv.unitex.process.commands.CassysCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
+import fr.umlv.unitex.config.Config;
+
 /**
  * Main frame of the cassys menu.
  * <p/>
@@ -82,7 +84,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	 * <p/>
 	 * This class is listenning to it
 	 */
-	private final JButton _import;
+	//private final JButton _import;
 	
 	/**
 	 * The <code>export transducer file</code> button.
@@ -132,11 +134,11 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		launch.addActionListener(this);
 		jpan.add(launch);
 		jpan.add(Box.createRigidArea(new Dimension(150, 60)));
-		_import = new JButton("Import");
+		/*_import = new JButton("Import");
 		_import.setMaximumSize(defaultButtonDimension);
 		_import.setAlignmentX(Component.CENTER_ALIGNMENT);
 		_import.addActionListener(this);
-		jpan.add(_import);
+		jpan.add(_import);*/
 		export = new JButton("Export");
 		export.setMaximumSize(defaultButtonDimension);
 		export.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -187,12 +189,13 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						null);
 				final File f_transducer = fc.getSelectedFile();
 				final File f_target = Config.getCurrentSnt();
-				
 				CassysCommand com = new CassysCommand()
 						.alphabet(f_alphabet)
 						.targetText(f_target)
 						.transducerList(f_transducer)
-						.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
+						.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null))
+						.separatorsToSystem()
+						.transducerDir(Config.getCurrentGraphDir());
 				
 				com.setWhatToDoBefore(new BeforeCassysDo(f_target.getAbsolutePath()));
 				
@@ -202,8 +205,10 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				
 				// new ProcessInfoFrame(com, true, new CassysDo());
 				Launcher.exec(cassysCommand, true, new CassysDo(Config.getUserCurrentLanguageDir(), f_target));
+				System.out.println(cassysCommand);
 			}
 		}
+		/*
 		if (a.getSource() == _import){
 			ShareTransducerList stl = new ShareTransducerList();
 			try {
@@ -224,7 +229,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			
-		}
+		}*/
 		if (a.getSource() == export){
 			ShareTransducerList stl = new ShareTransducerList();
 			try {

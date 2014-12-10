@@ -26,7 +26,7 @@ import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
-
+import fr.umlv.unitex.config.Config;
 /**
  * Render class of File Name in the table. It displays a file name in red and
  * italic if it does not exist.
@@ -67,7 +67,7 @@ public class DataListFileNameRenderer extends JLabel implements
 
 		
 		final String str = (String) value;
-		final File f = new File(str);
+		final File f = new File(Config.getCurrentGraphDir(),str);
 		// Write in red and italic if the file does not exist
 		
 		
