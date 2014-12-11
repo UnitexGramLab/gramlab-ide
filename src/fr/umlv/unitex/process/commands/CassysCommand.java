@@ -37,7 +37,7 @@ public class CassysCommand extends CommandBuilder {
 	    element("-v");
 	    return this;
 	  }
-	
+
 	public CassysCommand transducerDir(File s) {
 	    if (s != null) {
 	      protectElement("-r" + s.getAbsolutePath() + File.separator );
@@ -45,4 +45,10 @@ public class CassysCommand extends CommandBuilder {
 	    System.out.println(s.getAbsolutePath());
 	    return this;
 	  } 
+
+	public CassysCommand cleanupIntermediateFiles() {
+		element("-b");
+		return this;
+	}
+
 }
