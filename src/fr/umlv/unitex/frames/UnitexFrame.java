@@ -470,7 +470,8 @@ public class UnitexFrame extends JFrame {
 		cassys = new AbstractAction("Apply CasSys Cascade...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newCassysFrame();
+				InternalFrameManager.getManager(null).newCassysFrame()
+                                        .getContentPane().add(Config.getTransducerListDialogBox(),BorderLayout.WEST);
 			}
 		};
 		cassys.setEnabled(false);
@@ -1913,8 +1914,8 @@ public class UnitexFrame extends JFrame {
 	 */
 	void editCascade() {
 		Config.getTransducerListDialogBox().setControlButtonsAreShown(true);
-		Config.getTransducerListDialogBox().setDialogType(
-				JFileChooser.OPEN_DIALOG);
+		/*Config.getTransducerListDialogBox().setDialogType(
+				JFileChooser.OPEN_DIALOG);*/
 		final int returnVal = Config.getTransducerListDialogBox()
 				.showOpenDialog(this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -1928,6 +1929,7 @@ public class UnitexFrame extends JFrame {
 			return;
 		}
 		openCascade(f);
+                Config.getTransducerListDialogBox().setControlButtonsAreShown(false);
 	}
 
 }
