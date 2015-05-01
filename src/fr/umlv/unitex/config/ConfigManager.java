@@ -94,6 +94,15 @@ public class ConfigManager extends AbstractConfigModel {
 	}
 
 	@Override
+	public boolean isMatchWordBoundaries(String language) {
+		if (language == null) {
+			language = Config.getCurrentLanguage();
+		}
+		final Preferences p = PreferencesManager.getPreferences(language);
+		return p.isMatchWordBoundaries();
+	}
+
+	@Override
 	public boolean isRightToLeftForGraphs(String language) {
 		if (language == null) {
 			language = Config.getCurrentLanguage();

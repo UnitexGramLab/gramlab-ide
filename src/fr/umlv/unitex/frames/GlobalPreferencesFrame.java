@@ -87,6 +87,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	final JCheckBox rightToLeftForGraphsCheckBox = new JCheckBox(
 			"Right to left rendering for graphs");
 	final JCheckBox semiticCheckBox = new JCheckBox("Semitic language");
+	final JCheckBox matchWordBoundariesCheckBox = new JCheckBox("Match word boundaries");
 	final JCheckBox charByCharCheckBox = new JCheckBox(
 			"Analyze this language char by char");
 	final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
@@ -190,6 +191,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 				getPref().setSvnMonitoring(svnMonitoring.isSelected());
 				getPref().setOnlyCosmetic(onlyCosmetic.isSelected());
 				getPref().setSemitic(semiticCheckBox.isSelected());
+				getPref().setMatchWordBoundaries(matchWordBoundariesCheckBox.isSelected());
 				getPref().setRightToLeftForText(
 						rightToLeftForCorpusCheckBox.isSelected());
 				getPref().setRightToLeftForGraphs(
@@ -441,10 +443,11 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		textFont.setDisabledTextColor(Color.black);
 		concordanceFont.setDisabledTextColor(Color.black);
 		page2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		final JPanel yuyu = new JPanel(new GridLayout(5, 1));
+		final JPanel yuyu = new JPanel(new GridLayout(6, 1));
 		yuyu.add(charByCharCheckBox);
 		yuyu.add(morphologicalUseOfSpaceCheckBox);
 		yuyu.add(semiticCheckBox);
+		yuyu.add(matchWordBoundariesCheckBox);
 		yuyu.add(rightToLeftForCorpusCheckBox);
 		yuyu.add(rightToLeftForGraphsCheckBox);
 		page2.add(yuyu);
@@ -545,6 +548,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			htmlViewer.setText(getPref().getHtmlViewer().getAbsolutePath());
 		}
 		semiticCheckBox.setSelected(getPref().isSemitic());
+		matchWordBoundariesCheckBox.setSelected(getPref().isMatchWordBoundaries());
 		rightToLeftForCorpusCheckBox.setSelected(getPref()
 				.isRightToLeftForText());
 		rightToLeftForGraphsCheckBox.setSelected(getPref()
