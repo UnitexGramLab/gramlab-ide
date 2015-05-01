@@ -88,6 +88,12 @@ public class Preferences {
 	private boolean mustLog = false;
 	private boolean svnMonitoring = true;
 	private boolean onlyCosmetic = false;
+	
+	/**
+	 * LocateTfst option: if true, forbids that 'air' + 'port' in the grammar can match 'airport' in the TFST
+	 */
+	private boolean matchWordBoundaries = true;
+	
 	/**
 	 * Maximum size in bytes of text files. If a file is bigger than this limit,
 	 * it won't be loaded.
@@ -128,6 +134,7 @@ public class Preferences {
 		defaultProperties.setProperty("RIGHT TO LEFT FOR TEXT", "false");
 		defaultProperties.setProperty("RIGHT TO LEFT FOR GRAPHS", "false");
 		defaultProperties.setProperty("SEMITIC", "false");
+		defaultProperties.setProperty("MATCH_WORD_BOUNDARIES", "true");
 		defaultProperties.setProperty("BACKGROUND COLOR",
 				"" + Color.WHITE.getRGB());
 		defaultProperties.setProperty("FOREGROUND COLOR",
@@ -236,6 +243,7 @@ public class Preferences {
 		setRightToLeftForGraphs(Boolean.valueOf(prop
 				.getProperty("RIGHT TO LEFT FOR GRAPHS")));
 		setSemitic(Boolean.valueOf(prop.getProperty("SEMITIC")));
+		setMatchWordBoundaries(Boolean.valueOf(prop.getProperty("MATCH_WORD_BOUNDARIES")));
 		info = new GraphPresentationInfo(backgroundColor, foregroundColor,
 				subgraphColor, selectedColor, commentColor,
 				outputVariableColor, packageColor, contextColor,
@@ -309,6 +317,7 @@ public class Preferences {
 		prop.setProperty("RIGHT TO LEFT FOR GRAPHS", ""
 				+ isRightToLeftForGraphs());
 		prop.setProperty("SEMITIC", "" + isSemitic());
+		prop.setProperty("MATCH_WORD_BOUNDARIES", "" + isMatchWordBoundaries());
 		prop.setProperty("BACKGROUND COLOR", ""
 				+ info.getBackgroundColor().getRGB());
 		prop.setProperty("FOREGROUND COLOR", ""
@@ -382,6 +391,7 @@ public class Preferences {
 		p.setRightToLeftForText(rightToLeftForText);
 		p.setRightToLeftForGraphs(rightToLeftForGraphs);
 		p.setSemitic(semitic);
+		p.setMatchWordBoundaries(matchWordBoundaries);
 		p.setGraphRepositoryPath(graphRepositoryPath);
 		p.setLoggingDir(loggingDir);
 		p.setMustLog(mustLog);
@@ -449,6 +459,14 @@ public class Preferences {
 
 	public boolean isSemitic() {
 		return semitic;
+	}
+
+	public void setMatchWordBoundaries(boolean b) {
+		this.matchWordBoundaries = b;
+	}
+
+	public boolean isMatchWordBoundaries() {
+		return matchWordBoundaries;
 	}
 
 	public void setRightToLeftForGraphs(boolean rightToLeftForGraphs) {

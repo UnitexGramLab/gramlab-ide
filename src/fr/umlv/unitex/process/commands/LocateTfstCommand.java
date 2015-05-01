@@ -121,4 +121,9 @@ public class LocateTfstCommand extends CommandBuilder {
 		element("--single_tags_only");
 		return this;
 	}
+
+	public LocateTfstCommand dontMatchWordBoundaries() {
+		element("--dont_match_word_boundaries");
+		return this;
+	}
 }

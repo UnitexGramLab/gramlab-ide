@@ -449,6 +449,9 @@ public class LocateFrame extends JInternalFrame {
 			LocateTfstCommand locateCmd = new LocateTfstCommand().tfst(tfst)
 					.fst2(fst2)
 					.alphabet(ConfigManager.getManager().getAlphabet(null));
+			if (!ConfigManager.getManager().isMatchWordBoundaries(null)) {
+				locateCmd = locateCmd.dontMatchWordBoundaries();
+			}
 			if (shortestMatches.isSelected())
 				locateCmd = locateCmd.shortestMatches();
 			else if (longuestMatches.isSelected())
