@@ -1854,6 +1854,9 @@ public class UnitexFrame extends JFrame {
 		if (ConfigManager.getManager().isKorean(null)) {
 			cmd1 = cmd1.korean();
 		}
+		if (!ConfigManager.getManager().isMatchWordBoundaries(null)) {
+			cmd1 = cmd1.dontMatchWordBoundaries();
+		}
 		commands.addCommand(cmd1);
 		ConcordCommand cmd2;
 		File indFile = new File(Config.getCurrentSntDir(), "concord.ind");

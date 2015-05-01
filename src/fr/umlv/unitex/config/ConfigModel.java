@@ -49,6 +49,8 @@ public interface ConfigModel {
 
 	public boolean isSemiticLanguage(String language);
 
+	public boolean isMatchWordBoundaries(String language);
+
 	public boolean isRightToLeftForText(String language);
 
 	public boolean isRightToLeftForGraphs(String language);
