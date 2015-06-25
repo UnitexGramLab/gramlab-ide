@@ -311,8 +311,9 @@ public class PreprocessDialog extends JDialog {
 			lastOutputOffsets = new File(sntDir, "unxmlize.out.offsets");
 			nextOutputOffsets = new File(sntDir, "normalize.out.offsets");
 		}
-                else
+                else {
                     nextOutputOffsets = new File(sntDir, "normalize.out.offsets");
+                }
 		commands = normalizingText(commands, lastOutputOffsets,
 				nextOutputOffsets);
 		lastOutputOffsets = nextOutputOffsets;
@@ -625,8 +626,9 @@ public class PreprocessDialog extends JDialog {
 			lastOutputOffsets = new File(sntDir, "unxmlize.out.offsets");
 			nextOutputOffsets = new File(sntDir, "normalize.out.offsets");
 		}
-                else
+                else {
                     nextOutputOffsets = new File(sntDir, "normalize.out.offsets");
+                }
 		commands = normalizingText(commands, lastOutputOffsets,
 				nextOutputOffsets);
 		lastOutputOffsets = nextOutputOffsets;
