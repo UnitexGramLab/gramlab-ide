@@ -14,7 +14,9 @@ public class TransducerListTable extends JTable {
 	
 	/**
 	 * Redefinition of the tableChanged method to ensure integrity data
-	 * (ie both merge and replace cannot be set at true)
+	 * (ie both merge and replace cannot be set at true  OR
+         *     both generic and replace cannot be set to true OR 
+         *     both generic and until fix (star) cannot be set to true)
 	 */
 	@Override
 	public void tableChanged(TableModelEvent e) {
@@ -53,6 +55,19 @@ public class TransducerListTable extends JTable {
 					}
 				}
 			}
+		}
+                    
+                if (e.getColumn() == 6) {	
+                    if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
+			for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
+                            if (((Boolean) getValueAt(i, model.getReplaceIndex()) || (Boolean) getValueAt(i, model.getStarIndex()))
+				&& (Boolean) getValueAt(i, model.getGenericIndex())) {
+				setValueAt(Boolean.FALSE, i, model.getReplaceIndex());
+                                setValueAt(Boolean.FALSE, i, model.getStarIndex());
+                                setValueAt(Boolean.TRUE, i, model.getMergeIndex());
+                            }
+			}
+                    }
 		}
 		
 		// Update all rank columns.
