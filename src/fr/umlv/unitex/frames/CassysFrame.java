@@ -195,8 +195,9 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						.transducerList(f_transducer)
 						.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null))
 						.separatorsToSystem()
-						.transducerDir(Config.getCurrentGraphDir());
-				
+						.transducerDir(Config.getCurrentGraphDir())
+                                                .inputOffset(new File(Config.getCurrentSntDir(), "normalize.out.offsets"));
+                                                                                              
 				com.setWhatToDoBefore(new BeforeCassysDo(f_target.getAbsolutePath()));
 				
 				cassysCommand.addCommand(com);
