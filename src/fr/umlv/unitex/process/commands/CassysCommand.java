@@ -47,7 +47,7 @@ public class CassysCommand extends CommandBuilder {
 	  } 
         
         public CassysCommand inputOffset(File s) {
-            if (s != null) {
+            if (s != null &&s.isFile()) {
                 protectElement("--input_offsets" + s.getAbsolutePath() + File.separator );
             }
             return this;
