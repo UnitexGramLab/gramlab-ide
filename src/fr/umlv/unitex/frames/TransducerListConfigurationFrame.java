@@ -111,7 +111,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	/**
 	 * Table storing the sorted list of transducer files to be applied.
 	 * <p/>
-	 * The table has three columns. The <code>name</code> column indicates the
+	 * The table has seven columns. The <code>name</code> column indicates the
 	 * name of the transducer file. The <code>merge</code> and
 	 * <code>replace</code> columns indicate whether merge or replace are
 	 * selected. To ensure that, only one of <code>merge</code> or
@@ -323,7 +323,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		table.getColumnModel().getColumn(3).setPreferredWidth(70);
 		table.getColumnModel().getColumn(4).setPreferredWidth(70);
 		table.getColumnModel().getColumn(5).setPreferredWidth(90);
-		
+		table.getColumnModel().getColumn(6).setPreferredWidth(80);
 	}
 
 	void fill_table(File f) {
@@ -343,7 +343,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 							// ***final Object[] o = { DataList.UNRANKED, cfa.getFileName(), 
 							// ***		cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled(), cfa.isStar() };
 							final Object[] o = { DataList.UNRANKED, cfa.isDisabled(), cfa.getFileName(), 
-										cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isStar() };
+										cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isStar(), cfa.isGeneric() };
 							tableModel.addRow(o);
 							if (cfa.isCommentFound()) {
 								editedFileHasCommentOrError = true;
@@ -795,6 +795,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 				} else {
 					fw.write(" 1");
 				}
+                                if((Boolean) table.getValueAt(i, model.getGenericIndex())) {
+                                    fw.write(" @");
+                                }
+                                else {
+                                    fw.write(" 0");
+                                }
 				fw.newLine();
 			}
 			fw.close();

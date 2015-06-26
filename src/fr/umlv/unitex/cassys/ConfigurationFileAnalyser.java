@@ -27,7 +27,7 @@ public class ConfigurationFileAnalyser {
 	private boolean disabled;
 	private boolean star;
 	private boolean commentFound;
-
+        private boolean generic;
 	/**
 	 * @return the fileName
 	 */
@@ -55,7 +55,13 @@ public class ConfigurationFileAnalyser {
 	public boolean isCommentFound() {
 		return commentFound;
 	}
-	
+        
+	/**
+         * @return is graph generic or not
+         */
+        public boolean isGeneric() {
+		return generic;
+	}
 	
 	/**
 	 * 
@@ -123,6 +129,19 @@ public class ConfigurationFileAnalyser {
 					throw new InvalidLineException(lineSubstring[0]
 						                     						+ " --> Fourth argument should be 1 or *\n");
 				}
+                                if(lineCore.length>4){
+                                    if(lineCore[4].equals("@")){
+                                        generic = true;
+                                        mergeMode = true;
+                                        replaceMode = false;
+                                    }
+                                    else {
+                                        generic = false;
+                                    }
+                                }
+                                else {
+                                    generic = false;
+                                }
 			} else {
 				star = false;
 			}
