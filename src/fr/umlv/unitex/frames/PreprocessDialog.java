@@ -648,9 +648,9 @@ public class PreprocessDialog extends JDialog {
 					nextOutputOffsets);
 		}
 		lastOutputOffsets = nextOutputOffsets;
-		if (offsets) {
-			nextOutputOffsets = new File(sntDir, "tokenize.out.offsets");
-		}
+		//if (offsets) {
+		nextOutputOffsets = new File(sntDir, "tokenize.out.offsets");  
+		//}
 		commands = tokenization(commands, lastOutputOffsets, nextOutputOffsets);
 		if (applyDicCheck.isSelected()) {
 			commands = applyDefaultDictionaries(commands);
