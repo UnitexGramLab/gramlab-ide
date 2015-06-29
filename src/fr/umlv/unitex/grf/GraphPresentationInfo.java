@@ -33,6 +33,7 @@ public class GraphPresentationInfo {
 	private final Color outputVariableColor;
 	private final Color packageColor;
 	private final Color contextColor;
+        private final Color genericGrfColor;
 	private final Color morphologicalModeColor;
 	private final Color unreachableGraphColor;
 	private FontInfo input;
@@ -51,7 +52,7 @@ public class GraphPresentationInfo {
 			Color morphologicalModeColor, Color unreachableGraphColor,
 			FontInfo input, FontInfo output, boolean date, boolean filename,
 			boolean pathname, boolean frame, boolean rightToLeft,
-			boolean antialiasing, String iconBarPosition) {
+			boolean antialiasing, String iconBarPosition, Color gGrfColor) {
 		this.backgroundColor = backgroundColor;
 		this.foregroundColor = foregroundColor;
 		this.subgraphColor = subgraphColor;
@@ -71,6 +72,7 @@ public class GraphPresentationInfo {
 		this.rightToLeft = rightToLeft;
 		this.antialiasing = antialiasing;
 		this.iconBarPosition = iconBarPosition;
+                this.genericGrfColor = gGrfColor;
 	}
 
 	@Override
@@ -80,7 +82,7 @@ public class GraphPresentationInfo {
 				outputVariableColor, packageColor, contextColor,
 				morphologicalModeColor, unreachableGraphColor, input.clone(),
 				output.clone(), date, filename, pathname, frame, rightToLeft,
-				antialiasing, iconBarPosition);
+				antialiasing, iconBarPosition, genericGrfColor);
 	}
 
 	public boolean isFrame() {
@@ -205,6 +207,10 @@ public class GraphPresentationInfo {
 
 	public Color getContextColor() {
 		return contextColor;
+	}
+        
+        public Color getGenericGrfColor() {
+		return genericGrfColor;
 	}
 
 	public Color getMorphologicalModeColor() {

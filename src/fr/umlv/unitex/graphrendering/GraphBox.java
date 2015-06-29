@@ -228,6 +228,7 @@ public class GraphBox extends GenericGraphBox {
 		L = content.length();
 		variable = false;
 		contextMark = false;
+                genericGrfMark = false;
 		morphologicalModeMark = false;
 		commentBox = false;
 		transduction = "";
@@ -295,6 +296,25 @@ public class GraphBox extends GenericGraphBox {
 			X_out = X + Width + 2;
 			return;
 		}
+                if(content.equals("$@")) {
+                    // //////////////////////
+                    // case of mark $@:
+                    // $@ ab => search ab in the token list
+                    // /////////////////////
+                    genericGrfMark = true;
+                    lines.clear();
+                    greyed.clear();
+                    final String sub = content.substring(1);
+                    lines.add(sub);
+                    greyed.add(Boolean.FALSE);
+                    transduction = "";
+                    n_lines = 1;
+                    Height = get_h_variable_ligne() + 3;
+                    Width = maxContextMarkLineWidth(sub) + 5;
+                    Y1 = Y - Height / 2;
+                    X_out = X + Width + 2;
+                    return;
+                }
 		if (content.equals("$<") || content.equals("$>")) {
 			// //////////////////////////////////////////
 			// case of morphological mode marks ($< and $>)
