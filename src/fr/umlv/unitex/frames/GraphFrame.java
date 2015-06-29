@@ -850,6 +850,15 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		negative.setPreferredSize(new Dimension(36, 36));
 		negative.setForeground(Color.GREEN);
 		myToolBar.add(negative);
+                final JButton genericGrf = new JButton(
+                    graphicalZone.getAddGenericGraphIndicator());
+                genericGrf.setHideActionText(true);
+                genericGrf.setText("$@");
+                genericGrf.setMaximumSize(new Dimension(36, 36));
+		genericGrf.setMinimumSize(new Dimension(36, 36));
+		genericGrf.setPreferredSize(new Dimension(36, 36));
+		genericGrf.setForeground(Color.RED);
+		myToolBar.add(genericGrf);
 	}
 
 	public static class ShowDiffDo implements ToDo {

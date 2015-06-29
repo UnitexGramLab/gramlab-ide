@@ -155,6 +155,8 @@ public class Preferences {
 				"" + Color.RED.getRGB());
 		defaultProperties.setProperty("SELECTED NODES COLOR",
 				"" + Color.BLUE.getRGB());// 255");
+                defaultProperties.setProperty("GENERIC GRAPH MARK COLOR", 
+                                "" + Color.RED.getRGB());
 		defaultProperties.setProperty("ANTIALIASING", "false");
 		defaultProperties.setProperty("HTML VIEWER", "");
 		defaultProperties.setProperty("MORPHOLOGICAL DICTIONARY", "");
@@ -231,6 +233,8 @@ public class Preferences {
 				.getProperty("MORPHOLOGICAL NODES COLOR")));
 		final Color unreachableGraphColor = new Color(Integer.parseInt(prop
 				.getProperty("UNREACHABLE GRAPH COLOR")));
+                final Color genericGrfColor = new Color(Integer.parseInt(prop
+                                .getProperty("GENERIC GRAPH MARK COLOR")));
 		final boolean date = Boolean.valueOf(prop.getProperty("DATE"));
 		final boolean filename = Boolean.valueOf(prop.getProperty("FILE NAME"));
 		final boolean pathname = Boolean.valueOf(prop.getProperty("PATH NAME"));
@@ -249,7 +253,7 @@ public class Preferences {
 				outputVariableColor, packageColor, contextColor,
 				morphologicalModeColor, unreachableGraphColor, input, output,
 				date, filename, pathname, frame, isRightToLeftForGraphs(),
-				antialiasing, iconBarPosition);
+				antialiasing, iconBarPosition,genericGrfColor);
 		String s = prop.getProperty("HTML VIEWER");
 		setHtmlViewer((s == null || s.equals("")) ? null : new File(s));
 		setMorphologicalDic(tokenizeMorphologicalDicList(prop
@@ -332,6 +336,8 @@ public class Preferences {
 				+ info.getPackageColor().getRGB());
 		prop.setProperty("CONTEXT NODES COLOR", ""
 				+ info.getContextColor().getRGB());
+                prop.setProperty("GENERIC GRAPH MARK COLOR", ""
+				+ info.getGenericGrfColor().getRGB());
 		prop.setProperty("MORPHOLOGICAL NODES COLOR", ""
 				+ info.getMorphologicalModeColor().getRGB());
 		prop.setProperty("OUTPUT VARIABLE COLOR", ""

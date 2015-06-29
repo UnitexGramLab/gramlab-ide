@@ -76,6 +76,10 @@ public class GenericGraphBox {
 	 * Indicates if the box contains a morphological mode tag
 	 */
 	public boolean morphologicalModeMark;
+        /**
+        * Indicates if the box contains generic graph indicator
+        */
+        public boolean genericGrfMark;
 	/**
 	 * Indicates if the box is currently selected
 	 */
@@ -891,6 +895,7 @@ public class GenericGraphBox {
 			drawContextMarkStandalone(g, params);
 			return;
 		}
+
 		g.setColor(params.getCommentColor());
 		if (commentBox) {
 			g.setColor(Color.GREEN.darker());
@@ -1090,6 +1095,13 @@ public class GenericGraphBox {
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
 	}
+        
+        private void drawGenericGrfMark(Graphics2D g, DrawGraphParams params) {
+		g.setColor(params.getGenericGrfColor());
+		g.setFont(variableFont);
+		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
+				+ get_h_variable_ligne());
+	}
 
 	private void drawContextMarkSelected(Graphics2D g, DrawGraphParams params) {
 		drawVariableSelected(g, params);
@@ -1110,6 +1122,9 @@ public class GenericGraphBox {
 		drawVariableSelected(g, params);
 	}
 
+        private void drawGenericGrfMarkSelected(Graphics2D g, DrawGraphParams params) {
+		drawVariableSelected(g, params);
+	}
 	void drawOther(Graphics2D g, DrawGraphParams params) {
 		final int boxNumber = getBoxNumber();
 		int i;
@@ -1164,6 +1179,11 @@ public class GenericGraphBox {
 			drawContextMark(g, params);
 			return;
 		}
+                if(genericGrfMark) { 
+                    drawGenericGrfMark(g,params);
+                    return;
+                }
+                    
 		if (morphologicalModeMark) {
 			drawMorphologicalModeMark(g, params);
 			return;
@@ -1276,6 +1296,12 @@ public class GenericGraphBox {
 			drawMorphologicalModeMarkSelected(g, params);
 			return;
 		}
+                
+                if(genericGrfMark) {
+                    drawGenericGrfMarkSelected(g,params);
+                    return;
+                }
+                
 		g.setColor(params.getForegroundColor());
 		// drawing the box
 		if (n_lines == 0) {

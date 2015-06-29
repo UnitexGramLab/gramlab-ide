@@ -164,6 +164,10 @@ public class SVG {
 			drawMorphologicalModeMark(g);
 			return;
 		}
+                if(g.genericGrfMark) {
+                    drawGenericGrfMark(g);
+                    return;
+                }
 		final Color color = info.getForegroundColor();
 		// drawing the box
 		if (g.n_lines == 0) {
@@ -262,6 +266,15 @@ public class SVG {
 
 	private void drawContextMark(GenericGraphBox g) throws IOException {
 		final Color color = info.getContextColor();
+		graphics.setFont(GenericGraphBox.variableFont);
+		drawText(g.lines.get(0), g.X1 + 5, g.Y1
+				- graphics.getFontMetrics().getDescent()
+				+ graphics.getFontMetrics().getHeight(), color,
+				GenericGraphBox.variableFont);
+	}
+        
+        private void drawGenericGrfMark(GenericGraphBox g) throws IOException {
+		final Color color = info.getGenericGrfColor();
 		graphics.setFont(GenericGraphBox.variableFont);
 		drawText(g.lines.get(0), g.X1 + 5, g.Y1
 				- graphics.getFontMetrics().getDescent()
