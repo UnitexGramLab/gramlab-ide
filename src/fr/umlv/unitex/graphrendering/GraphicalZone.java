@@ -155,6 +155,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	public Action getSurroundWithNegativeRightContextAction() {
 		return surroundWithNegativeRightContext;
 	}
+        
+        Action addGenericGraphIndicator;
+        
+        public Action getAddGenericGraphIndicator() {
+		return addGenericGraphIndicator;
+	}
 
 	private void createPopup() {
 		final JPopupMenu popup = new JPopupMenu();
@@ -272,6 +278,21 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithNegativeRightContext.putValue(Action.SHORT_DESCRIPTION,
 				"Surround box selection with negative right context tags");
 		submenu.add(new JMenuItem(surroundWithNegativeRightContext));
+                
+                addGenericGraphIndicator = new AbstractAction(
+                        "Generic graph indicator") {
+                    @Override
+                    @SuppressWarnings("unchecked")
+                    public void actionPerformed(ActionEvent e) {
+                        surroundWithBoxes(
+                            (ArrayList<GenericGraphBox>) selectedBoxes.clone(),
+                            "$@", null);
+                    }
+                };
+                addGenericGraphIndicator.setEnabled(false);
+                addGenericGraphIndicator.putValue(Action.SHORT_DESCRIPTION, 
+                        "Insert generic graph mark before the selected box");
+                submenu.add(new JMenuItem(addGenericGraphIndicator));
 		popup.add(submenu);
 		final Action mergeBoxesAction = new AbstractAction("Merge boxes") {
 			@Override
@@ -322,6 +343,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				surroundWithNegativeRightContext.setEnabled(selected);
 				mergeBoxesAction.setEnabled(selected);
 				newGraphAction.setEnabled(selected);
+                                addGenericGraphIndicator.setEnabled(selected);
 			}
 		});
 		popup.addSeparator();
@@ -793,6 +815,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
+                        if (b.content.equals("$@")) {
+				JOptionPane.showMessageDialog(null,
+						"Cannot merge generic graph box", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
 			if (b.content.startsWith("$")
 					&& (b.content.endsWith("(") || b.content.endsWith(")"))) {
 				JOptionPane.showMessageDialog(null,
@@ -975,6 +1003,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		final GraphBox newBox = new GraphBox(x - 40, y, GenericGraphBox.NORMAL,
 				this);
+                System.out.println("create");
 		edit.addEdit(new AddBoxEdit(newBox, graphBoxes, this));
 		/* Finally, we set up all transitions */
 		for (final GenericGraphBox from : graphBoxes) {

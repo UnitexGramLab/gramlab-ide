@@ -46,6 +46,7 @@ private Color unreachableGraphColor;
 private Color outputVariableColor;
 private Color contextColor;
 private Color morphologicalModeColor;
+private Color genericGrfColor;
 private boolean frame;
 private boolean filename;
 private boolean pathname;
@@ -189,6 +190,13 @@ public void setMorphologicalModeColor(Color morphologicalModeColor) {
 	this.morphologicalModeColor = morphologicalModeColor;
 }
 
+public Color getGenericGrfColor() {
+    return genericGrfColor;
+}
+
+public void setGenericGrfColor(Color gGrfColor) {
+    this.genericGrfColor = gGrfColor;
+}
 public int getDpi() {
 	return dpi;
 }

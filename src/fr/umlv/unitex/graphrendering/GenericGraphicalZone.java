@@ -581,6 +581,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		params.setOutputVariableColor(getGraphPresentationInfo().getOutputVariableColor());
 		params.setContextColor(getGraphPresentationInfo().getContextColor());
 		params.setMorphologicalModeColor(getGraphPresentationInfo().getMorphologicalModeColor());
+                params.setGenericGrfColor(getGraphPresentationInfo().getGenericGrfColor());
 		params.setFrame(getGraphPresentationInfo().isFrame());
 		params.setFilename(getGraphPresentationInfo().isFilename());
 		params.setPathname(getGraphPresentationInfo().isPathname());
