@@ -125,12 +125,14 @@ public class Text {
 			UnxmlizeCommand cmd) {
 		final File dir = Config.getCurrentSntDir();
 		final MultiCommands commands = new MultiCommands();
+                File outputOffsets = new File(dir, "normalize.out.offsets");
 		if (cmd != null) {
 			commands.addCommand(cmd);
 		}
 		// NORMALIZING TEXT...
 		final NormalizeCommand normalizeCmd = new NormalizeCommand()
-				.textWithDefaultNormalization(name);
+				.textWithDefaultNormalization(name)
+                                .outputOffsets(outputOffsets);
 		commands.addCommand(normalizeCmd);
 		// creating snt dir
 		final MkdirCommand mkdir = new MkdirCommand().name(dir);
