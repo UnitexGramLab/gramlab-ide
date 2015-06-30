@@ -296,7 +296,7 @@ public class GraphBox extends GenericGraphBox {
 			X_out = X + Width + 2;
 			return;
 		}
-                if(content.equals("$@")) {
+                if(content.equals("$@") || content.startsWith("$@/")) {
                     // //////////////////////
                     // case of mark $@:
                     // $@ ab => search ab in the token list
@@ -304,10 +304,13 @@ public class GraphBox extends GenericGraphBox {
                     genericGrfMark = true;
                     lines.clear();
                     greyed.clear();
-                    final String sub = content.substring(1);
+                    final String sub = content.substring(1,2);
                     lines.add(sub);
                     greyed.add(Boolean.FALSE);
                     transduction = "";
+                    if(content.length() > 3 && content.charAt(2) =='/') {
+                            transduction = transduction.concat(content.substring(3));
+                    }
                     n_lines = 1;
                     Height = get_h_variable_ligne() + 3;
                     Width = maxContextMarkLineWidth(sub) + 5;
