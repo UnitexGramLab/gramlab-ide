@@ -1101,6 +1101,10 @@ public class GenericGraphBox {
 		g.setFont(variableFont);
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
+                if(!"".equals(transduction)) {
+                    g.drawString(transduction, X1 + 10, Y1 + Height
+				+ g.getFontMetrics().getHeight());
+                }
 	}
 
 	private void drawContextMarkSelected(Graphics2D g, DrawGraphParams params) {
