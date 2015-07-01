@@ -853,7 +853,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                 final JButton genericGrf = new JButton(
                     graphicalZone.getAddGenericGraphIndicator());
                 genericGrf.setHideActionText(true);
-                genericGrf.setText("$@");
+                genericGrf.setText("$G");
                 genericGrf.setMaximumSize(new Dimension(36, 36));
 		genericGrf.setMinimumSize(new Dimension(36, 36));
 		genericGrf.setPreferredSize(new Dimension(36, 36));

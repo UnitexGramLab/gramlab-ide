@@ -286,7 +286,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     public void actionPerformed(ActionEvent e) {
                         surroundWithBoxes(
                             (ArrayList<GenericGraphBox>) selectedBoxes.clone(),
-                            "$@", null);
+                            "$G", null);
                     }
                 };
                 addGenericGraphIndicator.setEnabled(false);
@@ -815,7 +815,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-                        if (b.content.equals("$@")) {
+                        if (b.content.equals("$G") || b.content.startsWith("$G/")) {
 				JOptionPane.showMessageDialog(null,
 						"Cannot merge generic graph box", "Error",
 						JOptionPane.ERROR_MESSAGE);

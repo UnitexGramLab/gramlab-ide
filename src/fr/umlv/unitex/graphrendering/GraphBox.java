@@ -296,7 +296,7 @@ public class GraphBox extends GenericGraphBox {
 			X_out = X + Width + 2;
 			return;
 		}
-                if(content.equals("$@") || content.startsWith("$@/")) {
+                if(content.equals("$G") || content.startsWith("$G/")) {
                     // //////////////////////
                     // case of mark $@:
                     // $@ ab => search ab in the token list
