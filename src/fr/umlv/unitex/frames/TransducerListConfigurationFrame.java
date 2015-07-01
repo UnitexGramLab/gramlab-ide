@@ -598,7 +598,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			if (selected_file != null) {
 				try {
 					ShareTransducerList stl = new ShareTransducerList();
-					final Object[] row = { DataList.UNRANKED, false, stl.relativize(selected_file.getAbsolutePath()), true, false,false };
+					final Object[] row = { DataList.UNRANKED, false, stl.relativize(selected_file.getAbsolutePath()), true, false,false,false };
 					if (selected_row == -1) {
 						selected_row = dtm.getRowCount();
 					}
