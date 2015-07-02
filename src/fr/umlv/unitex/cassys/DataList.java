@@ -55,7 +55,11 @@ public class DataList {
 	 * Whether the transducer should be stared
 	 */
 	private boolean star;
-	
+        /**
+         * Whether the transducer is generic
+         */
+        private boolean generic;
+        
 	public static int UNRANKED = -1;
 	
 	/**
@@ -75,6 +79,7 @@ public class DataList {
 		disabled = false;
 		rank = UNRANKED;
 		star = false;
+                generic = false;
 	}
 
 	/**
@@ -94,15 +99,17 @@ public class DataList {
 		disabled = d;
 		rank = UNRANKED;
 		star = false;
+                generic = false;
 	}
 	
-	public DataList(String n, boolean m, boolean r, boolean d, boolean s) {
+	public DataList(String n, boolean m, boolean r, boolean d, boolean s, boolean g) {
 		name = n;
 		merge = m;
 		replace = r;
 		disabled = d;
 		rank = UNRANKED;
 		star = s;
+                generic = g;
 	}
 	
 	/**
@@ -118,6 +125,7 @@ public class DataList {
 		disabled = dl.isDisabled();
 		rank = dl.rank;
 		star = dl.star;
+                generic = dl.generic;
 	}
 
 	/**
@@ -197,5 +205,13 @@ public class DataList {
 	public void setStar(boolean s){
 		this.star = s;
 	}
+        
+        public boolean isGeneric() {
+            return this.generic;
+        }
+        
+        public void setGeneric(boolean g) {
+            this.generic = g;
+        }
 	
 }
