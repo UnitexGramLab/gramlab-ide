@@ -58,7 +58,7 @@ class DataListTransferable implements Transferable {
 		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		dl = new DataList((String) o[2], (Boolean) o[3], (Boolean) o[4], (Boolean) o[1], (Boolean) o[5]);
+		dl = new DataList((String) o[2], (Boolean) o[3], (Boolean) o[4], (Boolean) o[1], (Boolean) o[5], (Boolean) o[6]);
 		// System.out.println("dl = "+ dl.getName()+" "+ dl.isMerge()+ " "+
 		// dl.isReplace());
 	}
