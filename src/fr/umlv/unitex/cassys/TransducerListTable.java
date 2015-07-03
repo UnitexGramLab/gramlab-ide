@@ -20,7 +20,7 @@ public class TransducerListTable extends JTable {
 	 */
 	@Override
 	public void tableChanged(TableModelEvent e) {
-		
+
 		TransducerListTableModel model = (TransducerListTableModel) getModel();
 		
 	   // if (e.getColumn() == 2) {
@@ -53,8 +53,23 @@ public class TransducerListTable extends JTable {
 							&& !((Boolean) getValueAt(i, model.getMergeIndex()))) {
 						setValueAt(Boolean.TRUE, i, model.getMergeIndex());
 					}
+                                        if ((Boolean) getValueAt(i, model.getReplaceIndex())
+							&& (Boolean) getValueAt(i, model.getGenericIndex())) {
+						setValueAt(Boolean.FALSE, i, model.getGenericIndex());
+					}
 				}
 			}
+		}
+                    
+                if (e.getColumn() == 5) {	
+                    if (e.getFirstRow() != TableModelEvent.HEADER_ROW) {
+			for (int i = e.getFirstRow(); i <= e.getLastRow(); i++) {
+                            if ((Boolean) getValueAt(i, model.getStarIndex())
+				&& (Boolean) getValueAt(i, model.getGenericIndex())) {
+                                    setValueAt(Boolean.FALSE, i, model.getGenericIndex());
+                            }
+			}
+                    }
 		}
                     
                 if (e.getColumn() == 6) {	
