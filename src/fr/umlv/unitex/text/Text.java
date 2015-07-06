@@ -129,14 +129,14 @@ public class Text {
 		if (cmd != null) {
 			commands.addCommand(cmd);
 		}
+                // creating snt dir
+		final MkdirCommand mkdir = new MkdirCommand().name(dir);
+		commands.addCommand(mkdir);
 		// NORMALIZING TEXT...
 		final NormalizeCommand normalizeCmd = new NormalizeCommand()
 				.textWithDefaultNormalization(name)
                                 .outputOffsets(outputOffsets);
 		commands.addCommand(normalizeCmd);
-		// creating snt dir
-		final MkdirCommand mkdir = new MkdirCommand().name(dir);
-		commands.addCommand(mkdir);
 		// TOKENIZING...
 		TokenizeCommand tokenizeCmd = new TokenizeCommand().text(
 				Config.getCurrentSnt()).alphabet(
