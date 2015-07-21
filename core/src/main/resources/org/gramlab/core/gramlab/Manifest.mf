@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: Sebastien Paumier
+Main-Class: fr.gramlab.Main
+Class-Path: Unitex.jar
+
