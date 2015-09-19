@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.MvnCommand.MvnCmdType;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
@@ -96,7 +96,7 @@ public class Pom {
 	 * to explicit the fact that one should always create a new empty
 	 * pom when starting a new project.
 	 */
-	public boolean createEmptyPom(Project p) {
+	public boolean createEmptyPom(GramlabProject p) {
 		return PomIO.savePom(this,p);
 	}
 

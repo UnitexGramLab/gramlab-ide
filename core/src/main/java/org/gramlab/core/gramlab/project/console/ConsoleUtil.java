@@ -13,7 +13,8 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.JTextComponent;
 
-import fr.gramlab.project.Project;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
@@ -102,7 +103,7 @@ public class ConsoleUtil {
 	private int currentBackground=1;
 	private Color[] bgColors=new Color[] {Color.WHITE,new Color(231,244,213)};
 
-	public void doBeforeMonitoring(Project p,CommandBuilder c) {
+	public void doBeforeMonitoring(GramlabProject p,CommandBuilder c) {
 		currentBackground=1-currentBackground;
 		JComponent comp=createCommandComponent(c);
 		p.getConsolePanel().add(comp);
@@ -155,7 +156,7 @@ public class ConsoleUtil {
 	}
 
 
-	public void doAfterMonitoring(Project p,boolean success,ConsoleEntry entry,
+	public void doAfterMonitoring(GramlabProject p,boolean success,ConsoleEntry entry,
 			CommandBuilder c,File f) {
 		if (entry==null) {
 			throw new IllegalStateException("Should not be invoked with a null entry !");
@@ -248,7 +249,8 @@ public class ConsoleUtil {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType()!=HyperlinkEvent.EventType.ACTIVATED) return;
 				File file=new File(e.getDescription());
-				InternalFrameManager.getManager(file).newGraphFrame(file);
+				GlobalProjectManager.search(file)
+					.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(file);
 			}
 		});
 		editor.setForeground(Color.BLACK);
@@ -344,7 +346,8 @@ public class ConsoleUtil {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType()!=HyperlinkEvent.EventType.ACTIVATED) return;
 				File file=new File(e.getDescription());
-				InternalFrameManager.getManager(file).newGraphFrame(file);
+				GlobalProjectManager.search(file)
+					.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(file);
 			}
 		});
 		editor.setForeground(Color.BLACK);
@@ -419,7 +422,8 @@ public class ConsoleUtil {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType()!=HyperlinkEvent.EventType.ACTIVATED) return;
 				File file=new File(e.getDescription());
-				InternalFrameManager.getManager(file).newGraphFrame(file);
+				GlobalProjectManager.search(file)
+					.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(file);
 			}
 		});
 		editor.setForeground(Color.BLACK);

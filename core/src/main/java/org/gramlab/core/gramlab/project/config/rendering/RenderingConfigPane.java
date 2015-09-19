@@ -21,7 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.gramlab.project.Project;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.config.Preferences;
@@ -41,7 +42,7 @@ public class RenderingConfigPane extends ConfigurationPaneFactory {
 	FontInfo textFontInfo;
 	FontInfo concordanceFontInfo;
 	
-	public RenderingConfigPane(final Project project) {
+	public RenderingConfigPane(final GramlabProject project) {
 		super(new GridBagLayout());
 		info=project.getPreferences().getInfo().clone();
 		textFontInfo=project.getPreferences().getTextFont();
@@ -73,8 +74,8 @@ public class RenderingConfigPane extends ConfigurationPaneFactory {
 		tmp1.add(textFont, BorderLayout.CENTER);
 		final Action textFontAction = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = InternalFrameManager.getManager(null,false)
-						.newFontDialog(textFontInfo);
+				final FontInfo i = GlobalProjectManager.search(null,false)
+					.getFrameManagerAs(InternalFrameManager.class).newFontDialog(textFontInfo);
 				if (i != null) {
 					textFontInfo = i;
 					textFont
@@ -93,8 +94,8 @@ public class RenderingConfigPane extends ConfigurationPaneFactory {
 		tmp2_.add(concordanceFont, BorderLayout.CENTER);
 		final Action concord = new AbstractAction("Set...") {
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = InternalFrameManager.getManager(null,false)
-						.newFontDialog(concordanceFontInfo);
+				final FontInfo i = GlobalProjectManager.search(null,false)
+					.getFrameManagerAs(InternalFrameManager.class).newFontDialog(concordanceFontInfo);
 				if (i != null) {
 					concordanceFontInfo = i;
 					concordanceFont.setText(" " + i.getFont().getFontName() + "  "
@@ -165,9 +166,9 @@ public class RenderingConfigPane extends ConfigurationPaneFactory {
 		final JButton graphConfig = new JButton("Graph configuration");
 		graphConfig.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final GraphPresentationInfo i = InternalFrameManager
-						.getManager(null,false).newGraphPresentationDialog(info,
-								false);
+				final GraphPresentationInfo i = GlobalProjectManager
+						.search(null,false).getFrameManagerAs(InternalFrameManager.class)
+						.newGraphPresentationDialog(info, false);
 				if (i != null) {
 					info = i;
 				}
@@ -185,7 +186,7 @@ public class RenderingConfigPane extends ConfigurationPaneFactory {
 	
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		File html=null;
 		if (!"".equals(htmlViewer.getText())) {
 			html=new File(htmlViewer.getText());

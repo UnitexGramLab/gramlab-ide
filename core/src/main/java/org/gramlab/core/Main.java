@@ -16,12 +16,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.frames.GramlabFrame;
-import fr.gramlab.frames.ProjectFrameManager;
 import fr.gramlab.icons.Icons;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
-import fr.umlv.unitex.frames.InternalFrameManager;
 
 
 public class Main {
@@ -76,8 +75,7 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-		        InternalFrameManager.setManager(new ProjectFrameManager());
-				ProjectManager.setManager(new ProjectManager());
+				new GlobalProjectManager(new GramlabProjectManager());
 				GramlabConfigManager.initConfig(path1);
 				frame = new GramlabFrame();
 				final Component glass=frame.getGlassPane();
@@ -91,7 +89,7 @@ public class Main {
 		        	@Override
 		        	public void run() {
 		        		p.add(new JLabel(Icons.logo),null);
-						ProjectManager.getManager().loadProjects();
+		        		GlobalProjectManager.getAs(GramlabProjectManager.class).loadProjects();
 						Timer t=new Timer(2000,new ActionListener() {
 							@Override
 							public void actionPerformed(ActionEvent e) {

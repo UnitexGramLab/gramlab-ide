@@ -8,9 +8,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.frames.GramlabInternalFrameManager;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 @SuppressWarnings("serial")
@@ -19,9 +20,10 @@ public class ProjectTabbedPane extends JTabbedPane {
 	boolean selecting=false;
 	
 	public ProjectTabbedPane() {
-		ProjectManager.getManager().addProjectListener(new ProjectAdapter() {
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.addProjectListener(new ProjectAdapter() {
 			@Override
-			public void projectOpened(Project p, int pos) {
+			public void projectOpened(GramlabProject p, int pos) {
 				GramlabInternalFrameManager m=new GramlabInternalFrameManager(p,new JDesktopPane());
 				p.setFrameManager(m);
 				JPanel tmp=new JPanel(new BorderLayout());
@@ -32,8 +34,9 @@ public class ProjectTabbedPane extends JTabbedPane {
 			}
 			
 			@Override
-			public void projectClosing(Project p, int pos, boolean[] canClose) {
-				InternalFrameManager m=InternalFrameManager.getManager(p.getProjectDirectory(),false);
+			public void projectClosing(GramlabProject p, int pos, boolean[] canClose) {
+				InternalFrameManager m=GlobalProjectManager.search(p.getProjectDirectory(),false)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (m==null) return;
 				p.saveOpenFrames(m.getDesktop().getAllFrames());
 				if (!m.closeAllFrames()) {
@@ -49,14 +52,14 @@ public class ProjectTabbedPane extends JTabbedPane {
 			}
 
 			@Override
-			public void projectClosed(Project p, int pos) {
-				if (!selecting && ProjectManager.getManager().getCurrentProject()==null) {
+			public void projectClosed(GramlabProject p, int pos) {
+				if (!selecting && GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject()==null) {
 					setSelectedIndex(-1);
 				}
 			}
 			
 			@Override
-			public void currentProjectChanged(Project p, int pos) {
+			public void currentProjectChanged(GramlabProject p, int pos) {
 				int currentIndex=getSelectedIndex();
 				int index;
 				if (p==null) {
@@ -93,11 +96,12 @@ public class ProjectTabbedPane extends JTabbedPane {
 						}
 					}
 					if (index==-1) {
-						ProjectManager.getManager().setCurrentProject(null);
+						GlobalProjectManager.getAs(GramlabProjectManager.class).setCurrentProject(null);
 					} else {
 						String name=getTitleAt(index);
-						Project p=ProjectManager.getManager().getProject(name);
-						ProjectManager.getManager().setCurrentProject(p);
+						GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class)
+									.getProject(name);
+						GlobalProjectManager.getAs(GramlabProjectManager.class).setCurrentProject(p);
 					}
 				} finally {
 					selecting=false;

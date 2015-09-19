@@ -18,7 +18,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.umlv.unitex.files.FileUtil;
 
@@ -27,7 +27,7 @@ public class PreprocessingTable extends JTable {
 	
 	private boolean filter=false;
 	
-	public PreprocessingTable(final PreprocessingTableModel model,final Project p) {
+	public PreprocessingTable(final PreprocessingTableModel model,final GramlabProject p) {
 		super(model);
 		setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 		installRendererAndEditorForSelectionColumn(getColumnModel().getColumn(0));
@@ -69,7 +69,7 @@ public class PreprocessingTable extends JTable {
 	}
 	
 	
-	private void installRendererForNameColumn(TableColumn column,final Project p) {
+	private void installRendererForNameColumn(TableColumn column,final GramlabProject p) {
 		column.setCellRenderer(new DefaultTableCellRenderer() {
 			@Override
 			public Component getTableCellRendererComponent(JTable table,
@@ -85,7 +85,7 @@ public class PreprocessingTable extends JTable {
 		});
 	}
 
-	private void installRendererAndEditorForTargetColumn(TableColumn column,final Project project) {
+	private void installRendererAndEditorForTargetColumn(TableColumn column,final GramlabProject project) {
 		final File preprocessDir = new File(project
 				.getProjectDirectory(), PomIO.TARGET_PREPROCESS_DIRECTORY);
 		column.setCellRenderer(new DefaultTableCellRenderer() {

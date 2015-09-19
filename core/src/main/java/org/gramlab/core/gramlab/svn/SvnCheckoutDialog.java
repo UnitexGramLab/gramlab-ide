@@ -24,10 +24,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.config.maven.MvnCommand;
 import fr.gramlab.project.config.maven.Pom;
 import fr.gramlab.project.config.maven.PomIO;
@@ -231,7 +232,7 @@ public class SvnCheckoutDialog extends JDialog {
 			}
 			switch (r.getOp()) {
 			case OK: {
-				final Project project=new Project(name1,null,null,null);
+				final GramlabProject project=new GramlabProject(name1,null,null,null);
 				if (!project.getPom().getFile().exists()
 						|| !project.getPreferencesFile().exists()
 						|| !project.getProjectVersionableConfigFile().exists()) {
@@ -239,7 +240,8 @@ public class SvnCheckoutDialog extends JDialog {
 							"Some configuration files are missing. It seems that you did\n"+
 							"not checkout a valid Gramlab project."+r.getErr(), "Error",
 							JOptionPane.ERROR_MESSAGE);
-					ProjectManager.getManager().deleteProject(project,false);
+					GlobalProjectManager.getAs(GramlabProjectManager.class)
+						.deleteProject(project,false);
 					unlock(true);
 					return;
 				}
@@ -272,13 +274,15 @@ public class SvnCheckoutDialog extends JDialog {
 	/**
 	 * Get the maven dependencies.
 	 */
-	public void getDependencies(final Project project) {
+	public void getDependencies(final GramlabProject project) {
 		Pom POM=project.getPom();
 		POM.loadFromFile();
 		if (POM.getDependencies().size()==0) {
 			/* There is no need to run maven if there is no dependency */
-			ProjectManager.getManager().addProject(project);
-			ProjectManager.getManager().openProject(project);
+			GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.addProject(project);
+			GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.openProject(project);
 			stdout.addLine(new Couple("Project created successfully.",false));
 			unlock(true);
 			return;
@@ -295,8 +299,10 @@ public class SvnCheckoutDialog extends JDialog {
 					EventQueue.invokeLater(new Runnable() {
 						@Override
 						public void run() {
-							ProjectManager.getManager().addProject(project);
-							ProjectManager.getManager().openProject(project);							
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.addProject(project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.openProject(project);							
 							finished=true;
 							stdout.addLine(new Couple("Project created successfully.",false));
 							unlock(true);
@@ -314,7 +320,8 @@ public class SvnCheckoutDialog extends JDialog {
 						stdout.addLine(new Couple("an error in your maven settings, or because",false));
 						stdout.addLine(new Couple("one of the components' description is invalid.",false));
 					}
-					ProjectManager.getManager().deleteProject(project,false);
+					GlobalProjectManager.getAs(GramlabProjectManager.class)
+						.deleteProject(project,false);
 					unlock(false);
 				}
 			}

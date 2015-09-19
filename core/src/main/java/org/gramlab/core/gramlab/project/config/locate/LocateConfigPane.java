@@ -29,7 +29,7 @@ import javax.swing.event.CaretListener;
 
 import fr.gramlab.project.ConfigurationListener;
 import fr.gramlab.project.ProcessPane;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.graph_compilation.GraphCompilationPane;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 import fr.gramlab.util.MyComboCellRenderer;
@@ -50,7 +50,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 	JTextField limit = new JTextField();
 	VariableErrorPolicy variableErrorPolicy;
 	GraphCompilationPane graphCompilationConfigPane;
-	Project project;
+	GramlabProject project;
 	JCheckBox ambiguousOutputsAllowed;
 	DefaultComboBoxModel model;
 	
@@ -73,7 +73,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		}
 	}
 	
-	public LocateConfigPane(final Project project) {
+	public LocateConfigPane(final GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -99,7 +99,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		add(new JPanel(null), gbc);
 	}
 
-	private JPanel createPatternPanel(final Project project) {
+	private JPanel createPatternPanel(final GramlabProject project) {
 		JPanel p = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -218,7 +218,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		return p;
 	}
 
-	private void populateIndexPanel(JPanel p,final Project project) {
+	private void populateIndexPanel(JPanel p,final GramlabProject project) {
 		
 		
 		ButtonGroup bg = new ButtonGroup();
@@ -246,7 +246,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		}
 	}
 	
-	private JPanel createIndexPanel(final Project project) {
+	private JPanel createIndexPanel(final GramlabProject project) {
 		final JPanel p = new JPanel(new GridLayout(3, 1));
 		p.setBorder(BorderFactory.createTitledBorder("Index"));
 		populateIndexPanel(p,project);
@@ -262,7 +262,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		return p;
 	}
 
-	private void populateOutputsPanel(JPanel p,Project project) {
+	private void populateOutputsPanel(JPanel p,GramlabProject project) {
 		ButtonGroup bg = new ButtonGroup();
 		outputs = project.getOutputsPolicy();
 		final OutputsPolicy[] values = new OutputsPolicy[] {
@@ -288,7 +288,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		}
 	}
 	
-	private JPanel createOutputsPanel(final Project project) {
+	private JPanel createOutputsPanel(final GramlabProject project) {
 		final JPanel p = new JPanel(null);
 		p.setLayout(new BoxLayout(p,BoxLayout.X_AXIS));
 		p.setBorder(BorderFactory.createTitledBorder("Grammar outputs"));
@@ -305,7 +305,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		return p;
 	}
 
-	private void populateSearchLimitPanel(JPanel p,final Project project) {
+	private void populateSearchLimitPanel(JPanel p,final GramlabProject project) {
 		ButtonGroup bg = new ButtonGroup();
 		int n = project.getSearchLimit();
 		searchAll = (n == -1);
@@ -340,7 +340,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		p.add(allMatches, gbc);
 	}
 	
-	private JPanel createSearchLimitPanel(final Project project) {
+	private JPanel createSearchLimitPanel(final GramlabProject project) {
 		final JPanel p = new JPanel(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Search limitation"));
 		populateSearchLimitPanel(p,project);
@@ -356,7 +356,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		return p;
 	}
 
-	private JCheckBox createAmbiguousOutputsPanel(final Project project) {
+	private JCheckBox createAmbiguousOutputsPanel(final GramlabProject project) {
 		ambiguousOutputsAllowed=new JCheckBox("Allow ambiguous outputs",project.isAmbiguousOutputsAllowed());
 		ambiguousOutputsAllowed.addActionListener(new ActionListener() {
 			@Override
@@ -373,7 +373,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		return ambiguousOutputsAllowed;
 	}
 
-	private void populateVariableErrorPanel(JPanel p,final Project project) {
+	private void populateVariableErrorPanel(JPanel p,final GramlabProject project) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -409,7 +409,7 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 		}
 	}
 	
-	private JPanel createVariableErrorPanel(final Project project) {
+	private JPanel createVariableErrorPanel(final GramlabProject project) {
 		final JPanel p = new JPanel(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Variable error policy"));
 		populateVariableErrorPanel(p,project);
@@ -428,14 +428,14 @@ public class LocateConfigPane extends ConfigurationPaneFactory {
 
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		return validateConfiguration(project,true);
 	}
 
 	/**
 	 * run==true means that we want to check the validity of the regexp/graph
 	 */
-	public boolean validateConfiguration(Project project,boolean run) {
+	public boolean validateConfiguration(GramlabProject project,boolean run) {
 		String regexp = regex.getText();
 		File graphToApply = null;
 		ArrayList<File> list = null;

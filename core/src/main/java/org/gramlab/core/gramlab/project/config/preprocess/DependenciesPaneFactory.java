@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.Artifact;
 import fr.gramlab.project.config.maven.PomIO;
 
@@ -31,7 +31,7 @@ public class DependenciesPaneFactory extends ConfigurationPaneFactory {
 	
 	DefaultListModel model;
 	
-	public DependenciesPaneFactory(final Project project) {
+	public DependenciesPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Set components to use"));
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -124,7 +124,7 @@ public class DependenciesPaneFactory extends ConfigurationPaneFactory {
 
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		ArrayList<Artifact> dependencies=new ArrayList<Artifact>();
 		for (int i=0;i<model.getSize();i++) {
 			dependencies.add((Artifact) model.get(i));
@@ -135,7 +135,7 @@ public class DependenciesPaneFactory extends ConfigurationPaneFactory {
 	}
 
 
-	public static DependenciesPaneFactory getPane(Project project) {
+	public static DependenciesPaneFactory getPane(GramlabProject project) {
 		return new DependenciesPaneFactory(project);
 	}
 	

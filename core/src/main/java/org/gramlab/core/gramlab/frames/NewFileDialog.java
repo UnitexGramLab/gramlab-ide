@@ -17,8 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
@@ -82,7 +83,8 @@ public class NewFileDialog extends JDialog {
 				}
 				setVisible(false);
 				dispose();
-				ProjectManager.getManager().getProject(f).openFile(f,true);
+				GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.getProject(f).openFile(f,true);
 			}
 		});
 		down.add(ok);

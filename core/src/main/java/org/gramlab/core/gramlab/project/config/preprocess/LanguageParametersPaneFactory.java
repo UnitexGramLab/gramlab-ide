@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public class LanguageParametersPaneFactory extends ConfigurationPaneFactory {
@@ -28,7 +28,7 @@ public class LanguageParametersPaneFactory extends ConfigurationPaneFactory {
 	boolean isCharByChar=false;
 	boolean isMorphoUseOfSpace=false;
 	
-	public LanguageParametersPaneFactory(final Project project) {
+	public LanguageParametersPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Language options"));
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -104,7 +104,7 @@ public class LanguageParametersPaneFactory extends ConfigurationPaneFactory {
 				isSemitic=semitic.isSelected();
 			}
 		});
-		add(semitic,gbc);
+		add(semitic, gbc);
 		final JCheckBox matchWordBoundaries=new JCheckBox("Match word boundaries",isMatchWordBoundaries);
 		matchWordBoundaries.addActionListener(new ActionListener() {
 			@Override
@@ -134,7 +134,7 @@ public class LanguageParametersPaneFactory extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setArabicTypoRules(arabicRules);
 		project.setKorean(isKorean);
 		project.setMatchWordBoundaries(isMatchWordBoundaries);
@@ -145,7 +145,7 @@ public class LanguageParametersPaneFactory extends ConfigurationPaneFactory {
 	}
 	
 	
-	public static LanguageParametersPaneFactory getPane(Project project) {
+	public static LanguageParametersPaneFactory getPane(GramlabProject project) {
 		return new LanguageParametersPaneFactory(project);
 	}
 	

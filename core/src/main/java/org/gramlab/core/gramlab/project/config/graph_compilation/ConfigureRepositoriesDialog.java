@@ -29,7 +29,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.umlv.unitex.LinkButton;
 import fr.umlv.unitex.config.NamedRepository;
@@ -39,12 +39,12 @@ import fr.umlv.unitex.frames.FrameUtil;
 @SuppressWarnings("serial")
 public class ConfigureRepositoriesDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	DefaultListModel modelRepositories;
 	private JTextField defaultGraphRepository=new JTextField();
 
 	
-	public ConfigureRepositoriesDialog(final Project p) {
+	public ConfigureRepositoriesDialog(final GramlabProject p) {
 		super(Main.getMainFrame(), "Graph repositories for project "+p.getName(), true);
 		this.project=p;
 		JPanel pane=new JPanel(new BorderLayout());
@@ -81,7 +81,7 @@ public class ConfigureRepositoriesDialog extends JDialog {
 	 * Returns true if the given directory is either in the src or in the dep directories
 	 * of the given project.
 	 */
-	public static boolean isValidRepository(Project p,File dir) {
+	public static boolean isValidRepository(GramlabProject p,File dir) {
 		File srcDir=p.getSrcDirectory();
 		if (null!=FileUtil.isAncestor(srcDir,dir)) return true;
 		File depDir=new File(p.getProjectDirectory(),PomIO.DEPENDENCY_DIRECTORY);
@@ -89,7 +89,7 @@ public class ConfigureRepositoriesDialog extends JDialog {
 	}
 	
 	
-	private JPanel createRepositoriesPanel(final Project project) {
+	private JPanel createRepositoriesPanel(final GramlabProject project) {
 		JPanel p=new JPanel(new GridBagLayout());
 		p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -232,7 +232,7 @@ public class ConfigureRepositoriesDialog extends JDialog {
 	}
 	
 	
-	private void addRepositoryActionListener(JButton b,final JTextField text,final Project project) {
+	private void addRepositoryActionListener(JButton b,final JTextField text,final GramlabProject project) {
 		b.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

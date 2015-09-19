@@ -18,9 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.gramlab.project.config.preprocess.fst2txt.PreprocessingPaneFactory;
 import fr.gramlab.util.KeyUtil;
@@ -30,7 +31,7 @@ import fr.umlv.unitex.frames.FrameUtil;
 @SuppressWarnings("serial")
 public class ConfigureProjectDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	boolean configurationCompleted=false;
 	boolean newProject;
 	
@@ -49,7 +50,7 @@ public class ConfigureProjectDialog extends JDialog {
 		PolyLexPaneFactory.class
 	};
 	
-	public ConfigureProjectDialog(final Project p,boolean newProject,boolean fullConfig,Class<?> c) {
+	public ConfigureProjectDialog(final GramlabProject p,boolean newProject,boolean fullConfig,Class<?> c) {
 		this(p,newProject,fullConfig,getIndex(c));
 	}
 	
@@ -68,7 +69,7 @@ public class ConfigureProjectDialog extends JDialog {
 	 * step>=0 means that we want to configure a single step. 1 is not a valid
 	 * value since changing the dependencies imposes to reconfigure everything else
 	 */
-	private ConfigureProjectDialog(final Project p,final boolean newProject,final boolean fullConfig,int step) {
+	private ConfigureProjectDialog(final GramlabProject p,final boolean newProject,final boolean fullConfig,int step) {
 		super(Main.getMainFrame(), "Configure project "+p.getName(), true);
 		if (step<-1 || step>=steps.length || (step!=-1 && steps[step].equals(GetDependenciesPaneFactory.class))) {
 			throw new IllegalArgumentException("Invalid value for step: "+step);
@@ -84,7 +85,7 @@ public class ConfigureProjectDialog extends JDialog {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				if (configurationCompleted) {
-					if (newProject) ProjectManager.getManager().openProject(p);
+					if (newProject) GlobalProjectManager.getAs(GramlabProjectManager.class).openProject(p);
 					return;
 				}
 				/* If the user has cancelled the configuration, we 
@@ -92,7 +93,7 @@ public class ConfigureProjectDialog extends JDialog {
 				if (newProject) {
 					/* If the project was a newly created one, we have 
 					 * to delete it if the user cancels */
-					ProjectManager.getManager().deleteProject(p,false);
+					GlobalProjectManager.getAs(GramlabProjectManager.class).deleteProject(p,false);
 				} else {
 					p.restoreConfiguration();
 				}
@@ -273,7 +274,7 @@ public class ConfigureProjectDialog extends JDialog {
 			return new MainInfoPaneFactory(project,newProject);
 		}
 		try {
-			Method method=steps[step].getMethod("getPane",Project.class);
+			Method method=steps[step].getMethod("getPane",GramlabProject.class);
 			return (ConfigurationPaneFactory)method.invoke(null,project);
 		} catch (SecurityException e) {
 			e.printStackTrace();

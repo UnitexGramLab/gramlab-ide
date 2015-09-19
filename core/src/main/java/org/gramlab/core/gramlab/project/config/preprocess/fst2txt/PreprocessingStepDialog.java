@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FrameUtil;
@@ -30,7 +30,7 @@ import fr.umlv.unitex.frames.FrameUtil;
 @SuppressWarnings("serial")
 public class PreprocessingStepDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	DefaultListModel modelInjectedVariables;
 	PreprocessingTableModel model;
 
@@ -38,7 +38,7 @@ public class PreprocessingStepDialog extends JDialog {
 	JRadioButton replace=new JRadioButton("Replace");
 	JTextField dstFst2=new JTextField("");
 
-	public PreprocessingStepDialog(final Project p,final PreprocessingTableModel model,
+	public PreprocessingStepDialog(final GramlabProject p,final PreprocessingTableModel model,
 			final File f,final PreprocessingStep editedStep) {
 		super(Main.getMainFrame(), "Setting a preprocessing graph", true);
 		this.project=p;

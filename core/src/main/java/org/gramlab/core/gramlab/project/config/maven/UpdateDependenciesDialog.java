@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.GetDependenciesPaneFactory;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FrameUtil;
@@ -35,7 +35,7 @@ public class UpdateDependenciesDialog extends JDialog {
 	JPanel mainPanel;
 	Executor executor=null;
 	JButton ok;
-	Project project;
+	GramlabProject project;
 	ProcessOutputList stdout=new ProcessOutputList(new ProcessOutputListModel());
 	JPanel p2=new JPanel(new GridBagLayout());
 	
@@ -43,7 +43,7 @@ public class UpdateDependenciesDialog extends JDialog {
 	private boolean finished=false;
 	
 
-	public UpdateDependenciesDialog(Project p) {
+	public UpdateDependenciesDialog(GramlabProject p) {
 		super(Main.getMainFrame(), "Updating dependencies of "+p.getName(), true);
 		this.project=p;
 
@@ -161,7 +161,7 @@ public class UpdateDependenciesDialog extends JDialog {
 	
 	
 	
-	public static String inSrcDirectory(Project p,File f) {
+	public static String inSrcDirectory(GramlabProject p,File f) {
 		String foo=FileUtil.isAncestor(p.getSrcDirectory(),f.getParentFile());
 		if (foo==null) return null;
 		return foo+f.getName();

@@ -28,7 +28,7 @@ import javax.swing.WindowConstants;
 import javax.swing.tree.TreePath;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.ExecParameters;
@@ -45,7 +45,7 @@ public class SvnCommitDialog extends JDialog {
 	JPanel mainPanel;
 	Executor executor=null;
 	JButton ok,cancel;
-	Project project;
+	GramlabProject project;
 	JCheckBox hideUnversionedItems;
 	ProcessOutputList stdout=new ProcessOutputList(new ProcessOutputListModel());
 	ProcessOutputList stderr=new ProcessOutputList(new ProcessOutputListModel());
@@ -59,12 +59,12 @@ public class SvnCommitDialog extends JDialog {
 	private boolean finished=false;
 	
 
-	public SvnCommitDialog(Project p,ArrayList<File> clickedFiles) {
+	public SvnCommitDialog(GramlabProject p,ArrayList<File> clickedFiles) {
 		this(null,p,clickedFiles);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public SvnCommitDialog(SvnStatusInfo info,final Project p,ArrayList<File> clickedFiles) {
+	public SvnCommitDialog(SvnStatusInfo info,final GramlabProject p,ArrayList<File> clickedFiles) {
 		super(Main.getMainFrame(), "SVN Commit for project "+p.getName(), true);
 		if (clickedFiles==null) {
 			this.clickedFiles=new ArrayList<File>();

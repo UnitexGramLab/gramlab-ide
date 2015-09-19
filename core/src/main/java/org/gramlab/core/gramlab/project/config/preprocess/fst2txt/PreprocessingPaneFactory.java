@@ -20,7 +20,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 
@@ -29,7 +29,7 @@ public class PreprocessingPaneFactory extends ConfigurationPaneFactory {
 	
 	PreprocessingTableModel model;
 	
-	public PreprocessingPaneFactory(final Project project) {
+	public PreprocessingPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Configuring preprocessing"));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -141,14 +141,14 @@ public class PreprocessingPaneFactory extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		ArrayList<PreprocessingStep> steps = model.getElements();
 		Preprocessing p = project.getPreprocessing();
 		p.setPreprocessingSteps(steps);
 		return true;
 	}
 
-	public static PreprocessingPaneFactory getPane(Project project) {
+	public static PreprocessingPaneFactory getPane(GramlabProject project) {
 		return new PreprocessingPaneFactory(project);
 	}
 	

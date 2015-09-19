@@ -6,15 +6,15 @@ import java.util.Collections;
 
 import javax.swing.table.AbstractTableModel;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public class CommitTableModel extends AbstractTableModel {
 
 	ArrayList<SvnCommitInfo> data=new ArrayList<SvnCommitInfo>();
-	Project project;
+	GramlabProject project;
 	
-	public CommitTableModel(Project p,SvnStatusInfo info,ArrayList<File> filesToSelect) {
+	public CommitTableModel(GramlabProject p,SvnStatusInfo info,ArrayList<File> filesToSelect) {
 		this.project=p;
 		/* First we add only the given items */
 		for (String s:info.getUnversionedFiles()) {

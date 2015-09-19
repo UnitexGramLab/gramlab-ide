@@ -8,7 +8,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 /**
  * This class provides a renderer that truncates on the left.
@@ -21,9 +21,9 @@ public class GraphCellListRenderer extends DefaultListCellRenderer {
 	FontMetrics fm;
 	Graphics graphics;
 	JComponent component;
-	Project project;
+	GramlabProject project;
 	
-	public GraphCellListRenderer(JComponent c,Project p) {
+	public GraphCellListRenderer(JComponent c,GramlabProject p) {
 		this.component=c;
 		this.project=p;
 	}

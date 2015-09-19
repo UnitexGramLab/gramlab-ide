@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.UnitexDropTarget;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
@@ -174,8 +175,9 @@ public class GramlabDropTarget implements UnitexDropTarget {
 					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase(
 							"grf") == 0) {
 						final File file = (File) aList;
-						InternalFrameManager.getManager(file).newGraphFrame(
-								file);
+						GlobalProjectManager.search(file)
+							.getFrameManagerAs(InternalFrameManager.class)
+							.newGraphFrame(file);
 					}
 				}
 			}

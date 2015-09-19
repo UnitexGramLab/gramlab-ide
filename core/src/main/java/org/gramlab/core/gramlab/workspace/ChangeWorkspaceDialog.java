@@ -18,9 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.umlv.unitex.LinkButton;
 import fr.umlv.unitex.frames.FrameUtil;
 
@@ -101,7 +102,7 @@ public class ChangeWorkspaceDialog extends JDialog {
 	                        JOptionPane.ERROR_MESSAGE);
 	                return;
 				}
-				ProjectManager.getManager().changeWorkspace(dir);
+				GlobalProjectManager.getAs(GramlabProjectManager.class).changeWorkspace(dir);
 				dispose();
 			}
 		});

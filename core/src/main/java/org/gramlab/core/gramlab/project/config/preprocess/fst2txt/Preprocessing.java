@@ -3,7 +3,7 @@ package fr.gramlab.project.config.preprocess.fst2txt;
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.process.commands.MkdirCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
@@ -27,7 +27,7 @@ public class Preprocessing {
 		}
 	}
 	
-	public MultiCommands getDeployCommands(Project p) {
+	public MultiCommands getDeployCommands(GramlabProject p) {
 		if (steps.size()==0) return null;
 		MultiCommands c=new MultiCommands();
 		for (PreprocessingStep s:steps) {
@@ -41,7 +41,7 @@ public class Preprocessing {
 		return c;
 	}
 	
-	public MultiCommands getPreprocessCommands(Project p,File text) {
+	public MultiCommands getPreprocessCommands(GramlabProject p,File text) {
 		if (steps.size()==0) return null;
 		MultiCommands c=new MultiCommands();
 		for (PreprocessingStep s:steps) {

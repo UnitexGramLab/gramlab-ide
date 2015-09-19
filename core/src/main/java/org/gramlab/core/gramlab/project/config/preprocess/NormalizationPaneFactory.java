@@ -21,7 +21,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.files.FileUtil;
 
 @SuppressWarnings("serial")
@@ -29,11 +29,11 @@ public class NormalizationPaneFactory extends ConfigurationPaneFactory {
 
 	File normTxt=null;
 	JPanel choicePanel;
-	Project project;
+	GramlabProject project;
 
 	JCheckBox noSeparatorNormalization=new JCheckBox("No separator normalization",false);
 	
-	public NormalizationPaneFactory(final Project project) {
+	public NormalizationPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		this.normTxt=project.getNormTxt();
@@ -134,13 +134,13 @@ public class NormalizationPaneFactory extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setNormTxt(normTxt);
 		project.setSeparatorNormalization(!noSeparatorNormalization.isSelected());
 		return true;
 	}
 
-	public static NormalizationPaneFactory getPane(Project project) {
+	public static NormalizationPaneFactory getPane(GramlabProject project) {
 		return new NormalizationPaneFactory(project);
 	}
 	

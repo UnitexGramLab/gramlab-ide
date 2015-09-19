@@ -16,7 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.util.filelist.SelectableFileList;
 import fr.gramlab.util.filelist.SelectableFileListModel;
 
@@ -25,7 +25,7 @@ public class MorphoDicsPaneFactory extends ConfigurationPaneFactory {
 	
 	SelectableFileList list;
 	
-	public MorphoDicsPaneFactory(Project project) {
+	public MorphoDicsPaneFactory(GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Morphological-mode dictionaries"));
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -78,12 +78,12 @@ public class MorphoDicsPaneFactory extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setMorphoDics(list.getSelectedFiles());
 		return true;
 	}
 
-	public static MorphoDicsPaneFactory getPane(Project project) {
+	public static MorphoDicsPaneFactory getPane(GramlabProject project) {
 		return new MorphoDicsPaneFactory(project);
 	}
 	

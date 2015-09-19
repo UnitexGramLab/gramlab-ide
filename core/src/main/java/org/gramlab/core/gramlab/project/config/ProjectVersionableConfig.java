@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.locate.MatchesPolicy;
 import fr.gramlab.project.config.locate.OutputsPolicy;
 import fr.gramlab.project.config.locate.VariableErrorPolicy;
@@ -25,7 +25,7 @@ import fr.umlv.unitex.io.Encoding;
 
 public class ProjectVersionableConfig extends AbstractProjectConfig {
 	
-	private Project project;
+	private GramlabProject project;
 	
 	/**
 	 * PREPROCESSING CONFIGURATION
@@ -114,7 +114,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 	private PackageOperation packageOperation;
 
 	
-	public ProjectVersionableConfig(Project p) {
+	public ProjectVersionableConfig(GramlabProject p) {
 		this.project=p;
 		this.encoding=Encoding.UTF8;
 		this.separatorNormalization=true;
@@ -145,7 +145,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 		this.packageOperation=PackageOperation.BUILD_AND_INSTALL;
 	}
 	
-	public ProjectVersionableConfig(Project p, String language, Encoding encoding) {
+	public ProjectVersionableConfig(GramlabProject p, String language, Encoding encoding) {
 		this(p);
 		this.language=language;
 		this.encoding=encoding;
@@ -160,7 +160,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 		}
 	}
 
-	public static ProjectVersionableConfig load(Project p,File f) {
+	public static ProjectVersionableConfig load(GramlabProject p,File f) {
 		ProjectVersionableConfig config=new ProjectVersionableConfig(p);
 		try {
 		FileInputStream stream;
@@ -236,7 +236,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 	}
 
 
-	private static MvnSourceConfig readMvnSourceConfig(Project p,BufferedReader s) throws IOException {
+	private static MvnSourceConfig readMvnSourceConfig(GramlabProject p,BufferedReader s) throws IOException {
 		boolean includeGrfs=readBoolean(MAVEN_INCLUDE_GRFS,s);
 		boolean includeDics=readBoolean(MAVEN_INCLUDE_DICS,s);
 		ArrayList<File> includes=readProjectRelativeFileList(MAVEN_INCLUDES,p,s);
@@ -244,7 +244,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 		return new MvnSourceConfig(includeGrfs,includeDics,includes,excludes);
 	}
 
-	private static MvnBuildConfig readMvnBuildConfig(Project p, BufferedReader s) throws IOException {
+	private static MvnBuildConfig readMvnBuildConfig(GramlabProject p, BufferedReader s) throws IOException {
 		int nGrf=readInt(MAVEN_GRFS_TO_COMPILE,s);
 		ArrayList<GrfToCompile> grfToCompile=new ArrayList<GrfToCompile>();
 		for (int i=0;i<nGrf;i++) {
@@ -361,7 +361,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 		return c;
 	}
 	
-	private static Preprocessing readPreprocessing(Project p, BufferedReader s) throws IOException {
+	private static Preprocessing readPreprocessing(GramlabProject p, BufferedReader s) throws IOException {
 		ArrayList<PreprocessingStep> steps=new ArrayList<PreprocessingStep>();
 		String tmp=new StringProperty(PREPROCESSING,null).load(s);
 		try {
@@ -394,7 +394,7 @@ public class ProjectVersionableConfig extends AbstractProjectConfig {
 		}
 	}
 	
-	private static ArrayList<NamedRepository> readNamedRepositories(Project p,BufferedReader s) throws IOException {
+	private static ArrayList<NamedRepository> readNamedRepositories(GramlabProject p,BufferedReader s) throws IOException {
 		ArrayList<NamedRepository> list=new ArrayList<NamedRepository>();
 		String tmp=new StringProperty(NAMED_REPOSITORIES,null).load(s);
 		try {
