@@ -62,6 +62,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
@@ -459,7 +460,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action textFontAction = new AbstractAction("Set...") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = InternalFrameManager.getManager(null)
+				final FontInfo i = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(getPref().getTextFont());
 				if (i != null) {
 					getPref().setTextFont(i);
@@ -480,7 +482,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action concord = new AbstractAction("Set...") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = InternalFrameManager.getManager(null)
+				final FontInfo i = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(getPref().getConcordanceFont());
 				if (i != null) {
 					getPref().setConcordanceFont(i);
@@ -520,9 +523,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		graphConfig.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphPresentationInfo i = InternalFrameManager
-						.getManager(null).newGraphPresentationDialog(
-								getPref().getInfo(), false);
+				final GraphPresentationInfo i = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newGraphPresentationDialog(getPref().getInfo(), false);
 				if (i != null) {
 					getPref().setInfo(i);
 				}

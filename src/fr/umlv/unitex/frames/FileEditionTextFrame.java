@@ -51,6 +51,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
@@ -156,8 +157,9 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 			MyCursors.findIcon) {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			InternalFrameManager.getManager(null).newFindDialog(
-					FileEditionTextFrame.this);
+			GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newFindDialog(FileEditionTextFrame.this);
 		}
 	};
 

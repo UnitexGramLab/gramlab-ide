@@ -50,6 +50,7 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.RegexFormatter;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -259,8 +260,9 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		final LoadDelaDo toDo = new LoadDelaDo(dela1);
 		final Encoding e = Encoding.getEncoding(dela1);
 		if (e == null) {
-			InternalFrameManager.getManager(dela1).newTranscodeOneFileDialog(
-					dela1, toDo);
+			GlobalProjectManager.search(dela1)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newTranscodeOneFileDialog(dela1, toDo);
 		} else {
 			toDo.toDo(true);
 		}

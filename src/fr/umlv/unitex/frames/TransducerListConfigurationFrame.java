@@ -40,6 +40,7 @@ import fr.umlv.unitex.cassys.ListDataTransfertHandler;
 import fr.umlv.unitex.cassys.TransducerListTable;
 import fr.umlv.unitex.cassys.TransducerListTableModel;
 import fr.umlv.unitex.cassys.ShareTransducerList;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -836,7 +837,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			grf = getGrfFromFst2(f);
 		}
 		if (grf != null) {
-			InternalFrameManager.getManager(grf).newGraphFrame(grf);
+			GlobalProjectManager.search(grf)
+					.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(grf);
 		} else {
 			final String t = "Wrong file selected";
 			final String message = "Please select a file with the fst2 extension";

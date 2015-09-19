@@ -38,6 +38,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -184,7 +185,8 @@ public class InflectFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(dela1).newDelaFrame(dela1);
+			GlobalProjectManager.search(dela1)
+					.getFrameManagerAs(InternalFrameManager.class).newDelaFrame(dela1);
 		}
 	}
 

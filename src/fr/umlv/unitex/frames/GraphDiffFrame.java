@@ -35,6 +35,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import fr.umlv.unitex.DropTargetManager;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -56,7 +57,8 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					InternalFrameManager.getManager(base.getGrf())
+					GlobalProjectManager.search(base.getGrf())
+							.getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(base.getGrf());
 				}
 			}
@@ -65,7 +67,8 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					InternalFrameManager.getManager(dest.getGrf())
+					GlobalProjectManager.search(dest.getGrf())
+							.getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(dest.getGrf());
 				}
 			}

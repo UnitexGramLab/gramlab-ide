@@ -32,6 +32,7 @@ import javax.swing.event.InternalFrameListener;
 
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.frames.manager.FrameManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -56,7 +57,7 @@ import fr.umlv.unitex.xalign.ConcordanceModel;
  * 
  * @author paumier
  */
-public class InternalFrameManager {
+public class InternalFrameManager implements FrameManager {
 	final JDesktopPane desktop;
 	private final static Integer LAYER = 1;
 	private final static Integer CONSOLE_LAYER = 10;
@@ -137,36 +138,6 @@ public class InternalFrameManager {
 	private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
 	private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
-	private static InternalFrameManager manager;
-
-	/**
-	 * If the frame manager has submanagers, it must override this method to get
-	 * the actual manager to be used. This getter is designed for compatibility
-	 * with Gramlab. Unitex does not use the resource parameter, but gramlab
-	 * will.
-	 */
-	public InternalFrameManager getSubManager(
-			@SuppressWarnings("unused") File resource,
-			@SuppressWarnings("unused") boolean weShallOpenTheProject) {
-		return this;
-	}
-
-	/**
-	 * Here we have a static access to the main frame manager. This getter is
-	 * designed for compatibility with Gramlab.
-	 */
-	public static InternalFrameManager getManager(File resource,
-			boolean weShallOpenTheProject) {
-		return manager.getSubManager(resource, weShallOpenTheProject);
-	}
-
-	public static InternalFrameManager getManager(File resource) {
-		return getManager(resource, true);
-	}
-
-	public static void setManager(InternalFrameManager m) {
-		manager = m;
-	}
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;

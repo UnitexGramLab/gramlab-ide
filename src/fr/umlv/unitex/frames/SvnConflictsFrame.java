@@ -32,6 +32,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.svn.SvnMonitor;
 
 /**
@@ -54,7 +55,8 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 				final int index = list.locationToIndex(e.getPoint());
 				if (index != -1) {
 					final File f = (File) list.getModel().getElementAt(index);
-					InternalFrameManager.getManager(f).newGraphFrame(f);
+					GlobalProjectManager.search(f).getFrameManagerAs(InternalFrameManager.class)
+							.newGraphFrame(f);
 				}
 			}
 		});

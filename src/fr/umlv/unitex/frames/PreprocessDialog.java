@@ -41,6 +41,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
@@ -266,7 +267,8 @@ public class PreprocessDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// if the user has clicked on cancel, we do nothing
 				setVisible(false);
-				InternalFrameManager.getManager(null).closeTextFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTextFrame();
 			}
 		};
 		final JButton cancel = new JButton(cancelAction);
@@ -330,7 +332,8 @@ public class PreprocessDialog extends JDialog {
 			tokenizeCmd = tokenizeCmd.inputOffsets(lastOutputOffsets);
 		}
 		commands.addCommand(tokenizeCmd);
-		InternalFrameManager.getManager(null).closeTextFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeTextFrame();
 		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true,
 				new AfterPreprocessDo(sntFile, taggedText));
@@ -658,7 +661,8 @@ public class PreprocessDialog extends JDialog {
 		if (textFst2Check.isSelected()) {
 			commands = constructTextAutomaton(commands);
 		}
-		InternalFrameManager.getManager(null).closeTextFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeTextFrame();
 		SntUtil.cleanSntDir(sntDir);
 		Launcher.exec(commands, true,
 				new AfterPreprocessDo(sntFile, taggedText));

@@ -21,6 +21,7 @@ import javax.swing.event.InternalFrameEvent;
 import fr.umlv.unitex.cassys.ShareTransducerList;
 import fr.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
 import fr.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.console.ConsoleEntry;
@@ -30,7 +31,6 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
 import fr.umlv.unitex.process.commands.CassysCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
-
 import fr.umlv.unitex.config.Config;
 
 /**
@@ -167,8 +167,8 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		}
 		
 		if (a.getSource() == edit || a.getSource() == _new) {
-			TransducerListConfigurationFrame t = InternalFrameManager
-					.getManager(null).getTransducerListConfigurationFrame();
+			TransducerListConfigurationFrame t = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class).getTransducerListConfigurationFrame();
 			
 			// If save has to be done. Do it first
 			if (t != null && t.isConfigurationHasChanged()) {
@@ -178,7 +178,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 					t.quit();
 				}
 				Config.setCurrentTransducerList(selected_file);
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newTransducerListConfigurationFrame(selected_file);
 			}
 		}
@@ -276,7 +276,8 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		public void toDo(boolean success) {
 			
 			
-			InternalFrameManager.getManager(languageDirectory).newConcordanceParameterFrame();
+			GlobalProjectManager.search(languageDirectory).getFrameManagerAs(InternalFrameManager.class)
+					.newConcordanceParameterFrame();
 		}
 	}
 	

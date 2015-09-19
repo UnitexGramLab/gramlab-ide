@@ -48,6 +48,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
@@ -247,7 +248,8 @@ public class ElagCompFrame extends JInternalFrame {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				InternalFrameManager.getManager(grf).newGraphFrame(grf);
+				GlobalProjectManager.search(grf)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(grf);
 			}
 		});
 		c.gridx = 4;
@@ -286,7 +288,8 @@ public class ElagCompFrame extends JInternalFrame {
 									"ERROR", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				InternalFrameManager.getManager(conc).newLocateFrame(conc);
+				GlobalProjectManager.search(conc)
+						.getFrameManagerAs(InternalFrameManager.class).newLocateFrame(conc);
 			}
 		});
 		c.gridx = 4;

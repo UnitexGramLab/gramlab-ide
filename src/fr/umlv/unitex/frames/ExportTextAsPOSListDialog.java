@@ -34,6 +34,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.io.Encoding;
@@ -95,7 +96,8 @@ public class ExportTextAsPOSListDialog extends JDialog {
 	public void launch() {
 		canceled = false;
 		progress.setMinimum(0);
-		final int sentenceCount = InternalFrameManager.getManager(null)
+		final int sentenceCount = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
 				.getTextAutomatonFrame().getSentenceCount();
 		progress.setMaximum(sentenceCount);
 		progress.setValue(0);
