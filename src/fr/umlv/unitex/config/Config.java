@@ -38,6 +38,7 @@ import java.util.TreeSet;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -1052,8 +1053,11 @@ public class Config {
         p.add(new JLabel("Choose the language you want"));
         p.add(new JLabel("to work on:"));
         p.add(langList);
+        
+        final JFrame frame = new JFrame();
+        frame.setAlwaysOnTop(true);
         final String[] options = { "OK", "Exit" };
-        if (1 == JOptionPane.showOptionDialog(null, p, "Unitex",
+        if (1 == JOptionPane.showOptionDialog(frame, p, "Unitex",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0])) {
             System.exit(0);
