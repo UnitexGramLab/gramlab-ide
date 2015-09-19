@@ -8,13 +8,14 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 
 
 public class ProjectNode extends WorkspaceTreeNode {
 
-	Project project;
+	GramlabProject project;
 	private Timer timer=new Timer(3000,new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -23,7 +24,7 @@ public class ProjectNode extends WorkspaceTreeNode {
 	});
 		
 	
-	public ProjectNode(final Project project,RootNode root) {
+	public ProjectNode(final GramlabProject project,RootNode root) {
 		super(project.getProjectDirectory(),root);
 		this.project=project;
 		timer.setCoalesce(false);
@@ -35,16 +36,17 @@ public class ProjectNode extends WorkspaceTreeNode {
 				 * a concurrent exception with the ProjectManager's 
 				 * projectListeners field
 				 */
-				ProjectManager.getManager().addProjectListener(new ProjectAdapter() {
+				GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.addProjectListener(new ProjectAdapter() {
 					@Override
-					public void projectOpened(Project p, int pos) {
+					public void projectOpened(GramlabProject p, int pos) {
 						if (project.equals(p)) {
 							timer.start();
 						}
 					}
 					
 					@Override
-					public void projectClosed(Project p, int pos) {
+					public void projectClosed(GramlabProject p, int pos) {
 						if (project.equals(p)) {
 							timer.stop();
 						}
@@ -62,7 +64,7 @@ public class ProjectNode extends WorkspaceTreeNode {
 		return !project.isOpen();
 	}
 	
-	public Project getProject() {
+	public GramlabProject getProject() {
 		return project;
 	}
 	

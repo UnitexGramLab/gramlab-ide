@@ -17,7 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.ExecParameters;
@@ -34,7 +34,7 @@ public class SvnDeleteUrlDialog extends JDialog {
 	JPanel mainPanel;
 	Executor executor=null;
 	JButton ok,cancel;
-	Project project;
+	GramlabProject project;
 	ProcessOutputList stdout=new ProcessOutputList(new ProcessOutputListModel());
 	ProcessOutputList stderr=new ProcessOutputList(new ProcessOutputListModel());
 	String url;

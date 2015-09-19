@@ -16,14 +16,14 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import fr.gramlab.project.Language;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public class PolyLexPaneFactory extends ConfigurationPaneFactory {
 	
 	File bin=null;
 	
-	public PolyLexPaneFactory(final Project project) {
+	public PolyLexPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Configuring polylexical units analysis"));
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -91,18 +91,18 @@ public class PolyLexPaneFactory extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setPolyLexBin(bin);
 		return true;
 	}
 	
 	
-	public static PolyLexPaneFactory getPane(Project project) {
+	public static PolyLexPaneFactory getPane(GramlabProject project) {
 		return new PolyLexPaneFactory(project);
 	}
 	
 	
-	public static String getPolyLexCompatibleLang(Project project) {
+	public static String getPolyLexCompatibleLang(GramlabProject project) {
 		String s=project.getLanguage();
 		if (s==null) return null;
 		Language l=Language.getLanguage(s);

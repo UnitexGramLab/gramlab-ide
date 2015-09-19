@@ -29,18 +29,18 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class EditDicsDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	DefaultListModel model;
 	JTextField dstBin=new JTextField("");
 	DefaultListModel dicModel;
 
-	public EditDicsDialog(final Project p,final DefaultListModel model,final int index) {
+	public EditDicsDialog(final GramlabProject p,final DefaultListModel model,final int index) {
 		super(Main.getMainFrame(), "Dictionary configuration", true);
 		this.project=p;
 		this.model=model;

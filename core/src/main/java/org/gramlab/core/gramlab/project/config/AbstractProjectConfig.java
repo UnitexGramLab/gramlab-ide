@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 public abstract class AbstractProjectConfig {
 	
@@ -14,7 +14,7 @@ public abstract class AbstractProjectConfig {
 
 	public abstract void save(OutputStreamWriter s) throws IOException;
 	
-	protected static File readProjectRelativeFile(Project p, String name, BufferedReader s) throws IOException {
+	protected static File readProjectRelativeFile(GramlabProject p, String name, BufferedReader s) throws IOException {
 		String tmp=new StringProperty(name,null).load(s);
 		if (tmp.equals("")) return null;
 		if (File.pathSeparatorChar=='\\') {
@@ -27,7 +27,7 @@ public abstract class AbstractProjectConfig {
 	}
 
 
-	protected static ArrayList<File> readProjectRelativeFileList(String name, Project p,
+	protected static ArrayList<File> readProjectRelativeFileList(String name, GramlabProject p,
 			BufferedReader s) throws IOException {
 		ArrayList<File> list=new ArrayList<File>();
 		String tmp=new StringProperty(name,null).load(s);
@@ -43,7 +43,7 @@ public abstract class AbstractProjectConfig {
 		return list;
 	}
 
-	protected void saveProjectRelativeFileList(Project project,String name, ArrayList<File> list,
+	protected void saveProjectRelativeFileList(GramlabProject project,String name, ArrayList<File> list,
 			OutputStreamWriter s) throws IOException {
 		new StringProperty(name,""+list.size()).save(s);
 		for (File f:list) {
@@ -51,7 +51,7 @@ public abstract class AbstractProjectConfig {
 		}
 	}
 
-	protected void saveProjectRelativeFile(Project project,String name,File f,OutputStreamWriter s) throws IOException {
+	protected void saveProjectRelativeFile(GramlabProject project,String name,File f,OutputStreamWriter s) throws IOException {
 		String tmp;
 		if (f!=null) tmp=project.getRelativeFileName(f);
 		else tmp="";
@@ -59,7 +59,7 @@ public abstract class AbstractProjectConfig {
 		new StringProperty(name,tmp).save(s);
 	}
 
-	protected static File readFile(Project p, String name, BufferedReader s) throws IOException {
+	protected static File readFile(GramlabProject p, String name, BufferedReader s) throws IOException {
 		String tmp=new StringProperty(name,null).load(s);
 		if (tmp.equals("")) return null;
 		File f=new File(tmp);
@@ -69,7 +69,7 @@ public abstract class AbstractProjectConfig {
 		return new File(p.getProjectDirectory(),tmp);
 	}
 
-	protected void saveFile(Project project,String name,File f,OutputStreamWriter s) throws IOException {
+	protected void saveFile(GramlabProject project,String name,File f,OutputStreamWriter s) throws IOException {
 		String tmp="";
 		if (f!=null) {
 			tmp=project.getNormalizedFileName(f);

@@ -12,14 +12,14 @@ import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.commands.SvnCommand;
 
 @SuppressWarnings("serial")
 public class SvnInfoDialog extends JDialog {
 	
-	public SvnInfoDialog(Project p) {
+	public SvnInfoDialog(GramlabProject p) {
 		super(Main.getMainFrame(), "SVN info on project "+p.getName(), true);
 		JPanel pane=new JPanel(new BorderLayout());
 		pane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));

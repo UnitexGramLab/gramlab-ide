@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import fr.gramlab.project.ProcessPane;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.concordance.ResultDisplay;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 import fr.gramlab.util.MyComboCellRenderer;
@@ -52,9 +52,9 @@ public class FileOperationConfigPane extends ConfigurationPaneFactory {
 	private final ButtonGroup bg = new ButtonGroup();
 	
 	ExtractMatchType extractMatchType;
-	private Project project;
+	private GramlabProject project;
 	
-	public FileOperationConfigPane(Project project) {
+	public FileOperationConfigPane(GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -82,7 +82,7 @@ public class FileOperationConfigPane extends ConfigurationPaneFactory {
 		add(new JPanel(null), gbc);
 	}
 
-	private JPanel createOutputPanel(final Project project) {
+	private JPanel createOutputPanel(final GramlabProject project) {
 		JPanel p=new JPanel(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Create an output text file"));
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -192,7 +192,7 @@ public class FileOperationConfigPane extends ConfigurationPaneFactory {
 		return p;
 	}
 
-	private JPanel createDisplayPanel(final Project project) {
+	private JPanel createDisplayPanel(final GramlabProject project) {
 		JPanel p=new JPanel(new GridLayout(3,1));
 		p.setBorder(BorderFactory.createTitledBorder("Display results with:"));
 		display=project.getBuildResultDisplay();
@@ -308,7 +308,7 @@ public class FileOperationConfigPane extends ConfigurationPaneFactory {
 	}
 
 	
-	public boolean validateConfiguration(Project project,boolean complainIfNoFile) {
+	public boolean validateConfiguration(GramlabProject project,boolean complainIfNoFile) {
 		String s=(String) lastResultFiles.getSelectedItem();
 		File result=null;
 		if (s==null || (result=project.getFileFromNormalizedName(s))==null) {
@@ -354,7 +354,7 @@ public class FileOperationConfigPane extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		return validateConfiguration(project,false);
 	}
 

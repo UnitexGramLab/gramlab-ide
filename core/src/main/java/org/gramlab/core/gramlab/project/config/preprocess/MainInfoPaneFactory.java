@@ -9,7 +9,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import fr.gramlab.project.Language;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.Artifact;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.umlv.unitex.io.Encoding;
@@ -24,7 +24,7 @@ public class MainInfoPaneFactory extends ConfigurationPaneFactory {
 	JTextField version;
 	JTextField language;
 	
-	public MainInfoPaneFactory(Project project,boolean editable) {
+	public MainInfoPaneFactory(GramlabProject project,boolean editable) {
 		super(new BorderLayout());
 		setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		name=new JTextField(project.getName());
@@ -43,7 +43,7 @@ public class MainInfoPaneFactory extends ConfigurationPaneFactory {
 	}
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		Artifact a=Artifact.checkedArtifactCreation(group.getText(),artifact.getText(),version.getText(),project.getName());
 		if (a==null) {
 			return false;

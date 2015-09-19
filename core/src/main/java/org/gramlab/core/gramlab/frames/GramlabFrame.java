@@ -42,10 +42,11 @@ import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.icons.Icons;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.config.ProjectPreferences;
 import fr.gramlab.project.config.maven.MavenDialog;
 import fr.gramlab.project.config.maven.UpdateDependenciesDialog;
@@ -121,9 +122,10 @@ public class GramlabFrame extends JFrame {
 		bigSplit.setOneTouchExpandable(true);
 		setContentPane(bigSplit);
 		refreshTitle();
-		ProjectManager.getManager().addProjectListener(new ProjectAdapter() {
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.addProjectListener(new ProjectAdapter() {
 			@Override
-			public void projectOpened(Project p, int pos) {
+			public void projectOpened(GramlabProject p, int pos) {
 				if (p != null) {
 					/* We have a special case for the .snt file, if any,
 					 * because p.openFile(f) would make it the current corpus
@@ -133,7 +135,9 @@ public class GramlabFrame extends JFrame {
 					ArrayList<File> files = p.getOpenFrames();
 					for (File f : files) {
 						if (FileUtil.getExtensionInLowerCase(f).equals("snt")) {
-							InternalFrameManager.getManager(f).newTextFrame(f,false);
+							GlobalProjectManager.search(f)
+								.getFrameManagerAs(InternalFrameManager.class)
+								.newTextFrame(f,false);
 						} else {
 							p.openFile(f,false);
 						}
@@ -142,7 +146,7 @@ public class GramlabFrame extends JFrame {
 			}
 
 			@Override
-			public void currentProjectChanged(Project p1, int pos) {
+			public void currentProjectChanged(GramlabProject p1, int pos) {
 				refreshTitle();
 				processPane.removeAll();
 				if (p1!=null) {
@@ -168,7 +172,7 @@ public class GramlabFrame extends JFrame {
 				}
 				GramlabConfigManager.saveConfigFile();
 				ProjectPreferences.setClosingGramlab(true);
-				if (ProjectManager.getManager().closeAllProjects()) {
+				if (GlobalProjectManager.getAs(GramlabProjectManager.class).closeAllProjects()) {
 					setVisible(false);
 					dispose();
 				} else {
@@ -200,16 +204,17 @@ public class GramlabFrame extends JFrame {
 		tree = new JTree(model);
 		tree.setLargeModel(true);
 		tree.setRootVisible(false);
-		ProjectManager.getManager().addProjectListener(new ProjectAdapter() {
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.addProjectListener(new ProjectAdapter() {
 			@Override
-			public void projectOpened(Project p, int pos) {
+			public void projectOpened(GramlabProject p, int pos) {
 				tree.expandPath(new TreePath(model.getPathToRoot(model
 						.getProjectNode(p))));
 				tree.setSelectionPath(null);
 			}
 
 			@Override
-			public void projectClosed(Project p, int pos) {
+			public void projectClosed(GramlabProject p, int pos) {
 				tree.collapsePath(new TreePath(model.getPathToRoot(model
 						.getProjectNode(p))));
 			}
@@ -248,8 +253,9 @@ public class GramlabFrame extends JFrame {
 					 */
 					super.getTreeCellRendererComponent(tree, name, sel,
 							expanded, false, row, hasFocus);
-					Project project = n.getProject();
-					if (ProjectManager.getManager().getCurrentProject() == project) {
+					GramlabProject project = n.getProject();
+					if (GlobalProjectManager.getAs(GramlabProjectManager.class)
+							.getCurrentProject() == project) {
 						/*
 						 * The current project is displayed with a different
 						 * color
@@ -277,8 +283,8 @@ public class GramlabFrame extends JFrame {
 						setForeground(Color.RED.darker());
 						setText(getText() + " (read-only)"+HACK_SPACES_TEXT);
 					}
-					Project p = ProjectManager.getManager().getProject(
-							node.getFile());
+					GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+							.getProject(node.getFile());
 					SvnInfo info = p.getSvnInfo(node.getFile());
 					if (info != null) {
 						String text = getText();
@@ -374,8 +380,8 @@ public class GramlabFrame extends JFrame {
 						}
 						if (doubleClick) {
 							if (!pn.getProject().isOpen()) {
-								ProjectManager.getManager().openProject(
-										pn.getProject());
+								GlobalProjectManager.getAs(GramlabProjectManager.class)
+									.openProject(pn.getProject());
 							}
 							return;
 						}
@@ -384,7 +390,8 @@ public class GramlabFrame extends JFrame {
 					/* If we have a normal node */
 					WorkspaceTreeNode node = (WorkspaceTreeNode) o;
 					File f = node.getFile();
-					Project project = ProjectManager.getManager().getProject(f);
+					GramlabProject project = GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.getProject(f);
 					if (doubleClick && f.isFile()) {
 						/* Double-click on a file */
 						project.openFile(f,false);
@@ -409,7 +416,7 @@ public class GramlabFrame extends JFrame {
 			}
 
 
-			private JPopupMenu createFilePopup(final Project project) {
+			private JPopupMenu createFilePopup(final GramlabProject project) {
 				JPopupMenu popup = new JPopupMenu();
 				/*
 				 * Some actions can be applied on several files, so we compute
@@ -504,8 +511,9 @@ public class GramlabFrame extends JFrame {
 				Action editor = new AbstractAction("Internal editor") {
 					public void actionPerformed(ActionEvent e) {
 						for (File f : filesNotDirs) {
-							InternalFrameManager.getManager(f)
-									.newFileEditionTextFrame(f);
+							GlobalProjectManager.search(f)
+								.getFrameManagerAs(InternalFrameManager.class)
+								.newFileEditionTextFrame(f);
 						}
 					}
 				};
@@ -554,10 +562,12 @@ public class GramlabFrame extends JFrame {
 					Action open = new AbstractAction("Open graphs") {
 						public void actionPerformed(ActionEvent e) {
 							for (File f : grfFiles) {
-								InternalFrameManager.getManager(f)
-										.newGraphFrame(f);
+								GlobalProjectManager.search(f)
+									.getFrameManagerAs(InternalFrameManager.class)
+									.newGraphFrame(f);
 							}
-							ProjectManager.getManager().setCurrentProject(project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.setCurrentProject(project);
 						}
 					};
 					graphMenu.add(new JMenuItem(open));
@@ -627,7 +637,8 @@ public class GramlabFrame extends JFrame {
 							for (File f:dicFiles) {
 								project.openDicFile(f);
 							}
-							ProjectManager.getManager().setCurrentProject(project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.setCurrentProject(project);
 						}
 					};
 					dicMenu.add(new JMenuItem(open));
@@ -650,8 +661,9 @@ public class GramlabFrame extends JFrame {
 					Action check = new AbstractAction("Check dictionary") {
 						public void actionPerformed(ActionEvent e) {
 							File file=dicFiles.get(0);
-							InternalFrameManager.getManager(file)
-									.newCheckDicFrame(file);
+							GlobalProjectManager.search(file)
+								.getFrameManagerAs(InternalFrameManager.class)
+								.newCheckDicFrame(file);
 						}
 					};
 					check.setEnabled(dicFiles.size() == 1);
@@ -683,18 +695,20 @@ public class GramlabFrame extends JFrame {
 				return popup;
 			}
 
-			private JPopupMenu createProjectPopup(final Project project) {
+			private JPopupMenu createProjectPopup(final GramlabProject project) {
 				JPopupMenu popup = new JPopupMenu();
 				final boolean open = project.isOpen();
 				Action openClose = new AbstractAction((open ? "Close" : "Open")
 						+ " project " + project.getName()) {
 					public void actionPerformed(ActionEvent e) {
 						if (open)
-							ProjectManager.getManager().closeProject(project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.closeProject(project);
 						else {
-							ProjectManager.getManager().openProject(project);
-							ProjectManager.getManager().setCurrentProject(
-									project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.openProject(project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.setCurrentProject(project);
 						}
 					}
 				};
@@ -702,7 +716,7 @@ public class GramlabFrame extends JFrame {
 				Action delete = new AbstractAction("Delete") {
 					public void actionPerformed(ActionEvent e) {
 						String urlToDelete=project.getSvnRepositoryUrl();
-						if (!ProjectManager.getManager()
+						if (!GlobalProjectManager.getAs(GramlabProjectManager.class)
 								.deleteProject(project,true)) {
 							return;
 						}
@@ -716,14 +730,15 @@ public class GramlabFrame extends JFrame {
 				};
 				popup.add(new JMenuItem(delete));
 				if (open
-						&& ProjectManager.getManager().getCurrentProject() != project) {
+						&& GlobalProjectManager.getAs(GramlabProjectManager.class)
+							.getCurrentProject() != project) {
 					/* If the project is not the current one, we offer here to
 					 * make it so */
 					Action setCurrent = new AbstractAction(
 							"Set as current project") {
 						public void actionPerformed(ActionEvent e) {
-							ProjectManager.getManager().setCurrentProject(
-									project);
+							GlobalProjectManager.getAs(GramlabProjectManager.class)
+								.setCurrentProject(project);
 						}
 					};
 					popup.add(new JMenuItem(setCurrent));
@@ -758,8 +773,9 @@ public class GramlabFrame extends JFrame {
 							EventQueue.invokeLater(new Runnable() {
 								@Override
 								public void run() {
-									InternalFrameManager.getManager(null)
-											.showConsoleFrame();
+									GlobalProjectManager.search(null)
+										.getFrameManagerAs(InternalFrameManager.class)
+										.showConsoleFrame();
 								}
 							});
 						}
@@ -880,7 +896,7 @@ public class GramlabFrame extends JFrame {
 		return list;
 	}
 
-	protected JPopupMenu addSvnItems(JPopupMenu popup,final Project project) {
+	protected JPopupMenu addSvnItems(JPopupMenu popup,final GramlabProject project) {
 		if (null == project.getSvnInfo(project.getSrcDirectory())) {
 			/* Nothing to do if the project is not versioned */
 			return popup;
@@ -956,7 +972,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 
-	private Action getSvnInfoAction(final Project p) {
+	private Action getSvnInfoAction(final GramlabProject p) {
 		if (!p.isOpen() || p.getSvnInfo(p.getSrcDirectory()) == null) {
 			return null;
 		}
@@ -974,7 +990,7 @@ public class GramlabFrame extends JFrame {
 	 * Returns an action that must launch a 'svn add' on those of the given
 	 * files that can be added.
 	 */
-	private Action getSvnAddAction(ArrayList<File> files, final Project project) {
+	private Action getSvnAddAction(ArrayList<File> files, final GramlabProject project) {
 		final ArrayList<File> unversioned = getUnversionedOrIgnoredFilesForSvnAdd(files,
 				project);
 		Action a = new AbstractAction("Add files...") {
@@ -989,7 +1005,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 
-	private Action getSvnIgnoreAction(ArrayList<File> files, Project project) {
+	private Action getSvnIgnoreAction(ArrayList<File> files, GramlabProject project) {
 		final ArrayList<File> files2 = getUnversionedFilesForSvnIgnore(files,
 				project);
 		Action a = new AbstractAction("Ignore files...") {
@@ -1005,7 +1021,7 @@ public class GramlabFrame extends JFrame {
 	}
 
 	
-	private Action getSvnRevertAction(final ArrayList<File> files,final Project project) {
+	private Action getSvnRevertAction(final ArrayList<File> files,final GramlabProject project) {
 		final ArrayList<File> revertable = getRevertableFiles(files,
 				project);
 		Action a = new AbstractAction("Revert") {
@@ -1021,7 +1037,7 @@ public class GramlabFrame extends JFrame {
 	}
 
 
-	private Action getMavenAction(final Project project) {
+	private Action getMavenAction(final GramlabProject project) {
 		Action a = new AbstractAction("Export as a maven component") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1031,7 +1047,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 	
-	private Action getUpdateDependenciesAction(final Project project) {
+	private Action getUpdateDependenciesAction(final GramlabProject project) {
 		Action a = new AbstractAction("Update maven dependencies") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1046,7 +1062,7 @@ public class GramlabFrame extends JFrame {
 	 * files that can be added.
 	 */
 	private Action getDeleteAction(final ArrayList<File> files,
-			final Project project) {
+			final GramlabProject project) {
 		Action a = new AbstractAction("Delete") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1064,7 +1080,7 @@ public class GramlabFrame extends JFrame {
 	 * files that are either modified or added ones.
 	 */
 	private Action getSvnCommitAction(ArrayList<File> files,
-			final Project project,final ArrayList<File> clickedFiles) {
+			final GramlabProject project,final ArrayList<File> clickedFiles) {
 		final SvnStatusInfo info = getCommittableFiles(files, project);
 		Action a = new AbstractAction("Commit files...") {
 			@Override
@@ -1103,7 +1119,7 @@ public class GramlabFrame extends JFrame {
 	 * For a svn add operations, we don't mind if the parents are themselves unversioned
 	 */
 	private ArrayList<File> getUnversionedOrIgnoredFilesForSvnAdd(ArrayList<File> files,
-			Project project) {
+			GramlabProject project) {
 		ArrayList<File> unversioned = new ArrayList<File>();
 		for (File f : files) {
 			SvnInfo i = project.getSvnInfo(f);
@@ -1119,7 +1135,7 @@ public class GramlabFrame extends JFrame {
 	 * For a svn ignore operations, we DO mind if the parents are themselves unversioned
 	 */
 	private ArrayList<File> getUnversionedFilesForSvnIgnore(ArrayList<File> files,
-			Project project) {
+			GramlabProject project) {
 		ArrayList<File> unversioned = new ArrayList<File>();
 		for (File f : files) {
 			SvnInfo i = project.getSvnInfo(f);
@@ -1134,7 +1150,7 @@ public class GramlabFrame extends JFrame {
 	}
 	
 	private ArrayList<File> getRevertableFiles(ArrayList<File> files,
-			Project project) {
+			GramlabProject project) {
 		ArrayList<File> revertable = new ArrayList<File>();
 		for (File f : files) {
 			SvnInfo i = project.getSvnInfo(f);
@@ -1149,7 +1165,7 @@ public class GramlabFrame extends JFrame {
 	}
 	
 	private ArrayList<File> getVersionedFiles(ArrayList<File> files,
-			Project project) {
+			GramlabProject project) {
 		if (files==null) return null;
 		ArrayList<File> versioned = new ArrayList<File>();
 		for (File f : files) {
@@ -1168,7 +1184,7 @@ public class GramlabFrame extends JFrame {
 	
 	@SuppressWarnings("unchecked")
 	private SvnStatusInfo getCommittableFiles(ArrayList<File> srcFiles,
-			Project project) {
+			GramlabProject project) {
 		ArrayList<File> files=(ArrayList<File>) srcFiles.clone();
 		expandDirectories(project,files);
 		SvnStatusInfo info = new SvnStatusInfo(project);
@@ -1203,7 +1219,7 @@ public class GramlabFrame extends JFrame {
 	 * For every directory contained in files, we add the 
 	 * subdirectories if not already there
 	 */
-	private void expandDirectories(Project p,ArrayList<File> files) {
+	private void expandDirectories(GramlabProject p,ArrayList<File> files) {
 		ArrayList<File> removed=p.getRemovedFiles();
 		for (int i=0;i<files.size();i++) {
 			File f=files.get(i);
@@ -1238,7 +1254,7 @@ public class GramlabFrame extends JFrame {
 	 * 
 	 * If 'extension' is non null, we only keep files with this extension
 	 */
-	private ArrayList<File> getConcernedFiles(TreePath[] selectionPaths, Project project, String extension) {
+	private ArrayList<File> getConcernedFiles(TreePath[] selectionPaths, GramlabProject project, String extension) {
 		ArrayList<File> list = new ArrayList<File>();
 		if (selectionPaths == null) {
 			return list;
@@ -1256,7 +1272,7 @@ public class GramlabFrame extends JFrame {
 		return list;
 	}
 
-	protected Action getSvnShareAction(final Project p) {
+	protected Action getSvnShareAction(final GramlabProject p) {
 		if (!p.isOpen() || p.getSvnInfo(p.getSrcDirectory()) != null) {
 			return null;
 		}
@@ -1269,7 +1285,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 
-	protected Action getSvnUpdateAction(final Project p,ArrayList<File> files,final boolean toHead) {
+	protected Action getSvnUpdateAction(final GramlabProject p,ArrayList<File> files,final boolean toHead) {
 		if (!p.isOpen() || p.getSvnInfo(p.getSrcDirectory()) == null) {
 			return null;
 		}
@@ -1286,7 +1302,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 
-	protected Action getSvnCommitAction(final Project p) {
+	protected Action getSvnCommitAction(final GramlabProject p) {
 		if (!p.isOpen() || p.getSvnInfo(p.getSrcDirectory()) == null) {
 			return null;
 		}
@@ -1299,7 +1315,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 
-	protected Action getSvnCleanupAction(final Project p) {
+	protected Action getSvnCleanupAction(final GramlabProject p) {
 		if (!p.isOpen() || p.getSvnInfo(p.getSrcDirectory()) == null) {
 			return null;
 		}
@@ -1338,27 +1354,31 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(n));
 		final Action delete = new AbstractAction("Delete current project") {
 			public void actionPerformed(ActionEvent e) {
-				ProjectManager.getManager().deleteProject(null, true);
+				GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.deleteProject(null, true);
 			}
 		};
 		delete.setEnabled(false);
 		m.add(new JMenuItem(delete));
 		final Action close = new AbstractAction("Close current project") {
 			public void actionPerformed(ActionEvent e) {
-				ProjectManager.getManager().closeProject(null);
+				GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.closeProject(null);
 			}
 		};
 		close.setEnabled(false);
 		m.add(new JMenuItem(close));
 		final Action closeAll = new AbstractAction("Close all projects") {
 			public void actionPerformed(ActionEvent e) {
-				ProjectManager.getManager().closeAllProjects();
+				GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.closeAllProjects();
 			}
 		};
 		m.add(new JMenuItem(closeAll));
-		ProjectManager.getManager().addProjectListener(new ProjectAdapter() {
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.addProjectListener(new ProjectAdapter() {
 			@Override
-			public void currentProjectChanged(Project p, int pos) {
+			public void currentProjectChanged(GramlabProject p, int pos) {
 				delete.setEnabled(p != null);
 				close.setEnabled(p != null);
 			}
@@ -1379,7 +1399,8 @@ public class GramlabFrame extends JFrame {
 
 	public void openGraph() {
 		File dir;
-		Project p = ProjectManager.getManager().getCurrentProject();
+		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.getCurrentProject();
 		if (p == null)
 			dir = GramlabConfigManager.getWorkspaceDirectory();
 		else
@@ -1396,7 +1417,7 @@ public class GramlabFrame extends JFrame {
 			return;
 		}
 		final File[] graphs = fc.getSelectedFiles();
-		Project proj=null;
+		GramlabProject proj=null;
 		for (int i = 0; i < graphs.length; i++) {
 			String s = graphs[i].getAbsolutePath();
 			if (!graphs[i].exists() && !s.endsWith(".grf")) {
@@ -1409,8 +1430,8 @@ public class GramlabFrame extends JFrame {
 					continue;
 				}
 			}
-			InternalFrameManager manager = InternalFrameManager
-					.getManager(graphs[i]);
+			InternalFrameManager manager = GlobalProjectManager
+					.search(graphs[i]).getFrameManagerAs(InternalFrameManager.class);
 			if (manager == null) {
 				JOptionPane.showMessageDialog(null,
 						"You can not open a graph if no project is opened.",
@@ -1419,11 +1440,13 @@ public class GramlabFrame extends JFrame {
 			}
 			manager.newGraphFrame(graphs[i]);
 			if (proj==null) {
-				proj=ProjectManager.getManager().getProject(graphs[i]);
+				proj=GlobalProjectManager.getAs(GramlabProjectManager.class)
+						.getProject(graphs[i]);
 			}
 		}
 		if (proj!=null) {
-			ProjectManager.getManager().setCurrentProject(proj);
+			GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.setCurrentProject(proj);
 		}
 	}
 
@@ -1431,7 +1454,8 @@ public class GramlabFrame extends JFrame {
 		JMenu m = new JMenu("Files");
 		Action n = new AbstractAction("New") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager m = InternalFrameManager.getManager(null);
+				InternalFrameManager m = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (m == null) {
 					JOptionPane
 							.showMessageDialog(
@@ -1452,7 +1476,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(open));
 		Action closeAll = new AbstractAction("Close all") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager m = InternalFrameManager.getManager(null);
+				InternalFrameManager m = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (m == null) {
 					return;
 				}
@@ -1465,7 +1490,8 @@ public class GramlabFrame extends JFrame {
 
 	public void openFile() {
 		File dir;
-		Project p = ProjectManager.getManager().getCurrentProject();
+		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.getCurrentProject();
 		if (p == null)
 			dir = GramlabConfigManager.getWorkspaceDirectory();
 		else
@@ -1488,8 +1514,8 @@ public class GramlabFrame extends JFrame {
 					continue;
 				}
 			}
-			InternalFrameManager manager = InternalFrameManager
-					.getManager(files[i]);
+			InternalFrameManager manager = GlobalProjectManager
+					.search(files[i]).getFrameManagerAs(InternalFrameManager.class);
 			if (manager == null) {
 				JOptionPane.showMessageDialog(null,
 						"You can not open a file outside a project directory\n"
@@ -1503,7 +1529,8 @@ public class GramlabFrame extends JFrame {
 
 	void openDELA() {
 		File dir;
-		Project p = ProjectManager.getManager().getCurrentProject();
+		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.getCurrentProject();
 		if (p == null)
 			dir = GramlabConfigManager.getWorkspaceDirectory();
 		else
@@ -1518,9 +1545,10 @@ public class GramlabFrame extends JFrame {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		Project proj=null;
+		GramlabProject proj=null;
 		for (File f : fc.getSelectedFiles()) {
-			InternalFrameManager m=InternalFrameManager.getManager(f);
+			InternalFrameManager m=GlobalProjectManager.search(f)
+				.getFrameManagerAs(InternalFrameManager.class);
 			if (m==null) {
 				JOptionPane.showMessageDialog(null, "Dictionary "
 						+ f.getAbsolutePath() + " does not belong\n"
@@ -1529,12 +1557,12 @@ public class GramlabFrame extends JFrame {
 			} else {
 				m.newDelaFrame(f);
 				if (proj==null) {
-					proj=ProjectManager.getManager().getProject(f);
+					proj=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(f);
 				}
 			}
 		}
 		if (proj!=null) {
-			ProjectManager.getManager().setCurrentProject(proj);
+			GlobalProjectManager.getAs(GramlabProjectManager.class).setCurrentProject(proj);
 		}
 	}
 
@@ -1543,7 +1571,8 @@ public class GramlabFrame extends JFrame {
 	 * through the creation of a <code>ProcessInfoFrame</code> object.
 	 */
 	private void sortDELA() {
-		InternalFrameManager manager=InternalFrameManager.getManager(null);
+		InternalFrameManager manager=GlobalProjectManager.search(null)
+			.getFrameManagerAs(InternalFrameManager.class);
 		if (manager==null) {
 			JOptionPane.showMessageDialog(null,
 					"This operation is not possible if no project is open!", "Error",
@@ -1563,7 +1592,8 @@ public class GramlabFrame extends JFrame {
 		if (f == null)
 			return;
 		SortTxtCommand command = new SortTxtCommand().file(f);
-		Project p = ProjectManager.getManager().getCurrentProject();
+		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.getCurrentProject();
 		if (p == null)
 			return;
 		if (p.getLanguage().equals("th")) {
@@ -1583,7 +1613,8 @@ public class GramlabFrame extends JFrame {
 		}
 
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(dela).newDelaFrame(dela);
+			GlobalProjectManager.search(dela)
+				.getFrameManagerAs(InternalFrameManager.class).newDelaFrame(dela);
 		}
 	}
 
@@ -1599,7 +1630,8 @@ public class GramlabFrame extends JFrame {
 		delaMenu.addSeparator();
 		Action checkDelaFormat = new AbstractAction("Check Format...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1635,7 +1667,8 @@ public class GramlabFrame extends JFrame {
 		delaMenu.add(new JMenuItem(sortDictionary));
 		Action inflect = new AbstractAction("Inflect...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1663,7 +1696,8 @@ public class GramlabFrame extends JFrame {
 		delaMenu.add(new JMenuItem(inflect));
 		Action compressIntoFST = new AbstractAction("Compress into FST") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1686,7 +1720,8 @@ public class GramlabFrame extends JFrame {
 					return;
 				}
 				CompressCommand cmd = new CompressCommand().dic(f);
-				if (ProjectManager.getManager().getProject(f).isSemitic()) {
+				if (GlobalProjectManager.getAs(GramlabProjectManager.class)
+						.getProject(f).isSemitic()) {
 					cmd = cmd.semitic();
 				}
 				Launcher.exec(cmd, false);
@@ -1696,7 +1731,8 @@ public class GramlabFrame extends JFrame {
 		delaMenu.addSeparator();
 		Action closeDela = new AbstractAction("Close") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1717,7 +1753,8 @@ public class GramlabFrame extends JFrame {
 		JMenu m = new JMenu("Graphs");
 		Action n = new AbstractAction("New") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1738,7 +1775,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(open));
 		Action save = new AbstractAction("Save") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1766,7 +1804,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(save));
 		Action saveAs = new AbstractAction("Save as...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1782,7 +1821,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(saveAs));
 		Action saveAll = new AbstractAction("Save all") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1799,7 +1839,8 @@ public class GramlabFrame extends JFrame {
 		m.addSeparator();
 		Action search = new AbstractAction("Search") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1827,7 +1868,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(setup));
 		final Action print = new AbstractAction("Print...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1842,7 +1884,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(print));
 		final Action printAll = new AbstractAction("Print All...") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1856,7 +1899,8 @@ public class GramlabFrame extends JFrame {
 		m.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1875,7 +1919,8 @@ public class GramlabFrame extends JFrame {
 		m.add(new JMenuItem(undo));
 		final Action redo = new AbstractAction("Redo") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1895,7 +1940,8 @@ public class GramlabFrame extends JFrame {
 		m.addSeparator();
 		final Action seq2grf = new AbstractAction("Build sequence automaton") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager m = InternalFrameManager.getManager(null);
+				InternalFrameManager m = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (m == null) {
 					JOptionPane
 							.showMessageDialog(
@@ -1913,7 +1959,8 @@ public class GramlabFrame extends JFrame {
 		final JMenuItem sortNodeLabel = new JMenuItem("Sort Node Label");
 		sortNodeLabel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1929,7 +1976,8 @@ public class GramlabFrame extends JFrame {
 		final JMenuItem explorePaths = new JMenuItem("Explore graph paths");
 		explorePaths.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1938,14 +1986,16 @@ public class GramlabFrame extends JFrame {
 				}
 				final GraphFrame f = manager.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					InternalFrameManager.getManager(null).newGraphPathDialog();
+					GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
 				}
 			}
 		});
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
 		compileFST.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1961,7 +2011,8 @@ public class GramlabFrame extends JFrame {
 		final JMenuItem flatten = new JMenuItem("Compile & Flatten FST2");
 		flatten.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1975,7 +2026,8 @@ public class GramlabFrame extends JFrame {
 				"Build Graph Collection");
 		graphCollection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -1988,14 +2040,16 @@ public class GramlabFrame extends JFrame {
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
 		svn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				Project p = ProjectManager.getManager().getCurrentProject();
+				GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+						.getCurrentProject();
 				if (p == null)
 					return;
 				p.getSvnMonitor().monitor(false);
@@ -2016,7 +2070,8 @@ public class GramlabFrame extends JFrame {
 		alignment.setAccelerator(KeyStroke.getKeyStroke('M', Event.CTRL_MASK));
 		alignment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2032,7 +2087,8 @@ public class GramlabFrame extends JFrame {
 		final JMenuItem antialiasing = new JMenuItem("Antialiasing...");
 		antialiasing.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2058,7 +2114,8 @@ public class GramlabFrame extends JFrame {
 				.getKeyStroke('R', Event.CTRL_MASK));
 		presentation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2078,7 +2135,8 @@ public class GramlabFrame extends JFrame {
 		final JMenuItem graphSize = new JMenuItem("Graph Size...");
 		graphSize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2117,7 +2175,8 @@ public class GramlabFrame extends JFrame {
 		groupe.add(fit140);
 		fitInScreen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2142,7 +2201,8 @@ public class GramlabFrame extends JFrame {
 		});
 		fitInWindow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2180,7 +2240,8 @@ public class GramlabFrame extends JFrame {
 		});
 		fit60.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2196,7 +2257,8 @@ public class GramlabFrame extends JFrame {
 		});
 		fit80.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2212,7 +2274,8 @@ public class GramlabFrame extends JFrame {
 		});
 		fit100.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2228,7 +2291,8 @@ public class GramlabFrame extends JFrame {
 		});
 		fit120.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2244,7 +2308,8 @@ public class GramlabFrame extends JFrame {
 		});
 		fit140.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",
@@ -2271,7 +2336,8 @@ public class GramlabFrame extends JFrame {
 		m.addSeparator();
 		Action closeAll = new AbstractAction("Close all") {
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager manager=InternalFrameManager.getManager(null);
+				InternalFrameManager manager=GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
 				if (manager==null) {
 					JOptionPane.showMessageDialog(null,
 							"This operation is not possible if no project is open!", "Error",

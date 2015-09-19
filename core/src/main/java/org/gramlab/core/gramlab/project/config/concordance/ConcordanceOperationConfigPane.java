@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import fr.gramlab.project.ProcessPane;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 import fr.umlv.unitex.LinkButton;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -46,9 +46,9 @@ public class ConcordanceOperationConfigPane extends ConfigurationPaneFactory {
 	
 	ConcordanceConfigPane concordanceConfigPane;
 
-	private Project project;
+	private GramlabProject project;
 	
-	public ConcordanceOperationConfigPane(Project project) {
+	public ConcordanceOperationConfigPane(GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -123,7 +123,7 @@ public class ConcordanceOperationConfigPane extends ConfigurationPaneFactory {
 		return p;
 	}
 	
-	private JPanel createDisplayPanel(final Project project) {
+	private JPanel createDisplayPanel(final GramlabProject project) {
 		JPanel p=new JPanel(new GridLayout(3,1));
 		p.setBorder(BorderFactory.createTitledBorder("Display results with:"));
 		display=project.getConcordanceDisplay();
@@ -242,7 +242,7 @@ public class ConcordanceOperationConfigPane extends ConfigurationPaneFactory {
 
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		if (!concordanceConfigPane.validateConfiguration(project)) {
 			return false;
 		}

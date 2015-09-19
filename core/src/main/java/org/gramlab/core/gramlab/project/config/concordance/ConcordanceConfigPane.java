@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 
 @SuppressWarnings("serial")
@@ -36,7 +36,7 @@ public class ConcordanceConfigPane extends ConfigurationPaneFactory {
 	JCheckBox rightS;
 	JLabel l1,l2,l3,l4;
 	JComboBox sortType;
-	Project project;
+	GramlabProject project;
 	ActionListener validateConfigListener=new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -44,7 +44,7 @@ public class ConcordanceConfigPane extends ConfigurationPaneFactory {
 		}
 	};
 	
-	public ConcordanceConfigPane(Project project) {
+	public ConcordanceConfigPane(GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -61,7 +61,7 @@ public class ConcordanceConfigPane extends ConfigurationPaneFactory {
 
 	
 	
-	private JPanel createConcordanceTypePanel(Project project) {
+	private JPanel createConcordanceTypePanel(GramlabProject project) {
 		JPanel p=new JPanel(new BorderLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Concordance type:"));
 		concordanceType=new JComboBox(ConcordanceType.values());
@@ -82,7 +82,7 @@ public class ConcordanceConfigPane extends ConfigurationPaneFactory {
 	}
 
 
-	private JPanel createContextPanel(Project project) {
+	private JPanel createContextPanel(GramlabProject project) {
 		JPanel p=new JPanel(new GridBagLayout());
 		p.setBorder(BorderFactory.createTitledBorder("Context:"));
 		noContext=new JCheckBox("No context",project.onlyMatches());
@@ -162,7 +162,7 @@ public class ConcordanceConfigPane extends ConfigurationPaneFactory {
 	}
 
 
-	private JPanel createSortPanel(Project project) {
+	private JPanel createSortPanel(GramlabProject project) {
 		JPanel p=new JPanel(new GridLayout(1,1));
 		p.setBorder(BorderFactory.createTitledBorder("Sort:"));
 		sortType=new JComboBox(ConcordanceSortType.values());
@@ -201,7 +201,7 @@ public class ConcordanceConfigPane extends ConfigurationPaneFactory {
 
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		ConcordanceType type=(ConcordanceType) concordanceType.getSelectedItem();
 		if (type==null) {
 			JOptionPane.showMessageDialog(null,

@@ -2,10 +2,11 @@ package fr.gramlab.workspace;
 
 import javax.swing.tree.DefaultTreeModel;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.ProjectListener;
-import fr.gramlab.project.ProjectManager;
 
 @SuppressWarnings("serial")
 public class WorkspaceTreeModel extends DefaultTreeModel {
@@ -25,8 +26,9 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 	
 	public WorkspaceTreeModel() {
 		this(new RootNode(GramlabConfigManager.getWorkspaceDirectory()));
-		ProjectManager.getManager().addProjectListener(new ProjectListener() {
-			public void projectOpened(Project p,int pos) {
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.addProjectListener(new ProjectListener() {
+			public void projectOpened(GramlabProject p,int pos) {
 				/* We have to update the project node icon */
 				ProjectNode node=(ProjectNode) root.getChildAt(pos);
 				node.refresh(p.getRemovedFiles(),null,true);
@@ -34,25 +36,25 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 				nodeStructureChanged(node);
 			}
 			
-			public void projectClosing(Project p,int pos, boolean[] canClose) {
+			public void projectClosing(GramlabProject p,int pos, boolean[] canClose) {
 				/* */
 			}
-			public void projectClosed(Project p,int pos) {
+			public void projectClosed(GramlabProject p,int pos) {
 				/* We have to update the project node icon */
 				nodeChanged(root.getChildAt(pos));
 			}
 			
-			public void projectAdded(Project p,int pos) {
+			public void projectAdded(GramlabProject p,int pos) {
 				root.addProjectNode(p,pos);
 				nodesWereInserted((RootNode)getRoot(),new int[]{pos});
 			}
 
-			public void projectRemoved(Project p,int pos) {
+			public void projectRemoved(GramlabProject p,int pos) {
 				root.removeProjectNode(p,pos);
 				nodesWereRemoved((RootNode)getRoot(),new int[]{pos},null);
 			}
 
-			public void currentProjectChanged(Project p,int pos) {
+			public void currentProjectChanged(GramlabProject p,int pos) {
 				/* We have to update all the project nodes */
 				int n=root.getChildCount();
 				for (int i=0;i<n;i++) {
@@ -61,7 +63,7 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 			}
 
 			@Override
-			public void projectSVNModified(Project p, int pos) {
+			public void projectSVNModified(GramlabProject p, int pos) {
 				ProjectNode node=(ProjectNode) root.getChildAt(pos);
 				node.refresh(p.getRemovedFiles(),null,true);
 				nodeChanged(node);
@@ -71,7 +73,7 @@ public class WorkspaceTreeModel extends DefaultTreeModel {
 		});
 	}
 
-	public ProjectNode getProjectNode(Project p) {
+	public ProjectNode getProjectNode(GramlabProject p) {
 		return (ProjectNode) root.getProjectNode(p);
 	}
 	

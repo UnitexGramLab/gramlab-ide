@@ -25,7 +25,7 @@ import javax.swing.JTable;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.util.filelist.SelectableFileList;
 import fr.gramlab.util.filelist.SelectableFileListModel;
 import fr.umlv.unitex.console.Couple;
@@ -45,7 +45,7 @@ public class SvnDeleteDialog extends JDialog {
 	JPanel mainPanel;
 	Executor executor=null;
 	JButton ok,cancel;
-	Project project;
+	GramlabProject project;
 	ProcessOutputList stdout=new ProcessOutputList(new ProcessOutputListModel());
 	ProcessOutputList stderr=new ProcessOutputList(new ProcessOutputListModel());
 	SvnStatusInfo svnStatusInfo;
@@ -53,7 +53,7 @@ public class SvnDeleteDialog extends JDialog {
 	boolean finished=false;
 
 	
-	public SvnDeleteDialog(ArrayList<File> files,Project p) {
+	public SvnDeleteDialog(ArrayList<File> files,GramlabProject p) {
 		super(Main.getMainFrame(), "Delete files for project "+p.getName(), true);
 		model=new SelectableFileListModel(files,files);
 		this.project=p;

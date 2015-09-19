@@ -20,7 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.files.FileUtil;
 
 @SuppressWarnings("serial")
@@ -28,9 +28,9 @@ public class AlphabetPaneFactory extends ConfigurationPaneFactory {
 	
 	File alphabet=null;
 	JPanel choicePanel;
-	Project project;
+	GramlabProject project;
 	
-	public AlphabetPaneFactory(final Project project) {
+	public AlphabetPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		this.alphabet=project.getAlphabet();
@@ -132,13 +132,13 @@ public class AlphabetPaneFactory extends ConfigurationPaneFactory {
 	}
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setAlphabet(alphabet);
 		return true;
 	}
 	
 	
-	public static AlphabetPaneFactory getPane(Project project) {
+	public static AlphabetPaneFactory getPane(GramlabProject project) {
 		return new AlphabetPaneFactory(project);
 	}
 	

@@ -11,15 +11,16 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.config.ProjectPreferences;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 
 public class GramlabConfigManager {
 	
-	private static Project currentProject;
+	private static GramlabProject currentProject;
 	private static int system = -1;
 	private static String user;
 	private static File workspace=null;
@@ -157,7 +158,7 @@ public class GramlabConfigManager {
 		return f.getSelectedFile();
 	}
 
-	public static void setCurrentProject(Project p) {
+	public static void setCurrentProject(GramlabProject p) {
 		currentProject=p;
 	}
 	
@@ -185,13 +186,13 @@ public class GramlabConfigManager {
 			}
 			s = workspace.getAbsolutePath()+"\n";
 			bw.write(s, 0, s.length());
-			Project current=ProjectManager.getManager().getCurrentProject();
+			GramlabProject current=GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject();
 			if (current!=null) {
 				/* We save the current project */
 				s=current.getName()+"\n";
 				bw.write(s, 0, s.length());
 			}
-			for (Project p:ProjectManager.getManager().getProjects()) {
+			for (GramlabProject p:GlobalProjectManager.getAs(GramlabProjectManager.class).getProjects()) {
 				if (!p.equals(current) && p.isOpen()) {
 					s=p.getName()+"\n";
 					bw.write(s, 0, s.length());
@@ -203,7 +204,7 @@ public class GramlabConfigManager {
 		}
 	}
 
-	public static Project getCurrentProject() {
+	public static GramlabProject getCurrentProject() {
 		return currentProject;
 	}
 

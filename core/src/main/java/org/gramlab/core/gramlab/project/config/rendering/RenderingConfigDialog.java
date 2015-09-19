@@ -12,15 +12,15 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class RenderingConfigDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 
-	public RenderingConfigDialog(final Project p) {
+	public RenderingConfigDialog(final GramlabProject p) {
 		super(Main.getMainFrame(), "Rendering options for project "+p.getName(), true);
 		this.project=p;
 		JPanel pane=new JPanel(new BorderLayout());

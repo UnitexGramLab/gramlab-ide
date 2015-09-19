@@ -5,23 +5,23 @@ import java.io.File;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.util.filelist.SelectableFile;
 
 @SuppressWarnings("serial")
 public class MavenTreeModel extends DefaultTreeModel {
 	
 	MavenFileTableModel model;
-	Project project;
+	GramlabProject project;
 	
-	public MavenTreeModel(Project p,MavenFileTableModel model) {
+	public MavenTreeModel(GramlabProject p,MavenFileTableModel model) {
 		super(new MavenTreeNode(null,null,null,-1));
 		this.project=p;
 		this.model=model;
 		createNodes();
 	}
 
-	public static String getTreeName(Project project,File f) {
+	public static String getTreeName(GramlabProject project,File f) {
 		String foo=project.getRelativeFileName(f);
 		 return foo.substring(4); /* We start after src/ */
 	}

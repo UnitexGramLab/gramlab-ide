@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.Artifact;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.gramlab.project.config.preprocess.fst2txt.PreprocessingPaneFactory;
@@ -40,7 +40,7 @@ public class ConfigBigPictureDialog extends JDialog {
 	
 	JPanel container;
 	
-	public ConfigBigPictureDialog(Project project) {
+	public ConfigBigPictureDialog(GramlabProject project) {
 		super(Main.getMainFrame(), "Configuring preprocessing of project "+project.getName(), true);
 		JPanel p=new JPanel(new BorderLayout());
 		container=new JPanel(new BorderLayout());
@@ -63,7 +63,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		setVisible(true);
 	}
 
-	private Component constructMainPane(Project project) {
+	private Component constructMainPane(GramlabProject project) {
 		JPanel main=new JPanel(new GridBagLayout());
 		GridBagConstraints gbc=new GridBagConstraints();
 		gbc.gridwidth=GridBagConstraints.REMAINDER;
@@ -91,7 +91,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private void updateInfoPane(Project p,JLabel name,JLabel language,JLabel encoding,
+	private void updateInfoPane(GramlabProject p,JLabel name,JLabel language,JLabel encoding,
 			JLabel groupId,JLabel artifactId,JLabel version) {
 		name.setText(p.getName());
 		language.setText(p.getLanguage());
@@ -102,7 +102,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		version.setText(a.getVersion());
 	}
 	
-	private JPanel createInfoPane(final Project project) {
+	private JPanel createInfoPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new GridBagLayout(),"General project information");
 		final JLabel name=new JLabel();
 		final JLabel language=new JLabel();
@@ -163,7 +163,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private JPanel createLanguagePane(final Project project) {
+	private JPanel createLanguagePane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new GridBagLayout(),"Language related parameters");
 		final JLabel arabic=new JLabel();
 		final JLabel korean=new JLabel();
@@ -198,7 +198,7 @@ public class ConfigBigPictureDialog extends JDialog {
 	private static final Color DISABLED=Color.RED;
 	
 	
-	private void updateLanguagePane(Project project, JLabel arabic,
+	private void updateLanguagePane(GramlabProject project, JLabel arabic,
 			JLabel korean, JLabel semitic, JLabel charByChar, JLabel morpho) {
 		File f=project.getArabicTypoRules();
 		if (f==null) {
@@ -218,7 +218,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		morpho.setForeground(project.isMorphologicalUseOfSpace()?ENABLED:DISABLED);
 	}
 
-	private JPanel createDependenciesPane(final Project project) {
+	private JPanel createDependenciesPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new BorderLayout(),"Dependencies");
 		JPanel top=new JPanel(new GridLayout(3,1));
 		top.add(new JLabel("Note: if you update the project dependencies,"));
@@ -263,7 +263,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private void updateAlphabet(JLabel alphabet,Project project) {
+	private void updateAlphabet(JLabel alphabet,GramlabProject project) {
 		File f=project.getAlphabet();
 		if (f==null) {
 			alphabet.setText("Use no alphabet file");
@@ -274,7 +274,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		alphabet.setForeground(ENABLED);
 	}
 
-	private JPanel createAlphabetPane(final Project project) {
+	private JPanel createAlphabetPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new BorderLayout(),"Alphabet");
 		final JLabel alphabet=new JLabel();
 		updateAlphabet(alphabet,project);
@@ -292,7 +292,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private void updateSortAlphabet(JLabel alphabet,Project project) {
+	private void updateSortAlphabet(JLabel alphabet,GramlabProject project) {
 		File f=project.getSortAlphabet();
 		if (f==null) {
 			alphabet.setText("Use no sort alphabet file");
@@ -303,7 +303,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		alphabet.setForeground(ENABLED);
 	}
 
-	private JPanel createSortAlphabetPane(final Project project) {
+	private JPanel createSortAlphabetPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new BorderLayout(),"Sort Alphabet");
 		final JLabel alphabet=new JLabel();
 		updateSortAlphabet(alphabet,project);
@@ -321,7 +321,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private void updateNorm(JLabel separators,JLabel norm,Project project) {
+	private void updateNorm(JLabel separators,JLabel norm,GramlabProject project) {
 		File f=project.getNormTxt();
 		if (f==null) {
 			norm.setText("Use no normalization file");
@@ -339,7 +339,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		}
 	}
 
-	private JPanel createNormPane(final Project project) {
+	private JPanel createNormPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new GridLayout(3,1),"Normalization");
 		final JLabel separators=new JLabel();
 		final JLabel norm=new JLabel();
@@ -359,7 +359,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private JPanel createPreprocessingPane(final Project project) {
+	private JPanel createPreprocessingPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new BorderLayout(),"Preprocessing");
 		DefaultListModel model = new DefaultListModel();
 		for (PreprocessingStep s : project.getPreprocessing()
@@ -425,7 +425,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private JPanel createMorphoDicsPane(final Project project) {
+	private JPanel createMorphoDicsPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new BorderLayout(),"Morphological-mode dictionaries");
 		DefaultListModel model=new DefaultListModel();
 		for (File f:project.getMorphoDics()) {
@@ -445,7 +445,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private JPanel createDicsPane(final Project project) {
+	private JPanel createDicsPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new BorderLayout(),"Dictionaries");
 		final JCheckBox applyDics=new JCheckBox("Apply dictionaries",project.applyDictionaries());
 		applyDics.setForeground(applyDics.isSelected()?ENABLED:DISABLED);
@@ -480,7 +480,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private void updatePolylex(JButton set,JLabel polylex,Project project) {
+	private void updatePolylex(JButton set,JLabel polylex,GramlabProject project) {
 		if (null==PolyLexPaneFactory.getPolyLexCompatibleLang(project)) {
 			polylex.setText("PolyLex does not support language '"+project.getLanguage()+"'");
 			polylex.setForeground(DISABLED);
@@ -498,7 +498,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		}
 	}
 
-	private JPanel createPolyLexPane(final Project project) {
+	private JPanel createPolyLexPane(final GramlabProject project) {
 		JPanel p=createTitledPanel(new GridLayout(2,1),"Polylexical units analysis");
 		final JLabel polylex=new JLabel();
 		final LinkButton set=new LinkButton("Set...");
@@ -516,7 +516,7 @@ public class ConfigBigPictureDialog extends JDialog {
 		return p;
 	}
 
-	private void update(Project project) {
+	private void update(GramlabProject project) {
 		container.removeAll();
 		container.add(constructMainPane(project),BorderLayout.CENTER);
 		container.revalidate();

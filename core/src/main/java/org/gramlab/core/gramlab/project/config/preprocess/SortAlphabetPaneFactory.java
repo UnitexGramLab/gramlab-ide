@@ -20,7 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.files.FileUtil;
 
 @SuppressWarnings("serial")
@@ -28,9 +28,9 @@ public class SortAlphabetPaneFactory extends ConfigurationPaneFactory {
 	
 	File sortAlphabet=null;
 	JPanel choicePanel;
-	Project project;
+	GramlabProject project;
 	
-	public SortAlphabetPaneFactory(final Project project) {
+	public SortAlphabetPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		this.sortAlphabet=project.getSortAlphabet();
@@ -131,12 +131,12 @@ public class SortAlphabetPaneFactory extends ConfigurationPaneFactory {
 	
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setSortAlphabet(sortAlphabet);
 		return true;
 	}
 
-	public static SortAlphabetPaneFactory getPane(Project project) {
+	public static SortAlphabetPaneFactory getPane(GramlabProject project) {
 		return new SortAlphabetPaneFactory(project);
 	}
 	

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 /**
  * This class provides a table cell editor that acts like a JCheckBox, except
@@ -31,9 +31,9 @@ public class MyTableCellEditor extends AbstractCellEditor implements TableCellEd
     private JCheckBox checkbox;
     private JPanel panel;
     private JLabel label;
-    private Project project;
+    private GramlabProject project;
     
-    public MyTableCellEditor(Project p) {
+    public MyTableCellEditor(GramlabProject p) {
         this.project=p;
         checkbox=new JCheckBox("");
         label=new JLabel();

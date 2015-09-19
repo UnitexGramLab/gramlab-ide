@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.files.FileUtil;
@@ -46,7 +46,7 @@ public class SvnUpdateDialog extends JDialog {
 	JPanel mainPanel;
 	Executor executor=null;
 	JButton ok,cancel;
-	Project project;
+	GramlabProject project;
 	ProcessOutputList stdout=new ProcessOutputList(new ProcessOutputListModel());
 	ProcessOutputList stderr=new ProcessOutputList(new ProcessOutputListModel());
 	JRadioButton updateToHead;
@@ -56,7 +56,7 @@ public class SvnUpdateDialog extends JDialog {
 	boolean finished=false;
 	boolean toHead;
 
-	public SvnUpdateDialog(Project p,final ArrayList<File> files,boolean updateToHead) {
+	public SvnUpdateDialog(GramlabProject p,final ArrayList<File> files,boolean updateToHead) {
 		super(Main.getMainFrame(), "SVN Updating project "+p.getName(), true);
 		if (files!=null && files.size()==0) {
 			throw new IllegalArgumentException();
@@ -150,7 +150,7 @@ public class SvnUpdateDialog extends JDialog {
 		setVisible(true);
 	}
 
-	private int getHeadRevisionNumber(Project p) {
+	private int getHeadRevisionNumber(GramlabProject p) {
 		String info=SvnExecutor.getCommandOutput(new SvnCommand().info(p.getProjectDirectory(),false,true));
 		Scanner s=new Scanner(info);
 		while (s.hasNextLine()) {
@@ -252,7 +252,7 @@ public class SvnUpdateDialog extends JDialog {
 	/**
 	 * Get the maven dependencies.
 	 */
-	public void getDependencies(final Project project) {
+	public void getDependencies(final GramlabProject project) {
 		if (!project.pomXmlWasUpdated()) {
 			/* Nothing to do if pom.xml did not change, except looking for grf conflicts */
 			project.getSvnMonitor().monitor(true);
