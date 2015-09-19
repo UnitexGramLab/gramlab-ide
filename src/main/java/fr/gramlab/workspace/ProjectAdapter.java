@@ -1,31 +1,31 @@
 package fr.gramlab.workspace;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.ProjectListener;
 
 
 public class ProjectAdapter implements ProjectListener {
 	
-	public void currentProjectChanged(Project p,int pos) {
+	public void currentProjectChanged(GramlabProject p,int pos) {
 		/* */
 	}
-	public void projectAdded(Project p,int pos) {
+	public void projectAdded(GramlabProject p,int pos) {
 		/* */
 	}
-	public void projectRemoved(Project p,int pos) {
+	public void projectRemoved(GramlabProject p,int pos) {
 		/* */
 	}
-	public void projectOpened(Project p,int pos) {
+	public void projectOpened(GramlabProject p,int pos) {
 		/* */
 	}
-	public void projectClosing(Project p,int pos,boolean[] canClose) {
+	public void projectClosing(GramlabProject p,int pos,boolean[] canClose) {
 		/* */
 	}
-	public void projectClosed(Project p,int pos) {
+	public void projectClosed(GramlabProject p,int pos) {
 		/* */
 	}
 
-	public void projectSVNModified(Project p, int pos) {
+	public void projectSVNModified(GramlabProject p, int pos) {
 		/* */
 	}
 

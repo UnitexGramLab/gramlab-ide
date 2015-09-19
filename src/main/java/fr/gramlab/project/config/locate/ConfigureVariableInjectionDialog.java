@@ -27,17 +27,17 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.config.InjectedVariable;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ConfigureVariableInjectionDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	DefaultListModel modelInjectedVariables;
 
-	public ConfigureVariableInjectionDialog(final Project p) {
+	public ConfigureVariableInjectionDialog(final GramlabProject p) {
 		super(Main.getMainFrame(), "Variable injection", true);
 		this.project=p;
 		JPanel pane=new JPanel(new BorderLayout());
@@ -70,7 +70,7 @@ public class ConfigureVariableInjectionDialog extends JDialog {
 	}
 
 
-	private JPanel createInjectedVariablesPanel(final Project project) {
+	private JPanel createInjectedVariablesPanel(final GramlabProject project) {
 		JPanel p = new JPanel(new GridBagLayout());
 		p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		/* Subpane */

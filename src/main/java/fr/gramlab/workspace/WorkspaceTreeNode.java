@@ -7,8 +7,9 @@ import java.util.Enumeration;
 
 import javax.swing.tree.TreeNode;
 
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.console.ConsoleUtil;
 import fr.gramlab.svn.SvnInfo;
 
@@ -51,11 +52,12 @@ public class WorkspaceTreeNode extends AbstractWorkspaceTreeNode {
 		return false;
 	}
 
-	private Project project = null;
+	private GramlabProject project = null;
 
 	private SvnInfo getSvnInfo(File file) {
 		if (project == null) {
-			project = ProjectManager.getManager().getProject(file);
+			project = GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.getProject(file);
 		}
 		return project.getSvnInfo(file);
 	}

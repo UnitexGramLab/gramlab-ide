@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.util.filelist.SelectableFile;
 import fr.gramlab.util.filelist.SelectableFileListModel;
 import fr.umlv.unitex.files.FileUtil;
@@ -13,9 +13,9 @@ import fr.umlv.unitex.files.FileUtil;
 @SuppressWarnings("serial")
 public class MavenFileTableModel extends SelectableFileListModel {
 
-	private Project project;
+	private GramlabProject project;
 	
-	public MavenFileTableModel(Project p) {
+	public MavenFileTableModel(GramlabProject p) {
 		super();
 		this.project=p;
 		populateModel(p.getMvnSourceConfig());
@@ -88,7 +88,7 @@ public class MavenFileTableModel extends SelectableFileListModel {
 		return false;
 	}
 
-	public void setTreeSelected(String rootName,boolean selected,Project p) {
+	public void setTreeSelected(String rootName,boolean selected,GramlabProject p) {
 		for (int i=0;i<getRowCount();i++) {
 			SelectableFile s=model.get(i);
 			String name=MavenTreeModel.getTreeName(p,s.getFile());

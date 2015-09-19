@@ -35,6 +35,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.project.config.buildfile.FileOperationConfigPane;
 import fr.gramlab.project.config.buildfile.FileOperationType;
 import fr.gramlab.project.config.concordance.ConcordanceOperationConfigPane;
@@ -60,7 +61,7 @@ import fr.umlv.unitex.text.SntUtil;
 @SuppressWarnings("serial")
 public class ProcessPane extends JSplitPane {
 	
-	private Project project;
+	private GramlabProject project;
 	JRadioButton typedText;
 	JRadioButton openedText;
 	JTextArea text=new JTextArea();
@@ -75,7 +76,7 @@ public class ProcessPane extends JSplitPane {
 	DefaultComboBoxModel model;
 	JComboBox lastSnts;
 	
-	public ProcessPane(Project project) {
+	public ProcessPane(GramlabProject project) {
 		super();
 		this.project=project;
 		JPanel p=new JPanel(new GridBagLayout());
@@ -264,10 +265,11 @@ public class ProcessPane extends JSplitPane {
 				project.setLastCorpusWasAFile(false);
 			} else {
 				currentCorpus=f;
-				TextFrame frame=project.getFrameManager().getTextFrame();
+				TextFrame frame=project
+					.getFrameManagerAs(InternalFrameManager.class).getTextFrame();
 				showFrame=(frame!=null);
 				if (!showFrame) {
-					project.getFrameManager().closeTextFrame();
+					project.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
 				}
 				project.setLastCorpusWasAFile(true);
 			}
@@ -489,9 +491,11 @@ public class ProcessPane extends JSplitPane {
 		textButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (InternalFrameManager.getManager(null).getTextFrame()!=null) {
+				if (GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).getTextFrame()!=null) {
 					File corpus=project.getCurrentCorpus();
-					InternalFrameManager.getManager(null).closeTextFrame();
+					GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
 					/* After closing the text frame, the current corpus has been
 					 * set back to null, so we restore it */
 					project.setCurrentCorpus(corpus,false);
@@ -500,7 +504,9 @@ public class ProcessPane extends JSplitPane {
 				}
 			}
 		});
-		InternalFrameManager.getManager(null).addTextFrameListener(new TextFrameListener() {
+		GlobalProjectManager.search(null)
+			.getFrameManagerAs(InternalFrameManager.class)
+			.addTextFrameListener(new TextFrameListener() {
 			@Override
 			public void textFrameOpened(boolean taggedText) {
 				textButton.setText("Hide snt");
@@ -732,13 +738,18 @@ public class ProcessPane extends JSplitPane {
 			}
 			cmds.addCommand(project.preprocessText(txt));
 		}
-		final boolean isTextFrameVisible=(InternalFrameManager.getManager(snt).getTextFrame()!=null);
+		final boolean isTextFrameVisible=
+				(GlobalProjectManager.search(snt)
+					.getFrameManagerAs(InternalFrameManager.class).getTextFrame()!=null);
 		if (isTextFrameVisible && doPreprocessing.isSelected()) {
-			InternalFrameManager.getManager(snt).closeTextFrame();
+			GlobalProjectManager.search(snt)
+				.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
 			SntUtil.cleanSntDir(FileUtil.getSntDir(snt));
 		}
-		InternalFrameManager.getManager(snt).closeConcordanceFrame();
-		InternalFrameManager.getManager(snt).closeConcordanceDiffFrame();
+		GlobalProjectManager.search(snt)
+			.getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame();
+		GlobalProjectManager.search(snt)
+			.getFrameManagerAs(InternalFrameManager.class).closeConcordanceDiffFrame();
 		
 		if (doLocate.isSelected()) {
 			cmds.addCommand(project.getLocateCommands(snt));
@@ -797,7 +808,8 @@ public class ProcessPane extends JSplitPane {
 				}
 				if (isTextFrameVisible && doPreprocess) {
 					project.setCurrentCorpus(corpus,false);
-					InternalFrameManager.getManager(snt).newTextFrame(snt,false);
+					GlobalProjectManager.search(snt)
+						.getFrameManagerAs(InternalFrameManager.class).newTextFrame(snt,false);
 				}
 				if (doResults.isSelected()) {
 					switch(project.getResultType()) {

@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public abstract class ConfigurationPaneFactory extends JPanel {
@@ -26,7 +26,7 @@ public abstract class ConfigurationPaneFactory extends JPanel {
 	 * and return true. If any error occurs, the project configuration 
 	 * remains unmodified and the method returns false.
 	 */
-	public abstract boolean validateConfiguration(Project project);
+	public abstract boolean validateConfiguration(GramlabProject project);
 	
 	
 	public static JPanel createArtifactPane(JTextField group,JTextField artifact,JTextField version) {

@@ -12,7 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 import fr.umlv.unitex.LinkButton;
 
@@ -22,7 +22,7 @@ public class GraphCompilationPane extends ConfigurationPaneFactory {
 	JCheckBox emitEmptyGraphWarning;
 	JCheckBox displayGraphNames;
 	JCheckBox strictTokenization;
-	Project project;
+	GramlabProject project;
 	
 	ActionListener validateConfigListener=new ActionListener() {
 		@Override
@@ -43,7 +43,7 @@ public class GraphCompilationPane extends ConfigurationPaneFactory {
 		}
 	}
 
-	public GraphCompilationPane(final Project project) {
+	public GraphCompilationPane(final GramlabProject project) {
 		super(new GridBagLayout());
 		this.project=project;
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -66,7 +66,7 @@ public class GraphCompilationPane extends ConfigurationPaneFactory {
 
 	
 	
-	private JPanel createCompilationOptionsPanel(Project project) {
+	private JPanel createCompilationOptionsPanel(GramlabProject project) {
 		JPanel p=new JPanel(new GridLayout(3,1));
 		p.setBorder(BorderFactory.createTitledBorder("Verbosity"));
 		emitEmptyGraphWarning=new JCheckBox("Emit warning on <E> matching",project.emitEmptyGraphWarning());
@@ -84,7 +84,7 @@ public class GraphCompilationPane extends ConfigurationPaneFactory {
 
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setEmitEmptyGraphWarning(emitEmptyGraphWarning.isSelected());
 		project.setDisplayGraphNames(displayGraphNames.isSelected());
 		project.setStrictTokenization(strictTokenization.isSelected());

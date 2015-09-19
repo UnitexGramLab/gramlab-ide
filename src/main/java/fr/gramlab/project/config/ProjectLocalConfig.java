@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.buildfile.ExtractMatchType;
 import fr.gramlab.project.config.buildfile.FileOperationType;
 import fr.gramlab.project.config.concordance.ConcordanceOperationType;
@@ -23,7 +23,7 @@ import fr.umlv.unitex.frames.TextFrame;
 
 public class ProjectLocalConfig extends AbstractProjectConfig {
 	
-	private Project project;
+	private GramlabProject project;
 	
 																
 	/**
@@ -108,7 +108,7 @@ public class ProjectLocalConfig extends AbstractProjectConfig {
 	private final static int N_LAST_RESULT_FILE=10;
 
 	
-	public ProjectLocalConfig(Project p) {
+	public ProjectLocalConfig(GramlabProject p) {
 		this.project=p;
 		this.lastPatternRegexp=true;
 		this.lastRegexp="";
@@ -144,7 +144,7 @@ public class ProjectLocalConfig extends AbstractProjectConfig {
 		this.lastResultFiles=new ArrayList<File>();
 	}
 	
-	public static ProjectLocalConfig load(Project p,File f) {
+	public static ProjectLocalConfig load(GramlabProject p,File f) {
 		ProjectLocalConfig config=new ProjectLocalConfig(p);
 		try {
 		FileInputStream stream;

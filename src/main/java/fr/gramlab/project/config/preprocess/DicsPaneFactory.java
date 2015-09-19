@@ -19,7 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.util.filelist.SelectableFileList;
 import fr.gramlab.util.filelist.SelectableFileListModel;
 
@@ -28,7 +28,7 @@ public class DicsPaneFactory extends ConfigurationPaneFactory {
 	
 	SelectableFileList list;
 	
-	public DicsPaneFactory(Project project) {
+	public DicsPaneFactory(GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Dictionaries"));
 		GridBagConstraints gbc=new GridBagConstraints();
@@ -123,12 +123,12 @@ public class DicsPaneFactory extends ConfigurationPaneFactory {
 	}
 
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		project.setDictionaries(list.getSelectedFiles());
 		return true;
 	}
 
-	public static DicsPaneFactory getPane(Project project) {
+	public static DicsPaneFactory getPane(GramlabProject project) {
 		return new DicsPaneFactory(project);
 	}
 	

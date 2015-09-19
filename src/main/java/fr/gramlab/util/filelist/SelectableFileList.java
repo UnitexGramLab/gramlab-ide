@@ -17,14 +17,14 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public class SelectableFileList extends JTable {
 	
 	private boolean filter=false;
 	
-	public SelectableFileList(SelectableFileListModel model,final Project p) {
+	public SelectableFileList(SelectableFileListModel model,final GramlabProject p) {
 		super(model);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		setDefaultRenderer(SelectableFile.class,new DefaultTableCellRenderer() {

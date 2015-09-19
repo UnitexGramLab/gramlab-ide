@@ -17,7 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.commands.CompressCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
@@ -37,7 +37,7 @@ public class PomIO {
 	public static final String TARGET_PREPROCESS_DIRECTORY = TARGET_DIRECTORY+File.separatorChar+"Preprocessing";
 	
 	
-	public static boolean savePom(Pom pom,Project project) {
+	public static boolean savePom(Pom pom,GramlabProject project) {
 		try {
 			FileOutputStream f=new FileOutputStream(pom.getFile());
 			PrintStream p=new PrintStream(f,true,"UTF-8");
@@ -111,7 +111,7 @@ public class PomIO {
 		p.println("\t\t</dependency>");
 	}
 
-	private static void savePlugins(PrintStream p,Project project) {
+	private static void savePlugins(PrintStream p,GramlabProject project) {
 		p.println("\t<build>");
 		p.println("\t\t<plugins>");
 		/* First, we write things about the dependency plugin */
@@ -294,12 +294,12 @@ public class PomIO {
 	 * @param arg
 	 * @return
 	 */
-	private static String getRelativePath(String arg,Project p) {
+	private static String getRelativePath(String arg,GramlabProject p) {
 		String s=p.getProjectDirectory().getAbsolutePath();
 		return arg.replaceAll(s,"\\${project.basedir}");
 	}
 
-	private static ArrayList<String> getDirectories(Project p,ArrayList<GrfToCompile> grfs) {
+	private static ArrayList<String> getDirectories(GramlabProject p,ArrayList<GrfToCompile> grfs) {
 		ArrayList<String> list=new ArrayList<String>();
 		for (GrfToCompile g:grfs) {
 			String s=FileUtil.isAncestor(p.getSrcDirectory(),g.getGrf().getParentFile());

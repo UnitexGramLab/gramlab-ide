@@ -24,9 +24,10 @@ import javax.swing.JTextField;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.workspace.ProjectAdapter;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.frames.GraphFrame;
@@ -38,11 +39,11 @@ public class GraphSearchDialog extends JDialog {
 	boolean init=false;
 	GraphFrame frame;
 	boolean closed=false;
-	Project project;
+	GramlabProject project;
 
 	ProjectAdapter projectAdapter=new ProjectAdapter() {
 		@Override
-		public void currentProjectChanged(Project p, int pos) {
+		public void currentProjectChanged(GramlabProject p, int pos) {
 			setVisible(p==project);
 		}
 	};
@@ -84,8 +85,10 @@ public class GraphSearchDialog extends JDialog {
 		setContentPane(createPane());
 		pack();
 		addWindowListener(windowAdapter);
-		this.project=ProjectManager.getManager().getCurrentProject();
-		ProjectManager.getManager().addProjectListener(projectAdapter);
+		this.project=GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.getCurrentProject();
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.addProjectListener(projectAdapter);
 		f.addInternalFrameListener(adapter);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setVisible(true);
@@ -96,7 +99,8 @@ public class GraphSearchDialog extends JDialog {
 	public void dispose() {
 		super.dispose();
 		removeWindowListener(windowAdapter);
-		ProjectManager.getManager().removeProjectListener(projectAdapter);
+		GlobalProjectManager.getAs(GramlabProjectManager.class)
+			.removeProjectListener(projectAdapter);
 		frame.removeInternalFrameListener(adapter);
 	}
 

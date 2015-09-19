@@ -18,17 +18,17 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class EditFst2Dialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	DefaultListModel model;
 	JTextField dstFst2=new JTextField("");
 
-	public EditFst2Dialog(final Project p,final DefaultListModel model,final int index) {
+	public EditFst2Dialog(final GramlabProject p,final DefaultListModel model,final int index) {
 		super(Main.getMainFrame(), "Fst2 configuration", true);
 		this.project=p;
 		this.model=model;

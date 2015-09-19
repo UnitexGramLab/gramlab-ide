@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.EatStreamThread;
@@ -94,14 +94,14 @@ public class SvnExecutor {
 	
 	
 	
-	public static HashMap<File,SvnInfo> getSvnInfos(Project project,ArrayList<File> removedFiles) {
+	public static HashMap<File,SvnInfo> getSvnInfos(GramlabProject project,ArrayList<File> removedFiles) {
 		HashMap<File,SvnInfo> map=new HashMap<File,SvnInfo>();
 		removedFiles.clear();
 		exploreDirForSvnInfos(project,map,removedFiles);
 		return map;
 	}
 
-	private static void exploreDirForSvnInfos(Project project,HashMap<File,SvnInfo> map,
+	private static void exploreDirForSvnInfos(GramlabProject project,HashMap<File,SvnInfo> map,
 			ArrayList<File> removedFiles) {
 		File dir=project.getProjectDirectory();
 		File f=new File(dir,".svn");
@@ -136,7 +136,7 @@ public class SvnExecutor {
 	}
 
 
-	private static void updateStatusInfos(Project p, HashMap<File, SvnInfo> map,
+	private static void updateStatusInfos(GramlabProject p, HashMap<File, SvnInfo> map,
 			ArrayList<File> removedFiles) {
 		SvnStatusInfo info=getSvnStatusInfo(p);
 		if (info==null) return;
@@ -194,7 +194,7 @@ public class SvnExecutor {
 
 
 
-	public static SvnStatusInfo getSvnStatusInfo(Project project) {
+	public static SvnStatusInfo getSvnStatusInfo(GramlabProject project) {
 		try {
 			SvnCommand c=new SvnCommand().status();
 			Process p=Runtime.getRuntime().exec(c.getCommandArguments(),null,project.getProjectDirectory());

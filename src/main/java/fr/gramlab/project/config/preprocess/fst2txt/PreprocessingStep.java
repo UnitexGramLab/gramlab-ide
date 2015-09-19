@@ -2,7 +2,7 @@ package fr.gramlab.project.config.preprocess.fst2txt;
 
 import java.io.File;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.CpCommand;
@@ -91,7 +91,7 @@ public class PreprocessingStep {
 	 * @return the command to perform to install the .fst2 into the target
 	 *         directory, either by compiling the .grf or copying the .fst2
 	 */
-	public CommandBuilder getDeployCommand(Project p) {
+	public CommandBuilder getDeployCommand(GramlabProject p) {
 		if (destFst2==null) {
 			throw new IllegalStateException("the dest .fst2 should have set before invoking this method");
 		}
@@ -106,7 +106,7 @@ public class PreprocessingStep {
 	/**
 	 * @return the Fst2Txt command to apply to the text.
 	 */
-	public CommandBuilder getPreprocessCommand(Project p,File text) {
+	public CommandBuilder getPreprocessCommand(GramlabProject p,File text) {
 		if (destFst2==null) {
 			throw new IllegalStateException("the dest .fst2 should have set before invoking this method");
 		}

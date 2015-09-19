@@ -4,9 +4,10 @@ import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.umlv.unitex.config.AbstractConfigModel;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.NamedRepository;
@@ -39,13 +40,13 @@ public class ProjectPreferences extends AbstractConfigModel {
 	 * if there is no such project. If language is null, the current project is
 	 * returned.
 	 */
-	private Project getProject(String language) {
-		if (language==null) return ProjectManager.getManager().getCurrentProject();
-		return ProjectManager.getManager().getProject(language);
+	private GramlabProject getProject(String language) {
+		if (language==null) return GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject();
+		return GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(language);
 	}
 	
 	public Preferences getPreferences(String language) {
-		Project p=getProject(language);
+		GramlabProject p=getProject(language);
 		if (p==null) return defaultPreferences;
 		Preferences prefs=p.getPreferences();
 		if (prefs!=null) return prefs;
@@ -53,7 +54,7 @@ public class ProjectPreferences extends AbstractConfigModel {
 	}
 	
 	public File getAlphabet(String language) {
-		Project p=getProject(language);
+		GramlabProject p=getProject(language);
 		if (p!=null) {
 			return p.getAlphabet();
 		}
@@ -73,13 +74,14 @@ public class ProjectPreferences extends AbstractConfigModel {
 	}
 
 	public File getConfigFileForLanguage(String language) {
-		Project p=getProject(language);
+		GramlabProject p=getProject(language);
 		if (p==null) return null;
 		return p.getPreferencesFile();
 	}
 
 	public String getCurrentLanguage() {
-		Project p=ProjectManager.getManager().getCurrentProject();
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.getCurrentProject();
 		if (p==null) return null;
 		return p.getName();
 	}
@@ -141,7 +143,7 @@ public class ProjectPreferences extends AbstractConfigModel {
 	}
 
 	public File getCurrentGraphDirectory() {
-		Project p=getProject(null);
+		GramlabProject p=getProject(null);
 		if (p==null) {
 			return GramlabConfigManager.getWorkspaceDirectory();
 		}
@@ -156,11 +158,11 @@ public class ProjectPreferences extends AbstractConfigModel {
 	 */
 	public File getAlphabetForGrf(String project,File grf) {
 		if (project!=null) {
-			Project p=ProjectManager.getManager().getProject(project);
+			GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 			if (p==null) return null;
 			return p.getAlphabet();
 		}
-		Project p=ProjectManager.getManager().getProject(grf);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(grf);
 		if (p==null) return null;
 		return p.getAlphabet();
 	}
@@ -173,104 +175,104 @@ public class ProjectPreferences extends AbstractConfigModel {
 	
 	@Override
 	public File getGraphRepositoryPath(String project,String repositoryName) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return null;
 		return p.getNamedRepository(repositoryName);
 	}
 
 	@Override
 	public File getDefaultGraphRepositoryPath(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return null; 
 		return p.getDefaultGraphRepository();
 	}
 
 	@Override
 	public ArrayList<NamedRepository> getNamedRepositories(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return null; 
 		return p.getNamedRepositories();
 	}
 
 	@Override
 	public boolean displayGraphNames(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return true; 
 		return p.displayGraphNames();
 	}
 
 	@Override
 	public boolean emitEmptyGraphWarning(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return true; 
 		return p.emitEmptyGraphWarning();
 	}
 	
 	@Override
 	public Encoding getEncoding(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return null;
 		return p.getEncoding();
 	}
 
 	@Override
 	public File getHtmlViewer(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		return p.getHtmlViewer();
 	}
 
 	@Override
 	public boolean isCharByCharLanguage(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return false;
 		return p.isCharByChar();
 	}
 
 	@Override
 	public boolean isMorphologicalUseOfSpaceAllowed(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return false;
 		return p.isMorphologicalUseOfSpace();
 	}
 
 	@Override
 	public boolean isSemiticLanguage(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return false;
 		return p.isSemitic();
 	}
 
 	@Override
 	public ArrayList<File> morphologicalDictionaries(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return null;
 		return p.getMorphoDics();
 	}
 	
 	@Override
 	public boolean isKorean(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return false;
 		return p.isKorean();
 	}
 
 	@Override
   public boolean isMatchWordBoundaries(String project) {
-    Project p=ProjectManager.getManager().getProject(project);
+    GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
     if (p==null) return false;
     return p.isMatchWordBoundaries();
   }
 
   @Override
 	public boolean isArabic(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return false;
 		return p.getLanguage().equals("ar");
 	}
 	
 	@Override
 	public boolean isThai(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		if (p==null) return false;
 		return p.getLanguage().equals("th");
 	}
@@ -282,7 +284,7 @@ public class ProjectPreferences extends AbstractConfigModel {
 
 	@Override
 	public File getCurrentSnt(String project) {
-		Project p=ProjectManager.getManager().getProject(project);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
 		System.err.println("getCurrentSnt");
 		if (p==null) return null;
 		System.err.println(" => "+p.getCurrentCorpus());
@@ -292,14 +294,14 @@ public class ProjectPreferences extends AbstractConfigModel {
 
 	@Override
 	public File getCurrentLanguageDir() {
-		Project p=ProjectManager.getManager().getCurrentProject();
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject();
 		if (p==null) return null;
 		return p.getProjectDirectory();
 	}
 
 	@Override
 	public SvnMonitor getSvnMonitor(File f) {
-		Project p=ProjectManager.getManager().getProject(f);
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(f);
 		if (p==null) return null;
 		return p.getSvnMonitor();
 	}
@@ -319,7 +321,7 @@ public class ProjectPreferences extends AbstractConfigModel {
 
 	@Override
 	public File getInflectionDir() {
-		Project p=ProjectManager.getManager().getCurrentProject();
+		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject();
 		if (p==null) return null;
 		return p.getInflectionDirectory();
 	}

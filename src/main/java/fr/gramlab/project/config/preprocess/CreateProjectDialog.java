@@ -34,11 +34,12 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.Main;
+import fr.gramlab.project.GramlabProject;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.project.Language;
-import fr.gramlab.project.Project;
-import fr.gramlab.project.ProjectManager;
 import fr.gramlab.project.config.maven.Artifact;
 import fr.gramlab.svn.SvnCheckoutDialog;
 import fr.gramlab.util.KeyUtil;
@@ -170,7 +171,7 @@ public class CreateProjectDialog extends JDialog {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						final Project project=Project.cloneProject(name.getText(),f);
+						final GramlabProject project=GramlabProject.cloneProject(name.getText(),f);
 						EventQueue.invokeLater(new Runnable() {
 							@Override
 							public void run() {
@@ -182,8 +183,8 @@ public class CreateProjectDialog extends JDialog {
 					                        JOptionPane.ERROR_MESSAGE);
 					                return;
 								}
-								ProjectManager.getManager().addProject(project);
-								ProjectManager.getManager().openProject(project);
+								GlobalProjectManager.getAs(GramlabProjectManager.class).addProject(project);
+								GlobalProjectManager.getAs(GramlabProjectManager.class).openProject(project);
 							}
 						});
 						
@@ -244,14 +245,14 @@ public class CreateProjectDialog extends JDialog {
 				if (a==null) {
 					return;
 				}
-				final Project project=Project.createEmptyProject(name.getText(),language,(Encoding) encoding.getSelectedItem(),a);
+				final GramlabProject project=GramlabProject.createEmptyProject(name.getText(),language,(Encoding) encoding.getSelectedItem(),a);
 				if (project==null) {
 					JOptionPane.showMessageDialog(null,
 	                        "Cannot create project "+name.getText(), "Error",
 	                        JOptionPane.ERROR_MESSAGE);
 	                return;
 				}
-				ProjectManager.getManager().addProject(project);
+				GlobalProjectManager.getAs(GramlabProjectManager.class).addProject(project);
 				setVisible(false);
 				dispose();
 				EventQueue.invokeLater(new Runnable() {
@@ -500,7 +501,7 @@ public class CreateProjectDialog extends JDialog {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						final Project project=Project.cloneUnitexResourcesProject(name.getText(),
+						final GramlabProject project=GramlabProject.cloneUnitexResourcesProject(name.getText(),
 								src,(Encoding) encoding.getSelectedItem(),a,true,language);
 						EventQueue.invokeLater(new Runnable() {
 							@Override
@@ -513,8 +514,8 @@ public class CreateProjectDialog extends JDialog {
 					                        JOptionPane.ERROR_MESSAGE);
 					                return;
 								}
-								ProjectManager.getManager().addProject(project);
-								ProjectManager.getManager().openProject(project);
+								GlobalProjectManager.getAs(GramlabProjectManager.class).addProject(project);
+								GlobalProjectManager.getAs(GramlabProjectManager.class).openProject(project);
 							}
 						});
 						
@@ -578,7 +579,7 @@ public class CreateProjectDialog extends JDialog {
 
 	private ArrayList<File> getWorkspaceProjectDirs() {
 		ArrayList<File> l=new ArrayList<File>();
-		for (Project p:ProjectManager.getManager().getProjects()) {
+		for (GramlabProject p:GlobalProjectManager.getAs(GramlabProjectManager.class).getProjects()) {
 			l.add(p.getProjectDirectory());
 		}
 		Collections.sort(l);
@@ -707,7 +708,7 @@ public class CreateProjectDialog extends JDialog {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						final Project project=Project.cloneUnitexResourcesProject(name.getText(),
+						final GramlabProject project=GramlabProject.cloneUnitexResourcesProject(name.getText(),
 								src,(Encoding) encoding.getSelectedItem(),a,false,language);
 						EventQueue.invokeLater(new Runnable() {
 							@Override
@@ -720,8 +721,8 @@ public class CreateProjectDialog extends JDialog {
 					                        JOptionPane.ERROR_MESSAGE);
 					                return;
 								}
-								ProjectManager.getManager().addProject(project);
-								ProjectManager.getManager().openProject(project);
+								GlobalProjectManager.getAs(GramlabProjectManager.class).addProject(project);
+								GlobalProjectManager.getAs(GramlabProjectManager.class).openProject(project);
 							}
 						});
 						

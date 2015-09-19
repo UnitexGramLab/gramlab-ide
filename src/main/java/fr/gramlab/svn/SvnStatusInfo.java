@@ -3,7 +3,7 @@ package fr.gramlab.svn;
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 
 public class SvnStatusInfo {
 
@@ -13,9 +13,9 @@ public class SvnStatusInfo {
 	private ArrayList<String> removedFiles=new ArrayList<String>();
 	private ArrayList<String> conflictFiles=new ArrayList<String>();
 
-	private Project project=null;
+	private GramlabProject project=null;
 	
-	public SvnStatusInfo(Project p) {
+	public SvnStatusInfo(GramlabProject p) {
 		this.project=p;
 	}
 	

@@ -16,8 +16,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.ProjectManager;
+import fr.gramlab.project.GramlabProjectManager;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.io.GraphIO;
 
@@ -79,7 +80,8 @@ public class NewGrfDialog extends JDialog {
 				GraphIO.createNewGrf(f);
 				setVisible(false);
 				dispose();
-				ProjectManager.getManager().getProject(f).openFile(f,false);
+				GlobalProjectManager.getAs(GramlabProjectManager.class)
+					.getProject(f).openFile(f,false);
 			}
 		});
 		down.add(ok);

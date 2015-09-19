@@ -41,7 +41,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.ProjectVersionableConfig;
 import fr.umlv.unitex.LinkButton;
 import fr.umlv.unitex.config.NamedRepository;
@@ -60,7 +60,7 @@ public class MavenDialog extends JDialog {
 	JPanel mainPanel;
 	Executor executor=null;
 	JButton ok,cancel;
-	Project project;
+	GramlabProject project;
 	ProcessOutputList stdout=new ProcessOutputList(new ProcessOutputListModel());
 	MavenFileTableModel tableModel;
 	MavenTreeModel treeModel;
@@ -88,7 +88,7 @@ public class MavenDialog extends JDialog {
 	private boolean finished=false;
 	
 
-	public MavenDialog(Project p) {
+	public MavenDialog(GramlabProject p) {
 		super(Main.getMainFrame(), "Maven packaging of "+p.getName(), true);
 		tableModel=new MavenFileTableModel(p);
 		this.project=p;
@@ -845,7 +845,7 @@ public class MavenDialog extends JDialog {
 
 	
 	
-	public static String inSrcDirectory(Project p,File f) {
+	public static String inSrcDirectory(GramlabProject p,File f) {
 		String foo=FileUtil.isAncestor(p.getSrcDirectory(),f.getParentFile());
 		if (foo==null) return null;
 		return foo+f.getName();

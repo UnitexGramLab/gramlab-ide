@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.ProjectVersionableConfig;
 import fr.gramlab.project.config.maven.Artifact;
 import fr.gramlab.project.config.maven.MvnCommand;
@@ -39,7 +39,7 @@ public class GetDependenciesPaneFactory extends ConfigurationPaneFactory {
 	Executor executor=null;
 	private boolean dependenciesSuccessfullyRetrieved=false;
 	
-	public GetDependenciesPaneFactory(final Project project) {
+	public GetDependenciesPaneFactory(final GramlabProject project) {
 		super(new GridBagLayout());
 		setBorder(BorderFactory.createTitledBorder("Retrieving components"));
 		dependenciesSuccessfullyRetrieved=false;
@@ -139,7 +139,7 @@ public class GetDependenciesPaneFactory extends ConfigurationPaneFactory {
 		t.start();
 	}
 
-	public static boolean getRepositories(Project project) {
+	public static boolean getRepositories(GramlabProject project) {
 		ProjectVersionableConfig cfg=new ProjectVersionableConfig(project);
 		cfg.setDefaultGraphRepository(project.getDefaultGraphRepository());
 		cfg.setNamedRepositories(project.getNamedRepositories());
@@ -157,7 +157,7 @@ public class GetDependenciesPaneFactory extends ConfigurationPaneFactory {
 	 * We read the 'repositories' file in the given dependency and try
 	 * to merge its repositories with the current project's ones.
 	 */
-	private static boolean getRepositories(Project project,Artifact a,ProjectVersionableConfig cfg) {
+	private static boolean getRepositories(GramlabProject project,Artifact a,ProjectVersionableConfig cfg) {
 		File depDir=new File(project.getProjectDirectory(),PomIO.DEPENDENCY_DIRECTORY);
 		File foo=new File(new File(depDir,project.getName()),"repositories");
 		ProjectVersionableConfig cfg2=ProjectVersionableConfig.load(project,foo);
@@ -182,7 +182,7 @@ public class GetDependenciesPaneFactory extends ConfigurationPaneFactory {
 
 	private static boolean namedRepositoryConflict(
 			String AV,NamedRepository nr,
-			ArrayList<NamedRepository> namedRepositories,Project project) {
+			ArrayList<NamedRepository> namedRepositories,GramlabProject project) {
 		for (NamedRepository foo:namedRepositories) {
 			if (foo.getName().equals(nr.getName())) {
 				/* Same name => conflict ? */
@@ -214,11 +214,11 @@ public class GetDependenciesPaneFactory extends ConfigurationPaneFactory {
 	}
 	
 	@Override
-	public boolean validateConfiguration(Project project) {
+	public boolean validateConfiguration(GramlabProject project) {
 		return dependenciesSuccessfullyRetrieved;
 	}
 	
-	public static GetDependenciesPaneFactory getPane(Project project) {
+	public static GetDependenciesPaneFactory getPane(GramlabProject project) {
 		return new GetDependenciesPaneFactory(project);
 	}
 	

@@ -27,7 +27,7 @@ import javax.swing.border.BevelBorder;
 
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.Main;
-import fr.gramlab.project.Project;
+import fr.gramlab.project.GramlabProject;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.ExecParameters;
@@ -40,7 +40,7 @@ import fr.umlv.unitex.process.list.ProcessOutputListModel;
 @SuppressWarnings("serial")
 public class SvnShareDialog extends JDialog {
 	
-	Project project;
+	GramlabProject project;
 	DefaultComboBoxModel model;
 	JComboBox url;
 	SvnAuthenticationPane authPane=null;
@@ -54,7 +54,7 @@ public class SvnShareDialog extends JDialog {
 	ProcessOutputList stderr=new ProcessOutputList(new ProcessOutputListModel());
 	private boolean finished=false;
 
-	public SvnShareDialog(final Project p) {
+	public SvnShareDialog(final GramlabProject p) {
 		super(Main.getMainFrame(), "SVN sharing project "+p.getName(), true);
 		this.project=p;
 		JPanel pane=new JPanel(new BorderLayout());
