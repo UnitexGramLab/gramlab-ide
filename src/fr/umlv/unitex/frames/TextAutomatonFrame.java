@@ -73,6 +73,7 @@ import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 
 import fr.umlv.unitex.DropTargetManager;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -385,8 +386,8 @@ public class TextAutomatonFrame extends TfstFrame {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		InternalFrameManager.getManager(null).newExportTextAsPOSListDialog(
-				chooser.getSelectedFile(), filter, delafStyle);
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter, delafStyle);
 	}
 
 	void refreshTableRowHeight(JTable table) {
@@ -451,11 +452,11 @@ public class TextAutomatonFrame extends TfstFrame {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).closeTfstTagsFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTfstTagsFrame();
 				replaceElagFst();
-				InternalFrameManager.getManager(null).newTfstTagsFrame(
-						new File(Config.getCurrentSntDir(),
-								"tfst_tags_by_freq.txt"));
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
 			}
 		});
 		p.add(button);
@@ -520,8 +521,10 @@ public class TextAutomatonFrame extends TfstFrame {
 		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				InternalFrameManager.getManager(null).closeTextAutomatonFrame();
-				InternalFrameManager.getManager(null).closeTfstTagsFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTextAutomatonFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTfstTagsFrame();
 				Config.cleanTfstFiles(false);
 				final RebuildTfstCommand command = new RebuildTfstCommand()
 						.automaton(new File(Config.getCurrentSntDir(),
@@ -921,17 +924,19 @@ public class TextAutomatonFrame extends TfstFrame {
 	}
 
 	void exploseElagFst() {
-		InternalFrameManager.getManager(null).closeTfstTagsFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeTfstTagsFrame();
 		explodeTextAutomaton(elag_tfst);
-		InternalFrameManager.getManager(null).newTfstTagsFrame(
-				new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
 	}
 
 	void implodeElagFst() {
-		InternalFrameManager.getManager(null).closeTfstTagsFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeTfstTagsFrame();
 		implodeTextAutomaton(elag_tfst);
-		InternalFrameManager.getManager(null).newTfstTagsFrame(
-				new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
 	}
 
 	boolean explodeTextAutomaton(File f) {
@@ -995,8 +1000,8 @@ public class TextAutomatonFrame extends TfstFrame {
 				JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 						"unable to delete " + f);
 			}
-			InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1,
-					false);
+			GlobalProjectManager.search(sntDir).getFrameManagerAs(InternalFrameManager.class)
+					.newTextAutomatonFrame(1,false);
 		}
 	}
 

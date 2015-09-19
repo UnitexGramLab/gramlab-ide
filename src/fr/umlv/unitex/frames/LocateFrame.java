@@ -49,6 +49,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -574,7 +575,8 @@ public class LocateFrame extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			if (!res.startsWith("0")) {
-				InternalFrameManager.getManager(sntDir)
+				GlobalProjectManager.search(sntDir)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newConcordanceParameterFrame();
 			}
 		}
@@ -593,7 +595,8 @@ public class LocateFrame extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			if (!res.startsWith("0")) {
-				InternalFrameManager.getManager(sntDir)
+				GlobalProjectManager.search(sntDir)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newConcordanceParameterFrame();
 			}
 		}

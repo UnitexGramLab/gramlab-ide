@@ -32,6 +32,7 @@ import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.StringContent;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
@@ -87,7 +88,8 @@ public class FileManager {
 	 *            file path
 	 */
 	private void load(File file) {
-		fileEditionTextFrame = InternalFrameManager.getManager(file)
+		fileEditionTextFrame = GlobalProjectManager.search(file)
+				.getFrameManagerAs(InternalFrameManager.class)
 				.newFileEditionTextFrame(file);
 		final EditionTextArea text = fileEditionTextFrame.getText();
 		if (file.length() <= 2) {
@@ -124,8 +126,9 @@ public class FileManager {
 			return;
 		}
 		try {
-			final FileEditionTextFrame fetf = InternalFrameManager.getManager(
-					null).getSelectedFileEditionTextFrame();
+			final FileEditionTextFrame fetf = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.getSelectedFileEditionTextFrame();
 			if (fetf == null)
 				return;
 			final EditionTextArea t = fetf.getText();
@@ -180,6 +183,8 @@ public class FileManager {
 	 * load an empty text
 	 */
 	public void newFile() {
-		InternalFrameManager.getManager(null).newFileEditionTextFrame(null);
+		GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.newFileEditionTextFrame(null);
 	}
 }

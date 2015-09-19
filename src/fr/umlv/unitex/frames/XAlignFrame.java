@@ -48,6 +48,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
@@ -170,7 +171,8 @@ public class XAlignFrame extends JInternalFrame {
 
 			@Override
 			public void internalFrameClosed(InternalFrameEvent e) {
-				InternalFrameManager.getManager(null).closeXAlignLocateFrame();
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).closeXAlignLocateFrame();
 			}
 		});
 		getContentPane().setLayout(new BorderLayout());
@@ -331,15 +333,16 @@ public class XAlignFrame extends JInternalFrame {
 			final ToDo toDo = new ToDo() {
 				@Override
 				public void toDo(boolean success) {
-					InternalFrameManager.getManager(null).newXAlignLocateFrame(
-							language, snt, concordModel);
+					GlobalProjectManager.search(null)
+							.getFrameManagerAs(InternalFrameManager.class)
+							.newXAlignLocateFrame(language, snt, concordModel);
 				}
 			};
 			Launcher.exec(commands, true, toDo, true);
 			return;
 		}
-		InternalFrameManager.getManager(null).newXAlignLocateFrame(language,
-				snt, concordModel);
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.newXAlignLocateFrame(language,snt, concordModel);
 	}
 
 	void saveAlignment(XAlignModel model1) {
@@ -463,7 +466,8 @@ public class XAlignFrame extends JInternalFrame {
 			try {
 				model1.load(f);
 			} catch (final IOException e) {
-				InternalFrameManager.getManager(null).closeXAlignFrame();
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).closeXAlignFrame();
 			}
 		}
 	}

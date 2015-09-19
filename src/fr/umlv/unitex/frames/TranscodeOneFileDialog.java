@@ -34,6 +34,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
@@ -106,8 +107,8 @@ public class TranscodeOneFileDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				InternalFrameManager.getManager(null).newTranscodingFrame(file,
-						toDo, true);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newTranscodingFrame(file,toDo, true);
 			}
 		});
 		buttons.add(transcode);

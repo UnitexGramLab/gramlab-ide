@@ -28,6 +28,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.GraphFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
@@ -87,7 +88,8 @@ public class GraphMenuBuilder {
 			frm = (GraphFrame) grZone.getParentFrame();
 		}
 		if(frm == null) {
-			frm = InternalFrameManager.getManager(null).getCurrentFocusedGraphFrame();
+			frm = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
 		}
 		if(frm == null) {
 			JOptionPane.showMessageDialog(null,"No active graph frame!","Missing Graph Frame", JOptionPane.WARNING_MESSAGE);

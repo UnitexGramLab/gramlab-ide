@@ -27,6 +27,7 @@ import java.io.OutputStreamWriter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
@@ -60,12 +61,13 @@ public class GraphCollection {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final MessageWhileWorkingFrame f = InternalFrameManager
-						.getManager(null).newMessageWhileWorkingFrame(
-								"Building graph collection");
+				final MessageWhileWorkingFrame f = GlobalProjectManager
+						.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newMessageWhileWorkingFrame("Building graph collection");
 				setStop(false);
 				buildGraphCollection(srcDir, destGraph, copy, f.getLabel());
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.closeMessageWhileWorkingFrame();
 			}
 		}).start();

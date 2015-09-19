@@ -40,6 +40,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.TranscodingFrame;
@@ -251,7 +252,8 @@ public class MyDropTarget implements UnitexDropTarget {
 							e.printStackTrace();
 							return;
 						}
-						InternalFrameManager.getManager(dela)
+						GlobalProjectManager.search(dela)
+								.getFrameManagerAs(InternalFrameManager.class)
 								.newDelaFrame(dela);
 					}
 				});
@@ -274,13 +276,15 @@ public class MyDropTarget implements UnitexDropTarget {
 						final ToDo toDo = new ToDo() {
 							@Override
 							public void toDo(boolean success) {
-								InternalFrameManager.getManager(dela)
+								GlobalProjectManager.search(dela)
+										.getFrameManagerAs(InternalFrameManager.class)
 										.newDelaFrame(dela);
 							}
 						};
 						final Encoding e = Encoding.getEncoding(dela);
 						if (e == null) {
-							InternalFrameManager.getManager(dela)
+							GlobalProjectManager.search(dela)
+									.getFrameManagerAs(InternalFrameManager.class)
 									.newTranscodeOneFileDialog(dela, toDo);
 						} else {
 							toDo.toDo(true);
@@ -294,8 +298,9 @@ public class MyDropTarget implements UnitexDropTarget {
 					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase(
 							"grf") == 0) {
 						final File file = (File) aList;
-						InternalFrameManager.getManager(file).newGraphFrame(
-								file);
+						GlobalProjectManager.search(file)
+								.getFrameManagerAs(InternalFrameManager.class)
+								.newGraphFrame(file);
 					}
 				}
 			}
@@ -363,8 +368,9 @@ public class MyDropTarget implements UnitexDropTarget {
 		}
 
 		private void processDropList(List<?> list) {
-			final TranscodingFrame frame = InternalFrameManager
-					.getManager(null).newTranscodingFrame();
+			final TranscodingFrame frame = GlobalProjectManager
+					.search(null).getFrameManagerAs(InternalFrameManager.class)
+					.newTranscodingFrame();
 			Object o;
 			for (final Object aList : list) {
 				o = aList;

@@ -75,6 +75,7 @@ import javax.swing.undo.UndoManager;
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
@@ -306,7 +307,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 					return;
 				final GraphCall c = (GraphCall) grfListModel.get(n);
 				final File f = c.getGrf();
-				InternalFrameManager.getManager(f).newGraphFrame(f);
+				GlobalProjectManager.search(f)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(f);
 			}
 		});
 		grfListPanel = new JPanel(new BorderLayout());
@@ -688,9 +690,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						final GraphPresentationInfo info = InternalFrameManager
-								.getManager(grf).newGraphPresentationDialog(
-										getGraphPresentationInfo(), true);
+						final GraphPresentationInfo info = GlobalProjectManager.search(grf)
+								.getFrameManagerAs(InternalFrameManager.class)
+								.newGraphPresentationDialog(getGraphPresentationInfo(), true);
 						if (info != null) {
 							setGraphPresentationInfo(info);
 						}
@@ -898,8 +900,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			InternalFrameManager.getManager(base).newGraphDiffFrame(baseGrf,
-					destGrf, info);
+			GlobalProjectManager.search(base).getFrameManagerAs(InternalFrameManager.class)
+					.newGraphDiffFrame(baseGrf,destGrf, info);
 		}
 	}
 

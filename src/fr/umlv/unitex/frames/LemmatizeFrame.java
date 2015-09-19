@@ -67,6 +67,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.DropTargetManager;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.concord.BigConcordance;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
@@ -635,8 +636,10 @@ public class LemmatizeFrame extends TfstFrame {
 		final Action rebuildAction = new AbstractAction("Apply modifications to TFST") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				InternalFrameManager.getManager(null).closeTextAutomatonFrame();
-				InternalFrameManager.getManager(null).closeTfstTagsFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTextAutomatonFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTfstTagsFrame();
 				Config.cleanTfstFiles(false);
 				final RebuildTfstCommand command = new RebuildTfstCommand()
 						.automaton(new File(Config.getCurrentSntDir(),

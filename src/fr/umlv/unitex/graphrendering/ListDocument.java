@@ -26,6 +26,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 
 /*
@@ -73,7 +74,8 @@ class ListDocument extends PlainDocument {
 			super.insertString(offs, s, a);
 			return;
 		}
-		final ContextsInfo info = InternalFrameManager.getManager(null)
+		final ContextsInfo info = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
 				.newListCopyDialog();
 		// tokenizes the text
 		final StringTokenizer st = new StringTokenizer(s, "\n");

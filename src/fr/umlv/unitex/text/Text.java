@@ -25,6 +25,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -61,8 +62,9 @@ public class Text {
 		final TextConversionDo toDo = new TextConversionDo(name, taggedText);
 		final Encoding e = Encoding.getEncoding(name);
 		if (e == null) {
-			InternalFrameManager.getManager(name).newTranscodeOneFileDialog(
-					name, toDo);
+			GlobalProjectManager.search(name)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newTranscodeOneFileDialog(name, toDo);
 		} else {
 			toDo.toDo(true);
 		}
@@ -117,8 +119,9 @@ public class Text {
 
 	private static void preprocessSnt(File name, File snt, boolean taggedText,
 			UnxmlizeCommand cmd) {
-		InternalFrameManager.getManager(name).newPreprocessDialog(name, snt,
-				taggedText, cmd);
+		GlobalProjectManager.search(name)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.newPreprocessDialog(name, snt,taggedText, cmd);
 	}
 
 	private static void preprocessLightSnt(File name, boolean taggedText,
@@ -150,7 +153,8 @@ public class Text {
 		 * We have to close the text frame there, because if not, we will have
 		 * problem when trying to close the .snt file that is mapped
 		 */
-		InternalFrameManager.getManager(null).closeTextFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeTextFrame();
 		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),
 				taggedText));
@@ -165,7 +169,8 @@ public class Text {
 	 */
 	public static void loadSnt(File snt, boolean taggedText) {
 		Config.setCurrentSnt(snt);
-		InternalFrameManager.getManager(snt).newTextFrame(snt, taggedText);
+		GlobalProjectManager.search(snt).getFrameManagerAs(InternalFrameManager.class)
+				.newTextFrame(snt, taggedText);
 		if(Unitex.isRunning()) {
 			PreferencesManager.getUserPreferences().addRecentText(new SntFileEntry(Config.getCurrentLanguage(),
 					snt));

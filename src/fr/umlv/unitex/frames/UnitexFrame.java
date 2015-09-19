@@ -66,8 +66,10 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
+
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.Version;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -91,6 +93,8 @@ import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateTfstCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.project.UnitexProject;
+import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 
 /**
@@ -133,7 +137,9 @@ public class UnitexFrame extends JFrame {
 				- inset * 2);
 		desktop = new JDesktopPane();
 		setContentPane(desktop);
-		InternalFrameManager.setManager(new InternalFrameManager(desktop));
+		UnitexProject project = new UnitexProject(new InternalFrameManager(desktop));
+		UnitexProjectManager projectManager = new UnitexProjectManager(project);
+		new GlobalProjectManager(projectManager);
 		buildMenus();
 		mainFrame = this;
 		this.addWindowListener(new WindowAdapter() {
@@ -145,7 +151,8 @@ public class UnitexFrame extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setTitle(Version.version + " - current language is "
 				+ Config.getCurrentLanguageForTitleBar());
-		InternalFrameManager.getManager(null).addTextFrameListener(
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.addTextFrameListener(
 				new TextFrameListener() {
 					@Override
 					public void textFrameOpened(boolean taggedText) {
@@ -163,13 +170,17 @@ public class UnitexFrame extends JFrame {
 						File snt = ConfigManager.getManager().getCurrentSnt(
 								null);
 						final File sntDir = FileUtil.getSntDir(snt);
-						InternalFrameManager.getManager(null).newTokensFrame(
+						GlobalProjectManager.search(null)
+								.getFrameManagerAs(InternalFrameManager.class).newTokensFrame(
 								new File(sntDir, "tok_by_freq.txt"), true);
-						InternalFrameManager.getManager(null).newTfstTagsFrame(
+						GlobalProjectManager.search(null)
+								.getFrameManagerAs(InternalFrameManager.class).newTfstTagsFrame(
 								new File(sntDir, "tfst_tags_by_freq.txt"));
-						InternalFrameManager.getManager(null).newTextDicFrame(
+						GlobalProjectManager.search(null)
+								.getFrameManagerAs(InternalFrameManager.class).newTextDicFrame(
 								sntDir, true);
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null)
+								.getFrameManagerAs(InternalFrameManager.class)
 								.newTextAutomatonFrame(1, true);
 					}
 
@@ -185,35 +196,36 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(false);
 						exportTfstAsCsv.setEnabled(false);
 						closeText.setEnabled(false);
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTokensFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeConcordanceFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeConcordanceDiffFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTextDicFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTextAutomatonFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTfstTagsFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeApplyLexicalResourcesFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeConcordanceParameterFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeConstructTfstFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeLemmatizeFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeConvertTfstToTextFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeLocateFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeStatisticsFrame();
 					}
 				});
-		InternalFrameManager.getManager(null).addDelaFrameListener(
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.addDelaFrameListener(
 				new DelaFrameListener() {
 					@Override
 					public void delaFrameOpened() {
@@ -227,13 +239,13 @@ public class UnitexFrame extends JFrame {
 
 					@Override
 					public void delaFrameClosed(int remainingFrames) {
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeCheckDicFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTransliterationFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeCheckResultFrame();
-						InternalFrameManager.getManager(null)
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeInflectFrame();
 						if (remainingFrames == 0) {
 							checkDelaFormat.setEnabled(false);
@@ -245,7 +257,7 @@ public class UnitexFrame extends JFrame {
 						}
 					}
 				});
-		InternalFrameManager.getManager(null)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.addLexiconGrammarTableFrameListener(
 						new LexiconGrammarTableFrameListener() {
 							@Override
@@ -265,8 +277,10 @@ public class UnitexFrame extends JFrame {
 			public void languageChanged() {
 				setTitle(Version.version + " - current language is "
 						+ Config.getCurrentLanguageForTitleBar());
-				InternalFrameManager.getManager(null).closeTextFrame();
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.closeGlobalPreferencesFrame();
 			}
 		});
@@ -428,8 +442,8 @@ public class UnitexFrame extends JFrame {
 				String txt = Config.getCurrentSnt().getAbsolutePath();
 				txt = txt.substring(0, txt.length() - 3);
 				txt = txt + "txt";
-				InternalFrameManager.getManager(null).newPreprocessDialog(
-						new File(txt), Config.getCurrentSnt());
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newPreprocessDialog(new File(txt), Config.getCurrentSnt());
 			}
 		};
 		preprocessText.putValue(Action.ACCELERATOR_KEY,
@@ -448,7 +462,7 @@ public class UnitexFrame extends JFrame {
 		applyLexicalResources = new AbstractAction("Apply Lexical Resources...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newApplyLexicalResourcesFrame();
 			}
 		};
@@ -460,7 +474,8 @@ public class UnitexFrame extends JFrame {
 		locatePattern = new AbstractAction("Locate Pattern...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newLocateFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newLocateFrame();
 			}
 		};
 		locatePattern.setEnabled(false);
@@ -470,8 +485,9 @@ public class UnitexFrame extends JFrame {
 		cassys = new AbstractAction("Apply CasSys Cascade...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newCassysFrame()
-                                        .getContentPane().add(Config.getTransducerListDialogBox(),BorderLayout.WEST);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newCassysFrame()
+						.getContentPane().add(Config.getTransducerListDialogBox(),BorderLayout.WEST);
 			}
 		};
 		cassys.setEnabled(false);
@@ -480,7 +496,7 @@ public class UnitexFrame extends JFrame {
 		displayLocatedSequences = new AbstractAction("Located Sequences...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newConcordanceParameterFrame();
 			}
 		};
@@ -490,7 +506,8 @@ public class UnitexFrame extends JFrame {
 		elagComp = new AbstractAction("Compile Elag Grammars") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newElagCompFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newElagCompFrame();
 			}
 		};
 		textMenu.add(new JMenuItem(elagComp));
@@ -498,7 +515,8 @@ public class UnitexFrame extends JFrame {
 		constructFst = new AbstractAction("Construct FST-Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newConstructTfstFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newConstructTfstFrame();
 			}
 		};
 		constructFst.setEnabled(false);
@@ -516,7 +534,8 @@ public class UnitexFrame extends JFrame {
 									"Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				InternalFrameManager.getManager(null).newLemmatizeFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newLemmatizeFrame();
 			}
 		};
 		lemmatize.setEnabled(false);
@@ -524,7 +543,7 @@ public class UnitexFrame extends JFrame {
 		constructSeqFst = new AbstractAction("Construct Sequences Automaton") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newConstructSeqTfstFrame();
 			}
 		};
@@ -533,7 +552,7 @@ public class UnitexFrame extends JFrame {
 		convertFst = new AbstractAction("Convert FST-Text to Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newConvertTfstToTextFrame();
 			}
 		};
@@ -551,7 +570,8 @@ public class UnitexFrame extends JFrame {
 		closeText = new AbstractAction("Close Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).closeTextFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTextFrame();
 			}
 		};
 		closeText.setEnabled(false);
@@ -596,7 +616,8 @@ public class UnitexFrame extends JFrame {
 		lookup.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newDicLookupFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newDicLookupFrame();
 			}
 		});
 		delaMenu.add(lookup);
@@ -611,7 +632,8 @@ public class UnitexFrame extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				InternalFrameManager.getManager(null).newCheckDicFrame(f);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newCheckDicFrame(f);
 			}
 		};
 		checkDelaFormat.setEnabled(false);
@@ -621,7 +643,8 @@ public class UnitexFrame extends JFrame {
 		transliterate = new AbstractAction("Transliterate...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newTransliterationFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newTransliterationFrame();
 			}
 		};
 		transliterate.setEnabled(false);
@@ -640,7 +663,8 @@ public class UnitexFrame extends JFrame {
 				final File dela = Config.getCurrentDELA();
 				if (dela == null)
 					return;
-				InternalFrameManager.getManager(null).newInflectFrame(dela);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newInflectFrame(dela);
 			}
 		};
 		inflect.setEnabled(false);
@@ -658,7 +682,8 @@ public class UnitexFrame extends JFrame {
 				"Build Korean MWU dic graph...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newBuildKrMwuDicFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newBuildKrMwuDicFrame();
 			}
 		};
 		buildKrMwuDic.setEnabled(ConfigManager.getManager().isKorean(null));
@@ -674,7 +699,8 @@ public class UnitexFrame extends JFrame {
 		closeDela = new AbstractAction("Close") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).closeCurrentDelaFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeCurrentDelaFrame();
 			}
 		};
 		closeDela.setEnabled(false);
@@ -688,7 +714,8 @@ public class UnitexFrame extends JFrame {
 		newGraph.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newGraphFrame(null);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newGraphFrame(null);
 			}
 		});
 		graphMenu.add(newGraph);
@@ -726,7 +753,8 @@ public class UnitexFrame extends JFrame {
 								PreferencesManager.getUserPreferences()
 										.removeRecentGraph(f);
 							} else {
-								InternalFrameManager.getManager(null)
+								GlobalProjectManager.search(null)
+										.getFrameManagerAs(InternalFrameManager.class)
 										.newGraphFrame(f);
 							}
 						}
@@ -764,7 +792,8 @@ public class UnitexFrame extends JFrame {
 		final Action save = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.saveGraph();
@@ -774,8 +803,8 @@ public class UnitexFrame extends JFrame {
 				 * Evil hack to allow save with ctrl+S in the internal text
 				 * editor
 				 */
-				final JInternalFrame frame = InternalFrameManager.getManager(
-						null).getSelectedFrame();
+				final JInternalFrame frame = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).getSelectedFrame();
 				if (frame instanceof FileEditionTextFrame) {
 					((FileEditionTextFrame) frame).saveFile();
 					return;
@@ -788,7 +817,8 @@ public class UnitexFrame extends JFrame {
 		final Action saveAs = new AbstractAction("Save as...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null)
 					f.saveAsGraph();
@@ -817,7 +847,8 @@ public class UnitexFrame extends JFrame {
 		final Action print = new AbstractAction("Print...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PrintManager.print(InternalFrameManager.getManager(null)
+				PrintManager.print(GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getSelectedFrame());
 			}
 		};
@@ -827,8 +858,8 @@ public class UnitexFrame extends JFrame {
 		final Action printAll = new AbstractAction("Print All...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PrintManager.printAllGraphs(InternalFrameManager.getManager(
-						null).getGraphFrames());
+				PrintManager.printAllGraphs(GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).getGraphFrames());
 			}
 		};
 		graphMenu.add(new JMenuItem(printAll));
@@ -836,7 +867,8 @@ public class UnitexFrame extends JFrame {
 		final Action undo = new AbstractAction("Undo") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.undo();
@@ -850,7 +882,8 @@ public class UnitexFrame extends JFrame {
 		final Action redo = new AbstractAction("Redo") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.redo();
@@ -867,7 +900,8 @@ public class UnitexFrame extends JFrame {
 		sortNodeLabel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.sortNodeLabel();
@@ -878,10 +912,12 @@ public class UnitexFrame extends JFrame {
 		explorePaths.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					InternalFrameManager.getManager(null).newGraphPathDialog();
+					GlobalProjectManager.search(null)
+							.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
 				}
 			}
 		});
@@ -889,8 +925,8 @@ public class UnitexFrame extends JFrame {
 		compileFST.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame currentFrame = InternalFrameManager
-						.getManager(null).getCurrentFocusedGraphFrame();
+				final GraphFrame currentFrame = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
 				if (currentFrame == null)
 					return;
 				currentFrame.compileGraph();
@@ -908,7 +944,8 @@ public class UnitexFrame extends JFrame {
 		graphCollection.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newGraphCollectionFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newGraphCollectionFrame();
 			}
 		});
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
@@ -934,10 +971,12 @@ public class UnitexFrame extends JFrame {
 		alignment.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					InternalFrameManager.getManager(null)
+					GlobalProjectManager.search(null)
+							.getFrameManagerAs(InternalFrameManager.class)
 							.newGraphAlignmentDialog(f);
 				}
 			}
@@ -946,7 +985,8 @@ public class UnitexFrame extends JFrame {
 		antialiasing.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final JInternalFrame f = InternalFrameManager.getManager(null)
+				final JInternalFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getSelectedFrame();
 				if (f == null)
 					return;
@@ -967,12 +1007,13 @@ public class UnitexFrame extends JFrame {
 		presentation.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					final GraphPresentationInfo info = InternalFrameManager
-							.getManager(null).newGraphPresentationDialog(
-									f.getGraphPresentationInfo(), true);
+					final GraphPresentationInfo info = GlobalProjectManager.search(null)
+							.getFrameManagerAs(InternalFrameManager.class)
+							.newGraphPresentationDialog(f.getGraphPresentationInfo(), true);
 					if (info != null) {
 						f.setGraphPresentationInfo(info);
 					}
@@ -983,10 +1024,12 @@ public class UnitexFrame extends JFrame {
 		graphSize.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					InternalFrameManager.getManager(null).newGraphSizeDialog(f);
+					GlobalProjectManager.search(null)
+							.getFrameManagerAs(InternalFrameManager.class).newGraphSizeDialog(f);
 				}
 			}
 		});
@@ -1017,7 +1060,8 @@ public class UnitexFrame extends JFrame {
 		fitInScreen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
@@ -1035,7 +1079,8 @@ public class UnitexFrame extends JFrame {
 		fitInWindow.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					final Dimension d = f.getScroll().getSize();
@@ -1068,7 +1113,8 @@ public class UnitexFrame extends JFrame {
 		fit60.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
@@ -1079,7 +1125,8 @@ public class UnitexFrame extends JFrame {
 		fit80.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
@@ -1090,7 +1137,8 @@ public class UnitexFrame extends JFrame {
 		fit100.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
@@ -1101,7 +1149,8 @@ public class UnitexFrame extends JFrame {
 		fit120.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
@@ -1112,7 +1161,8 @@ public class UnitexFrame extends JFrame {
 		fit140.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = InternalFrameManager.getManager(null)
+				final GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
 					f.removeComponentListener(f.compListener);
@@ -1148,7 +1198,8 @@ public class UnitexFrame extends JFrame {
 		closeAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).closeAllGraphFrames();
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).closeAllGraphFrames();
 			}
 		});
 		graphMenu.add(tools);
@@ -1165,12 +1216,14 @@ public class UnitexFrame extends JFrame {
 		graphMenu.addMenuListener(new MenuAdapter() {
 			@Override
 			public void menuSelected(MenuEvent e) {
-				GraphFrame f = InternalFrameManager.getManager(null)
+				GraphFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 
 				boolean existsFocusedGrFrame = f != null;
-				boolean existsAnyGrFrame = InternalFrameManager
-						.getManager(null).getGraphFrames().size() != 0;
+				boolean existsAnyGrFrame = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.getGraphFrames().size() != 0;
 
 				save.setEnabled(existsFocusedGrFrame);
 				saveAs.setEnabled(existsFocusedGrFrame);
@@ -1212,12 +1265,12 @@ public class UnitexFrame extends JFrame {
 		compileLexiconGrammar = new AbstractAction("Compile to GRF...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final LexiconGrammarTableFrame f = InternalFrameManager
-						.getManager(null).getLexiconGrammarTableFrame();
+				final LexiconGrammarTableFrame f = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).getLexiconGrammarTableFrame();
 				if (f == null) {
 					throw new IllegalStateException("Should not happen !");
 				}
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newConvertLexiconGrammarFrame(f.getTable());
 			}
 		};
@@ -1226,7 +1279,7 @@ public class UnitexFrame extends JFrame {
 		closeLexiconGrammar = new AbstractAction("Close") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeLexiconGrammarTableFrame();
 			}
 		};
@@ -1241,7 +1294,8 @@ public class UnitexFrame extends JFrame {
 		open.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newXAlignConfigFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newXAlignConfigFrame();
 			}
 		});
 		menu.add(open);
@@ -1342,21 +1396,23 @@ public class UnitexFrame extends JFrame {
 		aboutUnitex.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newAboutUnitexFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newAboutUnitexFrame();
 			}
 		});
 		final JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
 		helpOnCommands.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newHelpOnCommandFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newHelpOnCommandFrame();
 			}
 		});
 		final JMenuItem preferences = new JMenuItem("Preferences...");
 		preferences.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newGlobalPreferencesFrame();
 			}
 		});
@@ -1364,7 +1420,8 @@ public class UnitexFrame extends JFrame {
 		console.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).showConsoleFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.showConsoleFrame();
 			}
 		});
 		info.add(aboutUnitex);
@@ -1388,7 +1445,8 @@ public class UnitexFrame extends JFrame {
 			return;
 		}
 		UnitexFrame.closing = true;
-		InternalFrameManager.getManager(null).closeAllFrames();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeAllFrames();
 		System.exit(0);
 	}
 
@@ -1460,7 +1518,8 @@ public class UnitexFrame extends JFrame {
 					continue;
 				}
 			}
-			InternalFrameManager.getManager(null).newGraphFrame(graphs[i]);
+			GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+					.newGraphFrame(graphs[i]);
 		}
 	}
 
@@ -1498,7 +1557,8 @@ public class UnitexFrame extends JFrame {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		InternalFrameManager.getManager(null).newLexiconGrammarTableFrame(f);
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.newLexiconGrammarTableFrame(f);
 	}
 
 	/**
@@ -1519,7 +1579,8 @@ public class UnitexFrame extends JFrame {
 	 * through the creation of a <code>ProcessInfoFrame</code> object.
 	 */
 	public static void compileAndFlattenGraph() {
-		final GraphFrame currentFrame = InternalFrameManager.getManager(null)
+		final GraphFrame currentFrame = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
 				.getCurrentFocusedGraphFrame();
 		if (currentFrame == null)
 			return;
@@ -1604,12 +1665,13 @@ public class UnitexFrame extends JFrame {
 		final ToDo toDo = new ToDo() {
 			@Override
 			public void toDo(boolean success) {
-				InternalFrameManager.getManager(null).newDelaFrame(dela);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.newDelaFrame(dela);
 			}
 		};
 		if (null == Encoding.getEncoding(dela)) {
-			InternalFrameManager.getManager(null).newTranscodeOneFileDialog(
-					dela, toDo);
+			GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+					.newTranscodeOneFileDialog(dela, toDo);
 		} else {
 			toDo.toDo(true);
 		}
@@ -1628,7 +1690,8 @@ public class UnitexFrame extends JFrame {
 			command = command.sortAlphabet(new File(Config
 					.getUserCurrentLanguageDir(), "Alphabet_sort.txt"));
 		}
-		InternalFrameManager.getManager(null).closeCurrentDelaFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeCurrentDelaFrame();
 		Launcher.exec(command, true, new DelaDo(dela));
 	}
 
@@ -1809,7 +1872,8 @@ public class UnitexFrame extends JFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(dela).newDelaFrame(dela);
+			GlobalProjectManager.search(dela)
+					.getFrameManagerAs(InternalFrameManager.class).newDelaFrame(dela);
 		}
 	}
 
@@ -1895,8 +1959,9 @@ public class UnitexFrame extends JFrame {
 	 * @param selected_file
 	 */
 	void openCascade(File selected_file) {
-		TransducerListConfigurationFrame t = InternalFrameManager.getManager(
-				null).getTransducerListConfigurationFrame();
+		TransducerListConfigurationFrame t = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.getTransducerListConfigurationFrame();
 
 		// If save has to be done. Do it first
 		if (t != null && t.isConfigurationHasChanged()) {
@@ -1906,7 +1971,8 @@ public class UnitexFrame extends JFrame {
 				t.quit();
 			}
 			Config.setCurrentTransducerList(selected_file);
-			InternalFrameManager.getManager(null)
+			GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class)
 					.newTransducerListConfigurationFrame(selected_file);
 		}
 	}

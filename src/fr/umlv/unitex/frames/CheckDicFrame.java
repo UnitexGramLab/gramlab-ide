@@ -35,6 +35,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -126,7 +127,8 @@ public class CheckDicFrame extends JInternalFrame {
 			command = command.no_space_warning();
 		}
 		final File tmp = new File(dela.getParentFile(), "CHECK_DIC.TXT");
-		InternalFrameManager.getManager(null).closeCheckResultFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				.closeCheckResultFrame();
 		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
 
@@ -139,8 +141,8 @@ public class CheckDicFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(results).newCheckResultFrame(
-					results);
+			GlobalProjectManager.search(results).getFrameManagerAs(InternalFrameManager.class)
+					.newCheckResultFrame(results);
 		}
 	}
 }

@@ -58,6 +58,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -455,7 +456,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				InternalFrameManager.getManager(null).closeTextDicFrame();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.closeTextDicFrame();
 				MultiCommands commands;
 				commands = getRunCmd();
 				if (commands.numberOfCommands() == 0)
@@ -465,9 +467,10 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 					 * As we construct the text automaton for Korean, we must
 					 * close the text automaton frame, if any
 					 */
-					InternalFrameManager.getManager(null)
+					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 							.closeTextAutomatonFrame();
-					InternalFrameManager.getManager(null).closeTfstTagsFrame();
+					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+							.closeTfstTagsFrame();
 					/* We also have to rebuild the text automaton */
 					Config.cleanTfstFiles(true);
 					final Txt2TfstCommand txtCmd = new Txt2TfstCommand()
@@ -752,13 +755,16 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(sntDir).newTextDicFrame(sntDir,
-					false);
+			GlobalProjectManager.search(sntDir)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newTextDicFrame(sntDir,false);
 			if (ConfigManager.getManager().isKorean(null)) {
-				InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(
-						1, false);
-				InternalFrameManager.getManager(sntDir).newTfstTagsFrame(
-						new File(sntDir, "tfst_tags_by_freq.txt"));
+				GlobalProjectManager.search(sntDir)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newTextAutomatonFrame(1, false);
+				GlobalProjectManager.search(sntDir)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newTfstTagsFrame(new File(sntDir, "tfst_tags_by_freq.txt"));
 			}
 		}
 	}
