@@ -39,6 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
@@ -308,8 +309,10 @@ public class ConstructTfstFrame extends JInternalFrame {
 				commands.addCommand(taggerCmd);
 			}
 		}
-		InternalFrameManager.getManager(null).closeTextAutomatonFrame();
-		InternalFrameManager.getManager(null).closeTfstTagsFrame();
+		GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class).closeTextAutomatonFrame();
+		GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class).closeTfstTagsFrame();
 		/* We also have to rebuild the text automaton */
 		Config.cleanTfstFiles(true);
 		Launcher.exec(commands, true,
@@ -325,10 +328,12 @@ public class ConstructTfstFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(sntDir).newTextAutomatonFrame(1,
-					false);
-			InternalFrameManager.getManager(sntDir).newTfstTagsFrame(
-					new File(sntDir, "tfst_tags_by_freq.txt"));
+			GlobalProjectManager.search(sntDir)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newTextAutomatonFrame(1,false);
+			GlobalProjectManager.search(sntDir)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newTfstTagsFrame(new File(sntDir, "tfst_tags_by_freq.txt"));
 		}
 	}
 }

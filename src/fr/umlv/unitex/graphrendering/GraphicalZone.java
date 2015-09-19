@@ -58,6 +58,7 @@ import javax.swing.KeyStroke;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
@@ -193,7 +194,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				final String name = InternalFrameManager.getManager(null)
+				final String name = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newVariableInsertionDialog(true);
 				if (name == null || name.equals(""))
 					return;
@@ -210,7 +212,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			@Override
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent e) {
-				final String name = InternalFrameManager.getManager(null)
+				final String name = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newVariableInsertionDialog(false);
 				if (name == null || name.equals(""))
 					return;
@@ -401,7 +404,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				} catch (final PropertyVetoException e1) {
 					/* */
 				}
-				InternalFrameManager.getManager(null).newGraphPathDialog();
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
 			}
 		});
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
@@ -424,7 +428,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		graphCollection.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager.getManager(null).newGraphCollectionFrame();
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphCollectionFrame();
 			}
 		});
 		final JMenuItem svn = new JMenuItem("Look for SVN conflicts");
@@ -450,7 +455,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
-				InternalFrameManager.getManager(null)
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newGraphAlignmentDialog(f);
 			}
 		});
@@ -469,9 +475,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
-				final GraphPresentationInfo info = InternalFrameManager
-						.getManager(null).newGraphPresentationDialog(
-								f.getGraphPresentationInfo(), true);
+				final GraphPresentationInfo info = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newGraphPresentationDialog(f.getGraphPresentationInfo(), true);
 				if (info != null) {
 					f.setGraphPresentationInfo(info);
 				}
@@ -482,7 +488,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final GraphFrame f = (GraphFrame) parentFrame;
-				InternalFrameManager.getManager(null).newGraphSizeDialog(f);
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newGraphSizeDialog(f);
 			}
 		});
 		format.add(antialiasing);
@@ -642,7 +650,8 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 */
  	protected void createNewGraph(MultipleSelection selection,
 			boolean[] inputBox, boolean[] outputBox) {
-		final GraphFrame f = InternalFrameManager.getManager(null)
+		final GraphFrame f = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
 				.newGraphFrame(null);
 		final GraphicalZone zone = f.getGraphicalZone();
 		zone.pasteSelection(selection);
@@ -1334,8 +1343,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					b = (GraphBox) graphBoxes.get(boxSelected);
 					final File file = b.getGraphClicked(y_tmp);
 					if (file != null) {
-						InternalFrameManager.getManager(null).newGraphFrame(
-								file);
+						GlobalProjectManager.search(null)
+								.getFrameManagerAs(InternalFrameManager.class)
+								.newGraphFrame(file);
 					}
 				}
 			} else if (EDITING_MODE == MyCursors.KILL_BOXES) {

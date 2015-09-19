@@ -53,6 +53,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.console.Console;
@@ -481,7 +482,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final String sntName = FileUtil.getFileNameWithoutExtension(txt)
 				+ ".snt";
 		if (new File(sntName).equals(Config.getCurrentSnt())) {
-			InternalFrameManager.getManager(null).closeTextFrame();
+			GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
 			toDo = new ModifyTextDo(new File(sntName));
 		}
 		final MultiCommands commands = new MultiCommands();
@@ -593,7 +595,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		if (width < 40) {
 			width = 40;
 		}
-		InternalFrameManager.getManager(null).closeConcordanceFrame();
+		GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame();
 		Launcher.exec(command, true,
 				new ConcordanceDo(false, new File(Config.getCurrentSntDir(),
 						"concord.html"), openWithBrowser.isSelected(), width));
@@ -622,7 +625,8 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				.diffOnly();
 		setVisible(false);
 		final int width = 160;
-		InternalFrameManager.getManager(null).closeConcordanceDiffFrame();
+		GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class).closeConcordanceDiffFrame();
 		Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
 				openWithBrowser.isSelected(), width));
 	}
@@ -665,10 +669,12 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				}
 			} else {
 				if (!diff) {
-					InternalFrameManager.getManager(htmlFile)
+					GlobalProjectManager.search(htmlFile)
+							.getFrameManagerAs(InternalFrameManager.class)
 							.newConcordanceFrame(htmlFile, widthInChars);
 				} else {
-					InternalFrameManager.getManager(htmlFile)
+					GlobalProjectManager.search(htmlFile)
+							.getFrameManagerAs(InternalFrameManager.class)
 							.newConcordanceDiffFrame(htmlFile);
 				}
 			}
@@ -684,7 +690,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(snt).newTextFrame(snt, false);
+			GlobalProjectManager.search(snt)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newTextFrame(snt, false);
 		}
 	}
 
@@ -699,7 +707,9 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(f).newStatisticsFrame(f, mode);
+			GlobalProjectManager.search(f)
+					.getFrameManagerAs(InternalFrameManager.class)
+					.newStatisticsFrame(f, mode);
 		}
 	}
 

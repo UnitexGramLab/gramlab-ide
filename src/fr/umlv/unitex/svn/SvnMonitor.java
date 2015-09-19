@@ -29,6 +29,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.Timer;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
@@ -74,14 +75,16 @@ public class SvnMonitor {
 			monitor(ConfigManager.getManager().getGraphRepositoryPath(null,
 					null));
 			if (!autoMonitoring || svnConflictModel.size() > 0) {
-				InternalFrameManager.getManager(null).showSvnConflictsFrame(
-						this);
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.showSvnConflictsFrame(this);
 			}
 		} else {
 			monitor(rootDir);
 			if (!autoMonitoring || svnConflictModel.size() > 0) {
-				InternalFrameManager.getManager(null).showSvnConflictsFrame(
-						this);
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.showSvnConflictsFrame(this);
 			}
 		}
 	}

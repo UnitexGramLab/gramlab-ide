@@ -47,6 +47,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
@@ -386,7 +387,8 @@ class GraphPresentationDialog extends JDialog {
 		final Action inputAction = new AbstractAction("Input") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = InternalFrameManager.getManager(null)
+				final FontInfo i = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(info.getInput());
 				if (i != null) {
 					info.setInput(i);
@@ -398,7 +400,8 @@ class GraphPresentationDialog extends JDialog {
 		final Action outputAction = new AbstractAction("Output") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = InternalFrameManager.getManager(null)
+				final FontInfo i = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(info.getOutput());
 				if (i != null) {
 					info.setOutput(i);
@@ -432,7 +435,8 @@ class GraphPresentationDialog extends JDialog {
 		final Action defaultAction = new AbstractAction("Default") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (InternalFrameManager.getManager(null)
+				if (GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame() == null)
 					return;
 				info = ConfigManager.getManager()

@@ -38,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
@@ -278,12 +279,14 @@ public class XAlignConfigFrame extends JInternalFrame {
 		final File alignmentFile2 = alignmentFile;
 		/* We close the parameter frame */
 		setVisible(false);
-		InternalFrameManager.getManager(null).closeXAlignFrame();
+		GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class).closeXAlignFrame();
 		final ToDo toDo = new ToDo() {
 			@Override
 			public void toDo(boolean success) {
-				InternalFrameManager.getManager(null).newXAlignFrame(
-						xmlSourceFile, xmlTargetFile, alignmentFile2);
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newXAlignFrame(xmlSourceFile, xmlTargetFile, alignmentFile2);
 			}
 		};
 		/* And we launch the XMLizer commands, if any */

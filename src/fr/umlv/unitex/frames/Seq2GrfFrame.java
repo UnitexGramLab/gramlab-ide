@@ -44,6 +44,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 
 import fr.umlv.unitex.LinkButton;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
@@ -338,7 +339,8 @@ public class Seq2GrfFrame extends JInternalFrame {
 			@Override
 			public void toDo(boolean success) {
 				if (!success) return;
-				InternalFrameManager.getManager(output).newGraphFrame(output);
+				GlobalProjectManager.search(output).getFrameManagerAs(InternalFrameManager.class)
+						.newGraphFrame(output);
 			}
 			
 		});

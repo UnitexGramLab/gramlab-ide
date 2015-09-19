@@ -36,6 +36,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
@@ -182,7 +183,8 @@ public class TransliterationFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			InternalFrameManager.getManager(dela).newDelaFrame(dela);
+			GlobalProjectManager.search(dela)
+					.getFrameManagerAs(InternalFrameManager.class).newDelaFrame(dela);
 		}
 	}
 }

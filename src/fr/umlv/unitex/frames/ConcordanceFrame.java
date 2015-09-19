@@ -47,6 +47,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.concord.BigConcordance;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -238,14 +239,16 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				TextFrame fTmp = InternalFrameManager.getManager(null)
+				TextFrame fTmp = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
 						.getTextFrame();
 				if (fTmp == null) {
 					/*
 					 * In Gramlab, a concordance may be open while the text
 					 * frame is not
 					 */
-					fTmp = InternalFrameManager.getManager(null).newTextFrame(
+					fTmp = GlobalProjectManager.search(null)
+							.getFrameManagerAs(InternalFrameManager.class).newTextFrame(
 							ConfigManager.getManager().getCurrentSnt(null),
 							false);
 				}
@@ -289,13 +292,15 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 					e2.printStackTrace();
 				}
 				boolean iconified = true;
-				final TextAutomatonFrame foo = InternalFrameManager.getManager(
-						null).getTextAutomatonFrame();
+				final TextAutomatonFrame foo = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.getTextAutomatonFrame();
 				if (foo != null) {
 					iconified = foo.isIcon();
 				}
-				InternalFrameManager.getManager(null).newTextAutomatonFrame(
-						sentenceNumber, iconified);
+				GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newTextAutomatonFrame(sentenceNumber, iconified);
 				list.clearSelection();
 				if (index != null) {
 					try {
