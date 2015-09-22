@@ -24,7 +24,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
 
@@ -59,7 +59,7 @@ public class Launcher {
 			boolean stopIfProblem) {
 		if (c == null)
 			return;
-		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newProcessInfoFrame(c, close,myDo, stopIfProblem);
 	}
 

@@ -27,7 +27,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 
 /*
  * This class catches text and turns it into a list if it contains \n
@@ -75,7 +75,7 @@ class ListDocument extends PlainDocument {
 			return;
 		}
 		final ContextsInfo info = GlobalProjectManager.search(null)
-				.getFrameManagerAs(InternalFrameManager.class)
+				.getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newListCopyDialog();
 		// tokenizes the text
 		final StringTokenizer st = new StringTokenizer(s, "\n");

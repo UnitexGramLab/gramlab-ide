@@ -280,12 +280,12 @@ public class XAlignConfigFrame extends JInternalFrame {
 		/* We close the parameter frame */
 		setVisible(false);
 		GlobalProjectManager.search(null)
-				.getFrameManagerAs(InternalFrameManager.class).closeXAlignFrame();
+				.getFrameManagerAs(UnitexInternalFrameManager.class).closeXAlignFrame();
 		final ToDo toDo = new ToDo() {
 			@Override
 			public void toDo(boolean success) {
 				GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class)
+						.getFrameManagerAs(UnitexInternalFrameManager.class)
 						.newXAlignFrame(xmlSourceFile, xmlTargetFile, alignmentFile2);
 			}
 		};
