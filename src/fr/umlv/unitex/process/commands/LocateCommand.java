@@ -155,6 +155,41 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 
+	public LocateCommand maxExplorationSteps(int matches) {
+		element("--stack_max " + matches);
+		return this;
+	}
+	
+	public LocateCommand maxMatchesPerSubgraph(int matches) {
+		element("--max_matches_per_subgraph " + matches);
+		return this;
+	}
+	
+	public LocateCommand maxMatchesPerToken(int matches) {
+		element("--max_matches_at_token_pos " + matches);
+		return this;
+	}
+	
+	public LocateCommand maxErrors(int errors) {
+		element("--max_errors " + errors);
+		return this;
+	}
+	
+	public LocateCommand lessTolerant() {
+		element("--less_tolerant");
+		return this;
+	}
+	
+	public LocateCommand lesserTolerant() {
+		element("--lesser_tolerant");
+		return this;
+	}
+	
+	public LocateCommand leastTolerant() {
+		element("--least_tolerant");
+		return this;
+	}
+	
 	public LocateCommand setInjectedVariables(ArrayList<InjectedVariable> vars) {
 		if (vars == null)
 			return this;

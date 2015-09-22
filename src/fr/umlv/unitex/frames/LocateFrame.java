@@ -109,6 +109,19 @@ public class LocateFrame extends JInternalFrame {
 			"Backtrack on variable error");
 	private final JCheckBox debug = new JCheckBox("Activate debug mode", false);
 
+	private final JTextField maxExplorationSteps = new JTextField("1000");
+	private final JTextField maxMatchesPerSubgraph = new JTextField("200");
+	private final JTextField maxMatchesPerToken = new JTextField("400");
+	private final JRadioButton defaultTolerance = new JRadioButton(
+			"Limit search to bounds values", true);
+	private final JRadioButton lessTolerant = new JRadioButton(
+			"50% of the search bounds values");
+	private final JRadioButton lesserTolerant = new JRadioButton(
+			"20% of the search bounds values");
+	private final JRadioButton leastTolerant = new JRadioButton(
+			"10% of the search bounds values");
+	private final JTextField maxErrors = new JTextField("50");
+	
 	LocateFrame() {
 		super("Locate Pattern", false, true);
 		setContentPane(constructPanel());
@@ -155,6 +168,7 @@ public class LocateFrame extends JInternalFrame {
 		forbidAmbiguousOutputs
 				.setToolTipText("Displays only one output per match (arbitrarily chosen)");
 		box.add(panel1);
+		
 		final JPanel panel2 = new JPanel(new GridLayout(4, 1));
 		panel2.setBorder(BorderFactory
 				.createTitledBorder("Variable error policy:"));
@@ -172,6 +186,39 @@ public class LocateFrame extends JInternalFrame {
 		backtrackOnVariableErrors
 				.setToolTipText("Stop exploring the current path of the grammar");
 		box.add(panel2);
+		
+		final JPanel panel3 = new JPanel(new GridLayout(3, 2));
+		panel3.setBorder(BorderFactory
+				.createTitledBorder("Search bounds"));
+		panel3.add(new JLabel("Max exploration steps"));
+		panel3.add(maxExplorationSteps);
+		panel3.add(new JLabel("Max matches per subgraph"));
+		panel3.add(maxMatchesPerSubgraph);
+		panel3.add(new JLabel("Max matches per token"));
+		panel3.add(maxMatchesPerToken);
+		box.add(panel3);
+
+		final JPanel panel4 = new JPanel(new GridLayout(4, 1));
+		panel4.setBorder(BorderFactory
+				.createTitledBorder("Search stop policy"));
+		final ButtonGroup b4 = new ButtonGroup();
+		b4.add(defaultTolerance);
+		b4.add(lessTolerant);
+		b4.add(lesserTolerant);
+		b4.add(leastTolerant);
+		panel4.add(defaultTolerance);
+		panel4.add(lessTolerant);
+		panel4.add(lesserTolerant);
+		panel4.add(leastTolerant);
+		box.add(panel4);
+
+		final JPanel panel5 = new JPanel(new GridLayout(1, 2));
+		panel5.setBorder(BorderFactory
+				.createTitledBorder("Search error policy"));
+		panel5.add(new JLabel("Max numbers of errors to display after exit"));
+		panel5.add(maxErrors);
+		box.add(panel5);
+		
 		/* This BorderLayout is important because it acts as a glue */
 		box.add(new JPanel(new BorderLayout()));
 		return box;
@@ -434,6 +481,64 @@ public class LocateFrame extends JInternalFrame {
 			} else {
 				locateCmd = locateCmd.backtrackOnVariableErrors();
 			}
+			
+			int maxExplorationStepsValue = 1000;
+			try {
+				maxExplorationStepsValue = Integer.parseInt(maxExplorationSteps
+						.getText());
+			} catch (final NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Invalid max exploration steps value !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			locateCmd = locateCmd.maxExplorationSteps(maxExplorationStepsValue);
+			
+			int maxMatchesPerSubgraphValue = 200;
+			try {
+				maxMatchesPerSubgraphValue = Integer.parseInt(maxMatchesPerSubgraph
+						.getText());
+			} catch (final NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Invalid max matches per subgraph value !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			locateCmd = locateCmd.maxMatchesPerSubgraph(maxMatchesPerSubgraphValue);
+			
+			int maxMatchesPerTokenValue = 400;
+			try {
+				maxMatchesPerTokenValue = Integer.parseInt(maxMatchesPerToken
+						.getText());
+			} catch (final NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Invalid max matches per token value !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			locateCmd = locateCmd.maxMatchesPerToken(maxMatchesPerTokenValue);
+			
+			if (lessTolerant.isSelected()) {
+				locateCmd = locateCmd.lessTolerant();
+			} else if (lesserTolerant.isSelected()) {
+				locateCmd = locateCmd.lesserTolerant();
+			} else if (leastTolerant.isSelected()) {
+				locateCmd = locateCmd.leastTolerant();
+			} else {
+				// default
+			}
+			
+			int maxErrorsValue = 50;
+			try {
+				maxErrorsValue = Integer.parseInt(maxErrors.getText());
+			} catch (final NumberFormatException e) {
+				JOptionPane.showMessageDialog(null,
+						"Invalid max errors value !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			locateCmd = locateCmd.maxErrors(maxErrorsValue);
+			
 			commands.addCommand(locateCmd);
 			toDo = new LocateDo(Config.getCurrentSntDir());
 		} else {
