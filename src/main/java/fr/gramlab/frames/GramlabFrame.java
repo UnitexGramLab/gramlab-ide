@@ -99,6 +99,7 @@ import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.SvnCommand;
 import fr.umlv.unitex.process.commands.UncompressCommand;
 import fr.umlv.unitex.svn.SvnConflict;
+import fr.umlv.unitex.utils.HelpMenuBuilder;
 
 @SuppressWarnings("serial")
 public class GramlabFrame extends JFrame {
@@ -1336,6 +1337,8 @@ public class GramlabFrame extends JFrame {
 		bar.add(createDelaMenu());
 		bar.add(createGraphsMenu());
 		bar.add(createFileMenu());
+		bar.add(HelpMenuBuilder.build(ConfigManager.getManager()
+				.getApplicationDirectory()));
 		bar.add(createInfoMenu());
 		return bar;
 	}
