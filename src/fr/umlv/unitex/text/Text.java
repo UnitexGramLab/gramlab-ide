@@ -33,6 +33,7 @@ import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -120,7 +121,7 @@ public class Text {
 	private static void preprocessSnt(File name, File snt, boolean taggedText,
 			UnxmlizeCommand cmd) {
 		GlobalProjectManager.search(name)
-				.getFrameManagerAs(InternalFrameManager.class)
+				.getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newPreprocessDialog(name, snt,taggedText, cmd);
 	}
 

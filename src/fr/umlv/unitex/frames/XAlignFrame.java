@@ -172,7 +172,7 @@ public class XAlignFrame extends JInternalFrame {
 			@Override
 			public void internalFrameClosed(InternalFrameEvent e) {
 				GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class).closeXAlignLocateFrame();
+						.getFrameManagerAs(UnitexInternalFrameManager.class).closeXAlignLocateFrame();
 			}
 		});
 		getContentPane().setLayout(new BorderLayout());
@@ -334,14 +334,14 @@ public class XAlignFrame extends JInternalFrame {
 				@Override
 				public void toDo(boolean success) {
 					GlobalProjectManager.search(null)
-							.getFrameManagerAs(InternalFrameManager.class)
+							.getFrameManagerAs(UnitexInternalFrameManager.class)
 							.newXAlignLocateFrame(language, snt, concordModel);
 				}
 			};
 			Launcher.exec(commands, true, toDo, true);
 			return;
 		}
-		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newXAlignLocateFrame(language,snt, concordModel);
 	}
 
@@ -467,7 +467,7 @@ public class XAlignFrame extends JInternalFrame {
 				model1.load(f);
 			} catch (final IOException e) {
 				GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class).closeXAlignFrame();
+						.getFrameManagerAs(UnitexInternalFrameManager.class).closeXAlignFrame();
 			}
 		}
 	}
