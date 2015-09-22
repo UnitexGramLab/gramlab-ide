@@ -130,7 +130,8 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JPanel upPanel = new JPanel(new BorderLayout());
 		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		tabbedPane.addTab("Directories", constructPage1());
-		tabbedPane.addTab("Language & Presentation", constructPage2());
+		tabbedPane.addTab("Language", constructLanguageTab());
+		tabbedPane.addTab("Presentation", constructPresentationTab());
 		tabbedPane.addTab("Morphological-mode dictionaries", constructPage4());
 		tabbedPane.addTab("SVN", constructSvnPage());
 		tabbedPane.addTab("Encoding", constructEncodingPage());
@@ -436,22 +437,21 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		return page1;
 	}
 
-	private JPanel constructPage2() {
-		final JPanel page2 = new JPanel(null);
-		page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
+	private JPanel constructPresentationTab() {
+		final JPanel presentation = new JPanel(null);
+		presentation.setLayout(new BoxLayout(presentation, BoxLayout.Y_AXIS));
+		presentation.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 		textFont.setEnabled(false);
 		concordanceFont.setEnabled(false);
 		textFont.setDisabledTextColor(Color.black);
 		concordanceFont.setDisabledTextColor(Color.black);
-		page2.setBorder(new EmptyBorder(5, 5, 5, 5));
-		final JPanel yuyu = new JPanel(new GridLayout(6, 1));
-		yuyu.add(charByCharCheckBox);
-		yuyu.add(morphologicalUseOfSpaceCheckBox);
-		yuyu.add(semiticCheckBox);
-		yuyu.add(matchWordBoundariesCheckBox);
-		yuyu.add(rightToLeftForCorpusCheckBox);
-		yuyu.add(rightToLeftForGraphsCheckBox);
-		page2.add(yuyu);
+		
+		final JPanel checkBoxes = new JPanel(new GridLayout(2, 1));
+		checkBoxes.add(rightToLeftForCorpusCheckBox);
+		checkBoxes.add(rightToLeftForGraphsCheckBox);
+		presentation.add(checkBoxes);
+		
 		final JPanel tmp = new JPanel(new GridLayout(2, 1));
 		tmp.setPreferredSize(new Dimension(180, 60));
 		tmp.add(new JLabel("Text Font:"));
@@ -473,7 +473,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JButton setTextFont = new JButton(textFontAction);
 		tmp2.add(setTextFont, BorderLayout.EAST);
 		tmp.add(tmp2);
-		page2.add(tmp);
+		presentation.add(tmp);
 		final JPanel tmp_ = new JPanel(new GridLayout(2, 1));
 		tmp_.setPreferredSize(new Dimension(180, 60));
 		tmp_.add(new JLabel("Concordance Font:"));
@@ -495,7 +495,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final JButton setConcordanceFont = new JButton(concord);
 		tmp2_.add(setConcordanceFont, BorderLayout.EAST);
 		tmp_.add(tmp2_);
-		page2.add(tmp_);
+		presentation.add(tmp_);
 		final JPanel htmlViewerPanel = new JPanel(new GridLayout(2, 1));
 		htmlViewerPanel.setPreferredSize(new Dimension(180, 60));
 		htmlViewerPanel.add(new JLabel("Html Viewer:"));
@@ -515,7 +515,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp3_.add(htmlViewer, BorderLayout.CENTER);
 		tmp3_.add(setHtmlViewer, BorderLayout.EAST);
 		htmlViewerPanel.add(tmp3_);
-		page2.add(htmlViewerPanel);
+		presentation.add(htmlViewerPanel);
 		final JPanel graph = new JPanel();
 		final FlowLayout l = (FlowLayout) (graph.getLayout());
 		l.setAlignment(FlowLayout.LEFT);
@@ -525,14 +525,30 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				final GraphPresentationInfo i = GlobalProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
-						.newGraphPresentationDialog(getPref().getInfo(), false);
+						.newGraphPresentationDialog(
+								getPref().getInfo(), false);
 				if (i != null) {
 					getPref().setInfo(i);
 				}
 			}
 		});
 		graph.add(graphConfig);
-		page2.add(graph);
+		presentation.add(graph);
+		
+		return presentation;
+	}
+	
+	private JPanel constructLanguageTab() {
+		final JPanel page2 = new JPanel(null);
+		page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
+		
+		page2.setBorder(new EmptyBorder(5, 5, 5, 5));
+		final JPanel yuyu = new JPanel(new GridLayout(4, 1));
+		yuyu.add(charByCharCheckBox);
+		yuyu.add(morphologicalUseOfSpaceCheckBox);
+		yuyu.add(semiticCheckBox);
+		yuyu.add(matchWordBoundariesCheckBox);
+		page2.add(yuyu);
 		return page2;
 	}
 
