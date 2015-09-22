@@ -96,6 +96,7 @@ import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
+import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
 
 /**
  * This is the main frame of the Unitex system.
@@ -298,6 +299,7 @@ public class UnitexFrame extends JFrame {
 		final JMenu xalign = buildXAlignMenu();
 		final FileEditionMenu fileEditionMenu = new FileEditionMenu();
 		final JMenu windows = buildWindowsMenu();
+		final JMenu help = UnitexHelpMenuBuilder.build(Config.getApplicationDir());
 		final JMenu info = buildInfoMenu();
 		text.setMnemonic(KeyEvent.VK_T);
 		DELA.setMnemonic(KeyEvent.VK_D);
@@ -314,6 +316,7 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(xalign);
 		menuBar.add(fileEditionMenu);
 		menuBar.add(windows);
+		menuBar.add(help);
 		menuBar.add(info);
 		setJMenuBar(menuBar);
 	}
@@ -1400,14 +1403,6 @@ public class UnitexFrame extends JFrame {
 						.newAboutUnitexFrame();
 			}
 		});
-		final JMenuItem helpOnCommands = new JMenuItem("Help on commands...");
-		helpOnCommands.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-						.newHelpOnCommandFrame();
-			}
-		});
 		final JMenuItem preferences = new JMenuItem("Preferences...");
 		preferences.addActionListener(new ActionListener() {
 			@Override
@@ -1425,7 +1420,6 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		info.add(aboutUnitex);
-		info.add(helpOnCommands);
 		info.addSeparator();
 		info.add(preferences);
 		info.add(console);
