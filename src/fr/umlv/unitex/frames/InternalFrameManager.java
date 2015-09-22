@@ -38,57 +38,37 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.exceptions.UserRefusedFrameClosingError;
-import fr.umlv.unitex.graphrendering.ContextsInfo;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
 import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
-import fr.umlv.unitex.xalign.ConcordanceModel;
 
 /**
- * This class is responsible for managing all internal frames in Unitex main
+ * This class is responsible for managing all internal frames in Unitex and GramLab main
  * frame.
  * 
  * @author paumier
  */
-public class InternalFrameManager implements FrameManager {
+public abstract class InternalFrameManager implements FrameManager {
 	final JDesktopPane desktop;
 	private final static Integer LAYER = 1;
 	private final static Integer CONSOLE_LAYER = 10;
-	private final FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(
-			BuildKrMwuDicFrame.class);
-	private final FrameFactory aboutUnitexFrameFactory = new FrameFactory(
-			AboutUnitexFrame.class);
 	private final FrameFactory applyLexicalResourcesFrameFactory = new FrameFactory(
 			ApplyLexicalResourcesFrame.class);
 	private final FrameFactory checkDicFrameFactory = new FrameFactory(
 			CheckDicFrame.class);
-	private final FrameFactory transliterationFrameFactory = new FrameFactory(
-			TransliterationFrame.class);
 	private final FrameFactory checkResultFrameFactory = new FrameFactory(
 			CheckResultFrame.class);
 	private final FrameFactory concordanceDiffFrameFactory = new FrameFactory(
 			ConcordanceDiffFrame.class);
 	private final FrameFactory concordanceParameterFrameFactory = new FrameFactory(
 			ConcordanceParameterFrame.class);
-	private final FrameFactory constructTfstFrameFactory = new FrameFactory(
-			ConstructTfstFrame.class);
 	private final FrameFactory seq2GrfFrameFactory = new FrameFactory(
 			Seq2GrfFrame.class);
-	private final FrameFactory convertTfstToTextFrameFactory = new FrameFactory(
-			ConvertTfstToTextFrame.class);
-	private final FrameFactory dicLookupFrameFactory = new FrameFactory(
-			DicLookupFrame.class);
-	private final FrameFactory elagCompFrameFactory = new FrameFactory(
-			ElagCompFrame.class);
-	private final FrameFactory globalPreferencesFrameFactory = new FrameFactory(
-			GlobalPreferencesFrame.class);
 	private final FrameFactory graphCollectionFrameFactory = new FrameFactory(
 			GraphCollectionFrame.class);
 	private final FrameFactory inflectFrameFactory = new FrameFactory(
@@ -97,24 +77,14 @@ public class InternalFrameManager implements FrameManager {
 			ConvertLexiconGrammarFrame.class);
 	private final FrameFactory locateFrameFactory = new FrameFactory(
 			LocateFrame.class);
-	private final FrameFactory messageWhileWorkingFrameFactory = new FrameFactory(
-			MessageWhileWorkingFrame.class);
-	private final FrameFactory helpOnCommandFrameFactory = new FrameFactory(
-			HelpOnCommandFrame.class);
 	private final FrameFactory transcodingFrameFactory = new FrameFactory(
 			TranscodingFrame.class);
-	private final LemmatizeFrameFactory lemmatizeFrameFactory=new LemmatizeFrameFactory();
 	private final FrameFactory consoleFrameFactory = new FrameFactory(
 			ConsoleFrame.class);
-	private final XAlignLocateFrameFactory xAlignLocateFrameFactory = new XAlignLocateFrameFactory();
 	private final SvnConflictsFrameFactory svnConflictsFrameFactory = new SvnConflictsFrameFactory();
-	private final FrameFactory cassysFrameFactory = new FrameFactory(
-			CassysFrame.class);
 	private final TransducerListConfigurationFrameFactory transducerListConfigurationFrameFactory = 
 			new TransducerListConfigurationFrameFactory();
 	private final FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
-	private final FrameFactory xAlignConfigFrameFactory = new FrameFactory(
-			XAlignConfigFrame.class);
 	private final GraphFrameFactory graphFrameFactory = new GraphFrameFactory();
 	final MultiInstanceFrameFactory<DelaFrame, File> delaFrameFactory = new MultiInstanceFrameFactory<DelaFrame, File>();
 	private final TextFrameFactory textFrameFactory = new TextFrameFactory();
@@ -125,14 +95,10 @@ public class InternalFrameManager implements FrameManager {
 	private final ConcordanceFrameFactory concordanceFrameFactory = new ConcordanceFrameFactory();
 	private final LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory = new LexiconGrammarTableFrameFactory();
 	private final StatisticsFrameFactory statisticsFrameFactory = new StatisticsFrameFactory();
-	private final XAlignFrameFactory xAlignFrameFactory = new XAlignFrameFactory();
 	private final DialogFactory graphPathDialogFactory = new DialogFactory(
 			GraphPathDialog.class);
 	private final DialogFactory transcodeOneFileDialogFactory = new DialogFactory(
 			TranscodeOneFileDialog.class);
-	private final DialogFactory listCopyDialogFactory = new DialogFactory(
-			ListCopyDialog.class);
-	private final PreprocessDialogFactory preprocessDialogFactory = new PreprocessDialogFactory();
 	private final FontDialogFactory fontDialogFactory = new FontDialogFactory();
 	private final GraphPresentationDialogFactory graphPresentationDialogFactory = new GraphPresentationDialogFactory();
 	private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
@@ -425,10 +391,6 @@ public class InternalFrameManager implements FrameManager {
 		textAutomatonFrameFactory.closeTextAutomatonFrame();
 	}
 
-	public AboutUnitexFrame newAboutUnitexFrame() {
-		return (AboutUnitexFrame) setup(aboutUnitexFrameFactory.newFrame());
-	}
-
 	public ApplyLexicalResourcesFrame newApplyLexicalResourcesFrame() {
 		final ApplyLexicalResourcesFrame f = (ApplyLexicalResourcesFrame) applyLexicalResourcesFrameFactory
 				.newFrame();
@@ -441,31 +403,6 @@ public class InternalFrameManager implements FrameManager {
 
 	public void closeApplyLexicalResourcesFrame() {
 		applyLexicalResourcesFrameFactory.closeFrame();
-	}
-
-	public DicLookupFrame newDicLookupFrame() {
-		final DicLookupFrame f = (DicLookupFrame) dicLookupFrameFactory
-				.newFrame(false);
-		if (f == null)
-			return null;
-		setup(f);
-		return f;
-	}
-
-	public void closeDicLookupFrame() {
-		dicLookupFrameFactory.closeFrame();
-	}
-
-	public CassysFrame newCassysFrame() {
-		final CassysFrame f = (CassysFrame) cassysFrameFactory.newFrame();
-		if (f == null)
-			return null;
-		setup(f);
-		return f;
-	}
-
-	public void closeCassysFrame() {
-		cassysFrameFactory.closeFrame();
 	}
 	
 	public TransducerListConfigurationFrame newTransducerListConfigurationFrame(File f){
@@ -497,15 +434,6 @@ public class InternalFrameManager implements FrameManager {
 
 	public void closeCheckDicFrame() {
 		checkDicFrameFactory.closeFrame();
-	}
-
-	public TransliterationFrame newTransliterationFrame() {
-		return (TransliterationFrame) setup(transliterationFrameFactory
-				.newFrame());
-	}
-
-	public void closeTransliterationFrame() {
-		transliterationFrameFactory.closeFrame();
 	}
 
 	public CheckResultFrame newCheckResultFrame(File file) {
@@ -560,14 +488,6 @@ public class InternalFrameManager implements FrameManager {
 		concordanceParameterFrameFactory.closeFrame();
 	}
 
-	public ConstructTfstFrame newConstructTfstFrame() {
-		return (ConstructTfstFrame) setup(constructTfstFrameFactory.newFrame());
-	}
-
-	public void closeConstructTfstFrame() {
-		constructTfstFrameFactory.closeFrame();
-	}
-
 	public Seq2GrfFrame newConstructSeqTfstFrame() {
 		return (Seq2GrfFrame) setup(seq2GrfFrameFactory
 				.newFrame());
@@ -575,37 +495,6 @@ public class InternalFrameManager implements FrameManager {
 
 	public void closeConstructSeqTfstFrame() {
 		seq2GrfFrameFactory.closeFrame();
-	}
-
-	public ConvertTfstToTextFrame newConvertTfstToTextFrame() {
-		return (ConvertTfstToTextFrame) setup(convertTfstToTextFrameFactory
-				.newFrame());
-	}
-
-	public void closeConvertTfstToTextFrame() {
-		convertTfstToTextFrameFactory.closeFrame();
-	}
-
-	public ElagCompFrame newElagCompFrame() {
-		return (ElagCompFrame) setup(elagCompFrameFactory.newFrame());
-	}
-
-	public void closeElagCompFrame() {
-		elagCompFrameFactory.closeFrame();
-	}
-
-	public GlobalPreferencesFrame newGlobalPreferencesFrame() {
-		final GlobalPreferencesFrame f = (GlobalPreferencesFrame) globalPreferencesFrameFactory
-				.newFrame();
-		if (f == null)
-			return null;
-		f.reset();
-		setup(f);
-		return f;
-	}
-
-	public void closeGlobalPreferencesFrame() {
-		globalPreferencesFrameFactory.closeFrame();
 	}
 
 	public GraphPathDialog newGraphPathDialog() {
@@ -743,35 +632,6 @@ public class InternalFrameManager implements FrameManager {
 		locateFrameFactory.closeFrame();
 	}
 
-	public MessageWhileWorkingFrame newMessageWhileWorkingFrame(String title) {
-		final MessageWhileWorkingFrame f = (MessageWhileWorkingFrame) messageWhileWorkingFrameFactory
-				.newFrame();
-		if (f == null)
-			return null;
-		f.setTitle(title);
-		f.getLabel().setText("");
-		setup(f);
-		return f;
-	}
-
-	public void closeMessageWhileWorkingFrame() {
-		messageWhileWorkingFrameFactory.closeFrame();
-	}
-
-	public PreprocessDialog newPreprocessDialog(File text, File sntFile) {
-		return newPreprocessDialog(text, sntFile, false, null);
-	}
-
-	public PreprocessDialog newPreprocessDialog(File text, File sntFile,
-			boolean taggedText, UnxmlizeCommand cmd) {
-		final PreprocessDialog d = preprocessDialogFactory.newPreprocessDialog(
-				text, sntFile, taggedText, cmd);
-		if (d == null)
-			return null;
-		d.setVisible(true);
-		return d;
-	}
-
 	public StatisticsFrame newStatisticsFrame(File file, int mode) {
 		return (StatisticsFrame) setup(
 				statisticsFrameFactory.newStatisticsFrame(file, mode), true);
@@ -779,23 +639,6 @@ public class InternalFrameManager implements FrameManager {
 
 	public void closeStatisticsFrame() {
 		statisticsFrameFactory.closeStatisticsFrame();
-	}
-
-	public HelpOnCommandFrame newHelpOnCommandFrame() {
-		return (HelpOnCommandFrame) setup(helpOnCommandFrameFactory.newFrame());
-	}
-
-	public void closeHelpOnCommandFrame() {
-		helpOnCommandFrameFactory.closeFrame();
-	}
-
-	public ProcessInfoFrame newProcessInfoFrame(MultiCommands c, boolean close,
-			ToDo myDo, boolean stopIfProblem) {
-		final ProcessInfoFrame f = new ProcessInfoFrame(c, close, myDo,
-				stopIfProblem);
-		setup(f, true);
-		f.launchBuilderCommands();
-		return f;
 	}
 
 	public TranscodingFrame newTranscodingFrame() {
@@ -884,34 +727,6 @@ public class InternalFrameManager implements FrameManager {
 		return d;
 	}
 
-	public XAlignConfigFrame newXAlignConfigFrame() {
-		return (XAlignConfigFrame) setup(xAlignConfigFrameFactory.newFrame());
-	}
-
-	public XAlignFrame newXAlignFrame(File src, File dst, File alignment) {
-		return (XAlignFrame) setup(
-				xAlignFrameFactory.newXAlignFrame(src, dst, alignment), true);
-	}
-
-	public void closeXAlignFrame() {
-		xAlignFrameFactory.closeXAlignFrame();
-	}
-
-	public XAlignLocateFrame newXAlignLocateFrame(String language, File snt,
-			ConcordanceModel model) {
-		final XAlignLocateFrame f = xAlignLocateFrameFactory
-				.newXAlignLocateFrame(language);
-		if (f == null)
-			return null;
-		f.configure(language, snt, model);
-		setup(f);
-		return f;
-	}
-
-	public void closeXAlignLocateFrame() {
-		xAlignLocateFrameFactory.closeXAlignLocateFrame();
-	}
-
 	public FontInfo newFontDialog(FontInfo info) {
 		final FontDialog d = fontDialogFactory.newFontDialog(info);
 		if (d == null)
@@ -964,15 +779,6 @@ public class InternalFrameManager implements FrameManager {
 		return true;
 	}
 
-	public ContextsInfo newListCopyDialog() {
-		final ListCopyDialog d = (ListCopyDialog) listCopyDialogFactory
-				.newDialog();
-		if (d == null)
-			return null;
-		d.setVisible(true);
-		return d.getContextsInfo();
-	}
-
 	public String newVariableInsertionDialog(boolean inputVariable) {
 		final VariableInsertionDialog d = new VariableInsertionDialog(
 				inputVariable);
@@ -993,10 +799,6 @@ public class InternalFrameManager implements FrameManager {
 		return textAutomatonFrameFactory.getFrame();
 	}
 
-	public BuildKrMwuDicFrame newBuildKrMwuDicFrame() {
-		return (BuildKrMwuDicFrame) setup(buildKrMwuDicFrameFactory.newFrame());
-	}
-
 	public Seq2GrfFrame getSeq2GrfFrame() {
 		final Seq2GrfFrame f = (Seq2GrfFrame) seq2GrfFrameFactory.newFrame();
 		f.setVisible(true);
@@ -1007,21 +809,5 @@ public class InternalFrameManager implements FrameManager {
 			e.printStackTrace();
 		}
 		return f;
-	}
-
-	public LemmatizeFrame newLemmatizeFrame() {
-		final LemmatizeFrame f = lemmatizeFrameFactory.newFrame();
-		f.setVisible(true);
-		setup(f);
-		try {
-			f.setSelected(true);
-		} catch (final PropertyVetoException e) {
-			e.printStackTrace();
-		}
-		return f;
-	}
-
-	public void closeLemmatizeFrame() {
-		lemmatizeFrameFactory.closeFrame();
 	}
 }

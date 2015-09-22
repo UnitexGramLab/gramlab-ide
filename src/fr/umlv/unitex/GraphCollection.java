@@ -32,6 +32,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.UnicodeIO;
 
 /**
@@ -62,12 +63,12 @@ public class GraphCollection {
 			@Override
 			public void run() {
 				final MessageWhileWorkingFrame f = GlobalProjectManager
-						.search(null).getFrameManagerAs(InternalFrameManager.class)
+						.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 						.newMessageWhileWorkingFrame("Building graph collection");
 				setStop(false);
 				buildGraphCollection(srcDir, destGraph, copy, f.getLabel());
 				GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class)
+						.getFrameManagerAs(UnitexInternalFrameManager.class)
 						.closeMessageWhileWorkingFrame();
 			}
 		}).start();

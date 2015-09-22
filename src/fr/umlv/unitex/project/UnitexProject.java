@@ -1,7 +1,7 @@
 package fr.umlv.unitex.project;
 
 import fr.umlv.unitex.common.project.Project;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.common.frames.manager.FrameManager;
 
 /**
@@ -10,13 +10,13 @@ import fr.umlv.unitex.common.frames.manager.FrameManager;
  *
  */
 public class UnitexProject implements Project {
-	private InternalFrameManager frameManager;
+	private UnitexInternalFrameManager frameManager;
 	
-	public UnitexProject(InternalFrameManager frameManager) {
+	public UnitexProject(UnitexInternalFrameManager frameManager) {
 		this.frameManager = frameManager;
 	}
 
-	public void setFrameManager(InternalFrameManager frameManager) {
+	public void setFrameManager(UnitexInternalFrameManager frameManager) {
 		this.frameManager = frameManager;
 	}
 
