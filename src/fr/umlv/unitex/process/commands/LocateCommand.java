@@ -156,22 +156,22 @@ public class LocateCommand extends CommandBuilder {
 	}
 
 	public LocateCommand maxExplorationSteps(int matches) {
-		element("--stack_max " + matches);
+		element("--stack_max=" + matches);
 		return this;
 	}
 	
 	public LocateCommand maxMatchesPerSubgraph(int matches) {
-		element("--max_matches_per_subgraph " + matches);
+		element("--max_matches_per_subgraph=" + matches);
 		return this;
 	}
 	
 	public LocateCommand maxMatchesPerToken(int matches) {
-		element("--max_matches_at_token_pos " + matches);
+		element("--max_matches_at_token_pos=" + matches);
 		return this;
 	}
 	
 	public LocateCommand maxErrors(int errors) {
-		element("--max_errors " + errors);
+		element("--max_errors=" + errors);
 		return this;
 	}
 	
