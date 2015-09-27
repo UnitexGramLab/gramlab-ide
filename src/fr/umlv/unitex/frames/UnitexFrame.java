@@ -49,6 +49,7 @@ import java.util.TreeSet;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -68,6 +69,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 
 import fr.umlv.unitex.DropTargetManager;
+import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
@@ -1399,8 +1401,14 @@ public class UnitexFrame extends JFrame {
 		aboutUnitex.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-						.newAboutUnitexFrame();
+				File appDir = Config.getApplicationDir();
+				File disclaimersDir = new File(appDir.getPath()
+						+ File.separatorChar + "disclaimers");
+				File licensesDir = new File(appDir.getPath()
+						+ File.separatorChar + "licenses");
+				new AboutDialog(UnitexFrame.this, "Unitex", new ImageIcon(
+						Unitex.class.getResource("Unitex.jpg")),
+						disclaimersDir, licensesDir);
 			}
 		});
 		final JMenuItem preferences = new JMenuItem("Preferences...");
