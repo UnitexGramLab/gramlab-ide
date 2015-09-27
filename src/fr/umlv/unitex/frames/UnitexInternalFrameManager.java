@@ -17,8 +17,6 @@ import fr.umlv.unitex.xalign.ConcordanceModel;
  *
  */
 public class UnitexInternalFrameManager extends InternalFrameManager {
-	private final FrameFactory aboutUnitexFrameFactory = new FrameFactory(
-			AboutUnitexFrame.class);
 	private final FrameFactory buildKrMwuDicFrameFactory = new FrameFactory(
 			BuildKrMwuDicFrame.class);
 	private final FrameFactory cassysFrameFactory = new FrameFactory(
@@ -52,10 +50,6 @@ public class UnitexInternalFrameManager extends InternalFrameManager {
 		super(desktop);
 	}
 
-	public AboutUnitexFrame newAboutUnitexFrame() {
-		return (AboutUnitexFrame) setup(aboutUnitexFrameFactory.newFrame());
-	}
-	
 	public BuildKrMwuDicFrame newBuildKrMwuDicFrame() {
 		return (BuildKrMwuDicFrame) setup(buildKrMwuDicFrameFactory.newFrame());
 	}
