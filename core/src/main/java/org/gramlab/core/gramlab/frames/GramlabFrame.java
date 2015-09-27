@@ -25,6 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -81,6 +82,7 @@ import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
+import fr.umlv.unitex.frames.AboutDialog;
 import fr.umlv.unitex.frames.DelaFrame;
 import fr.umlv.unitex.frames.FileEditionTextFrame;
 import fr.umlv.unitex.frames.GraphFrame;
@@ -2249,13 +2251,24 @@ public class GramlabFrame extends JFrame {
 	}
 
 	private JMenu createInfoMenu() {
-		JMenu m = new JMenu("Information");
-		Action about = new AbstractAction("About Gramlab") {
+		JMenu info = new JMenu("Information");
+		final JMenuItem aboutGramLab = new JMenuItem("About GramLab");
+		aboutGramLab.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				new AboutGramlabDialog(GramlabFrame.this);
+				File appDir = ConfigManager.getManager()
+						.getApplicationDirectory();
+				File disclaimersDir = new File(appDir.getPath()
+						+ File.separatorChar + "disclaimers");
+				File licensesDir = new File(appDir.getPath()
+						+ File.separatorChar + "licenses");
+				new AboutDialog(GramlabFrame.this, "GramLab", new ImageIcon(
+						Icons.class.getResource("logo.png")), disclaimersDir,
+						licensesDir);
 			}
-		};
-		m.add(new JMenuItem(about));
-		return m;
+		});
+
+		info.add(aboutGramLab);
+		return info;
 	}
 }
