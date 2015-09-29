@@ -309,6 +309,7 @@ public class UnitexFrame extends JFrame {
 		lexiconGrammar.setMnemonic(KeyEvent.VK_L);
 		xalign.setMnemonic(KeyEvent.VK_X);
 		fileEditionMenu.setMnemonic(KeyEvent.VK_F);
+		help.setMnemonic(KeyEvent.VK_H);
 		windows.setMnemonic(KeyEvent.VK_W);
 		info.setMnemonic(KeyEvent.VK_I);
 		menuBar.add(text);
