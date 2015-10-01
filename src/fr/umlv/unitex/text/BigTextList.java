@@ -155,13 +155,13 @@ public class BigTextList extends JList {
 					startPos = pos;
 					do {
 						builder.append(c);
-						builder.append("<font color=\"#00B900\">");
+						builder.append((c != '=') ? "<font color=\"#00B900\">" : "<font color=\"#660066\">");
 						do {
 							last = c;
 							c = string.charAt(pos);
 							pos++;
 						} while (pos != length
-								&& !(last != '\\' && (c == '+' || c == ':')));
+								&& !(last != '\\' && (c == '+' || c == '=' || c == ':')));
 						if (pos == length) {
 							c = '\0';
 							builder.append(string.substring(startPos));
@@ -170,7 +170,7 @@ public class BigTextList extends JList {
 							startPos = pos;
 						}
 						builder.append("</font>");
-					} while (c == '+');
+					} while (c == '+' || c == '=' );
 					if (c != '\0') {
 						c = ':';
 						startPos = pos;
