@@ -96,11 +96,27 @@ public class BigTextList extends JList {
 						boolean cellHasFocus) {
 					super.getListCellRendererComponent(list, value, index,
 							isSelected, cellHasFocus);
-					setText(getDecoratedDelafLine((String) value));
+					setText(getDecoratedDelafLine(escapeHTML((String) value)));
 					return this;
 				}
 
 				final StringBuilder builder = new StringBuilder();
+
+				private String escapeHTML(String s){
+					builder.setLength(0);
+					final int l = s.length();
+					for (int i = 0; i < l; i++) {
+						final char c = s.charAt(i);
+						switch (c) {
+							case '<': builder.append("&lt;");   break;
+							case '>': builder.append("&gt;");   break;
+							case '&': builder.append("&amp;");  break;
+							case '"': builder.append("&quot;"); break;
+							default:  builder.append(c); break;
+						}
+					}
+					return builder.toString();
+				}
 
 				private String getDecoratedDelafLine(String string) {
 					if (string == null)
