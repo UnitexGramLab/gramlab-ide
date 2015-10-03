@@ -44,6 +44,7 @@ import fr.umlv.unitex.listeners.DelaFrameListener;
 import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
 import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
 
@@ -450,6 +451,15 @@ public abstract class InternalFrameManager implements FrameManager {
 		checkResultFrameFactory.closeFrame();
 	}
 
+	public ProcessInfoFrame newProcessInfoFrame(MultiCommands c, boolean close,
+			ToDo myDo, boolean stopIfProblem) {
+		final ProcessInfoFrame f = new ProcessInfoFrame(c, close, myDo,
+				stopIfProblem);
+		setup(f, true);
+		f.launchBuilderCommands();
+		return f;
+	}
+	
 	public ConcordanceDiffFrame newConcordanceDiffFrame(File file) {
 		final ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory
 				.newFrame();

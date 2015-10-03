@@ -6,8 +6,6 @@ import java.io.File;
 import javax.swing.JDesktopPane;
 
 import fr.umlv.unitex.graphrendering.ContextsInfo;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 import fr.umlv.unitex.xalign.ConcordanceModel;
 
@@ -187,15 +185,6 @@ public class UnitexInternalFrameManager extends InternalFrameManager {
 
 	public void closeLemmatizeFrame() {
 		lemmatizeFrameFactory.closeFrame();
-	}
-	
-	public ProcessInfoFrame newProcessInfoFrame(MultiCommands c, boolean close,
-			ToDo myDo, boolean stopIfProblem) {
-		final ProcessInfoFrame f = new ProcessInfoFrame(c, close, myDo,
-				stopIfProblem);
-		setup(f, true);
-		f.launchBuilderCommands();
-		return f;
 	}
 	
 	public XAlignConfigFrame newXAlignConfigFrame() {
