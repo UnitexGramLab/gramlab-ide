@@ -113,13 +113,13 @@ public class LocateFrame extends JInternalFrame {
 	private final JTextField maxMatchesPerSubgraph = new JTextField("200");
 	private final JTextField maxMatchesPerToken = new JTextField("400");
 	private final JRadioButton defaultTolerance = new JRadioButton(
-			"Limit search to bounds values", true);
+			"Apply search bounds above", true);
 	private final JRadioButton lessTolerant = new JRadioButton(
-			"50% of the search bounds values");
+			"Restrict search bounds to 50%");
 	private final JRadioButton lesserTolerant = new JRadioButton(
-			"20% of the search bounds values");
+			"Restrict search bounds to 20%");
 	private final JRadioButton leastTolerant = new JRadioButton(
-			"10% of the search bounds values");
+			"Restrict search bounds to 10%");
 	private final JTextField maxErrors = new JTextField("50");
 	
 	LocateFrame() {
@@ -200,7 +200,7 @@ public class LocateFrame extends JInternalFrame {
 
 		final JPanel panel4 = new JPanel(new GridLayout(4, 1));
 		panel4.setBorder(BorderFactory
-				.createTitledBorder("Search stop policy"));
+				.createTitledBorder("Restrict search bounds"));
 		final ButtonGroup b4 = new ButtonGroup();
 		b4.add(defaultTolerance);
 		b4.add(lessTolerant);
