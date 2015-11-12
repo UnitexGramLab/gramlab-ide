@@ -169,7 +169,7 @@ public class Preferences {
 		defaultProperties.setProperty("MUST LOG", "false");
 		defaultProperties.setProperty("SVN MONITORING", "true");
 		defaultProperties.setProperty("ONLY COSMETIC", "false");
-		defaultProperties.setProperty("ENCODING", Encoding.UTF16LE.toString());
+		defaultProperties.setProperty("ENCODING", Encoding.UTF8.toString());
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class Preferences {
 		try {
 			setEncoding(Encoding.valueOf(prop.getProperty("ENCODING")));
 		} catch (final Exception e) {
-			setEncoding(Encoding.UTF16LE);
+			setEncoding(Encoding.UTF8);
 		}
 	}
 
