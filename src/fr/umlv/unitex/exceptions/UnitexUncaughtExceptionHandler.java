@@ -25,7 +25,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.BorderFactory;
@@ -35,9 +34,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import fr.umlv.unitex.Version;
-import fr.umlv.unitex.config.Config;
+import javax.swing.JTextPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 /**
  * This class defines an <code>Exception</code> that is thrown when the user
@@ -71,35 +70,41 @@ public class UnitexUncaughtExceptionHandler implements UncaughtExceptionHandler 
 			}
 		}
 		final JScrollPane scroll = new JScrollPane(b);
-		scroll.setPreferredSize(new Dimension(b.getPreferredSize().width + 50,
-				400));
+		scroll.setPreferredSize(new Dimension(b.getPreferredSize().width + 50, 400));
 		scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 		final JPanel p = new JPanel(new BorderLayout());
 		p.add(scroll, BorderLayout.CENTER);
-		p.add(new JLabel(
-				"Do you want to report this problem to Unitex developers ?"),
-				BorderLayout.SOUTH);
-		if (JOptionPane.showConfirmDialog(null, p, "Java Exception",
-				JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE) == 0) {
-			try {
-				Desktop.getDesktop().mail(
-						new URI("mailto",
-								"unitex@univ-mlv.fr?subject=Java Exception"
-										+ "&body=" + "Revision date: "
-										+ Version.getRevisionDate() + "\n"
-										+ "Java revision Number: "
-										+ Version.getRevisionNumberForJava()
-										+ "\n" + "C/C++ revision Number: "
-										+ Version.getRevisionNumberForC()
-										+ "\n" + "System: "
-										+ Config.getCurrentSystemName() + "\n"
-										+ "\n" + s, null));
-			} catch (final IOException e1) {
-				e1.printStackTrace();
-			} catch (final URISyntaxException e1) {
-				e1.printStackTrace();
+
+		final JTextPane jTextPane = new JTextPane();
+		jTextPane.setEditable(false);
+		jTextPane.setOpaque(false);
+		jTextPane.setContentType("text/html");
+		jTextPane.setText("If you are having problems running Unitex/Gramlab please"
+				+ " feel free to post a support question<br> on the community support"
+				+ " forum : <a href='http://forum.unitexgramlab.org'> "
+				+ "http://forum.unitexgramlab.org</a>. <br>Some general advice "
+				+ "about asking technical support questions can be found at <br>"
+				+ "<a href='http://www.catb.org/esr/faqs/smart-questions.html'>"
+				+ "http://www.catb.org/esr/faqs/smart-questions.html</a>.");
+		jTextPane.addHyperlinkListener(new HyperlinkListener() {
+
+			@Override
+			public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
+				if (hyperlinkEvent.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+					try {
+						Desktop.getDesktop().browse(hyperlinkEvent.getURL().toURI());
+					} catch (URISyntaxException uriSyntaxException) {
+						uriSyntaxException.printStackTrace();
+					} catch (IOException ioException) {
+						ioException.printStackTrace();
+					}
+				}
 			}
-		}
+		});
+
+		p.add(jTextPane, BorderLayout.SOUTH);
+
+		JOptionPane.showConfirmDialog(null, p, "Java Exception", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 	}
 
 	public static UnitexUncaughtExceptionHandler getHandler() {
