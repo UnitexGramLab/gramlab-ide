@@ -79,7 +79,7 @@ public class UnitexUncaughtExceptionHandler implements UncaughtExceptionHandler 
 		jTextPane.setEditable(false);
 		jTextPane.setOpaque(false);
 		jTextPane.setContentType("text/html");
-		jTextPane.setText("If you are having problems running Unitex/Gramlab please"
+		jTextPane.setText("If you are having problems running Unitex/GramLab please"
 				+ " feel free to post a support question<br> on the community support"
 				+ " forum : <a href='http://forum.unitexgramlab.org'> "
 				+ "http://forum.unitexgramlab.org</a>. <br>Some general advice "
