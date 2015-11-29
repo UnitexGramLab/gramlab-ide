@@ -1,0 +1,61 @@
+# GramLab licensing
+
+These are the license details, copyright notice, and disclaimer for GramLab.
+GramLab is the integrated development environment (IDE) of Unitex/GramLab,
+an open source, cross-platform, multilingual, lexicon- and grammar-based
+corpus processing suite.
+
+## Copyright notice
+
+> Copyright (C) 2001-2015 Université Paris-Est Marne-la-Vallée <unitex-devel@univ-mlv.fr>  
+> All rights reserved.
+> 
+> This library is free software; you can redistribute it and/or modify it
+> under the terms of the GNU Lesser General Public License as published by
+> the Free Software Foundation; either version 2.1 of the License, or (at
+> your option) any later version.
+> 
+> This library is distributed in the hope that it will be useful, but WITHOUT
+> ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+> FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+> details.
+> 
+> You should have received a copy of the GNU Lesser General Public License
+> along with this library; if not, write to the Free Software Foundation, 
+> Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
+
+## Third-party libraries
+
+This library includes copyrighted third-party libraries licensed under the
+terms of the GNU Lesser General Public License version 2.1 (LGPLv2), the
+Apache Software License version 2.0 (Apache-2.0) and the TMate Open Source
+License (TMate). All third-party packages are copyright by their respective
+authors.
+
+* XAlign
+  - A text alignment tool
+  - Copyright (c) LORIA
+  - http://led.loria.fr/outils/ALIGN/align.html
+  - [GNU Lesser General Public License version 2.1][LGPLv2]
+
+* SVNKit
+  - A pure Java Subversion library
+  - Copyright (c) TMate Software
+  - http://svn.svnkit.com/repos/svnkit/
+  - [TMate Open Source License][TMate]
+
+* Xerces2-j : xercesImpl.jar and xml-apis.jar (used by XAlign)
+  - A library for parsing, validating and manipulating XML documents
+  - Copyright (c) The Apache Software Foundation
+  - http://apache.mirrors.ovh.net/ftp.apache.org/dist/xerces/j/source/
+  - [Apache Software License version 2.0][Apache-2.0]
+
+Some of those third-party packages are under licenses which require that the 
+copyright and license notices are included when distributing the code in binary
+form. These notices are available in the `licenses` directory.
+
+---
+
+[Apache-2.0]:   http://opensource.org/licenses/Apache-2.0
+[LGPLv2]:       http://opensource.org/licenses/lgpl-2.1
+[TMate]:        http://svnkit.com/license.html
