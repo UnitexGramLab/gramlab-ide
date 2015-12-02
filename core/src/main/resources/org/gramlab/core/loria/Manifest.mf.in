@@ -7,4 +7,4 @@ Specification-Vendor: LORIA
 Implementation-Title: fr.loria.xsilfide.multialign
 Implementation-Version: 11.09.1999
 Implementation-Vendor: LORIA
-Class-Path: xercesImpl.jar xml-apis.jar
+Class-Path: lib/xercesImpl.jar lib/xml-apis.jar
