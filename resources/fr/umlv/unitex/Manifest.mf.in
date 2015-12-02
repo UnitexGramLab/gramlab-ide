@@ -7,4 +7,3 @@ Specification-Vendor: @UNITEX_VERSION_COMPANY@
 Implementation-Title: fr.umlv.unitex
 Implementation-Version: @UNITEX_SEMVER_STRING@
 Implementation-Vendor: @UNITEX_VERSION_COMPANY@
-Class-Path: lib/xercesImpl.jar lib/xml-apis.jar lib/XAlign.jar lib/svnkitclient.jar
