@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Created-By: @UNITEX_VERSION_AUTHOR@
+Main-Class: fr.gramlab.Main
+Specification-Title: @UNITEX_IDE_NAME@ IDE
+Specification-Version: @UNITEX_SEMVER_STRING@
+Specification-Vendor: @UNITEX_VERSION_COMPANY@
+Implementation-Title: fr.gramlab
+Implementation-Version: @UNITEX_SEMVER_STRING@
+Implementation-Vendor: @UNITEX_VERSION_COMPANY@
+Class-Path: Unitex.jar
