@@ -31,166 +31,82 @@ import java.util.Scanner;
 import fr.umlv.unitex.config.ConfigManager;
 
 /**
- * This class only contains a <code>String</code> that indicates version
- * information. The content of this string appears in the caption of the main
- * frame.
+ * This class contains Unitex/GramLab version information
  * 
- * @author Sébastien Paumier
+ * @author Vinber
+ *
+ * DO NOT CHANGE THIS FILE DIRECTLY! IT WILL BE OVERWRITTEN.
+ * BUT INSTEAD USE VERSION.H.IN
  * 
  */
-public class Version {
+public final class Version {
+
+	public static final String UNITEX_VERSION_AUTHOR                    = "The Unitex/GramLab Authors";
+	public static final String UNITEX_VERSION_COMPANY                   = "Universite Paris-Est Marne-la-Vallee";
+	public static final String UNITEX_VERSION_COPYRIGHT                 = "Copyright (C) 2001-2015";
+	public static final String UNITEX_VERSION_DESCRIPTION_SHORT         = "corpus processing suite";
+	public static final String UNITEX_VERSION_DESCRIPTION               = "an open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite";
+	public static final String UNITEX_VERSION_LICENSE                   = "LGPL-2.1";
+
+	public static final String UNITEX_VERSION_URL_HOMEPAGE              = "http://unitexgramlab.org";
+	public static final String UNITEX_VERSION_URL_ISSUES                = "http://unitexgramlab.org/index.php?page=6";
+	public static final String UNITEX_VERSION_URL_REPOSITORY            = "https://svnigm.univ-mlv.fr/svn/unitex/Unitex-C%2B%2B";
+
+	public static final int UNITEX_VERSION_MAJOR_NUMBER                 = 3;
+	public static final int UNITEX_VERSION_MINOR_NUMBER                 = 1;
+	public static final int UNITEX_VERSION_REVISION_NUMBER              = 4205;
+	public static final String UNITEX_VERSION_SUFFIX                    = "beta";
+	public static final String UNITEX_VERSION_TYPE                      = "unstable";
+	public static final int UNITEX_VERSION_IS_UNSTABLE                  = 1;
+
+	public static final int UNITEX_VERSION_BUILD_IS_ANONYMOUS           = 1;
+	public static final int UNITEX_VERSION_BUILD_NUMBER                 = 0;
+	public static final String UNITEX_VERSION_BUILD_DATE                = "?";
+	public static final String UNITEX_VERSION_BUILD_DAY                 = "?";
+	public static final String UNITEX_VERSION_BUILD_MONTH               = "?";
+	public static final String UNITEX_VERSION_BUILD_YEAR                = "?";
+	public static final String UNITEX_VERSION_BUILD_TIMESTAMP           = "?";
+	public static final String UNITEX_VERSION_BUILD_SYSTEM              = "Anonymous Builder";
+
+	public static final String UNITEX_VERSION_COMMIT_BRANCH             = "?";
+	public static final String UNITEX_VERSION_COMMIT_DATE               = "?";
+	public static final String UNITEX_VERSION_COMMIT_HASH               = "?";
+	public static final String UNITEX_VERSION_COMMIT_TAG                = "?";
+
+	public static final int UNITEX_VERSION_REVISION_NUMBER_CORE         = 0;
+	public static final int UNITEX_VERSION_REVISION_NUMBER_CLASSIC_IDE  = 0;
+	public static final int UNITEX_VERSION_REVISION_NUMBER_GRAMLAB_IDE  = 0;
+		
 	/**
 	 * The string that contains the version number, and the date of the release.
 	 */
-	public final static String version = "Unitex 3.1beta " + getRevisionDate();
-	
-	/**
-	 * @return a <code>String</code> representing the date of the .jar file that
-	 *         contains Unitex's graphical interface in the form
-	 *         "(May 10, 2006)".
-	 */
-	private static String getJarDate() {
-		String date = "(";
-		final Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(new File(ConfigManager.getManager()
-				.getApplicationDirectory(), "Unitex.jar").lastModified());
-		switch (calendar.get(Calendar.MONTH)) {
-		case Calendar.JANUARY:
-			date = date + "January ";
-			break;
-		case Calendar.FEBRUARY:
-			date = date + "February ";
-			break;
-		case Calendar.MARCH:
-			date = date + "March ";
-			break;
-		case Calendar.APRIL:
-			date = date + "April ";
-			break;
-		case Calendar.MAY:
-			date = date + "May ";
-			break;
-		case Calendar.JUNE:
-			date = date + "June ";
-			break;
-		case Calendar.JULY:
-			date = date + "July ";
-			break;
-		case Calendar.AUGUST:
-			date = date + "August ";
-			break;
-		case Calendar.SEPTEMBER:
-			date = date + "September ";
-			break;
-		case Calendar.OCTOBER:
-			date = date + "October ";
-			break;
-		case Calendar.NOVEMBER:
-			date = date + "November ";
-			break;
-		case Calendar.DECEMBER:
-			date = date + "December ";
-			break;
-		}
-		return date + calendar.get(Calendar.DAY_OF_MONTH) + ", "
-				+ calendar.get(Calendar.YEAR) + ")";
-	}
+	public static final String version = "Unitex " +
+	                                      Integer.toString(UNITEX_VERSION_MAJOR_NUMBER)    +
+	                                      "."                                              +
+	                                      Integer.toString(UNITEX_VERSION_MINOR_NUMBER)    +
+	                                      "."                                              +
+	                                      Integer.toString(UNITEX_VERSION_REVISION_NUMBER) +
+	                                      UNITEX_VERSION_SUFFIX                            +
+	                                      " "                                              +
+	                                      getRevisionDate();
 
 	public static String getRevisionDate() {
-		final File f = new File(ConfigManager.getManager()
-				.getApplicationDirectory(), "revision.date");
-		if (!f.exists() || f.length() == 0) {
-			return getJarDate();
-		}
-		FileInputStream stream;
-		try {
-			stream = new FileInputStream(f);
-		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
-			return getJarDate();
-		}
-		final byte[] buffer = new byte[64];
-		int n;
-		try {
-			n = stream.read(buffer);
-		} catch (final IOException e) {
-			e.printStackTrace();
-			return getJarDate();
-		}
-		try {
-			return "(" + new String(buffer, 0, n - 1, "UTF8") + ")";
-		} catch (final UnsupportedEncodingException e) {
-			e.printStackTrace();
-			return getJarDate();
-		}
+		return "(" + UNITEX_VERSION_BUILD_DATE + ")";
 	}
 
 	public static String getRevisionNumberForJava() {
-		File f = new File(ConfigManager.getManager().getMainDirectory(), "Src");
-		f = new File(f, "log_svn_Java.txt");
-		Scanner s = null;
-		try {
-			s = new Scanner(f, "UTF8");
-			if (!s.hasNextLine()) {
-				return null;
-			}
-			s.nextLine();
-			if (!s.hasNext()) {
-				return null;
-			}
-			return s.next();
-		} catch (final FileNotFoundException e) {
-			return null;
-		} finally {
-			if (s != null) {
-				s.close();
-			}
-		}
+		return Integer.toString(UNITEX_VERSION_REVISION_NUMBER_CLASSIC_IDE);
 	}
 
 	public static String getRevisionNumberForC() {
-		File f = new File(ConfigManager.getManager().getMainDirectory(), "Src");
-		f = new File(f, "log_svn_C++.txt");
-		Scanner s = null;
-		try {
-			s = new Scanner(f, "UTF8");
-			if (!s.hasNextLine()) {
-				return null;
-			}
-			s.nextLine();
-			if (!s.hasNext()) {
-				return null;
-			}
-			return s.next();
-		} catch (final FileNotFoundException e) {
-			return null;
-		} finally {
-			if (s != null) {
-				s.close();
-			}
-		}
+		return Integer.toString(UNITEX_VERSION_REVISION_NUMBER_CORE);
 	}
 
 	public static String getRevisionNumberForGramlab() {
-		File f = new File(ConfigManager.getManager().getMainDirectory(), "Src");
-		f = new File(f, "log_svn_Gramlab.txt");
-		Scanner s = null;
-		try {
-			s = new Scanner(f, "UTF8");
-			if (!s.hasNextLine()) {
-				return null;
-			}
-			s.nextLine();
-			if (!s.hasNext()) {
-				return null;
-			}
-			return s.next();
-		} catch (final FileNotFoundException e) {
-			return null;
-		} finally {
-			if (s != null) {
-				s.close();
-			}
-		}
+		return Integer.toString(UNITEX_VERSION_REVISION_NUMBER_GRAMLAB_IDE);
 	}
+
+	/** Make constructor unavailable; class is for namespace only. */
+	private Version() {
+	}	
 }
