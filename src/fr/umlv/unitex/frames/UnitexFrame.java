@@ -1407,9 +1407,11 @@ public class UnitexFrame extends JFrame {
 						+ File.separatorChar + "disclaimers");
 				File licensesDir = new File(appDir.getPath()
 						+ File.separatorChar + "licenses");
-				new AboutDialog(UnitexFrame.this, "Unitex", new ImageIcon(
-						Unitex.class.getResource("Unitex.jpg")),
-						disclaimersDir, licensesDir);
+				new AboutDialog(UnitexFrame.this, "Unitex",
+				                new ImageIcon(Unitex.class.getResource("Unitex.jpg")),
+												"Unitex-GramLab.txt",
+												disclaimersDir,
+												licensesDir);
 			}
 		});
 		final JMenuItem preferences = new JMenuItem("Preferences...");
