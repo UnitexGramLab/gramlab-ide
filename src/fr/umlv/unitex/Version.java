@@ -80,7 +80,7 @@ public final class Version {
 	/**
 	 * The string that contains the version number, and the date of the release.
 	 */
-	public static final String version = "Unitex/GramLab " +
+	public static final String version = "Unitex/GramLab "                                 +
 	                                      Integer.toString(UNITEX_VERSION_MAJOR_NUMBER)    +
 	                                      "."                                              +
 	                                      Integer.toString(UNITEX_VERSION_MINOR_NUMBER)    +
