@@ -54,7 +54,7 @@ public final class Version {
 
 	public static final int UNITEX_VERSION_MAJOR_NUMBER                 = 3;
 	public static final int UNITEX_VERSION_MINOR_NUMBER                 = 1;
-	public static final int UNITEX_VERSION_REVISION_NUMBER              = 4205;
+	public static final int UNITEX_VERSION_REVISION_NUMBER              = 0;
 	public static final String UNITEX_VERSION_SUFFIX                    = "beta";
 	public static final String UNITEX_VERSION_TYPE                      = "unstable";
 	public static final int UNITEX_VERSION_IS_UNSTABLE                  = 1;
@@ -80,13 +80,13 @@ public final class Version {
 	/**
 	 * The string that contains the version number, and the date of the release.
 	 */
-	public static final String version = "Unitex " +
+	public static final String version = "Unitex/GramLab " +
 	                                      Integer.toString(UNITEX_VERSION_MAJOR_NUMBER)    +
 	                                      "."                                              +
 	                                      Integer.toString(UNITEX_VERSION_MINOR_NUMBER)    +
-	                                      "."                                              +
-	                                      Integer.toString(UNITEX_VERSION_REVISION_NUMBER) +
 	                                      UNITEX_VERSION_SUFFIX                            +
+	                                      " Rev."                                          +
+	                                      Integer.toString(UNITEX_VERSION_REVISION_NUMBER) +
 	                                      " "                                              +
 	                                      getRevisionDate();
 
