@@ -14,10 +14,12 @@
 
 	<!-- targets -->
 	
-	<target name="install-init">
-		<input message="Please enter Unitex Home (default is env var UNITEX_HOME):" 
-			addproperty="unitexHome" defaultvalue="${env.UNITEX_HOME}" />
+	<target name="install-init">	
+		<property environment="env"/>
+		<fail unless="env.UNITEX_BUILD_RELEASE_DIR" message="UNITEX_BUILD_RELEASE_DIR is not set. try `export UNITEX_BUILD_RELEASE_DIR=.`"/>
+    <property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>		
 		<property name="app-dir" location="${unitexHome}/App" />
+		<property name="app-lib-dir" location="${unitexHome}/App/lib" />
 	</target>
 
 	<target name="init">
@@ -64,22 +66,24 @@
 	</target>
 
 	<target name="dist" depends="clean,compile" description="generate the distribution">
-		<copy todir="${dist-dir}">
-			<fileset dir="${lib-dir}">
-				<include name="*.jar" />
-			</fileset>
-		</copy>
 		<!-- create Unitex.jar -->
 		<jar jarfile="${dist-dir}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf" basedir="classes" excludes="classes/fr/loria/**" />
 		<!-- create XAlign.jar -->
 		<jar jarfile="${dist-dir}/XAlign.jar" manifest="classes/fr/loria/Manifest.mf" basedir="classes" excludes="classes/fr/umlv/**" />
-
 	</target>
 
 	<target name="install" depends="install-init,dist">
 		<copy todir="${app-dir}">
 			<fileset dir="${dist-dir}" />
+			<fileset dir="${resources-dir}">
+				<include name="*.ico" />
+			</fileset>			
 		</copy>
+		<copy todir="${app-lib-dir}">
+			<fileset dir="${lib-dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>		
 	</target>
 </project>
 
