@@ -2262,9 +2262,12 @@ public class GramlabFrame extends JFrame {
 						+ File.separatorChar + "disclaimers");
 				File licensesDir = new File(appDir.getPath()
 						+ File.separatorChar + "licenses");
-				new AboutDialog(GramlabFrame.this, "GramLab", new ImageIcon(
-						Icons.class.getResource("logo.png")), disclaimersDir,
-						licensesDir);
+				new AboutDialog(GramlabFrame.this,
+												"GramLab",
+												new ImageIcon(Icons.class.getResource("logo.png")),
+												"Unitex-GramLab.txt",
+												disclaimersDir,
+												licensesDir);
 			}
 		});
 
