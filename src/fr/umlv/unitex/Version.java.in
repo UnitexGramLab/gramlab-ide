@@ -80,8 +80,8 @@ public final class Version {
 	/**
 	 * The string that contains the version number, and the date of the release.
 	 */
-	public static final String version =  @UNITEX_BUILD_FULL_RELEASE@ +
-	                                      " "                         +
+	public static final String version =  "@UNITEX_BUILD_FULL_RELEASE@" +
+	                                      " "                           +
 	                                      getRevisionDate();
 
 	public static String getRevisionDate() {
