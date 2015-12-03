@@ -23,7 +23,7 @@ import fr.umlv.unitex.text.BigTextArea;
  *
  */
 public class AboutDialog extends JDialog {
-	public AboutDialog(JFrame owner, String title, ImageIcon logo, File disclaimersDir, File licensesDir) {
+	public AboutDialog(JFrame owner, String title, ImageIcon logo, String fileName, File disclaimersDir, File licensesDir) {
 		super(owner, "About " + title);
 
 		final JPanel top = new JPanel(new BorderLayout());
@@ -53,7 +53,7 @@ public class AboutDialog extends JDialog {
 				
 		BigTextArea disclaimerContent = new BigTextArea();
 		if(disclaimersDir.exists() && disclaimersDir.isDirectory()) {
-			File disclaimer = new File(disclaimersDir, title + ".txt");
+			File disclaimer = new File(disclaimersDir, fileName);
 			if(disclaimer.exists()) {
 				disclaimerContent = new BigTextArea(disclaimer);
 				int disclaimerHeight = image.getHeight() > 150 ? image.getHeight() : 150;
@@ -66,15 +66,6 @@ public class AboutDialog extends JDialog {
 		top.add(up, BorderLayout.NORTH);
 		
 		final JTabbedPane licensesPanel = new JTabbedPane();
-		
-		if(title.equals("GramLab")) {
-			if(disclaimersDir.exists() && disclaimersDir.isDirectory()) {
-				File disclaimer = new File(disclaimersDir, "Unitex" + ".txt");
-				if(disclaimer.exists()) {
-					licensesPanel.add(new BigTextArea(disclaimer), "Unitex");
-				}
-			}
-		}
 		
 		if(licensesDir.exists() && licensesDir.isDirectory()) {
 			File[] licenses = licensesDir.listFiles();
