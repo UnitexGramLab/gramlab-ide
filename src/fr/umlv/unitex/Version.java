@@ -33,7 +33,7 @@ import fr.umlv.unitex.config.ConfigManager;
 /**
  * This class contains Unitex/GramLab version information
  * 
- * @author Vinber
+ * @author Anonymous Builder
  *
  * DO NOT CHANGE THIS FILE DIRECTLY! IT WILL BE OVERWRITTEN.
  * BUT INSTEAD USE VERSION.H.IN
@@ -73,9 +73,9 @@ public final class Version {
 	public static final String UNITEX_VERSION_COMMIT_HASH               = "?";
 	public static final String UNITEX_VERSION_COMMIT_TAG                = "?";
 
-	public static final int UNITEX_VERSION_REVISION_NUMBER_CORE         = 0;
-	public static final int UNITEX_VERSION_REVISION_NUMBER_CLASSIC_IDE  = 0;
-	public static final int UNITEX_VERSION_REVISION_NUMBER_GRAMLAB_IDE  = 0;
+	public static final int UNITEX_VERSION_CORE_REVISION_NUMBER         = 0;
+	public static final int UNITEX_VERSION_CLASSIC_IDE_REVISION_NUMBER  = 0;
+	public static final int UNITEX_VERSION_GRAMLAB_IDE_REVISION_NUMBER  = 0;
 		
 	/**
 	 * The string that contains the version number, and the date of the release.
@@ -95,15 +95,15 @@ public final class Version {
 	}
 
 	public static String getRevisionNumberForJava() {
-		return Integer.toString(UNITEX_VERSION_REVISION_NUMBER_CLASSIC_IDE);
+		return Integer.toString(UNITEX_VERSION_CLASSIC_IDE_REVISION_NUMBER);
 	}
 
 	public static String getRevisionNumberForC() {
-		return Integer.toString(UNITEX_VERSION_REVISION_NUMBER_CORE);
+		return Integer.toString(UNITEX_VERSION_CORE_REVISION_NUMBER);
 	}
 
 	public static String getRevisionNumberForGramlab() {
-		return Integer.toString(UNITEX_VERSION_REVISION_NUMBER_GRAMLAB_IDE);
+		return Integer.toString(UNITEX_VERSION_GRAMLAB_IDE_REVISION_NUMBER);
 	}
 
 	/** Make constructor unavailable; class is for namespace only. */
