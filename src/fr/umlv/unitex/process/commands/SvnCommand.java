@@ -37,8 +37,9 @@ public class SvnCommand extends CommandBuilder {
 		element("java");
 		element("-jar");
 		protectElement(new File(ConfigManager.getManager()
-				.getApplicationDirectory(), "svnkitclient.jar")
-				.getAbsolutePath());
+				                    .getApplicationDirectory().getPath() +
+				                     File.separatorChar + "lib",
+				                     "svnkitclient.jar").getAbsolutePath());
 		element("--non-interactive");
 		element("--trust-server-cert");
 	}
