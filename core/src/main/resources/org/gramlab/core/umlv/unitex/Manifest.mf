@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Created-By: The Unitex/GramLab Authors
 Main-Class: fr.umlv.unitex.Unitex
 Specification-Title: GramLab Classic IDE
-Specification-Version: 3.1.0-anonymous
+Specification-Version: 3.1.0-beta
 Specification-Vendor: Universite Paris-Est Marne-la-Vallee
 Implementation-Title: fr.umlv.unitex
-Implementation-Version: 3.1.0-anonymous
+Implementation-Version: 3.1.0-beta
 Implementation-Vendor: Universite Paris-Est Marne-la-Vallee
