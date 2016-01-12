@@ -21,6 +21,10 @@
 package fr.umlv.unitex.config;
 
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,6 +34,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.lang.Process;
+import java.lang.ProcessBuilder;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -42,6 +50,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JDialog;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
+import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.files.FileUtil;
@@ -713,10 +725,99 @@ public class Config {
         } else {
             applicationDir = s;
         }
-        unitexToolLogger = new File(applicationDir, "UnitexToolLogger"
-                + (Config.getCurrentSystem() == Config.WINDOWS_SYSTEM ? ".exe"
-                        : ""));
+        unitexToolLogger = setupUnitexToolLogger(applicationDir);
         setUnitexDir(applicationDir.getParentFile());
+    }
+
+    /**
+     * Setup the UnitexToolLogger executable
+     * 
+     * @param path
+     *            external programs directory
+     */
+    public static File setupUnitexToolLogger(File path) {        
+        // define the default unitexToolLogger path
+        File UnitexToolLogger = new File(path, "UnitexToolLogger" +
+        (Config.getSystem() == Config.WINDOWS_SYSTEM ? ".exe" : ""));
+
+        // if UnitexToolLogger does not exists and we are not running under
+        // Windows, try to install it
+        if(!UnitexToolLogger.exists() &&
+            Config.getSystem() != Config.WINDOWS_SYSTEM) {
+            // define the default setup script path    
+            File setupScript = new File(path, "install" + File.separatorChar + "setup");
+            if(setupScript.exists()) {
+                // setup ProcessBuilder
+                ProcessBuilder pb = new ProcessBuilder(setupScript.getAbsolutePath());
+                pb.directory(path);
+                pb.redirectErrorStream(true);
+                pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+
+                // show a "Please wait" message dialog. This was adapted from
+                // @source http://www.coding-dude.com/wp/java/modal-progress-bar-dialog-java-swing
+                java.awt.Frame f=null;
+
+                JDialog dlgProgress = new JDialog(f, "Please wait until installation is finished", true);
+                
+                JLabel lblStatus = new JLabel("Compiling " + UnitexToolLogger.getName() + "...");
+                
+                JProgressBar pbProgress = new JProgressBar(0, 100);
+                pbProgress.setIndeterminate(true);
+
+                dlgProgress.add(BorderLayout.NORTH, lblStatus);
+                dlgProgress.add(BorderLayout.CENTER, pbProgress);
+                
+                // prevent the user from closing the dialog
+                dlgProgress.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+                dlgProgress.setSize(400, 90);
+            
+                // center on screen
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                dlgProgress.setLocation((screenSize.width  - dlgProgress.getWidth())  / 2,
+                                        (screenSize.height - dlgProgress.getHeight()) / 2);
+
+                // SwingWorker
+                SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
+                 @Override
+                 protected Void doInBackground() throws Exception {
+                  // execute the setup script
+                  try {                  
+                      // star script
+                      Process p = pb.start();
+                      // wait to finish
+                      p.waitFor();
+                  } catch (Exception e) {
+                      // do nothing
+                  } 
+                  return null;
+                 }
+
+                 @Override
+                 protected void done() {
+                    //close the modal dialog 
+                    dlgProgress.dispose();
+                 }
+                };
+
+                // this will start the processing on a separate thread
+                sw.execute();
+                //this will block user input as long as the processing task is working
+                dlgProgress.setVisible(true);
+            }
+        }
+        
+        // check if UnitexToolLogger exists
+        if(!UnitexToolLogger.exists()) {
+          JOptionPane.showMessageDialog(null,
+                                    UnitexToolLogger.getAbsolutePath() +
+                                    " not found!\nSee the README for"  +
+                                    " detailed installation instructions",
+                                    UnitexToolLogger.getName() + " not found",
+                                    JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        return UnitexToolLogger;
     }
 
     /**
