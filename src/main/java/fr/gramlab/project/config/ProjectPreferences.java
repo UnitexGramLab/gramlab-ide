@@ -30,7 +30,7 @@ public class ProjectPreferences extends AbstractConfigModel {
 	private File unitexToolLogger;
 	
 	public ProjectPreferences(File jarPath) {
-		unitexToolLogger=new File(jarPath,"UnitexToolLogger"+(Config.getSystem() == Config.WINDOWS_SYSTEM ? ".exe" : ""));
+		unitexToolLogger = Config.setupUnitexToolLogger(jarPath);
 		defaultPreferences=new Preferences();
 		defaultPreferences.setEncoding(Encoding.UTF8);
 	}
