@@ -748,16 +748,16 @@ public class Config {
             File setupScript = new File(path, "install" + File.separatorChar + "setup");
             if(setupScript.exists()) {
                 // setup ProcessBuilder
-                ProcessBuilder pb = new ProcessBuilder(setupScript.getAbsolutePath());
+                final ProcessBuilder pb = new ProcessBuilder(setupScript.getAbsolutePath());
                 pb.directory(path);
                 pb.redirectErrorStream(true);
-                pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+                //pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
                 // show a "Please wait" message dialog. This was adapted from
                 // @source http://www.coding-dude.com/wp/java/modal-progress-bar-dialog-java-swing
                 java.awt.Frame f=null;
 
-                JDialog dlgProgress = new JDialog(f, "Please wait until installation is finished", true);
+                final JDialog dlgProgress = new JDialog(f, "Please wait until installation is finished", true);
                 
                 JLabel lblStatus = new JLabel("Compiling " + UnitexToolLogger.getName() + "...");
                 
