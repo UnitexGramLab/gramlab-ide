@@ -748,16 +748,28 @@ public class Config {
             File setupScript = new File(path, "install" + File.separatorChar + "setup");
             if(setupScript.exists()) {
                 // setup ProcessBuilder
-                final ProcessBuilder pb = new ProcessBuilder(setupScript.getAbsolutePath());
-                pb.directory(path);
-                pb.redirectErrorStream(true);
+                // Java 6+ alternative to redirect output and hence in our case
+                // avoid process hangs
+                // @see https://github.com/avl42/lanterna/commit/1bdb64fa
+                StringBuilder sb = new StringBuilder();
+                sb.append(setupScript.getAbsolutePath()).append(' ');
+                sb.append("> ").append("install" + File.separatorChar + "setup.log");
+                String cmd[] = new String[] { "sh", "-c", sb.toString() };                
+                final ProcessBuilder pb = new ProcessBuilder(cmd);
+                
+                // Java 7+ only
+                //final ProcessBuilder pb = new ProcessBuilder(setupScript.getAbsolutePath());
                 //pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
+                pb.directory(path);
+                pb.redirectErrorStream(true);
+                
                 // show a "Please wait" message dialog. This was adapted from
                 // @source http://www.coding-dude.com/wp/java/modal-progress-bar-dialog-java-swing
                 java.awt.Frame f=null;
 
                 final JDialog dlgProgress = new JDialog(f, "Please wait until installation is finished", true);
+                dlgProgress.setAlwaysOnTop(true);
                 
                 JLabel lblStatus = new JLabel("Compiling " + UnitexToolLogger.getName() + "...");
                 
