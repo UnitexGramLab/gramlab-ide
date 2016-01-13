@@ -133,7 +133,7 @@ public class UnitexFrame extends JFrame {
 	 * The sub-frames are created the first time they are needed.
 	 */
 	public UnitexFrame() {
-		super(Version.version);
+		super(Version.getFullStringVersion());
 		final int inset = 50;
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setBounds(inset, inset, screenSize.width - inset * 2, screenSize.height
@@ -152,7 +152,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setTitle(Version.version + " - current language is "
+		setTitle(Version.getFullStringVersion() + " - current language is "
 				+ Config.getCurrentLanguageForTitleBar());
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.addTextFrameListener(
@@ -278,7 +278,7 @@ public class UnitexFrame extends JFrame {
 		Config.addLanguageListener(new LanguageListener() {
 			@Override
 			public void languageChanged() {
-				setTitle(Version.version + " - current language is "
+				setTitle(Version.getFullStringVersion() + " - current language is "
 						+ Config.getCurrentLanguageForTitleBar());
 				GlobalProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
