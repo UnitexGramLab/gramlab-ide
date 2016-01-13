@@ -34,6 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import java.lang.Process;
 import java.lang.ProcessBuilder;
@@ -61,6 +62,9 @@ import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.svn.SvnMonitor;
 
+import fr.umlv.unitex.process.commands.CommandBuilder;
+import fr.umlv.unitex.process.commands.VersionInfoCommand;
+
 /**
  * This class contains general configuration information. It contains constants
  * used by many other classes.
@@ -73,6 +77,7 @@ public class Config {
      */
     private static File applicationDir;
     private static File unitexToolLogger;
+    
     /**
      * Path of the directory <code>.../Unitex</code>
      */
@@ -712,6 +717,38 @@ public class Config {
     }
 
     /**
+     * Returns the UnitexToolLogger semantic version
+     * <code>UnitexToolLogger VersionInfo -s</code>
+     * e.g. 3.1.4239-beta
+     *
+     * @author martinec
+     */
+    public static String getUnitexToolLoggerSemVer() {
+      String semver = "?";
+
+      CommandBuilder cmd = new VersionInfoCommand().getSemver();
+      String[] comm = cmd.getCommandArguments(true);
+      try {
+          final Process p = Runtime.getRuntime().exec(comm);
+          final BufferedReader in = new BufferedReader(
+                  new InputStreamReader(p.getInputStream(), "UTF8"));
+          String s = in.readLine();
+          if (s != null) {
+              if (s.endsWith("\n") || s.endsWith("\r")) {
+                      s = s.substring(0, s.length() - 1);
+              }
+              semver = s;
+          }
+          p.waitFor();
+          in.close();
+      } catch (final IOException e) {
+      } catch (InterruptedException e) {
+      }
+
+      return semver;
+    }
+
+    /**
      * Sets the application directory
      *
      * @param appPath
@@ -734,6 +771,8 @@ public class Config {
      * 
      * @param path
      *            external programs directory
+     *
+     * @author martinec
      */
     public static File setupUnitexToolLogger(File path) {        
         // define the default unitexToolLogger path
