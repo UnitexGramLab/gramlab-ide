@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -20,93 +20,139 @@
  */
 package fr.umlv.unitex;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.Scanner;
+import java.io.InputStream;
+import java.net.URLClassLoader;
+import java.net.URL;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
+import java.util.jar.Attributes;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fr.umlv.unitex.config.ConfigManager;
 
 /**
- * This class contains Unitex/GramLab version information
- * 
- * @author Anonymous Builder
+ * This class contains Unitex/GramLab IDE version information
  *
- * DO NOT CHANGE THIS FILE DIRECTLY! IT WILL BE OVERWRITTEN.
- * BUT INSTEAD USE VERSION.H.IN
+ * Version information is loaded from the JAR's Manifest.mf
+ * Source Manifest.mf file is available at:
+ *
+ * Unitex.jar:  resources/fr/umlv/unitex/Manifest.mf
+ * GramLab.jar: src/main/resources/fr/gramlab/Manifest.mf
  * 
+ * @author martinec
+ *
  */
 public final class Version {
+ /**
+  * IDE Title
+  * e.g. Unitex/GramLab IDE
+  */
+ public static String VERSION_TITLE           = "Unitex/GramLab IDE";
 
-	public static final String UNITEX_VERSION_AUTHOR                    = "The Unitex/GramLab Authors";
-	public static final String UNITEX_VERSION_COMPANY                   = "Universite Paris-Est Marne-la-Vallee";
-	public static final String UNITEX_VERSION_COPYRIGHT                 = "Copyright (C) 2001-2016";
-	public static final String UNITEX_VERSION_DESCRIPTION_SHORT         = "corpus processing suite";
-	public static final String UNITEX_VERSION_DESCRIPTION               = "an open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite";
-	public static final String UNITEX_VERSION_LICENSE                   = "LGPL-2.1";
+ /**
+  * IDE Semantic Version
+  * e.g. 3.1.4239-beta
+  */
+ public static String VERSION_SEMVER          = "0.0.0-anonymous";
 
-	public static final String UNITEX_VERSION_URL_HOMEPAGE              = "http://unitexgramlab.org";
-	public static final String UNITEX_VERSION_URL_ISSUES                = "http://unitexgramlab.org/index.php?page=6";
-	public static final String UNITEX_VERSION_URL_REPOSITORY            = "https://svnigm.univ-mlv.fr/svn/unitex/Unitex-C%2B%2B";
+ /**
+  * IDE Built Date
+  * e.g. January 04, 2016
+  */
+ public static String VERSION_BUILT_DATE      = "?";
 
-	public static final int UNITEX_VERSION_MAJOR_NUMBER                 = 3;
-	public static final int UNITEX_VERSION_MINOR_NUMBER                 = 1;
-	public static final int UNITEX_VERSION_REVISION_NUMBER              = 0;
-	public static final String UNITEX_VERSION_SUFFIX                    = "beta";
-	public static final String UNITEX_VERSION_TYPE                      = "unstable";
-	public static final int UNITEX_VERSION_IS_UNSTABLE                  = 1;
+ /**
+  * IDE MAJOR number version
+  * <code>MAJOR.MINOR.REVISION-SUFFIX</code>
+  */
+ public static int    VERSION_MAJOR_NUMBER    = 0;
 
-	public static final int UNITEX_VERSION_BUILD_IS_ANONYMOUS           = 1;
-	public static final int UNITEX_VERSION_BUILD_NUMBER                 = 0;
-	public static final String UNITEX_VERSION_BUILD_DATE                = "?";
-	public static final String UNITEX_VERSION_BUILD_DAY                 = "?";
-	public static final String UNITEX_VERSION_BUILD_MONTH               = "?";
-	public static final String UNITEX_VERSION_BUILD_YEAR                = "?";
-	public static final String UNITEX_VERSION_BUILD_TIMESTAMP           = "?";
-	public static final String UNITEX_VERSION_BUILD_SYSTEM              = "Anonymous Builder";
+ /**
+  * IDE MINOR number version
+  * <code>MAJOR.MINOR.REVISION-SUFFIX</code>
+  */
+ public static int    VERSION_MINOR_NUMBER    = 0;
 
-	public static final String UNITEX_VERSION_COMMIT_BRANCH             = "?";
-	public static final String UNITEX_VERSION_COMMIT_DATE               = "?";
-	public static final String UNITEX_VERSION_COMMIT_HASH               = "?";
-	public static final String UNITEX_VERSION_COMMIT_TAG                = "?";
+  /**
+  * IDE REVISION number version
+  * <code>MAJOR.MINOR.REVISION-SUFFIX</code>
+  */
+ public static int    VERSION_REVISION_NUMBER = 0;
 
-	public static final int UNITEX_VERSION_CORE_REVISION_NUMBER         = 0;
-	public static final int UNITEX_VERSION_CLASSIC_IDE_REVISION_NUMBER  = 0;
-	public static final int UNITEX_VERSION_GRAMLAB_IDE_REVISION_NUMBER  = 0;
-		
-	/**
-	 * The string that contains the version number, and the date of the release.
-	 */
-	public static final String version = "Unitex/GramLab "                                 +
-	                                      Integer.toString(UNITEX_VERSION_MAJOR_NUMBER)    +
-	                                      "."                                              +
-	                                      Integer.toString(UNITEX_VERSION_MINOR_NUMBER)    +
-	                                      UNITEX_VERSION_SUFFIX                            +
-	                                      " Rev."                                          +
-	                                      Integer.toString(UNITEX_VERSION_REVISION_NUMBER) +
-	                                      " "                                              +
-	                                      getRevisionDate();
+  /**
+  * IDE SUFFIX string version
+  * <code>MAJOR.MINOR.REVISION-SUFFIX</code>
+  */
+ public static String VERSION_SUFFIX          = "anonymous";
 
-	public static String getRevisionDate() {
-		return "(" + UNITEX_VERSION_BUILD_DATE + ")";
-	}
+ public static final Attributes manifestAttributes;
 
-	public static String getRevisionNumberForJava() {
-		return Integer.toString(UNITEX_VERSION_CLASSIC_IDE_REVISION_NUMBER);
-	}
+/**
+  * IDE formated string version
+  * e.g. Unitex/GramLab IDE 3.1beta Rev. 4239
+  */
+  public static String getStringVersion() {
+  return VERSION_TITLE                        + " "       +
+    Integer.toString(VERSION_MAJOR_NUMBER)    + "."       +
+    Integer.toString(VERSION_MINOR_NUMBER)    +
+    VERSION_SUFFIX                            + "  Rev. " +
+    Integer.toString(VERSION_REVISION_NUMBER);
+  }
 
-	public static String getRevisionNumberForC() {
-		return Integer.toString(UNITEX_VERSION_CORE_REVISION_NUMBER);
-	}
 
-	public static String getRevisionNumberForGramlab() {
-		return Integer.toString(UNITEX_VERSION_GRAMLAB_IDE_REVISION_NUMBER);
-	}
+ /**
+  * IDE formatted string version including the release date
+  * e.g. Unitex/GramLab 3.1beta Rev. 4239 (January 04, 2016)
+  */
+ public static String getFullStringVersion() {
+  return getStringVersion()  + " (" +
+         VERSION_BUILT_DATE  + ")";
+ }
 
-	/** Make constructor unavailable; class is for namespace only. */
-	private Version() {
-	}	
+ static {
+  // this is adapted from @see http://stackoverflow.com/a/14424273/2042871
+  Attributes mainManifestAttributes = null;
+
+  try {
+   // try to determine main class at runtime
+   // @see http://stackoverflow.com/a/26805687/2042871
+   String jarFileName = System.getProperty("sun.java.command").split(" ")[0];
+
+   // open jar and read the embedded manifest
+   JarFile jarFile = new JarFile(jarFileName);
+   Manifest manifest = jarFile.getManifest();
+
+   mainManifestAttributes = manifest.getMainAttributes();
+  } catch (Exception e) {
+    throw new RuntimeException("Loading MANIFEST failed!", e);
+  }
+
+  if(mainManifestAttributes != null) {
+    // try to parse major.minor.revision-suffix from Implementation-Version
+    // this is based on @see http://stackoverflow.com/a/11501749/2042871
+    Matcher m = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)(-?[\\da-z]+)?")
+      .matcher(mainManifestAttributes.getValue("Implementation-Version"));
+
+    if (!m.matches()) {
+       throw new IllegalArgumentException("Bad Implementation-Version format!");
+    }
+
+    VERSION_MAJOR_NUMBER    = Integer.parseInt(m.group(1));
+    VERSION_MINOR_NUMBER    = Integer.parseInt(m.group(2));
+    VERSION_REVISION_NUMBER = Integer.parseInt(m.group(3));
+    VERSION_SUFFIX          = m.group(4) == null ? "" : m.group(4);
+
+    VERSION_TITLE           = mainManifestAttributes.getValue("Implementation-Title");
+    VERSION_SEMVER          = mainManifestAttributes.getValue("Implementation-Version");
+    VERSION_BUILT_DATE      = mainManifestAttributes.getValue("Built-Date");
+  }
+
+  manifestAttributes = mainManifestAttributes;
+ }
+
+ /** Make constructor unavailable; class is for namespace only. */
+ private Version() {
+ }
 }
