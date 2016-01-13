@@ -1,11 +1,13 @@
 Manifest-Version: 1.0
 Created-By: The Unitex/GramLab Authors
 Main-Class: fr.gramlab.Main
-Specification-Title: GramLab IDE
-Specification-Version: 3.1.0-beta
+Specification-Title: Unitex/GramLab
+Specification-Version: 0.0.0-anonymous
 Specification-Vendor: Universite Paris-Est Marne-la-Vallee
-Implementation-Title: fr.gramlab
-Implementation-Version: 3.1.0-beta
+Implementation-Title: GramLab IDE
+Implementation-Version: 0.0.0-anonymous
 Implementation-Vendor: Universite Paris-Est Marne-la-Vallee
+Built-By: Anonymous Builder
+Built-Date: ?
 Class-Path: Unitex.jar
 
