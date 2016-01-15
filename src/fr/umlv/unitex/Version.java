@@ -115,10 +115,13 @@ public final class Version {
   // this is adapted from @see http://stackoverflow.com/a/14424273/2042871
   Attributes mainManifestAttributes = null;
 
+  // FIXME(martinec) temporal workaround
+  String jarFileName = "Unitex.jar";
+
   try {
    // try to determine main class at runtime
    // @see http://stackoverflow.com/a/26805687/2042871
-   String jarFileName = System.getProperty("sun.java.command").split(" ")[0];
+   jarFileName = System.getProperty("sun.java.command").split(" ")[0];
 
    // open jar and read the embedded manifest
    JarFile jarFile = new JarFile(jarFileName);
@@ -126,7 +129,8 @@ public final class Version {
 
    mainManifestAttributes = manifest.getMainAttributes();
   } catch (Exception e) {
-    throw new RuntimeException("Loading MANIFEST failed!", e);
+    // FIXME(martinec) temporal workaround
+    //throw new RuntimeException("Loading MANIFEST failed!", e);
   }
 
   if(mainManifestAttributes != null) {
