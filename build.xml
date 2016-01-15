@@ -48,7 +48,8 @@
 
 	<target name="compile" depends="init" description="compile the source">
 		<!-- Compile the java source code -->
-		<javac srcdir="${src-dir}" destdir="${build-dir}" includeAntRuntime="false">
+		<javac target="1.6" source="1.6" srcdir="${src-dir}" destdir="${build-dir}" includeAntRuntime="false">
+		<compilerarg value="-Xlint:-options"/>	
 			<classpath>
 				<fileset dir="${lib-dir}">
 					<include name="*.jar" />
