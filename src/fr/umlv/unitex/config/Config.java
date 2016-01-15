@@ -725,10 +725,10 @@ public class Config {
      */
     public static String getUnitexToolLoggerSemVer() {
       String semver = "?";
-
-      CommandBuilder cmd = new VersionInfoCommand().getSemver();
-      String[] comm = cmd.getCommandArguments(true);
       try {
+          CommandBuilder cmd = new VersionInfoCommand().getSemver();
+          String[] comm = cmd.getCommandArguments(true);
+          
           final Process p = Runtime.getRuntime().exec(comm);
           final BufferedReader in = new BufferedReader(
                   new InputStreamReader(p.getInputStream(), "UTF8"));
