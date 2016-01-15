@@ -38,11 +38,20 @@ public class AboutDialog extends JDialog {
     info.setBorder(new TitledBorder("Disclaimer"));
     
     JTextField versionInfo = new JTextField();
+
+    String unitexToolLoggerSemVer = "?";
+
+    // try to get the result of run 'UnitexToolLogger VersionInfo -s'
+    try {
+      unitexToolLoggerSemVer = Config.getUnitexToolLoggerSemVer(); 
+    } catch (final Exception e) {
+      // do nothing  
+    }
     
     versionInfo = new JTextField(Version.VERSION_TITLE   + ": "       +
                                  Version.VERSION_SEMVER  + " | "      +
                                  "UnitexToolLogger"      + ": "       +
-                                 Config.getUnitexToolLoggerSemVer());
+                                 unitexToolLoggerSemVer);
 
     versionInfo.setEditable(false);
     up.add(versionInfo, BorderLayout.NORTH);
