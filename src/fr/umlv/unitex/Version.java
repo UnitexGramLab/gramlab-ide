@@ -22,8 +22,10 @@ package fr.umlv.unitex;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
 import java.net.URLClassLoader;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.jar.Attributes;
@@ -40,7 +42,7 @@ import fr.umlv.unitex.config.ConfigManager;
  *
  * Unitex.jar:  resources/fr/umlv/unitex/Manifest.mf
  * GramLab.jar: src/main/resources/fr/gramlab/Manifest.mf
- * 
+ *
  * @author martinec
  *
  */
@@ -115,22 +117,37 @@ public final class Version {
   // this is adapted from @see http://stackoverflow.com/a/14424273/2042871
   Attributes mainManifestAttributes = null;
 
-  // FIXME(martinec) temporal workaround
-  String jarFileName = "Unitex.jar";
+  String jarFileName = "";
 
-  try {
-   // try to determine main class at runtime
-   // @see http://stackoverflow.com/a/26805687/2042871
-   jarFileName = System.getProperty("sun.java.command").split(" ")[0];
+  try{
+    // try to determine the running jar filename
+    jarFileName = URLDecoder.decode(System.getProperty("sun.java.command")
+                      .substring(0, System.getProperty("sun.java.command")
+                      .lastIndexOf(".jar")) + ".jar", "UTF-8");
 
-   // open jar and read the embedded manifest
-   JarFile jarFile = new JarFile(jarFileName);
-   Manifest manifest = jarFile.getManifest();
-
-   mainManifestAttributes = manifest.getMainAttributes();
+    // alternative method to get the jar filename associated with this class
+    // this is not necessary the same name of the running jar
+    if(!(new File(jarFileName).isFile())) {
+      jarFileName = URLDecoder.decode(Version.class.getProtectionDomain()
+                              .getCodeSource()
+                              .getLocation()
+                              .toURI()
+                              .getPath(), "UTF-8");
+    }
   } catch (Exception e) {
-    // FIXME(martinec) temporal workaround
-    //throw new RuntimeException("Loading MANIFEST failed!", e);
+  }
+
+  if(new File(jarFileName).isFile()) {
+    try {
+      // open jar and read the embedded manifest
+      JarFile jarFile = new JarFile(jarFileName);
+
+      Manifest manifest = jarFile.getManifest();
+
+      mainManifestAttributes = manifest.getMainAttributes();
+    } catch (Exception e) {
+      throw new RuntimeException("Loading MANIFEST failed!", e);
+    }
   }
 
   if(mainManifestAttributes != null) {
@@ -140,7 +157,7 @@ public final class Version {
       .matcher(mainManifestAttributes.getValue("Implementation-Version"));
 
     if (!m.matches()) {
-       throw new IllegalArgumentException("Bad Implementation-Version format!");
+      throw new IllegalArgumentException("Bad Implementation-Version format!");
     }
 
     VERSION_MAJOR_NUMBER    = Integer.parseInt(m.group(1));
