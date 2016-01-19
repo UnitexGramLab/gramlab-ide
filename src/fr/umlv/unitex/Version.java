@@ -153,7 +153,7 @@ public final class Version {
   if(mainManifestAttributes != null) {
     // try to parse major.minor.revision-suffix from Implementation-Version
     // this is based on @see http://stackoverflow.com/a/11501749/2042871
-    Matcher m = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)(-?[\\da-z]+)?")
+    Matcher m = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)-?([\\da-z]+)?")
       .matcher(mainManifestAttributes.getValue("Implementation-Version"));
 
     if (!m.matches()) {
