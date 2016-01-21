@@ -953,7 +953,7 @@ public class Config {
     }
 
     public static File getCassysDir() {
-        return new File(getUserCurrentLanguageDir(), "Cassys");
+        return new File(getUserCurrentLanguageDir(), "CasSys");
     }
 
     private static final String[] bastien = new String[] { "Greek (Ancient)",
@@ -1062,10 +1062,10 @@ public class Config {
             FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(),
                     "Graphs"), f);
         }
-        f = new File(userCurrentLanguageDir, "Cassys");
+        f = new File(userCurrentLanguageDir, "CasSys");
         if (!f.exists()) {
             FileUtil.copyDirRec(new File(getUnitexCurrentLanguageDir(),
-                    "Cassys"), f);
+                    "CasSys"), f);
         }
     }
 
