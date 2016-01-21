@@ -816,7 +816,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	}
 
 	public void setFrameTitle() {
-		String frameTitle = "Cassys Transducer Configuration : ";
+		String frameTitle = "CasSys Transducer Configuration : ";
 		if (Config.getCurrentTransducerList() != null) {
 			frameTitle = frameTitle.concat(Config.getCurrentTransducerList()
 					.getName());
