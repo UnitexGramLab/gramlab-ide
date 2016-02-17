@@ -266,15 +266,14 @@ public class TfstGraphBox extends GenericGraphBox {
 		return false;
 	}
 
-	private static final Color koreanUntaggedTokenColor = new Color(0xE9, 0xFF, 0x5B);
+	private static final Color koreanUntaggedTokenColor = new Color(0xCC, 0xCC, 0xFF);
 
 	@Override
 	void drawOther(Graphics2D g, DrawGraphParams params) {
 		final Color old = params.getBackgroundColor();
 		if (ConfigManager.getManager().isKorean(null)
 				&& isKoreanUntaggedToken(content)) {
-			parentGraphicalZone.getGraphPresentationInfo().setBackgroundColor(
-					koreanUntaggedTokenColor);
+			params.setBackgroundColor(koreanUntaggedTokenColor);
 		}
 		final Composite c = g.getComposite();
 		if (parentGraphicalZone.decorator != null) {
@@ -283,7 +282,7 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		super.drawOther(g, params);
 		g.setComposite(c);
-		parentGraphicalZone.getGraphPresentationInfo().setBackgroundColor(old);
+		params.setBackgroundColor(old);
 	}
 
 	private boolean isKoreanUntaggedToken(String s) {
