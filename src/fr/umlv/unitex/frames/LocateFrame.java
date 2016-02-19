@@ -145,7 +145,7 @@ public class LocateFrame extends JInternalFrame {
 	private JTabbedPane constructPanel() {
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(constructPatternPanel(), BorderLayout.CENTER);
+		panel.add(constructPatternPanel(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		tabbedPane.addTab("Locate configuration", panel);
 		tabbedPane.addTab("Advanced options", constructAdvancedOptionPanel());
