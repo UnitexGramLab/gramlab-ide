@@ -582,7 +582,7 @@ public class ProcessPane extends JSplitPane {
 	 * launches all the selected process steps (preprocessing, locate,
 	 * show results).
 	 */
-	protected void launchProcess() {
+	public void launchProcess() {
 		boolean backupPreviousConcorInd=true;
 		if (!doPreprocessing.isSelected() 
 				&& !doLocate.isSelected()
