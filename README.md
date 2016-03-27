@@ -28,7 +28,9 @@ asking technical support questions can be found
 
 ## Reporting Bugs
 
-Submit [bug reports or feature requests](https://github.com/UnitexGramLab/gramlab-ide/issues)
+See the [Bug Reporting
+Guide](http://unitexgramlab.org/index.php?page=6) for information on
+how to report bugs.
 
 ## Governance Model
 
