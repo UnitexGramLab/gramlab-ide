@@ -41,6 +41,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
@@ -114,7 +116,6 @@ public class GramlabFrame extends JFrame {
 	public GramlabFrame() {
 		super();
 		DropTargetManager.setDropTarget(new GramlabDropTarget());
-		setJMenuBar(createMenuBar());
 		JPanel treePane = createWorkspacePane();
 		tabbedPane = new ProjectTabbedPane();
 		JSplitPane leftPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT,true,treePane,processPane);
@@ -132,6 +133,7 @@ public class GramlabFrame extends JFrame {
 			@Override
 			public void projectOpened(GramlabProject p, int pos) {
 				if (p != null) {
+					refreshProjectMenu(p);
 					/* We have a special case for the .snt file, if any,
 					 * because p.openFile(f) would make it the current corpus
 					 * and the user may have wanted to keep the .txt as the current
@@ -153,6 +155,7 @@ public class GramlabFrame extends JFrame {
 			@Override
 			public void currentProjectChanged(GramlabProject p1, int pos) {
 				refreshTitle();
+				refreshProjectMenu(p1);
 				processPane.removeAll();
 				if (p1!=null) {
 					processPane.add(p1.getProcessPane(),BorderLayout.CENTER);
@@ -191,6 +194,9 @@ public class GramlabFrame extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setJMenuBar(createMenuBar());
+		refreshProjectMenu(GlobalProjectManager.
+		            getAs(GramlabProjectManager.class).getCurrentProject());		
 	}
 
 	void refreshTitle() {
@@ -202,7 +208,7 @@ public class GramlabFrame extends JFrame {
 
 	private JPanel createWorkspacePane() {
 		JPanel p = new JPanel(new BorderLayout());
-		p.setBorder(BorderFactory.createTitledBorder("Workspace"));
+		p.setBorder(BorderFactory.createTitledBorder("Projects"));
 		p.setMinimumSize(new Dimension(0, 0));
 		p.setPreferredSize(new Dimension(200, 1));
 		final WorkspaceTreeModel model = new WorkspaceTreeModel();
@@ -216,12 +222,14 @@ public class GramlabFrame extends JFrame {
 				tree.expandPath(new TreePath(model.getPathToRoot(model
 						.getProjectNode(p))));
 				tree.setSelectionPath(null);
+				refreshProjectMenu(p);
 			}
 
 			@Override
 			public void projectClosed(GramlabProject p, int pos) {
 				tree.collapsePath(new TreePath(model.getPathToRoot(model
 						.getProjectNode(p))));
+				refreshProjectMenu(p);		
 			}
 		});
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
@@ -353,10 +361,11 @@ public class GramlabFrame extends JFrame {
 		tree.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				boolean leftClick   = SwingUtilities.isLeftMouseButton(e);
 				boolean doubleClick = (e.getButton() == MouseEvent.BUTTON1 && e
 						.getClickCount() == 2);
 				boolean rightClick = MouseUtil.isPopupTrigger(e);
-				if (!doubleClick && !rightClick)
+				if (!doubleClick && !rightClick && !leftClick)
 					return;
 				final int x = e.getX();
 				final int y = e.getY();
@@ -369,6 +378,8 @@ public class GramlabFrame extends JFrame {
 					if (o instanceof ProjectNode) {
 						/* If we have a project node */
 						ProjectNode pn = (ProjectNode) o;
+						// update project menu
+						refreshProjectMenu(pn.getProject());
 						if (rightClick) {
 							TreePath[] selectedPath=tree.getSelectionModel().getSelectionPaths();
 							if (!isSelectedPath(path,selectedPath)) {
@@ -397,6 +408,8 @@ public class GramlabFrame extends JFrame {
 					File f = node.getFile();
 					GramlabProject project = GlobalProjectManager.getAs(GramlabProjectManager.class)
 								.getProject(f);
+					// update project menu			
+          refreshProjectMenu(project);
 					if (doubleClick && f.isFile()) {
 						/* Double-click on a file */
 						project.openFile(f,false);
@@ -852,6 +865,158 @@ public class GramlabFrame extends JFrame {
 		return p;
 	}
 
+	private void refreshProjectMenu(final GramlabProject project) {
+    // TODO(martinec) avoid to redraw a menu already refreshed
+    JMenu m = getJMenuBar().getMenu(1);
+		m.removeAll();
+		addToProjectMenu(m,project);
+	}
+
+  private JMenu addToProjectMenu(JMenu m, final GramlabProject project) {
+    // nothing to do if project is null
+		if(project == null) {
+			return m;
+		}
+		
+    final boolean open = project.isOpen();
+
+		// run project
+    if (open) {
+      if(GlobalProjectManager.getAs(GramlabProjectManager.class)
+                             .getCurrentProject() == project) {
+				Action run=new AbstractAction("Run " + project.getName()) {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						project.getProcessPane().launchProcess();
+					}
+				};
+				JMenuItem runMenuItem = new JMenuItem(run);
+				runMenuItem.setAccelerator( KeyStroke.getKeyStroke("F11"));
+				//runMenuItem.setAccelerator(KeyStroke.getKeyStroke('R',
+				                 //Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask()));
+				m.add(runMenuItem);
+				m.addSeparator();
+			}
+		}
+
+    // set as current
+    if (open) {
+      if(GlobalProjectManager.getAs(GramlabProjectManager.class)
+                             .getCurrentProject() != project) {
+				/* If the project is not the current one, we offer here to
+				 * make it so */
+				Action setCurrent = new AbstractAction(
+						"Set " + project.getName() + " as current project") {
+					public void actionPerformed(ActionEvent e) {
+						GlobalProjectManager.getAs(GramlabProjectManager.class)
+							.setCurrentProject(project);
+					}
+				};
+				m.add(new JMenuItem(setCurrent));
+				m.addSeparator();
+		  }
+    }		
+    
+    // configure
+    if (open) {
+      JMenu configureMenu = new JMenu("Configure");
+      // preprocessing
+      Action preprocessing = new AbstractAction("Preprocessing") {
+        public void actionPerformed(ActionEvent e) {
+          EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              new ConfigBigPictureDialog(project);
+            }
+          });
+        }
+      };
+      configureMenu.add(new JMenuItem(preprocessing));
+      // rendering
+      Action rendering = new AbstractAction("Rendering") {
+        public void actionPerformed(ActionEvent e) {
+          EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+              new RenderingConfigDialog(project);
+            }
+          });
+        }
+      };
+      configureMenu.add(new JMenuItem(rendering));      
+      m.add(configureMenu);
+      m.addSeparator();
+		}
+		    
+    // open/close
+    Action openClose = new AbstractAction((open ? "Close" : "Open " + project.getName())) {
+      public void actionPerformed(ActionEvent e) {
+        if (open)
+          GlobalProjectManager.getAs(GramlabProjectManager.class)
+            .closeProject(project);
+        else {
+          GlobalProjectManager.getAs(GramlabProjectManager.class)
+            .openProject(project);
+          GlobalProjectManager.getAs(GramlabProjectManager.class)
+            .setCurrentProject(project);
+        }
+      }
+    };
+    m.add(new JMenuItem(openClose));
+    
+    // delete
+    Action delete = new AbstractAction("Delete") {
+      public void actionPerformed(ActionEvent e) {
+        String urlToDelete=project.getSvnRepositoryUrl();
+        if (!GlobalProjectManager.getAs(GramlabProjectManager.class)
+            .deleteProject(project,true)) {
+          return;
+        }
+        if (urlToDelete!=null) {
+          /* If the project is versioned, the user may also
+           * want to delete the repository on the server
+           */
+          new SvnDeleteUrlDialog(urlToDelete);
+        }
+      }
+    };
+    m.add(new JMenuItem(delete));
+
+    // refresh
+		if (open) {
+      Action refresh=new AbstractAction("Refresh") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          project.asyncUpdateSvnInfo(null,true);
+        }
+      };
+      m.add(new JMenuItem(refresh));
+		}
+
+		// console
+		if (open) {
+      if(GlobalProjectManager.getAs(GramlabProjectManager.class)
+                             .getCurrentProject() == project) {			
+				m.addSeparator();
+				Action console = new AbstractAction("Show console") {
+					public void actionPerformed(ActionEvent e) {
+						EventQueue.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								GlobalProjectManager.search(null)
+									.getFrameManagerAs(InternalFrameManager.class)
+									.showConsoleFrame();
+							}
+						});
+					}
+				};      
+				m.add(new JMenuItem(console));
+			} 
+    }
+    
+    return m;
+  }
+  
 	protected boolean atLeastOneMenuItemEnabled(JMenu menu) {
 		for (int i=0;i<menu.getMenuComponentCount();i++) {
 			if (menu.getMenuComponent(i).isEnabled()) return true;
@@ -1337,18 +1502,17 @@ public class GramlabFrame extends JFrame {
 	
 	private JMenuBar createMenuBar() {
 		JMenuBar bar = new JMenuBar();
+		bar.add(createWorkspaceMenu());
 		bar.add(createProjectMenu());
 		bar.add(createDelaMenu());
 		bar.add(createGraphsMenu());
-		bar.add(createFileMenu());
-		bar.add(HelpMenuBuilder.build(ConfigManager.getManager()
-				.getApplicationDirectory()));
-		bar.add(createInfoMenu());
+		bar.add(createFileEditionMenu());
+		bar.add(createHelpMenu());
 		return bar;
 	}
 
-	private JMenu createProjectMenu() {
-		JMenu m = new JMenu("Project");
+	private JMenu createWorkspaceMenu() {
+		JMenu m = new JMenu("Workspace");
 		Action n = new AbstractAction("New project") {
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
@@ -1388,6 +1552,7 @@ public class GramlabFrame extends JFrame {
 			public void currentProjectChanged(GramlabProject p, int pos) {
 				delete.setEnabled(p != null);
 				close.setEnabled(p != null);
+				refreshProjectMenu(p);
 			}
 		});
 		m.addSeparator();
@@ -1396,6 +1561,8 @@ public class GramlabFrame extends JFrame {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						new ChangeWorkspaceDialog();
+						refreshProjectMenu(GlobalProjectManager.
+		            getAs(GramlabProjectManager.class).getCurrentProject());
 					}
 				});
 			}
@@ -1404,6 +1571,11 @@ public class GramlabFrame extends JFrame {
 		return m;
 	}
 
+	private JMenu createProjectMenu() {
+		JMenu m = new JMenu("Project");
+		return m;
+	}
+		
 	public void openGraph() {
 		File dir;
 		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
@@ -1457,8 +1629,36 @@ public class GramlabFrame extends JFrame {
 		}
 	}
 
-	private JMenu createFileMenu() {
-		JMenu m = new JMenu("Files");
+	private JMenu createHelpMenu() {
+		JMenu m = HelpMenuBuilder.build(ConfigManager.getManager()
+				      .getApplicationDirectory());
+    m.addSeparator();
+    
+		final JMenuItem about = new JMenuItem("About");
+		about.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File appDir = ConfigManager.getManager()
+						.getApplicationDirectory();
+				File disclaimersDir = new File(appDir.getPath()
+						+ File.separatorChar + "disclaimers");
+				File licensesDir = new File(appDir.getPath()
+						+ File.separatorChar + "licenses");
+				new AboutDialog(GramlabFrame.this,
+												"GramLab",
+												new ImageIcon(Icons.class.getResource("logo.png")),
+												"Unitex-GramLab.txt",
+												disclaimersDir,
+												licensesDir);
+			}
+		});
+
+		m.add(about);		
+    return m;
+	}	
+
+	private JMenu createFileEditionMenu() {
+		JMenu m = new JMenu("File Edition");
 		Action n = new AbstractAction("New") {
 			public void actionPerformed(ActionEvent e) {
 				InternalFrameManager m = GlobalProjectManager.search(null)
@@ -2248,30 +2448,5 @@ public class GramlabFrame extends JFrame {
 		});
 
 		return m;
-	}
-
-	private JMenu createInfoMenu() {
-		JMenu info = new JMenu("Information");
-		final JMenuItem aboutGramLab = new JMenuItem("About GramLab");
-		aboutGramLab.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				File appDir = ConfigManager.getManager()
-						.getApplicationDirectory();
-				File disclaimersDir = new File(appDir.getPath()
-						+ File.separatorChar + "disclaimers");
-				File licensesDir = new File(appDir.getPath()
-						+ File.separatorChar + "licenses");
-				new AboutDialog(GramlabFrame.this,
-												"GramLab",
-												new ImageIcon(Icons.class.getResource("logo.png")),
-												"Unitex-GramLab.txt",
-												disclaimersDir,
-												licensesDir);
-			}
-		});
-
-		info.add(aboutGramLab);
-		return info;
 	}
 }
