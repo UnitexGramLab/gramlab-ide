@@ -2,7 +2,7 @@
 
 > [Unitex/GramLab][unitex] is an open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite
 
-GramLab is the Project-oriented integrated development environment (IDE) of Unitex/GramLab.
+GramLab is the Integrated Development Environment (IDE) of Unitex/GramLab.
 
 
 ### Contributing
