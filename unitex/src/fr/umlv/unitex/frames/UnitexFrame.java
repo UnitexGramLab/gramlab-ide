@@ -1250,6 +1250,23 @@ public class UnitexFrame extends JFrame {
 				openRecent.setEnabled(l != null && l.size() > 0);
 
 			}
+
+            // Some menus are bond to keyboard shortcuts.
+            // Suppose that these menus are already disabled by menuSelected(), it's still possible
+            // that the states change afterwards by user's interaction. Now the user won't be able
+            // to use shortcuts, unless click to show the FSGraph menu, in order to reenable the menu
+            // by menuSelected() again.
+            //
+            // This workaround reenable the menu when the menu is collapsed. Since user won't see them
+            // now, reenabling the menu is not misleading to the user. And the user can still access
+            // the shortcuts.
+			@Override
+			public void menuDeselected(MenuEvent e) {
+				save.setEnabled(true);
+				print.setEnabled(true);
+				undo.setEnabled(true);
+				redo.setEnabled(true);
+			}
 		});
 		return graphMenu;
 	}
