@@ -154,6 +154,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 	private JPanel constructFindPanel() {
 		final JPanel p = new JPanel(new GridBagLayout());
 		final JButton find = new JButton("Find");
+		final JButton reload = new JButton("Reload");
 		find.setEnabled(false);
 		final JFormattedTextField pattern = new JFormattedTextField(
 				new RegexFormatter());
@@ -182,6 +183,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		gbc.insets = new Insets(0, 0, 0, 0);
 		gbc.weightx = 0;
 		p.add(find, gbc);
+		p.add(reload, gbc);
 		p.add(previous, gbc);
 		p.add(next, gbc);
 		p.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -191,6 +193,10 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 			public void actionPerformed(ActionEvent e) {
 				moveToMatchedElement(pattern.getText(), -1, true);
 			}
+		});
+		reload.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { loadDela(dela); }
 		});
 		next.addActionListener(new ActionListener() {
 			@Override
