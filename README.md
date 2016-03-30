@@ -58,18 +58,18 @@ Unitex Project-oriented IDE as "GramLab". If you are mentioning the
 distribution suite (Core, IDE, Linguistic Resources and others bundled
 tools) always use "Unitex/GramLab".
 
+## Contributing
+
+We welcome everyone to contribute to improve this project. Below are some of the things that you can do to contribute:
+
+-  [Fork us](https://github.com/UnitexGramLab/gramlab-ide/fork) and [request a pull](https://github.com/UnitexGramLab/gramlab-ide/pulls) to the [develop branch](https://github.com/UnitexGramLab/gramlab-ide/tree/develop).
+
 ## License
 
 <a href="/LICENSE"><img height="48" align="left" src="http://www.gnu.org/graphics/empowered-by-gnu.svg"></a>
 
 This program is licensed under the [GNU Lesser General Public License version 2.1](/LICENSE). 
 Contact unitex-devel@univ-mlv.fr for further inquiries.
-
-## Contributing
-
-We welcome everyone to contribute to improve this project. Below are some of the things that you can do to contribute:
-
--  [Fork us](https://github.com/UnitexGramLab/gramlab-ide/fork) and [request a pull](https://github.com/UnitexGramLab/gramlab-ide/pulls) to the [develop branch](https://github.com/UnitexGramLab/gramlab-ide/tree/develop).
 
 --
 
