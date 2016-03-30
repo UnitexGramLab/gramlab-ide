@@ -2,7 +2,7 @@ os: linux
 dist: trusty
 
 # sudo: false instructs Travis to build our project in a docker VM (faster)
-sudo: false
+sudo: required
 
 # language: instructs travis what compilers && environment to set up in build matrix
 language: java
