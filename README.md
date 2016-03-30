@@ -1,8 +1,12 @@
-# Unitex/GramLab IDE
+# Unitex/GramLab IDE  [![Build Status](https://travis-ci.org/UnitexGramLab/gramlab-ide.svg?branch=master)](https://travis-ci.org/UnitexGramLab/gramlab-ide)
 
 > [Unitex/GramLab][unitex] is an open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite
 
 GramLab is the Integrated Development Environment (IDE) of [Unitex/GramLab][unitex].
+
+<p align="center">
+  <img src="http://www-igm.univ-mlv.fr/~unitex/img/gramlab-ide.png" width="70%" height="70%" alt="GramLab IDE"/>
+</p>
 
 ## How to Build
 
@@ -55,6 +59,8 @@ distribution suite (Core, IDE, Linguistic Resources and others bundled
 tools) always use "Unitex/GramLab".
 
 ## License
+
+<a href="/LICENSE"><img height="48" align="left" src="http://www.gnu.org/graphics/empowered-by-gnu.svg"></a>
 
 This program is licensed under the [GNU Lesser General Public License version 2.1](/LICENSE). 
 Contact unitex-devel@univ-mlv.fr for further inquiries.
