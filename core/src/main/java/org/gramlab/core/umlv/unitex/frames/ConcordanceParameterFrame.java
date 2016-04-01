@@ -382,7 +382,6 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				useWebBrowser = openWithBrowser.isSelected();
-				setTitle("" + useWebBrowser);
 			}
 		});
 		middlePanel.add(openWithBrowser, BorderLayout.CENTER);
