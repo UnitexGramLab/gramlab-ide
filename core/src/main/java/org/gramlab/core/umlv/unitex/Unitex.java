@@ -20,8 +20,7 @@
  */
 package fr.umlv.unitex;
 
-import java.awt.EventQueue;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -38,6 +37,7 @@ import javax.swing.plaf.metal.OceanTheme;
 
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
@@ -117,6 +117,11 @@ public class Unitex {
 								ConfigManager.setManager(new ConfigManager());
 								Config.initConfig(args.length == 1 ? args[0]
 										: null);
+
+								Preferences preferences = ConfigManager.getManager().getPreferences(null);
+								FontInfo menuFontInfo = preferences.getMenuFont();
+								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
+
 								final JFrame frame = new UnitexFrame();
 								final Image img16x16 = new ImageIcon(
 										Unitex.class.getResource("16x16.png"))
@@ -141,5 +146,15 @@ public class Unitex {
 			}
 		});
 		splash.setVisible(true);
+	}
+
+	public static void setUIFont (javax.swing.plaf.FontUIResource f){
+		java.util.Enumeration keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get (key);
+			if (value != null && value instanceof javax.swing.plaf.FontUIResource)
+				UIManager.put (key, f);
+		}
 	}
 }
