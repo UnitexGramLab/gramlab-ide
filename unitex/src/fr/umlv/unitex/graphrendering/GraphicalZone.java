@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -55,6 +55,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.undo.UndoableEdit;
 
 import fr.umlv.unitex.MyCursors;
@@ -78,7 +80,7 @@ import fr.umlv.unitex.undo.TranslationGroupEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class GraphicalZone extends GenericGraphicalZone implements Printable {
@@ -96,10 +98,11 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	int Y_pressed_raw;
 
 	GenericGraphBox rolloveredBox = null;
+    File subgraphFileSelected = null;
 
 	/**
 	 * Constructs a new <code>GraphicalZone</code>.
-	 * 
+	 *
 	 * @param w
 	 *            width of the drawing area
 	 * @param h
@@ -156,9 +159,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	public Action getSurroundWithNegativeRightContextAction() {
 		return surroundWithNegativeRightContext;
 	}
-        
+
         Action addGenericGraphIndicator;
-        
+
         public Action getAddGenericGraphIndicator() {
 		return addGenericGraphIndicator;
 	}
@@ -187,7 +190,22 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		};
 		newBox.setEnabled(true);
 		newBox.putValue(Action.SHORT_DESCRIPTION, "Create a new box");
-		popup.add(new JMenuItem(newBox));
+        popup.add(new JMenuItem(newBox));
+
+        final Action openSubgraph = new AbstractAction("Open subgraph") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (subgraphFileSelected == null) return;
+                GlobalProjectManager.search(null)
+                        .getFrameManagerAs(InternalFrameManager.class)
+                        .newGraphFrame(subgraphFileSelected);
+            }
+        };
+        openSubgraph.setEnabled(false);
+        openSubgraph.putValue(Action.SHORT_DESCRIPTION,
+                "Open the subgraph if you point the mouse to a call");
+        popup.add(new JMenuItem(openSubgraph));
+
 		popup.addSeparator();
 		submenu = new JMenu("Surround with...");
 		surroundWithInputVar = new AbstractAction("Input variable") {
@@ -281,7 +299,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		surroundWithNegativeRightContext.putValue(Action.SHORT_DESCRIPTION,
 				"Surround box selection with negative right context tags");
 		submenu.add(new JMenuItem(surroundWithNegativeRightContext));
-                
+
                 addGenericGraphIndicator = new AbstractAction(
                         "Generic graph indicator") {
                     @Override
@@ -293,7 +311,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     }
                 };
                 addGenericGraphIndicator.setEnabled(false);
-                addGenericGraphIndicator.putValue(Action.SHORT_DESCRIPTION, 
+                addGenericGraphIndicator.putValue(Action.SHORT_DESCRIPTION,
                         "Insert generic graph mark before the selected box");
                 submenu.add(new JMenuItem(addGenericGraphIndicator));
 		popup.add(submenu);
@@ -365,12 +383,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				f.saveAsGraph();
 			}
 		};
-		
+
 		popup.add(new JMenuItem(saveAs));
-		
-		final JMenu exportMenu = GraphMenuBuilder.createExportMenu(this); 
+
+		final JMenu exportMenu = GraphMenuBuilder.createExportMenu(this);
 		popup.add(exportMenu);
-		
+
 		final Action setup = new AbstractAction("Page Setup") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -639,12 +657,42 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				show(e);
 			}
 		});
+
+        // Support for opening subgraph by right-click
+        popup.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                openSubgraph.setEnabled(false);
+
+                int x_tmp = (int) (popupX / scaleFactor);
+                int y_tmp = (int) (popupY / scaleFactor);
+                int boxSelected = getSelectedBox(x_tmp, y_tmp);
+                if (boxSelected == -1) return;
+                GraphBox box = (GraphBox) graphBoxes.get(boxSelected);
+                final File file = box.getGraphClicked(y_tmp);
+                if (file == null) return;
+
+                subgraphFileSelected = file;
+                openSubgraph.setEnabled(true);
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+
+            }
+        });
+
 	}
 
-	
+
 	/**
 	 * We create a new graph from a box selection.
-	 * 
+	 *
 	 * @param outputBox
 	 * @param inputBox
 	 */
@@ -715,9 +763,9 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * linked to a box Y, then the two of them are replace by a unique box whose
 	 * content is the combination of X's and Y's content. For instance, if
 	 * X=one+the and Y=cat+dog+pet, then the resulting box contains:
-	 * 
+	 *
 	 * one cat+one dog+one pet+the cat+the dog+the pet
-	 * 
+	 *
 	 * If there is no link relation, then the box contents are added and the
 	 * resulting box receive all incoming and outgoing transitions from X and Y.
 	 */
@@ -1224,7 +1272,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	}
 
 	private final Stroke rolloverStroke = new BasicStroke((float)(2.1/scaleFactor));
-	
+
 	public void drawRollover(Graphics2D g, DrawGraphParams params) {
 		if (rolloveredBox != null) {
 			g.setColor(params.getForegroundColor());
@@ -1419,7 +1467,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		public void mousePressed(MouseEvent e) {
 			if (clearRollover())
 				fireGraphChanged(false);
-			textFieldWasModified= text.isModified(); 
+			textFieldWasModified= text.isModified();
 			ignoreThisMouseAction = false;
 			if(textFieldWasModified) {
 				if(!text.validateContent())
@@ -1612,12 +1660,12 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 	}
 
-	
+
 
 	/**
 	 * Draws the graph. This method should only be called by the virtual
 	 * machine.
-	 * 
+	 *
 	 * @param f_old
 	 *            the graphical context
 	 */
@@ -1628,7 +1676,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		DrawGraphParams params = defaultDrawParams();
 		drawGraph(f, params);
 	}
-	
+
 	@Override
 	public void drawGraph(Graphics2D f, DrawGraphParams params) {
 		f.scale(params.getTotalScale(), params.getTotalScale());
@@ -1682,7 +1730,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 
 	/**
 	 * Prints the graph.
-	 * 
+	 *
 	 * @param g
 	 *            the graphical context
 	 * @param p
@@ -1696,7 +1744,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 			return Printable.NO_SUCH_PAGE;
 		final Graphics2D f = (Graphics2D) g;
 		DrawGraphParams params = defaultDrawParams();
-		
+
 		final double DPI = 96.0;
 		final double WidthInInches = p.getImageableWidth() / 72;
 		final double realWidthInInches = (getWidth() / DPI);
