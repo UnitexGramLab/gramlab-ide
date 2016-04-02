@@ -46,6 +46,7 @@ public class Preferences {
 	 * A null value indicates that we inherits from the default preferences.
 	 */
 	private Preferences base;
+	private FontInfo menuFont;
 	private FontInfo textFont;
 	private FontInfo concordanceFont;
 	/**
@@ -119,6 +120,8 @@ public class Preferences {
 		defaultProperties.setProperty("TEXT FONT NAME", "Courier New");
 		defaultProperties.setProperty("TEXT FONT STYLE", "" + Font.PLAIN);
 		defaultProperties.setProperty("TEXT FONT SIZE", "10");
+		defaultProperties.setProperty("MENU FONT NAME", "Serif");
+		defaultProperties.setProperty("MENU FONT SIZE", "12");
 		defaultProperties.setProperty("CONCORDANCE FONT NAME", "Courier new");
 		defaultProperties.setProperty("CONCORDANCE FONT HTML SIZE", "12");
 		defaultProperties.setProperty("INPUT FONT NAME", "Times New Roman");
@@ -199,6 +202,10 @@ public class Preferences {
 		Font font = new Font(prop.getProperty("TEXT FONT NAME"), style,
 				(int) (size / 0.72));
 		setTextFont(new FontInfo(font, size));
+		size = Integer.parseInt(prop.getProperty("MENU FONT SIZE"));
+		font = new Font(prop.getProperty("MENU FONT NAME"), Font.PLAIN,
+				(int) (size / 0.72));
+		setMenuFont(new FontInfo(font, size));
 		size = Integer.parseInt(prop.getProperty("CONCORDANCE FONT HTML SIZE"));
 		font = new Font(prop.getProperty("CONCORDANCE FONT NAME"), Font.PLAIN,
 				(int) (size / 0.72));
@@ -300,6 +307,8 @@ public class Preferences {
 		prop.setProperty("TEXT FONT STYLE", ""
 				+ getTextFont().getFont().getStyle());
 		prop.setProperty("TEXT FONT SIZE", "" + getTextFont().getSize());
+		prop.setProperty("MENU FONT NAME", getMenuFont().getFont().getName());
+		prop.setProperty("MENU FONT SIZE", "" + getMenuFont().getSize());
 		prop.setProperty("CONCORDANCE FONT NAME", getConcordanceFont()
 				.getFont().getName());
 		prop.setProperty("CONCORDANCE FONT HTML SIZE", ""
@@ -388,6 +397,7 @@ public class Preferences {
 		final Preferences p = new Preferences();
 		p.base = base;
 		p.setTextFont(textFont);
+		p.setMenuFont(menuFont);
 		p.setConcordanceFont(concordanceFont);
 		p.setHtmlViewer(htmlViewer);
 		p.setMorphologicalDic((getMorphologicalDic() == null) ? null
@@ -545,6 +555,14 @@ public class Preferences {
 
 	public boolean isMustLog() {
 		return mustLog;
+	}
+
+	public void setMenuFont(FontInfo menuFont) {
+		this.menuFont = menuFont;
+	}
+
+	public FontInfo getMenuFont() {
+		return menuFont;
 	}
 
 	public void setTextFont(FontInfo textFont) {

@@ -20,15 +20,7 @@
  */
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -62,6 +54,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
@@ -80,6 +73,7 @@ import fr.umlv.unitex.listeners.LanguageListener;
 public class GlobalPreferencesFrame extends JInternalFrame {
 
 	final JTextField privateDirectory = new JTextField("");
+	final JTextField menuFont = new JTextField("");
 	final JTextField textFont = new JTextField("");
 	final JTextField concordanceFont = new JTextField("");
 	final JTextField htmlViewer = new JTextField("");
@@ -129,6 +123,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	private JPanel constructUpPanel() {
 		final JPanel upPanel = new JPanel(new BorderLayout());
 		final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
+		tabbedPane.addTab("General", constructGeneralTab());
 		tabbedPane.addTab("Directories", constructPage1());
 		tabbedPane.addTab("Language", constructLanguageTab());
 		tabbedPane.addTab("Presentation", constructPresentationTab());
@@ -149,6 +144,44 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		p.add(onlyCosmetic);
 		p.add(Box.createVerticalGlue());
 		return p;
+	}
+
+	private JPanel constructGeneralTab() {
+		final JPanel general = new JPanel(null);
+
+		general.setLayout(new BoxLayout(general, BoxLayout.Y_AXIS));
+		general.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		menuFont.setEnabled(false);
+		menuFont.setDisabledTextColor(Color.black);
+
+		final JPanel tmp = new JPanel(new GridLayout(2, 1));
+		tmp.setPreferredSize(new Dimension(180, 60));
+		tmp.add(new JLabel("Menu Font:"));
+		final JPanel tmp2 = new JPanel(new BorderLayout());
+		tmp2.add(menuFont, BorderLayout.CENTER);
+		final Action menuFontAction = new AbstractAction("Set...") {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				final FontInfo i = GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class)
+						.newFontDialog(getPref().getMenuFont());
+				if (i != null) {
+					getPref().setMenuFont(i);
+					menuFont.setText(" " + i.getFont().getFontName() + "  "
+							+ i.getSize());
+					JOptionPane.showMessageDialog(null,
+							"Changes will take effect the next time you start Unitex",
+							"Information", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+		};
+		final JButton setMenuFont = new JButton(menuFontAction);
+		tmp2.add(setMenuFont, BorderLayout.EAST);
+		tmp.add(tmp2, BorderLayout.SOUTH);
+		general.add(tmp);
+
+		return general;
 	}
 
 	private JPanel constructEncodingPage() {
@@ -537,7 +570,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		
 		return presentation;
 	}
-	
+
 	private JPanel constructLanguageTab() {
 		final JPanel page2 = new JPanel(null);
 		page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
@@ -556,6 +589,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 * Refreshes the frame.
 	 */
 	void refresh() {
+		menuFont.setText("" + getPref().getMenuFont().getFont().getFontName() + " " + getPref().getMenuFont().getSize());
 		textFont.setText("" + getPref().getTextFont().getFont().getFontName()
 				+ "  " + getPref().getTextFont().getSize() + "");
 		concordanceFont.setText(""
