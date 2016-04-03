@@ -1,0 +1,50 @@
+# auto detect text files and perform LF normalization
+*               text=auto
+
+# force conversion to Unix format
+*.sh            eol=lf
+
+# force conversion to Windows format
+*.bat           eol=crlf
+
+# for the next files NOT found below, normalize CRLF into LF
+*.gitattributes text
+.gitignore      text
+*.md            text
+
+# lines below are from Java.gitattributes
+# https://github.com/Danimoth/gitattributes
+
+#
+# The above will handle all files NOT found below
+#
+# These files are text and should be normalized (Convert CRLF => LF)
+*.css           text
+*.df            text
+*.htm           text
+*.html          text
+*.java          text
+*.js            text
+*.json          text
+*.jsp           text
+*.jspf          text
+*.properties    text
+*.sh            text
+*.svg           text
+*.tld           text
+*.txt           text
+*.xml           text
+
+# These files are binary and should be left untouched
+# (binary is a macro for -text -diff)
+*.class         binary
+*.dll           binary
+*.ear           binary
+*.gif           binary
+*.ico           binary
+*.jar           binary
+*.jpg           binary
+*.jpeg          binary
+*.png           binary
+*.so            binary
+*.war           binary
