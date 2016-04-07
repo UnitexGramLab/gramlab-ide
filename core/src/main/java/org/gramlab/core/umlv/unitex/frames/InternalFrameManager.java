@@ -304,6 +304,9 @@ public abstract class InternalFrameManager implements FrameManager {
 		f.addInternalFrameListener(delaFrameListener);
 		setup(f);
 		fireDelaFrameOpened();
+		if(Unitex.isRunning()) {
+			PreferencesManager.getUserPreferences().addRecentDictionary(dela);
+		}
 		return f;
 	}
 
