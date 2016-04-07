@@ -25,6 +25,10 @@ public class UserPreferences {
 	private static final String PREFIX_ID_RECENT_TEXT = "snt";
 	private static final String PREFIX_ID_RECENT_TEXTLANG = "lng";
 	private static final int MAX_RECENT_TEXTS = 20;
+	
+	private static final String ID_RECENT_DICTIONARIES_NODE = "recent_dictionaries";
+	private static final String PREFIX_ID_RECENT_DICTIONARY = "dict";
+	private static final int MAX_RECENT_DICTIONARIES = 20;
 
 	private java.util.prefs.Preferences prefs;
 
@@ -293,4 +297,96 @@ public class UserPreferences {
 		}
 	}
 
+	private java.util.prefs.Preferences recentDictionariesPrefs() {
+		if (prefs == null)
+			return null;
+		try {
+			return prefs.node(ID_RECENT_DICTIONARIES_NODE);
+		} catch (IllegalStateException e) {
+			return null;
+		}
+	}
+
+	public List<File> getRecentDictionaries() {
+		List<File> l = new ArrayList<File>();
+		java.util.prefs.Preferences dp = recentDictionariesPrefs();
+		if (dp == null)
+			return null;
+		try {
+			String[] keys = dp.keys();
+			Arrays.sort(keys);
+			for (String key : keys) {
+				String val = dp.get(key, null);
+				if (val == null)
+					return null;
+				l.add(new File(val));
+			}
+		} catch (BackingStoreException e) {
+			return null;
+		} catch (IllegalStateException e) {
+			return null;
+		}
+		return l;
+	}
+
+	private boolean setRecentDictionaries(List<File> l) {
+		java.util.prefs.Preferences dp = recentDictionariesPrefs();
+		if (dp == null)
+			return false;
+		try {
+			dp.clear();
+			int m = l.size();
+			if (m > MAX_RECENT_DICTIONARIES)
+				m = MAX_RECENT_DICTIONARIES;
+			for (int i = 0; i < m; i++) {
+				String key;
+				if (i < 10)
+					key = PREFIX_ID_RECENT_DICTIONARY + "00" + i;
+				else if (i < 100)
+					key = PREFIX_ID_RECENT_DICTIONARY + "0" + i;
+				else
+					key = PREFIX_ID_RECENT_DICTIONARY + i;
+				dp.put(key, l.get(i).getAbsolutePath());
+			}
+		} catch (BackingStoreException e) {
+			return false;
+		} catch (IllegalStateException e) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean clearRecentDictionaries() {
+		return setRecentDictionaries(new ArrayList<File>());
+	}
+
+	public boolean addRecentDictionary(File df) {
+		if (df == null)
+			return false;
+		List<File> l = getRecentDictionaries();
+		if (l == null)
+			l = new ArrayList<File>();
+		List<File> l1 = new ArrayList<File>();
+		l1.add(df);
+		for (File f : l)
+			if (!f.equals(df))
+				l1.add(f);
+		return setRecentDictionaries(l1);
+	}
+	
+	public boolean removeRecentDictionary(File df) {
+		List<File> l = getRecentDictionaries();
+		if (l == null)
+			l = new ArrayList<File>();
+		List<File> l1 = new ArrayList<File>();
+		boolean removed = false;
+		for (File f : l)
+			if (!f.equals(df))
+				l1.add(f);
+			else
+				removed = true;
+		if (removed)
+			return setRecentDictionaries(l1);
+		return true;
+	}
 }

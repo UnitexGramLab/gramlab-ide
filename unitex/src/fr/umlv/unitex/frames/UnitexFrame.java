@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -102,7 +102,7 @@ import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
 
 /**
  * This is the main frame of the Unitex system.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class UnitexFrame extends JFrame {
@@ -618,6 +618,66 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		delaMenu.add(open2);
+
+		final JMenu openRecent = new JMenu("Open Recent");
+		openRecent.addMenuListener(new MenuAdapter() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				List<File> l = PreferencesManager.getUserPreferences()
+						.getRecentDictionaries();
+				if (l == null)
+					return;
+				openRecent.removeAll();
+				for (final File f : l) {
+					final JMenuItem item = new JMenuItem(f.getPath());
+					item.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent event) {
+							if (!f.exists()) {
+								JOptionPane.showMessageDialog(null,
+										"File " + f.getAbsolutePath()
+												+ " does not exist", "Error",
+										JOptionPane.ERROR_MESSAGE);
+								PreferencesManager.getUserPreferences()
+										.removeRecentDictionary(f);
+							} else {
+								GlobalProjectManager.search(null)
+										.getFrameManagerAs(InternalFrameManager.class)
+										.newDelaFrame(f);
+							}
+						}
+					});
+					openRecent.add(item);
+				}
+				if (!l.isEmpty()) {
+					final JMenuItem item = new JMenuItem(
+							"Clear Recent DELAs List");
+					item.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent event) {
+							final String[] options = { "Yes", "No" };
+							final int n = JOptionPane
+									.showOptionDialog(
+											UnitexFrame.this,
+											"Do you really want to clear the Recent DELAs List?",
+											"", JOptionPane.YES_NO_OPTION,
+											JOptionPane.QUESTION_MESSAGE, null,
+											options, options[0]);
+							if (n == 0) {
+								PreferencesManager.getUserPreferences()
+										.clearRecentDictionaries();
+							}
+						}
+					});
+					openRecent.addSeparator();
+					openRecent.add(item);
+				}
+
+			}
+		});
+		delaMenu.add(openRecent);
+
+
 		final JMenuItem lookup = new JMenuItem("Lookup...");
 		lookup.addActionListener(new ActionListener() {
 			@Override
@@ -711,6 +771,15 @@ public class UnitexFrame extends JFrame {
 		};
 		closeDela.setEnabled(false);
 		delaMenu.add(new JMenuItem(closeDela));
+
+		delaMenu.addMenuListener(new MenuAdapter() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				List<File> l = PreferencesManager.getUserPreferences()
+						.getRecentDictionaries();
+				openRecent.setEnabled(l != null && l.size() > 0);
+			}
+		});
 		return delaMenu;
 	}
 
@@ -848,7 +917,7 @@ public class UnitexFrame extends JFrame {
 
 		final JMenu exportMenu = GraphMenuBuilder.createExportMenu();
 		graphMenu.add(exportMenu);
-		
+
 		graphMenu.add(new JMenuItem(setup));
 		final Action print = new AbstractAction("Print...") {
 			@Override
@@ -1246,20 +1315,20 @@ public class UnitexFrame extends JFrame {
 
 				List<File> l = PreferencesManager.getUserPreferences()
 						.getRecentGraphs();
-				
+
 				openRecent.setEnabled(l != null && l.size() > 0);
 
 			}
 
-            // Some menus are bond to keyboard shortcuts.
-            // Suppose that these menus are already disabled by menuSelected(), it's still possible
-            // that the states change afterwards by user's interaction. Now the user won't be able
-            // to use shortcuts, unless click to show the FSGraph menu, in order to reenable the menu
-            // by menuSelected() again.
-            //
-            // This workaround reenable the menu when the menu is collapsed. Since user won't see them
-            // now, reenabling the menu is not misleading to the user. And the user can still access
-            // the shortcuts.
+			// Some menus are bond to keyboard shortcuts.
+			// Suppose that these menus are already disabled by menuSelected(), it's still possible
+			// that the states change afterwards by user's interaction. Now the user won't be able
+			// to use shortcuts, unless click to show the FSGraph menu, in order to reenable the menu
+			// by menuSelected() again.
+			//
+			// This workaround reenable the menu when the menu is collapsed. Since user won't see them
+			// now, reenabling the menu is not misleading to the user. And the user can still access
+			// the shortcuts.
 			@Override
 			public void menuDeselected(MenuEvent e) {
 				save.setEnabled(true);
@@ -1976,8 +2045,8 @@ public class UnitexFrame extends JFrame {
 	 * Open Cassys Configuration
 	 * <em>selected_file<\em>. If <em>selected_file<\em> is empty, open
 	 * an empty configuration file
-	 * 
-	 * 
+	 *
+	 *
 	 * @param selected_file
 	 */
 	void openCascade(File selected_file) {
