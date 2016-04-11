@@ -183,6 +183,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		panel.add(constructUpPanel(), BorderLayout.NORTH);
 		superpanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				constructTextPanel(), constructElagPanel());
+		superpanel.setBorder(new EmptyBorder(0,0,5,0));
 		superpanel.setOneTouchExpandable(true);
 		superpanel.setResizeWeight(0.5);
 		superpanel.setDividerLocation(10000);
