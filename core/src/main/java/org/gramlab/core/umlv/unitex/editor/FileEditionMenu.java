@@ -50,21 +50,21 @@ public class FileEditionMenu extends JMenu {
 			@Override
 			public void menuSelected(MenuEvent e) {
 				open.removeAll();
-				final JMenuItem txtItem = new JMenuItem("Text File");
+				final JMenuItem txtItem = new JMenuItem("Text files");
 				txtItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent ev) {
 						openFile("txt");
 					}
 				});
-				final JMenuItem dicItem = new JMenuItem("Dictionary");
+				final JMenuItem dicItem = new JMenuItem("Dictionaries");
 				dicItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent ev) {
 						openFile("dic");
 					}
 				});
-				final JMenuItem cscItem = new JMenuItem("Cascade Configuration File");
+				final JMenuItem cscItem = new JMenuItem("Cascade Configuration Files");
 				cscItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent ev) {
