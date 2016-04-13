@@ -459,7 +459,7 @@ public class Config {
         fileEditionDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         fileEditionDialogBox.setMultiSelectionEnabled(false);
         fileEditionDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
-        fileEditionDialogBox.setDialogTitle("Select file to edit");
+        fileEditionDialogBox.setDialogTitle("Select a file to edit");
         return fileEditionDialogBox;
     }
     
@@ -477,7 +477,7 @@ public class Config {
         jFileChooser.setCurrentDirectory(new File(Config
                 .getUserCurrentLanguageDir(), subfolder));
         jFileChooser.setMultiSelectionEnabled(false);
-        jFileChooser.setDialogTitle("Select file to edit");
+        jFileChooser.setDialogTitle("Select a file to edit");
         return jFileChooser;
     }
     
@@ -487,13 +487,13 @@ public class Config {
     		chooser = getFileEditionDialogBox();
     	else if(extension.equals("txt"))
     		chooser = initializeJFileChooser(txtFileEditionDialogBox,"txt",
-    				"Text Files", "Corpus");
+    				"Text files (*.txt)", "Corpus");
     	else if(extension.equals("dic"))
 			chooser = initializeJFileChooser(dicFileEditionDialogBox,"dic",
-					"Unicode Dela Dictionaries", "Dela");
+					"Unicode DELA Dictionaries  (*.dic)", "Dela");
     	else if(extension.equals("csc"))
 			chooser = initializeJFileChooser(cscFileEditionDialogBox,"csc",
-					"Cascade Configuration Files", "CasSys");
+					"Cascade Configuration Files (*.csc)", "CasSys");
     	else
     		chooser = getFileEditionDialogBox();
     	return chooser;
