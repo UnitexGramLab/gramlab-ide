@@ -54,7 +54,6 @@ import javax.swing.JPanel;
 import javax.swing.JDialog;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
-import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.files.FileUtil;
@@ -209,6 +208,18 @@ public class Config {
      * Dialog box used to open files to edit
      */
     private static JFileChooser fileEditionDialogBox;
+    /**
+     * Dialog box used to open dictionary files to edit
+     */
+    private static JFileChooser dicFileEditionDialogBox;
+    /**
+     * Dialog box used to open text files to edit
+     */
+    private static JFileChooser txtFileEditionDialogBox;
+    /**
+     * Dialog box used to open cascade configuration files to edit
+     */
+    private static JFileChooser cscFileEditionDialogBox;
     /**
      * Dialog box used to choose an output text file for Fst2Unambig
      */
@@ -450,6 +461,42 @@ public class Config {
         fileEditionDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
         fileEditionDialogBox.setDialogTitle("Select file to edit");
         return fileEditionDialogBox;
+    }
+    
+    public static JFileChooser initializeJFileChooser(JFileChooser jFileChooser,
+    		String extension, String description, String subfolder)
+    {
+    	if (jFileChooser != null)
+            return jFileChooser;
+        jFileChooser = new JFileChooser();
+        PersonalFileFilter fileFilter=new PersonalFileFilter(extension,
+                description); 
+        jFileChooser.addChoosableFileFilter(fileFilter);
+        jFileChooser.setFileFilter(fileFilter);
+        jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        jFileChooser.setCurrentDirectory(new File(Config
+                .getUserCurrentLanguageDir(), subfolder));
+        jFileChooser.setMultiSelectionEnabled(false);
+        jFileChooser.setDialogTitle("Select file to edit");
+        return jFileChooser;
+    }
+    
+    public static JFileChooser getFileEditionDialogBox(String extension) {
+    	JFileChooser chooser;
+    	if(extension == null)
+    		chooser = getFileEditionDialogBox();
+    	else if(extension.equals("txt"))
+    		chooser = initializeJFileChooser(txtFileEditionDialogBox,"txt",
+    				"Text Files", "Corpus");
+    	else if(extension.equals("dic"))
+			chooser = initializeJFileChooser(dicFileEditionDialogBox,"dic",
+					"Unicode Dela Dictionaries", "Dela");
+    	else if(extension.equals("csc"))
+			chooser = initializeJFileChooser(cscFileEditionDialogBox,"csc",
+					"Cascade Configuration Files", "CasSys");
+    	else
+    		chooser = getFileEditionDialogBox();
+    	return chooser;
     }
 
     public static JFileChooser getFst2UnambigDialogBox() {
