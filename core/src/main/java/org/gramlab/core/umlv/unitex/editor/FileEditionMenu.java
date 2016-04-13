@@ -26,10 +26,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.event.MenuEvent;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.MenuAdapter;
 
 /**
  * Menu to handle file edition
@@ -43,12 +45,43 @@ public class FileEditionMenu extends JMenu {
 	public FileEditionMenu() {
 		super("File Edition");
 		fileManager = new FileManager();
-		final JMenuItem open = new JMenuItem("Open...");
-		open.addActionListener(new ActionListener() {
+		final JMenu open = new JMenu("Open...");
+		open.addMenuListener(new MenuAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				openFile();
-				// save.setEnabled(true);
+			public void menuSelected(MenuEvent e) {
+				open.removeAll();
+				final JMenuItem txtItem = new JMenuItem("Text File");
+				txtItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent ev) {
+						openFile("txt");
+					}
+				});
+				final JMenuItem dicItem = new JMenuItem("Dictionary");
+				dicItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent ev) {
+						openFile("dic");
+					}
+				});
+				final JMenuItem cscItem = new JMenuItem("Cascade Configuration File");
+				cscItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent ev) {
+						openFile("csc");
+					}
+				});
+				final JMenuItem otherItem = new JMenuItem("Other Files");
+				otherItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent ev) {
+						openFile();
+					}
+				});
+				open.add(txtItem);
+				open.add(dicItem);
+				open.add(cscItem);
+				open.add(otherItem);
 			}
 		});
 		final JMenuItem newFile = new JMenuItem("New File");
@@ -87,6 +120,16 @@ public class FileEditionMenu extends JMenu {
 	 */
 	public static void openFile() {
 		final JFileChooser chooser = Config.getFileEditionDialogBox();
+		final int returnVal = chooser.showOpenDialog(null);
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			// we return if the user has clicked on CANCEL
+			return;
+		}
+		fileManager.loadFile(chooser.getSelectedFile());
+	}
+	
+	public static void openFile(String extension) {
+		final JFileChooser chooser = Config.getFileEditionDialogBox(extension);
 		final int returnVal = chooser.showOpenDialog(null);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			// we return if the user has clicked on CANCEL
