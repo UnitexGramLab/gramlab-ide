@@ -16,8 +16,9 @@ GramLab is the Integrated Development Environment (IDE) of [Unitex/GramLab][unit
     
 ## Documentation
 
-User's Manual (in PDF format) is available in English and French (more
-translations are welcome). You can view and print them with Evince,
+User's Manual (in PDF format) is available in English and French([more
+translations are welcome](https://github.com/UnitexGramLab/unitex-doc-usermanual)).
+You can view and print them with Evince,
 downloadable [here](https://wiki.gnome.org/Apps/Evince/Downloads). The
 latest on-line version of the User's Manual is accessible
 [here](http://releases.unitexgramlab.org/latest-stable/man/).
