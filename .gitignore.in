@@ -8,7 +8,7 @@
 # Modify the ignore_list variable below according to your needs
 # type ./gitignore.io.sh list to display a list of all supported templates
 # =============================================================================
-# ignore_list=archives,eclipse,java,cmake,maven,osx,svn,windows
+# ignore_list=archives,eclipse,intellij,maven,java,cmake,svn,tortoisegit,osx,linux,windows
 # =============================================================================
 
 # =============================================================================
@@ -22,3 +22,7 @@ ${gitignore_io}
 # List all other custom gitignore entries below:
 # =============================================================================
 **/classes
+/pom.xml
+/ext
+/build
+/bin
