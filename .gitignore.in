@@ -22,7 +22,3 @@ ${gitignore_io}
 # List all other custom gitignore entries below:
 # =============================================================================
 **/classes
-/pom.xml
-/ext
-/build
-/bin
