@@ -262,3 +262,4 @@ $RECYCLE.BIN/
 # List all other custom gitignore entries below:
 # =============================================================================
 **/classes
+dist/
