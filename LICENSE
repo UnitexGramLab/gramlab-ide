@@ -28,21 +28,45 @@ corpus processing suite.
 
 This library includes copyrighted third-party libraries licensed under the
 terms of the GNU Lesser General Public License version 2.1 (LGPLv2), the
-Apache Software License version 2.0 (Apache-2.0) and the TMate Open Source
-License (TMate). All third-party packages are copyright by their respective
-authors.
+Apache Software License version 2.0 (Apache-2.0), the MIT license (MIT) and the
+TMate Open Source License (TMate). All third-party packages are copyright
+by their respective authors.
 
-* XAlign
-  - A text alignment tool
-  - Copyright (c) LORIA
-  - http://led.loria.fr/outils/ALIGN/align.html
-  - [GNU Lesser General Public License version 2.1][LGPLv2]
+* Java SemVer
+  - A implementation of the Semantic Versioning (SemVer) Specification
+  - Copyright (c) Zafar Khaja
+  - https://github.com/zafarkhaja/jsemver
+  - [MIT License][MIT]
+
+* Guice
+  - A Dependency Injection Framework
+  - Copyright (c) Decebal Suiu
+  - https://github.com/decebals/pf4j
+  - [Apache Software License version 2.0][Apache-2.0]
+
+* PF4J
+  - A lightweight plugin framework
+  - Copyright (c) Decebal Suiu
+  - https://github.com/decebals/pf4j
+  - [Apache Software License version 2.0][Apache-2.0]
+
+* SLF4J
+  - A simple facade or abstraction for various logging frameworks
+  - Copyright (c) QOS.ch
+  - http://www.slf4j.org
+  - [MIT License][MIT]
 
 * SVNKit
   - A pure Java Subversion library
   - Copyright (c) TMate Software
   - http://svn.svnkit.com/repos/svnkit/
   - [TMate Open Source License][TMate]
+
+* XAlign
+  - A text alignment tool
+  - Copyright (c) LORIA
+  - http://led.loria.fr/outils/ALIGN/align.html
+  - [GNU Lesser General Public License version 2.1][LGPLv2]
 
 * Xerces2-j : xercesImpl.jar and xml-apis.jar (used by XAlign)
   - A library for parsing, validating and manipulating XML documents
@@ -58,4 +82,5 @@ form. These notices are available in the `licenses` directory.
 
 [Apache-2.0]:   http://opensource.org/licenses/Apache-2.0
 [LGPLv2]:       http://opensource.org/licenses/lgpl-2.1
+[MIT]:          http://opensource.org/licenses/mit
 [TMate]:        http://svnkit.com/license.html

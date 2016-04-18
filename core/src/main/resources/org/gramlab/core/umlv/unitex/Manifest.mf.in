@@ -9,3 +9,4 @@ Implementation-Version: @UNITEX_VERSION_SEMVER@
 Implementation-Vendor: @UNITEX_VERSION_COMPANY@
 Built-By: @UNITEX_VERSION_BUILD_SYSTEM@
 Built-Date: @UNITEX_VERSION_BUILD_DATE@
+Class-Path: lib/java-semver.jar lib/slf4j-api.jar lib/slf4j-simple.jar lib/pf4j.jar
