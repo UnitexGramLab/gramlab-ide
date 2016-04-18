@@ -18,6 +18,9 @@ import fr.gramlab.project.config.ProjectPreferences;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 
+import ro.fortsoft.pf4j.DefaultPluginManager;
+import ro.fortsoft.pf4j.PluginManager;
+
 public class GramlabConfigManager {
 	
 	private static GramlabProject currentProject;
@@ -30,14 +33,24 @@ public class GramlabConfigManager {
 	private static String previousCurrentProject;
 	private static ArrayList<String> svnRepositories=new ArrayList<String>();
 
+  /**
+   * PF4J plugin manager
+   */
+  private static DefaultPluginManager pluginManager;  
+
 	public static void initConfig(File path) {
 		system = Config.getSystem();
 		if (path==null) {
 			path = new File(System.getProperty("user.dir"));
 		}
+
 		ConfigManager.setManager(new ProjectPreferences(path));
 		setCurrentProject(null);
 		user = System.getProperty("user.name");
+
+    // start the plugin manager
+    startPluginManager(new File(path, Config.DEFAULT_PLUGINS_DIRECTORY));
+        
 		findWorkspace();
 	}
 
@@ -75,6 +88,26 @@ public class GramlabConfigManager {
 		}
 	}
 
+  /**
+   * Starts the Plugin Manager
+   * @author martinec
+   */
+  private static void startPluginManager(File path) {
+    File pluginsDirectory = path;
+
+    // create the plugins directory if doesn't exist
+    pluginsDirectory.mkdirs();
+
+    // create the plugin manager
+    pluginManager = new DefaultPluginManager(pluginsDirectory);
+
+    // load the plugins
+    pluginManager.loadPlugins();
+
+    // start (active/resolved) the plugins
+    pluginManager.startPlugins();
+  }
+    
 	private static void readConfigFile(File f) {
 		try {
 			svnRepositories.clear();
@@ -164,7 +197,7 @@ public class GramlabConfigManager {
 	
 	public static File getWorkspaceDirectory() {
 		return workspace;
-	}
+	}  
 	
 	public static void saveConfigFile() {
 		setWorkspaceDirectory(workspace,true);
@@ -206,6 +239,10 @@ public class GramlabConfigManager {
 
 	public static GramlabProject getCurrentProject() {
 		return currentProject;
+	}
+
+  public static DefaultPluginManager getPluginManager() {
+		return pluginManager;
 	}
 
 	public static ArrayList<String> getPreviousOpenProjects() {

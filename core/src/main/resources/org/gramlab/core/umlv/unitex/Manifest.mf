@@ -9,3 +9,5 @@ Implementation-Version: 0.0.0-anonymous
 Implementation-Vendor: Universite Paris-Est Marne-la-Vallee
 Built-By: Anonymous Builder
 Built-Date: ?
+Class-Path: lib/java-semver.jar lib/slf4j-api.jar lib/slf4j-simple.jar lib/pf4j.jar
+

@@ -339,4 +339,9 @@ public class ConfigManager extends AbstractConfigModel {
 		/* Do nothing */
 	}
 
+	@Override
+	public File getPluginsDirectory() {
+		return Config.getPluginsDir();
+	}
+
 }

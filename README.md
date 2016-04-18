@@ -1,6 +1,6 @@
 # Unitex/GramLab IDE  [![Build Status](https://travis-ci.org/UnitexGramLab/gramlab-ide.svg?branch=master)](https://travis-ci.org/UnitexGramLab/gramlab-ide)
 
-> [Unitex/GramLab][unitex] is an open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite
+> [Unitex/GramLab][unitexgramlab] is an open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite
 
 GramLab is the Integrated Development Environment (IDE) of [Unitex/GramLab][unitex].
 
@@ -13,10 +13,27 @@ GramLab is the Integrated Development Environment (IDE) of [Unitex/GramLab][unit
     git clone https://github.com/UnitexGramLab/gramlab-ide
     cd gramlab-ide
     ant
-    
+
+## GramLab Plugins
+
+Starting the v3.2.0 GramLab features an experimental mechanism to extend and
+enhancing the IDE functionalities via plugins. A plugin is a way for a
+third party to extend the functionality of an application.
+
+GramLab plugins are build on [PF4J](https://github.com/decebals/pf4j), an
+open source and lightweight plugin framework for java, with minimal dependencies
+and easily extensible. Plugins are distributed in ZIP files which bundled all
+runtime dependences, and that can be installed without difficulty copying them
+into the `App/plugins` folder.
+
+If you are interested to contribute to develop the plugin architecture you can
+start browsing the [PF4J documentation](https://github.com/decebals/pf4j/blob/master/README.md).
+To develop a new plugin the [GramLab Skeleton plugin](core-plugins/skel) will
+give you a starting point.
+
 ## Documentation
 
-User's Manual (in PDF format) is available in English and French([more
+User's Manual (in PDF format) is available in English and French ([more
 translations are welcome](https://github.com/UnitexGramLab/unitex-doc-usermanual)).
 You can view and print them with Evince,
 downloadable [here](https://wiki.gnome.org/Apps/Evince/Downloads). The
@@ -76,4 +93,4 @@ Contact unitex-devel@univ-mlv.fr for further inquiries.
 
 Copyright (C) 2016 Université Paris-Est Marne-la-Vallée
 
-[unitex]:  http://unitexgramlab.org
+[unitexgramlab]:  http://unitexgramlab.org

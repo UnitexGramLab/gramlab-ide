@@ -1,0 +1,21 @@
+# =============================================================================
+# Unitex/GramLab IDE disabled plugins
+# =============================================================================
+# add one plugin id on each line
+# put this file into the `App/plugins` folder
+# =============================================================================
+# about
+# charmap
+# console
+# dictionary-editor
+# file-editor
+# gate-connector
+# graph-editor
+# graph-l10n
+# image-exporter
+# pf4j-update
+# plugin-manager
+# transcoder
+# treecloud
+# welcome-wizard
+# xalign

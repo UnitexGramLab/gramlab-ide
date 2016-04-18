@@ -1,0 +1,129 @@
+#
+# gramlab-ide-plugin-skel Moxie project descriptor
+# add by martinec
+#
+# For an overview on Moxie project descriptors
+# @see http://moxie.gitblit.com/moxiedescriptor.html
+#
+# This file is based on gitblit-powertools-plugin
+# @see https://github.com/gitblit/gitblit-powertools-plugin
+#
+
+# Specify minimum Moxie version required to build
+requires: 0.9.2
+
+# Project Metadata
+name: gramlab-ide-plugin-skel
+description: GramLab IDE Skeleton plugin
+groupId: org.gramlab.plugins
+artifactId: skel
+version: 1.0.0-SNAPSHOT
+packaging: zip
+inceptionYear: 2016
+organization: unitexgramlab.org
+url: 'http://unitexgramlab.org'
+issuesUrl: 'https://github.com/UnitexGramLab/gramlab-ide-plugin-skel/issues'
+
+# Current stable release
+releaseVersion: 1.0.0
+releaseDate: 2016-04-18
+
+# Licenses section included for POM generation
+licenses:
+- {
+    name: Apache License, Version 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  }
+
+# Developers section included for POM generation
+developers:
+- {
+    id: ide-developers
+    name: 'The Unitex/GramLab IDE developers'
+    url: 'https://github.com/orgs/UnitexGramLab/teams/ide'
+    organization: 'Unitex/GramLab'
+    organizationUrl: 'http://unitexgramlab.org'
+    roles: developer
+  }
+
+# SCM section included for POM generation
+scm: {
+  connection: 'scm:git:git://github.com/UnitexGramLab/gramlab-ide-plugin-skel.git'
+  developerConnection: 'scm:git:https://github.com/UnitexGramLab/gramlab-ide-plugin-skel.git'
+  url: 'https://github.com/UnitexGramLab/gramlab-ide-plugin-skel'
+  tag: HEAD
+  }
+
+# Moxie supports multiple source directories and allows you to assign
+# a scope to each directory.
+sourceDirectories:
+- compile 'src/main/java'
+- compile '../../api/src/main/java' :api
+
+resourceDirectories:
+- compile 'src/main/resources'
+
+# Define the main class for the build process
+mainclass: org.gramlab.plugins.skel.Plugin
+
+# compile for Java 7 class format
+tasks: {
+	'mx:javac' : {
+      source: 1.7
+      target: 1.7
+      compiler: javac1.7
+      encoding: UTF-8
+      # stop complaints about bootstrap classpath when compiling with Java 7
+      compilerArgs: '-Xlint:-options'
+    }
+}
+
+# Generate Eclipse project files.
+# Generate IntelliJ IDEA module files.
+# Generate a distribution Maven POM (not suitable for building with Maven).
+apply: eclipse, intellij, pom
+
+# Copy all retrieved dependencies to the "ext" directory.
+# Generated IDE settings (.classpath, etc) will use the artifacts
+# from this project-relative directory. This allows the IDE settings
+# to be version-controlled and shared.
+dependencyDirectory: ext
+
+# Register the GramLab Maven repository
+registeredRepositories:
+ - {
+      id: 'org.gramlab'
+      url: 'http://gramlab-ide.github.io/gramlab-ide-maven/'
+      affinity: [ 'org.gramlab' ]
+  }
+
+
+repositories: 'central', 'org.gramlab'
+
+# Convenience properties for dependencies
+properties: {
+    gramlab.version : 3.2.0
+ }
+
+# Dependencies
+#
+#   May be tagged with ":label" notation to group dependencies.
+#
+#   "@extension" fetches the artifact with the specified extension
+#   and ignores all transitive dependencies.
+#
+#   "!groupId" or "!groupId:artifactId" excludes all matching transitive
+#   dependencies in that dependency's dependency graph.
+#
+
+dependencies:
+# FIXME(martinec) create http://gramlab-ide.github.io/gramlab-ide-maven
+#- provided 'org.gramlab:gramlab:${gramlab.version}'
+# temporal workaround
+- provided 'org.slf4j:slf4j-api:1.7.21'
+- provided 'org.slf4j:slf4j-simple:1.7.21'
+- provided 'ro.fortsoft.pf4j:pf4j:0.13.1'
+- test    'junit'
+# Dependencies with the "build" scope are retrieved
+# and injected into the Ant runtime classpath
+- build 'jacoco'

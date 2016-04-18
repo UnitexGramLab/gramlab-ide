@@ -3,12 +3,16 @@
 	<description>Unitex/GramLab Project-oriented IDE build file</description>
 
 	<!-- set global properties for this build -->
+  <property name="plugins" location="core-plugins" />
+  <property name="api-src" location="api/src" />
 	<property name="src" location="src" />
 	<property name="build" location="build" />
   <property name="classes" location="classes" />
 	<property name="dist" location="dist" />
 	<property name="lib" location="lib" />
 	<property name="resources" location="resources" />
+  <property name="dist-lib" location="${dist}/lib" />
+  <property name="dist-plugins" location="${dist}/plugins" />
   <property environment="env" />
 			
 	<!-- targets -->
@@ -26,6 +30,14 @@
 	</target>
 
 	<target name="clean" description="clean up">
+    <!-- Clean core-plugins -->
+    <subant target="clean" failonerror="false">
+			<fileset dir="${plugins}">
+				<include name="**/build.xml" />
+        <exclude name="build.xml" />
+			</fileset>
+    </subant>
+
     <!-- Classic IDE clean-->
     <subant target="clean">
       <property name="basedir" value="unitex"/>
@@ -60,18 +72,30 @@
     </subant>
 		<!-- Compile the java code from ${src} into ${build} -->
 		<echo message="classpaht=${dist}/Unitex.jar"/>
-		<javac target="1.6" source="1.6" srcdir="${src}" destdir="${build}" classpath="${dist}/Unitex.jar" includeAntRuntime="false"/>
+		<javac target="1.7" source="1.7" destdir="${build}" includeAntRuntime="false">
+      <compilerarg value="-Xlint:-options"/>
+      <src path="${src}"/>
+      <src path="${api-src}"/>
+      <classpath>
+				<fileset dir="${lib}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${dist}">
+					<include name="Unitex.jar" />
+				</fileset>
+			</classpath>
+    </javac>
+    <!-- Compile core-plugins -->
+    <subant target="build" failonerror="false">
+			<fileset dir="${plugins}">
+				<include name="**/build.xml" />
+        <exclude name="build.xml" />
+			</fileset>
+    </subant>
 	</target>
 
-
 	<target name="dist" depends="compile" description="generate the distribution">    
-    <!-- Classic IDE dist-->
-    <subant target="dist">
-      <property name="basedir" value="unitex"/>
-      <property name="dist-dir" value="${dist}"/>
-      <fileset dir="unitex" includes="build.xml"/>
-    </subant>
-    
+
 		<mkdir dir="${classes}" />
 		<copy todir="${classes}">
 			<fileset dir="src/main/resources" />
@@ -85,6 +109,30 @@
     <!-- create Gramlab.jar -->
 		<jar jarfile="${dist}/Gramlab.jar" manifest="${classes}/fr/gramlab/Manifest.mf" basedir="${classes}" />
 
+    <!-- dist/*.ico -->
+		<copy todir="${dist}">
+			<fileset dir="${resources}">
+				<include name="*.ico" />
+			</fileset>
+		</copy>
+
+    <!-- dist/lib -->
+    <mkdir dir="${dist-lib}" />
+		<copy todir="${dist-lib}">
+			<fileset dir="${lib}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+
+    <!-- dist/plugins -->
+    <mkdir dir="${dist-plugins}" />
+    <copy file="${plugins}/enabled.txt"  todir="${dist-plugins}"/>
+    <copy file="${plugins}/disabled.txt" todir="${dist-plugins}"/>    
+		<copy todir="${dist-plugins}" flatten="true">
+			<fileset dir="${plugins}">
+				<include name="**/build/target/**.zip" />
+			</fileset>
+		</copy>
 	</target>
 
   <target name="install-init">	
@@ -92,20 +140,23 @@
     <property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>		
 		<property name="app" location="${unitexHome}/App" />
 		<property name="app-lib" location="${unitexHome}/App/lib" />
+    <property name="app-plugins" location="${unitexHome}/App/plugins" />
 	</target>
 
 	<target name="install" depends="install-init,dist">
 		<copy todir="${app}">
 			<fileset dir="${dist}" />
-			<fileset dir="${resources}">
-				<include name="*.ico" />
-			</fileset>			
 		</copy>
 		<copy todir="${app-lib}">
-			<fileset dir="${lib}">
-				<include name="*.jar" />
+			<fileset dir="${dist-lib}">
+				<include name="*.*" />
 			</fileset>
-		</copy>		
+		</copy>
+		<copy todir="${app-plugins}">
+			<fileset dir="${dist-plugins}">
+				<include name="*.*" />
+			</fileset>
+		</copy>
 	</target>
 </project>
 

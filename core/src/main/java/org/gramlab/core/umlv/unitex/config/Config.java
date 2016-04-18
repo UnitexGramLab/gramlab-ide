@@ -64,6 +64,9 @@ import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.VersionInfoCommand;
 
+import ro.fortsoft.pf4j.DefaultPluginManager;
+import ro.fortsoft.pf4j.PluginManager;
+
 /**
  * This class contains general configuration information. It contains constants
  * used by many other classes.
@@ -76,6 +79,22 @@ public class Config {
      */
     private static File applicationDir;
     private static File unitexToolLogger;
+
+    /**
+     * PF4J plugin manager
+     */
+    private static DefaultPluginManager pluginManager;
+
+    /**
+     * Default plugins directory name
+     */
+    public static final String DEFAULT_PLUGINS_DIRECTORY = "plugins";
+
+    /**
+     * Path of the plugins directory
+     * <code>/App/plugins</code>
+     */
+    private static File pluginsDir;
     
     /**
      * Path of the directory <code>.../Unitex</code>
@@ -100,6 +119,7 @@ public class Config {
      * <code>.../(user dir)/(current language)/Corpus/(my_corpus_snt)</code>
      */
     private static File currentSntDir;
+
     /**
      * Path of the current cassys transducer list
      */
@@ -240,6 +260,7 @@ public class Config {
         determineWhichSystemIsRunning();
         determineUnitexDir(appPath);
         determineCurrentUser();
+        startPluginManager(new File(applicationDir, DEFAULT_PLUGINS_DIRECTORY));
         chooseInitialLanguage();
         setDefaultPreprocessingGraphs();
     }
@@ -697,6 +718,31 @@ public class Config {
     }
 
     /**
+     * Starts the Plugin Manager
+     * @author martinec
+     */
+    private static void startPluginManager(File path) {
+      File pluginsDirectory = path;
+
+      // create the plugins directory if doesn't exist
+      if(unitexToolLogger.exists()) {
+        pluginsDirectory.mkdirs();
+      }
+
+      // create the plugin manager
+      pluginManager = new DefaultPluginManager(pluginsDirectory);
+
+      // load the plugins
+      pluginManager.loadPlugins();
+
+      // start (active/resolved) the plugins
+      pluginManager.startPlugins();
+
+      // save plugins directory
+      setPluginsDir(path);
+    }
+
+    /**
      * Finds which operating system is used. If the system is not supported by
      * Unitex, the program behaves as for a Linux one.
      */
@@ -761,6 +807,10 @@ public class Config {
 
     public static File getUnitexToolLogger() {
         return unitexToolLogger;
+    }
+
+    public static DefaultPluginManager getPluginManager() {
+      return pluginManager;
     }
 
     /**
@@ -926,6 +976,29 @@ public class Config {
             System.err.println("ERROR in getUnitexDir()");
         }
         return unitexDir;
+    }
+
+    /**
+     * @return the Plugins directory
+     * @author martinec
+     */
+    public static File getPluginsDir() {
+        if (pluginsDir == null) {
+            System.err.println("ERROR in getPluginsDir()");
+        }
+        return pluginsDir;
+    }
+
+    /**
+     * Sets the plugins directory
+     *
+     * @param s
+     *            plugins' path
+     *
+     * @author martinec
+     */
+    private static void setPluginsDir(File s) {
+        pluginsDir = s;
     }
 
     /**
