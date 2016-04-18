@@ -4,6 +4,7 @@
 
 	<!-- set global properties for this build -->
 	<property name="src-dir" location="src" />
+  <property name="api-src-dir" location="../api/src" />
 	<property name="build-dir" location="build" />
 	<property name="classes-dir" location="classes" />
 	<property name="dist-dir" location="dist" />
@@ -43,13 +44,15 @@
 
 	<target name="compile" depends="init" description="compile the source">
 		<!-- Compile the java source code -->
-		<javac target="1.6" source="1.6" srcdir="${src-dir}" destdir="${build-dir}" includeAntRuntime="false">
-		<compilerarg value="-Xlint:-options"/>	
-			<classpath>
-				<fileset dir="${lib-dir}">
-					<include name="*.jar" />
-				</fileset>
-			</classpath>
+		<javac target="1.7" source="1.7" destdir="${build-dir}" includeAntRuntime="false">
+		<compilerarg value="-Xlint:-options"/>
+    <src path="${src-dir}"/>
+    <src path="${api-src-dir}"/>
+    <classpath>
+      <fileset dir="${lib-dir}">
+        <include name="*.jar" />
+      </fileset>
+    </classpath>
 		</javac>
 		<!-- "Compile" (indeed just copy) resources -->
 		<copy todir="${classes-dir}">
