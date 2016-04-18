@@ -122,4 +122,6 @@ public interface ConfigModel {
 
 	public void userRefusedClosingFrame();
 
+  public File getPluginsDirectory();
+
 }

@@ -1,0 +1,28 @@
+os: linux
+dist: trusty
+
+# sudo: false instructs Travis to build our project in a docker VM (faster)
+sudo: required
+
+# language: instructs travis what compilers && environment to set up in build matrix
+language: java
+
+# Travis CI clones repositories to a depth of 50 commits
+git:
+  depth: 3
+
+# to test against multiple JDKs 
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+  - openjdk7
+
+notifications:
+  email:
+    recipients:
+      - mail@example.org
+    on_success: change
+    on_failure: always
+
+# overwrite the default build step
+script: ant

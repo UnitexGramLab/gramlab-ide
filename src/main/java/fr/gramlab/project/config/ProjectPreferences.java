@@ -325,4 +325,8 @@ public class ProjectPreferences extends AbstractConfigModel {
 		if (p==null) return null;
 		return p.getInflectionDirectory();
 	}
+
+	public File getPluginsDirectory() {
+		return new File(getApplicationDirectory(),Config.DEFAULT_PLUGINS_DIRECTORY);
+	}
 }
