@@ -7,7 +7,9 @@
 # about
 # charmap
 # console
+# concordance-viewer
 # dictionary-editor
+# dictionary-viewer
 # file-editor
 # gate-connector
 # graph-editor
@@ -15,7 +17,10 @@
 # graph-l10n
 # pf4j-update
 # plugin-manager
+# stats-generator
+# svn-connector
 # transcoder
 # treecloud
 # welcome-wizard
 # xalign
+
