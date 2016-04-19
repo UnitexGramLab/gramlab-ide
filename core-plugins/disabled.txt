@@ -11,8 +11,8 @@
 # file-editor
 # gate-connector
 # graph-editor
+# graph-exporter
 # graph-l10n
-# image-exporter
 # pf4j-update
 # plugin-manager
 # transcoder
