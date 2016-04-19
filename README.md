@@ -28,8 +28,8 @@ into the `App/plugins` folder.
 
 If you are interested to contribute to develop the plugin architecture you can
 start browsing the [PF4J documentation](https://github.com/decebals/pf4j/blob/master/README.md).
-To develop a new plugin the [GramLab Skeleton plugin](core-plugins/skel) will
-give you a starting point.
+To develop a new plugin the [GramLab Skeleton plugin](https://github.com/UnitexGramLab/gramlab-ide/tree/feature/plugins/core-plugins/skel)
+will give you a starting point.
 
 ## Documentation
 
