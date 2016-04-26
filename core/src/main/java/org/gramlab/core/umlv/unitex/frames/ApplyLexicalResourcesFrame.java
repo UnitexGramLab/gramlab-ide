@@ -94,7 +94,8 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	JList systemDicList;
 	BigTextArea credits;
 	private final String noCreditMessage = "No available description for the dictionary \"";
-
+	private final String[] dicInfoExtensions = new String[] { "txt", "info" };
+      
 	// final String lexicalDir = getLexicalDir();
 	ApplyLexicalResourcesFrame() {
 		super("Lexical Resources", true, true);
@@ -298,14 +299,20 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 								.getElementAt(index));
 						final String s2 = FileUtil
 								.getFileNameWithoutExtension(s);
-						final File f = new File(
-								new File(Config.getUserCurrentLanguageDir(),
-										"Dela" /* lexicalDir */), s2 + ".txt");
-						if (f.exists()) {
-							credits.load(f);
-						} else {
-							credits.setText(noCreditMessage + s + "\"");
-						}
+            boolean hasDicInfo = false;
+            for (String dicInfoExtension : dicInfoExtensions) {
+              final File dicInfoFile = new File(new File(
+                         Config.getUserCurrentLanguageDir(),
+                         "Dela" /* lexicalDir */), s2 + "." + dicInfoExtension);
+              if (dicInfoFile.exists()) {
+                credits.load(dicInfoFile);
+                hasDicInfo = true;
+                break;
+              }
+            }
+            if (!hasDicInfo) {
+              credits.setText(noCreditMessage + s + "\"");
+            }
 					} else {
 						credits.setText("");
 					}
@@ -382,14 +389,20 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 					if (index != -1) {
 						final String s2 = FileUtil
 								.getFileNameWithoutExtension(s);
-						final File f = new File(
-								new File(Config.getUnitexCurrentLanguageDir(),
-										"Dela" /* lexicalDir */), s2 + ".txt");
-						if (f.exists()) {
-							credits.load(f);
-						} else {
-							credits.setText(noCreditMessage + s + "\"");
-						}
+            boolean hasDicInfo = false;
+            for (String dicInfoExtension : dicInfoExtensions) {
+              final File dicInfoFile = new File(new File(
+                         Config.getUnitexCurrentLanguageDir(),
+                         "Dela" /* lexicalDir */), s2 + "." + dicInfoExtension);
+              if (dicInfoFile.exists()) {
+                credits.load(dicInfoFile);
+                hasDicInfo = true;
+                break;
+              }
+            }
+            if (!hasDicInfo) {
+              credits.setText(noCreditMessage + s + "\"");
+            }
 					} else {
 						credits.setText("");
 					}
