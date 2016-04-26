@@ -305,6 +305,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                          Config.getUserCurrentLanguageDir(),
                          "Dela" /* lexicalDir */), s2 + "." + dicInfoExtension);
               if (dicInfoFile.exists()) {
+                credits.setText("");
                 credits.load(dicInfoFile);
                 hasDicInfo = true;
                 break;
@@ -395,6 +396,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                          Config.getUnitexCurrentLanguageDir(),
                          "Dela" /* lexicalDir */), s2 + "." + dicInfoExtension);
               if (dicInfoFile.exists()) {
+                credits.setText("");
                 credits.load(dicInfoFile);
                 hasDicInfo = true;
                 break;
