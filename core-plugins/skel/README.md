@@ -1,1 +1,1 @@
-src/main/resources/plugin.md
+src/main/resources/plugin.info
