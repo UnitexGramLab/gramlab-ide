@@ -80,11 +80,6 @@ public class MarkdownArea extends JPanel {
     document   = (HTMLDocument)  area.getDocument();
     styleSheet = editorKit.getStyleSheet();
 
-    normal = StyleContext.getDefaultStyleContext().getStyle(
-        StyleContext.DEFAULT_STYLE);
-    highlighted = document.addStyle("highlighted", normal);
-    StyleConstants.setBackground(highlighted, Color.CYAN);
-    
     scrollBar = new JScrollBar(Adjustable.VERTICAL, 0, 0, 0, 0);
     add(area);
     add(scrollBar, BorderLayout.EAST);
