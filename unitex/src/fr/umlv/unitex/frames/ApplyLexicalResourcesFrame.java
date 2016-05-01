@@ -70,7 +70,7 @@ import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
-import fr.umlv.unitex.text.BigTextArea;
+import fr.umlv.unitex.text.MarkdownArea;
 
 /**
  * This class defines the "Apply Lexical Resources" frame, accessible from the
@@ -92,7 +92,7 @@ import fr.umlv.unitex.text.BigTextArea;
 public class ApplyLexicalResourcesFrame extends JInternalFrame {
 	JList userDicList;
 	JList systemDicList;
-	BigTextArea credits;
+	MarkdownArea dicInfo;
 	private final String noCreditMessage = "No available description for the dictionary \"";
 	private final String[] dicInfoExtensions = new String[] { "txt", "info" };
       
@@ -194,7 +194,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		systemDicList.clearSelection();
 		setDefaultSelection(userDicList, userListDef);
 		setDefaultSelection(systemDicList, systemListDef);
-		credits.setText("");
+		dicInfo.setText("");
 	}
 
 	private JPanel constructCreditsPanel() {
@@ -202,14 +202,14 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		p.add(new JLabel(
 				"Right-click a dictionary to get information about it :"),
 				BorderLayout.NORTH);
-		credits = new BigTextArea();
+		dicInfo = new MarkdownArea();
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
 			@Override
 			public void preferencesChanged(String language) {
-				credits.setFont(ConfigManager.getManager().getTextFont(null));
+				dicInfo.setFont(ConfigManager.getManager().getTextFont(null));
 			}
 		});
-		p.add(credits, BorderLayout.CENTER);
+		p.add(dicInfo, BorderLayout.CENTER);
 		return p;
 	}
 
@@ -305,17 +305,17 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                          Config.getUserCurrentLanguageDir(),
                          "Dela" /* lexicalDir */), s2 + "." + dicInfoExtension);
               if (dicInfoFile.exists()) {
-                credits.setText("");
-                credits.load(dicInfoFile);
+                dicInfo.setText("");
+                dicInfo.load(dicInfoFile);
                 hasDicInfo = true;
                 break;
               }
             }
             if (!hasDicInfo) {
-              credits.setText(noCreditMessage + s + "\"");
+              dicInfo.setText(noCreditMessage + s + "\"");
             }
 					} else {
-						credits.setText("");
+						dicInfo.setText("");
 					}
 				}
 			}
@@ -396,17 +396,17 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
                          Config.getUnitexCurrentLanguageDir(),
                          "Dela" /* lexicalDir */), s2 + "." + dicInfoExtension);
               if (dicInfoFile.exists()) {
-                credits.setText("");
-                credits.load(dicInfoFile);
+                dicInfo.setText("");
+                dicInfo.load(dicInfoFile);
                 hasDicInfo = true;
                 break;
               }
             }
             if (!hasDicInfo) {
-              credits.setText(noCreditMessage + s + "\"");
+              dicInfo.setText(noCreditMessage + s + "\"");
             }
 					} else {
-						credits.setText("");
+						dicInfo.setText("");
 					}
 				}
 			}
@@ -440,7 +440,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				userDicList.clearSelection();
 				systemDicList.clearSelection();
-				credits.setText("");
+				dicInfo.setText("");
 			}
 		};
 		final JButton clearButton = new JButton(clearAction);
@@ -448,7 +448,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				refreshDicLists();
-				credits.setText("");
+				dicInfo.setText("");
 			}
 		};
 		final JButton defaultButton = new JButton(defaultAction);

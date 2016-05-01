@@ -50,6 +50,12 @@ by their respective authors.
   - https://github.com/decebals/pf4j
   - [Apache Software License version 2.0][Apache-2.0]
 
+* Txtmark
+  - A Java markdown processor
+  - Copyright (c) René Jeschke
+  - https://github.com/rjeschke/txtmark
+  - [Apache Software License version 2.0][Apache-2.0]
+
 * SLF4J
   - A simple facade or abstraction for various logging frameworks
   - Copyright (c) QOS.ch
