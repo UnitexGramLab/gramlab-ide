@@ -55,7 +55,7 @@ public class FindSentencePanel extends SearchPanel {
 		final JPanel p01 = new JPanel(new FlowLayout());
 		final JPanel p = new JPanel(new GridLayout(2, 1));
 		final JButton btFind = new JButton("Find");
-		// to have the same dimension betwin all panel buttons
+		// to have the same dimension between all panel buttons
 		btFind.setPreferredSize(new JButton("Count occurrences")
 				.getPreferredSize());
 		class findSentence implements ActionListener {
