@@ -31,11 +31,13 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
@@ -78,6 +80,18 @@ public class InflectFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		panel.getActionMap().put("closeTheDialog", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+			}
+		});
 		return panel;
 	}
 

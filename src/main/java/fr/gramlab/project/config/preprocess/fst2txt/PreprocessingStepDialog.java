@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.maven.PomIO;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FrameUtil;
 
@@ -94,6 +95,9 @@ public class PreprocessingStepDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(pane, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		pane.add(down,BorderLayout.SOUTH);
 		setContentPane(pane);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

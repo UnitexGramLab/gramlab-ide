@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -29,12 +30,12 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
@@ -44,6 +45,7 @@ import fr.gramlab.project.config.maven.Artifact;
 import fr.gramlab.svn.SvnCheckoutDialog;
 import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.LinkButton;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.io.Encoding;
@@ -115,6 +117,7 @@ public class CreateProjectDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(ok);
 		KeyUtil.addCRListener(cancel);
 		p.add(down,BorderLayout.SOUTH);
@@ -201,6 +204,7 @@ public class CreateProjectDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addCRListener(ok);
 		KeyUtil.addCRListener(name,ok);
@@ -271,6 +275,7 @@ public class CreateProjectDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addCRListener(ok);
 		p.add(down,BorderLayout.SOUTH);
@@ -532,6 +537,7 @@ public class CreateProjectDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addCRListener(ok);
 		KeyUtil.addCRListener(name,ok);
@@ -739,6 +745,7 @@ public class CreateProjectDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addCRListener(ok);
 		KeyUtil.addCRListener(name,ok);

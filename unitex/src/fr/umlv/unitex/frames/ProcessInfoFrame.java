@@ -32,12 +32,14 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.console.Couple;
@@ -136,6 +138,18 @@ public class ProcessInfoFrame extends JInternalFrame {
 			}
 		};
 		cancel = new JButton(cancelAction);
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		top.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		top.getActionMap().put("closeTheDialog", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				cancel.doClick();
+			}
+		});
 		final JPanel buttons = new JPanel(new GridLayout(1, 2));
 		buttons.add(ok);
 		buttons.add(cancel);

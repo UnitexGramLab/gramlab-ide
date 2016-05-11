@@ -8,17 +8,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProjectManager;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.io.GraphIO;
 
@@ -56,6 +60,7 @@ public class NewGrfDialog extends JDialog {
 			}
 		});
 		down.add(cancel);
+		KeyUtil.addEscListener(p, cancel);
 		JButton ok=new JButton("Ok");
 		ok.addActionListener(new ActionListener() {
 			@Override
@@ -86,6 +91,8 @@ public class NewGrfDialog extends JDialog {
 		});
 		down.add(ok);
 		main.add(down,BorderLayout.SOUTH);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		setContentPane(main);
 		pack();
 		FrameUtil.center(null,this);

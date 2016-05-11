@@ -33,6 +33,7 @@ import fr.gramlab.project.config.maven.MvnCommand;
 import fr.gramlab.project.config.maven.Pom;
 import fr.gramlab.project.config.maven.PomIO;
 import fr.gramlab.project.config.preprocess.CreateProjectDialog;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FrameUtil;
@@ -137,6 +138,9 @@ public class SvnCheckoutDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(pane, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		pane.add(down,BorderLayout.SOUTH);
 		setContentPane(pane);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

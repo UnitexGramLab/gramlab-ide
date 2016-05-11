@@ -26,6 +26,7 @@ import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
+import fr.gramlab.util.KeyUtil;
 import fr.gramlab.util.filelist.SelectableFileList;
 import fr.gramlab.util.filelist.SelectableFileListModel;
 import fr.umlv.unitex.console.Couple;
@@ -100,6 +101,9 @@ public class SvnRevertDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(pane, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		pane.add(down,BorderLayout.SOUTH);
 		setContentPane(pane);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

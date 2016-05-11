@@ -233,6 +233,7 @@ public class ConfigureProjectDialog extends JDialog {
 			}
 		});
 		p.add(nextOrFinish);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addCRListener(previous);
 		KeyUtil.addCRListener(nextOrFinish);
@@ -263,6 +264,7 @@ public class ConfigureProjectDialog extends JDialog {
 			}
 		});
 		p.add(ok);
+		KeyUtil.addEscListener(p, cancel);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addCRListener(ok);
 		return p;

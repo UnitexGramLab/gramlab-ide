@@ -18,11 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProjectManager;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.LinkButton;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
@@ -116,6 +117,9 @@ public class ChangeWorkspaceDialog extends JDialog {
 		});
 		buttons.add(cancel);
 		p.add(buttons,gbc);
+		KeyUtil.addEscListener(p, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		p.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		return p;
 	}

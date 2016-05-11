@@ -14,6 +14,7 @@ import javax.swing.JRadioButton;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.commands.SvnCommand.ResolveOp;
 import fr.umlv.unitex.svn.SvnConflict;
@@ -56,6 +57,9 @@ public class SvnConflictDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(pane, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		pane.add(down,BorderLayout.SOUTH);
 		setContentPane(pane);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

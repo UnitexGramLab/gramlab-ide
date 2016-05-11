@@ -23,14 +23,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -71,6 +74,19 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 							.getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(dest.getGrf());
 				}
+			}
+		});
+		//TODO : Change the action to Minimize rather than close on pressing Esc
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		main.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		main.getActionMap().put("closeTheDialog", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+
 			}
 		});
 		final JPanel p = buildSynchronizedScrollPanes(basePane, destPane);

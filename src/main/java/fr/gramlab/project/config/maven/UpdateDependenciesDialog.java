@@ -9,12 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
@@ -49,6 +52,18 @@ public class UpdateDependenciesDialog extends JDialog {
 
 		setContentPane(createMainPanel());
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		p2.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		p2.getActionMap().put("closeTheDialog", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+
+			}
+		});
 		setSize(400,600);
 		FrameUtil.center(getOwner(),this);
 		EventQueue.invokeLater(new Runnable() {
