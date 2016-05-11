@@ -33,12 +33,15 @@ import java.text.ParseException;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
@@ -87,6 +90,19 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		pack();
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		//TODO : Change the action to Minimize rather than close on pressing Esc	
+		/* Added by Mukarram Tailor
+		  [Esc] key binding to close the dialog box */
+		top.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		top.getActionMap().put("closeTheDialog", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+			}
+		});
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

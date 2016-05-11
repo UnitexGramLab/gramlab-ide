@@ -38,10 +38,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -116,6 +118,18 @@ class GraphPresentationDialog extends JDialog {
 		panel.add(upPanel, gbc);
 		panel.add(constructAntialiasingPanel(), gbc);
 		panel.add(downPanel, gbc);
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		panel.getActionMap().put("closeTheDialog", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+
+			}
+		});
 		return panel;
 	}
 

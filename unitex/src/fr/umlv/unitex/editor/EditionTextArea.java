@@ -58,19 +58,6 @@ public class EditionTextArea extends JTextArea {
 				setModified();
 			}
 		});
-		// Added by Mukarram Tailor
-		// [Esc] key binding to close the dialog box
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
-		this.getActionMap().put("closeTheDialog", new AbstractAction() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(ActionEvent escape) {
-				System.out.println("Closed Dialog using ESC");
-				// btClose.doClick();
-				
-			}
-		});
 	}
 
 	@Override

@@ -43,6 +43,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -50,6 +51,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -58,6 +60,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -225,6 +228,19 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		final JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
+		//TODO : Change the action to Minimize rather than close on pressing Esc
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		top.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		top.getActionMap().put("closeTheDialog", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+
+			}
+		});
 		graphicalZone = new GraphicalZone(g, getBoxContentEditor(), this, null);
 		graphicalZone.addGraphListener(new GraphListener() {
 			@Override

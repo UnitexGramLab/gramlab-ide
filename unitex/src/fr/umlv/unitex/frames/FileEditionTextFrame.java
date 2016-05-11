@@ -34,6 +34,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -196,6 +197,19 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		pack();
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		//TODO : Change the action to Minimize rather than close on pressing Esc
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		top.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		top.getActionMap().put("closeTheDialog", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+
+			}
+		});
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
