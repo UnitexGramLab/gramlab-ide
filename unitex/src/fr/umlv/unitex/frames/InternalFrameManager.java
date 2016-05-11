@@ -105,7 +105,8 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
 	private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
-
+	
+	
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
 	}
@@ -227,6 +228,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		});
 		setup(t, true);
 		fireTextFrameOpened(taggedText);
+		System.out.println("Text Frame opened");
 		return t;
 	}
 

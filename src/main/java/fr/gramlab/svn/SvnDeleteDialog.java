@@ -26,6 +26,7 @@ import javax.swing.WindowConstants;
 
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
+import fr.gramlab.util.KeyUtil;
 import fr.gramlab.util.filelist.SelectableFileList;
 import fr.gramlab.util.filelist.SelectableFileListModel;
 import fr.umlv.unitex.console.Couple;
@@ -104,6 +105,7 @@ public class SvnDeleteDialog extends JDialog {
 			}
 		});
 		down.add(cancel);
+		KeyUtil.addEscListener(pane, cancel);
 		down.add(ok);
 		pane.add(down,BorderLayout.SOUTH);
 		setContentPane(pane);

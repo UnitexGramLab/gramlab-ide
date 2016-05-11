@@ -28,6 +28,7 @@ import javax.swing.event.ListSelectionListener;
 
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.config.InjectedVariable;
 import fr.umlv.unitex.frames.FrameUtil;
 
@@ -61,6 +62,9 @@ public class ConfigureVariableInjectionDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(pane, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		pane.add(down,BorderLayout.SOUTH);
 		setContentPane(pane);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

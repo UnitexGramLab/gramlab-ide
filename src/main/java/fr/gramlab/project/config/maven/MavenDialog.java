@@ -43,6 +43,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.ProjectVersionableConfig;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.LinkButton;
 import fr.umlv.unitex.config.NamedRepository;
 import fr.umlv.unitex.files.FileUtil;
@@ -510,6 +511,9 @@ public class MavenDialog extends JDialog {
 		});
 		down.add(cancel);
 		down.add(ok);
+		KeyUtil.addEscListener(pane, cancel);
+		KeyUtil.addCRListener(ok);
+		KeyUtil.addCRListener(cancel);
 		pane.add(down,BorderLayout.SOUTH);
 		return pane;
 	}

@@ -28,11 +28,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -40,6 +42,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 
@@ -192,6 +195,18 @@ public class Seq2GrfFrame extends JInternalFrame {
 			}
 		});
 		p.add(go,gbc);
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		p.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		p.getActionMap().put("closeTheDialog", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				setVisible(false);
+			}
+		});
 		return p;
 	}
 	

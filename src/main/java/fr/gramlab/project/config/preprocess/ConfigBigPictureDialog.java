@@ -53,6 +53,7 @@ public class ConfigBigPictureDialog extends JDialog {
 				setVisible(false);
 			}
 		});
+		KeyUtil.addEscListener(p, ok);
 		KeyUtil.addCRListener(ok);
 		down.add(ok);
 		p.add(down,BorderLayout.SOUTH);

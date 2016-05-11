@@ -115,7 +115,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 	JScrollPane grfListScroll = new JScrollPane(grfList);
 	JPanel grfListPanel;
 	JLabel grfListLabel = new JLabel();
-
+	
 	public GraphicalZone getGraphicalZone() {
 		return graphicalZone;
 	}

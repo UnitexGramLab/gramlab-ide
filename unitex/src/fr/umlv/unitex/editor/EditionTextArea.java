@@ -20,12 +20,16 @@
  */
 package fr.umlv.unitex.editor;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -52,6 +56,19 @@ public class EditionTextArea extends JTextArea {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				setModified();
+			}
+		});
+		// Added by Mukarram Tailor
+		// [Esc] key binding to close the dialog box
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		this.getActionMap().put("closeTheDialog", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent escape) {
+				System.out.println("Closed Dialog using ESC");
+				// btClose.doClick();
+				
 			}
 		});
 	}
