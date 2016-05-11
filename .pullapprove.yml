@@ -1,0 +1,37 @@
+approve_by_comment: true
+approve_regex: '^(Approved|:\+1:|:lgtm:|lgtm|LGTM)'
+reject_regex:  '^(Rejected|:\-1:)'
+reset_on_push: false
+reviewers:
+  -
+    name: core-developers
+    required: 1
+    teams:
+      - core
+    conditions:
+      labels:
+        - needs:review-core
+  -
+    name: ide-developers
+    required: 1
+    teams:
+      - ide
+    conditions:
+      branches:
+        - master
+  -
+    name: lr-developers
+    required: 1
+    teams:
+      - lingua
+    conditions:
+      labels:
+        - needs:review-lingua
+  -
+    name: intern-developers
+    required: 1
+    teams:
+      - intern
+    conditions:
+      labels:
+        - needs:review-intern
