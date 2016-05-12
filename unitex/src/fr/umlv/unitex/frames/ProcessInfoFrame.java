@@ -146,7 +146,8 @@ public class ProcessInfoFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0){
 				for(int i=0; i < stderrList.getModel().getSize(); i++){
-			         s = s + stderrList.getModel().getElementAt(i) + "\n";}
+					Couple c = (Couple) stderrList.getModel().get(i);
+					s = s + c.getString() + "\n";}
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				StringSelection selection = new StringSelection(s);
 				clipboard.setContents(selection, null);
