@@ -31,7 +31,7 @@ reviewers:
     name: intern-developers
     required: 1
     teams:
-      - intern
+      - interns
     conditions:
       labels:
-        - needs:review-intern
+        - needs:review-interns
