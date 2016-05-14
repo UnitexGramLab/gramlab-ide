@@ -143,8 +143,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 		};
 		cancel = new JButton(cancelAction);
         final Action copyAction = new AbstractAction("Copy error message") {
+        	boolean clicked = false ;
 			@Override
 			public void actionPerformed(ActionEvent arg0){
+				if(!clicked){
 				for(int i=0; i < stderrList.getModel().getSize(); i++){
 					Couple c = (Couple) stderrList.getModel().get(i);
 					s = s + c.getString() + "\n";}
@@ -152,6 +154,10 @@ public class ProcessInfoFrame extends JInternalFrame {
 				StringSelection selection = new StringSelection(s);
 				clipboard.setContents(selection, null);
 				JOptionPane.showMessageDialog(null, "Error message is copied to clipboard");
+			clicked = true;
+			}else{
+				JOptionPane.showMessageDialog (null,"Error message has already been copied to clipboard."); 
+			}
 			}
 		};
 		copy = new JButton(copyAction);
