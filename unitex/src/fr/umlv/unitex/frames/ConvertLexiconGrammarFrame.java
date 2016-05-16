@@ -39,6 +39,7 @@ import javax.swing.border.EmptyBorder;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.Table2GrfCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the lexicon-grammar conversion frame.
@@ -164,6 +165,7 @@ public class ConvertLexiconGrammarFrame extends JInternalFrame {
 		final JPanel right = new JPanel(new BorderLayout());
 		right.setBorder(new EmptyBorder(10, 20, 10, 50));
 		right.add(OK, BorderLayout.CENTER);
+		KeyUtil.addEscListener(downPanel, CANCEL);
 		downPanel.add(left);
 		downPanel.add(right);
 		return downPanel;

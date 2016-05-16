@@ -49,6 +49,7 @@ import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display current corpus's DLF, DLC and
@@ -103,6 +104,8 @@ public class TextDicFrame extends TabbableInternalFrame {
 				t.start();
 			}
 		});
+		
+		
 		final boolean rightToLeftForText = ConfigManager.getManager()
 				.isRightToLeftForText(null);
 		dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
@@ -147,6 +150,7 @@ public class TextDicFrame extends TabbableInternalFrame {
 				}
 			}
 		};
+		KeyUtil.addCloseListener(split);
 		return split;
 	}
 

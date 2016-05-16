@@ -47,6 +47,7 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the XAlign parameter frame.
@@ -128,6 +129,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 		p.add(Box.createHorizontalStrut(3));
 		p.add(cancel);
 		p.add(Box.createHorizontalStrut(5));
+		KeyUtil.addEscListener(p, cancel);
 		return p;
 	}
 

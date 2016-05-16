@@ -41,6 +41,7 @@ import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the FST-Text to Text conversion frame.
@@ -93,6 +94,7 @@ public class ConvertTfstToTextFrame extends JInternalFrame {
 		});
 		buttonPanel.add(CANCEL);
 		buttonPanel.add(OK);
+		KeyUtil.addEscListener(panel, CANCEL);
 		panel.add(buttonPanel, BorderLayout.SOUTH);
 		return panel;
 	}
