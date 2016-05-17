@@ -38,6 +38,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.exceptions.UserRefusedFrameClosingError;
+import fr.umlv.unitex.findandreplace.FindAndReplaceData;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.DelaFrameListener;
@@ -822,5 +823,29 @@ public abstract class InternalFrameManager implements FrameManager {
 			e.printStackTrace();
 		}
 		return f;
+	}
+
+	public FindAndReplaceDialog newFindAndReplaceDialog(FindAndReplaceData data) {
+		final FindAndReplaceDialog d = new FindAndReplaceDialog(data);
+		if (d == null)
+			return null;
+		d.setVisible(true);
+		return d;
+	}
+
+	public UnitexFindAndReplaceDialog newUnitexFindAndReplaceDialog() {
+		final UnitexFindAndReplaceDialog d = UnitexFindAndReplaceDialog.createUnitexFindAndReplaceDialog();
+		if (d == null)
+			return null;
+		d.setVisible(true);
+		return d;
+	}
+
+	public TextAreaDialog newTextAreaDialog(String title, String s) {
+		final TextAreaDialog d = new TextAreaDialog(title, s);
+		if(d == null)
+			return null;
+		d.setVisible(true);
+		return d;
 	}
 }

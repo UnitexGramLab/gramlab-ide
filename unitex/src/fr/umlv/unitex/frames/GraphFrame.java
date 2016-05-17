@@ -82,6 +82,7 @@ import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.findandreplace.FindAndReplaceData;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -564,6 +565,10 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		configuration.setMaximumSize(new Dimension(36, 36));
 		configuration.setMinimumSize(new Dimension(36, 36));
 		configuration.setPreferredSize(new Dimension(36, 36));
+		final JButton findAndReplace = new JButton(MyCursors.findAndReplaceIcon);
+		findAndReplace.setMaximumSize(new Dimension(36, 36));
+		findAndReplace.setMinimumSize(new Dimension(36, 36));
+		findAndReplace.setPreferredSize(new Dimension(36, 36));
 		save.setToolTipText("Save graph");
 		compile.setToolTipText("Compile graph");
 		copy.setToolTipText("Copy");
@@ -576,6 +581,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		reverseLink.setToolTipText("Reversed link between boxes");
 		openSubgraph.setToolTipText("Open a sub-graph");
 		configuration.setToolTipText("Graph configuration");
+		findAndReplace.setToolTipText("Find and replace");
 		save.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -700,6 +706,20 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				});
 			}
 		});
+		findAndReplace.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						ArrayList<GenericGraphBox> currentBoxes = graphicalZone.getBoxes();
+						FindAndReplaceData findAndReplaceData = new FindAndReplaceData(currentBoxes, graphicalZone);
+						GlobalProjectManager.search(null)
+								.getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog(findAndReplaceData);
+					}
+				});
+			}
+		});
 		final ButtonGroup bg = new ButtonGroup();
 		bg.add(normalButton);
 		bg.add(create);
@@ -728,6 +748,11 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		myToolBar.addSeparator();
 		myToolBar.addSeparator();
 		myToolBar.add(configuration);
+		myToolBar.addSeparator();
+		myToolBar.addSeparator();
+		myToolBar.add(findAndReplace);
+		myToolBar.addSeparator();
+		myToolBar.addSeparator();
 		final JButton calledGrf = new JButton(MyCursors.calledGrfIcon);
 		calledGrf.setMaximumSize(new Dimension(36, 36));
 		calledGrf.setMinimumSize(new Dimension(36, 36));

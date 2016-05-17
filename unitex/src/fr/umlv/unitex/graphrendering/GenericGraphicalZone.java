@@ -1015,4 +1015,12 @@ public abstract class GenericGraphicalZone extends JComponent {
 		return metadata;
 	}
 
+	public void setTextBox(GenericGraphBox g, String s) {
+		final AbstractUndoableEdit edit = new BoxTextEdit(g, s, this);
+		postEdit(edit);
+		g.setContent(s);
+		fireGraphTextChanged("");
+		fireGraphChanged(true);
+		fireBoxSelectionChanged();
+	}
 }

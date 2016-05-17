@@ -83,6 +83,8 @@ public class MyCursors {
 			MyCursors.class.getResource("openSubgraphIcon.gif"));
 	public static ImageIcon configurationIcon = new ImageIcon(
 			MyCursors.class.getResource("configurationIcon.gif"));
+	public static ImageIcon findAndReplaceIcon = new ImageIcon(
+			MyCursors.class.getResource("findAndReplaceIcon.gif"));
 	public static Cursor normalCursor = Cursor.getDefaultCursor();
 	public static Cursor createBoxesCursor = Toolkit
 			.getDefaultToolkit()

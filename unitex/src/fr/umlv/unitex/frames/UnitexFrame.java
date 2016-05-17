@@ -78,6 +78,8 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.findandreplace.FindAndReplaceData;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
@@ -939,6 +941,24 @@ public class UnitexFrame extends JFrame {
 		};
 		graphMenu.add(new JMenuItem(printAll));
 		graphMenu.addSeparator();
+		final JMenu findAndReplaceMenu = new JMenu("Find and replace");
+
+		final Action findAndReplaceAll = new AbstractAction("in all graphs") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				findAndReplaceAll();
+			}
+		};
+		final Action findAndReplace = new AbstractAction("in current graph") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				findAndReplace();
+			}
+		};
+		findAndReplaceMenu.add(findAndReplaceAll);
+		findAndReplaceMenu.add(findAndReplace);
+		graphMenu.add(findAndReplaceMenu);
+		graphMenu.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1312,6 +1332,9 @@ public class UnitexFrame extends JFrame {
 				tools.setEnabled(existsFocusedGrFrame);
 				format.setEnabled(existsFocusedGrFrame);
 				zoom.setEnabled(existsFocusedGrFrame);
+				findAndReplaceMenu.setEnabled(existsAnyGrFrame);
+				findAndReplaceAll.setEnabled(existsAnyGrFrame);
+				findAndReplace.setEnabled(existsFocusedGrFrame);
 
 				List<File> l = PreferencesManager.getUserPreferences()
 						.getRecentGraphs();
@@ -2092,4 +2115,41 @@ public class UnitexFrame extends JFrame {
                 Config.getTransducerListDialogBox().setControlButtonsAreShown(false);
 	}
 
+	public void findAndReplace() {
+		GraphFrame f = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.getCurrentFocusedGraphFrame();
+		if(f != null) {
+			ArrayList<GenericGraphBox> currentBoxes = f.getGraphicalZone().getBoxes();
+			FindAndReplaceData findAndReplaceData = new FindAndReplaceData(currentBoxes, f.getGraphicalZone());
+			GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog(findAndReplaceData);
+		}
+	}
+
+	public void findAndReplaceAll() {
+		ArrayList<GraphFrame> graphFrames = GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.getGraphFrames();
+		if (!graphFrames.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < graphFrames.size(); i++) {
+				if(graphFrames.get(i).getGraph() == null) {
+					sb.append("new graph\n");
+				} else {
+					sb.append(graphFrames.get(i).getGraph().getPath() + '\n');
+				}
+			}
+			GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+					.newTextAreaDialog("Opened Graph", sb.toString());
+			try {
+				graphFrames.get(0).setIcon(false);
+				graphFrames.get(0).setSelected(true);
+			} catch (PropertyVetoException e) {
+				e.printStackTrace();
+			}
+			GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class).newUnitexFindAndReplaceDialog();
+		}
+	}
 }
