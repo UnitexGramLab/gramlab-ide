@@ -74,7 +74,7 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 				}
 			}
 		});
-		KeyUtil.addCloseListener(main);
+		KeyUtil.addCloseFrameListener(main);
 		final JPanel p = buildSynchronizedScrollPanes(basePane, destPane);
 		JPanel foo=new JPanel(new BorderLayout());
 		JPanel names=new JPanel(new GridLayout(1,2));

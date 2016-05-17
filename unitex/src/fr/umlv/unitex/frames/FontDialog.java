@@ -148,7 +148,7 @@ class FontDialog extends JDialog {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 

@@ -89,7 +89,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		//TODO : Change the action to Minimize rather than close on pressing Esc	
-		KeyUtil.addCloseListener(top);
+		KeyUtil.addCloseFrameListener(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

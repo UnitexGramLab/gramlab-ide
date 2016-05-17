@@ -74,7 +74,7 @@ public class TokensFrame extends TabbableInternalFrame {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
 			}
 		});
-		KeyUtil.addCloseListener(top);
+		KeyUtil.addMinimizeFrameListener(top);
 	}
 
 	private JPanel constructButtonsPanel() {

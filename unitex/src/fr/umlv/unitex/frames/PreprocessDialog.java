@@ -161,6 +161,7 @@ public class PreprocessDialog extends JDialog {
 		down.add(constructLexicalParsingPanel(), BorderLayout.WEST);
 		down.add(constructButtonsPanel(), BorderLayout.CENTER);
 		panel.add(down, BorderLayout.SOUTH);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 
@@ -277,7 +278,6 @@ public class PreprocessDialog extends JDialog {
 		buttons.add(goButton);
 		buttons.add(cancelButIndex);
 		buttons.add(cancel);
-		KeyUtil.addEscListener(buttons, cancel);
 		return buttons;
 	}
 

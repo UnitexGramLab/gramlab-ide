@@ -127,7 +127,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Concordance", constructConcordancePanel());
 		tabbedPane.addTab("Statistics", constructStatisticsPanel());
-		KeyUtil.addCloseListener(tabbedPane);
+		KeyUtil.addCloseFrameListener(tabbedPane);
 		return tabbedPane;
 	}
 

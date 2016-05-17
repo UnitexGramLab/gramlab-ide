@@ -193,7 +193,7 @@ public class Seq2GrfFrame extends JInternalFrame {
 			}
 		});
 		p.add(go,gbc);
-		KeyUtil.addCloseListener(p);
+		KeyUtil.addCloseFrameListener(p);
 		return p;
 	}
 	

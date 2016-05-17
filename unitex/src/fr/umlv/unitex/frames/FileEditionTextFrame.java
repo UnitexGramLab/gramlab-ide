@@ -197,8 +197,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		pack();
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		//TODO : Change the action to Minimize rather than close on pressing Esc
-		KeyUtil.addCloseListener(top);
+		KeyUtil.addMinimizeFrameListener(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

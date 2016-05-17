@@ -110,7 +110,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		main.add(constructInfoPanel(), BorderLayout.NORTH);
 		main.add(constructDicPanel(), BorderLayout.CENTER);
 		main.add(constructButtonsPanel(), BorderLayout.SOUTH);
-		KeyUtil.addCloseListener(main);
+		KeyUtil.addCloseFrameListener(main);
 		main.setPreferredSize(new Dimension(390, 460));
 		return main;
 	}

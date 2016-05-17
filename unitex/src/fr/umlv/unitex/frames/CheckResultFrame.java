@@ -55,7 +55,7 @@ public class CheckResultFrame extends TabbableInternalFrame {
 		setContentPane(top);
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		KeyUtil.addCloseListener(top);
+		KeyUtil.addCloseFrameListener(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

@@ -104,8 +104,9 @@ public class TextDicFrame extends TabbableInternalFrame {
 				t.start();
 			}
 		});
-		
-		
+		KeyUtil.addMinimizeFrameListener(dlc);
+		KeyUtil.addMinimizeFrameListener(dlf);
+		KeyUtil.addMinimizeFrameListener(err);
 		final boolean rightToLeftForText = ConfigManager.getManager()
 				.isRightToLeftForText(null);
 		dlf.setComponentOrientation(rightToLeftForText ? ComponentOrientation.RIGHT_TO_LEFT
@@ -150,7 +151,6 @@ public class TextDicFrame extends TabbableInternalFrame {
 				}
 			}
 		};
-		KeyUtil.addCloseListener(split);
 		return split;
 	}
 

@@ -107,7 +107,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

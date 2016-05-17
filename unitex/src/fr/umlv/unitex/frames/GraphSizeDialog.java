@@ -117,7 +117,7 @@ public class GraphSizeDialog extends JDialog {
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panel.add(constructPanel1(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 

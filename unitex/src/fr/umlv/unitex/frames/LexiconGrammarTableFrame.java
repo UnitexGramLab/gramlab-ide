@@ -38,6 +38,7 @@ import javax.swing.ScrollPaneConstants;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class is used to display a lexicon-grammar table
@@ -73,6 +74,7 @@ public class LexiconGrammarTableFrame extends JInternalFrame {
 		pack();
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		KeyUtil.addCloseFrameListener(top);
 	}
 
 	private void buildVectors(File f) {

@@ -150,7 +150,7 @@ public class LocateFrame extends JInternalFrame {
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		tabbedPane.addTab("Locate configuration", panel);
 		tabbedPane.addTab("Advanced options", constructAdvancedOptionPanel());
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseFrameListener(panel);
 		return tabbedPane;
 	}
 

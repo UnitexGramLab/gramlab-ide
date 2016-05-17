@@ -117,7 +117,7 @@ class GraphPresentationDialog extends JDialog {
 		panel.add(upPanel, gbc);
 		panel.add(constructAntialiasingPanel(), gbc);
 		panel.add(downPanel, gbc);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 

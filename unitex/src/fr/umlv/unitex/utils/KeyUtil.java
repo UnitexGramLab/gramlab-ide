@@ -29,6 +29,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.frames.InternalFrameManager;
+
 /**
  * This file stores the Key Bindings
  *
@@ -93,7 +96,7 @@ public class KeyUtil {
 	 * Pressing Esc on a focused dialog will close it
 	 * 
 	 */
-	public static void addCloseListener(final JComponent c) {
+	public static void addCloseDialogListener(final JComponent c) {
 		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
 		c.getActionMap().put("closeTheDialog", new AbstractAction() {
 
@@ -102,6 +105,40 @@ public class KeyUtil {
 			@Override
 			public void actionPerformed(ActionEvent close) {
 				c.getFocusCycleRootAncestor().setVisible(false);
+			}
+		});
+	}
+	
+	/**
+	 * Pressing Esc on a focused InternalFrame will minimize it
+	 * 
+	 */
+	public static void addMinimizeFrameListener(final JComponent c) {
+		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		c.getActionMap().put("closeTheDialog", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent close) {
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).minimizeCurrentFocusedFrame();
+			}
+		});
+	}
+	
+	/**
+	 * Pressing Esc on a focused InternalFrame will close it
+	 * 
+	 */
+	public static void addCloseFrameListener(final JComponent c) {
+		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
+		c.getActionMap().put("closeTheDialog", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent close) {
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedFrame();
 			}
 		});
 	}

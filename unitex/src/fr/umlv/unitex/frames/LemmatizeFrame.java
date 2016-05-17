@@ -173,7 +173,7 @@ public class LemmatizeFrame extends TfstFrame {
 		superpanel.setOneTouchExpandable(true);
 		superpanel.setResizeWeight(0.5);
 		panel.add(superpanel, BorderLayout.CENTER);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

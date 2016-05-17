@@ -49,6 +49,7 @@ public class UpdateDependenciesDialog extends JDialog {
 
 		setContentPane(createMainPanel());
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		KeyUtil.addCloseDialogListener(p2);
 		setSize(400,600);
 		FrameUtil.center(getOwner(),this);
 		EventQueue.invokeLater(new Runnable() {

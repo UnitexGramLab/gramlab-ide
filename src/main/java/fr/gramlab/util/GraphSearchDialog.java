@@ -168,7 +168,7 @@ public class GraphSearchDialog extends JDialog {
 			}
 		});
 		p.add(find,gbc);
-		KeyUtil.addClosingListener(p);
+		KeyUtil.addCloseDialogListener(p);
 		KeyUtil.addCRListener(pattern,find);
 		KeyUtil.addCRListener(find);
 		return p;

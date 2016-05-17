@@ -72,7 +72,7 @@ public class KeyUtil {
 	 * Pressing Esc on a focused dialog will close it
 	 * 
 	 */	
-	public static void addClosingListener(final JComponent c) {
+	public static void addCloseDialogListener(final JComponent c) {
 		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
 		c.getActionMap().put("closeTheDialog", new AbstractAction() {
 

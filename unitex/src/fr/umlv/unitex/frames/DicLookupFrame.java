@@ -109,7 +109,7 @@ public class DicLookupFrame extends JInternalFrame {
 		main.add(constructInfoPanel(), BorderLayout.NORTH);
 		main.add(constructDicListPanel(), BorderLayout.CENTER);
 		main.add(constructLookupPanel(), BorderLayout.SOUTH);
-		KeyUtil.addCloseListener(main);
+		KeyUtil.addCloseFrameListener(main);
 		main.setPreferredSize(new Dimension(550, 400));
 		return main;
 	}

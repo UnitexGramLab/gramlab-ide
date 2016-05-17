@@ -188,7 +188,28 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void saveAllGraphFrames() {
 		graphFrameFactory.saveAllFrames();
 	}
-
+	
+	public void minimizeCurrentFocusedFrame(){
+		JInternalFrame frame = getSelectedFrame();
+		try {
+			frame.setIcon(true);
+		} catch (final java.beans.PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		catch (NullPointerException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	public void closeCurrentFocusedFrame(){
+		JInternalFrame frame = getSelectedFrame();
+		try {
+			frame.doDefaultCloseAction();
+		} catch (final NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void closeAllGraphFrames() {
 		graphFrameFactory.closeAllFrames();
 	}

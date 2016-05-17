@@ -163,7 +163,7 @@ public class ConsoleFrame extends TabbableInternalFrame {
 		setContentPane(top);
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		KeyUtil.addCloseListener(top);
+		KeyUtil.addCloseFrameListener(top);
 	}
 
 	/**

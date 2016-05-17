@@ -115,7 +115,7 @@ public class TranscodeOneFileDialog extends JDialog {
 		buttons.add(transcode);
 		buttons.add(ignore);
 		buttons.add(more);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseDialogListener(panel);
 		getContentPane().add(buttons, BorderLayout.SOUTH);
 		pack();
 		setResizable(false);

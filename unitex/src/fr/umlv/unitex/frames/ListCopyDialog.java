@@ -75,7 +75,7 @@ class ListCopyDialog extends JDialog {
 				setVisible(false);
 			}
 		});
-		KeyUtil.addCloseListener(p);
+		KeyUtil.addCloseDialogListener(p);
 		final JPanel down = new JPanel();
 		down.add(ok);
 		p.add(down);

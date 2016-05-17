@@ -64,7 +64,7 @@ public class GraphCollectionFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

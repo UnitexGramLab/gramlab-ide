@@ -90,7 +90,7 @@ public class AboutDialog extends JDialog {
     licensesPanel.setPreferredSize(new Dimension(500, 300));
     pack();
     setDefaultCloseOperation(HIDE_ON_CLOSE);
-    KeyUtil.addCloseListener(top);
+    KeyUtil.addCloseDialogListener(top);
     setLocationRelativeTo(UnitexFrame.mainFrame);
     setVisible(true);
   }

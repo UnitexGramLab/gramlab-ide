@@ -226,8 +226,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		final JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
-		//TODO : Change the action to Minimize rather than close on pressing Esc
-		KeyUtil.addCloseListener(top);
+		KeyUtil.addMinimizeFrameListener(top);
 		graphicalZone = new GraphicalZone(g, getBoxContentEditor(), this, null);
 		graphicalZone.addGraphListener(new GraphListener() {
 			@Override

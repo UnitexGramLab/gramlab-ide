@@ -91,7 +91,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 		panel.add(constructNormalizationPanel(), BorderLayout.NORTH);
 		panel.add(constructDicPanel(), BorderLayout.CENTER);
 		panel.add(constructButtonsPanel(), BorderLayout.SOUTH);
-		KeyUtil.addCloseListener(panel);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

@@ -91,7 +91,7 @@ class VariableInsertionDialog extends JDialog {
 		down.add(ok);
 		p.add(down);
 		setContentPane(p);
-		KeyUtil.addCloseListener(p);
+		KeyUtil.addCloseDialogListener(p);
 		pack();
 		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}

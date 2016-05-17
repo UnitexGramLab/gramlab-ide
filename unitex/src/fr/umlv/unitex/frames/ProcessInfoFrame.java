@@ -160,7 +160,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 		final JPanel buttons = new JPanel(new GridLayout(1, 3));
 		KeyUtil.addEscListener(top, cancel);
 		final JPanel buttons = new JPanel(new GridLayout(1, 2));
-		 buttons.add(ok);
+		buttons.add(ok);
 		buttons.add(cancel);
 		buttons.add(copy);
 		top.add(buttons, BorderLayout.SOUTH);
