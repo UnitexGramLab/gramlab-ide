@@ -136,46 +136,36 @@ public class FindAndReplaceDialog extends JDialog {
             } else {
                 i = FindAndReplace.replaceAll(data.getBoxes(), findTextField.getText(), replaceTextField.getText(), data.getGraphicalZone());
             }
-            JOptionPane.showMessageDialog(null, i+" occurrences were replaced");
+            JOptionPane.showMessageDialog(null, "Replaced occurrence(s): "+i);
         }
     }
 
     private void createListeners() {
-        quitButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+        quitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 onQuit();
             }
         });
-        nextButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 onNext();
                 getParent().repaint();
             }
         });
-        prevButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+        prevButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 onPrev();
                 getParent().repaint();
             }
         });
-        replaceButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+        replaceButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 onReplace();
                 getParent().repaint();
             }
         });
-        replaceAllButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+        replaceAllButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 onReplaceAll();
                 repaint();
                 getParent().repaint();

@@ -21,6 +21,8 @@
 package fr.umlv.unitex.frames;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * This class defines a dialog that display a non editable JTextField.
@@ -29,6 +31,7 @@ import javax.swing.*;
  */
 public class TextAreaDialog extends JDialog {
     private final String text;
+    private JButton okButton;
 
     public TextAreaDialog(String title, String text) {
         super(UnitexFrame.mainFrame, title, true);
@@ -48,7 +51,24 @@ public class TextAreaDialog extends JDialog {
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         display.setText(text);
         middlePanel.add(scroll);
-        return middlePanel;
+        JPanel bottomPanel = new JPanel();
+        okButton = new JButton();
+        okButton.setText("OK");
+        createListeners();
+        bottomPanel.add(okButton);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(middlePanel);
+        panel.add(bottomPanel);
+        return panel;
+    }
+
+    private void createListeners() {
+        okButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
     }
 
 }
