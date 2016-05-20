@@ -59,7 +59,13 @@ public class KeyUtil {
 	}
 
 	/**
-	 * Pressing Esc on a focused dialog will act as clicking cancel button
+	 * This method implements hotkey  binding for [Esc] for currently focused JComponent with a "Cancel" Button.
+	 * Pressing Esc, would mimic as clicking on cancel button.
+	 * 
+	 * @param b
+	 * 		the cancel button(or exit or Back)
+	 * @param c
+	 * 		the focused Jcomponent
 	 * 
 	 */
 	public static void addEscListener(JComponent c, final JButton b) {
@@ -76,7 +82,13 @@ public class KeyUtil {
 	}
 
 	/**
-	 * Pressing Enter on a focused dialog will act as clicking OK button
+	 * This method implements hotkey  binding for [Enter] for currently focused JComponent with a "Ok" Button.
+	 * Pressing Enter, would mimic as clicking on Ok button.
+	 * 
+	 * @param b
+	 * 		the Ok button(or Next or Done)
+	 * @param c
+	 * 		the focused Jcomponent
 	 * 
 	 */
 	public static void addEnterListener(JComponent c, final JButton b) {
@@ -93,7 +105,11 @@ public class KeyUtil {
 	}
 
 	/**
-	 * Pressing Esc on a focused dialog will close it
+	 * This method implements hotkey  binding for [Esc] for currently focused Dialog box.
+	 * Pressing Esc, would close the dialog box.
+	 * 
+	 * @param c
+	 * 		the focused component that can be a part of JDialog 
 	 * 
 	 */
 	public static void addCloseDialogListener(final JComponent c) {
@@ -110,12 +126,16 @@ public class KeyUtil {
 	}
 	
 	/**
-	 * Pressing Esc on a focused InternalFrame will minimize it
+	 * This method implements hotkey  binding for [Esc] for currently focused Frame.
+	 * Pressing Esc, would minimize the frame.
+	 * 
+	 * @param c
+	 * 		the focused component that can be a part of JInternalFrame
 	 * 
 	 */
 	public static void addMinimizeFrameListener(final JComponent c) {
-		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
-		c.getActionMap().put("closeTheDialog", new AbstractAction() {
+		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "minimizeTheFrame");
+		c.getActionMap().put("minimizeTheFrame", new AbstractAction() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -127,12 +147,16 @@ public class KeyUtil {
 	}
 	
 	/**
-	 * Pressing Esc on a focused InternalFrame will close it
+	 * This method implements hotkey  binding for [Esc] for currently focused Frame.
+	 * Pressing Esc, would close the frame.
+	 * 
+	 * @param c
+	 * 		the focused component that can be a part of JInternalFrame
 	 * 
 	 */
 	public static void addCloseFrameListener(final JComponent c) {
-		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheDialog");
-		c.getActionMap().put("closeTheDialog", new AbstractAction() {
+		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheFrame");
+		c.getActionMap().put("closeTheFrame", new AbstractAction() {
 
 			private static final long serialVersionUID = 1L;
 
