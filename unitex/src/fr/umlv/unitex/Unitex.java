@@ -48,18 +48,19 @@ import fr.umlv.unitex.frames.UnitexFrame;
  * @author Sébastien Paumier
  */
 public class Unitex {
-	
+
 	/**
-	 * This is used to know whether Unitex code is called from Unitex or from Gramlab 
+	 * This is used to know whether Unitex code is called from Unitex or from
+	 * Gramlab
 	 */
-	private static boolean running=false;
-	
+	private static boolean running = false;
+
 	public static boolean isRunning() {
 		return running;
 	}
-	
+
 	public static void main(final String[] args) {
-		running=true;
+		running = true;
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -73,36 +74,30 @@ public class Unitex {
 	 * then creates a <code>UnitexFrame</code>.
 	 */
 	static void launchUnitex(final String[] args) {
-		Thread.currentThread().setUncaughtExceptionHandler(
-				UnitexUncaughtExceptionHandler.getHandler());
+		Thread.currentThread().setUncaughtExceptionHandler(UnitexUncaughtExceptionHandler.getHandler());
 		Locale.setDefault(Locale.ENGLISH);
 		try {
-			javax.swing.plaf.metal.MetalLookAndFeel
-					.setCurrentTheme(new OceanTheme());
+			javax.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme(new OceanTheme());
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 		} catch (final UnsupportedLookAndFeelException e) {
-			System.err
-					.println("Ocean Theme not supported on this platform. \nProgram Terminated");
+			System.err.println("Ocean Theme not supported on this platform. \nProgram Terminated");
 			System.exit(0);
 		} catch (final IllegalAccessException e) {
-			System.err
-					.println("Ocean Theme could not be accessed. \nProgram Terminated");
+			System.err.println("Ocean Theme could not be accessed. \nProgram Terminated");
 			System.exit(0);
 		} catch (final ClassNotFoundException e) {
-			System.err
-					.println("Your version of Java does not contain all the classes required by Unitex.\nProgram Terminated");
+			System.err.println(
+					"Your version of Java does not contain all the classes required by Unitex.\nProgram Terminated");
 			System.exit(0);
 		} catch (final InstantiationException e) {
-			System.err
-					.println("Ocean Theme can not be instantiated. \nProgram Terminated");
+			System.err.println("Ocean Theme can not be instantiated. \nProgram Terminated");
 			System.exit(0);
 		} catch (final Exception e) {
 			System.err.println("Unexpected error. \nProgram Terminated");
 			e.printStackTrace();
 			System.exit(0);
 		}
-		final SplashScreen splash = new SplashScreen(new ImageIcon(
-				Unitex.class.getResource("Unitex.jpg")));
+		final SplashScreen splash = new SplashScreen(new ImageIcon(Unitex.class.getResource("Unitex.jpg")));
 		splash.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
@@ -117,26 +112,18 @@ public class Unitex {
 								ConfigManager.setManager(new ConfigManager());
 								Config.initConfig(args.length == 1 ? args[0]
 										: null);
-
 								Preferences preferences = ConfigManager.getManager().getPreferences(null);
 								FontInfo menuFontInfo = preferences.getMenuFont();
-								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
+								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(),
+										Font.PLAIN, menuFontInfo.getSize()));
 
 								final JFrame frame = new UnitexFrame();
-								final Image img16x16 = new ImageIcon(
-										Unitex.class.getResource("16x16.png"))
-										.getImage();
-								final Image img32x32 = new ImageIcon(
-										Unitex.class.getResource("32x32.png"))
-										.getImage();
-								final Image img48x48 = new ImageIcon(
-										Unitex.class.getResource("48x48.png"))
-										.getImage();
-								frame.setIconImages(Arrays.asList(img16x16,
-										img32x32, img48x48));
+								final Image img16x16 = new ImageIcon(Unitex.class.getResource("16x16.png")).getImage();
+								final Image img32x32 = new ImageIcon(Unitex.class.getResource("32x32.png")).getImage();
+								final Image img48x48 = new ImageIcon(Unitex.class.getResource("48x48.png")).getImage();
+								frame.setIconImages(Arrays.asList(img16x16, img32x32, img48x48));
 								frame.setVisible(true);
-								ConfigManager.getManager().getSvnMonitor(null)
-										.start();
+								ConfigManager.getManager().getSvnMonitor(null).start();
 							}
 						});
 						timer.stop();
@@ -148,13 +135,13 @@ public class Unitex {
 		splash.setVisible(true);
 	}
 
-	public static void setUIFont (javax.swing.plaf.FontUIResource f){
+	public static void setUIFont(javax.swing.plaf.FontUIResource f) {
 		java.util.Enumeration keys = UIManager.getDefaults().keys();
 		while (keys.hasMoreElements()) {
 			Object key = keys.nextElement();
-			Object value = UIManager.get (key);
+			Object value = UIManager.get(key);
 			if (value != null && value instanceof javax.swing.plaf.FontUIResource)
-				UIManager.put (key, f);
+				UIManager.put(key, f);
 		}
 	}
 }

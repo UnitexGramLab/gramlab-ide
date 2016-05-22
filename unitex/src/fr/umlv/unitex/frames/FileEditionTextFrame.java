@@ -56,6 +56,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.editor.FileManager;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /*
  * This class is used to display the text
@@ -196,6 +197,8 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 		pack();
 		setBounds(100, 100, 800, 600);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		//TODO : Change the action to Minimize rather than close on pressing Esc
+		KeyUtil.addCloseListener(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

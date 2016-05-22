@@ -51,6 +51,7 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.list.ProcessOutputList;
 import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to execute shell commands and display
@@ -153,12 +154,13 @@ public class ProcessInfoFrame extends JInternalFrame {
 				clipboard.setContents(selection, null);
 				JOptionPane.showMessageDialog(null, "Error message is copied to clipboard");
 			}
-				
-			};
+		};
 		copy = new JButton(copyAction);
 		copy.setEnabled(false);
 		final JPanel buttons = new JPanel(new GridLayout(1, 3));
-		buttons.add(ok);
+		KeyUtil.addEscListener(top, cancel);
+		final JPanel buttons = new JPanel(new GridLayout(1, 2));
+		 buttons.add(ok);
 		buttons.add(cancel);
 		buttons.add(copy);
 		top.add(buttons, BorderLayout.SOUTH);

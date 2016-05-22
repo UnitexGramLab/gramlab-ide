@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import fr.umlv.unitex.editor.EditionTextArea;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Decreton Julien
@@ -42,6 +43,7 @@ abstract class SearchPanel extends JPanel {
 		// close button
 		btClose = new JButton("Close");
 		btClose.setMnemonic('c');
+		KeyUtil.addEscListener(this, btClose);
 	}
 
 	/**
