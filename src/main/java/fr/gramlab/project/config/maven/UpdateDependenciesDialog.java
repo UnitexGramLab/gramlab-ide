@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.GetDependenciesPaneFactory;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.ExecParameters;
