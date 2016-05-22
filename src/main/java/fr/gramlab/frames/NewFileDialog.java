@@ -56,6 +56,7 @@ public class NewFileDialog extends JDialog {
 			}
 		});
 		down.add(cancel);
+		KeyUtil.addEscListener(p, cancel);
 		JButton ok=new JButton("Ok");
 		ok.addActionListener(new ActionListener() {
 			@Override

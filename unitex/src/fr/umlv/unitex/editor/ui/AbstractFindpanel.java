@@ -96,8 +96,6 @@ abstract class AbstractFindpanel extends SearchPanel {
 		btReplaceAll = new JButton("Replace All");
 		btReplaceAll.setMnemonic('g');
 		p.add(btReplaceAll);
-		btClose = new JButton("Close");
-		btClose.setMnemonic('c');
 		p.add(btClose);
 		p01.add(p);
 		add(p01, BorderLayout.EAST);

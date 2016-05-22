@@ -26,7 +26,7 @@ import fr.umlv.unitex.utils.KeyUtil;
  *
  */
 public class AboutDialog extends JDialog {
-<<<<<<< HEAD
+
   public AboutDialog(JFrame owner, String title, ImageIcon logo, String fileName, File disclaimersDir, File licensesDir) {
     super(owner, "About " + "Unitex/GramLab");
 
