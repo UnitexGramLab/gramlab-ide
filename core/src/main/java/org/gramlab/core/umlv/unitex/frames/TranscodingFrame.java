@@ -54,6 +54,7 @@ import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.transcoding.Transcoder;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class provides a file transcoding internal frame.
@@ -121,6 +122,7 @@ public class TranscodingFrame extends JInternalFrame {
 		down.add(constructFileListPanel(), BorderLayout.CENTER);
 		down.add(constructButtonPanel(), BorderLayout.EAST);
 		panel.add(down, BorderLayout.CENTER);
+		KeyUtil.addEscListener(panel, cancel);
 		return panel;
 	}
 

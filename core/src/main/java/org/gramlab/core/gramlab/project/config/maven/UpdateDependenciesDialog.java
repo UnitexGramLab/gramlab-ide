@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.config.preprocess.GetDependenciesPaneFactory;
+import fr.gramlab.util.KeyUtil;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.process.ExecParameters;
@@ -49,6 +50,7 @@ public class UpdateDependenciesDialog extends JDialog {
 
 		setContentPane(createMainPanel());
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		KeyUtil.addCloseDialogListener(p2);
 		setSize(400,600);
 		FrameUtil.center(getOwner(),this);
 		EventQueue.invokeLater(new Runnable() {

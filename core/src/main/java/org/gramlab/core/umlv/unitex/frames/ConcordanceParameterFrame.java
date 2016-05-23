@@ -71,6 +71,7 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.StatsCommand;
 import fr.umlv.unitex.process.commands.TokenizeCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame in which the user can select how to use the
@@ -126,6 +127,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Concordance", constructConcordancePanel());
 		tabbedPane.addTab("Statistics", constructStatisticsPanel());
+		KeyUtil.addCloseFrameListener(tabbedPane);
 		return tabbedPane;
 	}
 

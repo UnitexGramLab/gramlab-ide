@@ -64,6 +64,7 @@ import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.LanguageListener;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.
@@ -333,6 +334,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		tmp.add(tmp1);
 		tmp.add(tmp2);
 		downPanel.add(tmp, BorderLayout.EAST);
+		KeyUtil.addEscListener(downPanel, CANCEL);
 		return downPanel;
 	}
 

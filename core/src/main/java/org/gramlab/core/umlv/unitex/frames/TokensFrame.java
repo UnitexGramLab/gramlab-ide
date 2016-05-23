@@ -39,6 +39,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display current corpus's token lists.
@@ -73,6 +74,7 @@ public class TokensFrame extends TabbableInternalFrame {
 				text.setFont(ConfigManager.getManager().getTextFont(null));
 			}
 		});
+		KeyUtil.addMinimizeFrameListener(top);
 	}
 
 	private JPanel constructButtonsPanel() {

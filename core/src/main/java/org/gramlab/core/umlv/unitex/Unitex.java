@@ -117,7 +117,6 @@ public class Unitex {
 								ConfigManager.setManager(new ConfigManager());
 								Config.initConfig(args.length == 1 ? args[0]
 										: null);
-
 								Preferences preferences = ConfigManager.getManager().getPreferences(null);
 								FontInfo menuFontInfo = preferences.getMenuFont();
 								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));

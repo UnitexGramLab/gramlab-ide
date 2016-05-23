@@ -38,6 +38,7 @@ import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.GraphCollection;
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class provides a frame that allows the user to select a source directory
@@ -63,6 +64,7 @@ public class GraphCollectionFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

@@ -101,6 +101,7 @@ import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokensInfo;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display sentence automata.
@@ -188,6 +189,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		superpanel.setResizeWeight(0.5);
 		superpanel.setDividerLocation(10000);
 		panel.add(superpanel, BorderLayout.CENTER);
+		KeyUtil.addMinimizeFrameListener(panel);
 		return panel;
 	}
 

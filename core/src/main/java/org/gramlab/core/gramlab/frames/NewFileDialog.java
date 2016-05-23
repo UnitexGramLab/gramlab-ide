@@ -17,9 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProjectManager;
+import fr.gramlab.util.KeyUtil;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
@@ -56,6 +57,7 @@ public class NewFileDialog extends JDialog {
 			}
 		});
 		down.add(cancel);
+		KeyUtil.addEscListener(p, cancel);
 		JButton ok=new JButton("Ok");
 		ok.addActionListener(new ActionListener() {
 			@Override

@@ -17,6 +17,7 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.Version;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.text.BigTextArea;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * 
@@ -25,6 +26,7 @@ import fr.umlv.unitex.text.BigTextArea;
  *
  */
 public class AboutDialog extends JDialog {
+
   public AboutDialog(JFrame owner, String title, ImageIcon logo, String fileName, File disclaimersDir, File licensesDir) {
     super(owner, "About " + "Unitex/GramLab");
 
@@ -88,6 +90,7 @@ public class AboutDialog extends JDialog {
     licensesPanel.setPreferredSize(new Dimension(500, 300));
     pack();
     setDefaultCloseOperation(HIDE_ON_CLOSE);
+    KeyUtil.addCloseDialogListener(top);
     setLocationRelativeTo(UnitexFrame.mainFrame);
     setVisible(true);
   }

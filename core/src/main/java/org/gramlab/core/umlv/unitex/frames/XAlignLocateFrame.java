@@ -60,6 +60,7 @@ import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.LocateCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.Reg2GrfCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 import fr.umlv.unitex.xalign.ConcordanceLoader;
 import fr.umlv.unitex.xalign.ConcordanceModel;
 
@@ -106,6 +107,7 @@ public class XAlignLocateFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructPatternPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

@@ -43,6 +43,7 @@ import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConvertCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Sébastien Paumier
@@ -60,7 +61,7 @@ public class TransliterationFrame extends JInternalFrame {
 			"Buckwalter++", true);
 
 	TransliterationFrame() {
-		super("Transliteratation", false, true);
+		super("Transliteration", false, true);
 		setContentPane(constructPanel());
 		pack();
 	}
@@ -135,6 +136,7 @@ public class TransliterationFrame extends JInternalFrame {
 		final JButton CANCEL = new JButton(cancelAction);
 		rightPanel.add(GO);
 		rightPanel.add(CANCEL);
+		KeyUtil.addEscListener(rightPanel, CANCEL);
 		return rightPanel;
 	}
 

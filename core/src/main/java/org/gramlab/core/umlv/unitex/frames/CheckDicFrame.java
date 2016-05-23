@@ -40,6 +40,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.CheckDicCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"
@@ -105,6 +106,7 @@ public class CheckDicFrame extends JInternalFrame {
 			}
 		};
 		final JButton CANCEL = new JButton(cancelAction);
+		KeyUtil.addEscListener(rightPanel, CANCEL);
 		rightPanel.add(GO);
 		rightPanel.add(CANCEL);
 		return rightPanel;

@@ -71,6 +71,7 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 import fr.umlv.unitex.text.BigTextArea;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class defines the "Apply Lexical Resources" frame, accessible from the
@@ -109,6 +110,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 		main.add(constructInfoPanel(), BorderLayout.NORTH);
 		main.add(constructDicPanel(), BorderLayout.CENTER);
 		main.add(constructButtonsPanel(), BorderLayout.SOUTH);
+		KeyUtil.addCloseFrameListener(main);
 		main.setPreferredSize(new Dimension(390, 460));
 		return main;
 	}

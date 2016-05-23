@@ -82,6 +82,7 @@ import fr.umlv.unitex.process.commands.XAlignCommand;
 import fr.umlv.unitex.process.commands.XMLizerCommand;
 import fr.umlv.unitex.process.list.ProcessOutputList;
 import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import fr.umlv.unitex.utils.KeyUtil;
 
 public class HelpOnCommandFrame extends JInternalFrame {
 	private final Class<?>[] commands = { BuildKrMwuDicCommand.class, CassysCommand.class,
@@ -126,6 +127,7 @@ public class HelpOnCommandFrame extends JInternalFrame {
 						cellHasFocus);
 			}
 		});
+		KeyUtil.addCloseFrameListener(top);
 		final ProcessOutputList stdoutList = new ProcessOutputList(
 				new ProcessOutputListModel());
 		stdoutList.setCellRenderer(ProcessInfoFrame.myRenderer);
