@@ -23,6 +23,9 @@ package fr.umlv.unitex.exceptions;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URISyntaxException;
@@ -104,8 +107,14 @@ public class UnitexUncaughtExceptionHandler implements UncaughtExceptionHandler 
 
 		p.add(jTextPane, BorderLayout.SOUTH);
 
-		JOptionPane.showConfirmDialog(null, p, "Java Exception", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-	}
+		String[] options = {"OK", "Copy message to clipboard"}; 
+		int res = JOptionPane.showOptionDialog(null, p, "Java Exception", JOptionPane.WARNING_MESSAGE, 0, null, options, options[0]);
+		if (res==1){
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection selection = new StringSelection(s);
+			clipboard.setContents(selection, null);
+			JOptionPane.showMessageDialog(null, "Error message is copied to clipboard");
+	}}
 
 	public static UnitexUncaughtExceptionHandler getHandler() {
 		if (handler == null) {
