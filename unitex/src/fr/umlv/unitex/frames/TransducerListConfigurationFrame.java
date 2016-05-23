@@ -46,6 +46,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * User Configuration frame for Cassys.
@@ -487,6 +488,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		close.setMaximumSize(defaultButtonDimension);
 		close.setAlignmentX(Component.CENTER_ALIGNMENT);
 		button_panel.add(close);
+		KeyUtil.addEscListener(button_panel, close);
 		return button_panel;
 	}
 

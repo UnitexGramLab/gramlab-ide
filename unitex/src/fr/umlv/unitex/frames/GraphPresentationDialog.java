@@ -51,6 +51,7 @@ import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the graph presentation dialog box, that allows the user
@@ -116,6 +117,7 @@ class GraphPresentationDialog extends JDialog {
 		panel.add(upPanel, gbc);
 		panel.add(constructAntialiasingPanel(), gbc);
 		panel.add(downPanel, gbc);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 

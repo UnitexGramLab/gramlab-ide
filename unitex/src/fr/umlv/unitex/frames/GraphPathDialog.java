@@ -54,6 +54,7 @@ import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.
@@ -206,6 +207,9 @@ public class GraphPathDialog extends JDialog {
 		final JButton CANCEL = new JButton(cancelAction);
 		buttons.add(CANCEL);
 		panel.add(buttons, BorderLayout.EAST);
+		KeyUtil.addCRListener(GO);
+		KeyUtil.addCRListener(CANCEL);
+		KeyUtil.addEscListener(panel, CANCEL);
 		return panel;
 	}
 

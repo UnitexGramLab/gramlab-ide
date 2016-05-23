@@ -46,6 +46,7 @@ import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokenTags;
 import fr.umlv.unitex.tfst.TokensInfo;
+import fr.umlv.unitex.utils.KeyUtil;
 
 public class ExportTextAsPOSListDialog extends JDialog {
 	File output;
@@ -80,6 +81,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 	private JPanel constructPanel() {
 		final JPanel p = new JPanel();
 		p.add(progress);
+		KeyUtil.addCloseDialogListener(p);
 		return p;
 	}
 

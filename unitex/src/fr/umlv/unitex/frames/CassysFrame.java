@@ -31,6 +31,7 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
 import fr.umlv.unitex.process.commands.CassysCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.utils.KeyUtil;
 import fr.umlv.unitex.config.Config;
 
 /**
@@ -148,6 +149,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		this.getContentPane().add(jpan, BorderLayout.EAST);
 		this.pack();
 		this.setVisible(true);
+		KeyUtil.addCloseFrameListener(jpan);
 	}
 
 	/**

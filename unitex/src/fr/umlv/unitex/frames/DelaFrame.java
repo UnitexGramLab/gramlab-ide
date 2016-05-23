@@ -59,6 +59,7 @@ import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.text.BigTextList;
 import fr.umlv.unitex.text.TextAsListModelImpl;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display a dictionary.
@@ -87,6 +88,8 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		pack();
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		//TODO : Change the action to Minimize rather than close on pressing Esc	
+		KeyUtil.addCloseFrameListener(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

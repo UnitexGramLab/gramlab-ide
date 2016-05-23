@@ -46,6 +46,7 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.MultiFlexCommand;
 import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that allows the user to set parameters of the
@@ -78,6 +79,7 @@ public class InflectFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

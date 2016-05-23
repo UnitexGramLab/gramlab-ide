@@ -57,6 +57,7 @@ import fr.umlv.unitex.debug.DebugGraphPane;
 import fr.umlv.unitex.debug.DebugInfos;
 import fr.umlv.unitex.debug.DebugTableModel;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that can show an HTML concordance file.
@@ -163,6 +164,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 				repaint();
 			}
 		});
+		KeyUtil.addMinimizeFrameListener(scroll);
 		setBounds(150, 50, 850, 550);
 		load(f, widthInChars);
 	}

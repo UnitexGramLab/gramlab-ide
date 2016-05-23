@@ -49,6 +49,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display current corpus's token lists.
@@ -142,6 +143,7 @@ public class TfstTagsFrame extends JInternalFrame {
 		buttonsPanel.add(tmp1);
 		buttonsPanel.add(tmp2);
 		top.add(buttonsPanel);
+		KeyUtil.addMinimizeFrameListener(top);
 		return top;
 	}
 

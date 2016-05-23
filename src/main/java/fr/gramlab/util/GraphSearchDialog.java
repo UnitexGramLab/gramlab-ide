@@ -14,21 +14,24 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.gramlab.Main;
 import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.GramlabProjectManager;
 import fr.gramlab.workspace.ProjectAdapter;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.FrameUtil;
 import fr.umlv.unitex.frames.GraphFrame;
 
@@ -165,6 +168,7 @@ public class GraphSearchDialog extends JDialog {
 			}
 		});
 		p.add(find,gbc);
+		KeyUtil.addCloseDialogListener(p);
 		KeyUtil.addCRListener(pattern,find);
 		KeyUtil.addCRListener(find);
 		return p;

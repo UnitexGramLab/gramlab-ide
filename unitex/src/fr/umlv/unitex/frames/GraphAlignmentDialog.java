@@ -39,6 +39,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import fr.umlv.unitex.utils.KeyUtil;
+
 /**
  * This class describes a dialog box that allows the user to align the current
  * selected boxes in the the current graph. The user can also define if a grid
@@ -194,6 +196,9 @@ public class GraphAlignmentDialog extends JDialog {
 		final JPanel buttonPanel = new JPanel();
 		buttonPanel.add(OK);
 		buttonPanel.add(CANCEL);
+		KeyUtil.addCRListener(OK);
+		KeyUtil.addCRListener(CANCEL);
+		KeyUtil.addEscListener(panel, CANCEL);
 		panel.add(centerPanel, BorderLayout.NORTH);
 		panel.add(southPanel, BorderLayout.CENTER);
 		panel.add(buttonPanel, BorderLayout.SOUTH);

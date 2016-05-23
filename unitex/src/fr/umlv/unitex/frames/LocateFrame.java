@@ -65,6 +65,7 @@ import fr.umlv.unitex.process.commands.LocateCommand;
 import fr.umlv.unitex.process.commands.LocateTfstCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.Reg2GrfCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the locate pattern frame.
@@ -149,6 +150,7 @@ public class LocateFrame extends JInternalFrame {
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
 		tabbedPane.addTab("Locate configuration", panel);
 		tabbedPane.addTab("Advanced options", constructAdvancedOptionPanel());
+		KeyUtil.addCloseFrameListener(panel);
 		return tabbedPane;
 	}
 

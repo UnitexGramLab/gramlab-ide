@@ -57,6 +57,7 @@ import fr.umlv.unitex.process.commands.ElagCompCommand;
 import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Olivier Blanc
@@ -404,6 +405,7 @@ public class ElagCompFrame extends JInternalFrame {
 		c.gridwidth = 4;
 		c.gridheight = 1;
 		panel.add(button, c);
+		KeyUtil.addEscListener(panel, button);
 		return panel;
 	}
 

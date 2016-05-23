@@ -61,6 +61,7 @@ import fr.umlv.unitex.process.commands.TokenizeCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
 import fr.umlv.unitex.process.commands.UnxmlizeCommand;
 import fr.umlv.unitex.text.SntUtil;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a dialog box that allows the user to parameter the
@@ -160,6 +161,7 @@ public class PreprocessDialog extends JDialog {
 		down.add(constructLexicalParsingPanel(), BorderLayout.WEST);
 		down.add(constructButtonsPanel(), BorderLayout.CENTER);
 		panel.add(down, BorderLayout.SOUTH);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 
