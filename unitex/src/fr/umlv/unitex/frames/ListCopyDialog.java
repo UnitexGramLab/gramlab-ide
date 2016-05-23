@@ -36,6 +36,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import fr.umlv.unitex.graphrendering.ContextsInfo;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set left
@@ -74,6 +75,7 @@ class ListCopyDialog extends JDialog {
 				setVisible(false);
 			}
 		});
+		KeyUtil.addCloseDialogListener(p);
 		final JPanel down = new JPanel();
 		down.add(ok);
 		p.add(down);

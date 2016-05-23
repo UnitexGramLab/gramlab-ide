@@ -23,14 +23,18 @@ package fr.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -43,6 +47,7 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.text.BigTextArea;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display the current corpus.
@@ -74,7 +79,8 @@ public class TextFrame extends TabbableInternalFrame {
 				text.revalidate();
 				text.repaint();
 			}
-		};
+		}; 
+		KeyUtil.addMinimizeFrameListener(top);
 		PreferencesManager.addPreferencesListener(preferencesListener);
 		final JPanel up = new JPanel(new GridLayout(2, 1));
 		up.setBorder(new EmptyBorder(2, 2, 2, 2));

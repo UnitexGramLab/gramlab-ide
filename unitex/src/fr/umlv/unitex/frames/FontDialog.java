@@ -45,6 +45,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a font selection dialog box.
@@ -147,6 +148,7 @@ class FontDialog extends JDialog {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.CENTER);
 		panel.add(constructDownPanel(), BorderLayout.SOUTH);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 

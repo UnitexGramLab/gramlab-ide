@@ -54,6 +54,7 @@ import fr.umlv.unitex.process.commands.Fst2TxtCommand;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.NormalizeCommand;
 import fr.umlv.unitex.process.commands.Seq2GrfCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 public class Seq2GrfFrame extends JInternalFrame {
 	
@@ -192,6 +193,7 @@ public class Seq2GrfFrame extends JInternalFrame {
 			}
 		});
 		p.add(go,gbc);
+		KeyUtil.addCloseFrameListener(p);
 		return p;
 	}
 	

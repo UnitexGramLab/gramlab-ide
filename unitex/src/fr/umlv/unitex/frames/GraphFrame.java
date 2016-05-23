@@ -99,6 +99,7 @@ import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
 import fr.umlv.unitex.svn.ConflictSolvedListener;
 import fr.umlv.unitex.svn.SvnConflict;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display and edit a graph.
@@ -225,6 +226,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		final JPanel top = new JPanel(new BorderLayout());
 		top.add(buildTextPanel(), BorderLayout.NORTH);
+		KeyUtil.addMinimizeFrameListener(top);
 		graphicalZone = new GraphicalZone(g, getBoxContentEditor(), this, null);
 		graphicalZone.addGraphListener(new GraphListener() {
 			@Override

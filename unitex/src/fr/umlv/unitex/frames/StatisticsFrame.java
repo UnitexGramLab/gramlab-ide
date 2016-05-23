@@ -38,6 +38,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.stats.StatisticsTableModelMode0;
 import fr.umlv.unitex.stats.StatisticsTableModelMode1;
 import fr.umlv.unitex.stats.StatisticsTableModelMode2;
+import fr.umlv.unitex.utils.KeyUtil;
 
 public class StatisticsFrame extends TabbableInternalFrame {
 	StatisticsFrame(File file, int mode) {
@@ -50,6 +51,7 @@ public class StatisticsFrame extends TabbableInternalFrame {
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		top.add(scroll, BorderLayout.CENTER);
 		setContentPane(top);
+		KeyUtil.addCloseFrameListener(top);
 		pack();
 	}
 

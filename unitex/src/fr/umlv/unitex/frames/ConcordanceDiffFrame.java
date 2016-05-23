@@ -48,6 +48,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that can show an HTML condordance diff file.
@@ -144,6 +145,7 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 			}
 		});
 		setBounds(150, 50, 850, 550);
+		KeyUtil.addMinimizeFrameListener(scroll);
 	}
 
 	/**

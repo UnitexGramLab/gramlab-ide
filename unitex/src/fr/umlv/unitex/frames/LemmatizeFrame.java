@@ -92,6 +92,7 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.RebuildTfstCommand;
 import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
 import fr.umlv.unitex.tfst.TokensInfo;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to lemmatize sentence automata.
@@ -172,6 +173,7 @@ public class LemmatizeFrame extends TfstFrame {
 		superpanel.setOneTouchExpandable(true);
 		superpanel.setResizeWeight(0.5);
 		panel.add(superpanel, BorderLayout.CENTER);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 
