@@ -37,6 +37,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import fr.umlv.unitex.utils.KeyUtil;
+
 /**
  * This class describes a <code>JPanel</code> that allows the user to set a
  * variable name.
@@ -89,6 +91,7 @@ class VariableInsertionDialog extends JDialog {
 		down.add(ok);
 		p.add(down);
 		setContentPane(p);
+		KeyUtil.addCloseDialogListener(p);
 		pack();
 		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}

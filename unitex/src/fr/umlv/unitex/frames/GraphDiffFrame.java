@@ -41,6 +41,7 @@ import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
 import fr.umlv.unitex.graphrendering.TextField;
 import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.utils.KeyUtil;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
 	public GraphDiffFrame(final GraphIO base, final GraphIO dest,
@@ -73,6 +74,7 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 				}
 			}
 		});
+		KeyUtil.addCloseFrameListener(main);
 		final JPanel p = buildSynchronizedScrollPanes(basePane, destPane);
 		JPanel foo=new JPanel(new BorderLayout());
 		JPanel names=new JPanel(new GridLayout(1,2));

@@ -72,6 +72,7 @@ import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.DicoCommand;
 import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
 
 public class DicLookupFrame extends JInternalFrame {
 	JList userDicList;
@@ -108,6 +109,7 @@ public class DicLookupFrame extends JInternalFrame {
 		main.add(constructInfoPanel(), BorderLayout.NORTH);
 		main.add(constructDicListPanel(), BorderLayout.CENTER);
 		main.add(constructLookupPanel(), BorderLayout.SOUTH);
+		KeyUtil.addCloseFrameListener(main);
 		main.setPreferredSize(new Dimension(550, 400));
 		return main;
 	}

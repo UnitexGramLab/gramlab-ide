@@ -44,6 +44,7 @@ import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.ConsoleTableCellEditor;
 import fr.umlv.unitex.console.ConsoleTableModel;
 import fr.umlv.unitex.console.ConsoleTransferHandler;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that shows all the command lines that have been
@@ -162,6 +163,7 @@ public class ConsoleFrame extends TabbableInternalFrame {
 		setContentPane(top);
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		KeyUtil.addCloseFrameListener(top);
 	}
 
 	/**

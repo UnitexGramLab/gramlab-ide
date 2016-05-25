@@ -42,6 +42,7 @@ import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.ConvertCommand;
 import fr.umlv.unitex.transcoding.Transcoder;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Sébastien Paumier
@@ -114,6 +115,7 @@ public class TranscodeOneFileDialog extends JDialog {
 		buttons.add(transcode);
 		buttons.add(ignore);
 		buttons.add(more);
+		KeyUtil.addCloseDialogListener(panel);
 		getContentPane().add(buttons, BorderLayout.SOUTH);
 		pack();
 		setResizable(false);

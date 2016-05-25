@@ -189,7 +189,38 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void saveAllGraphFrames() {
 		graphFrameFactory.saveAllFrames();
 	}
-
+	
+	/**
+	 * This method implements the functionality to minimize the currently focused frame.
+	 * 
+	 * @author Mukarram Tailor
+	 */	
+	public void minimizeCurrentFocusedFrame(){
+		JInternalFrame frame = getSelectedFrame();
+		try {
+			frame.setIcon(true);
+		} catch (final java.beans.PropertyVetoException e) {
+			e.printStackTrace();
+		}
+		catch (NullPointerException e1) {
+			e1.printStackTrace();
+		}
+	}
+	
+	/**
+	 * This method implements the functionality to close the currently focused frame.
+	 * 
+	 * @author Mukarram Tailor
+	 */
+	public void closeCurrentFocusedFrame(){
+		JInternalFrame frame = getSelectedFrame();
+		try {
+			frame.doDefaultCloseAction();
+		} catch (final NullPointerException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void closeAllGraphFrames() {
 		graphFrameFactory.closeAllFrames();
 	}

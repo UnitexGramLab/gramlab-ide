@@ -32,6 +32,7 @@ import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a text frame that shows the results of dictionary
@@ -54,6 +55,7 @@ public class CheckResultFrame extends TabbableInternalFrame {
 		setContentPane(top);
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		KeyUtil.addCloseFrameListener(top);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {

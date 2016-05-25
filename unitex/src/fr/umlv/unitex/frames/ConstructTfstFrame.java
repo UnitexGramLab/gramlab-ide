@@ -22,6 +22,7 @@ package fr.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -52,6 +53,7 @@ import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
 import fr.umlv.unitex.process.commands.TaggerCommand;
 import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user
@@ -89,6 +91,7 @@ public class ConstructTfstFrame extends JInternalFrame {
 		panel.add(constructNormalizationPanel(), BorderLayout.NORTH);
 		panel.add(constructDicPanel(), BorderLayout.CENTER);
 		panel.add(constructButtonsPanel(), BorderLayout.SOUTH);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 

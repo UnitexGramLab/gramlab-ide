@@ -43,6 +43,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import fr.umlv.unitex.graphrendering.DrawGraphParams;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
+import fr.umlv.unitex.utils.KeyUtil;
+
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -399,6 +401,7 @@ public class GraphExportDialog extends JDialog {
 				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
+				KeyUtil.addEscListener(getRootPane(), cancelButton);
 			}
 		}
 	}

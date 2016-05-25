@@ -34,6 +34,7 @@ import javax.swing.event.ListDataListener;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.svn.SvnMonitor;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that shows all the command lines that have been
@@ -87,6 +88,7 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 				BorderLayout.NORTH);
 		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		KeyUtil.addCloseFrameListener(scroll);
 	}
 
 	@Override

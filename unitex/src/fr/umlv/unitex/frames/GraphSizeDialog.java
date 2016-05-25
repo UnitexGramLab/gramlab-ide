@@ -38,6 +38,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import fr.umlv.unitex.utils.KeyUtil;
+
 /**
  * This class describes a dialog box that allows the user to adjust the current
  * graph's size.
@@ -115,6 +117,7 @@ public class GraphSizeDialog extends JDialog {
 		panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		panel.add(constructPanel1(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
+		KeyUtil.addCloseDialogListener(panel);
 		return panel;
 	}
 

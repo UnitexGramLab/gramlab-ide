@@ -44,6 +44,7 @@ import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.BuildKrMwuDicCommand;
+import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * With this frame, the user can configure the generation of a MWU dictionary
@@ -78,6 +79,7 @@ public class BuildKrMwuDicFrame extends JInternalFrame {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructUpPanel(), BorderLayout.NORTH);
 		panel.add(constructDownPanel(), BorderLayout.CENTER);
+		KeyUtil.addCloseFrameListener(panel);
 		return panel;
 	}
 
