@@ -84,7 +84,14 @@ import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.frames.*;
+import fr.umlv.unitex.frames.AboutDialog;
+import fr.umlv.unitex.frames.DelaFrame;
+import fr.umlv.unitex.frames.FileEditionTextFrame;
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.MenuAdapter;
+import fr.umlv.unitex.frames.TextAutomatonFrame;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.print.PrintManager;
@@ -189,7 +196,7 @@ public class GramlabFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setJMenuBar(createMenuBar());
 		refreshProjectMenu(GlobalProjectManager.
-		            getAs(GramlabProjectManager.class).getCurrentProject());
+		            getAs(GramlabProjectManager.class).getCurrentProject());		
 	}
 
 	void refreshTitle() {
@@ -222,11 +229,11 @@ public class GramlabFrame extends JFrame {
 			public void projectClosed(GramlabProject p, int pos) {
 				tree.collapsePath(new TreePath(model.getPathToRoot(model
 						.getProjectNode(p))));
-				refreshProjectMenu(p);
+				refreshProjectMenu(p);		
 			}
 		});
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
-
+			
 			private String createHackSpaces(boolean html) {
 				StringBuilder b=new StringBuilder();
 				for (int i=0;i<30;i++) {
@@ -235,10 +242,10 @@ public class GramlabFrame extends JFrame {
 				}
 				return b.toString();
 			}
-
+			
 			private String HACK_SPACES_TEXT=createHackSpaces(false);
 			private String HACK_SPACES_HTML=createHackSpaces(true);
-
+			
 			@Override
 			public Component getTreeCellRendererComponent(JTree tree,
 					Object value, boolean sel, boolean expanded, boolean leaf,
@@ -401,7 +408,7 @@ public class GramlabFrame extends JFrame {
 					File f = node.getFile();
 					GramlabProject project = GlobalProjectManager.getAs(GramlabProjectManager.class)
 								.getProject(f);
-					// update project menu
+					// update project menu			
           refreshProjectMenu(project);
 					if (doubleClick && f.isFile()) {
 						/* Double-click on a file */
@@ -795,7 +802,7 @@ public class GramlabFrame extends JFrame {
 					popup.add(new JMenuItem(getMavenAction(project)));
 					popup.add(new JMenuItem(getUpdateDependenciesAction(project)));
 					Action refresh=new AbstractAction("Refresh") {
-
+						
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							project.asyncUpdateSvnInfo(null,true);
@@ -870,7 +877,7 @@ public class GramlabFrame extends JFrame {
 		if(project == null) {
 			return m;
 		}
-
+		
     final boolean open = project.isOpen();
 
 		// run project
@@ -908,8 +915,8 @@ public class GramlabFrame extends JFrame {
 				m.add(new JMenuItem(setCurrent));
 				m.addSeparator();
 		  }
-    }
-
+    }		
+    
     // configure
     if (open) {
       JMenu configureMenu = new JMenu("Configure");
@@ -936,11 +943,11 @@ public class GramlabFrame extends JFrame {
           });
         }
       };
-      configureMenu.add(new JMenuItem(rendering));
+      configureMenu.add(new JMenuItem(rendering));      
       m.add(configureMenu);
       m.addSeparator();
 		}
-
+		    
     // open/close
     Action openClose = new AbstractAction((open ? "Close" : "Open " + project.getName())) {
       public void actionPerformed(ActionEvent e) {
@@ -956,7 +963,7 @@ public class GramlabFrame extends JFrame {
       }
     };
     m.add(new JMenuItem(openClose));
-
+    
     // delete
     Action delete = new AbstractAction("Delete") {
       public void actionPerformed(ActionEvent e) {
@@ -989,7 +996,7 @@ public class GramlabFrame extends JFrame {
 		// console
 		if (open) {
       if(GlobalProjectManager.getAs(GramlabProjectManager.class)
-                             .getCurrentProject() == project) {
+                             .getCurrentProject() == project) {			
 				m.addSeparator();
 				Action console = new AbstractAction("Show console") {
 					public void actionPerformed(ActionEvent e) {
@@ -1002,14 +1009,14 @@ public class GramlabFrame extends JFrame {
 							}
 						});
 					}
-				};
+				};      
 				m.add(new JMenuItem(console));
-			}
+			} 
     }
-
+    
     return m;
   }
-
+  
 	protected boolean atLeastOneMenuItemEnabled(JMenu menu) {
 		for (int i=0;i<menu.getMenuComponentCount();i++) {
 			if (menu.getMenuComponent(i).isEnabled()) return true;
@@ -1031,7 +1038,7 @@ public class GramlabFrame extends JFrame {
 		}
 		return false;
 	}
-
+	
 	private void lookForFilesByExtensions(ArrayList<File> files,File file,String[] ext) {
 		if (file==null) return;
 		if (file.isFile()) {
@@ -1048,7 +1055,7 @@ public class GramlabFrame extends JFrame {
 		}
 	}
 
-
+	
 	protected ArrayList<File> getFilesContainedInDirectories(ArrayList<File> dirs,String extension) {
 		ArrayList<File> list=new ArrayList<File>();
 		String[] extensions=new String[] {extension};
@@ -1074,7 +1081,7 @@ public class GramlabFrame extends JFrame {
 		ArrayList<File> versioned=getVersionedFiles(files,project);
 		Action svnAdd = getSvnAddAction(files, project);
 		menu.add(new JMenuItem(svnAdd));
-
+		
 		JMenu updateMenu=new JMenu("Update");
 		updateMenu.setEnabled(false);
 		Action svnUpdateToHead = getSvnUpdateAction(project,files,true);
@@ -1147,8 +1154,8 @@ public class GramlabFrame extends JFrame {
 		};
 		return a;
 	}
-
-
+	
+	
 	/**
 	 * Returns an action that must launch a 'svn add' on those of the given
 	 * files that can be added.
@@ -1183,7 +1190,7 @@ public class GramlabFrame extends JFrame {
 		return a;
 	}
 
-
+	
 	private Action getSvnRevertAction(final ArrayList<File> files,final GramlabProject project) {
 		final ArrayList<File> revertable = getRevertableFiles(files,
 				project);
@@ -1209,7 +1216,7 @@ public class GramlabFrame extends JFrame {
 		};
 		return a;
 	}
-
+	
 	private Action getUpdateDependenciesAction(final GramlabProject project) {
 		Action a = new AbstractAction("Update maven dependencies") {
 			@Override
@@ -1292,7 +1299,7 @@ public class GramlabFrame extends JFrame {
 		}
 		return unversioned;
 	}
-
+	
 
 	/**
 	 * For a svn ignore operations, we DO mind if the parents are themselves unversioned
@@ -1311,7 +1318,7 @@ public class GramlabFrame extends JFrame {
 		}
 		return unversioned;
 	}
-
+	
 	private ArrayList<File> getRevertableFiles(ArrayList<File> files,
 			GramlabProject project) {
 		ArrayList<File> revertable = new ArrayList<File>();
@@ -1326,7 +1333,7 @@ public class GramlabFrame extends JFrame {
 		}
 		return revertable;
 	}
-
+	
 	private ArrayList<File> getVersionedFiles(ArrayList<File> files,
 			GramlabProject project) {
 		if (files==null) return null;
@@ -1336,7 +1343,7 @@ public class GramlabFrame extends JFrame {
 			if (i==null) continue;
 			switch (i.getStatus()) {
 				case UNVERSIONED:
-				case IGNORED:
+				case IGNORED: 
 				case ADDED: continue;
 				default: versioned.add(f);
 			}
@@ -1344,7 +1351,7 @@ public class GramlabFrame extends JFrame {
 		return versioned;
 	}
 
-
+	
 	@SuppressWarnings("unchecked")
 	private SvnStatusInfo getCommittableFiles(ArrayList<File> srcFiles,
 			GramlabProject project) {
@@ -1379,7 +1386,7 @@ public class GramlabFrame extends JFrame {
 	}
 
 	/**
-	 * For every directory contained in files, we add the
+	 * For every directory contained in files, we add the 
 	 * subdirectories if not already there
 	 */
 	private void expandDirectories(GramlabProject p,ArrayList<File> files) {
@@ -1414,7 +1421,7 @@ public class GramlabFrame extends JFrame {
 	 * We want the list of files concerned by a right click operation, that is:
 	 * 1) the selected files that belongs to the given project if there is a
 	 * selection or 2) the file that was clicked on
-	 *
+	 * 
 	 * If 'extension' is non null, we only keep files with this extension
 	 */
 	private ArrayList<File> getConcernedFiles(TreePath[] selectionPaths, GramlabProject project, String extension) {
@@ -1492,7 +1499,7 @@ public class GramlabFrame extends JFrame {
 		};
 		return a;
 	}
-
+	
 	private JMenuBar createMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		bar.add(createWorkspaceMenu());
@@ -1568,7 +1575,7 @@ public class GramlabFrame extends JFrame {
 		JMenu m = new JMenu("Project");
 		return m;
 	}
-
+		
 	public void openGraph() {
 		File dir;
 		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
@@ -1626,7 +1633,7 @@ public class GramlabFrame extends JFrame {
 		JMenu m = HelpMenuBuilder.build(ConfigManager.getManager()
 				      .getApplicationDirectory());
     m.addSeparator();
-
+    
 		final JMenuItem about = new JMenuItem("About");
 		about.addActionListener(new ActionListener() {
 			@Override
@@ -1646,9 +1653,9 @@ public class GramlabFrame extends JFrame {
 			}
 		});
 
-		m.add(about);
+		m.add(about);		
     return m;
-	}
+	}	
 
 	private JMenu createFileEditionMenu() {
 		JMenu m = new JMenu("File Edition");
@@ -2016,14 +2023,19 @@ public class GramlabFrame extends JFrame {
 		m.add(exportMenu);
 
 		m.addSeparator();
-		final Action search = new AbstractAction("Find and replace") {
+		final Action search = new AbstractAction("Search") {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
-        if(frames.isEmpty()) {
-          return;
-        }
-        final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
+				InternalFrameManager manager = GlobalProjectManager
+						.search(null).getFrameManagerAs(
+								InternalFrameManager.class);
+				GraphFrame f = manager.getCurrentFocusedGraphFrame();
+				if (f == null) {
+					JOptionPane.showMessageDialog(null,
+							"You must select a graph to search in", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				new GraphSearchDialog(f);
 			}
 		};
 		search.putValue(Action.ACCELERATOR_KEY,
