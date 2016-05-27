@@ -78,7 +78,6 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.findandreplace.FindAndReplaceData;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
@@ -941,23 +940,20 @@ public class UnitexFrame extends JFrame {
 		};
 		graphMenu.add(new JMenuItem(printAll));
 		graphMenu.addSeparator();
-		final JMenu findAndReplaceMenu = new JMenu("Find and replace");
-
-		final Action findAndReplaceAll = new AbstractAction("in all graphs") {
+		final Action findAndReplace = new AbstractAction("Find and replace") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				findAndReplaceAll();
-			}
+        ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
+        if(frames.isEmpty()) {
+          return;
+        }
+        final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
+      }
 		};
-		final Action findAndReplace = new AbstractAction("in current graph") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				findAndReplace();
-			}
-		};
-		findAndReplaceMenu.add(findAndReplaceAll);
-		findAndReplaceMenu.add(findAndReplace);
-		graphMenu.add(findAndReplaceMenu);
+    findAndReplace.putValue(Action.ACCELERATOR_KEY,
+      KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+    graphMenu.add(new JMenuItem(findAndReplace));
 		graphMenu.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
 			@Override
@@ -1332,9 +1328,7 @@ public class UnitexFrame extends JFrame {
 				tools.setEnabled(existsFocusedGrFrame);
 				format.setEnabled(existsFocusedGrFrame);
 				zoom.setEnabled(existsFocusedGrFrame);
-				findAndReplaceMenu.setEnabled(existsAnyGrFrame);
-				findAndReplaceAll.setEnabled(existsAnyGrFrame);
-				findAndReplace.setEnabled(existsFocusedGrFrame);
+				findAndReplace.setEnabled(existsAnyGrFrame);
 
 				List<File> l = PreferencesManager.getUserPreferences()
 						.getRecentGraphs();
@@ -1358,6 +1352,7 @@ public class UnitexFrame extends JFrame {
 				print.setEnabled(true);
 				undo.setEnabled(true);
 				redo.setEnabled(true);
+        findAndReplace.setEnabled(true);
 			}
 		});
 		return graphMenu;
@@ -2113,43 +2108,5 @@ public class UnitexFrame extends JFrame {
 		}
 		openCascade(f);
                 Config.getTransducerListDialogBox().setControlButtonsAreShown(false);
-	}
-
-	public void findAndReplace() {
-		GraphFrame f = GlobalProjectManager.search(null)
-				.getFrameManagerAs(InternalFrameManager.class)
-				.getCurrentFocusedGraphFrame();
-		if(f != null) {
-			ArrayList<GenericGraphBox> currentBoxes = f.getGraphicalZone().getBoxes();
-			FindAndReplaceData findAndReplaceData = new FindAndReplaceData(currentBoxes, f.getGraphicalZone());
-			GlobalProjectManager.search(null)
-					.getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog(findAndReplaceData);
-		}
-	}
-
-	public void findAndReplaceAll() {
-		ArrayList<GraphFrame> graphFrames = GlobalProjectManager.search(null)
-				.getFrameManagerAs(InternalFrameManager.class)
-				.getGraphFrames();
-		if (!graphFrames.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < graphFrames.size(); i++) {
-				if(graphFrames.get(i).getGraph() == null) {
-					sb.append("new graph\n");
-				} else {
-					sb.append(graphFrames.get(i).getGraph().getPath() + '\n');
-				}
-			}
-			GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-					.newTextAreaDialog("Opened Graph", sb.toString());
-			try {
-				graphFrames.get(0).setIcon(false);
-				graphFrames.get(0).setSelected(true);
-			} catch (PropertyVetoException e) {
-				e.printStackTrace();
-			}
-			GlobalProjectManager.search(null)
-					.getFrameManagerAs(InternalFrameManager.class).newUnitexFindAndReplaceDialog();
-		}
 	}
 }
