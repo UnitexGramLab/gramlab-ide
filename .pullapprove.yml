@@ -28,10 +28,10 @@ reviewers:
       labels:
         - needs:review-lingua
   -
-    name: intern-developers
+    name: ide-interns
     required: 1
     teams:
-      - intern
+      - ide-interns
     conditions:
       labels:
-        - needs:review-intern
+        - needs:review-ide-interns
