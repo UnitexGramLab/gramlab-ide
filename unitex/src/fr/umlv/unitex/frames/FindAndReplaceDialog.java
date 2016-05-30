@@ -29,7 +29,9 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 
@@ -225,7 +227,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     tooltips.add(graphDefaultText);
     for (GraphFrame f : graphFrames) {
       model.addElement(f);
-      if(f.getGraph() == null) {
+      if (f.getGraph() == null) {
         tooltips.add(f.toString());
       } else {
         tooltips.add(f.getGraph().getPath());
@@ -567,7 +569,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     tooltips.add(graphDefaultText);
     for (GraphFrame f : graphFrames) {
       model.addElement(f);
-      tooltips.add(f.getGraph().getPath());
+      if (f.getGraph() == null) {
+        tooltips.add(f.toString());
+      } else {
+        tooltips.add(f.getGraph().getPath());
+      }
     }
     renderer.setTooltips(tooltips);
     graphComboBox.setRenderer(renderer);
