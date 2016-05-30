@@ -225,7 +225,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     tooltips.add(graphDefaultText);
     for (GraphFrame f : graphFrames) {
       model.addElement(f);
-      tooltips.add(f.getGraph().getPath());
+      if(f.getGraph() == null) {
+        tooltips.add(f.toString());
+      } else {
+        tooltips.add(f.getGraph().getPath());
+      }
     }
     renderer.setTooltips(tooltips);
     graphComboBox.setRenderer(renderer);
