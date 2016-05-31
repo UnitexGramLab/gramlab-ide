@@ -21,8 +21,8 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.findandreplace.FindAndReplace;
-import fr.umlv.unitex.findandreplace.FindAndReplaceData;
+import fr.umlv.unitex.graphtools.FindAndReplace;
+import fr.umlv.unitex.graphtools.FindAndReplaceData;
 import fr.umlv.unitex.utils.KeyUtil;
 
 import javax.swing.*;
@@ -220,22 +220,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.anchor = GridBagConstraints.WEST;
     panel1.add(label3, gbc);
     graphComboBox = new JComboBox();
-    ComboBoxToolTipRenderer renderer = new ComboBoxToolTipRenderer();
-    ArrayList<String> tooltips = new ArrayList<String>();
-    DefaultComboBoxModel<GraphFrame> model = new DefaultComboBoxModel<GraphFrame>();
-    model.addElement(new defaultGraphFrame());
-    tooltips.add(graphDefaultText);
-    for (GraphFrame f : graphFrames) {
-      model.addElement(f);
-      if (f.getGraph() == null) {
-        tooltips.add(f.toString());
-      } else {
-        tooltips.add(f.getGraph().getPath());
-      }
-    }
-    renderer.setTooltips(tooltips);
-    graphComboBox.setRenderer(renderer);
-    graphComboBox.setModel(model);
+    fillComboBox();
     gbc = new GridBagConstraints();
     gbc.gridx = 3;
     gbc.gridy = 5;
@@ -426,6 +411,25 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     return panel1;
   }
 
+  private void fillComboBox() {
+    ComboBoxToolTipRenderer renderer = new ComboBoxToolTipRenderer();
+    ArrayList<String> tooltips = new ArrayList<String>();
+    DefaultComboBoxModel<GraphFrame> model = new DefaultComboBoxModel<GraphFrame>();
+    model.addElement(new defaultGraphFrame());
+    tooltips.add(graphDefaultText);
+    for (GraphFrame f : graphFrames) {
+      model.addElement(f);
+      if (f.getGraph() == null) {
+        tooltips.add(f.toString());
+      } else {
+        tooltips.add(f.getGraph().getPath());
+      }
+    }
+    renderer.setTooltips(tooltips);
+    graphComboBox.setRenderer(renderer);
+    graphComboBox.setModel(model);
+  }
+
   private void onClose() {
     dispose();
   }
@@ -507,13 +511,13 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     String msg;
     switch (res) {
       case 0:
-        msg = "No match found with " + findTextField.getText();
+        msg = "No match found with: " + findTextField.getText();
         break;
       case 1:
-        msg = "Found 1 box which match with " + findTextField.getText();
+        msg = "Found 1 box which matches with: " + findTextField.getText();
         break;
       default:
-        msg = "Found " + t.toString() + " boxes which match with " + findTextField.getText();
+        msg = "Found " + t.toString() + " boxes which match with: " + findTextField.getText();
     }
     statusBarTextField.setText(msg);
     getParent().repaint();
@@ -523,13 +527,13 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     String msg;
     switch (i) {
       case 0:
-        msg = "No match found with " + findTextField.getText();
+        msg = "No match found with: " + findTextField.getText();
         break;
       case 1:
-        msg = "Replaced 1 box which match " + findTextField.getText() + " with " + replaceTextField.getText();
+        msg = "Replaced 1 box with: " + replaceTextField.getText();
         break;
       default:
-        msg = "Replaced " + i + " boxes which match " + findTextField.getText() + " with " + replaceTextField.getText();
+        msg = "Replaced " + i + " boxes with: " + replaceTextField.getText();
         break;
     }
     statusBarTextField.setText(msg);
@@ -562,22 +566,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     } catch (PropertyVetoException exception) {
       exception.printStackTrace();
     }
-    ComboBoxToolTipRenderer renderer = new ComboBoxToolTipRenderer();
-    ArrayList<String> tooltips = new ArrayList<String>();
-    DefaultComboBoxModel<GraphFrame> model = new DefaultComboBoxModel<GraphFrame>();
-    model.addElement(new defaultGraphFrame());
-    tooltips.add(graphDefaultText);
-    for (GraphFrame f : graphFrames) {
-      model.addElement(f);
-      if (f.getGraph() == null) {
-        tooltips.add(f.toString());
-      } else {
-        tooltips.add(f.getGraph().getPath());
-      }
-    }
-    renderer.setTooltips(tooltips);
-    graphComboBox.setRenderer(renderer);
-    graphComboBox.setModel(model);
+    fillComboBox();
   }
 
   public class ComboBoxToolTipRenderer extends DefaultListCellRenderer {
