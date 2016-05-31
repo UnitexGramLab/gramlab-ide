@@ -459,11 +459,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     data.getGraphicalZone().unSelectAllBoxes();
+    if(findTextField.getText().equals(replaceTextField.getText())) {
+      return;
+    }
     boolean wasReplaced = FindAndReplace.replace(data.getCurrentBox(), findTextField.getText(), replaceTextField.getText(), data.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
     if (wasReplaced) {
       updateReplaceResultTextField(1);
     } else {
-      updateReplaceResultTextField(0);
+      updateReplaceResultTextField(-1);
     }
   }
 
@@ -526,6 +529,9 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   private void updateReplaceResultTextField(int i) {
     String msg;
     switch (i) {
+      case -1:
+        msg = "No box is selected";
+        break;
       case 0:
         msg = "No match found with: " + findTextField.getText();
         break;
