@@ -1147,7 +1147,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * created, and the $aaa( box is then linked to all input boxes. The same
 	 * for output boxes.
 	 */
-	void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
+	public void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
 			ArrayList<GenericGraphBox> inputBoxes,
 			ArrayList<GenericGraphBox> outputBoxes) {
 		final ArrayList<GenericGraphBox> accessible = new ArrayList<GenericGraphBox>();

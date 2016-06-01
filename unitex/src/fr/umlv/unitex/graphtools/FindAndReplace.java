@@ -20,6 +20,8 @@
  */
 package fr.umlv.unitex.graphtools;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
 import fr.umlv.unitex.graphrendering.GraphicalZone;
@@ -73,6 +75,11 @@ public class FindAndReplace {
   private static boolean replace(GenericGraphBox g, String search, String replace, GraphicalZone zone) {
     if (g.getType() == GraphBox.NORMAL && !g.getContent().equals("<E>")) {
       String newContent = g.getContent().replace(search, replace);
+      /*String newContent = g.getContent().replace(search, replace).replaceAll("\\++", "+").replaceAll("^\\+", "")
+        .replaceAll("\\+$", "");
+      if (newContent.isEmpty()) {
+        newContent = "<E>";
+      }*/
       return setNewText(g, zone, newContent);
     }
     return false;
@@ -80,8 +87,12 @@ public class FindAndReplace {
 
   private static boolean setNewText(GenericGraphBox g, GraphicalZone zone, String newContent) {
     if (!newContent.equals(g.getContent())) {
-      zone.setTextBox(g, newContent);
-      return true;
+      newContent = newContent.replaceAll("\\++", "+").replaceAll("^\\+", "")
+        .replaceAll("\\+$", "");
+      if (newContent.isEmpty()) {
+        newContent = "<E>";
+      }
+      return zone.setTextBox((GraphBox) g, newContent);
     }
     return false;
   }
@@ -128,14 +139,14 @@ public class FindAndReplace {
     if (wholeLine) {
       for (GenericGraphBox box : boxes) {
         String[] tokens = box.getContent().split("\\+");
-        if (!(box.isStandaloneBox() && ignoreComment) && searchArray(tokens, search, useRegex, caseSensitive)) {
+        if (!(box.isStandaloneBox() && ignoreComment) && searchArray(tokens, search, useRegex, caseSensitive) && box.getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
           i++;
         }
       }
     } else {
       if (!useRegex) {
         for (GenericGraphBox box : boxes) {
-          if (!(box.isStandaloneBox() && ignoreComment) && contains(search, box.getContent(), caseSensitive)) {
+          if (!(box.isStandaloneBox() && ignoreComment) && contains(search, box.getContent(), caseSensitive) && box.getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
             i++;
           }
         }
@@ -163,7 +174,7 @@ public class FindAndReplace {
    * @return true if the box contains search, false otherwise.
    */
   public static boolean find(GraphicalZone zone, GenericGraphBox box, String search, boolean useRegex, boolean caseSensitive, boolean wholeLine, boolean ignoreComment) {
-    if (box.isStandaloneBox() && ignoreComment) {
+    if (box.isStandaloneBox() && ignoreComment || box.getContent().equals("<E>") || box.getType() != GenericGraphBox.NORMAL) {
       zone.setHighlight(false);
       return false;
     }
@@ -180,7 +191,7 @@ public class FindAndReplace {
           return true;
         }
       } else {
-        if (isRegex(search) && Pattern.compile(search).matcher(box.getContent()).find() && box.getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
+        if (isRegex(search) && Pattern.compile(search).matcher(box.getContent()).find()) {
           zone.setHighlight(box, true);
           return true;
         }
@@ -305,5 +316,90 @@ public class FindAndReplace {
       }
     }
     return sb.toString();
+  }
+
+
+  private static void checkReplace(GenericGraphBox box, String search, String replace, GraphicalZone zone, boolean useRegex, boolean caseSensitive, boolean wholeLine, boolean ignoreComment) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+    if (box.isStandaloneBox() && ignoreComment) {
+      return;
+    }
+    if (wholeLine) {
+      String[] tokens = box.getContent().split("\\+");
+      String newContent = replaceArrayToString(tokens, search, replace, useRegex, caseSensitive);
+      checkNewText(box, zone, newContent);
+    } else {
+      if (useRegex) {
+        checkReplaceRegex(box, search, replace, zone);
+      } else {
+        if (caseSensitive) {
+          checkReplace(box, search, replace, zone);
+        } else {
+          checkReplaceCaseInsensitive(box, search, replace, zone);
+        }
+      }
+    }
+  }
+
+  private static void checkReplaceCaseInsensitive(GenericGraphBox g, String search, String replace, GraphicalZone zone) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+    if (g.getType() == GraphBox.NORMAL && !g.getContent().equals("<E>")) {
+      String newContent = g.getContent().replaceAll("(?i)" + Pattern.quote(search), replace);
+      checkNewText(g, zone, newContent);
+    }
+  }
+
+  private static void checkReplaceRegex(GenericGraphBox g, String regex, String replace, GraphicalZone zone) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+    if (isRegex(regex) && g.getType() == GraphBox.NORMAL && !g.getContent().equals("<E>")) {
+      String newContent = g.getContent().replaceAll(regex, replace);
+      checkNewText(g, zone, newContent);
+    }
+  }
+
+  private static void checkReplace(GenericGraphBox g, String search, String replace, GraphicalZone zone) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+    if (g.getType() == GraphBox.NORMAL && !g.getContent().equals("<E>")) {
+      String newContent = g.getContent().replace(search, replace).replaceAll("\\++", "+").replaceAll("^\\+", "")
+        .replaceAll("\\+$", "");
+      if (newContent.isEmpty()) {
+        newContent = "<E>";
+      }
+      checkNewText(g, zone, newContent);
+    }
+  }
+
+  private static void checkNewText(GenericGraphBox box, GraphicalZone zone, String newContent) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+    if (!newContent.equals(box.getContent())) {
+      zone.checkTextBox((GraphBox) box, newContent);
+    }
+  }
+
+  /**
+   * Returns a String containing an error message if one or more boxes cannot be replaced.
+   *
+   * @param boxes         the list containing the boxes.
+   * @param search        the sequence to search for.
+   * @param replace       the sequence to replace with.
+   * @param zone          the GraphicalZone containing the box.
+   * @param useRegex      true if the search must use regular expressions, false otherwise.
+   * @param caseSensitive true if the search must be case sensitive, false otherwise.
+   * @param wholeLine     true if the search must match a whole line only, false otherwise.
+   * @param ignoreComment true if the search must ignore comment boxes, false otherwise.
+   * @return the string containing an error message.
+   */
+  public static String checkReplaceAll(ArrayList<GenericGraphBox> boxes, String search, String replace, GraphicalZone zone, boolean useRegex, boolean caseSensitive, boolean wholeLine, boolean ignoreComment) {
+    for (GenericGraphBox box : boxes) {
+      try {
+        checkReplace(box, search, replace, zone, useRegex, caseSensitive, wholeLine, ignoreComment);
+      } catch (BackSlashAtEndOfLineException e) {
+        return "Unexpected \'\\\' at end of line";
+      } catch (NoClosingSupException e) {
+        return "No closing \'>\'";
+      } catch (NoClosingQuoteException e) {
+        return "No closing \"";
+      } catch (NoClosingRoundBracketException e) {
+        return "No closing \'}\'";
+      } catch (MissingGraphNameException e) {
+        return "Missing graph name after \':\'";
+      }
+    }
+    return "";
   }
 }

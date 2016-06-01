@@ -118,7 +118,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
           }
         }
         if (findTextField.getText() != null) {
-          updateFoundResultTextField();
+          updateReplaceErrorTextField();
         }
       }
     });
@@ -153,12 +153,28 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     findTextField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
-        updateFoundResultTextField();
+        updateReplaceErrorTextField();
       }
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        updateFoundResultTextField();
+        updateReplaceErrorTextField();
+      }
+
+      @Override
+      public void changedUpdate(DocumentEvent e) {
+        // Do nothing
+      }
+    });
+    replaceTextField.getDocument().addDocumentListener(new DocumentListener() {
+      @Override
+      public void insertUpdate(DocumentEvent e) {
+        updateReplaceErrorTextField();
+      }
+
+      @Override
+      public void removeUpdate(DocumentEvent e) {
+        updateReplaceErrorTextField();
       }
 
       @Override
@@ -169,25 +185,25 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     useRegularExpressionsCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateFoundResultTextField();
+        updateReplaceErrorTextField();
       }
     });
     caseSensitiveCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateFoundResultTextField();
+        updateReplaceErrorTextField();
       }
     });
     matchOnlyAWholeCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateFoundResultTextField();
+        updateReplaceErrorTextField();
       }
     });
     ignoreCommentBoxesCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateFoundResultTextField();
+        updateReplaceErrorTextField();
       }
     });
   }
@@ -239,8 +255,8 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     matchOnlyAWholeCheckBox = new JCheckBox();
     matchOnlyAWholeCheckBox.setText("Match only a whole line");
     gbc = new GridBagConstraints();
-    gbc.gridx = 5;
-    gbc.gridy = 7;
+    gbc.gridx = 3;
+    gbc.gridy = 8;
     gbc.anchor = GridBagConstraints.WEST;
     panel1.add(matchOnlyAWholeCheckBox, gbc);
     closeButton = new JButton();
@@ -336,7 +352,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.gridwidth = 7;
     gbc.fill = GridBagConstraints.BOTH;
     panel1.add(panel2, gbc);
-    statusBarTextField = new JTextField();
+    statusBarTextField = new JTextField("");
     statusBarTextField.setEditable(false);
     statusBarTextField.setPreferredSize(new Dimension(480, 24));
     gbc = new GridBagConstraints();
@@ -380,8 +396,8 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     useRegularExpressionsCheckBox = new JCheckBox();
     useRegularExpressionsCheckBox.setText("Use regular expressions");
     gbc = new GridBagConstraints();
-    gbc.gridx = 3;
-    gbc.gridy = 8;
+    gbc.gridx = 5;
+    gbc.gridy = 7;
     gbc.anchor = GridBagConstraints.WEST;
     panel1.add(useRegularExpressionsCheckBox, gbc);
     final JPanel spacer12 = new JPanel();
@@ -390,7 +406,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.gridy = 9;
     gbc.fill = GridBagConstraints.VERTICAL;
     panel1.add(spacer12, gbc);
-    findTextField = new JTextField();
+    findTextField = new JTextField("");
     findTextField.setEditable(true);
     gbc = new GridBagConstraints();
     gbc.gridx = 3;
@@ -399,7 +415,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     panel1.add(findTextField, gbc);
-    replaceTextField = new JTextField();
+    replaceTextField = new JTextField("");
     replaceTextField.setEditable(true);
     gbc = new GridBagConstraints();
     gbc.gridx = 3;
@@ -459,13 +475,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     data.getGraphicalZone().unSelectAllBoxes();
-    if(findTextField.getText().equals(replaceTextField.getText())) {
+    if (findTextField.getText().equals(replaceTextField.getText())) {
       return;
     }
     boolean wasReplaced = FindAndReplace.replace(data.getCurrentBox(), findTextField.getText(), replaceTextField.getText(), data.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
     if (wasReplaced) {
       updateReplaceResultTextField(1);
     } else {
+      data.getGraphicalZone().setHighlight(false);
       updateReplaceResultTextField(-1);
     }
   }
@@ -490,7 +507,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private boolean isValidReplaceTextField() {
-    return replaceTextField.getText() != null && !replaceTextField.getText().equals("");
+    return replaceTextField.getText() != null;
   }
 
   private boolean isValidFindTextField() {
@@ -510,7 +527,6 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
       }
     }
-    Integer t = res;
     String msg;
     switch (res) {
       case 0:
@@ -520,10 +536,10 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         msg = "Found 1 box which matches with: " + findTextField.getText();
         break;
       default:
-        msg = "Found " + t.toString() + " boxes which match with: " + findTextField.getText();
+        msg = "Found " + res + " boxes which match with: " + findTextField.getText();
     }
     statusBarTextField.setText(msg);
-    getParent().repaint();
+    statusBarTextField.setForeground(Color.BLACK);
   }
 
   private void updateReplaceResultTextField(int i) {
@@ -533,7 +549,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         msg = "No box is selected";
         break;
       case 0:
-        msg = "No match found with: " + findTextField.getText();
+        msg = "No box was replaced with: " + findTextField.getText();
         break;
       case 1:
         msg = "Replaced 1 box with: " + replaceTextField.getText();
@@ -543,6 +559,24 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         break;
     }
     statusBarTextField.setText(msg);
+    statusBarTextField.setForeground(Color.BLACK);
+  }
+
+  private void updateReplaceErrorTextField() {
+    String msg = "";
+    if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+      msg = FindAndReplace.checkReplaceAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(), replaceTextField.getText(), currentFrame.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    } else {
+      for (GraphFrame f : graphFrames) {
+        msg = FindAndReplace.checkReplaceAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), replaceTextField.getText(), f.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+      }
+    }
+    if (!msg.isEmpty()) {
+      statusBarTextField.setText("Error one or more boxes won't be replaced: " + msg);
+      statusBarTextField.setForeground(Color.red);
+    } else {
+      updateFoundResultTextField();
+    }
   }
 
   void updateDialog() {
