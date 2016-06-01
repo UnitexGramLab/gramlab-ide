@@ -4,7 +4,7 @@ reject_regex:  '^(Rejected|:\-1:)'
 reset_on_push: false
 reviewers:
   -
-    name: core-developers
+    name: core-committers
     required: 1
     teams:
       - core
@@ -12,7 +12,7 @@ reviewers:
       labels:
         - needs:review-core
   -
-    name: ide-developers
+    name: ide-committers
     required: 1
     teams:
       - ide
@@ -20,7 +20,7 @@ reviewers:
       branches:
         - master
   -
-    name: lr-developers
+    name: lingua-committers
     required: 1
     teams:
       - lingua
