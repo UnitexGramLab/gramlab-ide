@@ -39,6 +39,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -1354,6 +1356,37 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 
 	public boolean saveAsGraph() {
 		return saveAsGraph(false);
+	}
+	
+	/**
+	 * A method to provide "Save As /foo/bar.grf" functionality to a graph.
+	 * This method saves current graph frame at a particular location with the specified name.
+	 * 
+	 * @author Mukarram Tailor
+	 * @param  path
+	 * 		the absolute path(to be saved at) of .grf file 
+	 * @param  validated
+	 * 		boolean stating validation of content of .grf file
+	 * @return
+	 * 		true if saveAs operation is successful, else false
+	 */
+	public boolean saveAsGraph(String path, boolean validated){
+		if(!validated) {
+			if(graphicalZone.text.isModified()){
+				if(!graphicalZone.text.validateContent()){
+					return false;
+				}
+			}
+		}
+		final GraphIO g = new GraphIO(graphicalZone);
+		Path p = Paths.get(path);
+		File newFile = p.toFile();
+		if (newFile == null) {
+			return false;
+		}
+		g.saveGraph(newFile);
+		setGraph(newFile, newFile, false);
+		return true;
 	}
 	
 	private boolean saveAsGraph(boolean validated) {
