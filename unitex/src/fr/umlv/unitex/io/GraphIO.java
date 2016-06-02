@@ -27,13 +27,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import fr.umlv.unitex.graphrendering.GraphBox;
@@ -85,7 +89,8 @@ public class GraphIO {
 	}
 
 	/**
-	 * This method loads a graph.
+	 * This method loads a graph. 
+	 * If the specified graph is not found, it provides an option to create a new one with the same name.
 	 * 
 	 * @param grfFile
 	 *            name of the graph
@@ -97,11 +102,41 @@ public class GraphIO {
 		res.grf = grfFile;
 		InputStreamReader reader;
 		if (!grfFile.exists()) {
-			if (emitErrorMessage)
-				JOptionPane.showMessageDialog(null,
-						"Cannot find " + grfFile.getAbsolutePath(), "Error",
-						JOptionPane.ERROR_MESSAGE);
-			return null;
+			if (emitErrorMessage) {
+				String[] options = { "Yes", "No" };
+				int result = JOptionPane.showOptionDialog(null,
+						"Graph not found! Do you want to create a new one on \n" + grfFile.getAbsolutePath() + "?",
+						"Error", JOptionPane.WARNING_MESSAGE, 0, null, options, options[0]);
+				if (result == 0) {
+					File parent = grfFile.getParentFile();
+					if(!parent.exists() && !parent.mkdirs()){
+						JOptionPane.showMessageDialog(null,
+								"Couldn't create dir: " + parent, "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return null;
+					}
+					try {
+						if (!grfFile.exists()){
+							grfFile.createNewFile();
+						}
+					} catch (final IOException e) {
+						JOptionPane.showMessageDialog(null,
+								"Cannot write " + grfFile.getAbsolutePath(), "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return null;
+					};
+					if (!grfFile.canWrite()) {
+						JOptionPane.showMessageDialog(null,
+								"Cannot write " + grfFile.getAbsolutePath(), "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return null;
+					}
+					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newGraphFrame(null);
+					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+							.getCurrentFocusedGraphFrame().saveAsGraph(grfFile.getAbsolutePath(), false);
+				}
+				return null;
+			}
 		}
 		if (!grfFile.canRead()) {
 			if (emitErrorMessage)
