@@ -20,7 +20,8 @@ jdk:
 notifications:
   email:
     recipients:
-      - unitex-devel@univ-mlv.fr
+      # travis encrypt "ci@example.org" --add notifications.email.recipients
+      secure: a46xNyzDxp0Pn1MuIzps2mJs3dS4zR+5t86k8QqjkKJmptVO2zvEXOHtVvekkLgsk3bveAlglJfHyw/eDeBu45rOlAPf6eW+/WqdnGsndsxZlC4gVZWoriBEyeLMGnFxw61CpauY3p8hOH/JHo89Is+oMnQZ1+fIpHQsLblkpmUFCGNOnniKN1iFu2JL/9xqgbQCNMBJ8ZujP9ZofAfDS/WCleyK4HWV8BVM2oU6PPV/WZ5lqeVxZ1vOLb+R3WYi90wJKJs3VlsyEIw25KxIxMEEGbIFcB+bTbpJqjhmHzNQcg0stbKQM6mHSXbIm9qGNzyCCU+4V5VZ12+iL+Lxi/MhNBxOfZ1zKDwCDxX1wxYYHYGGhRijJBvqk58y492/BJN8oIgY5acacv8ov7jcVD7EWAms9oY+yhMHwoQ2pP4hc9u8wq2FcCpDietTt1YYC3aQL1kaJXRPtoyJW/JEJ4TxBgXjrZjHniSrESSUysVrz+F7xY+Hzid8jG6oWY70rkt09v+rSWYY1eHJ0cVMcIhQxW1WlR132DBg5AJ5qEsO+C1bZqqYwB/llzE3hS8UAmxdYjESTncF0Ryieu/lL5Tb8vdsd54fj2tkU0lKInXGD7Ka0gz5mpXdbF0g34iPHcD68qWbQ06U6Hf9Hk9CBYzan4b+FjBYQBLNoDEaeMc=
     on_success: change
     on_failure: always
   slack:
