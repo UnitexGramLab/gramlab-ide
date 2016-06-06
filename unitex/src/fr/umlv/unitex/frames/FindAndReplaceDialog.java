@@ -549,7 +549,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         msg = "No box is selected";
         break;
       case 0:
-        msg = "No box was replaced with: " + findTextField.getText();
+        msg = "No box was replaced with: " + replaceTextField.getText();
         break;
       case 1:
         msg = "Replaced 1 box with: " + replaceTextField.getText();
