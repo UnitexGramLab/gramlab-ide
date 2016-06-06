@@ -20,7 +20,6 @@
  */
 package fr.umlv.unitex.graphtools;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphBox;
@@ -75,11 +74,6 @@ public class FindAndReplace {
   private static boolean replace(GenericGraphBox g, String search, String replace, GraphicalZone zone) {
     if (g.getType() == GraphBox.NORMAL && !g.getContent().equals("<E>")) {
       String newContent = g.getContent().replace(search, replace);
-      /*String newContent = g.getContent().replace(search, replace).replaceAll("\\++", "+").replaceAll("^\\+", "")
-        .replaceAll("\\+$", "");
-      if (newContent.isEmpty()) {
-        newContent = "<E>";
-      }*/
       return setNewText(g, zone, newContent);
     }
     return false;
@@ -391,11 +385,11 @@ public class FindAndReplace {
       } catch (BackSlashAtEndOfLineException e) {
         return "Unexpected \'\\\' at end of line";
       } catch (NoClosingSupException e) {
-        return "No closing \'>\'";
+        return "Boxes must be properly balanced with < >";
       } catch (NoClosingQuoteException e) {
         return "No closing \"";
       } catch (NoClosingRoundBracketException e) {
-        return "No closing \'}\'";
+        return "Boxes must be properly balanced with { }";
       } catch (MissingGraphNameException e) {
         return "Missing graph name after \':\'";
       }

@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
@@ -529,110 +530,49 @@ public class GraphBox extends GenericGraphBox {
     throws BackSlashAtEndOfLineException, MissingGraphNameException,
     NoClosingQuoteException, NoClosingSupException,
     NoClosingRoundBracketException {
-    final int L = s.length();
-    int i = 0;
-    String tmp;
-    char ligne[] = new char[10000];
-    ligne = s.toCharArray();
-    while (i < L) {
-      tmp = "";
-      if (ligne[i] == ':') {
-        // case of a sub graph call
-        i++;
-        while ((i < L) && !isAPlusChar(ligne[i]) /* (ligne[i]!='+') */
-          ) {
-          if (ligne[i] == '\\') {
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-            if (i >= L) {
-              final BackSlashAtEndOfLineException e = new BackSlashAtEndOfLineException();
-              throw e;
-            }
-          }
-          tmp = tmp.concat(String.valueOf(ligne[i++]));
+    Stack<Character> stack = new Stack<Character>();
+    if (s.equals(":")) {
+      throw new MissingGraphNameException();
+    }
+    if (s.endsWith("\\")) {
+      throw new BackSlashAtEndOfLineException();
+    }
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if(c == '"') {
+        count++;
+      }
+      if (c == '<' || c == '{') {
+        stack.push(c);
+      } else if (c == '>') {
+        if (stack.isEmpty()) {
+          throw new NoClosingSupException();
         }
-        if (tmp.length() == 0) {
-          final MissingGraphNameException e = new MissingGraphNameException();
-          throw e;
+        if (stack.pop() != '<') {
+          throw new NoClosingSupException();
         }
-        // if we had a + separator char (even a japanese one), we put a
-        // standard + instead
-        if (i < L)
-          ligne[i] = '+';
-        i++;
-        greyed.add(Boolean.TRUE);
-      } else {
-        // all other cases
-        while ((i < L) && !isAPlusChar(ligne[i]) /* (ligne[i]!='+') */
-          ) {
-          if (ligne[i] == '"') {
-            // case of a quote expression
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-            while ((i < L) && ligne[i] != '"') {
-              if (ligne[i] == '\\') {
-                tmp = tmp.concat(String.valueOf(ligne[i++]));
-                if (i >= L) {
-                  final BackSlashAtEndOfLineException e = new BackSlashAtEndOfLineException();
-                  throw e;
-                }
-              }
-              tmp = tmp.concat(String.valueOf(ligne[i++]));
-            }
-            if (i >= L) {
-              final NoClosingQuoteException e = new NoClosingQuoteException();
-              throw e;
-            }
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-          } else if (ligne[i] == '<') {
-            // case of a <...> expression
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-            while ((i < L) && ligne[i] != '>') {
-              if (ligne[i] == '\\') {
-                tmp = tmp.concat(String.valueOf(ligne[i++]));
-                if (i >= L) {
-                  final BackSlashAtEndOfLineException e = new BackSlashAtEndOfLineException();
-                  throw e;
-                }
-              }
-              tmp = tmp.concat(String.valueOf(ligne[i++]));
-            }
-            if (i >= L) {
-              final NoClosingSupException e = new NoClosingSupException();
-              throw e;
-            }
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-          } else if (ligne[i] == '{') {
-            // case of a {...} expression
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-            while ((i < L) && ligne[i] != '}') {
-              if (ligne[i] == '\\') {
-                tmp = tmp.concat(String.valueOf(ligne[i++]));
-                if (i >= L) {
-                  final BackSlashAtEndOfLineException e = new BackSlashAtEndOfLineException();
-                  throw e;
-                }
-              }
-              tmp = tmp.concat(String.valueOf(ligne[i++]));
-            }
-            if (i >= L) {
-              final NoClosingRoundBracketException e = new NoClosingRoundBracketException();
-              throw e;
-            }
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-          } else {
-            if (ligne[i] == '\\') {
-              tmp = tmp.concat(String.valueOf(ligne[i++]));
-              if (i >= L) {
-                final BackSlashAtEndOfLineException e = new BackSlashAtEndOfLineException();
-                throw e;
-              }
-            }
-            tmp = tmp.concat(String.valueOf(ligne[i++]));
-          }
+
+      } else if (c == '}') {
+        if (stack.isEmpty()) {
+          throw new NoClosingRoundBracketException();
         }
-        if (i < L)
-          ligne[i] = '+';
-        greyed.add(Boolean.FALSE);
-        i++;
+        if (stack.pop() != '{') {
+          throw new NoClosingRoundBracketException();
+        }
+      }
+
+    }
+    if ((count % 2) == 1) {
+      throw new NoClosingQuoteException();
+    }
+    if(!stack.isEmpty()) {
+      Character c = stack.pop();
+      if(c == '{') {
+        throw new NoClosingRoundBracketException();
+      }
+      if(c == '<') {
+        throw new NoClosingSupException();
       }
     }
   }
