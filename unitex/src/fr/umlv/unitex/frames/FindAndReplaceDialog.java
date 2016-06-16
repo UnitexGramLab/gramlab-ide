@@ -21,6 +21,7 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphtools.FindAndReplace;
 import fr.umlv.unitex.graphtools.FindAndReplaceData;
 import fr.umlv.unitex.utils.KeyUtil;
@@ -453,19 +454,69 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   private void onNext() {
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
+    int res = 0;
+    for (GraphFrame f : graphFrames) {
+      res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    }
+    if (res == 0) {
+      data.getGraphicalZone().setHighlight(false);
+      return;
+    }
     if (isValidFindTextField()) {
-      while (!FindAndReplace.find(data.getGraphicalZone(), data.nextBox(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
+      GenericGraphBox nextBox = data.nextBox();
+      if (nextBox == null) {
+        selectGraph(nextGraph());
+        onNext();
+        return;
+      }
+      while (!FindAndReplace.find(data.getGraphicalZone(), nextBox, findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
         i++;
+        nextBox = data.nextBox();
+        if (nextBox == null) {
+          selectGraph(nextGraph());
+          onNext();
+          return;
+        }
       }
     }
+  }
+
+  private GraphFrame nextGraph() {
+    int currentIndex = (graphFrames.indexOf(currentFrame) + 1) % graphFrames.size();
+    return graphFrames.get(currentIndex);
+  }
+
+  private GraphFrame prevGraph() {
+    int currentIndex = floorMod(graphFrames.indexOf(currentFrame) - 1, graphFrames.size());
+    return graphFrames.get(currentIndex);
   }
 
   private void onPrev() {
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
+    int res = 0;
+    for (GraphFrame f : graphFrames) {
+      res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    }
+    if (res == 0) {
+      data.getGraphicalZone().setHighlight(false);
+      return;
+    }
     if (isValidFindTextField()) {
-      while (!FindAndReplace.find(data.getGraphicalZone(), data.prevBox(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
+      GenericGraphBox prevBox = data.prevBox();
+      if (prevBox == null) {
+        selectGraph(prevGraph());
+        onPrev();
+        return;
+      }
+      while (!FindAndReplace.find(data.getGraphicalZone(), prevBox, findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
         i++;
+        prevBox = data.prevBox();
+        if (prevBox == null) {
+          selectGraph(prevGraph());
+          onPrev();
+          return;
+        }
       }
     }
   }
@@ -599,14 +650,35 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     if (currentFrame == null) {
       currentFrame = graphFrames.get(0);
     }
+    selectGraph(currentFrame);
+    fillComboBox();
+  }
+
+  private void selectGraph(GraphFrame f) {
+    if(f == null) {
+      return;
+    }
+    currentFrame = f;
     try {
-      currentFrame.setIcon(false);
-      currentFrame.setSelected(true);
-      data = new FindAndReplaceData(currentFrame.getGraphicalZone().getBoxes(), currentFrame.getGraphicalZone());
+      f.setIcon(false);
+      f.setSelected(true);
+      data = new FindAndReplaceData(f.getGraphicalZone().getBoxes(), f.getGraphicalZone());
     } catch (PropertyVetoException exception) {
       exception.printStackTrace();
     }
-    fillComboBox();
+  }
+
+  private int floorMod(int x, int y) {
+    return x - floorDiv(x, y) * y;
+  }
+
+  private int floorDiv(int x, int y) {
+    int r = x / y;
+    // if the signs are different and modulo not zero, round down
+    if ((x ^ y) < 0 && (r * y != x)) {
+      r--;
+    }
+    return r;
   }
 
   public class ComboBoxToolTipRenderer extends DefaultListCellRenderer {

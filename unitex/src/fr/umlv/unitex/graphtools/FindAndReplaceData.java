@@ -58,6 +58,9 @@ public class FindAndReplaceData {
    * @return the next box in the list.
    */
   public GenericGraphBox nextBox() {
+    if (currentIndex == (boxes.size() - 1)) {
+      return null;
+    }
     currentIndex = (currentIndex + 1) % boxes.size();
     return boxes.get(currentIndex);
   }
@@ -68,6 +71,9 @@ public class FindAndReplaceData {
    * @return the previous box in the list.
    */
   public GenericGraphBox prevBox() {
+    if (currentIndex == 1) {
+      return null;
+    }
     currentIndex = floorMod(currentIndex - 1, boxes.size());
     return boxes.get(currentIndex);
   }
