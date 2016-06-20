@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -53,18 +53,18 @@ import fr.umlv.unitex.undo.SelectEdit;
 
 /**
  * This class describes a component on which a sentence graph can be drawn.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class TfstGraphicalZone extends GenericGraphicalZone implements
 		Printable {
-	
+
 	TaggingModel model;
 	int sentence=-1;
 
 	/**
 	 * Constructs a new <code>TfstGraphicalZone</code>.
-	 * 
+	 *
 	 * @param t
 	 *            text field to edit box contents
 	 * @param p
@@ -148,8 +148,18 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					if (!selectedBoxes.isEmpty()) {
 						// if there are selected boxes, we rely them to the
 						// current
-						addTransitionsFromSelectedBoxes(b, true);
-						unSelectAllBoxes();
+            // we make sure that the new transition will not
+            // create a cycle
+            boolean changeIsValid = false;
+            for(GenericGraphBox box : selectedBoxes) {
+              ArrayList<GenericGraphBox> newTransition = new ArrayList<GenericGraphBox>();
+              newTransition.add(b);
+              changeIsValid = !isCycle(box, newTransition);
+            }
+            if(changeIsValid) {
+              addTransitionsFromSelectedBoxes(b, true);
+              unSelectAllBoxes();
+            }
 					} else {
 						// if not, we just select this one
 						b.setSelected(true);
@@ -286,7 +296,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	/**
 	 * Draws the graph. This method should only be called by the virtual
 	 * machine.
-	 * 
+	 *
 	 * @param f_old
 	 *            the graphical context
 	 */
@@ -296,7 +306,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		DrawGraphParams params = defaultDrawParams();
 		drawGraph(f,params);
 	}
-		
+
 	@Override
 	public void drawGraph(Graphics2D f, DrawGraphParams params) {
 		f.setRenderingHint(
@@ -330,7 +340,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 
 	/**
 	 * Prints the graph.
-	 * 
+	 *
 	 * @param g
 	 *            the graphical context
 	 * @param p
@@ -409,9 +419,9 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		}
 	}
 
-	
+
 	private HashMap<Integer,TaggingState[]> stateSelection=new HashMap<Integer,TaggingState[]>();
-	
+
 	public void setup(GraphIO g,int sentence) {
 		/* First, we save the previous state selection if any */
 		if (this.sentence!=-1) {
@@ -453,11 +463,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		stateSelection.put(n,null);
 		model.resetModel();
 	}
-	
+
 	public void saveStateSelection(int n) {
 		stateSelection.put(n,model.getTaggingStates());
 	}
-	
+
 	public TaggingModel getTaggingModel() {
 		return model;
 	}
@@ -496,12 +506,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 	public void resetAllStateSelections() {
 		stateSelection.clear();
 	}
-	
+
 	public Integer[] getModifiedSentenceIndices() {
 		Integer[] tab=new Integer[stateSelection.keySet().size()];
 		stateSelection.keySet().toArray(tab);
 		Arrays.sort(tab);
 		return tab;
 	}
-	
+
 }

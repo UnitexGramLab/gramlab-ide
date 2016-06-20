@@ -1040,4 +1040,14 @@ public abstract class GenericGraphicalZone extends JComponent {
 		fireBoxSelectionChanged();
     return true;
 	}
+
+  public boolean isCycle(GenericGraphBox root, ArrayList<GenericGraphBox> transitions) {
+    if(transitions.contains(root)) {
+      return true;
+    }
+    for (GenericGraphBox box : transitions) {
+      return isCycle(root, box.getTransitions());
+    }
+    return false;
+  }
 }
