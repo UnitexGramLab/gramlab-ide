@@ -12,65 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
 package fr.umlv.unitex.frames;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
-import javax.swing.table.TableCellRenderer;
 
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
@@ -93,19 +41,35 @@ import fr.umlv.unitex.process.EatStreamThread;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ElagCommand;
-import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
-import fr.umlv.unitex.process.commands.RebuildTfstCommand;
-import fr.umlv.unitex.process.commands.TagsetNormTfstCommand;
-import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
+import fr.umlv.unitex.process.commands.*;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokensInfo;
 import fr.umlv.unitex.utils.KeyUtil;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.event.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 /**
  * This class describes a frame used to display sentence automata.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class TextAutomatonFrame extends TfstFrame {
@@ -150,6 +114,9 @@ public class TextAutomatonFrame extends TfstFrame {
 	Process currentElagLoadingProcess = null;
 	JSplitPane superpanel;
 	JButton resetSentenceGraph;
+  private JButton undoButton;
+  private JButton redoButton;
+  private final UndoManager manager = new UndoManager();
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -177,6 +144,8 @@ public class TextAutomatonFrame extends TfstFrame {
 						.getTextFont(null));
 			}
 		});
+    getManager().setLimit(-1);
+    graphicalZone.addUndoableEditListener(getManager());
 	}
 
 	private JPanel constructPanel() {
@@ -490,7 +459,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	}
 
 	private JPanel constructCornerPanel() {
-		final JPanel cornerPanel = new JPanel(new GridLayout(6, 1));
+		final JPanel cornerPanel = new JPanel(new GridLayout(8, 1));
 		cornerPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		cornerPanel.add(sentence_count_label);
 		final JPanel middle = new JPanel(new BorderLayout());
@@ -521,6 +490,14 @@ public class TextAutomatonFrame extends TfstFrame {
 		resetSentenceGraph = new JButton(resetSentenceAction);
 		resetSentenceGraph.setVisible(false);
 		cornerPanel.add(resetSentenceGraph);
+    undoButton = new JButton("Undo");
+    undoButton.setEnabled(false);
+    undoButton.addActionListener(new UndoIt());
+    cornerPanel.add(undoButton);
+    redoButton = new JButton("Redo");
+    redoButton.setEnabled(false);
+    redoButton.addActionListener(new RedoIt());
+    cornerPanel.add(redoButton);
 		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -604,7 +581,7 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	/**
 	 * Indicates if the graph has been modified
-	 * 
+	 *
 	 * @param b
 	 *            <code>true</code> if the graph has been modified,
 	 *            <code>false</code> otherwise
@@ -658,7 +635,7 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	/**
 	 * Loads a sentence automaton
-	 * 
+	 *
 	 * @param n
 	 *            sentence number
 	 * @return <code>false</code> if a sentence is already being loaded,
@@ -1021,7 +998,62 @@ public class TextAutomatonFrame extends TfstFrame {
 	public TfstGraphicalZone getTfstGraphicalZone() {
 		return graphicalZone;
 	}
-	
+
+  public UndoManager getManager() {
+    return manager;
+  }
+
+  private void updateDoUndoButtons() {
+    if (undoButton != null && redoButton != null) {
+      undoButton.setEnabled(getManager().canUndo());
+      redoButton.setEnabled(getManager().canRedo());
+    }
+  }
+
+  @Override
+  public void repaint() {
+    super.repaint();
+    updateDoUndoButtons();
+  }
+
+  class UndoIt implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent ev) {
+      undo();
+    }
+  }
+
+  public void undo() {
+    try {
+      if (getManager().canUndo()) {
+        getManager().undo();
+      }
+    } catch (final CannotUndoException ex) {
+      ex.printStackTrace();
+    } finally {
+      graphicalZone.unSelectAllBoxes();
+      repaint();
+    }
+  }
+
+  class RedoIt implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent ev) {
+      redo();
+    }
+  }
+
+  public void redo() {
+    try {
+      if (getManager().canRedo()) {
+        getManager().redo();
+      }
+    } catch (final CannotRedoException ex) {
+      /* */
+    } finally {
+      repaint();
+    }
+  }
 }
 
 class LoadSentenceDo1 implements ToDo {
