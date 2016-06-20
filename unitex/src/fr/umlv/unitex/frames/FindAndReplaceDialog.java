@@ -119,7 +119,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
           }
         }
         if (findTextField.getText() != null) {
-          updateReplaceErrorTextField();
+          updateTextField();
         }
       }
     });
@@ -154,12 +154,12 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     findTextField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
 
       @Override
@@ -170,12 +170,12 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     replaceTextField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
 
       @Override
@@ -186,25 +186,25 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     useRegularExpressionsCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
     });
     caseSensitiveCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
     });
     matchOnlyAWholeCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
     });
     ignoreCommentBoxesCheckBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        updateReplaceErrorTextField();
+        updateTextField();
       }
     });
   }
@@ -452,6 +452,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onNext() {
+    updateTextField();
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
     int res = 0;
@@ -492,6 +493,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onPrev() {
+    updateTextField();
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
     int res = 0;
@@ -613,6 +615,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     statusBarTextField.setForeground(Color.BLACK);
   }
 
+  private void updateTextField() {
+    if(replaceTextField.getText().equals("")) {
+      updateFoundResultTextField();
+      return;
+    }
+    updateReplaceErrorTextField();
+  }
+
   private void updateReplaceErrorTextField() {
     String msg = "";
     if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
@@ -652,6 +662,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
     selectGraph(currentFrame);
     fillComboBox();
+    updateTextField();
   }
 
   private void selectGraph(GraphFrame f) {
