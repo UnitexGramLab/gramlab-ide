@@ -40,6 +40,8 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -78,7 +80,6 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
@@ -171,6 +172,7 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(true);
 						exportTfstAsCsv.setEnabled(true);
 						closeText.setEnabled(true);
+            saveAsSnt.setEnabled(true);
 						File snt = ConfigManager.getManager().getCurrentSnt(
 								null);
 						final File sntDir = FileUtil.getSntDir(snt);
@@ -200,6 +202,7 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(false);
 						exportTfstAsCsv.setEnabled(false);
 						closeText.setEnabled(false);
+            saveAsSnt.setEnabled(false);
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTokensFrame();
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -332,6 +335,7 @@ public class UnitexFrame extends JFrame {
 	Action changeLang;
 	Action applyLexicalResources;
 	Action locatePattern;
+  Action saveAsSnt;
 	AbstractAction displayLocatedSequences;
 	AbstractAction elagComp;
 	AbstractAction constructFst;
@@ -442,7 +446,70 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		textMenu.add(openRecent);
-
+    saveAsSnt = new AbstractAction("Save Snt As...") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+          return;
+        }
+        JFileChooser fc = Config.getCorpusDialogBox();
+        fc.setMultiSelectionEnabled(false);
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        File file;
+        for(;;) {
+          final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
+          if (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+          }
+          file = fc.getSelectedFile();
+          if (file == null || !file.exists()) {
+            break;
+          }
+          final String message = file + "\nalready exists. Do you want to replace it?";
+          final String[] options = {"Yes", "No"};
+          final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
+            .ERROR_MESSAGE, null, options, options[0]);
+          if (n == 0) {
+            break;
+          }
+        }
+        if (file == null) {
+          return;
+        }
+        final String name = file.getAbsolutePath();
+        if (!name.endsWith(".snt")) {
+          file = new File(name + ".snt");
+        }
+        try {
+          Files.copy(Config.getCurrentSnt().toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {
+          JOptionPane.showMessageDialog(null, "except file copy");
+          ioe.printStackTrace();
+          return;
+        }
+        String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
+        File folder = new File(folderPath + "_snt");
+        try {
+          Files.copy(Config.getCurrentSntDir().toPath(), folder.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {
+          JOptionPane.showMessageDialog(null, "except dir copy");
+          ioe.printStackTrace();
+          return;
+        }
+        for (File subFile : Config.getCurrentSntDir().listFiles()) {
+          try {
+            Files.copy(subFile.toPath(), new File(folder.getAbsolutePath() + "" + File.separator + "" + subFile
+              .getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+          } catch (IOException ioe) {
+            JOptionPane.showMessageDialog(null, "except dir content copy");
+            ioe.printStackTrace();
+          }
+        }
+        Text.loadSnt(file, false);
+      }
+    };
+    saveAsSnt.setEnabled(false);
+    textMenu.add(new JMenuItem(saveAsSnt));
 		preprocessText = new AbstractAction("Preprocess Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
