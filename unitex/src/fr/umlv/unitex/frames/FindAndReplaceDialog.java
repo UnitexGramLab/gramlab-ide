@@ -456,8 +456,12 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
     int res = 0;
-    for (GraphFrame f : graphFrames) {
-      res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+      res = FindAndReplace.findAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    } else {
+      for (GraphFrame f : graphFrames) {
+        res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+      }
     }
     if (res == 0) {
       data.getGraphicalZone().setHighlight(false);
@@ -466,7 +470,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     if (isValidFindTextField()) {
       GenericGraphBox nextBox = data.nextBox();
       if (nextBox == null) {
-        selectGraph(nextGraph());
+        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+          selectGraph(currentFrame);
+        } else {
+          selectGraph(nextGraph());
+        }
         onNext();
         return;
       }
@@ -474,7 +482,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         i++;
         nextBox = data.nextBox();
         if (nextBox == null) {
-          selectGraph(nextGraph());
+          if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+            selectGraph(currentFrame);
+          } else {
+            selectGraph(nextGraph());
+          }
           onNext();
           return;
         }
@@ -497,8 +509,12 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
     int res = 0;
-    for (GraphFrame f : graphFrames) {
-      res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+      res = FindAndReplace.findAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+    } else {
+      for (GraphFrame f : graphFrames) {
+        res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+      }
     }
     if (res == 0) {
       data.getGraphicalZone().setHighlight(false);
@@ -507,7 +523,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     if (isValidFindTextField()) {
       GenericGraphBox prevBox = data.prevBox();
       if (prevBox == null) {
-        selectGraph(prevGraph());
+        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+          selectGraph(currentFrame);
+        } else {
+          selectGraph(prevGraph());
+        }
         onPrev();
         return;
       }
@@ -515,7 +535,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         i++;
         prevBox = data.prevBox();
         if (prevBox == null) {
-          selectGraph(prevGraph());
+          if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+            selectGraph(currentFrame);
+          } else {
+            selectGraph(prevGraph());
+          }
           onPrev();
           return;
         }
