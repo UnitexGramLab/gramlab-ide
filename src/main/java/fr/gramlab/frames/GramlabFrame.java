@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -40,11 +41,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.event.MenuEvent;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
+
+import org.gramlab.api.Menu;
 
 import fr.gramlab.GramlabConfigManager;
 import fr.gramlab.icons.Icons;
@@ -81,6 +83,7 @@ import fr.gramlab.workspace.WorkspaceTreeModel;
 import fr.gramlab.workspace.WorkspaceTreeNode;
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
@@ -106,6 +109,7 @@ import fr.umlv.unitex.process.commands.SvnCommand;
 import fr.umlv.unitex.process.commands.UncompressCommand;
 import fr.umlv.unitex.svn.SvnConflict;
 import fr.umlv.unitex.utils.HelpMenuBuilder;
+import ro.fortsoft.pf4j.DefaultPluginManager;
 
 @SuppressWarnings("serial")
 public class GramlabFrame extends JFrame {
@@ -1508,6 +1512,14 @@ public class GramlabFrame extends JFrame {
 		bar.add(createGraphsMenu());
 		bar.add(createFileEditionMenu());
 		bar.add(createHelpMenu());
+
+		// Added by Mukarram Tailor
+		File pluginsDirectory = new File(Config.DEFAULT_PLUGINS_DIRECTORY);
+		DefaultPluginManager pluginManager = new DefaultPluginManager(pluginsDirectory);
+		List<Menu> menus = pluginManager.getExtensions(Menu.class);
+		for (Menu menu : menus) {
+			bar.add(menu.Addmenu());
+	     }
 		return bar;
 	}
 

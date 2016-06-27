@@ -14,6 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.gramlab.api.Greeting;
+import org.gramlab.api.Menu;
 
 import fr.gramlab.project.GramlabProject;
 import fr.gramlab.project.GramlabProjectManager;
@@ -51,8 +52,9 @@ public class GramlabConfigManager {
 		setCurrentProject(null);
 		user = System.getProperty("user.name");
 
-    // start the plugin manager
-    startPluginManager(new File(path, Config.DEFAULT_PLUGINS_DIRECTORY));
+		//TODO: Check the runtimemode to decide Config.DEVELOPMENT_PLUGINS_DIRECTORY or Config.DEFAULT_PLUGINS_DIRECTORY
+		// start the plugin manager
+	    startPluginManager(new File(path, Config.DEFAULT_PLUGINS_DIRECTORY));
         
 		findWorkspace();
 	}
@@ -116,6 +118,9 @@ public class GramlabConfigManager {
     for (Greeting greeting : greetings) {
         System.out.println(">>> " + greeting.getGreeting());
     }
+    
+    List<Menu> menus = pluginManager.getExtensions(Menu.class);
+    System.out.println(String.format("Found %d extensions for extension point '%s'", menus.size(), Menu.class.getName()));
     
     // print extensions from classpath (non plugin)
     System.out.println(String.format("Extensions added by classpath:"));

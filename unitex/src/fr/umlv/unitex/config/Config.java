@@ -89,6 +89,7 @@ public class Config {
      * Default plugins directory name
      */
     public static final String DEFAULT_PLUGINS_DIRECTORY = "plugins";
+    public static final String DEVELOPMENT_PLUGINS_DIRECTORY = "core-plugins";
 
     /**
      * Path of the plugins directory
