@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -31,15 +31,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
@@ -49,6 +41,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.concord.BigConcordance;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -61,7 +54,7 @@ import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that can show an HTML concordance file.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class ConcordanceFrame extends TabbableInternalFrame {
@@ -136,7 +129,8 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				list.reset();
 				list.clearSelection();
-			}
+        Config.setCurrentConcordance(null);
+      }
 
 			@Override
 			public void internalFrameDeactivated(InternalFrameEvent e) {
@@ -214,7 +208,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 	 * Constructs a new <code>ConcordanceFrame</code> and loads in it an HTML
 	 * file. The number of lines in the concordance is shown in the caption of
 	 * the frame.
-	 * 
+	 *
 	 * @param concor
 	 *            the HTML file
 	 * @param widthInChars
