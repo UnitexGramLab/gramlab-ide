@@ -45,6 +45,7 @@ import java.util.Collections;
  * @author Maxime Petit
  */
 public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameFactoryObserver<GraphFrame> {
+  private final String separator = "▶";
   private JTextField findTextField;
   private JTextField replaceTextField;
   private JComboBox graphComboBox;
@@ -372,7 +373,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onReplaceAllS() {
-    String tokens[] = findSTextField.getText().split("◊");
+    String tokens[] = findSTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(findSeqList, tokens);
@@ -382,7 +383,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     if (replaceSTextField.getText().isEmpty()) {
       replaceSTextField.setText("<E>");
     }
-    tokens = replaceSTextField.getText().split("◊");
+    tokens = replaceSTextField.getText().split(separator);
     replaceSeqList.clear();
     Collections.addAll(replaceSeqList, tokens);
 
@@ -400,21 +401,28 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onFindSNext() {
-    if(findSTextField.getText().equals("")) {
+    if (findSTextField.getText().equals("")) {
       return;
     }
-    String tokens[] = findSTextField.getText().split("◊");
+    String tokens[] = findSTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(findSeqList, tokens);
     if (findSeqList.isEmpty()) {
       return;
     }
+    if(updateSeqFoundResultTextField() == 0) {
+      return;
+    }
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
     GenericGraphBox nextBox = data.nextBox();
     if (nextBox == null) {
-      selectGraph(nextGraph());
+      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+        selectGraph(currentFrame);
+      } else {
+        selectGraph(nextGraph());
+      }
       onFindSNext();
       return;
     }
@@ -423,33 +431,44 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       i++;
       nextBox = data.nextBox();
       if (nextBox == null) {
-        selectGraph(nextGraph());
+        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+          selectGraph(currentFrame);
+        } else {
+          selectGraph(nextGraph());
+        }
         onFindSNext();
         return;
       }
     }
     currentSeq.clear();
-    for(i = 0; i < data.getGraphicalZone().getSelectedBoxes().size(); i++) {
+    for (i = 0; i < data.getGraphicalZone().getSelectedBoxes().size(); i++) {
       currentSeq.add(data.getGraphicalZone().getSelectedBoxes().get(i));
     }
   }
 
   private void onFindSPrevious() {
-    if(findSTextField.getText().equals("")) {
+    if (findSTextField.getText().equals("")) {
       return;
     }
-    String tokens[] = findSTextField.getText().split("◊");
+    String tokens[] = findSTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(findSeqList, tokens);
     if (findSeqList.isEmpty()) {
       return;
     }
+    if(updateSeqFoundResultTextField() == 0) {
+      return;
+    }
     int i = 0;
     data.getGraphicalZone().unSelectAllBoxes();
     GenericGraphBox prevBox = data.prevBox();
     if (prevBox == null) {
-      selectGraph(prevGraph());
+      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+        selectGraph(currentFrame);
+      } else {
+        selectGraph(prevGraph());
+      }
       onFindSPrevious();
       return;
     }
@@ -458,7 +477,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       i++;
       prevBox = data.prevBox();
       if (prevBox == null) {
-        selectGraph(prevGraph());
+        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+          selectGraph(currentFrame);
+        } else {
+          selectGraph(prevGraph());
+        }
         onFindSPrevious();
         return;
       }
@@ -466,19 +489,16 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onReplaceS() {
-    if(currentSeq.isEmpty()) {
+    if (currentSeq.isEmpty()) {
+      updateSeqReplaceResultTextField(-1);
       return;
     }
     if (replaceSTextField.getText().isEmpty()) {
       replaceSTextField.setText("<E>");
     }
-    String tokens[] = replaceSTextField.getText().split("◊");
+    String tokens[] = replaceSTextField.getText().split(separator);
     replaceSeqList.clear();
     Collections.addAll(replaceSeqList, tokens);
-    if (data.getGraphicalZone().getSelectedBoxes().isEmpty()) {
-      updateSeqReplaceResultTextField(-1);
-      return;
-    }
     boolean wasReplaced = FindAndReplace.replaceSeq(data.getGraphicalZone(), replaceSeqList, currentSeq);
     if (wasReplaced) {
       updateSeqReplaceResultTextField(1);
@@ -497,7 +517,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void updateSeqReplaceErrorTextField() {
-    String tokens[] = replaceSTextField.getText().split("◊");
+    String tokens[] = replaceSTextField.getText().split(separator);
     replaceSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(replaceSeqList, tokens);
@@ -515,7 +535,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void updateSingleReplaceErrorTextField() {
-    if(replaceTextField.getText().equals("")) {
+    if (replaceTextField.getText().equals("")) {
       updateSingleFoundResultTextField();
       return;
     }
@@ -549,7 +569,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       if (replaceSTextField.getText().equals("")) {
         replaceSTextField.setText(currentFrame.getSelectedBoxes().get(0).getContent());
       } else {
-        replaceSTextField.setText(replaceSTextField.getText() + "◊" + currentFrame.getSelectedBoxes().get(0)
+        replaceSTextField.setText(replaceSTextField.getText() + separator + currentFrame.getSelectedBoxes().get(0)
           .getContent());
       }
     } else if (replaceAllBoxesAtOnceRadioButton.isSelected()) {
@@ -559,7 +579,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         if (replaceSTextField.getText().isEmpty()) {
           replaceSTextField.setText(boxes.get(i).getContent());
         } else {
-          replaceSTextField.setText(replaceSTextField.getText() + "◊" + boxes.get(i).getContent());
+          replaceSTextField.setText(replaceSTextField.getText() + separator + boxes.get(i).getContent());
         }
       }
     }
@@ -603,7 +623,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       if (findSTextField.getText().equals("")) {
         findSTextField.setText(data.getGraphicalZone().getSelectedBoxes().get(0).getContent());
       } else {
-        findSTextField.setText(findSTextField.getText() + "◊" + data.getGraphicalZone().getSelectedBoxes().get(0)
+        findSTextField.setText(findSTextField.getText() + separator + data.getGraphicalZone().getSelectedBoxes().get(0)
           .getContent());
       }
     } else if (findAllBoxesAtOnceRadioButton.isSelected()) {
@@ -613,7 +633,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         if (findSTextField.getText().isEmpty()) {
           findSTextField.setText(boxes.get(i).getContent());
         } else {
-          findSTextField.setText(findSTextField.getText() + "◊" + boxes.get(i).getContent());
+          findSTextField.setText(findSTextField.getText() + separator + boxes.get(i).getContent());
         }
       }
     }
@@ -1215,10 +1235,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     data.getGraphicalZone().unSelectAllBoxes();
     int res = 0;
     if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-      res = FindAndReplace.findAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+      res = FindAndReplace.findAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(),
+        useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox
+          .isSelected(), ignoreCommentBoxesCheckBox.isSelected());
     } else {
       for (GraphFrame f : graphFrames) {
-        res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+        res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(),
+          useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox
+            .isSelected(), ignoreCommentBoxesCheckBox.isSelected());
       }
     }
     if (res == 0) {
@@ -1269,10 +1293,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     data.getGraphicalZone().unSelectAllBoxes();
     int res = 0;
     if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-      res = FindAndReplace.findAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+      res = FindAndReplace.findAll(currentFrame.getGraphicalZone().getBoxes(), findTextField.getText(),
+        useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox
+          .isSelected(), ignoreCommentBoxesCheckBox.isSelected());
     } else {
       for (GraphFrame f : graphFrames) {
-        res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(), useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+        res += FindAndReplace.findAll(f.getGraphicalZone().getBoxes(), findTextField.getText(),
+          useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox
+            .isSelected(), ignoreCommentBoxesCheckBox.isSelected());
       }
     }
     if (res == 0) {
@@ -1432,17 +1460,17 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     statusBarTextField.setForeground(Color.BLACK);
   }
 
-  private void updateSeqFoundResultTextField() {
+  private int updateSeqFoundResultTextField() {
     if (findSTextField.getText().isEmpty()) {
       statusBarTextField.setText("");
-      return;
+      return -1;
     }
-    String tokens[] = findSTextField.getText().split("◊");
+    String tokens[] = findSTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(findSeqList, tokens);
     if (findSeqList.isEmpty()) {
-      return;
+      return -1;
     }
     int res = 0;
     if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
@@ -1475,6 +1503,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
     statusBarTextField.setText(msg);
     statusBarTextField.setForeground(Color.BLACK);
+    return res;
   }
 
   void updateDialog() {
@@ -1505,7 +1534,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void selectGraph(GraphFrame f) {
-    if(f == null) {
+    if (f == null) {
       return;
     }
     currentFrame = f;
