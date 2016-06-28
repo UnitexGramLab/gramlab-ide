@@ -332,6 +332,7 @@ public class UnitexFrame extends JFrame {
 	Action changeLang;
 	Action applyLexicalResources;
 	Action locatePattern;
+  Action openConcordance;
 	AbstractAction displayLocatedSequences;
 	AbstractAction elagComp;
 	AbstractAction constructFst;
@@ -478,6 +479,28 @@ public class UnitexFrame extends JFrame {
 		applyLexicalResources.setEnabled(false);
 		textMenu.add(new JMenuItem(applyLexicalResources));
 		textMenu.addSeparator();
+    openConcordance = new AbstractAction("Open Concordance") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+          return;
+        }
+        Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
+        final int returnVal = Config.getCorpusDialogBox().showOpenDialog(UnitexFrame.mainFrame);
+        if (returnVal != JFileChooser.APPROVE_OPTION) {
+          // we return if the user has clicked on CANCEL
+          return;
+        }
+        final File f = Config.getCorpusDialogBox().getSelectedFile();
+        if (!f.exists()) {
+          JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
+            + " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+          return;
+        }
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 100);
+      }
+    };
+    textMenu.add(new JMenuItem(openConcordance));
 		locatePattern = new AbstractAction("Locate Pattern...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
