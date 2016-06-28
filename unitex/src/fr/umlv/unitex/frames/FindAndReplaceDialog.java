@@ -407,6 +407,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     String tokens[] = findSTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
+    data.getGraphicalZone().removeHighlight();
     Collections.addAll(findSeqList, tokens);
     if (findSeqList.isEmpty()) {
       return;
@@ -415,7 +416,6 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     int i = 0;
-    data.getGraphicalZone().unSelectAllBoxes();
     GenericGraphBox nextBox = data.nextBox();
     if (nextBox == null) {
       if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
@@ -453,6 +453,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     String tokens[] = findSTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
+    data.getGraphicalZone().removeHighlight();
     Collections.addAll(findSeqList, tokens);
     if (findSeqList.isEmpty()) {
       return;
@@ -461,7 +462,6 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     int i = 0;
-    data.getGraphicalZone().unSelectAllBoxes();
     GenericGraphBox prevBox = data.prevBox();
     if (prevBox == null) {
       if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
@@ -485,6 +485,10 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         onFindSPrevious();
         return;
       }
+    }
+    currentSeq.clear();
+    for (i = 0; i < data.getGraphicalZone().getSelectedBoxes().size(); i++) {
+      currentSeq.add(data.getGraphicalZone().getSelectedBoxes().get(i));
     }
   }
 

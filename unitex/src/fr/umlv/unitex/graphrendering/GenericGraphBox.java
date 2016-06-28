@@ -20,11 +20,7 @@
  */
 package fr.umlv.unitex.graphrendering;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.font.TextLayout;
 import java.io.File;
 import java.util.ArrayList;
@@ -180,6 +176,8 @@ public class GenericGraphBox {
 	 * Number of the box
 	 */
 	int identificationNumber; // number used to numerote the state
+
+  private boolean highlight = false;
 
 	/**
 	 * Constructs a new box
@@ -1135,6 +1133,30 @@ public class GenericGraphBox {
 		Boolean is_greyed;
 		String l;
 		boolean boxDrawn = false;
+    if(highlight) {
+      g.setColor(GraphDecoratorConfig.DEBUG_HIGHLIGHT);
+      final Stroke old = g.getStroke();
+      g.setStroke(new BasicStroke(3));
+      GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
+      if (hasOutgoingTransitions || type == INITIAL) {
+        if (!parentGraphicalZone.getGraphPresentationInfo()
+          .isRightToLeft()) {
+          final int a = X1 + Width;
+          final int b = Y1 + Height;
+          GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
+          GraphicalToolBox.drawLine(g, a, Y1, a, b);
+          GraphicalToolBox.drawLine(g, a, b, X_out, Y_out);
+        } else {
+          GraphicalToolBox.drawLine(g, X_in - 5, Y_in, X1, Y1);
+          GraphicalToolBox.drawLine(g, X1, Y1, X1, Y1 + Height);
+          GraphicalToolBox.drawLine(g, X1, Y1 + Height, X_in - 5,
+            Y_in);
+        }
+    }
+      g.setStroke(old);
+      g.setColor(params.getForegroundColor());
+      boxDrawn = true;
+    }
 		if (parentGraphicalZone.decorator != null
 				&& parentGraphicalZone.decorator
 						.requiresSpecialLineDrawing(boxNumber)) {
@@ -1642,6 +1664,14 @@ public class GenericGraphBox {
 	public void setTransitions(ArrayList<GenericGraphBox> transitions) {
 		this.transitions = transitions;
 	}
+
+  public boolean getHighlight() {
+    return highlight;
+  }
+
+  public void setHighlight(boolean bool) {
+    highlight = bool;
+  }
 
 	void updateWithContext(Graphics2D g) {
 		if (context != null) {

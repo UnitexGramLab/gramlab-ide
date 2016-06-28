@@ -1077,4 +1077,10 @@ public abstract class GenericGraphicalZone extends JComponent {
     fireGraphChanged(true);
     repaint();
   }
+
+  public void removeHighlight() {
+    for(GenericGraphBox box : graphBoxes) {
+      box.setHighlight(false);
+    }
+  }
 }

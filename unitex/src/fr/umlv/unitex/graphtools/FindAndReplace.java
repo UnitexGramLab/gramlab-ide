@@ -425,7 +425,8 @@ public class FindAndReplace {
       return false;
     } else {
       if (highlight) {
-        box.setSelected(highlight);
+        //box.setSelected(highlight);
+        box.setHighlight(true);
         zone.getSelectedBoxes().add(box);
       }
     }
@@ -456,7 +457,8 @@ public class FindAndReplace {
     genericGraphBox, boolean highlight, boolean caseSensitive, boolean useRegex) {
     if(findSeqList.size() == 1 && boxEquals(findSeqList.get(0), genericGraphBox.getContent(), caseSensitive, useRegex)) {
       if (highlight) {
-        genericGraphBox.setSelected(highlight);
+        //genericGraphBox.setSelected(highlight);
+        genericGraphBox.setHighlight(true);
         graphicalZone.getSelectedBoxes().add(genericGraphBox);
         graphicalZone.setHighlight(genericGraphBox, highlight);
       }
@@ -465,7 +467,8 @@ public class FindAndReplace {
     if (boxEquals(findSeqList.get(0), genericGraphBox.getContent(), caseSensitive, useRegex) && genericGraphBox
       .getTransitions().size() == 1) {
       if (highlight) {
-        genericGraphBox.setSelected(highlight);
+        //genericGraphBox.setSelected(highlight);
+        genericGraphBox.setHighlight(true);
         graphicalZone.getSelectedBoxes().add(genericGraphBox);
         graphicalZone.setHighlight(genericGraphBox, highlight);
       }
@@ -473,12 +476,14 @@ public class FindAndReplace {
         caseSensitive, useRegex)) {
         graphicalZone.unSelectAllBoxes();
         graphicalZone.setHighlight(false);
+        graphicalZone.removeHighlight();
         return false;
       }
       return true;
     }
     graphicalZone.setHighlight(false);
     graphicalZone.unSelectAllBoxes();
+    graphicalZone.removeHighlight();
     return false;
   }
 
