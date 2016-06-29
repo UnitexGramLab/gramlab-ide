@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -28,9 +28,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.swing.JComponent;
-import javax.swing.JInternalFrame;
-import javax.swing.JViewport;
+import javax.swing.*;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
@@ -39,6 +37,7 @@ import javax.swing.undo.UndoableEditSupport;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.grf.GraphMetaData;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
@@ -56,7 +55,7 @@ import fr.umlv.unitex.undo.TranslationEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.
- * 
+ *
  * @author Sébastien Paumier
  */
 public abstract class GenericGraphicalZone extends JComponent {
@@ -64,7 +63,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * Text field in which the content of boxes can be edited.
 	 */
 	public final GraphTextField text;
-	
+
 	/**
 	 * ArrayList containing the current selected boxes
 	 */
@@ -87,7 +86,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	private GraphPresentationInfo graphPresentationInfo;
 	GraphMetaData metadata;
 	private static DrawGraphParams exportBitmapParams;
-	
+
 	/**
 	 * <code>JInternalFrame</code> that contains this component
 	 */
@@ -96,7 +95,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public JInternalFrame getParentFrame() {
 		return parentFrame;
 	}
-	
+
 	public DrawGraphParams getExportBitmapParams() {
 		synchronized(GenericGraphicalZone.class) {
 			if(exportBitmapParams == null) {
@@ -171,7 +170,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Adds a graph box to the graph
-	 * 
+	 *
 	 * @param g
 	 *            the graph box
 	 */
@@ -191,7 +190,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Paste a graph box selection in the graph. The created boxes will be the
 	 * new box selection.
-	 * 
+	 *
 	 * @param m
 	 *            the graph box selection
 	 */
@@ -255,7 +254,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Removes all transitions that go to a specified graph box
-	 * 
+	 *
 	 * @param dest
 	 *            the target graph box
 	 */
@@ -291,7 +290,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Removes all transitions that go to a specified graph box
-	 * 
+	 *
 	 * @param dest
 	 *            the target graph box
 	 * @return the boxes which had transition to dest
@@ -355,7 +354,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Sets the content for all selected graph boxes
-	 * 
+	 *
 	 * @param s
 	 *            the new content
 	 */
@@ -388,7 +387,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Finds the box that is selected by a click
-	 * 
+	 *
 	 * @param x
 	 *            X coordinate of the click
 	 * @param y
@@ -441,7 +440,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Selects all graph boxes that have a non empty intersection with a
 	 * selection rectangle
-	 * 
+	 *
 	 * @param x
 	 *            X coordinate of the selection rectangle
 	 * @param y
@@ -486,7 +485,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Translates all selected graph boxes
-	 * 
+	 *
 	 * @param dx
 	 *            value to be added to X coordinates
 	 * @param dy
@@ -520,7 +519,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Adds transitions from all selected boxes to a specified graph box
-	 * 
+	 *
 	 * @param dest
 	 *            the target graph box
 	 * @param save
@@ -547,7 +546,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Adds transitions from a specified graph box to all selected boxes
-	 * 
+	 *
 	 * @param src
 	 *            the source graph box
 	 */
@@ -568,7 +567,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	public DrawGraphParams defaultDrawParams() {
 		DrawGraphParams params = new DrawGraphParams();
 		params.setScaleFactor(scaleFactor);
-		params.setDpi(DrawGraphParams.BASE_DPI); 
+		params.setDpi(DrawGraphParams.BASE_DPI);
 		params.setCompressionQuality(0.95f);
 		params.setAntialiasing(getGraphPresentationInfo().isAntialiasing());
 		params.setBackgroundColor(getGraphPresentationInfo().getBackgroundColor());
@@ -586,17 +585,17 @@ public abstract class GenericGraphicalZone extends JComponent {
 		params.setFilename(getGraphPresentationInfo().isFilename());
 		params.setPathname(getGraphPresentationInfo().isPathname());
 		params.setDate(getGraphPresentationInfo().isDate());
-		params.setCrop(false); 
+		params.setCrop(false);
 		params.setCropMarginW(0);
 		params.setCropMarginH(0);
 		return params;
 	}
-	
+
 	abstract public void drawGraph(Graphics2D f, DrawGraphParams params);
-	
+
 	/**
 	 * Draws all graph's transitions
-	 * 
+	 *
 	 * @param gr
 	 *            the graphical context
 	 */
@@ -614,7 +613,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Adds transitions from the last mouse click position to all selected boxes
-	 * 
+	 *
 	 * @param gr
 	 *            the graphical context
 	 */
@@ -632,7 +631,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Adds transitions from all selected boxes to the last mouse click position
-	 * 
+	 *
 	 * @param gr
 	 *            the graphical context
 	 */
@@ -650,7 +649,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	/**
 	 * Draws all boxes of the graph
-	 * 
+	 *
 	 * @param gr
 	 *            the graphical context
 	 */
@@ -669,7 +668,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	/**
 	 * Draws the grid of the graph if the <code>isGrid</code> field is set to
 	 * <code>true</code>
-	 * 
+	 *
 	 * @param f
 	 *            the graphical context
 	 */
@@ -1015,4 +1014,30 @@ public abstract class GenericGraphicalZone extends JComponent {
 		return metadata;
 	}
 
+  public void checkTextBox(GraphBox g, String s) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+    g.checkString(s);
+  }
+
+	public boolean setTextBox(GraphBox g, String s) {
+    try {
+      g.checkString(s);
+    } catch (BackSlashAtEndOfLineException e) {
+      return false;
+    } catch (MissingGraphNameException e) {
+      return false;
+    } catch (NoClosingQuoteException e) {
+      return false;
+    } catch (NoClosingSupException e) {
+      return false;
+    } catch (NoClosingRoundBracketException e) {
+      return false;
+    }
+    final AbstractUndoableEdit edit = new BoxTextEdit(g, s, this);
+    postEdit(edit);
+		g.setContent(s);
+    fireGraphTextChanged("");
+		fireGraphChanged(true);
+		fireBoxSelectionChanged();
+    return true;
+	}
 }
