@@ -1627,6 +1627,10 @@ public class GenericGraphBox {
 		Y_out = y_out;
 	}
 
+	public boolean isStandaloneBox() {
+		return standaloneBox;
+	}
+
 	public int getType() {
 		return type;
 	}

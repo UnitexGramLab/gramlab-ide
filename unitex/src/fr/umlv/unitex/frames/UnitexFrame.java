@@ -78,6 +78,7 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
@@ -939,6 +940,21 @@ public class UnitexFrame extends JFrame {
 		};
 		graphMenu.add(new JMenuItem(printAll));
 		graphMenu.addSeparator();
+		final Action findAndReplace = new AbstractAction("Find and replace") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+        ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
+        if(frames.isEmpty()) {
+          return;
+        }
+        final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
+      }
+		};
+    findAndReplace.putValue(Action.ACCELERATOR_KEY,
+      KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+    graphMenu.add(new JMenuItem(findAndReplace));
+		graphMenu.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1312,6 +1328,7 @@ public class UnitexFrame extends JFrame {
 				tools.setEnabled(existsFocusedGrFrame);
 				format.setEnabled(existsFocusedGrFrame);
 				zoom.setEnabled(existsFocusedGrFrame);
+				findAndReplace.setEnabled(existsAnyGrFrame);
 
 				List<File> l = PreferencesManager.getUserPreferences()
 						.getRecentGraphs();
@@ -1335,6 +1352,7 @@ public class UnitexFrame extends JFrame {
 				print.setEnabled(true);
 				undo.setEnabled(true);
 				redo.setEnabled(true);
+        findAndReplace.setEnabled(true);
 			}
 		});
 		return graphMenu;
@@ -2091,5 +2109,4 @@ public class UnitexFrame extends JFrame {
 		openCascade(f);
                 Config.getTransducerListDialogBox().setControlButtonsAreShown(false);
 	}
-
 }

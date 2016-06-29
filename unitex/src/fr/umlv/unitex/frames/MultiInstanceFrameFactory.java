@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -27,6 +27,7 @@ import javax.swing.event.InternalFrameEvent;
 
 class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>, K> {
 	final ArrayList<F> frames = new ArrayList<F>();
+  private ArrayList<MultiInstanceFrameFactoryObserver> observers = new ArrayList<MultiInstanceFrameFactoryObserver>();
 
 	F getFrameIfExists(K key) {
 		if (key != null) {
@@ -41,11 +42,17 @@ class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>, K> {
 
 	void addFrame(final F f) {
 		frames.add(f);
-		f.addInternalFrameListener(new InternalFrameAdapter() {
+    for(MultiInstanceFrameFactoryObserver o : observers) {
+      o.onUpdate(frames);
+    }
+    f.addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosed(InternalFrameEvent e) {
 				frames.remove(f);
-			}
+        for(MultiInstanceFrameFactoryObserver o : observers) {
+          o.onUpdate(frames);
+        }
+      }
 		});
 	}
 
@@ -69,4 +76,9 @@ class MultiInstanceFrameFactory<F extends KeyedInternalFrame<K>, K> {
 	int getFrameCount() {
 		return frames.size();
 	}
+
+  public void addObserver(MultiInstanceFrameFactoryObserver o) {
+    observers.add(o);
+  }
+
 }
