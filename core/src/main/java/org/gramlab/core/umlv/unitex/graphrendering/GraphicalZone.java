@@ -1147,7 +1147,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 	 * created, and the $aaa( box is then linked to all input boxes. The same
 	 * for output boxes.
 	 */
-	void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
+	public void computeInputOutputBoxes(ArrayList<GenericGraphBox> selection,
 			ArrayList<GenericGraphBox> inputBoxes,
 			ArrayList<GenericGraphBox> outputBoxes) {
 		final ArrayList<GenericGraphBox> accessible = new ArrayList<GenericGraphBox>();
@@ -1874,4 +1874,44 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		viewport.setViewPosition(new Point(newX, newY));
 	}
+
+  public void setHighlight(GenericGraphBox b, boolean highlight) {
+    if (!highlight) {
+      setDecorator(null);
+      repaint();
+      return;
+    }
+    final GraphDecorator d = new GraphDecorator(null);
+    d.highlightBoxLine(-1, b.getBoxNumber(), -1);
+    setDecorator(d);
+    revalidate();
+    repaint();
+    final JViewport viewport = ((GraphFrame) parentFrame).scroll
+      .getViewport();
+    Rectangle visibleRect = viewport.getViewRect();
+    if (visibleRect.width == 0 && visibleRect.height == 0) {
+			/*
+			 * If the view port has not been given a size, we consider the panel
+			 * area as default
+			 */
+      visibleRect = new Rectangle(0, 0, getWidth(), getHeight());
+    }
+		/*
+		 * If necessary, we adjust the scrolling so that the middle of the box
+		 * will be visible
+		 */
+    int newX = visibleRect.x;
+    if (b.X < visibleRect.x + 50) {
+      newX = b.X1 - 50;
+    } else if ((b.X1 + b.Width) > (visibleRect.x + visibleRect.width)) {
+      newX = b.X1 - 50;
+    }
+    int newY = visibleRect.y;
+    if (b.Y < visibleRect.y + 50) {
+      newY = b.Y1 - 50;
+    } else if ((b.Y1 + b.Height) > (visibleRect.y + visibleRect.height)) {
+      newY = b.Y1 - 50;
+    }
+    viewport.setViewPosition(new Point(newX, newY));
+  }
 }

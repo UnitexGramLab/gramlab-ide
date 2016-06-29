@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.regex.Pattern;
 
 import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
@@ -34,13 +35,13 @@ import fr.umlv.unitex.exceptions.NoClosingSupException;
 
 /**
  * This class describes a box of a graph.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class GraphBox extends GenericGraphBox {
 	/**
 	 * Constructs a new box
-	 * 
+	 *
 	 * @param x
 	 *            X coordinate of the input point of the box
 	 * @param y
@@ -210,7 +211,7 @@ public class GraphBox extends GenericGraphBox {
 
 	/**
 	 * Sets the box content.
-	 * 
+	 *
 	 * @param s
 	 *            the content
 	 */
@@ -514,5 +515,67 @@ public class GraphBox extends GenericGraphBox {
 					old);
 		}
 	}
+
+  /**
+   * This method checks if the String s is valid or not.
+   *
+   * @param s the string to check
+   * @throws BackSlashAtEndOfLineException if the String ends with a backslash.
+   * @throws MissingGraphNameException if the String starts with a semicolon but is missing a graph name.
+   * @throws NoClosingQuoteException if the String contains a not closed quotation.
+   * @throws NoClosingSupException if the String contains a not closed chevron.
+   * @throws NoClosingRoundBracketException if the String contains a not closed brace.
+   */
+  public void checkString(String s)
+    throws BackSlashAtEndOfLineException, MissingGraphNameException,
+    NoClosingQuoteException, NoClosingSupException,
+    NoClosingRoundBracketException {
+    Stack<Character> stack = new Stack<Character>();
+    if (s.equals(":")) {
+      throw new MissingGraphNameException();
+    }
+    if (s.endsWith("\\")) {
+      throw new BackSlashAtEndOfLineException();
+    }
+    int count = 0;
+    for (int i = 0; i < s.length(); i++) {
+      char c = s.charAt(i);
+      if(c == '"') {
+        count++;
+      }
+      if (c == '<' || c == '{') {
+        stack.push(c);
+      } else if (c == '>') {
+        if (stack.isEmpty()) {
+          throw new NoClosingSupException();
+        }
+        if (stack.pop() != '<') {
+          throw new NoClosingSupException();
+        }
+
+      } else if (c == '}') {
+        if (stack.isEmpty()) {
+          throw new NoClosingRoundBracketException();
+        }
+        if (stack.pop() != '{') {
+          throw new NoClosingRoundBracketException();
+        }
+      }
+
+    }
+    if ((count % 2) == 1) {
+      throw new NoClosingQuoteException();
+    }
+    if(!stack.isEmpty()) {
+      Character c = stack.pop();
+      if(c == '{') {
+        throw new NoClosingRoundBracketException();
+      }
+      if(c == '<') {
+        throw new NoClosingSupException();
+      }
+    }
+  }
+
 }
 /* end of GraphBox */

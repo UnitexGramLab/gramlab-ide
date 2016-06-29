@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -51,7 +51,7 @@ import fr.umlv.unitex.tfst.TagFilter;
 /**
  * This class is responsible for managing all internal frames in Unitex and GramLab main
  * frame.
- * 
+ *
  * @author paumier
  */
 public abstract class InternalFrameManager implements FrameManager {
@@ -83,7 +83,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final FrameFactory consoleFrameFactory = new FrameFactory(
 			ConsoleFrame.class);
 	private final SvnConflictsFrameFactory svnConflictsFrameFactory = new SvnConflictsFrameFactory();
-	private final TransducerListConfigurationFrameFactory transducerListConfigurationFrameFactory = 
+	private final TransducerListConfigurationFrameFactory transducerListConfigurationFrameFactory =
 			new TransducerListConfigurationFrameFactory();
 	private final FileEditionTextFrameFactory fileEditionTextFrameFactory = new FileEditionTextFrameFactory();
 	private final GraphFrameFactory graphFrameFactory = new GraphFrameFactory();
@@ -105,6 +105,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
 	private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
+  private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -163,7 +164,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	 * Creates a GraphFrame for the given .grf file. If a frame for 'grf'
 	 * already exists, then it is made visible. If the .grf is not loadable, the
 	 * function does nothing and returns false.
-	 * 
+	 *
 	 * @param grf
 	 * @return
 	 */
@@ -188,12 +189,12 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void saveAllGraphFrames() {
 		graphFrameFactory.saveAllFrames();
 	}
-	
+
 	/**
 	 * This method implements the functionality to minimize the currently focused frame.
-	 * 
+	 *
 	 * @author Mukarram Tailor
-	 */	
+	 */
 	public void minimizeCurrentFocusedFrame(){
 		JInternalFrame frame = getSelectedFrame();
 		try {
@@ -205,10 +206,10 @@ public abstract class InternalFrameManager implements FrameManager {
 			e1.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This method implements the functionality to close the currently focused frame.
-	 * 
+	 *
 	 * @author Mukarram Tailor
 	 */
 	public void closeCurrentFocusedFrame(){
@@ -219,7 +220,7 @@ public abstract class InternalFrameManager implements FrameManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void closeAllGraphFrames() {
 		graphFrameFactory.closeAllFrames();
 	}
@@ -242,7 +243,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	/**
 	 * Creates a TextFrame for the given text file. If the text is not loadable,
 	 * the function does nothing and returns null.
-	 * 
+	 *
 	 * @param fileInConflict
 	 * @return
 	 */
@@ -439,27 +440,27 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void closeApplyLexicalResourcesFrame() {
 		applyLexicalResourcesFrameFactory.closeFrame();
 	}
-	
+
 	public TransducerListConfigurationFrame newTransducerListConfigurationFrame(File f){
 		return (TransducerListConfigurationFrame) setup(
 				transducerListConfigurationFrameFactory.newTransducerListConfigurationFrame(f),
 				false, false);
-		
+
 	}
-	
+
 	public boolean isTransducerListConfigurationExist(){
 		return transducerListConfigurationFrameFactory.existsFrame();
 	}
-	
-	
+
+
 	public TransducerListConfigurationFrame getTransducerListConfigurationFrame(){
 		return transducerListConfigurationFrameFactory.getFrame();
 	}
-	
+
 	public void closeTransducerListConfigurationFrame(){
 		transducerListConfigurationFrameFactory.closeFrame();
 	}
-	
+
 	public CheckDicFrame newCheckDicFrame(File dela) {
 		final CheckDicFrame f = (CheckDicFrame) setup(checkDicFrameFactory
 				.newFrame());
@@ -493,7 +494,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		f.launchBuilderCommands();
 		return f;
 	}
-	
+
 	public ConcordanceDiffFrame newConcordanceDiffFrame(File file) {
 		final ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory
 				.newFrame();
@@ -854,4 +855,17 @@ public abstract class InternalFrameManager implements FrameManager {
 		}
 		return f;
 	}
+
+	public FindAndReplaceDialog newFindAndReplaceDialog() {
+    final FindAndReplaceDialog d = findAndReplaceFactory.newFindAndReplaceDialog();
+		if (d == null)
+			return null;
+		d.setVisible(true);
+		return d;
+	}
+
+  public void addObserver(MultiInstanceFrameFactoryObserver o) {
+    graphFrameFactory.addObserver(o);
+  }
+
 }
