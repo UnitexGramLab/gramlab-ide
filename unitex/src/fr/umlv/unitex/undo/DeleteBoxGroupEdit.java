@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -31,7 +31,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph delete a group of boxes
- * 
+ *
  * @author Decreton Julien
  */
 public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
@@ -135,19 +135,7 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 	@Override
 	public void redo() {
 		super.redo();
-		int i, L;
-		GenericGraphBox g;
-		if (selectedBoxes.isEmpty())
-			return;
-		L = oldSelectedBoxes.size();
-		// delete each selected boxes before the delete action
-		for (i = 0; i < L; i++) {
-			g = oldSelectedBoxes.get(i);
-			if (g.getType() == GenericGraphBox.NORMAL) {
-				boxes.remove(g);
-			}
-			zone.removeTransitionsToSelected();
-		}
+		zone.removeBoxes(oldSelectedBoxes);
 		zone.unSelectAllBoxes();
 		zone.repaint();
 	}
