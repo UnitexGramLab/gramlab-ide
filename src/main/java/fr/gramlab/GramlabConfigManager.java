@@ -114,7 +114,7 @@ public class GramlabConfigManager {
     
     // Finding extensions for greeting extension point
     List<Greeting> greetings = pluginManager.getExtensions(Greeting.class);
-    System.out.println(String.format("Found %d extensions for extension point '%s'", greetings.size(), Greeting.class.getName()));
+    System.out.println(String.format("Found %d extensions for extension points '%s'", greetings.size(), Greeting.class.getName()));
     for (Greeting greeting : greetings) {
         System.out.println(">>> " + greeting.getGreeting());
     }

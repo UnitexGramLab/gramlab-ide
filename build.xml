@@ -1,28 +1,29 @@
 <project name="project-oriented-ide" default="dist" basedir=".">
-  
+
 	<description>Unitex/GramLab Project-oriented IDE build file</description>
 
 	<!-- set global properties for this build -->
-  <property name="plugins" location="core-plugins" />
-  <property name="api-src" location="api/src" />
+	<property name="plugins" location="core-plugins" />
+	<property name="api" location="api" />
+	<property name="api-src" location="api/src" />
 	<property name="src" location="src" />
 	<property name="build" location="build" />
-  <property name="classes" location="classes" />
+	<property name="classes" location="classes" />
 	<property name="dist" location="dist" />
 	<property name="lib" location="lib" />
 	<property name="resources" location="resources" />
-  <property name="dist-lib" location="${dist}/lib" />
-  <property name="dist-plugins" location="${dist}/plugins" />
-  <property environment="env" />
-			
+	<property name="dist-lib" location="${dist}/lib" />
+	<property name="dist-plugins" location="${dist}/plugins" />
+	<property environment="env" />
+
 	<!-- targets -->
 	<target name="init">
-    <!-- Classic IDE init-->
-    <subant target="init">
-      <property name="basedir"  value="unitex"/>
-      <property name="dist-dir" value="${dist}"/>
-      <fileset dir="unitex" includes="build.xml"/>
-    </subant>
+		<!-- Classic IDE init-->
+		<subant target="init">
+			<property name="basedir"  value="unitex"/>
+			<property name="dist-dir" value="${dist}"/>
+			<fileset dir="unitex" includes="build.xml"/>
+		</subant>
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->
@@ -30,53 +31,58 @@
 	</target>
 
 	<target name="clean" description="clean up">
-    <!-- Clean core-plugins -->
-    <subant target="clean" failonerror="false">
+		<!-- Clean core-plugins -->
+		<subant target="clean" failonerror="false">
 			<fileset dir="${plugins}">
 				<include name="**/build.xml" />
-        <exclude name="build.xml" />
+				<exclude name="build.xml" />
 			</fileset>
-    </subant>
+		</subant>
 
-    <!-- Classic IDE clean-->
-    <subant target="clean">
-      <property name="basedir" value="unitex"/>
-      <fileset dir="unitex" includes="build.xml"/>
-    </subant>
+		<!-- Clean api -->
+		<subant target="clean" failonerror="false">
+			<fileset dir="api" includes="build.xml"/>
+		</subant>
+
+		<!-- Classic IDE clean-->
+		<subant target="clean">
+			<property name="basedir" value="unitex"/>
+			<fileset dir="unitex" includes="build.xml"/>
+		</subant>
 
 		<echo message="Deleting files in ${build}" level="info" />
 		<delete includeemptydirs="true" quiet="true">
 			<fileset dir="${build}" includes="**/*" />
 		</delete>
-    <delete dir="${build}" />
-    
+		<delete dir="${build}" />
+
 		<echo message="Deleting files in ${classes}" level="info" />
 		<delete includeemptydirs="true" quiet="true">
 			<fileset dir="${classes}" includes="**/*" />
 		</delete>
-    <delete dir="${classes}" />
-    
+		<delete dir="${classes}" />
+
 		<echo message="Deleting files in ${dist}" level="info" />
 		<delete includeemptydirs="true" quiet="true">
 			<fileset dir="${dist}" includes="**/*" />
 		</delete>
-    <delete dir="${dist}" />
-	</target>  
+		<delete dir="${dist}" />
+	</target>
 
 	<target name="compile" depends="init" description="compile the source">
-    <!-- Classic IDE dist-->
-    <subant target="dist">
-      <property name="basedir" value="unitex"/>
-      <property name="dist-dir" value="${dist}"/>
-      <fileset dir="unitex" includes="build.xml"/>
-    </subant>
+		<!-- Classic IDE dist-->
+		<subant target="dist">
+			<property name="basedir" value="unitex"/>
+			<property name="dist-dir" value="${dist}"/>
+			<fileset dir="unitex" includes="build.xml"/>
+		</subant>
 		<!-- Compile the java code from ${src} into ${build} -->
 		<echo message="classpaht=${dist}/Unitex.jar"/>
 		<javac target="1.7" source="1.7" destdir="${build}" includeAntRuntime="false">
-      <compilerarg value="-Xlint:-options"/>
-      <src path="${src}"/>
-      <src path="${api-src}"/>
-      <classpath>
+			<compilerarg value="-Xlint:-options"/>
+			<src path="${src}"/>
+			<src path="${api-src}"/>
+			<classpath>
 				<fileset dir="${lib}">
 					<include name="*.jar" />
 				</fileset>
@@ -84,17 +90,21 @@
 					<include name="Unitex.jar" />
 				</fileset>
 			</classpath>
-    </javac>
-    <!-- Compile core-plugins -->
-    <subant target="build" failonerror="false">
+		</javac>
+		<!-- Compile api -->
+		<subant target="build" failonerror="false">
+			<fileset dir="api" includes="build.xml" />
+		</subant>
+		<!-- Compile core-plugins -->
+		<subant target="build" failonerror="false">
 			<fileset dir="${plugins}">
 				<include name="**/build.xml" />
-        <exclude name="build.xml" />
+				<exclude name="build.xml" />
 			</fileset>
-    </subant>
+		</subant>
 	</target>
 
-	<target name="dist" depends="compile" description="generate the distribution">    
+	<target name="dist" depends="compile" description="generate the distribution">
 
 		<mkdir dir="${classes}" />
 		<copy todir="${classes}">
@@ -104,30 +114,30 @@
 			<fileset dir="${build}" />
 		</copy>
 
-    <!-- Create the distribution directory -->
+		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}" />
-    <!-- create Gramlab.jar -->
+		<!-- create Gramlab.jar -->
 		<jar jarfile="${dist}/Gramlab.jar" manifest="${classes}/fr/gramlab/Manifest.mf" basedir="${classes}" />
 
-    <!-- dist/*.ico -->
+		<!-- dist/*.ico -->
 		<copy todir="${dist}">
 			<fileset dir="${resources}">
 				<include name="*.ico" />
 			</fileset>
 		</copy>
 
-    <!-- dist/lib -->
-    <mkdir dir="${dist-lib}" />
+		<!-- dist/lib -->
+		<mkdir dir="${dist-lib}" />
 		<copy todir="${dist-lib}">
 			<fileset dir="${lib}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
 
-    <!-- dist/plugins -->
-    <mkdir dir="${dist-plugins}" />
-    <copy file="${plugins}/enabled.txt"  todir="${dist-plugins}"/>
-    <copy file="${plugins}/disabled.txt" todir="${dist-plugins}"/>    
+		<!-- dist/plugins -->
+		<mkdir dir="${dist-plugins}" />
+		<copy file="${plugins}/enabled.txt"  todir="${dist-plugins}"/>
+		<copy file="${plugins}/disabled.txt" todir="${dist-plugins}"/>
 		<copy todir="${dist-plugins}" flatten="true">
 			<fileset dir="${plugins}">
 				<include name="**/build/target/**.zip" />
@@ -135,12 +145,12 @@
 		</copy>
 	</target>
 
-  <target name="install-init">	
+	<target name="install-init">
 		<fail unless="env.UNITEX_BUILD_RELEASE_DIR" message="UNITEX_BUILD_RELEASE_DIR is not set. try `export UNITEX_BUILD_RELEASE_DIR=.`"/>
-    <property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>		
+		<property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>
 		<property name="app" location="${unitexHome}/App" />
 		<property name="app-lib" location="${unitexHome}/App/lib" />
-    <property name="app-plugins" location="${unitexHome}/App/plugins" />
+		<property name="app-plugins" location="${unitexHome}/App/plugins" />
 	</target>
 
 	<target name="install" depends="install-init,dist">

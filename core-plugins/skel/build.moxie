@@ -58,7 +58,6 @@ scm: {
 # a scope to each directory.
 sourceDirectories:
 - compile 'src/main/java'
-- compile '../../api/src/main/java' :api
 
 resourceDirectories:
 - compile 'src/main/resources'
@@ -68,7 +67,7 @@ mainclass: org.gramlab.plugins.skel.Plugin
 
 # compile for Java 7 class format
 tasks: {
-       'mx:javac' : {
+  'mx:javac' : {
       source: 1.7
       target: 1.7
       compiler: javac1.7
@@ -89,6 +88,7 @@ apply: eclipse, intellij, pom
 # to be version-controlled and shared.
 dependencyDirectory: ext
 
+
 # Register the GramLab Maven repository
 registeredRepositories:
  - {
@@ -99,6 +99,9 @@ registeredRepositories:
 
 
 repositories: 'central', 'org.gramlab'
+
+modules: 
+- '../../api/' @build.moxie
 
 # Convenience properties for dependencies
 properties: {
@@ -122,8 +125,8 @@ dependencies:
 # temporal workaround
 - provided 'org.slf4j:slf4j-api:1.7.21'
 - provided 'org.slf4j:slf4j-simple:1.7.21'
-- provided 'org.slf4j:slf4j-log4j12:1.7.5'
 - provided 'ro.fortsoft.pf4j:pf4j:0.13.1'
+#- provided 'org.gramlab.api:gramlabapi:1.0.0-SNAPSHOT'
 - test    'junit'
 # Dependencies with the "build" scope are retrieved
 # and injected into the Ant runtime classpath
