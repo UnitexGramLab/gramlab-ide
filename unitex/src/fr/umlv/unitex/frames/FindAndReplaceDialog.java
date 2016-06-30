@@ -566,6 +566,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onAddReplace() {
+    selectGraph(GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame());
     if (data.getGraphicalZone().getSelectedBoxes().isEmpty()) {
       return;
     }
@@ -620,6 +621,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onAddFind() {
+    selectGraph(GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame());
     if (data.getGraphicalZone().getSelectedBoxes().isEmpty()) {
       return;
     }

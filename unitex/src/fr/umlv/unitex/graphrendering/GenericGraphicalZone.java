@@ -455,6 +455,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = graphBoxes.get(i);
 			if (g.isSelectedByRectangle(x, y, w, h)) {
 				g.setSelected(true);
+        g.setHighlight(false);
 				selectedBoxes.add(g);
 				if (s == null) {
 					s = g.content;
