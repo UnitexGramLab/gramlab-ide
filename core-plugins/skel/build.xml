@@ -30,7 +30,7 @@
 		<!-- Setup Ant build from build.moxie and resolve dependencies.
 		     If it exists, build.properties is automatically loaded.
 		     Explicitly set mxroot allowing CI servers to override the default. -->
-		<mx:init verbose="yes" mxroot="${moxie.dir}" />
+		<mx:init verbose="no" mxroot="${moxie.dir}" />
 
 		<property name="registry.directory" value="${basedir}/../gramlab-ide-plugins-registry" />
 
