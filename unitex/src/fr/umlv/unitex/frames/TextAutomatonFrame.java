@@ -116,7 +116,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	JButton resetSentenceGraph;
   private JButton undoButton;
   private JButton redoButton;
-  private final UndoManager manager = new UndoManager();
+  private UndoManager manager = new UndoManager();
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -545,7 +545,15 @@ public class TextAutomatonFrame extends TfstFrame {
 		return cornerPanel;
 	}
 
-	/**
+  private void reinitializeUndoManager() {
+    graphicalZone.removeUndoableEditListener(manager);
+    manager = new UndoManager();
+    manager.setLimit(-1);
+    graphicalZone.addUndoableEditListener(manager);
+    updateDoUndoButtons();
+  }
+
+  /**
 	 * Shows the frame
 	 */
 	boolean loadTfst() {
@@ -644,6 +652,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	boolean loadSentence(int n) {
 		if (n < 1 || n > sentence_count)
 			return false;
+    reinitializeUndoManager();
 		final int z = n;
 		if (isAcurrentLoadingThread)
 			return false;
