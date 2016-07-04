@@ -416,7 +416,7 @@ public class FindAndReplace {
     return "";
   }
 
-  public static boolean findNextInSeq(GraphicalZone zone, ArrayList<String> seq, GenericGraphBox box, int i, boolean
+  private static boolean findNextInSeq(GraphicalZone zone, ArrayList<String> seq, GenericGraphBox box, int i, boolean
     highlight, boolean caseSensitive, boolean useRegex) {
     if (i >= seq.size()) {
       return true;
@@ -431,11 +431,7 @@ public class FindAndReplace {
       }
     }
     if (box.getTransitions().isEmpty()) {
-      if (i == (seq.size() - 1)) {
-        return true;
-      } else {
-        return false;
-      }
+      return i == (seq.size() - 1);
 
     }
     switch (i - seq.size()) {
@@ -453,6 +449,17 @@ public class FindAndReplace {
     return findNextInSeq(zone, seq, box.getTransitions().get(0), i + 1, highlight, caseSensitive, useRegex);
   }
 
+  /**
+   * Returns true if and only if this box and the following boxes match the sequence.
+   *
+   * @param graphicalZone the GraphicalZone containing the sequence.
+   * @param findSeqList the list containing the sequence to search for.
+   * @param genericGraphBox the first box of the sequence.
+   * @param highlight true if the sequence must be highlighted, false otherwise.
+   * @param caseSensitive true if the search must be case sensitive, false otherwise.
+   * @param useRegex true if the search must use regular expressions, false otherwise.
+     * @return true if the box and the following boxes match the sequence, false otherwise.
+     */
   public static boolean isSeq(GraphicalZone graphicalZone, ArrayList<String> findSeqList, GenericGraphBox
     genericGraphBox, boolean highlight, boolean caseSensitive, boolean useRegex) {
     if(findSeqList.size() == 1 && boxEquals(findSeqList.get(0), genericGraphBox.getContent(), caseSensitive, useRegex)) {
@@ -460,7 +467,7 @@ public class FindAndReplace {
         //genericGraphBox.setSelected(highlight);
         genericGraphBox.setHighlight(true);
         graphicalZone.getSelectedBoxes().add(genericGraphBox);
-        graphicalZone.setHighlight(genericGraphBox, highlight);
+        graphicalZone.setHighlight(genericGraphBox, true);
       }
       return true;
     }
@@ -470,7 +477,7 @@ public class FindAndReplace {
         //genericGraphBox.setSelected(highlight);
         genericGraphBox.setHighlight(true);
         graphicalZone.getSelectedBoxes().add(genericGraphBox);
-        graphicalZone.setHighlight(genericGraphBox, highlight);
+        graphicalZone.setHighlight(genericGraphBox, true);
       }
       if (!findNextInSeq(graphicalZone, findSeqList, genericGraphBox.getTransitions().get(0), 1, highlight,
         caseSensitive, useRegex)) {
@@ -487,6 +494,16 @@ public class FindAndReplace {
     return false;
   }
 
+  /**
+   * Returns the number of sequences which have been replaced.
+   *
+   * @param zone the GraphicalZone containing the sequence.
+   * @param findSeqList the list containing the sequence to search for.
+   * @param replaceSeqList the list containing the sequence to replace with.
+   * @param caseSensitive true if the search must be case sensitive, false otherwise.
+   * @param useRegex true if the search must use regular expressions, false otherwise.
+     * @return the number of sequences which have been replaced.
+     */
   public static int replaceAllSeq(GraphicalZone zone, ArrayList<String> findSeqList, ArrayList<String>
     replaceSeqList, boolean caseSensitive, boolean useRegex) {
     ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
@@ -510,11 +527,20 @@ public class FindAndReplace {
     return res;
   }
 
+  /**
+   * Returns if and only if the sequence has been replaced.
+   *
+   * @param zone the GraphicalZone containing the sequence.
+   * @param replaceSeqList the list containing the sequence to replace with.
+   * @param seq the list containing the sequence of boxes.
+     * @return true if the sequence has been replaced.
+     */
   public static boolean replaceSeq(GraphicalZone zone, ArrayList<String> replaceSeqList, ArrayList<GenericGraphBox> seq) {
     if (seq.isEmpty()) {
       return false;
     }
-    // Case no delete no add; we only modify the content
+    // Case we do not need to delete or add boxes
+    // we only modify the content
     if (seq.size() == replaceSeqList.size()) {
       for (int i = 0; i < seq.size(); i++) {
         setNewText(seq.get(i), zone, replaceSeqList.get(i));
@@ -570,6 +596,14 @@ public class FindAndReplace {
     return content.equalsIgnoreCase(search);
   }
 
+  /**
+   * Returns a String containing an error message if one or more boxes cannot be replaced.
+   *
+   * @param zone the GraphicalZone containing the box.
+   * @param box a GraphBox in the GraphicalZone.
+   * @param replaceSeqList the list containing the sequence to replace with.
+     * @return the string containing an error message.
+     */
   public static String checkNewBoxContent(GraphicalZone zone, GraphBox box, ArrayList<String> replaceSeqList) {
     for (String s : replaceSeqList) {
       try {

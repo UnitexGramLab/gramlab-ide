@@ -68,15 +68,15 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   private JPanel box;
   private JRadioButton findOneBoxAfterAnotherRadioButton;
   private JRadioButton findAllBoxesAtOnceRadioButton;
-  private JTextField findSTextField;
+  private JTextField findCompleteBoxesTextField;
   private JButton findAddButton;
   private JLabel findLabel;
   private JLabel replaceLabel;
-  private JTextField replaceSTextField;
+  private JTextField replaceCompleteBoxesTextField;
   private JRadioButton replaceOneBoxAfterAnotherRadioButton;
   private JRadioButton replaceAllBoxesAtOnceRadioButton;
   private JButton replaceAddButton;
-  private JComboBox graphSComboBox;
+  private JComboBox graphCompleteBoxesComboBox;
   private JCheckBox caseSensitiveSCheckBox;
   private JCheckBox useRegularExpressionsSCheckBox;
   private JPanel mainPanel;
@@ -85,15 +85,15 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   private JPanel findWhatPanel;
   private JPanel replaceWithPanel;
   private JPanel bottomPanel;
-  private JButton findSNext;
-  private JButton replaceSButton;
-  private JButton closeSButton;
-  private JButton findSPrevious;
+  private JButton findCompleteBoxesNext;
+  private JButton replaceCompleteBoxesButton;
+  private JButton closeCompleteBoxesButton;
+  private JButton findCompleteBoxesPrevious;
+  private JButton replaceAllCompleteBoxesButton;
 
   private ArrayList<String> findSeqList = new ArrayList<String>();
   private ArrayList<String> replaceSeqList = new ArrayList<String>();
   private ArrayList<GenericGraphBox> currentSeq = new ArrayList<GenericGraphBox>();
-  private JButton replaceAllSButton;
 
   private class defaultGraphFrame extends GraphFrame {
 
@@ -141,13 +141,13 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         onClose();
       }
     });
-    closeSButton.addActionListener(new ActionListener() {
+    closeCompleteBoxesButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         onClose();
       }
     });
-    graphSComboBox.addActionListener(new ActionListener() {
+    graphCompleteBoxesComboBox.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
       }
@@ -309,35 +309,35 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         replaceLabel.setText("Select a graph, then the sequence then click Add.");
       }
     });
-    findSNext.addActionListener(new ActionListener() {
+    findCompleteBoxesNext.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        onFindSNext();
+        onCompleteBoxesNext();
         getParent().repaint();
       }
     });
-    findSPrevious.addActionListener(new ActionListener() {
+    findCompleteBoxesPrevious.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        onFindSPrevious();
+        onCompleteBoxesPrevious();
         getParent().repaint();
       }
     });
-    replaceSButton.addActionListener(new ActionListener() {
+    replaceCompleteBoxesButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        onReplaceS();
+        onReplaceCompleteBoxes();
         getParent().repaint();
       }
     });
-    replaceAllSButton.addActionListener(new ActionListener() {
+    replaceAllCompleteBoxesButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         onReplaceAllS();
         getParent().repaint();
       }
     });
-    findSTextField.getDocument().addDocumentListener(new DocumentListener() {
+    findCompleteBoxesTextField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
         updateTextField();
@@ -353,7 +353,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
 
       }
     });
-    replaceSTextField.getDocument().addDocumentListener(new DocumentListener() {
+    replaceCompleteBoxesTextField.getDocument().addDocumentListener(new DocumentListener() {
       @Override
       public void insertUpdate(DocumentEvent e) {
         updateTextField();
@@ -373,17 +373,17 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void onReplaceAllS() {
-    String tokens[] = findSTextField.getText().split(separator);
+    String tokens[] = findCompleteBoxesTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(findSeqList, tokens);
     if (findSeqList.isEmpty()) {
       return;
     }
-    if (replaceSTextField.getText().isEmpty()) {
-      replaceSTextField.setText("<E>");
+    if (replaceCompleteBoxesTextField.getText().isEmpty()) {
+      replaceCompleteBoxesTextField.setText("<E>");
     }
-    tokens = replaceSTextField.getText().split(separator);
+    tokens = replaceCompleteBoxesTextField.getText().split(separator);
     replaceSeqList.clear();
     Collections.addAll(replaceSeqList, tokens);
 
@@ -400,11 +400,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     updateSeqReplaceResultTextField(res);
   }
 
-  private void onFindSNext() {
-    if (findSTextField.getText().equals("")) {
+  private void onCompleteBoxesNext() {
+    if (findCompleteBoxesTextField.getText().equals("")) {
       return;
     }
-    String tokens[] = findSTextField.getText().split(separator);
+    String tokens[] = findCompleteBoxesTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     data.getGraphicalZone().removeHighlight();
@@ -423,7 +423,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       } else {
         selectGraph(nextGraph());
       }
-      onFindSNext();
+      onCompleteBoxesNext();
       return;
     }
     while (i < data.getBoxes().size() && !FindAndReplace.isSeq(data.getGraphicalZone(), findSeqList, nextBox,
@@ -436,7 +436,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         } else {
           selectGraph(nextGraph());
         }
-        onFindSNext();
+        onCompleteBoxesNext();
         return;
       }
     }
@@ -446,11 +446,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
   }
 
-  private void onFindSPrevious() {
-    if (findSTextField.getText().equals("")) {
+  private void onCompleteBoxesPrevious() {
+    if (findCompleteBoxesTextField.getText().equals("")) {
       return;
     }
-    String tokens[] = findSTextField.getText().split(separator);
+    String tokens[] = findCompleteBoxesTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     data.getGraphicalZone().removeHighlight();
@@ -469,7 +469,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       } else {
         selectGraph(prevGraph());
       }
-      onFindSPrevious();
+      onCompleteBoxesPrevious();
       return;
     }
     while (i < data.getBoxes().size() && !FindAndReplace.isSeq(data.getGraphicalZone(), findSeqList, prevBox,
@@ -482,7 +482,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         } else {
           selectGraph(prevGraph());
         }
-        onFindSPrevious();
+        onCompleteBoxesPrevious();
         return;
       }
     }
@@ -492,15 +492,15 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
   }
 
-  private void onReplaceS() {
+  private void onReplaceCompleteBoxes() {
     if (currentSeq.isEmpty()) {
       updateSeqReplaceResultTextField(-1);
       return;
     }
-    if (replaceSTextField.getText().isEmpty()) {
-      replaceSTextField.setText("<E>");
+    if (replaceCompleteBoxesTextField.getText().isEmpty()) {
+      replaceCompleteBoxesTextField.setText("<E>");
     }
-    String tokens[] = replaceSTextField.getText().split(separator);
+    String tokens[] = replaceCompleteBoxesTextField.getText().split(separator);
     replaceSeqList.clear();
     Collections.addAll(replaceSeqList, tokens);
     boolean wasReplaced = FindAndReplace.replaceSeq(data.getGraphicalZone(), replaceSeqList, currentSeq);
@@ -521,7 +521,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private void updateSeqReplaceErrorTextField() {
-    String tokens[] = replaceSTextField.getText().split(separator);
+    String tokens[] = replaceCompleteBoxesTextField.getText().split(separator);
     replaceSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(replaceSeqList, tokens);
@@ -571,20 +571,20 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     if (replaceOneBoxAfterAnotherRadioButton.isSelected() && currentFrame.getSelectedBoxes().size() == 1) {
-      if (replaceSTextField.getText().equals("")) {
-        replaceSTextField.setText(currentFrame.getSelectedBoxes().get(0).getContent());
+      if (replaceCompleteBoxesTextField.getText().equals("")) {
+        replaceCompleteBoxesTextField.setText(currentFrame.getSelectedBoxes().get(0).getContent());
       } else {
-        replaceSTextField.setText(replaceSTextField.getText() + separator + currentFrame.getSelectedBoxes().get(0)
+        replaceCompleteBoxesTextField.setText(replaceCompleteBoxesTextField.getText() + separator + currentFrame.getSelectedBoxes().get(0)
           .getContent());
       }
     } else if (replaceAllBoxesAtOnceRadioButton.isSelected()) {
       ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
       fillSeqList(boxes, currentFrame);
       for (int i = 0; i < boxes.size(); i++) {
-        if (replaceSTextField.getText().isEmpty()) {
-          replaceSTextField.setText(boxes.get(i).getContent());
+        if (replaceCompleteBoxesTextField.getText().isEmpty()) {
+          replaceCompleteBoxesTextField.setText(boxes.get(i).getContent());
         } else {
-          replaceSTextField.setText(replaceSTextField.getText() + separator + boxes.get(i).getContent());
+          replaceCompleteBoxesTextField.setText(replaceCompleteBoxesTextField.getText() + separator + boxes.get(i).getContent());
         }
       }
     }
@@ -626,20 +626,20 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     if (findOneBoxAfterAnotherRadioButton.isSelected() && data.getGraphicalZone().getSelectedBoxes().size() == 1) {
-      if (findSTextField.getText().equals("")) {
-        findSTextField.setText(data.getGraphicalZone().getSelectedBoxes().get(0).getContent());
+      if (findCompleteBoxesTextField.getText().equals("")) {
+        findCompleteBoxesTextField.setText(data.getGraphicalZone().getSelectedBoxes().get(0).getContent());
       } else {
-        findSTextField.setText(findSTextField.getText() + separator + data.getGraphicalZone().getSelectedBoxes().get(0)
+        findCompleteBoxesTextField.setText(findCompleteBoxesTextField.getText() + separator + data.getGraphicalZone().getSelectedBoxes().get(0)
           .getContent());
       }
     } else if (findAllBoxesAtOnceRadioButton.isSelected()) {
       ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
       fillSeqList(boxes, currentFrame);
       for (int i = 0; i < boxes.size(); i++) {
-        if (findSTextField.getText().isEmpty()) {
-          findSTextField.setText(boxes.get(i).getContent());
+        if (findCompleteBoxesTextField.getText().isEmpty()) {
+          findCompleteBoxesTextField.setText(boxes.get(i).getContent());
         } else {
-          findSTextField.setText(findSTextField.getText() + separator + boxes.get(i).getContent());
+          findCompleteBoxesTextField.setText(findCompleteBoxesTextField.getText() + separator + boxes.get(i).getContent());
         }
       }
     }
@@ -895,15 +895,15 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.anchor = GridBagConstraints.WEST;
     gbc.insets = new Insets(0, 5, 0, 0);
     findWhatPanel.add(findLabel, gbc);
-    findSTextField = new JTextField("");
-    findSTextField.setPreferredSize(new Dimension(400, 24));
+    findCompleteBoxesTextField = new JTextField("");
+    findCompleteBoxesTextField.setPreferredSize(new Dimension(400, 24));
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 4;
     gbc.gridwidth = 2;
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    findWhatPanel.add(findSTextField, gbc);
+    findWhatPanel.add(findCompleteBoxesTextField, gbc);
     findAddButton = new JButton();
     findAddButton.setText("Add");
     gbc = new GridBagConstraints();
@@ -966,15 +966,15 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.WEST;
     replaceWithPanel.add(replaceOneBoxAfterAnotherRadioButton, gbc);
-    replaceSTextField = new JTextField("");
-    replaceSTextField.setPreferredSize(new Dimension(400, 24));
+    replaceCompleteBoxesTextField = new JTextField("");
+    replaceCompleteBoxesTextField.setPreferredSize(new Dimension(400, 24));
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
     gbc.gridy = 4;
     gbc.gridwidth = 2;
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    replaceWithPanel.add(replaceSTextField, gbc);
+    replaceWithPanel.add(replaceCompleteBoxesTextField, gbc);
     replaceAddButton = new JButton();
     replaceAddButton.setText("Add");
     gbc = new GridBagConstraints();
@@ -1036,28 +1036,28 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     replaceWithPanel.add(replaceLabel, gbc);
     bottomPanel = new JPanel();
     bottomPanel.setLayout(new GridBagLayout());
-    graphSComboBox = new JComboBox();
+    graphCompleteBoxesComboBox = new JComboBox();
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
     gbc.gridy = 1;
     gbc.gridwidth = 5;
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    bottomPanel.add(graphSComboBox, gbc);
-    findSNext = new JButton();
-    findSNext.setText("Find Next");
+    bottomPanel.add(graphCompleteBoxesComboBox, gbc);
+    findCompleteBoxesNext = new JButton();
+    findCompleteBoxesNext.setText("Find Next");
     gbc = new GridBagConstraints();
     gbc.gridx = 6;
     gbc.gridy = 5;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    bottomPanel.add(findSNext, gbc);
-    replaceAllSButton = new JButton();
-    replaceAllSButton.setText("Replace All");
+    bottomPanel.add(findCompleteBoxesNext, gbc);
+    replaceAllCompleteBoxesButton = new JButton();
+    replaceAllCompleteBoxesButton.setText("Replace All");
     gbc = new GridBagConstraints();
     gbc.gridx = 6;
     gbc.gridy = 7;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    bottomPanel.add(replaceAllSButton, gbc);
+    bottomPanel.add(replaceAllCompleteBoxesButton, gbc);
     final JPanel spacer26 = new JPanel();
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
@@ -1126,15 +1126,15 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.gridy = 1;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     bottomPanel.add(spacer34, gbc);
-    closeSButton = new JButton();
-    closeSButton.setMaximumSize(new Dimension(30, 32));
-    closeSButton.setPreferredSize(new Dimension(90, 26));
-    closeSButton.setText("Close");
+    closeCompleteBoxesButton = new JButton();
+    closeCompleteBoxesButton.setMaximumSize(new Dimension(30, 32));
+    closeCompleteBoxesButton.setPreferredSize(new Dimension(90, 26));
+    closeCompleteBoxesButton.setText("Close");
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 7;
     gbc.anchor = GridBagConstraints.WEST;
-    bottomPanel.add(closeSButton, gbc);
+    bottomPanel.add(closeCompleteBoxesButton, gbc);
     caseSensitiveSCheckBox = new JCheckBox();
     caseSensitiveSCheckBox.setText("Case sensitive");
     caseSensitiveSCheckBox.setSelected(true);
@@ -1143,20 +1143,20 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     gbc.gridy = 3;
     gbc.anchor = GridBagConstraints.WEST;
     bottomPanel.add(caseSensitiveSCheckBox, gbc);
-    findSPrevious = new JButton();
-    findSPrevious.setText("Find Previous");
+    findCompleteBoxesPrevious = new JButton();
+    findCompleteBoxesPrevious.setText("Find Previous");
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
     gbc.gridy = 5;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    bottomPanel.add(findSPrevious, gbc);
-    replaceSButton = new JButton();
-    replaceSButton.setText("Replace");
+    bottomPanel.add(findCompleteBoxesPrevious, gbc);
+    replaceCompleteBoxesButton = new JButton();
+    replaceCompleteBoxesButton.setText("Replace");
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
     gbc.gridy = 7;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    bottomPanel.add(replaceSButton, gbc);
+    bottomPanel.add(replaceCompleteBoxesButton, gbc);
     ButtonGroup buttonGroup;
     buttonGroup = new ButtonGroup();
     buttonGroup.add(findOneBoxAfterAnotherRadioButton);
@@ -1210,7 +1210,6 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     completeBoxes.add(spacer37, gbc);
   }
 
-
   private void fillComboBox() {
     ComboBoxToolTipRenderer renderer = new ComboBoxToolTipRenderer();
     ArrayList<String> tooltips = new ArrayList<String>();
@@ -1228,8 +1227,8 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     renderer.setTooltips(tooltips);
     graphComboBox.setRenderer(renderer);
     graphComboBox.setModel(model);
-    graphSComboBox.setRenderer(renderer);
-    graphSComboBox.setModel(model);
+    graphCompleteBoxesComboBox.setRenderer(renderer);
+    graphCompleteBoxesComboBox.setModel(model);
   }
 
   private void onClose() {
@@ -1453,13 +1452,13 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
         msg = "No sequence is selected";
         break;
       case 0:
-        msg = "No sequence was replaced with: " + replaceSTextField.getText();
+        msg = "No sequence was replaced with: " + replaceCompleteBoxesTextField.getText();
         break;
       case 1:
-        msg = "Replaced 1 sequence with: " + replaceSTextField.getText();
+        msg = "Replaced 1 sequence with: " + replaceCompleteBoxesTextField.getText();
         break;
       default:
-        msg = "Replaced " + i + " sequences with: " + replaceSTextField.getText();
+        msg = "Replaced " + i + " sequences with: " + replaceCompleteBoxesTextField.getText();
         break;
     }
     statusBarTextField.setText(msg);
@@ -1467,11 +1466,11 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   private int updateSeqFoundResultTextField() {
-    if (findSTextField.getText().isEmpty()) {
+    if (findCompleteBoxesTextField.getText().isEmpty()) {
       statusBarTextField.setText("");
       return -1;
     }
-    String tokens[] = findSTextField.getText().split(separator);
+    String tokens[] = findCompleteBoxesTextField.getText().split(separator);
     findSeqList.clear();
     data.getGraphicalZone().unSelectAllBoxes();
     Collections.addAll(findSeqList, tokens);
@@ -1499,13 +1498,13 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     String msg;
     switch (res) {
       case 0:
-        msg = "No match found with: " + findSTextField.getText();
+        msg = "No match found with: " + findCompleteBoxesTextField.getText();
         break;
       case 1:
-        msg = "Found 1 sequence which matches with: " + findSTextField.getText();
+        msg = "Found 1 sequence which matches with: " + findCompleteBoxesTextField.getText();
         break;
       default:
-        msg = "Found " + res + " sequences which match with: " + findSTextField.getText();
+        msg = "Found " + res + " sequences which match with: " + findCompleteBoxesTextField.getText();
     }
     statusBarTextField.setText(msg);
     statusBarTextField.setForeground(Color.BLACK);
