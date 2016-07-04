@@ -164,6 +164,7 @@ public class UnitexFrame extends JFrame {
 						exportTfstAsCsv.setEnabled(false);
 						closeText.setEnabled(false);
             openConcordance.setEnabled(false);
+            saveAsConcordance.setEnabled(false);
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTokensFrame();
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -468,6 +469,7 @@ public class UnitexFrame extends JFrame {
           return;
         }
         GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 100);
+        saveAsConcordance.setEnabled(true);
       }
     };
     openConcordance.setEnabled(false);
@@ -486,8 +488,8 @@ public class UnitexFrame extends JFrame {
     saveAsConcordance = new AbstractAction("Save Concordance As...") {
       @Override
       public void actionPerformed(ActionEvent e) {
-        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null || Config.getCurrentConcordance() ==
-          null) {
+        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null || GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() == null) {
           return;
         }
         JFileChooser fc = Config.getConcordanceDialogBox();
@@ -519,13 +521,18 @@ public class UnitexFrame extends JFrame {
           file = new File(name + ".html");
         }
         try {
-          Files.copy(Config.getCurrentConcordance().toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+          Files.copy(GlobalProjectManager.search(null)
+            .getFrameManagerAs(InternalFrameManager.class)
+            .getCurrentFocusedConcordance().getFile().toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ioe) {
           ioe.printStackTrace();
           return;
         }
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedConcordance();
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 100);
       }
     };
+    saveAsConcordance.setEnabled(false);
     textMenu.add(new JMenuItem(saveAsConcordance));
     cassys = new AbstractAction("Apply CasSys Cascade...") {
 			@Override
@@ -634,7 +641,20 @@ public class UnitexFrame extends JFrame {
 			public void menuSelected(MenuEvent e) {
 				List<SntFileEntry> l = PreferencesManager.getUserPreferences()
 						.getRecentTexts();
-				openRecent.setEnabled(l != null && l.size() > 0);
+        if (GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() != null) {
+          String s = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance().getName();
+          if (s != null) {
+            JOptionPane.showMessageDialog(null, s);
+          }
+        }
+        openRecent.setEnabled(l != null && l.size() > 0);
+        if(GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedConcordance() != null) {
+          saveAsConcordance.setEnabled(true);
+        } else {
+          saveAsConcordance.setEnabled(false);
+        }
 			}
 		});
 		return textMenu;

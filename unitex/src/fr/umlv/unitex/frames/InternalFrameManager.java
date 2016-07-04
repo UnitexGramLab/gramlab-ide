@@ -236,6 +236,13 @@ public abstract class InternalFrameManager implements FrameManager {
 		return null;
 	}
 
+  public ConcordanceFrame getCurrentFocusedConcordance() {
+		final JInternalFrame frame = desktop.getSelectedFrame();
+		if (frame instanceof ConcordanceFrame)
+			return (ConcordanceFrame) frame;
+		return null;
+	}
+
 	public ArrayList<GraphFrame> getGraphFrames() {
 		return graphFrameFactory.getFrames();
 	}
@@ -510,11 +517,17 @@ public abstract class InternalFrameManager implements FrameManager {
 	}
 
 	public ConcordanceFrame newConcordanceFrame(File file, int widthInChars) {
-    Config.setCurrentConcordance(file);
 		return (ConcordanceFrame) setup(
 				concordanceFrameFactory.newConcordanceFrame(file, widthInChars),
 				true);
 	}
+
+  public void closeCurrentFocusedConcordance() {
+    ConcordanceFrame f = getCurrentFocusedConcordance();
+    if(f != null) {
+      f.doDefaultCloseAction();
+    }
+  }
 
 	public void closeConcordanceFrame() {
 		concordanceFrameFactory.closeConcordanceFrame();
