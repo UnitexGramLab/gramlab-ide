@@ -447,7 +447,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		textMenu.add(openRecent);
-    saveAsSnt = new AbstractAction("Save Snt As...") {
+    saveAsSnt = new AbstractAction("Save As...") {
       @Override
       public void actionPerformed(ActionEvent e) {
         if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
@@ -463,6 +463,10 @@ public class UnitexFrame extends JFrame {
             return;
           }
           file = fc.getSelectedFile();
+          final String name = file.getAbsolutePath();
+          if (!name.endsWith(".snt")) {
+            file = new File(name + ".snt");
+          }
           if (file == null || !file.exists()) {
             break;
           }
@@ -477,35 +481,10 @@ public class UnitexFrame extends JFrame {
         if (file == null) {
           return;
         }
-        final String name = file.getAbsolutePath();
-        if (!name.endsWith(".snt")) {
-          file = new File(name + ".snt");
-        }
-        try {
-          Files.copy(Config.getCurrentSnt().toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ioe) {
-          JOptionPane.showMessageDialog(null, "except file copy");
-          ioe.printStackTrace();
-          return;
-        }
+        FileUtil.copyFile(Config.getCurrentSnt(), file);
         String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
         File folder = new File(folderPath + "_snt");
-        try {
-          Files.copy(Config.getCurrentSntDir().toPath(), folder.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ioe) {
-          JOptionPane.showMessageDialog(null, "except dir copy");
-          ioe.printStackTrace();
-          return;
-        }
-        for (File subFile : Config.getCurrentSntDir().listFiles()) {
-          try {
-            Files.copy(subFile.toPath(), new File(folder.getAbsolutePath() + "" + File.separator + "" + subFile
-              .getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
-          } catch (IOException ioe) {
-            JOptionPane.showMessageDialog(null, "except dir content copy");
-            ioe.printStackTrace();
-          }
-        }
+        FileUtil.copyDirRec(Config.getCurrentSntDir(), folder);
         Text.loadSnt(file, false);
       }
     };
