@@ -24,8 +24,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -242,6 +241,14 @@ public abstract class InternalFrameManager implements FrameManager {
 			return (ConcordanceFrame) frame;
 		return null;
 	}
+
+  public void setCurrentFocusedConcordance(ConcordanceFrame f) {
+    try {
+      f.setSelected(true);
+    } catch (PropertyVetoException e) {
+      e.printStackTrace();
+    }
+  }
 
 	public ArrayList<GraphFrame> getGraphFrames() {
 		return graphFrameFactory.getFrames();
@@ -502,6 +509,10 @@ public abstract class InternalFrameManager implements FrameManager {
 		return f;
 	}
 
+  public ArrayList<ConcordanceFrame> getConcordanceFrames() {
+    return concordanceFrameFactory.getFrames();
+  }
+
 	public ConcordanceDiffFrame newConcordanceDiffFrame(File file) {
 		final ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory
 				.newFrame();
@@ -529,8 +540,12 @@ public abstract class InternalFrameManager implements FrameManager {
     }
   }
 
+  public void closeConcordanceFrame(ConcordanceFrame f) {
+    concordanceFrameFactory.closeConcordanceFrame(f);
+  }
+
 	public void closeConcordanceFrame() {
-		concordanceFrameFactory.closeConcordanceFrame();
+		concordanceFrameFactory.closeConcordanceFrame(getCurrentFocusedConcordance());
 	}
 
 	public ConcordanceParameterFrame newConcordanceParameterFrame() {

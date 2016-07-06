@@ -20,20 +20,28 @@
  */
 package fr.umlv.unitex.frames;
 
+import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 
 class ConcordanceFrameFactory {
-	private ConcordanceFrame frame;
+  private ArrayList<ConcordanceFrame> frames = new ArrayList<ConcordanceFrame>();
 
 	ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
-		frame = new ConcordanceFrame(f, widthInChars);
-		return frame;
+		ConcordanceFrame frame = new ConcordanceFrame(f, widthInChars);
+    frames.add(frame);
+    return frame;
 	}
 
-	void closeConcordanceFrame() {
-		if (frame == null) {
+	void closeConcordanceFrame(ConcordanceFrame f) {
+		if (f == null) {
 			return;
 		}
-		frame.doDefaultCloseAction();
+    frames.remove(f);
+		f.doDefaultCloseAction();
 	}
+
+  ArrayList<ConcordanceFrame> getFrames() {
+    return frames;
+  }
 }

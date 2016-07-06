@@ -465,15 +465,17 @@ public class UnitexFrame extends JFrame {
             + " is not a HTML file", "Error", JOptionPane.ERROR_MESSAGE);
           return;
         }
-        if(GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() != null) {
-          File currentConcordance = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance().getFile();
-          if(currentConcordance != null) {
-            if(f.equals(currentConcordance)) {
-              return;
+        for(ConcordanceFrame frame : GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getConcordanceFrames()) {
+          if (frame.getFile().equals(f)) {
+            if(frame.isClosed()) {
+              GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame(frame);
+              break;
             }
+            GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).setCurrentFocusedConcordance(frame);
+            return;
           }
         }
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 100);
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
       }
     };
     openConcordance.setEnabled(false);
@@ -528,7 +530,7 @@ public class UnitexFrame extends JFrame {
           .getFrameManagerAs(InternalFrameManager.class)
           .getCurrentFocusedConcordance().getFile(), file);
         GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedConcordance();
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 100);
+        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 95);
       }
     };
     saveAsConcordance.setEnabled(false);
