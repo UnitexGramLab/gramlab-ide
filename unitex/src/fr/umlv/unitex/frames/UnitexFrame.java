@@ -30,7 +30,6 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
@@ -58,8 +57,6 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.List;
 
@@ -468,8 +465,15 @@ public class UnitexFrame extends JFrame {
             + " is not a HTML file", "Error", JOptionPane.ERROR_MESSAGE);
           return;
         }
+        if(GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() != null) {
+          File currentConcordance = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance().getFile();
+          if(currentConcordance != null) {
+            if(f.equals(currentConcordance)) {
+              return;
+            }
+          }
+        }
         GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 100);
-        saveAsConcordance.setEnabled(true);
       }
     };
     openConcordance.setEnabled(false);
@@ -502,6 +506,10 @@ public class UnitexFrame extends JFrame {
             return;
           }
           file = fc.getSelectedFile();
+          final String name = file.getAbsolutePath();
+          if (!name.endsWith(".html")) {
+            file = new File(name + ".html");
+          }
           if (file == null || !file.exists()) {
             break;
           }
@@ -516,18 +524,9 @@ public class UnitexFrame extends JFrame {
         if (file == null) {
           return;
         }
-        final String name = file.getAbsolutePath();
-        if (!name.endsWith(".html")) {
-          file = new File(name + ".html");
-        }
-        try {
-          Files.copy(GlobalProjectManager.search(null)
-            .getFrameManagerAs(InternalFrameManager.class)
-            .getCurrentFocusedConcordance().getFile().toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ioe) {
-          ioe.printStackTrace();
-          return;
-        }
+        FileUtil.copyFile(GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedConcordance().getFile(), file);
         GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedConcordance();
         GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 100);
       }
