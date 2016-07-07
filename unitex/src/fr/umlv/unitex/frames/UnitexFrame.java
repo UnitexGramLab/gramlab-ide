@@ -475,7 +475,7 @@ public class UnitexFrame extends JFrame {
             return;
           }
         }
-        if(f.getName().equals("diff.html")) {
+        if(FileUtil.getHtmlPageTitle(f) == null) {
           GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceDiffFrame(f);
         } else {
           GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
