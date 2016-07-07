@@ -540,6 +540,10 @@ public abstract class InternalFrameManager implements FrameManager {
     }
   }
 
+  public void closeConcordFrame() {
+    concordanceFrameFactory.closeConcordanceFrame();
+  }
+
   public void closeConcordanceFrame(ConcordanceFrame f) {
     concordanceFrameFactory.closeConcordanceFrame(f);
   }

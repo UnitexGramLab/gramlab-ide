@@ -20,18 +20,37 @@
  */
 package fr.umlv.unitex.frames;
 
-import javax.swing.*;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.files.FileUtil;
+
 import java.io.File;
 import java.util.ArrayList;
 
 class ConcordanceFrameFactory {
   private ArrayList<ConcordanceFrame> frames = new ArrayList<ConcordanceFrame>();
+  private ConcordanceFrame concordFrame;
 
 	ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
+    String filePath = FileUtil.getFilePathWithoutFileName(f);
+    filePath = filePath.substring(0, filePath.length()-1);
+    if (filePath.equals(Config.getCurrentSntDir().getAbsolutePath()) && f.getName().equals("concord.html")) {
+      frames.remove(concordFrame);
+      concordFrame = new ConcordanceFrame(f, widthInChars);
+      frames.add(concordFrame);
+      return concordFrame;
+    }
 		ConcordanceFrame frame = new ConcordanceFrame(f, widthInChars);
     frames.add(frame);
     return frame;
 	}
+
+  void closeConcordanceFrame() {
+    if(concordFrame == null) {
+      return;
+    }
+    frames.remove(concordFrame);
+    concordFrame.doDefaultCloseAction();
+  }
 
 	void closeConcordanceFrame(ConcordanceFrame f) {
 		if (f == null) {

@@ -475,7 +475,11 @@ public class UnitexFrame extends JFrame {
             return;
           }
         }
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
+        if(f.getName().equals("diff.html")) {
+          GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceDiffFrame(f);
+        } else {
+          GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
+        }
       }
     };
     openConcordance.setEnabled(false);
