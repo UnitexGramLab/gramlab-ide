@@ -261,7 +261,7 @@ public class FindAndReplace {
   }
 
   /**
-   * Returns the number of boxes which content has been replaced.
+   * Replace all boxes and returns the number of boxes which content has been replaced.
    *
    * @param boxes         the list containing the boxes.
    * @param search        the sequence to search for.
@@ -495,7 +495,8 @@ public class FindAndReplace {
   }
 
   /**
-   * Returns the number of sequences which have been replaced.
+   * Replace all sequence with replaceSeqList and returns the number of sequences
+   * which have been replaced.
    *
    * @param zone the GraphicalZone containing the sequence.
    * @param findSeqList the list containing the sequence to search for.
@@ -528,7 +529,7 @@ public class FindAndReplace {
   }
 
   /**
-   * Returns if and only if the sequence has been replaced.
+   * Replace seq with replaceSeqList and returns true if and only if the sequence has been replaced.
    *
    * @param zone the GraphicalZone containing the sequence.
    * @param replaceSeqList the list containing the sequence to replace with.

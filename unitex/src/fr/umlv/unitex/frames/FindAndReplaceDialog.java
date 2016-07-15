@@ -20,23 +20,24 @@
  */
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphBox;
-import fr.umlv.unitex.graphtools.FindAndReplace;
-import fr.umlv.unitex.graphtools.FindAndReplaceData;
-
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GraphBox;
+import fr.umlv.unitex.graphtools.FindAndReplace;
+import fr.umlv.unitex.graphtools.FindAndReplaceData;
 
 /**
  * This class defines a dialog that allow the user to search and replace the content of one or more boxes
@@ -417,26 +418,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
     int i = 0;
     GenericGraphBox nextBox = data.nextBox();
-    if (nextBox == null) {
-      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-        selectGraph(currentFrame);
-      } else {
-        selectGraph(nextGraph());
-      }
-      onCompleteBoxesNext();
+    if (changeNextGraph(nextBox)) {
       return;
     }
     while (i < data.getBoxes().size() && !FindAndReplace.isSeq(data.getGraphicalZone(), findSeqList, nextBox,
       true, caseSensitiveSCheckBox.isSelected(), useRegularExpressionsSCheckBox.isSelected())) {
       i++;
       nextBox = data.nextBox();
-      if (nextBox == null) {
-        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-          selectGraph(currentFrame);
-        } else {
-          selectGraph(nextGraph());
-        }
-        onCompleteBoxesNext();
+      if (changeNextGraph(nextBox)) {
         return;
       }
     }
@@ -444,6 +433,19 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     for (i = 0; i < data.getGraphicalZone().getSelectedBoxes().size(); i++) {
       currentSeq.add(data.getGraphicalZone().getSelectedBoxes().get(i));
     }
+  }
+
+  private boolean changeNextGraph(GenericGraphBox nextBox) {
+    if (nextBox == null) {
+      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+        selectGraph(currentFrame);
+      } else {
+        selectGraph(nextGraph());
+      }
+      onCompleteBoxesNext();
+      return true;
+    }
+    return false;
   }
 
   private void onCompleteBoxesPrevious() {
@@ -463,26 +465,14 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
     int i = 0;
     GenericGraphBox prevBox = data.prevBox();
-    if (prevBox == null) {
-      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-        selectGraph(currentFrame);
-      } else {
-        selectGraph(prevGraph());
-      }
-      onCompleteBoxesPrevious();
+    if (changePrevGraph(prevBox)) {
       return;
     }
     while (i < data.getBoxes().size() && !FindAndReplace.isSeq(data.getGraphicalZone(), findSeqList, prevBox,
       true, caseSensitiveSCheckBox.isSelected(), useRegularExpressionsSCheckBox.isSelected())) {
       i++;
       prevBox = data.prevBox();
-      if (prevBox == null) {
-        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-          selectGraph(currentFrame);
-        } else {
-          selectGraph(prevGraph());
-        }
-        onCompleteBoxesPrevious();
+      if (changePrevGraph(prevBox)) {
         return;
       }
     }
@@ -490,6 +480,19 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     for (i = 0; i < data.getGraphicalZone().getSelectedBoxes().size(); i++) {
       currentSeq.add(data.getGraphicalZone().getSelectedBoxes().get(i));
     }
+  }
+
+  private boolean changePrevGraph(GenericGraphBox prevBox) {
+    if (prevBox == null) {
+      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+        selectGraph(currentFrame);
+      } else {
+        selectGraph(prevGraph());
+      }
+      onCompleteBoxesPrevious();
+      return true;
+    }
+    return false;
   }
 
   private void onReplaceCompleteBoxes() {
@@ -578,17 +581,21 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
           .getContent());
       }
     } else if (replaceAllBoxesAtOnceRadioButton.isSelected()) {
-      ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
-      fillSeqList(boxes, currentFrame);
-      for (int i = 0; i < boxes.size(); i++) {
-        if (replaceCompleteBoxesTextField.getText().isEmpty()) {
-          replaceCompleteBoxesTextField.setText(boxes.get(i).getContent());
-        } else {
-          replaceCompleteBoxesTextField.setText(replaceCompleteBoxesTextField.getText() + separator + boxes.get(i).getContent());
-        }
-      }
+      fillTextFieldAllBoxAtOnce(replaceCompleteBoxesTextField);
     }
     currentFrame.getGraphicalZone().unSelectAllBoxes();
+  }
+
+  private void fillTextFieldAllBoxAtOnce(JTextField textField) {
+    ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
+    fillSeqList(boxes, currentFrame);
+    for (int i = 0; i < boxes.size(); i++) {
+      if (textField.getText().isEmpty()) {
+        textField.setText(boxes.get(i).getContent());
+      } else {
+        textField.setText(textField.getText() + separator + boxes.get(i).getContent());
+      }
+    }
   }
 
   private void fillSeqList(ArrayList<GenericGraphBox> boxes, GraphFrame f) {
@@ -612,9 +619,6 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       if (inputBox[i]) {
         root = i;
       }
-      if (outputBox[i]) {
-      }
-
     }
     boxes.add(f.getSelectedBoxes().remove(root));
     fillSeqList(boxes, f);
@@ -633,15 +637,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
           .getContent());
       }
     } else if (findAllBoxesAtOnceRadioButton.isSelected()) {
-      ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
-      fillSeqList(boxes, currentFrame);
-      for (int i = 0; i < boxes.size(); i++) {
-        if (findCompleteBoxesTextField.getText().isEmpty()) {
-          findCompleteBoxesTextField.setText(boxes.get(i).getContent());
-        } else {
-          findCompleteBoxesTextField.setText(findCompleteBoxesTextField.getText() + separator + boxes.get(i).getContent());
-        }
-      }
+      fillTextFieldAllBoxAtOnce(findCompleteBoxesTextField);
     }
     currentFrame.getGraphicalZone().unSelectAllBoxes();
   }
@@ -1256,13 +1252,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
     if (isValidFindTextField()) {
       GenericGraphBox nextBox = data.nextBox();
-      if (nextBox == null) {
-        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-          selectGraph(currentFrame);
-        } else {
-          selectGraph(nextGraph());
-        }
-        onNext();
+      if (onNextChangeGraph(nextBox)) {
         return;
       }
       while (!FindAndReplace.find(data.getGraphicalZone(), nextBox, findTextField.getText(),
@@ -1270,17 +1260,24 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
           .isSelected(), ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
         i++;
         nextBox = data.nextBox();
-        if (nextBox == null) {
-          if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-            selectGraph(currentFrame);
-          } else {
-            selectGraph(nextGraph());
-          }
-          onNext();
+        if (onNextChangeGraph(nextBox)) {
           return;
         }
       }
     }
+  }
+
+  private boolean onNextChangeGraph(GenericGraphBox nextBox) {
+    if (nextBox == null) {
+      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+        selectGraph(currentFrame);
+      } else {
+        selectGraph(nextGraph());
+      }
+      onNext();
+      return true;
+    }
+    return false;
   }
 
   private GraphFrame nextGraph() {
@@ -1314,13 +1311,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
     }
     if (isValidFindTextField()) {
       GenericGraphBox prevBox = data.prevBox();
-      if (prevBox == null) {
-        if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-          selectGraph(currentFrame);
-        } else {
-          selectGraph(prevGraph());
-        }
-        onPrev();
+      if (onPrevChangeGraph(prevBox)) {
         return;
       }
       while (!FindAndReplace.find(data.getGraphicalZone(), prevBox, findTextField.getText(),
@@ -1328,17 +1319,24 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
           .isSelected(), ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
         i++;
         prevBox = data.prevBox();
-        if (prevBox == null) {
-          if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
-            selectGraph(currentFrame);
-          } else {
-            selectGraph(prevGraph());
-          }
-          onPrev();
+        if (onPrevChangeGraph(prevBox)) {
           return;
         }
       }
     }
+  }
+
+  private boolean onPrevChangeGraph(GenericGraphBox prevBox) {
+    if (prevBox == null) {
+      if (!graphComboBox.getSelectedItem().toString().equals(graphDefaultText)) {
+        selectGraph(currentFrame);
+      } else {
+        selectGraph(prevGraph());
+      }
+      onPrev();
+      return true;
+    }
+    return false;
   }
 
   private void onReplace() {
