@@ -21,13 +21,21 @@
 package org.gramlab.plugins.fileEditor;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import org.gramlab.api.Menu;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 import ro.fortsoft.pf4j.Extension;
 
@@ -41,25 +49,79 @@ public class FileEditor implements Menu {
   public JMenu Addmenu(){
 	  
 	  JMenu m = new JMenu("File Edition");
-		Action n = new AbstractAction("New") {
+	  Action n = new AbstractAction("New") {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				InternalFrameManager m = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
+				if (m == null) {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"You cannot create a file if no project is opened.",
+									"Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				m.newFileEditionTextFrame(null);
 			}
 		};
 		m.add(new JMenuItem(n));
 		Action open = new AbstractAction("Open") {
 			public void actionPerformed(ActionEvent e) {
-				
+				openFile();
 			}
 		};
 		m.add(new JMenuItem(open));
 		Action closeAll = new AbstractAction("Close all") {
 			public void actionPerformed(ActionEvent e) {
-				
+				InternalFrameManager m = GlobalProjectManager.search(null)
+					.getFrameManagerAs(InternalFrameManager.class);
+				if (m == null) {
+					return;
+				}
+				m.closeAllFileEditionTextFrames();
 			}
 		};
 		m.add(new JMenuItem(closeAll));
 		return m;
   }
+  
+  public void openFile() {
+		File dir;
+		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
+				.getCurrentProject();
+		if (p == null)
+			dir = GramlabConfigManager.getWorkspaceDirectory();
+		else
+			dir = p.getProjectDirectory();
+		final JFileChooser fc = new JFileChooser(dir);
+		fc.setMultiSelectionEnabled(true);
+		fc.setDialogType(JFileChooser.OPEN_DIALOG);
+		final int returnVal = fc.showOpenDialog(fc);
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			// we return if the user has clicked on CANCEL
+			return;
+		}
+		final File[] files = fc.getSelectedFiles();
+		for (int i = 0; i < files.length; i++) {
+			if (!files[i].exists()) {
+				if (!files[i].exists()) {
+					JOptionPane.showMessageDialog(null, "File "
+							+ files[i].getAbsolutePath() + " does not exist",
+							"Error", JOptionPane.ERROR_MESSAGE);
+					continue;
+				}
+			}
+			InternalFrameManager manager = GlobalProjectManager
+					.search(files[i]).getFrameManagerAs(InternalFrameManager.class);
+			if (manager == null) {
+				JOptionPane.showMessageDialog(null,
+						"You can not open a file outside a project directory\n"
+								+ "or if the project is opened.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			manager.newFileEditionTextFrame(files[i]);
+		}
+	}
+  
 }

@@ -1,29 +1,23 @@
-<project name="project-oriented-ide" default="dist" basedir=".">
+<project name="integrated-ide" default="dist" basedir=".">
 
-	<description>Unitex/GramLab Project-oriented IDE build file</description>
+	<description> Integrated IDE build file</description>
 
 	<!-- set global properties for this build -->
 	<property name="plugins" location="core-plugins" />
 	<property name="api" location="api" />
 	<property name="api-src" location="api/src" />
-	<property name="src" location="src" />
+	<property name="src" location="core/src" />
 	<property name="build" location="build" />
 	<property name="classes" location="classes" />
 	<property name="dist" location="dist" />
 	<property name="lib" location="lib" />
-	<property name="resources" location="resources" />
+	<property name="resources" location="${src}/main/resources" />
 	<property name="dist-lib" location="${dist}/lib" />
 	<property name="dist-plugins" location="${dist}/plugins" />
 	<property environment="env" />
 
 	<!-- targets -->
 	<target name="init">
-		<!-- Classic IDE init-->
-		<subant target="init">
-			<property name="basedir"  value="unitex"/>
-			<property name="dist-dir" value="${dist}"/>
-			<fileset dir="unitex" includes="build.xml"/>
-		</subant>
 		<!-- Create the time stamp -->
 		<tstamp />
 		<!-- Create the build directory structure used by compile -->
@@ -42,12 +36,6 @@
 		<!-- Clean api -->
 		<subant target="clean" failonerror="false">
 			<fileset dir="api" includes="build.xml"/>
-		</subant>
-
-		<!-- Classic IDE clean-->
-		<subant target="clean">
-			<property name="basedir" value="unitex"/>
-			<fileset dir="unitex" includes="build.xml"/>
 		</subant>
 
 		<echo message="Deleting files in ${build}" level="info" />
@@ -70,24 +58,13 @@
 	</target>
 
 	<target name="compile" depends="init" description="compile the source">
-		<!-- Classic IDE dist-->
-		<subant target="dist">
-			<property name="basedir" value="unitex"/>
-			<property name="dist-dir" value="${dist}"/>
-			<fileset dir="unitex" includes="build.xml"/>
-		</subant>
-		<!-- Compile the java code from ${src} into ${build} -->
-		<echo message="classpaht=${dist}/Unitex.jar"/>
-		<javac target="1.7" source="1.7" destdir="${build}" includeAntRuntime="false">
+		<javac target="1.7" source="1.7" destdir="${build}" debug="true" includeAntRuntime="false">
 			<compilerarg value="-Xlint:-options"/>
 			<src path="${src}"/>
 			<src path="${api-src}"/>
 			<classpath>
 				<fileset dir="${lib}">
 					<include name="*.jar" />
-				</fileset>
-				<fileset dir="${dist}">
-					<include name="Unitex.jar" />
 				</fileset>
 			</classpath>
 		</javac>
@@ -108,7 +85,7 @@
 
 		<mkdir dir="${classes}" />
 		<copy todir="${classes}">
-			<fileset dir="src/main/resources" />
+			<fileset dir="core/src/main/resources" />
 		</copy>
 		<copy todir="${classes}">
 			<fileset dir="${build}" />
@@ -117,7 +94,7 @@
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}" />
 		<!-- create Gramlab.jar -->
-		<jar jarfile="${dist}/Gramlab.jar" manifest="${classes}/fr/gramlab/Manifest.mf" basedir="${classes}" />
+		<jar jarfile="${dist}/Gramlab.jar" manifest="${classes}/org/gramlab/core/gramlab/Manifest.mf" basedir="${classes}" />
 
 		<!-- dist/*.ico -->
 		<copy todir="${dist}">
@@ -169,4 +146,3 @@
 		</copy>
 	</target>
 </project>
-

@@ -4,20 +4,23 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.gramlab.api</groupId>
-  <artifactId>gramlabapi</artifactId>
+  <artifactId>gramlab-api</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
-      <!-- github server corresponds to entry in ~/.m2/settings.xml -->
-      <github.global.server>github</github.global.server>
-    </properties>
-  <!-- <name>gramlab-ide-api</name>
-  <description>GramLab IDE API</description>
+    <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+    <github.global.server>github</github.global.server>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+  </properties>
+
+  <name>gramlab-ide-api</name>
+  <description>API for developing plugins for Gramlab Integrated IDE</description>
   <organization><name>unitexgramlab.org</name></organization>
   <url>http://unitexgramlab.org</url>
-  <inceptionYear>2016</inceptionYear> -->
-<!-- 
+  <inceptionYear>2016</inceptionYear>
+
   <licenses>
     <license>
       <name>Apache ASLv2.0</name>
@@ -43,7 +46,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <role>developer</role>
       </roles>
     </developer>
-  </developers> -->
+  </developers>
 
   <dependencies>
   	<!-- provided dependencies -->
@@ -54,44 +57,42 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <type>jar</type>
       <scope>provided</scope>
     </dependency>
-
   </dependencies>
-    <build>
-      <plugins>
-      
-     
-      <plugin>
-            <groupId>com.github.github</groupId>
-            <artifactId>site-maven-plugin</artifactId>
-            <version>0.11</version>
-            <configuration>
-                <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
-                <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-                <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-                <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
-                <includes><include>**/*</include></includes>
-                <repositoryName>gramlab-ide</repositoryName>      <!-- github repo name -->
-                <repositoryOwner>Mukarr</repositoryOwner>    <!-- github username  -->
-            </configuration>
-            <executions>
-              <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-              <execution>
-                <goals>
-                  <goal>site</goal>
-                </goals>
-                <phase>deploy</phase>
-              </execution>
-            </executions>
-        </plugin>
-      </plugins>
-    </build>
-    
-    <distributionManagement>
-      <repository>
-        <id>internal.repo</id>
-        <name>Temporary Staging Repository</name>
-        <url>file://${project.build.directory}/mvn-repo</url>
-      </repository>
-    </distributionManagement>
-</project>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.11</version>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+          <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+          <branch>refs/heads/api-mvn-repo</branch>                       <!-- remote branch name -->
+          <includes><include>**/*</include></includes>
+          <repositoryName>gramlab-ide</repositoryName>      <!-- github repo name -->
+          <repositoryOwner>Mukarr</repositoryOwner>    <!-- github username  -->
+          <merge>true</merge>
+        </configuration>
+        <executions>
+          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
+</project>
