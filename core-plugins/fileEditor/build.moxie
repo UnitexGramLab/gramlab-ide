@@ -91,15 +91,15 @@ dependencyDirectory: ext
 # Register the GramLab Maven repository
 registeredRepositories:
 -{
-    id: 'gramlab-ide-core-mvn-repo'
-    url: 'https://raw.github.com/Mukarr/gramlab-ide/core-mvn-repo/'
+    id: 'org.gramlab.core'
+    url: 'http://UnitexGramLab.github.io/gramlab-ide-maven-artifacts/'
   }
 -{
-    id: 'gramlab-ide-api-mvn-repo'
-    url: 'https://raw.github.com/Mukarr/gramlab-ide/api-mvn-repo/'
+    id: 'org.gramlab.api'
+    url: 'http://UnitexGramLab.github.io/gramlab-ide-maven-artifacts/'
   }
 
-repositories: 'central', 'gramlab-ide-core-mvn-repo' , 'gramlab-ide-api-mvn-repo'
+repositories: 'central', 'org.gramlab.core','org.gramlab.api'
 
 # Convenience properties for dependencies
 properties: {
@@ -124,7 +124,7 @@ dependencies:
 - provided 'org.slf4j:slf4j-api:1.7.21'
 - provided 'org.slf4j:slf4j-simple:1.7.21'
 - provided 'ro.fortsoft.pf4j:pf4j:0.13.1'
-- provided 'org.gramlab.api:gramlab-api:1.0.0-SNAPSHOT'
+- provided 'org.gramlab.api:gramlab-api:1.0.1-SNAPSHOT'
 - provided 'org.gramlab.core:gramlab-core:1.0.1-SNAPSHOT'
 - test    'junit'
 # Dependencies with the "build" scope are retrieved

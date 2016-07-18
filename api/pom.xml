@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
   <groupId>org.gramlab.api</groupId>
   <artifactId>gramlab-api</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>
@@ -69,10 +69,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
           <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
           <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
           <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-          <branch>refs/heads/api-mvn-repo</branch>                       <!-- remote branch name -->
+          <branch>refs/heads/gh-pages</branch>                       <!-- remote branch name -->
           <includes><include>**/*</include></includes>
-          <repositoryName>gramlab-ide</repositoryName>      <!-- github repo name -->
-          <repositoryOwner>Mukarr</repositoryOwner>    <!-- github username  -->
+          <repositoryName>gramlab-ide-maven-artifacts</repositoryName>      <!-- github repo name -->
+          <repositoryOwner>UnitexGramLab</repositoryOwner>    <!-- github username  -->
           <merge>true</merge>
         </configuration>
         <executions>
@@ -85,7 +85,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
           </execution>
         </executions>
       </plugin>
-      </plugins>
+     </plugins>
   </build>
 
   <distributionManagement>
