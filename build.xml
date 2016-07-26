@@ -8,6 +8,7 @@
   <property name="classes" location="classes" />
 	<property name="dist" location="dist" />
 	<property name="lib" location="lib" />
+	<property name="licenses" location="licenses" />  
 	<property name="resources" location="resources" />
   <property environment="env" />
 			
@@ -92,6 +93,7 @@
     <property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>		
 		<property name="app" location="${unitexHome}/App" />
 		<property name="app-lib" location="${unitexHome}/App/lib" />
+    <property name="app-licenses" location="${unitexHome}/App/licenses" />
 	</target>
 
 	<target name="install" depends="install-init,dist">
@@ -105,7 +107,11 @@
 			<fileset dir="${lib}">
 				<include name="*.jar" />
 			</fileset>
-		</copy>		
+		</copy>
+		<copy todir="${app-licenses}">
+			<fileset dir="${licenses}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>	    
 	</target>
 </project>
-
