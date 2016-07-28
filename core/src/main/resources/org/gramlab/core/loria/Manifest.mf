@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Created-By: The Unitex/GramLab Authors
+Main-Class: org.gramlab.core.loria.xsilfide.multialign.MultiAlign
+Specification-Title: XAlign
+Specification-Version: 11.09.1999
+Specification-Vendor: LORIA
+Implementation-Title: org.gramlab.core.loria.xsilfide.multialign
+Implementation-Version: 11.09.1999
+Implementation-Vendor: LORIA
+Class-Path: lib/xercesImpl.jar lib/xml-apis.jar

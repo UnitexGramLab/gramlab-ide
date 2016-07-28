@@ -13,12 +13,12 @@
 	<property name="moxie.url" value="http://gitblit.github.io/moxie/maven" />
 	<property name="moxie.jar" value="moxie-toolkit-${moxie.version}.jar" />
 	<property name="moxie.dir" value="${user.home}/.moxie" />
-	
+
 	<!-- Download Moxie from it's Maven repository to user.home -->
 	<mkdir dir="${moxie.dir}" />
 	<get src="${moxie.url}/com/gitblit/moxie/moxie-toolkit/${moxie.version}/${moxie.jar}"
 		   dest="${moxie.dir}" skipexisting="true" verbose="true" />
-	
+
 	<!-- Register Moxie tasks -->
 	<taskdef uri="antlib:org.moxie">
 		<classpath location="${moxie.dir}/${moxie.jar}" />
@@ -26,7 +26,7 @@
 
 	<!-- Initialize Moxie and setup build properties -->
 	<target name="prepare">
-	
+
 		<!-- Setup Ant build from build.moxie and resolve dependencies.
 		     If it exists, build.properties is automatically loaded.
 		     Explicitly set mxroot allowing CI servers to override the default. -->
@@ -36,13 +36,13 @@
 
 	</target>
 
-	
+
 	<!-- Cleanup all build artifacts and directories -->
 	<target name="clean" depends="prepare" description="Cleanup all build artifacts and directories">
 		<mx:clean />
 	</target>
 
-	
+
 	<!-- Compile -->
 	<target name="compile" depends="prepare" description="Compile from sources">
 		<mx:javac scope="compile" clean="true" />
@@ -62,16 +62,16 @@
 				<attribute name="plugin-dependencies" value="" />
 			</manifest>
 		</mx:jar>
-		
+
 		<!-- Unpack the built jar to a temporary folder -->
 		<property name="plugin.classes" value="${project.targetDirectory}/exploded" />
 		<unzip dest="${plugin.classes}" src="${project.targetDirectory}/${project.artifactId}-${project.version}.jar" />
-		
+
 		<!-- Assemble the plugin zip file: classes in classes/ and dependencies in lib/ -->
 		<mx:zip>
 			<zipfileset prefix="classes/" dir="${plugin.classes}" />
 			<!--<zipgroupfileset prefix="classes/" file="${project.targetDirectory}/plugin.jar" /> -->
-			<dependencies prefix="lib/" />
+			<!-- <dependencies prefix="lib/" /> -->
 		</mx:zip>
 	</target>
 
@@ -84,7 +84,7 @@
 		<property name="project.tag" value="v${project.version}" />
 		<!-- commit build.moxie & releases.moxie (automatic) -->
 		<mx:commit showtitle="no">
-		    <message>Prepare ${project.version} release</message>
+			<message>Prepare ${project.version} release</message>
 			<tag name="${project.tag}">
 				<message>${project.name} ${project.version} release</message>
 			</tag>
@@ -121,8 +121,8 @@
 		<!-- next cycle -->
 		<mx:version stage="snapshot" incrementNumber="incremental" dryrun="${dryrun}" />
 		<mx:commit showtitle="no">
-		    <message>Reset build identifiers for next development cycle</message>
-		</mx:commit>		
+			<message>Reset build identifiers for next development cycle</message>
+		</mx:commit>
 	</target>
 
 	<!-- Build and deploy to the registry directory without tagging -->

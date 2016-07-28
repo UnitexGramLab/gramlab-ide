@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.gramlab.core</groupId>
+  <artifactId>gramlab-core</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+    <github.global.server>github</github.global.server>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+  </properties>
+
+  <name>gramlab-ide-core</name>
+  <description>Core for Gramlab Integrated IDE</description>
+  <organization><name>unitexgramlab.org</name></organization>
+  <url>http://unitexgramlab.org</url>
+
+  <licenses>
+    <license>
+      <name>Apache ASLv2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/UnitexGramLab/gramlab-ide-api.git</connection>
+    <developerConnection>scm:git:https://github.com/UnitexGramLab/gramlab-ide-api.git</developerConnection>
+    <url>https://github.com/UnitexGramLab/gramlab-ide-api</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>ide-developers</id>
+      <name>The Unitex/GramLab IDE developers</name>
+      <url>https://github.com/orgs/UnitexGramLab/teams/ide</url>
+      <organization>Unitex/GramLab</organization>
+      <organizationUrl>http://unitexgramlab.org</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <repositories>
+    <repository>
+      <id>org.gramlab.api</id>
+      <url>http://unitexgramlab.github.io/gramlab-ide-maven-artifacts/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+  	<!-- provided dependencies -->
+    <dependency>
+      <groupId>org.gramlab.api</groupId>
+      <artifactId>gramlab-api</artifactId>
+      <version>1.0.1-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ro.fortsoft.pf4j</groupId>
+      <artifactId>pf4j</artifactId>
+      <version>0.13.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.8.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>2.0.2</version>
+      <type>jar</type>
+    </dependency> 
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.11</version>
+        <configuration>
+          <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+          <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+          <branch>refs/heads/gh-pages</branch>       <!-- remote branch name -->
+          <includes><include>**/*</include></includes>
+          <repositoryName>gramlab-ide-maven-artifacts</repositoryName>      <!-- github repo name -->
+          <repositoryOwner>UnitexGramLab</repositoryOwner>    <!-- github username  -->
+          <merge>true</merge>
+        </configuration>
+        <executions>
+          <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin></plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>internal.repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
+</project>
