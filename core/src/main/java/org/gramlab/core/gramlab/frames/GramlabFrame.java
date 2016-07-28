@@ -46,6 +46,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import org.gramlab.api.InternalFileEditor;
 import org.gramlab.api.Menu;
 import org.gramlab.core.GramlabConfigManager;
 import org.gramlab.core.gramlab.icons.Icons;
@@ -539,6 +540,15 @@ public class GramlabFrame extends JFrame {
 						}
 					}
 				};
+				
+				//Added by Mukarram Tailor
+				DefaultPluginManager pluginManager = GramlabConfigManager.getPluginManager();
+				List<InternalFileEditor> editors = pluginManager.getExtensions(InternalFileEditor.class);
+
+				if(editors.isEmpty()){
+					editor.setEnabled(false);
+				}
+				
 				menu.add(new JMenuItem(editor));
 				final File htmlViewer = project.getHtmlViewer();
 				Action html = new AbstractAction("Html viewer") {

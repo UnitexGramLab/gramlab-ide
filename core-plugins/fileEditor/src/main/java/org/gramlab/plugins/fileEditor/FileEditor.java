@@ -30,6 +30,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import org.gramlab.api.InternalFileEditor;
 import org.gramlab.api.Menu;
 import org.gramlab.core.GramlabConfigManager;
 import org.gramlab.core.gramlab.project.GramlabProject;
@@ -44,7 +45,7 @@ import ro.fortsoft.pf4j.Extension;
  * add by Mukarram Tailor
  */ 
 @Extension
-public class FileEditor implements Menu {
+public class FileEditor implements Menu, InternalFileEditor{
   @Override
   public JMenu Addmenu(){
 	  

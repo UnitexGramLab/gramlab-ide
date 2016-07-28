@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Created-By: The Unitex/GramLab Authors
-Main-Class: fr.umlv.unitex.Unitex
+Main-Class: org.gramlab.core.umlv.unitex.Unitex
 Specification-Title: Unitex/GramLab
 Specification-Version: 0.0.0-anonymous
 Specification-Vendor: Universite Paris-Est Marne-la-Vallee
