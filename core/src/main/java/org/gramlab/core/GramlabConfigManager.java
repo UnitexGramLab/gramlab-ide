@@ -1,4 +1,4 @@
-package fr.gramlab;
+package org.gramlab.core;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,20 +6,24 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.config.ProjectPreferences;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
+import org.gramlab.api.Greeting;
+import org.gramlab.api.Menu;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.config.ProjectPreferences;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 import ro.fortsoft.pf4j.DefaultPluginManager;
-import ro.fortsoft.pf4j.PluginManager;
+import ro.fortsoft.pf4j.PluginWrapper;
 
 public class GramlabConfigManager {
 	
@@ -48,8 +52,9 @@ public class GramlabConfigManager {
 		setCurrentProject(null);
 		user = System.getProperty("user.name");
 
-    // start the plugin manager
-    startPluginManager(new File(path, Config.DEFAULT_PLUGINS_DIRECTORY));
+		//TODO: Check the runtimemode to decide Config.DEVELOPMENT_PLUGINS_DIRECTORY or Config.DEFAULT_PLUGINS_DIRECTORY
+		// start the plugin manager
+	    startPluginManager(new File(path, Config.DEFAULT_PLUGINS_DIRECTORY));
         
 		findWorkspace();
 	}
@@ -106,6 +111,35 @@ public class GramlabConfigManager {
 
     // start (active/resolved) the plugins
     pluginManager.startPlugins();
+    
+    // Finding extensions for greeting extension point
+    List<Greeting> greetings = pluginManager.getExtensions(Greeting.class);
+    System.out.println(String.format("Found %d extensions for extension points '%s'", greetings.size(), Greeting.class.getName()));
+    for (Greeting greeting : greetings) {
+        System.out.println(">>> " + greeting.getGreeting());
+    }
+    
+    List<Menu> menus = pluginManager.getExtensions(Menu.class);
+    System.out.println(String.format("Found %d extensions for extension point '%s'", menus.size(), Menu.class.getName()));
+    
+    // print extensions from classpath (non plugin)
+    System.out.println(String.format("Extensions added by classpath:"));
+    Set<String> extensionClassNames = pluginManager.getExtensionClassNames(null);
+    for (String extension : extensionClassNames) {
+        System.out.println("   " + extension);
+    }
+
+    // print extensions for each started plugin
+    List<PluginWrapper> startedPlugins = pluginManager.getStartedPlugins();
+    for (PluginWrapper plugin : startedPlugins) {
+        String pluginId = plugin.getDescriptor().getPluginId();
+        System.out.println(String.format("Extensions added by plugin '%s':", pluginId));
+        extensionClassNames = pluginManager.getExtensionClassNames(pluginId);
+        for (String extension : extensionClassNames) {
+            System.out.println("   " + extension);
+        }
+    }
+    
   }
     
 	private static void readConfigFile(File f) {

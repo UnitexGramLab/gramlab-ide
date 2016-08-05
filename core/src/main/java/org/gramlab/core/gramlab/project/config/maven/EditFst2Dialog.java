@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -17,9 +17,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class EditFst2Dialog extends JDialog {

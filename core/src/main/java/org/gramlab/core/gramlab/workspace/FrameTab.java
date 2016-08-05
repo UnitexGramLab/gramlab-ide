@@ -1,10 +1,10 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import java.awt.Dimension;
 
 import javax.swing.JComponent;
 
-import fr.umlv.unitex.frames.TabbableInternalFrame;
+import org.gramlab.core.umlv.unitex.frames.TabbableInternalFrame;
 
 @SuppressWarnings("serial")
 public class FrameTab extends JComponent {

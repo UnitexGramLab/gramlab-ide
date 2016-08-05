@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.editor.ui;
+package org.gramlab.core.umlv.unitex.editor.ui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -32,9 +32,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.text.BadLocationException;
 
-import fr.umlv.unitex.editor.EditionTextArea;
-import fr.umlv.unitex.editor.ReplacementTargetException;
-import fr.umlv.unitex.editor.TargetException;
+import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
+import org.gramlab.core.umlv.unitex.editor.ReplacementTargetException;
+import org.gramlab.core.umlv.unitex.editor.TargetException;
 
 public class FindPanel extends AbstractFindpanel {
 	private final ButtonModel modelUp;

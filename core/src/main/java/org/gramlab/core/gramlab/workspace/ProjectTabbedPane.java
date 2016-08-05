@@ -1,4 +1,4 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import java.awt.BorderLayout;
 
@@ -8,11 +8,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.frames.GramlabInternalFrameManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.gramlab.frames.GramlabInternalFrameManager;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 @SuppressWarnings("serial")
 public class ProjectTabbedPane extends JTabbedPane {

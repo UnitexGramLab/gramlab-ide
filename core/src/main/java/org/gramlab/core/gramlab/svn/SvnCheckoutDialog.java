@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,25 +24,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.config.maven.MvnCommand;
-import fr.gramlab.project.config.maven.Pom;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.gramlab.project.config.preprocess.CreateProjectDialog;
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.FrameUtil;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Executor;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.SvnCommand;
-import fr.umlv.unitex.process.list.ProcessOutputList;
-import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.config.maven.MvnCommand;
+import org.gramlab.core.gramlab.project.config.maven.Pom;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.gramlab.project.config.preprocess.CreateProjectDialog;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.umlv.unitex.process.ExecParameters;
+import org.gramlab.core.umlv.unitex.process.Executor;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.SvnCommand;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
 
 public class SvnCheckoutDialog extends JDialog {
 	

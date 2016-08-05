@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

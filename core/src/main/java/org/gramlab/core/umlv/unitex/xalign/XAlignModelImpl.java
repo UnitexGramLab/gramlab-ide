@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.xalign;
+package org.gramlab.core.umlv.unitex.xalign;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +36,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import fr.umlv.unitex.listeners.AlignmentListener;
+import org.gramlab.core.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignModelImpl implements XAlignModel {
 

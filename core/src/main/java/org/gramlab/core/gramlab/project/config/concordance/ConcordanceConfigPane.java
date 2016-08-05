@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.concordance;
+package org.gramlab.core.gramlab.project.config.concordance;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -22,8 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 
 @SuppressWarnings("serial")
 public class ConcordanceConfigPane extends ConfigurationPaneFactory {

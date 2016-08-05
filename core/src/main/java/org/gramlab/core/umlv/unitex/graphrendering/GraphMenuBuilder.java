@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.event.ActionEvent;
 
@@ -28,9 +28,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 /**
  * This class defines static methods for building portions of Graph related menu options that 

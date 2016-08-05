@@ -1,4 +1,4 @@
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;

@@ -1,8 +1,8 @@
-package fr.umlv.unitex.common.project.manager;
+package org.gramlab.core.umlv.unitex.common.project.manager;
 
 import java.io.File;
 
-import fr.umlv.unitex.common.project.Project;
+import org.gramlab.core.umlv.unitex.common.project.Project;
 
 /**
  * This class constitutes a global access point for the ProjectManager in Unitex

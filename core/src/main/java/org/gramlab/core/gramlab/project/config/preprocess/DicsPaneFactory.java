@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -19,9 +19,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.util.filelist.SelectableFileList;
-import fr.gramlab.util.filelist.SelectableFileListModel;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileList;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileListModel;
 
 @SuppressWarnings("serial")
 public class DicsPaneFactory extends ConfigurationPaneFactory {

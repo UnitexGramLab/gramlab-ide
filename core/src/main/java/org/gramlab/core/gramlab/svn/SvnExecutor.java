@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.EatStreamThread;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ProcessInfoThread;
-import fr.umlv.unitex.process.commands.SvnCommand;
-import fr.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.EatStreamThread;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ProcessInfoThread;
+import org.gramlab.core.umlv.unitex.process.commands.SvnCommand;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
 
 public class SvnExecutor {
 	

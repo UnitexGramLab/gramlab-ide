@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -34,18 +34,18 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
-import fr.umlv.unitex.tfst.TagFilter;
-import fr.umlv.unitex.tfst.TfstTableModel;
-import fr.umlv.unitex.tfst.TokenTags;
-import fr.umlv.unitex.tfst.TokensInfo;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.io.UnicodeIO;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
+import org.gramlab.core.umlv.unitex.tfst.TagFilter;
+import org.gramlab.core.umlv.unitex.tfst.TfstTableModel;
+import org.gramlab.core.umlv.unitex.tfst.TokenTags;
+import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
 
 public class ExportTextAsPOSListDialog extends JDialog {
 	File output;

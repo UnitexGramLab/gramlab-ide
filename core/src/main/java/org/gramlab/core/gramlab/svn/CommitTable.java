@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -10,7 +10,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
-import fr.gramlab.project.config.preprocess.fst2txt.SelectionTableCellEditor;
+import org.gramlab.core.gramlab.project.config.preprocess.fst2txt.SelectionTableCellEditor;
 
 @SuppressWarnings("serial")
 public class CommitTable extends JTable {

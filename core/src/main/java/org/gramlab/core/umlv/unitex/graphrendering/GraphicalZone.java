@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
@@ -59,24 +59,24 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.undo.UndoableEdit;
 
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.print.PrintManager;
-import fr.umlv.unitex.undo.AddBoxEdit;
-import fr.umlv.unitex.undo.BoxTextEdit;
-import fr.umlv.unitex.undo.MultipleEdit;
-import fr.umlv.unitex.undo.RemoveBoxEdit;
-import fr.umlv.unitex.undo.SelectEdit;
-import fr.umlv.unitex.undo.TransitionEdit;
-import fr.umlv.unitex.undo.TranslationGroupEdit;
+import org.gramlab.core.umlv.unitex.MyCursors;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.print.PrintManager;
+import org.gramlab.core.umlv.unitex.undo.AddBoxEdit;
+import org.gramlab.core.umlv.unitex.undo.BoxTextEdit;
+import org.gramlab.core.umlv.unitex.undo.MultipleEdit;
+import org.gramlab.core.umlv.unitex.undo.RemoveBoxEdit;
+import org.gramlab.core.umlv.unitex.undo.SelectEdit;
+import org.gramlab.core.umlv.unitex.undo.TransitionEdit;
+import org.gramlab.core.umlv.unitex.undo.TranslationGroupEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.

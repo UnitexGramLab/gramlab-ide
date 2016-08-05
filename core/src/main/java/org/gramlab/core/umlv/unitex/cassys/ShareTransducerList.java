@@ -1,4 +1,4 @@
-package fr.umlv.unitex.cassys;
+package org.gramlab.core.umlv.unitex.cassys;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,9 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
-import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
-import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
-import fr.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
+import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
+import org.gramlab.core.umlv.unitex.config.Config;
 
 
 

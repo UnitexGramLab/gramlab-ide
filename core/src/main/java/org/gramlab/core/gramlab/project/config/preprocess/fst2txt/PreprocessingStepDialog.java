@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -21,11 +21,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class PreprocessingStepDialog extends JDialog {

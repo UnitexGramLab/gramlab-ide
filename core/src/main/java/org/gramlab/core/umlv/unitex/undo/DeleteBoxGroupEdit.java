@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.undo;
+package org.gramlab.core.umlv.unitex.undo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +26,8 @@ import java.util.Set;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
  * class uses to save the state of the graph delete a group of boxes

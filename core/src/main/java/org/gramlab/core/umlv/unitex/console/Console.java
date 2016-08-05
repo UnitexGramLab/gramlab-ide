@@ -18,10 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.console;
+package org.gramlab.core.umlv.unitex.console;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 public class Console {
 	/**

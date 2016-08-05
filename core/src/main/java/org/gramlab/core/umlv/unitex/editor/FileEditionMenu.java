@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.editor;
+package org.gramlab.core.umlv.unitex.editor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,10 +28,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.MenuAdapter;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.MenuAdapter;
 
 /**
  * Menu to handle file edition

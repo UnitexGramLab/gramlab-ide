@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,13 +40,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Executor;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.list.ProcessOutputList;
-import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.process.ExecParameters;
+import org.gramlab.core.umlv.unitex.process.Executor;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
 
 /**
  * This class describes a frame used to execute shell commands and display

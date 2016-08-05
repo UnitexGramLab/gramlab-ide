@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,9 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.util.filelist.SelectableFileList;
-import fr.gramlab.util.filelist.SelectableFileListModel;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileList;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileListModel;
 
 @SuppressWarnings("serial")
 public class MorphoDicsPaneFactory extends ConfigurationPaneFactory {

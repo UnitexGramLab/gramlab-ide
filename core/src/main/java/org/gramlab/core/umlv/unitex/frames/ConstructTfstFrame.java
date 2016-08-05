@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -39,19 +39,19 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ErrorMessageCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.LocateCommand;
-import fr.umlv.unitex.process.commands.MkdirCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.ReconstrucaoCommand;
-import fr.umlv.unitex.process.commands.TaggerCommand;
-import fr.umlv.unitex.process.commands.Txt2TfstCommand;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.ErrorMessageCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
+import org.gramlab.core.umlv.unitex.process.commands.LocateCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MkdirCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.ReconstrucaoCommand;
+import org.gramlab.core.umlv.unitex.process.commands.TaggerCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user

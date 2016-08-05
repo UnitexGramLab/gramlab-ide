@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import fr.gramlab.util.filelist.SelectableFile;
+import org.gramlab.core.gramlab.util.filelist.SelectableFile;
 
 public class MavenTreeNode implements MutableTreeNode {
 

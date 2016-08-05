@@ -36,7 +36,7 @@
  Pour l'instant, le pb avec la hastable est qu'on en retrouve pas nb nos
  petits ! (on indexe par des points en faisant des new Point...)
  */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 import java.util.Enumeration;
 import java.util.Vector;

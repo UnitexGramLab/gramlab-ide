@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.diff;
+package org.gramlab.core.umlv.unitex.diff;
 
 import java.awt.Color;
 import java.awt.Composite;
@@ -31,10 +31,10 @@ import java.util.Scanner;
 
 import javax.swing.JLabel;
 
-import fr.umlv.unitex.debug.Coverage;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.tfst.tagging.TaggingModel;
-import fr.umlv.unitex.tfst.tagging.TaggingState;
+import org.gramlab.core.umlv.unitex.debug.Coverage;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.tfst.tagging.TaggingModel;
+import org.gramlab.core.umlv.unitex.tfst.tagging.TaggingState;
 
 public class GraphDecorator {
 	/* Those fields are used in diff mode */

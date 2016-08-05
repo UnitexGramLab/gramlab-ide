@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -32,8 +32,8 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.svn.SvnMonitor;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 
 /**
  * This class describes a frame that shows all the command lines that have been

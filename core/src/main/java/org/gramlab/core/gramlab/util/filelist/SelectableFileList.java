@@ -1,4 +1,4 @@
-package fr.gramlab.util.filelist;
+package org.gramlab.core.gramlab.util.filelist;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -17,7 +17,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public class SelectableFileList extends JTable {

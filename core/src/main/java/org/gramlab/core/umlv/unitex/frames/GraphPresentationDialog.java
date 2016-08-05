@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -46,11 +46,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.FontInfo;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 
 /**
  * This class describes the graph presentation dialog box, that allows the user

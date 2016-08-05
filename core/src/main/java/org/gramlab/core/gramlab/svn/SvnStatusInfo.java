@@ -1,9 +1,9 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 public class SvnStatusInfo {
 

@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -18,15 +18,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.gramlab.project.config.preprocess.fst2txt.PreprocessingPaneFactory;
-import fr.gramlab.util.KeyUtil;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.gramlab.project.config.preprocess.fst2txt.PreprocessingPaneFactory;
+import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ConfigureProjectDialog extends JDialog {

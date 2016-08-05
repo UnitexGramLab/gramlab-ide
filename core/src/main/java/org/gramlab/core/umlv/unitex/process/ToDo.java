@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
 /**
  * This interface is used to define a method named <code>toDo()</code>. It is

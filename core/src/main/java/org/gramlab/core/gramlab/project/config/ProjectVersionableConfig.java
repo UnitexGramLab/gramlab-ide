@@ -1,4 +1,4 @@
-package fr.gramlab.project.config;
+package org.gramlab.core.gramlab.project.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,20 +8,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.locate.MatchesPolicy;
-import fr.gramlab.project.config.locate.OutputsPolicy;
-import fr.gramlab.project.config.locate.VariableErrorPolicy;
-import fr.gramlab.project.config.maven.BinToBuild;
-import fr.gramlab.project.config.maven.GrfToCompile;
-import fr.gramlab.project.config.maven.MvnBuildConfig;
-import fr.gramlab.project.config.maven.MvnSourceConfig;
-import fr.gramlab.project.config.maven.PackageOperation;
-import fr.gramlab.project.config.preprocess.fst2txt.Preprocessing;
-import fr.gramlab.project.config.preprocess.fst2txt.PreprocessingStep;
-import fr.umlv.unitex.config.InjectedVariable;
-import fr.umlv.unitex.config.NamedRepository;
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.locate.MatchesPolicy;
+import org.gramlab.core.gramlab.project.config.locate.OutputsPolicy;
+import org.gramlab.core.gramlab.project.config.locate.VariableErrorPolicy;
+import org.gramlab.core.gramlab.project.config.maven.BinToBuild;
+import org.gramlab.core.gramlab.project.config.maven.GrfToCompile;
+import org.gramlab.core.gramlab.project.config.maven.MvnBuildConfig;
+import org.gramlab.core.gramlab.project.config.maven.MvnSourceConfig;
+import org.gramlab.core.gramlab.project.config.maven.PackageOperation;
+import org.gramlab.core.gramlab.project.config.preprocess.fst2txt.Preprocessing;
+import org.gramlab.core.gramlab.project.config.preprocess.fst2txt.PreprocessingStep;
+import org.gramlab.core.umlv.unitex.config.InjectedVariable;
+import org.gramlab.core.umlv.unitex.config.NamedRepository;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 public class ProjectVersionableConfig extends AbstractProjectConfig {
 	

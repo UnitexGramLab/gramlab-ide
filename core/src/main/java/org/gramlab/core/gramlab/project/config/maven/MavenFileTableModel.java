@@ -1,14 +1,14 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.util.filelist.SelectableFile;
-import fr.gramlab.util.filelist.SelectableFileListModel;
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.util.filelist.SelectableFile;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileListModel;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 @SuppressWarnings("serial")
 public class MavenFileTableModel extends SelectableFileListModel {

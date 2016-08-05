@@ -27,7 +27,7 @@
  *            UMR LORIA (Universities of Nancy, CNRS & INRIA)
  *           
  */
-package fr.loria.nguyen.mytools;
+package org.gramlab.core.loria.nguyen.mytools;
 
 import java.io.FileOutputStream;
 

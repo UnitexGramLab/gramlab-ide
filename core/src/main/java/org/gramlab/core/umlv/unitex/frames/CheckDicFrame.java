@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -35,11 +35,11 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.CheckDicCommand;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.CheckDicCommand;
 
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"

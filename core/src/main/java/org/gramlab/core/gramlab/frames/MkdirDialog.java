@@ -1,4 +1,4 @@
-package fr.gramlab.frames;
+package org.gramlab.core.gramlab.frames;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -16,8 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.gramlab.Main;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class MkdirDialog extends JDialog {

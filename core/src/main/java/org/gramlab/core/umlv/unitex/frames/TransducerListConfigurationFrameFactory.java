@@ -1,4 +1,4 @@
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.io.File;
 

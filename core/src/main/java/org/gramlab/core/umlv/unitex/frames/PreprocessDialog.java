@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -41,26 +41,26 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.DicoCommand;
-import fr.umlv.unitex.process.commands.ErrorMessageCommand;
-import fr.umlv.unitex.process.commands.FlattenCommand;
-import fr.umlv.unitex.process.commands.Fst2TxtCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.MkdirCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.NormalizeCommand;
-import fr.umlv.unitex.process.commands.PolyLexCommand;
-import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.process.commands.TokenizeCommand;
-import fr.umlv.unitex.process.commands.Txt2TfstCommand;
-import fr.umlv.unitex.process.commands.UnxmlizeCommand;
-import fr.umlv.unitex.text.SntUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
+import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.commands.DicoCommand;
+import org.gramlab.core.umlv.unitex.process.commands.ErrorMessageCommand;
+import org.gramlab.core.umlv.unitex.process.commands.FlattenCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Fst2TxtCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
+import org.gramlab.core.umlv.unitex.process.commands.MkdirCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.PolyLexCommand;
+import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
+import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
+import org.gramlab.core.umlv.unitex.text.SntUtil;
 
 /**
  * This class describes a dialog box that allows the user to parameter the

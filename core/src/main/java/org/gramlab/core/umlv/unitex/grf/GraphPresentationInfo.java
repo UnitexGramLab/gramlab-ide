@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.grf;
+package org.gramlab.core.umlv.unitex.grf;
 
 import java.awt.Color;
 
-import fr.umlv.unitex.FontInfo;
+import org.gramlab.core.umlv.unitex.FontInfo;
 
 public class GraphPresentationInfo {
 	private Color backgroundColor;

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.config;
+package org.gramlab.core.umlv.unitex.config;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,9 +28,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.FontInfo;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 /**
  * This class describes language preferences.

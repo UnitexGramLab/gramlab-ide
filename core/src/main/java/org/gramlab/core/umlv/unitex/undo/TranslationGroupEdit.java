@@ -18,13 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.undo;
+package org.gramlab.core.umlv.unitex.undo;
 
 import java.util.ArrayList;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
 
 /**
  * Class used to save the state of the graph before translate boxes

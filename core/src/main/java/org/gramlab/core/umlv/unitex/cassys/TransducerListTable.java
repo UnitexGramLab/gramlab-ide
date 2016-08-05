@@ -1,4 +1,4 @@
-package fr.umlv.unitex.cassys;
+package org.gramlab.core.umlv.unitex.cassys;
 
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;

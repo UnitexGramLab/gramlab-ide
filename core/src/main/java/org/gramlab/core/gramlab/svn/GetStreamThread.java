@@ -18,13 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import fr.umlv.unitex.process.NullOutputStream;
+import org.gramlab.core.umlv.unitex.process.NullOutputStream;
 
 
 public class GetStreamThread extends Thread {

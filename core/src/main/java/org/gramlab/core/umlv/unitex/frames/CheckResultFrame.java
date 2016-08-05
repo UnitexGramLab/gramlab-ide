@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -30,8 +30,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.text.BigTextList;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.text.BigTextList;
 
 /**
  * This class describes a text frame that shows the results of dictionary

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -66,32 +66,32 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.concord.BigConcordance;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
-import fr.umlv.unitex.graphrendering.TfstTextField;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.listeners.GraphListener;
-import fr.umlv.unitex.process.EatStreamThread;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.Log;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ConcordCommand;
-import fr.umlv.unitex.process.commands.LocateTfstCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.RebuildTfstCommand;
-import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
-import fr.umlv.unitex.tfst.TokensInfo;
+import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.concord.BigConcordance;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.console.Console;
+import org.gramlab.core.umlv.unitex.exceptions.InvalidConcordanceOrderException;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphicalZone;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstTextField;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.io.UnicodeIO;
+import org.gramlab.core.umlv.unitex.listeners.GraphListener;
+import org.gramlab.core.umlv.unitex.process.EatStreamThread;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.Log;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.ConcordCommand;
+import org.gramlab.core.umlv.unitex.process.commands.LocateTfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.RebuildTfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
+import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
 
 /**
  * This class describes a frame used to lemmatize sentence automata.

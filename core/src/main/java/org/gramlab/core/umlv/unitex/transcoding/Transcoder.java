@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.transcoding;
+package org.gramlab.core.umlv.unitex.transcoding;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import fr.umlv.unitex.process.commands.ConvertCommand;
+import org.gramlab.core.umlv.unitex.process.commands.ConvertCommand;
 
 public class Transcoder {
 	/**

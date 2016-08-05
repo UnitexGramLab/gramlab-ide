@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -68,37 +68,37 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.Unitex;
-import fr.umlv.unitex.Version;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.config.SntFileEntry;
-import fr.umlv.unitex.editor.FileEditionMenu;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.graphrendering.GraphMenuBuilder;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.listeners.DelaFrameListener;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
-import fr.umlv.unitex.listeners.TextFrameListener;
-import fr.umlv.unitex.print.PrintManager;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.CompressCommand;
-import fr.umlv.unitex.process.commands.ConcordCommand;
-import fr.umlv.unitex.process.commands.FlattenCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.LocateTfstCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.project.UnitexProject;
-import fr.umlv.unitex.project.manager.UnitexProjectManager;
-import fr.umlv.unitex.text.Text;
-import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
+import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.Version;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.config.SntFileEntry;
+import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphMenuBuilder;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.listeners.DelaFrameListener;
+import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
+import org.gramlab.core.umlv.unitex.listeners.TextFrameListener;
+import org.gramlab.core.umlv.unitex.print.PrintManager;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.CompressCommand;
+import org.gramlab.core.umlv.unitex.process.commands.ConcordCommand;
+import org.gramlab.core.umlv.unitex.process.commands.FlattenCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
+import org.gramlab.core.umlv.unitex.process.commands.LocateTfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
+import org.gramlab.core.umlv.unitex.project.UnitexProject;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
+import org.gramlab.core.umlv.unitex.text.Text;
+import org.gramlab.core.umlv.unitex.utils.UnitexHelpMenuBuilder;
 
 /**
  * This is the main frame of the Unitex system.

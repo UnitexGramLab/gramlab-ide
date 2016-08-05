@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -34,10 +34,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.stats.StatisticsTableModelMode0;
-import fr.umlv.unitex.stats.StatisticsTableModelMode1;
-import fr.umlv.unitex.stats.StatisticsTableModelMode2;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.stats.StatisticsTableModelMode0;
+import org.gramlab.core.umlv.unitex.stats.StatisticsTableModelMode1;
+import org.gramlab.core.umlv.unitex.stats.StatisticsTableModelMode2;
 
 public class StatisticsFrame extends TabbableInternalFrame {
 	StatisticsFrame(File file, int mode) {

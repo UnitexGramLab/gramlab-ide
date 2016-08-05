@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -40,9 +40,6 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import fr.umlv.unitex.graphrendering.DrawGraphParams;
-import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -61,6 +58,8 @@ import javax.swing.JCheckBox;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
+import org.gramlab.core.umlv.unitex.graphrendering.DrawGraphParams;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphicalZone;
 import org.w3c.dom.Element;
 
 import java.awt.Dimension;

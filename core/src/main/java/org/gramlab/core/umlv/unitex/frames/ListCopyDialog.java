@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import fr.umlv.unitex.graphrendering.ContextsInfo;
+import org.gramlab.core.umlv.unitex.graphrendering.ContextsInfo;
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set left

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -44,16 +44,16 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.Fst2ListCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.text.BigTextList;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesListener;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.Fst2ListCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.text.BigTextList;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.

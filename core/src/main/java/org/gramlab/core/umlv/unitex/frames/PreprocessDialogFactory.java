@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.io.File;
 
-import fr.umlv.unitex.process.commands.UnxmlizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
 
 class PreprocessDialogFactory {
 	private PreprocessDialog dialog;

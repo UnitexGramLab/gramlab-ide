@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -30,23 +30,23 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
-import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.Unitex;
-import fr.umlv.unitex.common.frames.manager.FrameManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.exceptions.UserRefusedFrameClosingError;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.listeners.DelaFrameListener;
-import fr.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
-import fr.umlv.unitex.listeners.TextFrameListener;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.svn.SvnMonitor;
-import fr.umlv.unitex.tfst.TagFilter;
+import org.gramlab.core.umlv.unitex.FontInfo;
+import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.common.frames.manager.FrameManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
+import org.gramlab.core.umlv.unitex.exceptions.UserRefusedFrameClosingError;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.listeners.DelaFrameListener;
+import org.gramlab.core.umlv.unitex.listeners.LexiconGrammarTableFrameListener;
+import org.gramlab.core.umlv.unitex.listeners.TextFrameListener;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
+import org.gramlab.core.umlv.unitex.tfst.TagFilter;
 
 /**
  * This class is responsible for managing all internal frames in Unitex and GramLab main

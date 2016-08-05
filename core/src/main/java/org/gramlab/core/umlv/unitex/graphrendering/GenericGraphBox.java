@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,10 +33,10 @@ import java.util.Iterator;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.diff.GraphDecoratorConfig;
-import fr.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.diff.GraphDecoratorConfig;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
 
 /**
  * This class describes a box of a graph or a sentence graph.

@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public abstract class ConfigurationPaneFactory extends JPanel {

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -53,24 +53,24 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.exceptions.InvalidConcordanceOrderException;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ConcorDiffCommand;
-import fr.umlv.unitex.process.commands.ConcordCommand;
-import fr.umlv.unitex.process.commands.ExtractCommand;
-import fr.umlv.unitex.process.commands.MkdirCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.NormalizeCommand;
-import fr.umlv.unitex.process.commands.StatsCommand;
-import fr.umlv.unitex.process.commands.TokenizeCommand;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.console.Console;
+import org.gramlab.core.umlv.unitex.exceptions.InvalidConcordanceOrderException;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.ConcorDiffCommand;
+import org.gramlab.core.umlv.unitex.process.commands.ConcordCommand;
+import org.gramlab.core.umlv.unitex.process.commands.ExtractCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MkdirCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.StatsCommand;
+import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 
 /**
  * This class describes a frame in which the user can select how to use the

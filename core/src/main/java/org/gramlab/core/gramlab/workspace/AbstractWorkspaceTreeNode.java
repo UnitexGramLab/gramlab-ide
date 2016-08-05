@@ -1,4 +1,4 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import java.io.File;
 import java.util.ArrayList;

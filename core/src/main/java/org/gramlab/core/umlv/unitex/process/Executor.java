@@ -18,15 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
 
-import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
+import org.gramlab.core.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 
 /**
  * This object launches a thread that will process all the given commands.

@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.rendering;
+package org.gramlab.core.gramlab.project.config.rendering;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,13 +21,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
-import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigurationPaneFactory;
+import org.gramlab.core.umlv.unitex.FontInfo;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 
 @SuppressWarnings("serial")
 public class RenderingConfigPane extends ConfigurationPaneFactory {

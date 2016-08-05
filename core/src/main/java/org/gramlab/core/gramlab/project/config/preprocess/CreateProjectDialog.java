@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -34,19 +34,19 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.Language;
-import fr.gramlab.project.config.maven.Artifact;
-import fr.gramlab.svn.SvnCheckoutDialog;
-import fr.gramlab.util.KeyUtil;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.frames.FrameUtil;
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.Language;
+import org.gramlab.core.gramlab.project.config.maven.Artifact;
+import org.gramlab.core.gramlab.svn.SvnCheckoutDialog;
+import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 @SuppressWarnings("serial")
 public class CreateProjectDialog extends JDialog {

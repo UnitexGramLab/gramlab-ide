@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.concordance;
+package org.gramlab.core.gramlab.project.config.concordance;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -11,9 +11,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ConcordanceConfigDialog extends JDialog {

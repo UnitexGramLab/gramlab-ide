@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process.commands;
+package org.gramlab.core.umlv.unitex.process.commands;
 
 import java.io.File;
 
-import fr.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 /**
  * @author Sébastien Paumier

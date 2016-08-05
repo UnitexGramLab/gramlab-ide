@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.loria.nguyen.mytools;
+package org.gramlab.core.loria.nguyen.mytools;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

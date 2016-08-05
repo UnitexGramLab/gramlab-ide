@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.text;
+package org.gramlab.core.umlv.unitex.text;
 
 import java.io.File;
 
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 public class SntUtil {
 	/**

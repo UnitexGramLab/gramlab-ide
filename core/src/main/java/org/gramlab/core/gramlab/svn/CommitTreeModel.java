@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;

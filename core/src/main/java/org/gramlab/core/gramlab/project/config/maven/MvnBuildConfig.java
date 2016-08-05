@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.util.ArrayList;
 

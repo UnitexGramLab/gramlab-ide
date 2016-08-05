@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.buildfile;
+package org.gramlab.core.gramlab.project.config.buildfile;
 
 public enum ExtractMatchType {
 	TEXT_ORDER,

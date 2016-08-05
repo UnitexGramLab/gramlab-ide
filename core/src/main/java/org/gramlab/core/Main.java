@@ -1,4 +1,4 @@
-package fr.gramlab;
+package org.gramlab.core;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -16,11 +16,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.frames.GramlabFrame;
-import fr.gramlab.icons.Icons;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import org.gramlab.core.gramlab.frames.GramlabFrame;
+import org.gramlab.core.gramlab.icons.Icons;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 
 
 public class Main {

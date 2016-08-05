@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.gramlab.util;
+package org.gramlab.core.gramlab.util;
 
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
@@ -35,10 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.UnitexDropTarget;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.UnitexDropTarget;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 /**
  * This class is used to listen drag and drop events on grf files.

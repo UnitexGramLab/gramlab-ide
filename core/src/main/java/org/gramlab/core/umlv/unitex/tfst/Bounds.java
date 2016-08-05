@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.tfst;
+package org.gramlab.core.umlv.unitex.tfst;
 
 /**
  * This class represent the bounds of a sequence in the text that goes with a

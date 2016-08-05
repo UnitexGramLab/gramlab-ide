@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -45,15 +45,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
-import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ConvertCommand;
-import fr.umlv.unitex.transcoding.Transcoder;
+import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.exceptions.InvalidDestinationEncodingException;
+import org.gramlab.core.umlv.unitex.exceptions.InvalidSourceEncodingException;
+import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.ConvertCommand;
+import org.gramlab.core.umlv.unitex.transcoding.Transcoder;
 
 /**
  * This class provides a file transcoding internal frame.

@@ -1,13 +1,13 @@
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
 
 import javax.swing.JDesktopPane;
 
-import fr.umlv.unitex.graphrendering.ContextsInfo;
-import fr.umlv.unitex.process.commands.UnxmlizeCommand;
-import fr.umlv.unitex.xalign.ConcordanceModel;
+import org.gramlab.core.umlv.unitex.graphrendering.ContextsInfo;
+import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
+import org.gramlab.core.umlv.unitex.xalign.ConcordanceModel;
 
 /**
  * 

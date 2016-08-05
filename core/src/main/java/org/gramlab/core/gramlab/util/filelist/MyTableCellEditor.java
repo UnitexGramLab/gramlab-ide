@@ -1,4 +1,4 @@
-package fr.gramlab.util.filelist;
+package org.gramlab.core.gramlab.util.filelist;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 /**
  * This class provides a table cell editor that acts like a JCheckBox, except

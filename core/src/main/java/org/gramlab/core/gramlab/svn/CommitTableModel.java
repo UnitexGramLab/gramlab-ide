@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import javax.swing.table.AbstractTableModel;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 @SuppressWarnings("serial")
 public class CommitTableModel extends AbstractTableModel {

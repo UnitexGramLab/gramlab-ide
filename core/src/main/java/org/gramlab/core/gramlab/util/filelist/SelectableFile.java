@@ -1,4 +1,4 @@
-package fr.gramlab.util.filelist;
+package org.gramlab.core.gramlab.util.filelist;
 
 import java.io.File;
 

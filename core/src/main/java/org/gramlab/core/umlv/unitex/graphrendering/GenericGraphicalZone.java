@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,23 +36,23 @@ import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
 import javax.swing.undo.UndoableEditSupport;
 
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.grf.GraphMetaData;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.listeners.GraphListener;
-import fr.umlv.unitex.listeners.GraphTextEvent;
-import fr.umlv.unitex.listeners.GraphTextListener;
-import fr.umlv.unitex.undo.AddBoxEdit;
-import fr.umlv.unitex.undo.BoxGroupTextEdit;
-import fr.umlv.unitex.undo.BoxTextEdit;
-import fr.umlv.unitex.undo.DeleteBoxGroupEdit;
-import fr.umlv.unitex.undo.SelectEdit;
-import fr.umlv.unitex.undo.TransitionEdit;
-import fr.umlv.unitex.undo.TransitionGroupEdit;
-import fr.umlv.unitex.undo.TranslationEdit;
+import org.gramlab.core.umlv.unitex.MyCursors;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
+import org.gramlab.core.umlv.unitex.grf.GraphMetaData;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.listeners.GraphListener;
+import org.gramlab.core.umlv.unitex.listeners.GraphTextEvent;
+import org.gramlab.core.umlv.unitex.listeners.GraphTextListener;
+import org.gramlab.core.umlv.unitex.undo.AddBoxEdit;
+import org.gramlab.core.umlv.unitex.undo.BoxGroupTextEdit;
+import org.gramlab.core.umlv.unitex.undo.BoxTextEdit;
+import org.gramlab.core.umlv.unitex.undo.DeleteBoxGroupEdit;
+import org.gramlab.core.umlv.unitex.undo.SelectEdit;
+import org.gramlab.core.umlv.unitex.undo.TransitionEdit;
+import org.gramlab.core.umlv.unitex.undo.TransitionGroupEdit;
+import org.gramlab.core.umlv.unitex.undo.TranslationEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.

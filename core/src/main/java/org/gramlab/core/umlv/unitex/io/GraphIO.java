@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.io;
+package org.gramlab.core.umlv.unitex.io;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,15 +31,15 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Unitex;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
-import fr.umlv.unitex.graphrendering.GraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphBox;
-import fr.umlv.unitex.grf.GraphMetaData;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphicalZone;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphBox;
+import org.gramlab.core.umlv.unitex.grf.GraphMetaData;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 
 /**
  * This class provides methods for loading and saving graphs.

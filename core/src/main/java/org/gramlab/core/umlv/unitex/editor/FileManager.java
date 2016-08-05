@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.editor;
+package org.gramlab.core.umlv.unitex.editor;
 
 import java.awt.image.ImageObserver;
 import java.io.File;
@@ -32,13 +32,13 @@ import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.StringContent;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.frames.FileEditionTextFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.frames.FileEditionTextFrame;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 /**
  * This class provides methods for loading corpora

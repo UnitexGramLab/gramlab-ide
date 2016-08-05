@@ -1,4 +1,4 @@
-package fr.gramlab.frames;
+package org.gramlab.core.gramlab.frames;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -17,10 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class NewFileDialog extends JDialog {

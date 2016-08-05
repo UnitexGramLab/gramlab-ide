@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.editor;
+package org.gramlab.core.umlv.unitex.editor;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -30,8 +30,8 @@ import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import fr.umlv.unitex.editor.ui.KeyErrorException;
-import fr.umlv.unitex.editor.ui.TextAreaSeparatorException;
+import org.gramlab.core.umlv.unitex.editor.ui.KeyErrorException;
+import org.gramlab.core.umlv.unitex.editor.ui.TextAreaSeparatorException;
 
 /**
  * This class describes a JTextArea that can correctly load unicode text an

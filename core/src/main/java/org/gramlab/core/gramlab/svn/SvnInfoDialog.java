@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.frames.FrameUtil;
-import fr.umlv.unitex.process.commands.SvnCommand;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.umlv.unitex.process.commands.SvnCommand;
 
 @SuppressWarnings("serial")
 public class SvnInfoDialog extends JDialog {

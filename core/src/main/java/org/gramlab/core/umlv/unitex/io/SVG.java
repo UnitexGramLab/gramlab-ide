@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.io;
+package org.gramlab.core.umlv.unitex.io;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -28,10 +28,10 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 
 /**
  * This class provides static method for saving graphs as SVG files.

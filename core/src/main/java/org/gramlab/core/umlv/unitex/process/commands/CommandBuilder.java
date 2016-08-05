@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process.commands;
+package org.gramlab.core.umlv.unitex.process.commands;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -26,16 +26,16 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.process.EatStreamThread;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Log;
-import fr.umlv.unitex.process.ProcessInfoThread;
-import fr.umlv.unitex.process.ToDoAfterSingleCommand;
-import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.console.Console;
+import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.process.EatStreamThread;
+import org.gramlab.core.umlv.unitex.process.ExecParameters;
+import org.gramlab.core.umlv.unitex.process.Log;
+import org.gramlab.core.umlv.unitex.process.ProcessInfoThread;
+import org.gramlab.core.umlv.unitex.process.ToDoAfterSingleCommand;
+import org.gramlab.core.umlv.unitex.process.ToDoBeforeSingleCommand;
 
 /**
  * This class provides facilities for build process command lines.

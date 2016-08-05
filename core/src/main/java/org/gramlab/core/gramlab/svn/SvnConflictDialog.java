@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -13,10 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.WindowConstants;
 
-import fr.gramlab.Main;
-import fr.umlv.unitex.frames.FrameUtil;
-import fr.umlv.unitex.process.commands.SvnCommand.ResolveOp;
-import fr.umlv.unitex.svn.SvnConflict;
+import org.gramlab.core.Main;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.umlv.unitex.process.commands.SvnCommand.ResolveOp;
+import org.gramlab.core.umlv.unitex.svn.SvnConflict;
 
 @SuppressWarnings("serial")
 public class SvnConflictDialog extends JDialog {

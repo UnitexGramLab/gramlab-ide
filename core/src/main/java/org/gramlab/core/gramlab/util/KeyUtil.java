@@ -1,4 +1,4 @@
-package fr.gramlab.util;
+package org.gramlab.core.gramlab.util;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

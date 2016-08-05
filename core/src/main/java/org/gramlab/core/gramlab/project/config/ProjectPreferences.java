@@ -1,22 +1,22 @@
-package fr.gramlab.project.config;
+package org.gramlab.core.gramlab.project.config;
 
 import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.umlv.unitex.config.AbstractConfigModel;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.NamedRepository;
-import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.exceptions.UserRefusedFrameClosingError;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.svn.SvnMonitor;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.AbstractConfigModel;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.NamedRepository;
+import org.gramlab.core.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.exceptions.UserRefusedFrameClosingError;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 
 /**
  * This class provides the default Unitex config information,

@@ -1,4 +1,4 @@
-package fr.umlv.unitex.utils;
+package org.gramlab.core.umlv.unitex.utils;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex;
+package org.gramlab.core.umlv.unitex;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import java.util.jar.Attributes;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import fr.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 /**
  * This class contains Unitex/GramLab IDE version information

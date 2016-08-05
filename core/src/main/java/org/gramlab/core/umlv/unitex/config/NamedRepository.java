@@ -1,4 +1,4 @@
-package fr.umlv.unitex.config;
+package org.gramlab.core.umlv.unitex.config;
 
 import java.io.File;
 import java.util.regex.Pattern;

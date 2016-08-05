@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -53,17 +53,17 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import fr.umlv.unitex.FontInfo;
-import fr.umlv.unitex.Unitex;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.grf.GraphPresentationInfo;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.FontInfo;
+import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
+import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.

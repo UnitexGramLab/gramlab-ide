@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -50,12 +50,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.MyCursors;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.editor.EditionTextArea;
-import fr.umlv.unitex.editor.FileEditionMenu;
-import fr.umlv.unitex.editor.FileManager;
+import org.gramlab.core.umlv.unitex.MyCursors;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
+import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
+import org.gramlab.core.umlv.unitex.editor.FileManager;
 
 /*
  * This class is used to display the text

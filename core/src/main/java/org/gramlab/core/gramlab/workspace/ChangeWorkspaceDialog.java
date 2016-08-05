@@ -1,4 +1,4 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -18,12 +18,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ChangeWorkspaceDialog extends JDialog {

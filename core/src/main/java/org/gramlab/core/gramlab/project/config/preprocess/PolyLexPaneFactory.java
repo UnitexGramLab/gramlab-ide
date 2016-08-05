@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
-import fr.gramlab.project.Language;
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.Language;
 
 @SuppressWarnings("serial")
 public class PolyLexPaneFactory extends ConfigurationPaneFactory {

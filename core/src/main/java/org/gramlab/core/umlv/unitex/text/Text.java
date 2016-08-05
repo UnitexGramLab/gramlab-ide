@@ -18,30 +18,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.text;
+package org.gramlab.core.umlv.unitex.text;
 
 import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.Unitex;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.config.SntFileEntry;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.frames.UnitexInternalFrameManager;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MkdirCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.NormalizeCommand;
-import fr.umlv.unitex.process.commands.TokenizeCommand;
-import fr.umlv.unitex.process.commands.UnxmlizeCommand;
+import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.config.SntFileEntry;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
+import org.gramlab.core.umlv.unitex.frames.UnitexInternalFrameManager;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MkdirCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
 
 /**
  * This class provides methods for loading corpora.

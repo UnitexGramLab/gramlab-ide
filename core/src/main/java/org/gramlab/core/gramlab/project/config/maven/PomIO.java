@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,15 +12,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.commands.CompressCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.commands.CompressCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 
 public class PomIO {
 

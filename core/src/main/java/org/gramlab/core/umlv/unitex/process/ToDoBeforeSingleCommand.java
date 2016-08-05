@@ -18,9 +18,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
-import fr.umlv.unitex.console.ConsoleEntry;
+import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
 
 /**
  * See comments in the 'ToDo' interface

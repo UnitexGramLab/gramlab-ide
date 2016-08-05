@@ -1,4 +1,4 @@
-package fr.gramlab.project.config;
+package org.gramlab.core.gramlab.project.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,16 +10,16 @@ import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.buildfile.ExtractMatchType;
-import fr.gramlab.project.config.buildfile.FileOperationType;
-import fr.gramlab.project.config.concordance.ConcordanceOperationType;
-import fr.gramlab.project.config.concordance.ConcordanceSortType;
-import fr.gramlab.project.config.concordance.ConcordanceType;
-import fr.gramlab.project.config.concordance.ResultDisplay;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.TextFrame;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.buildfile.ExtractMatchType;
+import org.gramlab.core.gramlab.project.config.buildfile.FileOperationType;
+import org.gramlab.core.gramlab.project.config.concordance.ConcordanceOperationType;
+import org.gramlab.core.gramlab.project.config.concordance.ConcordanceSortType;
+import org.gramlab.core.gramlab.project.config.concordance.ConcordanceType;
+import org.gramlab.core.gramlab.project.config.concordance.ResultDisplay;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.frames.TextFrame;
 
 public class ProjectLocalConfig extends AbstractProjectConfig {
 	

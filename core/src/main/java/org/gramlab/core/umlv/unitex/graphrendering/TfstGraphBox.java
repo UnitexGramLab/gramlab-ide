@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -29,8 +29,8 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.tfst.Bounds;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.tfst.Bounds;
 
 /**
  * This class describes a box of a sentence automaton.

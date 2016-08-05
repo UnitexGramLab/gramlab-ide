@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.locate;
+package org.gramlab.core.gramlab.project.config.locate;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -26,10 +26,10 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.config.InjectedVariable;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.config.InjectedVariable;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ConfigureVariableInjectionDialog extends JDialog {

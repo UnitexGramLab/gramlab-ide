@@ -1,4 +1,4 @@
-package fr.gramlab.project.console;
+package org.gramlab.core.gramlab.project.console;
 
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
@@ -13,19 +13,19 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.JTextComponent;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.DicoCommand;
-import fr.umlv.unitex.process.commands.Fst2TxtCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.LocateCommand;
-import fr.umlv.unitex.process.commands.NormalizeCommand;
-import fr.umlv.unitex.process.commands.TokenizeCommand;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
+import org.gramlab.core.umlv.unitex.process.commands.DicoCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Fst2TxtCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
+import org.gramlab.core.umlv.unitex.process.commands.LocateCommand;
+import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
+import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 
 
 public class ConsoleUtil {

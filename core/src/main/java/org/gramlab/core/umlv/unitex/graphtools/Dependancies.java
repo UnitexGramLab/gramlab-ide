@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphtools;
+package org.gramlab.core.umlv.unitex.graphtools;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -26,9 +26,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
 
 /**
  * This class provides methods for building graph dependencies.

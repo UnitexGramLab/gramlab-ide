@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.concordance;
+package org.gramlab.core.gramlab.project.config.concordance;
 
 public enum ConcordanceOperationType {
 	SHOW_DIFFERENCES_WITH_PREVIOUS_CONCORDANCE,

@@ -31,7 +31,7 @@
  J'ai besoin de quelque chose de plus modulaire :
  -> découpage de la fonction de lecture de deux textes
  pout obtenir un fonction de lecture d'un texte */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -44,15 +44,14 @@ import java.util.Properties;
 import java.util.Stack;
 import java.util.Vector;
 
+import org.gramlab.core.loria.nguyen.mytools.FileIO;
+import org.gramlab.core.loria.nguyen.mytools.XMLTools;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import fr.loria.nguyen.mytools.FileIO;
-import fr.loria.nguyen.mytools.XMLTools;
 
 /**
  * Load and prepared 2 texts.

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -35,9 +35,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.UnicodeIO;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.UnicodeIO;
 
 /**
  * This class is used to display a lexicon-grammar table

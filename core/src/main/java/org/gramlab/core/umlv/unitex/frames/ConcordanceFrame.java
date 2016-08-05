@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -47,16 +47,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.concord.BigConcordance;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.debug.DebugDetails;
-import fr.umlv.unitex.debug.DebugGraphPane;
-import fr.umlv.unitex.debug.DebugInfos;
-import fr.umlv.unitex.debug.DebugTableModel;
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.concord.BigConcordance;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesListener;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.debug.DebugDetails;
+import org.gramlab.core.umlv.unitex.debug.DebugGraphPane;
+import org.gramlab.core.umlv.unitex.debug.DebugInfos;
+import org.gramlab.core.umlv.unitex.debug.DebugTableModel;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 /**
  * This class describes a frame that can show an HTML concordance file.

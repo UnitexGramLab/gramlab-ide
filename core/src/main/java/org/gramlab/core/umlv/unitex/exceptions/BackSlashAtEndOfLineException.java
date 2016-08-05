@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.exceptions;
+package org.gramlab.core.umlv.unitex.exceptions;
 
 /**
  * This class defines an <code>Exception</code> that is thrown when the user

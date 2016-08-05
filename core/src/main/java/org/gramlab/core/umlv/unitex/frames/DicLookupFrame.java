@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
@@ -63,15 +63,15 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.DicoCommand;
-import fr.umlv.unitex.text.BigTextList;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesListener;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.commands.DicoCommand;
+import org.gramlab.core.umlv.unitex.text.BigTextList;
 
 public class DicLookupFrame extends JInternalFrame {
 	JList userDicList;
