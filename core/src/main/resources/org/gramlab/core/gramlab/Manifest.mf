@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Created-By: The Unitex/GramLab Authors
-Main-Class: fr.gramlab.Main
-Specification-Title: Unitex/GramLab
+Main-Class: org.gramlab.core.Main
+Specification-Title: GramLab
 Specification-Version: 0.0.0-anonymous
 Specification-Vendor: Universite Paris-Est Marne-la-Vallee
 Implementation-Title: GramLab IDE

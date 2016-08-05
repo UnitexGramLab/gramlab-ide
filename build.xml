@@ -1,6 +1,6 @@
 <project name="integrated-ide" default="dist" basedir=".">
 
-	<description> Integrated IDE build file</description>
+	<description> GramLab Integrated IDE build file</description>
 
 	<!-- set global properties for this build -->
 	<property name="plugins" location="core-plugins" />
@@ -94,7 +94,7 @@
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}" />
 		<!-- create Gramlab.jar -->
-		<jar jarfile="${dist}/Gramlab.jar" manifest="${classes}/org/gramlab/core/gramlab/Manifest.mf" basedir="${classes}" />
+		<jar jarfile="${dist}/GramLab.jar" manifest="${classes}/org/gramlab/core/gramlab/Manifest.mf" basedir="${classes}" />
 
 		<!-- dist/*.ico -->
 		<copy todir="${dist}">
