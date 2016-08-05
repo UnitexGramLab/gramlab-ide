@@ -1374,11 +1374,6 @@ public class GramlabProject implements Project, Comparable<GramlabProject> {
 				GlobalProjectManager.getAs(GramlabProjectManager.class).setCurrentProject(this);
 				return;
 			}
-			if (file.getName().endsWith(".dic")) {
-				openDicFile(file);
-				GlobalProjectManager.getAs(GramlabProjectManager.class).setCurrentProject(this);
-				return;
-			}
 		}
 		if (Encoding.getEncoding(file) == null) {
 			JOptionPane.showMessageDialog(null,
