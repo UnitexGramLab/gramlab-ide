@@ -18,14 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.xalign;
+package org.gramlab.core.umlv.unitex.xalign;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import fr.umlv.unitex.listeners.AlignmentListener;
+import org.gramlab.core.umlv.unitex.listeners.AlignmentListener;
 
 public interface XAlignModel {
 	public ArrayList<Integer> getAlignedSrcSequences(int sentence);

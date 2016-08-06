@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -18,9 +18,9 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 @SuppressWarnings("serial")
 public class PreprocessingTable extends JTable {

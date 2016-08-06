@@ -18,13 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
 import java.io.File;
 
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
 
 /**
  * @author paumier

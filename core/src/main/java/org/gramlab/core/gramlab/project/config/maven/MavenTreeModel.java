@@ -1,12 +1,12 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.io.File;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.util.filelist.SelectableFile;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.util.filelist.SelectableFile;
 
 @SuppressWarnings("serial")
 public class MavenTreeModel extends DefaultTreeModel {

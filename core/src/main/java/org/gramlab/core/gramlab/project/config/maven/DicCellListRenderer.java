@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.awt.Component;
 import java.awt.FontMetrics;
@@ -10,7 +10,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 /**
  * This class provides a renderer that truncates on the left.

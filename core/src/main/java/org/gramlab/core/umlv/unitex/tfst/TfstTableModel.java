@@ -18,14 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.tfst;
+package org.gramlab.core.umlv.unitex.tfst;
 
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphBox;
 
 /**
  * This model is used to present a sentence automaton as a table.

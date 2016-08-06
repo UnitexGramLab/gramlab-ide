@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 
 import java.awt.Color;
@@ -13,7 +13,7 @@ import javax.swing.JTree;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 
-import fr.gramlab.util.filelist.SelectableFile;
+import org.gramlab.core.gramlab.util.filelist.SelectableFile;
 
 /**
  * This class provides a table cell editor that acts like a JCheckBox, except

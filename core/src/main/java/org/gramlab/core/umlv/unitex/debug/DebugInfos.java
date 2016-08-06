@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.debug;
+package org.gramlab.core.umlv.unitex.debug;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,10 +29,10 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
 
 public class DebugInfos {
 	public File concordIndFile = null;

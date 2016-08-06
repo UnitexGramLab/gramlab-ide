@@ -1,4 +1,4 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,11 +7,11 @@ import java.util.Enumeration;
 
 import javax.swing.tree.TreeNode;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.console.ConsoleUtil;
-import fr.gramlab.svn.SvnInfo;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.console.ConsoleUtil;
+import org.gramlab.core.gramlab.svn.SvnInfo;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 
 public class WorkspaceTreeNode extends AbstractWorkspaceTreeNode {
 	private WorkspaceTreeNode parent;

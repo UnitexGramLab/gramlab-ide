@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -22,9 +22,9 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.Artifact;
-import fr.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.Artifact;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
 
 @SuppressWarnings("serial")
 public class DependenciesPaneFactory extends ConfigurationPaneFactory {

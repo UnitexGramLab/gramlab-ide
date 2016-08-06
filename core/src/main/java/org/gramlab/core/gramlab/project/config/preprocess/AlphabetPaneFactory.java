@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,8 +20,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 @SuppressWarnings("serial")
 public class AlphabetPaneFactory extends ConfigurationPaneFactory {

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex;
+package org.gramlab.core.umlv.unitex;
 
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -40,14 +40,14 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.TranscodingFrame;
-import fr.umlv.unitex.frames.UnitexFrame;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.text.Text;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.TranscodingFrame;
+import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.text.Text;
 
 /**
  * This class is used to listen drag and drop events. Files that can be dragged

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.concord;
+package org.gramlab.core.umlv.unitex.concord;
 
 import java.awt.Component;
 import java.io.File;
@@ -26,7 +26,7 @@ import java.io.File;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
-import fr.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 /**
  * This class provides a text component that can display in read-only large HTML

@@ -1,12 +1,12 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import javax.swing.tree.DefaultTreeModel;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.GramlabConfigManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.ProjectListener;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.ProjectListener;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 
 @SuppressWarnings("serial")
 public class WorkspaceTreeModel extends DefaultTreeModel {

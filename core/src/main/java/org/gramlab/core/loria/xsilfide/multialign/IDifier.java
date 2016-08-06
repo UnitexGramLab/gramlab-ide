@@ -31,7 +31,7 @@
  * removed partly Huen's XMLTools from the game....
  * We keep (at the moment) the reader part of it
  */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -50,15 +50,14 @@ import org.apache.xerces.dom.NodeImpl;
 import org.apache.xerces.dom.TextImpl;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.gramlab.core.loria.nguyen.mytools.FileIO;
+import org.gramlab.core.loria.nguyen.mytools.XMLTools;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import fr.loria.nguyen.mytools.FileIO;
-import fr.loria.nguyen.mytools.XMLTools;
 
 //import javax.swing.*;
 // IDifier -- add id's to all PHRASE elements in a document.  Useful

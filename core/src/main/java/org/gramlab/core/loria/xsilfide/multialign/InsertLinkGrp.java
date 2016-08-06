@@ -30,7 +30,7 @@
  *
  *
  */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -39,11 +39,10 @@ import org.apache.xerces.dom.DocumentImpl;
 import org.apache.xerces.dom.ElementImpl;
 import org.apache.xerces.dom.TextImpl;
 import org.apache.xerces.parsers.DOMParser;
+import org.gramlab.core.loria.nguyen.mytools.XMLTools;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import fr.loria.nguyen.mytools.XMLTools;
 
 class InsertLinkGrp {
 	@SuppressWarnings("rawtypes")

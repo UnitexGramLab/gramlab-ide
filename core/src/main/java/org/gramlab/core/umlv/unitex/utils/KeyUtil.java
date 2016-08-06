@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.utils;
+package org.gramlab.core.umlv.unitex.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
@@ -29,8 +29,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 /**
  * This file stores the Key Bindings

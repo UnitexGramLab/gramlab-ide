@@ -1,4 +1,4 @@
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,10 +14,10 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import fr.umlv.unitex.Version;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.text.BigTextArea;
-import fr.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.umlv.unitex.Version;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.text.BigTextArea;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * 

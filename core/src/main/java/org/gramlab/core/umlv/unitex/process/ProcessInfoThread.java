@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,9 +29,9 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
-import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
 
 /**
  * This class is used to monitor stdout and stderr messages of external

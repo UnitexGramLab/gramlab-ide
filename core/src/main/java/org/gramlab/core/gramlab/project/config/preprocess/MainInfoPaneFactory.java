@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.BorderLayout;
 
@@ -8,11 +8,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import fr.gramlab.project.Language;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.Artifact;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.Language;
+import org.gramlab.core.gramlab.project.config.maven.Artifact;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 @SuppressWarnings("serial")
 public class MainInfoPaneFactory extends ConfigurationPaneFactory {

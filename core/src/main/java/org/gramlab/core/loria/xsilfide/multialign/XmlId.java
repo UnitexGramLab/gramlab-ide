@@ -30,7 +30,7 @@
 // On veut être sûr de l'ordre dans lequel les identificateurs
 // apparaîssent dans le texte.... L'endroit où on a l'ordre est
 // LoadAndPrepareTexts.
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 class XmlId implements Comparable<XmlId> {
 	private static LoadAndPrepareTexts lpt = null;

@@ -1,4 +1,4 @@
-package fr.umlv.unitex.utils;
+package org.gramlab.core.umlv.unitex.utils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,8 +7,8 @@ import java.io.File;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.UnitexInternalFrameManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.UnitexInternalFrameManager;
 
 /**
  * 

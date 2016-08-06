@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.concord;
+package org.gramlab.core.umlv.unitex.concord;
 
 import java.awt.Color;
 
-import fr.umlv.unitex.text.Interval;
+import org.gramlab.core.umlv.unitex.text.Interval;
 
 /**
  * This is a model for representing an HTML concordance file as the list of its

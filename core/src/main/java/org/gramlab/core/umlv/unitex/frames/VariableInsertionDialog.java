@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -37,7 +37,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import fr.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set a

@@ -18,19 +18,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.cassys;
+package org.gramlab.core.umlv.unitex.cassys;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import fr.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableModel;
-import fr.umlv.unitex.cassys.ShareTransducerList;
+
+import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList;
+import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 
 /**
  * Class specifying how drag and drop transfer from and to the table are done.

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.debug;
+package org.gramlab.core.umlv.unitex.debug;
 
 public class DebugDetails {
 	public static String[] fields = new String[] { "Tag", "Output", "Matched",

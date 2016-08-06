@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,8 +26,8 @@ import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 public class Log {
 	/**

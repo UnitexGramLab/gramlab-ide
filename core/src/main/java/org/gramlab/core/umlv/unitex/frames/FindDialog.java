@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -27,9 +27,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JDialog;
 import javax.swing.JTabbedPane;
 
-import fr.umlv.unitex.editor.ui.DictionaryFindPanel;
-import fr.umlv.unitex.editor.ui.FindPanel;
-import fr.umlv.unitex.editor.ui.FindSentencePanel;
+import org.gramlab.core.umlv.unitex.editor.ui.DictionaryFindPanel;
+import org.gramlab.core.umlv.unitex.editor.ui.FindPanel;
+import org.gramlab.core.umlv.unitex.editor.ui.FindSentencePanel;
 
 public class FindDialog extends JDialog {
 	/**

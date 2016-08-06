@@ -18,16 +18,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphtools;
-
-import fr.umlv.unitex.exceptions.*;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
+package org.gramlab.core.umlv.unitex.graphtools;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import org.gramlab.core.umlv.unitex.exceptions.*;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
 
 /**
  * This class contains static methods that allow to find and replace the content of one or more boxes.

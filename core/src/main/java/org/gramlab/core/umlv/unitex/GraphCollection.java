@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex;
+package org.gramlab.core.umlv.unitex;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,13 +27,13 @@ import java.io.OutputStreamWriter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.MessageWhileWorkingFrame;
-import fr.umlv.unitex.frames.UnitexInternalFrameManager;
-import fr.umlv.unitex.io.UnicodeIO;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.MessageWhileWorkingFrame;
+import org.gramlab.core.umlv.unitex.frames.UnitexInternalFrameManager;
+import org.gramlab.core.umlv.unitex.io.UnicodeIO;
 
 /**
  * This class provides methods that generate a graph that calls all the

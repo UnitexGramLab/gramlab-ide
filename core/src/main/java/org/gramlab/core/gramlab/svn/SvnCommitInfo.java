@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 public class SvnCommitInfo implements Comparable<SvnCommitInfo> {
 	

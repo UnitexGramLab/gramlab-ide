@@ -1,4 +1,4 @@
-package fr.gramlab.project;
+package org.gramlab.core.gramlab.project;
 
 
 public interface ProjectListener {

@@ -1,4 +1,4 @@
-package fr.gramlab;
+package org.gramlab.core;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,17 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.gramlab.project.config.ProjectPreferences;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
+import org.gramlab.api.Greeting;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.gramlab.project.config.ProjectPreferences;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 import ro.fortsoft.pf4j.DefaultPluginManager;
 import ro.fortsoft.pf4j.PluginManager;
@@ -106,6 +108,13 @@ public class GramlabConfigManager {
 
     // start (active/resolved) the plugins
     pluginManager.startPlugins();
+    
+    // Finding extensions for greeting extension point
+    List<Greeting> greetings = pluginManager.getExtensions(Greeting.class);
+    System.out.println(String.format("Found %d extensions for extension points '%s'", greetings.size(), Greeting.class.getName()));
+    for (Greeting greeting : greetings) {
+        System.out.println(">>> " + greeting.getGreeting());
+    }
   }
     
 	private static void readConfigFile(File f) {

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.editor.ui;
+package org.gramlab.core.umlv.unitex.editor.ui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
@@ -27,8 +27,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.umlv.unitex.editor.EditionTextArea;
-import fr.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Decreton Julien

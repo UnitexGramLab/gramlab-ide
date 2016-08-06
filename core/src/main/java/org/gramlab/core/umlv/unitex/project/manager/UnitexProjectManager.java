@@ -1,10 +1,10 @@
-package fr.umlv.unitex.project.manager;
+package org.gramlab.core.umlv.unitex.project.manager;
 
 import java.io.File;
 
-import fr.umlv.unitex.common.project.Project;
-import fr.umlv.unitex.common.project.manager.ProjectManager;
-import fr.umlv.unitex.project.UnitexProject;
+import org.gramlab.core.umlv.unitex.common.project.Project;
+import org.gramlab.core.umlv.unitex.common.project.manager.ProjectManager;
+import org.gramlab.core.umlv.unitex.project.UnitexProject;
 
 /**
  * 

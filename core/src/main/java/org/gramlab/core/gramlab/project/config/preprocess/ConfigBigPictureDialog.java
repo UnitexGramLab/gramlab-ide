@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,16 +24,16 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.Artifact;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.gramlab.project.config.preprocess.fst2txt.PreprocessingPaneFactory;
-import fr.gramlab.project.config.preprocess.fst2txt.PreprocessingStep;
-import fr.gramlab.util.KeyUtil;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.Artifact;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.gramlab.project.config.preprocess.fst2txt.PreprocessingPaneFactory;
+import org.gramlab.core.gramlab.project.config.preprocess.fst2txt.PreprocessingStep;
+import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ConfigBigPictureDialog extends JDialog {

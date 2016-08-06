@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.xalign;
+package org.gramlab.core.umlv.unitex.xalign;
 
 import java.io.File;
 import java.util.Scanner;
@@ -26,7 +26,7 @@ import java.util.Scanner;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 /**
  * This is a loader for alignement concordance files.

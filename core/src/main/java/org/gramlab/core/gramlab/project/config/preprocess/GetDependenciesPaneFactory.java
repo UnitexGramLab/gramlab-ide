@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess;
+package org.gramlab.core.gramlab.project.config.preprocess;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -18,20 +18,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.ProjectVersionableConfig;
-import fr.gramlab.project.config.maven.Artifact;
-import fr.gramlab.project.config.maven.MvnCommand;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.umlv.unitex.config.NamedRepository;
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Executor;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.list.ProcessOutputList;
-import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.ProjectVersionableConfig;
+import org.gramlab.core.gramlab.project.config.maven.Artifact;
+import org.gramlab.core.gramlab.project.config.maven.MvnCommand;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.umlv.unitex.config.NamedRepository;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.ExecParameters;
+import org.gramlab.core.umlv.unitex.process.Executor;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
 
 @SuppressWarnings("serial")
 public class GetDependenciesPaneFactory extends ConfigurationPaneFactory {

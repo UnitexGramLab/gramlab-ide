@@ -18,15 +18,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process;
+package org.gramlab.core.umlv.unitex.process;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 
 /**
  * Note: if any, the ToDo instructions are executed in the Swing Thread

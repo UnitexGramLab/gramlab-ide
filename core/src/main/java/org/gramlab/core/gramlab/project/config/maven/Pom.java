@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -8,9 +8,9 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.MvnCommand.MvnCmdType;
-import fr.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.MvnCommand.MvnCmdType;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 
 public class Pom {
 	

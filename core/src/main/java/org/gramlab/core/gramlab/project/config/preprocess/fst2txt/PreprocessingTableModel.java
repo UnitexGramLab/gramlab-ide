@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.io.File;
 import java.util.ArrayList;

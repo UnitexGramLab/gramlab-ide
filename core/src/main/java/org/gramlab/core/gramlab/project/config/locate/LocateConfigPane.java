@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.locate;
+package org.gramlab.core.gramlab.project.config.locate;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -27,17 +27,17 @@ import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import fr.gramlab.project.ConfigurationListener;
-import fr.gramlab.project.ProcessPane;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.graph_compilation.GraphCompilationPane;
-import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
-import fr.gramlab.util.MyComboCellRenderer;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.files.PersonalFileFilter;
+import org.gramlab.core.gramlab.project.ConfigurationListener;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.ProcessPane;
+import org.gramlab.core.gramlab.project.config.graph_compilation.GraphCompilationPane;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigurationPaneFactory;
+import org.gramlab.core.gramlab.util.MyComboCellRenderer;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.config.PreferencesListener;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
 
 @SuppressWarnings("serial")
 public class LocateConfigPane extends ConfigurationPaneFactory {

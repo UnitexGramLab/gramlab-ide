@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.concordance;
+package org.gramlab.core.gramlab.project.config.concordance;
 
 public enum ConcordanceSortType {
 	

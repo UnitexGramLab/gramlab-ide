@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,14 +34,14 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.diff.GraphDecoratorConfig;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
-import fr.umlv.unitex.graphrendering.TextField;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
+import org.gramlab.core.umlv.unitex.diff.GraphDecoratorConfig;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
+import org.gramlab.core.umlv.unitex.graphrendering.TextField;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
 	public GraphDiffFrame(final GraphIO base, final GraphIO dest,

@@ -1,15 +1,15 @@
-package fr.gramlab.frames;
+package org.gramlab.core.gramlab.frames;
 
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 
 import javax.swing.JDesktopPane;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.GramlabProjectManager;
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
+import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 
 public class GramlabInternalFrameManager extends InternalFrameManager {
 

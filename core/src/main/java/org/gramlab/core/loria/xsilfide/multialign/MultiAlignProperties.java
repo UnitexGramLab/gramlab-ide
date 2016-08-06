@@ -27,7 +27,7 @@
  *            UMR LORIA (Universities of Nancy, CNRS & INRIA)
  *            
  */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

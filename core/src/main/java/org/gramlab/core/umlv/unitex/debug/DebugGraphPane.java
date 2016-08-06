@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.debug;
+package org.gramlab.core.umlv.unitex.debug;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -34,13 +34,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
-import fr.umlv.unitex.graphrendering.TextField;
-import fr.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
+import org.gramlab.core.umlv.unitex.graphrendering.TextField;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
 
 public class DebugGraphPane extends JPanel {
 	private final DebugInfos infos;

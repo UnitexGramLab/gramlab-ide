@@ -1,8 +1,8 @@
-package fr.gramlab.util;
+package org.gramlab.core.gramlab.util;
 
 import java.awt.event.MouseEvent;
 
-import fr.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.Config;
 
 public class MouseUtil {
 	

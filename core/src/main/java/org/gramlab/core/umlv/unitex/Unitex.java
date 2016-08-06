@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex;
+package org.gramlab.core.umlv.unitex;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,12 +35,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
-import fr.umlv.unitex.frames.SplashScreen;
-import fr.umlv.unitex.frames.UnitexFrame;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import org.gramlab.core.umlv.unitex.frames.SplashScreen;
+import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This is the main class of the Unitex system.

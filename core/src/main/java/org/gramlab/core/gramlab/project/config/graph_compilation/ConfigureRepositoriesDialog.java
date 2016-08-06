@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.graph_compilation;
+package org.gramlab.core.gramlab.project.config.graph_compilation;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,13 +28,13 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.config.NamedRepository;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.config.NamedRepository;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 @SuppressWarnings("serial")
 public class ConfigureRepositoriesDialog extends JDialog {

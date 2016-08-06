@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.regex.Pattern;
 
-import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
-import fr.umlv.unitex.exceptions.MissingGraphNameException;
-import fr.umlv.unitex.exceptions.NoClosingQuoteException;
-import fr.umlv.unitex.exceptions.NoClosingRoundBracketException;
-import fr.umlv.unitex.exceptions.NoClosingSupException;
+import org.gramlab.core.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
+import org.gramlab.core.umlv.unitex.exceptions.MissingGraphNameException;
+import org.gramlab.core.umlv.unitex.exceptions.NoClosingQuoteException;
+import org.gramlab.core.umlv.unitex.exceptions.NoClosingRoundBracketException;
+import org.gramlab.core.umlv.unitex.exceptions.NoClosingSupException;
 
 /**
  * This class describes a box of a graph.

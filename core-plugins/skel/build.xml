@@ -71,7 +71,7 @@
 		<mx:zip>
 			<zipfileset prefix="classes/" dir="${plugin.classes}" />
 			<!--<zipgroupfileset prefix="classes/" file="${project.targetDirectory}/plugin.jar" /> -->
-			<dependencies prefix="lib/" />
+			<!-- <dependencies prefix="lib/" /> -->
 		</mx:zip>
 	</target>
 

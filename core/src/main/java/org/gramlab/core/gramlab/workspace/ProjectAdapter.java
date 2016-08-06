@@ -1,7 +1,7 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.ProjectListener;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.ProjectListener;
 
 
 public class ProjectAdapter implements ProjectListener {

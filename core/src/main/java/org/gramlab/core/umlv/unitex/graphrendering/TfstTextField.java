@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.event.KeyAdapter;
@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.frames.TfstFrame;
+import org.gramlab.core.umlv.unitex.frames.TfstFrame;
 
 /**
  * This class describes the text field used to get the box text in a sentence

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.io;
+package org.gramlab.core.umlv.unitex.io;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Scanner;
 
-import fr.umlv.unitex.config.Preferences;
+import org.gramlab.core.umlv.unitex.config.Preferences;
 
 public enum Encoding {
 	UTF16LE {

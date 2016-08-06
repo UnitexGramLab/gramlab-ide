@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.buildfile;
+package org.gramlab.core.gramlab.project.config.buildfile;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -22,14 +22,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import fr.gramlab.project.ProcessPane;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.concordance.ResultDisplay;
-import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
-import fr.gramlab.util.MyComboCellRenderer;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.ProcessPane;
+import org.gramlab.core.gramlab.project.config.concordance.ResultDisplay;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigurationPaneFactory;
+import org.gramlab.core.gramlab.util.MyComboCellRenderer;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.config.PreferencesListener;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 
 @SuppressWarnings("serial")
 public class FileOperationConfigPane extends ConfigurationPaneFactory {

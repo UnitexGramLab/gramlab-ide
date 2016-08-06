@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 public abstract class KeyedInternalFrame<K> extends TabbableInternalFrame {
 	public KeyedInternalFrame(String string, boolean b, boolean c, boolean d,

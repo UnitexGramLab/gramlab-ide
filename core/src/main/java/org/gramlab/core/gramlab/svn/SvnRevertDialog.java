@@ -1,4 +1,4 @@
-package fr.gramlab.svn;
+package org.gramlab.core.gramlab.svn;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -24,18 +24,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.util.filelist.SelectableFileList;
-import fr.gramlab.util.filelist.SelectableFileListModel;
-import fr.umlv.unitex.console.Couple;
-import fr.umlv.unitex.frames.FrameUtil;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Executor;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.SvnCommand;
-import fr.umlv.unitex.process.list.ProcessOutputList;
-import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileList;
+import org.gramlab.core.gramlab.util.filelist.SelectableFileListModel;
+import org.gramlab.core.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.umlv.unitex.process.ExecParameters;
+import org.gramlab.core.umlv.unitex.process.Executor;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.SvnCommand;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
 
 @SuppressWarnings("serial")
 public class SvnRevertDialog extends JDialog {

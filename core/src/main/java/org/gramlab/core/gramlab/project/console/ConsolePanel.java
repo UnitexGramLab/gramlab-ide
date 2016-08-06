@@ -1,4 +1,4 @@
-package fr.gramlab.project.console;
+package org.gramlab.core.gramlab.project.console;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

@@ -1,6 +1,6 @@
-package fr.umlv.unitex.common.project;
+package org.gramlab.core.umlv.unitex.common.project;
 
-import fr.umlv.unitex.common.frames.manager.FrameManager;
+import org.gramlab.core.umlv.unitex.common.frames.manager.FrameManager;
 
 /**
  * 

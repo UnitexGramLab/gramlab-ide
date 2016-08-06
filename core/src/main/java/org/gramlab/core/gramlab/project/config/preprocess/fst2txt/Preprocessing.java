@@ -1,11 +1,11 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.process.commands.MkdirCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.process.commands.MkdirCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 
 
 /**

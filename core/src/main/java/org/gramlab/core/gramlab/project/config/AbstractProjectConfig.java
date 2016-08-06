@@ -1,4 +1,4 @@
-package fr.gramlab.project.config;
+package org.gramlab.core.gramlab.project.config;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import fr.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.GramlabProject;
 
 public abstract class AbstractProjectConfig {
 	

@@ -18,13 +18,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.tfst;
+package org.gramlab.core.umlv.unitex.tfst;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 public class TokensInfo {
 	private static int[] info;

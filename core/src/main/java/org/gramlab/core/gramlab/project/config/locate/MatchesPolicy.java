@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.locate;
+package org.gramlab.core.gramlab.project.config.locate;
 
 public enum MatchesPolicy {
 	SHORTEST,

@@ -1,4 +1,4 @@
-package fr.gramlab.project.config;
+package org.gramlab.core.gramlab.project.config;
 
 import java.io.BufferedReader;
 import java.io.IOException;

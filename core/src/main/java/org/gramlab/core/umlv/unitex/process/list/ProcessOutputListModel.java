@@ -18,11 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.process.list;
+package org.gramlab.core.umlv.unitex.process.list;
 
 import javax.swing.DefaultListModel;
 
-import fr.umlv.unitex.console.Couple;
+import org.gramlab.core.umlv.unitex.console.Couple;
 
 /**
  * This class provides a list model with a method to replace the last element.

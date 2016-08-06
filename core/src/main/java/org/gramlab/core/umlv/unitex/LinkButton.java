@@ -1,4 +1,4 @@
-package fr.umlv.unitex;
+package org.gramlab.core.umlv.unitex;
 
 import java.awt.Color;
 import java.awt.Cursor;

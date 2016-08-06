@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.console;
+package org.gramlab.core.umlv.unitex.console;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -30,7 +30,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellEditor;
 
-import fr.umlv.unitex.frames.ConsoleFrame;
+import org.gramlab.core.umlv.unitex.frames.ConsoleFrame;
 
 @SuppressWarnings("serial")
 public class ConsoleTableCellEditor extends AbstractCellEditor implements

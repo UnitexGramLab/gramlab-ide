@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.svn;
+package org.gramlab.core.umlv.unitex.svn;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -26,11 +26,11 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.commands.GrfDiff3Command;
-import fr.umlv.unitex.process.commands.SvnCommand;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.commands.GrfDiff3Command;
+import org.gramlab.core.umlv.unitex.process.commands.SvnCommand;
 
 public class SvnConflict {
 	static Pattern pattern = Pattern.compile("r([0-9]+)");

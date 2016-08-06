@@ -1,4 +1,4 @@
-package fr.umlv.unitex.common.frames.manager;
+package org.gramlab.core.umlv.unitex.common.frames.manager;
 
 /**
  * 

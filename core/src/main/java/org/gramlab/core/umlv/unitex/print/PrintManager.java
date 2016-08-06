@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.print;
+package org.gramlab.core.umlv.unitex.print;
 
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.TextAutomatonFrame;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.frames.TextAutomatonFrame;
 
 public class PrintManager {
 	private static PrinterJob printerJob;

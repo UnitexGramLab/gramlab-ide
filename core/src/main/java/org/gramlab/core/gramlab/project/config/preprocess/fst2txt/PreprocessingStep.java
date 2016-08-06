@@ -1,12 +1,12 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.io.File;
 
-import fr.gramlab.project.GramlabProject;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.CpCommand;
-import fr.umlv.unitex.process.commands.Fst2TxtCommand;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
+import org.gramlab.core.umlv.unitex.process.commands.CpCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Fst2TxtCommand;
 
 /**
  * This class describes a preprocessing step, which means

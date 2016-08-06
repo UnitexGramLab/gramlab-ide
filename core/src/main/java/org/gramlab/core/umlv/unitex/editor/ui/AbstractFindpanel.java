@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.editor.ui;
+package org.gramlab.core.umlv.unitex.editor.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -33,7 +33,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.Document;
 
-import fr.umlv.unitex.editor.EditionTextArea;
+import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
 
 abstract class AbstractFindpanel extends SearchPanel {
 	final JTextField txtFind;

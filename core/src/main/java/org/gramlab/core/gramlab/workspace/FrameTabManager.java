@@ -1,4 +1,4 @@
-package fr.gramlab.workspace;
+package org.gramlab.core.gramlab.workspace;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -24,9 +24,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.frames.ConsoleFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.TabbableInternalFrame;
+import org.gramlab.core.umlv.unitex.frames.ConsoleFrame;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.TabbableInternalFrame;
 
 @SuppressWarnings("serial")
 public class FrameTabManager extends JTabbedPane {

@@ -1,4 +1,4 @@
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -18,21 +18,20 @@ import javax.swing.JPanel;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import fr.umlv.unitex.cassys.ShareTransducerList;
-import fr.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
-import fr.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
-import fr.umlv.unitex.process.commands.CassysCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.utils.KeyUtil;
-import fr.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList;
+import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
+import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.ToDoBeforeSingleCommand;
+import org.gramlab.core.umlv.unitex.process.commands.CassysCommand;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * Main frame of the cassys menu.

@@ -18,17 +18,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
-
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphtools.FindAndReplace;
-import fr.umlv.unitex.graphtools.FindAndReplaceData;
-import fr.umlv.unitex.utils.KeyUtil;
+package org.gramlab.core.umlv.unitex.frames;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphtools.FindAndReplace;
+import org.gramlab.core.umlv.unitex.graphtools.FindAndReplaceData;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

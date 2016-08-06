@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.preprocess.fst2txt;
+package org.gramlab.core.gramlab.project.config.preprocess.fst2txt;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -20,9 +20,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.maven.PomIO;
-import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.maven.PomIO;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigurationPaneFactory;
 
 @SuppressWarnings("serial")
 public class PreprocessingPaneFactory extends ConfigurationPaneFactory {

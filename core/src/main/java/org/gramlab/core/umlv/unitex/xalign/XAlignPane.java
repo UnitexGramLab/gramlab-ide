@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.xalign;
+package org.gramlab.core.umlv.unitex.xalign;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -65,7 +65,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLEditorKit;
 
-import fr.umlv.unitex.listeners.AlignmentListener;
+import org.gramlab.core.umlv.unitex.listeners.AlignmentListener;
 
 public class XAlignPane extends JPanel {
 

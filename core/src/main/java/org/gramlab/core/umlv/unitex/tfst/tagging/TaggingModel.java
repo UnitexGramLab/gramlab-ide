@@ -18,16 +18,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.tfst.tagging;
+package org.gramlab.core.umlv.unitex.tfst.tagging;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
-import fr.umlv.unitex.listeners.GraphListener;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphicalZone;
+import org.gramlab.core.umlv.unitex.listeners.GraphListener;
 
 /**
  * This class is used to know whether a sentence automaton box has been

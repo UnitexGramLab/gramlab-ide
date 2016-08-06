@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.text;
+package org.gramlab.core.umlv.unitex.text;
 
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
@@ -42,7 +42,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 
-import fr.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 /**
  * This class provides a text component that can display in read-only large

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.config;
+package org.gramlab.core.umlv.unitex.config;
 
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
@@ -55,14 +55,13 @@ import javax.swing.JDialog;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
-import fr.umlv.unitex.Unitex;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.svn.SvnMonitor;
-
-import fr.umlv.unitex.process.commands.CommandBuilder;
-import fr.umlv.unitex.process.commands.VersionInfoCommand;
+import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
+import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
+import org.gramlab.core.umlv.unitex.process.commands.VersionInfoCommand;
+import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 
 import ro.fortsoft.pf4j.DefaultPluginManager;
 import ro.fortsoft.pf4j.PluginManager;

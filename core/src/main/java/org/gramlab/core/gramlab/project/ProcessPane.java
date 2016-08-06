@@ -1,4 +1,4 @@
-package fr.gramlab.project;
+package org.gramlab.core.gramlab.project;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,28 +35,28 @@ import javax.swing.border.BevelBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.gramlab.project.config.buildfile.FileOperationConfigPane;
-import fr.gramlab.project.config.buildfile.FileOperationType;
-import fr.gramlab.project.config.concordance.ConcordanceOperationConfigPane;
-import fr.gramlab.project.config.concordance.ConcordanceOperationType;
-import fr.gramlab.project.config.locate.LocateConfigPane;
-import fr.gramlab.project.config.locate.OutputsPolicy;
-import fr.gramlab.project.config.preprocess.ConfigBigPictureDialog;
-import fr.gramlab.project.console.ConsolePanel;
-import fr.gramlab.util.MyComboCellRenderer;
-import fr.gramlab.util.SplitUtil;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.frames.InternalFrameManager;
-import fr.umlv.unitex.frames.TextFrame;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.listeners.TextFrameListener;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.text.SntUtil;
+import org.gramlab.core.gramlab.project.config.buildfile.FileOperationConfigPane;
+import org.gramlab.core.gramlab.project.config.buildfile.FileOperationType;
+import org.gramlab.core.gramlab.project.config.concordance.ConcordanceOperationConfigPane;
+import org.gramlab.core.gramlab.project.config.concordance.ConcordanceOperationType;
+import org.gramlab.core.gramlab.project.config.locate.LocateConfigPane;
+import org.gramlab.core.gramlab.project.config.locate.OutputsPolicy;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigBigPictureDialog;
+import org.gramlab.core.gramlab.project.console.ConsolePanel;
+import org.gramlab.core.gramlab.util.MyComboCellRenderer;
+import org.gramlab.core.gramlab.util.SplitUtil;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.TextFrame;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.listeners.TextFrameListener;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.text.SntUtil;
 
 @SuppressWarnings("serial")
 public class ProcessPane extends JSplitPane {

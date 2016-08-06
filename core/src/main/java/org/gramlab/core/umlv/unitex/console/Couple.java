@@ -25,7 +25,7 @@
  *
  * @author Sébastien Paumier
  */
-package fr.umlv.unitex.console;
+package org.gramlab.core.umlv.unitex.console;
 
 public class Couple {
 	private final String s;

@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.maven;
+package org.gramlab.core.gramlab.project.config.maven;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -40,19 +40,19 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import fr.gramlab.Main;
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.ProjectVersionableConfig;
-import fr.umlv.unitex.LinkButton;
-import fr.umlv.unitex.config.NamedRepository;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.frames.FrameUtil;
-import fr.umlv.unitex.process.ExecParameters;
-import fr.umlv.unitex.process.Executor;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.list.ProcessOutputList;
-import fr.umlv.unitex.process.list.ProcessOutputListModel;
+import org.gramlab.core.Main;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.ProjectVersionableConfig;
+import org.gramlab.core.umlv.unitex.LinkButton;
+import org.gramlab.core.umlv.unitex.config.NamedRepository;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.frames.FrameUtil;
+import org.gramlab.core.umlv.unitex.process.ExecParameters;
+import org.gramlab.core.umlv.unitex.process.Executor;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
+import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
 
 @SuppressWarnings("serial")
 public class MavenDialog extends JDialog {

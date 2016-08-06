@@ -30,7 +30,7 @@
  *            CRIN/CNRS & INRIA Lorraine
  *
  */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 class Dist {
 	private final int[] dist;

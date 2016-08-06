@@ -1,4 +1,4 @@
-package fr.gramlab.project.config.graph_compilation;
+package org.gramlab.core.gramlab.project.config.graph_compilation;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,9 +12,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import fr.gramlab.project.GramlabProject;
-import fr.gramlab.project.config.preprocess.ConfigurationPaneFactory;
-import fr.umlv.unitex.LinkButton;
+import org.gramlab.core.gramlab.project.GramlabProject;
+import org.gramlab.core.gramlab.project.config.preprocess.ConfigurationPaneFactory;
+import org.gramlab.core.umlv.unitex.LinkButton;
 
 @SuppressWarnings("serial")
 public class GraphCompilationPane extends ConfigurationPaneFactory {

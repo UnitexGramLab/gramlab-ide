@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.stats;
+package org.gramlab.core.umlv.unitex.stats;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +31,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.table.AbstractTableModel;
 
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 public class StatisticsTableModelMode0 extends AbstractTableModel {
 	private final String[] columnNames;

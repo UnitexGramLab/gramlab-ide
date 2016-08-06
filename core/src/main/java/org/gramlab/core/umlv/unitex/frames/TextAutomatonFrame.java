@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -72,36 +72,36 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphBox;
-import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
-import fr.umlv.unitex.graphrendering.TfstTextField;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.listeners.GraphListener;
-import fr.umlv.unitex.process.EatStreamThread;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.Log;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ElagCommand;
-import fr.umlv.unitex.process.commands.ImplodeTfstCommand;
-import fr.umlv.unitex.process.commands.RebuildTfstCommand;
-import fr.umlv.unitex.process.commands.TagsetNormTfstCommand;
-import fr.umlv.unitex.process.commands.Tfst2GrfCommand;
-import fr.umlv.unitex.tfst.TagFilter;
-import fr.umlv.unitex.tfst.TfstTableModel;
-import fr.umlv.unitex.tfst.TokensInfo;
-import fr.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.Config;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
+import org.gramlab.core.umlv.unitex.config.PreferencesListener;
+import org.gramlab.core.umlv.unitex.config.PreferencesManager;
+import org.gramlab.core.umlv.unitex.console.Console;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphicalZone;
+import org.gramlab.core.umlv.unitex.graphrendering.TfstTextField;
+import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.io.UnicodeIO;
+import org.gramlab.core.umlv.unitex.listeners.GraphListener;
+import org.gramlab.core.umlv.unitex.process.EatStreamThread;
+import org.gramlab.core.umlv.unitex.process.Launcher;
+import org.gramlab.core.umlv.unitex.process.Log;
+import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.process.commands.ElagCommand;
+import org.gramlab.core.umlv.unitex.process.commands.ImplodeTfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.RebuildTfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.TagsetNormTfstCommand;
+import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
+import org.gramlab.core.umlv.unitex.tfst.TagFilter;
+import org.gramlab.core.umlv.unitex.tfst.TfstTableModel;
+import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
+import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display sentence automata.

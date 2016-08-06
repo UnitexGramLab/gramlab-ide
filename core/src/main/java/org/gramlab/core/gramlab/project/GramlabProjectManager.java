@@ -1,4 +1,4 @@
-package fr.gramlab.project;
+package org.gramlab.core.gramlab.project;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,9 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import fr.gramlab.GramlabConfigManager;
-import fr.umlv.unitex.common.project.manager.ProjectManager;
-import fr.umlv.unitex.files.FileUtil;
+import org.gramlab.core.GramlabConfigManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.ProjectManager;
+import org.gramlab.core.umlv.unitex.files.FileUtil;
 
 
 public class GramlabProjectManager implements ProjectManager {

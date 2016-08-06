@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.text;
+package org.gramlab.core.umlv.unitex.text;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractListModel;
 import javax.swing.SwingWorker;
 
-import fr.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.io.Encoding;
 
 /**
  * This is a model for representing a text file as the list of its paragraphs.

@@ -18,12 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphtools;
-
-import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
+package org.gramlab.core.umlv.unitex.graphtools;
 
 import java.util.ArrayList;
+
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
 
 /**
  * This class defines the data used to find and replace the content of a graph.

@@ -27,7 +27,7 @@
  *            
  *            
  */
-package fr.loria.xsilfide.multialign;
+package org.gramlab.core.loria.xsilfide.multialign;
 
 class Alignement implements Comparable<Alignement> {
 	private final XmlId pSource;

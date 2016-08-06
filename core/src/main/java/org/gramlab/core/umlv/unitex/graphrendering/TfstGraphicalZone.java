@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.graphrendering;
+package org.gramlab.core.umlv.unitex.graphrendering;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,13 +43,13 @@ import java.util.HashMap;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
-import fr.umlv.unitex.diff.GraphDecorator;
-import fr.umlv.unitex.frames.TfstFrame;
-import fr.umlv.unitex.io.GraphIO;
-import fr.umlv.unitex.tfst.Bounds;
-import fr.umlv.unitex.tfst.tagging.TaggingModel;
-import fr.umlv.unitex.tfst.tagging.TaggingState;
-import fr.umlv.unitex.undo.SelectEdit;
+import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
+import org.gramlab.core.umlv.unitex.frames.TfstFrame;
+import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.tfst.Bounds;
+import org.gramlab.core.umlv.unitex.tfst.tagging.TaggingModel;
+import org.gramlab.core.umlv.unitex.tfst.tagging.TaggingState;
+import org.gramlab.core.umlv.unitex.undo.SelectEdit;
 
 /**
  * This class describes a component on which a sentence graph can be drawn.

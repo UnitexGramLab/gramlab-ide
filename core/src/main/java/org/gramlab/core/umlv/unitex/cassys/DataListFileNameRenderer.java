@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.cassys;
+package org.gramlab.core.umlv.unitex.cassys;
 
 import java.awt.Component;
 import java.io.File;
@@ -26,7 +26,8 @@ import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
-import fr.umlv.unitex.config.Config;
+
+import org.gramlab.core.umlv.unitex.config.Config;
 /**
  * Render class of File Name in the table. It displays a file name in red and
  * italic if it does not exist.

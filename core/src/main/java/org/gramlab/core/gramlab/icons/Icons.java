@@ -1,4 +1,4 @@
-package fr.gramlab.icons;
+package org.gramlab.core.gramlab.icons;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
