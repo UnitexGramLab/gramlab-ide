@@ -66,6 +66,9 @@ import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 import ro.fortsoft.pf4j.DefaultPluginManager;
 import ro.fortsoft.pf4j.PluginManager;
 
+import ro.fortsoft.pf4j.DefaultPluginManager;
+import ro.fortsoft.pf4j.PluginManager;
+
 /**
  * This class contains general configuration information. It contains constants
  * used by many other classes.

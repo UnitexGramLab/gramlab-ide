@@ -73,6 +73,7 @@ import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
 import org.gramlab.core.umlv.unitex.text.BigTextArea;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
+
 /**
  * This class defines the "Apply Lexical Resources" frame, accessible from the
  * "Text" menu of Unitex. This frame shows two dictionary list. The first

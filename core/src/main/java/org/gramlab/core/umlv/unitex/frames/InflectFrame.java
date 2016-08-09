@@ -38,6 +38,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/InflectFrame.java
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -47,6 +48,17 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.MultiFlexCommand;
 import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.MultiFlexCommand;
+import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/InflectFrame.java
 
 /**
  * This class describes a frame that allows the user to set parameters of the

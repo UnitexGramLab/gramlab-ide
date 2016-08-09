@@ -1,0 +1,95 @@
+<project name="classic-ide" default="dist" basedir=".">
+
+	<description>Unitex/GramLab Classic IDE build file</description>
+
+	<!-- set global properties for this build -->
+	<property name="src-dir" location="src" />
+  <property name="api-src-dir" location="../api/src" />
+	<property name="build-dir" location="build" />
+	<property name="classes-dir" location="classes" />
+	<property name="dist-dir" location="dist" />
+	<property name="lib-dir" location="../lib" />
+	<property name="resources-dir" location="../resources" />
+	<property environment="env" />
+
+	<!-- targets -->
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp />
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build-dir}" />
+		<mkdir dir="${classes-dir}" />
+		<mkdir dir="${dist-dir}" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<echo message="Deleting files in ${build-dir}" level="info" />
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${build-dir}" includes="**/*" />
+		</delete>
+    <delete dir="${build-dir}" />
+    
+		<echo message="Deleting files in ${classes-dir}" level="info" />
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${classes-dir}" includes="**/*" />
+		</delete>
+    <delete dir="${classes-dir}" />
+    
+		<echo message="Deleting files in ${dist-dir}" level="info" />
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${dist-dir}" includes="**/*" />
+		</delete>
+    <delete dir="${dist-dir}" />    
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the java source code -->
+		<javac target="1.7" source="1.7" destdir="${build-dir}" includeAntRuntime="false">
+		<compilerarg value="-Xlint:-options"/>
+    <src path="${src-dir}"/>
+    <src path="${api-src-dir}"/>
+    <classpath>
+      <fileset dir="${lib-dir}">
+        <include name="*.jar" />
+      </fileset>
+    </classpath>
+		</javac>
+		<!-- "Compile" (indeed just copy) resources -->
+		<copy todir="${classes-dir}">
+			<fileset dir="${resources-dir}" />
+		</copy>
+		<!-- Move compiled code to ${classes-dir} -->
+		<move todir="${classes-dir}">
+			<fileset dir="${build-dir}" />
+		</move>
+	</target>
+
+	<target name="dist" depends="clean,compile" description="generate the distribution">
+		<!-- create Unitex.jar -->
+		<jar jarfile="${dist-dir}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf" basedir="classes" excludes="classes/fr/loria/**" />
+		<!-- create XAlign.jar -->
+		<jar jarfile="${dist-dir}/XAlign.jar" manifest="classes/fr/loria/Manifest.mf" basedir="classes" excludes="classes/fr/umlv/**" />
+	</target>
+
+  <target name="install-init">	
+		<fail unless="env.UNITEX_BUILD_RELEASE_DIR" message="UNITEX_BUILD_RELEASE_DIR is not set. try `export UNITEX_BUILD_RELEASE_DIR=.`"/>
+    <property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>		
+		<property name="app-dir" location="${unitexHome}/App" />
+		<property name="app-lib-dir" location="${unitexHome}/App/lib" />
+	</target>
+
+	<target name="install" depends="install-init,dist">
+		<copy todir="${app-dir}">
+			<fileset dir="${dist-dir}" />
+			<fileset dir="${resources-dir}">
+				<include name="*.ico" />
+			</fileset>			
+		</copy>
+		<copy todir="${app-lib-dir}">
+			<fileset dir="${lib-dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>		
+	</target>
+</project>
+

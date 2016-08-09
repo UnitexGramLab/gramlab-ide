@@ -44,8 +44,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/FontDialog.java
 import org.gramlab.core.umlv.unitex.FontInfo;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.FontInfo;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/FontDialog.java
 
 /**
  * This class describes a font selection dialog box.

@@ -37,11 +37,19 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/ConvertTfstToTextFrame.java
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.Tfst2UnambigCommand;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.commands.MultiCommands;
+import fr.umlv.unitex.process.commands.Tfst2UnambigCommand;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/ConvertTfstToTextFrame.java
 
 /**
  * This class describes the FST-Text to Text conversion frame.

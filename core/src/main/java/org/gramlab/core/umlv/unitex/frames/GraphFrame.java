@@ -74,6 +74,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/GraphFrame.java
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.MyCursors;
 import org.gramlab.core.umlv.unitex.Unitex;
@@ -102,6 +103,36 @@ import org.gramlab.core.umlv.unitex.process.commands.GrfDiffCommand;
 import org.gramlab.core.umlv.unitex.svn.ConflictSolvedListener;
 import org.gramlab.core.umlv.unitex.svn.SvnConflict;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.DropTargetManager;
+import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.files.FileUtil;
+import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GraphBox;
+import fr.umlv.unitex.graphrendering.GraphicalZone;
+import fr.umlv.unitex.graphrendering.MultipleSelection;
+import fr.umlv.unitex.graphrendering.TextField;
+import fr.umlv.unitex.graphtools.Dependancies;
+import fr.umlv.unitex.graphtools.GraphCall;
+import fr.umlv.unitex.grf.GraphPresentationInfo;
+import fr.umlv.unitex.io.GraphIO;
+import fr.umlv.unitex.io.SVG;
+import fr.umlv.unitex.listeners.GraphListener;
+import fr.umlv.unitex.process.Launcher;
+import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.Grf2Fst2Command;
+import fr.umlv.unitex.process.commands.GrfDiffCommand;
+import fr.umlv.unitex.svn.ConflictSolvedListener;
+import fr.umlv.unitex.svn.SvnConflict;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/GraphFrame.java
 
 /**
  * This class describes a frame used to display and edit a graph.

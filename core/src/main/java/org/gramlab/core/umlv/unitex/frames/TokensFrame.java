@@ -34,12 +34,21 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/TokensFrame.java
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.text.BigTextList;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/TokensFrame.java
 
 /**
  * This class describes a frame used to display current corpus's token lists.

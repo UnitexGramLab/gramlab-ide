@@ -25,6 +25,7 @@
 	</target>
 
 	<target name="clean" description="clean up">
+
 		<!-- Clean core-plugins -->
 		<subant target="clean" failonerror="false">
 			<fileset dir="${plugins}">

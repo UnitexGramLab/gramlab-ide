@@ -49,6 +49,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/DelaFrame.java
 import org.gramlab.core.umlv.unitex.RegexFormatter;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
@@ -60,6 +61,19 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.text.BigTextList;
 import org.gramlab.core.umlv.unitex.text.TextAsListModelImpl;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.RegexFormatter;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.PreferencesListener;
+import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.io.Encoding;
+import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.text.BigTextList;
+import fr.umlv.unitex.text.TextAsListModelImpl;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/DelaFrame.java
 
 /**
  * This class describes a frame used to display a dictionary.

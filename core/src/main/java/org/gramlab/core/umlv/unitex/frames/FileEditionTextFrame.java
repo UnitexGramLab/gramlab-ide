@@ -50,6 +50,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/FileEditionTextFrame.java
 import org.gramlab.core.umlv.unitex.MyCursors;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -57,6 +58,15 @@ import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
 import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
 import org.gramlab.core.umlv.unitex.editor.FileManager;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+=======
+import fr.umlv.unitex.MyCursors;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.editor.EditionTextArea;
+import fr.umlv.unitex.editor.FileEditionMenu;
+import fr.umlv.unitex.editor.FileManager;
+import fr.umlv.unitex.utils.KeyUtil;
+>>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/FileEditionTextFrame.java
 
 /*
  * This class is used to display the text

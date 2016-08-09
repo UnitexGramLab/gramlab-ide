@@ -23,6 +23,9 @@ import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import ro.fortsoft.pf4j.DefaultPluginManager;
 import ro.fortsoft.pf4j.PluginManager;
 
+import ro.fortsoft.pf4j.DefaultPluginManager;
+import ro.fortsoft.pf4j.PluginManager;
+
 public class GramlabConfigManager {
 	
 	private static GramlabProject currentProject;
