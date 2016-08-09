@@ -45,7 +45,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/TranscodingFrame.java
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidDestinationEncodingException;
@@ -56,18 +55,6 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.ConvertCommand;
 import org.gramlab.core.umlv.unitex.transcoding.Transcoder;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-=======
-import fr.umlv.unitex.DropTargetManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.exceptions.InvalidDestinationEncodingException;
-import fr.umlv.unitex.exceptions.InvalidSourceEncodingException;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.ConvertCommand;
-import fr.umlv.unitex.transcoding.Transcoder;
-import fr.umlv.unitex.utils.KeyUtil;
->>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/TranscodingFrame.java
 
 /**
  * This class provides a file transcoding internal frame.

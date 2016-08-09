@@ -39,11 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/GraphAlignmentDialog.java
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-=======
-import fr.umlv.unitex.utils.KeyUtil;
->>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/GraphAlignmentDialog.java
 
 /**
  * This class describes a dialog box that allows the user to align the current

@@ -38,11 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/GraphSizeDialog.java
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-=======
-import fr.umlv.unitex.utils.KeyUtil;
->>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/GraphSizeDialog.java
 
 /**
  * This class describes a dialog box that allows the user to adjust the current

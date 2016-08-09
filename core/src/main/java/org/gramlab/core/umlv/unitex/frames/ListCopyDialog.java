@@ -35,13 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/ListCopyDialog.java
 import org.gramlab.core.umlv.unitex.graphrendering.ContextsInfo;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-=======
-import fr.umlv.unitex.graphrendering.ContextsInfo;
-import fr.umlv.unitex.utils.KeyUtil;
->>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/ListCopyDialog.java
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set left

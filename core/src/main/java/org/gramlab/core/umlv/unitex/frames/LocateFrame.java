@@ -49,7 +49,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/LocateFrame.java
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -67,25 +66,6 @@ import org.gramlab.core.umlv.unitex.process.commands.LocateTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.Reg2GrfCommand;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-=======
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
-import fr.umlv.unitex.files.FileUtil;
-import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.io.UnicodeIO;
-import fr.umlv.unitex.listeners.LanguageListener;
-import fr.umlv.unitex.process.Launcher;
-import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.LocateCommand;
-import fr.umlv.unitex.process.commands.LocateTfstCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.Reg2GrfCommand;
-import fr.umlv.unitex.utils.KeyUtil;
->>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/LocateFrame.java
 
 /**
  * This class describes the locate pattern frame.

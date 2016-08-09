@@ -39,21 +39,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-<<<<<<< HEAD:core/src/main/java/org/gramlab/core/umlv/unitex/frames/ConsoleFrame.java
 import org.gramlab.core.umlv.unitex.console.Console;
 import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
 import org.gramlab.core.umlv.unitex.console.ConsoleTableCellEditor;
 import org.gramlab.core.umlv.unitex.console.ConsoleTableModel;
 import org.gramlab.core.umlv.unitex.console.ConsoleTransferHandler;
 import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-=======
-import fr.umlv.unitex.console.Console;
-import fr.umlv.unitex.console.ConsoleEntry;
-import fr.umlv.unitex.console.ConsoleTableCellEditor;
-import fr.umlv.unitex.console.ConsoleTableModel;
-import fr.umlv.unitex.console.ConsoleTransferHandler;
-import fr.umlv.unitex.utils.KeyUtil;
->>>>>>> UGL/feature/plugins:unitex/src/fr/umlv/unitex/frames/ConsoleFrame.java
 
 /**
  * This class describes a frame that shows all the command lines that have been
