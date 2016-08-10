@@ -43,7 +43,7 @@
 
 	<target name="compile" depends="init" description="compile the source">
 		<!-- Compile the java source code -->
-		<javac target="1.6" source="1.6" encoding="UTF-8" srcdir="${src-dir}" destdir="${build-dir}" includeAntRuntime="false">
+		<javac target="1.7" source="1.7" encoding="UTF-8" srcdir="${src-dir}" destdir="${build-dir}" includeAntRuntime="false">
 		<compilerarg value="-Xlint:-options"/>	
 			<classpath>
 				<fileset dir="${lib-dir}">
