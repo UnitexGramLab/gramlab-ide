@@ -50,13 +50,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.MyCursors;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
 import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
 import org.gramlab.core.umlv.unitex.editor.FileManager;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /*
  * This class is used to display the text

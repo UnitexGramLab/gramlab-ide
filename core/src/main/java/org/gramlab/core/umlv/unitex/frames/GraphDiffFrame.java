@@ -34,6 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
@@ -41,7 +42,6 @@ import org.gramlab.core.umlv.unitex.diff.GraphDecoratorConfig;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
 import org.gramlab.core.umlv.unitex.graphrendering.TextField;
 import org.gramlab.core.umlv.unitex.io.GraphIO;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
 	public GraphDiffFrame(final GraphIO base, final GraphIO dest,

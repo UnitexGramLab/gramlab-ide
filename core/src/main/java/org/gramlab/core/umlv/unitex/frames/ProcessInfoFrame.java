@@ -44,6 +44,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.console.Couple;
 import org.gramlab.core.umlv.unitex.process.ExecParameters;
 import org.gramlab.core.umlv.unitex.process.Executor;
@@ -51,7 +52,6 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
 import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to execute shell commands and display

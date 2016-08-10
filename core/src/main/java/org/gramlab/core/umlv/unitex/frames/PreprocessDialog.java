@@ -41,6 +41,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -61,7 +62,6 @@ import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
 import org.gramlab.core.umlv.unitex.text.SntUtil;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a dialog box that allows the user to parameter the

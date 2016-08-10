@@ -48,6 +48,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
@@ -57,7 +58,6 @@ import org.gramlab.core.umlv.unitex.process.commands.ElagCompCommand;
 import org.gramlab.core.umlv.unitex.process.commands.FlattenCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Olivier Blanc

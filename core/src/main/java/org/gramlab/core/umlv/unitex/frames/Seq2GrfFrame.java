@@ -43,6 +43,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.LinkButton;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -54,7 +55,6 @@ import org.gramlab.core.umlv.unitex.process.commands.Fst2TxtCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Seq2GrfCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class Seq2GrfFrame extends JInternalFrame {
 	

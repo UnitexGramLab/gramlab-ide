@@ -33,6 +33,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.process.ProcessInfoThread;
 import org.gramlab.core.umlv.unitex.process.commands.BuildKrMwuDicCommand;
 import org.gramlab.core.umlv.unitex.process.commands.CassysCommand;
@@ -82,7 +83,6 @@ import org.gramlab.core.umlv.unitex.process.commands.XAlignCommand;
 import org.gramlab.core.umlv.unitex.process.commands.XMLizerCommand;
 import org.gramlab.core.umlv.unitex.process.list.ProcessOutputList;
 import org.gramlab.core.umlv.unitex.process.list.ProcessOutputListModel;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class HelpOnCommandFrame extends JInternalFrame {
 	private final Class<?>[] commands = { BuildKrMwuDicCommand.class, CassysCommand.class,

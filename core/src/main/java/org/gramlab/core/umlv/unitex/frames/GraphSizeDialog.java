@@ -38,7 +38,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.gramlab.util.KeyUtil;
 
 /**
  * This class describes a dialog box that allows the user to adjust the current

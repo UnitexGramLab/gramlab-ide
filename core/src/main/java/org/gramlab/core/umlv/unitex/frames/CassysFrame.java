@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
@@ -31,7 +32,6 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.ToDoBeforeSingleCommand;
 import org.gramlab.core.umlv.unitex.process.commands.CassysCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * Main frame of the cassys menu.

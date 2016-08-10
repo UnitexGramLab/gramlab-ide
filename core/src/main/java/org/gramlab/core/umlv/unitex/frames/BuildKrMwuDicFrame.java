@@ -38,13 +38,13 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
 import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.BuildKrMwuDicCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * With this frame, the user can configure the generation of a MWU dictionary

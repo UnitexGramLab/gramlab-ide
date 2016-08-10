@@ -27,8 +27,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * @author Decreton Julien

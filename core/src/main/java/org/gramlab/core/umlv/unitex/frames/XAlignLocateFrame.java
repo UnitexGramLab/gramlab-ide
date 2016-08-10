@@ -46,6 +46,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidConcordanceOrderException;
@@ -60,7 +61,6 @@ import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.LocateCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.Reg2GrfCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 import org.gramlab.core.umlv.unitex.xalign.ConcordanceLoader;
 import org.gramlab.core.umlv.unitex.xalign.ConcordanceModel;
 

@@ -29,24 +29,24 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser;
+import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
+import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
 import org.gramlab.core.umlv.unitex.cassys.DataList;
 import org.gramlab.core.umlv.unitex.cassys.DataListFileNameRenderer;
 import org.gramlab.core.umlv.unitex.cassys.DataListFileRankRenderer;
 import org.gramlab.core.umlv.unitex.cassys.ListDataTransfertHandler;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList;
+import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 import org.gramlab.core.umlv.unitex.cassys.TransducerListTable;
 import org.gramlab.core.umlv.unitex.cassys.TransducerListTableModel;
-import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
-import org.gramlab.core.umlv.unitex.cassys.ConfigurationFileAnalyser.InvalidLineException;
-import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * User Configuration frame for Cassys.

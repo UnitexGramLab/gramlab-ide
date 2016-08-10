@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+
 /**
  * This class stores various key bindings.
  * 
@@ -104,6 +107,48 @@ public class KeyUtil {
 			@Override
 			public void actionPerformed(ActionEvent close) {
 				c.getFocusCycleRootAncestor().setVisible(false);
+			}
+		});
+	}
+	
+	/**
+	 * This method implements hotkey  binding for [Esc] for currently focused Frame.
+	 * Pressing Esc, would minimize the frame.
+	 * 
+	 * @param c
+	 * 		the focused component that can be a part of JInternalFrame
+	 * 
+	 */
+	public static void addMinimizeFrameListener(final JComponent c) {
+		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "minimizeTheFrame");
+		c.getActionMap().put("minimizeTheFrame", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent close) {
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).minimizeCurrentFocusedFrame();
+			}
+		});
+	}
+	
+	/**
+	 * This method implements hotkey  binding for [Esc] for currently focused Frame.
+	 * Pressing Esc, would close the frame.
+	 * 
+	 * @param c
+	 * 		the focused component that can be a part of JInternalFrame
+	 * 
+	 */
+	public static void addCloseFrameListener(final JComponent c) {
+		c.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "closeTheFrame");
+		c.getActionMap().put("closeTheFrame", new AbstractAction() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent close) {
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedFrame();
 			}
 		});
 	}

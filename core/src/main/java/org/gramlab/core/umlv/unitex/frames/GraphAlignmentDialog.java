@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.gramlab.util.KeyUtil;
 
 /**
  * This class describes a dialog box that allows the user to align the current

@@ -34,6 +34,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -46,7 +47,6 @@ import org.gramlab.core.umlv.unitex.tfst.TagFilter;
 import org.gramlab.core.umlv.unitex.tfst.TfstTableModel;
 import org.gramlab.core.umlv.unitex.tfst.TokenTags;
 import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class ExportTextAsPOSListDialog extends JDialog {
 	File output;
