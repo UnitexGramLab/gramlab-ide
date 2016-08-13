@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -68,6 +69,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 
+import org.gramlab.core.gramlab.frames.ChangePerspective;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.Unitex;
 import org.gramlab.core.umlv.unitex.Version;
@@ -302,6 +304,7 @@ public class UnitexFrame extends JFrame {
 		final JMenu xalign = buildXAlignMenu();
 		final FileEditionMenu fileEditionMenu = new FileEditionMenu();
 		final JMenu windows = buildWindowsMenu();
+		final JMenu perspective = buildPerspectiveMenu();
 		final JMenu help = UnitexHelpMenuBuilder.build(Config.getApplicationDir());
 		final JMenu info = buildInfoMenu();
 		text.setMnemonic(KeyEvent.VK_T);
@@ -312,6 +315,7 @@ public class UnitexFrame extends JFrame {
 		fileEditionMenu.setMnemonic(KeyEvent.VK_F);
 		help.setMnemonic(KeyEvent.VK_H);
 		windows.setMnemonic(KeyEvent.VK_W);
+		perspective.setMnemonic(KeyEvent.VK_P);
 		info.setMnemonic(KeyEvent.VK_I);
 		menuBar.add(text);
 		menuBar.add(DELA);
@@ -320,6 +324,7 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(xalign);
 		menuBar.add(fileEditionMenu);
 		menuBar.add(windows);
+		menuBar.add(perspective);
 		menuBar.add(help);
 		menuBar.add(info);
 		setJMenuBar(menuBar);
@@ -1410,6 +1415,21 @@ public class UnitexFrame extends JFrame {
 		});
 		menu.add(open);
 		return menu;
+	}
+	
+	private JMenu buildPerspectiveMenu() {
+		JMenu m = new JMenu("Perspective");
+		Action n = new AbstractAction("Change Perspective") {
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new ChangePerspective("Classic", null);
+					}
+				});
+			}
+		};
+		m.add(new JMenuItem(n));
+		return m;
 	}
 
 	JMenu buildWindowsMenu() {

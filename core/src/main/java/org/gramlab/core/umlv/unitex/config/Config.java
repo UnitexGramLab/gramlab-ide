@@ -20,11 +20,10 @@
  */
 package org.gramlab.core.umlv.unitex.config;
 
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,26 +34,24 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import java.lang.Process;
-import java.lang.ProcessBuilder;
-
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JDialog;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
+import org.gramlab.api.Greeting;
 import org.gramlab.core.umlv.unitex.Unitex;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
@@ -64,10 +61,6 @@ import org.gramlab.core.umlv.unitex.process.commands.VersionInfoCommand;
 import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 
 import ro.fortsoft.pf4j.DefaultPluginManager;
-import ro.fortsoft.pf4j.PluginManager;
-
-import ro.fortsoft.pf4j.DefaultPluginManager;
-import ro.fortsoft.pf4j.PluginManager;
 
 /**
  * This class contains general configuration information. It contains constants
@@ -742,6 +735,13 @@ public class Config {
 
       // save plugins directory
       setPluginsDir(path);
+      
+      // Finding extensions for greeting extension point
+      List<Greeting> greetings = pluginManager.getExtensions(Greeting.class);
+      System.out.println(String.format("Found %d extensions for extension points '%s'", greetings.size(), Greeting.class.getName()));
+      for (Greeting greeting : greetings) {
+          System.out.println(">>> " + greeting.getGreeting());
+      }
     }
 
     /**
