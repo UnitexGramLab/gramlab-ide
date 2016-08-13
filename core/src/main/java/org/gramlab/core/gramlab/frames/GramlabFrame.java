@@ -40,9 +40,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.event.MenuEvent;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
@@ -70,7 +69,6 @@ import org.gramlab.core.gramlab.svn.SvnStatus;
 import org.gramlab.core.gramlab.svn.SvnStatusInfo;
 import org.gramlab.core.gramlab.svn.SvnUpdateDialog;
 import org.gramlab.core.gramlab.util.GramlabDropTarget;
-import org.gramlab.core.gramlab.util.GraphSearchDialog;
 import org.gramlab.core.gramlab.util.MouseUtil;
 import org.gramlab.core.gramlab.workspace.ChangeWorkspaceDialog;
 import org.gramlab.core.gramlab.workspace.ProjectAdapter;
@@ -84,7 +82,15 @@ import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
-import org.gramlab.core.umlv.unitex.frames.*;
+import org.gramlab.core.umlv.unitex.frames.AboutDialog;
+import org.gramlab.core.umlv.unitex.frames.DelaFrame;
+import org.gramlab.core.umlv.unitex.frames.FileEditionTextFrame;
+import org.gramlab.core.umlv.unitex.frames.FindAndReplaceDialog;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.MenuAdapter;
+import org.gramlab.core.umlv.unitex.frames.TextAutomatonFrame;
+import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphMenuBuilder;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.print.PrintManager;
@@ -1497,6 +1503,7 @@ public class GramlabFrame extends JFrame {
 		JMenuBar bar = new JMenuBar();
 		bar.add(createWorkspaceMenu());
 		bar.add(createProjectMenu());
+		bar.add(createWindowMenu());
 		bar.add(createDelaMenu());
 		bar.add(createGraphsMenu());
 		bar.add(createFileEditionMenu());
@@ -1563,7 +1570,22 @@ public class GramlabFrame extends JFrame {
 		m.add(workspace);
 		return m;
 	}
-
+	
+	private JMenu createWindowMenu() {
+		JMenu m = new JMenu("Window");
+		Action n = new AbstractAction("Change Perspective") {
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new ChangePerspective("Project-oriented", null);
+					}
+				});
+			}
+		};
+		m.add(new JMenuItem(n));
+		return m;
+	}
+	
 	private JMenu createProjectMenu() {
 		JMenu m = new JMenu("Project");
 		return m;
