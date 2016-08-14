@@ -36,9 +36,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.GraphCollection;
 import org.gramlab.core.umlv.unitex.config.Config;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class provides a frame that allows the user to select a source directory

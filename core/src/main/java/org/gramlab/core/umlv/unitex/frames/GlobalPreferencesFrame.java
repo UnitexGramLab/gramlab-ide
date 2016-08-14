@@ -20,7 +20,15 @@
  */
 package org.gramlab.core.umlv.unitex.frames;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -53,8 +61,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.FontInfo;
-import org.gramlab.core.umlv.unitex.Unitex;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -64,7 +72,6 @@ import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.io.Encoding;
 import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.

@@ -23,22 +23,19 @@ package org.gramlab.core.umlv.unitex.frames;
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -47,7 +44,6 @@ import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.io.Encoding;
 import org.gramlab.core.umlv.unitex.io.UnicodeIO;
 import org.gramlab.core.umlv.unitex.text.BigTextArea;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display the current corpus.

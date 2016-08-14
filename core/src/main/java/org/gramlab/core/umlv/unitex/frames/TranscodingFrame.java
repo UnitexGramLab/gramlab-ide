@@ -45,6 +45,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidDestinationEncodingException;
@@ -54,7 +55,6 @@ import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.ConvertCommand;
 import org.gramlab.core.umlv.unitex.transcoding.Transcoder;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class provides a file transcoding internal frame.

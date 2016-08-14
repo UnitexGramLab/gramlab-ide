@@ -20,22 +20,36 @@
  */
 package org.gramlab.core.umlv.unitex.frames;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
-import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
-import org.gramlab.core.umlv.unitex.graphtools.FindAndReplace;
-import org.gramlab.core.umlv.unitex.graphtools.FindAndReplaceData;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
+import org.gramlab.core.umlv.unitex.graphtools.FindAndReplace;
+import org.gramlab.core.umlv.unitex.graphtools.FindAndReplaceData;
 
 /**
  * This class defines a dialog that allow the user to search and replace the content of one or more boxes

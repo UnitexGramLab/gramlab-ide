@@ -72,6 +72,7 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.TableCellRenderer;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
@@ -101,7 +102,6 @@ import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
 import org.gramlab.core.umlv.unitex.tfst.TagFilter;
 import org.gramlab.core.umlv.unitex.tfst.TfstTableModel;
 import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display sentence automata.

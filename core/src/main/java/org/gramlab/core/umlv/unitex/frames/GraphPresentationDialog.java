@@ -46,12 +46,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.FontInfo;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.Preferences;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the graph presentation dialog box, that allows the user

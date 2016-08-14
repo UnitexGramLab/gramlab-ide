@@ -34,11 +34,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.stats.StatisticsTableModelMode0;
 import org.gramlab.core.umlv.unitex.stats.StatisticsTableModelMode1;
 import org.gramlab.core.umlv.unitex.stats.StatisticsTableModelMode2;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class StatisticsFrame extends TabbableInternalFrame {
 	StatisticsFrame(File file, int mode) {

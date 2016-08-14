@@ -39,12 +39,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.console.Console;
 import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
 import org.gramlab.core.umlv.unitex.console.ConsoleTableCellEditor;
 import org.gramlab.core.umlv.unitex.console.ConsoleTableModel;
 import org.gramlab.core.umlv.unitex.console.ConsoleTransferHandler;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that shows all the command lines that have been

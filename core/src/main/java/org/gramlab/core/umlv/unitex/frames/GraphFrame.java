@@ -74,6 +74,7 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.MyCursors;
 import org.gramlab.core.umlv.unitex.Unitex;
@@ -101,7 +102,6 @@ import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.GrfDiffCommand;
 import org.gramlab.core.umlv.unitex.svn.ConflictSolvedListener;
 import org.gramlab.core.umlv.unitex.svn.SvnConflict;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display and edit a graph.

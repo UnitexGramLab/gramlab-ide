@@ -1,4 +1,5 @@
 /*
+
  * Unitex
  *
  * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
@@ -37,11 +38,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.Tfst2UnambigCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the FST-Text to Text conversion frame.

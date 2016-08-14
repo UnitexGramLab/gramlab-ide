@@ -22,7 +22,6 @@ package org.gramlab.core.umlv.unitex.frames;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.RenderingHints.Key;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -40,6 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -53,7 +53,6 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.ReconstrucaoCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TaggerCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user

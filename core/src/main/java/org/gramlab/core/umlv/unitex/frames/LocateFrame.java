@@ -49,6 +49,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -65,7 +66,6 @@ import org.gramlab.core.umlv.unitex.process.commands.LocateCommand;
 import org.gramlab.core.umlv.unitex.process.commands.LocateTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.Reg2GrfCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the locate pattern frame.

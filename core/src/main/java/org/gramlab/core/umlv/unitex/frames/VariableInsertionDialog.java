@@ -37,7 +37,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
+import org.gramlab.core.gramlab.util.KeyUtil;
 
 /**
  * This class describes a <code>JPanel</code> that allows the user to set a

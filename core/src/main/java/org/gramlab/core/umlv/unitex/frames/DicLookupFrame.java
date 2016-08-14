@@ -63,6 +63,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
@@ -72,7 +73,6 @@ import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.DicoCommand;
 import org.gramlab.core.umlv.unitex.text.BigTextList;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 public class DicLookupFrame extends JInternalFrame {
 	JList userDicList;

@@ -47,6 +47,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.concord.BigConcordance;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -57,7 +58,6 @@ import org.gramlab.core.umlv.unitex.debug.DebugGraphPane;
 import org.gramlab.core.umlv.unitex.debug.DebugInfos;
 import org.gramlab.core.umlv.unitex.debug.DebugTableModel;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that can show an HTML concordance file.

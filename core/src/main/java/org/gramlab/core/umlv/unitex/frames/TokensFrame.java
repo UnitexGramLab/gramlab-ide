@@ -34,12 +34,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.text.BigTextList;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display current corpus's token lists.

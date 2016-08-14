@@ -53,6 +53,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -71,7 +72,6 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.StatsCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame in which the user can select how to use the

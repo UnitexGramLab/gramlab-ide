@@ -66,6 +66,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.concord.BigConcordance;
@@ -92,7 +93,6 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.RebuildTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
 import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to lemmatize sentence automata.

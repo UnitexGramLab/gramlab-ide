@@ -44,6 +44,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
@@ -54,7 +55,6 @@ import org.gramlab.core.umlv.unitex.process.commands.Fst2ListCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.text.BigTextList;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.

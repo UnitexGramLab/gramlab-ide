@@ -58,6 +58,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -71,7 +72,6 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
 import org.gramlab.core.umlv.unitex.text.BigTextArea;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 
 /**

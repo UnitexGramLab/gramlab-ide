@@ -35,12 +35,12 @@ import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.CheckDicCommand;
-import org.gramlab.core.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"
