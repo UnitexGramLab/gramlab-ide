@@ -52,11 +52,11 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.MyCursors;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.editor.EditionTextArea;
 import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
 import org.gramlab.core.umlv.unitex.editor.FileManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /*
  * This class is used to display the text
@@ -158,7 +158,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 			MyCursors.findIcon) {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			GlobalProjectManager.search(null)
+			UnitexProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newFindDialog(FileEditionTextFrame.this);
 		}

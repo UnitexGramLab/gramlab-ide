@@ -38,11 +38,11 @@ import javax.swing.text.Document;
 import javax.swing.text.Keymap;
 import javax.swing.text.TextAction;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.GraphFrame;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes the text field used to get the box text in a graph.
@@ -273,12 +273,12 @@ public class TextField extends GraphTextField {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			final GraphFrame f = GlobalProjectManager.search(null)
+			final GraphFrame f = UnitexProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.getCurrentFocusedGraphFrame();
 			if (f == null)
 				return;
-			final GraphPresentationInfo info = GlobalProjectManager.search(null)
+			final GraphPresentationInfo info = UnitexProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newGraphPresentationDialog(f.getGraphPresentationInfo(), true);
 			if (info != null) {

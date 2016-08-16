@@ -54,7 +54,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.console.Console;
@@ -72,6 +71,7 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.StatsCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes a frame in which the user can select how to use the
@@ -483,7 +483,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		final String sntName = FileUtil.getFileNameWithoutExtension(txt)
 				+ ".snt";
 		if (new File(sntName).equals(Config.getCurrentSnt())) {
-			GlobalProjectManager.search(null)
+			UnitexProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class).closeTextFrame();
 			toDo = new ModifyTextDo(new File(sntName));
 		}
@@ -596,7 +596,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		if (width < 40) {
 			width = 40;
 		}
-		GlobalProjectManager.search(null)
+		UnitexProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame();
 		Launcher.exec(command, true,
 				new ConcordanceDo(false, new File(Config.getCurrentSntDir(),
@@ -626,7 +626,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				.diffOnly();
 		setVisible(false);
 		final int width = 160;
-		GlobalProjectManager.search(null)
+		UnitexProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class).closeConcordanceDiffFrame();
 		Launcher.exec(command, true, new ConcordanceDo(true, outputHtmlFile,
 				openWithBrowser.isSelected(), width));
@@ -670,11 +670,11 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 				}
 			} else {
 				if (!diff) {
-					GlobalProjectManager.search(htmlFile)
+					UnitexProjectManager.search(htmlFile)
 							.getFrameManagerAs(InternalFrameManager.class)
 							.newConcordanceFrame(htmlFile, widthInChars);
 				} else {
-					GlobalProjectManager.search(htmlFile)
+					UnitexProjectManager.search(htmlFile)
 							.getFrameManagerAs(InternalFrameManager.class)
 							.newConcordanceDiffFrame(htmlFile);
 				}
@@ -691,7 +691,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(snt)
+			UnitexProjectManager.search(snt)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newTextFrame(snt, false);
 		}
@@ -708,7 +708,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(f)
+			UnitexProjectManager.search(f)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newStatisticsFrame(f, mode);
 		}

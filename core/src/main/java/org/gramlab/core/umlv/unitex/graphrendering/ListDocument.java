@@ -26,8 +26,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.UnitexInternalFrameManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /*
  * This class catches text and turns it into a list if it contains \n
@@ -74,7 +74,7 @@ class ListDocument extends PlainDocument {
 			super.insertString(offs, s, a);
 			return;
 		}
-		final ContextsInfo info = GlobalProjectManager.search(null)
+		final ContextsInfo info = UnitexProjectManager.search(null)
 				.getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newListCopyDialog();
 		// tokenizes the text

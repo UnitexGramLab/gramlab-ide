@@ -37,13 +37,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.ConvertCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * @author Sébastien Paumier
@@ -185,7 +185,7 @@ public class TransliterationFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(dela)
+			UnitexProjectManager.search(dela)
 					.getFrameManagerAs(InternalFrameManager.class).newDelaFrame(dela);
 		}
 	}

@@ -44,9 +44,9 @@ public class ChangePerspective extends JDialog {
 	public ChangePerspective(String currPerspective, String[] args) {
 		super(Main.getMainFrame(), "Choose perspective", true);
 		setContentPane(constructPanel(currPerspective, args));
-		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
 		pack();
-		FrameUtil.center(getOwner(),this);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
@@ -118,20 +118,30 @@ public class ChangePerspective extends JDialog {
 
 	protected void openClassic(String[] args) {
 		Main.launchUnitex(args);
+		
 	}
 
 	protected void openProjectOriented(String[] args) {
 		Main.launchGramlab(args);
 	}
-
+	
 	protected void switchToProjectOriented(String[] args) {
-		Main.launchGramlab(args);
-		Main.getMainFrame().setVisible(false);
+		if(Main.getProjectorientedMainFrame()!=null){
+			Main.getProjectorientedMainFrame().setVisible(true);
+		}
+		else{
+			Main.launchGramlab(args);
+		}
+		Main.getClassicMainFrame().setVisible(false);
 	}
 
 	protected void switchToClassic(String[] args) {
-		Main.launchUnitex(args);
-		Main.getMainFrame().setVisible(false);
+		if(Main.getClassicMainFrame()!=null){
+			Main.getClassicMainFrame().setVisible(true);
+		}else{
+			Main.launchUnitex(args);
+		}
+		Main.getProjectorientedMainFrame().setVisible(false);
 	}
-
+	
 }

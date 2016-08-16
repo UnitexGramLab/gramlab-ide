@@ -27,14 +27,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import org.gramlab.core.umlv.unitex.Unitex;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
@@ -44,6 +41,7 @@ import org.gramlab.core.umlv.unitex.graphrendering.GraphBox;
 import org.gramlab.core.umlv.unitex.graphrendering.TfstGraphBox;
 import org.gramlab.core.umlv.unitex.grf.GraphMetaData;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class provides methods for loading and saving graphs.
@@ -131,8 +129,8 @@ public class GraphIO {
 								JOptionPane.ERROR_MESSAGE);
 						return null;
 					}
-					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newGraphFrame(null);
-					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+					UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newGraphFrame(null);
+					UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 							.getCurrentFocusedGraphFrame().saveAsGraph(grfFile.getAbsolutePath(), false);
 				}
 				return null;

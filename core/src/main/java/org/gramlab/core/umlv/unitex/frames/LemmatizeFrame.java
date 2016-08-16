@@ -68,7 +68,6 @@ import javax.swing.event.ListSelectionListener;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.concord.BigConcordance;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
@@ -92,6 +91,7 @@ import org.gramlab.core.umlv.unitex.process.commands.LocateTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.RebuildTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
 
 /**
@@ -638,9 +638,9 @@ public class LemmatizeFrame extends TfstFrame {
 		final Action rebuildAction = new AbstractAction("Apply modifications to TFST") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTextAutomatonFrame();
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTfstTagsFrame();
 				Config.cleanTfstFiles(false);
 				final RebuildTfstCommand command = new RebuildTfstCommand()

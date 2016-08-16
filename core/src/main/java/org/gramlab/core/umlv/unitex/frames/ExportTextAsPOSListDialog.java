@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.io.Encoding;
@@ -43,6 +42,7 @@ import org.gramlab.core.umlv.unitex.io.GraphIO;
 import org.gramlab.core.umlv.unitex.io.UnicodeIO;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.tfst.TagFilter;
 import org.gramlab.core.umlv.unitex.tfst.TfstTableModel;
 import org.gramlab.core.umlv.unitex.tfst.TokenTags;
@@ -98,7 +98,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 	public void launch() {
 		canceled = false;
 		progress.setMinimum(0);
-		final int sentenceCount = GlobalProjectManager.search(null)
+		final int sentenceCount = UnitexProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class)
 				.getTextAutomatonFrame().getSentenceCount();
 		progress.setMaximum(sentenceCount);

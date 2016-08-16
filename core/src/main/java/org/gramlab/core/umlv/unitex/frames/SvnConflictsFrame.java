@@ -33,7 +33,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 
 /**
@@ -56,7 +56,7 @@ public class SvnConflictsFrame extends TabbableInternalFrame {
 				final int index = list.locationToIndex(e.getPoint());
 				if (index != -1) {
 					final File f = (File) list.getModel().getElementAt(index);
-					GlobalProjectManager.search(f).getFrameManagerAs(InternalFrameManager.class)
+					UnitexProjectManager.search(f).getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(f);
 				}
 			}

@@ -7,8 +7,8 @@ import java.io.File;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.UnitexInternalFrameManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * 
@@ -22,7 +22,7 @@ public class UnitexHelpMenuBuilder extends HelpMenuBuilder {
 		commands.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalProjectManager.search(null)
+				UnitexProjectManager.search(null)
 						.getFrameManagerAs(UnitexInternalFrameManager.class)
 						.newHelpOnCommandFrame();
 			}

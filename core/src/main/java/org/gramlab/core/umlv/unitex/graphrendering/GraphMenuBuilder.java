@@ -28,9 +28,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.GraphFrame;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class defines static methods for building portions of Graph related menu options that 
@@ -88,7 +88,7 @@ public class GraphMenuBuilder {
 			frm = (GraphFrame) grZone.getParentFrame();
 		}
 		if(frm == null) {
-			frm = GlobalProjectManager.search(null)
+			frm = UnitexProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
 		}
 		if(frm == null) {

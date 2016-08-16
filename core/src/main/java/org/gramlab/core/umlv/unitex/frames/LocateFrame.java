@@ -50,7 +50,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
@@ -66,6 +65,7 @@ import org.gramlab.core.umlv.unitex.process.commands.LocateCommand;
 import org.gramlab.core.umlv.unitex.process.commands.LocateTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.Reg2GrfCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes the locate pattern frame.
@@ -682,7 +682,7 @@ public class LocateFrame extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			if (!res.startsWith("0")) {
-				GlobalProjectManager.search(sntDir)
+				UnitexProjectManager.search(sntDir)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newConcordanceParameterFrame();
 			}
@@ -702,7 +702,7 @@ public class LocateFrame extends JInternalFrame {
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			if (!res.startsWith("0")) {
-				GlobalProjectManager.search(sntDir)
+				UnitexProjectManager.search(sntDir)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newConcordanceParameterFrame();
 			}

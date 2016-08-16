@@ -32,13 +32,13 @@ import javax.swing.text.Document;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.StringContent;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.Preferences;
 import org.gramlab.core.umlv.unitex.frames.FileEditionTextFrame;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.io.Encoding;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class provides methods for loading corpora
@@ -88,7 +88,7 @@ public class FileManager {
 	 *            file path
 	 */
 	private void load(File file) {
-		fileEditionTextFrame = GlobalProjectManager.search(file)
+		fileEditionTextFrame = UnitexProjectManager.search(file)
 				.getFrameManagerAs(InternalFrameManager.class)
 				.newFileEditionTextFrame(file);
 		final EditionTextArea text = fileEditionTextFrame.getText();
@@ -126,7 +126,7 @@ public class FileManager {
 			return;
 		}
 		try {
-			final FileEditionTextFrame fetf = GlobalProjectManager.search(null)
+			final FileEditionTextFrame fetf = UnitexProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.getSelectedFileEditionTextFrame();
 			if (fetf == null)
@@ -183,7 +183,7 @@ public class FileManager {
 	 * load an empty text
 	 */
 	public void newFile() {
-		GlobalProjectManager.search(null)
+		UnitexProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class)
 				.newFileEditionTextFrame(null);
 	}

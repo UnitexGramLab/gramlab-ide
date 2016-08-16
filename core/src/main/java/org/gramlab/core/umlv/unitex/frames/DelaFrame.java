@@ -51,13 +51,13 @@ import javax.swing.event.InternalFrameEvent;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.RegexFormatter;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.io.Encoding;
 import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.text.BigTextList;
 import org.gramlab.core.umlv.unitex.text.TextAsListModelImpl;
 
@@ -269,7 +269,7 @@ public class DelaFrame extends KeyedInternalFrame<File> {
 		final LoadDelaDo toDo = new LoadDelaDo(dela1);
 		final Encoding e = Encoding.getEncoding(dela1);
 		if (e == null) {
-			GlobalProjectManager.search(dela1)
+			UnitexProjectManager.search(dela1)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newTranscodeOneFileDialog(dela1, toDo);
 		} else {

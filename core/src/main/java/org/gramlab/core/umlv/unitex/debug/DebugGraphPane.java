@@ -34,13 +34,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
 import org.gramlab.core.umlv.unitex.graphrendering.TextField;
 import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 public class DebugGraphPane extends JPanel {
 	private final DebugInfos infos;
@@ -59,7 +59,7 @@ public class DebugGraphPane extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2 && getCurrentGraph() != -1) {
 					final File f = infos.graphs.get(getCurrentGraph() - 1);
-					GlobalProjectManager.search(f).getFrameManagerAs(InternalFrameManager.class)
+					UnitexProjectManager.search(f).getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(f);
 				}
 			}

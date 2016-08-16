@@ -63,7 +63,6 @@ import javax.swing.border.EmptyBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.FontInfo;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.Preferences;
@@ -72,6 +71,7 @@ import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.io.Encoding;
 import org.gramlab.core.umlv.unitex.listeners.LanguageListener;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes a frame that offers to the user to set his preferences.
@@ -171,7 +171,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action menuFontAction = new AbstractAction("Set...") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = GlobalProjectManager.search(null)
+				final FontInfo i = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(getPref().getMenuFont());
 				if (i != null) {
@@ -502,7 +502,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action textFontAction = new AbstractAction("Set...") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = GlobalProjectManager.search(null)
+				final FontInfo i = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(getPref().getTextFont());
 				if (i != null) {
@@ -524,7 +524,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action concord = new AbstractAction("Set...") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = GlobalProjectManager.search(null)
+				final FontInfo i = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(getPref().getConcordanceFont());
 				if (i != null) {
@@ -565,7 +565,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		graphConfig.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphPresentationInfo i = GlobalProjectManager.search(null)
+				final GraphPresentationInfo i = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newGraphPresentationDialog(
 								getPref().getInfo(), false);

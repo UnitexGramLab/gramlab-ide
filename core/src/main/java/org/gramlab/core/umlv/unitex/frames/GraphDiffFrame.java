@@ -36,12 +36,12 @@ import javax.swing.event.ChangeListener;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.diff.GraphDecorator;
 import org.gramlab.core.umlv.unitex.diff.GraphDecoratorConfig;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphicalZone;
 import org.gramlab.core.umlv.unitex.graphrendering.TextField;
 import org.gramlab.core.umlv.unitex.io.GraphIO;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 public class GraphDiffFrame extends TabbableInternalFrame {
 	public GraphDiffFrame(final GraphIO base, final GraphIO dest,
@@ -58,7 +58,7 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					GlobalProjectManager.search(base.getGrf())
+					UnitexProjectManager.search(base.getGrf())
 							.getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(base.getGrf());
 				}
@@ -68,7 +68,7 @@ public class GraphDiffFrame extends TabbableInternalFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					GlobalProjectManager.search(dest.getGrf())
+					UnitexProjectManager.search(dest.getGrf())
 							.getFrameManagerAs(InternalFrameManager.class)
 							.newGraphFrame(dest.getGrf());
 				}

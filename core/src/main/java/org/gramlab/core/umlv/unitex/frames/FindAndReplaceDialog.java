@@ -46,10 +46,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
 import org.gramlab.core.umlv.unitex.graphtools.FindAndReplace;
 import org.gramlab.core.umlv.unitex.graphtools.FindAndReplaceData;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class defines a dialog that allow the user to search and replace the content of one or more boxes
@@ -103,8 +103,8 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   public static FindAndReplaceDialog createFindAndReplaceDialog() {
-    ArrayList<GraphFrame> graphFrames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
-    GraphFrame currentFrame = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
+    ArrayList<GraphFrame> graphFrames = UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
+    GraphFrame currentFrame = UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
     if (currentFrame == null) {
       currentFrame = graphFrames.get(0);
     }
@@ -680,8 +680,8 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
   }
 
   void updateDialog() {
-    graphFrames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
-    currentFrame = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
+    graphFrames = UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
+    currentFrame = UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
     if (currentFrame == null) {
       currentFrame = graphFrames.get(0);
     }
@@ -695,7 +695,7 @@ public class FindAndReplaceDialog extends JDialog implements MultiInstanceFrameF
       return;
     }
     graphFrames = frames;
-    currentFrame = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
+    currentFrame = UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedGraphFrame();
     if (currentFrame == null) {
       currentFrame = graphFrames.get(0);
     }

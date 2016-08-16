@@ -41,12 +41,12 @@ import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.NotAnAbsolutePathException;
 import org.gramlab.core.umlv.unitex.cassys.TransducerListTable;
 import org.gramlab.core.umlv.unitex.cassys.TransducerListTableModel;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * User Configuration frame for Cassys.
@@ -839,7 +839,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			grf = getGrfFromFst2(f);
 		}
 		if (grf != null) {
-			GlobalProjectManager.search(grf)
+			UnitexProjectManager.search(grf)
 					.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(grf);
 		} else {
 			final String t = "Wrong file selected";

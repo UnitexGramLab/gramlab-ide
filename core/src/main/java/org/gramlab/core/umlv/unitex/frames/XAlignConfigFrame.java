@@ -39,7 +39,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
@@ -48,6 +47,7 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.XMLizerCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes the XAlign parameter frame.
@@ -281,12 +281,12 @@ public class XAlignConfigFrame extends JInternalFrame {
 		final File alignmentFile2 = alignmentFile;
 		/* We close the parameter frame */
 		setVisible(false);
-		GlobalProjectManager.search(null)
+		UnitexProjectManager.search(null)
 				.getFrameManagerAs(UnitexInternalFrameManager.class).closeXAlignFrame();
 		final ToDo toDo = new ToDo() {
 			@Override
 			public void toDo(boolean success) {
-				GlobalProjectManager.search(null)
+				UnitexProjectManager.search(null)
 						.getFrameManagerAs(UnitexInternalFrameManager.class)
 						.newXAlignFrame(xmlSourceFile, xmlTargetFile, alignmentFile2);
 			}

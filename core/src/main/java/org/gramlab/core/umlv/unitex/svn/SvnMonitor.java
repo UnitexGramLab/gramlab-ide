@@ -29,10 +29,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 import javax.swing.Timer;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 public class SvnMonitor {
 
@@ -75,14 +75,14 @@ public class SvnMonitor {
 			monitor(ConfigManager.getManager().getGraphRepositoryPath(null,
 					null));
 			if (!autoMonitoring || svnConflictModel.size() > 0) {
-				GlobalProjectManager.search(null)
+				UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.showSvnConflictsFrame(this);
 			}
 		} else {
 			monitor(rootDir);
 			if (!autoMonitoring || svnConflictModel.size() > 0) {
-				GlobalProjectManager.search(null)
+				UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.showSvnConflictsFrame(this);
 			}

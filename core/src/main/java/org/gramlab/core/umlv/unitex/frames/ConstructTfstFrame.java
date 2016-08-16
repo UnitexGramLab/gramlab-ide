@@ -40,7 +40,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.process.Launcher;
@@ -53,6 +52,7 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.ReconstrucaoCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TaggerCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes the "Construct Text FST" frame that offers to the user
@@ -311,9 +311,9 @@ public class ConstructTfstFrame extends JInternalFrame {
 				commands.addCommand(taggerCmd);
 			}
 		}
-		GlobalProjectManager.search(null)
+		UnitexProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class).closeTextAutomatonFrame();
-		GlobalProjectManager.search(null)
+		UnitexProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class).closeTfstTagsFrame();
 		/* We also have to rebuild the text automaton */
 		Config.cleanTfstFiles(true);
@@ -330,10 +330,10 @@ public class ConstructTfstFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(sntDir)
+			UnitexProjectManager.search(sntDir)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newTextAutomatonFrame(1,false);
-			GlobalProjectManager.search(sntDir)
+			UnitexProjectManager.search(sntDir)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newTfstTagsFrame(new File(sntDir, "tfst_tags_by_freq.txt"));
 		}

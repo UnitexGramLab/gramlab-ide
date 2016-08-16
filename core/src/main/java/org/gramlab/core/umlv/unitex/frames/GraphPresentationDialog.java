@@ -48,10 +48,10 @@ import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.FontInfo;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.Preferences;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes the graph presentation dialog box, that allows the user
@@ -389,7 +389,7 @@ class GraphPresentationDialog extends JDialog {
 		final Action inputAction = new AbstractAction("Input") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = GlobalProjectManager.search(null)
+				final FontInfo i = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(info.getInput());
 				if (i != null) {
@@ -402,7 +402,7 @@ class GraphPresentationDialog extends JDialog {
 		final Action outputAction = new AbstractAction("Output") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				final FontInfo i = GlobalProjectManager.search(null)
+				final FontInfo i = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newFontDialog(info.getOutput());
 				if (i != null) {
@@ -437,7 +437,7 @@ class GraphPresentationDialog extends JDialog {
 		final Action defaultAction = new AbstractAction("Default") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (GlobalProjectManager.search(null)
+				if (UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame() == null)
 					return;

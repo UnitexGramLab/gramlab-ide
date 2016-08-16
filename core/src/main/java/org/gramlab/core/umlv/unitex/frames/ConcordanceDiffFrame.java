@@ -43,12 +43,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.concord.BigConcordanceDiff;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes a frame that can show an HTML condordance diff file.
@@ -171,7 +171,7 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 				if (s == null || e.getValueIsAdjusting())
 					return;
 				if (!s.contains("<a href=\"")) return;
-				TextFrame fTmp = GlobalProjectManager.search(null)
+				TextFrame fTmp = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.getTextFrame();
 				if (fTmp == null) {
@@ -179,7 +179,7 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 					 * In Gramlab, a concordance may be open while the text
 					 * frame is not
 					 */
-					fTmp = GlobalProjectManager.search(null)
+					fTmp = UnitexProjectManager.search(null)
 							.getFrameManagerAs(InternalFrameManager.class).newTextFrame(
 							ConfigManager.getManager().getCurrentSnt(null),
 							false);
@@ -210,12 +210,12 @@ public class ConcordanceDiffFrame extends TabbableInternalFrame {
 					e2.printStackTrace();
 				}
 				boolean iconified = true;
-				final TextAutomatonFrame foo = GlobalProjectManager.search(null)
+				final TextAutomatonFrame foo = UnitexProjectManager.search(null)
 						.getFrameManagerAs(InternalFrameManager.class).getTextAutomatonFrame();
 				if (foo != null) {
 					iconified = foo.isIcon();
 				}
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newTextAutomatonFrame(sentenceNumber, iconified);
 				list.clearSelection();
 			}

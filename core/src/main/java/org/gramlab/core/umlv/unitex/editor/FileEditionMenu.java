@@ -28,10 +28,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.frames.MenuAdapter;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * Menu to handle file edition
@@ -97,7 +97,7 @@ public class FileEditionMenu extends JMenu {
 		convert.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newTranscodingFrame();
 			}
 		});
@@ -105,7 +105,7 @@ public class FileEditionMenu extends JMenu {
 		closeAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeAllFileEditionTextFrames();
 			}
 		});

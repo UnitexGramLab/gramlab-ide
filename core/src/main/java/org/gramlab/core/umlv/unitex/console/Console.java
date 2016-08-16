@@ -20,8 +20,8 @@
  */
 package org.gramlab.core.umlv.unitex.console;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 public class Console {
 	/**
@@ -32,13 +32,13 @@ public class Console {
 	 */
 	public static ConsoleEntry addCommand(String command,
 			boolean isRealCommand, int pos, boolean systemMsg, String logID) {
-		return GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		return UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.getConsoleFrame().addCommand(command, isRealCommand, pos, systemMsg, logID);
 	}
 
 	public static ConsoleEntry addCommand(String command, boolean systemMsg,
 			String logID) {
-		return GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		return UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.getConsoleFrame().addCommand(command, true, -1, systemMsg, logID);
 	}
 }

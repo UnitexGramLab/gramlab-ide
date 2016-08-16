@@ -18,7 +18,7 @@ public class GlobalProjectManager {
 	public GlobalProjectManager(ProjectManager manager) {
 		GlobalProjectManager.projectManager = manager;
 	}
-
+	
 	/**
 	 * Casts the projectManager to the specified type.
 	 * 

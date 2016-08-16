@@ -36,11 +36,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.CheckDicCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes the "Check Format" frame, accessible from the "DELA"
@@ -129,7 +129,7 @@ public class CheckDicFrame extends JInternalFrame {
 			command = command.no_space_warning();
 		}
 		final File tmp = new File(dela.getParentFile(), "CHECK_DIC.TXT");
-		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeCheckResultFrame();
 		Launcher.exec(command.getBuilder(), true, new CheckDicDo(tmp));
 	}
@@ -143,7 +143,7 @@ public class CheckDicFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(results).getFrameManagerAs(InternalFrameManager.class)
+			UnitexProjectManager.search(results).getFrameManagerAs(InternalFrameManager.class)
 					.newCheckResultFrame(results);
 		}
 	}

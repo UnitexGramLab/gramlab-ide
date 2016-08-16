@@ -11,20 +11,18 @@ import org.gramlab.core.umlv.unitex.project.UnitexProject;
  * @author mdamis
  *
  */
-public class UnitexProjectManager implements ProjectManager {
-	private UnitexProject project;
+public class UnitexProjectManager {
+	private static UnitexProject project;
 	
 	public UnitexProjectManager(UnitexProject project) {
 		this.project = project;
 	}
 
-	@Override
-	public Project search(File resource) {
+	public static Project search(File resource) {
 		return project;
 	}
 
-	@Override
-	public Project search(File resource, boolean weShallOpenTheProject) {
+	public static Project search(File resource, boolean weShallOpenTheProject) {
 		return project;
 	}
 }

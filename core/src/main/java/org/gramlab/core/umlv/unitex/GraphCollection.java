@@ -27,13 +27,12 @@ import java.io.OutputStreamWriter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
-import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.frames.MessageWhileWorkingFrame;
 import org.gramlab.core.umlv.unitex.frames.UnitexInternalFrameManager;
 import org.gramlab.core.umlv.unitex.io.UnicodeIO;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class provides methods that generate a graph that calls all the
@@ -62,12 +61,12 @@ public class GraphCollection {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final MessageWhileWorkingFrame f = GlobalProjectManager
+				final MessageWhileWorkingFrame f = UnitexProjectManager
 						.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 						.newMessageWhileWorkingFrame("Building graph collection");
 				setStop(false);
 				buildGraphCollection(srcDir, destGraph, copy, f.getLabel());
-				GlobalProjectManager.search(null)
+				UnitexProjectManager.search(null)
 						.getFrameManagerAs(UnitexInternalFrameManager.class)
 						.closeMessageWhileWorkingFrame();
 			}

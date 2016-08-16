@@ -35,13 +35,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidSourceEncodingException;
 import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.ConvertCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.transcoding.Transcoder;
 
 /**
@@ -108,7 +108,7 @@ public class TranscodeOneFileDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newTranscodingFrame(file,toDo, true);
 			}
 		});

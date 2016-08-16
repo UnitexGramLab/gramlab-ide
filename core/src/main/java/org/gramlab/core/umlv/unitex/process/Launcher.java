@@ -23,10 +23,10 @@ package org.gramlab.core.umlv.unitex.process;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.process.commands.CommandBuilder;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * Note: if any, the ToDo instructions are executed in the Swing Thread
@@ -59,7 +59,7 @@ public class Launcher {
 			boolean stopIfProblem) {
 		if (c == null)
 			return;
-		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.newProcessInfoFrame(c, close,myDo, stopIfProblem);
 	}
 

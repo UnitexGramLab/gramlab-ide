@@ -40,13 +40,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
 import org.gramlab.core.umlv.unitex.frames.TranscodingFrame;
 import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
 import org.gramlab.core.umlv.unitex.io.Encoding;
 import org.gramlab.core.umlv.unitex.process.ToDo;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.text.Text;
 
 /**
@@ -252,7 +252,7 @@ public class MyDropTarget implements UnitexDropTarget {
 							e.printStackTrace();
 							return;
 						}
-						GlobalProjectManager.search(dela)
+						UnitexProjectManager.search(dela)
 								.getFrameManagerAs(InternalFrameManager.class)
 								.newDelaFrame(dela);
 					}
@@ -276,14 +276,14 @@ public class MyDropTarget implements UnitexDropTarget {
 						final ToDo toDo = new ToDo() {
 							@Override
 							public void toDo(boolean success) {
-								GlobalProjectManager.search(dela)
+								UnitexProjectManager.search(dela)
 										.getFrameManagerAs(InternalFrameManager.class)
 										.newDelaFrame(dela);
 							}
 						};
 						final Encoding e = Encoding.getEncoding(dela);
 						if (e == null) {
-							GlobalProjectManager.search(dela)
+							UnitexProjectManager.search(dela)
 									.getFrameManagerAs(InternalFrameManager.class)
 									.newTranscodeOneFileDialog(dela, toDo);
 						} else {
@@ -298,7 +298,7 @@ public class MyDropTarget implements UnitexDropTarget {
 					if (FileUtil.getFileNameExtension(f).compareToIgnoreCase(
 							"grf") == 0) {
 						final File file = (File) aList;
-						GlobalProjectManager.search(file)
+						UnitexProjectManager.search(file)
 								.getFrameManagerAs(InternalFrameManager.class)
 								.newGraphFrame(file);
 					}
@@ -368,7 +368,7 @@ public class MyDropTarget implements UnitexDropTarget {
 		}
 
 		private void processDropList(List<?> list) {
-			final TranscodingFrame frame = GlobalProjectManager
+			final TranscodingFrame frame = UnitexProjectManager
 					.search(null).getFrameManagerAs(InternalFrameManager.class)
 					.newTranscodingFrame();
 			Object o;

@@ -59,7 +59,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
@@ -71,6 +70,7 @@ import org.gramlab.core.umlv.unitex.process.commands.DicoCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.text.BigTextArea;
 
 
@@ -474,7 +474,7 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
-				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTextDicFrame();
 				MultiCommands commands;
 				commands = getRunCmd();
@@ -485,9 +485,9 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 					 * As we construct the text automaton for Korean, we must
 					 * close the text automaton frame, if any
 					 */
-					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+					UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 							.closeTextAutomatonFrame();
-					GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+					UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 							.closeTfstTagsFrame();
 					/* We also have to rebuild the text automaton */
 					Config.cleanTfstFiles(true);
@@ -773,14 +773,14 @@ public class ApplyLexicalResourcesFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(sntDir)
+			UnitexProjectManager.search(sntDir)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newTextDicFrame(sntDir,false);
 			if (ConfigManager.getManager().isKorean(null)) {
-				GlobalProjectManager.search(sntDir)
+				UnitexProjectManager.search(sntDir)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newTextAutomatonFrame(1, false);
-				GlobalProjectManager.search(sntDir)
+				UnitexProjectManager.search(sntDir)
 						.getFrameManagerAs(InternalFrameManager.class)
 						.newTfstTagsFrame(new File(sntDir, "tfst_tags_by_freq.txt"));
 			}

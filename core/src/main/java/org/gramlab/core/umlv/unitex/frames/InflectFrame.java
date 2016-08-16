@@ -39,7 +39,6 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
-import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.process.Launcher;
@@ -47,6 +46,7 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.MultiFlexCommand;
 import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class describes a frame that allows the user to set parameters of the
@@ -187,7 +187,7 @@ public class InflectFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			GlobalProjectManager.search(dela1)
+			UnitexProjectManager.search(dela1)
 					.getFrameManagerAs(InternalFrameManager.class).newDelaFrame(dela1);
 		}
 	}
