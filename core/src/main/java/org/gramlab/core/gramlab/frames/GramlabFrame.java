@@ -1505,10 +1505,10 @@ public class GramlabFrame extends JFrame {
 		JMenuBar bar = new JMenuBar();
 		bar.add(createWorkspaceMenu());
 		bar.add(createProjectMenu());
-		bar.add(createWindowMenu());
 		bar.add(createDelaMenu());
 		bar.add(createGraphsMenu());
 		bar.add(createFileEditionMenu());
+		bar.add(createWindowMenu());
 		bar.add(createHelpMenu());
 		return bar;
 	}
@@ -1574,7 +1574,8 @@ public class GramlabFrame extends JFrame {
 	}
 	
 	private JMenu createWindowMenu() {
-		JMenu m = new JMenu("Window");
+		final JMenu window = new JMenu("Window");
+		JMenu m = new JMenu("Perspective");
 		Action n = new AbstractAction("Change Perspective") {
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
@@ -1585,7 +1586,8 @@ public class GramlabFrame extends JFrame {
 			}
 		};
 		m.add(new JMenuItem(n));
-		return m;
+		window.add(m);
+		return window;
 	}
 	
 	private JMenu createProjectMenu() {

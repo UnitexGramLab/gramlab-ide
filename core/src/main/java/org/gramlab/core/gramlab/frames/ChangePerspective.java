@@ -1,7 +1,6 @@
 package org.gramlab.core.gramlab.frames;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -19,6 +18,7 @@ import javax.swing.WindowConstants;
 import org.gramlab.core.Main;
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
+import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 /**
@@ -60,25 +60,26 @@ public class ChangePerspective extends JDialog {
 		JPanel center=new JPanel(new GridLayout(7,7));
 		center.add(new JLabel(""));
 		final JRadioButton classic=new JRadioButton("Classic",true);
-		final JRadioButton projectOriented=new JRadioButton("Project-Oriented",false);
+		final JRadioButton projectOriented=new JRadioButton("Project-oriented",false);
 		ButtonGroup bg=new ButtonGroup();
 		center.add(classic);
 		center.add(projectOriented);
 		bg.add(classic);
 		bg.add(projectOriented);
-		final JLabel error = new JLabel("You are already using "+currPerspective+" Perspective.");
-		error.setForeground(Color.red);
-		center.add(error);
-	    error.setVisible(false);
 		p.add(center,BorderLayout.CENTER);
 		JPanel down=new JPanel();
 		final JButton ok=new JButton("OK");
+		if(currPerspective.equals("Classic")){
+			classic.setEnabled(false);
+			projectOriented.setSelected(true);
+		}else if(currPerspective.equals("Project-oriented")){
+			projectOriented.setEnabled(false);
+			classic.setSelected(true);
+		}
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (classic.isSelected()) {
-					if(currPerspective.equals("Classic")){
-						error.setVisible(true);	
-					}else if(currPerspective.equals("none")){
+					if(currPerspective.equals("none")){
 						setVisible(false);
 						openClassic(args);
 					}
@@ -87,9 +88,7 @@ public class ChangePerspective extends JDialog {
 						switchToClassic(args);
 					}
 				} else if (projectOriented.isSelected()) {
-					if(currPerspective.equals("Project-oriented")){
-						error.setVisible(true);
-					}else if(currPerspective.equals("none")){
+					if(currPerspective.equals("none")){
 						setVisible(false);
 						openProjectOriented(args);
 					}
@@ -113,6 +112,8 @@ public class ChangePerspective extends JDialog {
 		down.add(ok);
 		KeyUtil.addCRListener(ok);
 		KeyUtil.addCRListener(cancel);
+		KeyUtil.addEnterListener(p, ok);
+		KeyUtil.addEscListener(p, cancel);
 		p.add(down,BorderLayout.SOUTH);
 		return p;
 	}
@@ -130,6 +131,8 @@ public class ChangePerspective extends JDialog {
 			Main.getProjectorientedMainFrame().setVisible(true);
 			//set Current projectManager back to Initial GramlabProjectManager
 			GlobalProjectManager.setGlobalProjectManager(GlobalProjectManager.getGramlabProjectManager()); 
+			//set Current configManager back to initial GramlabPreferences
+			ConfigManager.setManager(ConfigManager.getGramlabPreferences());
 		}
 		else{
 			Main.launchGramlab(args);
@@ -141,7 +144,9 @@ public class ChangePerspective extends JDialog {
 		if(Main.getClassicMainFrame()!=null){
 			Main.getClassicMainFrame().setVisible(true);
 			//set Current projectManager back to Initial UnitexProjectManager
-			GlobalProjectManager.setGlobalProjectManager(GlobalProjectManager.getUnitexProjectManager());  // set projectmanger back to unitex
+			GlobalProjectManager.setGlobalProjectManager(GlobalProjectManager.getUnitexProjectManager());
+			//set Current configManager back to initial GramlabPreferences
+			ConfigManager.setManager(ConfigManager.getUnitexConfigManager());
 		}else{
 			Main.launchUnitex(args);
 		}

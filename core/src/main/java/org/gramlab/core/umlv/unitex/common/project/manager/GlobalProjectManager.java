@@ -21,7 +21,7 @@ public class GlobalProjectManager {
 	 */
 	private static ProjectManager projectManager;
 	private static ProjectManager classic;
-	private static GramlabProjectManager projectoriented;
+	private static GramlabProjectManager projectOriented;
 	
 	public GlobalProjectManager(ProjectManager manager) {
 		GlobalProjectManager.projectManager = manager;
@@ -36,7 +36,7 @@ public class GlobalProjectManager {
 	}
 	
 	public static void setGramlabProjectManager (ProjectManager manager) {
-		GlobalProjectManager.projectoriented = (GramlabProjectManager) manager;
+		GlobalProjectManager.projectOriented = (GramlabProjectManager) manager;
 	}
 	
 	public static void setUnitexProjectManager (ProjectManager manager) {
@@ -44,7 +44,7 @@ public class GlobalProjectManager {
 	}
 	
 	public static GramlabProjectManager getGramlabProjectManager () {
-		return projectoriented;
+		return projectOriented;
 	}
 	
 	public static ProjectManager getUnitexProjectManager () {

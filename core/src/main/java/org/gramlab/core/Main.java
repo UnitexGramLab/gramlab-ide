@@ -16,7 +16,6 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
@@ -72,7 +71,7 @@ public class Main {
 			System.exit(0);
 		} catch (final ClassNotFoundException e) {
 			System.err
-					.println("Your version of Java does not contain all the classes required by Unitex.\nProgram Terminated");
+					.println("Your version of Java does not contain all the classes required by GramLab.\nProgram Terminated");
 			System.exit(0);
 		} catch (final InstantiationException e) {
 			System.err
@@ -136,21 +135,8 @@ public class Main {
 		        frame.setVisible(true);
 				frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		        frame.repaint();
-		        EventQueue.invokeLater(new Runnable() {
-		        	@Override
-		        	public void run() {
-		        		p.add(new JLabel(Icons.logo),null);
-		        		GlobalProjectManager.getAs(GramlabProjectManager.class).loadProjects();
-						Timer t=new Timer(2000,new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								frame.setGlassPane(glass);
-							}
-						});
-						t.setRepeats(false);
-						t.start();
-		        	}
-		        });
+		        GlobalProjectManager.getAs(GramlabProjectManager.class).loadProjects();
+		        frame.setGlassPane(glass);
 			}
 		});        
  	}
@@ -171,48 +157,28 @@ public class Main {
 			path=args[0];
 		}
 		final String path1 = path;
-		final SplashScreen splash = new SplashScreen(new ImageIcon(Icons.class.getResource("logo.png")));
-		splash.addWindowListener(new WindowAdapter() {
+		EventQueue.invokeLater(new Runnable() {
 			@Override
-			public void windowOpened(WindowEvent e) {
-				final Timer timer = new Timer(1500, null);
-				timer.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e1) {
-						splash.dispose();
-						EventQueue.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								ConfigManager.setManager(new ConfigManager());
-								Config.initConfig(path1);
-								Preferences preferences = ConfigManager.getManager().getPreferences(null);
-								FontInfo menuFontInfo = preferences.getMenuFont();
-								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
-								
-								classicFrame = new UnitexFrame();
-								final Image img16x16 = new ImageIcon(
-										Unitex.class.getResource("16x16.png"))
-										.getImage();
-								final Image img32x32 = new ImageIcon(
-										Unitex.class.getResource("32x32.png"))
-										.getImage();
-								final Image img48x48 = new ImageIcon(
-										Unitex.class.getResource("48x48.png"))
-										.getImage();
-								classicFrame.setIconImages(Arrays.asList(img16x16,
-										img32x32, img48x48));
-								classicFrame.setVisible(true);
-								ConfigManager.getManager().getSvnMonitor(null)
-										.start();
-							}
-						});
-						timer.stop();
-					}
-				});
-				timer.start();
+			public void run() {
+				ConfigManager configManager = new ConfigManager();
+				//save preferences to reuse when switching back to Classic
+				ConfigManager.setUnitexConfigManager(configManager);
+				ConfigManager.setManager(configManager);
+				Config.initConfig(path1);
+				Preferences preferences = ConfigManager.getManager().getPreferences(null);
+				FontInfo menuFontInfo = preferences.getMenuFont();
+				setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN,
+						menuFontInfo.getSize()));
+				classicFrame = new UnitexFrame();
+				final Image img16x16 = new ImageIcon(Unitex.class.getResource("16x16.png")).getImage();
+				final Image img32x32 = new ImageIcon(Unitex.class.getResource("32x32.png")).getImage();
+				final Image img48x48 = new ImageIcon(Unitex.class.getResource("48x48.png")).getImage();
+				classicFrame.setIconImages(Arrays.asList(img16x16, img32x32, img48x48));
+				classicFrame.setVisible(true);
+				ConfigManager.getManager().getSvnMonitor(null).start();
 			}
 		});
-		splash.setVisible(true);
+
 	}
 
 	public static void setUIFont (javax.swing.plaf.FontUIResource f){

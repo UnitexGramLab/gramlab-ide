@@ -1416,7 +1416,7 @@ public class UnitexFrame extends JFrame {
 	}
 	
 	JMenu buildWindowsMenu() {
-		final JMenu windows = new JMenu("Windows");
+		final JMenu windows = new JMenu("Window");
 		final JMenuItem tile = new JMenuItem("Tile");
 		final List<JMenuItem> frameItems = new ArrayList<JMenuItem>();
 		tile.setEnabled(true);
