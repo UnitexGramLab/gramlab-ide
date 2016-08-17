@@ -249,6 +249,7 @@ public class GramlabFrame extends JFrame {
 			public Component getTreeCellRendererComponent(JTree tree,
 					Object value, boolean sel, boolean expanded, boolean leaf,
 					int row, boolean hasFocus) {
+	
 				WorkspaceTreeNode node = (WorkspaceTreeNode) value;
 				String name = node.getFile().getName();
 				if (value instanceof RootNode) {
@@ -266,7 +267,8 @@ public class GramlabFrame extends JFrame {
 					super.getTreeCellRendererComponent(tree, name, sel,
 							expanded, false, row, hasFocus);
 					GramlabProject project = n.getProject();
-					if (GlobalProjectManager.getAs(GramlabProjectManager.class)
+					//to keep using GramlabProjectManager even when user has switched to Classic perspective
+					if (GlobalProjectManager.getGramlabProjectManager()
 							.getCurrentProject() == project) {
 						/*
 						 * The current project is displayed with a different
@@ -295,8 +297,8 @@ public class GramlabFrame extends JFrame {
 						setForeground(Color.RED.darker());
 						setText(getText() + " (read-only)"+HACK_SPACES_TEXT);
 					}
-					GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
-							.getProject(node.getFile());
+					//to keep using GramlabProjectManager even when user has switched to Classic perspective
+					GramlabProject p = GlobalProjectManager.getGramlabProjectManager().getProject(node.getFile());
 					SvnInfo info = p.getSvnInfo(node.getFile());
 					if (info != null) {
 						String text = getText();

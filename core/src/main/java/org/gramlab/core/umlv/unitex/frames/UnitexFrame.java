@@ -80,7 +80,6 @@ import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.config.SntFileEntry;
 import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
-import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphMenuBuilder;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.io.Encoding;
@@ -145,6 +144,8 @@ public class UnitexFrame extends JFrame {
 		setContentPane(desktop);
 		UnitexProject project = new UnitexProject(new UnitexInternalFrameManager(desktop));
 		UnitexProjectManager projectManager = new UnitexProjectManager(project);
+		//save projectManager for Classic perspective, in case user switches back
+		GlobalProjectManager.setUnitexProjectManager(projectManager); 
 		new GlobalProjectManager(projectManager);
 		buildMenus();
 		mainFrame = this;
@@ -304,7 +305,6 @@ public class UnitexFrame extends JFrame {
 		final JMenu xalign = buildXAlignMenu();
 		final FileEditionMenu fileEditionMenu = new FileEditionMenu();
 		final JMenu windows = buildWindowsMenu();
-		final JMenu perspective = buildPerspectiveMenu();
 		final JMenu help = UnitexHelpMenuBuilder.build(Config.getApplicationDir());
 		final JMenu info = buildInfoMenu();
 		text.setMnemonic(KeyEvent.VK_T);
@@ -315,7 +315,6 @@ public class UnitexFrame extends JFrame {
 		fileEditionMenu.setMnemonic(KeyEvent.VK_F);
 		help.setMnemonic(KeyEvent.VK_H);
 		windows.setMnemonic(KeyEvent.VK_W);
-		perspective.setMnemonic(KeyEvent.VK_P);
 		info.setMnemonic(KeyEvent.VK_I);
 		menuBar.add(text);
 		menuBar.add(DELA);
@@ -324,7 +323,6 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(xalign);
 		menuBar.add(fileEditionMenu);
 		menuBar.add(windows);
-		menuBar.add(perspective);
 		menuBar.add(help);
 		menuBar.add(info);
 		setJMenuBar(menuBar);
@@ -1417,21 +1415,6 @@ public class UnitexFrame extends JFrame {
 		return menu;
 	}
 	
-	private JMenu buildPerspectiveMenu() {
-		JMenu m = new JMenu("Perspective");
-		Action n = new AbstractAction("Change Perspective") {
-			public void actionPerformed(ActionEvent e) {
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						new ChangePerspective("Classic", null);
-					}
-				});
-			}
-		};
-		m.add(new JMenuItem(n));
-		return m;
-	}
-
 	JMenu buildWindowsMenu() {
 		final JMenu windows = new JMenu("Windows");
 		final JMenuItem tile = new JMenuItem("Tile");
@@ -1457,9 +1440,21 @@ public class UnitexFrame extends JFrame {
 				arrangeIcons();
 			}
 		});
+		JMenu m = new JMenu("Perspective");
+		Action n = new AbstractAction("Change Perspective") {
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new ChangePerspective("Classic", null);
+					}
+				});
+			}
+		};
+		m.add(new JMenuItem(n));
 		windows.add(tile);
 		windows.add(cascade);
 		windows.add(arrangeIcons);
+		windows.add(m);
 		windows.addSeparator();
 
 		windows.addMenuListener(new MenuAdapter() {

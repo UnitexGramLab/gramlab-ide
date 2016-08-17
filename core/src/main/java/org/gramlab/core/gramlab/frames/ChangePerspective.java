@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 
 import org.gramlab.core.Main;
 import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 /**
@@ -44,9 +45,9 @@ public class ChangePerspective extends JDialog {
 	public ChangePerspective(String currPerspective, String[] args) {
 		super(Main.getMainFrame(), "Choose perspective", true);
 		setContentPane(constructPanel(currPerspective, args));
-		setLocationRelativeTo(null);
+		setAlwaysOnTop(true);
 		pack();
-		FrameUtil.center(getOwner(),this);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setVisible(true);
 	}
@@ -115,23 +116,35 @@ public class ChangePerspective extends JDialog {
 		p.add(down,BorderLayout.SOUTH);
 		return p;
 	}
-
+	
 	protected void openClassic(String[] args) {
 		Main.launchUnitex(args);
 	}
-
+	
 	protected void openProjectOriented(String[] args) {
 		Main.launchGramlab(args);
 	}
-
+	
 	protected void switchToProjectOriented(String[] args) {
-		Main.launchGramlab(args);
-		Main.getMainFrame().setVisible(false);
+		if(Main.getProjectorientedMainFrame()!=null){
+			Main.getProjectorientedMainFrame().setVisible(true);
+			//set Current projectManager back to Initial GramlabProjectManager
+			GlobalProjectManager.setGlobalProjectManager(GlobalProjectManager.getGramlabProjectManager()); 
+		}
+		else{
+			Main.launchGramlab(args);
+		}
+		Main.getClassicMainFrame().setVisible(false);
 	}
 
 	protected void switchToClassic(String[] args) {
-		Main.launchUnitex(args);
-		Main.getMainFrame().setVisible(false);
+		if(Main.getClassicMainFrame()!=null){
+			Main.getClassicMainFrame().setVisible(true);
+			//set Current projectManager back to Initial UnitexProjectManager
+			GlobalProjectManager.setGlobalProjectManager(GlobalProjectManager.getUnitexProjectManager());  // set projectmanger back to unitex
+		}else{
+			Main.launchUnitex(args);
+		}
+		Main.getProjectorientedMainFrame().setVisible(false);
 	}
-
 }

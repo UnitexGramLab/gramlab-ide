@@ -41,8 +41,8 @@ public class ProjectPreferences extends AbstractConfigModel {
 	 * returned.
 	 */
 	private GramlabProject getProject(String language) {
-		if (language==null) return GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject();
-		return GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(language);
+		if (language==null) return GlobalProjectManager.getGramlabProjectManager().getCurrentProject();
+		return GlobalProjectManager.getGramlabProjectManager().getProject(language);
 	}
 	
 	public Preferences getPreferences(String language) {
@@ -175,14 +175,14 @@ public class ProjectPreferences extends AbstractConfigModel {
 	
 	@Override
 	public File getGraphRepositoryPath(String project,String repositoryName) {
-		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
+		GramlabProject p=GlobalProjectManager.getGramlabProjectManager().getProject(project);
 		if (p==null) return null;
 		return p.getNamedRepository(repositoryName);
 	}
 
 	@Override
 	public File getDefaultGraphRepositoryPath(String project) {
-		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);
+		GramlabProject p=GlobalProjectManager.getGramlabProjectManager().getProject(project);
 		if (p==null) return null; 
 		return p.getDefaultGraphRepository();
 	}

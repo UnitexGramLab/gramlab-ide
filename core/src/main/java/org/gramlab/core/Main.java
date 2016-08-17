@@ -109,6 +109,9 @@ public class Main {
     }
 	
 	private static JFrame frame;
+	public static JFrame getProjectorientedMainFrame() {
+		return frame;
+	}
 	
 	public static void launchGramlab(String[] args) {
 		
@@ -120,7 +123,10 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new GlobalProjectManager(new GramlabProjectManager());
+				GramlabProjectManager manager = new GramlabProjectManager();
+				//save projectManager for Project-oriented perspective, in case user switches back
+				GlobalProjectManager.setGramlabProjectManager(manager);
+				new GlobalProjectManager(manager);
 				GramlabConfigManager.initConfig(path1);
 				frame = new GramlabFrame();
 				final Component glass=frame.getGlassPane();
@@ -149,6 +155,11 @@ public class Main {
 		});        
  	}
 	
+	private static UnitexFrame classicFrame=null;
+	
+	public static UnitexFrame getClassicMainFrame() {
+		return classicFrame;
+	}
 	/**
 	 * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo and
 	 * then creates a <code>UnitexFrame</code>.
@@ -177,8 +188,8 @@ public class Main {
 								Preferences preferences = ConfigManager.getManager().getPreferences(null);
 								FontInfo menuFontInfo = preferences.getMenuFont();
 								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
-
-								frame = new UnitexFrame();
+								
+								classicFrame = new UnitexFrame();
 								final Image img16x16 = new ImageIcon(
 										Unitex.class.getResource("16x16.png"))
 										.getImage();
@@ -188,9 +199,9 @@ public class Main {
 								final Image img48x48 = new ImageIcon(
 										Unitex.class.getResource("48x48.png"))
 										.getImage();
-								frame.setIconImages(Arrays.asList(img16x16,
+								classicFrame.setIconImages(Arrays.asList(img16x16,
 										img32x32, img48x48));
-								frame.setVisible(true);
+								classicFrame.setVisible(true);
 								ConfigManager.getManager().getSvnMonitor(null)
 										.start();
 							}
