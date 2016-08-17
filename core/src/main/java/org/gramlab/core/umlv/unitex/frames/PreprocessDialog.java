@@ -42,6 +42,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidPolyLexArgumentException;
@@ -60,7 +61,6 @@ import org.gramlab.core.umlv.unitex.process.commands.SortTxtCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Txt2TfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.text.SntUtil;
 
 /**
@@ -269,7 +269,7 @@ public class PreprocessDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// if the user has clicked on cancel, we do nothing
 				setVisible(false);
-				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTextFrame();
 			}
 		};
@@ -334,7 +334,7 @@ public class PreprocessDialog extends JDialog {
 			tokenizeCmd = tokenizeCmd.inputOffsets(lastOutputOffsets);
 		}
 		commands.addCommand(tokenizeCmd);
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeTextFrame();
 		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true,
@@ -663,7 +663,7 @@ public class PreprocessDialog extends JDialog {
 		if (textFst2Check.isSelected()) {
 			commands = constructTextAutomaton(commands);
 		}
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeTextFrame();
 		SntUtil.cleanSntDir(sntDir);
 		Launcher.exec(commands, true,

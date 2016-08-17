@@ -22,6 +22,7 @@ import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.FormatFileException;
 import org.gramlab.core.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.console.ConsoleEntry;
@@ -31,7 +32,6 @@ import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.ToDoBeforeSingleCommand;
 import org.gramlab.core.umlv.unitex.process.commands.CassysCommand;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * Main frame of the cassys menu.
@@ -168,7 +168,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		}
 		
 		if (a.getSource() == edit || a.getSource() == _new) {
-			TransducerListConfigurationFrame t = UnitexProjectManager.search(null)
+			TransducerListConfigurationFrame t = GlobalProjectManager.search(null)
 					.getFrameManagerAs(InternalFrameManager.class).getTransducerListConfigurationFrame();
 			
 			// If save has to be done. Do it first
@@ -179,7 +179,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 					t.quit();
 				}
 				Config.setCurrentTransducerList(selected_file);
-				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newTransducerListConfigurationFrame(selected_file);
 			}
 		}
@@ -277,7 +277,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		public void toDo(boolean success) {
 			
 			
-			UnitexProjectManager.search(languageDirectory).getFrameManagerAs(InternalFrameManager.class)
+			GlobalProjectManager.search(languageDirectory).getFrameManagerAs(InternalFrameManager.class)
 					.newConcordanceParameterFrame();
 		}
 	}

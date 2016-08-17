@@ -48,6 +48,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
@@ -61,7 +62,6 @@ import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TEI2TxtCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.XAlignCommand;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.xalign.AlignmentEvent;
 import org.gramlab.core.umlv.unitex.xalign.ConcordanceModel;
 import org.gramlab.core.umlv.unitex.xalign.ConcordanceModelImpl;
@@ -171,7 +171,7 @@ public class XAlignFrame extends JInternalFrame {
 
 			@Override
 			public void internalFrameClosed(InternalFrameEvent e) {
-				UnitexProjectManager.search(null)
+				GlobalProjectManager.search(null)
 						.getFrameManagerAs(UnitexInternalFrameManager.class).closeXAlignLocateFrame();
 			}
 		});
@@ -333,7 +333,7 @@ public class XAlignFrame extends JInternalFrame {
 			final ToDo toDo = new ToDo() {
 				@Override
 				public void toDo(boolean success) {
-					UnitexProjectManager.search(null)
+					GlobalProjectManager.search(null)
 							.getFrameManagerAs(UnitexInternalFrameManager.class)
 							.newXAlignLocateFrame(language, snt, concordModel);
 				}
@@ -341,7 +341,7 @@ public class XAlignFrame extends JInternalFrame {
 			Launcher.exec(commands, true, toDo, true);
 			return;
 		}
-		UnitexProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newXAlignLocateFrame(language,snt, concordModel);
 	}
 
@@ -466,7 +466,7 @@ public class XAlignFrame extends JInternalFrame {
 			try {
 				model1.load(f);
 			} catch (final IOException e) {
-				UnitexProjectManager.search(null)
+				GlobalProjectManager.search(null)
 						.getFrameManagerAs(UnitexInternalFrameManager.class).closeXAlignFrame();
 			}
 		}

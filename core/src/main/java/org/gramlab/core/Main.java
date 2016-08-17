@@ -47,7 +47,8 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				
-				choosePerspective(args);				
+				choosePerspective(args);
+				
 			}
 		});
 	}
@@ -107,11 +108,7 @@ public class Main {
         
     }
 	
-	private static JFrame frame = null;
-	
-	public static JFrame getProjectorientedMainFrame() {
-		return frame;
-	}
+	private static JFrame frame;
 	
 	public static void launchGramlab(String[] args) {
 		
@@ -152,12 +149,6 @@ public class Main {
 		});        
  	}
 	
-	private static UnitexFrame classicFrame=null;
-	
-	public static UnitexFrame getClassicMainFrame() {
-		return classicFrame;
-	}
-	
 	/**
 	 * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo and
 	 * then creates a <code>UnitexFrame</code>.
@@ -187,7 +178,7 @@ public class Main {
 								FontInfo menuFontInfo = preferences.getMenuFont();
 								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
 
-								classicFrame = new UnitexFrame();
+								frame = new UnitexFrame();
 								final Image img16x16 = new ImageIcon(
 										Unitex.class.getResource("16x16.png"))
 										.getImage();
@@ -197,9 +188,9 @@ public class Main {
 								final Image img48x48 = new ImageIcon(
 										Unitex.class.getResource("48x48.png"))
 										.getImage();
-								classicFrame.setIconImages(Arrays.asList(img16x16,
+								frame.setIconImages(Arrays.asList(img16x16,
 										img32x32, img48x48));
-								classicFrame.setVisible(true);
+								frame.setVisible(true);
 								ConfigManager.getManager().getSvnMonitor(null)
 										.start();
 							}
@@ -222,14 +213,9 @@ public class Main {
 				UIManager.put (key, f);
 		}
 	}
-	
+
 	public static JFrame getMainFrame() {
-		if(getProjectorientedMainFrame()!=null){
-			return frame;
-		}
-		else{
-			return classicFrame;
-		}
+		return frame;
 	}
 	
 }

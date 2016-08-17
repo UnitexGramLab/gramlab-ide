@@ -49,6 +49,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileFilter;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
@@ -57,7 +58,6 @@ import org.gramlab.core.umlv.unitex.process.commands.ElagCompCommand;
 import org.gramlab.core.umlv.unitex.process.commands.FlattenCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * @author Olivier Blanc
@@ -249,7 +249,7 @@ public class ElagCompFrame extends JInternalFrame {
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				UnitexProjectManager.search(grf)
+				GlobalProjectManager.search(grf)
 						.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(grf);
 			}
 		});
@@ -289,7 +289,7 @@ public class ElagCompFrame extends JInternalFrame {
 									"ERROR", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
-				UnitexProjectManager.search(conc)
+				GlobalProjectManager.search(conc)
 						.getFrameManagerAs(InternalFrameManager.class).newLocateFrame(conc);
 			}
 		});

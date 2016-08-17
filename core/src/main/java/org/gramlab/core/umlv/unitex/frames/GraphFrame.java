@@ -78,6 +78,7 @@ import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.MyCursors;
 import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.Preferences;
@@ -99,7 +100,6 @@ import org.gramlab.core.umlv.unitex.process.Launcher;
 import org.gramlab.core.umlv.unitex.process.ToDo;
 import org.gramlab.core.umlv.unitex.process.commands.Grf2Fst2Command;
 import org.gramlab.core.umlv.unitex.process.commands.GrfDiffCommand;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.svn.ConflictSolvedListener;
 import org.gramlab.core.umlv.unitex.svn.SvnConflict;
 
@@ -311,7 +311,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 					return;
 				final GraphCall c = (GraphCall) grfListModel.get(n);
 				final File f = c.getGrf();
-				UnitexProjectManager.search(f)
+				GlobalProjectManager.search(f)
 						.getFrameManagerAs(InternalFrameManager.class).newGraphFrame(f);
 			}
 		});
@@ -699,7 +699,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						final GraphPresentationInfo info = UnitexProjectManager.search(grf)
+						final GraphPresentationInfo info = GlobalProjectManager.search(grf)
 								.getFrameManagerAs(InternalFrameManager.class)
 								.newGraphPresentationDialog(getGraphPresentationInfo(), true);
 						if (info != null) {
@@ -715,8 +715,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-            final FindAndReplaceDialog dialog = UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
-            UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
+            final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
+            GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
           }
 				});
 			}
@@ -926,7 +926,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			UnitexProjectManager.search(base).getFrameManagerAs(InternalFrameManager.class)
+			GlobalProjectManager.search(base).getFrameManagerAs(InternalFrameManager.class)
 					.newGraphDiffFrame(baseGrf,destGrf, info);
 		}
 	}

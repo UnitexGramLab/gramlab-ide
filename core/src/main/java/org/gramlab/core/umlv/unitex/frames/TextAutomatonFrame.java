@@ -74,6 +74,7 @@ import javax.swing.table.TableCellRenderer;
 
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesListener;
@@ -98,7 +99,6 @@ import org.gramlab.core.umlv.unitex.process.commands.ImplodeTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.RebuildTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TagsetNormTfstCommand;
 import org.gramlab.core.umlv.unitex.process.commands.Tfst2GrfCommand;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.tfst.TagFilter;
 import org.gramlab.core.umlv.unitex.tfst.TfstTableModel;
 import org.gramlab.core.umlv.unitex.tfst.TokensInfo;
@@ -389,7 +389,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter, delafStyle);
 	}
 
@@ -455,10 +455,10 @@ public class TextAutomatonFrame extends TfstFrame {
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTfstTagsFrame();
 				replaceElagFst();
-				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
 			}
 		});
@@ -524,9 +524,9 @@ public class TextAutomatonFrame extends TfstFrame {
 		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTextAutomatonFrame();
-				UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 						.closeTfstTagsFrame();
 				Config.cleanTfstFiles(false);
 				final RebuildTfstCommand command = new RebuildTfstCommand()
@@ -927,18 +927,18 @@ public class TextAutomatonFrame extends TfstFrame {
 	}
 
 	void exploseElagFst() {
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeTfstTagsFrame();
 		explodeTextAutomaton(elag_tfst);
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
 	}
 
 	void implodeElagFst() {
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeTfstTagsFrame();
 		implodeTextAutomaton(elag_tfst);
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
 	}
 
@@ -1003,7 +1003,7 @@ public class TextAutomatonFrame extends TfstFrame {
 				JOptionPane.showInternalMessageDialog(UnitexFrame.mainFrame,
 						"unable to delete " + f);
 			}
-			UnitexProjectManager.search(sntDir).getFrameManagerAs(InternalFrameManager.class)
+			GlobalProjectManager.search(sntDir).getFrameManagerAs(InternalFrameManager.class)
 					.newTextAutomatonFrame(1,false);
 		}
 	}

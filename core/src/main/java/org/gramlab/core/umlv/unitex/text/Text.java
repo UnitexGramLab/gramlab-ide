@@ -25,6 +25,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import org.gramlab.core.umlv.unitex.Unitex;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
@@ -41,7 +42,6 @@ import org.gramlab.core.umlv.unitex.process.commands.MultiCommands;
 import org.gramlab.core.umlv.unitex.process.commands.NormalizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 import org.gramlab.core.umlv.unitex.process.commands.UnxmlizeCommand;
-import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class provides methods for loading corpora.
@@ -63,7 +63,7 @@ public class Text {
 		final TextConversionDo toDo = new TextConversionDo(name, taggedText);
 		final Encoding e = Encoding.getEncoding(name);
 		if (e == null) {
-			UnitexProjectManager.search(name)
+			GlobalProjectManager.search(name)
 					.getFrameManagerAs(InternalFrameManager.class)
 					.newTranscodeOneFileDialog(name, toDo);
 		} else {
@@ -120,7 +120,7 @@ public class Text {
 
 	private static void preprocessSnt(File name, File snt, boolean taggedText,
 			UnxmlizeCommand cmd) {
-		UnitexProjectManager.search(name)
+		GlobalProjectManager.search(name)
 				.getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newPreprocessDialog(name, snt,taggedText, cmd);
 	}
@@ -154,7 +154,7 @@ public class Text {
 		 * We have to close the text frame there, because if not, we will have
 		 * problem when trying to close the .snt file that is mapped
 		 */
-		UnitexProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeTextFrame();
 		SntUtil.cleanSntDir(Config.getCurrentSntDir());
 		Launcher.exec(commands, true, new TextDo(Config.getCurrentSnt(),
@@ -170,7 +170,7 @@ public class Text {
 	 */
 	public static void loadSnt(File snt, boolean taggedText) {
 		Config.setCurrentSnt(snt);
-		UnitexProjectManager.search(snt).getFrameManagerAs(InternalFrameManager.class)
+		GlobalProjectManager.search(snt).getFrameManagerAs(InternalFrameManager.class)
 				.newTextFrame(snt, taggedText);
 		if(Unitex.isRunning()) {
 			PreferencesManager.getUserPreferences().addRecentText(new SntFileEntry(Config.getCurrentLanguage(),
