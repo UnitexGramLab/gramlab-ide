@@ -45,8 +45,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
 import org.gramlab.core.gramlab.util.KeyUtil;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
+import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidDestinationEncodingException;
 import org.gramlab.core.umlv.unitex.exceptions.InvalidSourceEncodingException;
@@ -88,14 +90,21 @@ public class TranscodingFrame extends JInternalFrame {
 		setContentPane(constructPanel());
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		final String language;
+		if((GlobalProjectManager.getGlobalProjectManager()) instanceof GramlabProjectManager){
+			language=GlobalProjectManager.getAs(GramlabProjectManager.class).getCurrentProject().getLanguage();
+		}
+		else{
+			language = Config.getCurrentLanguage();
+		}	
 		srcEncodingList.setSelectedValue(
-				Transcoder.getEncodingForLanguage(Config.getCurrentLanguage()),
+				Transcoder.getEncodingForLanguage(language),
 				true);
 		Config.addLanguageListener(new LanguageListener() {
 			@Override
 			public void languageChanged() {
 				srcEncodingList.setSelectedValue(Transcoder
-						.getEncodingForLanguage(Config.getCurrentLanguage()),
+						.getEncodingForLanguage(language),
 						true);
 			}
 		});

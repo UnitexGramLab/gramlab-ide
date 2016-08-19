@@ -68,6 +68,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 
+import org.gramlab.api.GramlabMenu;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.Unitex;
 import org.gramlab.core.umlv.unitex.Version;
@@ -76,7 +77,6 @@ import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.config.SntFileEntry;
-import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphMenuBuilder;
@@ -100,6 +100,8 @@ import org.gramlab.core.umlv.unitex.project.UnitexProject;
 import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 import org.gramlab.core.umlv.unitex.text.Text;
 import org.gramlab.core.umlv.unitex.utils.UnitexHelpMenuBuilder;
+
+import ro.fortsoft.pf4j.DefaultPluginManager;
 
 /**
  * This is the main frame of the Unitex system.
@@ -127,7 +129,9 @@ public class UnitexFrame extends JFrame {
 	public static UnitexFrame mainFrame;
 	static Dimension screenSize;
 	public static boolean closing = false;
-
+	
+	DefaultPluginManager pluginManager = Config.getPluginManager();
+	
 	/**
 	 * This method initializes the system by a call to the
 	 * <code>Config.initConfig()</code> method. Then, the main frame is created.
@@ -300,7 +304,6 @@ public class UnitexFrame extends JFrame {
 		final JMenu fsGraph = buildFsGraphMenu();
 		final JMenu lexiconGrammar = buildLexiconGrammarMenu();
 		final JMenu xalign = buildXAlignMenu();
-		final FileEditionMenu fileEditionMenu = new FileEditionMenu();
 		final JMenu windows = buildWindowsMenu();
 		final JMenu help = UnitexHelpMenuBuilder.build(Config.getApplicationDir());
 		final JMenu info = buildInfoMenu();
@@ -309,7 +312,6 @@ public class UnitexFrame extends JFrame {
 		fsGraph.setMnemonic(KeyEvent.VK_G);
 		lexiconGrammar.setMnemonic(KeyEvent.VK_L);
 		xalign.setMnemonic(KeyEvent.VK_X);
-		fileEditionMenu.setMnemonic(KeyEvent.VK_F);
 		help.setMnemonic(KeyEvent.VK_H);
 		windows.setMnemonic(KeyEvent.VK_W);
 		info.setMnemonic(KeyEvent.VK_I);
@@ -318,7 +320,10 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(fsGraph);
 		menuBar.add(lexiconGrammar);
 		menuBar.add(xalign);
-		menuBar.add(fileEditionMenu);
+		List<GramlabMenu> menus = pluginManager.getExtensions(GramlabMenu.class);
+		for (GramlabMenu menu : menus) {
+			menuBar.add(menu.Addmenu());
+		}
 		menuBar.add(windows);
 		menuBar.add(help);
 		menuBar.add(info);

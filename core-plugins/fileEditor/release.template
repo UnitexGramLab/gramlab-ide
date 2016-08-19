@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# This file is based on gitblit-powertools-plugin
+# @see https://raw.githubusercontent.com/gitblit/gitblit-powertools-plugin
+#
+# ${project.version} release script
+#
+
+# ensure Plugin Registry repository is up-to-date
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Preparing Plugin Registry repository"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+cd ${registry.directory}
+git checkout gh-pages
+git pull
+cd ${project.directory}
+
+# go back one commit to RELEASE commit
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Checking out ${project.version} RELEASE commit ${project.commitId}"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+git checkout ${project.commitId}
+
+# build RELEASE artifacts
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Building ${project.version} RELEASE artifacts"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+ant clean release
+
+# commit all generated artifacts and metadata
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Committing Registry repository ${project.version} RELEASE artifacts"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+cd ${registry.directory}
+git add .
+git commit -m "${project.artifactId} ${project.version} artifacts"
+cd ${project.directory}
+
+# return to project master
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Checking out master"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+git checkout master
+
+# push Plugin Registry repository to origin
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Pushing Plugin Registry repository"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+cd ${registry.directory}
+git push origin gh-pages
+cd ${project.directory}
+
+# push project branches
+echo ""
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo "Pushing master and tag ${project.tag}"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+echo ""
+git push origin master tag ${project.tag}
+
+# display registry reminder
+echo ""
+echo "REMEMBER: You must add a release entry for ${project.artifactId} ${project.version}"
+echo "          in plugins.json and re-run checksums.sh!"
