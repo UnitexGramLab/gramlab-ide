@@ -69,7 +69,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 
-import org.gramlab.core.gramlab.frames.ChangePerspective;
+import org.gramlab.core.gramlab.frames.ChangePerspectiveDialog;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.Unitex;
 import org.gramlab.core.umlv.unitex.Version;
@@ -1445,7 +1445,7 @@ public class UnitexFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						new ChangePerspective("Classic", null);
+						new ChangePerspectiveDialog("Classic", null);
 					}
 				});
 			}

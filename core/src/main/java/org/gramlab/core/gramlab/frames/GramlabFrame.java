@@ -1580,7 +1580,7 @@ public class GramlabFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						new ChangePerspective("Project-oriented", null);
+						new ChangePerspectiveDialog("Project-oriented", null);
 					}
 				});
 			}

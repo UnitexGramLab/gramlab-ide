@@ -22,7 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
-import org.gramlab.core.gramlab.frames.ChangePerspective;
+import org.gramlab.core.gramlab.frames.ChangePerspectiveDialog;
 import org.gramlab.core.gramlab.frames.GramlabFrame;
 import org.gramlab.core.gramlab.icons.Icons;
 import org.gramlab.core.gramlab.project.GramlabProjectManager;
@@ -94,7 +94,7 @@ public class Main {
 						EventQueue.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								new ChangePerspective("none",args );
+								new ChangePerspectiveDialog("none",args );
 							}
 						});
 						timer.stop();

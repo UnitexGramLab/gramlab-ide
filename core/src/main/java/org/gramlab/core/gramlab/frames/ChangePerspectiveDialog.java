@@ -31,7 +31,7 @@ import org.gramlab.core.umlv.unitex.frames.FrameUtil;
 
 
 @SuppressWarnings("serial")
-public class ChangePerspective extends JDialog {
+public class ChangePerspectiveDialog extends JDialog {
 	
 	/**
 	 * 
@@ -42,7 +42,7 @@ public class ChangePerspective extends JDialog {
 	 * command line arguments at start-up
 	 * 
 	 */
-	public ChangePerspective(String currPerspective, String[] args) {
+	public ChangePerspectiveDialog(String currPerspective, String[] args) {
 		super(Main.getMainFrame(), "Choose perspective", true);
 		setContentPane(constructPanel(currPerspective, args));
 		setAlwaysOnTop(true);
@@ -98,7 +98,7 @@ public class ChangePerspective extends JDialog {
 					}
 				} 
 				pack();
-				FrameUtil.center(getOwner(),ChangePerspective.this);
+				FrameUtil.center(getOwner(),ChangePerspectiveDialog.this);
 			}
 		});
 		JButton cancel=new JButton("Cancel");
