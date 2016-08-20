@@ -108,8 +108,8 @@ public class ChangePerspective extends JDialog {
 				dispose();
 			}
 		});
-		down.add(cancel);
 		down.add(ok);
+		down.add(cancel);
 		KeyUtil.addCRListener(ok);
 		KeyUtil.addCRListener(cancel);
 		KeyUtil.addEnterListener(p, ok);
