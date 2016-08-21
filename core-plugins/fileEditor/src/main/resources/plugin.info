@@ -1,41 +1,43 @@
-# Unitex/GramLab IDE File-Editor plugin
+# GramLab IDE File-Editor plugin
 
 > [Unitex/GramLab][unitexgramlab] is an open source, cross-platform, multilingual,
 lexicon- and grammar-based corpus processing suite
 
 ## NAME
 
-plugin name - short description (no more than 60 chars)
+fileEditor - Internal file editor plugin for GramLab
 
 ## SYNOPSIS
 
-Synopsis means "see together" and shows example usage.
+
 
 ## INSTALLATION
 
 To install this plugin you can download the latest `.zip` release from
-[here](https://github.com/UnitexGramLab/gramlab-ide-plugin-fileEditor/releases/latest)
-and manually copy it to your `App/plugins` directory.
+[gramlab-ide-plugin-registry](https://github.com/UnitexGramLab/gramlab-ide-plugin-registry)
+
 
 ## DESCRIPTION
 
-Contains a long description of what this plugin does and lists functions.
+The plugin works for both perspectives of GramLab.
+This plugin allows user to use the basic file editor of GramLab. It provides user with basic editing functionalities including serach.
 
 ## CAVEATS
 
-Tells about bugs or issues the user should know about.
+For bugs [see](https://github.com/UnitexGramLab/gramlab-ide/issues)
 
 ## CONTRIBUTING
 
-Tells about how to contribute to the development of this plugin. 
+You can start contributing by reporting a issue [here](https://github.com/UnitexGramLab/gramlab-ide/issues). 
+If you wanna improve the plugin, read this [guide](https://teamink.co/public/unitex-gramlab/guide-to-plugin-development-for-gramlab) and submit a pull request [here](https://github.com/UnitexGramLab/gramlab-ide/pulls). 
 
 ## AUTHOR
 
-Mukarram Tailor <author.name@example.org>
+[Mukarram Tailor](https://github.com/Mukarr)
 
 ## SEE ALSO
 
-Refers to additional documentation.
+[Guide for building plugins for GramLab](https://teamink.co/public/unitex-gramlab/guide-to-plugin-development-for-gramlab)
 
 ## LICENSE
 
