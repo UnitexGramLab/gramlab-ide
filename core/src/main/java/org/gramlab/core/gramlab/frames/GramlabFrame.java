@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -46,6 +47,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import org.gramlab.api.GramlabMenu;
+import org.gramlab.api.InternalFileEditor;
 import org.gramlab.core.GramlabConfigManager;
 import org.gramlab.core.gramlab.icons.Icons;
 import org.gramlab.core.gramlab.project.GramlabProject;
@@ -100,11 +103,14 @@ import org.gramlab.core.umlv.unitex.process.commands.UncompressCommand;
 import org.gramlab.core.umlv.unitex.svn.SvnConflict;
 import org.gramlab.core.umlv.unitex.utils.HelpMenuBuilder;
 
+import ro.fortsoft.pf4j.DefaultPluginManager;
+
 @SuppressWarnings("serial")
 public class GramlabFrame extends JFrame {
 	ProjectTabbedPane tabbedPane;
 	final JPanel processPane=new JPanel(new BorderLayout());
 	JTree tree;
+	DefaultPluginManager pluginManager = GramlabConfigManager.getPluginManager();
 
 	public GramlabFrame() {
 		super();
@@ -528,6 +534,11 @@ public class GramlabFrame extends JFrame {
 						}
 					}
 				};
+				List<InternalFileEditor> editors = pluginManager.getExtensions(InternalFileEditor.class);
+
+				if (editors.isEmpty()) {
+					editor.setEnabled(false);
+				}
 				menu.add(new JMenuItem(editor));
 				final File htmlViewer = project.getHtmlViewer();
 				Action html = new AbstractAction("Html viewer") {
@@ -1499,7 +1510,11 @@ public class GramlabFrame extends JFrame {
 		bar.add(createProjectMenu());
 		bar.add(createDelaMenu());
 		bar.add(createGraphsMenu());
-		bar.add(createFileEditionMenu());
+		// load plugins menu
+		List<GramlabMenu> menus = pluginManager.getExtensions(GramlabMenu.class);
+		for (GramlabMenu menu : menus) {
+			bar.add(menu.Addmenu());
+		}
 		bar.add(createHelpMenu());
 		return bar;
 	}
@@ -1648,83 +1663,6 @@ public class GramlabFrame extends JFrame {
 
 		m.add(about);
     return m;
-	}
-
-	private JMenu createFileEditionMenu() {
-		JMenu m = new JMenu("File Edition");
-		Action n = new AbstractAction("New") {
-			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager m = GlobalProjectManager.search(null)
-					.getFrameManagerAs(InternalFrameManager.class);
-				if (m == null) {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"You cannot create a file if no project is opened.",
-									"Error", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				m.newFileEditionTextFrame(null);
-			}
-		};
-		m.add(new JMenuItem(n));
-		Action open = new AbstractAction("Open") {
-			public void actionPerformed(ActionEvent e) {
-				openFile();
-			}
-		};
-		m.add(new JMenuItem(open));
-		Action closeAll = new AbstractAction("Close all") {
-			public void actionPerformed(ActionEvent e) {
-				InternalFrameManager m = GlobalProjectManager.search(null)
-					.getFrameManagerAs(InternalFrameManager.class);
-				if (m == null) {
-					return;
-				}
-				m.closeAllFileEditionTextFrames();
-			}
-		};
-		m.add(new JMenuItem(closeAll));
-		return m;
-	}
-
-	public void openFile() {
-		File dir;
-		GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
-				.getCurrentProject();
-		if (p == null)
-			dir = GramlabConfigManager.getWorkspaceDirectory();
-		else
-			dir = p.getProjectDirectory();
-		final JFileChooser fc = new JFileChooser(dir);
-		fc.setMultiSelectionEnabled(true);
-		fc.setDialogType(JFileChooser.OPEN_DIALOG);
-		final int returnVal = fc.showOpenDialog(this);
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			// we return if the user has clicked on CANCEL
-			return;
-		}
-		final File[] files = fc.getSelectedFiles();
-		for (int i = 0; i < files.length; i++) {
-			if (!files[i].exists()) {
-				if (!files[i].exists()) {
-					JOptionPane.showMessageDialog(null, "File "
-							+ files[i].getAbsolutePath() + " does not exist",
-							"Error", JOptionPane.ERROR_MESSAGE);
-					continue;
-				}
-			}
-			InternalFrameManager manager = GlobalProjectManager
-					.search(files[i]).getFrameManagerAs(InternalFrameManager.class);
-			if (manager == null) {
-				JOptionPane.showMessageDialog(null,
-						"You can not open a file outside a project directory\n"
-								+ "or if the project is opened.", "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			manager.newFileEditionTextFrame(files[i]);
-		}
 	}
 
 	void openDELA() {

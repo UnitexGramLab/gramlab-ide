@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.gramlab.api.InternalFileEditor;
 import org.gramlab.core.GramlabConfigManager;
 import org.gramlab.core.Main;
 import org.gramlab.core.gramlab.frames.GramlabInternalFrameManager;
@@ -86,6 +88,8 @@ import org.gramlab.core.umlv.unitex.process.commands.TokenizeCommand;
 import org.gramlab.core.umlv.unitex.svn.SvnConflict;
 import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 import org.gramlab.core.umlv.unitex.text.Text;
+
+import ro.fortsoft.pf4j.DefaultPluginManager;
 /**
  * Description of a gramlab project.
  * 
@@ -124,7 +128,10 @@ public class GramlabProject implements Project, Comparable<GramlabProject> {
 
 	private ConsoleUtil consoleUtil = new ConsoleUtil();
 	private SplitUtil splitUtil = new SplitUtil(null, null);
+	
 
+	private DefaultPluginManager pluginManager = GramlabConfigManager.getPluginManager();
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null || !(obj instanceof GramlabProject))
@@ -1388,9 +1395,9 @@ public class GramlabProject implements Project, Comparable<GramlabProject> {
 					file.getAbsolutePath());
 			return;
 		}
-		InternalFrameManager manager = GlobalProjectManager.search(file)
-			.getFrameManagerAs(InternalFrameManager.class);
-		if (manager != null) {
+		InternalFrameManager manager = GlobalProjectManager.search(file).getFrameManagerAs(InternalFrameManager.class);
+		List<InternalFileEditor> editors = pluginManager.getExtensions(InternalFileEditor.class);
+		if (manager != null && !editors.isEmpty()) {
 			manager.newFileEditionTextFrame(file);
 			GlobalProjectManager.getAs(GramlabProjectManager.class).setCurrentProject(this);
 		}

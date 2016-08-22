@@ -2,7 +2,9 @@ package org.gramlab.core.umlv.unitex.common.project.manager;
 
 import java.io.File;
 
+import org.gramlab.core.gramlab.project.GramlabProjectManager;
 import org.gramlab.core.umlv.unitex.common.project.Project;
+import org.gramlab.core.umlv.unitex.project.manager.UnitexProjectManager;
 
 /**
  * This class constitutes a global access point for the ProjectManager in Unitex
@@ -13,10 +15,37 @@ import org.gramlab.core.umlv.unitex.common.project.Project;
  */
 public class GlobalProjectManager {
 	/* The ProjectManager currently in use. */
-	private static ProjectManager projectManager;
+	private static ProjectManager projectManager; 	
 
+	private static UnitexProjectManager classic;
+	private static GramlabProjectManager projectOriented;
+	
 	public GlobalProjectManager(ProjectManager manager) {
 		GlobalProjectManager.projectManager = manager;
+	}
+	
+	public static void setGlobalProjectManager (ProjectManager manager) {
+		GlobalProjectManager.projectManager = manager;
+	}
+	
+	public static ProjectManager getGlobalProjectManager(){
+		return projectManager;
+	}
+	
+	public static void setGramlabProjectManager (ProjectManager manager) {
+		GlobalProjectManager.projectOriented = (GramlabProjectManager) manager;
+	}
+	
+	public static void setUnitexProjectManager (ProjectManager manager) {
+		GlobalProjectManager.classic = (UnitexProjectManager) manager;
+	}
+	
+	public static GramlabProjectManager getGramlabProjectManager () {
+		return projectOriented;
+	}
+	
+	public static ProjectManager getUnitexProjectManager () {
+		return classic;
 	}
 
 	/**

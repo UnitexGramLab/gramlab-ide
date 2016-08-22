@@ -5,3 +5,4 @@
 # put this file into the `App/plugins` folder
 # =============================================================================
 skel
+fileEditor

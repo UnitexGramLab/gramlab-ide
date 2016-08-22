@@ -10,7 +10,6 @@
 # concordance-viewer
 # dictionary-editor
 # dictionary-viewer
-# file-editor
 # gate-connector
 # graph-editor
 # graph-exporter
@@ -23,4 +22,3 @@
 # treecloud
 # welcome-wizard
 # xalign
-
