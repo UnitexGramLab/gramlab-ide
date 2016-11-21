@@ -141,4 +141,11 @@ public class Grf2Fst2Command extends CommandBuilder {
 		return this;
 	}
 
+    public Grf2Fst2Command replaceAllByEpsilon(boolean b) {
+        if (b) {
+            element("-C");
+        }
+        return this;
+    }
+
 }

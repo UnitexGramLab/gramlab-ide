@@ -1012,6 +1012,19 @@ public class UnitexFrame extends JFrame {
 				}
 			}
 		});
+
+        final JMenuItem verifyBraces = new JMenuItem("Verify braces");
+        verifyBraces.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final GraphFrame f = GlobalProjectManager.search(null)
+                    .getFrameManagerAs(InternalFrameManager.class)
+                    .getCurrentFocusedGraphFrame();
+                if (f != null) {
+                    f.verifyBraces();
+                }
+            }
+        });
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
 		compileFST.addActionListener(new ActionListener() {
 			@Override
@@ -1048,6 +1061,7 @@ public class UnitexFrame extends JFrame {
 		});
 		tools.add(sortNodeLabel);
 		tools.add(explorePaths);
+        tools.add(verifyBraces);
 		tools.addSeparator();
 		tools.add(compileFST);
 		tools.add(flatten);
