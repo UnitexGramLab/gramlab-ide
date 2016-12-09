@@ -518,6 +518,12 @@ public class Config {
         transducerListDialogBox = new JFileChooser(Config.getCassysDir());*/
         if (transducerListDialogBox == null)
             transducerListDialogBox = new JFileChooser(Config.getCassysDir());
+        if (transducerListDialogBox.getCurrentDirectory()
+                .getAbsolutePath()
+                .indexOf(Config.getUserCurrentLanguageDir()
+                    .getAbsolutePath()) == -1) {
+            transducerListDialogBox.setCurrentDirectory(Config.getCassysDir());
+        }
         transducerListDialogBox.setFileFilter(new PersonalFileFilter("csc",
                 "CaSCade configuration File"));
         transducerListDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
