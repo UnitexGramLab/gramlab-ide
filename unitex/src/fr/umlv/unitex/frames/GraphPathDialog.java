@@ -25,9 +25,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -35,6 +39,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,6 +49,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -64,6 +70,8 @@ import fr.umlv.unitex.utils.KeyUtil;
 public class GraphPathDialog extends JDialog {
 	final BigTextList textArea = new BigTextList();
 	final JTextField graphName = new JTextField();
+	// issue #61
+	final JTextField outputFileName = new JTextField();
 	JCheckBox limit;
 	JTextField limitSize;
 	JRadioButton ignoreOutputs;
@@ -118,8 +126,10 @@ public class GraphPathDialog extends JDialog {
 	}
 
 	private JPanel constructTopPanel() {
-		final JPanel top = new JPanel(new GridLayout(6, 1));
+		final JPanel top = new JPanel(new GridLayout(7, 1));
 		top.add(constructGraphNamePanel());
+		// issue #61
+		top.add(constructListFileNamePanel());
 		final ButtonGroup bg = new ButtonGroup();
 		ignoreOutputs = new JRadioButton("Ignore outputs", true);
 		separateOutputs = new JRadioButton("Separate inputs and outputs");
@@ -133,9 +143,25 @@ public class GraphPathDialog extends JDialog {
 		top.add(constructDownPanel());
 		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		final ButtonGroup pathWithSubGraph = new ButtonGroup();
+		
 		onlyPaths = new JRadioButton("Only paths", true);
 		exploreRecursively = new JRadioButton(
 				"Do not explore subgraphs recursively");
+		
+		// issue #61 add listeners to change default output file name based on user selection
+		onlyPaths.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				outputFileName.setText(ConfigManager.getManager()
+						.getCurrentLanguageDir() + String.valueOf(File.separatorChar) + "list.txt");
+			}
+		});
+		exploreRecursively.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphName
+						.getText()) + "autolst.txt");
+			}
+		});
+		
 		pathWithSubGraph.add(onlyPaths);
 		pathWithSubGraph.add(exploreRecursively);
 		top1.add(onlyPaths);
@@ -180,10 +206,12 @@ public class GraphPathDialog extends JDialog {
 				fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
 						.getText()) + ".fst2");
 				if (onlyPaths.isSelected()) {
-					list = new File(ConfigManager.getManager()
-							.getCurrentLanguageDir(), "list.txt");
+					// set file to user input
+					list = new File(outputFileName.getText());
 					cmd = cmd.listOfPaths(fst2, list);
 				} else {
+					// we can't set recursive file name to user selection yet because the name is hard coded in UnitexToolLogger
+					// we will rename the file once that process has completed
 					list = new File(
 							FileUtil.getFileNameWithoutExtension(graphName
 									.getText()) + "autolst.txt");
@@ -212,7 +240,8 @@ public class GraphPathDialog extends JDialog {
 		KeyUtil.addEscListener(panel, CANCEL);
 		return panel;
 	}
-
+	
+	
 	void close() {
 		setVisible(false);
 		textArea.reset();
@@ -237,6 +266,51 @@ public class GraphPathDialog extends JDialog {
 		panel.add(graphName, BorderLayout.CENTER);
 		return panel;
 	}
+	
+	/**
+	 * Constructs panel with list file output location and browse button to allow user to select other file/location
+	 * issue #61
+	 * @return
+	 */
+	private JPanel constructListFileNamePanel() {
+		
+		outputFileName.setText(ConfigManager.getManager()
+				.getCurrentLanguageDir() + String.valueOf(File.separatorChar) + "list.txt");
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.add(new JLabel(" Output file: "), BorderLayout.WEST);
+		panel.add(outputFileName, BorderLayout.CENTER);
+		
+		final JPanel button = new JPanel(new GridLayout(1, 1));
+		
+		final Action browseAction = new AbstractAction("Browse") {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				openOutputFile();
+			}
+		};
+		final JButton browse = new JButton(browseAction);
+		button.add(browse);
+		panel.add(button, BorderLayout.EAST);
+		
+		return panel;
+	}
+	
+	private void openOutputFile() {
+		final int returnVal = Config.getTableDialogBox().showOpenDialog(this);
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			// we return if the user has clicked on CANCEL
+			return;
+		}
+		final String name;
+		try {
+			name = Config.getTableDialogBox().getSelectedFile()
+					.getCanonicalPath();
+		} catch (final IOException e) {
+			return;
+		}
+		outputFileName.setText(name);
+	}
+
 
 	class ShowPathsDo implements ToDo {
 		private final File name;
@@ -249,6 +323,20 @@ public class GraphPathDialog extends JDialog {
 		public void toDo(boolean success) {
 			textArea.load(name);
 			textArea.getModel().addListDataListener(listListener);
+			
+			try {
+				// issue #61 - recursive path option invokes UnitexToolLogger which hard codes the name of the output file to GraphNameautolst.txt 
+				// once that process has completed and loaded the file rename it using the user input if that differs from the default
+				if (!name.getAbsolutePath().equals(outputFileName.getText())) {
+					File dest = new File(outputFileName.getText());
+					Files.move(name.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				}
+			}  catch (final IOException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+						"Could not save file with name [" + outputFileName.getText() + "] a file has been created [" + name.getAbsolutePath() + "]", "Error",
+						JOptionPane.ERROR_MESSAGE);
+			} 
 		}
 	}
 }
