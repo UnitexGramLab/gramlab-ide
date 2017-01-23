@@ -70,7 +70,6 @@ import fr.umlv.unitex.utils.KeyUtil;
 public class GraphPathDialog extends JDialog {
 	final BigTextList textArea = new BigTextList();
 	final JTextField graphName = new JTextField();
-	// issue #61
 	final JTextField outputFileName = new JTextField();
 	JCheckBox limit;
 	JTextField limitSize;
@@ -128,7 +127,6 @@ public class GraphPathDialog extends JDialog {
 	private JPanel constructTopPanel() {
 		final JPanel top = new JPanel(new GridLayout(7, 1));
 		top.add(constructGraphNamePanel());
-		// issue #61
 		top.add(constructListFileNamePanel());
 		final ButtonGroup bg = new ButtonGroup();
 		ignoreOutputs = new JRadioButton("Ignore outputs", true);
@@ -151,14 +149,14 @@ public class GraphPathDialog extends JDialog {
 		// issue #61 add listeners to change default output file name based on user selection
 		onlyPaths.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				outputFileName.setText(ConfigManager.getManager()
-						.getCurrentLanguageDir() + String.valueOf(File.separatorChar) + "list.txt");
+				outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphName
+						.getText()) + "-recursive-paths.txt");
 			}
 		});
 		exploreRecursively.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphName
-						.getText()) + "autolst.txt");
+						.getText()) + "-paths.txt");
 			}
 		});
 		
@@ -210,8 +208,10 @@ public class GraphPathDialog extends JDialog {
 					list = new File(outputFileName.getText());
 					cmd = cmd.listOfPaths(fst2, list);
 				} else {
-					// we can't set recursive file name to user selection yet because the name is hard coded in UnitexToolLogger
-					// we will rename the file once that process has completed
+					// we can't set non recursive file name to user selection yet because the name is hard coded in UnitexToolLogger (Fst2List.cpp line 1230)
+					// if we change it here ShowPathsDo will throw a FileNotFoundException 
+					// we will rename the file once the UnitexToolLogger process has completed
+					// alternatively that process could be changed to remove the hard coding
 					list = new File(
 							FileUtil.getFileNameWithoutExtension(graphName
 									.getText()) + "autolst.txt");
@@ -262,7 +262,7 @@ public class GraphPathDialog extends JDialog {
 
 	private JPanel constructGraphNamePanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new JLabel(" Graph: "), BorderLayout.WEST);
+		panel.add(new JLabel("       Graph: "), BorderLayout.WEST);
 		panel.add(graphName, BorderLayout.CENTER);
 		return panel;
 	}
@@ -270,45 +270,46 @@ public class GraphPathDialog extends JDialog {
 	/**
 	 * Constructs panel with list file output location and browse button to allow user to select other file/location
 	 * issue #61
-	 * @return
 	 */
 	private JPanel constructListFileNamePanel() {
-		
-		outputFileName.setText(ConfigManager.getManager()
-				.getCurrentLanguageDir() + String.valueOf(File.separatorChar) + "list.txt");
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(new JLabel(" Output file: "), BorderLayout.WEST);
 		panel.add(outputFileName, BorderLayout.CENTER);
 		
+		
 		final JPanel button = new JPanel(new GridLayout(1, 1));
 		
-		final Action browseAction = new AbstractAction("Browse") {
+		final Action setFileAction = new AbstractAction("Set File") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				openOutputFile();
 			}
 		};
-		final JButton browse = new JButton(browseAction);
-		button.add(browse);
+		final JButton setFile = new JButton(setFileAction);
+		button.add(setFile);
 		panel.add(button, BorderLayout.EAST);
 		
 		return panel;
 	}
 	
 	private void openOutputFile() {
-		final int returnVal = Config.getTableDialogBox().showOpenDialog(this);
+		final int returnVal = Config.getExploreGraphOutputDialogBox().showOpenDialog(this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
 		final String name;
 		try {
-			name = Config.getTableDialogBox().getSelectedFile()
+			name = Config.getExploreGraphOutputDialogBox().getSelectedFile()
 					.getCanonicalPath();
 		} catch (final IOException e) {
 			return;
 		}
 		outputFileName.setText(name);
+	}
+	
+	public void setOutputFileDefaultName(String graphFileName) {
+		outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphFileName) + "-recursive-paths.txt");
 	}
 
 
@@ -334,7 +335,7 @@ public class GraphPathDialog extends JDialog {
 			}  catch (final IOException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null,
-						"Could not save file with name [" + outputFileName.getText() + "] a file has been created [" + name.getAbsolutePath() + "]", "Error",
+						"Could not save path list to " + outputFileName.getText(), "Error",
 						JOptionPane.ERROR_MESSAGE);
 			} 
 		}
