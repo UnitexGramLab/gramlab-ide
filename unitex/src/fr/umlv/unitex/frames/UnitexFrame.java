@@ -1007,8 +1007,17 @@ public class UnitexFrame extends JFrame {
 						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					GlobalProjectManager.search(null)
-							.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+
+					if (f.getGraph() == null) {
+						JOptionPane.showMessageDialog(null,
+								"Cannot explore graph paths for graph with no name", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else {
+						GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+					}
 				}
 			}
 		});
