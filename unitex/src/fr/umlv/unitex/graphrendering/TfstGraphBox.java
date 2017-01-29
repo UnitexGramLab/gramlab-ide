@@ -30,6 +30,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.tfst.Bounds;
 
 /**
@@ -266,14 +267,12 @@ public class TfstGraphBox extends GenericGraphBox {
 		return false;
 	}
 
-	private static final Color koreanUntaggedTokenColor = new Color(0xCC, 0xCC, 0xFF);
-
 	@Override
 	void drawOther(Graphics2D g, DrawGraphParams params) {
 		final Color old = params.getBackgroundColor();
 		if (ConfigManager.getManager().isKorean(null)
 				&& isKoreanUntaggedToken(content)) {
-			params.setBackgroundColor(koreanUntaggedTokenColor);
+			params.setBackgroundColor(GraphDecoratorConfig.KOREAN_UNTAGGED_TOKEN_COLOR);
 		}
 		final Composite c = g.getComposite();
 		if (parentGraphicalZone.decorator != null) {
@@ -288,5 +287,5 @@ public class TfstGraphBox extends GenericGraphBox {
 	private boolean isKoreanUntaggedToken(String s) {
 		return !s.equals("<E>") && s.charAt(0) != '{';
 	}
-	
+
 }
