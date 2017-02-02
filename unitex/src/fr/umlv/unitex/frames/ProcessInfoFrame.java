@@ -44,6 +44,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.process.ExecParameters;
 import fr.umlv.unitex.process.Executor;
@@ -118,6 +120,13 @@ public class ProcessInfoFrame extends JInternalFrame {
 		final JSplitPane middle = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				tmp, tmp2);
 		middle.setDividerLocation(250);
+		
+		Preferences preferences = ConfigManager.getManager().getPreferences(null);
+		if(!preferences.isDisplayProcessErrors()) {
+			tmp2.setVisible(false);
+			middle.setDividerSize(0);
+		}
+		
 		top.add(middle, BorderLayout.CENTER);
 		final Action okAction = new AbstractAction("OK") {
 			@Override
