@@ -49,6 +49,12 @@ public class Preferences {
 	private FontInfo menuFont;
 	private FontInfo textFont;
 	private FontInfo concordanceFont;
+	
+	/**
+	 * Indicates if the error messages must be displayed in ProcessInfoFrame
+	 */
+	private boolean displayProcessErrors;
+	
 	/**
 	 * Name of the external program to use to view HTML concordances. If
 	 * <code>null</code>, concordances will be shown in a Unitex frame
@@ -161,6 +167,7 @@ public class Preferences {
                 defaultProperties.setProperty("GENERIC GRAPH MARK COLOR", 
                                 "" + Color.RED.getRGB());
 		defaultProperties.setProperty("ANTIALIASING", "false");
+		defaultProperties.setProperty("DISPLAY PROCESS ERRORS", "true");
 		defaultProperties.setProperty("HTML VIEWER", "");
 		defaultProperties.setProperty("MORPHOLOGICAL DICTIONARY", "");
 		defaultProperties.setProperty("MAX TEXT FILE SIZE", "2048000");
@@ -248,6 +255,7 @@ public class Preferences {
 		final boolean frame = Boolean.valueOf(prop.getProperty("FRAME"));
 		final boolean antialiasing = Boolean.valueOf(prop
 				.getProperty("ANTIALIASING"));
+		setDisplayProcessErrors(Boolean.parseBoolean(prop.getProperty("DISPLAY PROCESS ERRORS")));
 		final String iconBarPosition = prop.getProperty("TOOLBAR POSITION");
 		setRightToLeftForText(Boolean.valueOf(prop
 				.getProperty("RIGHT TO LEFT FOR TEXT")));
@@ -354,6 +362,7 @@ public class Preferences {
 		prop.setProperty("UNREACHABLE GRAPH COLOR", ""
 				+ info.getUnreachableGraphColor().getRGB());
 		prop.setProperty("ANTIALIASING", "" + info.isAntialiasing());
+		prop.setProperty("DISPLAY PROCESS ERRORS", "" + isDisplayProcessErrors());
 		prop.setProperty("HTML VIEWER", (getHtmlViewer() == null) ? ""
 				: getHtmlViewer().getAbsolutePath());
 		prop.setProperty("MORPHOLOGICAL DICTIONARY",
@@ -399,6 +408,7 @@ public class Preferences {
 		p.setTextFont(textFont);
 		p.setMenuFont(menuFont);
 		p.setConcordanceFont(concordanceFont);
+		p.setDisplayProcessErrors(displayProcessErrors);
 		p.setHtmlViewer(htmlViewer);
 		p.setMorphologicalDic((getMorphologicalDic() == null) ? null
 				: (ArrayList<File>) getMorphologicalDic().clone());
@@ -451,6 +461,14 @@ public class Preferences {
 
 	public void setInfo(GraphPresentationInfo info) {
 		this.info = info;
+	}
+	
+	public boolean isDisplayProcessErrors() {
+		return displayProcessErrors;
+	}
+
+	public void setDisplayProcessErrors(boolean displayProcessErrors) {
+		this.displayProcessErrors = displayProcessErrors;
 	}
 
 	public void setCharByChar(boolean charByChar) {
