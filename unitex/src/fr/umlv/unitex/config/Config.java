@@ -24,7 +24,6 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,10 +34,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.lang.Process;
 import java.lang.ProcessBuilder;
-
+import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -56,11 +54,13 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.svn.SvnMonitor;
-
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.VersionInfoCommand;
 
@@ -71,6 +71,7 @@ import fr.umlv.unitex.process.commands.VersionInfoCommand;
  * @author Sébastien Paumier
  */
 public class Config {
+	
     /**
      * Path of the directory <code>.../Unitex/App</code>
      */
@@ -247,6 +248,38 @@ public class Config {
         chooseInitialLanguage();
         setDefaultPreprocessingGraphs();
     }
+    
+    /**
+     * Initializes the system. Strips the -DUnitex.bin.dir param from args and passes to above method.
+     * Issue #27
+     */
+    public static void initConfig(String[] args) {
+    	String binDir = null;
+    	
+    	if (args != null && args.length > 0) {
+    		int bidx = args[0].indexOf("=");
+        	if (bidx != -1) {
+        		binDir = args[0].substring(bidx + 1); 
+        	}
+    	}
+    	initConfig(binDir);
+    }
+    
+    /**
+     * Extracts the graph files from args passed to application on startup and opens graph frames
+     * Issue #27
+     */
+    public static void openGraphFiles(String[] args) {
+    	for (int i = 0; i < args.length; i++) {
+    		if (args[i].indexOf("=") == -1) {
+    			File f = new File(args[i]);
+    			GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.newGraphFrame(f);
+    		}		
+    	}
+    }
+    
 
     private static void updateGraphFileFilters(boolean allowImageFormats) {
         graphDialogBox.resetChoosableFileFilters();
