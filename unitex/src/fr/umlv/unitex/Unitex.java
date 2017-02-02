@@ -25,11 +25,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.BindException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -48,6 +58,12 @@ import fr.umlv.unitex.frames.UnitexFrame;
  * @author Sébastien Paumier
  */
 public class Unitex {
+	private static final int PORT = 9999;
+	private static ServerSocket serverSocket = null;
+	private static Socket socket = null;
+	private static final String DELIMITER = ";";
+	private static boolean SOCKET_OPEN = false;
+	
 	
 	/**
 	 * This is used to know whether Unitex code is called from Unitex or from Gramlab 
@@ -60,13 +76,37 @@ public class Unitex {
 	
 	public static void main(final String[] args) {
 		running=true;
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				launchUnitex(args);
-			}
-		});
+		try {
+			// Issue #27 use ServerSocket to restrict IDE to single instance and to allow failed instance to pass file name to running instance.
+			// Run in SwingWorker background thread so doesn't block main thread
+			serverSocket = new ServerSocket(PORT,0,InetAddress.getByAddress(new byte[] {127,0,0,1}));  
+			SOCKET_OPEN = true;
+			
+			SwingWorker<String, Void> socketThread = new SwingWorker<String, Void>() { 
+				
+	            @Override
+	            public String doInBackground() { 
+	            	while (SOCKET_OPEN) {
+	            		serverSocketListener();
+	            	}
+	                return "";
+	            }	
+	        };
+	        socketThread.execute(); 
+			
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					launchUnitex(args);
+				}
+			});
+		} catch (BindException e) {
+	        clientSocketListener(args);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 
 	/**
 	 * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo and
@@ -115,8 +155,7 @@ public class Unitex {
 							@Override
 							public void run() {
 								ConfigManager.setManager(new ConfigManager());
-								Config.initConfig(args.length == 1 ? args[0]
-										: null);
+								Config.initConfig(args);
 								Preferences preferences = ConfigManager.getManager().getPreferences(null);
 								FontInfo menuFontInfo = preferences.getMenuFont();
 								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
@@ -136,6 +175,7 @@ public class Unitex {
 								frame.setVisible(true);
 								ConfigManager.getManager().getSvnMonitor(null)
 										.start();
+								Config.openGraphFiles(args);
 							}
 						});
 						timer.stop();
@@ -155,5 +195,87 @@ public class Unitex {
 			if (value != null && value instanceof javax.swing.plaf.FontUIResource)
 				UIManager.put (key, f);
 		}
+	}
+	
+	// Server socket - listens for connection from failed instance startup
+	public static void serverSocketListener() { 
+		try {
+			socket = serverSocket.accept();
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+			String str = in.readLine();
+			
+			if (str != null && str.length() > 0) {  
+				Config.openGraphFiles(stringToArray(str, DELIMITER));
+				if (UnitexFrame.mainFrame.isVisible()) {
+					UnitexFrame.mainFrame.setVisible(true);
+				}
+			}       
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
+
+	// Client socket sends graph file name(s) to running process 
+	public static void clientSocketListener(String[] args) { 
+		try {
+			socket = new Socket(InetAddress.getByAddress( new byte[] {127,0,0,1}), PORT );
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true );
+			out.println(arrayToString(args, DELIMITER));
+		} catch  (IOException e) {
+			System.out.println("No I/O");
+			System.exit(1);
+		} finally {
+			try {
+				socket.close();
+			} catch (IOException ex) {
+				System.err.println("Exception closing client socket on port " + PORT);
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public static void closeSocket() {
+		SOCKET_OPEN = false;
+		try {
+			if (serverSocket != null) {
+				serverSocket.close();
+			}
+		} catch (IOException ex) {
+			System.err.println("Exception closing server socket on port " + PORT);
+			ex.printStackTrace();
+		}
+	}
+	
+	// Utility methods to convert String[] to delimited string and back again
+	public static String arrayToString(String[] arr, String delim) {
+		String ret = "";
+		
+		for (int i = 0; i < arr.length; i++) {
+			ret += arr[i] + delim;
+		}
+		ret = ret.substring(0,ret.lastIndexOf(delim));
+		
+		return ret;
+	}
+	
+	public static String[] stringToArray(String str, String delim) {
+		ArrayList<String> list = new ArrayList<String>(0);
+		
+		int sidx = 0;
+		int eidx = str.indexOf(delim);
+		
+		while (eidx != -1) {
+			list.add(str.substring(sidx, eidx));
+			sidx = eidx + 1;
+			eidx = str.indexOf(" ", sidx);
+		}
+		list.add(str.substring(sidx));
+		
+		String[] ret = new String[list.size()];
+		list.toArray(ret);
+		
+		return ret;
 	}
 }
