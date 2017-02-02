@@ -245,10 +245,9 @@ public class GraphDecorator {
 		if (boxNumber == currentBox)
 			return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
 		if (model != null && model.isLinearTfst()) {
-			if (ConfigManager.getManager().isKorean(null)) {
-				return GraphDecoratorConfig.KOREAN_LINEAR_TFST;
+			if (!ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.LINEAR_TFST;
 			}
-			return GraphDecoratorConfig.LINEAR_TFST;
 		}
 		return c;
 	}
