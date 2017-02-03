@@ -265,21 +265,6 @@ public class Config {
     	initConfig(binDir);
     }
     
-    /**
-     * Extracts the graph files from args passed to application on startup and opens graph frames
-     * Issue #27
-     */
-    public static void openGraphFiles(String[] args) {
-    	for (int i = 0; i < args.length; i++) {
-    		if (args[i].indexOf("=") == -1) {
-    			File f = new File(args[i]);
-    			GlobalProjectManager.search(null)
-				.getFrameManagerAs(InternalFrameManager.class)
-				.newGraphFrame(f);
-    		}		
-    	}
-    }
-    
 
     private static void updateGraphFileFilters(boolean allowImageFormats) {
         graphDialogBox.resetChoosableFileFilters();
