@@ -29,6 +29,7 @@ import java.awt.font.TextLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,6 +37,7 @@ import javax.swing.JOptionPane;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
+import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**
@@ -1657,5 +1659,66 @@ public class GenericGraphBox {
 		}
 		context = g;
 		update();
+	}
+
+	/**
+	 * This method checks if the String s is valid or not.
+	 *
+	 * @param s the string to check
+	 * @throws BackSlashAtEndOfLineException if the String ends with a backslash.
+	 * @throws MissingGraphNameException if the String starts with a semicolon but is missing a graph name.
+	 * @throws NoClosingQuoteException if the String contains a not closed quotation.
+	 * @throws NoClosingSupException if the String contains a not closed chevron.
+	 * @throws NoClosingRoundBracketException if the String contains a not closed brace.
+	 */
+	public void checkString(String s)
+			throws BackSlashAtEndOfLineException, MissingGraphNameException,
+			NoClosingQuoteException, NoClosingSupException,
+			NoClosingRoundBracketException {
+		Stack<Character> stack = new Stack<Character>();
+		if (s.equals(":")) {
+			throw new MissingGraphNameException();
+		}
+		if (s.endsWith("\\")) {
+			throw new BackSlashAtEndOfLineException();
+		}
+		int count = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if(c == '"') {
+				count++;
+			}
+			if (c == '<' || c == '{') {
+				stack.push(c);
+			} else if (c == '>') {
+				if (stack.isEmpty()) {
+					throw new NoClosingSupException();
+				}
+				if (stack.pop() != '<') {
+					throw new NoClosingSupException();
+				}
+
+			} else if (c == '}') {
+				if (stack.isEmpty()) {
+					throw new NoClosingRoundBracketException();
+				}
+				if (stack.pop() != '{') {
+					throw new NoClosingRoundBracketException();
+				}
+			}
+
+		}
+		if ((count % 2) == 1) {
+			throw new NoClosingQuoteException();
+		}
+		if(!stack.isEmpty()) {
+			Character c = stack.pop();
+			if(c == '{') {
+				throw new NoClosingRoundBracketException();
+			}
+			if(c == '<') {
+				throw new NoClosingSupException();
+			}
+		}
 	}
 }

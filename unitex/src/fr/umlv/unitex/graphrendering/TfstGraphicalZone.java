@@ -328,6 +328,23 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		drawAllBoxes(f, params);
 	}
 
+	@Override
+	public void setHighlight(boolean highlight) {
+		if (!highlight) {
+			setDecorator(null);
+			repaint();
+			return;
+		}
+	}
+
+	@Override
+	public void setHighlight(GenericGraphBox b, boolean highlight) {
+		unsureBoxIsVisible(graphBoxes.indexOf(b));
+		final GraphDecorator d = new GraphDecorator(null);
+		d.highlightBoxLine(-1, b.getBoxNumber(), -1);
+		setDecorator(d);
+	}
+
 	/**
 	 * Prints the graph.
 	 * 
