@@ -92,6 +92,7 @@ public class TextAutomatonTagFilterDialog extends JDialog {
 
     private void onOk() {
         final JFileChooser chooserInput = new JFileChooser();
+        chooserInput.setDialogTitle("Input File Name");
         chooserInput.addChoosableFileFilter(new PersonalFileFilter("txt",
                 "Unicode Raw Texts"));
         chooserInput.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -103,6 +104,7 @@ public class TextAutomatonTagFilterDialog extends JDialog {
         }
 
         final JFileChooser chooserOutput = new JFileChooser();
+        chooserOutput.setDialogTitle("Output File Name");
         chooserOutput.addChoosableFileFilter(new PersonalFileFilter("txt",
                 "Unicode Raw Texts"));
         chooserOutput.setDialogType(JFileChooser.SAVE_DIALOG);
