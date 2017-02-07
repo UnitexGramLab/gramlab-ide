@@ -106,6 +106,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
   private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
+  private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -857,6 +858,15 @@ public abstract class InternalFrameManager implements FrameManager {
 		return f;
 	}
 
+	public TextAutomatonFindAndReplaceDialog newTextAutomatonFindAndReplaceDialog() {
+		final TextAutomatonFindAndReplaceDialog d = textAutomatonFindAndReplaceFactory.newTextAutomatonFindAndReplaceDialog();
+		if (d == null) {
+			return null;
+		}
+		d.setVisible(true);
+		return d;
+	}
+
 	public FindAndReplaceDialog newFindAndReplaceDialog() {
     final FindAndReplaceDialog d = findAndReplaceFactory.newFindAndReplaceDialog();
 		if (d == null)
@@ -865,8 +875,11 @@ public abstract class InternalFrameManager implements FrameManager {
 		return d;
 	}
 
-  public void addObserver(MultiInstanceFrameFactoryObserver o) {
-    graphFrameFactory.addObserver(o);
-  }
+	public void addObserver(MultiInstanceFrameFactoryObserver o) {
+		graphFrameFactory.addObserver(o);
+	}
 
+	public void updateTextAutomatonFindAndReplaceDialog() {
+		textAutomatonFindAndReplaceFactory.update();
+	}
 }
