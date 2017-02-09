@@ -7,17 +7,17 @@ public class TfstTagFilter {
 	private boolean keepSurface = true;
 	private boolean keepLemma = false;
 
-	private boolean allExceptInfClasses = false;
+	private boolean allTagsInfClasses = false;
 
 	private String directListing;
 	private String tagLetterNumber;
 	private String tagPrefixString;
 
-	public TfstTagFilter(boolean keepSurface, boolean keepLemma, boolean allExceptInfClasses, String directListing,
+	public TfstTagFilter(boolean keepSurface, boolean keepLemma, boolean allTagsInfClasses, String directListing,
 			String tagLetterNumber, String tagPrefixString) {
 		this.keepSurface = keepSurface;
 		this.keepLemma = keepLemma;
-		this.allExceptInfClasses = allExceptInfClasses;
+		this.allTagsInfClasses = allTagsInfClasses;
 		this.directListing = directListing;
 		this.tagLetterNumber = tagLetterNumber;
 		this.tagPrefixString = tagPrefixString;
@@ -127,67 +127,63 @@ public class TfstTagFilter {
 
 		for (int i = 0; i < wordTags.length; i++) {
 			if (i == 0) { // Surface
-
 				if (keepSurface) {
 					stringBuilder.append(wordTags[i]).append("/");
 				}
 			} else if (i == 1) { // Lemma
-
 				if (keepLemma) {
 					stringBuilder.append(wordTags[i]).append("/");
 				}
 			} else { // Codes
-				if (allExceptInfClasses) {
-					if (!wordTags[i].contains("#")) {
-						stringBuilder.append(wordTags[i]).append("/");
+				if (allTagsInfClasses) {
+					if (wordTags[i].contains("#")) { // Skip codes containing inflected classes
 						continue;
 					}
-				} else {
+				}
 
-					if (tagLetterNumber.isEmpty() && tagPrefixString.isEmpty() && directListing.isEmpty()) {
-						stringBuilder.append(wordTags[i]).append("/");
-						continue;
-					}
+				if (tagLetterNumber.isEmpty() && tagPrefixString.isEmpty() && directListing.isEmpty()) {
+					stringBuilder.append(wordTags[i]).append("/");
+					continue;
+				}
 
-					boolean keepCode = false;
+				boolean keepCode = false;
 
-					// Check tags length
-					if (!tagLetterNumber.isEmpty()) {
-						for (int tagLength : tagLengthes) {
-							if (wordTags[i].length() == tagLength) {
-								keepCode = true;
-								break;
-							}
+				// Check tags length
+				if (!tagLetterNumber.isEmpty()) {
+					for (int tagLength : tagLengthes) {
+						if (wordTags[i].length() == tagLength) {
+							keepCode = true;
+							break;
 						}
 					}
+				}
 
-					// Check prefixes
-					if (!keepCode && !tagPrefixString.isEmpty()) {
-						for (String tagPrefix : tagPrefixes) {
-							if (wordTags[i].startsWith(tagPrefix)) {
-								keepCode = true;
-								break;
-							}
+				// Check prefixes
+				if (!keepCode && !tagPrefixString.isEmpty()) {
+					for (String tagPrefix : tagPrefixes) {
+						if (wordTags[i].startsWith(tagPrefix)) {
+							keepCode = true;
+							break;
 						}
 					}
+				}
 
-					// Check tags
-					if (!keepCode && !directListing.isEmpty()) {
-						for (String tag : tags) {
-							if (wordTags[i].equals(tag)) {
-								keepCode = true;
-								break;
-							}
+				// Check tags
+				if (!keepCode && !directListing.isEmpty()) {
+					for (String tag : tags) {
+						if (wordTags[i].equals(tag)) {
+							keepCode = true;
+							break;
 						}
 					}
+				}
 
-					if (keepCode) {
-						stringBuilder.append(wordTags[i]).append("/");
-					}
-
+				if (keepCode) {
+					stringBuilder.append(wordTags[i]).append("/");
 				}
 
 			}
+
 		}
 
 		String filteredWord = stringBuilder.toString();
