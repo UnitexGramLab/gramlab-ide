@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -228,6 +228,10 @@ public class Config {
      * Dialog box used to choose the transducer list file used with Cassys
      */
     private static JFileChooser transducerListDialogBox;
+    /**
+     * Dialog box used to choose an output text file for exporting graph paths
+     */
+    private static JFileChooser exploreGraphOutputDialogBox;
 
     /**
      * Initializes the system. This method finds which system is running, which
@@ -531,6 +535,17 @@ public class Config {
         transducerListDialogBox.setMultiSelectionEnabled(false);
         //transducerListDialogBox.setControlButtonsAreShown(false);
         return transducerListDialogBox;
+    }
+    
+    public static JFileChooser getExploreGraphOutputDialogBox() {
+        if (exploreGraphOutputDialogBox != null)
+            return exploreGraphOutputDialogBox;
+        exploreGraphOutputDialogBox = new JFileChooser();
+        exploreGraphOutputDialogBox.setFileFilter(new PersonalFileFilter("txt", "Unicode Text File"));
+        exploreGraphOutputDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+        exploreGraphOutputDialogBox.setCurrentDirectory(Config.getUserCurrentLanguageDir());
+        exploreGraphOutputDialogBox.setMultiSelectionEnabled(false);
+        return exploreGraphOutputDialogBox;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -529,67 +529,5 @@ public class GraphBox extends GenericGraphBox {
 					old);
 		}
 	}
-
-  /**
-   * This method checks if the String s is valid or not.
-   *
-   * @param s the string to check
-   * @throws BackSlashAtEndOfLineException if the String ends with a backslash.
-   * @throws MissingGraphNameException if the String starts with a semicolon but is missing a graph name.
-   * @throws NoClosingQuoteException if the String contains a not closed quotation.
-   * @throws NoClosingSupException if the String contains a not closed chevron.
-   * @throws NoClosingRoundBracketException if the String contains a not closed brace.
-   */
-  public void checkString(String s)
-    throws BackSlashAtEndOfLineException, MissingGraphNameException,
-    NoClosingQuoteException, NoClosingSupException,
-    NoClosingRoundBracketException {
-    Stack<Character> stack = new Stack<Character>();
-    if (s.equals(":")) {
-      throw new MissingGraphNameException();
-    }
-    if (s.endsWith("\\")) {
-      throw new BackSlashAtEndOfLineException();
-    }
-    int count = 0;
-    for (int i = 0; i < s.length(); i++) {
-      char c = s.charAt(i);
-      if(c == '"') {
-        count++;
-      }
-      if (c == '<' || c == '{') {
-        stack.push(c);
-      } else if (c == '>') {
-        if (stack.isEmpty()) {
-          throw new NoClosingSupException();
-        }
-        if (stack.pop() != '<') {
-          throw new NoClosingSupException();
-        }
-
-      } else if (c == '}') {
-        if (stack.isEmpty()) {
-          throw new NoClosingRoundBracketException();
-        }
-        if (stack.pop() != '{') {
-          throw new NoClosingRoundBracketException();
-        }
-      }
-
-    }
-    if ((count % 2) == 1) {
-      throw new NoClosingQuoteException();
-    }
-    if(!stack.isEmpty()) {
-      Character c = stack.pop();
-      if(c == '{') {
-        throw new NoClosingRoundBracketException();
-      }
-      if(c == '<') {
-        throw new NoClosingSupException();
-      }
-    }
-  }
-
 }
 /* end of GraphBox */

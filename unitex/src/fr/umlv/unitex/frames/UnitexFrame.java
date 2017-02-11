@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1007,8 +1007,17 @@ public class UnitexFrame extends JFrame {
 						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					GlobalProjectManager.search(null)
-							.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+
+					if (f.getGraph() == null) {
+						JOptionPane.showMessageDialog(null,
+								"Cannot explore graph paths for graph with no name", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else {
+						GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+					}
 				}
 			}
 		});
