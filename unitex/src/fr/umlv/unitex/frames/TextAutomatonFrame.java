@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -85,6 +85,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
 import fr.umlv.unitex.graphrendering.TfstTextField;
+import fr.umlv.unitex.graphtools.FindAndReplace;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -105,7 +106,7 @@ import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame used to display sentence automata.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class TextAutomatonFrame extends TfstFrame {
@@ -149,7 +150,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	boolean isAcurrentElagLoadingThread = false;
 	Process currentElagLoadingProcess = null;
 	JSplitPane superpanel;
-	JButton resetSentenceGraph;
+	JButton revertSentenceGraph;
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -195,7 +196,7 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	private JPanel constructTextPanel() {
 		final JPanel textframe = new JPanel(new BorderLayout());
-		final JPanel p = new JPanel(new GridLayout(3, 1));
+		final JPanel p = new JPanel(new GridLayout(4, 1));
 		JButton button = new JButton("Explode");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -217,6 +218,16 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				elagDialog();
+			}
+		});
+		p.add(button);
+		button = new JButton("Find and Replace");
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//graphicalZone.setHighlight(graphicalZone.getBoxes().get(10), true);
+				//FindAndReplace.find(graphicalZone, graphicalZone.getBoxes().get(0), "fdp", true, true, true, true);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newTextAutomatonFindAndReplaceDialog();
 			}
 		});
 		p.add(button);
@@ -500,13 +511,14 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				loadSentence(spinnerModel.getNumber().intValue());
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
 		});
 		spinner = new JSpinner(spinnerModel);
 		middle.add(spinner, BorderLayout.CENTER);
 		cornerPanel.add(middle);
-		final Action resetSentenceAction = new AbstractAction(
-				"Reset Sentence Graph") {
+		final Action revertSentenceAction = new AbstractAction(
+				"Revert To Last Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int n = spinnerModel.getNumber().intValue();
@@ -518,10 +530,10 @@ public class TextAutomatonFrame extends TfstFrame {
 				loadSentence(n);
 			}
 		};
-		resetSentenceGraph = new JButton(resetSentenceAction);
-		resetSentenceGraph.setVisible(false);
-		cornerPanel.add(resetSentenceGraph);
-		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
+		revertSentenceGraph = new JButton(revertSentenceAction);
+		revertSentenceGraph.setVisible(false);
+		cornerPanel.add(revertSentenceGraph);
+		final Action saveAction = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -536,8 +548,8 @@ public class TextAutomatonFrame extends TfstFrame {
 						new RebuildTextAutomatonDo(Config.getCurrentSntDir()));
 			}
 		};
-		final JButton rebuildTfstButton = new JButton(rebuildAction);
-		cornerPanel.add(rebuildTfstButton);
+		final JButton saveTfstButton = new JButton(saveAction);
+		cornerPanel.add(saveTfstButton);
 		final JButton elagButton = new JButton("Elag Frame");
 		elagButton.addActionListener(new ActionListener() {
 			@Override
@@ -604,14 +616,14 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	/**
 	 * Indicates if the graph has been modified
-	 * 
+	 *
 	 * @param b
 	 *            <code>true</code> if the graph has been modified,
 	 *            <code>false</code> otherwise
 	 */
 	void setModified(boolean b) {
 		repaint();
-		resetSentenceGraph.setVisible(b);
+		revertSentenceGraph.setVisible(b);
 		final int n = spinnerModel.getNumber().intValue();
 		if (b && !isAcurrentLoadingThread && n != 0) {
 			/*
@@ -658,7 +670,7 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	/**
 	 * Loads a sentence automaton
-	 * 
+	 *
 	 * @param n
 	 *            sentence number
 	 * @return <code>false</code> if a sentence is already being loaded,
@@ -1021,7 +1033,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	public TfstGraphicalZone getTfstGraphicalZone() {
 		return graphicalZone;
 	}
-	
+
 }
 
 class LoadSentenceDo1 implements ToDo {
