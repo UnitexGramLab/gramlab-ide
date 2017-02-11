@@ -472,11 +472,25 @@ public class GraphBox extends GenericGraphBox {
 	 */
 	public void sortNodeLabel() {
 		if (!lines.isEmpty()) {
+            int outputIdx = content.indexOf('/');
+            String output = null;
+            if (outputIdx > 0) {
+                output = content.substring(outputIdx);
+            }
 			quicksort(lines, greyed, 0, lines.size() - 1);
 			content = lines.get(0);
 			for (int i = 1; i < lines.size(); i++) {
-				content = content + "+" + lines.get(i);
+                if (greyed.get(i)) {
+                    // subgraph
+                    content = content + "+:" + lines.get(i);
+                }
+                else {
+				    content = content + "+" + lines.get(i);
+                }
 			}
+            if (output != null) {
+                content = content + output;
+            }
 		}
 	}
 

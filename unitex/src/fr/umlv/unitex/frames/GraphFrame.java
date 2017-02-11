@@ -35,10 +35,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -97,8 +101,10 @@ import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.ConflictSolvedListener;
 import fr.umlv.unitex.svn.SvnConflict;
 import fr.umlv.unitex.utils.KeyUtil;
@@ -889,6 +895,46 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		myToolBar.add(genericGrf);
 	}
 
+    class ShowVerifyDo implements ToDo {
+        private final File list;
+
+        public ShowVerifyDo(File list) {
+            this.list = list;
+        }
+
+        @Override
+        public void toDo(boolean success) {
+            String line;
+            try {
+                int errFound = 0;
+                FileInputStream fis = new FileInputStream(list);
+                BufferedReader br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+                while ((line = br.readLine()) != null) {
+                    int count = 0;
+                    for (int i=0; i<line.length(); i++) {
+                        if (line.charAt(i) == '{') {
+                            count++;
+                        } else if (line.charAt(i) == '}') {
+                            count--;
+                        }   
+                    }   
+                    if (count != 0) {
+                        JOptionPane.showMessageDialog(null,"Braces are not well formed");
+                        errFound = 1;
+                        break;
+                    }   
+                }
+                if (errFound == 0) {
+                    JOptionPane.showMessageDialog(null,"No error found");
+                }
+            } catch (FileNotFoundException notFoundErr) {
+                ;
+            } catch(IOException ioErr) {
+                ;
+            } 
+        }
+    }
+
 	public static class ShowDiffDo implements ToDo {
 		File base, dest, diffResult;
 
@@ -1357,6 +1403,41 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				.displayGraphNames();
 		Launcher.exec(command, false);
 	}
+
+    public void verifyBraces() {
+        if (modified) {
+            JOptionPane.showMessageDialog(null,
+                    "Save the graph before verification", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (getGraph() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Cannot verify a graph with no name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Fst2ListCommand pathCmd = new Fst2ListCommand();
+        File fst2 = new File(FileUtil.getFileNameWithoutExtension(
+                    getGraph()) + ".fst2");
+	    File list = new File(ConfigManager.getManager()
+							.getCurrentLanguageDir(), "lst.txt");
+        pathCmd = pathCmd
+                    .noLimit()
+                    .separateOutputs(true)
+				    .listOfPaths(fst2, list);
+        final Grf2Fst2Command grfCommand = new Grf2Fst2Command()
+            .grf(getGraph())
+            .enableLoopAndRecursionDetection(true)
+            .emitEmptyGraphWarning(false)
+            .tokenizationMode(graphicalZone.getMetadata().getLanguage(),
+                    getGraph()).repositories().replaceAllByEpsilon(true)
+            .displayGraphNames();
+		final MultiCommands commands = new MultiCommands();
+		commands.addCommand(grfCommand);
+		commands.addCommand(pathCmd);
+		Launcher.exec(commands, true, new ShowVerifyDo(list),false);
+    }
 
 	public boolean saveGraph() {
 		if(graphicalZone.text.isModified())
