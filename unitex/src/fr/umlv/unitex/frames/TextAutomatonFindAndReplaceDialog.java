@@ -148,7 +148,7 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		JPanel panel1 = new JPanel();
 		KeyUtil.addCloseDialogListener(panel1);
 		panel1.setLayout(new GridBagLayout());
-		panel1.setPreferredSize(new Dimension(480, 226));
+		panel1.setPreferredSize(new Dimension(480, 250));
 		final JLabel label1 = new JLabel();
 		label1.setText("Find what:");
 		GridBagConstraints gbc;
@@ -180,12 +180,13 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		gbc.anchor = GridBagConstraints.WEST;
 		panel1.add(caseSensitiveCheckBox, gbc);
 		matchOnlyAWholeCheckBox = new JCheckBox();
-		matchOnlyAWholeCheckBox.setText("Match only a whole line");
+		matchOnlyAWholeCheckBox.setText("Match only current line");
+		matchOnlyAWholeCheckBox.setSelected(true);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 8;
 		gbc.anchor = GridBagConstraints.WEST;
-		matchOnlyAWholeCheckBox.setVisible(false);
+		matchOnlyAWholeCheckBox.setVisible(true);
 		panel1.add(matchOnlyAWholeCheckBox, gbc);
 		closeButton = new JButton();
 		closeButton.setMnemonic(KeyEvent.VK_C);
@@ -367,32 +368,36 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		data.getGraphicalZone().unSelectAllBoxes();
 		int res = 0;
 		res = FindAndReplace.findAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
-				useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(),
-				matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+				useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), false,
+				ignoreCommentBoxesCheckBox.isSelected());
 		if (res == 0) {
 			data.getGraphicalZone().setHighlight(false);
+			selectNextSentence();
 			return;
 		}
 		if (isValidFindTextField()) {
 			GenericGraphBox nextBox = data.nextBox();
 			if (nextBox == null) {
-				data = new FindAndReplaceData(frame.getGraphicalZone().getBoxes(), frame.getGraphicalZone());
+				selectNextSentence();
 				onNext();
 				return;
 			}
 			while (!FindAndReplace.find(data.getGraphicalZone(), nextBox, findTextField.getText(),
-					useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(),
-					matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected())
-					&& i < data.getBoxes().size()) {
+					useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), false,
+					ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
 				i++;
 				nextBox = data.nextBox();
 				if (nextBox == null) {
-					data = new FindAndReplaceData(frame.getGraphicalZone().getBoxes(), frame.getGraphicalZone());
+					selectNextSentence();
 					onNext();
 					return;
 				}
 			}
 		}
+	}
+
+	private void selectNextSentence() {
+		frame.loadNextSentence();
 	}
 
 	private void onPrev() {
@@ -401,32 +406,36 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		data.getGraphicalZone().unSelectAllBoxes();
 		int res = 0;
 		res = FindAndReplace.findAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
-				useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(),
-				matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+				useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), false,
+				ignoreCommentBoxesCheckBox.isSelected());
 		if (res == 0) {
 			data.getGraphicalZone().setHighlight(false);
+			selectPrevSentence();
 			return;
 		}
 		if (isValidFindTextField()) {
 			GenericGraphBox prevBox = data.prevBox();
 			if (prevBox == null) {
-				data = new FindAndReplaceData(frame.getGraphicalZone().getBoxes(), frame.getGraphicalZone());
+				selectPrevSentence();
 				onPrev();
 				return;
 			}
 			while (!FindAndReplace.find(data.getGraphicalZone(), prevBox, findTextField.getText(),
-					useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(),
-					matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected())
-					&& i < data.getBoxes().size()) {
+					useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), false,
+					ignoreCommentBoxesCheckBox.isSelected()) && i < data.getBoxes().size()) {
 				i++;
 				prevBox = data.prevBox();
 				if (prevBox == null) {
-					data = new FindAndReplaceData(frame.getGraphicalZone().getBoxes(), frame.getGraphicalZone());
+					selectPrevSentence();
 					onPrev();
 					return;
 				}
 			}
 		}
+	}
+
+	private void selectPrevSentence() {
+		frame.loadPrevSentence();
 	}
 
 	private void onReplace() {
@@ -439,8 +448,7 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		}
 		boolean wasReplaced = FindAndReplace.replace(data.getCurrentBox(), findTextField.getText(),
 				replaceTextField.getText(), data.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(),
-				caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(),
-				ignoreCommentBoxesCheckBox.isSelected());
+				caseSensitiveCheckBox.isSelected(), false, ignoreCommentBoxesCheckBox.isSelected());
 		if (wasReplaced) {
 			updateReplaceResultTextField(1);
 		} else {
@@ -454,10 +462,20 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 			return;
 		}
 		int i = 0;
-		i += FindAndReplace.replaceAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
-				replaceTextField.getText(), frame.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(),
-				caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(),
-				ignoreCommentBoxesCheckBox.isSelected());
+		if (matchOnlyAWholeCheckBox.isSelected()) {
+			i = FindAndReplace.replaceAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
+					replaceTextField.getText(), frame.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(),
+					caseSensitiveCheckBox.isSelected(), false, ignoreCommentBoxesCheckBox.isSelected());
+		} else {
+			for (int j = 1; j <= frame.getSentenceCount(); j++) {
+				i += FindAndReplace.replaceAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
+						replaceTextField.getText(), frame.getGraphicalZone(),
+						useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), false,
+						ignoreCommentBoxesCheckBox.isSelected());
+				frame.loadNextSentence();
+				updateData();
+			}
+		}
 		updateReplaceResultTextField(i);
 	}
 
@@ -480,8 +498,8 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		}
 		int res = 0;
 		res = FindAndReplace.findAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
-				useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(),
-				matchOnlyAWholeCheckBox.isSelected(), ignoreCommentBoxesCheckBox.isSelected());
+				useRegularExpressionsCheckBox.isSelected(), caseSensitiveCheckBox.isSelected(), false,
+				ignoreCommentBoxesCheckBox.isSelected());
 		String msg;
 		switch (res) {
 		case 0:
@@ -529,8 +547,7 @@ public class TextAutomatonFindAndReplaceDialog extends JDialog {
 		String msg = "";
 		msg = FindAndReplace.checkReplaceAll(frame.getGraphicalZone().getBoxes(), findTextField.getText(),
 				replaceTextField.getText(), frame.getGraphicalZone(), useRegularExpressionsCheckBox.isSelected(),
-				caseSensitiveCheckBox.isSelected(), matchOnlyAWholeCheckBox.isSelected(),
-				ignoreCommentBoxesCheckBox.isSelected());
+				caseSensitiveCheckBox.isSelected(), false, ignoreCommentBoxesCheckBox.isSelected());
 		if (!msg.isEmpty()) {
 			statusBarTextField.setText("Error one or more boxes won't be replaced: " + msg);
 			statusBarTextField.setForeground(Color.red);
