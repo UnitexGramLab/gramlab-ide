@@ -150,7 +150,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	boolean isAcurrentElagLoadingThread = false;
 	Process currentElagLoadingProcess = null;
 	JSplitPane superpanel;
-	JButton resetSentenceGraph;
+	JButton revertSentenceGraph;
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -517,8 +517,8 @@ public class TextAutomatonFrame extends TfstFrame {
 		spinner = new JSpinner(spinnerModel);
 		middle.add(spinner, BorderLayout.CENTER);
 		cornerPanel.add(middle);
-		final Action resetSentenceAction = new AbstractAction(
-				"Reset Sentence Graph") {
+		final Action revertSentenceAction = new AbstractAction(
+				"Revert To Last Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int n = spinnerModel.getNumber().intValue();
@@ -530,10 +530,10 @@ public class TextAutomatonFrame extends TfstFrame {
 				loadSentence(n);
 			}
 		};
-		resetSentenceGraph = new JButton(resetSentenceAction);
-		resetSentenceGraph.setVisible(false);
-		cornerPanel.add(resetSentenceGraph);
-		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
+		revertSentenceGraph = new JButton(revertSentenceAction);
+		revertSentenceGraph.setVisible(false);
+		cornerPanel.add(revertSentenceGraph);
+		final Action saveAction = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -548,8 +548,8 @@ public class TextAutomatonFrame extends TfstFrame {
 						new RebuildTextAutomatonDo(Config.getCurrentSntDir()));
 			}
 		};
-		final JButton rebuildTfstButton = new JButton(rebuildAction);
-		cornerPanel.add(rebuildTfstButton);
+		final JButton saveTfstButton = new JButton(saveAction);
+		cornerPanel.add(saveTfstButton);
 		final JButton elagButton = new JButton("Elag Frame");
 		elagButton.addActionListener(new ActionListener() {
 			@Override
@@ -623,7 +623,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	 */
 	void setModified(boolean b) {
 		repaint();
-		resetSentenceGraph.setVisible(b);
+		revertSentenceGraph.setVisible(b);
 		final int n = spinnerModel.getNumber().intValue();
 		if (b && !isAcurrentLoadingThread && n != 0) {
 			/*
