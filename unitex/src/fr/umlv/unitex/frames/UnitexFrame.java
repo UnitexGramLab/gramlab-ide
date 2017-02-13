@@ -1565,7 +1565,7 @@ public class UnitexFrame extends JFrame {
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeAllFrames();
 		// close socket created to restrict IDE to single instance
-		Unitex.closeSocket();
+		Config.closeSocket();
 		System.exit(0);
 	}
 

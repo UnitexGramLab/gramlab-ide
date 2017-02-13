@@ -17,6 +17,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.Config;
 import fr.gramlab.frames.GramlabFrame;
 import fr.gramlab.icons.Icons;
 import fr.gramlab.project.GramlabProjectManager;
@@ -29,11 +30,14 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				launchGramlab(args);
-			}
-		});
+		if (!Config.isRunning(args)) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					launchGramlab(args);
+				}
+			});
+		}
+		
 	}
 
 	private static GramlabFrame frame;

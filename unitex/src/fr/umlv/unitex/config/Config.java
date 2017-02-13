@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.config;
 
+import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -34,8 +35,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.lang.Process;
 import java.lang.ProcessBuilder;
+import java.net.BindException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -53,8 +59,11 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
+import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexFrame;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.process.commands.CommandBuilder;
@@ -67,6 +76,12 @@ import fr.umlv.unitex.process.commands.VersionInfoCommand;
  * @author Sébastien Paumier
  */
 public class Config {
+	
+	private static final int PORT = 9999;
+	private static ServerSocket serverSocket = null;
+	private static Socket socket = null;
+	private static final String DELIMITER = ";";
+	private static boolean SOCKET_OPEN = false;
 	
     /**
      * Path of the directory <code>.../Unitex/App</code>
@@ -1593,4 +1608,133 @@ public class Config {
         }
         return monitor;
     }
+    
+    public static boolean isRunning(final String[] args) {
+    	try {
+			// Issue #27 use ServerSocket to restrict IDE to single instance and to allow failed instance to pass file name to running instance.
+			// Run in SwingWorker background thread so doesn't block main thread
+			serverSocket = new ServerSocket(PORT,0,InetAddress.getByAddress(new byte[] {127,0,0,1}));  
+			SOCKET_OPEN = true;
+			
+			SwingWorker<String, Void> socketThread = new SwingWorker<String, Void>() { 
+				
+	            @Override
+	            public String doInBackground() { 
+	            	while (SOCKET_OPEN) {
+	            		serverSocketListener();
+	            	}
+	                return "";
+	            }	
+	        };
+	        socketThread.execute(); 
+			return false;
+		} catch (BindException e) {
+			System.err.println("IDE instance already running.");
+			clientSocketListener(args);
+			return true;
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        return true;
+	    }
+    }
+    
+    /**
+     * Extracts the graph files from args passed to application on startup and opens graph frames
+     * Issue #27
+     */
+    public static void openGraphFiles(String[] args) {
+    	for (int i = 0; i < args.length; i++) {
+    		if (args[i].indexOf("=") == -1) {
+    			File f = new File(args[i]);
+    			
+    			// f.getAbsoluleFile ensures we initialize the full path in cases where file name only is passed
+    			GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.newGraphFrame(f.getAbsoluteFile());
+    		}		
+    	}
+    }
+	
+	// Server socket - listens for connection from failed instance startup
+	public static void serverSocketListener() { 
+		try {
+			socket = serverSocket.accept();
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+			String str = in.readLine();
+			
+			if (str != null && str.length() > 0) {  
+				openGraphFiles(stringToArray(str, DELIMITER));
+				if (UnitexFrame.mainFrame.isVisible()) {
+					UnitexFrame.mainFrame.setVisible(true);
+				}
+			}       
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+	}
+
+	// Client socket sends graph file name(s) to running process 
+	public static void clientSocketListener(String[] args) { 
+		try {
+			socket = new Socket(InetAddress.getByAddress( new byte[] {127,0,0,1}), PORT );
+			PrintWriter out = new PrintWriter(socket.getOutputStream(), true );
+			out.println(arrayToString(args, DELIMITER));
+		} catch  (IOException e) {
+			System.out.println("No I/O");
+			System.exit(1);
+		} finally {
+			try {
+				socket.close();
+			} catch (IOException ex) {
+				System.err.println("Exception closing client socket on port " + PORT);
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public static void closeSocket() {
+		SOCKET_OPEN = false;
+		try {
+			if (serverSocket != null) {
+				serverSocket.close();
+			}
+		} catch (IOException ex) {
+			System.err.println("Exception closing server socket on port " + PORT);
+			ex.printStackTrace();
+		}
+	}
+	
+	// Utility methods to convert String[] to delimited string and back again
+	public static String arrayToString(String[] arr, String delim) {
+		String ret = "";
+		
+		if (arr != null && arr.length > 0) {
+			for (int i = 0; i < arr.length; i++) {
+				ret += arr[i] + delim;
+			}
+			ret = ret.substring(0,ret.lastIndexOf(delim));
+		}
+		return ret;
+	}
+	
+	public static String[] stringToArray(String str, String delim) {
+		ArrayList<String> list = new ArrayList<String>(0);
+		
+		int sidx = 0;
+		int eidx = str.indexOf(delim);
+		
+		while (eidx != -1) {
+			list.add(str.substring(sidx, eidx));
+			sidx = eidx + 1;
+			eidx = str.indexOf(" ", sidx);
+		}
+		list.add(str.substring(sidx));
+		
+		String[] ret = new String[list.size()];
+		list.toArray(ret);
+		
+		return ret;
+	}
 }
