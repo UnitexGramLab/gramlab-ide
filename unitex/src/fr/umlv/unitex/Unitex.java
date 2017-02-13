@@ -104,6 +104,7 @@ public class Unitex {
 				}
 			});
 		} catch (BindException e) {
+			System.err.println("IDE instance already running.");
 			clientSocketListener(args);
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -208,9 +209,11 @@ public class Unitex {
     	for (int i = 0; i < args.length; i++) {
     		if (args[i].indexOf("=") == -1) {
     			File f = new File(args[i]);
+    			
+    			// f.getAbsoluleFile ensures we initialize the full path in cases where file name only is passed
     			GlobalProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class)
-				.newGraphFrame(f);
+				.newGraphFrame(f.getAbsoluteFile());
     		}		
     	}
     }
@@ -270,11 +273,12 @@ public class Unitex {
 	public static String arrayToString(String[] arr, String delim) {
 		String ret = "";
 		
-		for (int i = 0; i < arr.length; i++) {
-			ret += arr[i] + delim;
+		if (arr != null && arr.length > 0) {
+			for (int i = 0; i < arr.length; i++) {
+				ret += arr[i] + delim;
+			}
+			ret = ret.substring(0,ret.lastIndexOf(delim));
 		}
-		ret = ret.substring(0,ret.lastIndexOf(delim));
-		
 		return ret;
 	}
 	
