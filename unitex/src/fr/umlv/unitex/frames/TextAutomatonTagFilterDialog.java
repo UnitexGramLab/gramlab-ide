@@ -1,16 +1,32 @@
 package fr.umlv.unitex.frames;
 
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.files.PersonalFileFilter;
-import fr.umlv.unitex.tfst.TfstTagFilter;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
+
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.files.PersonalFileFilter;
+import fr.umlv.unitex.tfst.TfstTagFilter;
+import fr.umlv.unitex.utils.CharsetDetector;
 
 public class TextAutomatonTagFilterDialog extends JDialog {
 
@@ -114,39 +130,43 @@ public class TextAutomatonTagFilterDialog extends JDialog {
 
 		checkAllFields();
 
-		// This will reference one line at a time
-		String line = null;
-
-		TfstTagFilter filter = new TfstTagFilter(surfaceCheckBox.isSelected(), lemmaCheckBox.isSelected(),
-				allTagsInfClassCheckBox.isSelected(), directListingTextField.getText(),
-				tagLetterNumberTextField.getText(), tagPrefixTextField.getText());
-
+		String charset = null;
+		// Try to detect the charset from the input file
 		try {
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(chooserInput.getSelectedFile());
+			charset = CharsetDetector.detect(chooserInput.getSelectedFile());
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "Input file : Could not determine the encoding.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+		}
 
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+		if (charset != null) {
+			TfstTagFilter filter = new TfstTagFilter(surfaceCheckBox.isSelected(), lemmaCheckBox.isSelected(),
+					allTagsInfClassCheckBox.isSelected(), directListingTextField.getText(),
+					tagLetterNumberTextField.getText(), tagPrefixTextField.getText());
 
-			FileWriter fileWriter = new FileWriter(chooserOutput.getSelectedFile());
+			String line = null;
 
-			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+			try {
+				InputStreamReader inputStreamReader = new InputStreamReader(
+						new FileInputStream(chooserInput.getSelectedFile()), charset);
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-			while ((line = bufferedReader.readLine()) != null) {
-				String filteredLine = filter.filterLine(line);
-				bufferedWriter.write(filteredLine);
+				OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
+						new FileOutputStream(chooserOutput.getSelectedFile()), "UTF8");
+				BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+
+				while ((line = bufferedReader.readLine()) != null) {
+					String filteredLine = filter.filterLine(line);
+					bufferedWriter.write(filteredLine);
+				}
+
+				bufferedReader.close();
+				bufferedWriter.close();
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(this, "An error occurred while trying to filter the tags.", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
-
-			// Always close files.
-			bufferedReader.close();
-			bufferedWriter.close();
-
-		} catch (FileNotFoundException ex) {
-			System.out.println("Unable to open file");
-		} catch (IOException ex) {
-			System.out.println("Error reading file");
-			// Or we could just do this:
-			// ex.printStackTrace();
 		}
 
 		dispose();
