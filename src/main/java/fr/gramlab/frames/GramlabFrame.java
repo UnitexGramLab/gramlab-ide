@@ -83,6 +83,7 @@ import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.SingleInstanceMonitor;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.frames.*;
@@ -184,7 +185,7 @@ public class GramlabFrame extends JFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				Config.closeSocket();
+				SingleInstanceMonitor.closeSocket();
 				System.exit(0);
 			}
 		});

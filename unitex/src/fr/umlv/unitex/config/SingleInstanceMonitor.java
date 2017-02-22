@@ -133,36 +133,6 @@ public class SingleInstanceMonitor {
     	return port;
     }
     
-   
-    
-//    public static boolean isRunning(final String[] args) {
-//    	System.out.println("unitexDir = " + getUnitexDir());
-//    	String appId = "UnitexGramLab";
-//    	boolean alreadyRunning;
-//    	
-//    	try {
-//			JUnique.acquireLock(appId, new MessageHandler() {
-//				public String handle(String message) {
-//					if (message != null && message.length() > 0) {  
-//						openGraphFiles(stringToArray(message, DELIMITER));
-//						if (UnitexFrame.mainFrame.isVisible()) {
-//							UnitexFrame.mainFrame.setVisible(true);
-//						}
-//					}       
-//					return null;
-//				}
-//			});
-//			alreadyRunning = false;
-//		} catch (AlreadyLockedException e) {
-//			System.err.println("IDE instance already running.");
-//			alreadyRunning = true;
-//	    }
-//    	
-//    	if (alreadyRunning) {
-//    		JUnique.sendMessage(appId, arrayToString(args, DELIMITER));
-//    	}
-//    	return alreadyRunning;
-//    }
     
  // Server socket - listens for connection from failed instance startup
  	public static void serverSocketListener() { 
