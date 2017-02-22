@@ -38,6 +38,7 @@ import javax.swing.plaf.metal.OceanTheme;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
+import fr.umlv.unitex.config.SingleInstanceMonitor;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
@@ -61,7 +62,7 @@ public class Unitex {
 	public static void main(final String[] args) {
 		running=true;
 
-		if (!Config.isRunning(args)) {
+		if (!SingleInstanceMonitor.isRunning(args)) {
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
