@@ -60,6 +60,7 @@ import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.svn.SvnMonitor;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.VersionInfoCommand;
 
@@ -70,6 +71,11 @@ import fr.umlv.unitex.process.commands.VersionInfoCommand;
  * @author Sébastien Paumier
  */
 public class Config {
+	
+	/**
+	 * Reference to the SingleInstanceMonitor in the running IDE for use by window close listeners
+	 */
+	private static SingleInstanceMonitor sim;
 	
     /**
      * Path of the directory <code>.../Unitex/App</code>
@@ -255,17 +261,22 @@ public class Config {
     public static void initConfig(String[] args) {
     	String binDir = null;
     	
-    	if (args != null && args.length > 0) {
-    		if (args[0].indexOf(".grf") == -1) {
-    			int bidx = args[0].indexOf("=");
-            	if (bidx != -1) {
-            		binDir = args[0].substring(bidx + 1); 
-            	}
-            	else {
-            		binDir = args[0]; 
-            	}
-    		}
+    	File appPath = getAppPath(args);
+    	if (appPath != null) {
+    		binDir = appPath.getAbsolutePath();
     	}
+	
+//    	if (args != null && args.length > 0) {
+//    		if (args[0].indexOf(".grf") == -1) {
+//    			int bidx = args[0].indexOf("=");
+//            	if (bidx != -1) {
+//            		binDir = args[0].substring(bidx + 1); 
+//            	}
+//            	else {
+//            		binDir = args[0]; 
+//            	}
+//    		}
+//    	}
     	initConfig(binDir);
     }
     
@@ -1302,6 +1313,12 @@ public class Config {
         if (1 == JOptionPane.showOptionDialog(frame, p, "Unitex",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0])) {
+        	try {
+        		getSingleInstanceMonitor().closeSocket();
+        	} catch(Exception e) {
+        	
+        	}
+        	
             System.exit(0);
         }
         String selectedItem = (String) (langList.getSelectedItem());
@@ -1623,6 +1640,10 @@ public class Config {
 				}
 			}
 		}
+    	if (path != null && !path.isDirectory()) {
+    		System.err.println("Usage: Path to UnitexToolLogger must be a valid directory.");
+    		path = null;
+    	}
     	return path;
     }
     
@@ -1630,7 +1651,6 @@ public class Config {
     	File path = getAppPath(args);
     	determineUnitexDir(path != null ? path.getAbsolutePath() : null);
     }
-    
     
     /**
      * Extracts the graph files from args passed to application on startup and opens graph frames
@@ -1647,6 +1667,14 @@ public class Config {
 				.newGraphFrame(f.getAbsoluteFile());
     		}		
     	}
+    }
+    
+    public static void setSingleInstanceMonitor(SingleInstanceMonitor s) {
+    	sim = s;
+    }
+    
+    public static SingleInstanceMonitor getSingleInstanceMonitor() {
+    	return sim;
     }
 	
 }

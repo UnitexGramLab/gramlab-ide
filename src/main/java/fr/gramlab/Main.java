@@ -18,11 +18,12 @@ import javax.swing.plaf.metal.OceanTheme;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.SingleInstanceMonitor;
 import fr.gramlab.frames.GramlabFrame;
 import fr.gramlab.icons.Icons;
 import fr.gramlab.project.GramlabProjectManager;
+import fr.gramlab.util.GramlabSingleInstanceMonitor;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 
 
 public class Main {
@@ -31,7 +32,10 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		if (!SingleInstanceMonitor.isRunning(args)) {
+		SingleInstanceMonitor sim = new GramlabSingleInstanceMonitor();
+		
+		if (!sim.isRunning(args)) {
+			Config.setSingleInstanceMonitor(sim);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					launchGramlab(args);
@@ -73,20 +77,7 @@ public class Main {
 			System.exit(0);
 		}
 		File path=Config.getAppPath(args);
-//		if (args.length > 0) {
-//			// strip the path to UnitexToolLogger binary from args. Assumes if present it will be arg[0]
-//			if (args[0].indexOf(".grf") == -1) {
-//				int bidx = args[0].indexOf("=");
-//				if (bidx != -1) {
-//					path = new File(args[0].substring(bidx + 1)); 
-//				}
-//				else {
-//					// ensure backward compatibility with Unitex/Gramlab <= 3.1
-//					path = new File(args[0]);
-//				}
-//			}
-//			
-//		}
+
         final File path1=path;
         EventQueue.invokeLater(new Runnable() {
 			@Override

@@ -26,6 +26,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -83,7 +84,7 @@ import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.SingleInstanceMonitor;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.frames.*;
@@ -107,6 +108,7 @@ public class GramlabFrame extends JFrame {
 	ProjectTabbedPane tabbedPane;
 	final JPanel processPane=new JPanel(new BorderLayout());
 	JTree tree;
+	
 
 	public GramlabFrame() {
 		super();
@@ -123,6 +125,7 @@ public class GramlabFrame extends JFrame {
 		bigSplit.setOneTouchExpandable(true);
 		setContentPane(bigSplit);
 		refreshTitle();
+		
 		GlobalProjectManager.getAs(GramlabProjectManager.class)
 			.addProjectListener(new ProjectAdapter() {
 			@Override
@@ -185,7 +188,11 @@ public class GramlabFrame extends JFrame {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				SingleInstanceMonitor.closeSocket();
+				try {
+					Config.getSingleInstanceMonitor().closeSocket();
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
 				System.exit(0);
 			}
 		});

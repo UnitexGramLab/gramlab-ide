@@ -1,4 +1,4 @@
-package fr.umlv.unitex.config;
+package fr.umlv.unitex.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,8 +17,11 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
+import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.frames.UnitexFrame;
 
 
@@ -29,19 +32,14 @@ import fr.umlv.unitex.frames.UnitexFrame;
  */
 public class SingleInstanceMonitor {
 
-	private static ServerSocket serverSocket = null;
-	private static Socket socket = null;
-	private static final String DELIMITER = ";";
-	private static boolean SOCKET_OPEN = false;
-	private static final String PORT_FILE_NAME = "port_file.txt";
+	private ServerSocket serverSocket = null;
+	private Socket socket = null;
+	private final String DELIMITER = ";";
+	private boolean SOCKET_OPEN = false;
+	private final String PORT_FILE_NAME = "single_instance.port";
 	
-	static {
-		// Adds a shutdown hook to release resources at JVM shutdown.
-		Runtime rt = Runtime.getRuntime();
-		rt.addShutdownHook(new Thread(new ShutdownHook()));
-	}
 	
-	public static boolean isRunning(final String[] args) {
+	public boolean isRunning(final String[] args) {
     	try {
     		// set the app path so we know where to store the port file
     		Config.setAppPath(args);
@@ -49,7 +47,6 @@ public class SingleInstanceMonitor {
     		File f = getPortFile();
 			
 			if (f.exists()) {
-				//System.err.println("IDE instance already running.");
 				clientSocketListener(args);
 				return true;
 			}
@@ -82,23 +79,27 @@ public class SingleInstanceMonitor {
 			clientSocketListener(args);
 			return true;
 	    } catch (IOException e) {
+	    	System.out.println("IOException...");
 	        e.printStackTrace();
 	        return true;
 	    }
     }
     
-    private static File getPortFile() {
+    private File getPortFile() {
     	return new File(Config.getApplicationDir(), PORT_FILE_NAME);
     }
     
-    private static void writePortFile(int portNumber) {
+    private void writePortFile(int portNumber) {
     	Writer portWriter = null;
 		try {
 			portWriter = new FileWriter(getPortFile());
 			portWriter.write(String.valueOf(portNumber));
 			portWriter.flush();
-		} catch (Throwable t) {
+		} catch (Exception e) {
+			// Exception writing file, report the error and close the socket and allow IDE to launch. 
 			System.err.println("Error writing to port file for single instance listener running on port " + portNumber);
+			closeSocket();
+			e.printStackTrace();
 		} finally {
 			if (portWriter != null) {
 				try {
@@ -110,7 +111,7 @@ public class SingleInstanceMonitor {
 		}
     }
     
-    private static int readPortFile() {
+    private int readPortFile() {
     	int port = -1;
     	BufferedReader reader = null;
     	try {
@@ -133,9 +134,18 @@ public class SingleInstanceMonitor {
     	return port;
     }
     
+    /**
+     * Maximises the UnitexFrame
+     */
+    public void setFrameVisible() {
+    	if (UnitexFrame.mainFrame.isVisible()) {
+    		UnitexFrame.mainFrame.setVisible(true);
+    	}
+    }
+    
     
  // Server socket - listens for connection from failed instance startup
- 	public static void serverSocketListener() { 
+ 	public  void serverSocketListener() { 
  		try {
  			if (!serverSocket.isClosed()) {
  				socket = serverSocket.accept();
@@ -145,10 +155,8 @@ public class SingleInstanceMonitor {
  				
  				if (str != null && str.length() > 0) {  
  					Config.openGraphFiles(stringToArray(str, DELIMITER));
- 					if (UnitexFrame.mainFrame.isVisible()) {
- 						UnitexFrame.mainFrame.setVisible(true);
- 					}
- 				}       
+ 				} 
+ 				setFrameVisible();
  			}
  		} catch (SocketException ex) {
  			// ignore socket closed exception if we've closed it
@@ -157,29 +165,27 @@ public class SingleInstanceMonitor {
  			}
  		} catch (IOException e) {
  			e.printStackTrace();
- 			System.exit(-1);
  		}
  	}
 
  	// Client socket sends graph file name(s) to running process 
- 	public static void clientSocketListener(String[] args) { 
+ 	public  void clientSocketListener(String[] args) { 
  		int port = readPortFile();
  		try {
- 			socket = new Socket(InetAddress.getByAddress( new byte[] {127,0,0,1}), port);
+ 			socket = new Socket(InetAddress.getByAddress(new byte[] {127,0,0,1}), port);
  			PrintWriter out = new PrintWriter(socket.getOutputStream(), true );
  			out.println(arrayToString(args, DELIMITER));
  			System.err.println("IDE instance already running.");
  		} catch (IOException e) {
  			System.err.println("Exception opening client socket listener on port " + port + ".\n"
  					+ "The IDE may not have shut down correctly. Please try again.");
- 			// the port file is out of date so delete it
- 			System.out.println("client socket calling delete port file...");
+ 			// the port file is out of date, delete it so IDE will launch on retry
  			deletePortFile();
- 			//e.printStackTrace();
- 			System.exit(1);
  		} finally {
  			try {
- 				socket.close();
+ 				if (socket != null) {
+ 					socket.close();
+ 				}
  			} catch (Exception ex) {
  				System.err.println("Exception closing client socket on port " + port);
  				ex.printStackTrace();
@@ -187,41 +193,29 @@ public class SingleInstanceMonitor {
  		}
  	}
  	
- 	public static void closeSocket() {
+ 	public  void closeSocket() {
  		SOCKET_OPEN = false;
  		try {
  			if (serverSocket != null) {
  				serverSocket.close();
  			}
+ 			deletePortFile();
  		} catch (IOException ex) {
  			System.err.println("Exception closing server socket on port ");
  			ex.printStackTrace();
  		}
  	}
  	
- 	private static void deletePortFile() {
- 		System.out.println("Deleting port file...");
+ 	private  void deletePortFile() {
  		File f = getPortFile();
  		if (f.exists()) {
  			f.delete();
  		}
  	}
  	
- 	// TODO test this already noticed port file is being deleted when second instance JVM shuts down 
- 	// which allows the third instance to start up. Suspect there is also socket comm probs on 3rd instance
- 	// the reason for this was to ensure the file was deleted when Apple close was used to exit
- 	private static class ShutdownHook implements Runnable {
-
- 		public void run() {
- 			System.out.println("shutdown hook.....");
- 			closeSocket();
- 			//deletePortFile();
- 		}
-
- 	}
  	
  	// Utility methods to convert String[] to delimited string and back again
- 	public static String arrayToString(String[] arr, String delim) {
+ 	public  String arrayToString(String[] arr, String delim) {
  		String ret = "";
  		
  		if (arr != null && arr.length > 0) {
@@ -233,7 +227,7 @@ public class SingleInstanceMonitor {
  		return ret;
  	}
  	
- 	public static String[] stringToArray(String str, String delim) {
+ 	public  String[] stringToArray(String str, String delim) {
  		ArrayList<String> list = new ArrayList<String>(0);
  		
  		int sidx = 0;

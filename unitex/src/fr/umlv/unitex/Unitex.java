@@ -38,10 +38,10 @@ import javax.swing.plaf.metal.OceanTheme;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.Preferences;
-import fr.umlv.unitex.config.SingleInstanceMonitor;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 
 /**
  * This is the main class of the Unitex system.
@@ -61,8 +61,10 @@ public class Unitex {
 	
 	public static void main(final String[] args) {
 		running=true;
-
-		if (!SingleInstanceMonitor.isRunning(args)) {
+		SingleInstanceMonitor sim = new SingleInstanceMonitor();
+		
+		if (!sim.isRunning(args)) {
+			Config.setSingleInstanceMonitor(sim);
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
