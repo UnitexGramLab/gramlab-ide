@@ -489,9 +489,10 @@ public abstract class InternalFrameManager implements FrameManager {
 	}
 
 	public ProcessInfoFrame newProcessInfoFrame(MultiCommands c, boolean close,
-			ToDo myDo, boolean stopIfProblem) {
+			ToDo myDo, boolean stopIfProblem,boolean forceToDo) {
 		final ProcessInfoFrame f = new ProcessInfoFrame(c, close, myDo,
 				stopIfProblem);
+		f.setForceToDo(forceToDo);
 		setup(f, true);
 		f.launchBuilderCommands();
 		return f;

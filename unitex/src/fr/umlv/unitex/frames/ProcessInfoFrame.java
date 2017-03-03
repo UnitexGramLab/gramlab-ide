@@ -84,6 +84,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	final JButton copy;
 	ExecParameters parameters;
 	Executor executor;
+	private boolean forceToDo;
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -181,6 +182,11 @@ public class ProcessInfoFrame extends JInternalFrame {
 		pack();
 		setBounds(100, 100, 600, 400);
 	}
+	
+	public void setForceToDo(boolean forceToDo) {
+		this.forceToDo = forceToDo;
+	}
+
 
 	void launchBuilderCommands() {
 		final ToDo originalToDo = parameters.getDO();
@@ -199,6 +205,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 						@Override
 						public void run() {
 							ToDo DO = originalToDo;
+							boolean todoExecuted = false;
 							if (PB) {
 								setTitle("ERROR");
 								copy.setEnabled(true);
@@ -210,7 +217,11 @@ public class ProcessInfoFrame extends JInternalFrame {
 								dispose();
 								if (DO != null) {
 									DO.toDo(success);
+									todoExecuted = true;
 								}
+							}
+							if(forceToDo && !todoExecuted && DO != null){
+								DO.toDo(success);
 							}
 						}
 					});
