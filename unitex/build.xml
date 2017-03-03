@@ -63,7 +63,9 @@
 
 	<target name="dist" depends="clean,compile" description="generate the distribution">
 		<!-- create Unitex.jar -->
-		<jar jarfile="${dist-dir}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf" basedir="classes" excludes="classes/fr/loria/**" />
+		<jar jarfile="${dist-dir}/Unitex.jar" manifest="classes/fr/umlv/unitex/Manifest.mf" basedir="classes" excludes="classes/fr/loria/**">
+			<zipgroupfileset dir="${lib-dir}" includes="juniversalchardet-1.0.3.jar"></zipgroupfileset>	
+		</jar>
 		<!-- create XAlign.jar -->
 		<jar jarfile="${dist-dir}/XAlign.jar" manifest="classes/fr/loria/Manifest.mf" basedir="classes" excludes="classes/fr/umlv/**" />
 	</target>

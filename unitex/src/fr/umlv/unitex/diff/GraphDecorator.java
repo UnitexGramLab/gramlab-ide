@@ -225,8 +225,13 @@ public class GraphDecorator {
 			return GraphDecoratorConfig.STROKE;
 		if (hasMoved(boxNumber))
 			return GraphDecoratorConfig.STROKE;
-		if (boxNumber == currentBox)
-			return GraphDecoratorConfig.STROKE;
+		if (boxNumber == currentBox) {
+			if (ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.KOREAN_HIGHLIGHT_STROKE;
+			} else {
+				return GraphDecoratorConfig.STROKE;
+			}
+		}
 		if (model != null && model.isSelected(boxNumber)) {
 			if (!ConfigManager.getManager().isKorean(null)) {
 				return GraphDecoratorConfig.STROKE;
@@ -242,8 +247,13 @@ public class GraphDecorator {
 			return GraphDecoratorConfig.REMOVED;
 		if (hasMoved(boxNumber))
 			return GraphDecoratorConfig.MOVED;
-		if (boxNumber == currentBox)
-			return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
+		if (boxNumber == currentBox) {
+			if (ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.KOREAN_HIGHLIGHT;
+			} else {
+				return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
+			}
+		}
 		if (model != null && model.isLinearTfst()) {
 			if (!ConfigManager.getManager().isKorean(null)) {
 				return GraphDecoratorConfig.LINEAR_TFST;
