@@ -13,9 +13,9 @@ git:
 
 # to test against multiple JDKs 
 jdk:
+  - oraclejdk9
   - oraclejdk8
   - oraclejdk7
-  - openjdk7
 
 notifications:
   email:

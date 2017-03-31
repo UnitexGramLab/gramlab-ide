@@ -20,25 +20,14 @@
  */
 package fr.umlv.unitex.frames;
 
+public class TextAutomatonTagFilterDialogFactory {
 
-public class TextAutomatonFindAndReplaceDialogFactory {
+	private TextAutomatonTagFilterDialog dialog;
 
-    private TextAutomatonFindAndReplaceDialog dialog;
-
-    public TextAutomatonFindAndReplaceDialog newTextAutomatonFindAndReplaceDialog() {
-        if (dialog == null) {
-            dialog = TextAutomatonFindAndReplaceDialog.createFindAndReplaceDialog();
-        } else {
-            dialog.updateData();
-        }
-        return dialog;
-    }
-
-    public void update() {
-        if (dialog == null) {
-            return;
-        }
-        dialog.clearHighlight();
-        dialog.updateData();
-    }
+	public TextAutomatonTagFilterDialog newTextAutomatonTagFilterDialog() {
+		if (dialog == null) {
+			dialog = TextAutomatonTagFilterDialog.createFindAndReplaceDialog();
+		}
+		return dialog;
+	}
 }

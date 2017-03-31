@@ -85,7 +85,6 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
 import fr.umlv.unitex.graphrendering.TfstTextField;
-import fr.umlv.unitex.graphtools.FindAndReplace;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.io.UnicodeIO;
@@ -150,7 +149,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	boolean isAcurrentElagLoadingThread = false;
 	Process currentElagLoadingProcess = null;
 	JSplitPane superpanel;
-	JButton revertSentenceGraph;
+	JButton resetSentenceGraph;
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -313,6 +312,13 @@ public class TextAutomatonFrame extends TfstFrame {
 				exportTextAsTable(delafStyle.isSelected());
 			}
 		});
+		final JButton tagFilterButton = new JButton("Filter Tags");
+		tagFilterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newTextAutomatonTagFilterDialog();
+			}
+		});
 		final ButtonGroup group = new ButtonGroup();
 		group.add(all);
 		group.add(onlyShowGramCode);
@@ -377,6 +383,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		filterPanel.add(export, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		filterPanel.add(delafStyle, gbc);
+		filterPanel.add(tagFilterButton, gbc);
 		gbc.gridwidth = 1;
 		filterPanel.add(all, gbc);
 		filterPanel.add(onlyShowGramCode, gbc);
@@ -517,8 +524,8 @@ public class TextAutomatonFrame extends TfstFrame {
 		spinner = new JSpinner(spinnerModel);
 		middle.add(spinner, BorderLayout.CENTER);
 		cornerPanel.add(middle);
-		final Action revertSentenceAction = new AbstractAction(
-				"Revert To Last Save") {
+		final Action resetSentenceAction = new AbstractAction(
+				"Reset Sentence Graph") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final int n = spinnerModel.getNumber().intValue();
@@ -530,10 +537,10 @@ public class TextAutomatonFrame extends TfstFrame {
 				loadSentence(n);
 			}
 		};
-		revertSentenceGraph = new JButton(revertSentenceAction);
-		revertSentenceGraph.setVisible(false);
-		cornerPanel.add(revertSentenceGraph);
-		final Action saveAction = new AbstractAction("Save") {
+		resetSentenceGraph = new JButton(resetSentenceAction);
+		resetSentenceGraph.setVisible(false);
+		cornerPanel.add(resetSentenceGraph);
+		final Action rebuildAction = new AbstractAction("Rebuild FST-Text") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -548,8 +555,8 @@ public class TextAutomatonFrame extends TfstFrame {
 						new RebuildTextAutomatonDo(Config.getCurrentSntDir()));
 			}
 		};
-		final JButton saveTfstButton = new JButton(saveAction);
-		cornerPanel.add(saveTfstButton);
+		final JButton rebuildTfstButton = new JButton(rebuildAction);
+		cornerPanel.add(rebuildTfstButton);
 		final JButton elagButton = new JButton("Elag Frame");
 		elagButton.addActionListener(new ActionListener() {
 			@Override
@@ -623,7 +630,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	 */
 	void setModified(boolean b) {
 		repaint();
-		revertSentenceGraph.setVisible(b);
+		resetSentenceGraph.setVisible(b);
 		final int n = spinnerModel.getNumber().intValue();
 		if (b && !isAcurrentLoadingThread && n != 0) {
 			/*
@@ -1032,6 +1039,24 @@ public class TextAutomatonFrame extends TfstFrame {
 	@Override
 	public TfstGraphicalZone getTfstGraphicalZone() {
 		return graphicalZone;
+	}
+
+	public void loadNextSentence() {
+		int currentSentence = spinnerModel.getNumber().intValue();
+		int nextSentence = currentSentence + 1;
+		if (nextSentence > sentence_count) {
+			nextSentence = nextSentence % sentence_count;
+		}
+		spinnerModel.setValue(new Integer(nextSentence));
+	}
+
+	public void loadPrevSentence() {
+		int currentSentence = spinnerModel.getNumber().intValue();
+		int prevSentence = currentSentence - 1;
+		if (prevSentence == 0) {
+			prevSentence = sentence_count;
+		}
+		spinnerModel.setValue(new Integer(prevSentence));
 	}
 
 }
