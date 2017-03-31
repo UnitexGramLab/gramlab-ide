@@ -50,6 +50,11 @@ authors.
   - http://apache.mirrors.ovh.net/ftp.apache.org/dist/xerces/j/source/
   - [Apache Software License version 2.0][Apache-2.0]
 
+* juniversalchardet
+  - Java port of universalchardet from Mozilla
+  - https://code.google.com/archive/p/juniversalchardet/source/default/source
+  - [GNU Lesser General Public License version 2.1][LGPLv2]
+
 Some of those third-party packages are under licenses which require that the 
 copyright and license notices are included when distributing the code in binary
 form. These notices are available in the `licenses` directory.

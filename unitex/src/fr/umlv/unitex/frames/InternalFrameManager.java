@@ -107,6 +107,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
   private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
   private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
+	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -488,9 +489,10 @@ public abstract class InternalFrameManager implements FrameManager {
 	}
 
 	public ProcessInfoFrame newProcessInfoFrame(MultiCommands c, boolean close,
-			ToDo myDo, boolean stopIfProblem) {
+			ToDo myDo, boolean stopIfProblem,boolean forceToDo) {
 		final ProcessInfoFrame f = new ProcessInfoFrame(c, close, myDo,
 				stopIfProblem);
+		f.setForceToDo(forceToDo);
 		setup(f, true);
 		f.launchBuilderCommands();
 		return f;
@@ -871,6 +873,15 @@ public abstract class InternalFrameManager implements FrameManager {
     final FindAndReplaceDialog d = findAndReplaceFactory.newFindAndReplaceDialog();
 		if (d == null)
 			return null;
+		d.setVisible(true);
+		return d;
+	}
+
+	public TextAutomatonTagFilterDialog newTextAutomatonTagFilterDialog() {
+		final TextAutomatonTagFilterDialog d = textAutomatonTagFilterFactory.newTextAutomatonTagFilterDialog();
+		if (d == null) {
+			return null;
+		}
 		d.setVisible(true);
 		return d;
 	}

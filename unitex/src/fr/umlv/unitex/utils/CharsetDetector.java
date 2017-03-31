@@ -18,27 +18,37 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
-package fr.umlv.unitex.frames;
+package fr.umlv.unitex.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
-public class TextAutomatonFindAndReplaceDialogFactory {
+import org.mozilla.universalchardet.UniversalDetector;
 
-    private TextAutomatonFindAndReplaceDialog dialog;
+public class CharsetDetector {
 
-    public TextAutomatonFindAndReplaceDialog newTextAutomatonFindAndReplaceDialog() {
-        if (dialog == null) {
-            dialog = TextAutomatonFindAndReplaceDialog.createFindAndReplaceDialog();
-        } else {
-            dialog.updateData();
-        }
-        return dialog;
-    }
+	public static String detect(File file) throws IOException {
+		FileInputStream fileInputStream = new FileInputStream(file);
+		UniversalDetector detector = new UniversalDetector(null);
 
-    public void update() {
-        if (dialog == null) {
-            return;
-        }
-        dialog.clearHighlight();
-        dialog.updateData();
-    }
+		byte[] buffer = new byte[4096];
+		int bytesRead;
+
+		while ((bytesRead = fileInputStream.read(buffer)) > 0 && !detector.isDone()) {
+			detector.handleData(buffer, 0, bytesRead);
+		}
+
+		detector.dataEnd();
+		fileInputStream.close();
+
+		String encoding = detector.getDetectedCharset();
+		if (encoding == null) {
+			// default to UTF8
+			encoding = "UTF8";
+		}
+
+		return encoding;
+	}
+
 }
