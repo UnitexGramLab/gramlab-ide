@@ -905,12 +905,24 @@ public class GraphFrame extends KeyedInternalFrame<File> {
         @Override
         public void toDo(boolean success) {
             String line;
+            FileInputStream fileIn = null;
+            BufferedReader fileReader = null;
             try {
                 int errFound = 0;
-                FileInputStream fis = new FileInputStream(list);
-                BufferedReader br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-                while ((line = br.readLine()) != null) {
+                fileIn = new FileInputStream(list);
+                fileReader = new BufferedReader(new InputStreamReader(fileIn, Charset.forName("UTF-16LE")));
+                while ((line = fileReader.readLine()) != null) {
                     int count = 0;
+                    if (line.length() < 2) {
+                        continue;
+                    }
+                    if(errFound == 1 && line.trim().startsWith("the automate")) {
+                        JOptionPane.showMessageDialog(null,"Braces are not well formed in " + line.substring(0,line.indexOf(',')));
+                        break;
+                    }
+                    else if (errFound == 1 || line.charAt(0) == '[') {
+                        continue;
+                    }
                     for (int i=0; i<line.length(); i++) {
                         if (line.charAt(i) == '{') {
                             count++;
@@ -919,9 +931,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                         }   
                     }   
                     if (count != 0) {
-                        JOptionPane.showMessageDialog(null,"Braces are not well formed");
                         errFound = 1;
-                        break;
                     }   
                 }
                 if (errFound == 0) {
@@ -931,7 +941,14 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                 ;
             } catch(IOException ioErr) {
                 ;
-            } 
+            } finally {
+                try {
+                    fileIn.close();
+                    fileReader.close();
+                } catch (IOException ioExcp) {
+                    ;
+                }
+            }
         }
     }
 
@@ -1420,18 +1437,17 @@ public class GraphFrame extends KeyedInternalFrame<File> {
         Fst2ListCommand pathCmd = new Fst2ListCommand();
         File fst2 = new File(FileUtil.getFileNameWithoutExtension(
                     getGraph()) + ".fst2");
-	    File list = new File(ConfigManager.getManager()
-							.getCurrentLanguageDir(), "lst.txt");
+	    File list = new File(FileUtil.getFileNameWithoutExtension(
+                    getGraph()) + "autolst.txt");
         pathCmd = pathCmd
                     .noLimit()
                     .separateOutputs(true)
-				    .listOfPaths(fst2, list);
+				    .listsOfSubgraph(fst2);
         final Grf2Fst2Command grfCommand = new Grf2Fst2Command()
             .grf(getGraph())
             .enableLoopAndRecursionDetection(true)
-            .emitEmptyGraphWarning(false)
             .tokenizationMode(graphicalZone.getMetadata().getLanguage(),
-                    getGraph()).repositories().replaceAllByEpsilon(true)
+                    getGraph()).repositories()
             .displayGraphNames();
 		final MultiCommands commands = new MultiCommands();
 		commands.addCommand(grfCommand);
