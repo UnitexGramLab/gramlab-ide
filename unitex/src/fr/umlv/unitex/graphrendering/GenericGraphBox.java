@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@ import java.awt.font.TextLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -32,6 +33,7 @@ import javax.swing.JOptionPane;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
+import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.GraphFrame;
 
 /**
@@ -1162,6 +1164,8 @@ public class GenericGraphBox {
 						.requiresSpecialLineDrawing(boxNumber)) {
 			g.setColor(parentGraphicalZone.decorator.getBoxShapeColor(
 					boxNumber, params.getForegroundColor()));
+			params.setBackgroundColor(
+					parentGraphicalZone.decorator.getBoxBackgroundColor(boxNumber, params.getBackgroundColor()));
 			final Stroke old = g.getStroke();
 			g.setStroke(parentGraphicalZone.decorator.getBoxStroke(boxNumber,
 					old));
@@ -1219,7 +1223,9 @@ public class GenericGraphBox {
 		if (n_lines == 0) {
 			if (parentGraphicalZone.decorator != null
 					&& parentGraphicalZone.decorator.isLinearTfst()) {
-				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
+				if (!ConfigManager.getManager().isKorean(null)) {
+					g.setColor(GraphDecoratorConfig.LINEAR_TFST);
+				}
 			}
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 			if (!parentGraphicalZone.getGraphPresentationInfo().isRightToLeft())
@@ -1243,7 +1249,9 @@ public class GenericGraphBox {
 		// and the triangle if necessary
 		if (parentGraphicalZone.decorator != null
 				&& parentGraphicalZone.decorator.isLinearTfst()) {
-			g.setColor(GraphDecoratorConfig.LINEAR_TFST);
+			if (!ConfigManager.getManager().isKorean(null)) {
+				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
+			}
 		} else {
 			g.setColor(params.getForegroundColor());
 		}
@@ -1398,7 +1406,9 @@ public class GenericGraphBox {
 		final Color old = g.getColor();
 		if (parentGraphicalZone.decorator != null
 				&& parentGraphicalZone.decorator.isLinearTfst()) {
-			g.setColor(GraphDecoratorConfig.LINEAR_TFST);
+			if (!ConfigManager.getManager().isKorean(null)) {
+				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
+			}
 		}
 		if (!parentGraphicalZone.getGraphPresentationInfo().isRightToLeft())
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in - 10, Y_in);
@@ -1684,4 +1694,66 @@ public class GenericGraphBox {
   public int getHasIncomingTransitions() {
     return hasIncomingTransitions;
   }
+
+	/**
+	 * This method checks if the String s is valid or not.
+	 *
+	 * @param s the string to check
+	 * @throws BackSlashAtEndOfLineException if the String ends with a backslash.
+	 * @throws MissingGraphNameException if the String starts with a semicolon but is missing a graph name.
+	 * @throws NoClosingQuoteException if the String contains a not closed quotation.
+	 * @throws NoClosingSupException if the String contains a not closed chevron.
+	 * @throws NoClosingRoundBracketException if the String contains a not closed brace.
+	 */
+	public void checkString(String s)
+			throws BackSlashAtEndOfLineException, MissingGraphNameException,
+			NoClosingQuoteException, NoClosingSupException,
+			NoClosingRoundBracketException {
+		Stack<Character> stack = new Stack<Character>();
+		if (s.equals(":")) {
+			throw new MissingGraphNameException();
+		}
+		if (s.endsWith("\\")) {
+			throw new BackSlashAtEndOfLineException();
+		}
+		int count = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if(c == '"') {
+				count++;
+			}
+			if (c == '<' || c == '{') {
+				stack.push(c);
+			} else if (c == '>') {
+				if (stack.isEmpty()) {
+					throw new NoClosingSupException();
+				}
+				if (stack.pop() != '<') {
+					throw new NoClosingSupException();
+				}
+
+			} else if (c == '}') {
+				if (stack.isEmpty()) {
+					throw new NoClosingRoundBracketException();
+				}
+				if (stack.pop() != '{') {
+					throw new NoClosingRoundBracketException();
+				}
+			}
+
+		}
+		if ((count % 2) == 1) {
+			throw new NoClosingQuoteException();
+		}
+		if(!stack.isEmpty()) {
+			Character c = stack.pop();
+			if(c == '{') {
+				throw new NoClosingRoundBracketException();
+			}
+			if(c == '<') {
+				throw new NoClosingSupException();
+			}
+		}
+	}
+
 }

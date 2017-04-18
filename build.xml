@@ -8,6 +8,7 @@
   <property name="classes" location="classes" />
 	<property name="dist" location="dist" />
 	<property name="lib" location="lib" />
+	<property name="licenses" location="licenses" />  
 	<property name="resources" location="resources" />
   <property environment="env" />
 			
@@ -59,8 +60,8 @@
       <fileset dir="unitex" includes="build.xml"/>
     </subant>
 		<!-- Compile the java code from ${src} into ${build} -->
-		<echo message="classpaht=${dist}/Unitex.jar"/>
-		<javac target="1.6" source="1.6" srcdir="${src}" destdir="${build}" classpath="${dist}/Unitex.jar" includeAntRuntime="false"/>
+		<echo message="classpath=${dist}/Unitex.jar"/>
+		<javac target="1.7" source="1.7" encoding="UTF-8" srcdir="${src}" destdir="${build}" classpath="${dist}/Unitex.jar" includeAntRuntime="false"/>
 	</target>
 
 
@@ -92,6 +93,7 @@
     <property name="unitexHome" value="${env.UNITEX_BUILD_RELEASE_DIR}"/>		
 		<property name="app" location="${unitexHome}/App" />
 		<property name="app-lib" location="${unitexHome}/App/lib" />
+    <property name="app-licenses" location="${unitexHome}/App/licenses" />
 	</target>
 
 	<target name="install" depends="install-init,dist">
@@ -105,7 +107,11 @@
 			<fileset dir="${lib}">
 				<include name="*.jar" />
 			</fileset>
-		</copy>		
+		</copy>
+		<copy todir="${app-licenses}">
+			<fileset dir="${licenses}">
+				<include name="*.txt" />
+			</fileset>
+		</copy>	    
 	</target>
 </project>
-
