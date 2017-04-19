@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -336,6 +336,23 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		f.setColor(params.getForegroundColor());
 		drawAllTransitions(f, params);
 		drawAllBoxes(f, params);
+	}
+
+	@Override
+	public void setHighlight(boolean highlight) {
+		if (!highlight) {
+			setDecorator(null);
+			repaint();
+			return;
+		}
+	}
+
+	@Override
+	public void setHighlight(GenericGraphBox b, boolean highlight) {
+		unsureBoxIsVisible(graphBoxes.indexOf(b));
+		final GraphDecorator d = new GraphDecorator(null);
+		d.highlightBoxLine(-1, b.getBoxNumber(), -1);
+		setDecorator(d);
 	}
 
 	/**

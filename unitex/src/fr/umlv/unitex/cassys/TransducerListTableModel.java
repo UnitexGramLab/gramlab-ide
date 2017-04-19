@@ -30,7 +30,7 @@ public class TransducerListTableModel extends DefaultTableModel {
 		addColumn("Merge"); mergeIndex =3;
 		addColumn("Replace"); replaceIndex =4;
 		addColumn("Until Fix Point"); starIndex=5;
-                addColumn("Generic"); genericIndex=6;
+                addColumn("Generalization"); genericIndex=6;
 	}
 	
 	/**

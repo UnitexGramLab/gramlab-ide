@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -44,6 +44,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Couple;
 import fr.umlv.unitex.process.ExecParameters;
 import fr.umlv.unitex.process.Executor;
@@ -82,6 +84,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 	final JButton copy;
 	ExecParameters parameters;
 	Executor executor;
+	private boolean forceToDo;
 
 	/**
 	 * Creates a new <code>ProcessInfoFrame</code>
@@ -118,6 +121,13 @@ public class ProcessInfoFrame extends JInternalFrame {
 		final JSplitPane middle = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				tmp, tmp2);
 		middle.setDividerLocation(250);
+		
+		Preferences preferences = ConfigManager.getManager().getPreferences(null);
+		if(!preferences.isDisplayProcessErrors()) {
+			tmp2.setVisible(false);
+			middle.setDividerSize(0);
+		}
+		
 		top.add(middle, BorderLayout.CENTER);
 		final Action okAction = new AbstractAction("OK") {
 			@Override
@@ -172,6 +182,11 @@ public class ProcessInfoFrame extends JInternalFrame {
 		pack();
 		setBounds(100, 100, 600, 400);
 	}
+	
+	public void setForceToDo(boolean forceToDo) {
+		this.forceToDo = forceToDo;
+	}
+
 
 	void launchBuilderCommands() {
 		final ToDo originalToDo = parameters.getDO();
@@ -190,6 +205,7 @@ public class ProcessInfoFrame extends JInternalFrame {
 						@Override
 						public void run() {
 							ToDo DO = originalToDo;
+							boolean todoExecuted = false;
 							if (PB) {
 								setTitle("ERROR");
 								copy.setEnabled(true);
@@ -201,7 +217,11 @@ public class ProcessInfoFrame extends JInternalFrame {
 								dispose();
 								if (DO != null) {
 									DO.toDo(success);
+									todoExecuted = true;
 								}
+							}
+							if(forceToDo && !todoExecuted && DO != null){
+								DO.toDo(success);
 							}
 						}
 					});

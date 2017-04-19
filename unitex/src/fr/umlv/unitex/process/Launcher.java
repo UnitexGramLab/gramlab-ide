@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -59,8 +59,15 @@ public class Launcher {
 			boolean stopIfProblem) {
 		if (c == null)
 			return;
+		exec(c, close,myDo, stopIfProblem,false);
+	}
+	
+	public static void exec(MultiCommands c, boolean close, ToDo myDo,
+			boolean stopIfProblem,boolean forceToDo) {
+		if (c == null)
+			return;
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-				.newProcessInfoFrame(c, close,myDo, stopIfProblem);
+				.newProcessInfoFrame(c, close,myDo, stopIfProblem,forceToDo);
 	}
 
 	/**
