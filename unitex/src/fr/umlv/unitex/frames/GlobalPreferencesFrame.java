@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -77,6 +77,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	final JTextField menuFont = new JTextField("");
 	final JTextField textFont = new JTextField("");
 	final JTextField concordanceFont = new JTextField("");
+	final JCheckBox displayProcessErrorsCheckBox = new JCheckBox("Display process error messages");
 	final JTextField htmlViewer = new JTextField("");
 	final JCheckBox rightToLeftForCorpusCheckBox = new JCheckBox(
 			"Right to left rendering for text");
@@ -156,8 +157,9 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		menuFont.setEnabled(false);
 		menuFont.setDisabledTextColor(Color.black);
 
-		final JPanel tmp = new JPanel(new GridLayout(2, 1));
+		final JPanel tmp = new JPanel(new GridLayout(3, 1));
 		tmp.setPreferredSize(new Dimension(180, 60));
+		tmp.add(displayProcessErrorsCheckBox);
 		tmp.add(new JLabel("Menu Font:"));
 		final JPanel tmp2 = new JPanel(new BorderLayout());
 		tmp2.add(menuFont, BorderLayout.CENTER);
@@ -224,6 +226,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		final Action okAction = new AbstractAction("OK") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				getPref().setDisplayProcessErrors(displayProcessErrorsCheckBox.isSelected());
 				getPref().setSvnMonitoring(svnMonitoring.isSelected());
 				getPref().setOnlyCosmetic(onlyCosmetic.isSelected());
 				getPref().setSemitic(semiticCheckBox.isSelected());
@@ -591,6 +594,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	 * Refreshes the frame.
 	 */
 	void refresh() {
+		displayProcessErrorsCheckBox.setSelected(getPref().isDisplayProcessErrors());
 		menuFont.setText("" + getPref().getMenuFont().getFont().getFontName() + " " + getPref().getMenuFont().getSize());
 		textFont.setText("" + getPref().getTextFont().getFont().getFontName()
 				+ "  " + getPref().getTextFont().getSize() + "");

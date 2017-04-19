@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,10 +35,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -97,8 +101,10 @@ import fr.umlv.unitex.io.SVG;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.GrfDiffCommand;
+import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.ConflictSolvedListener;
 import fr.umlv.unitex.svn.SvnConflict;
 import fr.umlv.unitex.utils.KeyUtil;
@@ -889,6 +895,63 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		myToolBar.add(genericGrf);
 	}
 
+    class ShowVerifyDo implements ToDo {
+        private final File list;
+
+        public ShowVerifyDo(File list) {
+            this.list = list;
+        }
+
+        @Override
+        public void toDo(boolean success) {
+            String line;
+            FileInputStream fileIn = null;
+            BufferedReader fileReader = null;
+            try {
+                int errFound = 0;
+                fileIn = new FileInputStream(list);
+                fileReader = new BufferedReader(new InputStreamReader(fileIn, Charset.forName("UTF-16LE")));
+                while ((line = fileReader.readLine()) != null) {
+                    int count = 0;
+                    if (line.length() < 2) {
+                        continue;
+                    }
+                    if(errFound == 1 && line.trim().startsWith("the automate")) {
+                        JOptionPane.showMessageDialog(null,"Braces are not well formed in " + line.substring(0,line.indexOf(',')));
+                        break;
+                    }
+                    else if (errFound == 1 || line.charAt(0) == '[') {
+                        continue;
+                    }
+                    for (int i=0; i<line.length(); i++) {
+                        if (line.charAt(i) == '{') {
+                            count++;
+                        } else if (line.charAt(i) == '}') {
+                            count--;
+                        }   
+                    }   
+                    if (count != 0) {
+                        errFound = 1;
+                    }   
+                }
+                if (errFound == 0) {
+                    JOptionPane.showMessageDialog(null,"No error found");
+                }
+            } catch (FileNotFoundException notFoundErr) {
+                ;
+            } catch(IOException ioErr) {
+                ;
+            } finally {
+                try {
+                    fileIn.close();
+                    fileReader.close();
+                } catch (IOException ioExcp) {
+                    ;
+                }
+            }
+        }
+    }
+
 	public static class ShowDiffDo implements ToDo {
 		File base, dest, diffResult;
 
@@ -1357,6 +1420,40 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				.displayGraphNames();
 		Launcher.exec(command, false);
 	}
+
+    public void verifyBraces() {
+        if (modified) {
+            JOptionPane.showMessageDialog(null,
+                    "Save the graph before verification", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (getGraph() == null) {
+            JOptionPane.showMessageDialog(null,
+                    "Cannot verify a graph with no name", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Fst2ListCommand pathCmd = new Fst2ListCommand();
+        File fst2 = new File(FileUtil.getFileNameWithoutExtension(
+                    getGraph()) + ".fst2");
+	    File list = new File(FileUtil.getFileNameWithoutExtension(
+                    getGraph()) + "autolst.txt");
+        pathCmd = pathCmd
+                    .noLimit()
+                    .separateOutputs(true)
+				    .listsOfSubgraph(fst2);
+        final Grf2Fst2Command grfCommand = new Grf2Fst2Command()
+            .grf(getGraph())
+            .enableLoopAndRecursionDetection(true)
+            .tokenizationMode(graphicalZone.getMetadata().getLanguage(),
+                    getGraph()).repositories()
+            .displayGraphNames();
+		final MultiCommands commands = new MultiCommands();
+		commands.addCommand(grfCommand);
+		commands.addCommand(pathCmd);
+		Launcher.exec(commands, true, new ShowVerifyDo(list),false);
+    }
 
 	public boolean saveGraph() {
 		if(graphicalZone.text.isModified())

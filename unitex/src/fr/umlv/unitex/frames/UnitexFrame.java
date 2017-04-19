@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -131,6 +131,7 @@ public class UnitexFrame extends JFrame {
 						exportTfstAsCsv.setEnabled(true);
 						closeText.setEnabled(true);
             openConcordance.setEnabled(true);
+            saveAsSnt.setEnabled(true);
 						File snt = ConfigManager.getManager().getCurrentSnt(
 								null);
 						final File sntDir = FileUtil.getSntDir(snt);
@@ -162,6 +163,7 @@ public class UnitexFrame extends JFrame {
 						closeText.setEnabled(false);
             openConcordance.setEnabled(false);
             saveAsConcordance.setEnabled(false);
+            saveAsSnt.setEnabled(false);
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTokensFrame();
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -296,6 +298,7 @@ public class UnitexFrame extends JFrame {
 	Action locatePattern;
   Action openConcordance;
   Action saveAsConcordance;
+  Action saveAsSnt;
 	AbstractAction displayLocatedSequences;
 	AbstractAction elagComp;
 	AbstractAction constructFst;
@@ -406,7 +409,49 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		textMenu.add(openRecent);
-
+    saveAsSnt = new AbstractAction("Save As...") {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+          return;
+        }
+        JFileChooser fc = Config.getCorpusDialogBox();
+        fc.setMultiSelectionEnabled(false);
+        fc.setDialogType(JFileChooser.SAVE_DIALOG);
+        File file;
+        for(;;) {
+          final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
+          if (returnVal != JFileChooser.APPROVE_OPTION) {
+            return;
+          }
+          file = fc.getSelectedFile();
+          final String name = file.getAbsolutePath();
+          if (!name.endsWith(".snt")) {
+            file = new File(name + ".snt");
+          }
+          if (file == null || !file.exists()) {
+            break;
+          }
+          final String message = file + "\nalready exists. Do you want to replace it?";
+          final String[] options = {"Yes", "No"};
+          final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
+            .ERROR_MESSAGE, null, options, options[0]);
+          if (n == 0) {
+            break;
+          }
+        }
+        if (file == null) {
+          return;
+        }
+        FileUtil.copyFile(Config.getCurrentSnt(), file);
+        String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
+        File folder = new File(folderPath + "_snt");
+        FileUtil.copyDirRec(Config.getCurrentSntDir(), folder);
+        Text.loadSnt(file, false);
+      }
+    };
+    saveAsSnt.setEnabled(false);
+    textMenu.add(new JMenuItem(saveAsSnt));
 		preprocessText = new AbstractAction("Preprocess Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1070,11 +1115,33 @@ public class UnitexFrame extends JFrame {
 						.getFrameManagerAs(InternalFrameManager.class)
 						.getCurrentFocusedGraphFrame();
 				if (f != null) {
-					GlobalProjectManager.search(null)
-							.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+
+					if (f.getGraph() == null) {
+						JOptionPane.showMessageDialog(null,
+								"Cannot explore graph paths for graph with no name", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					else {
+						GlobalProjectManager.search(null)
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+					}
 				}
 			}
 		});
+
+        final JMenuItem verifyBraces = new JMenuItem("Verify braces");
+        verifyBraces.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final GraphFrame f = GlobalProjectManager.search(null)
+                    .getFrameManagerAs(InternalFrameManager.class)
+                    .getCurrentFocusedGraphFrame();
+                if (f != null) {
+                    f.verifyBraces();
+                }
+            }
+        });
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
 		compileFST.addActionListener(new ActionListener() {
 			@Override
@@ -1111,6 +1178,7 @@ public class UnitexFrame extends JFrame {
 		});
 		tools.add(sortNodeLabel);
 		tools.add(explorePaths);
+        tools.add(verifyBraces);
 		tools.addSeparator();
 		tools.add(compileFST);
 		tools.add(flatten);

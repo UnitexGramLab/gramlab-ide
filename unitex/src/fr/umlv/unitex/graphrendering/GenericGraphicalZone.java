@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1014,11 +1014,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 		return metadata;
 	}
 
-  public void checkTextBox(GraphBox g, String s) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
+  public void checkTextBox(GenericGraphBox g, String s) throws BackSlashAtEndOfLineException, NoClosingSupException, NoClosingQuoteException, NoClosingRoundBracketException, MissingGraphNameException {
     g.checkString(s);
   }
 
-	public boolean setTextBox(GraphBox g, String s) {
+	public boolean setTextBox(GenericGraphBox g, String s) {
     try {
       g.checkString(s);
     } catch (BackSlashAtEndOfLineException e) {
@@ -1040,4 +1040,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		fireBoxSelectionChanged();
     return true;
 	}
+
+	public abstract void setHighlight(boolean highlight);
+	public abstract void setHighlight(GenericGraphBox b, boolean highlight);
 }
