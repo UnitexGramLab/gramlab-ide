@@ -28,6 +28,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser;
 import fr.umlv.unitex.cassys.ConfigurationFileAnalyser.EmptyLineException;
@@ -267,6 +269,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		this.getContentPane().add(mainContainer);
 		this.pack();
 		this.setVisible(true);
+		addInternalFrameListener(new MyInternalFrameListener());
 	}
 
 	/**
@@ -874,4 +877,12 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 		setConfigurationHasChanged(true);
 		setFrameTitle();
 	}
+    
+    class MyInternalFrameListener extends InternalFrameAdapter {
+
+		@Override
+		public void internalFrameClosing(InternalFrameEvent e) {
+            quit_asked();
+        }
+    }
 }

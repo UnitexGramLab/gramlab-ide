@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -164,7 +164,7 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	private JPanel constructTextPanel() {
 		final JPanel textframe = new JPanel(new BorderLayout());
-		final JPanel p = new JPanel(new GridLayout(3, 1));
+		final JPanel p = new JPanel(new GridLayout(4, 1));
 		JButton button = new JButton("Explode");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -186,6 +186,16 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				elagDialog();
+			}
+		});
+		p.add(button);
+		button = new JButton("Find and Replace");
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//graphicalZone.setHighlight(graphicalZone.getBoxes().get(10), true);
+				//FindAndReplace.find(graphicalZone, graphicalZone.getBoxes().get(0), "fdp", true, true, true, true);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newTextAutomatonFindAndReplaceDialog();
 			}
 		});
 		p.add(button);
@@ -271,6 +281,13 @@ public class TextAutomatonFrame extends TfstFrame {
 				exportTextAsTable(delafStyle.isSelected());
 			}
 		});
+		final JButton tagFilterButton = new JButton("Filter Tags");
+		tagFilterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newTextAutomatonTagFilterDialog();
+			}
+		});
 		final ButtonGroup group = new ButtonGroup();
 		group.add(all);
 		group.add(onlyShowGramCode);
@@ -335,6 +352,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		filterPanel.add(export, gbc);
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		filterPanel.add(delafStyle, gbc);
+		filterPanel.add(tagFilterButton, gbc);
 		gbc.gridwidth = 1;
 		filterPanel.add(all, gbc);
 		filterPanel.add(onlyShowGramCode, gbc);
@@ -469,6 +487,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				loadSentence(spinnerModel.getNumber().intValue());
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
 		});
 		spinner = new JSpinner(spinnerModel);
@@ -1063,6 +1082,25 @@ public class TextAutomatonFrame extends TfstFrame {
       repaint();
     }
   }
+
+	public void loadNextSentence() {
+		int currentSentence = spinnerModel.getNumber().intValue();
+		int nextSentence = currentSentence + 1;
+		if (nextSentence > sentence_count) {
+			nextSentence = nextSentence % sentence_count;
+		}
+		spinnerModel.setValue(new Integer(nextSentence));
+	}
+
+	public void loadPrevSentence() {
+		int currentSentence = spinnerModel.getNumber().intValue();
+		int prevSentence = currentSentence - 1;
+		if (prevSentence == 0) {
+			prevSentence = sentence_count;
+		}
+		spinnerModel.setValue(new Integer(prevSentence));
+	}
+
 }
 
 class LoadSentenceDo1 implements ToDo {

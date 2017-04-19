@@ -92,7 +92,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 	 * <p/>
 	 * This class is listenning to it
 	 */
-	private final JButton export;
+	//private final JButton export;
 	
 
 	/**
@@ -139,12 +139,12 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 		_import.setMaximumSize(defaultButtonDimension);
 		_import.setAlignmentX(Component.CENTER_ALIGNMENT);
 		_import.addActionListener(this);
-		jpan.add(_import);*/
+		jpan.add(_import);
 		export = new JButton("Export");
 		export.setMaximumSize(defaultButtonDimension);
 		export.setAlignmentX(Component.CENTER_ALIGNMENT);
 		export.addActionListener(this);
-		jpan.add(export);
+		jpan.add(export);*/
 		jpan.add(Box.createRigidArea(new Dimension(150, 40)));
 		this.getContentPane().add(jpan, BorderLayout.EAST);
 		this.pack();
@@ -232,7 +232,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				e.printStackTrace();
 			}
 			
-		}*/
+		}
 		if (a.getSource() == export){
 			ShareTransducerList stl = new ShareTransducerList();
 			try {
@@ -256,7 +256,7 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this, e.getMessage(), t,
 						JOptionPane.ERROR_MESSAGE);
 			}
-		}
+		}*/
 	}
 
 	/**

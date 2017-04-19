@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -140,5 +140,12 @@ public class Grf2Fst2Command extends CommandBuilder {
 		}
 		return this;
 	}
+
+    public Grf2Fst2Command replaceAllByEpsilon(boolean b) {
+        if (b) {
+            element("-C");
+        }
+        return this;
+    }
 
 }

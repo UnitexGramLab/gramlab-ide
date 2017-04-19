@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2016 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2017 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,7 @@
 package fr.umlv.unitex.graphtools;
 
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
+import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 import java.util.ArrayList;
 
@@ -32,10 +32,10 @@ import java.util.ArrayList;
  */
 public class FindAndReplaceData {
   private final ArrayList<GenericGraphBox> boxes;
-  private final GraphicalZone graphicalZone;
+  private final GenericGraphicalZone graphicalZone;
   private int currentIndex = 0;
 
-  public FindAndReplaceData(ArrayList<GenericGraphBox> boxes, GraphicalZone graphicalZone) {
+  public FindAndReplaceData(ArrayList<GenericGraphBox> boxes, GenericGraphicalZone graphicalZone) {
     this.boxes = boxes;
     this.graphicalZone = graphicalZone;
   }
@@ -48,7 +48,7 @@ public class FindAndReplaceData {
     return boxes.get(currentIndex);
   }
 
-  public GraphicalZone getGraphicalZone() {
+  public GenericGraphicalZone getGraphicalZone() {
     return graphicalZone;
   }
 
