@@ -511,16 +511,14 @@ public class FindAndReplace {
   public static boolean replaceSeq(GenericGraphicalZone zone, ArrayList<String> replaceSeqList, ArrayList<GenericGraphBox> seq) {
     if (seq.isEmpty()) {
       return false;
-    }
-    // Case we do not need to delete or add boxes
-    // we only modify the content
-    if (seq.size() == replaceSeqList.size()) {
+    } else if (seq.size() == replaceSeqList.size()) {
+      // Case we do not need to delete or add boxes
+      // we only modify the content
       for (int i = 0; i < seq.size(); i++) {
         setNewText(seq.get(i), zone, replaceSeqList.get(i));
       }
-    }
-    // Case we have to delete one or more boxes
-    if (seq.size() > replaceSeqList.size()) {
+    } else if (seq.size() > replaceSeqList.size()) {
+      // Case we have to delete one or more boxes
       GenericGraphBox box = seq.get(seq.size() - 1);
       zone.copyTransition((GraphBox) box, (GraphBox) seq.get(replaceSeqList.size() - 1));
       for (int i = 0; i < seq.size(); i++) {
@@ -528,13 +526,10 @@ public class FindAndReplace {
           zone.removeBox((GraphBox) seq.get(i));
         } else {
           setNewText(seq.get(i), zone, replaceSeqList.get(i));
-
         }
       }
-    }
-
-    // Case we have to add one or more boxes
-    if (seq.size() < replaceSeqList.size()) {
+    } else {
+      // Case we have to add one or more boxes
       GraphBox lastBox = (GraphBox) seq.get(seq.size() - 1);
       ArrayList<GraphBox> boxes = new ArrayList<GraphBox>();
       for (int i = 0; i < replaceSeqList.size(); i++) {
@@ -547,7 +542,6 @@ public class FindAndReplace {
           boxes.add(box);
         } else {
           setNewText(seq.get(i), zone, replaceSeqList.get(i));
-
         }
       }
       zone.copyAndRemoveTransition(lastBox, boxes.get(boxes.size() - 1));
