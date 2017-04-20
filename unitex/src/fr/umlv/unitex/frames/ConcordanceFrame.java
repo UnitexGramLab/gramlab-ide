@@ -41,7 +41,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.concord.BigConcordance;
-import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
@@ -58,7 +57,7 @@ import fr.umlv.unitex.utils.KeyUtil;
  * @author Sébastien Paumier
  */
 public class ConcordanceFrame extends TabbableInternalFrame {
-  private final File f;
+  private final File concordanceFile;
 	final BigConcordance list;
 	private final JLabel numberOfMatches = new JLabel("");
 	final JComponent invisible = new JComponent() {
@@ -88,10 +87,10 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 	/**
 	 * Constructs a new <code>ConcordanceFrame</code>.
 	 */
-	ConcordanceFrame(File f, int widthInChars) {
+	ConcordanceFrame(File concordanceFile, int widthInChars) {
 		super("", true, true, true, true);
-    this.f = f;
-		index = DebugInfos.loadConcordanceIndex(f);
+    this.concordanceFile = concordanceFile;
+		index = DebugInfos.loadConcordanceIndex(concordanceFile);
 		if (index != null) {
 			model = new DebugTableModel(index);
 			graphPane = new DebugGraphPane(index);
@@ -161,7 +160,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		});
 		KeyUtil.addMinimizeFrameListener(scroll);
 		setBounds(150, 50, 850, 550);
-		load(f, widthInChars);
+		load(concordanceFile, widthInChars);
 	}
 
 	private JSplitPane createDebugFrame(JPanel concordPanel) {
@@ -312,7 +311,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 	}
 
   public File getFile() {
-    return f;
+    return concordanceFile;
   }
 
 	@Override
