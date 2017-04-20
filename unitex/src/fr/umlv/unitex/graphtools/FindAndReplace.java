@@ -139,20 +139,18 @@ public class FindAndReplace {
           i++;
         }
       }
-    } else {
-      if (!useRegex) {
-        for (GenericGraphBox box : boxes) {
-          if (!(box.isStandaloneBox() && ignoreComment) && contains(search, box.getContent(), caseSensitive) && box
-            .getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
-            i++;
-          }
+    } else if (!useRegex) {
+      for (GenericGraphBox box : boxes) {
+        if (!(box.isStandaloneBox() && ignoreComment) && contains(search, box.getContent(), caseSensitive) && box
+          .getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
+          i++;
         }
-      } else {
-        for (GenericGraphBox box : boxes) {
-          if (!(box.isStandaloneBox() && ignoreComment) && isRegex(search) && Pattern.compile(search).matcher(box
-            .getContent()).find() && box.getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
-            i++;
-          }
+      }
+    } else {
+      for (GenericGraphBox box : boxes) {
+        if (!(box.isStandaloneBox() && ignoreComment) && isRegex(search) && Pattern.compile(search).matcher(box
+          .getContent()).find() && box.getType() == GenericGraphBox.NORMAL && !box.getContent().equals("<E>")) {
+          i++;
         }
       }
     }
@@ -409,28 +407,16 @@ public class FindAndReplace {
     }
     if (!boxEquals(seq.get(i), box.getContent(), caseSensitive, useRegex)) {
       return false;
-    } else {
-      if (highlight) {
-        //box.setSelected(highlight);
-        box.setHighlight(true);
-        zone.getSelectedBoxes().add(box);
-      }
+    } else if (highlight) {
+      box.setHighlight(true);
+      zone.getSelectedBoxes().add(box);
     }
     if (box.getTransitions().isEmpty()) {
       return i == (seq.size() - 1);
 
     }
-    switch (i - seq.size()) {
-      case -1:
-        if (box.getHasIncomingTransitions() > 1) {
-          return false;
-        }
-        break;
-      default:
-        if (box.getHasIncomingTransitions() > 1 || box.getTransitions().size() > 1) {
-          return false;
-        }
-        break;
+    if ((i - seq.size() != -1 && box.getTransitions().size() > 1) || (box.getHasIncomingTransitions() > 1)) {
+      return false;
     }
     return findNextInSeq(zone, seq, box.getTransitions().get(0), i + 1, highlight, caseSensitive, useRegex);
   }
@@ -438,17 +424,17 @@ public class FindAndReplace {
   /**
    * Returns true if and only if this box and the following boxes match the sequence.
    *
-   * @param graphicalZone the GenericGraphicalZone containing the sequence.
-   * @param findSeqList the list containing the sequence to search for.
+   * @param graphicalZone   the GenericGraphicalZone containing the sequence.
+   * @param findSeqList     the list containing the sequence to search for.
    * @param genericGraphBox the first box of the sequence.
-   * @param highlight true if the sequence must be highlighted, false otherwise.
-   * @param caseSensitive true if the search must be case sensitive, false otherwise.
-   * @param useRegex true if the search must use regular expressions, false otherwise.
-     * @return true if the box and the following boxes match the sequence, false otherwise.
-     */
+   * @param highlight       true if the sequence must be highlighted, false otherwise.
+   * @param caseSensitive   true if the search must be case sensitive, false otherwise.
+   * @param useRegex        true if the search must use regular expressions, false otherwise.
+   * @return true if the box and the following boxes match the sequence, false otherwise.
+   */
   public static boolean isSeq(GenericGraphicalZone graphicalZone, ArrayList<String> findSeqList, GenericGraphBox
     genericGraphBox, boolean highlight, boolean caseSensitive, boolean useRegex) {
-    if(findSeqList.size() == 1 && boxEquals(findSeqList.get(0), genericGraphBox.getContent(), caseSensitive, useRegex)) {
+    if (findSeqList.size() == 1 && boxEquals(findSeqList.get(0), genericGraphBox.getContent(), caseSensitive, useRegex)) {
       if (highlight) {
         //genericGraphBox.setSelected(highlight);
         genericGraphBox.setHighlight(true);
@@ -484,13 +470,13 @@ public class FindAndReplace {
    * Replace all sequence with replaceSeqList and returns the number of sequences
    * which have been replaced.
    *
-   * @param zone the GenericGraphicalZone containing the sequence.
-   * @param findSeqList the list containing the sequence to search for.
+   * @param zone           the GenericGraphicalZone containing the sequence.
+   * @param findSeqList    the list containing the sequence to search for.
    * @param replaceSeqList the list containing the sequence to replace with.
-   * @param caseSensitive true if the search must be case sensitive, false otherwise.
-   * @param useRegex true if the search must use regular expressions, false otherwise.
-     * @return the number of sequences which have been replaced.
-     */
+   * @param caseSensitive  true if the search must be case sensitive, false otherwise.
+   * @param useRegex       true if the search must use regular expressions, false otherwise.
+   * @return the number of sequences which have been replaced.
+   */
   public static int replaceAllSeq(GenericGraphicalZone zone, ArrayList<String> findSeqList, ArrayList<String>
     replaceSeqList, boolean caseSensitive, boolean useRegex) {
     ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
@@ -503,7 +489,7 @@ public class FindAndReplace {
     for (GenericGraphBox box : boxes) {
       isSeq(zone, findSeqList, box, true, caseSensitive, useRegex);
       ArrayList<GenericGraphBox> currentSeq = new ArrayList<GenericGraphBox>();
-      for(int i = 0; i < zone.getSelectedBoxes().size(); i++) {
+      for (int i = 0; i < zone.getSelectedBoxes().size(); i++) {
         currentSeq.add(zone.getSelectedBoxes().get(i));
       }
       if (replaceSeq(zone, replaceSeqList, currentSeq)) {
@@ -517,11 +503,11 @@ public class FindAndReplace {
   /**
    * Replace seq with replaceSeqList and returns true if and only if the sequence has been replaced.
    *
-   * @param zone the GenericGraphicalZone containing the sequence.
+   * @param zone           the GenericGraphicalZone containing the sequence.
    * @param replaceSeqList the list containing the sequence to replace with.
-   * @param seq the list containing the sequence of boxes.
-     * @return true if the sequence has been replaced.
-     */
+   * @param seq            the list containing the sequence of boxes.
+   * @return true if the sequence has been replaced.
+   */
   public static boolean replaceSeq(GenericGraphicalZone zone, ArrayList<String> replaceSeqList, ArrayList<GenericGraphBox> seq) {
     if (seq.isEmpty()) {
       return false;
@@ -553,7 +539,7 @@ public class FindAndReplace {
       ArrayList<GraphBox> boxes = new ArrayList<GraphBox>();
       for (int i = 0; i < replaceSeqList.size(); i++) {
         if (i >= seq.size()) {
-          GraphBox box = new GraphBox(lastBox.getX() + (50 * i), lastBox.getY(), GraphBox.NORMAL, (GraphicalZone)zone);
+          GraphBox box = new GraphBox(lastBox.getX() + (50 * i), lastBox.getY(), GraphBox.NORMAL, (GraphicalZone) zone);
           box.setSelected(true);
           box.setContent(replaceSeqList.get(i));
           zone.addBox(box);
@@ -586,11 +572,11 @@ public class FindAndReplace {
   /**
    * Returns a String containing an error message if one or more boxes cannot be replaced.
    *
-   * @param zone the GenericGraphicalZone containing the box.
-   * @param box a GraphBox in the GraphicalZone.
+   * @param zone           the GenericGraphicalZone containing the box.
+   * @param box            a GraphBox in the GraphicalZone.
    * @param replaceSeqList the list containing the sequence to replace with.
-     * @return the string containing an error message.
-     */
+   * @return the string containing an error message.
+   */
   public static String checkNewBoxContent(GenericGraphicalZone zone, GraphBox box, ArrayList<String> replaceSeqList) {
     for (String s : replaceSeqList) {
       try {
