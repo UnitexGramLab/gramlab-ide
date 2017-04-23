@@ -26,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -44,14 +45,7 @@ import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
 import fr.umlv.unitex.listeners.GraphTextListener;
-import fr.umlv.unitex.undo.AddBoxEdit;
-import fr.umlv.unitex.undo.BoxGroupTextEdit;
-import fr.umlv.unitex.undo.BoxTextEdit;
-import fr.umlv.unitex.undo.DeleteBoxGroupEdit;
-import fr.umlv.unitex.undo.SelectEdit;
-import fr.umlv.unitex.undo.TransitionEdit;
-import fr.umlv.unitex.undo.TransitionGroupEdit;
-import fr.umlv.unitex.undo.TranslationEdit;
+import fr.umlv.unitex.undo.*;
 
 /**
  * This class describes a component on which a graph can be drawn.
@@ -123,6 +117,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	public int EDITING_MODE = MyCursors.NORMAL;
 
+  ArrayList<GraphDecorator> decorators = new ArrayList<GraphDecorator>();
+
 	protected abstract void initializeEmptyGraph();
 
 	GenericGraphicalZone(GraphIO g, GraphTextField t, final JInternalFrame p,
@@ -174,7 +170,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param g
 	 *            the graph box
 	 */
-	void addBox(GenericGraphBox g) {
+	public void addBox(GenericGraphBox g) {
 		if (graphBoxes.size() >= 2) {
 			final UndoableEdit edit = new AddBoxEdit(g, graphBoxes, this);
 			postEdit(edit);
@@ -236,7 +232,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			final int taille = vec.size();
 			for (int j = 0; j < taille; j++) {
 				final Integer n = vec.get(j);
-				g.addTransitionTo(selectedBoxes.get(n.intValue()));
+        g.addTransitionTo(selectedBoxes.get(n.intValue()));
 			}
 		}
 		initText("");
@@ -459,6 +455,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = graphBoxes.get(i);
 			if (g.isSelectedByRectangle(x, y, w, h)) {
 				g.setSelected(true);
+        g.setHighlight(false);
 				selectedBoxes.add(g);
 				if (s == null) {
 					s = g.content;
@@ -1041,6 +1038,52 @@ public abstract class GenericGraphicalZone extends JComponent {
     return true;
 	}
 
+  public void removeBox(GraphBox g) {
+    if(graphBoxes.remove(g)) {
+      final AbstractUndoableEdit edit = new RemoveBoxEdit(g, graphBoxes, this);
+      postEdit(edit);
+      g.removeAllIncomingTransitions();
+      fireGraphChanged(true);
+      repaint();
+    }
+  }
+
+  public void copyTransition(GraphBox src, GraphBox dest) {
+    for(int i = 0; i < src.getTransitions().size(); i++) {
+      final AbstractUndoableEdit edit = new TransitionEdit(dest, src.getTransitions().get(i));
+      dest.addTransitionTo(src.getTransitions().get(i));
+      postEdit(edit);
+    }
+    fireGraphChanged(true);
+    repaint();
+  }
+
+  public void addTransition(GraphBox src, GraphBox dest) {
+    final AbstractUndoableEdit edit = new TransitionEdit(src, dest);
+    postEdit(edit);
+    src.addTransitionTo(dest);
+    fireGraphChanged(true);
+    repaint();
+  }
+
+  public void copyAndRemoveTransition(GraphBox src, GraphBox dest) {
+    for(int i = 0; i < src.getTransitions().size(); i++) {
+      final AbstractUndoableEdit addTransitionEdit = new TransitionEdit(dest, src.getTransitions().get(i));
+      postEdit(addTransitionEdit);
+      dest.addTransitionTo(src.getTransitions().get(i));
+      final AbstractUndoableEdit removeTransitionEdit = new TransitionEdit(src, src.getTransitions().get(i));
+      postEdit(removeTransitionEdit);
+    }
+    src.removeAllOutgoingTransitions();
+    fireGraphChanged(true);
+    repaint();
+  }
+
+  public void removeHighlight() {
+    for(GenericGraphBox box : graphBoxes) {
+      box.setHighlight(false);
+    }
+  }
 	public abstract void setHighlight(boolean highlight);
 	public abstract void setHighlight(GenericGraphBox b, boolean highlight);
 }

@@ -181,6 +181,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// then, the only selected box is the new one
 				unSelectAllBoxes();
 				b.setSelected(true);
+        b.setHighlight(false);
 				selectedBoxes.add(b);
 				postEdit(new SelectEdit(selectedBoxes));
 				fireGraphTextChanged(b.content);
@@ -1358,6 +1359,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							// selected in REVERSE_LINK_BOXES mode,
 							// we select it
 							b.setSelected(true);
+              b.setHighlight(false);
 							selectedBoxes.add(b);
 							postEdit(new SelectEdit(selectedBoxes));
 							fireBoxSelectionChanged();
@@ -1378,6 +1380,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// then, the only selected box is the new one
 				unSelectAllBoxes();
 				b.setSelected(true);
+        b.setHighlight(false);
 				selectedBoxes.add(b);
 				fireGraphTextChanged(b.content); /* Should be "<E>" */
 				fireGraphChanged(true);
@@ -1421,6 +1424,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					b = (GraphBox) graphBoxes.get(boxSelected);
 					if (!b.isSelected()) {
 						b.setSelected(true);
+            b.setHighlight(false);
 						selectedBoxes.add(b);
 					} else {
 						b.setSelected(false);
@@ -1448,6 +1452,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 							// are not clicking
 							// on final state in LINK_BOXES mode
 							b.setSelected(true);
+              b.setHighlight(false);
 							selectedBoxes.add(b);
 							postEdit(new SelectEdit(selectedBoxes));
 							fireGraphTextChanged(b.content);
