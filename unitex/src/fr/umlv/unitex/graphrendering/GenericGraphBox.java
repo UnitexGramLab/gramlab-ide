@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -20,11 +20,7 @@
  */
 package fr.umlv.unitex.graphrendering;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.font.TextLayout;
 import java.io.File;
 import java.util.ArrayList;
@@ -42,7 +38,7 @@ import fr.umlv.unitex.frames.GraphFrame;
 
 /**
  * This class describes a box of a graph or a sentence graph.
- * 
+ *
  * @author Sébastien Paumier
  */
 public class GenericGraphBox {
@@ -183,9 +179,11 @@ public class GenericGraphBox {
 	 */
 	int identificationNumber; // number used to numerote the state
 
+  private boolean highlight = false;
+
 	/**
 	 * Constructs a new box
-	 * 
+	 *
 	 * @param x
 	 *            X coordinate of the input point of the box
 	 * @param y
@@ -352,7 +350,7 @@ public class GenericGraphBox {
 	/**
 	 * Tests if the click point was in a sub-graph call area. In that case, it
 	 * returns the sub-graph's name
-	 * 
+	 *
 	 * @param y
 	 *            Y coordinate of the click point
 	 * @return the sub-graph's name, or the empty string if no graph was pointed
@@ -415,7 +413,7 @@ public class GenericGraphBox {
 	/**
 	 * Adds a transition to a box. If there is already a transition to this box,
 	 * it is removed.
-	 * 
+	 *
 	 * @param g
 	 *            the destination box
 	 */
@@ -458,7 +456,7 @@ public class GenericGraphBox {
 	/**
 	 * Adds a transition to a box. If there is already a transition to this box,
 	 * it is not removed.
-	 * 
+	 *
 	 * @param g
 	 *            the destination box
 	 */
@@ -484,7 +482,7 @@ public class GenericGraphBox {
 
 	/**
 	 * removes a box transition
-	 * 
+	 *
 	 * @param g
 	 *            the transition's destination box
 	 */
@@ -517,7 +515,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Translates the box
-	 * 
+	 *
 	 * @param dx
 	 *            length of X shift in pixels
 	 * @param dy
@@ -536,7 +534,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Tests if the box is selected by a rectangle
-	 * 
+	 *
 	 * @param Xr
 	 *            X coordinate of the upper left corner of the rectangle
 	 * @param Yr
@@ -554,7 +552,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Draws a transition to a box
-	 * 
+	 *
 	 * @param g
 	 *            the graphical context
 	 * @param dest
@@ -750,7 +748,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Draws all transitions that go out of the box
-	 * 
+	 *
 	 * @param gr
 	 *            the graphical context
 	 */
@@ -1097,7 +1095,7 @@ public class GenericGraphBox {
 		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
 				+ get_h_variable_ligne());
 	}
-        
+
         private void drawGenericGrfMark(Graphics2D g, DrawGraphParams params) {
 		g.setColor(params.getGenericGrfColor());
 		g.setFont(variableFont);
@@ -1137,6 +1135,30 @@ public class GenericGraphBox {
 		Boolean is_greyed;
 		String l;
 		boolean boxDrawn = false;
+    if(highlight) {
+      g.setColor(GraphDecoratorConfig.DEBUG_HIGHLIGHT);
+      final Stroke old = g.getStroke();
+      g.setStroke(new BasicStroke(3));
+      GraphicalToolBox.drawRect(g, X1, Y1, Width, Height);
+      if (hasOutgoingTransitions || type == INITIAL) {
+        if (!parentGraphicalZone.getGraphPresentationInfo()
+          .isRightToLeft()) {
+          final int a = X1 + Width;
+          final int b = Y1 + Height;
+          GraphicalToolBox.drawLine(g, X_out, Y_out, a, Y1);
+          GraphicalToolBox.drawLine(g, a, Y1, a, b);
+          GraphicalToolBox.drawLine(g, a, b, X_out, Y_out);
+        } else {
+          GraphicalToolBox.drawLine(g, X_in - 5, Y_in, X1, Y1);
+          GraphicalToolBox.drawLine(g, X1, Y1, X1, Y1 + Height);
+          GraphicalToolBox.drawLine(g, X1, Y1 + Height, X_in - 5,
+            Y_in);
+        }
+    }
+      g.setStroke(old);
+      g.setColor(params.getForegroundColor());
+      boxDrawn = true;
+    }
 		if (parentGraphicalZone.decorator != null
 				&& parentGraphicalZone.decorator
 						.requiresSpecialLineDrawing(boxNumber)) {
@@ -1187,11 +1209,11 @@ public class GenericGraphBox {
 			drawContextMark(g, params);
 			return;
 		}
-                if(genericGrfMark) { 
+                if(genericGrfMark) {
                     drawGenericGrfMark(g,params);
                     return;
                 }
-                    
+
 		if (morphologicalModeMark) {
 			drawMorphologicalModeMark(g, params);
 			return;
@@ -1308,12 +1330,12 @@ public class GenericGraphBox {
 			drawMorphologicalModeMarkSelected(g, params);
 			return;
 		}
-                
+
                 if(genericGrfMark) {
                     drawGenericGrfMarkSelected(g,params);
                     return;
                 }
-                
+
 		g.setColor(params.getForegroundColor());
 		// drawing the box
 		if (n_lines == 0) {
@@ -1406,7 +1428,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Draws the box
-	 * 
+	 *
 	 * @param g
 	 *            the graphical context
 	 */
@@ -1454,7 +1476,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Returns the height of a line of the box.
-	 * 
+	 *
 	 * @return the height
 	 */
 	int get_h_ligne() {
@@ -1468,7 +1490,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Returns the height of a variable definition line like <code>$a(</code>.
-	 * 
+	 *
 	 * @return the height
 	 */
 	int get_h_variable_ligne() {
@@ -1481,7 +1503,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Returns the width of the box's largest line.
-	 * 
+	 *
 	 * @return the width
 	 */
 	int maxLineWidth() {
@@ -1503,7 +1525,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Sets the content of the box
-	 * 
+	 *
 	 * @param s
 	 *            the content
 	 */
@@ -1544,7 +1566,7 @@ public class GenericGraphBox {
 
 	/**
 	 * Translate a box to the x,y position
-	 * 
+	 *
 	 * @param xPos
 	 * @param yPos
 	 */
@@ -1653,6 +1675,14 @@ public class GenericGraphBox {
 		this.transitions = transitions;
 	}
 
+  public boolean getHighlight() {
+    return highlight;
+  }
+
+  public void setHighlight(boolean bool) {
+    highlight = bool;
+  }
+
 	void updateWithContext(Graphics2D g) {
 		if (context != null) {
 			return;
@@ -1660,6 +1690,10 @@ public class GenericGraphBox {
 		context = g;
 		update();
 	}
+
+  public int getHasIncomingTransitions() {
+    return hasIncomingTransitions;
+  }
 
 	/**
 	 * This method checks if the String s is valid or not.
@@ -1721,4 +1755,5 @@ public class GenericGraphBox {
 			}
 		}
 	}
+
 }
