@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.gramlab.core.gramlab.project.config.ProjectPreferences;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.io.Encoding;
 import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
@@ -41,6 +42,10 @@ import org.gramlab.core.umlv.unitex.svn.SvnMonitor;
 public class ConfigManager extends AbstractConfigModel {
 
 	private static ConfigModel cm;
+	
+	// To store preferences/configManager so as to set the Manager when switching between the perspectives
+	private static ProjectPreferences GramlabPreferences;
+	private static ConfigManager UnitexConfigManager;
 
 	public static ConfigModel getManager() {
 		return cm;
@@ -49,7 +54,24 @@ public class ConfigManager extends AbstractConfigModel {
 	public static void setManager(ConfigModel cm) {
 		ConfigManager.cm = cm;
 	}
+	
+	//Getter and setter methods for the GramlabPreferences and UnitexConfigManager
+	public static void setGramlabPreferences(ProjectPreferences gp){
+		ConfigManager.GramlabPreferences = gp;
+	}
+	
+	public static void setUnitexConfigManager(ConfigManager cm){
+		ConfigManager.UnitexConfigManager = cm;
+	}
 
+	public static ProjectPreferences getGramlabPreferences(){
+		return GramlabPreferences;
+	}
+	
+	public static ConfigManager getUnitexConfigManager(){
+		return UnitexConfigManager;
+	}
+	
 	@Override
 	public File getAlphabet(String language) {
 		if (language == null) {

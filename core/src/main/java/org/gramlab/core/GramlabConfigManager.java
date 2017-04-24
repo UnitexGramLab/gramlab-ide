@@ -21,10 +21,6 @@ import org.gramlab.core.umlv.unitex.config.Config;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 
 import ro.fortsoft.pf4j.DefaultPluginManager;
-import ro.fortsoft.pf4j.PluginManager;
-
-import ro.fortsoft.pf4j.DefaultPluginManager;
-import ro.fortsoft.pf4j.PluginManager;
 
 public class GramlabConfigManager {
 	
@@ -48,8 +44,11 @@ public class GramlabConfigManager {
 		if (path==null) {
 			path = new File(System.getProperty("user.dir"));
 		}
-
-		ConfigManager.setManager(new ProjectPreferences(path));
+		
+		ProjectPreferences preferences = new ProjectPreferences(path);
+		//save preferences to reuse when switching back to Project-oriented
+		ConfigManager.setGramlabPreferences(preferences);
+		ConfigManager.setManager(preferences);
 		setCurrentProject(null);
 		user = System.getProperty("user.name");
 

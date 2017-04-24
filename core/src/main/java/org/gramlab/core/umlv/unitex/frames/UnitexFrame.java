@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -68,6 +69,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.MenuEvent;
 
+import org.gramlab.core.gramlab.frames.ChangePerspectiveDialog;
 import org.gramlab.core.umlv.unitex.DropTargetManager;
 import org.gramlab.core.umlv.unitex.Unitex;
 import org.gramlab.core.umlv.unitex.Version;
@@ -78,7 +80,6 @@ import org.gramlab.core.umlv.unitex.config.PreferencesManager;
 import org.gramlab.core.umlv.unitex.config.SntFileEntry;
 import org.gramlab.core.umlv.unitex.editor.FileEditionMenu;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
-import org.gramlab.core.umlv.unitex.graphrendering.GenericGraphBox;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphMenuBuilder;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.io.Encoding;
@@ -143,6 +144,8 @@ public class UnitexFrame extends JFrame {
 		setContentPane(desktop);
 		UnitexProject project = new UnitexProject(new UnitexInternalFrameManager(desktop));
 		UnitexProjectManager projectManager = new UnitexProjectManager(project);
+		//save projectManager for Classic perspective, in case user switches back
+		GlobalProjectManager.setUnitexProjectManager(projectManager); 
 		new GlobalProjectManager(projectManager);
 		buildMenus();
 		mainFrame = this;
@@ -1411,9 +1414,9 @@ public class UnitexFrame extends JFrame {
 		menu.add(open);
 		return menu;
 	}
-
+	
 	JMenu buildWindowsMenu() {
-		final JMenu windows = new JMenu("Windows");
+		final JMenu windows = new JMenu("Window");
 		final JMenuItem tile = new JMenuItem("Tile");
 		final List<JMenuItem> frameItems = new ArrayList<JMenuItem>();
 		tile.setEnabled(true);
@@ -1437,9 +1440,21 @@ public class UnitexFrame extends JFrame {
 				arrangeIcons();
 			}
 		});
+		JMenu m = new JMenu("Perspective");
+		Action n = new AbstractAction("Change Perspective") {
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new ChangePerspectiveDialog("Classic", null);
+					}
+				});
+			}
+		};
+		m.add(new JMenuItem(n));
 		windows.add(tile);
 		windows.add(cascade);
 		windows.add(arrangeIcons);
+		windows.add(m);
 		windows.addSeparator();
 
 		windows.addMenuListener(new MenuAdapter() {

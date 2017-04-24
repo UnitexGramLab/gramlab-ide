@@ -40,9 +40,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.event.MenuEvent;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.MenuEvent;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
@@ -70,7 +69,6 @@ import org.gramlab.core.gramlab.svn.SvnStatus;
 import org.gramlab.core.gramlab.svn.SvnStatusInfo;
 import org.gramlab.core.gramlab.svn.SvnUpdateDialog;
 import org.gramlab.core.gramlab.util.GramlabDropTarget;
-import org.gramlab.core.gramlab.util.GraphSearchDialog;
 import org.gramlab.core.gramlab.util.MouseUtil;
 import org.gramlab.core.gramlab.workspace.ChangeWorkspaceDialog;
 import org.gramlab.core.gramlab.workspace.ProjectAdapter;
@@ -84,7 +82,15 @@ import org.gramlab.core.umlv.unitex.common.project.manager.GlobalProjectManager;
 import org.gramlab.core.umlv.unitex.config.ConfigManager;
 import org.gramlab.core.umlv.unitex.files.FileUtil;
 import org.gramlab.core.umlv.unitex.files.PersonalFileFilter;
-import org.gramlab.core.umlv.unitex.frames.*;
+import org.gramlab.core.umlv.unitex.frames.AboutDialog;
+import org.gramlab.core.umlv.unitex.frames.DelaFrame;
+import org.gramlab.core.umlv.unitex.frames.FileEditionTextFrame;
+import org.gramlab.core.umlv.unitex.frames.FindAndReplaceDialog;
+import org.gramlab.core.umlv.unitex.frames.GraphFrame;
+import org.gramlab.core.umlv.unitex.frames.InternalFrameManager;
+import org.gramlab.core.umlv.unitex.frames.MenuAdapter;
+import org.gramlab.core.umlv.unitex.frames.TextAutomatonFrame;
+import org.gramlab.core.umlv.unitex.frames.UnitexFrame;
 import org.gramlab.core.umlv.unitex.graphrendering.GraphMenuBuilder;
 import org.gramlab.core.umlv.unitex.grf.GraphPresentationInfo;
 import org.gramlab.core.umlv.unitex.print.PrintManager;
@@ -243,6 +249,7 @@ public class GramlabFrame extends JFrame {
 			public Component getTreeCellRendererComponent(JTree tree,
 					Object value, boolean sel, boolean expanded, boolean leaf,
 					int row, boolean hasFocus) {
+	
 				WorkspaceTreeNode node = (WorkspaceTreeNode) value;
 				String name = node.getFile().getName();
 				if (value instanceof RootNode) {
@@ -260,7 +267,8 @@ public class GramlabFrame extends JFrame {
 					super.getTreeCellRendererComponent(tree, name, sel,
 							expanded, false, row, hasFocus);
 					GramlabProject project = n.getProject();
-					if (GlobalProjectManager.getAs(GramlabProjectManager.class)
+					//to keep using GramlabProjectManager even when user has switched to Classic perspective
+					if (GlobalProjectManager.getGramlabProjectManager()
 							.getCurrentProject() == project) {
 						/*
 						 * The current project is displayed with a different
@@ -289,8 +297,8 @@ public class GramlabFrame extends JFrame {
 						setForeground(Color.RED.darker());
 						setText(getText() + " (read-only)"+HACK_SPACES_TEXT);
 					}
-					GramlabProject p = GlobalProjectManager.getAs(GramlabProjectManager.class)
-							.getProject(node.getFile());
+					//to keep using GramlabProjectManager even when user has switched to Classic perspective
+					GramlabProject p = GlobalProjectManager.getGramlabProjectManager().getProject(node.getFile());
 					SvnInfo info = p.getSvnInfo(node.getFile());
 					if (info != null) {
 						String text = getText();
@@ -1500,6 +1508,7 @@ public class GramlabFrame extends JFrame {
 		bar.add(createDelaMenu());
 		bar.add(createGraphsMenu());
 		bar.add(createFileEditionMenu());
+		bar.add(createWindowMenu());
 		bar.add(createHelpMenu());
 		return bar;
 	}
@@ -1563,7 +1572,24 @@ public class GramlabFrame extends JFrame {
 		m.add(workspace);
 		return m;
 	}
-
+	
+	private JMenu createWindowMenu() {
+		final JMenu window = new JMenu("Window");
+		JMenu m = new JMenu("Perspective");
+		Action n = new AbstractAction("Change Perspective") {
+			public void actionPerformed(ActionEvent e) {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						new ChangePerspectiveDialog("Project-oriented", null);
+					}
+				});
+			}
+		};
+		m.add(new JMenuItem(n));
+		window.add(m);
+		return window;
+	}
+	
 	private JMenu createProjectMenu() {
 		JMenu m = new JMenu("Project");
 		return m;
