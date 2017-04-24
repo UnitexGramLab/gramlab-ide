@@ -130,8 +130,8 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(true);
 						exportTfstAsCsv.setEnabled(true);
 						closeText.setEnabled(true);
-            openConcordance.setEnabled(true);
-            saveAsSnt.setEnabled(true);
+						openConcordance.setEnabled(true);
+						saveAsSnt.setEnabled(true);
 						File snt = ConfigManager.getManager().getCurrentSnt(
 								null);
 						final File sntDir = FileUtil.getSntDir(snt);
@@ -161,9 +161,9 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(false);
 						exportTfstAsCsv.setEnabled(false);
 						closeText.setEnabled(false);
-            openConcordance.setEnabled(false);
-            saveAsConcordance.setEnabled(false);
-            saveAsSnt.setEnabled(false);
+						openConcordance.setEnabled(false);
+						saveAsConcordance.setEnabled(false);
+						saveAsSnt.setEnabled(false);
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTokensFrame();
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -296,9 +296,9 @@ public class UnitexFrame extends JFrame {
 	Action changeLang;
 	Action applyLexicalResources;
 	Action locatePattern;
-  Action openConcordance;
-  Action saveAsConcordance;
-  Action saveAsSnt;
+	Action openConcordance;
+	Action saveAsConcordance;
+	Action saveAsSnt;
 	AbstractAction displayLocatedSequences;
 	AbstractAction elagComp;
 	AbstractAction constructFst;
@@ -409,49 +409,49 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		textMenu.add(openRecent);
-    saveAsSnt = new AbstractAction("Save As...") {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
-          return;
-        }
-        JFileChooser fc = Config.getCorpusDialogBox();
-        fc.setMultiSelectionEnabled(false);
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        File file;
-        for(;;) {
-          final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
-          if (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-          }
-          file = fc.getSelectedFile();
-          final String name = file.getAbsolutePath();
-          if (!name.endsWith(".snt")) {
-            file = new File(name + ".snt");
-          }
-          if (file == null || !file.exists()) {
-            break;
-          }
-          final String message = file + "\nalready exists. Do you want to replace it?";
-          final String[] options = {"Yes", "No"};
-          final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
-            .ERROR_MESSAGE, null, options, options[0]);
-          if (n == 0) {
-            break;
-          }
-        }
-        if (file == null) {
-          return;
-        }
-        FileUtil.copyFile(Config.getCurrentSnt(), file);
-        String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
-        File folder = new File(folderPath + "_snt");
-        FileUtil.copyDirRec(Config.getCurrentSntDir(), folder);
-        Text.loadSnt(file, false);
-      }
-    };
-    saveAsSnt.setEnabled(false);
-    textMenu.add(new JMenuItem(saveAsSnt));
+		saveAsSnt = new AbstractAction("Save As...") {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+				  return;
+				}
+				JFileChooser fc = Config.getCorpusDialogBox();
+				fc.setMultiSelectionEnabled(false);
+				fc.setDialogType(JFileChooser.SAVE_DIALOG);
+				File file;
+				for(;;) {
+				  final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
+				  if (returnVal != JFileChooser.APPROVE_OPTION) {
+						return;
+				  }
+				  file = fc.getSelectedFile();
+				  final String name = file.getAbsolutePath();
+				  if (!name.endsWith(".snt")) {
+						file = new File(name + ".snt");
+				  }
+				  if (file == null || !file.exists()) {
+						break;
+				  }
+				  final String message = file + "\nalready exists. Do you want to replace it?";
+				  final String[] options = {"Yes", "No"};
+				  final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
+						.ERROR_MESSAGE, null, options, options[0]);
+				  if (n == 0) {
+						break;
+				  }
+				}
+				if (file == null) {
+				  return;
+				}
+				FileUtil.copyFile(Config.getCurrentSnt(), file);
+				String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
+				File folder = new File(folderPath + "_snt");
+				FileUtil.copyDirRec(Config.getCurrentSntDir(), folder);
+				Text.loadSnt(file, false);
+		  }
+		};
+		saveAsSnt.setEnabled(false);
+		textMenu.add(new JMenuItem(saveAsSnt));
 		preprocessText = new AbstractAction("Preprocess Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -487,48 +487,48 @@ public class UnitexFrame extends JFrame {
 		applyLexicalResources.setEnabled(false);
 		textMenu.add(new JMenuItem(applyLexicalResources));
 		textMenu.addSeparator();
-    openConcordance = new AbstractAction("Open Concordance") {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
-          return;
-        }
-        Config.getConcordanceDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
-        final int returnVal = Config.getConcordanceDialogBox().showOpenDialog(UnitexFrame.mainFrame);
-        if (returnVal != JFileChooser.APPROVE_OPTION) {
-          // we return if the user has clicked on CANCEL
-          return;
-        }
-        final File f = Config.getConcordanceDialogBox().getSelectedFile();
-        if (!f.exists()) {
-          JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
-            + " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
-          return;
-        }
-        if(!f.getAbsolutePath().endsWith(".html")) {
-          JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
-            + " is not a HTML file", "Error", JOptionPane.ERROR_MESSAGE);
-          return;
-        }
-        for(ConcordanceFrame frame : GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getConcordanceFrames()) {
-          if (frame.getFile().equals(f)) {
-            if(frame.isClosed()) {
-              GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame(frame);
-              break;
-            }
-            GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).setCurrentFocusedConcordance(frame);
-            return;
-          }
-        }
-        if(FileUtil.getHtmlPageTitle(f) == null) {
-          GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceDiffFrame(f);
-        } else {
-          GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
-        }
-      }
-    };
-    openConcordance.setEnabled(false);
-    textMenu.add(new JMenuItem(openConcordance));
+		openConcordance = new AbstractAction("Open Concordance") {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+				  return;
+				}
+				Config.getConcordanceDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
+				final int returnVal = Config.getConcordanceDialogBox().showOpenDialog(UnitexFrame.mainFrame);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+				  // we return if the user has clicked on CANCEL
+				  return;
+				}
+				final File f = Config.getConcordanceDialogBox().getSelectedFile();
+				if (!f.exists()) {
+				  JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
+						+ " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+				  return;
+				}
+				if(!f.getAbsolutePath().endsWith(".html")) {
+				  JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
+						+ " is not a HTML file", "Error", JOptionPane.ERROR_MESSAGE);
+				  return;
+				}
+				for(ConcordanceFrame frame : GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getConcordanceFrames()) {
+				  if (frame.getFile().equals(f)) {
+						if(frame.isClosed()) {
+						  GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame(frame);
+						  break;
+						}
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).setCurrentFocusedConcordance(frame);
+						return;
+				  }
+				}
+				if(FileUtil.getHtmlPageTitle(f) == null) {
+				  GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceDiffFrame(f);
+				} else {
+				  GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
+				}
+		  }
+		};
+		openConcordance.setEnabled(false);
+		textMenu.add(new JMenuItem(openConcordance));
 		locatePattern = new AbstractAction("Locate Pattern...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -540,50 +540,50 @@ public class UnitexFrame extends JFrame {
 		locatePattern.putValue(Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
 		textMenu.add(new JMenuItem(locatePattern));
-    saveAsConcordance = new AbstractAction("Save Concordance As...") {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null || GlobalProjectManager.search(null)
-          .getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() == null) {
-          return;
-        }
-        JFileChooser fc = Config.getConcordanceDialogBox();
-        fc.setMultiSelectionEnabled(false);
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        File file;
-        for (; ; ) {
-          final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
-          if (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-          }
-          file = fc.getSelectedFile();
-          final String name = file.getAbsolutePath();
-          if (!name.endsWith(".html")) {
-            file = new File(name + ".html");
-          }
-          if (file == null || !file.exists()) {
-            break;
-          }
-          final String message = file + "\nalready exists. Do you want to replace it?";
-          final String[] options = {"Yes", "No"};
-          final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
-            .ERROR_MESSAGE, null, options, options[0]);
-          if (n == 0) {
-            break;
-          }
-        }
-        if (file == null) {
-          return;
-        }
-        FileUtil.copyFile(GlobalProjectManager.search(null)
-          .getFrameManagerAs(InternalFrameManager.class)
-          .getCurrentFocusedConcordance().getFile(), file);
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedConcordance();
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 95);
-      }
-    };
-    saveAsConcordance.setEnabled(false);
-    textMenu.add(new JMenuItem(saveAsConcordance));
+		saveAsConcordance = new AbstractAction("Save Concordance As...") {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null || GlobalProjectManager.search(null)
+				  .getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() == null) {
+				  return;
+				}
+				JFileChooser fc = Config.getConcordanceDialogBox();
+				fc.setMultiSelectionEnabled(false);
+				fc.setDialogType(JFileChooser.SAVE_DIALOG);
+				File file;
+				for (; ; ) {
+				  final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
+				  if (returnVal != JFileChooser.APPROVE_OPTION) {
+						return;
+				  }
+				  file = fc.getSelectedFile();
+				  final String name = file.getAbsolutePath();
+				  if (!name.endsWith(".html")) {
+						file = new File(name + ".html");
+				  }
+				  if (file == null || !file.exists()) {
+						break;
+				  }
+				  final String message = file + "\nalready exists. Do you want to replace it?";
+				  final String[] options = {"Yes", "No"};
+				  final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
+						.ERROR_MESSAGE, null, options, options[0]);
+				  if (n == 0) {
+						break;
+				  }
+				}
+				if (file == null) {
+				  return;
+				}
+				FileUtil.copyFile(GlobalProjectManager.search(null)
+				  .getFrameManagerAs(InternalFrameManager.class)
+				  .getCurrentFocusedConcordance().getFile(), file);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedConcordance();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 95);
+		  }
+		};
+		saveAsConcordance.setEnabled(false);
+		textMenu.add(new JMenuItem(saveAsConcordance));
     cassys = new AbstractAction("Apply CasSys Cascade...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -1051,17 +1051,17 @@ public class UnitexFrame extends JFrame {
 		final Action findAndReplace = new AbstractAction("Find and replace") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-        ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
-        if(frames.isEmpty()) {
-          return;
-        }
-        final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
-      }
+				ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
+				if(frames.isEmpty()) {
+					return;
+				}
+				final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
+			}
 		};
-    findAndReplace.putValue(Action.ACCELERATOR_KEY,
-      KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
-    graphMenu.add(new JMenuItem(findAndReplace));
+		findAndReplace.putValue(Action.ACCELERATOR_KEY,
+		KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+		graphMenu.add(new JMenuItem(findAndReplace));
 		graphMenu.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
 			@Override
