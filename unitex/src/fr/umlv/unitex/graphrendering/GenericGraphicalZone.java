@@ -117,7 +117,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	public int EDITING_MODE = MyCursors.NORMAL;
 
-  ArrayList<GraphDecorator> decorators = new ArrayList<GraphDecorator>();
+	ArrayList<GraphDecorator> decorators = new ArrayList<GraphDecorator>();
 
 	protected abstract void initializeEmptyGraph();
 
@@ -232,7 +232,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			final int taille = vec.size();
 			for (int j = 0; j < taille; j++) {
 				final Integer n = vec.get(j);
-        g.addTransitionTo(selectedBoxes.get(n.intValue()));
+				g.addTransitionTo(selectedBoxes.get(n.intValue()));
 			}
 		}
 		initText("");
@@ -455,7 +455,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = graphBoxes.get(i);
 			if (g.isSelectedByRectangle(x, y, w, h)) {
 				g.setSelected(true);
-        g.setHighlight(false);
+				g.setHighlight(false);
 				selectedBoxes.add(g);
 				if (s == null) {
 					s = g.content;
@@ -1036,6 +1036,16 @@ public abstract class GenericGraphicalZone extends JComponent {
 		fireGraphChanged(true);
 		fireBoxSelectionChanged();
     return true;
+	}
+
+	public boolean isCycle(GenericGraphBox root, ArrayList<GenericGraphBox> transitions) {
+		if (transitions.contains(root)) {
+			return true;
+		}
+		for (GenericGraphBox box : transitions) {
+			return isCycle(root, box.getTransitions());
+		}
+		return false;
 	}
 
   public void removeBox(GraphBox g) {
