@@ -24,8 +24,8 @@ https://github.com/UnitexGramLab/unitex-doc-contributor-guidelines/blob/master/p
 <!--- What type of files does your pull request modify? Put an `x` in the box (only the mainly type) that apply: -->
 - [ ] `bin`: Binary files
 - [ ] `ci`: Continuous integration files
-- [ ] `doc`: Documentation files
-- [ ] Plain-text source code files
+- [ ] `doc`: Documentation files
+- [ ] Plain-text source code files
 
 ## Level of change
 <!--- What level of change does your code introduce? Put an `x` in the box (only one) that apply: -->
