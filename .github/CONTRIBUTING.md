@@ -1,10 +1,10 @@
 ## Contributing
 
-Unitex/GramLab project decision-making is based on a community meritocratic process. Anyone with an interest in Unitex/GramLab can join the community, contribute to the project design and participate in decisions. See http://unitexgramlab.org/how-to-contribute for information on how to start contributing to Unitex/GramLab.
+> Unitex/GramLab project decision-making is based on a community meritocratic process. Anyone with an interest in Unitex/GramLab can join the community, contribute to the project design and participate in decisions. See http://unitexgramlab.org/how-to-contribute for more detailed information on how to start contributing to Unitex/GramLab.
 
-You could start to improve the Unitex/GramLab IDE by [forking this repository](https://help.github.com/articles/fork-a-repo/)
+You are welcome to contribute by [forking this repository](https://help.github.com/articles/fork-a-repo/)
 and [sending pull requests](https://help.github.com/articles/using-pull-requests/)
-with their changes. The recommended [workflow](http://rypress.com/tutorials/git/rebasing) to contribute is:
+with your changes. The recommended [workflow](http://rypress.com/tutorials/git/rebasing) to contribute is:
 
 1. [Fork us](https://github.com/UnitexGramLab/gramlab-ide/fork)
 
