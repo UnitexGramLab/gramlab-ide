@@ -134,7 +134,7 @@ public class Config {
     private static int currentSystem = WINDOWS_SYSTEM;
     private static String userName;
     private static File currentDELA;
-  private static File currentConcordance;
+    private static File currentConcordance;
     /**
      * Message shown when a text file is too large to be loaded.
      */
@@ -234,7 +234,7 @@ public class Config {
      */
     private static JFileChooser exploreGraphOutputDialogBox;
 
-  private static JFileChooser concordanceDialogBox;
+    private static JFileChooser concordanceDialogBox;
 
     /**
      * Initializes the system. This method finds which system is running, which
@@ -551,15 +551,15 @@ public class Config {
         return exploreGraphOutputDialogBox;
     }
 
-  public static JFileChooser getConcordanceDialogBox() {
-    if(concordanceDialogBox == null) {
-      concordanceDialogBox = new JFileChooser(Config.getCurrentSntDir());
-      concordanceDialogBox.setFileFilter(new PersonalFileFilter("html", "HTML files"));
-      concordanceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-      concordanceDialogBox.setMultiSelectionEnabled(false);
+    public static JFileChooser getConcordanceDialogBox() {
+        if(concordanceDialogBox == null) {
+            concordanceDialogBox = new JFileChooser(Config.getCurrentSntDir());
+            concordanceDialogBox.setFileFilter(new PersonalFileFilter("html", "HTML files"));
+            concordanceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+            concordanceDialogBox.setMultiSelectionEnabled(false);
+        }
+        return concordanceDialogBox;
     }
-      return concordanceDialogBox;
-  }
 
     /**
      * Updates working directories of dialog boxes. This method is called when
@@ -601,9 +601,9 @@ public class Config {
         if (taggerDataDialogBox != null)
             taggerDataDialogBox.setCurrentDirectory(new File(Config
                     .getUserCurrentLanguageDir(), "Dela"));
-      if(concordanceDialogBox != null) {
-        concordanceDialogBox.setCurrentDirectory(Config.getCurrentSntDir());
-      }
+        if(concordanceDialogBox != null) {
+            concordanceDialogBox.setCurrentDirectory(Config.getCurrentSntDir());
+        }
     }
 
     /**
@@ -1467,13 +1467,13 @@ public class Config {
         return currentDELA;
     }
 
-  public static File getCurrentConcordance() {
-    return currentConcordance;
-  }
+    public static File getCurrentConcordance() {
+        return currentConcordance;
+    }
 
-  public static void setCurrentConcordance(File s) {
-    currentConcordance = s;
-  }
+    public static void setCurrentConcordance(File s) {
+        currentConcordance = s;
+    }
 
     public static File getXAlignDirectory() {
         final File dir = new File(Config.getUserDir(), "XAlign");

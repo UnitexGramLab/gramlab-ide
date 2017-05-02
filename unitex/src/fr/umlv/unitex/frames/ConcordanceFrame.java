@@ -57,7 +57,7 @@ import fr.umlv.unitex.utils.KeyUtil;
  * @author Sébastien Paumier
  */
 public class ConcordanceFrame extends TabbableInternalFrame {
-  private final File concordanceFile;
+	private final File concordanceFile;
 	final BigConcordance list;
 	private final JLabel numberOfMatches = new JLabel("");
 	final JComponent invisible = new JComponent() {
@@ -89,7 +89,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 	 */
 	ConcordanceFrame(File concordanceFile, int widthInChars) {
 		super("", true, true, true, true);
-    this.concordanceFile = concordanceFile;
+		this.concordanceFile = concordanceFile;
 		index = DebugInfos.loadConcordanceIndex(concordanceFile);
 		if (index != null) {
 			model = new DebugTableModel(index);
@@ -310,9 +310,9 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 		list.load(concor);
 	}
 
-  public File getFile() {
-    return concordanceFile;
-  }
+	public File getFile() {
+		return concordanceFile;
+	}
 
 	@Override
 	public String getTabName() {

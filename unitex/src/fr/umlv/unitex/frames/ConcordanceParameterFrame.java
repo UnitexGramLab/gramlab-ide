@@ -535,7 +535,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 	}
 
 	void buildConcordance(boolean onlyAmbiguous) {
-    GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeConcordFrame();
+		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeConcordFrame();
 		int leftContext;
 		int rightContext;
 		try {

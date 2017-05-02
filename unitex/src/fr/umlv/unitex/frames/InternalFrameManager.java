@@ -237,20 +237,20 @@ public abstract class InternalFrameManager implements FrameManager {
 		return null;
 	}
 
-  public ConcordanceFrame getCurrentFocusedConcordance() {
+	public ConcordanceFrame getCurrentFocusedConcordance() {
 		final JInternalFrame frame = desktop.getSelectedFrame();
 		if (frame instanceof ConcordanceFrame)
 			return (ConcordanceFrame) frame;
 		return null;
 	}
 
-  public void setCurrentFocusedConcordance(ConcordanceFrame f) {
-    try {
-      f.setSelected(true);
-    } catch (PropertyVetoException e) {
-      e.printStackTrace();
-    }
-  }
+	public void setCurrentFocusedConcordance(ConcordanceFrame f) {
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ArrayList<GraphFrame> getGraphFrames() {
 		return graphFrameFactory.getFrames();
@@ -512,9 +512,9 @@ public abstract class InternalFrameManager implements FrameManager {
 		return f;
 	}
 
-  public ArrayList<ConcordanceFrame> getConcordanceFrames() {
-    return concordanceFrameFactory.getFrames();
-  }
+	public ArrayList<ConcordanceFrame> getConcordanceFrames() {
+		return concordanceFrameFactory.getFrames();
+	}
 
 	public ConcordanceDiffFrame newConcordanceDiffFrame(File file) {
 		final ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory
@@ -536,20 +536,20 @@ public abstract class InternalFrameManager implements FrameManager {
 				true);
 	}
 
-  public void closeCurrentFocusedConcordance() {
-    ConcordanceFrame f = getCurrentFocusedConcordance();
-    if(f != null) {
-      f.doDefaultCloseAction();
-    }
-  }
+	public void closeCurrentFocusedConcordance() {
+		ConcordanceFrame f = getCurrentFocusedConcordance();
+		if(f != null) {
+			f.doDefaultCloseAction();
+		}
+	}
 
-  public void closeConcordFrame() {
-    concordanceFrameFactory.closeConcordanceFrame();
-  }
+	public void closeConcordFrame() {
+		concordanceFrameFactory.closeConcordanceFrame();
+	}
 
-  public void closeConcordanceFrame(ConcordanceFrame f) {
-    concordanceFrameFactory.closeConcordanceFrame(f);
-  }
+	public void closeConcordanceFrame(ConcordanceFrame f) {
+		concordanceFrameFactory.closeConcordanceFrame(f);
+	}
 
 	public void closeConcordanceFrame() {
 		concordanceFrameFactory.closeConcordanceFrame(getCurrentFocusedConcordance());

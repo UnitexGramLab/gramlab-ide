@@ -27,40 +27,40 @@ import java.io.File;
 import java.util.ArrayList;
 
 class ConcordanceFrameFactory {
-  private ArrayList<ConcordanceFrame> frames = new ArrayList<ConcordanceFrame>();
-  private ConcordanceFrame concordFrame;
+	private ArrayList<ConcordanceFrame> frames = new ArrayList<ConcordanceFrame>();
+	private ConcordanceFrame concordFrame;
 
 	ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
-    String filePath = FileUtil.getFilePathWithoutFileName(f);
-    filePath = filePath.substring(0, filePath.length()-1);
-    if (filePath.equals(Config.getCurrentSntDir().getAbsolutePath()) && f.getName().equals("concord.html")) {
-      frames.remove(concordFrame);
-      concordFrame = new ConcordanceFrame(f, widthInChars);
-      frames.add(concordFrame);
-      return concordFrame;
-    }
+		String filePath = FileUtil.getFilePathWithoutFileName(f);
+		filePath = filePath.substring(0, filePath.length()-1);
+		if (filePath.equals(Config.getCurrentSntDir().getAbsolutePath()) && f.getName().equals("concord.html")) {
+			frames.remove(concordFrame);
+			concordFrame = new ConcordanceFrame(f, widthInChars);
+			frames.add(concordFrame);
+			return concordFrame;
+		}
 		ConcordanceFrame frame = new ConcordanceFrame(f, widthInChars);
-    frames.add(frame);
-    return frame;
+		frames.add(frame);
+		return frame;
 	}
 
-  void closeConcordanceFrame() {
-    if(concordFrame == null) {
-      return;
-    }
-    frames.remove(concordFrame);
-    concordFrame.doDefaultCloseAction();
-  }
+	void closeConcordanceFrame() {
+		if(concordFrame == null) {
+			return;
+		}
+		frames.remove(concordFrame);
+		concordFrame.doDefaultCloseAction();
+	}
 
 	void closeConcordanceFrame(ConcordanceFrame f) {
 		if (f == null) {
 			return;
 		}
-    frames.remove(f);
+		frames.remove(f);
 		f.doDefaultCloseAction();
 	}
 
-  ArrayList<ConcordanceFrame> getFrames() {
-    return frames;
-  }
+	ArrayList<ConcordanceFrame> getFrames() {
+		return frames;
+	}
 }
