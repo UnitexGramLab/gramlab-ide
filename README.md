@@ -61,9 +61,8 @@ tools) always use "Unitex/GramLab".
 
 ## Contributing
 
-We welcome everyone to contribute to improve this project. Below are some of the things that you can do to contribute:
-
--  [Fork us](https://github.com/UnitexGramLab/gramlab-ide/fork) and [request a pull](https://github.com/UnitexGramLab/gramlab-ide/pulls) to the [develop branch](https://github.com/UnitexGramLab/gramlab-ide/tree/develop).
+We welcome everyone to contribute to improve this project. See [CONTRIBUTING.md](.github/CONTRIBUTING.md) 
+for contribution guidelines and instructions.
 
 ## License
 
