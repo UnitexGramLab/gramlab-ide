@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -53,7 +53,7 @@ import fr.umlv.unitex.utils.KeyUtil;
 
 /**
  * This class describes a frame that can show an HTML concordance file.
- *
+ * 
  * @author Sébastien Paumier
  */
 public class ConcordanceFrame extends TabbableInternalFrame {
@@ -130,7 +130,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 			public void internalFrameClosing(InternalFrameEvent e) {
 				list.reset();
 				list.clearSelection();
-      }
+			}
 
 			@Override
 			public void internalFrameDeactivated(InternalFrameEvent e) {
@@ -208,7 +208,7 @@ public class ConcordanceFrame extends TabbableInternalFrame {
 	 * Constructs a new <code>ConcordanceFrame</code> and loads in it an HTML
 	 * file. The number of lines in the concordance is shown in the caption of
 	 * the frame.
-	 *
+	 * 
 	 * @param concor
 	 *            the HTML file
 	 * @param widthInChars
