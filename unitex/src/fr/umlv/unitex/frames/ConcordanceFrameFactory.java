@@ -20,23 +20,47 @@
  */
 package fr.umlv.unitex.frames;
 
+import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.files.FileUtil;
+
 import java.io.File;
+import java.util.ArrayList;
 
 class ConcordanceFrameFactory {
-	private ConcordanceFrame frame;
+	private ArrayList<ConcordanceFrame> frames = new ArrayList<ConcordanceFrame>();
+	private ConcordanceFrame concordFrame;
 
 	ConcordanceFrame newConcordanceFrame(File f, int widthInChars) {
-		if (frame != null) {
-			frame.doDefaultCloseAction();
+		String filePath = FileUtil.getFilePathWithoutFileName(f);
+		filePath = filePath.substring(0, filePath.length()-1);
+		if (filePath.equals(Config.getCurrentSntDir().getAbsolutePath()) && f.getName().equals("concord.html")) {
+			frames.remove(concordFrame);
+			concordFrame = new ConcordanceFrame(f, widthInChars);
+			frames.add(concordFrame);
+			return concordFrame;
 		}
-		frame = new ConcordanceFrame(f, widthInChars);
+		ConcordanceFrame frame = new ConcordanceFrame(f, widthInChars);
+		frames.add(frame);
 		return frame;
 	}
 
 	void closeConcordanceFrame() {
-		if (frame == null) {
+		if(concordFrame == null) {
 			return;
 		}
-		frame.doDefaultCloseAction();
+		frames.remove(concordFrame);
+		concordFrame.doDefaultCloseAction();
+	}
+
+	void closeConcordanceFrame(ConcordanceFrame f) {
+		if (f == null) {
+			return;
+		}
+		frames.remove(f);
+		f.doDefaultCloseAction();
+	}
+
+	ArrayList<ConcordanceFrame> getFrames() {
+		return frames;
 	}
 }

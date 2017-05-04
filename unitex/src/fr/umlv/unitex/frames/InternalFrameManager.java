@@ -24,8 +24,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -236,6 +235,21 @@ public abstract class InternalFrameManager implements FrameManager {
 		if (frame instanceof GraphFrame)
 			return (GraphFrame) frame;
 		return null;
+	}
+
+	public ConcordanceFrame getCurrentFocusedConcordance() {
+		final JInternalFrame frame = desktop.getSelectedFrame();
+		if (frame instanceof ConcordanceFrame)
+			return (ConcordanceFrame) frame;
+		return null;
+	}
+
+	public void setCurrentFocusedConcordance(ConcordanceFrame f) {
+		try {
+			f.setSelected(true);
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public ArrayList<GraphFrame> getGraphFrames() {
@@ -498,6 +512,10 @@ public abstract class InternalFrameManager implements FrameManager {
 		return f;
 	}
 
+	public ArrayList<ConcordanceFrame> getConcordanceFrames() {
+		return concordanceFrameFactory.getFrames();
+	}
+
 	public ConcordanceDiffFrame newConcordanceDiffFrame(File file) {
 		final ConcordanceDiffFrame f = (ConcordanceDiffFrame) concordanceDiffFrameFactory
 				.newFrame();
@@ -518,8 +536,23 @@ public abstract class InternalFrameManager implements FrameManager {
 				true);
 	}
 
-	public void closeConcordanceFrame() {
+	public void closeCurrentFocusedConcordance() {
+		ConcordanceFrame f = getCurrentFocusedConcordance();
+		if(f != null) {
+			f.doDefaultCloseAction();
+		}
+	}
+
+	public void closeConcordFrame() {
 		concordanceFrameFactory.closeConcordanceFrame();
+	}
+
+	public void closeConcordanceFrame(ConcordanceFrame f) {
+		concordanceFrameFactory.closeConcordanceFrame(f);
+	}
+
+	public void closeConcordanceFrame() {
+		concordanceFrameFactory.closeConcordanceFrame(getCurrentFocusedConcordance());
 	}
 
 	public ConcordanceParameterFrame newConcordanceParameterFrame() {

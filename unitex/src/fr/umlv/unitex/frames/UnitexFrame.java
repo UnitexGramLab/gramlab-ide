@@ -20,54 +20,6 @@
  */
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Event;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.dnd.DropTarget;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.MenuEvent;
-
 import fr.umlv.unitex.DropTargetManager;
 import fr.umlv.unitex.Unitex;
 import fr.umlv.unitex.Version;
@@ -88,17 +40,25 @@ import fr.umlv.unitex.listeners.TextFrameListener;
 import fr.umlv.unitex.print.PrintManager;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.CompressCommand;
-import fr.umlv.unitex.process.commands.ConcordCommand;
-import fr.umlv.unitex.process.commands.FlattenCommand;
-import fr.umlv.unitex.process.commands.Grf2Fst2Command;
-import fr.umlv.unitex.process.commands.LocateTfstCommand;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.SortTxtCommand;
+import fr.umlv.unitex.process.commands.*;
 import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.MenuEvent;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.dnd.DropTarget;
+import java.awt.event.*;
+import java.beans.PropertyVetoException;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.*;
+import java.util.List;
 
 /**
  * This is the main frame of the Unitex system.
@@ -170,7 +130,8 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(true);
 						exportTfstAsCsv.setEnabled(true);
 						closeText.setEnabled(true);
-            saveAsSnt.setEnabled(true);
+						openConcordance.setEnabled(true);
+						saveAsSnt.setEnabled(true);
 						File snt = ConfigManager.getManager().getCurrentSnt(
 								null);
 						final File sntDir = FileUtil.getSntDir(snt);
@@ -200,7 +161,9 @@ public class UnitexFrame extends JFrame {
 						convertFst.setEnabled(false);
 						exportTfstAsCsv.setEnabled(false);
 						closeText.setEnabled(false);
-            saveAsSnt.setEnabled(false);
+						openConcordance.setEnabled(false);
+						saveAsConcordance.setEnabled(false);
+						saveAsSnt.setEnabled(false);
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeTokensFrame();
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -333,7 +296,9 @@ public class UnitexFrame extends JFrame {
 	Action changeLang;
 	Action applyLexicalResources;
 	Action locatePattern;
-  Action saveAsSnt;
+	Action openConcordance;
+	Action saveAsConcordance;
+	Action saveAsSnt;
 	AbstractAction displayLocatedSequences;
 	AbstractAction elagComp;
 	AbstractAction constructFst;
@@ -444,49 +409,49 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		textMenu.add(openRecent);
-    saveAsSnt = new AbstractAction("Save As...") {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
-          return;
-        }
-        JFileChooser fc = Config.getCorpusDialogBox();
-        fc.setMultiSelectionEnabled(false);
-        fc.setDialogType(JFileChooser.SAVE_DIALOG);
-        File file;
-        for(;;) {
-          final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
-          if (returnVal != JFileChooser.APPROVE_OPTION) {
-            return;
-          }
-          file = fc.getSelectedFile();
-          final String name = file.getAbsolutePath();
-          if (!name.endsWith(".snt")) {
-            file = new File(name + ".snt");
-          }
-          if (file == null || !file.exists()) {
-            break;
-          }
-          final String message = file + "\nalready exists. Do you want to replace it?";
-          final String[] options = {"Yes", "No"};
-          final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
-            .ERROR_MESSAGE, null, options, options[0]);
-          if (n == 0) {
-            break;
-          }
-        }
-        if (file == null) {
-          return;
-        }
-        FileUtil.copyFile(Config.getCurrentSnt(), file);
-        String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
-        File folder = new File(folderPath + "_snt");
-        FileUtil.copyDirRec(Config.getCurrentSntDir(), folder);
-        Text.loadSnt(file, false);
-      }
-    };
-    saveAsSnt.setEnabled(false);
-    textMenu.add(new JMenuItem(saveAsSnt));
+		saveAsSnt = new AbstractAction("Save As...") {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+				  return;
+				}
+				JFileChooser fc = Config.getCorpusDialogBox();
+				fc.setMultiSelectionEnabled(false);
+				fc.setDialogType(JFileChooser.SAVE_DIALOG);
+				File file;
+				for(;;) {
+				  final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
+				  if (returnVal != JFileChooser.APPROVE_OPTION) {
+						return;
+				  }
+				  file = fc.getSelectedFile();
+				  final String name = file.getAbsolutePath();
+				  if (!name.endsWith(".snt")) {
+						file = new File(name + ".snt");
+				  }
+				  if (file == null || !file.exists()) {
+						break;
+				  }
+				  final String message = file + "\nalready exists. Do you want to replace it?";
+				  final String[] options = {"Yes", "No"};
+				  final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
+						.ERROR_MESSAGE, null, options, options[0]);
+				  if (n == 0) {
+						break;
+				  }
+				}
+				if (file == null) {
+				  return;
+				}
+				FileUtil.copyFile(Config.getCurrentSnt(), file);
+				String folderPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf('.'));
+				File folder = new File(folderPath + "_snt");
+				FileUtil.copyDirRec(Config.getCurrentSntDir(), folder);
+				Text.loadSnt(file, false);
+		  }
+		};
+		saveAsSnt.setEnabled(false);
+		textMenu.add(new JMenuItem(saveAsSnt));
 		preprocessText = new AbstractAction("Preprocess Text...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -522,6 +487,48 @@ public class UnitexFrame extends JFrame {
 		applyLexicalResources.setEnabled(false);
 		textMenu.add(new JMenuItem(applyLexicalResources));
 		textMenu.addSeparator();
+		openConcordance = new AbstractAction("Open Concordance") {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
+				  return;
+				}
+				Config.getConcordanceDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
+				final int returnVal = Config.getConcordanceDialogBox().showOpenDialog(UnitexFrame.mainFrame);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+				  // we return if the user has clicked on CANCEL
+				  return;
+				}
+				final File f = Config.getConcordanceDialogBox().getSelectedFile();
+				if (!f.exists()) {
+				  JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
+						+ " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+				  return;
+				}
+				if(!f.getAbsolutePath().endsWith(".html")) {
+				  JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
+						+ " is not a HTML file", "Error", JOptionPane.ERROR_MESSAGE);
+				  return;
+				}
+				for(ConcordanceFrame frame : GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getConcordanceFrames()) {
+				  if (frame.getFile().equals(f)) {
+						if(frame.isClosed()) {
+						  GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame(frame);
+						  break;
+						}
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).setCurrentFocusedConcordance(frame);
+						return;
+				  }
+				}
+				if(FileUtil.getHtmlPageTitle(f) == null) {
+				  GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceDiffFrame(f);
+				} else {
+				  GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(f, 95);
+				}
+		  }
+		};
+		openConcordance.setEnabled(false);
+		textMenu.add(new JMenuItem(openConcordance));
 		locatePattern = new AbstractAction("Locate Pattern...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -533,7 +540,51 @@ public class UnitexFrame extends JFrame {
 		locatePattern.putValue(Action.ACCELERATOR_KEY,
 				KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
 		textMenu.add(new JMenuItem(locatePattern));
-		cassys = new AbstractAction("Apply CasSys Cascade...") {
+		saveAsConcordance = new AbstractAction("Save Concordance As...") {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null || GlobalProjectManager.search(null)
+				  .getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() == null) {
+				  return;
+				}
+				JFileChooser fc = Config.getConcordanceDialogBox();
+				fc.setMultiSelectionEnabled(false);
+				fc.setDialogType(JFileChooser.SAVE_DIALOG);
+				File file;
+				for (; ; ) {
+				  final int returnVal = fc.showSaveDialog(UnitexFrame.mainFrame);
+				  if (returnVal != JFileChooser.APPROVE_OPTION) {
+						return;
+				  }
+				  file = fc.getSelectedFile();
+				  final String name = file.getAbsolutePath();
+				  if (!name.endsWith(".html")) {
+						file = new File(name + ".html");
+				  }
+				  if (file == null || !file.exists()) {
+						break;
+				  }
+				  final String message = file + "\nalready exists. Do you want to replace it?";
+				  final String[] options = {"Yes", "No"};
+				  final int n = JOptionPane.showOptionDialog(null, message, "Error", JOptionPane.YES_NO_OPTION, JOptionPane
+						.ERROR_MESSAGE, null, options, options[0]);
+				  if (n == 0) {
+						break;
+				  }
+				}
+				if (file == null) {
+				  return;
+				}
+				FileUtil.copyFile(GlobalProjectManager.search(null)
+				  .getFrameManagerAs(InternalFrameManager.class)
+				  .getCurrentFocusedConcordance().getFile(), file);
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).closeCurrentFocusedConcordance();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newConcordanceFrame(file, 95);
+		  }
+		};
+		saveAsConcordance.setEnabled(false);
+		textMenu.add(new JMenuItem(saveAsConcordance));
+    cassys = new AbstractAction("Apply CasSys Cascade...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
@@ -640,7 +691,20 @@ public class UnitexFrame extends JFrame {
 			public void menuSelected(MenuEvent e) {
 				List<SntFileEntry> l = PreferencesManager.getUserPreferences()
 						.getRecentTexts();
-				openRecent.setEnabled(l != null && l.size() > 0);
+        if (GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance() != null) {
+          String s = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getCurrentFocusedConcordance().getName();
+          if (s != null) {
+            JOptionPane.showMessageDialog(null, s);
+          }
+        }
+        openRecent.setEnabled(l != null && l.size() > 0);
+        if(GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedConcordance() != null) {
+          saveAsConcordance.setEnabled(true);
+        } else {
+          saveAsConcordance.setEnabled(false);
+        }
 			}
 		});
 		return textMenu;
@@ -987,17 +1051,17 @@ public class UnitexFrame extends JFrame {
 		final Action findAndReplace = new AbstractAction("Find and replace") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-        ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
-        if(frames.isEmpty()) {
-          return;
-        }
-        final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
-        GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
-      }
+				ArrayList<GraphFrame> frames = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).getGraphFrames();
+				if(frames.isEmpty()) {
+					return;
+				}
+				final FindAndReplaceDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newFindAndReplaceDialog();
+				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(dialog);
+			}
 		};
-    findAndReplace.putValue(Action.ACCELERATOR_KEY,
-      KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
-    graphMenu.add(new JMenuItem(findAndReplace));
+		findAndReplace.putValue(Action.ACCELERATOR_KEY,
+		KeyStroke.getKeyStroke(KeyEvent.VK_F, Event.CTRL_MASK));
+		graphMenu.add(new JMenuItem(findAndReplace));
 		graphMenu.addSeparator();
 		final Action undo = new AbstractAction("Undo") {
 			@Override
