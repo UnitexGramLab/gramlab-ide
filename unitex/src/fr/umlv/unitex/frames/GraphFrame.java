@@ -931,6 +931,12 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                             count++;
                             if (line.indexOf("{B}",i) == i) {
                                 i += 2;
+                            } else if (line.indexOf("{BB}",i) == i) {
+                                i += 3;
+                                count++;
+                            } else if (line.indexOf("{BBB}",i) == i) {
+                                i += 4;
+                                count += 2;
                             }
                         } else if (line.charAt(i) == '}') {
                             count--;
