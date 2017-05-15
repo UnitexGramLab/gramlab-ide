@@ -916,6 +916,8 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                     if (line.length() < 2) {
                         continue;
                     }
+                    if (line.indexOf("#/{") > -1) //signature of graph B
+                        continue;
                     if(errFound == 1 && line.trim().startsWith("the automate")) {
                         JOptionPane.showMessageDialog(null,"Braces are not well formed in " + line.substring(0,line.indexOf(',')));
                         break;
@@ -926,6 +928,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                     for (int i=0; i<line.length(); i++) {
                         if (line.charAt(i) == '{') {
                             count++;
+                            if (line.indexOf("{B}",i) == i) {
+                                i += 2;
+                            }
                         } else if (line.charAt(i) == '}') {
                             count--;
                         }   
