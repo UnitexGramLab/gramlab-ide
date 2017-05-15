@@ -36,6 +36,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -346,6 +347,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				.getIconWidth() + 8, MyCursors.copyIcon.getIconHeight() + 8));
 		copyButton.setBorderPainted(false);
 		copyButton.setOpaque(false);
+		copyButton.setToolTipText("Copy the list to the clipboard");
 		copyButton.setContentAreaFilled(false);
 		copyButton.setFocusPainted(false);
 		copyButton.addActionListener(new ActionListener() {
