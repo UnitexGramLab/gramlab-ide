@@ -29,3 +29,7 @@ notifications:
 
 # overwrite the default build step
 script: ant
+
+# check for code styling conventions
+script: ant checkstyle
+

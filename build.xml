@@ -114,4 +114,19 @@
 			</fileset>
 		</copy>	    
 	</target>
+
+	<target name="checkstyle" description="Gives an error for code convention violation and generates a report for the same.">
+		<taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties">
+		    <classpath>
+		        <pathelement location="lib/checkstyle-6.19-all.jar"/>
+		        <pathelement location="lib/checkstyle-addons-3.0.0-all.jar"/>
+		    </classpath>
+		</taskdef>
+		<checkstyle config="checkstyle.xml" failureProperty="checkstyle.failure.property" failOnViolation="true" maxErrors="0">
+		    <formatter type="plain"/>
+		    <!-- <formatter type="xml" usefile="true" tofile="checkstyle_violations.xml"/> -->
+		    <fileset dir="src" includes="**/*.java"/>
+		    <fileset dir="unitex" includes="**/*.java"/>
+		</checkstyle>        
+	</target>
 </project>
