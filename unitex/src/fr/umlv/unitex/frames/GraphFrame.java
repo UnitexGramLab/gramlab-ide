@@ -355,9 +355,9 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 			public void actionPerformed(ActionEvent e) {
 				StringBuilder listSb = new StringBuilder();
 				for (int i = 0; i < grfListModel.getSize(); i++) {
-          GraphCall gc = (GraphCall) grfListModel.getElementAt(i);
-          listSb.append(gc.getGrf().getName());
-          listSb.append(System.getProperty("line.separator"));
+					GraphCall gc = (GraphCall) grfListModel.getElementAt(i);
+					listSb.append(gc.getGrf().getName());
+					listSb.append(System.getProperty("line.separator"));
 				}
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard .setContents(new StringSelection(listSb.toString()), null);
