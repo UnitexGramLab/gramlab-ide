@@ -347,7 +347,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				.getIconWidth() + 8, MyCursors.copyIcon.getIconHeight() + 8));
 		copyButton.setBorderPainted(false);
 		copyButton.setOpaque(false);
-		copyButton.setToolTipText("Copy the list to the clipboard");
+		copyButton.setToolTipText("Copy the list of called graphs to the Clipboard");
 		copyButton.setContentAreaFilled(false);
 		copyButton.setFocusPainted(false);
 		copyButton.addActionListener(new ActionListener() {
