@@ -45,6 +45,7 @@ import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
+import leximir.Index;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -288,7 +289,7 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(info);
 		setJMenuBar(menuBar);
 	}
-
+	Action leximir;
 	Action openText;
 	Action openTaggedText;
 	Action preprocessText;
@@ -466,6 +467,19 @@ public class UnitexFrame extends JFrame {
 				KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
 		preprocessText.setEnabled(false);
 		textMenu.add(new JMenuItem(preprocessText));
+		textMenu.addSeparator();
+
+		leximir = new AbstractAction("Open leximir...") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("unitex dir :"+Config.getUnitexDir()+"/"+Config.getCurrentLanguage());
+				System.out.println("user dir :"+Config.getUserDir()+"/"+Config.getCurrentLanguage());
+				Index index = new Index();
+				index.setVisible(true);
+			}
+		};
+		textMenu.add(new JMenuItem(leximir));
+
 		textMenu.addSeparator();
 		changeLang = new AbstractAction("Change Language...") {
 			@Override
