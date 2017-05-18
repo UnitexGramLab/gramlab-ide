@@ -28,12 +28,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -323,7 +326,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 		});
 		grfListPanel = new JPanel(new BorderLayout());
 		final JPanel up = new JPanel(new BorderLayout());
-		up.add(grfListLabel, BorderLayout.CENTER);
+		up.add(grfListLabel, BorderLayout.WEST);
 		final JButton closeButton = new JButton(MyCursors.closeIcon);
 		closeButton.setPreferredSize(new Dimension(MyCursors.closeIcon
 				.getIconWidth() + 8, MyCursors.closeIcon.getIconHeight() + 8));
@@ -339,7 +342,29 @@ public class GraphFrame extends KeyedInternalFrame<File> {
 				getActualMainPanel().repaint();
 			}
 		});
+		final JButton copyButton = new JButton(MyCursors.copyIcon);
+		copyButton.setPreferredSize(new Dimension(MyCursors.copyIcon
+				.getIconWidth() + 8, MyCursors.copyIcon.getIconHeight() + 8));
+		copyButton.setBorderPainted(false);
+		copyButton.setOpaque(false);
+		copyButton.setToolTipText("Copy the list of called graphs to the Clipboard");
+		copyButton.setContentAreaFilled(false);
+		copyButton.setFocusPainted(false);
+		copyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StringBuilder listSb = new StringBuilder();
+				for (int i = 0; i < grfListModel.getSize(); i++) {
+					GraphCall gc = (GraphCall) grfListModel.getElementAt(i);
+					listSb.append(gc.getGrf().getName());
+					listSb.append(System.getProperty("line.separator"));
+				}
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard .setContents(new StringSelection(listSb.toString()), null);
+			}
+		});
 		up.add(closeButton, BorderLayout.EAST);
+		up.add(copyButton, BorderLayout.CENTER);
 		up.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		grfListPanel.add(up, BorderLayout.NORTH);
 		grfListPanel.add(grfListScroll, BorderLayout.CENTER);
