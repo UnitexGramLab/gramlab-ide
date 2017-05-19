@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Objects;
-import model.Delas;
+import java.util.regex.Pattern;
+import model.Delac;
 import model.StaticValue;
 import util.Utils;
 
@@ -21,18 +22,16 @@ import util.Utils;
  *
  * @author rojo
  */
-public class DelasHelper {
+public class DelacHelper {
     /**
      * This function return a list of dictionnary in directory
      * @return
      * @throws FileNotFoundException 
      */
-    public static ArrayList<String> getDicDelasPath() throws FileNotFoundException, IOException{
+    public static ArrayList<String> getDicDelacPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
         //File folder = new File(Utils.getValueXml("pathDelas"));
-        //File folder = new File("/Users/rojo/Documents/LeXimir4UnitexRes/Delas");
-        System.out.println("file : "+StaticValue.allDelas);
-        File folder = new File(StaticValue.allDelas);
+        File folder = new File(StaticValue.allDelac);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
@@ -47,14 +46,14 @@ public class DelasHelper {
         return list;
     }
     
-    public static Object[][] getAllDelasFromDicToObject() throws FileNotFoundException, IOException{
-        ArrayList<String> list= getDicDelasPath();
-        Delas delac = new Delas();
+    public static Object[][] getAllDelacFromDicToObject() throws FileNotFoundException, IOException{
+        ArrayList<String> list= getDicDelacPath();
+        Delac delac = new Delac();
         Field[] lf = delac.getClass().getDeclaredFields();
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = StaticValue.allDelas+"//"+dela;
+            String path = StaticValue.allDelac+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 count++;
@@ -66,72 +65,75 @@ public class DelasHelper {
         int k=0;
         int dicId=0;
         for(String dela:list){
-            String pOs,lemma,fSTCode,sinSem,comment,lemmaInv,wn_SinSet;
+            String pOs,lemmaAll,lemma,fSTCode,sinSem,comment,wn_SinSet;
             int lemmaId=10;
             String dicFile=dela;
-            //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = StaticValue.allDelas+"//"+dela;
+            String path = StaticValue.allDelac+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
-                lemma=getLemaInDelas(s);
-                lemmaInv=Utils.reverseString(lemma);
-                sinSem="+"+getSynSemInDelas(s);
-                fSTCode = getFstCodeInDelas(s);
-                pOs = getPosInDelas(s);
+                wn_SinSet="";
+                lemmaAll=getLemaAllDelac(s);
+                lemma=getLemaInLemaAllDelac(lemmaAll);
+                fSTCode = getFstCodeInDelac(s);
+                sinSem="+"+getSynSemInDelac(s);
+                pOs = getPosInDelac(s);
                 comment = getCommentInDelas(s);
-                wn_SinSet = "";
-                Delas tmp = new Delas(pOs, lemma, fSTCode, sinSem, comment, lemmaInv, wn_SinSet, lemmaId, dicFile, dicId);
+                Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile, dicId);
                 delacToObject(ob, k, tmp);
                 k++;
                 lemmaId=lemmaId+10;
-                
             }
             dicId++;
         }
         return ob;
     }
 
-    private static void delacToObject(Object[][] ob, int k, Delas tmp) {
+    private static void delacToObject(Object[][] ob, int k, Delac tmp) {
         ob[k][0]=tmp.getpOS();
-        ob[k][1]=tmp.getLemma();
-        ob[k][2]=tmp.getfSTCode();
-        ob[k][3]=tmp.getSimSem();
-        ob[k][4]=tmp.getComment();
-        ob[k][5]=tmp.getLemmaInv();
+        ob[k][1]=tmp.getLemmaAll();
+        ob[k][2]=tmp.getLemma();
+        ob[k][3]=tmp.getfSTCode();
+        ob[k][4]=tmp.getSimSem();
+        ob[k][5]=tmp.getComment();
         ob[k][6]=tmp.getWn_sinSet();
         ob[k][7]=tmp.getLemmaId();
         ob[k][8]=tmp.getDicFile();
         ob[k][9]=tmp.getDicId();
     }
     
-    public static String getLemaInDelas(String text){
+    public static String getLemaInLemaAllDelac(String text) {
         StringBuilder sb = new StringBuilder();
+        boolean isNotInBracket=false;
         for(int i=0;i<text.length();i++){
-            if(text.charAt(i)==','){
-                break;
+            if(!isNotInBracket){
+                if(text.charAt(i)!='('){
+                    sb.append(text.charAt(i));
+                }
+                else{
+                    isNotInBracket=true;
+                }
             }
-            sb.append(text.charAt(i));
+            else{
+                if(text.charAt(i)==')'){
+                    isNotInBracket=false;
+                }
+            }
         }
         return sb.toString();
-    }
-    public static String getSynSemInDelas(String text){
+    }  
+    public static String getLemaAllDelac(String text) {
         StringBuilder sb = new StringBuilder();
-        boolean begin=false;
         for(int i=0;i<text.length();i++){
-            if(text.charAt(i)==','){
-                begin=true;
-                i++;
-            }
-            if(begin){
-                if(text.charAt(i)=='='||text.charAt(i)=='/'){
-                    break;
-                }
+            if(text.charAt(i)!=','){
                 sb.append(text.charAt(i));
             }
+            else{
+                break;
+            }
         }
         return sb.toString();
-    }
-    public static String getFstCodeInDelas(String text){
+    }  
+    public static String getFstCodeInDelac(String text){
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
         for(int i=0;i<text.length();i++){
@@ -148,7 +150,24 @@ public class DelasHelper {
         }
         return sb.toString();
     }
-    public static String getPosInDelas(String text){
+    public static String getSynSemInDelac(String text){
+        StringBuilder sb = new StringBuilder();
+        boolean begin=false;
+        for(int i=0;i<text.length();i++){
+            if(text.charAt(i)==','){
+                begin=true;
+                i++;
+            }
+            if(begin){
+                if(text.charAt(i)=='='||text.charAt(i)=='/'){
+                    break;
+                }
+                sb.append(text.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+    public static String getPosInDelac(String text){
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
         for(int i=0;i<text.length();i++){
@@ -161,7 +180,7 @@ public class DelasHelper {
                 if(charInt>=48 && charInt<=57){
                     break;
                 }
-                if(charInt=='/'||charInt=='+'){
+                if(charInt=='/'||charInt=='+'||charInt=='_'){
                     break;
                 }
                 sb.append(text.charAt(i));

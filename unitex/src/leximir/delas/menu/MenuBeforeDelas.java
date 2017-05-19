@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import leximir.EditorLadl;
+import leximir.EditorDelas;
 import util.Utils;
 
 /**
@@ -17,7 +17,7 @@ import util.Utils;
  * @author rojo
  */
 public class MenuBeforeDelas extends javax.swing.JFrame {
-    private EditorLadl editor;
+    private EditorDelas editor;
     private Object[] obj;
         private int idObject;
     /**
@@ -27,7 +27,7 @@ public class MenuBeforeDelas extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MenuBeforeDelas(EditorLadl aThis, Object[] obj,int id) {
+    public MenuBeforeDelas(EditorDelas aThis, Object[] obj,int id) {
         initComponents();
         this.editor=aThis;
         this.obj=obj;

@@ -15,6 +15,7 @@ import model.GridModel;
  * @author rojo
  */
 public class GridHelper {
+    //Helper for search
     public static JTable getOpenEditorLadl() throws IOException{
         
         String[] entete = {"POS","Lemma","FSTCode","SinSem","Comment","Lemmalnv","WN_Sinset","LemmaID","DictFile","Id"};
@@ -23,19 +24,27 @@ public class GridHelper {
         JTable tableau = new JTable(tm.getDonnees(), tm.getEntete());
         return tableau;
     }
-    public static JTable getOpenEditorLadl(DefaultTableModel model) throws IOException{
+    //instance default grid
+    public static DefaultTableModel getOpenEditorforDelas() throws IOException{
         
         String[] entete = {"POS","Lemma","FSTCode","SynSem","Comment","Lemmalnv","WN_SynSet","LemmaID","DictFile","Id"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject();
+        return new DefaultTableModel(data,entete);
+    }
+    // tableau pour afficher après recherche
+    public static JTable getOpenEditorLadlforDelac() throws IOException{
+        
+        String[] entete = {"POS","Comp.Lema all","Comp.Lema","FSTCode","SynSem","Comment","WN_SynSet","LemmaID","DictFile","DicId"};
+        Object[][] data = DelacHelper.getAllDelacFromDicToObject();
         GridModel tm=new GridModel(entete,data);
-        tm.insererObjet(data);
         JTable tableau = new JTable(tm.getDonnees(), tm.getEntete());
         return tableau;
     }
-    public static DefaultTableModel getOpenEditor() throws IOException{
+    //tableau par defaut
+    public static DefaultTableModel getOpenEditorforDelac() throws IOException{
         
-        String[] entete = {"POS","Lemma","FSTCode","SynSem","Comment","Lemmalnv","WN_SynSet","LemmaID","DictFile","Id"};
-        Object[][] data = DelasHelper.getAllDelasFromDicToObject();
+        String[] entete = {"POS","Comp.Lema all","Comp.Lema","FSTCode","SynSem","Comment","WN_SynSet","LemmaID","DictFile","DicId"};
+        Object[][] data = DelacHelper.getAllDelacFromDicToObject();
         return new DefaultTableModel(data,entete);
     }
 }

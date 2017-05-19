@@ -40,16 +40,16 @@ import util.Utils;
  *
  * @author rojo
  */
-public final class EditorLadl extends javax.swing.JFrame {
+public final class EditorDelas extends javax.swing.JFrame {
     private DefaultTableModel tableModel ;
     /**
      * Creates new form EditorLadl
      */
-    public EditorLadl() {
+    public EditorDelas() {
         try {
             initComponents();
             this.setTitle("Editor for Dela Dictionaries of simple words");
-            tableModel = GridHelper.getOpenEditor();
+            tableModel = GridHelper.getOpenEditorforDelas();
             JTable table = new JTable(getTableModel());
             jLabel12.setText(jLabel12.getText()+tableModel.getRowCount());
             RowSorter<TableModel> sort = new TableRowSorter<>(table.getModel());
@@ -63,11 +63,12 @@ public final class EditorLadl extends javax.swing.JFrame {
                 {
                     final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                     c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
+                    c.setForeground(Color.black);
                     return c;
                 }
             });
         } catch (IOException ex) {
-            Logger.getLogger(EditorLadl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -604,7 +605,6 @@ public final class EditorLadl extends javax.swing.JFrame {
     private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuStatisticsMouseClicked
         try {
             Map<String, HashMap<String, String>> data = new HashMap<>();
-            int k = 0;
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
                 String dic = (String) this.getjTable1().getValueAt(i, 8);
                 String value = (String) this.getjTable1().getValueAt(i, 0);
@@ -614,27 +614,15 @@ public final class EditorLadl extends javax.swing.JFrame {
                     if (data.get(dic).containsKey(value)) {
                         int count = Integer.parseInt(data.get(dic).get(value)) + 1;
                         data.get(dic).replace(value, String.valueOf(count));
-                        k++;
                     } else {
-                        k++;
                         data.get(dic).put(value, "1");
                     }
                 }
             }
-            Map<String, Object[]> datas = new HashMap<>();
-            datas.put("1", new Object[]{"Dic", "POS", "Number"});
-            int inc = 2;
-            for (Map.Entry<String, HashMap<String, String>> f : data.entrySet()) {
-                String key = f.getKey();
-                for (Map.Entry<String, String> p : f.getValue().entrySet()) {
-                    datas.put(String.valueOf(inc), new Object[]{key, p.getKey(), p.getValue()});
-                    inc++;
-                }
-            }
-            HSSFWorkbook workbook = new HSSFWorkbook();
+            Map<String, Object[]> datas = Utils.putDataGridInExcel(data);
             //String filename = Utils.getValueXml("pathExportStatistics");
             String filename = StaticValue.statisticsTmpPath;
-            Utils.exportJtableToExcel(workbook, datas,filename);
+            Utils.exportJtableToExcel(datas,filename);
             
             JOptionPane.showMessageDialog(null, "file created in \n"+filename);
         } catch (IOException ex) {
@@ -765,6 +753,7 @@ public final class EditorLadl extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
                 }
             }
+             JOptionPane.showMessageDialog(null, "everything is Ok");
         }
     }//GEN-LAST:event_jMenuSaveMouseClicked
 
@@ -1015,8 +1004,9 @@ public final class EditorLadl extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditorLadl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditorDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
         
         //</editor-fold>
@@ -1024,7 +1014,7 @@ public final class EditorLadl extends javax.swing.JFrame {
         /* Create and display the form */
          java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditorLadl().setVisible(true);
+                new EditorDelas().setVisible(true);
             }
         });
     }

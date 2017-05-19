@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import leximir.EditorLadl;
+import leximir.EditorDelas;
 import model.StaticValue;
 import util.Utils;
 
@@ -18,7 +18,7 @@ import util.Utils;
  * @author rojo
  */
 public class MenuAddAfterDelas extends javax.swing.JFrame {
-    private EditorLadl elFrame ;
+    private EditorDelas elFrame ;
     private int valueSelected;
     /**
      * Creates new form AddDelas
@@ -30,7 +30,7 @@ public class MenuAddAfterDelas extends javax.swing.JFrame {
         }
         
     }
-    public MenuAddAfterDelas(EditorLadl el,int value){
+    public MenuAddAfterDelas(EditorDelas el,int value){
         initComponents();
         for(String dic:StaticValue.dictionnary){
             jComboBoxDic.addItem(dic);

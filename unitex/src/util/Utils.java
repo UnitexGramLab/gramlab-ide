@@ -5,19 +5,26 @@
  */
 package util;
 
+import helper.DelacHelper;
+import helper.DelasHelper;
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Pattern;
 import model.StaticValue;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -29,7 +36,23 @@ import org.apache.poi.ss.usermodel.Row;
  * @author rojo
  */
 public class Utils {
-
+    /**
+     * This function read file from path file and return an ArrayList<String>
+     * @param file path of file to open
+     * @return
+     * @throws IOException 
+     */
+    public static ArrayList<String> readFile(String file) throws IOException {
+        ArrayList<String> tmp;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String ligne;
+            tmp = new ArrayList<>();
+            while((ligne = reader.readLine()) != null){			
+                tmp.add(ligne);
+            }
+        }
+        return tmp;
+    }
     /**
      * This function causes a String to be inverted from right to left
      *
@@ -45,8 +68,22 @@ public class Utils {
         }
         return new String(result);
     }
+    public static Map<String, Object[]> putDataGridInExcel(Map<String, HashMap<String, String>> data) {
+        Map<String, Object[]> datas = new HashMap<>();
+        datas.put("1", new Object[]{"Dic", "POS", "Number"});
+        int inc = 2;
+        for (Map.Entry<String, HashMap<String, String>> f : data.entrySet()) {
+            String key = f.getKey();
+            for (Map.Entry<String, String> p : f.getValue().entrySet()) {
+                datas.put(String.valueOf(inc), new Object[]{key, p.getKey(), p.getValue()});
+                inc++;
+            }
+        }
+        return datas;
+    }
 
-    public static void exportJtableToExcel(HSSFWorkbook workbook, Map<String, Object[]> datas, String filename) throws IOException, FileNotFoundException {
+    public static void exportJtableToExcel( Map<String, Object[]> datas, String filename) throws IOException, FileNotFoundException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("Sample sheet");
         Set<String> keyset = datas.keySet();
         int rownum = 0;
@@ -80,15 +117,11 @@ public class Utils {
     }
 
     public static Object[] delasToObject(String lemma, String fstCode, String comment, String Dicname) throws ArrayIndexOutOfBoundsException {
-        String pOs;
-        try {
-            pOs = fstCode.split("[^A-Z0-9]+|(?<=[A-Z])(?=[0-9])|(?<=[0-9])(?=[A-Z])")[0];
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new ArrayIndexOutOfBoundsException("Fst code format error : "+ex.getMessage());
-        }
+        String sinSem = "+"+fstCode+"="+fstCode;
+        String line = lemma+","+fstCode+sinSem+"//"+comment;
+        String pOs=DelasHelper.getPosInDelas(line);
         String lemmas = lemma;
         String fSTCode = fstCode;
-        String sinSem = "";
         String comments = comment;
         String lemmaInv = Utils.reverseString(lemma);
         String wn_SinSet = "";
@@ -96,6 +129,21 @@ public class Utils {
         String dicFile = Dicname;
         int dicId = 0;
         return new Object[]{pOs, lemmas, fSTCode, sinSem, comments, lemmaInv, wn_SinSet, lemmaId, dicFile, dicId};
+    }
+    
+    public static Object[] delacToObject(String lemma, String fstCode,String synSem, String comment, String Dicname) throws ArrayIndexOutOfBoundsException {
+        String line = lemma+","+fstCode+synSem+"//"+comment;
+        String pOs = DelacHelper.getPosInDelac(line);
+        String lemaAll = lemma;
+        String lema = DelacHelper.getLemaInLemaAllDelac(lemaAll);
+        String fSTCode = fstCode;
+        String sinSem = synSem;
+        String comments = comment;
+        String wn_SinSet = "";
+        int lemmaId = 10;
+        String dicFile = Dicname;
+        int dicId = 0;
+        return new Object[]{pOs, lemaAll, lema, fSTCode, sinSem, comments, wn_SinSet, lemmaId, dicFile, dicId};
     }
 
     public static String getValueXml(String key) throws IOException, FileNotFoundException, IllegalArgumentException {
@@ -152,4 +200,7 @@ public class Utils {
         }
 
     }
+     
+   
+
 }

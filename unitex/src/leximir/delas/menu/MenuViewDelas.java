@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import leximir.EditorLadl;
+import leximir.EditorDelas;
 import util.Utils;
 
 /**
@@ -19,7 +19,7 @@ import util.Utils;
  * @author rojo
  */
 public class MenuViewDelas extends javax.swing.JFrame {
-    private EditorLadl aThis;
+    private EditorDelas aThis;
     private Object[] obj;
     /**
      * Creates new form ViewDelas
@@ -28,7 +28,7 @@ public class MenuViewDelas extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MenuViewDelas(EditorLadl aThis, Object[] obj) {
+    public MenuViewDelas(EditorDelas aThis, Object[] obj) {
         initComponents();
         this.aThis=aThis;
         this.obj=obj;

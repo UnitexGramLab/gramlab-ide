@@ -45,6 +45,8 @@ import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
+import leximir.EditorDelac;
+import leximir.EditorDelas;
 import leximir.Index;
 
 import javax.swing.*;
@@ -289,7 +291,6 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(info);
 		setJMenuBar(menuBar);
 	}
-	Action leximir;
 	Action openText;
 	Action openTaggedText;
 	Action preprocessText;
@@ -469,18 +470,6 @@ public class UnitexFrame extends JFrame {
 		textMenu.add(new JMenuItem(preprocessText));
 		textMenu.addSeparator();
 
-		leximir = new AbstractAction("Open leximir...") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("unitex dir :"+Config.getUnitexDir()+"/"+Config.getCurrentLanguage());
-				System.out.println("user dir :"+Config.getUserDir()+"/"+Config.getCurrentLanguage());
-				Index index = new Index();
-				index.setVisible(true);
-			}
-		};
-		textMenu.add(new JMenuItem(leximir));
-
-		textMenu.addSeparator();
 		changeLang = new AbstractAction("Change Language...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -728,6 +717,8 @@ public class UnitexFrame extends JFrame {
 	AbstractAction transliterate;
 	AbstractAction sortDictionary;
 	AbstractAction inflect;
+	AbstractAction delasLeximir;
+	AbstractAction delacLeximir;
 	AbstractAction compressIntoFST;
 	AbstractAction closeDela;
 
@@ -846,6 +837,26 @@ public class UnitexFrame extends JFrame {
 		};
 		sortDictionary.setEnabled(false);
 		delaMenu.add(new JMenuItem(sortDictionary));
+		delaMenu.addSeparator();
+		delasLeximir = new AbstractAction("Open Delas Leximir") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorDelas editorDelas = new EditorDelas();
+				editorDelas.setVisible(true);
+			}
+		};
+		delasLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(delasLeximir));
+		delacLeximir = new AbstractAction("Open Delac Leximir") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorDelac editorDelac = new EditorDelac();
+				editorDelac.setVisible(true);
+			}
+		};
+		delacLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(delacLeximir));
+		delaMenu.addSeparator();
 		inflect = new AbstractAction("Inflect...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
