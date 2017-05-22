@@ -678,7 +678,10 @@ public class LocateFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			final String res = readInfo(new File(sntDir, "concord.n"));
+			String res = readInfo(new File(sntDir, "concord.n"));
+			if (res == null) {
+				res = "0 match";
+			}
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			if (!res.startsWith("0")) {
@@ -698,7 +701,10 @@ public class LocateFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			final String res = readTfstInfo(new File(sntDir, "concord_tfst.n"));
+			String res = readTfstInfo(new File(sntDir, "concord_tfst.n"));
+			if (res == null) {
+				res = "0 match";
+			}
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
 			if (!res.startsWith("0")) {
