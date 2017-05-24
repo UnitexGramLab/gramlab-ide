@@ -841,6 +841,7 @@ public class UnitexFrame extends JFrame {
 		delasLeximir = new AbstractAction("Open Delas Leximir") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
 				EditorDelas editorDelas = new EditorDelas();
 				editorDelas.setVisible(true);
 			}

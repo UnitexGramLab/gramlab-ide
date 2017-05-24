@@ -15,7 +15,7 @@ import fr.umlv.unitex.config.Config;
  */
 public class StaticValue {
 	public static ArrayList<String> dictionnary= new ArrayList<>();
-    public static final String unitexLoggerPath = "//Users//rojo//Unitex-GramLab-3.1//App//UnitexToolLogger";
+    public static final String unitexLoggerPath = Config.getUnitexToolLogger().getAbsolutePath();
     public static final String alphabetPath = Config.getUserDir().toString().replace("/", "//")+"//"+Config.getCurrentLanguage()+"//"+"Alphabet.txt";
     public static final String inflectionPath = Config.getUserDir().toString().replace("/", "//")+"//"+Config.getCurrentLanguage()+"//"+"Inflection//";
     public static final String allDelas = Config.getUserDir()+"/"+Config.getCurrentLanguage()+"/"+"Dela/Delas/";
