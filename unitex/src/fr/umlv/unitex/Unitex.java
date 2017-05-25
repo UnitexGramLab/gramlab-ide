@@ -41,6 +41,7 @@ import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
 import fr.umlv.unitex.frames.SplashScreen;
 import fr.umlv.unitex.frames.UnitexFrame;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 
 /**
  * This is the main class of the Unitex system.
@@ -48,7 +49,7 @@ import fr.umlv.unitex.frames.UnitexFrame;
  * @author Sébastien Paumier
  */
 public class Unitex {
-	
+
 	/**
 	 * This is used to know whether Unitex code is called from Unitex or from Gramlab 
 	 */
@@ -60,13 +61,19 @@ public class Unitex {
 	
 	public static void main(final String[] args) {
 		running=true;
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				launchUnitex(args);
-			}
-		});
+		SingleInstanceMonitor sim = new SingleInstanceMonitor();
+		
+		if (!sim.isRunning(args)) {
+			Config.setSingleInstanceMonitor(sim);
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					launchUnitex(args);
+				}
+			});
+		}
 	}
+
 
 	/**
 	 * Starts Unitex. Shows a <code>SplashScreen</code> with the Unitex logo and
@@ -115,8 +122,7 @@ public class Unitex {
 							@Override
 							public void run() {
 								ConfigManager.setManager(new ConfigManager());
-								Config.initConfig(args.length == 1 ? args[0]
-										: null);
+								Config.initConfig(args);
 								Preferences preferences = ConfigManager.getManager().getPreferences(null);
 								FontInfo menuFontInfo = preferences.getMenuFont();
 								setUIFont(new javax.swing.plaf.FontUIResource(menuFontInfo.getFont().toString(), Font.PLAIN, menuFontInfo.getSize()));
@@ -136,6 +142,7 @@ public class Unitex {
 								frame.setVisible(true);
 								ConfigManager.getManager().getSvnMonitor(null)
 										.start();
+								Config.openGraphFiles(args);
 							}
 						});
 						timer.stop();
@@ -156,4 +163,5 @@ public class Unitex {
 				UIManager.put (key, f);
 		}
 	}
+	
 }

@@ -17,10 +17,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.OceanTheme;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.Config;
 import fr.gramlab.frames.GramlabFrame;
 import fr.gramlab.icons.Icons;
 import fr.gramlab.project.GramlabProjectManager;
+import fr.gramlab.util.GramlabSingleInstanceMonitor;
 import fr.umlv.unitex.exceptions.UnitexUncaughtExceptionHandler;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 
 
 public class Main {
@@ -29,16 +32,22 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				launchGramlab(args);
-			}
-		});
+		SingleInstanceMonitor sim = new GramlabSingleInstanceMonitor();
+		
+		if (!sim.isRunning(args)) {
+			Config.setSingleInstanceMonitor(sim);
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					launchGramlab(args);
+				}
+			});
+		}
+		
 	}
 
 	private static GramlabFrame frame;
 	
-	protected static void launchGramlab(String[] args) {
+	protected static void launchGramlab(final String[] args) {
 		Thread.currentThread().setUncaughtExceptionHandler(
 				UnitexUncaughtExceptionHandler.getHandler());
 		Locale.setDefault(Locale.ENGLISH);
@@ -67,10 +76,8 @@ public class Main {
 			e.printStackTrace();
 			System.exit(0);
 		}
-		File path=null;
-		if (args.length==1) {
-			path=new File(args[0]);
-		}
+		File path=Config.getAppPath(args);
+
         final File path1=path;
         EventQueue.invokeLater(new Runnable() {
 			@Override

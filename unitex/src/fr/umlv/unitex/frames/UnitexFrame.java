@@ -27,6 +27,7 @@ import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 import fr.umlv.unitex.config.SntFileEntry;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.files.FileUtil;
@@ -1687,6 +1688,13 @@ public class UnitexFrame extends JFrame {
 		UnitexFrame.closing = true;
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeAllFrames();
+		// close socket created to restrict IDE to single instance
+		try {
+			Config.getSingleInstanceMonitor().closeSocket();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		System.exit(0);
 	}
 

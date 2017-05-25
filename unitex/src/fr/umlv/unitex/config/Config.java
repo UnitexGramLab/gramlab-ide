@@ -24,7 +24,6 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,10 +34,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import java.lang.Process;
 import java.lang.ProcessBuilder;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -54,13 +51,16 @@ import javax.swing.JPanel;
 import javax.swing.JDialog;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 
 import fr.umlv.unitex.Unitex;
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.files.PersonalFileFilter;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.listeners.LanguageListener;
 import fr.umlv.unitex.svn.SvnMonitor;
-
+import fr.umlv.unitex.utils.SingleInstanceMonitor;
 import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.VersionInfoCommand;
 
@@ -71,6 +71,12 @@ import fr.umlv.unitex.process.commands.VersionInfoCommand;
  * @author Sébastien Paumier
  */
 public class Config {
+	
+	/**
+	 * Reference to the SingleInstanceMonitor in the running IDE for use by window close listeners
+	 */
+	private static SingleInstanceMonitor sim;
+	
     /**
      * Path of the directory <code>.../Unitex/App</code>
      */
@@ -250,6 +256,33 @@ public class Config {
         chooseInitialLanguage();
         setDefaultPreprocessingGraphs();
     }
+    
+    /**
+     * Initializes the system. Strips the -DUnitex.bin.dir param from args and passes to above method.
+     * Issue #27
+     */
+    public static void initConfig(String[] args) {
+    	String binDir = null;
+    	
+    	File appPath = getAppPath(args);
+    	if (appPath != null) {
+    		binDir = appPath.getAbsolutePath();
+    	}
+	
+//    	if (args != null && args.length > 0) {
+//    		if (args[0].indexOf(".grf") == -1) {
+//    			int bidx = args[0].indexOf("=");
+//            	if (bidx != -1) {
+//            		binDir = args[0].substring(bidx + 1); 
+//            	}
+//            	else {
+//            		binDir = args[0]; 
+//            	}
+//    		}
+//    	}
+    	initConfig(binDir);
+    }
+    
 
     private static void updateGraphFileFilters(boolean allowImageFormats) {
         graphDialogBox.resetChoosableFileFilters();
@@ -903,7 +936,7 @@ public class Config {
                 dlgProgress.add(BorderLayout.CENTER, pbProgress);
                 
                 // prevent the user from closing the dialog
-                dlgProgress.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                dlgProgress.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
                 dlgProgress.setSize(400, 90);
             
@@ -1296,6 +1329,12 @@ public class Config {
         if (1 == JOptionPane.showOptionDialog(frame, p, "Unitex",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0])) {
+        	try {
+        		getSingleInstanceMonitor().closeSocket();
+        	} catch(Exception e) {
+        	
+        	}
+        	
             System.exit(0);
         }
         String selectedItem = (String) (langList.getSelectedItem());
@@ -1609,4 +1648,57 @@ public class Config {
         }
         return monitor;
     }
+    
+    public static File getAppPath(final String[] args) {
+    	File path = null;
+    	if (args.length > 0) {
+			// strip the path to UnitexToolLogger binary from args. Assumes if present it will be arg[0]
+			if (args[0].indexOf(".grf") == -1) {
+				int bidx = args[0].indexOf("=");
+				if (bidx != -1) {
+					path = new File(args[0].substring(bidx + 1)); 
+				}
+				else {
+					// ensure backward compatibility with Unitex/Gramlab <= 3.1
+					path = new File(args[0]);
+				}
+			}
+		}
+    	if (path != null && !path.isDirectory()) {
+    		System.err.println("Usage: Path to UnitexToolLogger must be a valid directory.");
+    		path = null;
+    	}
+    	return path;
+    }
+    
+    public static void setAppPath(final String[] args) {
+    	File path = getAppPath(args);
+    	determineUnitexDir(path != null ? path.getAbsolutePath() : null);
+    }
+    
+    /**
+     * Extracts the graph files from args passed to application on startup and opens graph frames
+     * Issue #27
+     */
+    public static void openGraphFiles(String[] args) {
+    	for (int i = 0; i < args.length; i++) {
+    		if (args[i].indexOf(".grf") != -1) {
+    			File f = new File(args[i]);
+    			
+    			// f.getAbsoluleFile ensures we initialize the full path in cases where file name only is passed
+    			GlobalProjectManager.search(null)
+				.getFrameManagerAs(InternalFrameManager.class)
+				.newGraphFrame(f.getAbsoluteFile());
+    		}		
+    	}
+    }
+    
+    public static void setSingleInstanceMonitor(SingleInstanceMonitor s) {
+    	sim = s;
+    }
+    
+    public static SingleInstanceMonitor getSingleInstanceMonitor() {
+    	return sim;
+    }
+	
 }
