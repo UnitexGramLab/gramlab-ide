@@ -57,6 +57,8 @@ public abstract class InternalFrameManager implements FrameManager {
 	final JDesktopPane desktop;
 	private final static Integer LAYER = 1;
 	private final static Integer CONSOLE_LAYER = 10;
+	private final FrameFactory conjugaisonFrameFactory = new FrameFactory(
+			ConjugaisonFrame.class);
 	private final FrameFactory applyLexicalResourcesFrameFactory = new FrameFactory(
 			ApplyLexicalResourcesFrame.class);
 	private final FrameFactory checkDicFrameFactory = new FrameFactory(
@@ -374,7 +376,14 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void addDelaFrameListener(DelaFrameListener l) {
 		delaFrameListeners.add(l);
 	}
-
+	public ConjugaisonFrame newConjugaisonFrame(){
+		final ConjugaisonFrame f = (ConjugaisonFrame) conjugaisonFrameFactory
+				.newFrame(false);
+		if (f == null)
+			return null;
+		setup(f);
+		return f;
+	}
 	public void removeDelaFrameListener(DelaFrameListener l) {
 		if (firingDelaFrame) {
 			throw new IllegalStateException(

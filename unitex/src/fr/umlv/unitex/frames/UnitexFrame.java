@@ -262,6 +262,7 @@ public class UnitexFrame extends JFrame {
 		final JMenu text = buildTextMenu();
 		final JMenu DELA = buildDELAMenu();
 		final JMenu fsGraph = buildFsGraphMenu();
+		final JMenu conjugeur = buildConjugueurMenu();
 		final JMenu lexiconGrammar = buildLexiconGrammarMenu();
 		final JMenu xalign = buildXAlignMenu();
 		final FileEditionMenu fileEditionMenu = new FileEditionMenu();
@@ -286,6 +287,10 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(windows);
 		menuBar.add(help);
 		menuBar.add(info);
+		if(Config.getCurrentLanguage().equalsIgnoreCase("Malagasy")){
+			menuBar.add(conjugeur);
+		}
+		
 		setJMenuBar(menuBar);
 	}
 
@@ -892,6 +897,22 @@ public class UnitexFrame extends JFrame {
 		return delaMenu;
 	}
 
+	JMenu buildConjugueurMenu(){
+		final JMenu conjugueurMenu = new JMenu("Menu Conjugueur");
+		final JMenuItem conjugeur = new JMenuItem("conjugeur");
+		conjugeur.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//JOptionPane.showMessageDialog(null, "Fonction en cours d'implementation");
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newConjugaisonFrame();
+			}
+		});
+		conjugueurMenu.add(conjugeur);
+		return conjugueurMenu;
+	}
+	
 	JMenu buildFsGraphMenu() {
 		final JMenu graphMenu = new JMenu("FSGraph");
 		final JMenuItem newGraph = new JMenuItem("New");
