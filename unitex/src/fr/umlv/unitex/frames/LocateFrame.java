@@ -680,7 +680,7 @@ public class LocateFrame extends JInternalFrame {
 		public void toDo(boolean success) {
 			String res = readInfo(new File(sntDir, "concord.n"));
 			if (res == null) {
-				res = "0 match";
+				res = "0 matches";
 			}
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
@@ -703,7 +703,7 @@ public class LocateFrame extends JInternalFrame {
 		public void toDo(boolean success) {
 			String res = readTfstInfo(new File(sntDir, "concord_tfst.n"));
 			if (res == null) {
-				res = "0 match";
+				res = "0 matches";
 			}
 			JOptionPane.showMessageDialog(null, res, "Result Info",
 					JOptionPane.PLAIN_MESSAGE);
