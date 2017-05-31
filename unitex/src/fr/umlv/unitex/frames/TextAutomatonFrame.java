@@ -649,6 +649,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		buildTokensButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
 				checkGraph();
 				if (checkList.isEmpty()) {
 					JOptionPane.showMessageDialog(null,
@@ -657,6 +658,7 @@ public class TextAutomatonFrame extends TfstFrame {
 							JOptionPane.PLAIN_MESSAGE);
 				} else {
 					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
+
 				}
 			}
 		});
