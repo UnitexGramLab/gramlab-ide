@@ -114,6 +114,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	Process currentElagLoadingProcess = null;
 	JSplitPane superpanel;
 	JButton revertSentenceGraph;
+	private JButton buildTokensButton;
   private JButton undoButton;
   private JButton redoButton;
   private UndoManager manager = new UndoManager();
@@ -477,7 +478,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	}
 
 	private JPanel constructCornerPanel() {
-		final JPanel cornerPanel = new JPanel(new GridLayout(8, 1));
+		final JPanel cornerPanel = new JPanel(new GridLayout(9, 1));
 		cornerPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		cornerPanel.add(sentence_count_label);
 		final JPanel middle = new JPanel(new BorderLayout());
@@ -561,6 +562,21 @@ public class TextAutomatonFrame extends TfstFrame {
 			}
 		});
 		cornerPanel.add(deleteStates);
+		buildTokensButton = new JButton("Check");
+		buildTokensButton.setEnabled(true);
+		buildTokensButton.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("size:" + graphicalZone.getBoxes().size());
+				System.out.println(sentenceTextArea.getText());
+				String text = sentenceTextArea.getText();
+				for(int i = 0; i < graphicalZone.getBoxes().size(); i++) {
+				  TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
+					System.out.println(i + " " + b.getContent() + " "+ b.getBounds() + " " + b.isModified());
+				}
+			}
+		});
+		cornerPanel.add(buildTokensButton);
 		return cornerPanel;
 	}
 
