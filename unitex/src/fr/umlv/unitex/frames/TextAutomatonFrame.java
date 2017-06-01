@@ -567,17 +567,28 @@ public class TextAutomatonFrame extends TfstFrame {
 		buildTokensButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("size:" + graphicalZone.getBoxes().size());
-				System.out.println(sentenceTextArea.getText());
-				String text = sentenceTextArea.getText();
-				for(int i = 0; i < graphicalZone.getBoxes().size(); i++) {
-				  TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
-					System.out.println(i + " " + b.getContent() + " "+ b.getBounds() + " " + b.isModified());
-				}
+				checkGraph();
 			}
 		});
 		cornerPanel.add(buildTokensButton);
 		return cornerPanel;
+	}
+
+	private void checkGraph() {
+		String text = sentenceTextArea.getText();
+		for(int i = 0; i < graphicalZone.getBoxes().size(); i++) {
+			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
+			if (b.isModified() && b.getContent().startsWith("{")) {
+				int index = b.getContent().indexOf(",");
+				String content = b.getContent().substring(1, index);
+				if (!text.contains(content)) {
+					JOptionPane.showMessageDialog(null,
+						"Warning: the token " + content + " is not in the sentence.",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
 	}
 
   private void reinitializeUndoManager() {
