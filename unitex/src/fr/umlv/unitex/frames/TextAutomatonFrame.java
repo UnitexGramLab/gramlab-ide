@@ -649,7 +649,6 @@ public class TextAutomatonFrame extends TfstFrame {
 		buildTokensButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				checkGraph();
 				if (checkList.isEmpty()) {
 					JOptionPane.showMessageDialog(null,
@@ -669,6 +668,31 @@ public class TextAutomatonFrame extends TfstFrame {
 	private boolean isGraphValid() {
 		return checkGraph() == 0;
 	}
+	
+	private void checkGraph() {
+		String text = sentenceTextArea.getText();
+		for(int i = 0; i < graphicalZone.getBoxes().size(); i++) {
+			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
+			if (b.isModified() && b.getContent().startsWith("{")) {
+				int index = b.getContent().indexOf(",");
+				String content = b.getContent().substring(1, index);
+				if (!text.contains(content)) {
+					JOptionPane.showMessageDialog(null,
+						"Warning: the token " + content + " is not in the sentence.",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		}
+	}
+
+        private void reinitializeUndoManager() {
+            graphicalZone.removeUndoableEditListener(manager);
+            manager = new UndoManager();
+            manager.setLimit(-1);
+            graphicalZone.addUndoableEditListener(manager);
+            updateDoUndoButtons();
+        }
 
 	private int checkGraph() {
 		String text = sentenceTextArea.getText();
