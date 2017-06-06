@@ -5,15 +5,12 @@
  */
 package helper;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.List;
 import model.Delac;
 import model.StaticValue;
 import util.Utils;
@@ -87,6 +84,7 @@ public class DelacHelper {
         }
         return ob;
     }
+    
 
     private static void delacToObject(Object[][] ob, int k, Delac tmp) {
         ob[k][0]=tmp.getpOS();
@@ -201,5 +199,84 @@ public class DelacHelper {
             }
         }
         return sb.toString();
+    }
+    public static Object[][] completeJTableFLX(String lema) {
+        String[] words = lema.split("-|\\ ");
+        int separatorSpace = lema.indexOf(" ");
+        int separatorIndex = lema.indexOf("-");
+        char separator = 0;
+        if (separatorSpace > -1) {
+            separator = lema.charAt(separatorSpace);
+        } else if (separatorIndex > -1) {
+            separator = lema.charAt(separatorIndex);
+        }
+        Object[][] objFlx = new Object[words.length][6];
+        int k = 0;
+        for (String word : words) {
+            String sbForm = "";
+            String sbLema = "";
+            String sbFstCode = "";
+            String sbGramCat = "";
+            if (word.contains("(")) {
+                int parantheseIndex = word.indexOf("(");
+                int pointIndex = word.indexOf(".");
+                int colounIndex = word.indexOf(":");
+                int endParantesIndex = word.indexOf(")");
+                sbForm = word.substring(0, parantheseIndex);
+                sbLema = word.substring(parantheseIndex + 1, pointIndex);
+                sbFstCode = word.substring(pointIndex + 1, colounIndex);
+                sbGramCat = word.substring(colounIndex + 1, endParantesIndex - 1);
+            } else {
+                sbForm = word;
+            }
+            objFlx[k][0] = k + 1;
+            objFlx[k][1] = sbForm;
+            objFlx[k][2] = sbLema;
+            objFlx[k][3] = sbFstCode;
+            objFlx[k][4] = sbGramCat;
+            objFlx[k][5] = separator;
+            k++;
+        }
+        return objFlx;
+    }
+    public static Object[][] completeJTableDlf(List<String> result) {
+        /**
+         * ** complete for jtable dlf **
+         */
+        Object[][] predictFlex = new Object[result.size()][4]; // create a table ulaz,lema,Pos,GramCat
+        int i = 0;
+        for (String result1 : result) {
+            int indexLema = result1.indexOf(",");
+            int indexPosBegin = result1.indexOf(".");
+            int indexPosEnd = result1.indexOf("+") > -1 ? result1.indexOf("+") : result1.indexOf(":");
+            int indexGramCat = result1.indexOf(":");
+            String ulaz = result1;
+            String lema = "";
+            if ((indexLema + 1) == indexPosBegin) {
+                lema = result1.substring(0, indexLema);
+            } else {
+                lema = result1.substring(indexLema + 1, indexPosBegin);
+            }
+            String Pos = indexPosEnd > -1 ? result1.substring(indexPosBegin + 1, indexPosEnd) : result1.substring(indexPosBegin);
+            String gramCat = result1.substring(indexGramCat + 1);
+            if (!Pos.contains("V")) {
+                predictFlex[i][0] = ulaz;
+                predictFlex[i][1] = lema;
+                predictFlex[i][2] = Pos;
+                predictFlex[i][3] = gramCat;
+                i++;
+            }
+        }
+        return predictFlex;
+    }
+    public static Object[][] completeJTablePredict(List<String> ret) {
+        Object[][] dataPredict = new Object[ret.size()][3];
+        for (int k = 0; k < ret.size(); k++) {
+            String[] token = ret.get(k).split(",");
+            for (int l = 0; l < token.length; l++) {
+                dataPredict[k][l] = token[l];
+            }
+        }
+        return dataPredict;
     }
 }

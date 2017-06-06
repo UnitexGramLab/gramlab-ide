@@ -8,6 +8,7 @@ package util;
 import helper.DelacHelper;
 import helper.DelasHelper;
 import java.awt.Desktop;
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -24,7 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import leximir.delac.menu.MenuAddBeforeDelac;
 import model.StaticValue;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -44,7 +49,8 @@ public class Utils {
      */
     public static ArrayList<String> readFile(String file) throws IOException {
         ArrayList<String> tmp;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file));
+        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
             String ligne;
             tmp = new ArrayList<>();
             while((ligne = reader.readLine()) != null){			
@@ -116,8 +122,8 @@ public class Utils {
         }
     }
 
-    public static Object[] delasToObject(String lemma, String fstCode, String comment, String Dicname) throws ArrayIndexOutOfBoundsException {
-        String sinSem = "+"+fstCode+"="+fstCode;
+    public static Object[] delasToObject(String lemma, String fstCode, String sinSem,String comment, String Dicname) throws ArrayIndexOutOfBoundsException {
+        sinSem = "+"+fstCode+"+"+sinSem+"="+fstCode;
         String line = lemma+","+fstCode+sinSem+"//"+comment;
         String pOs=DelasHelper.getPosInDelas(line);
         String lemmas = lemma;
@@ -167,12 +173,14 @@ public class Utils {
         ProcessBuilder pb = new ProcessBuilder(command);
         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
-        pb.start();
+        Process p =pb.start();
+        while (p.isAlive()) {
+        }
     }
 
     public static void InflectDelas(String lemma, String fst) throws IOException,FileNotFoundException {
-        System.out.println("infect : " + StaticValue.inflectionPath + fst + ".fst2");
-        if (new File(StaticValue.inflectionPath + fst + ".fst2").exists()) {
+        System.out.println("infect : " + StaticValue.inflectionPath + fst + ".grf");
+        if (new File(StaticValue.inflectionPath + fst + ".grf").exists()) {
             BufferedWriter bfw;
             bfw = new BufferedWriter(new FileWriter("DelasTmp.dic"));
             bfw.write(lemma);
@@ -186,6 +194,7 @@ public class Utils {
                 "-a", StaticValue.alphabetPath,
                 "-d", StaticValue.inflectionPath
             };
+            for(String s:command)System.out.print(s+" ");
             ProcessBuilder pb = new ProcessBuilder(command);
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
@@ -201,6 +210,24 @@ public class Utils {
 
     }
      
-   
+   public static void generateDelaf(String tempPath, String value) throws IOException, HeadlessException {
+        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(tempPath))) {
+            bfw.write(value+".");
+        } catch (IOException ex) {
+            Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String snt = tempPath.replace(".txt", ".snt");
+        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(snt))) {
+            bfw.write(value+".");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+        }
+        String[] cmd1 = {StaticValue.unitexLoggerPath, "Normalize", StaticValue.delafTmpAbsPathDelac+"text.txt" };
+        String[] cmd2 = {StaticValue.unitexLoggerPath,"Tokenize",StaticValue.delafTmpAbsPathDelac+"text.snt" ,"-a",StaticValue.alphabetPath};
+        String[] cmd3 ={StaticValue.unitexLoggerPath, "Dico","-t",StaticValue.delafTmpAbsPathDelac+"text.snt","-a",StaticValue.alphabetPath,StaticValue.allDelafAbsPath+"delaf.bin"};
+        Utils.runCommandTerminal(cmd1);
+        Utils.runCommandTerminal(cmd2);
+        Utils.runCommandTerminal(cmd3);
+    }
 
 }

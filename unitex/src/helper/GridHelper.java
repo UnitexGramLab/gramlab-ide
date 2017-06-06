@@ -6,6 +6,7 @@
 package helper;
 
 import java.io.IOException;
+import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.GridModel;
@@ -45,6 +46,34 @@ public class GridHelper {
         
         String[] entete = {"POS","Comp.Lema all","Comp.Lema","FSTCode","SynSem","Comment","WN_SynSet","LemmaID","DictFile","DicId"};
         Object[][] data = DelacHelper.getAllDelacFromDicToObject();
+        return new DefaultTableModel(data,entete);
+    }
+    //tableau par defaut
+    public static DefaultTableModel getDelafInDelacForDelac() throws IOException{
+        
+        String[] entete = {"Ulaz","POS","lema","GramCats"};
+        Object[][] data = DelafHelper.getAllDelafFromDelacToObject();
+        return new DefaultTableModel(data,entete);
+    }
+    // tableau pour afficher les données du tableau jTableFLX
+    public static DefaultTableModel getDataforjTableFlx(String lema) throws IOException{
+        
+        String[] entete = {"RB", "Form", "Lema", "FST Code", "GramCat", "Separator"};
+        Object[][] data = DelacHelper.completeJTableFLX(lema);
+        return new DefaultTableModel(data,entete);
+    }
+    // tableau pour afficher les données du tableau jTableDlf
+    public static DefaultTableModel getDataforjTableDlf(List<String> dlf) throws IOException{
+        
+        Object[][] data = DelacHelper.completeJTableDlf(dlf);
+        String[] entete = {"ulaz", "lema", "Pos", "GramCat"};
+        return new DefaultTableModel(data,entete);
+    }
+    // tableau pour afficher les données du tableau jTableDlf
+    public static DefaultTableModel getDataforjTablePredict(List<String> predict) throws IOException{
+        
+        Object[][] data = DelacHelper.completeJTablePredict(predict);
+        String[] entete = {"words", "FLX", "Rule"};
         return new DefaultTableModel(data,entete);
     }
 }

@@ -642,7 +642,7 @@ public final class EditorDelas extends javax.swing.JFrame {
 
     private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertAfterActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
-            MenuAddBeforeDelas ad=new MenuAddBeforeDelas(this,this.getjTable1().getSelectedRow());
+            MenuAddDelas ad=new MenuAddDelas(this,this.getjTable1().getSelectedRow(),1,this.getjTable1().getModel().getValueAt(this.getjTable1().getSelectedRow(), 8));
             ad.setVisible(true);
         }
         else{
@@ -652,7 +652,8 @@ public final class EditorDelas extends javax.swing.JFrame {
 
     private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertBeforeActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
-            MenuAddBeforeDelas ad=new MenuAddBeforeDelas(this,this.getjTable1().getSelectedRow());
+            
+            MenuAddDelas ad=new MenuAddDelas(this,this.getjTable1().getSelectedRow(),0,this.getjTable1().getModel().getValueAt(this.getjTable1().getSelectedRow(), 8));
             ad.setVisible(true);
         }
         else{
@@ -694,7 +695,7 @@ public final class EditorDelas extends javax.swing.JFrame {
             for(int i=0;i<10;i++){
                 obj[i]=this.getjTable1().getModel().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuBeforeDelas beforeDelas=new MenuBeforeDelas(this,obj,this.getjTable1().getSelectedRow());
+            MenuCopyDelas beforeDelas=new MenuCopyDelas(this,obj,this.getjTable1().getSelectedRow(),0);
             beforeDelas.setVisible(true);
         }
         else{
@@ -708,7 +709,7 @@ public final class EditorDelas extends javax.swing.JFrame {
             for(int i=0;i<10;i++){
                 obj[i]=this.getjTable1().getModel().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuAfterDelas afterDelas=new MenuAfterDelas(this,obj,this.getjTable1().getSelectedRow());
+            MenuCopyDelas afterDelas=new MenuCopyDelas(this,obj,this.getjTable1().getSelectedRow(),1);
             afterDelas.setVisible(true);
         }
         else{

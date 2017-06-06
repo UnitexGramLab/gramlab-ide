@@ -17,25 +17,26 @@ import util.Utils;
  *
  * @author rojo
  */
-public class MenuAddBeforeDelas extends javax.swing.JFrame {
+public class MenuAddDelas extends javax.swing.JFrame {
     private EditorDelas elFrame ;
     private int valueSelected;
     /**
      * Creates new form AddDelas
      */
-    public MenuAddBeforeDelas() {
+    public MenuAddDelas() {
         initComponents();
         for(String dic:StaticValue.dictionnary){
             jComboBoxDic.addItem(dic);
         };
     }
-    public MenuAddBeforeDelas(EditorDelas el,int value){
+    public MenuAddDelas(EditorDelas el,int value,int position,Object dictionnary){
         initComponents();
         for(String dic:StaticValue.dictionnary){
             jComboBoxDic.addItem(dic);
         };
+        jComboBoxDic.setSelectedItem(dictionnary);
         this.elFrame=el;
-        this.valueSelected=value;
+        this.valueSelected=value+position;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
@@ -61,6 +62,8 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextFieldComment = new javax.swing.JTextField();
         jButtonInflect = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jTextFieldSinSem = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,6 +111,8 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("SinSem");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -124,13 +129,15 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jComboBoxDic, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jTextFieldLemma)
                             .addComponent(jTextFieldFST, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                            .addComponent(jTextFieldComment))))
+                            .addComponent(jTextFieldComment)
+                            .addComponent(jTextFieldSinSem))))
                 .addGap(94, 94, 94))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -156,9 +163,13 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
                     .addComponent(jTextFieldFST, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jComboBoxDic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -199,10 +210,11 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
         try{
             String lemma = jTextFieldLemma.getText();
             String FST = jTextFieldFST.getText();
+            String sinSem = jTextFieldSinSem.getText();
             String dic = (String) jComboBoxDic.getSelectedItem();
             String comment=jTextFieldComment.getText();
 
-            Object[] row = Utils.delasToObject(lemma,FST,comment,dic);
+            Object[] row = Utils.delasToObject(lemma,FST,sinSem,comment,dic);
             elFrame.getTableModel().insertRow(valueSelected,row);
             this.setVisible(false);
         }
@@ -250,8 +262,12 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuAddBeforeDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuAddDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -265,7 +281,7 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuAddBeforeDelas().setVisible(true);
+                new MenuAddDelas().setVisible(true);
             }
         });
     }
@@ -280,10 +296,12 @@ public class MenuAddBeforeDelas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextFieldComment;
     private javax.swing.JTextField jTextFieldFST;
     private javax.swing.JTextField jTextFieldLemma;
+    private javax.swing.JTextField jTextFieldSinSem;
     // End of variables declaration//GEN-END:variables
 
     

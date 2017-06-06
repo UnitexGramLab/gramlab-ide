@@ -31,7 +31,6 @@ public class DelasHelper {
         ArrayList<String> list= new ArrayList<>();
         //File folder = new File(Utils.getValueXml("pathDelas"));
         //File folder = new File("/Users/rojo/Documents/LeXimir4UnitexRes/Delas");
-        System.out.println("file : "+StaticValue.allDelas);
         File folder = new File(StaticValue.allDelas);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
