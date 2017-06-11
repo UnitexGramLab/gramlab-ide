@@ -36,6 +36,7 @@ public class TransitionEdit extends AbstractUndoableEdit {
 	private final GenericGraphBox srcBoxe;
 	private final GenericGraphBox /** boxe where tanstion go */
 	dstBoxe;
+	private final boolean isModified;
 
 	/**
 	 * constuct a Transition Edit
@@ -48,17 +49,21 @@ public class TransitionEdit extends AbstractUndoableEdit {
 	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
 		this.srcBoxe = srcBoxe;
 		this.dstBoxe = dstBoxe;
+		this.isModified = srcBoxe.isModified();
+		srcBoxe.setModified(true);
 	}
 
 	@Override
 	public void undo() {
 		super.undo();
 		srcBoxe.addTransitionTo(dstBoxe);
+		srcBoxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		srcBoxe.addTransitionTo(dstBoxe);
+		srcBoxe.setModified(true);
 	}
 }
