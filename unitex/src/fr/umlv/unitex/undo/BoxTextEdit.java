@@ -81,5 +81,6 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 	public void redo() {
 		super.redo();
 		boxe.setContent(newText);
+		boxe.setModified(true);
 	}
 }
