@@ -665,27 +665,51 @@ public class TextAutomatonFrame extends TfstFrame {
 		return cornerPanel;
 	}
 
-	private boolean isGraphValid() {
-		return checkGraph() == 0;
-	}
-	
-	private void checkGraph() {
-		String text = sentenceTextArea.getText();
-		for(int i = 0; i < graphicalZone.getBoxes().size(); i++) {
-			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
-			if (b.isModified() && b.getContent().startsWith("{")) {
-				int index = b.getContent().indexOf(",");
-				String content = b.getContent().substring(1, index);
-				if (!text.contains(content)) {
-					JOptionPane.showMessageDialog(null,
-						"Warning: the token " + content + " is not in the sentence.",
-						"Warning",
-						JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		}
-	}
 
+  private void checkGraph() {
+    String text = sentenceTextArea.getText();
+    for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
+      TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
+      if (b.isModified()) {
+        if (b.getContent().startsWith("{")) {
+          if (!text.contains(b.getContentText())) {
+            JOptionPane.showMessageDialog(null,
+              "Warning: the token \"" + b.getContentText() + "\" is not in the sentence.",
+              "Warning",
+              JOptionPane.WARNING_MESSAGE);
+          }
+        }
+        for (int j = 0; j < b.getTransitions().size(); j++) {
+          TfstGraphBox nextBox = (TfstGraphBox) b.getTransitions().get(j);
+          if (b.getBounds() == null) {
+            // start & end
+            // if initial
+            if (b.getType() == 0 && (nextBox.getBounds() == null || nextBox.getBounds().getStart_in_tokens() != 0)) {
+              JOptionPane.showMessageDialog(null,
+                "Warning: the first box has incorrect outgoing transition(s).",
+                "Warning",
+                JOptionPane.WARNING_MESSAGE);
+              // if final
+            } else if (b.getType() == 1) {
+              JOptionPane.showMessageDialog(null,
+                "Warning: the last box must not have outgoing transition(s).",
+                "Warning",
+                JOptionPane.WARNING_MESSAGE);
+              // if normal
+            }
+          } else if (nextBox.getBounds() != null) {
+            int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
+            if (diff > 2 || diff < 0) {
+              JOptionPane.showMessageDialog(null,
+                "Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
+                  + nextBox.getContentText()
+                  + "\".", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+          }
+        }
+      }
+    }
+  }
         private void reinitializeUndoManager() {
             graphicalZone.removeUndoableEditListener(manager);
             manager = new UndoManager();
