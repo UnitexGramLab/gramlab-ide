@@ -71,6 +71,9 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		this.dst = dst;
 		this.zone = zone;
 		for(GenericGraphBox b : oldSelectedBoxes) {
+			isModified.put(b, b.isModified());
+			b.setModified(true);
+		}
 	}
 
 	@Override

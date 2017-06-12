@@ -612,9 +612,13 @@ public class TextAutomatonFrame extends TfstFrame {
                 "Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
                   + nextBox.getContentText()
                   + "\".", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (nextBox.getBounds().equals(b.getBounds())){
+              JOptionPane.showMessageDialog(null,
+                "Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
+                  + nextBox.getContentText()
+                  + "\".", "Warning", JOptionPane.WARNING_MESSAGE);
             }
           }
-          //}
         }
       }
     }
