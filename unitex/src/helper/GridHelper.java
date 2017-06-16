@@ -13,7 +13,7 @@ import model.GridModel;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class GridHelper {
     //Helper for search

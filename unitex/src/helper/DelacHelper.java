@@ -17,7 +17,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class DelacHelper {
     /**
@@ -157,7 +157,7 @@ public class DelacHelper {
                 i++;
             }
             if(begin){
-                if(text.charAt(i)=='='||text.charAt(i)=='/'){
+                if(text.charAt(i)=='/'){
                     break;
                 }
                 sb.append(text.charAt(i));

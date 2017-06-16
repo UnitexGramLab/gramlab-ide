@@ -15,7 +15,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class MenuAddDelas extends javax.swing.JFrame {
     private EditorDelas elFrame ;

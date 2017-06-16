@@ -26,9 +26,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import leximir.delac.menu.MenuAddBeforeDelac;
 import model.StaticValue;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -38,7 +42,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class Utils {
     /**
@@ -74,7 +78,7 @@ public class Utils {
         }
         return new String(result);
     }
-    public static Map<String, Object[]> putDataGridInExcel(Map<String, HashMap<String, String>> data) {
+    public static Map<String, Object[]> putPosDicGridInExcel(Map<String, HashMap<String, String>> data) {
         Map<String, Object[]> datas = new HashMap<>();
         datas.put("1", new Object[]{"Dic", "POS", "Number"});
         int inc = 2;
@@ -87,15 +91,45 @@ public class Utils {
         }
         return datas;
     }
+    public static Map<String, Object[]> putPosGridInExcel(Map<String,  String> data) {
+        Map<String, Object[]> datas = new HashMap<>();
+        datas.put("1", new Object[]{"POS", "Number"});
+        int inc = 2;
+        for (Map.Entry<String,  String> f : data.entrySet()) {
+            datas.put(String.valueOf(inc), new Object[]{f.getKey(), f.getValue()});
+            inc++;
+        }
+        return datas;
+    }
 
-    public static void exportJtableToExcel( Map<String, Object[]> datas, String filename) throws IOException, FileNotFoundException {
+    public static void exportJtableToExcel( Map<String, Object[]> dicPos,Map<String, Object[]> pos, String filename) throws IOException, FileNotFoundException {
         HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Sample sheet");
-        Set<String> keyset = datas.keySet();
+        HSSFSheet sheet = workbook.createSheet("Dic Pos Stat");
+        Set<String> keyset = dicPos.keySet();
         int rownum = 0;
         for (String key : keyset) {
             Row row = sheet.createRow(rownum++);
-            Object[] objArr = datas.get(key);
+            Object[] objArr = dicPos.get(key);
+            int cellnum = 0;
+            for (Object obj : objArr) {
+                Cell cell = row.createCell(cellnum++);
+                if (obj instanceof Date) {
+                    cell.setCellValue((Date) obj);
+                } else if (obj instanceof Boolean) {
+                    cell.setCellValue((Boolean) obj);
+                } else if (obj instanceof String) {
+                    cell.setCellValue((String) obj);
+                } else if (obj instanceof Double) {
+                    cell.setCellValue((Double) obj);
+                }
+            }
+        }
+        HSSFSheet sheetPos = workbook.createSheet("Pos stat");
+        Set<String> keypos = pos.keySet();
+        int rowPosnum = 0;
+        for (String key : keypos) {
+            Row row = sheetPos.createRow(rowPosnum++);
+            Object[] objArr = pos.get(key);
             int cellnum = 0;
             for (Object obj : objArr) {
                 Cell cell = row.createCell(cellnum++);
@@ -121,6 +155,107 @@ public class Utils {
             }
         }
     }
+    public static void exportJtableDelacToExcel( Map<String, Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("Dic Pos Stat");
+        Set<String> keyset = dicPos.keySet();
+        int rownum = 0;
+        for (String key : keyset) {
+            Row row = sheet.createRow(rownum++);
+            Object[] objArr = dicPos.get(key);
+            int cellnum = 0;
+            for (Object obj : objArr) {
+                Cell cell = row.createCell(cellnum++);
+                if (obj instanceof Date) {
+                    cell.setCellValue((Date) obj);
+                } else if (obj instanceof Boolean) {
+                    cell.setCellValue((Boolean) obj);
+                } else if (obj instanceof String) {
+                    cell.setCellValue((String) obj);
+                } else if (obj instanceof Double) {
+                    cell.setCellValue((Double) obj);
+                }
+            }
+        }
+        
+        boolean isDone = false;
+        try (FileOutputStream out = new FileOutputStream(new File(filename))) {
+            workbook.write(out);
+            isDone = true;
+        } finally {
+            if (isDone) {
+                Desktop.getDesktop().open(new File(filename));
+                System.out.println("Excel written successfully..");
+            }
+        }
+    }
+    
+    
+    public static void exportStatAllToExcel( Map<String, Object[]> simSem1,Map<String, Object[]> simSem2, String filename) throws IOException, FileNotFoundException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("SinSem1");
+        Set<String> keyset = simSem1.keySet();
+        int rownum = 0;
+        for (String key : keyset) {
+            Row row = sheet.createRow(rownum++);
+            Object[] objArr = simSem1.get(key);
+            int cellnum = 0;
+            for (Object obj : objArr) {
+                Cell cell = row.createCell(cellnum++);
+                if (obj instanceof Date) {
+                    cell.setCellValue((Date) obj);
+                } else if (obj instanceof Boolean) {
+                    cell.setCellValue((Boolean) obj);
+                } else if (obj instanceof String) {
+                    cell.setCellValue((String) obj);
+                } else if (obj instanceof Double) {
+                    cell.setCellValue((Double) obj);
+                }
+            }
+        }
+        HSSFSheet sheets = workbook.createSheet("SimSem2");
+        Object[] objTitle =  new Object[]{"POS", "SinSem","Category", "Number"};
+        Row rowTitle = sheets.createRow(0);
+        Cell cellTitle = rowTitle.createCell(0);
+        cellTitle.setCellValue((String)objTitle[0]);
+        cellTitle = rowTitle.createCell(1);
+        cellTitle.setCellValue((String)objTitle[1]);
+        cellTitle = rowTitle.createCell(2);
+        cellTitle.setCellValue((String)objTitle[2]);
+        cellTitle = rowTitle.createCell(3);
+        cellTitle.setCellValue((String)objTitle[3]);
+        Set<String> keysets = simSem2.keySet();
+        int rownums = 1;
+        for (String key : keysets) {
+            Row row = sheets.createRow(rownums++);
+            Object[] objArr = simSem2.get(key);
+            int cellnum = 0;
+            for (Object obj : objArr) {
+                Cell cell = row.createCell(cellnum++);
+                if (obj instanceof Date) {
+                    cell.setCellValue((Date) obj);
+                } else if (obj instanceof Boolean) {
+                    cell.setCellValue((Boolean) obj);
+                } else if (obj instanceof String) {
+                    cell.setCellValue((String) obj);
+                } else if (obj instanceof Double) {
+                    cell.setCellValue((Double) obj);
+                }
+            }
+        }
+        boolean isDone = false;
+        try (FileOutputStream out = new FileOutputStream(new File(filename))) {
+            workbook.write(out);
+            isDone = true;
+        } finally {
+            if (isDone) {
+                Desktop.getDesktop().open(new File(filename));
+                System.out.println("Excel written successfully..");
+            }
+        }
+    }
+    
+    
 
     public static Object[] delasToObject(String lemma, String fstCode, String sinSem,String comment, String Dicname) throws ArrayIndexOutOfBoundsException {
         sinSem = "+"+fstCode+"+"+sinSem+"="+fstCode;
@@ -194,6 +329,7 @@ public class Utils {
                 "-a", StaticValue.alphabetPath,
                 "-d", StaticValue.inflectionPath
             };
+            
             for(String s:command)System.out.print(s+" ");
             ProcessBuilder pb = new ProcessBuilder(command);
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
@@ -230,4 +366,5 @@ public class Utils {
         Utils.runCommandTerminal(cmd3);
     }
 
+   
 }

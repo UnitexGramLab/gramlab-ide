@@ -14,7 +14,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class MenuEditDelas extends javax.swing.JFrame {
     private EditorDelas editor;

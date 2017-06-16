@@ -11,10 +11,10 @@ import fr.umlv.unitex.config.Config;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class StaticValue {
-    public static ArrayList<String> dictionnary= new ArrayList<>();
+	public static ArrayList<String> dictionnary= new ArrayList<>();
 
     public static final String allDelafAbsPath = Config.getUnitexDir().toString().replace("/", "//")+"//"+Config.getCurrentLanguage()+"//Dela//";
 
@@ -31,5 +31,4 @@ public class StaticValue {
     public static final String statisticsTmpPath = "statisticsTmp.xls";
     public static final String delasTmpPath = "DelasTmp.dic";
     public static final String delafTmpPath = "DelafTmp.dic";
-    
 }

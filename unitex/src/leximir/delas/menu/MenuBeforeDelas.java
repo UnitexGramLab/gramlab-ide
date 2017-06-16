@@ -14,7 +14,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class MenuBeforeDelas extends javax.swing.JFrame {
     private EditorDelas editor;

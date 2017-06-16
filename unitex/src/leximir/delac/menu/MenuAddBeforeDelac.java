@@ -47,7 +47,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
@@ -544,6 +544,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         try {
             String lemmaAll = jTextFieldLemaAll.getText();
 
+
             String FST = jTextFieldCFlx.getText();
             String synSem = "+" + jTextFieldsynSem.getText();
             String dic = jTextFieldDictionnary.getText();
@@ -831,7 +832,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     }
 
     public static NodeList getNodeList() throws ParserConfigurationException, SAXException, IOException {
-        File inputFile = new File(StaticValue.ruleCompoundsPath);
+        File inputFile = new File("CompoundsStrat7_Ver5-3.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(inputFile);

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class Index extends javax.swing.JFrame {
 

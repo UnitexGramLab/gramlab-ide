@@ -7,7 +7,7 @@ package model;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class Delac{
     private  String pOS;

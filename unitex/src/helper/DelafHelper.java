@@ -13,7 +13,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class DelafHelper {
     public static Object[][] getAllDelafFromDelacToObject() throws FileNotFoundException, IOException{

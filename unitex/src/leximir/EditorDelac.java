@@ -38,7 +38,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public final class EditorDelac extends javax.swing.JFrame {
     private DefaultTableModel tableModel ;
@@ -67,6 +67,8 @@ public final class EditorDelac extends javax.swing.JFrame {
                     return c;
                 }
             });
+        }catch (FileNotFoundException ex) {
+            Logger.getLogger(EditorDelac.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(EditorDelac.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -612,7 +614,7 @@ public final class EditorDelac extends javax.swing.JFrame {
             }
             //String filename = Utils.getValueXml("pathExportStatistics");
             String filename = StaticValue.statisticsTmpPath;
-            Utils.exportJtableToExcel( datas,filename);
+            Utils.exportJtableDelacToExcel(datas,filename);
             
             JOptionPane.showMessageDialog(null, "file created in \n"+filename);
         } catch (IOException ex) {
@@ -721,7 +723,8 @@ public final class EditorDelac extends javax.swing.JFrame {
                 String lemma = (String) jTable1.getValueAt(row, 1);
                 String fstCode = (String) jTable1.getValueAt(row, 3);
                 String synSem = ((String) jTable1.getValueAt(row, 4));
-                fstCode = fstCode+synSem+"="+fstCode;
+                int beginSynSem = synSem.indexOf("+", 2)>-1?synSem.indexOf("+", 2):0;
+                fstCode =beginSynSem==0?synSem.substring(1)+"="+fstCode:fstCode+synSem.substring(beginSynSem);
                 String str = lemma+","+fstCode;
                 String comment =(String) jTable1.getValueAt(row, 5);
                 if(comment!=null && comment.trim().length()>0){

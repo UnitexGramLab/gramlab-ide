@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class GridModel extends AbstractTableModel {
 

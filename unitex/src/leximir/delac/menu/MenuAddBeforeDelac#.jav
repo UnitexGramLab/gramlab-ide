@@ -39,7 +39,7 @@ import util.Utils;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private EditorDelac editorDelac;

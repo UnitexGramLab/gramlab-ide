@@ -7,7 +7,7 @@ package leximir;
 
 /**
  *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class Leximir {
 
