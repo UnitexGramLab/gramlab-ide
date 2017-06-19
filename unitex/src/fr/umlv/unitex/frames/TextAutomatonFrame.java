@@ -114,6 +114,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	Process currentElagLoadingProcess = null;
 	JSplitPane superpanel;
 	JButton revertSentenceGraph;
+	private int currentSentenceNumber = 0;
 	private JButton buildTokensButton;
   private JButton undoButton;
   private JButton redoButton;
@@ -487,6 +488,14 @@ public class TextAutomatonFrame extends TfstFrame {
 		spinnerModel.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
+				// if we changed the value of the spinner in the code
+				if (currentSentenceNumber == spinnerModel.getNumber().intValue()) {
+					return;
+				}
+				if (!isGraphValid()) {
+					spinnerModel.setValue(new Integer(currentSentenceNumber));
+					return;
+				}
 				loadSentence(spinnerModel.getNumber().intValue());
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
@@ -574,13 +583,19 @@ public class TextAutomatonFrame extends TfstFrame {
 		return cornerPanel;
 	}
 
-  private void checkGraph() {
+	private boolean isGraphValid() {
+		return checkGraph() == 0;
+	}
+
+	private int checkGraph() {
     String text = sentenceTextArea.getText();
+    int errorCount = 0;
     for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
       TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
       if (b.isModified()) {
         if (b.getContent().startsWith("{")) {
           if (!text.contains(b.getContentText())) {
+            errorCount++;
             JOptionPane.showMessageDialog(null,
               "Warning: the token \"" + b.getContentText() + "\" is not in the sentence.",
               "Warning",
@@ -593,12 +608,14 @@ public class TextAutomatonFrame extends TfstFrame {
             // start & end
             // if initial
             if (b.getType() == 0 && (nextBox.getBounds() == null || nextBox.getBounds().getStart_in_tokens() != 0)) {
+              errorCount++;
               JOptionPane.showMessageDialog(null,
                 "Warning: the first box has incorrect outgoing transition(s).",
                 "Warning",
                 JOptionPane.WARNING_MESSAGE);
               // if final
             } else if (b.getType() == 1) {
+              errorCount++;
               JOptionPane.showMessageDialog(null,
                 "Warning: the last box must not have outgoing transition(s).",
                 "Warning",
@@ -608,11 +625,13 @@ public class TextAutomatonFrame extends TfstFrame {
           } else if (nextBox.getBounds() != null) {
             int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
             if (diff > 2 || diff < 0) {
+              errorCount++;
               JOptionPane.showMessageDialog(null,
                 "Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
                   + nextBox.getContentText()
                   + "\".", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (nextBox.getBounds().equals(b.getBounds())){
+              errorCount++;
               JOptionPane.showMessageDialog(null,
                 "Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
                   + nextBox.getContentText()
@@ -622,6 +641,7 @@ public class TextAutomatonFrame extends TfstFrame {
         }
       }
     }
+    return errorCount;
   }
 
   private void reinitializeUndoManager() {
@@ -771,6 +791,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		}
 		isAcurrentLoadingThread = false;
 		loadElagSentence(z);
+		currentSentenceNumber = n;
 		return true;
 	}
 
