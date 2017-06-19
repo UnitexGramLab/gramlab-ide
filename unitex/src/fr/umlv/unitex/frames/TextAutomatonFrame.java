@@ -592,6 +592,14 @@ public class TextAutomatonFrame extends TfstFrame {
 		int errorCount = 0;
 		for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
 			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
+			// if the box is not final then it should have at least one transition
+			if (b.getTransitions().size() == 0 && b.getType() != 1) {
+				errorCount++;
+				JOptionPane.showMessageDialog(null,
+					"Warning: the box \"" + b.getContentText() + "\" has no outgoing transition.",
+					"Warning",
+					JOptionPane.WARNING_MESSAGE);
+			}
 			if (b.isModified()) {
 				if (b.getContent().startsWith("{")) {
 					if (!text.contains(b.getContentText())) {
