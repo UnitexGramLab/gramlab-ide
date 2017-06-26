@@ -525,7 +525,8 @@ public class TaggingModel {
 			if (b.equals(boxes[i]))
 				return i;
 		}
-		throw new IllegalStateException("Should not have an unknown box");
+		// If the box is unknown then we return -1
+		return -1;
 	}
 
 	public TaggingState getBoxState(TfstGraphBox b) {
@@ -537,6 +538,7 @@ public class TaggingModel {
 			return TaggingState.NEUTRAL;
 		}
 		final int index = getBoxIndex(b);
+		// If the box is unknown then it is considered as neutral
 		if (index == -1)
 			return TaggingState.NEUTRAL;
 		return taggingStates[index];
