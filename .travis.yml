@@ -2,10 +2,15 @@ os: linux
 dist: trusty
 
 # sudo: false instructs Travis to build our project in a docker VM (faster)
-sudo: required
+sudo: false
 
 # language: instructs travis what compilers && environment to set up in build matrix
 language: java
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
 
 # Travis CI clones repositories to a depth of 50 commits
 git:
@@ -15,7 +20,7 @@ git:
 jdk:
   - oraclejdk9
   - oraclejdk8
-  - oraclejdk7
+  - openjdk7
 
 notifications:
   email:
