@@ -28,11 +28,20 @@ A detailed summary of the issue goes here.
 
 **More info**
 
-<!---  
-Any other information you want to share that is relevant to the issue being reported. For example: 
+<!---
+Any other information you want to share that is relevant to the issue being reported.
+~
+To check the version of Unitex/GramLab IDE and UnitexToolLogger, open the IDE, 
+click Info > About, and look at the string in the upper left corner. The string 
+has the form "Unitex/GramLab IDE: #.#.# | UnitexToolLogger: #.#.#"
+~
+For more information about how to create a log file (.ulp) , see the User's Manual, 
+section 13.1 "Creating log files"
+~
 --->
 
-- Unitex/GramLab version: #.#.# 
+- Unitex/GramLab IDE version: #.#.# 
+- UnitexToolLogger version: #.#.# 
 - Did this work before?: [ ] yes [ ] no
 - Forum thread:
-- Log (.ulp) file:
+- Log file (.ulp):
