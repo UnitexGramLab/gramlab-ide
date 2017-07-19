@@ -928,8 +928,8 @@ public abstract class InternalFrameManager implements FrameManager {
 		textAutomatonFindAndReplaceFactory.update();
 	}
 
-	public CheckTextAutomatonDialog newCheckTextAutomatonDialog() {
-		final CheckTextAutomatonDialog d = checkTextAutomatonDialogFactory.newCheckTextAutomatonDialog();
+	public CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
+		final CheckTextAutomatonDialog d = checkTextAutomatonDialogFactory.newCheckTextAutomatonDialog(checkList);
 		if (d == null) {
 			return null;
 		}

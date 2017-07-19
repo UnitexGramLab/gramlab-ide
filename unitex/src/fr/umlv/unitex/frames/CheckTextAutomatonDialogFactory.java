@@ -1,5 +1,7 @@
 package fr.umlv.unitex.frames;
 
+import java.util.ArrayList;
+
 /**
  * @author Maxime Petit
  */
@@ -7,12 +9,8 @@ public class CheckTextAutomatonDialogFactory {
 
   private CheckTextAutomatonDialog dialog;
 
-  CheckTextAutomatonDialog newCheckTextAutomatonDialog() {
-    if (dialog == null) {
-      dialog = CheckTextAutomatonDialog.createCheckTextAutomatonDialog();
-    } else {
-      dialog.updateDialog();
-    }
+  CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
+    dialog = CheckTextAutomatonDialog.createCheckTextAutomatonDialog(checkList);
     return dialog;
   }
 }
