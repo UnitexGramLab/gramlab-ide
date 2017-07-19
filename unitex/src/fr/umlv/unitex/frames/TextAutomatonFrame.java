@@ -535,20 +535,21 @@ public class TextAutomatonFrame extends TfstFrame {
 					return;
 				}
 				/*if (!isGraphValid()) {
-<<<<<<< HEAD
-					spinnerModel.setValue(new Integer(currentSentenceNumber));
-					return;
-				}*/
+
 				checkGraph();
 				if (!checkList.isEmpty()) {
 					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
 				
 				if (!isGraphValid()) {
-=======
->>>>>>> Add a new dialog to the check button
 					spinnerModel.setValue(new Integer(currentSentenceNumber));
 					return;
 				}*/
+        checkGraph();
+        if (!checkList.isEmpty()) {
+          final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
+          spinnerModel.setValue(new Integer(currentSentenceNumber));
+          return;
+        }
 				loadSentence(spinnerModel.getNumber().intValue());
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
@@ -655,6 +656,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 				checkGraph();
 				if (checkList.isEmpty()) {
 					JOptionPane.showMessageDialog(null,
@@ -669,6 +671,17 @@ public class TextAutomatonFrame extends TfstFrame {
         final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog();
         //checkGraph();
 >>>>>>> Add a new dialog to the check button
+=======
+				checkGraph();
+				if (checkList.isEmpty()) {
+					JOptionPane.showMessageDialog(null,
+						"Everything looks OK",
+						"OK",
+						JOptionPane.PLAIN_MESSAGE);
+				} else {
+					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
+				}
+>>>>>>> Check dialog now displays all errors
 			}
 		});
 		cornerPanel.add(buildTokensButton);
@@ -690,32 +703,28 @@ public class TextAutomatonFrame extends TfstFrame {
 		String text = sentenceTextArea.getText();
 		int errorCount = 0;
 		if (graphicalZone.getBoxes().isEmpty()) {
-		  return 0;
-    }
-		TfstGraphBox firstBox = (TfstGraphBox) graphicalZone.getBoxes().get(0);
+			return 0;
+		}
+		checkList.clear();
+		// New check need text.cod in order to improve performance
+		/*TfstGraphBox firstBox = (TfstGraphBox) graphicalZone.getBoxes().get(0);
 		for (int i = 0; i < firstBox.getTransitions().size(); i++) {
-		  TfstGraphBox nextBox =(TfstGraphBox) firstBox.getTransitions().get(i);
-      checkContent(nextBox, 0, firstBox.getBounds());
-    }
-    System.out.println("End");
-    for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
+			TfstGraphBox nextBox =(TfstGraphBox) firstBox.getTransitions().get(i);
+			checkContent(nextBox, 0, firstBox.getBounds());
+		}
+		System.out.println("End");*/
+		for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
 			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
-      // if the box is not final then it should have at least one transition
+			// if the box is not final then it should have at least one transition
 			if (b.getTransitions().size() == 0 && b.getType() != 1) {
 				errorCount++;
-				JOptionPane.showMessageDialog(null,
-					"Warning: the box \"" + b.getContentText() + "\" has no outgoing transition.",
-					"Warning",
-					JOptionPane.WARNING_MESSAGE);
+				checkList.add("Error: the box \"" + b.getContentText() + "\" has no outgoing transition");
 			}
 			if (b.isModified()) {
 				if (b.getContent().startsWith("{")) {
 					if (!text.contains(b.getContentText())) {
 						errorCount++;
-						JOptionPane.showMessageDialog(null,
-							"Warning: the token \"" + b.getContentText() + "\" is not in the sentence. ERR1",
-							"Warning",
-							JOptionPane.WARNING_MESSAGE);
+						checkList.add("Warning: the token \"" + b.getContentText() + "\" is not in the sentence ERR1");
 					}
 				}
 				for (int j = 0; j < b.getTransitions().size(); j++) {
@@ -725,33 +734,21 @@ public class TextAutomatonFrame extends TfstFrame {
 						// if initial
 						if (b.getType() == 0 && (nextBox.getBounds() == null || nextBox.getBounds().getStart_in_tokens() != 0)) {
 							errorCount++;
-							JOptionPane.showMessageDialog(null,
-								"Warning: the first box has incorrect outgoing transition(s).",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
+							checkList.add("Error: the first box has incorrect outgoing transition(s)");
 							// if final
 						} else if (b.getType() == 1) {
 							errorCount++;
-							JOptionPane.showMessageDialog(null,
-								"Warning: the last box must not have outgoing transition(s).",
-								"Warning",
-								JOptionPane.WARNING_MESSAGE);
+							checkList.add("Error: the last box must not have outgoing transition(s)");
 							// if normal
 						}
 					} else if (nextBox.getBounds() != null) {
 						int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
 						if (diff > 2 || diff < 0) {
 							errorCount++;
-							JOptionPane.showMessageDialog(null,
-								"Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
-									+ nextBox.getContentText()
-									+ "\".", "Warning", JOptionPane.WARNING_MESSAGE);
+							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
 						} else if (nextBox.getBounds().equals(b.getBounds())){
 							errorCount++;
-							JOptionPane.showMessageDialog(null,
-								"Warning: the box \"" + b.getContentText() + "\" has incorrect transition with the box \""
-									+ nextBox.getContentText()
-									+ "\".", "Warning", JOptionPane.WARNING_MESSAGE);
+							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
 						}
 					}
 				}
@@ -760,6 +757,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		return errorCount;
 	}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   private void checkContent(TfstGraphBox box, int textIndex, Bounds bounds) {
@@ -815,6 +813,61 @@ public class TextAutomatonFrame extends TfstFrame {
       checkContent(nextBox, nextIndex, box.getBounds());
     }
   }
+=======
+	private void checkContent(TfstGraphBox box, int textIndex, Bounds bounds) {
+		// if last box then we are finished
+		if (box.getType() == 1) {
+			//System.out.println("End");
+			return;
+		}
+		// If the parent box is the first one or if both box are side by side
+		String text = sentenceTextArea.getText();
+		int nextIndex = bounds == null || box.getBounds().getStart_in_tokens()-bounds.getEnd_in_tokens() == 1 ? textIndex+box.getBounds().getEnd_in_chars()+1 : textIndex+box.getBounds().getEnd_in_chars()+2;
+		if (box.isModified()) {
+			if (bounds == null || box.getBounds().getStart_in_tokens() - bounds.getEnd_in_tokens() == 1) {
+				String subContent = text.substring(textIndex, textIndex + box.getBounds().getEnd_in_chars() + 1);
+				//System.out.println("1Box: " +box.getContentText() + " || " +subContent);
+				//nextIndex = textIndex+box.getBounds().getEnd_in_chars()+1;
+				if (!box.getContentText().equals(subContent)) {
+					JOptionPane.showMessageDialog(null,
+						"Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR2",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				//
+			} else if (box.getBounds().getStart_in_tokens() - bounds.getEnd_in_tokens() == 2) {
+				//System.out.println("textIndex: "+textIndex+ " | textIndex+1: "+(textIndex+1));
+				String subContent = text.substring(textIndex, textIndex + 1);
+				//System.out.println("subContent: \""+subContent+"\"");
+				//nextIndex = textIndex+box.getBounds().getEnd_in_chars()+2;
+				if (!subContent.equals(" ")) {
+					JOptionPane.showMessageDialog(null,
+						"Warning: there should be a white space in the text before \"" + box.getContentText() + "\".",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				//System.out.println("textIndex+1: "+(textIndex+1)+" | textIndex+1+box.getBounds().getEnd_in_chars()+1: " +(textIndex+1+box.getBounds().getEnd_in_chars()+1));
+				subContent = text.substring(textIndex + 1, textIndex + 1 + box.getBounds().getEnd_in_chars() + 1);
+				//System.out.println("2Box: " +box.getContentText() + " || " +subContent);
+				if (!box.getContentText().equals(subContent)) {
+					JOptionPane.showMessageDialog(null,
+						"Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR3",
+						"Warning",
+						JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+			} else {
+				return;
+			}
+		}
+		for (int i = 0; i < box.getTransitions().size(); i++) {
+			TfstGraphBox nextBox = (TfstGraphBox) box.getTransitions().get(i);
+			checkContent(nextBox, nextIndex, box.getBounds());
+		}
+	}
+>>>>>>> Check dialog now displays all errors
 
   private void reinitializeUndoManager() {
     graphicalZone.removeUndoableEditListener(manager);
