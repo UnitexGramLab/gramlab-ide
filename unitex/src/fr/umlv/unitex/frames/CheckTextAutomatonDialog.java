@@ -1,5 +1,7 @@
 package fr.umlv.unitex.frames;
 
+import fr.umlv.unitex.MyCursors;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +16,38 @@ public class CheckTextAutomatonDialog extends JDialog {
   private ArrayList<String> checkList = new ArrayList<>();
   private int errorCount;
   private int warningCount;
+
+  class CustomListRenderer extends JLabel implements ListCellRenderer<String> {
+
+    public CustomListRenderer() {
+      setOpaque(true);
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList list, String value, int index, boolean isSelected, boolean cellHasFocus) {
+      // Either Warning or Error
+      String icon = value.split(":")[0];
+      ImageIcon imageIcon = new ImageIcon(
+        MyCursors.class.getResource("close.png"));
+      if (icon.equals("Error")) {
+        imageIcon = new ImageIcon(
+          MyCursors.class.getResource("error.png"));
+      } else if (icon.equals("Warning")) {
+        imageIcon = new ImageIcon(
+          MyCursors.class.getResource("warning.png"));
+      }
+      setIcon(imageIcon);
+      setText(value);
+      if (isSelected) {
+        setBackground(list.getSelectionBackground());
+        setForeground(list.getSelectionForeground());
+      } else {
+        setBackground(list.getBackground());
+        setForeground(list.getForeground());
+      }
+      return this;
+    }
+  }
 
 
   private CheckTextAutomatonDialog(ArrayList<String> checkList) {
@@ -79,6 +113,7 @@ public class CheckTextAutomatonDialog extends JDialog {
       defaultListModel1.addElement(checkList.get(i));
     }
     jList.setModel(defaultListModel1);
+    jList.setCellRenderer(new CustomListRenderer());
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 3;
