@@ -3,6 +3,7 @@ package fr.umlv.unitex.frames;
 import fr.umlv.unitex.MyCursors;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +37,7 @@ public class CheckTextAutomatonDialog extends JDialog {
         imageIcon = new ImageIcon(
           MyCursors.class.getResource("warning.png"));
       }
+      setBorder(new EmptyBorder(2,5,2,5));
       setIcon(imageIcon);
       setText(value);
       if (isSelected) {
