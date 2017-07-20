@@ -1,6 +1,7 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.MyCursors;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -115,6 +116,7 @@ public class CheckTextAutomatonDialog extends JDialog {
       defaultListModel1.addElement(checkList.get(i));
     }
     jList.setModel(defaultListModel1);
+    jList.setCellRenderer(new CustomListRenderer());
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 3;
