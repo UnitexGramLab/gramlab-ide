@@ -283,16 +283,21 @@ public class SVG {
 	}
 
 	private void drawVariable(GenericGraphBox g) throws IOException {
-		final Color color = info.getCommentColor();
+		final Color color = !g.outputVariable ? info.getCommentColor() :
+                                    info.getOutputVariableColor();
 		graphics.setFont(GenericGraphBox.variableFont);
 		drawText(g.lines.get(0), g.X1 + 5, g.Y1
 				- graphics.getFontMetrics().getDescent()
 				+ graphics.getFontMetrics().getHeight(), color,
 				GenericGraphBox.variableFont);
 		graphics.setFont(info.getOutput().getFont());
-		drawText(g.transduction, g.X1 + 10, g.Y1 + g.Height
-				+ graphics.getFontMetrics().getHeight(), color, info
-				.getOutput().getFont());
+                final int yShift = g.outputVariable ?
+                          g.Height + graphics.getFontMetrics().getHeight() :
+                                   - graphics.getFontMetrics().getHeight() / 2;
+                final int xShift = g.closeVariable ? graphics.getFontMetrics().charWidth('|')/2:
+                                                     graphics.getFontMetrics().charWidth('|')*2;
+		drawText(g.transduction, g.X1 + xShift, g.Y1 + yShift,
+                                color, info.getOutput().getFont());
 	}
 
 	private void drawFinal(GenericGraphBox g) throws IOException {
