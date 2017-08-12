@@ -61,9 +61,12 @@ public class SVG {
 		writer.write("<svg width=\"" + graphicalZone.getWidth()
 				+ "\" height=\"" + graphicalZone.getHeight()
 				+ "\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n");
-		writer.write("<desc>\n\tThis SVG file was created by Unitex (http://igm.univ-mlv.fr/~unitex).\n");
+		writer.write("<desc>\n\tThis SVG file was created by Unitex/GramLab (http://unitexgramlab.org).\n");
+                final String graphName = frame.getGraph() != null ?
+                                         frame.getGraph().getAbsolutePath() :
+                                         "(Unsaved)";
 		writer.write("\tIt represents the graph named: "
-				+ frame.getGraph().getAbsolutePath() + "\n</desc>\n");
+				+ graphName + "\n</desc>\n");
 	}
 
 	public void save() throws IOException {
@@ -80,10 +83,12 @@ public class SVG {
 		}
 		// if necessary, we print the file name
 		final Font defaultFont = graphicalZone.getFont();
+                final String graphName = frame.getGraph() != null ?
+                                         frame.getGraph().getAbsolutePath() :
+                                         "(Unsaved)";
 		if (info.isFilename()) {
 			if (info.isPathname())
-				drawText((frame.getGraph() != null) ? frame.getGraph()
-						.getAbsolutePath() : "", 20,
+				drawText((frame.getGraph() != null) ? graphName : "", 20,
 						graphicalZone.getHeight() - 45,
 						info.getForegroundColor(), defaultFont);
 			else
