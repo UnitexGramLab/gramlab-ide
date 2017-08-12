@@ -263,6 +263,7 @@ public class GraphBox extends GenericGraphBox {
 			// //////////////////////////////////////////
 			variable = true;
 			outputVariable = (line[1] == '|');
+                        closeVariable = (line[L - 1] != '(');
 			lines.clear();
 			greyed.clear();
 			lines.add(String.valueOf(line[L - 1]));
@@ -299,8 +300,8 @@ public class GraphBox extends GenericGraphBox {
 		}
                 if(content.equals("$G") || content.startsWith("$G/")) {
                     // //////////////////////
-                    // case of mark $@:
-                    // $@ ab => search ab in the token list
+                    // case of mark $G:
+                    // $G ab => search ab in the token list
                     // /////////////////////
                     genericGrfMark = true;
                     lines.clear();

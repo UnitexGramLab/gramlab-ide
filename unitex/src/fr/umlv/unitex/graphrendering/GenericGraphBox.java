@@ -61,11 +61,16 @@ public class GenericGraphBox {
 	 * Indicates if the box contains a start or end of a variable
 	 */
 	public boolean variable;
+        /**
+	 * If 'variable' is true, this field is used to know whether the mark
+	 * is closing  ')' or opening '(' a variable
+	 */
+        public boolean closeVariable;
 	/**
 	 * If 'variable' is true, this field is used to know whether the variable is
 	 * a normal one or an output one
 	 */
-	boolean outputVariable;
+	public boolean outputVariable;
 	/**
 	 * Indicates if the box contains a context limit
 	 */
@@ -1050,12 +1055,27 @@ public class GenericGraphBox {
 				+ get_h_variable_ligne());
 		g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput()
 				.getFont());
-		g.drawString(transduction, X1 + 10, Y1 + Height
-				+ g.getFontMetrics().getHeight());
+
+                final int yShift = outputVariable ?
+                          Height + g.getFontMetrics().getHeight() :
+                                 - g.getFontMetrics().getHeight() / 2;
+
+                final int xShift = closeVariable ? g.getFontMetrics().charWidth('|')/2:
+                                                   g.getFontMetrics().charWidth('|')*2;
+
+		g.drawString(transduction, X1 + xShift, Y1 + yShift);
 	}
 
 	private void drawVariableSelected(Graphics2D g, DrawGraphParams params) {
 		Color c = params.getSelectedColor();
+                final int yShift = outputVariable ?
+                          Height + g.getFontMetrics().getHeight() :
+                                 - g.getFontMetrics().getHeight() / 2;
+                final int yFillShift = outputVariable ?
+                          Height   + g.getFontMetrics().getDescent() :
+                        - Height/2 - g.getFontMetrics().getDescent()/2;
+                final int xShift = closeVariable ? g.getFontMetrics().charWidth('|')/2:
+                                                   g.getFontMetrics().charWidth('|')*2;
 		if (parentGraphicalZone.decorator != null) {
 			c = parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),
 					c);
@@ -1069,20 +1089,19 @@ public class GenericGraphBox {
 		g.setColor(params.getSelectedColor());
 		GraphicalToolBox.fillRect(
 				g,
-				X1 + 5,
-				Y1 + Height + g.getFontMetrics().getDescent(),
+				X1 + xShift,
+				Y1 + yFillShift,
 				g.getFontMetrics(
 						parentGraphicalZone.getGraphPresentationInfo()
 								.getOutput().getFont()).stringWidth(
 						transduction),
 				g.getFontMetrics(
 						parentGraphicalZone.getGraphPresentationInfo()
-								.getOutput().getFont()).getHeight() + 1);
-		g.setColor(params.getBackgroundColor());
-		g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput()
-				.getFont());
-		g.drawString(transduction, X1 + 5, Y1 + Height
-				+ g.getFontMetrics().getHeight());
+								.getOutput().getFont()).getHeight() - 1);
+                g.setColor(params.getBackgroundColor());
+                g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput()
+                        .getFont());
+                g.drawString(transduction, X1 + xShift, Y1 + yShift);
 	}
 
 	private void drawVariableStandalone(Graphics2D g, DrawGraphParams params) {

@@ -1061,7 +1061,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 		}
 		final GraphBox newBox = new GraphBox(x - 40, y, GenericGraphBox.NORMAL,
 				this);
-                System.out.println("create");
 		edit.addEdit(new AddBoxEdit(newBox, graphBoxes, this));
 		/* Finally, we set up all transitions */
 		for (final GenericGraphBox from : graphBoxes) {
