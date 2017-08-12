@@ -1217,7 +1217,16 @@ public class GenericGraphBox {
 								.getInput().getFont(), g.getFontRenderContext());
 				g.setColor(r.getForeground());
 				g.setFont(r.getFont());
-				textlayout.draw(g, X1 + 2 + getRangeShift(g), Y1 - 5);
+                                if (variable) {
+                                   final int yShift = outputVariable ?
+                                             - 5 :
+                                             - 25 ;
+                                   final int xShift = closeVariable ? + 5 - getRangeShift(g):
+                                                                      + 15 - getRangeShift(g);
+                                  textlayout.draw(g, X1 + xShift, Y1 + yShift);
+                                } else {
+                                  textlayout.draw(g, X1 + 2 + getRangeShift(g), Y1 - 5);
+                                }
 			}
 		}
 		if (variable) {
