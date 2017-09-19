@@ -289,6 +289,7 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(windows);
 		menuBar.add(help);
 		menuBar.add(info);
+		menuBar.add(info);
 		setJMenuBar(menuBar);
 	}
 	Action openText;
@@ -718,6 +719,10 @@ public class UnitexFrame extends JFrame {
 	AbstractAction sortDictionary;
 	AbstractAction inflect;
 	AbstractAction delasLeximir;
+	AbstractAction confDelaLeximir;
+	AbstractAction conjugaisonFrame;
+	AbstractAction delacStrategyLeximir;
+	AbstractAction shellLeximir;
 	AbstractAction delacLeximir;
 	AbstractAction compressIntoFST;
 	AbstractAction closeDela;
@@ -790,7 +795,30 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		delaMenu.add(openRecent);
-
+		conjugaisonFrame = new AbstractAction("Open Conjugaison...") {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newConjugaisonDialog();
+				
+			}
+		};
+		conjugaisonFrame.setEnabled(true);
+		delaMenu.add(new JMenuItem(conjugaisonFrame));
+		//for shell
+		shellLeximir = new AbstractAction("Compile...") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
+				//EditorDelas editorDelas = new EditorDelas();
+				//editorDelas.setVisible(true);
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newShellDialog();
+			}
+		};
+		shellLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(shellLeximir));
 
 		final JMenuItem lookup = new JMenuItem("Lookup...");
 		lookup.addActionListener(new ActionListener() {
@@ -838,25 +866,60 @@ public class UnitexFrame extends JFrame {
 		sortDictionary.setEnabled(false);
 		delaMenu.add(new JMenuItem(sortDictionary));
 		delaMenu.addSeparator();
-		delasLeximir = new AbstractAction("Open Delas Leximir") {
+		// for delas Menu
+		delasLeximir = new AbstractAction("Edit Delas") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
-				EditorDelas editorDelas = new EditorDelas();
-				editorDelas.setVisible(true);
+				//System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
+				//EditorDelas editorDelas = new EditorDelas();
+				//editorDelas.setVisible(true);
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newChooseDelasDialog();
 			}
 		};
 		delasLeximir.setEnabled(true);
 		delaMenu.add(new JMenuItem(delasLeximir));
-		delacLeximir = new AbstractAction("Open Delac Leximir") {
+		// for delac Menu confDelaLeximir
+		delacLeximir = new AbstractAction("Edit Delac") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EditorDelac editorDelac = new EditorDelac();
-				editorDelac.setVisible(true);
+				//EditorDelac editorDelac = new EditorDelac();
+				//editorDelac.setVisible(true);
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newChooseDelacDialog();
 			}
 		};
 		delacLeximir.setEnabled(true);
 		delaMenu.add(new JMenuItem(delacLeximir));
+		// for  confDelaLeximir
+		confDelaLeximir = new AbstractAction("Edition Settings") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//EditorDelac editorDelac = new EditorDelac();
+				//editorDelac.setVisible(true);
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newConfigDelaDialog();
+			}
+		};
+		confDelaLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(confDelaLeximir));
+		//for strategy 
+		delacStrategyLeximir = new AbstractAction("Open Strategy") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
+				//EditorDelas editorDelas = new EditorDelas();
+				//editorDelas.setVisible(true);
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newStrategyDialog();
+			}
+		};
+		delacStrategyLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(delacStrategyLeximir));
+		
+		
+		//end 
+		
 		delaMenu.addSeparator();
 		inflect = new AbstractAction("Inflect...") {
 			@Override

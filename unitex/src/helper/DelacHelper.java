@@ -5,6 +5,8 @@
  */
 package helper;
 
+import static helper.DelasHelper.getDicConfigDelasPath;
+import static helper.DelasHelper.getDicDelasPath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,14 +18,14 @@ import model.StaticValue;
 import util.Utils;
 
 /**
- *
+ * This class is an helper for delac entry
  * @author Rojo Rabelisoa
  */
 public class DelacHelper {
     /**
      * This function return a list of dictionnary in directory
-     * @return
-     * @throws FileNotFoundException 
+     * @return return an ArrayList of dictionnary
+     * @throws FileNotFoundException if there are no dictionnary found in StaticValue.allDelc path 
      */
     public static ArrayList<String> getDicDelacPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
@@ -42,9 +44,47 @@ public class DelacHelper {
         }
         return list;
     }
-    
-    public static Object[][] getAllDelacFromDicToObject() throws FileNotFoundException, IOException{
-        ArrayList<String> list= getDicDelacPath();
+    /**
+     * This function return a list of dictionnary found in configuration
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public static ArrayList<String> getDicConfigDelacPath() throws FileNotFoundException, IOException{
+    	ArrayList<String> list= new ArrayList<>();
+        File f = new File(StaticValue.allDelac+File.separator+"confDelac.conf");
+        if(f.exists()){
+            List<String> dic = Utils.readFile(StaticValue.allDelac+File.separator+"confDelac.conf");
+            for(String line : dic ){
+                String dicName = line.split(",")[0];
+                if (dicName.endsWith("dic")) {
+                    list.add(dicName);
+                }
+            }
+            if(list.isEmpty()){
+                throw new FileNotFoundException("dictonnary not found in "+StaticValue.allDelac);
+            }
+            return list;
+        }
+        else{
+            throw new FileNotFoundException("Configuration file not found in "+StaticValue.allDelac);
+        }
+    }
+    /***
+     * This function get all dictionnaries in delac folder and return an Object [][] which contains all information(
+     * POS, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile)
+     * @param alldelac if alldelac is true, the function takes all delas in delcs folder, else it takes dictionnary selected in configuration
+     * @return List of lemma in Object[][] format
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    public static Object[][] getAllDelacFromDicToObject(boolean alldelac) throws FileNotFoundException, IOException{
+        ArrayList<String> list= new ArrayList<>();
+        if(alldelac){
+            list = getDicDelacPath();
+        }
+        else{
+            list = getDicConfigDelacPath();
+        }
         Delac delac = new Delac();
         Field[] lf = delac.getClass().getDeclaredFields();
         int count =0;
@@ -53,39 +93,53 @@ public class DelacHelper {
             String path = StaticValue.allDelac+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
-                count++;
+                if(s.trim().length()>0)
+                    count++;
             }
             StaticValue.dictionnary.add(dela);
         }
         
         Object[][] ob = new Object[count][lf.length];
         int k=0;
-        int dicId=0;
+        int lemmaId=0;
         for(String dela:list){
             String pOs,lemmaAll,lemma,fSTCode,sinSem,comment,wn_SinSet;
-            int lemmaId=10;
+            
             String dicFile=dela;
             String path = StaticValue.allDelac+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
-                wn_SinSet="";
-                lemmaAll=getLemaAllDelac(s);
-                lemma=getLemaInLemaAllDelac(lemmaAll);
-                fSTCode = getFstCodeInDelac(s);
-                sinSem="+"+getSynSemInDelac(s);
-                pOs = getPosInDelac(s);
-                comment = getCommentInDelas(s);
-                Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile, dicId);
-                delacToObject(ob, k, tmp);
-                k++;
-                lemmaId=lemmaId+10;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 1; i < s.length(); i++) {
+                    String str = String.valueOf(s.charAt(i));
+                    if(str.matches("^[a-zA-Z0-9áàâäãåçéèêëíì=îïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\\s-]+$||[$&+'*,:.;\\[?@#\\]/ |)_(-]")){
+                        sb.append(s.charAt(i));
+                    }
+                }
+                if (!sb.toString().isEmpty()) {
+                    wn_SinSet="";
+                    lemmaAll=getLemaAllDelac(s);
+                    lemma=getLemaInLemaAllDelac(lemmaAll);
+                    fSTCode = getFstCodeInDelac(s);
+                    sinSem=getSynSemInDelac(s);
+                    pOs = getPosInDelac(s);
+                    comment = getCommentInDelas(s);
+                    Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile);
+                    delacToObject(ob, k, tmp);
+                    k++;
+                    lemmaId=lemmaId+1;
+                }
             }
-            dicId++;
         }
         return ob;
     }
     
-
+    /**
+     * This function transform Delac to Object[][] to put an entry of delac into jtable
+     * @param ob data in jtable
+     * @param k position of entry
+     * @param tmp delac entry
+     */
     private static void delacToObject(Object[][] ob, int k, Delac tmp) {
         ob[k][0]=tmp.getpOS();
         ob[k][1]=tmp.getLemmaAll();
@@ -96,9 +150,12 @@ public class DelacHelper {
         ob[k][6]=tmp.getWn_sinSet();
         ob[k][7]=tmp.getLemmaId();
         ob[k][8]=tmp.getDicFile();
-        ob[k][9]=tmp.getDicId();
     }
-    
+    /**
+     * This function get lemma in All lema
+     * @param text lemma All
+     * @return lemma
+     */
     public static String getLemaInLemaAllDelac(String text) {
         StringBuilder sb = new StringBuilder();
         boolean isNotInBracket=false;
@@ -118,7 +175,12 @@ public class DelacHelper {
             }
         }
         return sb.toString();
-    }  
+    }
+    /**
+     * This function get lemma in entry delac
+     * @param text entry delac
+     * @return lemma all of delac
+     */
     public static String getLemaAllDelac(String text) {
         StringBuilder sb = new StringBuilder();
         for(int i=0;i<text.length();i++){
@@ -131,6 +193,11 @@ public class DelacHelper {
         }
         return sb.toString();
     }  
+    /**
+     * This function get Fst Code in entry delac
+     * @param text entry delac
+     * @return Fst Code of delac
+     */
     public static String getFstCodeInDelac(String text){
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
@@ -148,23 +215,41 @@ public class DelacHelper {
         }
         return sb.toString();
     }
+    /**
+     * This function get SynSem in entry delac
+     * @param text entry delac
+     * @return SynSem of delac
+     */
     public static String getSynSemInDelac(String text){
-        StringBuilder sb = new StringBuilder();
-        boolean begin=false;
-        for(int i=0;i<text.length();i++){
-            if(text.charAt(i)==','){
-                begin=true;
-                i++;
-            }
-            if(begin){
-                if(text.charAt(i)=='/'){
-                    break;
+        try{
+            StringBuilder sb = new StringBuilder();
+            boolean begin=false;
+            for(int i=0;i<text.length();i++){
+
+                if(begin){
+                    if(text.charAt(i)=='/'){
+                        break;
+                    }
+                    sb.append(text.charAt(i));
                 }
-                sb.append(text.charAt(i));
+                else{
+                    if(text.charAt(i)=='+'){
+                        begin=true;
+                        sb.append(text.charAt(i));
+                    }
+                }
             }
+
+            return sb.toString();
+        }catch(java.lang.StringIndexOutOfBoundsException e){
+            return"";
         }
-        return sb.toString();
     }
+    /**
+     * This function get POS in entry delac
+     * @param text entry delac
+     * @return POS of delac
+     */
     public static String getPosInDelac(String text){
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
@@ -186,20 +271,34 @@ public class DelacHelper {
         }
         return sb.toString();
     }
+    /**
+     * This function get comment in entry delac
+     * @param text entry delac
+     * @return comment of delac
+     */
     public static String getCommentInDelas(String text){
-        StringBuilder sb = new StringBuilder();
-        boolean begin=false;
-        for(int i=0;i<text.length();i++){
-            if(text.charAt(i)=='/'){
-                begin=true;
-                i=i+2;
+        try{
+            StringBuilder sb = new StringBuilder();
+            boolean begin=false;
+            for(int i=0;i<text.length();i++){
+                if(text.charAt(i)=='/'){
+                    begin=true;
+                    i=i+2;
+                }
+                if(begin){
+                    sb.append(text.charAt(i));
+                }
             }
-            if(begin){
-                sb.append(text.charAt(i));
-            }
+            return sb.toString();
+        }catch(java.lang.StringIndexOutOfBoundsException e){
+            return"";
         }
-        return sb.toString();
     }
+    /**
+     * This function is used in Menu delac when you select an entry of delaf in JtableDlf and complete lemma of simple word in jTableFLX   
+     * @param lema
+     * @return 
+     */
     public static Object[][] completeJTableFLX(String lema) {
         String[] words = lema.split("-|\\ ");
         int separatorSpace = lema.indexOf(" ");
@@ -234,11 +333,17 @@ public class DelacHelper {
             objFlx[k][2] = sbLema;
             objFlx[k][3] = sbFstCode;
             objFlx[k][4] = sbGramCat;
-            objFlx[k][5] = separator;
+            if(k+1!=words.length)objFlx[k][5] = separator;
+            else objFlx[k][5] = "";
             k++;
         }
         return objFlx;
     }
+    /**
+     * This function complete JTableDlf from delaf file  in snt_txt/dlf and transform all entries to Object[][]
+     * @param result list of entries delaf 
+     * @return list of entries to Object [][]
+     */
     public static Object[][] completeJTableDlf(List<String> result) {
         /**
          * ** complete for jtable dlf **
@@ -258,19 +363,24 @@ public class DelacHelper {
                 lema = result1.substring(indexLema + 1, indexPosBegin);
             }
             String Pos = indexPosEnd > -1 ? result1.substring(indexPosBegin + 1, indexPosEnd) : result1.substring(indexPosBegin);
+            
             String gramCat = result1.substring(indexGramCat + 1);
-            if (!Pos.contains("V")) {
-                predictFlex[i][0] = ulaz;
-                predictFlex[i][1] = lema;
-                predictFlex[i][2] = Pos;
-                predictFlex[i][3] = gramCat;
-                i++;
-            }
+            predictFlex[i][0] = ulaz;
+            predictFlex[i][1] = lema;
+            predictFlex[i][2] = Pos;
+            predictFlex[i][3] = gramCat;
+            i++;
+            
         }
         return predictFlex;
     }
+    /**
+     * This is for JtablePredict. 
+     * @param ret
+     * @return 
+     */
     public static Object[][] completeJTablePredict(List<String> ret) {
-        Object[][] dataPredict = new Object[ret.size()][3];
+        Object[][] dataPredict = new Object[ret.size()][6];
         for (int k = 0; k < ret.size(); k++) {
             String[] token = ret.get(k).split(",");
             for (int l = 0; l < token.length; l++) {

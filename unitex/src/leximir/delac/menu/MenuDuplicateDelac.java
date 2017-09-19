@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package leximir.delas.menu;
+package leximir.delac.menu;
 
+import leximir.delas.menu.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -16,30 +17,30 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import leximir.EditorDelac;
 import leximir.EditorDelas;
 
 /**
  *
  * @author rojo
  */
-public class MenuDuplicateDelas extends javax.swing.JFrame {
+public class MenuDuplicateDelac extends javax.swing.JFrame {
 
-    private EditorDelas editorDelas;
+    private EditorDelac editorDelac;
     private DefaultTableModel tableModel;
 
     /**
      * Creates new form MenuDuplicateDelas
      */
-    public MenuDuplicateDelas() {
-        //super("Duplicate Delas", true, true, true, true);
+    public MenuDuplicateDelac() {
+        //super("Duplicate value", true, true, true, true);
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    public MenuDuplicateDelas(EditorDelas ed) {
-        //super("Duplicate Delas", true, true, true, true);
-        editorDelas = ed;
-        
+    public MenuDuplicateDelac(EditorDelac ed) {
+        //super("Duplicate value", true, true, true, true);
+        editorDelac = ed;
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.jTable1.removeAll();
@@ -54,8 +55,8 @@ public class MenuDuplicateDelas extends javax.swing.JFrame {
                 if (jTable1.getSelectedRow() > -1) {
                     int id = (int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0);
                     String lema = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1).toString();
-                    if(lema.equals(editorDelas.getTableModel().getValueAt(id, 1))){
-                        editorDelas.getTableModel().removeRow(id);
+                    if(lema.equals(editorDelac.getTableModel().getValueAt(id, 2))){
+                        editorDelac.getTableModel().removeRow(id);
                         int idDuplicate = jTable1.getSelectedRow();
                         DefaultTableModel tm = (DefaultTableModel) jTable1.getModel();
                         tm.removeRow(idDuplicate);
@@ -183,20 +184,21 @@ public class MenuDuplicateDelas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuDuplicateDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDuplicateDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuDuplicateDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDuplicateDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuDuplicateDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDuplicateDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuDuplicateDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDuplicateDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuDuplicateDelas().setVisible(true);
+                new MenuDuplicateDelac().setVisible(true);
             }
         });
     }
@@ -204,23 +206,26 @@ public class MenuDuplicateDelas extends javax.swing.JFrame {
     private void CheckDuplicateValue(JTable jtable, DefaultTableModel tableModel) {
         tableModel = (DefaultTableModel) jTable1.getModel();
         for (int i = 0; i < jtable.getRowCount() - 1; i++) {
-            String lema = jtable.getModel().getValueAt(i, 1).toString();
-            String fst = jtable.getModel().getValueAt(i, 2).toString();
-            String sinsem = jtable.getModel().getValueAt(i, 3).toString();
+            String lema = jtable.getModel().getValueAt(i, 2).toString();
+            String fst = jtable.getModel().getValueAt(i, 3).toString();
+            String sinsem = jtable.getModel().getValueAt(i, 4).toString();
             String dic = jtable.getModel().getValueAt(i, 8).toString();
             String[] sinsems = sinsem.split("(=)|(\\+)");
             for (int j = i + 1; j < jtable.getRowCount(); j++) {
-                String lemaCompare = jtable.getModel().getValueAt(j, 1).toString();
-                String fstCompare = jtable.getModel().getValueAt(j, 2).toString();
-                String sinsemCompare = jtable.getModel().getValueAt(j, 3).toString();
+                
+                String lemaCompare = jtable.getModel().getValueAt(j, 2).toString();
+                String fstCompare = jtable.getModel().getValueAt(j, 3).toString();
+                String sinsemCompare = jtable.getModel().getValueAt(j, 4).toString();
                 String dicCompare = jtable.getModel().getValueAt(j, 8).toString();
                 String[] sinsemCompares = sinsemCompare.split("()=|(\\+)");
-                if (lemaCompare.equals(lema) && fstCompare.equals(fst)
+                if (lemaCompare.trim().equals(lema.trim()) && fstCompare.equals(fst)
                         && areAllTrue(sinsems, sinsemCompares)) {
                     Object[] rowCompare = new Object[]{j, lemaCompare, fstCompare, sinsemCompare, dicCompare};
                     Object[] row = new Object[]{i, lema, fst, sinsem, dic};
                     tableModel.addRow(row);
                     tableModel.addRow(rowCompare);
+                    i++;
+
                 }
             }
         }

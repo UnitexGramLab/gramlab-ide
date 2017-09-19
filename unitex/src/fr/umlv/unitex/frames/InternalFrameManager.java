@@ -24,7 +24,8 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -46,6 +47,20 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
+import leximir.ChooseDelac;
+import leximir.ChooseDelacFactory;
+import leximir.ChooseDelas;
+import leximir.ChooseDelasFactory;
+import leximir.ConfigDela;
+import leximir.ConfigDelaFactory;
+import leximir.EditorDelac;
+import leximir.EditorDelacFactory;
+import leximir.EditorDelas;
+import leximir.EditorDelasFactory;
+import leximir.Shell;
+import leximir.ShellFactory;
+import leximir.Strategy;
+import leximir.StrategyFactory;
 
 /**
  * This class is responsible for managing all internal frames in Unitex and GramLab main
@@ -107,6 +122,14 @@ public abstract class InternalFrameManager implements FrameManager {
   private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
   private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
+	private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
+	private final StrategyFactory strategyFactory = new StrategyFactory();
+	private final ShellFactory shellFactory = new ShellFactory();
+	private final ConfigDelaFactory configDelaFactory = new ConfigDelaFactory();
+	private final ConjugaisonFactory congugaisonFactory = new ConjugaisonFactory();
+	private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
+	private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
+	private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -917,6 +940,73 @@ public abstract class InternalFrameManager implements FrameManager {
 		}
 		d.setVisible(true);
 		return d;
+	}
+	public ChooseDelas newChooseDelasDialog() {
+		
+		final ChooseDelas d = chooseDelasFactory.newChooseDelasDialog();
+		if (d == null) {
+			return null;
+		}
+		setup(d);
+		return d;
+	}
+	public ChooseDelac newChooseDelacDialog() {
+		final ChooseDelac d = chooseDelacFactory.newChooseDelacDialog();
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+	public Strategy newStrategyDialog() {
+		final Strategy d = strategyFactory.newStrategyDialog();
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+	public Shell newShellDialog() {
+		final Shell d = shellFactory.newShellDialog();
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+	public ConfigDela newConfigDelaDialog() {
+		final ConfigDela d = configDelaFactory.newConfigDelasDialog();
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+	public EditorDelas newEditorDelasDialog(boolean alldelas) {
+		final EditorDelas d = editorDelasFactory.newEditorDelasDialog(alldelas);
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+	public EditorDelac newEditorDelacDialog(boolean alldelas) {
+		final EditorDelac d = editorDelacFactory.newEditorDelacDialog(alldelas);
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+	
+	public ConjugaisonFrame newConjugaisonDialog() {
+		final ConjugaisonFrame d = congugaisonFactory.newConjugaisonDialog();
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+		
 	}
 
 	public void addObserver(MultiInstanceFrameFactoryObserver o) {

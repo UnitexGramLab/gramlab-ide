@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import model.Delas;
 import model.StaticValue;
 import util.Utils;
@@ -26,8 +27,6 @@ public class DelasHelper {
      */
     public static ArrayList<String> getDicDelasPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
-        //File folder = new File(Utils.getValueXml("pathDelas"));
-        //File folder = new File("/Users/rojo/Documents/LeXimir4UnitexRes/Delas");
         File folder = new File(StaticValue.allDelas);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
@@ -42,11 +41,49 @@ public class DelasHelper {
         }
         return list;
     }
+    /**
+     * This function return a list of dictionnary found in configuration
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public static ArrayList<String> getDicConfigDelasPath() throws FileNotFoundException, IOException{
+    	ArrayList<String> list= new ArrayList<>();
+        File f = new File(StaticValue.allDelas+File.separator+"confDelas.conf");
+        if(f.exists()){
+            List<String> dic = Utils.readFile(StaticValue.allDelas+File.separator+"confDelas.conf");
+            for(String line : dic ){
+                String dicName = line.split(",")[0];
+                if (dicName.endsWith("dic")) {
+                    list.add(dicName);
+                }
+            }
+            if(list.isEmpty()){
+                throw new FileNotFoundException("dictonnary not found in "+StaticValue.allDelas);
+            }
+            return list;
+        }
+        else{
+            throw new FileNotFoundException("Configuration file not found in "+StaticValue.allDelas);
+        }
+    }
+    /***
+     *  This funtion return all line in delas dictionary into Object[][] 
+     * @param allDelas if allDelas is true, the function takes all delas in delas folder, else it takes dictionnary selected in configuration
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     
-    public static Object[][] getAllDelasFromDicToObject() throws FileNotFoundException, IOException{
-        ArrayList<String> list= getDicDelasPath();
-        Delas delac = new Delas();
-        Field[] lf = delac.getClass().getDeclaredFields();
+    public static Object[][] getAllDelasFromDicToObject(boolean allDelas) throws FileNotFoundException, IOException{
+        ArrayList<String> list= new ArrayList<>();
+        if(allDelas){
+            list = getDicDelasPath();
+        }
+        else{
+            list = getDicConfigDelasPath();
+        }
+        Delas delas = new Delas();
+        Field[] lf = delas.getClass().getDeclaredFields();
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
@@ -60,10 +97,10 @@ public class DelasHelper {
         
         Object[][] ob = new Object[count][lf.length];
         int k=0;
-        int dicId=0;
+        int lemmaId=0;
         for(String dela:list){
             String pOs,lemma,fSTCode,sinSem,comment,lemmaInv,wn_SinSet;
-            int lemmaId=10;
+            
             String dicFile=dela;
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path = StaticValue.allDelas+"//"+dela;
@@ -71,18 +108,17 @@ public class DelasHelper {
             for(String s:readFile){
                 lemma=getLemaInDelas(s);
                 lemmaInv=Utils.reverseString(lemma);
-                sinSem="+"+getSynSemInDelas(s);
+                sinSem=getSynSemInDelas(s);
                 fSTCode = getFstCodeInDelas(s);
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
                 wn_SinSet = "";
-                Delas tmp = new Delas(pOs, lemma, fSTCode, sinSem, comment, lemmaInv, wn_SinSet, lemmaId, dicFile, dicId);
+                Delas tmp = new Delas(pOs, lemma, fSTCode, sinSem, comment, lemmaInv, wn_SinSet, lemmaId, dicFile);
                 delacToObject(ob, k, tmp);
                 k++;
-                lemmaId=lemmaId+10;
+                lemmaId=lemmaId+1;
                 
             }
-            dicId++;
         }
         return ob;
     }
@@ -97,7 +133,6 @@ public class DelasHelper {
         ob[k][6]=tmp.getWn_sinSet();
         ob[k][7]=tmp.getLemmaId();
         ob[k][8]=tmp.getDicFile();
-        ob[k][9]=tmp.getDicId();
     }
     
     public static String getLemaInDelas(String text){
@@ -111,24 +146,28 @@ public class DelasHelper {
         return sb.toString();
     }
     public static String getSynSemInDelas(String text){
-        StringBuilder sb = new StringBuilder();
-        boolean begin=false;
-        for(int i=0;i<text.length();i++){
-            
-            if(begin){
-                if(text.charAt(i)=='/'){
-                    break;
+        try{
+            StringBuilder sb = new StringBuilder();
+            boolean begin=false;
+            for(int i=0;i<text.length();i++){
+
+                if(begin){
+                    if(text.charAt(i)=='/'){
+                        break;
+                    }
+                    sb.append(text.charAt(i));
                 }
-                sb.append(text.charAt(i));
-            }
-            else{
-                if(text.charAt(i)=='+'){
-                    begin=true;
-                    
+                else{
+                    if(text.charAt(i)=='+'){
+                        begin=true;
+                        sb.append(text.charAt(i));
+                    }
                 }
             }
+            return sb.toString();
+        }catch(java.lang.StringIndexOutOfBoundsException e){
+            return"";
         }
-        return sb.toString();
     }
     public static String getFstCodeInDelas(String text){
         StringBuilder sb = new StringBuilder();
@@ -139,7 +178,7 @@ public class DelasHelper {
                 i++;
             }
             if(begin){
-                if(text.charAt(i)=='+'||text.charAt(i)=='/'||text.charAt(i)=='='){
+                if(text.charAt(i)=='+'||text.charAt(i)=='/'||text.charAt(i)=='!'||text.charAt(i)=='['||text.charAt(i)=='='){
                     break;
                 }
                 sb.append(text.charAt(i));
@@ -169,17 +208,21 @@ public class DelasHelper {
         return sb.toString();
     }
     public static String getCommentInDelas(String text){
-        StringBuilder sb = new StringBuilder();
-        boolean begin=false;
-        for(int i=0;i<text.length();i++){
-            if(text.charAt(i)=='/'){
-                begin=true;
-                i=i+2;
+        try{
+            StringBuilder sb = new StringBuilder();
+            boolean begin=false;
+            for(int i=0;i<text.length();i++){
+                if(text.charAt(i)=='/'){
+                    begin=true;
+                    i=i+2;
+                }
+                if(begin){
+                    sb.append(text.charAt(i));
+                }
             }
-            if(begin){
-                sb.append(text.charAt(i));
-            }
+            return sb.toString();
+        }catch(java.lang.StringIndexOutOfBoundsException e){
+            return"";
         }
-        return sb.toString();
     }
 }

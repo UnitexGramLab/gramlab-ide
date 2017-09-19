@@ -17,27 +17,78 @@ import util.Utils;
  *
  * @author Rojo Rabelisoa
  */
-public class MenuAddDelas extends javax.swing.JFrame {
+public class MenuDelas extends javax.swing.JFrame {
     private EditorDelas elFrame ;
     private int valueSelected;
+    private boolean edit = false;
+    int idedit=0;
     /**
      * Creates new form AddDelas
      */
-    public MenuAddDelas() {
+    public MenuDelas() {
+        //super("Manage Delas", true, true, true, true);
         initComponents();
         for(String dic:StaticValue.dictionnary){
             jComboBoxDic.addItem(dic);
         };
     }
-    public MenuAddDelas(EditorDelas el,int value,int position,Object dictionnary){
+    public MenuDelas(EditorDelas el,int selectedRow,String menuSelected,Object dictionnary, Object[] obj){
+        //super("Manage Delas", true, true, true, true);
         initComponents();
         for(String dic:StaticValue.dictionnary){
             jComboBoxDic.addItem(dic);
         };
         jComboBoxDic.setSelectedItem(dictionnary);
         this.elFrame=el;
-        this.valueSelected=value+position;
+        
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        switch (menuSelected) {
+            case "insertBefore":
+                this.idedit = (int) obj[7];
+                jLabelTitle.setText("Insertion value");
+                break;
+            case "insertAfter":
+                this.idedit = ((int) obj[7])+1;
+                jLabelTitle.setText("Insertion value");
+                break;
+            case "copyBefore":
+                this.jTextFieldLemma.setText((String) obj[1]);
+                this.jTextFieldFST.setText((String) obj[2]);
+                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldComment.setText((String) obj[4]);
+                this.valueSelected = selectedRow;
+                this.idedit = (int) obj[7];
+                jLabelTitle.setText("Insertion value");
+                break;
+            case "copyAfter":
+               this.jTextFieldLemma.setText((String) obj[1]);
+                this.jTextFieldFST.setText((String) obj[2]);
+                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldComment.setText((String) obj[4]);
+                this.valueSelected = selectedRow + 1;
+                this.idedit = ((int) obj[7])+1;
+                jLabelTitle.setText("Insertion value");
+                break;
+            case "view":
+                this.jTextFieldLemma.setText((String) obj[1]);
+                this.jTextFieldFST.setText((String) obj[2]);
+                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldComment.setText((String) obj[4]);
+                jButtonAdd.setVisible(false);
+                
+                jLabelTitle.setText("View value");
+                break;
+            case "edit":
+                edit=true;
+                this.jTextFieldLemma.setText((String) obj[1]);
+                this.jTextFieldFST.setText((String) obj[2]);
+                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldComment.setText((String) obj[4]);
+                this.valueSelected = selectedRow;
+                this.idedit = (int) obj[7];
+                jLabelTitle.setText("Edit value");
+                break;
+        }
     }
 
     /**
@@ -50,7 +101,7 @@ public class MenuAddDelas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelTitle = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -67,7 +118,7 @@ public class MenuAddDelas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Add value");
+        jLabelTitle.setText(" value");
 
         jLabel2.setText("Lema");
 
@@ -119,10 +170,13 @@ public class MenuAddDelas extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(jLabel1)
-                        .addGap(0, 105, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 125, Short.MAX_VALUE)
+                        .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonInflect)
+                        .addGap(5, 5, 5)
+                        .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,29 +185,30 @@ public class MenuAddDelas extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel4)
                             .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBoxDic, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldLemma)
-                            .addComponent(jTextFieldFST, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                            .addComponent(jTextFieldComment)
-                            .addComponent(jTextFieldSinSem))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBoxDic, 0, 265, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldComment)
+                                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldLemma)
+                                    .addComponent(jTextFieldFST))))))
                 .addGap(94, 94, 94))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonInflect)
-                .addGap(5, 5, 5)
-                .addComponent(jButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(210, 210, 210)
+                .addComponent(jLabelTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelTitle)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldLemma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -165,7 +220,7 @@ public class MenuAddDelas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,26 +228,29 @@ public class MenuAddDelas extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jComboBoxDic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAdd)
                     .addComponent(jButtonCancel)
                     .addComponent(jButtonInflect))
-                .addGap(33, 33, 33))
+                .addGap(32, 32, 32))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -210,12 +268,27 @@ public class MenuAddDelas extends javax.swing.JFrame {
         try{
             String lemma = jTextFieldLemma.getText();
             String FST = jTextFieldFST.getText();
-            String sinSem = jTextFieldSinSem.getText();
+            String sinSem = jTextFieldSinSem.getText().equals("")?"":jTextFieldSinSem.getText().substring(0,1).equals("+")?jTextFieldSinSem.getText():"+"+jTextFieldSinSem.getText();
             String dic = (String) jComboBoxDic.getSelectedItem();
             String comment=jTextFieldComment.getText();
 
-            Object[] row = Utils.delasToObject(lemma,FST,sinSem,comment,dic);
-            elFrame.getTableModel().insertRow(valueSelected,row);
+            Object[] row = Utils.delasToObject(lemma,FST,sinSem,comment,dic,idedit);
+            if(edit){
+                for(int i=0;i<row.length;i++){
+                    if(i!=7){
+                        elFrame.getTableModel().setValueAt(row[i],idedit,i);
+                    }
+                }
+            }else{
+                
+                elFrame.getTableModel().insertRow(idedit,row);
+                elFrame.getjTable1().setModel(elFrame.getTableModel());
+                for(int i=idedit;i<elFrame.getTableModel().getRowCount();i++){
+                    elFrame.getTableModel().setValueAt(i,i,7);
+                }
+                elFrame.getJLablel13().setText(String.valueOf(elFrame.getjTable1().getRowCount()));
+            }
+            elFrame.setUnsaved(true);
             this.setVisible(false);
         }
         catch(ArrayIndexOutOfBoundsException e){
@@ -262,8 +335,16 @@ public class MenuAddDelas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuAddDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -281,7 +362,7 @@ public class MenuAddDelas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuAddDelas().setVisible(true);
+                new MenuDelas().setVisible(true);
             }
         });
     }
@@ -291,12 +372,12 @@ public class MenuAddDelas extends javax.swing.JFrame {
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonInflect;
     private javax.swing.JComboBox jComboBoxDic;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextFieldComment;
     private javax.swing.JTextField jTextFieldFST;

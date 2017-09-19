@@ -597,6 +597,10 @@ public class LocateFrame extends JInternalFrame {
 		}
 		setVisible(false);
 		savePreviousConcordance();
+		System.out.println("command :");
+		for(int i=0;i<commands.numberOfCommands();i++){
+			System.out.println("commane :"+commands.getCommand(i).getCommandLine());
+		}
 		Launcher.exec(commands, true, toDo);
 	}
 

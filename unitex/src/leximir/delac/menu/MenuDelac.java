@@ -5,12 +5,10 @@
  */
 package leximir.delac.menu;
 
-import helper.DelacHelper;
 import helper.DelasHelper;
 import helper.GridHelper;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -31,7 +29,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,21 +46,24 @@ import util.Utils;
  *
  * @author Rojo Rabelisoa
  */
-public class MenuAddBeforeDelac extends javax.swing.JFrame {
+public class MenuDelac extends javax.swing.JFrame {
 
     private EditorDelac editorDelac;
     private Object[] obj;
     private int valueSelected;
     private DefaultTableModel tableModel;
+    private boolean edit=false;
+    int idedit=0;
 
     /**
      * Creates new form MenuAddBeforeDelac
      */
-    public MenuAddBeforeDelac() {
+    public MenuDelac() {
+        //super("Manage Delac", true, true, true, true);
         initComponents();
     }
 
-    public MenuAddBeforeDelac(EditorDelac aThis, Object[] obj, int selectedRow) {
+    public MenuDelac(EditorDelac aThis,String menuSelected, Object[] obj, int selectedRow) {
         initComponents();
         DefaultTableCellRenderer color = new DefaultTableCellRenderer() {
             @Override
@@ -74,19 +74,113 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                 return c;
             }
         };
+        jMenuPrediction.setVisible(false);
         editorDelac = aThis;
         this.obj = obj;
-        this.valueSelected = selectedRow + 1;
+        switch (menuSelected) {
+            case "insertBefore":
+                this.valueSelected = selectedRow;
+                this.idedit = (int) obj[7];
+                break;
+            case "insertAfter":
+                this.valueSelected = selectedRow + 1;
+                this.idedit = ((int) obj[7])+1;
+                break;
+            case "copyBefore":
+                jTextFieldLema.setText((String) this.obj[2]);
+                jTextFieldLemaAll.setText((String) this.obj[1]);
+                jTextFieldComment.setText((String) this.obj[5]);
+                this.valueSelected = selectedRow;
+                this.idedit = (int) obj[7];
+                completeJtableDelaf((String) this.obj[1]);
+                break;
+            case "copyAfter":
+                jTextFieldLema.setText((String) this.obj[2]);
+                jTextFieldLemaAll.setText((String) this.obj[1]);
+                jTextFieldComment.setText((String) this.obj[5]);
+                this.valueSelected = selectedRow + 1;
+                this.idedit = ((int) obj[7])+1;
+                completeJtableDelaf((String) this.obj[1]);
+                break;
+            case "view":
+                jTextFieldLema.setText((String) this.obj[2]);
+                jTextFieldLemaAll.setText((String) this.obj[1]);
+                jTextFieldComment.setText((String) this.obj[5]);
+                jMenuSave.setVisible(false);
+                completeJtableDelaf((String) this.obj[1]);
+                break;
+            case "edit":
+                edit=true;
+                jTextFieldLema.setText((String) this.obj[2]);
+                jTextFieldLemaAll.setText((String) this.obj[1]);
+                jTextFieldComment.setText((String) this.obj[5]);
+                this.valueSelected = selectedRow;
+                this.idedit = (int) obj[7];
+                completeJtableDelaf((String) this.obj[1]);
+                break;
+        }
+        
         jTextFieldPos.setText((String) this.obj[0]);
         jTextFieldCFlx.setText((String) this.obj[3]);
         jTextFieldDictionnary.setText((String) this.obj[8]);
-        jTextFieldDicId.setText(String.valueOf((int) this.obj[9]));
-        jTextFieldLemaId.setText(String.valueOf((int) this.obj[7]) + 1);
-        //this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        jTextFieldsynSem.setText((String) this.obj[4]);
+        int lemaid = Integer.parseInt(this.obj[7].toString()) + 1;
+        jTextFieldLemaId.setText(String.valueOf(lemaid));
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.jTableFLX.setDefaultRenderer(Object.class, color);
         this.jTableDelaf.setDefaultRenderer(Object.class, color);
     }
-
+    private void completeJtableDelaf(String LemmaAll){
+        String[] words = LemmaAll.split("-|\\ ");
+        int separatorSpace = LemmaAll.indexOf(" ");
+        int separatorIndex = LemmaAll.indexOf("-");
+        char separator = 0;
+        if (separatorSpace > -1) {
+            separator = LemmaAll.charAt(separatorSpace);
+        } else if (separatorIndex > -1) {
+            separator = LemmaAll.charAt(separatorIndex);
+        }
+        DefaultTableModel model = new DefaultTableModel();
+        model = (DefaultTableModel)jTableFLX.getModel();
+        model.addColumn("RB");
+        model.addColumn("Form");
+        model.addColumn("Lemma");
+        model.addColumn("FST Code");
+        model.addColumn("GramCat");
+        model.addColumn("Separator");
+        for(int i = 0;i<words.length;i++){
+            String word = words[i];
+            if(word.contains("(")){
+                int indexPosBegin = word.indexOf(".");
+                int indexGramCat = word.indexOf(":");
+                String lema = word.substring(word.indexOf("(")+1, indexPosBegin);
+                String fst = word.substring(indexPosBegin+1, indexGramCat);
+                String gramCat=word.substring(indexGramCat+1, word.length()-1);
+                try{
+                    Object[] obj = new Object[6];
+                    if(i+1==words.length){
+                        obj = new Object[]{i,lema,lema,fst,gramCat,""};
+                    }else{
+                        obj = new Object[]{i,lema,lema,fst,gramCat,separator};
+                    }
+                    model.addRow(obj);
+                }
+                catch(java.lang.ArrayIndexOutOfBoundsException e){
+                }
+                
+            }
+            else{
+                try{
+                    Object[] obj = new Object[]{i,word,"","","",""};
+                    model.addRow(obj);
+                }
+                catch(java.lang.ArrayIndexOutOfBoundsException e){
+                }
+            }
+        }
+        jTableFLX.setModel(model);
+        jTableFLX.repaint();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,7 +202,6 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jTextFieldLemaAll = new javax.swing.JTextField();
         jTextFieldLema = new javax.swing.JTextField();
@@ -118,7 +211,6 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         jTextFieldCFlx = new javax.swing.JTextField();
         jTextFieldsynSem = new javax.swing.JTextField();
         jTextFieldDictionnary = new javax.swing.JTextField();
-        jTextFieldDicId = new javax.swing.JTextField();
         jTextFieldLemaId = new javax.swing.JTextField();
         jPanelPrediction = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -145,18 +237,13 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         jMenuClose = new javax.swing.JMenu();
         jMenuInflect = new javax.swing.JMenu();
         jMenuPrediction = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
-        jMenu6 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
-        jMenu8 = new javax.swing.JMenu();
-        jMenu9 = new javax.swing.JMenu();
-        jMenu10 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setText("Lema (All)");
+        jLabel2.setText("Lemma (All)");
 
-        jLabel3.setText("Lema");
+        jLabel3.setText("Lemma");
 
         jLabel4.setText("Comment");
 
@@ -168,11 +255,9 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
         jLabel8.setText("SynSem");
 
-        jLabel9.setText("Dictionnary");
+        jLabel9.setText("Dictionary");
 
-        jLabel10.setText("DicId");
-
-        jLabel11.setText("LemaId");
+        jLabel11.setText("Lemma id");
 
         jTextFieldLemaAll.setEditable(false);
         jTextFieldLemaAll.setBackground(new java.awt.Color(204, 204, 204));
@@ -185,9 +270,6 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
         jTextFieldDictionnary.setEditable(false);
         jTextFieldDictionnary.setBackground(new java.awt.Color(204, 204, 204));
-
-        jTextFieldDicId.setEditable(false);
-        jTextFieldDicId.setBackground(new java.awt.Color(204, 204, 204));
 
         javax.swing.GroupLayout jPanelCompoundLayout = new javax.swing.GroupLayout(jPanelCompound);
         jPanelCompound.setLayout(jPanelCompoundLayout);
@@ -212,7 +294,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(jLabel8))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldCFlx, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,12 +303,10 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
-                    .addComponent(jLabel10)
                     .addComponent(jLabel11))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextFieldDictionnary, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                    .addComponent(jTextFieldDicId)
                     .addComponent(jTextFieldLemaId))
                 .addGap(40, 40, 40))
         );
@@ -250,10 +330,8 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                 .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel7)
-                    .addComponent(jLabel10)
                     .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldCFlx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldDicId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCFlx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -355,11 +433,10 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
         jTableFLX.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "", "", "","",""},
-                {"2", "", "", "","",""},
+
             },
             new String [] {
-                "RB", "Form", "Lema", "FST Code","GramCat","Separator"
+
             }
         ));
         jTableFLX.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -376,7 +453,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
             }
         });
 
-        jButtonRefresh.setText("Refresh Lema");
+        jButtonRefresh.setText("Refresh Lemma");
         jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRefreshActionPerformed(evt);
@@ -384,6 +461,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         });
 
         jTableDelaf.setAutoCreateRowSorter(true);
+        jTableDelaf.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(jTableDelaf);
 
         jLabel12.setText("Defaf<Ctrl+F> - Copy <Ctrl+C>");
@@ -472,23 +550,8 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenuPrediction);
 
-        jMenu5.setText("Dlf");
-        jMenuBar1.add(jMenu5);
-
-        jMenu6.setText("Debug file");
-        jMenuBar1.add(jMenu6);
-
         jMenu7.setText("Selected Rule");
         jMenuBar1.add(jMenu7);
-
-        jMenu8.setText("FSD");
-        jMenuBar1.add(jMenu8);
-
-        jMenu9.setText("Check in Dictionnary");
-        jMenuBar1.add(jMenu9);
-
-        jMenu10.setText("WorldNet");
-        jMenuBar1.add(jMenu10);
 
         setJMenuBar(jMenuBar1);
 
@@ -526,12 +589,12 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                         }
                     }
                 }
-                if (!jTableFLX.getModel().getValueAt(row, 5).equals("")) {
+                if (jTableFLX.getModel().getValueAt(row, 5)!=null) {
                     valueLema = valueLema + jTableFLX.getModel().getValueAt(row, 5);
                     valueLemaAll = valueLemaAll + jTableFLX.getModel().getValueAt(row, 5);
                 } else {
-                    valueLema = valueLema + " ";
-                    valueLemaAll = valueLemaAll + " ";
+                    valueLema = row==jTableFLX.getRowCount()-1?valueLema:valueLema + " ";
+                    valueLemaAll = row==jTableFLX.getRowCount()-1?valueLema:valueLemaAll + " ";
                 }
             }
         }
@@ -546,12 +609,33 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
 
             String FST = jTextFieldCFlx.getText();
-            String synSem = "+" + jTextFieldsynSem.getText();
+            String synSem = "";
+            try{
+                synSem = jTextFieldsynSem.getText().substring(0, 1).equals("+")?jTextFieldsynSem.getText():"+" + jTextFieldsynSem.getText();
+            }
+            catch(java.lang.StringIndexOutOfBoundsException ex){
+                synSem="";
+            }
             String dic = jTextFieldDictionnary.getText();
             String comment = jTextFieldComment.getText();
 
             Object[] row = Utils.delacToObject(lemmaAll, FST, synSem, comment, dic);
-            editorDelac.getTableModel().insertRow(valueSelected, row);
+            if(edit){
+                for(int i=0;i<row.length;i++){
+                    if(i!=7){
+                        editorDelac.getTableModel().setValueAt(row[i],idedit,i);
+                    }
+                }
+            }
+            else{
+                editorDelac.getTableModel().insertRow(idedit, row);
+                editorDelac.getjTable1().setModel(editorDelac.getTableModel());
+                for(int i=idedit;i<editorDelac.getTableModel().getRowCount();i++){
+                    editorDelac.getTableModel().setValueAt(i,i,7);
+                }
+                editorDelac.getJLablel13().setText(String.valueOf(editorDelac.getjTable1().getRowCount()));
+            }
+            editorDelac.setUnsaved(true);
             this.setVisible(false);
         } catch (ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -562,15 +646,23 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         if (this.jTableFLX.getSelectedRow() != -1) {
             if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_F) {
                 try {
+                    rowIdSelectedDelaf= this.jTableFLX.getSelectedRow();
                     String value = (String) this.jTableFLX.getModel().getValueAt(this.jTableFLX.getSelectedRow(), 1);
-                    String tempPath = StaticValue.delafTmpPathDelac;
-                    Utils.generateDelaf(tempPath, value);
+                    
+                    Utils.generateDelaf(value);
                     tableModel = GridHelper.getDelafInDelacForDelac();
                     JTable table = new JTable(tableModel);
                     this.jTableDelaf.setModel(table.getModel());
-                    this.jTableDelaf.removeAll();
+                    this.jTableDelaf.removeAll();//dd
+                    
                     //
                     this.jTableDelaf.repaint();
+                    final JPopupMenu popupMenu = new JPopupMenu();
+                    JMenuItem selectItem = new JMenuItem("Select");
+                    selectItem.addActionListener(selectMenuJTableDelaf());
+                    popupMenu.add(selectItem);
+                    jTableDelaf.setComponentPopupMenu(popupMenu);
+                
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
@@ -633,7 +725,8 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                 /**
                  * *** complete datatableRule **
                  */
-                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject();
+                boolean alldelas = true;
+                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas);
                 Object[][] allDelasImportant = new Object[jTableDlf.getRowCount()][6];
                 int indexImportantDelas = 0;
                 List<String> wordFoundInDico = new ArrayList<>();
@@ -703,7 +796,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "error :" + ex.getMessage());
             } catch (ParserConfigurationException | SAXException ex) {
-                Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MenuDelac.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Value Clma is Empty");
@@ -720,9 +813,32 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                         jTableFLX.removeAll();
                         jTableFLX.setModel(GridHelper.getDataforjTableFlx(lema));
                         jTableFLX.repaint();
+                        jTextFieldCFlx.setText((String) jTablePredict.getModel().getValueAt(jTablePredict.getSelectedRow(), 1));
                     } catch (IOException ex) {
-                        Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(MenuDelac.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No selected value");
+                }
+            }
+            
+        };
+    }
+    private ActionListener selectMenuJTableDelaf() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (jTableDelaf.getSelectedRow() != -1) {
+                    String lema = (String) jTableDelaf.getModel().getValueAt(jTableDelaf.getSelectedRow(), 2);
+                    String gramCat = (String) jTableDelaf.getModel().getValueAt(jTableDelaf.getSelectedRow(), 3);
+                    String fst = (String) jTableDelaf.getModel().getValueAt(jTableDelaf.getSelectedRow(), 4);
+                    DefaultTableModel model = (DefaultTableModel)jTableFLX.getModel();
+                    model.setValueAt(lema, rowIdSelectedDelaf, 2);
+                    model.setValueAt(gramCat, rowIdSelectedDelaf, 4);
+                    model.setValueAt(fst, rowIdSelectedDelaf, 3);
+                    jTableFLX.setModel(model);
+                    jTableFLX.repaint();
+                    jTableDelaf.setModel(new DefaultTableModel());
                 } else {
                     JOptionPane.showMessageDialog(null, "No selected value");
                 }
@@ -859,20 +975,21 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MenuAddBeforeDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MenuDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuAddBeforeDelac().setVisible(true);
+                new MenuDelac().setVisible(true);
             }
         });
     }
@@ -883,7 +1000,6 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAddSimpleForm;
     private javax.swing.JButton jButtonRefresh;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -894,12 +1010,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu10;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
-    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuClose;
     private javax.swing.JMenu jMenuInflect;
@@ -926,7 +1037,6 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldCFlx;
     private javax.swing.JTextField jTextFieldClemaAll;
     private javax.swing.JTextField jTextFieldComment;
-    private javax.swing.JTextField jTextFieldDicId;
     private javax.swing.JTextField jTextFieldDictionnary;
     private javax.swing.JTextField jTextFieldLema;
     private javax.swing.JTextField jTextFieldLemaAll;
@@ -934,5 +1044,5 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldPos;
     private javax.swing.JTextField jTextFieldsynSem;
     // End of variables declaration//GEN-END:variables
-
+    private int rowIdSelectedDelaf;
 }
