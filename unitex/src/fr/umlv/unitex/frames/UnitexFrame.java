@@ -189,6 +189,8 @@ public class UnitexFrame extends JFrame {
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeLocateFrame();
 						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+								.closeGraphPathFrame();
+						GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 								.closeStatisticsFrame();
 					}
 				});
@@ -1124,7 +1126,7 @@ public class UnitexFrame extends JFrame {
 					}
 					else {
 						GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathFrame();
 					}
 				}
 			}

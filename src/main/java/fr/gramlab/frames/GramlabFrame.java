@@ -2119,7 +2119,7 @@ public class GramlabFrame extends JFrame {
 				if (f != null) {
 					GlobalProjectManager.search(null)
 							.getFrameManagerAs(InternalFrameManager.class)
-							.newGraphPathDialog();
+							.newGraphPathFrame();
 				}
 			}
 		});

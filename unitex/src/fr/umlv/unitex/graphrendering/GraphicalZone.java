@@ -424,7 +424,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					/* */
 				}
 				GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class).newGraphPathDialog();
+						.getFrameManagerAs(InternalFrameManager.class).newGraphPathFrame();
 			}
 		});
 		final JMenuItem compileFST = new JMenuItem("Compile FST2");
