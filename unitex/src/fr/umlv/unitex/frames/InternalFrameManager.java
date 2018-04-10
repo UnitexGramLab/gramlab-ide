@@ -95,8 +95,8 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final ConcordanceFrameFactory concordanceFrameFactory = new ConcordanceFrameFactory();
 	private final LexiconGrammarTableFrameFactory lexiconGrammarTableFrameFactory = new LexiconGrammarTableFrameFactory();
 	private final StatisticsFrameFactory statisticsFrameFactory = new StatisticsFrameFactory();
-	private final DialogFactory graphPathDialogFactory = new DialogFactory(
-			GraphPathDialog.class);
+	private final FrameFactory graphPathFrameFactory = new FrameFactory(
+			GraphPathFrame.class);
 	private final DialogFactory transcodeOneFileDialogFactory = new DialogFactory(
 			TranscodeOneFileDialog.class);
 	private final FontDialogFactory fontDialogFactory = new FontDialogFactory();
@@ -578,13 +578,13 @@ public abstract class InternalFrameManager implements FrameManager {
 		seq2GrfFrameFactory.closeFrame();
 	}
 
-	public GraphPathDialog newGraphPathDialog() {
+	public GraphPathFrame newGraphPathFrame() {
 		final GraphFrame gf = getCurrentFocusedGraphFrame();
 		if (gf == null) {
 			return null;
 		}
-		final GraphPathDialog d = (GraphPathDialog) graphPathDialogFactory
-				.newDialog();
+		final GraphPathFrame d = (GraphPathFrame) setup(graphPathFrameFactory
+				.newFrame(),true);
 		if (d == null)
 			return null;
 		final File f = gf.getGraph();
@@ -592,6 +592,10 @@ public abstract class InternalFrameManager implements FrameManager {
 		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
 		return d;
+	}
+	
+	public void closeGraphPathFrame() {
+		graphPathFrameFactory.closeFrame();
 	}
 
 	public GraphCollectionFrame newGraphCollectionFrame() {
