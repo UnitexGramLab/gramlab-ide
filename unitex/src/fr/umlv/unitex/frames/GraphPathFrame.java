@@ -38,8 +38,8 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -67,7 +67,7 @@ import fr.umlv.unitex.utils.KeyUtil;
  * 
  * @author Sébastien Paumier 11.11.2005 modified HyunGue HUH
  */
-public class GraphPathDialog extends JDialog {
+public class GraphPathFrame extends JInternalFrame {
 	final BigTextList textArea = new BigTextList();
 	final JTextField graphName = new JTextField();
 	final JTextField outputFileName = new JTextField();
@@ -96,17 +96,11 @@ public class GraphPathDialog extends JDialog {
 		}
 	};
 
-	GraphPathDialog() {
-		super(UnitexFrame.mainFrame, "Explore graph paths", true);
+	GraphPathFrame() {
+		super("Explore graph paths", true,true);
 		setContentPane(constructPanel());
-		setBounds(100, 100, 420, 400);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				close();
-			}
-		});
+		pack();
+		setDefaultCloseOperation(HIDE_ON_CLOSE);
 		textArea.setFont(ConfigManager.getManager().getTextFont(null));
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
 			@Override
@@ -114,7 +108,6 @@ public class GraphPathDialog extends JDialog {
 				textArea.setFont(ConfigManager.getManager().getTextFont(null));
 			}
 		});
-		setLocationRelativeTo(UnitexFrame.mainFrame);
 	}
 
 	private JPanel constructPanel() {
