@@ -26,8 +26,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -100,7 +98,7 @@ public class GraphPathFrame extends JInternalFrame {
 		super("Explore graph paths", true,true);
 		setContentPane(constructPanel());
 		pack();
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		textArea.setFont(ConfigManager.getManager().getTextFont(null));
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
 			@Override
@@ -234,6 +232,12 @@ public class GraphPathFrame extends JInternalFrame {
 		return panel;
 	}
 	
+	@Override
+	public void dispose() {
+		textArea.reset();
+		textArea.clearSelection();
+		textArea.getModel().removeListDataListener(listListener);
+	}
 	
 	void close() {
 		setVisible(false);
