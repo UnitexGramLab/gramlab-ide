@@ -56,7 +56,7 @@ import fr.umlv.unitex.frames.InternalFrameManager;
 import helper.GridHelper;
 import leximir.delas.menu.MenuDelas;
 import leximir.delas.menu.MenuDuplicateDelas;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -79,14 +79,14 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
         try {
             initComponents();
-            StaticValue.dictionnary.clear();
+            DictionaryPath.dictionnary.clear();
             this.setTitle("LeXimir Editor for Dela dictionaries of simple words");
             
             tableModel = GridHelper.getOpenEditorforDelas(alldelas);
             JTable table = new JTable(getTableModel());
             
             RowSorter<DefaultTableModel> sort = new TableRowSorter<>(tableModel);
-            for(String dic:StaticValue.dictionnary){
+            for(String dic:DictionaryPath.dictionnary){
                 jComboBoxDic.addItem(dic);
             }
             this.getjTable1().setRowSorter(sort);
@@ -745,7 +745,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             Map<String, Object[]> dicPos = Utils.putPosDicGridInExcel(dic_POS_stat);
             Map<String, Object[]> pos = Utils.putPosGridInExcel(pOS_stat);
             //String filename = Utils.getValueXml("pathExportStatistics");
-            String filename = StaticValue.statisticsTmpPath;
+            String filename = DictionaryPath.statisticsTmpPath;
             Utils.exportJtableToExcel(dicPos,pos,filename);
             
             JOptionPane.showMessageDialog(null, "file created in \n"+filename);
@@ -879,7 +879,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             for(Map.Entry<String, List<String>> data:fileData.entrySet()){
                 try {
                     //bfw = new BufferedWriter(new FileWriter(Utils.getValueXml("pathDelas")+"/"+data.getKey()));
-                    bfw = new BufferedWriter(new FileWriter(StaticValue.allDelas+"//"+data.getKey()));
+                    bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas+"//"+data.getKey()));
                     for(String lines:data.getValue()){
                         bfw.write(lines);
                     }
@@ -1056,7 +1056,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     }
                 }
             }
-            String filename = StaticValue.statisticsTmpPath;
+            String filename = DictionaryPath.statisticsTmpPath;
             Utils.exportStatAllToExcel(statSimSem1,statSimSem2,filename);
             
         } catch (IOException ex) {
@@ -1232,7 +1232,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGraphActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
             
-            String filename = StaticValue.inflectionPath+this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2)+".grf";
+            String filename = DictionaryPath.inflectionPath+this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2)+".grf";
             
             final File[] graphs =new File[1];
             graphs[0] = new File(filename);
@@ -1291,7 +1291,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         File file = null;
         String path = "";
         JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File(StaticValue.allDela));
+        chooser.setCurrentDirectory(new File(DictionaryPath.allDela));
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             file = chooser.getSelectedFile();

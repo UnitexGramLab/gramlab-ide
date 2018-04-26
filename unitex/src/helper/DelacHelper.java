@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import model.Delac;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -40,12 +40,12 @@ public class DelacHelper {
     /**
      * This function return a list of dictionnary in directory
      * @return return an ArrayList of dictionnary
-     * @throws FileNotFoundException if there are no dictionnary found in StaticValue.allDelc path 
+     * @throws FileNotFoundException if there are no dictionnary found in DictionaryPath.allDelc path 
      */
     public static ArrayList<String> getDicDelacPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
         //File folder = new File(Utils.getValueXml("pathDelas"));
-        File folder = new File(StaticValue.allDelac);
+        File folder = new File(DictionaryPath.allDelac);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
@@ -66,9 +66,9 @@ public class DelacHelper {
      */
     public static ArrayList<String> getDicConfigDelacPath() throws FileNotFoundException, IOException{
     	ArrayList<String> list= new ArrayList<>();
-        File f = new File(StaticValue.allDelac+File.separator+"confDelac.conf");
+        File f = new File(DictionaryPath.allDelac+File.separator+"confDelac.conf");
         if(f.exists()){
-            List<String> dic = Utils.readFile(StaticValue.allDelac+File.separator+"confDelac.conf");
+            List<String> dic = Utils.readFile(DictionaryPath.allDelac+File.separator+"confDelac.conf");
             for(String line : dic ){
                 String dicName = line.split(",")[0];
                 if (dicName.endsWith("dic")) {
@@ -76,12 +76,12 @@ public class DelacHelper {
                 }
             }
             if(list.isEmpty()){
-                throw new FileNotFoundException("dictonnary not found in "+StaticValue.allDelac);
+                throw new FileNotFoundException("dictonnary not found in "+DictionaryPath.allDelac);
             }
             return list;
         }
         else{
-            throw new FileNotFoundException("Configuration file not found in "+StaticValue.allDelac);
+            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelac);
         }
     }
     /***
@@ -105,13 +105,13 @@ public class DelacHelper {
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = StaticValue.allDelac+"//"+dela;
+            String path = DictionaryPath.allDelac+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 if(s.trim().length()>0)
                     count++;
             }
-            StaticValue.dictionnary.add(dela);
+            DictionaryPath.dictionnary.add(dela);
         }
         
         Object[][] ob = new Object[count][lf.length];
@@ -121,7 +121,7 @@ public class DelacHelper {
             String pOs,lemmaAll,lemma,fSTCode,sinSem,comment,wn_SinSet;
             
             String dicFile=dela;
-            String path = StaticValue.allDelac+"//"+dela;
+            String path = DictionaryPath.allDelac+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 StringBuilder sb = new StringBuilder();

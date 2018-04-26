@@ -35,7 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -53,7 +53,7 @@ public class Shell extends javax.swing.JInternalFrame {
         jRadioInflectCompress.setSelected(true);
         buttonGroup1.add(jRadioCompress);
         buttonGroup1.add(jRadioInflectCompress);
-        jTextFieldInflection.setText(StaticValue.inflectionPath);
+        jTextFieldInflection.setText(DictionaryPath.inflectionPath);
         final JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem deleteItem = new JMenuItem("Delete");
         deleteItem.addActionListener(new ActionListener() {
@@ -331,7 +331,7 @@ public class Shell extends javax.swing.JInternalFrame {
             JFileChooser theFileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Dic FILES", "dic");
             theFileChooser.setFileFilter(filter);
-            theFileChooser.setCurrentDirectory(new File(StaticValue.allDela));
+            theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela));
             theFileChooser.setDialogTitle("Search dela Dictionnary");
             theFileChooser.setMultiSelectionEnabled(true);
             theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -415,7 +415,7 @@ public class Shell extends javax.swing.JInternalFrame {
     private void jButtonInflectionPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInflectionPathActionPerformed
        if(!isDelas){
             JFileChooser theFileChooser = new JFileChooser();
-            theFileChooser.setCurrentDirectory(new File(StaticValue.inflectionPath));
+            theFileChooser.setCurrentDirectory(new File(DictionaryPath.inflectionPath));
             theFileChooser.setDialogTitle("Search dela Dictionnary");
             theFileChooser.setMultiSelectionEnabled(true);
             theFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -494,11 +494,11 @@ public class Shell extends javax.swing.JInternalFrame {
             String strDelas = (String) jTable1.getModel().getValueAt(i, 1);
             /* Generate delaf */
             String strDelaf = strDelas.replace("delas", "delaf");
-            String[] command = new String[]{StaticValue.unitexLoggerPath, "MultiFlex",
-                strDelas,"-o",strDelaf,"-a",StaticValue.alphabetPath,"-d",jTextFieldInflection.getText()};
+            String[] command = new String[]{DictionaryPath.unitexLoggerPath, "MultiFlex",
+                strDelas,"-o",strDelaf,"-a",DictionaryPath.alphabetPath,"-d",jTextFieldInflection.getText()};
             Utils.runCommandTerminal(command);
             /* compress delaf */
-            String[] command1 = new String[]{StaticValue.unitexLoggerPath, "Compress",strDelaf};
+            String[] command1 = new String[]{DictionaryPath.unitexLoggerPath, "Compress",strDelaf};
             Utils.runCommandTerminal(command1);
         }
         jTextArea1.append("Done\n");
@@ -509,7 +509,7 @@ public class Shell extends javax.swing.JInternalFrame {
         for(int i=0;i<jTable1.getRowCount();i++){
             String strDelaf = (String) jTable1.getModel().getValueAt(i, 1);
             /* compress delaf */
-            String[] command1 = new String[]{StaticValue.unitexLoggerPath, "Compress",strDelaf};
+            String[] command1 = new String[]{DictionaryPath.unitexLoggerPath, "Compress",strDelaf};
             Utils.runCommandTerminal(command1);
         }
         jTextArea1.append("Done\n");

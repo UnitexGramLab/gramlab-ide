@@ -45,7 +45,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import leximir.delac.menu.MenuDelac;
-import model.StaticValue;
+import model.DictionaryPath;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -358,8 +358,8 @@ public class Utils {
      * @throws FileNotFoundException 
      */
     public static void InflectDelas(String lemma, String fst) throws IOException,FileNotFoundException {
-        System.out.println("infect : " + StaticValue.inflectionPath + fst + ".grf");
-        if (new File(StaticValue.inflectionPath + fst + ".grf").exists()) {
+        System.out.println("infect : " + DictionaryPath.inflectionPath + fst + ".grf");
+        if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
             BufferedWriter bfw;
             bfw = new BufferedWriter(new FileWriter("DelasTmp.dic"));
             bfw.write(lemma);
@@ -367,11 +367,11 @@ public class Utils {
             bfw.write(fst);
             bfw.close();
             String[] command = {
-                StaticValue.unitexLoggerPath, "MultiFlex",
-                StaticValue.delasTmpPath,
-                "-o", StaticValue.delafTmpPath,
-                "-a", StaticValue.alphabetPath,
-                "-d", StaticValue.inflectionPath
+                DictionaryPath.unitexLoggerPath, "MultiFlex",
+                DictionaryPath.delasTmpPath,
+                "-o", DictionaryPath.delafTmpPath,
+                "-a", DictionaryPath.alphabetPath,
+                "-d", DictionaryPath.inflectionPath
             };
             
             //for(String s:command)System.out.print(s+" ");
@@ -382,7 +382,7 @@ public class Utils {
             while (p.isAlive()) {
             }
 
-            Desktop.getDesktop().open(new File(StaticValue.delafTmpPath));
+            Desktop.getDesktop().open(new File(DictionaryPath.delafTmpPath));
         }
         else{
             throw new FileNotFoundException(" FST Graph doesn't exist");
@@ -396,7 +396,7 @@ public class Utils {
       * @throws HeadlessException 
       */
    public static void generateDelaf(String value) throws IOException, HeadlessException {
-       String tempPath = StaticValue.delafTmpPathDelac; 
+       String tempPath = DictionaryPath.delafTmpPathDelac; 
        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(tempPath))) {
             bfw.write(value+".");
         } 
@@ -404,19 +404,19 @@ public class Utils {
         try (BufferedWriter bfw = new BufferedWriter(new FileWriter(snt))) {
             bfw.write(value+".");
         }
-        String[] cmd1 = {StaticValue.unitexLoggerPath, "Normalize", StaticValue.delafTmpAbsPathDelac+"text.txt" };
-        String[] cmd2 = {StaticValue.unitexLoggerPath,"Tokenize",StaticValue.delafTmpAbsPathDelac+"text.snt" ,"-a",StaticValue.alphabetPath};
+        String[] cmd1 = {DictionaryPath.unitexLoggerPath, "Normalize", DictionaryPath.delafTmpAbsPathDelac+"text.txt" };
+        String[] cmd2 = {DictionaryPath.unitexLoggerPath,"Tokenize",DictionaryPath.delafTmpAbsPathDelac+"text.snt" ,"-a",DictionaryPath.alphabetPath};
         List<String> allDela=new ArrayList<>();
-        File folder = new File(StaticValue.allDelafAbsPath);
+        File folder = new File(DictionaryPath.allDelafAbsPath);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
                 if (listOfFile.getName().endsWith(".bin")) {
-                    allDela.add(StaticValue.allDelafAbsPath+listOfFile.getName());
+                    allDela.add(DictionaryPath.allDelafAbsPath+listOfFile.getName());
                 }
             } 
         }
-        String[] cmdTmp ={StaticValue.unitexLoggerPath, "Dico","-t",StaticValue.delafTmpAbsPathDelac+"text.snt","-a",StaticValue.alphabetPath};
+        String[] cmdTmp ={DictionaryPath.unitexLoggerPath, "Dico","-t",DictionaryPath.delafTmpAbsPathDelac+"text.snt","-a",DictionaryPath.alphabetPath};
         String[] cmd3 = new String[cmdTmp.length+allDela.size()];
         System.arraycopy(cmdTmp, 0, cmd3, 0, cmdTmp.length);
         int indiceCmd=cmdTmp.length;

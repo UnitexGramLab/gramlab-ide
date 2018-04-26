@@ -35,7 +35,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -57,7 +57,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
         tableModel.addColumn("order");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         try {
-            List<String> dic = Utils.readFile(StaticValue.allDelas + "//confDelas.conf");
+            List<String> dic = Utils.readFile(DictionaryPath.allDelas + "//confDelas.conf");
 
             for (String line : dic) {
                 int count = Integer.parseInt(line.split(":")[1]);
@@ -67,7 +67,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
             }
             jTable1.setModel(tableModel);
         } catch (java.io.FileNotFoundException ex) {
-            File f = new File(StaticValue.allDelas + "//confDelas.conf");
+            File f = new File(DictionaryPath.allDelas + "//confDelas.conf");
             try {
                 f.createNewFile();
             } catch (IOException ex1) {
@@ -83,7 +83,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
         tableModel2.addColumn("order");
 
         try {
-            List<String> dic = Utils.readFile(StaticValue.allDelac + "//confDelac.conf");
+            List<String> dic = Utils.readFile(DictionaryPath.allDelac + "//confDelac.conf");
             for (String line : dic) {
                 int count = Integer.parseInt(line.split(":")[1]);
                 String path = line.split(":")[0].split(",")[1];
@@ -93,7 +93,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
             jTable2.setModel(tableModel2);
         } catch (java.io.FileNotFoundException ex) {
             try {
-                File f = new File(StaticValue.allDelas + "//confDelas.conf");
+                File f = new File(DictionaryPath.allDelas + "//confDelas.conf");
                 f.createNewFile();
             } catch (IOException ex1) {
                 Logger.getLogger(ConfigDela.class.getName()).log(Level.SEVERE, null, ex1);
@@ -282,7 +282,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
         JFileChooser theFileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Dic FILES", "dic");
         theFileChooser.setFileFilter(filter);
-        theFileChooser.setCurrentDirectory(new File(StaticValue.allDela));
+        theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela));
         theFileChooser.setDialogTitle("Search dela Dictionnary");
         theFileChooser.setMultiSelectionEnabled(true);
         theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -318,7 +318,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
             try {
                 BufferedWriter bfw;
                 Map<String, List<String>> fileData = new HashMap<>();
-                bfw = new BufferedWriter(new FileWriter(StaticValue.allDelas + "//confDelas.conf"));
+                bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas + "//confDelas.conf"));
                 for (int row = 0; row < tableModel.getRowCount(); row++) {
 
                     String file = (String) tableModel.getValueAt(row, 0);
@@ -341,7 +341,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
         JFileChooser theFileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Dic FILES", "dic");
         theFileChooser.setFileFilter(filter);
-        theFileChooser.setCurrentDirectory(new File(StaticValue.allDela));
+        theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela));
         theFileChooser.setDialogTitle("Search delac Dictionnary");
         theFileChooser.setMultiSelectionEnabled(true);
         theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -377,7 +377,7 @@ public class ConfigDela extends javax.swing.JInternalFrame {
             try {
                 BufferedWriter bfw;
                 Map<String, List<String>> fileData = new HashMap<>();
-                bfw = new BufferedWriter(new FileWriter(StaticValue.allDelac + "//confDelac.conf"));
+                bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelac + "//confDelac.conf"));
                 for (int row = 0; row < tableModel2.getRowCount(); row++) {
 
                     String file = (String) tableModel2.getValueAt(row, 0);

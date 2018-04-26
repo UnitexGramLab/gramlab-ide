@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import leximir.EditorDelas;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -28,14 +28,14 @@ public class MenuDelas extends javax.swing.JFrame {
     public MenuDelas() {
         //super("Manage Delas", true, true, true, true);
         initComponents();
-        for(String dic:StaticValue.dictionnary){
+        for(String dic:DictionaryPath.dictionnary){
             jComboBoxDic.addItem(dic);
         };
     }
     public MenuDelas(EditorDelas el,int selectedRow,String menuSelected,Object dictionnary, Object[] obj){
         //super("Manage Delas", true, true, true, true);
         initComponents();
-        for(String dic:StaticValue.dictionnary){
+        for(String dic:DictionaryPath.dictionnary){
             jComboBoxDic.addItem(dic);
         };
         jComboBoxDic.setSelectedItem(dictionnary);

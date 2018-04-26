@@ -27,7 +27,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import model.Delas;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -42,7 +42,7 @@ public class DelasHelper {
      */
     public static ArrayList<String> getDicDelasPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
-        File folder = new File(StaticValue.allDelas);
+        File folder = new File(DictionaryPath.allDelas);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
@@ -63,9 +63,9 @@ public class DelasHelper {
      */
     public static ArrayList<String> getDicConfigDelasPath() throws FileNotFoundException, IOException{
     	ArrayList<String> list= new ArrayList<>();
-        File f = new File(StaticValue.allDelas+File.separator+"confDelas.conf");
+        File f = new File(DictionaryPath.allDelas+File.separator+"confDelas.conf");
         if(f.exists()){
-            List<String> dic = Utils.readFile(StaticValue.allDelas+File.separator+"confDelas.conf");
+            List<String> dic = Utils.readFile(DictionaryPath.allDelas+File.separator+"confDelas.conf");
             for(String line : dic ){
                 String dicName = line.split(",")[0];
                 if (dicName.endsWith("dic")) {
@@ -73,12 +73,12 @@ public class DelasHelper {
                 }
             }
             if(list.isEmpty()){
-                throw new FileNotFoundException("dictonnary not found in "+StaticValue.allDelas);
+                throw new FileNotFoundException("dictonnary not found in "+DictionaryPath.allDelas);
             }
             return list;
         }
         else{
-            throw new FileNotFoundException("Configuration file not found in "+StaticValue.allDelas);
+            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelas);
         }
     }
     /***
@@ -102,12 +102,12 @@ public class DelasHelper {
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = StaticValue.allDelas+"//"+dela;
+            String path = DictionaryPath.allDelas+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 count++;
             }
-            StaticValue.dictionnary.add(dela);
+            DictionaryPath.dictionnary.add(dela);
         }
         
         Object[][] ob = new Object[count][lf.length];
@@ -118,7 +118,7 @@ public class DelasHelper {
             
             String dicFile=dela;
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = StaticValue.allDelas+"//"+dela;
+            String path = DictionaryPath.allDelas+"//"+dela;
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 lemma=getLemaInDelas(s);

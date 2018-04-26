@@ -24,7 +24,7 @@ import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import model.StaticValue;
+import model.DictionaryPath;
 
 /**
  *
@@ -40,7 +40,7 @@ public class CompoundsUtils {
      */
     public static List<String> getDlfInFile(String value) throws IOException, HeadlessException {
         Utils.generateDelaf(value);
-        String path = StaticValue.text_sntAbsPath;
+        String path = DictionaryPath.text_sntAbsPath;
         ArrayList<String> readFile = Utils.readFile(path);
         return readFile;
     }

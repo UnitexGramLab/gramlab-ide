@@ -24,7 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import model.StaticValue;
+import model.DictionaryPath;
 import util.Utils;
 
 /**
@@ -44,7 +44,7 @@ public class DelafHelper {
      * @throws IOException 
      */
     public static Object[][] getAllDelafFromDelacToObject() throws FileNotFoundException, IOException{
-        String path = StaticValue.text_sntAbsPath;
+        String path = DictionaryPath.text_sntAbsPath;
         ArrayList<String> readFile = Utils.readFile(path);
         Object[][] ob = new Object[readFile.size()][5];        
         try{
