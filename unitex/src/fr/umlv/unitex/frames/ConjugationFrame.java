@@ -61,7 +61,7 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiFlexCommand;
 import fr.umlv.unitex.text.BigTextList;
 
-public class ConjugaisonFrame extends JInternalFrame {
+public class ConjugationFrame extends JInternalFrame {
 	
 	private static final int MAIN_PANEL_WIDTH = 450;
 	private static final int MAIN_PANEL_HEIGHT = 400;
@@ -103,7 +103,7 @@ public class ConjugaisonFrame extends JInternalFrame {
 	private static final String DESCRIPTION_DIC_FILE_ONLY = "Only Dictionnary File (.dic)";
 	private static final List<String> extractedLines = new ArrayList<String>();
 
-	public ConjugaisonFrame(){
+	public ConjugationFrame(){
 		super("Conjugeur", true, true);
 		graphNameList.clear();
 		graphNameList.add(ALL);

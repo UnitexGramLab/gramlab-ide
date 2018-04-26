@@ -722,7 +722,7 @@ public class UnitexFrame extends JFrame {
 	AbstractAction inflect;
 	AbstractAction delasLeximir;
 	AbstractAction confDelaLeximir;
-	AbstractAction conjugaisonFrame;
+	AbstractAction ConjugationFrame;
 	AbstractAction delacStrategyLeximir;
 	AbstractAction shellLeximir;
 	AbstractAction delacLeximir;
@@ -797,7 +797,7 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		delaMenu.add(openRecent);
-		conjugaisonFrame = new AbstractAction("Open Conjugaison...") {
+		ConjugationFrame = new AbstractAction("Open Conjugaison...") {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -806,8 +806,8 @@ public class UnitexFrame extends JFrame {
 				
 			}
 		};
-		conjugaisonFrame.setEnabled(true);
-		delaMenu.add(new JMenuItem(conjugaisonFrame));
+		ConjugationFrame.setEnabled(true);
+		delaMenu.add(new JMenuItem(ConjugationFrame));
 		//for shell
 		shellLeximir = new AbstractAction("Compile...") {
 			@Override
