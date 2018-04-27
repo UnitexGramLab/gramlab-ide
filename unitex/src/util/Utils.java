@@ -46,10 +46,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import leximir.delac.menu.MenuDelac;
 import model.DictionaryPath;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+
 
 /**
  *
@@ -107,184 +104,62 @@ public class Utils {
     public static String reverseString(String text) {
         return new StringBuffer(text).reverse().toString();
     }
-    public static Map<String, Object[]> putPosDicGridInExcel(Map<String, HashMap<String, String>> data) {
-        Map<String, Object[]> datas = new HashMap<>();
-        datas.put("1", new Object[]{"Dic", "POS", "Number"});
-        int inc = 2;
-        for (Map.Entry<String, HashMap<String, String>> f : data.entrySet()) {
-            String key = f.getKey();
-            for (Map.Entry<String, String> p : f.getValue().entrySet()) {
-                datas.put(String.valueOf(inc), new Object[]{key, p.getKey(), p.getValue()});
-                inc++;
+
+    public static void exportJtableToCsv( List<Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
+
+        String creator="";
+        for (Object[] tab : dicPos) {
+            for (Object obj : tab) {
+                   creator+=obj.toString()+";";
+            }
+            creator+="\n";
+        }
+
+        boolean isDone = false;
+        try{
+            FileWriter fileWriter = new FileWriter(filename,false);
+            fileWriter.write(creator);
+            fileWriter.close();
+            isDone = true;
+        } finally {
+            if (isDone) {
+                Desktop.getDesktop().open(new File(filename));
+                System.out.println("csv written successfully..");
             }
         }
-        return datas;
-    }
-    /**
-     * This function is for All Button. Complete cell in excel file.
-     * @param data 
-     * @return 
-     */
-    public static Map<String, Object[]> putPosGridInExcel(Map<String,  String> data) {
-        Map<String, Object[]> datas = new HashMap<>();
-        datas.put("1", new Object[]{"POS", "Number"});
-        int inc = 2;
-        for (Map.Entry<String,  String> f : data.entrySet()) {
-            datas.put(String.valueOf(inc), new Object[]{f.getKey(), f.getValue()});
-            inc++;
-        }
-        return datas;
     }
 
-    public static void exportJtableToExcel( Map<String, Object[]> dicPos,Map<String, Object[]> pos, String filename) throws IOException, FileNotFoundException {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Dic Pos Stat");
-        Set<String> keyset = dicPos.keySet();
-        int rownum = 0;
-        for (String key : keyset) {
-            Row row = sheet.createRow(rownum++);
-            Object[] objArr = dicPos.get(key);
-            int cellnum = 0;
-            for (Object obj : objArr) {
-                Cell cell = row.createCell(cellnum++);
-                if (obj instanceof Date) {
-                    cell.setCellValue((Date) obj);
-                } else if (obj instanceof Boolean) {
-                    cell.setCellValue((Boolean) obj);
-                } else if (obj instanceof String) {
-                    cell.setCellValue((String) obj);
-                } else if (obj instanceof Double) {
-                    cell.setCellValue((Double) obj);
-                }
-            }
-        }
-        HSSFSheet sheetPos = workbook.createSheet("Pos stat");
-        Set<String> keypos = pos.keySet();
-        int rowPosnum = 0;
-        for (String key : keypos) {
-            Row row = sheetPos.createRow(rowPosnum++);
-            Object[] objArr = pos.get(key);
-            int cellnum = 0;
-            for (Object obj : objArr) {
-                Cell cell = row.createCell(cellnum++);
-                if (obj instanceof Date) {
-                    cell.setCellValue((Date) obj);
-                } else if (obj instanceof Boolean) {
-                    cell.setCellValue((Boolean) obj);
-                } else if (obj instanceof String) {
-                    cell.setCellValue((String) obj);
-                } else if (obj instanceof Double) {
-                    cell.setCellValue((Double) obj);
-                }
-            }
-        }
-        boolean isDone = false;
-        try (FileOutputStream out = new FileOutputStream(new File(filename))) {
-            workbook.write(out);
-            isDone = true;
-        } finally {
-            if (isDone) {
-                Desktop.getDesktop().open(new File(filename));
-                System.out.println("Excel written successfully..");
-            }
-        }
-    }
-    public static void exportJtableDelacToExcel( Map<String, Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("Dic Pos Stat");
-        Set<String> keyset = dicPos.keySet();
-        int rownum = 0;
-        for (String key : keyset) {
-            Row row = sheet.createRow(rownum++);
-            Object[] objArr = dicPos.get(key);
-            int cellnum = 0;
-            for (Object obj : objArr) {
-                Cell cell = row.createCell(cellnum++);
-                if (obj instanceof Date) {
-                    cell.setCellValue((Date) obj);
-                } else if (obj instanceof Boolean) {
-                    cell.setCellValue((Boolean) obj);
-                } else if (obj instanceof String) {
-                    cell.setCellValue((String) obj);
-                } else if (obj instanceof Double) {
-                    cell.setCellValue((Double) obj);
-                }
-            }
-        }
-        
-        boolean isDone = false;
-        try (FileOutputStream out = new FileOutputStream(new File(filename))) {
-            workbook.write(out);
-            isDone = true;
-        } finally {
-            if (isDone) {
-                Desktop.getDesktop().open(new File(filename));
-                System.out.println("Excel written successfully..");
-            }
-        }
-    }
+   
     
-    
-    public static void exportStatAllToExcel( Map<String, Object[]> simSem1,Map<String, Object[]> simSem2, String filename) throws IOException, FileNotFoundException {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("SinSem1");
+    public static void exportStatAllToCsv( Map<String, Object[]> simSem1,Map<String, Object[]> simSem2, String filename) throws IOException, FileNotFoundException {
+        String creator="";
         Set<String> keyset = simSem1.keySet();
-        int rownum = 0;
         for (String key : keyset) {
-            Row row = sheet.createRow(rownum++);
             Object[] objArr = simSem1.get(key);
-            int cellnum = 0;
             for (Object obj : objArr) {
-                Cell cell = row.createCell(cellnum++);
-                if (obj instanceof Date) {
-                    cell.setCellValue((Date) obj);
-                } else if (obj instanceof Boolean) {
-                    cell.setCellValue((Boolean) obj);
-                } else if (obj instanceof String) {
-                    cell.setCellValue((String) obj);
-                } else if (obj instanceof Double) {
-                    cell.setCellValue((Double) obj);
-                }
+                creator+=obj.toString()+";";
             }
+            creator+="\n";
         }
-        HSSFSheet sheets = workbook.createSheet("SimSem2");
-        Object[] objTitle =  new Object[]{"POS", "SinSem","Category", "Number"};
-        Row rowTitle = sheets.createRow(0);
-        Cell cellTitle = rowTitle.createCell(0);
-        cellTitle.setCellValue((String)objTitle[0]);
-        cellTitle = rowTitle.createCell(1);
-        cellTitle.setCellValue((String)objTitle[1]);
-        cellTitle = rowTitle.createCell(2);
-        cellTitle.setCellValue((String)objTitle[2]);
-        cellTitle = rowTitle.createCell(3);
-        cellTitle.setCellValue((String)objTitle[3]);
+        creator="POS;SinSem;Category;Number\n";
         Set<String> keysets = simSem2.keySet();
-        int rownums = 1;
         for (String key : keysets) {
-            Row row = sheets.createRow(rownums++);
             Object[] objArr = simSem2.get(key);
-            int cellnum = 0;
             for (Object obj : objArr) {
-                Cell cell = row.createCell(cellnum++);
-                if (obj instanceof Date) {
-                    cell.setCellValue((Date) obj);
-                } else if (obj instanceof Boolean) {
-                    cell.setCellValue((Boolean) obj);
-                } else if (obj instanceof String) {
-                    cell.setCellValue((String) obj);
-                } else if (obj instanceof Double) {
-                    cell.setCellValue((Double) obj);
-                }
+                  creator+=obj.toString()+";";
             }
+            creator+="\n";
         }
         boolean isDone = false;
-        try (FileOutputStream out = new FileOutputStream(new File(filename))) {
-            workbook.write(out);
+        try{
+            FileWriter fileWriter = new FileWriter(filename,false);
+            fileWriter.write(creator);
+            fileWriter.close();
             isDone = true;
         } finally {
             if (isDone) {
                 Desktop.getDesktop().open(new File(filename));
-                System.out.println("Excel written successfully..");
+                System.out.println("csv written successfully..");
             }
         }
     }

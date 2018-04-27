@@ -40,7 +40,7 @@ public class DelacHelper {
     /**
      * This function return a list of dictionnary in directory
      * @return return an ArrayList of dictionnary
-     * @throws FileNotFoundException if there are no dictionnary found in DictionaryPath.allDelc path 
+     * @throws FileNotFoundException if there are no dictionnary found in StaticValue.allDelc path 
      */
     public static ArrayList<String> getDicDelacPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();

@@ -29,7 +29,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import leximir.EditorDelac;
-import model.DictionaryPath;
+import model.StaticValue;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -563,7 +563,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
             if(evt.isControlDown() && evt.getKeyCode()==KeyEvent.VK_F){
                 try {
                     String value = (String) this.jTable1.getModel().getValueAt(this.jTable1.getSelectedRow(), 1);
-                    String tempPath = DictionaryPath.delafTmpPathDelac;
+                    String tempPath = StaticValue.delafTmpPathDelac;
                     Utils.generateDelaf(tempPath, value);
                     tableModel = GridHelper.getDelafInDelacForDelac();
                     JTable table = new JTable(tableModel);
@@ -764,9 +764,9 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
     private List<String> getDlf(String value) throws IOException, HeadlessException {
         List<String> result = new ArrayList<>();
-        String tempPath = DictionaryPath.delafTmpPathDelac;
+        String tempPath = StaticValue.delafTmpPathDelac;
         Utils.generateDelaf(tempPath, value);
-        String path = DictionaryPath.text_sntAbsPath;
+        String path = StaticValue.text_sntAbsPath;
         ArrayList<String> readFile = Utils.readFile(path);
         int count = 0;
         for(String s:readFile){

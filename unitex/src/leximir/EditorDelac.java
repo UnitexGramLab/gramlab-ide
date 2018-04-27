@@ -600,16 +600,13 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     jMenuBar1.add(jMenuDuplicate);
 
     jMenuStatistics.setText("Statistics");
+
     jMenuStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             jMenuStatisticsMouseClicked(evt);
         }
     });
-    jMenuStatistics.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jMenuStatisticsActionPerformed(evt);
-        }
-    });
+
     jMenuBar1.add(jMenuStatistics);
 
     jMenuSave.setText("Save");
@@ -670,47 +667,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
-    private void jMenuStatisticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuStatisticsActionPerformed
-        try {
-            Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
-            for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String dic = (String) this.getjTable1().getValueAt(i, 8);
-                String value = (String) this.getjTable1().getValueAt(i, 0);
-                if (!dic_POS_stat.containsKey(dic)) {
-                    dic_POS_stat.put(dic, new HashMap<String,String>());
-                    dic_POS_stat.get(dic).put(value, "1");
-                } else {
-                    if (dic_POS_stat.get(dic).containsKey(value)) {
-                        int count = Integer.parseInt(dic_POS_stat.get(dic).get(value)) + 1;
-                        dic_POS_stat.get(dic).replace(value, String.valueOf(count));
-                    } else {
-                        dic_POS_stat.get(dic).put(value, "1");
-                    }
-                }
-            }
-            
-            Map<String, String> pOS_stat = new HashMap<>();
-            for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String value = (String) this.getjTable1().getValueAt(i, 0);
-                if (!pOS_stat.containsKey(value)) {
-                    pOS_stat.put(value, "1");
-                } else {
-                    int count = Integer.parseInt(pOS_stat.get(value)) + 1;
-                    pOS_stat.replace(value, String.valueOf(count));
-                }
-            }
-            Map<String, Object[]> dicPos = Utils.putPosDicGridInExcel(dic_POS_stat);
-            Map<String, Object[]> pos = Utils.putPosGridInExcel(pOS_stat);
-            //String filename = Utils.getValueXml("pathExportStatistics");
-            String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportJtableToExcel(dicPos,pos,filename);
-            
-            JOptionPane.showMessageDialog(null, "file created in \n"+filename);
-        } catch (IOException ex) {
-           JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
-        }
-    }//GEN-LAST:event_jMenuStatisticsActionPerformed
-
     private void jMenuNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuNewMouseClicked
         
     }//GEN-LAST:event_jMenuNewMouseClicked
@@ -735,19 +691,20 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     }
                 }
             }
-            Map<String, Object[]> datas = new HashMap<>();
-            datas.put("1", new Object[]{"Dic", "POS", "Number"});
-            int inc = 2;
+                      
+            List<Object[]> dicPos =new ArrayList<Object[]>();
+            dicPos.add( new Object[]{"Dic", "POS", "Number"});
             for (Map.Entry<String, HashMap<String, String>> f : data.entrySet()) {
                 String key = f.getKey();
                 for (Map.Entry<String, String> p : f.getValue().entrySet()) {
-                    datas.put(String.valueOf(inc), new Object[]{key, p.getKey(), p.getValue()});
-                    inc++;
+                    dicPos.add( new Object[]{key, p.getKey(), p.getValue()});
+                    
                 }
             }
+            
             //String filename = Utils.getValueXml("pathExportStatistics");
             String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportJtableDelacToExcel(datas,filename);
+            Utils.exportJtableToCsv(dicPos,filename);
             
             JOptionPane.showMessageDialog(null, "file created in \n"+filename);
         } catch (IOException ex) {
@@ -946,7 +903,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     valueInData.addAll(Arrays.asList(tmp));
                     data.put(pos, valueInData);
                 }
-                /** This section is for SimSem1 excel data **/
+                /** This section is for SimSem1 Csv data **/
                 String sinsemForPos = (String) this.getjTable1().getValueAt(i, 4);
                 String[] domain = sinsemForPos.split("=")[0].split(Pattern.quote("+"));
                 
@@ -962,9 +919,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                         dataForSinSem1.get(pos).put(realSynSem, "1");
                     }
                 }
-                /** end of SimSem1 excel data **/
+                /** end of SimSem1 Csv data **/
                 
-                /** This section is for SimSem2 excel data **/
+                /** This section is for SimSem2 Csv data **/
                 String domainCategory ="";
                 try{
                     domainCategory = sinsemForPos.split("=")[1].split(Pattern.quote("+"))[0];
@@ -995,7 +952,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-                /** end of SimSem2 excel data **/
+                /** end of SimSem2 Csv data **/
             }
             
             for(Map.Entry<String, List<String>> d:data.entrySet()){
@@ -1049,7 +1006,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 }
             }
             String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportStatAllToExcel(statSimSem1,statSimSem2,filename);
+            Utils.exportStatAllToCsv(statSimSem1,statSimSem2,filename);
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
         }

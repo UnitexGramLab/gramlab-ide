@@ -742,11 +742,20 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     pOS_stat.replace(value, String.valueOf(count));
                 }
             }
-            Map<String, Object[]> dicPos = Utils.putPosDicGridInExcel(dic_POS_stat);
-            Map<String, Object[]> pos = Utils.putPosGridInExcel(pOS_stat);
+            
+            List<Object[]> dicPos =new ArrayList<Object[]>();
+            dicPos.add( new Object[]{"Dic", "POS", "Number"});
+            for (Map.Entry<String, HashMap<String, String>> f : dic_POS_stat.entrySet()) {
+                String key = f.getKey();
+                for (Map.Entry<String, String> p : f.getValue().entrySet()) {
+                    dicPos.add( new Object[]{key, p.getKey(), p.getValue()});
+                    
+                }
+            }
+            
             //String filename = Utils.getValueXml("pathExportStatistics");
             String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportJtableToExcel(dicPos,pos,filename);
+            Utils.exportJtableToCsv(dicPos,filename);
             
             JOptionPane.showMessageDialog(null, "file created in \n"+filename);
         } catch (IOException ex) {
@@ -944,7 +953,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     valueInData.addAll(Arrays.asList(tmp));
                     data.put(pos, valueInData);
                 }
-                /** This section is for SimSem1 excel data **/
+                /** This section is for SimSem1 Csv data **/
                 String sinsemForPos = (String) this.getjTable1().getValueAt(i, 3);
                 
                 String[] domain = sinsemForPos.split("=")[0].split(Pattern.quote("+"));
@@ -967,9 +976,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         dataForSinSem1.get(pos).put(realSynSem, "1");
                     }
                 }
-                /** end of SimSem1 excel data **/
+                /** end of SimSem1 Csv data **/
                 
-                /** This section is for SimSem2 excel data **/
+                /** This section is for SimSem2 Csv data **/
                 String domainCategory ="";
                 try{
                     domainCategory = sinsemForPos.split("=")[1].split(Pattern.quote("+"))[0];
@@ -1002,7 +1011,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-                /** end of SimSem2 excel data **/
+                /** end of SimSem2 Csv data **/
             }
             
             for(Map.Entry<String, List<String>> d:data.entrySet()){
@@ -1057,7 +1066,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 }
             }
             String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportStatAllToExcel(statSimSem1,statSimSem2,filename);
+            Utils.exportStatAllToCsv(statSimSem1,statSimSem2,filename);
             
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());

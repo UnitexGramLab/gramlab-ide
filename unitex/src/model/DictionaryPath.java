@@ -41,7 +41,7 @@ public class DictionaryPath {
     public static final String inflectionPath = Config.getUserDir().toString().replace("/", "//")+"//"+Config.getCurrentLanguage()+"//"+"Inflection//";
     public static final String allDelas = Config.getUserDir()+"/"+Config.getCurrentLanguage()+"/"+"Dela/Delas/";
     public static final String allDelac = Config.getUserDir()+"/"+Config.getCurrentLanguage()+"/"+"Dela/Delac/";
-    public static final String statisticsTmpPath = "statisticsTmp.xls";
+    public static final String statisticsTmpPath = "statisticsTmp.csv";
     public static final String delasTmpPath = Config.getUnitexDir()+"//App//DelasTmp.dic";
     public static final String delafTmpPath = Config.getUnitexDir()+"//App//DelafTmp.dic";
     
