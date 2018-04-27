@@ -98,9 +98,9 @@ public class ConjugationFrame extends JInternalFrame {
 	private static final String flxSuffix ="flx.dic";
 	private static final String tmpFlxSuffix ="tmpflx.dic";
 	private static final String ERROR_FILE_EMPTY = "Please choose a dictionary file";
-	private static final String ERROR_RESULT_EMPTY = "Current criteria has not find result";
-	private static final String FILE_EMPTY_DIALOG_TITLE = "No File Choosen";
-	private static final String DESCRIPTION_DIC_FILE_ONLY = "Only Dictionnary File (.dic)";
+	private static final String ERROR_RESULT_EMPTY = "No results were found using the criteria provided";
+	private static final String FILE_EMPTY_DIALOG_TITLE = "No File Chosen";
+	private static final String DESCRIPTION_DIC_FILE_ONLY = "Only Dictionnary file (*.dic)";
 	private static final List<String> extractedLines = new ArrayList<String>();
 
 	public ConjugationFrame(){
