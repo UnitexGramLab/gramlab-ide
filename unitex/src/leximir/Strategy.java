@@ -580,7 +580,7 @@ private DefaultTableModel tableModel ;
                  * *** complete datatableRule **
                  */
                 boolean alldelas = true;
-                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas);
+                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas,null);
                 Object[][] allDelasImportant = new Object[jTableDlf.getRowCount()][6];
                 int indexImportantDelas = 0;
                 for (Object[] allDela : getAllDelas) {

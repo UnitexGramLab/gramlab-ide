@@ -726,7 +726,7 @@ public class MenuDelac extends javax.swing.JFrame {
                  * *** complete datatableRule **
                  */
                 boolean alldelas = true;
-                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas);
+                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas,null);
                 Object[][] allDelasImportant = new Object[jTableDlf.getRowCount()][6];
                 int indexImportantDelas = 0;
                 List<String> wordFoundInDico = new ArrayList<>();

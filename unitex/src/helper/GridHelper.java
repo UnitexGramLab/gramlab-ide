@@ -20,6 +20,7 @@
  */
 package helper;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.JTable;
@@ -37,10 +38,10 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getOpenEditorforDelas(boolean alldelas) throws IOException{
+    public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException{
         
         String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Lemma lnv","WN_SynSet","Lemma ID","Dict. File"};
-        Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas);
+        Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
         return new DefaultTableModel(data,entete);
     }
     /**
@@ -48,10 +49,10 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getOpenEditorforDelac(boolean alldelac) throws IOException{
+    public static DefaultTableModel getOpenEditorforDelac(boolean alldelac, File dic) throws IOException{
         
         String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SynSem","Comment","WN_SynSet","Lemma ID","Dict. File"};
-        Object[][] data = DelacHelper.getAllDelacFromDicToObject(alldelac);
+        Object[][] data = DelacHelper.getAllDelacFromDicToObject(alldelac, dic);
         return new DefaultTableModel(data,entete);
     }
     /**

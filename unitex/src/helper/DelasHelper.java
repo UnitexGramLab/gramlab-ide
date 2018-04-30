@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import model.Delas;
 import model.DictionaryPath;
@@ -61,26 +62,26 @@ public class DelasHelper {
      * @return
      * @throws FileNotFoundException 
      */
-    public static ArrayList<String> getDicConfigDelasPath() throws FileNotFoundException, IOException{
-    	ArrayList<String> list= new ArrayList<>();
-        File f = new File(DictionaryPath.allDelas+File.separator+"confDelas.conf");
-        if(f.exists()){
-            List<String> dic = Utils.readFile(DictionaryPath.allDelas+File.separator+"confDelas.conf");
-            for(String line : dic ){
-                String dicName = line.split(",")[0];
-                if (dicName.endsWith("dic")) {
-                    list.add(dicName);
-                }
-            }
-            if(list.isEmpty()){
-                throw new FileNotFoundException("dictonnary not found in "+DictionaryPath.allDelas);
-            }
-            return list;
-        }
-        else{
-            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelas);
-        }
-    }
+//    public static ArrayList<String> getDicConfigDelasPath() throws FileNotFoundException, IOException{
+//    	ArrayList<String> list= new ArrayList<>();
+//        File f = new File(DictionaryPath.allDelas+File.separator+"confDelas.conf");
+//        if(f.exists()){
+//            List<String> dic = Utils.readFile(DictionaryPath.allDelas+File.separator+"confDelas.conf");
+//            for(String line : dic ){
+//                String dicName = line.split(",")[0];
+//                if (dicName.endsWith("dic")) {
+//                    list.add(dicName);
+//                }
+//            }
+//            if(list.isEmpty()){
+//                throw new FileNotFoundException("dictonnary not found in "+DictionaryPath.allDelas);
+//            }
+//            return list;
+//        }
+//        else{
+//            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelas);
+//        }
+//    }
     /***
      *  This funtion return all line in delas dictionary into Object[][] 
      * @param allDelas if allDelas is true, the function takes all delas in delas folder, else it takes dictionnary selected in configuration
@@ -89,20 +90,25 @@ public class DelasHelper {
      * @throws IOException 
      */
     
-    public static Object[][] getAllDelasFromDicToObject(boolean allDelas) throws FileNotFoundException, IOException{
-        ArrayList<String> list= new ArrayList<>();
+    public static Object[][] getAllDelasFromDicToObject(boolean allDelas,File dic) throws FileNotFoundException, IOException{
+        List<String> list= new ArrayList<>();
         if(allDelas){
             list = getDicDelasPath();
         }
         else{
-            list = getDicConfigDelasPath();
+            list = Arrays.asList(dic.getAbsolutePath().toString());
         }
         Delas delas = new Delas();
         Field[] lf = delas.getClass().getDeclaredFields();
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = DictionaryPath.allDelas+"//"+dela;
+            String path="";
+            if(allDelas)
+            path = DictionaryPath.allDelas+"//"+dela;
+            else
+            path = dela;
+
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 count++;
@@ -118,7 +124,12 @@ public class DelasHelper {
             
             String dicFile=dela;
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = DictionaryPath.allDelas+"//"+dela;
+            String path="";
+            if(allDelas)
+            path = DictionaryPath.allDelas+"//"+dela;
+            else
+            path = dela;
+            
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 lemma=getLemaInDelas(s);

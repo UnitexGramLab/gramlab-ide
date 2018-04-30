@@ -72,17 +72,17 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form EditorLadl
-     * @param alldelac if alldelas is true, the programm open all dictionary in delas folder, else the program open dictionary found in configuration
+     * @param alldelac if alldelas is true, the programm open all dictionary in delac folder, 
      */
-    public EditorDelac(boolean alldelac) {
+    public EditorDelac(boolean alldelac, File dic) {
         super("LeXimir Editor for Dela dictionaries of compound words", true, true, true, true);
         try {
             initComponents();
             DictionaryPath.dictionnary.clear();
             this.setTitle("LeXimir Editor for Dela dictionaries of compound words");
-            tableModel = GridHelper.getOpenEditorforDelac(alldelac);
-            for(String dic:DictionaryPath.dictionnary){
-                jComboBoxDic.addItem(dic);
+            tableModel = GridHelper.getOpenEditorforDelac(alldelac, dic);
+            for(String d:DictionaryPath.dictionnary){
+                jComboBoxDic.addItem(d);
             }
             JTable table = new JTable(getTableModel());
             
@@ -178,7 +178,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuSaveAs = new javax.swing.JMenu();
         jMenuExit = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel2.setText("POS");
 
@@ -219,7 +219,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             }
         });
 
-        jButtonAll.setText("All");
+        jButtonAll.setText("Statistics on table");
         jButtonAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAllActionPerformed(evt);
@@ -270,11 +270,11 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                         .addComponent(jButton2)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAll, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel4))
+                        .addComponent(jButtonAll)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -397,7 +397,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     });
 
-    jLabel11.setText("all columns");
+    jLabel11.setText("All columns");
 
     jLabel15.setText("Comment");
 
@@ -600,13 +600,12 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     jMenuBar1.add(jMenuDuplicate);
 
     jMenuStatistics.setText("Statistics");
-
     jMenuStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             jMenuStatisticsMouseClicked(evt);
         }
     });
-
+    
     jMenuBar1.add(jMenuStatistics);
 
     jMenuSave.setText("Save");
@@ -1242,6 +1241,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         File file = null;
         String path = "";
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save");
+        chooser.setApproveButtonText("Save");
         chooser.setCurrentDirectory(new File(DictionaryPath.allDela));
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

@@ -20,12 +20,14 @@
  */
 package leximir;
 
+import java.io.File;
+
 
 public class EditorDelasFactory {
 	private EditorDelas dialog;
 
-	public EditorDelas newEditorDelasDialog(boolean alldelas) {
-		dialog = new EditorDelas(alldelas);
+	public EditorDelas newEditorDelasDialog(boolean alldelas, File dic) {
+		dialog = new EditorDelas(alldelas, dic);
 		return dialog;
 	}
 }

@@ -49,7 +49,7 @@ public class DelafHelper {
         Object[][] ob = new Object[readFile.size()][5];        
         try{
             boolean alldelas = true;
-            Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas);
+            Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas,null);
             int i=0;
             for (Object[] allDela : getAllDelas) {
                 String lema = (String) allDela[1];

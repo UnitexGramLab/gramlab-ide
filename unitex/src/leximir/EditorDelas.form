@@ -14,7 +14,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemInsertBefore">
               <Properties>
-                <Property name="text" type="java.lang.String" value="insert before"/>
+                <Property name="text" type="java.lang.String" value="Insert before"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemInsertBeforeActionPerformed"/>
@@ -22,7 +22,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemInsertAfter">
               <Properties>
-                <Property name="text" type="java.lang.String" value="insert after"/>
+                <Property name="text" type="java.lang.String" value="Insert after"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemInsertAfterActionPerformed"/>
@@ -423,7 +423,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonAll">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="All"/>
+                    <Property name="text" type="java.lang.String" value="Statistics on table"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAllActionPerformed"/>
@@ -610,7 +610,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel11">
               <Properties>
-                <Property name="text" type="java.lang.String" value="all columns"/>
+                <Property name="text" type="java.lang.String" value="All columns"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">

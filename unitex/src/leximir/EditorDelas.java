@@ -75,19 +75,19 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      * Creates new form EditorLadl
      * @param alldelas if alldelas is true, the programm open all dictionary in delas folder, else the program open dictionary found in configuration
      */
-    public EditorDelas(boolean alldelas) {
+    public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
         try {
             initComponents();
             DictionaryPath.dictionnary.clear();
             this.setTitle("LeXimir Editor for Dela dictionaries of simple words");
             
-            tableModel = GridHelper.getOpenEditorforDelas(alldelas);
+            tableModel = GridHelper.getOpenEditorforDelas(alldelas, dic);
             JTable table = new JTable(getTableModel());
             
             RowSorter<DefaultTableModel> sort = new TableRowSorter<>(tableModel);
-            for(String dic:DictionaryPath.dictionnary){
-                jComboBoxDic.addItem(dic);
+            for(String d:DictionaryPath.dictionnary){
+                jComboBoxDic.addItem(d);
             }
             this.getjTable1().setRowSorter(sort);
             this.getjTable1().setModel(table.getModel());
@@ -191,7 +191,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuSaveAs = new javax.swing.JMenu();
         jMenuExit = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel2.setText("POS");
 
@@ -237,7 +237,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jButtonAll.setText("All");
+        jButtonAll.setText("Statistics on table");
         jButtonAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAllActionPerformed(evt);
@@ -439,7 +439,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
         jLabel14.setText("SynSem");
 
-        jLabel11.setText("all columns");
+        jLabel11.setText("All columns");
 
         jLabel10.setText("FST Code");
 
@@ -557,7 +557,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jMenuItemInsertBefore.setText("insert before");
+        jMenuItemInsertBefore.setText("Insert before");
         jMenuItemInsertBefore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemInsertBeforeActionPerformed(evt);
@@ -565,7 +565,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         });
         jMenuNew.add(jMenuItemInsertBefore);
 
-        jMenuItemInsertAfter.setText("insert after");
+        jMenuItemInsertAfter.setText("Insert after");
         jMenuItemInsertAfter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemInsertAfterActionPerformed(evt);
@@ -1300,6 +1300,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         File file = null;
         String path = "";
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save");
+        chooser.setApproveButtonText("Save");
         chooser.setCurrentDirectory(new File(DictionaryPath.allDela));
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {

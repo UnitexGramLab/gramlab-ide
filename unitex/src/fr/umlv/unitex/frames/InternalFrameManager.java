@@ -125,7 +125,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final StrategyFactory strategyFactory = new StrategyFactory();
 	private final ShellFactory shellFactory = new ShellFactory();
 	private final ConfigDelaFactory configDelaFactory = new ConfigDelaFactory();
-	private final ConjugationFactory congugaisonFactory = new ConjugationFactory();
+	private final ConjugaisonFactory congugaisonFactory = new ConjugaisonFactory();
 	private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
 	private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
 	private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
@@ -172,16 +172,16 @@ public abstract class InternalFrameManager implements FrameManager {
 		setup(d,true);
 		return d;
 	}
-	public EditorDelas newEditorDelasDialog(boolean alldelas) {
-		final EditorDelas d = editorDelasFactory.newEditorDelasDialog(alldelas);
+	public EditorDelas newEditorDelasDialog(boolean alldelas, File dic) {
+		final EditorDelas d = editorDelasFactory.newEditorDelasDialog(alldelas, dic);
 		if (d == null) {
 			return null;
 		}
 		setup(d,true);
 		return d;
 	}
-	public EditorDelac newEditorDelacDialog(boolean alldelas) {
-		final EditorDelac d = editorDelacFactory.newEditorDelacDialog(alldelas);
+	public EditorDelac newEditorDelacDialog(boolean alldelac, File dic) {
+		final EditorDelac d = editorDelacFactory.newEditorDelacDialog(alldelac,dic);
 		if (d == null) {
 			return null;
 		}
@@ -189,8 +189,8 @@ public abstract class InternalFrameManager implements FrameManager {
 		return d;
 	}
 	
-	public ConjugationFrame newConjugaisonDialog() {
-		final ConjugationFrame d = congugaisonFactory.newConjugaisonDialog();
+	public ConjugaisonFrame newConjugaisonDialog() {
+		final ConjugaisonFrame d = congugaisonFactory.newConjugaisonDialog();
 		if (d == null) {
 			return null;
 		}

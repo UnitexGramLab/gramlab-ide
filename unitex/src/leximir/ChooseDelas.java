@@ -1,22 +1,7 @@
 /*
- * Unitex
- *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
- *
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package leximir;
 
@@ -24,6 +9,11 @@ import javax.swing.JFrame;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import model.DictionaryPath;
 
 /**
  *
@@ -35,11 +25,11 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
      * Creates new form ChooseDelas
      */
     public ChooseDelas() {
-        super("Choose delas option", true, true, true, true);
+        super("Edit Delas", true, true, true, true);
         initComponents();
         jRadioAllDelas.setSelected(true);
         buttonGroup1.add(jRadioAllDelas);
-        buttonGroup1.add(jRadioConfig);
+        buttonGroup1.add(jRadioBrowse);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
@@ -54,23 +44,27 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jRadioAllDelas = new javax.swing.JRadioButton();
-        jRadioConfig = new javax.swing.JRadioButton();
+        jRadioBrowse = new javax.swing.JRadioButton();
         jButtonOpen = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jBrowseButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("What do you want to do?");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jRadioAllDelas.setText("Open all Delas in Delas folder");
 
-        jRadioConfig.setText("Use configuration");
-
-        jButtonOpen.setText("Open Editor Delas");
+        jButtonOpen.setText("Open");
         jButtonOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOpenActionPerformed(evt);
+            }
+        });
+
+        jBrowseButton.setText("Browse");
+        jBrowseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBrowseActionPerformed(evt);
             }
         });
 
@@ -81,27 +75,34 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioConfig)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jRadioBrowse)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jBrowseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jRadioAllDelas)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(128, 128, 128)
                         .addComponent(jButtonOpen)))
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jRadioAllDelas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioConfig)
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jRadioAllDelas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioBrowse))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jBrowseButton))))
                 .addGap(18, 18, 18)
                 .addComponent(jButtonOpen)
                 .addContainerGap(38, Short.MAX_VALUE))
@@ -125,13 +126,55 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenActionPerformed
-        boolean value  = jRadioAllDelas.isSelected();
-        //EditorDelas ed= new EditorDelas(value);
-        //ed.setVisible(true);
+        boolean all  = jRadioAllDelas.isSelected();
+        boolean browse  = jRadioBrowse.isSelected();
+        if(all){
+            File allDFoler = new File (DictionaryPath.allDelas);
+            
+            if(allDFoler.exists()){
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-		.newEditorDelasDialog(value);
+		.newEditorDelasDialog(all,null);
         this.setVisible(false);
+            }
+            else{
+        int reply = JOptionPane.showConfirmDialog(null, "No Delas folder found in Dela folder \nCreate Delas folder?", title,
+                JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {           
+            allDFoler.mkdirs();
+            if (allDFoler.exists())
+                JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
+        
+        GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+		.newEditorDelasDialog(all,null);  
+        this.setVisible(false);
+        }else {
+           this.jRadioAllDelas.setEnabled(false);
+           this.jRadioBrowse.setSelected(true);
+        }
+            }
+        }
+         if(browse){
+          GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+		.newEditorDelasDialog(all,new File(jTextField1.getText()));
+          this.setVisible(false);
+         }
+         
     }//GEN-LAST:event_jButtonOpenActionPerformed
+
+    private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseActionPerformed
+        boolean value  = jRadioBrowse.isSelected();
+        if(value){
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.dic", "dic");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        jTextField1.setText(selectedFile.getAbsolutePath()); 
+        }
+        }
+    }//GEN-LAST:event_jButtonBrowseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,10 +213,11 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jBrowseButton;
     private javax.swing.JButton jButtonOpen;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioAllDelas;
-    private javax.swing.JRadioButton jRadioConfig;
+    private javax.swing.JRadioButton jRadioBrowse;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

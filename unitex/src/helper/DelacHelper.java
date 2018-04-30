@@ -20,13 +20,13 @@
  */
 package helper;
 
-import static helper.DelasHelper.getDicConfigDelasPath;
 import static helper.DelasHelper.getDicDelasPath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import model.Delac;
 import model.DictionaryPath;
@@ -59,31 +59,7 @@ public class DelacHelper {
         }
         return list;
     }
-    /**
-     * This function return a list of dictionnary found in configuration
-     * @return
-     * @throws FileNotFoundException 
-     */
-    public static ArrayList<String> getDicConfigDelacPath() throws FileNotFoundException, IOException{
-    	ArrayList<String> list= new ArrayList<>();
-        File f = new File(DictionaryPath.allDelac+File.separator+"confDelac.conf");
-        if(f.exists()){
-            List<String> dic = Utils.readFile(DictionaryPath.allDelac+File.separator+"confDelac.conf");
-            for(String line : dic ){
-                String dicName = line.split(",")[0];
-                if (dicName.endsWith("dic")) {
-                    list.add(dicName);
-                }
-            }
-            if(list.isEmpty()){
-                throw new FileNotFoundException("dictonnary not found in "+DictionaryPath.allDelac);
-            }
-            return list;
-        }
-        else{
-            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelac);
-        }
-    }
+    
     /***
      * This function get all dictionnaries in delac folder and return an Object [][] which contains all information(
      * POS, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile)
@@ -92,20 +68,25 @@ public class DelacHelper {
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    public static Object[][] getAllDelacFromDicToObject(boolean alldelac) throws FileNotFoundException, IOException{
-        ArrayList<String> list= new ArrayList<>();
+    public static Object[][] getAllDelacFromDicToObject(boolean alldelac, File dic) throws FileNotFoundException, IOException{
+        List<String> list= new ArrayList<>();
         if(alldelac){
             list = getDicDelacPath();
         }
         else{
-            list = getDicConfigDelacPath();
+            list=Arrays.asList(dic.getAbsolutePath().toString());
         }
         Delac delac = new Delac();
         Field[] lf = delac.getClass().getDeclaredFields();
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path = DictionaryPath.allDelac+"//"+dela;
+             String path="";
+            if(alldelac)
+            path = DictionaryPath.allDelac+"//"+dela;
+            else
+            path = dela;
+            
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 if(s.trim().length()>0)
@@ -121,7 +102,12 @@ public class DelacHelper {
             String pOs,lemmaAll,lemma,fSTCode,sinSem,comment,wn_SinSet;
             
             String dicFile=dela;
-            String path = DictionaryPath.allDelac+"//"+dela;
+            String path="";
+            if(alldelac)
+            path = DictionaryPath.allDelac+"//"+dela;
+            else
+            path = dela;
+            
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 StringBuilder sb = new StringBuilder();

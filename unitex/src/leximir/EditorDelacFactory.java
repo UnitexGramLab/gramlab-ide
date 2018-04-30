@@ -20,11 +20,13 @@
  */
 package leximir;
 
+import java.io.File;
+
 public class EditorDelacFactory {
 	private EditorDelac dialog;
 
-	public EditorDelac newEditorDelacDialog(boolean alldelas) {
-		dialog = new EditorDelac(alldelas);
+	public EditorDelac newEditorDelacDialog(boolean alldelac, File dic) {
+		dialog = new EditorDelac(alldelac,dic);
 		return dialog;
 	}
 }
