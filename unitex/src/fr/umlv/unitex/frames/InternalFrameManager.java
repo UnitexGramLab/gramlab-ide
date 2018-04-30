@@ -125,7 +125,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final StrategyFactory strategyFactory = new StrategyFactory();
 	private final ShellFactory shellFactory = new ShellFactory();
 	private final ConfigDelaFactory configDelaFactory = new ConfigDelaFactory();
-	private final ConjugaisonFactory congugaisonFactory = new ConjugaisonFactory();
+	private final ConjugationFactory congugaisonFactory = new ConjugationFactory();
 	private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
 	private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
 	private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
@@ -189,8 +189,8 @@ public abstract class InternalFrameManager implements FrameManager {
 		return d;
 	}
 	
-	public ConjugaisonFrame newConjugaisonDialog() {
-		final ConjugaisonFrame d = congugaisonFactory.newConjugaisonDialog();
+	public ConjugationFrame newConjugaisonDialog() {
+		final ConjugationFrame d = congugaisonFactory.newConjugaisonDialog();
 		if (d == null) {
 			return null;
 		}
