@@ -107,6 +107,7 @@ public abstract class InternalFrameManager implements FrameManager {
   private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
   private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
+	private final CheckTextAutomatonDialogFactory checkTextAutomatonDialogFactory = new CheckTextAutomatonDialogFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -929,5 +930,14 @@ public abstract class InternalFrameManager implements FrameManager {
 
 	public void updateTextAutomatonFindAndReplaceDialog() {
 		textAutomatonFindAndReplaceFactory.update();
+	}
+
+	public CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
+		final CheckTextAutomatonDialog d = checkTextAutomatonDialogFactory.newCheckTextAutomatonDialog(checkList);
+		if (d == null) {
+			return null;
+		}
+		d.setVisible(true);
+		return d;
 	}
 }
