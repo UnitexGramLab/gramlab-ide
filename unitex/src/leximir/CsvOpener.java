@@ -36,7 +36,7 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     private String csvfile;
 
     public CsvOpener(String csvfile) {
-        super("Statistic on the dictionary", true, true, true, true);
+        super("Statistic on table", true, true, true, true);
         this.csvfile = csvfile;
         initComponents();
 
