@@ -105,8 +105,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 }
             });
         }catch (FileNotFoundException ex) {
-        	JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
+//        	JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
+//					JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
         	JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);

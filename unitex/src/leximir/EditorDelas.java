@@ -101,8 +101,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                   .searchable(true)
                   .apply();*/
         }catch(FileNotFoundException|NullPointerException ex){
-            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
-    							JOptionPane.ERROR_MESSAGE);
+           // JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
+    		//					JOptionPane.ERROR_MESSAGE);
         } 
         catch (IOException ex) {
             Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
