@@ -20,6 +20,8 @@
  */
 package util;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import helper.DelacHelper;
 import helper.DelasHelper;
 import java.awt.Desktop;
@@ -122,9 +124,10 @@ public class Utils {
             fileWriter.close();
             isDone = true;
         } finally {
-            if (isDone) {
-                Desktop.getDesktop().open(new File(filename));
-                System.out.println("csv written successfully..");
+            if (isDone) {                
+                GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                        .newCsvOpener(filename);
+                
             }
         }
     }
@@ -157,9 +160,10 @@ public class Utils {
             fileWriter.close();
             isDone = true;
         } finally {
-            if (isDone) {
-                Desktop.getDesktop().open(new File(filename));
-                System.out.println("csv written successfully..");
+            if (isDone) {                
+                GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                        .newCsvOpener(filename);
+                
             }
         }
     }

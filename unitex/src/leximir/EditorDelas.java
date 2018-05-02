@@ -53,6 +53,7 @@ import javax.swing.table.TableRowSorter;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import helper.GridHelper;
 import leximir.delas.menu.MenuDelas;
 import leximir.delas.menu.MenuDuplicateDelas;
@@ -714,7 +715,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuNewMouseClicked
 
     private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuStatisticsMouseClicked
-        try {
+        
             Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
                 String dic = (String) this.getjTable1().getValueAt(i, 8);
@@ -752,15 +753,14 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     
                 }
             }
-            
-            //String filename = Utils.getValueXml("pathExportStatistics");
-            String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportJtableToCsv(dicPos,filename);
-            
-            JOptionPane.showMessageDialog(null, "file created in \n"+filename);
-        } catch (IOException ex) {
-           JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
-        }
+            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                    .newStatisticOutput(dicPos);
+//            //String filename = Utils.getValueXml("pathExportStatistics");
+//            String filename = DictionaryPath.statisticsTmpPath;
+//            Utils.exportJtableToCsv(dicPos,filename);
+//            
+//            JOptionPane.showMessageDialog(null, "file created in \n"+filename);
+
     }//GEN-LAST:event_jMenuStatisticsMouseClicked
 
     private void jMenuDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuDeleteMouseClicked
@@ -935,7 +935,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuInflectMouseClicked
 
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
-        try {
+
             Map<String, List<String>> data = new HashMap<>();
             Map<String, HashMap<String,String>> dataForSinSem1 = new HashMap<>();
             Map<String, HashMap<String,HashMap<String,String>>> dataForSinSem2 = new HashMap<>();
@@ -1014,32 +1014,32 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 /** end of SimSem2 Csv data **/
             }
             
-            for(Map.Entry<String, List<String>> d:data.entrySet()){
-                List<String> tmp = d.getValue();
-                Set<String> hs = new HashSet<>();
-                hs.addAll(tmp);
-                tmp.clear();
-                tmp.addAll(hs);
-                d.setValue(tmp);
-            }
-            BufferedWriter bfw;
-            bfw = new BufferedWriter(new FileWriter("TmpSinSem.txt"));
-            for (Map.Entry<String, List<String>> f : data.entrySet()) {
-                bfw.write(f.getKey()+"_distribution");
-                bfw.write(" = ");
-                List<String> tmp = f.getValue();
-                for(int j =0;j<tmp.size();j++){
-                    bfw.write(tmp.get(j));
-                    if(j!=tmp.size()-1){
-                         bfw.write(" + ");
-                    }
-                }
-                bfw.write("\n");
-                bfw.write("\n");
-            }
-            bfw.close();
-            JOptionPane.showMessageDialog(null, "file created in \n TmpSinSem.txt");
-            Desktop.getDesktop().open(new File("TmpSinSem.txt"));
+//            for(Map.Entry<String, List<String>> d:data.entrySet()){
+//                List<String> tmp = d.getValue();
+//                Set<String> hs = new HashSet<>();
+//                hs.addAll(tmp);
+//                tmp.clear();
+//                tmp.addAll(hs);
+//                d.setValue(tmp);
+//            }
+//            BufferedWriter bfw;
+//            bfw = new BufferedWriter(new FileWriter("TmpSinSem.txt"));
+//            for (Map.Entry<String, List<String>> f : data.entrySet()) {
+//                bfw.write(f.getKey()+"_distribution");
+//                bfw.write(" = ");
+//                List<String> tmp = f.getValue();
+//                for(int j =0;j<tmp.size();j++){
+//                    bfw.write(tmp.get(j));
+//                    if(j!=tmp.size()-1){
+//                         bfw.write(" + ");
+//                    }
+//                }
+//                bfw.write("\n");
+//                bfw.write("\n");
+//            }
+//            bfw.close();
+//            JOptionPane.showMessageDialog(null, "file created in \n TmpSinSem.txt");
+//            Desktop.getDesktop().open(new File("TmpSinSem.txt"));
             
             
             Map<String, Object[]> statSimSem1 = new HashMap<>();
@@ -1065,12 +1065,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     }
                 }
             }
-            String filename = DictionaryPath.statisticsTmpPath;
-            Utils.exportStatAllToCsv(statSimSem1,statSimSem2,filename);
-            
-        } catch (IOException ex) {
-           JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
-        }
+//            String filename = DictionaryPath.statisticsTmpPath;
+//            Utils.exportStatAllToCsv(statSimSem1,statSimSem2,filename);
+
+            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                    .newStatisticOutput(statSimSem1,statSimSem2);
+
     }//GEN-LAST:event_jButtonAllActionPerformed
 
     private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPosKeyPressed

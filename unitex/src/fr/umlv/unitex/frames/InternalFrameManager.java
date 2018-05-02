@@ -46,20 +46,9 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
-import leximir.ChooseDelac;
-import leximir.ChooseDelacFactory;
-import leximir.ChooseDelas;
-import leximir.ChooseDelasFactory;
-import leximir.ConfigDela;
-import leximir.ConfigDelaFactory;
-import leximir.EditorDelac;
-import leximir.EditorDelacFactory;
-import leximir.EditorDelas;
-import leximir.EditorDelasFactory;
-import leximir.Shell;
-import leximir.ShellFactory;
-import leximir.Strategy;
-import leximir.StrategyFactory;
+import java.util.List;
+import java.util.Map;
+import leximir.*;
 
 /**
  * This class is responsible for managing all internal frames in Unitex and GramLab main
@@ -129,6 +118,8 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
 	private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
 	private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
+	private final StatisticOutputFactory statisticOutputFactory = new StatisticOutputFactory();
+	private final CsvOpenerFactory csvOpenerFactory = new CsvOpenerFactory();
 
 
 	public ChooseDelas newChooseDelasDialog() {
@@ -180,6 +171,34 @@ public abstract class InternalFrameManager implements FrameManager {
 		setup(d,true);
 		return d;
 	}
+        
+	public StatisticOutput newStatisticOutput(List<Object[]> dicPos) {
+		final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos);
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+        
+	public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem1,Map<String, Object[]> statSimSem2) {
+		final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem1,statSimSem2);
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+        
+	public CsvOpener newCsvOpener(String Csvfile) {
+		final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(Csvfile);
+		if (d == null) {
+			return null;
+		}
+		setup(d,true);
+		return d;
+	}
+        
 	public EditorDelac newEditorDelacDialog(boolean alldelac, File dic) {
 		final EditorDelac d = editorDelacFactory.newEditorDelacDialog(alldelac,dic);
 		if (d == null) {
