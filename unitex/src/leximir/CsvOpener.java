@@ -36,9 +36,10 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     private String csvfile;
 
     public CsvOpener(String csvfile) {
-        super("Csv Opener", true, true, true, true);
-		this.csvfile = csvfile;
+        super("Statistic on the dictionary", true, true, true, true);
+        this.csvfile = csvfile;
         initComponents();
+
     }
 
     private Vector<String> header() {
@@ -68,7 +69,7 @@ public class CsvOpener extends javax.swing.JInternalFrame {
             }
             fichier_source.close();
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
         return tmp;
 
@@ -84,22 +85,17 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        Vector<String> header = this.header();
-        Vector<Vector> data = this.read();
-		System.out.println(data.size());
-		for(Vector<String> v : data)
-			for(String s: v)
-				System.out.println(s);
-		
+                Vector<String> header = this.header();
+        Vector<Vector> data = this.read();		
         JTable tableau = new JTable(data, header);
-		tableau.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        getContentPane().add(new JScrollPane(tableau));
-        pack();
+JScrollPane scrollpane=new JScrollPane(tableau,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+       JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    this.add(scrollpane);
+    this.setVisible(true);
+    this.setSize(450,400);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-	
 }

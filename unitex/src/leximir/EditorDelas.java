@@ -432,7 +432,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel12.setText("Rec.No : ");
+        jLabel12.setText("No of lines : ");
 
         jLabel13.setText("jLabel13");
 

@@ -22,10 +22,12 @@ package util;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
+import fr.umlv.unitex.utils.CharsetDetector;
 import helper.DelacHelper;
 import helper.DelasHelper;
 import java.awt.Desktop;
 import java.awt.HeadlessException;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
@@ -76,8 +79,9 @@ public class Utils {
             }
         }
          */
+         
         
-        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file));
+        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file),CharsetDetector.detect(new File(file)));
         try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
             String ligne;
             tmp = new ArrayList<>();

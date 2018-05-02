@@ -105,7 +105,7 @@ public class GraphIO {
 			if (emitErrorMessage) {
 				String[] options = { "Yes", "No" };
 				int result = JOptionPane.showOptionDialog(null,
-						"Graph not found! Do you want to create a new one on \n" + grfFile.getAbsolutePath() + "?",
+						"Graph not found! Do you want to create a new one as \n" + grfFile.getAbsolutePath() + "?",
 						"Error", JOptionPane.WARNING_MESSAGE, 0, null, options, options[0]);
 				if (result == 0) {
 					File parent = grfFile.getParentFile();

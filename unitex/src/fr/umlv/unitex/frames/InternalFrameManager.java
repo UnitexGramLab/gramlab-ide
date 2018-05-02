@@ -181,7 +181,8 @@ public abstract class InternalFrameManager implements FrameManager {
 		return d;
 	}
         
-	public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem1,Map<String, Object[]> statSimSem2) {
+	
+        public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem1,Map<String, Object[]> statSimSem2) {
 		final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem1,statSimSem2);
 		if (d == null) {
 			return null;

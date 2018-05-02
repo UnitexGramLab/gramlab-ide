@@ -162,8 +162,6 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonOpenActionPerformed
 
     private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseActionPerformed
-        boolean value  = jRadioBrowse.isSelected();
-        if(value){
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("*.dic", "dic");
         fileChooser.setFileFilter(filter);
@@ -172,8 +170,9 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
         File selectedFile = fileChooser.getSelectedFile();
         jTextField1.setText(selectedFile.getAbsolutePath()); 
+        jRadioBrowse.setSelected(true); 
         }
-        }
+        
     }//GEN-LAST:event_jButtonBrowseActionPerformed
 
     /**

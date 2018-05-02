@@ -309,7 +309,7 @@ public class ConjugationFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final JFileChooser f = new JFileChooser();
-				f.setDialogTitle("Choose your dictionnary file");
+				f.setDialogTitle("Choose your dictionary file");
 				f.setDialogType(JFileChooser.OPEN_DIALOG);
 				f.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				f.setFileFilter(new GrfFiltre(new String[]{"dic"},DESCRIPTION_DIC_FILE_ONLY));

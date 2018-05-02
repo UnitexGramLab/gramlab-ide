@@ -152,7 +152,6 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         }else{
             Utils.exportJtableToCsv(this.dicPos,filename);    
             }
-        JOptionPane.showMessageDialog(null, "file created in \n"+filename);
         this.setVisible(false);
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
