@@ -56,6 +56,7 @@ import model.DictionaryPath;
 /**
  *
  * @author Rojo Rabelisoa
+ * @author Anas Ait cheikh
  */
 public class Utils {
     /**
@@ -110,7 +111,12 @@ public class Utils {
     public static String reverseString(String text) {
         return new StringBuffer(text).reverse().toString();
     }
-
+    /**
+     * This function export the JTable into a csv file
+     *
+     * @param dicPos is the liste of the element to export
+     * @param filename the name of the csv file
+     */
     public static void exportJtableToCsv( List<Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
 
         String creator="";

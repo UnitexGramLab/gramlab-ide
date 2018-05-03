@@ -63,6 +63,7 @@ import util.Utils;
 /**
  *
  * @author Rojo Rabelisoa
+ * @author Anas Ait cheikh
  */
 public final class EditorDelas extends javax.swing.JInternalFrame {
     private DefaultTableModel tableModel ;

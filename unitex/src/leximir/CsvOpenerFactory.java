@@ -20,11 +20,10 @@
  */
 package leximir;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
-
+/**
+ *
+ * @author Anas Ait cheikh
+ */
 public class CsvOpenerFactory {
 	private CsvOpener dialog;
 

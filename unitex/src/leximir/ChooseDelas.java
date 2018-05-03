@@ -18,6 +18,7 @@ import model.DictionaryPath;
 /**
  *
  * @author rojo
+ * @author Anas Ait cheikh
  */
 public class ChooseDelas extends javax.swing.JInternalFrame {
 
