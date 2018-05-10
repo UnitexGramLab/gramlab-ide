@@ -599,6 +599,7 @@ public class ConcordanceParameterFrame extends JInternalFrame {
 		}
 		GlobalProjectManager.search(null)
 				.getFrameManagerAs(InternalFrameManager.class).closeConcordanceFrame();
+		System.out.println("locate :"+command.getCommandLine());
 		Launcher.exec(command, true,
 				new ConcordanceDo(false, new File(Config.getCurrentSntDir(),
 						"concord.html"), openWithBrowser.isSelected(), width));

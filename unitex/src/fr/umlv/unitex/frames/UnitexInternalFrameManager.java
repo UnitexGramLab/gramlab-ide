@@ -214,4 +214,6 @@ public class UnitexInternalFrameManager extends InternalFrameManager {
 	public void closeXAlignLocateFrame() {
 		xAlignLocateFrameFactory.closeXAlignLocateFrame();
 	}
+
+	
 }
