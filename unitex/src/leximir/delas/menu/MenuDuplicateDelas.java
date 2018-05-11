@@ -41,6 +41,7 @@ public class MenuDuplicateDelas extends javax.swing.JFrame {
         editorDelas = ed;
         
         initComponents();
+        this.setTitle("Duplicated value");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.jTable1.removeAll();
         CheckDuplicateValue(ed.getjTable1(), tableModel);
@@ -108,7 +109,7 @@ public class MenuDuplicateDelas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Duplucate value", "Lemma", "Fst", "Synsem", "dic"
+                "Duplucate value", "Lemma", "Fst", "SinSem", "dic"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -166,6 +167,9 @@ public class MenuDuplicateDelas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
+    
+    
+    
     /**
      * @param args the command line arguments
      */

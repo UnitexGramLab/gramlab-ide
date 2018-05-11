@@ -134,7 +134,7 @@ public class DelasHelper {
             for(String s:readFile){
                 lemma=getLemaInDelas(s);
                 lemmaInv=Utils.reverseString(lemma);
-                sinSem=getSynSemInDelas(s);
+                sinSem=getSinSemInDelas(s);
                 fSTCode = getFstCodeInDelas(s);
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
@@ -171,7 +171,7 @@ public class DelasHelper {
         }
         return sb.toString();
     }
-    public static String getSynSemInDelas(String text){
+    public static String getSinSemInDelas(String text){
         try{
             StringBuilder sb = new StringBuilder();
             boolean begin=false;

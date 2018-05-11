@@ -109,7 +109,7 @@ public class MenuDuplicateDelac extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Duplucate value", "Lemma", "Fst", "Synsem", "dic"
+                "Duplucate value", "Lemma", "Fst", "SinSem", "dic"
             }
         ) {
             boolean[] canEdit = new boolean [] {

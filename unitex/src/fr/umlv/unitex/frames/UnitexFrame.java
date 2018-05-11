@@ -893,18 +893,7 @@ public class UnitexFrame extends JFrame {
 		};
 		delacLeximir.setEnabled(true);
 		delaMenu.add(new JMenuItem(delacLeximir));
-		// for  confDelaLeximir
-		confDelaLeximir = new AbstractAction("Edition Settings") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//EditorDelac editorDelac = new EditorDelac();
-				//editorDelac.setVisible(true);
-				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-				.newConfigDelaDialog();
-			}
-		};
-		confDelaLeximir.setEnabled(true);
-		delaMenu.add(new JMenuItem(confDelaLeximir));
+
 		//for strategy 
 		delacStrategyLeximir = new AbstractAction("Open Strategy") {
 			@Override

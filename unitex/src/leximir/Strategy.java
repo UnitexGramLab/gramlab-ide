@@ -135,14 +135,14 @@ private DefaultTableModel tableModel ;
 
         jTextFieldSearchfile.setEditable(false);
 
-        jButtonSearchFile.setText("Search");
+        jButtonSearchFile.setText("Open file");
         jButtonSearchFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSearchFileActionPerformed(evt);
             }
         });
 
-        jButtonOpenFile.setText("Open");
+        jButtonOpenFile.setText("Show File");
         jButtonOpenFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOpenFileActionPerformed(evt);
@@ -177,14 +177,14 @@ private DefaultTableModel tableModel ;
 
         jTextFieldStrategy.setEditable(false);
 
-        jButtonStrategySearch.setText("Search");
+        jButtonStrategySearch.setText("Open File");
         jButtonStrategySearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonStrategySearchActionPerformed(evt);
             }
         });
 
-        jButtonStrategyOpen.setText("Open");
+        jButtonStrategyOpen.setText("Show File");
         jButtonStrategyOpen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonStrategyOpenActionPerformed(evt);
@@ -325,7 +325,7 @@ private DefaultTableModel tableModel ;
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Select", "Clemma", "CFLX", "Word NO", "Predict Id", "Rule Id", "RulePart Id", "SynSem"
+                "Select", "Clemma", "CFLX", "Word NO", "Predict Id", "Rule Id", "RulePart Id", "SinSem"
             }
         ));
         jTablePredict.setShowGrid(false);
@@ -514,40 +514,46 @@ private DefaultTableModel tableModel ;
         JFileChooser theFileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("TEXT FILES", "txt", "text");
         theFileChooser.setFileFilter(filter);
-        theFileChooser.showOpenDialog(this);
+        int res=theFileChooser.showOpenDialog(this);
         theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
+        if (res == JFileChooser.APPROVE_OPTION) {
         File f = theFileChooser.getSelectedFile();
         jTextFieldSearchfile.setText(f.getAbsolutePath());
+        }
     }//GEN-LAST:event_jButtonSearchFileActionPerformed
 
     private void jButtonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenFileActionPerformed
+       if(new File(jTextFieldSearchfile.getText()).exists()){
         try {
             String filename = jTextFieldSearchfile.getText();       
             Desktop.getDesktop().open(new File(filename));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error: "+ex);
         }
+       }
     }//GEN-LAST:event_jButtonOpenFileActionPerformed
 
     private void jButtonStrategySearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStrategySearchActionPerformed
         JFileChooser theFileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("XML FILES", "xml");
         theFileChooser.setFileFilter(filter);
-        theFileChooser.showOpenDialog(this);
+        int res=theFileChooser.showOpenDialog(this);
         theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
+        if (res == JFileChooser.APPROVE_OPTION) {
         File f = theFileChooser.getSelectedFile();
         jTextFieldStrategy.setText(f.getAbsolutePath());
+        }
     }//GEN-LAST:event_jButtonStrategySearchActionPerformed
 
     private void jButtonStrategyOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStrategyOpenActionPerformed
-       try {
+       if(new File(jTextFieldStrategy.getText()).exists()){
+        try {
             String filename = jTextFieldStrategy.getText();       
             Desktop.getDesktop().open(new File(filename));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Error: "+ex);
         }
+       }
     }//GEN-LAST:event_jButtonStrategyOpenActionPerformed
 
     private void jMenuPredictionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuPredictionMouseClicked
@@ -619,9 +625,11 @@ private DefaultTableModel tableModel ;
                             String lema = ((String) jTableDlf.getValueAt(k, 0)).substring(0, indexLemajTableDlf);
                             if (lema.equals(wordSplit[j])) {
                                 pos.add((String) jTableDlf.getValueAt(k, 2));
+                               
                             }
                         }
                     }
+                    
                     String w = "";
                     for (String s : pos) {
                         w = s + ",";
@@ -635,7 +643,7 @@ private DefaultTableModel tableModel ;
                 System.err.println("predict : "+predict.size());
                 jTablePredict.setModel(GridHelper.getDataforjTablePredict(predict));
                 jTablePredict.repaint();
-            }
+            }   
             
             
         } catch (IOException ex) {

@@ -207,7 +207,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setText("SynSem");
+        jLabel4.setText("SinSem");
 
         jTextFieldSinSem.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -348,8 +348,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanel4Layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE))
     );
 
     jLabel7.setText("Search : ");
@@ -377,7 +376,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     jLabel10.setText("FST Code");
 
-    jLabel5.setText("SynSem");
+    jLabel5.setText("SinSem");
 
     jButton1.setText("Clear");
     jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -608,7 +607,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             jMenuStatisticsMouseClicked(evt);
         }
     });
-    
     jMenuBar1.add(jMenuStatistics);
 
     jMenuSave.setText("Save");
@@ -718,7 +716,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         if(dialogResult == JOptionPane.YES_OPTION){
             int t = this.getjTable1().getSelectedRow();
             this.getTableModel().removeRow(t);
-            JOptionPane.showMessageDialog(null, "rows deleted !");
+            JOptionPane.showMessageDialog(null, "Row deleted !");
             this.setUnsaved(true);
         }
         
@@ -819,7 +817,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 String file = (String) tableModel.getValueAt(row, 8);
                 String lemma = (String) tableModel.getValueAt(row, 1);
                 String fstCode = tableModel.getValueAt(row, 3).toString().concat(tableModel.getValueAt(row, 4).toString());
-                //String synSem = ((String) tableModel.getValueAt(row, 4));
+                //String SinSem = ((String) tableModel.getValueAt(row, 4));
                 String str = lemma+","+fstCode;
                 String comment =(String) tableModel.getValueAt(row, 5);
                 if(comment!=null && comment.trim().length()>0){
@@ -848,7 +846,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 }
             }
             this.setUnsaved(false);
-            JOptionPane.showMessageDialog(null, "Success");
+            JOptionPane.showMessageDialog(null, "Files where saved successfully");
         }
     }//GEN-LAST:event_jMenuSaveMouseClicked
 
@@ -872,7 +870,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 String lemma = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 1);
                 String fst = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 3);
                 Utils.InflectDelas(lemma, fst);
-                JOptionPane.showMessageDialog(null, "done !!");
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
             } catch (IOException ex) {
@@ -908,16 +905,16 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 String sinsemForPos = (String) this.getjTable1().getValueAt(i, 4);
                 String[] domain = sinsemForPos.split("=")[0].split(Pattern.quote("+"));
                 
-                String realSynSem = domain[domain.length-1];
+                String realSinSem = domain[domain.length-1];
                 if (!dataForSinSem1.containsKey(pos)) {
                     dataForSinSem1.put(pos, new HashMap<String,String>());
-                    dataForSinSem1.get(pos).put(realSynSem, "1");
+                    dataForSinSem1.get(pos).put(realSinSem, "1");
                 } else {
-                    if (dataForSinSem1.get(pos).containsKey(realSynSem)) {
-                        int count = Integer.parseInt(dataForSinSem1.get(pos).get(realSynSem)) + 1;
-                        dataForSinSem1.get(pos).replace(realSynSem, String.valueOf(count));
+                    if (dataForSinSem1.get(pos).containsKey(realSinSem)) {
+                        int count = Integer.parseInt(dataForSinSem1.get(pos).get(realSinSem)) + 1;
+                        dataForSinSem1.get(pos).replace(realSinSem, String.valueOf(count));
                     } else {
-                        dataForSinSem1.get(pos).put(realSynSem, "1");
+                        dataForSinSem1.get(pos).put(realSinSem, "1");
                     }
                 }
                 /** end of SimSem1 Csv data **/
@@ -937,19 +934,19 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 }
                 if (!dataForSinSem2.containsKey(pos)) {
                     dataForSinSem2.put(pos, new HashMap<String,HashMap<String,String>>());
-                    dataForSinSem2.get(pos).put(realSynSem, new HashMap<String,String>());
-                    dataForSinSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+                    dataForSinSem2.get(pos).put(realSinSem, new HashMap<String,String>());
+                    dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
                 } else {
-                    if (!dataForSinSem2.get(pos).containsKey(realSynSem)) {
-                        dataForSinSem2.get(pos).put(realSynSem,  new HashMap<String,String>());
-                        dataForSinSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+                    if (!dataForSinSem2.get(pos).containsKey(realSinSem)) {
+                        dataForSinSem2.get(pos).put(realSinSem,  new HashMap<String,String>());
+                        dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
                     } else {
-                        if(!dataForSinSem2.get(pos).get(realSynSem).containsKey(domainCategory)){
-                            dataForSinSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+                        if(!dataForSinSem2.get(pos).get(realSinSem).containsKey(domainCategory)){
+                            dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
                         }
                         else{
-                            int count = Integer.parseInt(dataForSinSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
-                            dataForSinSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
+                            int count = Integer.parseInt(dataForSinSem2.get(pos).get(realSinSem).get(domainCategory)) + 1;
+                            dataForSinSem2.get(pos).get(realSinSem).replace(domainCategory, String.valueOf(count));
                         }
                     }
                 }
@@ -1118,7 +1115,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         String pos = jTextField1.getText();
         String lemma = jTextField2.getText();
         String fst = jTextField3.getText();
-        String synsem = jTextField4.getText();
+        String SinSem = jTextField4.getText();
         String comment= jTextField5.getText();
         TableRowSorter<DefaultTableModel> rowSorter;
         rowSorter = new TableRowSorter<>(tableModel);
@@ -1134,8 +1131,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         if (fst.length() != 0) {
             filters.add(RowFilter.regexFilter(fst, 3));
         }
-        if (synsem.length() != 0) {
-            filters.add(RowFilter.regexFilter(synsem, 4));
+        if (SinSem.length() != 0) {
+            filters.add(RowFilter.regexFilter(SinSem, 4));
         }
         if (comment.length() != 0) {
             filters.add(RowFilter.regexFilter(comment, 5));
@@ -1268,7 +1265,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     
                 }
                 bfw.close();
-                JOptionPane.showMessageDialog(null, "Success");
+                JOptionPane.showMessageDialog(null, "Files where saved successfully");
             } catch (IOException ex) {
                 Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }

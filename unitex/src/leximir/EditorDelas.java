@@ -224,7 +224,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setText("SynSem");
+        jLabel4.setText("SinSem");
 
         jTextFieldSinSem.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -383,8 +383,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel7.setText("Search : ");
@@ -439,7 +439,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
         jLabel8.setText("POS");
 
-        jLabel14.setText("SynSem");
+        jLabel14.setText("SinSem");
 
         jLabel11.setText("All columns");
 
@@ -521,7 +521,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
@@ -769,7 +769,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         if(dialogResult == JOptionPane.YES_OPTION){
             int t = this.getjTable1().getSelectedRow();
             this.getTableModel().removeRow(t);
-            JOptionPane.showMessageDialog(null, "rows deleted !");
+            JOptionPane.showMessageDialog(null, "Row deleted !");
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
             this.setUnsaved(true);
         }
@@ -900,7 +900,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
              
              this.setUnsaved(false);
-             JOptionPane.showMessageDialog(null, "Success");
+             JOptionPane.showMessageDialog(null, "Files where saved successfully");
         }
     }//GEN-LAST:event_jMenuSaveMouseClicked
 
@@ -922,7 +922,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 String lemma = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 1);
                 String fst = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2);
                 Utils.InflectDelas(lemma, fst);
-                JOptionPane.showMessageDialog(null, "done !!");
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
             } catch (IOException ex) {
@@ -959,22 +958,22 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 
                 String[] domain = sinsemForPos.split("=")[0].split(Pattern.quote("+"));
                 
-                String realSynSem="";
+                String realSinSem="";
                 try{
-                    realSynSem = domain[domain.length-1];
+                    realSinSem = domain[domain.length-1];
                 }
                 catch(java.lang.ArrayIndexOutOfBoundsException e){
                     
                 }
                 if (!dataForSinSem1.containsKey(pos)) {
                     dataForSinSem1.put(pos, new HashMap<String,String>());
-                    dataForSinSem1.get(pos).put(realSynSem, "1");
+                    dataForSinSem1.get(pos).put(realSinSem, "1");
                 } else {
-                    if (dataForSinSem1.get(pos).containsKey(realSynSem)) {
-                        int count = Integer.parseInt(dataForSinSem1.get(pos).get(realSynSem)) + 1;
-                        dataForSinSem1.get(pos).replace(realSynSem, String.valueOf(count));
+                    if (dataForSinSem1.get(pos).containsKey(realSinSem)) {
+                        int count = Integer.parseInt(dataForSinSem1.get(pos).get(realSinSem)) + 1;
+                        dataForSinSem1.get(pos).replace(realSinSem, String.valueOf(count));
                     } else {
-                        dataForSinSem1.get(pos).put(realSynSem, "1");
+                        dataForSinSem1.get(pos).put(realSinSem, "1");
                     }
                 }
                 /** end of SimSem1 Csv data **/
@@ -996,19 +995,19 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 }
                 if (!dataForSinSem2.containsKey(pos)) {
                     dataForSinSem2.put(pos, new HashMap<String,HashMap<String,String>>());
-                    dataForSinSem2.get(pos).put(realSynSem, new HashMap<String,String>());
-                    dataForSinSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+                    dataForSinSem2.get(pos).put(realSinSem, new HashMap<String,String>());
+                    dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
                 } else {
-                    if (!dataForSinSem2.get(pos).containsKey(realSynSem)) {
-                        dataForSinSem2.get(pos).put(realSynSem,  new HashMap<String,String>());
-                        dataForSinSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+                    if (!dataForSinSem2.get(pos).containsKey(realSinSem)) {
+                        dataForSinSem2.get(pos).put(realSinSem,  new HashMap<String,String>());
+                        dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
                     } else {
-                        if(!dataForSinSem2.get(pos).get(realSynSem).containsKey(domainCategory)){
-                            dataForSinSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+                        if(!dataForSinSem2.get(pos).get(realSinSem).containsKey(domainCategory)){
+                            dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
                         }
                         else{
-                            int count = Integer.parseInt(dataForSinSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
-                            dataForSinSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
+                            int count = Integer.parseInt(dataForSinSem2.get(pos).get(realSinSem).get(domainCategory)) + 1;
+                            dataForSinSem2.get(pos).get(realSinSem).replace(domainCategory, String.valueOf(count));
                         }
                     }
                 }
@@ -1326,7 +1325,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     
                 }
                 bfw.close();
-                JOptionPane.showMessageDialog(null, "Success");
+                JOptionPane.showMessageDialog(null, "Files where saved successfully");
             } catch (IOException ex) {
                 Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }

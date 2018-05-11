@@ -113,7 +113,6 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
 	private final StrategyFactory strategyFactory = new StrategyFactory();
 	private final ShellFactory shellFactory = new ShellFactory();
-	private final ConfigDelaFactory configDelaFactory = new ConfigDelaFactory();
 	private final ConjugationFactory congugaisonFactory = new ConjugationFactory();
 	private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
 	private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
@@ -155,14 +154,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		setup(d,true);
 		return d;
 	}
-	public ConfigDela newConfigDelaDialog() {
-		final ConfigDela d = configDelaFactory.newConfigDelasDialog();
-		if (d == null) {
-			return null;
-		}
-		setup(d,true);
-		return d;
-	}
+
 	public EditorDelas newEditorDelasDialog(boolean alldelas, File dic) {
 		final EditorDelas d = editorDelasFactory.newEditorDelasDialog(alldelas, dic);
 		if (d == null) {

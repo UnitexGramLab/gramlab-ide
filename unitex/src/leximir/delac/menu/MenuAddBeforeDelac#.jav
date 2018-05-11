@@ -108,7 +108,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         WorldNet = new javax.swing.JTextField();
         jTextFieldPos = new javax.swing.JTextField();
         jTextFieldCFlx = new javax.swing.JTextField();
-        jTextFieldsynSem = new javax.swing.JTextField();
+        jTextFieldSinSem = new javax.swing.JTextField();
         jTextFieldDictionnary = new javax.swing.JTextField();
         jTextFieldDicId = new javax.swing.JTextField();
         jTextFieldLemaId = new javax.swing.JTextField();
@@ -160,7 +160,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
         jLabel7.setText("CFlx");
 
-        jLabel8.setText("SynSem");
+        jLabel8.setText("SinSem");
 
         jLabel9.setText("Dictionnary");
 
@@ -209,7 +209,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldCFlx)
-                            .addComponent(jTextFieldsynSem)
+                            .addComponent(jTextFieldSinSem)
                             .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jTextFieldLemaAll))
                 .addGap(37, 37, 37)
@@ -254,7 +254,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel11)
                     .addComponent(WorldNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldsynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldLemaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -545,11 +545,11 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
             String lemmaAll = jTextFieldLemaAll.getText();
             
             String FST = jTextFieldCFlx.getText();
-            String synSem = "+"+jTextFieldsynSem.getText();
+            String SinSem = "+"+jTextFieldSinSem.getText();
             String dic = jTextFieldDictionnary.getText();
             String comment=jTextFieldComment.getText();
 
-            Object[] row = Utils.delacToObject(lemmaAll,FST,synSem,comment,dic);
+            Object[] row = Utils.delacToObject(lemmaAll,FST,SinSem,comment,dic);
             editorDelac.getTableModel().insertRow(valueSelected,row);
             this.setVisible(false);
         }
@@ -958,7 +958,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldLemaAll;
     private javax.swing.JTextField jTextFieldLemaId;
     private javax.swing.JTextField jTextFieldPos;
-    private javax.swing.JTextField jTextFieldsynSem;
+    private javax.swing.JTextField jTextFieldSinSem;
     // End of variables declaration//GEN-END:variables
 
     

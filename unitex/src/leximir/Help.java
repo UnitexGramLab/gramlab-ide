@@ -66,15 +66,15 @@ public class Help extends javax.swing.JFrame {
 
         jLabel1.setText("Instruction for search");
 
-        jLabel2.setText("For text begin with : use ^+text. eg: text begin with ab=^ab");
+        jLabel2.setText("For text begins with : use ^+text. eg: text begins with ab=^ab");
 
-        jLabel3.setText("For text end with : use text+$. eg: text end with ab=ab$");
+        jLabel3.setText("For text ends with : use text+$. eg: text ends with ab=ab$");
 
-        jLabel4.setText("For extract match : use ^+text+$. eg: search \"hello\" = ^hello$");
+        jLabel4.setText("For exact matches : use ^+text+$. eg: search \"hello\" = ^hello$");
 
-        jLabel5.setText("For multiple criteria in one field : use text | text2");
+        jLabel5.setText("For multiple criteria in one field : use text1 | text2");
 
-        jLabel6.setText("e.g : text begin with ab OR and with cd =>^ab||cd$");
+        jLabel6.setText("e.g : text begins with ab OR ends with cd =>^ab||cd$");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,7 +96,7 @@ public class Help extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(184, 184, 184)
                         .addComponent(jButton1)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

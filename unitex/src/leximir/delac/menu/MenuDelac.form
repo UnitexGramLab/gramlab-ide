@@ -152,7 +152,7 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jTextFieldPos" min="-2" pref="252" max="-2" attributes="0"/>
                                       <Component id="jTextFieldCFlx" alignment="0" min="-2" pref="254" max="-2" attributes="0"/>
-                                      <Component id="jTextFieldsynSem" min="-2" pref="254" max="-2" attributes="0"/>
+                                      <Component id="jTextFieldSinSem" min="-2" pref="254" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jTextFieldLemaAll" max="32767" attributes="0"/>
@@ -203,7 +203,7 @@
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="WorldNet" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldsynSem" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldSinSem" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldLemaId" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="18" max="32767" attributes="0"/>
@@ -244,7 +244,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel8">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="SynSem"/>
+                    <Property name="text" type="java.lang.String" value="SinSem"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel9">
@@ -287,7 +287,7 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldCFlx">
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextFieldsynSem">
+                <Component class="javax.swing.JTextField" name="jTextFieldSinSem">
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldDictionnary">
                   <Properties>

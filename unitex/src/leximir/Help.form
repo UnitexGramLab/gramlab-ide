@@ -62,7 +62,7 @@
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace pref="21" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -104,27 +104,27 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="For text begin with : use ^+text. eg: text begin with ab=^ab"/>
+            <Property name="text" type="java.lang.String" value="For text begins with : use ^+text. eg: text begins with ab=^ab"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="For text end with : use text+$. eg: text end with ab=ab$"/>
+            <Property name="text" type="java.lang.String" value="For text ends with : use text+$. eg: text ends with ab=ab$"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="For extract match : use ^+text+$. eg: search &quot;hello&quot; = ^hello$"/>
+            <Property name="text" type="java.lang.String" value="For exact matches : use ^+text+$. eg: search &quot;hello&quot; = ^hello$"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="For multiple criteria in one field : use text | text2"/>
+            <Property name="text" type="java.lang.String" value="For multiple criteria in one field : use text1 | text2"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="e.g : text begin with ab OR and with cd =&gt;^ab||cd$"/>
+            <Property name="text" type="java.lang.String" value="e.g : text begins with ab OR ends with cd =&gt;^ab||cd$"/>
           </Properties>
         </Component>
       </SubComponents>

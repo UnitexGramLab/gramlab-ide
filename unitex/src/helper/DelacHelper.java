@@ -122,7 +122,7 @@ public class DelacHelper {
                     lemmaAll=getLemaAllDelac(s);
                     lemma=getLemaInLemaAllDelac(lemmaAll);
                     fSTCode = getFstCodeInDelac(s);
-                    sinSem=getSynSemInDelac(s);
+                    sinSem=getSinSemInDelac(s);
                     pOs = getPosInDelac(s);
                     comment = getCommentInDelas(s);
                     Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile);
@@ -217,11 +217,11 @@ public class DelacHelper {
         return sb.toString();
     }
     /**
-     * This function get SynSem in entry delac
+     * This function get SinSem in entry delac
      * @param text entry delac
-     * @return SynSem of delac
+     * @return SinSem of delac
      */
-    public static String getSynSemInDelac(String text){
+    public static String getSinSemInDelac(String text){
         try{
             StringBuilder sb = new StringBuilder();
             boolean begin=false;

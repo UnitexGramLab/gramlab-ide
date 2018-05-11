@@ -493,10 +493,12 @@ public class Shell extends javax.swing.JInternalFrame {
         for(int i=0;i<jTable1.getRowCount();i++){
             String strDelas = (String) jTable1.getModel().getValueAt(i, 1);
             /* Generate delaf */
+            
             String strDelaf = strDelas.replace("delas", "delaf");
             String[] command = new String[]{DictionaryPath.unitexLoggerPath, "MultiFlex",
                 strDelas,"-o",strDelaf,"-a",DictionaryPath.alphabetPath,"-d",jTextFieldInflection.getText()};
             Utils.runCommandTerminal(command);
+            
             /* compress delaf */
             String[] command1 = new String[]{DictionaryPath.unitexLoggerPath, "Compress",strDelaf};
             Utils.runCommandTerminal(command1);

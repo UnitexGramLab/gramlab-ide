@@ -19,13 +19,16 @@
  *
  */
 package leximir;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Vector;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
 
 /**
  *
@@ -85,14 +88,16 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-                Vector<String> header = this.header();
-        Vector<Vector> data = this.read();		
-        JTable tableau = new JTable(data, header);
-JScrollPane scrollpane=new JScrollPane(tableau,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-       JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    this.add(scrollpane);
-    this.setVisible(true);
-    this.setSize(450,400);
+        Vector<String> header = this.header();
+        Vector<Vector> data = this.read();
+        JTable table = new JTable(data, header);
+        table.setRowHeight(20);
+        JScrollPane scrollpane=new JScrollPane(table,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+           JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.getContentPane().add(scrollpane);
+        int h=(data.size()>20)? 20:data.size();
+        this.setSize(header.size()*124,56+h*20);
+	
     }// </editor-fold>//GEN-END:initComponents
 
 
