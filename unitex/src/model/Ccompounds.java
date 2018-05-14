@@ -52,7 +52,7 @@ public class Ccompounds {
     private String[] words;
     private char separator;
     private String[] posOfthisWordInJtable;
-    private String sinSem;
+    private String SynSem;
     private JTable jTableReturn;
 
     public Ccompounds(JTable jtable1, String pathtext, String[] text, char separator, String[] pos, String simsem) {
@@ -61,7 +61,7 @@ public class Ccompounds {
         this.words = text;
         this.separator = separator;
         this.posOfthisWordInJtable = pos;
-        this.sinSem = simsem;
+        this.SynSem = simsem;
     }
 
     /**
@@ -72,9 +72,9 @@ public class Ccompounds {
      * @param words mot a traiter
      * @param separator separateur du mot
      * @param POSwords POS se trouvant dans JtableDlf
-     * @param SinSem SinSem du mot se trouvant dans le fichier compoundsTest
+     * @param SynSem SynSem du mot se trouvant dans le fichier compoundsTest
      * @return retourne une liste de string au format "words", "FLX",
-     * "Rule","Spec/Gen","SinSem" pour chaque regle trouver
+     * "Rule","Spec/Gen","SynSem" pour chaque regle trouver
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
@@ -198,7 +198,7 @@ public class Ccompounds {
 
                             returns = getGenRule(eElementRule, posOfthisWordInJtable, returns, words, separator);
                             if (!returns.equals("")) {
-                                ret.add(returns.substring(0, returns.length() - 1) + "," + flx + "," + ruleNo + ",GenRule,0," + sinSem);
+                                ret.add(returns.substring(0, returns.length() - 1) + "," + flx + "," + ruleNo + ",GenRule,0," + SynSem);
                             }
                             returns = "";
 
@@ -260,7 +260,7 @@ public class Ccompounds {
                                     }
                                 }
                                 returns = !allOk.contains(false)?returns:"";
-                                if(!returns.equals(""))ret.add(returns.substring(0, returns.length() - 1) + "," + flx + "," + ruleNo+",SpecRule,"+idSpecRule+","+sinSem);
+                                if(!returns.equals(""))ret.add(returns.substring(0, returns.length() - 1) + "," + flx + "," + ruleNo+",SpecRule,"+idSpecRule+","+SynSem);
                                 returns = "";
 
                             }

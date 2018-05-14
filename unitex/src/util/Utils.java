@@ -79,30 +79,14 @@ public class Utils {
     public static ArrayList<String> readFile(String file) throws IOException {
 
         ArrayList<String> tmp;
-        /*InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file));
-        FileInputStream fs = new FileInputStream(new File(file));
-        try (CRLFTerminatedReader reader = new CRLFTerminatedReader(fs)) {
-            System.err.println(" e : "+file);
-            String ligne;
-            tmp = new ArrayList<>();
-            while((ligne = reader.readLine()) != null){	
-                System.err.println("err : "+ligne);
-                tmp.add(ligne);
-            }
-        }
-         */
-
-        InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), CharsetDetector.detect(new File(file)));
+        InputStreamReader inputStreamReader = Encoding.getInputStreamReader(new File(file)); 
         try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
             String ligne;
             tmp = new ArrayList<>();
             while ((ligne = reader.readLine()) != null) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < ligne.length(); i++) {
-                    String str = String.valueOf(ligne.charAt(i));
-                    if (str.matches("^[a-zA-Z0-9áàâäãåçéèêëíì=îïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\\s-]+$||[$&+'*,:.;\\[?@#\\]/ |)_(-]")) {
                         sb.append(ligne.charAt(i));
-                    }
                 }
                 if (!sb.toString().isEmpty()) {
                     tmp.add(sb.toString());
@@ -157,19 +141,28 @@ public class Utils {
     public static void exportStatAllToCsv(Map<String, Object[]> simSem1, Map<String, Object[]> simSem2, String filename) throws IOException, FileNotFoundException {
         String creator = "";
         Set<String> keyset = simSem1.keySet();
+        int i=0;
         for (String key : keyset) {
             Object[] objArr = simSem1.get(key);
-            for (Object obj : objArr) {
-                creator += obj.toString() + ";";
+            i=0;
+            for (Object obj : objArr) {               
+                if(i!=1){
+                   creator += obj.toString() + ";";
+                }
+                i++;
             }
             creator += "\n";
         }
-        creator = "POS;Semantic codes;SinSem;Count\n";
+        creator = "POS;SynSem;Count\n";
         Set<String> keysets = simSem2.keySet();
         for (String key : keysets) {
             Object[] objArr = simSem2.get(key);
+            i=0;
             for (Object obj : objArr) {
+               if(i!=1){
                 creator += obj.toString() + ";";
+               }
+               i++;
             }
             creator += "\n";
         }
@@ -188,9 +181,9 @@ public class Utils {
         }
     }
 
-    public static Object[] delasToObject(String lemma, String fstCode, String sinSem, String comment, String Dicname, int valueSelected){
-        //sinSem = sinSem+"="+fstCode;
-//        String line = lemma + "," + fstCode + sinSem + "//" + comment;
+    public static Object[] delasToObject(String lemma, String fstCode, String SynSem, String comment, String Dicname, int valueSelected){
+        //SynSem = SynSem+"="+fstCode;
+//        String line = lemma + "," + fstCode + SynSem + "//" + comment;
 //        String pOs = DelasHelper.getPosInDelas(line);
        
         String lemmas = lemma;
@@ -202,22 +195,22 @@ public class Utils {
         int lemmaId = valueSelected + 1;
         String dicFile = Dicname;
         int dicId = 0;
-        return new Object[]{pOs, lemmas, fSTCode, sinSem, comments, lemmaInv, wn_SinSet, lemmaId, dicFile, dicId};
+        return new Object[]{pOs, lemmas, fSTCode, SynSem, comments, lemmaInv, wn_SinSet, lemmaId, dicFile, dicId};
     }
 
-    public static Object[] delacToObject(String lemma, String fstCode, String SinSem, String comment, String Dicname){
-        String line = lemma + "," + fstCode + SinSem + "//" + comment;
+    public static Object[] delacToObject(String lemma, String fstCode, String synSem, String comment, String Dicname){
+        String line = lemma + "," + fstCode + synSem + "//" + comment;
         String pOs = DelacHelper.getPosInDelac(line);
         String lemaAll = lemma;
         String lema = DelacHelper.getLemaInLemaAllDelac(lemaAll);
         String fSTCode = fstCode;
-        String sinSem = SinSem;
+        String SynSem = synSem;
         String comments = comment;
         String wn_SinSet = "";
         int lemmaId = 10;
         String dicFile = Dicname;
         int dicId = 0;
-        return new Object[]{pOs, lemaAll, lema, fSTCode, sinSem, comments, wn_SinSet, lemmaId, dicFile, dicId};
+        return new Object[]{pOs, lemaAll, lema, fSTCode, SynSem, comments, wn_SinSet, lemmaId, dicFile, dicId};
     }
 
     public static String getValueXml(String key) throws IOException, FileNotFoundException, IllegalArgumentException {

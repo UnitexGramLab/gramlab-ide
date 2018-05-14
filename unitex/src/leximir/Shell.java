@@ -104,7 +104,7 @@ public class Shell extends javax.swing.JInternalFrame {
         jTextFieldInflection = new javax.swing.JTextField();
         jButtonInflectionPath = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jRadioInflectCompress.setText("Inflect delas(c) and compress");
         jRadioInflectCompress.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -148,7 +148,7 @@ public class Shell extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Selected", jPanel4);
 
-        jButtonDo.setText("Do it");
+        jButtonDo.setText("Compile");
         jButtonDo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonDoActionPerformed(evt);
@@ -175,8 +175,8 @@ public class Shell extends javax.swing.JInternalFrame {
                             .addComponent(jRadioInflectCompress)
                             .addComponent(jRadioCompress)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jButtonDo, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(jButtonDo, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonQuit)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -202,7 +202,7 @@ public class Shell extends javax.swing.JInternalFrame {
         jTextFieldPath.setEditable(false);
         jTextFieldPath.setBackground(new java.awt.Color(204, 204, 204));
 
-        jButtonSearch.setText("search");
+        jButtonSearch.setText("Browse");
         jButtonSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSearchActionPerformed(evt);
@@ -217,7 +217,7 @@ public class Shell extends javax.swing.JInternalFrame {
                 .addComponent(jTextFieldPath, javax.swing.GroupLayout.PREFERRED_SIZE, 407, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonSearch)
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -239,7 +239,7 @@ public class Shell extends javax.swing.JInternalFrame {
         jTextFieldInflection.setEditable(false);
         jTextFieldInflection.setBackground(new java.awt.Color(204, 204, 204));
 
-        jButtonInflectionPath.setText("Search");
+        jButtonInflectionPath.setText("Browse");
         jButtonInflectionPath.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonInflectionPathActionPerformed(evt);
@@ -312,6 +312,8 @@ public class Shell extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jPanel5.getAccessibleContext().setAccessibleName("Select dela dictionaries (dic files)");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -320,7 +322,7 @@ public class Shell extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -331,8 +333,8 @@ public class Shell extends javax.swing.JInternalFrame {
             JFileChooser theFileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Dic FILES", "dic");
             theFileChooser.setFileFilter(filter);
-            theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela));
-            theFileChooser.setDialogTitle("Search dela Dictionnary");
+            theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela+"/Dela"));
+            theFileChooser.setDialogTitle("Search dela dictionary");
             theFileChooser.setMultiSelectionEnabled(true);
             theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             theFileChooser.setAcceptAllFileFilterUsed(false);
@@ -399,14 +401,14 @@ public class Shell extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonDoActionPerformed
 
     private void jRadioInflectCompressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioInflectCompressMouseClicked
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select dela dictionnary (dic file)"));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select dela dictionary (dic file)"));
         isDelas=false;
         jTextFieldPath.setEditable(false);
         jTextFieldPath.setBackground(new java.awt.Color(204, 204, 204));
     }//GEN-LAST:event_jRadioInflectCompressMouseClicked
 
     private void jRadioCompressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioCompressMouseClicked
-      jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select delaf dictionnary (dic file)"));
+      jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select delaf dictionary (dic file)"));
       isDelas=false;
       jTextFieldPath.setEditable(false);
       jTextFieldPath.setBackground(new java.awt.Color(204, 204, 204));
@@ -416,7 +418,7 @@ public class Shell extends javax.swing.JInternalFrame {
        if(!isDelas){
             JFileChooser theFileChooser = new JFileChooser();
             theFileChooser.setCurrentDirectory(new File(DictionaryPath.inflectionPath));
-            theFileChooser.setDialogTitle("Search dela Dictionnary");
+            theFileChooser.setDialogTitle("Search dela dictionary");
             theFileChooser.setMultiSelectionEnabled(true);
             theFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             theFileChooser.setAcceptAllFileFilterUsed(false);

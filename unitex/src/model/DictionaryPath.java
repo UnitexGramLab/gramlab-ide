@@ -28,7 +28,7 @@ import fr.umlv.unitex.config.*;
  * @author Rojo Rabelisoa
  */
 public class DictionaryPath {
-    public static ArrayList<String> dictionnary= new ArrayList<>();
+    public static ArrayList<String> dictionary= new ArrayList<>();
     public static final String allDelafAbsPath = Config.getUserDir().toString().replace("/", "//")+"//"+Config.getCurrentLanguage()+"//Dela//";
 
     public static final String delafTmpPathDelac = Config.getUserDir().toString().replace("/", "//")+"//"+Config.getCurrentLanguage()+"//"+"text.txt";

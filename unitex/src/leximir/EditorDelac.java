@@ -55,9 +55,13 @@ import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import helper.GridHelper;
+import javax.swing.JInternalFrame;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import leximir.delac.menu.MenuDelac;
-import leximir.delac.menu.MenuDuplicateDelac;
 import model.DictionaryPath;
+import util.DuplicationFinder;
 import util.Utils;
 
 /**
@@ -81,10 +85,10 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         try {
             initComponents();
-            DictionaryPath.dictionnary.clear();
+            DictionaryPath.dictionary.clear();
             this.setTitle("LeXimir Editor for Dela dictionaries of compound words");
             tableModel = GridHelper.getOpenEditorforDelac(alldelac, dic);
-            for(String d:DictionaryPath.dictionnary){
+            for(String d:DictionaryPath.dictionary){
                 jComboBoxDic.addItem(d);
             }
             JTable table = new JTable(getTableModel());
@@ -112,6 +116,24 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         	JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
 					JOptionPane.ERROR_MESSAGE);
         }
+        
+        
+            final JInternalFrame frame = this;
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addInternalFrameListener(new InternalFrameAdapter() {
+			@Override
+			public void internalFrameClosing(InternalFrameEvent e) {
+                                   if(unsaved){
+           int dialogResult = JOptionPane.showConfirmDialog (null, "You " +
+"have some unsaved data, do you want to exit?","Exit Delac dictioneries in unicode",JOptionPane.YES_NO_OPTION);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                frame.dispose();
+            }
+       }else{
+           frame.dispose();
+       }
+                        }
+                });
     }
 
     /**
@@ -133,7 +155,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextFieldFst = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldSinSem = new javax.swing.JTextField();
+        jTextFieldSynSem = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButtonAll = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -207,11 +229,11 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setText("SinSem");
+        jLabel4.setText("SynSem");
 
-        jTextFieldSinSem.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextFieldSynSem.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextFieldSinSemKeyPressed(evt);
+                jTextFieldSynSemKeyPressed(evt);
             }
         });
 
@@ -275,7 +297,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonAll)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,7 +333,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldLemma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2)
                     .addComponent(jButtonAll)
                     .addComponent(jButtonMove)
@@ -376,7 +398,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     jLabel10.setText("FST Code");
 
-    jLabel5.setText("SinSem");
+    jLabel5.setText("SynSem");
 
     jButton1.setText("Clear");
     jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -817,7 +839,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 String file = (String) tableModel.getValueAt(row, 8);
                 String lemma = (String) tableModel.getValueAt(row, 1);
                 String fstCode = tableModel.getValueAt(row, 3).toString().concat(tableModel.getValueAt(row, 4).toString());
-                //String SinSem = ((String) tableModel.getValueAt(row, 4));
+                //String SynSem = ((String) tableModel.getValueAt(row, 4));
                 String str = lemma+","+fstCode;
                 String comment =(String) tableModel.getValueAt(row, 5);
                 if(comment!=null && comment.trim().length()>0){
@@ -852,8 +874,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuExitMouseClicked
        if(this.getUnsaved()){
-           int dialogResult = JOptionPane.showConfirmDialog (null, "you " +
-"have some unsaved data, do you want to exit","exit Delas Dictioneries in Unicode",JOptionPane.YES_NO_OPTION);
+           int dialogResult = JOptionPane.showConfirmDialog (null, "You " +
+"have some unsaved data, do you want to exit?","exit Delac dictioneries in unicode",JOptionPane.YES_NO_OPTION);
             if(dialogResult == JOptionPane.YES_OPTION){
                 this.setVisible(false);
             }
@@ -885,36 +907,36 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
        
             Map<String, List<String>> data = new HashMap<>();
-            Map<String, HashMap<String,String>> dataForSinSem1 = new HashMap<>();
-            Map<String, HashMap<String,HashMap<String,String>>> dataForSinSem2 = new HashMap<>();
+            Map<String, HashMap<String,String>> dataForSynSem1 = new HashMap<>();
+            Map<String, HashMap<String,HashMap<String,String>>> dataForSynSem2 = new HashMap<>();
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String sinsem = (String) this.getjTable1().getValueAt(i, 4);
+                String SynSem = (String) this.getjTable1().getValueAt(i, 4);
                 String pos = (String) this.getjTable1().getValueAt(i, 0);
                 if (!data.containsKey(pos)) {
                     List symSem = new ArrayList<>();
-                    String[] tmp = sinsem.split("=")[0].split(Pattern.quote("+"));
+                    String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
                     symSem.addAll(Arrays.asList(tmp));
                     data.put(pos, symSem);
                 } else {
                     List<String> valueInData = data.get(pos);
-                    String[] tmp = sinsem.split("=")[0].split(Pattern.quote("+"));
+                    String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
                     valueInData.addAll(Arrays.asList(tmp));
                     data.put(pos, valueInData);
                 }
                 /** This section is for SimSem1 Csv data **/
-                String sinsemForPos = (String) this.getjTable1().getValueAt(i, 4);
-                String[] domain = sinsemForPos.split("=")[0].split(Pattern.quote("+"));
+                String SynSemForPos = (String) this.getjTable1().getValueAt(i, 4);
+                String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
                 
-                String realSinSem = domain[domain.length-1];
-                if (!dataForSinSem1.containsKey(pos)) {
-                    dataForSinSem1.put(pos, new HashMap<String,String>());
-                    dataForSinSem1.get(pos).put(realSinSem, "1");
+                String realSynSem = domain[domain.length-1];
+                if (!dataForSynSem1.containsKey(pos)) {
+                    dataForSynSem1.put(pos, new HashMap<String,String>());
+                    dataForSynSem1.get(pos).put(realSynSem, "1");
                 } else {
-                    if (dataForSinSem1.get(pos).containsKey(realSinSem)) {
-                        int count = Integer.parseInt(dataForSinSem1.get(pos).get(realSinSem)) + 1;
-                        dataForSinSem1.get(pos).replace(realSinSem, String.valueOf(count));
+                    if (dataForSynSem1.get(pos).containsKey(realSynSem)) {
+                        int count = Integer.parseInt(dataForSynSem1.get(pos).get(realSynSem)) + 1;
+                        dataForSynSem1.get(pos).replace(realSynSem, String.valueOf(count));
                     } else {
-                        dataForSinSem1.get(pos).put(realSinSem, "1");
+                        dataForSynSem1.get(pos).put(realSynSem, "1");
                     }
                 }
                 /** end of SimSem1 Csv data **/
@@ -922,31 +944,31 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 /** This section is for SimSem2 Csv data **/
                 String domainCategory ="";
                 try{
-                    domainCategory = sinsemForPos.split("=")[1].split(Pattern.quote("+"))[0];
+                    domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
                 }
                 catch(java.lang.ArrayIndexOutOfBoundsException e){
                     try{
-                        domainCategory = sinsemForPos.split("=")[1];
+                        domainCategory = SynSemForPos.split("=")[1];
                     }
                     catch(java.lang.ArrayIndexOutOfBoundsException ex){
-                        domainCategory = sinsemForPos;
+                        domainCategory = SynSemForPos;
                     }
                 }
-                if (!dataForSinSem2.containsKey(pos)) {
-                    dataForSinSem2.put(pos, new HashMap<String,HashMap<String,String>>());
-                    dataForSinSem2.get(pos).put(realSinSem, new HashMap<String,String>());
-                    dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
+                if (!dataForSynSem2.containsKey(pos)) {
+                    dataForSynSem2.put(pos, new HashMap<String,HashMap<String,String>>());
+                    dataForSynSem2.get(pos).put(realSynSem, new HashMap<String,String>());
+                    dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
                 } else {
-                    if (!dataForSinSem2.get(pos).containsKey(realSinSem)) {
-                        dataForSinSem2.get(pos).put(realSinSem,  new HashMap<String,String>());
-                        dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
+                    if (!dataForSynSem2.get(pos).containsKey(realSynSem)) {
+                        dataForSynSem2.get(pos).put(realSynSem,  new HashMap<String,String>());
+                        dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
                     } else {
-                        if(!dataForSinSem2.get(pos).get(realSinSem).containsKey(domainCategory)){
-                            dataForSinSem2.get(pos).get(realSinSem).put(domainCategory, "1");
+                        if(!dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)){
+                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
                         }
                         else{
-                            int count = Integer.parseInt(dataForSinSem2.get(pos).get(realSinSem).get(domainCategory)) + 1;
-                            dataForSinSem2.get(pos).get(realSinSem).replace(domainCategory, String.valueOf(count));
+                            int count = Integer.parseInt(dataForSynSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
+                            dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
                         }
                     }
                 }
@@ -962,7 +984,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 //                d.setValue(tmp);
 //            }
 //            BufferedWriter bfw;
-//            bfw = new BufferedWriter(new FileWriter("TmpSinSem.txt"));
+//            bfw = new BufferedWriter(new FileWriter("TmpSynSem.txt"));
 //            for (Map.Entry<String, List<String>> f : data.entrySet()) {
 //                bfw.write(f.getKey()+"_distribution");
 //                bfw.write(" = ");
@@ -977,14 +999,14 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 //                bfw.write("\n");
 //            }
 //            bfw.close();
-//            JOptionPane.showMessageDialog(null, "file created in \n TmpSinSem.txt");
-//            Desktop.getDesktop().open(new File("TmpSinSem.txt"));
+//            JOptionPane.showMessageDialog(null, "file created in \n TmpSynSem.txt");
+//            Desktop.getDesktop().open(new File("TmpSynSem.txt"));
 //            
             
             Map<String, Object[]> statSimSem1 = new HashMap<>();
-            statSimSem1.put("1", new Object[]{"POS", "SinSem", "Number"});
+            statSimSem1.put("1", new Object[]{"POS", "SynSem", "Number"});
             int inc = 2;
-            for (Map.Entry<String, HashMap<String, String>> f : dataForSinSem1.entrySet()) {
+            for (Map.Entry<String, HashMap<String, String>> f : dataForSynSem1.entrySet()) {
                 String key = f.getKey();
                 for (Map.Entry<String, String> p : f.getValue().entrySet()) {
                     statSimSem1.put(String.valueOf(inc), new Object[]{key, p.getKey(), p.getValue()});
@@ -992,9 +1014,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 }
             }
             Map<String, Object[]> statSimSem2 = new HashMap<>();
-            //statSimSem2.put("1", new Object[]{"POS", "SinSem","Category", "Number"});
+            //statSimSem2.put("1", new Object[]{"POS", "SynSem","Category", "Number"});
             int v=2;
-            for(Map.Entry<String, HashMap<String, HashMap<String, String>>> t:dataForSinSem2.entrySet()){
+            for(Map.Entry<String, HashMap<String, HashMap<String, String>>> t:dataForSynSem2.entrySet()){
                 String key = t.getKey();
                 for(Map.Entry<String, HashMap<String, String>> y:t.getValue().entrySet()){
                     for(Map.Entry<String, String> u:y.getValue().entrySet()){
@@ -1085,7 +1107,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextFieldFstKeyPressed
 
-    private void jTextFieldSinSemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSinSemKeyPressed
+    private void jTextFieldSynSemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSynSemKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
@@ -1105,7 +1127,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
-    }//GEN-LAST:event_jTextFieldSinSemKeyPressed
+    }//GEN-LAST:event_jTextFieldSynSemKeyPressed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
@@ -1115,7 +1137,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         String pos = jTextField1.getText();
         String lemma = jTextField2.getText();
         String fst = jTextField3.getText();
-        String SinSem = jTextField4.getText();
+        String SynSem = jTextField4.getText();
         String comment= jTextField5.getText();
         TableRowSorter<DefaultTableModel> rowSorter;
         rowSorter = new TableRowSorter<>(tableModel);
@@ -1131,8 +1153,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         if (fst.length() != 0) {
             filters.add(RowFilter.regexFilter(fst, 3));
         }
-        if (SinSem.length() != 0) {
-            filters.add(RowFilter.regexFilter(SinSem, 4));
+        if (SynSem.length() != 0) {
+            filters.add(RowFilter.regexFilter(SynSem, 4));
         }
         if (comment.length() != 0) {
             filters.add(RowFilter.regexFilter(comment, 5));
@@ -1182,8 +1204,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuDuplicateMouseClicked
-        MenuDuplicateDelac mdd = new MenuDuplicateDelac(this);
-        mdd.setVisible(true);
+          new DuplicationFinder(this.getjTable1()).execute();
+
     }//GEN-LAST:event_jMenuDuplicateMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1370,7 +1392,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextFieldLemma;
     private javax.swing.JTextField jTextFieldPos;
     private javax.swing.JTextField jTextFieldSearch;
-    private javax.swing.JTextField jTextFieldSinSem;
+    private javax.swing.JTextField jTextFieldSynSem;
     // End of variables declaration//GEN-END:variables
     public javax.swing.JLabel getJLablel13(){
         return this.jLabel13;

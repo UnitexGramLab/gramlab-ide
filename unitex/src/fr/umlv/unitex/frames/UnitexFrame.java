@@ -47,7 +47,6 @@ import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
 import leximir.EditorDelac;
 import leximir.EditorDelas;
-import leximir.Index;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -893,20 +892,6 @@ public class UnitexFrame extends JFrame {
 		};
 		delacLeximir.setEnabled(true);
 		delaMenu.add(new JMenuItem(delacLeximir));
-
-		//for strategy 
-		delacStrategyLeximir = new AbstractAction("Open Strategy") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
-				//EditorDelas editorDelas = new EditorDelas();
-				//editorDelas.setVisible(true);
-				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-				.newStrategyDialog();
-			}
-		};
-		delacStrategyLeximir.setEnabled(true);
-		delaMenu.add(new JMenuItem(delacStrategyLeximir));
 		
 		
 		//end 

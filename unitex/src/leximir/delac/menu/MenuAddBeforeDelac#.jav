@@ -71,7 +71,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         this.valueSelected=selectedRow+1;
         jTextFieldPos.setText((String) this.obj[0]);
         jTextFieldCFlx.setText((String) this.obj[3]);
-        jTextFieldDictionnary.setText((String) this.obj[8]);
+        jTextFielddictionary.setText((String) this.obj[8]);
         jTextFieldDicId.setText(String.valueOf((int) this.obj[9]));
         jTextFieldLemaId.setText(String.valueOf((int) this.obj[7])+1);
         //this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -108,8 +108,8 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         WorldNet = new javax.swing.JTextField();
         jTextFieldPos = new javax.swing.JTextField();
         jTextFieldCFlx = new javax.swing.JTextField();
-        jTextFieldSinSem = new javax.swing.JTextField();
-        jTextFieldDictionnary = new javax.swing.JTextField();
+        jTextFieldSynSem = new javax.swing.JTextField();
+        jTextFielddictionary = new javax.swing.JTextField();
         jTextFieldDicId = new javax.swing.JTextField();
         jTextFieldLemaId = new javax.swing.JTextField();
         jPanelPrediction = new javax.swing.JPanel();
@@ -160,9 +160,9 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
 
         jLabel7.setText("CFlx");
 
-        jLabel8.setText("SinSem");
+        jLabel8.setText("SynSem");
 
-        jLabel9.setText("Dictionnary");
+        jLabel9.setText("dictionary");
 
         jLabel10.setText("DicId");
 
@@ -177,8 +177,8 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         jTextFieldPos.setEditable(false);
         jTextFieldPos.setBackground(new java.awt.Color(204, 204, 204));
 
-        jTextFieldDictionnary.setEditable(false);
-        jTextFieldDictionnary.setBackground(new java.awt.Color(204, 204, 204));
+        jTextFielddictionary.setEditable(false);
+        jTextFielddictionary.setBackground(new java.awt.Color(204, 204, 204));
 
         jTextFieldDicId.setEditable(false);
         jTextFieldDicId.setBackground(new java.awt.Color(204, 204, 204));
@@ -209,7 +209,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldCFlx)
-                            .addComponent(jTextFieldSinSem)
+                            .addComponent(jTextFieldSynSem)
                             .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jTextFieldLemaAll))
                 .addGap(37, 37, 37)
@@ -219,7 +219,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                     .addComponent(jLabel11))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldDictionnary)
+                    .addComponent(jTextFielddictionary)
                     .addComponent(jTextFieldDicId)
                     .addComponent(jTextFieldLemaId, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(89, 89, 89))
@@ -239,7 +239,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                         .addComponent(jLabel9)
                         .addComponent(jTextFieldLema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextFieldDictionnary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jTextFielddictionary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanelCompoundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -254,7 +254,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel11)
                     .addComponent(WorldNet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldLemaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -482,7 +482,7 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
         jMenu8.setText("FSD");
         jMenuBar1.add(jMenu8);
 
-        jMenu9.setText("Check in Dictionnary");
+        jMenu9.setText("Check in dictionary");
         jMenuBar1.add(jMenu9);
 
         jMenu10.setText("WorldNet");
@@ -545,11 +545,11 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
             String lemmaAll = jTextFieldLemaAll.getText();
             
             String FST = jTextFieldCFlx.getText();
-            String SinSem = "+"+jTextFieldSinSem.getText();
-            String dic = jTextFieldDictionnary.getText();
+            String SynSem = "+"+jTextFieldSynSem.getText();
+            String dic = jTextFielddictionary.getText();
             String comment=jTextFieldComment.getText();
 
-            Object[] row = Utils.delacToObject(lemmaAll,FST,SinSem,comment,dic);
+            Object[] row = Utils.delacToObject(lemmaAll,FST,SynSem,comment,dic);
             editorDelac.getTableModel().insertRow(valueSelected,row);
             this.setVisible(false);
         }
@@ -953,12 +953,12 @@ public class MenuAddBeforeDelac extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldClemaAll;
     private javax.swing.JTextField jTextFieldComment;
     private javax.swing.JTextField jTextFieldDicId;
-    private javax.swing.JTextField jTextFieldDictionnary;
+    private javax.swing.JTextField jTextFielddictionary;
     private javax.swing.JTextField jTextFieldLema;
     private javax.swing.JTextField jTextFieldLemaAll;
     private javax.swing.JTextField jTextFieldLemaId;
     private javax.swing.JTextField jTextFieldPos;
-    private javax.swing.JTextField jTextFieldSinSem;
+    private javax.swing.JTextField jTextFieldSynSem;
     // End of variables declaration//GEN-END:variables
 
     

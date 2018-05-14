@@ -40,7 +40,7 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException{
         
-        String[] entete = {"POS","Lemma","FST Code","SinSem","Comment","Lemma lnv","WN_SynSet","Lemma ID","Dict. File"};
+        String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Lemma lnv","WN_SynSet","Lemma ID","Dict. File"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
         return new DefaultTableModel(data,entete);
     }
@@ -51,7 +51,7 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelac(boolean alldelac, File dic) throws IOException{
         
-        String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SinSem","Comment","WN_SynSet","Lemma ID","Dict. File"};
+        String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SynSem","Comment","WN_SynSet","Lemma ID","Dict. File"};
         Object[][] data = DelacHelper.getAllDelacFromDicToObject(alldelac, dic);
         return new DefaultTableModel(data,entete);
     }
@@ -97,14 +97,14 @@ public class GridHelper {
     public static DefaultTableModel getDataforjTablePredict(List<String> predict) throws IOException{
         
         Object[][] data = DelacHelper.completeJTablePredict(predict);
-        String[] entete = {"words", "FST", "Rule","Spec/Gen","ID RULE","SinSem"};
+        String[] entete = {"words", "FST", "Rule","Spec/Gen","ID RULE","SynSem"};
         return new DefaultTableModel(data,entete);
     }
     /*// tableau pour afficher les données du tableau Strategie
     public static DefaultTableModel getDataforStrategy(List<String> words,String strategy) throws IOException{
         
         Object[][] data = StrategieHelper.completeJTableStrategie(words,strategy);
-        String[] entete = {"select", "Clemma", "CFLX", "Word NO", "Predict Id", "Rule Id", "RulePart Id", "SinSem"};
+        String[] entete = {"select", "Clemma", "CFLX", "Word NO", "Predict Id", "Rule Id", "RulePart Id", "SynSem"};
         return new DefaultTableModel(data,entete);
     }*/
 }

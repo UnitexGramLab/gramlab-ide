@@ -111,7 +111,6 @@ public abstract class InternalFrameManager implements FrameManager {
   private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
 	private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
-	private final StrategyFactory strategyFactory = new StrategyFactory();
 	private final ShellFactory shellFactory = new ShellFactory();
 	private final ConjugationFactory congugaisonFactory = new ConjugationFactory();
 	private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
@@ -138,14 +137,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		setup(d,true);
 		return d;
 	}
-	public Strategy newStrategyDialog() {
-		final Strategy d = strategyFactory.newStrategyDialog();
-		if (d == null) {
-			return null;
-		}
-		setup(d,true);
-		return d;
-	}
+
 	public Shell newShellDialog() {
 		final Shell d = shellFactory.newShellDialog();
 		if (d == null) {

@@ -53,7 +53,7 @@ public class CsvOpener extends javax.swing.JInternalFrame {
                 return new Vector<String>(Arrays.asList(chaine.split(";")));
             }
         } catch (Exception e) {
-            System.out.println("Le fichier est introuvable !");
+            e.printStackTrace();
         }
         return null;
     }

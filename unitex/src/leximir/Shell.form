@@ -85,8 +85,8 @@
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                              <Component id="jButtonDo" min="-2" pref="75" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                              <Component id="jButtonDo" min="-2" pref="86" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jButtonQuit" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -199,7 +199,7 @@
             </Container>
             <Component class="javax.swing.JButton" name="jButtonDo">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Do it"/>
+                <Property name="text" type="java.lang.String" value="Compile"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDoActionPerformed"/>
@@ -223,6 +223,9 @@
               </Border>
             </Property>
           </Properties>
+          <AccessibilityProperties>
+            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Select dela dictionaries (dic files)"/>
+          </AccessibilityProperties>
 
           <Layout>
             <DimensionLayout dim="0">
@@ -231,7 +234,7 @@
                       <Component id="jTextFieldPath" min="-2" pref="407" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonSearch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="49" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -259,7 +262,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonSearch">
               <Properties>
-                <Property name="text" type="java.lang.String" value="search"/>
+                <Property name="text" type="java.lang.String" value="Browse"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSearchActionPerformed"/>
@@ -356,7 +359,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonInflectionPath">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Search"/>
+                    <Property name="text" type="java.lang.String" value="Browse"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonInflectionPathActionPerformed"/>

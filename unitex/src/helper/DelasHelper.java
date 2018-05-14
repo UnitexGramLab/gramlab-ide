@@ -37,7 +37,7 @@ import util.Utils;
  */
 public class DelasHelper {
     /**
-     * This function return a list of dictionnary in directory
+     * This function return a list of dictionary in directory
      * @return
      * @throws FileNotFoundException 
      */
@@ -58,7 +58,7 @@ public class DelasHelper {
         return list;
     }
     /**
-     * This function return a list of dictionnary found in configuration
+     * This function return a list of dictionary found in configuration
      * @return
      * @throws FileNotFoundException 
      */
@@ -84,7 +84,7 @@ public class DelasHelper {
 //    }
     /***
      *  This funtion return all line in delas dictionary into Object[][] 
-     * @param allDelas if allDelas is true, the function takes all delas in delas folder, else it takes dictionnary selected in configuration
+     * @param allDelas if allDelas is true, the function takes all delas in delas folder, else it takes dictionary selected in configuration
      * @return
      * @throws FileNotFoundException
      * @throws IOException 
@@ -113,14 +113,14 @@ public class DelasHelper {
             for(String s:readFile){
                 count++;
             }
-            DictionaryPath.dictionnary.add(dela);
+            DictionaryPath.dictionary.add(dela);
         }
         
         Object[][] ob = new Object[count][lf.length];
         int k=0;
         int lemmaId=0;
         for(String dela:list){
-            String pOs,lemma,fSTCode,sinSem,comment,lemmaInv,wn_SinSet;
+            String pOs,lemma,fSTCode,SynSem,comment,lemmaInv,wn_SinSet;
             
             String dicFile=dela;
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
@@ -134,12 +134,12 @@ public class DelasHelper {
             for(String s:readFile){
                 lemma=getLemaInDelas(s);
                 lemmaInv=Utils.reverseString(lemma);
-                sinSem=getSinSemInDelas(s);
+                SynSem=getSynSemInDelas(s);
                 fSTCode = getFstCodeInDelas(s);
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
                 wn_SinSet = "";
-                Delas tmp = new Delas(pOs, lemma, fSTCode, sinSem, comment, lemmaInv, wn_SinSet, lemmaId, dicFile);
+                Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, wn_SinSet, lemmaId, dicFile);
                 delacToObject(ob, k, tmp);
                 k++;
                 lemmaId=lemmaId+1;
@@ -171,7 +171,7 @@ public class DelasHelper {
         }
         return sb.toString();
     }
-    public static String getSinSemInDelas(String text){
+    public static String getSynSemInDelas(String text){
         try{
             StringBuilder sb = new StringBuilder();
             boolean begin=false;

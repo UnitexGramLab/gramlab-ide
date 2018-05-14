@@ -38,9 +38,9 @@ import util.Utils;
  */
 public class DelacHelper {
     /**
-     * This function return a list of dictionnary in directory
-     * @return return an ArrayList of dictionnary
-     * @throws FileNotFoundException if there are no dictionnary found in StaticValue.allDelc path 
+     * This function return a list of dictionary in directory
+     * @return return an ArrayList of dictionary
+     * @throws FileNotFoundException if there are no dictionary found in StaticValue.allDelc path 
      */
     public static ArrayList<String> getDicDelacPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
@@ -62,8 +62,8 @@ public class DelacHelper {
     
     /***
      * This function get all dictionnaries in delac folder and return an Object [][] which contains all information(
-     * POS, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile)
-     * @param alldelac if alldelac is true, the function takes all delas in delcs folder, else it takes dictionnary selected in configuration
+     * POS, lemmaAll, lemma, fSTCode, SynSem, comment, wn_SinSet, lemmaId, dicFile)
+     * @param alldelac if alldelac is true, the function takes all delas in delcs folder, else it takes dictionary selected in configuration
      * @return List of lemma in Object[][] format
      * @throws FileNotFoundException
      * @throws IOException 
@@ -92,14 +92,14 @@ public class DelacHelper {
                 if(s.trim().length()>0)
                     count++;
             }
-            DictionaryPath.dictionnary.add(dela);
+            DictionaryPath.dictionary.add(dela);
         }
         
         Object[][] ob = new Object[count][lf.length];
         int k=0;
         int lemmaId=0;
         for(String dela:list){
-            String pOs,lemmaAll,lemma,fSTCode,sinSem,comment,wn_SinSet;
+            String pOs,lemmaAll,lemma,fSTCode,SynSem,comment,wn_SinSet;
             
             String dicFile=dela;
             String path="";
@@ -122,10 +122,10 @@ public class DelacHelper {
                     lemmaAll=getLemaAllDelac(s);
                     lemma=getLemaInLemaAllDelac(lemmaAll);
                     fSTCode = getFstCodeInDelac(s);
-                    sinSem=getSinSemInDelac(s);
+                    SynSem=getSynSemInDelac(s);
                     pOs = getPosInDelac(s);
                     comment = getCommentInDelas(s);
-                    Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, sinSem, comment, wn_SinSet, lemmaId, dicFile);
+                    Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, SynSem, comment, wn_SinSet, lemmaId, dicFile);
                     delacToObject(ob, k, tmp);
                     k++;
                     lemmaId=lemmaId+1;
@@ -217,11 +217,11 @@ public class DelacHelper {
         return sb.toString();
     }
     /**
-     * This function get SinSem in entry delac
+     * This function get SynSem in entry delac
      * @param text entry delac
-     * @return SinSem of delac
+     * @return SynSem of delac
      */
-    public static String getSinSemInDelac(String text){
+    public static String getSynSemInDelac(String text){
         try{
             StringBuilder sb = new StringBuilder();
             boolean begin=false;

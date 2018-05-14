@@ -28,17 +28,17 @@ public class MenuDelas extends javax.swing.JFrame {
     public MenuDelas() {
         //super("Manage Delas", true, true, true, true);
         initComponents();
-        for(String dic:DictionaryPath.dictionnary){
+        for(String dic:DictionaryPath.dictionary){
             jComboBoxDic.addItem(dic);
         };
     }
-    public MenuDelas(EditorDelas el,int selectedRow,String menuSelected,Object dictionnary, Object[] obj){
+    public MenuDelas(EditorDelas el,int selectedRow,String menuSelected,Object dictionary, Object[] obj){
         //super("Manage Delas", true, true, true, true);
         initComponents();
-        for(String dic:DictionaryPath.dictionnary){
+        for(String dic:DictionaryPath.dictionary){
             jComboBoxDic.addItem(dic);
         };
-        jComboBoxDic.setSelectedItem(dictionnary);
+        jComboBoxDic.setSelectedItem(dictionary);
         this.elFrame=el;
         
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,7 +54,7 @@ public class MenuDelas extends javax.swing.JFrame {
             case "copyBefore":
                 this.jTextFieldLemma.setText((String) obj[1]);
                 this.jTextFieldFST.setText((String) obj[2]);
-                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 this.valueSelected = selectedRow;
                 this.idedit = (int) obj[7];
@@ -63,7 +63,7 @@ public class MenuDelas extends javax.swing.JFrame {
             case "copyAfter":
                this.jTextFieldLemma.setText((String) obj[1]);
                 this.jTextFieldFST.setText((String) obj[2]);
-                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 this.valueSelected = selectedRow + 1;
                 this.idedit = ((int) obj[7])+1;
@@ -72,7 +72,7 @@ public class MenuDelas extends javax.swing.JFrame {
             case "view":
                 this.jTextFieldLemma.setText((String) obj[1]);
                 this.jTextFieldFST.setText((String) obj[2]);
-                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 jButtonAdd.setVisible(false);
                 
@@ -82,7 +82,7 @@ public class MenuDelas extends javax.swing.JFrame {
                 edit=true;
                 this.jTextFieldLemma.setText((String) obj[1]);
                 this.jTextFieldFST.setText((String) obj[2]);
-                this.jTextFieldSinSem.setText((String) obj[3]);
+                this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 this.valueSelected = selectedRow;
                 this.idedit = (int) obj[7];
@@ -114,7 +114,7 @@ public class MenuDelas extends javax.swing.JFrame {
         jTextFieldComment = new javax.swing.JTextField();
         jButtonInflect = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jTextFieldSinSem = new javax.swing.JTextField();
+        jTextFieldSynSem = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,7 +162,7 @@ public class MenuDelas extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("SinSem");
+        jLabel6.setText("SynSem");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -191,7 +191,7 @@ public class MenuDelas extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jComboBoxDic, 0, 265, Short.MAX_VALUE)
                                     .addComponent(jTextFieldComment)
-                                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                    .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(47, 47, 47)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +219,7 @@ public class MenuDelas extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextFieldSinSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -268,11 +268,11 @@ public class MenuDelas extends javax.swing.JFrame {
         
             String lemma = jTextFieldLemma.getText();
             String FST = jTextFieldFST.getText();
-            String sinSem = jTextFieldSinSem.getText().equals("")?"":jTextFieldSinSem.getText().substring(0,1).equals("+")?jTextFieldSinSem.getText():"+"+jTextFieldSinSem.getText();
+            String SynSem = jTextFieldSynSem.getText().equals("")?"":jTextFieldSynSem.getText().substring(0,1).equals("+")?jTextFieldSynSem.getText():"+"+jTextFieldSynSem.getText();
             String dic = (String) jComboBoxDic.getSelectedItem();
             String comment=jTextFieldComment.getText();
 
-           Object[] row = Utils.delasToObject(lemma,FST,sinSem,comment,dic,idedit);
+           Object[] row = Utils.delasToObject(lemma,FST,SynSem,comment,dic,idedit);
            if(edit){
                 for(int i=0;i<row.length;i++){
                     if(i!=7){
@@ -381,7 +381,7 @@ public class MenuDelas extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldComment;
     private javax.swing.JTextField jTextFieldFST;
     private javax.swing.JTextField jTextFieldLemma;
-    private javax.swing.JTextField jTextFieldSinSem;
+    private javax.swing.JTextField jTextFieldSynSem;
     // End of variables declaration//GEN-END:variables
 
     
