@@ -21,6 +21,7 @@
 package fr.umlv.unitex.undo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
@@ -50,6 +51,8 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	 */
 	private final GenericGraphicalZone zone;
 
+	private final HashMap<GenericGraphBox, Boolean> isModified;
+
 	/**
 	 * @param selectedBoxes
 	 *            selected boxes in the graph
@@ -64,8 +67,13 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		this.selectedBoxes = selectedBoxes;
 		this.oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes
 				.clone();
+		this.isModified = new HashMap<>();
 		this.dst = dst;
 		this.zone = zone;
+		for(GenericGraphBox b : oldSelectedBoxes) {
+			isModified.put(b, b.isModified());
+			b.setModified(true);
+		}
 	}
 
 	@Override
@@ -79,6 +87,7 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 			g.setSelected(true);
 			selectedBoxes.add(g);
 			zone.initText(g.getContent());
+			g.setModified(isModified.get(g));
 		}
 	}
 
@@ -92,6 +101,7 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 			// unselect this boxe
 			g.setSelected(false);
 			selectedBoxes.remove(g);
+			g.setModified(true);
 		}
 	}
 }

@@ -288,4 +288,12 @@ public class TfstGraphBox extends GenericGraphBox {
 		return !s.equals("<E>") && s.charAt(0) != '{';
 	}
 
+	public String getContentText() {
+		if (content.startsWith("{")) {
+			int index = content.indexOf(",");
+		return content.substring(1, index);
+		}	
+		return content;
+	}
+
 }

@@ -45,6 +45,7 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 	 * zone where the graph is drawn
 	 */
 	private final GenericGraphicalZone zone;
+	private final boolean isModified;
 
 	/**
 	 * contruct an edit to redo and undo a text edition in a boxe
@@ -62,6 +63,8 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		this.newText = text;
 		this.zone = zone;
 		oldText = boxe.getContent();
+		this.isModified = boxe.isModified();
+		boxe.setModified(true);
 	}
 
 	@Override
@@ -71,11 +74,13 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		boxe.setSelected(true);
 		zone.getSelectedBoxes().add(boxe);
 		zone.initText(boxe.getContent());
+		boxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		boxe.setContent(newText);
+		boxe.setModified(true);
 	}
 }
