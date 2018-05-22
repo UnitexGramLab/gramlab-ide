@@ -211,18 +211,6 @@ public class MenuDelac extends javax.swing.JFrame {
         jTextFieldSynSem = new javax.swing.JTextField();
         jTextFielddictionary = new javax.swing.JTextField();
         jTextFieldLemaId = new javax.swing.JTextField();
-        jPanelPrediction = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextFieldClemaAll = new javax.swing.JTextField();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        jTablePredict = new javax.swing.JTable();
-        jPanelTable = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTableDlf = new javax.swing.JTable();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTableRule = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableFLX = new javax.swing.JTable();
@@ -344,92 +332,6 @@ public class MenuDelac extends javax.swing.JFrame {
 
         jTabbedPaneTable.addTab("Compound", jPanelCompound);
 
-        jLabel1.setText("Coumpound for prediction of CLemaAll and  CFlx :");
-
-        buttonGroupRules.add(jRadioButton1);
-        jRadioButton1.setText("First rule strategy");
-
-        buttonGroupRules.add(jRadioButton2);
-        jRadioButton2.setText("Second rule strategy");
-
-        jTablePredict.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane7.setViewportView(jTablePredict);
-
-        javax.swing.GroupLayout jPanelPredictionLayout = new javax.swing.GroupLayout(jPanelPrediction);
-        jPanelPrediction.setLayout(jPanelPredictionLayout);
-        jPanelPredictionLayout.setHorizontalGroup(
-            jPanelPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelPredictionLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanelPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelPredictionLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldClemaAll, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanelPredictionLayout.setVerticalGroup(
-            jPanelPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelPredictionLayout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addGroup(jPanelPredictionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextFieldClemaAll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(297, 297, 297))
-            .addGroup(jPanelPredictionLayout.createSequentialGroup()
-                .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton2)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jTabbedPaneTable.addTab("Prediction", jPanelPrediction);
-
-        jTableDlf.setAutoCreateRowSorter(true);
-        jScrollPane3.setViewportView(jTableDlf);
-
-        jScrollPane5.setViewportView(jTableRule);
-
-        javax.swing.GroupLayout jPanelTableLayout = new javax.swing.GroupLayout(jPanelTable);
-        jPanelTable.setLayout(jPanelTableLayout);
-        jPanelTableLayout.setHorizontalGroup(
-            jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanelTableLayout.setVerticalGroup(
-            jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jTabbedPaneTable.addTab("table", jPanelTable);
-
         jTableFLX.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -438,11 +340,6 @@ public class MenuDelac extends javax.swing.JFrame {
 
             }
         ));
-        jTableFLX.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTableFLXKeyPressed(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTableFLX);
 
         jButtonAddSimpleForm.setText("Add simple form");
@@ -541,14 +438,6 @@ public class MenuDelac extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenuInflect);
 
-        jMenuPrediction.setText("Prediction");
-        jMenuPrediction.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuPredictionMouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenuPrediction);
-
         jMenu7.setText("Selected Rule");
         jMenuBar1.add(jMenu7);
 
@@ -638,38 +527,7 @@ public class MenuDelac extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuSaveMouseClicked
 
-    private void jTableFLXKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableFLXKeyPressed
-        if (this.jTableFLX.getSelectedRow() != -1) {
-            if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_F) {
-                try {
-                    rowIdSelectedDelaf = this.jTableFLX.getSelectedRow();
-                    String value = (String) this.jTableFLX.getModel().getValueAt(this.jTableFLX.getSelectedRow(), 1);
-
-                    Utils.generateDelaf(value);
-                    tableModel = GridHelper.getDelafInDelacForDelac();
-                    JTable table = new JTable(tableModel);
-                    this.jTableDelaf.setModel(table.getModel());
-                    this.jTableDelaf.removeAll();//dd
-
-                    //
-                    this.jTableDelaf.repaint();
-                    final JPopupMenu popupMenu = new JPopupMenu();
-                    JMenuItem selectItem = new JMenuItem("Select");
-                    selectItem.addActionListener(selectMenuJTableDelaf());
-                    popupMenu.add(selectItem);
-                    jTableDelaf.setComponentPopupMenu(popupMenu);
-
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                }
-            }
-            if (evt.isControlDown() && evt.getKeyCode() == KeyEvent.VK_C) {
-                String value = (String) this.jTableFLX.getModel().getValueAt(this.jTableFLX.getSelectedRow(), 1);
-                this.jTableFLX.getModel().setValueAt(value, this.jTableFLX.getSelectedRow(), 2);
-            }
-        }
-    }//GEN-LAST:event_jTableFLXKeyPressed
-
+  
     private void jMenuInflectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInflectMouseClicked
         if (jTextFieldLemaAll.getText().equals("") || jTextFieldCFlx.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "something wrong");
@@ -697,248 +555,9 @@ public class MenuDelac extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jMenuCloseMouseClicked
 
-    private void jMenuPredictionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuPredictionMouseClicked
-        String value = jTextFieldClemaAll.getText();
-        if (!value.equals("")) {
-            try {
-                String[] words = value.split("-|\\ ");
-                int separatorSpace = value.indexOf(" ");
-                int separatorIndex = value.indexOf("-");
-                char separator = 0;
-                String flxGroup = "AC_2XA";
-
-                if (separatorSpace > -1) {
-                    separator = value.charAt(separatorSpace);
-                } else if (separatorIndex > -1) {
-                    separator = value.charAt(separatorIndex);
-                }
-                List<String> result = CompoundsUtils.getDlfInFile(value);
-
-                jTableDlf.setModel(GridHelper.getDataforjTableDlf(result));
-                jTableDlf.repaint();
-
-                /**
-                 * *** complete datatableRule **
-                 */
-                boolean alldelas = true;
-                Object[][] getAllDelas = DelasHelper.getAllDelasFromDicToObject(alldelas, null);
-                Object[][] allDelasImportant = new Object[jTableDlf.getRowCount()][6];
-                int indexImportantDelas = 0;
-                List<String> wordFoundInDico = new ArrayList<>();
-                wordFoundInDico.addAll(Arrays.asList(words));
-                for (Object[] allDela : getAllDelas) {
-
-                    for (int i = 0; i < jTableDlf.getRowCount(); i++) {
-                        String text = (String) jTableDlf.getModel().getValueAt(i, 1);
-                        String compare = (String) allDela[1];
-                        try {
-                            if (text.equals(compare)) {
-                                String word = (String) jTableDlf.getModel().getValueAt(i, 0);
-                                word = word.split(",")[0];
-                                allDelasImportant[indexImportantDelas][0] = 1;// Rule
-
-                                allDelasImportant[indexImportantDelas][1] = allDela[1];// Lema
-                                allDelasImportant[indexImportantDelas][2] = allDela[2];// FLX CODE
-                                allDelasImportant[indexImportantDelas][3] = jTableDlf.getModel().getValueAt(i, 3);// GramCat
-                                allDelasImportant[indexImportantDelas][4] = allDela[0];// POS
-                                allDelasImportant[indexImportantDelas][5] = word;// words
-                                indexImportantDelas++;
-                                wordFoundInDico.remove((String) allDela[1]);
-                            }
-                        } catch (java.lang.NullPointerException e) {
-                            continue;
-                        }
-                    }
-                }
-                String[] enteteRule = {"Rule", "Lema", "FLX", "GramCat", "POS", "words"};
-                jTableRule.setModel((new JTable(new DefaultTableModel(allDelasImportant, enteteRule))).getModel());
-                jTableRule.repaint();
-
-                String[] PosWords = new String[words.length];
-                Set<String> pos = new HashSet();
-                for (int j = 0; j < words.length; j++) {
-                    for (int k = 0; k < jTableDlf.getRowCount(); k++) {
-                        if (jTableDlf.getValueAt(k, 0) != null) {
-                            int indexLema = ((String) jTableDlf.getValueAt(k, 0)).indexOf(",");
-                            String lema = ((String) jTableDlf.getValueAt(k, 0)).substring(0, indexLema);
-                            if (lema.equals(words[j])) {
-                                pos.add((String) jTableDlf.getValueAt(k, 2));
-                            }
-                        }
-                    }
-                    String w = "";
-                    for (String s : pos) {
-                        w = s + ",";
-                    }
-                    PosWords[j] = "".equals(w) ? w : w.substring(0, w.length() - 1);
-                }
-
-                List<String> predict = getLemaFromXmlRule(words, separator, flxGroup, PosWords);
-
-                jTablePredict.setModel(GridHelper.getDataforjTablePredict(predict));
-                jTablePredict.repaint();
-                final JPopupMenu popupMenu = new JPopupMenu();
-                JMenuItem selectItem = new JMenuItem("Select");
-                selectItem.addActionListener(selectMenuJTableFLX());
-                popupMenu.add(selectItem);
-                jTablePredict.setComponentPopupMenu(popupMenu);
-                /*for (String t : getLemaFromXmlRule(words, separator, flxGroup, PosWords)) {
-                    System.out.println(t);
-                }
-                wordFoundInDico.stream().forEach((s) -> {
-                    System.err.println(s + " is not found in dico");
-                });*/
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "error :" + ex.getMessage());
-            } catch (ParserConfigurationException | SAXException ex) {
-                Logger.getLogger(MenuDelac.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Value Clma is Empty");
-        }
-    }//GEN-LAST:event_jMenuPredictionMouseClicked
-
-    private ActionListener selectMenuJTableFLX() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (jTablePredict.getSelectedRow() != -1) {
-                    try {
-                        String lema = (String) jTablePredict.getModel().getValueAt(jTablePredict.getSelectedRow(), 0);
-                        jTableFLX.removeAll();
-                        jTableFLX.setModel(GridHelper.getDataforjTableFlx(lema));
-                        jTableFLX.repaint();
-                        jTextFieldCFlx.setText((String) jTablePredict.getModel().getValueAt(jTablePredict.getSelectedRow(), 1));
-                    } catch (IOException ex) {
-                        Logger.getLogger(MenuDelac.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "No selected value");
-                }
-            }
-
-        };
-    }
-
-    private ActionListener selectMenuJTableDelaf() {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (jTableDelaf.getSelectedRow() != -1) {
-                    String lema = (String) jTableDelaf.getModel().getValueAt(jTableDelaf.getSelectedRow(), 2);
-                    String gramCat = (String) jTableDelaf.getModel().getValueAt(jTableDelaf.getSelectedRow(), 3);
-                    String fst = (String) jTableDelaf.getModel().getValueAt(jTableDelaf.getSelectedRow(), 4);
-                    DefaultTableModel model = (DefaultTableModel) jTableFLX.getModel();
-                    model.setValueAt(lema, rowIdSelectedDelaf, 2);
-                    model.setValueAt(gramCat, rowIdSelectedDelaf, 4);
-                    model.setValueAt(fst, rowIdSelectedDelaf, 3);
-                    jTableFLX.setModel(model);
-                    jTableFLX.repaint();
-                    jTableDelaf.setModel(new DefaultTableModel());
-                } else {
-                    JOptionPane.showMessageDialog(null, "No selected value");
-                }
-            }
-
-        };
-    }
-
-    private String getFlex(String words, String poss) {
-        String flexion = "";
-        for (int k = 0; k < jTableRule.getRowCount(); k++) {
-            if (jTableRule.getValueAt(k, 1) != null) {
-                if (!((String) jTableRule.getValueAt(k, 5)).equals(words)) {
-                    flexion = "";
-                } else {
-                    if (words.equals((String) jTableRule.getValueAt(k, 5)) && (poss.equals((String) jTableRule.getValueAt(k, 4)) || poss.equals("MOT"))) {//get lemma in Table
-                        String lema = (String) jTableRule.getValueAt(k, 1);
-                        String flex = (String) jTableRule.getValueAt(k, 2);
-                        String gramcat = (String) jTableRule.getValueAt(k, 3);
-                        flexion = "(" + lema + "." + flex + ":" + gramcat + ")";
-                        return flexion;
-                    }
-                }
-            }
-        }
-        return "";
-    }
-
-    private List<String> getLemaFromXmlRule(String[] words, char separator, String flxGroup, String[] POSwords) throws ParserConfigurationException, SAXException, IOException {
-        boolean ruleIdFound = false;
-        boolean flxFound = false;
-        String flx = new String();
-        String ruleNo = "";
-        NodeList nList = getNodeList();
-        String returns = "";
-        List<String> ret = new ArrayList<>();
-        for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element eElement = (Element) nNode;
-                if (eElement.getAttribute("WordNo").equals(Integer.toString(words.length))) {
-                    ruleIdFound = true;
-                    NodeList ndRule = eElement.getElementsByTagName("Rule");
-                    for (int i = 0; i < ndRule.getLength(); i++) {
-                        Node nNodeRule = ndRule.item(i);
-                        if (nNodeRule.getNodeType() == Node.ELEMENT_NODE) {
-                            Element eElementRule = (Element) nNodeRule;
-                            if (eElementRule.getAttribute("CflxGroup").equals(flxGroup)) {
-                                flxFound = true;
-                                flx = eElementRule.getAttribute("CFLX");
-                                ruleNo = eElementRule.getAttribute("ID");
-                                /**
-                                 * **** For General Rules ****
-                                 */
-                                NodeList ndRuleGenCond = eElementRule.getElementsByTagName("RuleGenCond");
-                                for (int j = 0; j < ndRuleGenCond.getLength(); j++) {
-                                    Node nNodeRuleGenCond = ndRuleGenCond.item(j);
-                                    if (nNodeRuleGenCond.getNodeType() == Node.ELEMENT_NODE) {
-                                        Element eElementRuleGenCond = (Element) nNodeRuleGenCond;
-                                        NodeList ndWord = eElementRuleGenCond.getElementsByTagName("Word");
-                                        for (int k = 0; k < ndWord.getLength(); k++) {
-                                            Node nNodeWord = ndWord.item(k);
-                                            if (nNodeWord.getNodeType() == Node.ELEMENT_NODE) {
-                                                Element eElementWord = (Element) nNodeWord;
-                                                if (eElementWord.getAttribute("POS").equals(POSwords[k]) || eElementWord.getAttribute("POS").equals("MOT")) {
-                                                    if (eElementWord.getAttribute("Flex").equals("false") || eElementWord.getAttribute("Flex") == null || eElementWord.getAttribute("Flex").equals("")) {
-                                                        //returns = returns+words[k]+"(flexion off)";
-                                                        returns = returns + words[k];
-                                                    } else {
-                                                        String flex = getFlex(words[k], eElementWord.getAttribute("POS"));
-                                                        //returns = returns+words[k]+"(flexion on)"+flex;
-                                                        returns = returns + words[k] + flex;
-                                                    }
-                                                } else {
-                                                    //returns = returns+words[k]+"(flexion off)";
-                                                    returns = returns + words[k];
-                                                }
-                                            }
-                                            returns = returns + separator;
-                                        }
-                                    }
-                                }
-                                /**
-                                 * **** End For General Rules ****
-                                 */
-                                ret.add(returns.substring(0, returns.length() - 1) + "," + flx + "," + ruleNo);
-                                returns = "";
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (flxFound == false) {
-            throw new NullPointerException(flxGroup + " flx not found in rule " + words.length);
-        }
-        if (ruleIdFound == false) {
-            throw new NullPointerException(words.length + " rule not found");
-        }
-        return ret;
-    }
 
     public static NodeList getNodeList() throws ParserConfigurationException, SAXException, IOException {
-        File inputFile = new File("CompoundsStrat7_Ver5-3.xml");
+        File inputFile = new File("C:/Users/Anas/Desktop/test-set-strategy/strategy-fr.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(inputFile);
@@ -987,7 +606,6 @@ public class MenuDelac extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroupRules;
     private javax.swing.JButton jButtonAddSimpleForm;
     private javax.swing.JButton jButtonRefresh;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -1007,30 +625,19 @@ public class MenuDelac extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelCompound;
-    private javax.swing.JPanel jPanelPrediction;
-    private javax.swing.JPanel jPanelTable;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPaneTable;
     private javax.swing.JTable jTableDelaf;
-    private javax.swing.JTable jTableDlf;
     private javax.swing.JTable jTableFLX;
-    private javax.swing.JTable jTablePredict;
-    private javax.swing.JTable jTableRule;
     private javax.swing.JTextField jTextFieldCFlx;
-    private javax.swing.JTextField jTextFieldClemaAll;
     private javax.swing.JTextField jTextFieldComment;
-    private javax.swing.JTextField jTextFielddictionary;
     private javax.swing.JTextField jTextFieldLema;
     private javax.swing.JTextField jTextFieldLemaAll;
     private javax.swing.JTextField jTextFieldLemaId;
     private javax.swing.JTextField jTextFieldPos;
     private javax.swing.JTextField jTextFieldSynSem;
+    private javax.swing.JTextField jTextFielddictionary;
     // End of variables declaration//GEN-END:variables
     private int rowIdSelectedDelaf;
 }
