@@ -42,6 +42,9 @@ public class CompoundsUtils {
         Utils.generateDelaf(value);
         String path = DictionaryPath.text_sntAbsPath;
         ArrayList<String> readFile = Utils.readFile(path);
+        for (String s : readFile)
+            System.out.println(s);
+        
         return readFile;
     }
 }

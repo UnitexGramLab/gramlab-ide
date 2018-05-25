@@ -44,11 +44,11 @@ public class MenuDelas extends javax.swing.JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         switch (menuSelected) {
             case "insertBefore":
-                this.idedit = (int) obj[7];
+                this.idedit = (int) obj[6];
                 jLabelTitle.setText("Insertion value");
                 break;
             case "insertAfter":
-                this.idedit = ((int) obj[7])+1;
+                this.idedit = ((int) obj[6])+1;
                 jLabelTitle.setText("Insertion value");
                 break;
             case "copyBefore":
@@ -57,7 +57,7 @@ public class MenuDelas extends javax.swing.JFrame {
                 this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 this.valueSelected = selectedRow;
-                this.idedit = (int) obj[7];
+                this.idedit = (int) obj[6];
                 jLabelTitle.setText("Insertion value");
                 break;
             case "copyAfter":
@@ -66,7 +66,7 @@ public class MenuDelas extends javax.swing.JFrame {
                 this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 this.valueSelected = selectedRow + 1;
-                this.idedit = ((int) obj[7])+1;
+                this.idedit = ((int) obj[6])+1;
                 jLabelTitle.setText("Insertion value");
                 break;
             case "view":
@@ -85,7 +85,7 @@ public class MenuDelas extends javax.swing.JFrame {
                 this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
                 this.valueSelected = selectedRow;
-                this.idedit = (int) obj[7];
+                this.idedit = (int) obj[6];
                 jLabelTitle.setText("Edit value");
                 break;
         }

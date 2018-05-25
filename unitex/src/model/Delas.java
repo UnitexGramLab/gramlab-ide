@@ -31,11 +31,10 @@ public class Delas{
     private  String simSem;
     private  String comment;
     private  String lemmaInv;
-    private  String wn_sinSet;
     private  int lemmaId;
     private  String dicFile;
 
-    public Delas(String pOS, String lemma, String fSTCode, String simSem, String comment, String lemmaInv, String wn_sinSet, int lemmaId, String dicFile) {
+    public Delas(String pOS, String lemma, String fSTCode, String simSem, String comment, String lemmaInv, int lemmaId, String dicFile) {
         
         this.pOS = pOS;
         this.lemma = lemma;
@@ -43,7 +42,6 @@ public class Delas{
         this.simSem = simSem;
         this.comment = comment;
         this.lemmaInv = lemmaInv;
-        this.wn_sinSet = wn_sinSet;
         this.lemmaId = lemmaId;
         this.dicFile = dicFile;
     }
@@ -92,13 +90,6 @@ public class Delas{
      */
     public String getLemmaInv() {
         return lemmaInv;
-    }
-
-    /**
-     * @return the wn_sinSet
-     */
-    public String getWn_sinSet() {
-        return wn_sinSet;
     }
 
     /**

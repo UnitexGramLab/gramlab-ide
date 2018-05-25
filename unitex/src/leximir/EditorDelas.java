@@ -741,7 +741,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         
             Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String dic = (String) this.getjTable1().getValueAt(i, 8);
+                String dic = (String) this.getjTable1().getValueAt(i, 7);
                 String value = (String) this.getjTable1().getValueAt(i, 0);
                 if (!dic_POS_stat.containsKey(dic)) {
                     dic_POS_stat.put(dic, new HashMap<String,String>());
@@ -801,11 +801,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertAfterActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"insertAfter",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 8),obj);
+            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"insertAfter",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
             ad.setVisible(true);
         }
         else{
@@ -815,11 +815,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertBeforeActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"insertBefore",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 8),obj);
+            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"insertBefore",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
             ad.setVisible(true);
         }
         else{
@@ -829,11 +829,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuViewMouseClicked
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-           MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"view",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 8),obj);
+           MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"view",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
             ad.setVisible(true);
         }
         else{
@@ -843,11 +843,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEditMouseClicked
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"edit",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 8),obj);
+            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"edit",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
             ad.setVisible(true);
         }
         else{
@@ -857,11 +857,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBeforeMouseClicked
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"copyBefore",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 8),obj);
+            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"copyBefore",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
             ad.setVisible(true);
         }
         else{
@@ -871,11 +871,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuAfterMouseClicked
        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"copyAfter",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 8),obj);
+            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"copyAfter",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
             ad.setVisible(true);
         }
         else{
@@ -890,7 +890,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             Map<String,List<String>> fileData=new HashMap<>();
             for(int row = 0; row < tableModel.getRowCount(); row ++){
                 
-                String file = (String) tableModel.getValueAt(row, 8);
+                String file = (String) tableModel.getValueAt(row, 7);
                 String lemma = (String) tableModel.getValueAt(row, 1);
                 String fstCode = tableModel.getValueAt(row, 2).toString().concat(tableModel.getValueAt(row, 3).toString());
                 String str = lemma+","+fstCode;
@@ -1292,7 +1292,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveActionPerformed
         String dic = (String) jComboBoxDic.getSelectedItem();
         for(int i =0 ; i<this.getjTable1().getRowCount();i++){
-            jTable1.setValueAt(dic, i, 8);
+            jTable1.setValueAt(dic, i, 7);
         }
         JOptionPane.showMessageDialog(null, "there are "+ this.getjTable1().getRowCount()+" to move to "+dic);
        
@@ -1332,7 +1332,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             try {
                 BufferedWriter bfw;
                 String filename = path;
-                System.out.println(filename);
                 bfw = new BufferedWriter(new FileWriter(filename));
                 for(int row = 0; row < this.getjTable1().getRowCount(); row ++){
                     String lemma = (String) this.getjTable1().getValueAt(row, 1);

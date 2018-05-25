@@ -95,7 +95,7 @@ public class DelasHelper {
         if(allDelas){
             list = getDicDelasPath();
         }
-        else{
+        else if(dic!=null){
             list = Arrays.asList(dic.getAbsolutePath().toString());
         }
         Delas delas = new Delas();
@@ -138,8 +138,7 @@ public class DelasHelper {
                 fSTCode = getFstCodeInDelas(s);
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
-                wn_SinSet = "";
-                Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, wn_SinSet, lemmaId, dicFile);
+                Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, lemmaId, dicFile);
                 delacToObject(ob, k, tmp);
                 k++;
                 lemmaId=lemmaId+1;
@@ -156,9 +155,8 @@ public class DelasHelper {
         ob[k][3]=tmp.getSimSem();
         ob[k][4]=tmp.getComment();
         ob[k][5]=tmp.getLemmaInv();
-        ob[k][6]=tmp.getWn_sinSet();
-        ob[k][7]=tmp.getLemmaId();
-        ob[k][8]=tmp.getDicFile();
+        ob[k][6]=tmp.getLemmaId();
+        ob[k][7]=tmp.getDicFile();
     }
     
     public static String getLemaInDelas(String text){

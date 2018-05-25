@@ -31,11 +31,10 @@ public class Delac{
     private  String fSTCode;
     private  String simSem;
     private  String comment;
-    private  String wn_sinSet;
     private  int lemmaId;
     private  String dicFile;
 
-    public Delac(String pOS, String lemmaAll, String lemma, String fSTCode, String simSem, String comment, String wn_sinSet, int lemmaId, String dicFile) {
+    public Delac(String pOS, String lemmaAll, String lemma, String fSTCode, String simSem, String comment, int lemmaId, String dicFile) {
         
         this.pOS = pOS;
         this.lemma = lemma;
@@ -43,7 +42,6 @@ public class Delac{
         this.simSem = simSem;
         this.comment = comment;
         this.lemmaAll = lemmaAll;
-        this.wn_sinSet = wn_sinSet;
         this.lemmaId = lemmaId;
         this.dicFile = dicFile;
     }
@@ -85,15 +83,6 @@ public class Delac{
      */
     public String getComment() {
         return comment;
-    }
-
-    
-
-    /**
-     * @return the wn_sinSet
-     */
-    public String getWn_sinSet() {
-        return wn_sinSet;
     }
 
     /**

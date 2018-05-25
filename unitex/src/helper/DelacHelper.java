@@ -125,7 +125,7 @@ public class DelacHelper {
                     SynSem=getSynSemInDelac(s);
                     pOs = getPosInDelac(s);
                     comment = getCommentInDelas(s);
-                    Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, SynSem, comment, wn_SinSet, lemmaId, dicFile);
+                    Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, SynSem, comment, lemmaId, dicFile);
                     delacToObject(ob, k, tmp);
                     k++;
                     lemmaId=lemmaId+1;
@@ -148,9 +148,8 @@ public class DelacHelper {
         ob[k][3]=tmp.getfSTCode();
         ob[k][4]=tmp.getSimSem();
         ob[k][5]=tmp.getComment();
-        ob[k][6]=tmp.getWn_sinSet();
-        ob[k][7]=tmp.getLemmaId();
-        ob[k][8]=tmp.getDicFile();
+        ob[k][6]=tmp.getLemmaId();
+        ob[k][7]=tmp.getDicFile();
     }
     /**
      * This function get lemma in All lema

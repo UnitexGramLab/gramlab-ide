@@ -698,7 +698,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             Map<String, HashMap<String, String>> data = new HashMap<>();
             int k = 0;
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String dic = (String) this.getjTable1().getValueAt(i, 8);
+                String dic = (String) this.getjTable1().getValueAt(i, 7);
                 String value = (String) this.getjTable1().getValueAt(i, 0);
                 if (!data.containsKey(dic)) {
                     data.put(dic, new HashMap<String,String>());
@@ -746,8 +746,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertAfterActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
             MenuDelac ad=new MenuDelac(this,"insertAfter",obj,this.getjTable1().getSelectedRow());
@@ -760,8 +760,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertBeforeActionPerformed
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
             MenuDelac ad=new MenuDelac(this,"insertBefore",obj,this.getjTable1().getSelectedRow());
@@ -774,8 +774,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuViewMouseClicked
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
             MenuDelac ad=new MenuDelac(this,"view",obj,this.getjTable1().getSelectedRow());
@@ -789,8 +789,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEditMouseClicked
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
             MenuDelac ad=new MenuDelac(this,"edit",obj,this.getjTable1().getSelectedRow());
@@ -803,8 +803,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBeforeMouseClicked
         if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
             MenuDelac ad=new MenuDelac(this,"copyBefore",obj,this.getjTable1().getSelectedRow());
@@ -817,8 +817,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuAfterMouseClicked
        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[9];
-            for(int i=0;i<9;i++){
+            Object [] obj =new Object[8];
+            for(int i=0;i<8;i++){
                 obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
             MenuDelac ad=new MenuDelac(this,"copyAfter",obj,this.getjTable1().getSelectedRow());
@@ -836,7 +836,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             Map<String,List<String>> fileData=new HashMap<>();
             for(int row = 0; row < tableModel.getRowCount(); row ++){
                 
-                String file = (String) tableModel.getValueAt(row, 8);
+                String file = (String) tableModel.getValueAt(row, 7);
                 String lemma = (String) tableModel.getValueAt(row, 1);
                 String fstCode = tableModel.getValueAt(row, 3).toString().concat(tableModel.getValueAt(row, 4).toString());
                 //String SynSem = ((String) tableModel.getValueAt(row, 4));
@@ -1168,7 +1168,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveActionPerformed
         String dic = (String) jComboBoxDic.getSelectedItem();
         for(int i =0 ; i<this.getjTable1().getRowCount();i++){
-            tableModel.setValueAt(dic, i, 8);
+            tableModel.setValueAt(dic, i, 7);
         }
         JOptionPane.showMessageDialog(null, "there are "+ this.getjTable1().getRowCount()+" to move to "+dic);
        

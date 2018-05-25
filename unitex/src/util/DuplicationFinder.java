@@ -120,13 +120,13 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
             String lema = jtableSrc.getModel().getValueAt(i, 1).toString();
             String fst = jtableSrc.getModel().getValueAt(i, 2).toString();
             String SynSem = jtableSrc.getModel().getValueAt(i, 3).toString();
-            String dic = jtableSrc.getModel().getValueAt(i, 8).toString();
+            String dic = jtableSrc.getModel().getValueAt(i, 7).toString();
             String[] SynSems = SynSem.split("(=)|(\\+)");
             for (int j = i + 1; j < jtableSrc.getRowCount(); j++) {
                 String lemaCompare = jtableSrc.getModel().getValueAt(j, 1).toString();
                 String fstCompare = jtableSrc.getModel().getValueAt(j, 2).toString();
                 String SynSemCompare = jtableSrc.getModel().getValueAt(j, 3).toString();
-                String dicCompare = jtableSrc.getModel().getValueAt(j, 8).toString();
+                String dicCompare = jtableSrc.getModel().getValueAt(j, 7).toString();
                 String[] SynSemCompares = SynSemCompare.split("()=|(\\+)");
                 if (lemaCompare.equals(lema) && fstCompare.equals(fst)
                         && areAllTrue(SynSems, SynSemCompares)) {

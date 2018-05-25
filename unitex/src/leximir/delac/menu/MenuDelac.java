@@ -80,18 +80,18 @@ public class MenuDelac extends javax.swing.JFrame {
         switch (menuSelected) {
             case "insertBefore":
                 this.valueSelected = selectedRow;
-                this.idedit = (int) obj[7];
+                this.idedit = (int) obj[6];
                 break;
             case "insertAfter":
                 this.valueSelected = selectedRow + 1;
-                this.idedit = ((int) obj[7]) + 1;
+                this.idedit = ((int) obj[6]) + 1;
                 break;
             case "copyBefore":
                 jTextFieldLema.setText((String) this.obj[2]);
                 jTextFieldLemaAll.setText((String) this.obj[1]);
                 jTextFieldComment.setText((String) this.obj[5]);
                 this.valueSelected = selectedRow;
-                this.idedit = (int) obj[7];
+                this.idedit = (int) obj[6];
                 completeJtableDelaf((String) this.obj[1]);
                 break;
             case "copyAfter":
@@ -99,7 +99,7 @@ public class MenuDelac extends javax.swing.JFrame {
                 jTextFieldLemaAll.setText((String) this.obj[1]);
                 jTextFieldComment.setText((String) this.obj[5]);
                 this.valueSelected = selectedRow + 1;
-                this.idedit = ((int) obj[7]) + 1;
+                this.idedit = ((int) obj[6]) + 1;
                 completeJtableDelaf((String) this.obj[1]);
                 break;
             case "view":
@@ -115,16 +115,16 @@ public class MenuDelac extends javax.swing.JFrame {
                 jTextFieldLemaAll.setText((String) this.obj[1]);
                 jTextFieldComment.setText((String) this.obj[5]);
                 this.valueSelected = selectedRow;
-                this.idedit = (int) obj[7];
+                this.idedit = (int) obj[6];
                 completeJtableDelaf((String) this.obj[1]);
                 break;
         }
 
         jTextFieldPos.setText((String) this.obj[0]);
         jTextFieldCFlx.setText((String) this.obj[3]);
-        jTextFielddictionary.setText((String) this.obj[8]);
+        jTextFielddictionary.setText((String) this.obj[7]);
         jTextFieldSynSem.setText((String) this.obj[4]);
-        int lemaid = Integer.parseInt(this.obj[7].toString()) + 1;
+        int lemaid = Integer.parseInt(this.obj[6].toString()) + 1;
         jTextFieldLemaId.setText(String.valueOf(lemaid));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.jTableFLX.setDefaultRenderer(Object.class, color);
@@ -556,14 +556,7 @@ public class MenuDelac extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuCloseMouseClicked
 
 
-    public static NodeList getNodeList() throws ParserConfigurationException, SAXException, IOException {
-        File inputFile = new File("C:/Users/Anas/Desktop/test-set-strategy/strategy-fr.xml");
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(inputFile);
-        doc.getDocumentElement().normalize();
-        return doc.getElementsByTagName("Rules");
-    }
+
 
     /**
      * @param args the command line arguments
