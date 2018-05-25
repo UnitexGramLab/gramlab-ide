@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -40,7 +42,7 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException{
         
-        String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Lemma lnv","WN_SynSet","Lemma ID","Dict. File"};
+        String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Lemma lnv","Lemma ID","Dict. File"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
         return new DefaultTableModel(data,entete);
     }
@@ -51,7 +53,7 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelac(boolean alldelac, File dic) throws IOException{
         
-        String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SynSem","Comment","WN_SynSet","Lemma ID","Dict. File"};
+        String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SynSem","Comment","Lemma ID","Dict. File"};
         Object[][] data = DelacHelper.getAllDelacFromDicToObject(alldelac, dic);
         return new DefaultTableModel(data,entete);
     }
@@ -85,7 +87,7 @@ public class GridHelper {
     public static DefaultTableModel getDataforjTableDlf(List<String> dlf) throws IOException{
         
         Object[][] data = DelacHelper.completeJTableDlf(dlf);
-        String[] entete = {"delaf entry", "lemma", "Pos", "Gram cat"};
+        String[] entete = {"Delaf entry", "Lemma", "POS", "Features"};
         return new DefaultTableModel(data,entete);
     }
     /**
@@ -100,11 +102,5 @@ public class GridHelper {
         String[] entete = {"words", "FST", "Rule","Spec/Gen","ID RULE","SynSem"};
         return new DefaultTableModel(data,entete);
     }
-    /*// tableau pour afficher les données du tableau Strategie
-    public static DefaultTableModel getDataforStrategy(List<String> words,String strategy) throws IOException{
-        
-        Object[][] data = StrategieHelper.completeJTableStrategie(words,strategy);
-        String[] entete = {"select", "Clemma", "CFLX", "Word NO", "Predict Id", "Rule Id", "RulePart Id", "SynSem"};
-        return new DefaultTableModel(data,entete);
-    }*/
+
 }
