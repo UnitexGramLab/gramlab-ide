@@ -132,10 +132,10 @@ public class GraphPathFrame extends JInternalFrame {
 		top.add(constructDownPanel());
 		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		final ButtonGroup pathWithSubGraph = new ButtonGroup();
-		final JLabel explorationLabel = new JLabel("Calls to subgraphs: ");
-		onlyPaths = new JRadioButton("Explore recursively", true);
+		final JLabel explorationLabel = new JLabel("Explore subgraphs: ");
+		onlyPaths = new JRadioButton("Recursively", true);
 		exploreRecursively = new JRadioButton(
-				"Explore each subgraph independently");
+				"Independently, printing names of called subgraphs");
 		
 		// issue #61 add listeners to change default output file name based on user selection
 		onlyPaths.addActionListener(new ActionListener() {
