@@ -27,12 +27,11 @@ import java.util.List;
 import model.DictionaryPath;
 
 /**
- *
- * @author rojo
+ * @author Rojo Rabelisoa
  */
 public class CompoundsUtils {
     /**
-     * this function get an entry of delac and inflect to delaf and tranform to List<String> of delaf
+     * This function get an entry of delac and inflect to delaf and transform to List<String> of delaf
      * @param value entry of delac
      * @return List delaf of this delac
      * @throws IOException

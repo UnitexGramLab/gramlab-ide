@@ -27,7 +27,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
- *
  * @author Anas Ait cheikh
  */
 public class MenuDuplicate extends JFrame {

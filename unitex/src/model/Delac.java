@@ -21,7 +21,6 @@
 package model;
 
 /**
- *
  * @author Rojo Rabelisoa
  */
 public class Delac{
@@ -35,7 +34,6 @@ public class Delac{
     private  String dicFile;
 
     public Delac(String pOS, String lemmaAll, String lemma, String fSTCode, String simSem, String comment, int lemmaId, String dicFile) {
-        
         this.pOS = pOS;
         this.lemma = lemma;
         this.fSTCode = fSTCode;
@@ -106,5 +104,4 @@ public class Delac{
     public String getLemmaAll() {
         return lemmaAll;
     }
-    
 }
