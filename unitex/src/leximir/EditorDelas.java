@@ -65,12 +65,11 @@ import util.DuplicationFinder;
 import util.Utils;
 
 /**
- *
  * @author Rojo Rabelisoa
  * @author Anas Ait cheikh
  */
 public final class EditorDelas extends javax.swing.JInternalFrame {
-    private DefaultTableModel tableModel ;
+    private DefaultTableModel tableModel;
     private DefaultTableModel defaulttableModel ;
     private boolean unsaved=false;
 
@@ -104,11 +103,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                   .forTable(table)
                   .searchable(true)
                   .apply();*/
-        }catch(FileNotFoundException|NullPointerException ex){
-           // JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
-    		//					JOptionPane.ERROR_MESSAGE);
-        } 
-        catch (IOException ex) {
+        }catch (IOException ex) {
             Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
         }
     
@@ -117,19 +112,17 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-                                   if(unsaved){
-           int dialogResult = JOptionPane.showConfirmDialog (null, "You " +
-"have some unsaved data, do you want to exit?","Exit Delas dictioneries in unicode",JOptionPane.YES_NO_OPTION);
-            if(dialogResult == JOptionPane.YES_OPTION){
-                frame.dispose();
-            }
-       }else{
-           frame.dispose();
-       }
-                        }
-                });
-    
-    
+		        if(unsaved){
+			        int dialogResult = JOptionPane.showConfirmDialog (null, "You "
+			        		+ "have some unsaved data, do you want to exit?","Exit Delas dictionaries in unicode",JOptionPane.YES_NO_OPTION);
+			        if(dialogResult == JOptionPane.YES_OPTION){
+			            frame.dispose();
+			        }
+		        }else{
+		           frame.dispose();
+		        }
+	        }
+        });
     }
 
     private DefaultTableCellRenderer paintGrid() {
@@ -974,13 +967,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
                 
                 String realSynSem="";
-                try{
-                    realSynSem = domain[domain.length-1];
-                }
-                catch(java.lang.ArrayIndexOutOfBoundsException e){
-                    
-                }
-
+                realSynSem = domain[domain.length-1];
+                
                 String domainCategory ="";
                 try{
                     domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
@@ -1052,7 +1040,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 else{
                     if(!text.contains(".")&&!text.contains("$"))text="^"+text;
                 }    
-                RowFilter rowFilter = RowFilter.regexFilter(text, 0);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 0);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1074,7 +1062,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 if(jCheckBoxExtract.isSelected()){
                     text="^"+text+"$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 2);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1099,7 +1087,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 else{
                     if(!text.contains(".")&&!text.contains("$"))text="."+text;
                 }    
-                RowFilter rowFilter = RowFilter.regexFilter(text, 3);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 3);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1119,7 +1107,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 rowSorter.setRowFilter(null);
             } else {
                 if(!text.contains(".")&&!text.contains("$"))text=text+"$";
-                RowFilter rowFilter = RowFilter.regexFilter(text, 1);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1291,7 +1279,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     else{
                         if(!text.contains(".")&&!text.contains("$"))text="^"+text;
                     }    
-                    RowFilter rowFilter = RowFilter.regexFilter(text, 4);// recherche avec la colonne indice 4
+                    RowFilter rowFilter = RowFilter.regexFilter(text, 4);// search in column at index 4
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
