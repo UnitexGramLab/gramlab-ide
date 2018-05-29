@@ -29,7 +29,6 @@ import model.DictionaryPath;
 import util.Utils;
 
 /**
- *
  * @author Rojo Rabelisoa
  */
 public class MenuDelas extends javax.swing.JFrame {
@@ -280,34 +279,29 @@ public class MenuDelas extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBoxDicActionPerformed
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        
-            String lemma = jTextFieldLemma.getText();
-            String FST = jTextFieldFST.getText();
-            String SynSem = jTextFieldSynSem.getText().equals("")?"":jTextFieldSynSem.getText().substring(0,1).equals("+")?jTextFieldSynSem.getText():"+"+jTextFieldSynSem.getText();
-            String dic = (String) jComboBoxDic.getSelectedItem();
-            String comment=jTextFieldComment.getText();
+	String lemma = jTextFieldLemma.getText();
+    String FST = jTextFieldFST.getText();
+    String SynSem = jTextFieldSynSem.getText().equals("")?"":jTextFieldSynSem.getText().substring(0,1).equals("+")?jTextFieldSynSem.getText():"+"+jTextFieldSynSem.getText();
+    String dic = (String) jComboBoxDic.getSelectedItem();
+    String comment=jTextFieldComment.getText();
 
-           Object[] row = Utils.delasToObject(lemma,FST,SynSem,comment,dic,idedit);
-           if(edit){
-                for(int i=0;i<row.length;i++){
-                    if(i!=7){
-                       try{elFrame.getTableModel().setValueAt(row[i],idedit,i);} 
-                       catch(Exception e ){}
-                    }
-                }
-            }else{
-                
-                elFrame.getTableModel().insertRow(idedit,row);
-                elFrame.getjTable1().setModel(elFrame.getTableModel());
-                for(int i=idedit;i<elFrame.getTableModel().getRowCount();i++){
-                    elFrame.getTableModel().setValueAt(i,i,7);
-                }
-                elFrame.getJLablel13().setText(String.valueOf(elFrame.getjTable1().getRowCount()));
+    Object[] row = Utils.delasToObject(lemma,FST,SynSem,comment,dic,idedit);
+    if(edit){
+        for(int i=0;i<row.length;i++){
+            if(i!=7){
+               elFrame.getTableModel().setValueAt(row[i],idedit,i);
             }
-            elFrame.setUnsaved(true);
-            this.setVisible(false);
-        
-
+        }
+    }else{
+       elFrame.getTableModel().insertRow(idedit,row);
+       elFrame.getjTable1().setModel(elFrame.getTableModel());
+       for(int i=idedit;i<elFrame.getTableModel().getRowCount();i++){
+           elFrame.getTableModel().setValueAt(i,i,7);
+       }
+       elFrame.getJLablel13().setText(String.valueOf(elFrame.getjTable1().getRowCount()));
+    }
+    elFrame.setUnsaved(true);
+    this.setVisible(false); 
     }//GEN-LAST:event_jButtonAddActionPerformed
 
     private void jTextFieldCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCommentActionPerformed
