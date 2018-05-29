@@ -23,7 +23,6 @@ package helper;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import model.DictionaryPath;
 import util.Utils;
 
@@ -55,7 +54,6 @@ public class DelafHelper {
                 String lema = (String) allDela[1];
                 String pos = (String) allDela[0];
                 for(String s:readFile){
-                    //
                     if (lema.equals(getLema(s))) {
                         ob[i][0]=getUlaz(s);
                         ob[i][1]=getPOS(s);
