@@ -21,49 +21,29 @@
 package util;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.frames.InflectFrame;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.Encoding;
-import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.process.commands.MultiFlexCommand;
-import fr.umlv.unitex.process.commands.SortTxtCommand;
-import fr.umlv.unitex.utils.CharsetDetector;
 import helper.DelacHelper;
-import helper.DelasHelper;
-import java.awt.Desktop;
 import java.awt.HeadlessException;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import leximir.delac.menu.MenuDelac;
+
 import model.DictionaryPath;
 
 /**
- *
  * @author Rojo Rabelisoa
  * @author Anas Ait cheikh
  */
@@ -71,7 +51,6 @@ public class Utils {
 
     /**
      * This function read file from path file and return an ArrayList<String>
-     *
      * @param file path of file to open
      * @return
      * @throws IOException
@@ -122,54 +101,51 @@ public class Utils {
     /**
      * This function export the JTable into a csv file
      *
-     * @param dicPos is the liste of the element to export
+     * @param dicPos is the list of the element to export
      * @param filename the name of the csv file
      */
     public static void exportJtableToCsv(List<Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
-
-        String creator = "";
+        StringBuilder sb = new StringBuilder();
         for (Object[] tab : dicPos) {
             for (Object obj : tab) {
-                creator += obj.toString() + ";";
+                sb.append(obj.toString() +";");
             }
-            creator += "\n";
+            sb.append("\n");
         }
-
         boolean isDone = false;
         try {
             FileWriter fileWriter = new FileWriter(filename, false);
-            fileWriter.write(creator);
+            fileWriter.write(sb.toString());
             fileWriter.close();
             isDone = true;
         } finally {
             if (isDone) {
                 GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                         .newCsvOpener(filename);
-
             }
         }
     }
 
     public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename) throws IOException, FileNotFoundException {
-        String creator = "";
+        StringBuilder sb = new StringBuilder();
         int i = 0;
-        creator = "POS;SynSem;Count\n";
+        sb.append("POS;SynSem;Count\n");
         Set<String> keysets = simSem.keySet();
         for (String key : keysets) {
             Object[] objArr = simSem.get(key);
             i = 0;
             for (Object obj : objArr) {
                 if (i != 1) {
-                    creator += obj.toString() + ";";
+                    sb.append(obj.toString()).append(";");
                 }
                 i++;
             }
-            creator += "\n";
+            sb.append("\n");
         }
         boolean isDone = false;
         try {
             FileWriter fileWriter = new FileWriter(filename, false);
-            fileWriter.write(creator);
+            fileWriter.write(sb.toString());
             fileWriter.close();
             isDone = true;
         } finally {
@@ -228,7 +204,7 @@ public class Utils {
 //        throw new IllegalArgumentException("Key not found in path");
 //    }
     /**
-     * this fonction open terminal and run command
+     * this function open terminal and run command
      *
      * @param command
      * @throws IOException
@@ -239,6 +215,7 @@ public class Utils {
         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
         Process p = pb.start();
         while (p.isAlive()) {
+        	continue;
         }
     }
 
@@ -256,7 +233,6 @@ public class Utils {
         if (!delaffolder.exists()) {
             delaffolder.mkdir();
         }
-
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
             BufferedWriter bfw;
             bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas + "/DelasTmp.dic"));
@@ -279,6 +255,7 @@ public class Utils {
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
             while (p.isAlive()) {
+            	continue;
             }
             new File(DictionaryPath.allDelas + "/DelasTmp.dic").delete();
 
@@ -312,10 +289,10 @@ public class Utils {
         List<String> allDela = new ArrayList<>();
         File folder = new File(DictionaryPath.allDelafAbsPath);
         File[] listOfFiles = folder.listFiles();
-        for (File listOfFile : listOfFiles) {
-            if (listOfFile.isFile()) {
-                if (listOfFile.getName().endsWith(".bin")) {
-                    allDela.add(DictionaryPath.allDelafAbsPath + listOfFile.getName());
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                if (file.getName().endsWith(".bin")) {
+                    allDela.add(DictionaryPath.allDelafAbsPath + file.getName());
                 }
             }
         }
@@ -331,5 +308,4 @@ public class Utils {
         Utils.runCommandTerminal(cmd2);
         Utils.runCommandTerminal(cmd3);
     }
-
 }
