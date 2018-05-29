@@ -907,7 +907,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
        
             Map<String, List<String>> data = new HashMap<>();
-            Map<String, HashMap<String,String>> dataForSynSem1 = new HashMap<>();
             Map<String, HashMap<String,HashMap<String,String>>> dataForSynSem2 = new HashMap<>();
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
                 String SynSem = (String) this.getjTable1().getValueAt(i, 4);
@@ -923,25 +922,11 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     valueInData.addAll(Arrays.asList(tmp));
                     data.put(pos, valueInData);
                 }
-                /** This section is for SimSem1 Csv data **/
                 String SynSemForPos = (String) this.getjTable1().getValueAt(i, 4);
                 String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
                 
                 String realSynSem = domain[domain.length-1];
-                if (!dataForSynSem1.containsKey(pos)) {
-                    dataForSynSem1.put(pos, new HashMap<String,String>());
-                    dataForSynSem1.get(pos).put(realSynSem, "1");
-                } else {
-                    if (dataForSynSem1.get(pos).containsKey(realSynSem)) {
-                        int count = Integer.parseInt(dataForSynSem1.get(pos).get(realSynSem)) + 1;
-                        dataForSynSem1.get(pos).replace(realSynSem, String.valueOf(count));
-                    } else {
-                        dataForSynSem1.get(pos).put(realSynSem, "1");
-                    }
-                }
-                /** end of SimSem1 Csv data **/
-                
-                /** This section is for SimSem2 Csv data **/
+               
                 String domainCategory ="";
                 try{
                     domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
@@ -972,64 +957,22 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                         }
                     }
                 }
-                /** end of SimSem2 Csv data **/
             }
-            
-//            for(Map.Entry<String, List<String>> d:data.entrySet()){
-//                List<String> tmp = d.getValue();
-//                Set<String> hs = new HashSet<>();
-//                hs.addAll(tmp);
-//                tmp.clear();
-//                tmp.addAll(hs);
-//                d.setValue(tmp);
-//            }
-//            BufferedWriter bfw;
-//            bfw = new BufferedWriter(new FileWriter("TmpSynSem.txt"));
-//            for (Map.Entry<String, List<String>> f : data.entrySet()) {
-//                bfw.write(f.getKey()+"_distribution");
-//                bfw.write(" = ");
-//                List<String> tmp = f.getValue();
-//                for(int j =0;j<tmp.size();j++){
-//                    bfw.write(tmp.get(j));
-//                    if(j!=tmp.size()-1){
-//                         bfw.write(" + ");
-//                    }
-//                }
-//                bfw.write("\n");
-//                bfw.write("\n");
-//            }
-//            bfw.close();
-//            JOptionPane.showMessageDialog(null, "file created in \n TmpSynSem.txt");
-//            Desktop.getDesktop().open(new File("TmpSynSem.txt"));
-//            
-            
-            Map<String, Object[]> statSimSem1 = new HashMap<>();
-            statSimSem1.put("1", new Object[]{"POS", "SynSem", "Number"});
-            int inc = 2;
-            for (Map.Entry<String, HashMap<String, String>> f : dataForSynSem1.entrySet()) {
-                String key = f.getKey();
-                for (Map.Entry<String, String> p : f.getValue().entrySet()) {
-                    statSimSem1.put(String.valueOf(inc), new Object[]{key, p.getKey(), p.getValue()});
-                    inc++;
-                }
-            }
-            Map<String, Object[]> statSimSem2 = new HashMap<>();
-            //statSimSem2.put("1", new Object[]{"POS", "SynSem","Category", "Number"});
+      
+            Map<String, Object[]> statSimSem = new HashMap<>();
             int v=2;
             for(Map.Entry<String, HashMap<String, HashMap<String, String>>> t:dataForSynSem2.entrySet()){
                 String key = t.getKey();
                 for(Map.Entry<String, HashMap<String, String>> y:t.getValue().entrySet()){
                     for(Map.Entry<String, String> u:y.getValue().entrySet()){
-                        statSimSem2.put(String.valueOf(v), new Object[]{key, y.getKey(),u.getKey(), u.getValue()});
+                        statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(),u.getKey(), u.getValue()});
                         v++;
                     }
                 }
             }
-//            String filename = DictionaryPath.statisticsTmpPath;
-//            Utils.exportStatAllToCsv(statSimSem1,statSimSem2,filename);
 
             GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                    .newStatisticOutput(statSimSem1,statSimSem2);
+                    .newStatisticOutput(statSimSem);
 
     }//GEN-LAST:event_jButtonAllActionPerformed
 

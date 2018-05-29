@@ -37,25 +37,22 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
 
     private List<Object[]> dicPos;
     
-    Map<String, Object[]> statSimSem1;
-    Map<String, Object[]> statSimSem2;
+    Map<String, Object[]> statSimSem;
     
     public StatisticOutput(List<Object[]> dicPos) {
         super("Set output folder", true, true, true, true);
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dicPos=dicPos;
-        this.statSimSem1=null;
-        this.statSimSem2=null;
+        this.statSimSem=null;
 
     }
-        public StatisticOutput(Map<String, Object[]> statSimSem1,Map<String, Object[]> statSimSem2) {
+        public StatisticOutput(Map<String, Object[]> statSimSem2) {
         super("Set output folder", true, true, true, true);
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dicPos=null;
-        this.statSimSem1=statSimSem1;
-        this.statSimSem2=statSimSem2;
+        this.statSimSem=statSimSem2;
 
     }
 
@@ -158,7 +155,7 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         try{   
         String filename= jTextField1.getText();
         if(this.dicPos==null){
-            Utils.exportStatAllToCsv(statSimSem1,statSimSem2,filename);
+            Utils.exportStatAllToCsv(statSimSem,filename);
         }else{
             Utils.exportJtableToCsv(this.dicPos,filename);    
             }

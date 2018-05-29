@@ -34,8 +34,8 @@ public class StatisticOutputFactory {
 		return dialog;
 	}
         
-	public StatisticOutput newStatisticOutputDialog(Map<String, Object[]> statSimSem1,Map<String, Object[]> statSimSem2) {
-		dialog = new StatisticOutput(statSimSem1,statSimSem2);
+	public StatisticOutput newStatisticOutputDialog(Map<String, Object[]> statSimSem) {
+		dialog = new StatisticOutput(statSimSem);
 		return dialog;
 	}
 }
