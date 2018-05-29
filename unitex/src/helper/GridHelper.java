@@ -23,7 +23,6 @@ package helper;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -40,7 +39,7 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException{
+    public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException {
         
         String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Lemma lnv","Lemma ID","Dict. File"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
@@ -51,7 +50,7 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getOpenEditorforDelac(boolean alldelac, File dic) throws IOException{
+    public static DefaultTableModel getOpenEditorforDelac(boolean alldelac, File dic) throws IOException {
         
         String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SynSem","Comment","Lemma ID","Dict. File"};
         Object[][] data = DelacHelper.getAllDelacFromDicToObject(alldelac, dic);
@@ -62,8 +61,7 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getDelafInDelacForDelac() throws IOException{
-        
+    public static DefaultTableModel getDelafInDelacForDelac() throws IOException {
         String[] entete = {"delaf entry","POS","lemma","Gram cats","FST graph"};
         Object[][] data = DelafHelper.getAllDelafFromDelacToObject();
         return new DefaultTableModel(data,entete);
@@ -73,8 +71,7 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getDataforjTableFlx(String lema) throws IOException{
-        
+    public static DefaultTableModel getDataforjTableFlx(String lema) throws IOException {
         String[] entete = {"RB", "Form", "Lemma", "FST code", "Gram cat", "Separator"};
         Object[][] data = DelacHelper.completeJTableFLX(lema);
         return new DefaultTableModel(data,entete);
@@ -84,23 +81,19 @@ public class GridHelper {
      * @return 
      * @throws IOException 
      */
-    public static DefaultTableModel getDataforjTableDlf(List<String> dlf) throws IOException{
-        
+    public static DefaultTableModel getDataforjTableDlf(List<String> dlf) throws IOException {
         Object[][] data = DelacHelper.completeJTableDlf(dlf);
         String[] entete = {"Delaf entry", "Lemma", "POS", "Features"};
         return new DefaultTableModel(data,entete);
     }
     /**
-     * This function is for prediction
+     * Array to display data from jTableDlf
      * @return 
      * @throws IOException 
      */
-    // tableau pour afficher les données du tableau jTableDlf
-    public static DefaultTableModel getDataforjTablePredict(List<String> predict) throws IOException{
-        
+    public static DefaultTableModel getDataforjTablePredict(List<String> predict) throws IOException {
         Object[][] data = DelacHelper.completeJTablePredict(predict);
         String[] entete = {"words", "FST", "Rule","Spec/Gen","ID RULE","SynSem"};
         return new DefaultTableModel(data,entete);
     }
-
 }

@@ -41,7 +41,7 @@ public class DelasHelper {
      * @return
      * @throws FileNotFoundException 
      */
-    public static ArrayList<String> getDicDelasPath() throws FileNotFoundException, IOException{
+    public static ArrayList<String> getDicDelasPath() throws FileNotFoundException, IOException {
         ArrayList<String> list= new ArrayList<>();
         File folder = new File(DictionaryPath.allDelas);
         File[] listOfFiles = folder.listFiles();
@@ -74,7 +74,7 @@ public class DelasHelper {
 //                }
 //            }
 //            if(list.isEmpty()){
-//                throw new FileNotFoundException("dictonnary not found in "+DictionaryPath.allDelas);
+//                throw new FileNotFoundException("dictionary not found in "+DictionaryPath.allDelas);
 //            }
 //            return list;
 //        }
@@ -82,15 +82,14 @@ public class DelasHelper {
 //            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelas);
 //        }
 //    }
-    /***
-     *  This funtion return all line in delas dictionary into Object[][] 
+    /**
+     * This function return all line in delas dictionary into Object[][] 
      * @param allDelas if allDelas is true, the function takes all delas in delas folder, else it takes dictionary selected in configuration
      * @return
      * @throws FileNotFoundException
      * @throws IOException 
      */
-    
-    public static Object[][] getAllDelasFromDicToObject(boolean allDelas,File dic) throws FileNotFoundException, IOException{
+    public static Object[][] getAllDelasFromDicToObject(boolean allDelas,File dic) throws FileNotFoundException, IOException {
         List<String> list= new ArrayList<>();
         if(allDelas){
             list = getDicDelasPath();
@@ -100,7 +99,7 @@ public class DelasHelper {
         }
         Delas delas = new Delas();
         Field[] lf = delas.getClass().getDeclaredFields();
-        int count =0;
+        int count = 0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
@@ -110,9 +109,7 @@ public class DelasHelper {
             path = dela;
 
             ArrayList<String> readFile = Utils.readFile(path);
-            for(String s:readFile){
-                count++;
-            }
+            count += readFile.size();
             DictionaryPath.dictionary.add(dela);
         }
         
@@ -159,7 +156,7 @@ public class DelasHelper {
         ob[k][7]=tmp.getDicFile();
     }
     
-    public static String getLemaInDelas(String text){
+    public static String getLemaInDelas(String text) {
         StringBuilder sb = new StringBuilder();
         for(int i=0;i<text.length();i++){
             if(text.charAt(i)==','){
@@ -169,7 +166,7 @@ public class DelasHelper {
         }
         return sb.toString();
     }
-    public static String getSynSemInDelas(String text){
+    public static String getSynSemInDelas(String text) {
         try{
             StringBuilder sb = new StringBuilder();
             boolean begin=false;
@@ -189,11 +186,11 @@ public class DelasHelper {
                 }
             }
             return sb.toString();
-        }catch(java.lang.StringIndexOutOfBoundsException e){
-            return"";
+        } catch(java.lang.StringIndexOutOfBoundsException e) {
+            return "";
         }
     }
-    public static String getFstCodeInDelas(String text){
+    public static String getFstCodeInDelas(String text) {
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
         for(int i=0;i<text.length();i++){
@@ -210,7 +207,7 @@ public class DelasHelper {
         }
         return sb.toString();
     }
-    public static String getPosInDelas(String text){
+    public static String getPosInDelas(String text) {
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
         for(int i=0;i<text.length();i++){
@@ -231,7 +228,7 @@ public class DelasHelper {
         }
         return sb.toString();
     }
-    public static String getCommentInDelas(String text){
+    public static String getCommentInDelas(String text) {
         try{
             StringBuilder sb = new StringBuilder();
             boolean begin=false;
@@ -245,8 +242,8 @@ public class DelasHelper {
                 }
             }
             return sb.toString();
-        }catch(java.lang.StringIndexOutOfBoundsException e){
-            return"";
+        } catch(java.lang.StringIndexOutOfBoundsException e) {
+            return "";
         }
     }
 }

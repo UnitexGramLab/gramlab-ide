@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import fr.umlv.unitex.config.*;
 
 /**
- *
  * @author Rojo Rabelisoa
  */
 public class DictionaryPath {
@@ -43,5 +42,4 @@ public class DictionaryPath {
     public static final String allDelac = Config.getUserDir()+"/"+Config.getCurrentLanguage()+"/"+"Dela/Delac/";
     public static final String statisticsTmpPath = "statisticsTmp.csv";
     public static final String delafPath = Config.getUserDir()+"/"+Config.getCurrentLanguage()+"/Dela/Delaf";
-    
 }

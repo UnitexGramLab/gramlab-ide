@@ -21,7 +21,6 @@
 package model;
 
 /**
- *
  * @author Rojo Rabelisoa
  */
 public class Delas{
@@ -35,7 +34,6 @@ public class Delas{
     private  String dicFile;
 
     public Delas(String pOS, String lemma, String fSTCode, String simSem, String comment, String lemmaInv, int lemmaId, String dicFile) {
-        
         this.pOS = pOS;
         this.lemma = lemma;
         this.fSTCode = fSTCode;
@@ -105,6 +103,4 @@ public class Delas{
     public String getDicFile() {
         return dicFile;
     }
-
-    
 }

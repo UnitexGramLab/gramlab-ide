@@ -20,7 +20,6 @@
  */
 package helper;
 
-import static helper.DelasHelper.getDicDelasPath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -44,24 +43,23 @@ public class DelacHelper {
      */
     public static ArrayList<String> getDicDelacPath() throws FileNotFoundException, IOException{
         ArrayList<String> list= new ArrayList<>();
-        //File folder = new File(Utils.getValueXml("pathDelas"));
         File folder = new File(DictionaryPath.allDelac);
         File[] listOfFiles = folder.listFiles();
-        for (File listOfFile : listOfFiles) {
-            if (listOfFile.isFile()) {
-                if (listOfFile.getName().endsWith("dic")) {
-                    list.add(listOfFile.getName());
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                if (file.getName().endsWith("dic")) {
+                    list.add(file.getName());
                 }
             } 
         }
         if(list.isEmpty()){
-            throw new FileNotFoundException("dictonnary not found");
+            throw new FileNotFoundException("dictionary not found");
         }
         return list;
     }
     
-    /***
-     * This function get all dictionnaries in delac folder and return an Object [][] which contains all information(
+    /**
+     * This function get all dictionaries in delac folder and return an Object [][] which contains all information(
      * POS, lemmaAll, lemma, fSTCode, SynSem, comment, wn_SinSet, lemmaId, dicFile)
      * @param alldelac if alldelac is true, the function takes all delas in delcs folder, else it takes dictionary selected in configuration
      * @return List of lemma in Object[][] format
@@ -81,7 +79,7 @@ public class DelacHelper {
         int count =0;
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-             String path="";
+            String path="";
             if(alldelac)
             path = DictionaryPath.allDelac+"//"+dela;
             else
@@ -89,8 +87,9 @@ public class DelacHelper {
             
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
-                if(s.trim().length()>0)
+                if(s.trim().length()>0) {
                     count++;
+                }
             }
             DictionaryPath.dictionary.add(dela);
         }

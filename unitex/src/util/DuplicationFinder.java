@@ -21,8 +21,6 @@
 package util;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -42,7 +40,6 @@ import javax.swing.table.DefaultTableModel;
  * @author Anas Ait cheikh
  */
 public class DuplicationFinder extends SwingWorker<Integer, Object> {
-
     JTable jtableRes;
     JTable jtableSrc;
     private JFrame frame = new JFrame();
@@ -95,9 +92,7 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
 
     public static boolean areAllTrue(String[] text1, String[] text2) {
         int numberSame = 0;
-
         for (String a : text1) {
-
             for (String b : text2) {
                 if (a.equals(b)) {
                     numberSame++;
@@ -106,15 +101,14 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
             }
         }
         return numberSame == text1.length || numberSame == text1.length - 1;
-
     }
-    /*
-       this function search the table for any duplicated value and add it to the jtable that contines
-        the resultes
-    */
+    
+    /**
+     * This function search the table for any duplicate values and 
+     * add it to the jtable that contains the results
+     */
     @Override
     protected Integer doInBackground() throws Exception {
-
         DefaultTableModel tableModel = (DefaultTableModel) jtableRes.getModel();
         for (int i = 0; i < jtableSrc.getRowCount() - 1; i++) {
             String lema = jtableSrc.getModel().getValueAt(i, 1).toString();
@@ -145,11 +139,11 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
     @Override
     protected void done() {
         dialog.dispose();
-        if(this.jtableRes.getModel().getRowCount()>0)
+        if(this.jtableRes.getModel().getRowCount()>0) {
             new MenuDuplicate(this.jtableRes);
-        else
+        } else {
             JOptionPane.showMessageDialog(null, "No duplication where found !", "Duplication", JOptionPane.INFORMATION_MESSAGE);
-
+        }
     }
 
 }

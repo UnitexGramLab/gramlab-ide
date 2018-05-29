@@ -21,7 +21,6 @@
 package leximir;
 
 /**
- *
  * @author Anas Ait cheikh
  */
 public class CsvOpenerFactory {

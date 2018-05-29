@@ -22,7 +22,6 @@ package leximir;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,10 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -56,7 +53,6 @@ import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import helper.GridHelper;
 import javax.swing.JInternalFrame;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import leximir.delac.menu.MenuDelac;
@@ -65,7 +61,6 @@ import util.DuplicationFinder;
 import util.Utils;
 
 /**
- *
  * @author Rojo Rabelisoa
  * @author Anas Ait cheikh
  */
@@ -78,7 +73,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form EditorLadl
-     * @param alldelac if alldelas is true, the programm open all dictionary in delac folder, 
+     * @param alldelac if alldelas is true, the program open all dictionaries in delac folder, 
      */
     public EditorDelac(boolean alldelac, File dic) {
         super("LeXimir Editor for Dela dictionaries of compound words", true, true, true, true);
@@ -109,31 +104,27 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     return c;
                 }
             });
-        }catch (FileNotFoundException ex) {
-//        	JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
-//					JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
         	JOptionPane.showMessageDialog(null,ex.getMessage(), "Error",
-					JOptionPane.ERROR_MESSAGE);
+				JOptionPane.ERROR_MESSAGE);
         }
         
-        
-            final JInternalFrame frame = this;
+        final JInternalFrame frame = this;
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameClosing(InternalFrameEvent e) {
-                                   if(unsaved){
-           int dialogResult = JOptionPane.showConfirmDialog (null, "You " +
-"have some unsaved data, do you want to exit?","Exit Delac dictioneries in unicode",JOptionPane.YES_NO_OPTION);
-            if(dialogResult == JOptionPane.YES_OPTION){
-                frame.dispose();
-            }
-       }else{
-           frame.dispose();
-       }
-                        }
-                });
+			    if(unsaved){
+			        int dialogResult = JOptionPane.showConfirmDialog (null, "You " +
+			        "have some unsaved data, do you want to exit?","Exit Delac dictioneries in unicode",JOptionPane.YES_NO_OPTION);
+			        if(dialogResult == JOptionPane.YES_OPTION) {
+			        	frame.dispose();
+			        }
+		        } else {
+		           frame.dispose();
+		        }
+	        }
+        });
     }
 
     /**
@@ -696,7 +687,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuStatisticsMouseClicked
         
             Map<String, HashMap<String, String>> data = new HashMap<>();
-            int k = 0;
             for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
                 String dic = (String) this.getjTable1().getValueAt(i, 7);
                 String value = (String) this.getjTable1().getValueAt(i, 0);
@@ -706,9 +696,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     if (data.get(dic).containsKey(value)) {
                         int count = Integer.parseInt(data.get(dic).get(value)) + 1;
                         data.get(dic).replace(value, String.valueOf(count));
-                        k++;
                     } else {
-                        k++;
                         data.get(dic).put(value, "1");
                     }
                 }
@@ -741,7 +729,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Row deleted !");
             this.setUnsaved(true);
         }
-        
     }//GEN-LAST:event_jMenuDeleteMouseClicked
 
     private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertAfterActionPerformed
@@ -976,6 +963,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButtonAllActionPerformed
 
+    @SuppressWarnings("unchecked")
     private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPosKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -993,7 +981,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 else{
                     if(!text.contains(".")&&!text.contains("$"))text="^"+text;
                 }
-                RowFilter rowFilter = RowFilter.regexFilter("(?i)" +text, 0);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter("(?i)" +text, 0);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1001,6 +989,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextFieldPosKeyPressed
 
+    @SuppressWarnings("unchecked")
     private void jTextFieldLemmaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldLemmaKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -1020,7 +1009,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     if(!text.contains(".")&&!text.contains("$"))text="^"+text;
                     
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 2);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 2);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1028,6 +1017,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jTextFieldLemmaKeyPressed
 
+    @SuppressWarnings("unchecked")
     private void jTextFieldFstKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFstKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -1042,7 +1032,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 if(jCheckBoxExtract.isSelected()){
                     text="^"+text+"$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 3);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 3);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1064,7 +1054,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 if(jCheckBoxExtract.isSelected()){
                     text="^"+text+"$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 4);// recherche avec la colonne indice 0
+                RowFilter rowFilter = RowFilter.regexFilter(text, 4);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1132,7 +1122,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     				if (!graphs[i].exists()) {
     					JOptionPane.showMessageDialog(null,
     							"File " + graphs[i].getAbsolutePath()
-    									+ " does not exist", "Error",
+    							+ " does not exist", "Error",
     							JOptionPane.ERROR_MESSAGE);
     					continue;
     				}
@@ -1191,7 +1181,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     else{
                         if(!text.contains(".")&&!text.contains("$"))text="^"+text;
                     }    
-                    RowFilter rowFilter = RowFilter.regexFilter(text, 5);// recherche avec la colonne indice 4
+                    RowFilter rowFilter = RowFilter.regexFilter(text, 5);// search column at index 4
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
