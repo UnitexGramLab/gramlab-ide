@@ -29,6 +29,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import fr.umlv.unitex.leximir.model.DictionaryPath;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Rojo Rabelisoa
@@ -39,6 +46,8 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
     /**
      * Creates new form ChooseDelac
      */
+    File lastLink;
+
     public ChooseDelac() {
         super("Edit Delac", true, true, true, true);
         initComponents();
@@ -46,8 +55,39 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
         buttonGroup1.add(jRadioallDelac);
         buttonGroup1.add(jRadioBrowse);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        lastLink = new File(DictionaryPath.allDela + "/tmp_delac.txt");
+        if (lastLink.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(lastLink));
+                jTextField1.setText(br.readLine());
+                if (!jTextField1.getText().equals("")) {
+                    jRadioBrowse.setSelected(true);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
+     private void updateLinks(boolean all) {
+        try {
+            FileWriter bw = new FileWriter(lastLink);
+            if (!all) {
+                bw.write(jTextField1.getText() + "\r\n");
+                bw.close();
+            } else {
+                bw.write("");
+                bw.close();
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -141,7 +181,7 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
 
     private void jButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenActionPerformed
         boolean all = jRadioallDelac.isSelected();
-        boolean browse = jRadioBrowse.isSelected();
+        updateLinks(all);
         if (all) {
             File allDFoler = new File(DictionaryPath.allDelac);
 
@@ -171,7 +211,7 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
                 }
             }
         }
-        if (browse) {
+        else{
             GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                     .newEditorDelacDialog(all, new File(jTextField1.getText()));
             this.setVisible(false);

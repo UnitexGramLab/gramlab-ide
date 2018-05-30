@@ -126,7 +126,6 @@ public abstract class InternalFrameManager implements FrameManager {
     private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
     private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
     private final ShellFactory shellFactory = new ShellFactory();
-    private final ConjugationFactory congugaisonFactory = new ConjugationFactory();
     private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
     private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
     private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
@@ -208,16 +207,6 @@ public abstract class InternalFrameManager implements FrameManager {
         }
         setup(d, true);
         return d;
-    }
-
-    public ConjugationFrame newConjugaisonDialog() {
-        final ConjugationFrame d = congugaisonFactory.newConjugaisonDialog();
-        if (d == null) {
-            return null;
-        }
-        setup(d, true);
-        return d;
-
     }
 
     public InternalFrameManager(JDesktopPane desktop) {
