@@ -45,8 +45,8 @@ import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
-import leximir.EditorDelac;
-import leximir.EditorDelas;
+import fr.umlv.unitex.leximir.delac.EditorDelac;
+import fr.umlv.unitex.leximir.delas.EditorDelas;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

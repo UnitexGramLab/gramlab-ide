@@ -20,6 +20,20 @@
  */
 package fr.umlv.unitex.frames;
 
+import fr.umlv.unitex.leximir.delac.EditorDelacFactory;
+import fr.umlv.unitex.leximir.helper.CsvOpener;
+import fr.umlv.unitex.leximir.delac.ChooseDelac;
+import fr.umlv.unitex.leximir.delas.ChooseDelas;
+import fr.umlv.unitex.leximir.helper.CsvOpenerFactory;
+import fr.umlv.unitex.leximir.helper.StatisticOutput;
+import fr.umlv.unitex.leximir.delac.ChooseDelacFactory;
+import fr.umlv.unitex.leximir.delac.EditorDelac;
+import fr.umlv.unitex.leximir.helper.StatisticOutputFactory;
+import fr.umlv.unitex.leximir.delas.ChooseDelasFactory;
+import fr.umlv.unitex.leximir.delas.EditorDelas;
+import fr.umlv.unitex.leximir.shell.ShellFactory;
+import fr.umlv.unitex.leximir.shell.Shell;
+import fr.umlv.unitex.leximir.delas.EditorDelasFactory;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +62,6 @@ import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
 import java.util.List;
 import java.util.Map;
-import leximir.*;
 
 /**
  * This class is responsible for managing all internal frames in Unitex and
