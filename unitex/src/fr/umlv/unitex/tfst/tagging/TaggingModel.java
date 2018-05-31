@@ -98,8 +98,6 @@ public class TaggingModel {
 		zone.removeGraphListener(graphListener);		
 	}
 	
-	
-	
 	/** @Yass
 	 * This basically checks if a new box was created, if yes, it resets the model, otherwise it updates the factorization Nodes.
 	 * This method must be called when the sentence automaton has been modified,
@@ -156,7 +154,6 @@ public class TaggingModel {
 		System.out.println("TOKENS : "+ tokens);	
 	}
 	
-
 	void generateAlphabet() {
 		if( regex == null || !alphabetFile.equals(ConfigManager.getManager().getAlphabet(null))) { 
 			// switching languages must also switch this
@@ -410,8 +407,7 @@ public class TaggingModel {
 			updateBoundsReversed(destIndex, visited);
 		}
 	}
-	
-		
+
 	/**
 	 * 
 	 */
@@ -446,6 +442,7 @@ public class TaggingModel {
 			 * If the automaton is not acyclic, then we fail to compute the
 			 * factorization nodes, so we just say that the initial and final
 			 * ones aren't.
+			 * ones aren.
 			 */
 			for (int i = 0; i < factorization.length; i++) {
 				if (boxes[i].type != GenericGraphBox.NORMAL) {
@@ -564,8 +561,7 @@ public class TaggingModel {
 			}
 		}
 	}
-	
-	
+
 	/** @Yass
 	 * This function takes the Initial state and an empty boolean array and recursively checks if the boxes are accessible, ie
 	 * if there's a set of transitions that link the n box to the Initial state.

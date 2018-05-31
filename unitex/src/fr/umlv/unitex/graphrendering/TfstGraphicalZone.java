@@ -182,11 +182,9 @@ Printable {
 						boolean changeIsValid = false;
 						for(GenericGraphBox box : selectedBoxes) {
 							ArrayList<GenericGraphBox> newTransition = new ArrayList<GenericGraphBox>();
-							newTransition.add(b);
-							
+							newTransition.add(b);		
 							/* same token / different token transition drawing */
 							//model.updateBoundsOfNextUseless( (TfstGraphBox)box, b);
-							
 							changeIsValid = !isCycle(box, newTransition);
 						}
 
