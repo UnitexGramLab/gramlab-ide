@@ -85,7 +85,8 @@ public class TaggingModel {
 	}
 	
 	
-	/**
+	/** @Yass
+	 * This basically checks if a new box was created, if yes, it resets the model, otherwise it updates the factorization Nodes.
 	 * This method must be called when the sentence automaton has been modified,
 	 * either by a box removal, or by a transition added or removed.
 	 */
@@ -106,8 +107,9 @@ public class TaggingModel {
 		}
 	}
 
-	/**
+	/** @Yass
 	 * This method must be called when a new sentence automaton has been loaded.
+	 * This method resets the various arrays used in this class by applying all the graphBoxes, including new ones, in them.
 	 */
 	public void resetModel() {
 		final int n = zone.graphBoxes.size();
@@ -125,13 +127,17 @@ public class TaggingModel {
 		}
 		updateFactorizationNodes();
 	}
-
+	
+	/**
+	 * 
+	 */
 	private void updateFactorizationNodes() {
 		if (boxes.length == 0)
 			return;
 		/*
-		 * First, we look for useless states (not both accessible and
+		 * First, we look for useless states (neither accessible and
 		 * co-accessible)
+		 * 
 		 */
 		markUselessStates();
 		/* Then we look for factorization nodes */
@@ -144,14 +150,17 @@ public class TaggingModel {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 */
 	private void computeFactorizationNodes() {
 		renumber = topologicalSort();
 		if (renumber == null) {
 			/*
 			 * If the automaton is not acyclic, then we fail to compute the
 			 * factorization nodes, so we just say that the initial and final
-			 * ones are
+			 * ones aren.
 			 */
 			for (int i = 0; i < factorization.length; i++) {
 				if (boxes[i].type != GenericGraphBox.NORMAL) {
@@ -191,7 +200,10 @@ public class TaggingModel {
 			}
 		}
 	}
-
+	/** @Yass
+	 * incoming holds the size of all incoming reverse transitions. meaning the size of all outgoing transition.
+	 * @return
+	 */
 	private int[] topologicalSort() {
 		renumber = new int[boxes.length];
 		final int[] incoming = new int[boxes.length];
@@ -216,6 +228,7 @@ public class TaggingModel {
 				renumber = null;
 				return null;
 			}
+			// shouldn't this be renumber[q] = old; ?
 			renumber[old] = q;
 			incoming[old] = -1;
 			for (final GenericGraphBox gb : boxes[old].transitions) {
@@ -233,7 +246,12 @@ public class TaggingModel {
 		}
 		return renumber;
 	}
-
+	
+	/** @Yass
+	 * Goes through the boxes, checking accessibility and coaccessiblity, and then tagging them
+	 * USELESS if they're neither of those.
+	 * or TO_BE_REMOVED if they were USELESS but became either of those or both. 
+	 */
 	private void markUselessStates() {
 		final boolean[] accessible = new boolean[boxes.length];
 		final boolean[] coaccessible = new boolean[boxes.length];
@@ -254,7 +272,12 @@ public class TaggingModel {
 			}
 		}
 	}
-
+	/** @Yass
+	 * This function takes the Initial state and an empty boolean array and recursively checks if the boxes are accessible, ie
+	 * if there's a set of transitions that link the n box to the Initial state.
+	 * @param current, box index, starts with the Initial state.
+	 * @param visited, boolean array,values start blank, and are set to True if the index box is indeed accessible.
+	 */
 	private void checkAccessibility(int current, boolean[] visited) {
 		if (visited[current])
 			return;
@@ -264,7 +287,14 @@ public class TaggingModel {
 			checkAccessibility(destIndex, visited);
 		}
 	}
-
+	/** @Yass
+	 * This function takes the Final state and an empty boolean array and recursively checks if the boxes are coaccessible, ie
+	 * if there's a set of transitions that link the n box to the Final state.
+	 * This function is basically
+	 * @param current, box index, starts with the Final state.
+	 * @param visited, boolean array,values start blank, and are set to True if the index box is indeed accessible.
+	 * @param reverse, a representation of the graph but reversed, as to see it as basically a reverse accessibility check.
+	 */
 	private void checkCoaccessibility(int current, boolean[] visited,
 			ArrayList<Integer>[] reverse) {
 		if (visited[current])
@@ -338,6 +368,7 @@ public class TaggingModel {
 	 * transitions point to TO_BE_REMOVED states. If so, those states are
 	 * recursively made neutral.
 	 */
+	// better named PropagatesNeutralToAdjacentRemoved ?
 	private void contaminateFollowers(int n, int limit) {
 		if (n == limit)
 			return;
