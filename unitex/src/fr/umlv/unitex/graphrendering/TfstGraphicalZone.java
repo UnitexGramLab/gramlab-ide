@@ -81,7 +81,12 @@ Printable {
 			addMouseListener(new FstGraphMouseListener());
 		}
 	}
-
+	
+	/*
+	 * This function creates a generic box of NORMAL type, meaning it can have ingoing or outgoing transitions.
+	 * This is the most used function instead of newBox just below
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#createBox(int, int)
+	 */
 	@Override
 	protected GenericGraphBox createBox(int x, int y) {
 		final TfstGraphBox g = new TfstGraphBox(x, y, 2, this);
@@ -89,7 +94,11 @@ Printable {
 		addBox(g);
 		return g;
 	}
-
+	
+	/*
+	 * This function creates a generic box of the input type.
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#newBox(int, int, int, fr.umlv.unitex.graphrendering.GenericGraphicalZone)
+	 */
 	@Override
 	protected GenericGraphBox newBox(int x, int y, int type,
 			GenericGraphicalZone p) {
@@ -109,6 +118,28 @@ Printable {
 		public void mouseClicked(MouseEvent e) {
 			int boxSelected;
 			TfstGraphBox b;
+			
+//			if (e.isShiftDown() && e.getButton() == MouseEvent.BUTTON1) {
+//				// nothing happens with the shift button
+//				// Shift+click
+//				// reverse transitions
+//				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+//				if (boxSelected != -1) {
+//					// if we click on a box
+//					b = (TfstGraphBox) graphBoxes.get(boxSelected);
+//					if (!selectedBoxes.isEmpty()) {
+//						// if there are selected boxes, we rely them to the
+//						// current
+//						addReverseTransitionsFromSelectedBoxes(b);
+//						unSelectAllBoxes();
+//					}
+//				} else {
+//					// nothing happens
+//				}
+//			} else
+			
+			
+			
 			if (e.isControlDown() && e.getButton() == MouseEvent.BUTTON1) {
 				/*
 				 * In the text automaton, Ctrl+click is used to select a box for
@@ -121,6 +152,16 @@ Printable {
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
 					model.selectBox(b);
 				} else {
+//					if (selectedBoxes.size() == 1) {
+//						TfstGraphBox selected = (TfstGraphBox) selectedBoxes.get(0);
+//						unSelectAllBoxes();
+//						b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+//						Bounds bounds = selected.getBounds();
+//						b.setBounds(new Bounds(bounds.getStart_in_tokens(), bounds.getStart_in_chars(),
+//						bounds.getStart_in_letters(), bounds.getEnd_in_tokens(), bounds.getEnd_in_chars(),
+//						bounds.getEnd_in_letters()));
+//					} else {
+					unSelectAllBoxes();
 					// here we create a box on the mouse's click position
 					b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
 					// Coordinates set to zeros.

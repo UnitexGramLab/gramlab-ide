@@ -120,6 +120,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	private JButton buildTokensButton;
   private JButton undoButton;
   private JButton redoButton;
+  
   private UndoManager manager = new UndoManager();
 
 	TextAutomatonFrame() {
@@ -535,6 +536,31 @@ public class TextAutomatonFrame extends TfstFrame {
     redoButton.setEnabled(false);
     redoButton.addActionListener(new RedoIt());
     cornerPanel.add(redoButton);
+    buildTokensButton = new JButton("Token");
+            buildTokensButton.setEnabled(true);
+            buildTokensButton.addActionListener(new AbstractAction() {
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                System.out.println("============================");
+                System.out.println("size:" + graphicalZone.getBoxes().size());
+                GenericGraphBox b = graphicalZone.getBoxes().get(0);
+                System.out.println("1: "+b.getContent());
+                int i = 2;
+                while(b.getType() != 1) {
+                  if (b.getTransitions().size() == 1) {
+                    b = b.getTransitions().get(0);
+                    System.out.println(i+": "+b.getContent());
+                    i++;
+                  } else {
+                    System.out.println("Ambi");
+                    return;
+                  }
+                }
+                System.out.println("============================");
+             }
+            });
+            cornerPanel.add(buildTokensButton);
+    
 		final Action saveAction = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
