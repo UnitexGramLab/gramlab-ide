@@ -157,10 +157,10 @@ public class TextAutomatonFrame extends TfstFrame {
 	private int currentSentenceNumber = 0;
 	private ArrayList<String> checkList = new ArrayList<>();
 	private JButton buildTokensButton;
-	private JButton undoButton;
-	private JButton redoButton;
-
-	private UndoManager manager = new UndoManager();
+        private JButton undoButton;
+        private JButton redoButton;
+  
+        private UndoManager manager = new UndoManager();
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -605,7 +605,6 @@ public class TextAutomatonFrame extends TfstFrame {
 			}
 		});
 		cornerPanel.add(buildTokensButton);
-
 		final Action saveAction = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -655,8 +654,6 @@ public class TextAutomatonFrame extends TfstFrame {
 		buildTokensButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
-<<<<<<< HEAD
 				checkGraph();
 				if (checkList.isEmpty()) {
 					JOptionPane.showMessageDialog(null,
@@ -665,23 +662,10 @@ public class TextAutomatonFrame extends TfstFrame {
 							JOptionPane.PLAIN_MESSAGE);
 				} else {
 					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
-
 				}
-=======
         final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog();
         //checkGraph();
->>>>>>> Add a new dialog to the check button
-=======
-				checkGraph();
-				if (checkList.isEmpty()) {
-					JOptionPane.showMessageDialog(null,
-						"Everything looks OK",
-						"OK",
-						JOptionPane.PLAIN_MESSAGE);
-				} else {
-					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
-				}
->>>>>>> Check dialog now displays all errors
+
 			}
 		});
 		cornerPanel.add(buildTokensButton);
@@ -757,63 +741,6 @@ public class TextAutomatonFrame extends TfstFrame {
 		return errorCount;
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  private void checkContent(TfstGraphBox box, int textIndex, Bounds bounds) {
-	  // if last box then we are finished
-	  if (box.getType() == 1) {
-      //System.out.println("End");
-      return;
-    }
-    // If the parent box is the first one or if both box are side by side
-    String text = sentenceTextArea.getText();
-	  int nextIndex = bounds == null || box.getBounds().getStart_in_tokens()-bounds.getEnd_in_tokens() == 1 ? textIndex+box.getBounds().getEnd_in_chars()+1 : textIndex+box.getBounds().getEnd_in_chars()+2;
-    if (box.isModified()) {
-      if (bounds == null || box.getBounds().getStart_in_tokens() - bounds.getEnd_in_tokens() == 1) {
-        String subContent = text.substring(textIndex, textIndex + box.getBounds().getEnd_in_chars() + 1);
-        //System.out.println("1Box: " +box.getContentText() + " || " +subContent);
-        //nextIndex = textIndex+box.getBounds().getEnd_in_chars()+1;
-        if (!box.getContentText().equals(subContent)) {
-          JOptionPane.showMessageDialog(null,
-            "Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR2",
-            "Warning",
-            JOptionPane.WARNING_MESSAGE);
-          return;
-        }
-        //
-      } else if (box.getBounds().getStart_in_tokens() - bounds.getEnd_in_tokens() == 2) {
-        //System.out.println("textIndex: "+textIndex+ " | textIndex+1: "+(textIndex+1));
-        String subContent = text.substring(textIndex, textIndex + 1);
-        //System.out.println("subContent: \""+subContent+"\"");
-        //nextIndex = textIndex+box.getBounds().getEnd_in_chars()+2;
-        if (!subContent.equals(" ")) {
-          JOptionPane.showMessageDialog(null,
-            "Warning: there should be a white space in the text before \"" + box.getContentText() + "\".",
-            "Warning",
-            JOptionPane.WARNING_MESSAGE);
-          return;
-        }
-        //System.out.println("textIndex+1: "+(textIndex+1)+" | textIndex+1+box.getBounds().getEnd_in_chars()+1: " +(textIndex+1+box.getBounds().getEnd_in_chars()+1));
-        subContent = text.substring(textIndex + 1, textIndex + 1 + box.getBounds().getEnd_in_chars() + 1);
-        //System.out.println("2Box: " +box.getContentText() + " || " +subContent);
-        if (!box.getContentText().equals(subContent)) {
-          JOptionPane.showMessageDialog(null,
-            "Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR3",
-            "Warning",
-            JOptionPane.WARNING_MESSAGE);
-          return;
-        }
-      } else {
-        return;
-      }
-    }
-    for (int i = 0; i < box.getTransitions().size(); i++) {
-      TfstGraphBox nextBox = (TfstGraphBox) box.getTransitions().get(i);
-      checkContent(nextBox, nextIndex, box.getBounds());
-    }
-  }
-=======
 	private void checkContent(TfstGraphBox box, int textIndex, Bounds bounds) {
 		// if last box then we are finished
 		if (box.getType() == 1) {
@@ -867,16 +794,14 @@ public class TextAutomatonFrame extends TfstFrame {
 			checkContent(nextBox, nextIndex, box.getBounds());
 		}
 	}
->>>>>>> Check dialog now displays all errors
 
-  private void reinitializeUndoManager() {
-    graphicalZone.removeUndoableEditListener(manager);
-    manager = new UndoManager();
-    manager.setLimit(-1);
-    graphicalZone.addUndoableEditListener(manager);
-    updateDoUndoButtons();
-  }
->>>>>>> Add a new dialog to the check button
+          private void reinitializeUndoManager() {
+            graphicalZone.removeUndoableEditListener(manager);
+            manager = new UndoManager();
+            manager.setLimit(-1);
+            graphicalZone.addUndoableEditListener(manager);
+            updateDoUndoButtons();
+          }
 
 	private int checkGraph() {
 		String text = sentenceTextArea.getText();

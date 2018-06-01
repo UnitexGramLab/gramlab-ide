@@ -297,7 +297,6 @@ public class TfstGraphBox extends GenericGraphBox {
 			        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
 			        + bounds.getEnd_in_letters();
 			     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());
-			    
 			    }
 		g.setComposite(c);
 		params.setBackgroundColor(old);
