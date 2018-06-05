@@ -33,6 +33,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -185,7 +186,15 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         if (all) {
             File allDFoler = new File(DictionaryPath.allDelas);
             if (allDFoler.exists()) {
-                if (allDFoler.list((dir, name) -> name.endsWith(".dic")).length == 0) {
+
+                FilenameFilter filter = new FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.endsWith(".dic");
+                    }
+                };
+
+                if (allDFoler.list(filter).length == 0) {
                     JOptionPane.showMessageDialog(null, "No Delas was Found in : " + DictionaryPath.allDelas, "Information", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
