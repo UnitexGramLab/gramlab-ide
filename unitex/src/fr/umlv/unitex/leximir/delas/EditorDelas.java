@@ -25,7 +25,6 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -939,7 +938,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             String SynSem = (String) this.getjTable1().getValueAt(i, 3);
             String pos = (String) this.getjTable1().getValueAt(i, 0);
             if (!data.containsKey(pos)) {
-                List symSem = new ArrayList<>();
+                List<String> symSem = new ArrayList<>();
                 String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
                 symSem.addAll(Arrays.asList(tmp));
                 data.put(pos, symSem);
@@ -1321,7 +1320,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButtonMove;
     private javax.swing.JButton jButtonSearch;
     private javax.swing.JCheckBox jCheckBoxExtract;
-    private javax.swing.JComboBox jComboBoxDic;
+    private javax.swing.JComboBox<String> jComboBoxDic;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
