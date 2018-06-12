@@ -191,8 +191,8 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		Y1 = Y - Height / 2;
 		X_out = X + Width + 5;
-		
-		
+		// updating the letters bounds
+		updateBoundsLetters( tmp.length() );
 	}
 	// @Yass
 	public void updateBoundsLetters( int length ) {

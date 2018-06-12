@@ -146,6 +146,9 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
+		/* new call to updateBounds here */
+		boolean[] visited = new boolean[n] ;
+		//updateBounds(initialState, visited);
 		updateFactorizationNodes();
 		
 		generateAlphabet();
@@ -379,35 +382,44 @@ public class TaggingModel {
 	/** 
 	 * 
 	 */
-//	public void updateBoundsOfNextUseless( TfstGraphBox firstBox, TfstGraphBox SecondBox) {
-//		if( taggingStates[SecondBox.getBoxNumber()] == TaggingState.SELECTED || taggingStates[SecondBox.getBoxNumber()] == TaggingState.NEUTRAL )
-//			return;
-//		Bounds bounds = new Bounds(firstBox.getBounds());
-//		bounds.setStart_in_tokens(bounds.getStart_in_tokens()+2);
-//		bounds.setEnd_in_tokens(bounds.getEnd_in_tokens()+2);
-//		SecondBox.setBounds(bounds);
-//	}
-	
-	private void updateBoundsReversed( int current, boolean[] visited ) {
-		final ArrayList<Integer>[] reverse = computeReverseTransitions();
+	private void updateBounds( int current, boolean[] visited ) {
 		if(visited.length == 0 )
 			return;
-		
+		//final ArrayList<Integer>[] reverse = computeReverseTransitions();
 		if (visited[current])
 			return;
 		visited[current] = true;
-		for (final int destIndex : reverse[current]) {
-			if( boxes[current].type == TfstGraphBox.NORMAL && ( taggingStates[destIndex] == TaggingState.TO_BE_REMOVED || taggingStates[destIndex] == TaggingState.USELESS ) ) {
-				Bounds b = new Bounds(boxes[current].getBounds());
-				b.setStart_in_tokens(b.getStart_in_tokens()-2);
-				b.setEnd_in_tokens(b.getEnd_in_tokens()-2);
+		for (final GenericGraphBox gb : boxes[current].transitions) {
+			final int destIndex = getBoxIndex((TfstGraphBox) gb);
+			System.out.println("current : "+ current +" --> destIndex : "+destIndex);
+			if( boxes[current].type == TfstGraphBox.NORMAL) {
+				Bounds b = boxes[current].getBounds();
+				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
+				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
 				boxes[destIndex].setBounds(b);
-				
-			}
-			updateBoundsReversed(destIndex, visited);
+				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
+				if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
+					System.out.println("to check current : "+ current +" --> destIndex : "+destIndex);
+				}
+			}	/*System.err.println("current : "+current
+					+"\tdestIndex : "+destIndex
+					+"\tvisited size : "+visited.length
+					);*/
+			
+//			if( taggingStates[current] == TaggingState.NEUTRAL && taggingStates[destIndex] == TaggingState.SELECTED )
+//				taggingStates[destIndex] = TaggingState.TO_CHECK;
+//			if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
+//				Bounds b = boxes[current].getBounds();
+//				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
+//				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
+//				boxes[destIndex].setBounds(b);
+//				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
+//				taggingStates[destIndex] = TaggingState.NEUTRAL;
+//				
+//			}
+			updateBounds(destIndex, visited);
 		}
 	}
-
 	/**
 	 * 
 	 */
@@ -550,7 +562,6 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
-					
 					computeFactorizationNodes();
 					System.out.println("USELESS CASE NODES COMPUTING FIRST");
 					/* this is the key location of verification */
