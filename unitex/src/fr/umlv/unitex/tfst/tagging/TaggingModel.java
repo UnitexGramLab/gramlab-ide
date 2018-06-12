@@ -28,6 +28,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
 import fr.umlv.unitex.listeners.GraphListener;
+import fr.umlv.unitex.tfst.Bounds;
 
 /**
  * This class is used to know whether a sentence automaton box has been
@@ -102,6 +103,7 @@ public class TaggingModel {
 				 */
 				resetModel();
 			} else {
+				
 				updateFactorizationNodes();
 			}
 		}
@@ -125,9 +127,55 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
+		/* new call to updateBounds here */
+		boolean[] visited = new boolean[n] ;
+		//updateBounds(initialState, visited);
 		updateFactorizationNodes();
 	}
 	
+	/** 
+	 * 
+	 */
+	
+	private void updateBounds( int current, boolean[] visited ) {
+		if(visited.length == 0 )
+			return;
+		//final ArrayList<Integer>[] reverse = computeReverseTransitions();
+		if (visited[current])
+			return;
+		visited[current] = true;
+		for (final GenericGraphBox gb : boxes[current].transitions) {
+			final int destIndex = getBoxIndex((TfstGraphBox) gb);
+			System.out.println("current : "+ current +" --> destIndex : "+destIndex);
+			if( boxes[current].type == TfstGraphBox.NORMAL) {
+				Bounds b = boxes[current].getBounds();
+				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
+				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
+				boxes[destIndex].setBounds(b);
+				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
+				if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
+					System.out.println("to check current : "+ current +" --> destIndex : "+destIndex);
+				}
+			}	/*System.err.println("current : "+current
+					+"\tdestIndex : "+destIndex
+					+"\tvisited size : "+visited.length
+					);*/
+			
+//			if( taggingStates[current] == TaggingState.NEUTRAL && taggingStates[destIndex] == TaggingState.SELECTED )
+//				taggingStates[destIndex] = TaggingState.TO_CHECK;
+//			if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
+//				Bounds b = boxes[current].getBounds();
+//				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
+//				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
+//				boxes[destIndex].setBounds(b);
+//				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
+//				taggingStates[destIndex] = TaggingState.NEUTRAL;
+//				
+//			}
+			updateBounds(destIndex, visited);
+		}
+	}
+		
 	/**
 	 * 
 	 */
@@ -265,9 +313,10 @@ public class TaggingModel {
 				if (taggingStates[i] == TaggingState.USELESS) {
 					/*
 					 * If the state used to be useless but is not anymore, we
-					 * set its state to TO_BE_REMOVED
+					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
+					 * 
 					 */
-					setBoxStateInternal(i, TaggingState.TO_BE_REMOVED);
+					setBoxStateInternal(i, TaggingState.TO_CHECK);
 				}
 			}
 		}

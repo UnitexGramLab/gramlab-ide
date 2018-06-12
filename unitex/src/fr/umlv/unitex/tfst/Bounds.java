@@ -171,6 +171,31 @@ public class Bounds {
 	public int getEnd_in_letters() {
 		return end_in_letters;
 	}
+	
+	public void setStart_in_tokens( int value ) {
+		start_in_tokens = value ;
+	}
+
+	public void setStart_in_chars( int value ) {
+		start_in_chars = value ;
+	}
+
+	public void setStart_in_letters( int value ) {
+		start_in_letters = value ;
+	}
+
+	public void setEnd_in_tokens( int value ) {
+		end_in_tokens = value ;
+	}
+
+	public void setEnd_in_chars( int value ) {
+		end_in_chars = value ;
+	}
+
+	public void setEnd_in_letters( int value ) {
+		end_in_letters = value ;
+	}
+
 
 	@Override
 	public String toString() {

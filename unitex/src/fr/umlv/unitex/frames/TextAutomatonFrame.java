@@ -118,10 +118,10 @@ public class TextAutomatonFrame extends TfstFrame {
 	private int currentSentenceNumber = 0;
 	private ArrayList<String> checkList = new ArrayList<>();
 	private JButton buildTokensButton;
-  private JButton undoButton;
-  private JButton redoButton;
-  
-  private UndoManager manager = new UndoManager();
+	private JButton undoButton;
+	private JButton redoButton;
+
+	private UndoManager manager = new UndoManager();
 
 	TextAutomatonFrame() {
 		super("FST-Text", true, true, true, true);
@@ -149,8 +149,8 @@ public class TextAutomatonFrame extends TfstFrame {
 						.getTextFont(null));
 			}
 		});
-    getManager().setLimit(-1);
-    graphicalZone.addUndoableEditListener(getManager());
+		getManager().setLimit(-1);
+		graphicalZone.addUndoableEditListener(getManager());
 	}
 
 	private JPanel constructPanel() {
@@ -382,7 +382,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			return;
 		}
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-				.newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter, delafStyle);
+		.newExportTextAsPOSListDialog(chooser.getSelectedFile(), filter, delafStyle);
 	}
 
 	void refreshTableRowHeight(JTable table) {
@@ -448,10 +448,10 @@ public class TextAutomatonFrame extends TfstFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-						.closeTfstTagsFrame();
+				.closeTfstTagsFrame();
 				replaceElagFst();
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-						.newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
+				.newTfstTagsFrame(new File(Config.getCurrentSntDir(),"tfst_tags_by_freq.txt"));
 			}
 		});
 		p.add(button);
@@ -472,7 +472,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		final JScrollPane textScroll = new JScrollPane(sentenceTextArea);
 		textScroll.setPreferredSize(new Dimension(600, 100));
 		textScroll
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		final JPanel tmp = new JPanel(new BorderLayout());
 		tmp.setBorder(new EmptyBorder(2, 2, 2, 2));
 		tmp.add(textScroll, BorderLayout.CENTER);
@@ -499,12 +499,12 @@ public class TextAutomatonFrame extends TfstFrame {
 					spinnerModel.setValue(new Integer(currentSentenceNumber));
 					return;
 				}*/
-        checkGraph();
-        if (!checkList.isEmpty()) {
-          final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
-          spinnerModel.setValue(new Integer(currentSentenceNumber));
-          return;
-        }
+				checkGraph();
+				if (!checkList.isEmpty()) {
+					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
+					spinnerModel.setValue(new Integer(currentSentenceNumber));
+					return;
+				}
 				loadSentence(spinnerModel.getNumber().intValue());
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
@@ -528,46 +528,46 @@ public class TextAutomatonFrame extends TfstFrame {
 		revertSentenceGraph = new JButton(revertSentenceAction);
 		revertSentenceGraph.setVisible(false);
 		cornerPanel.add(revertSentenceGraph);
-    undoButton = new JButton("Undo");
-    undoButton.setEnabled(false);
-    undoButton.addActionListener(new UndoIt());
-    cornerPanel.add(undoButton);
-    redoButton = new JButton("Redo");
-    redoButton.setEnabled(false);
-    redoButton.addActionListener(new RedoIt());
-    cornerPanel.add(redoButton);
-    buildTokensButton = new JButton("Token");
-            buildTokensButton.setEnabled(true);
-            buildTokensButton.addActionListener(new AbstractAction() {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                System.out.println("============================");
-                System.out.println("size:" + graphicalZone.getBoxes().size());
-                GenericGraphBox b = graphicalZone.getBoxes().get(0);
-                System.out.println("1: "+b.getContent());
-                int i = 2;
-                while(b.getType() != 1) {
-                  if (b.getTransitions().size() == 1) {
-                    b = b.getTransitions().get(0);
-                    System.out.println(i+": "+b.getContent());
-                    i++;
-                  } else {
-                    System.out.println("Ambi");
-                    return;
-                  }
-                }
-                System.out.println("============================");
-             }
-            });
-            cornerPanel.add(buildTokensButton);
-    
+		undoButton = new JButton("Undo");
+		undoButton.setEnabled(false);
+		undoButton.addActionListener(new UndoIt());
+		cornerPanel.add(undoButton);
+		redoButton = new JButton("Redo");
+		redoButton.setEnabled(false);
+		redoButton.addActionListener(new RedoIt());
+		cornerPanel.add(redoButton);
+		buildTokensButton = new JButton("Token");
+		buildTokensButton.setEnabled(true);
+		buildTokensButton.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("============================");
+				System.out.println("size:" + graphicalZone.getBoxes().size());
+				GenericGraphBox b = graphicalZone.getBoxes().get(0);
+				System.out.println("1: "+b.getContent());
+				int i = 2;
+				while(b.getType() != 1) {
+					if (b.getTransitions().size() == 1) {
+						b = b.getTransitions().get(0);
+						System.out.println(i+": "+b.getContent());
+						i++;
+					} else {
+						System.out.println("Ambi");
+						return;
+					}
+				}
+				System.out.println("============================");
+			}
+		});
+		cornerPanel.add(buildTokensButton);
+
 		final Action saveAction = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-						.closeTextAutomatonFrame();
+				.closeTextAutomatonFrame();
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-						.closeTfstTagsFrame();
+				.closeTfstTagsFrame();
 				Config.cleanTfstFiles(false);
 				final RebuildTfstCommand command = new RebuildTfstCommand()
 						.automaton(new File(Config.getCurrentSntDir(),
@@ -613,9 +613,9 @@ public class TextAutomatonFrame extends TfstFrame {
 				checkGraph();
 				if (checkList.isEmpty()) {
 					JOptionPane.showMessageDialog(null,
-						"Everything looks OK",
-						"OK",
-						JOptionPane.PLAIN_MESSAGE);
+							"Everything looks OK",
+							"OK",
+							JOptionPane.PLAIN_MESSAGE);
 				} else {
 					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
 				}
@@ -643,6 +643,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			checkContent(nextBox, 0, firstBox.getBounds());
 		}
 		System.out.println("End");*/
+		System.out.println("size of boxes : "+ graphicalZone.getBoxes().size());
 		for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
 			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
 			// if the box is not final then it should have at least one transition
@@ -660,20 +661,27 @@ public class TextAutomatonFrame extends TfstFrame {
 				for (int j = 0; j < b.getTransitions().size(); j++) {
 					TfstGraphBox nextBox = (TfstGraphBox) b.getTransitions().get(j);
 					if (b.getBounds() == null) {
+						System.out.println(b.getBoxNumber()+" had bounds null");
 						// start & end
 						// if initial
 						if (b.getType() == 0 && (nextBox.getBounds() == null || nextBox.getBounds().getStart_in_tokens() != 0)) {
+							System.out.println(b.getBoxNumber()+" cas initial");
 							errorCount++;
 							checkList.add("Error: the first box has incorrect outgoing transition(s)");
 							// if final
 						} else if (b.getType() == 1) {
+							System.out.println(b.getBoxNumber()+" cas final");
 							errorCount++;
 							checkList.add("Error: the last box must not have outgoing transition(s)");
 							// if normal
 						}
-					} else if (nextBox.getBounds() != null) {
+					} else if ( b.getBounds() != null && nextBox.getBounds() != null) {
 						int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
-						if (diff > 2 || diff < 0) {
+						System.out.println(b.getBoxNumber()+" "+b.getContentText());
+						System.out.println("diff = nextBounds - currentBounds : "+diff+" = "+nextBox.getBounds().getStart_in_tokens()+" - "+
+								b.getBounds().getStart_in_tokens());
+						if (diff > 2 || diff <= 0) {
+							System.out.println("dans le cas d'erreur de diff = 2 ou = 0");
 							errorCount++;
 							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
 						} else if (nextBox.getBounds().equals(b.getBounds())){
@@ -684,6 +692,7 @@ public class TextAutomatonFrame extends TfstFrame {
 				}
 			}
 		}
+		System.out.println("erroroCount : "+errorCount);
 		return errorCount;
 	}
 
@@ -703,9 +712,9 @@ public class TextAutomatonFrame extends TfstFrame {
 				//nextIndex = textIndex+box.getBounds().getEnd_in_chars()+1;
 				if (!box.getContentText().equals(subContent)) {
 					JOptionPane.showMessageDialog(null,
-						"Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR2",
-						"Warning",
-						JOptionPane.WARNING_MESSAGE);
+							"Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR2",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				//
@@ -716,9 +725,9 @@ public class TextAutomatonFrame extends TfstFrame {
 				//nextIndex = textIndex+box.getBounds().getEnd_in_chars()+2;
 				if (!subContent.equals(" ")) {
 					JOptionPane.showMessageDialog(null,
-						"Warning: there should be a white space in the text before \"" + box.getContentText() + "\".",
-						"Warning",
-						JOptionPane.WARNING_MESSAGE);
+							"Warning: there should be a white space in the text before \"" + box.getContentText() + "\".",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				//System.out.println("textIndex+1: "+(textIndex+1)+" | textIndex+1+box.getBounds().getEnd_in_chars()+1: " +(textIndex+1+box.getBounds().getEnd_in_chars()+1));
@@ -726,9 +735,9 @@ public class TextAutomatonFrame extends TfstFrame {
 				//System.out.println("2Box: " +box.getContentText() + " || " +subContent);
 				if (!box.getContentText().equals(subContent)) {
 					JOptionPane.showMessageDialog(null,
-						"Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR3",
-						"Warning",
-						JOptionPane.WARNING_MESSAGE);
+							"Warning: the token \"" + box.getContentText() + "\" is not in the sentence. ERR3",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 			} else {
@@ -741,15 +750,15 @@ public class TextAutomatonFrame extends TfstFrame {
 		}
 	}
 
-  private void reinitializeUndoManager() {
-    graphicalZone.removeUndoableEditListener(manager);
-    manager = new UndoManager();
-    manager.setLimit(-1);
-    graphicalZone.addUndoableEditListener(manager);
-    updateDoUndoButtons();
-  }
+	private void reinitializeUndoManager() {
+		graphicalZone.removeUndoableEditListener(manager);
+		manager = new UndoManager();
+		manager.setLimit(-1);
+		graphicalZone.addUndoableEditListener(manager);
+		updateDoUndoButtons();
+	}
 
-  /**
+	/**
 	 * Shows the frame
 	 */
 	boolean loadTfst() {
@@ -848,7 +857,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	boolean loadSentence(int n) {
 		if (n < 1 || n > sentence_count)
 			return false;
-    reinitializeUndoManager();
+		reinitializeUndoManager();
 		final int z = n;
 		if (isAcurrentLoadingThread)
 			return false;
@@ -1111,18 +1120,18 @@ public class TextAutomatonFrame extends TfstFrame {
 
 	void exploseElagFst() {
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-				.closeTfstTagsFrame();
+		.closeTfstTagsFrame();
 		explodeTextAutomaton(elag_tfst);
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-				.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+		.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
 	}
 
 	void implodeElagFst() {
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-				.closeTfstTagsFrame();
+		.closeTfstTagsFrame();
 		implodeTextAutomaton(elag_tfst);
 		GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-				.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
+		.newTfstTagsFrame(new File(Config.getCurrentSntDir(), "tfst_tags_by_freq.txt"));
 	}
 
 	boolean explodeTextAutomaton(File f) {
@@ -1187,7 +1196,7 @@ public class TextAutomatonFrame extends TfstFrame {
 						"unable to delete " + f);
 			}
 			GlobalProjectManager.search(sntDir).getFrameManagerAs(InternalFrameManager.class)
-					.newTextAutomatonFrame(1,false);
+			.newTextAutomatonFrame(1,false);
 		}
 	}
 
@@ -1205,61 +1214,61 @@ public class TextAutomatonFrame extends TfstFrame {
 		return graphicalZone;
 	}
 
-  public UndoManager getManager() {
-    return manager;
-  }
+	public UndoManager getManager() {
+		return manager;
+	}
 
-  private void updateDoUndoButtons() {
-    if (undoButton != null && redoButton != null) {
-      undoButton.setEnabled(getManager().canUndo());
-      redoButton.setEnabled(getManager().canRedo());
-    }
-  }
+	private void updateDoUndoButtons() {
+		if (undoButton != null && redoButton != null) {
+			undoButton.setEnabled(getManager().canUndo());
+			redoButton.setEnabled(getManager().canRedo());
+		}
+	}
 
-  @Override
-  public void repaint() {
-    super.repaint();
-    updateDoUndoButtons();
-  }
+	@Override
+	public void repaint() {
+		super.repaint();
+		updateDoUndoButtons();
+	}
 
-  class UndoIt implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent ev) {
-      undo();
-    }
-  }
+	class UndoIt implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			undo();
+		}
+	}
 
-  public void undo() {
-    try {
-      if (getManager().canUndo()) {
-        getManager().undo();
-      }
-    } catch (final CannotUndoException ex) {
-      ex.printStackTrace();
-    } finally {
-      graphicalZone.unSelectAllBoxes();
-      repaint();
-    }
-  }
+	public void undo() {
+		try {
+			if (getManager().canUndo()) {
+				getManager().undo();
+			}
+		} catch (final CannotUndoException ex) {
+			ex.printStackTrace();
+		} finally {
+			graphicalZone.unSelectAllBoxes();
+			repaint();
+		}
+	}
 
-  class RedoIt implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent ev) {
-      redo();
-    }
-  }
+	class RedoIt implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			redo();
+		}
+	}
 
-  public void redo() {
-    try {
-      if (getManager().canRedo()) {
-        getManager().redo();
-      }
-    } catch (final CannotRedoException ex) {
-      /* */
-    } finally {
-      repaint();
-    }
-  }
+	public void redo() {
+		try {
+			if (getManager().canRedo()) {
+				getManager().redo();
+			}
+		} catch (final CannotRedoException ex) {
+			/* */
+		} finally {
+			repaint();
+		}
+	}
 
 	public void loadNextSentence() {
 		int currentSentence = spinnerModel.getNumber().intValue();

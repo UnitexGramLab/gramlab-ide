@@ -30,5 +30,7 @@ public enum TaggingState {
 	/* The box is neither accessible and co-accessible */
 	USELESS,
 	/* None of previous cases */
-	NEUTRAL
+	NEUTRAL,
+	/* new tag, used when a new branch ie series of boxes connected with transitions gets connected to the main graph */
+	TO_CHECK,
 }
