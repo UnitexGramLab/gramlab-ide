@@ -696,10 +696,10 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             } else {
                 if (data.get(dic).containsKey(value)) {
                     int count = Integer.parseInt(data.get(dic).get(value)) + 1;
-                    data.get(dic).replace(value, String.valueOf(count));
-//                    if (data.get(dic).containsKey(value)) {
-//                        data.get(dic).put(value, String.valueOf(count));
-//                    }
+//                    data.get(dic).replace(value, String.valueOf(count));
+                    if (data.get(dic).containsKey(value)) {
+                        data.get(dic).put(value, String.valueOf(count));
+                    }
                 } else {
                     data.get(dic).put(value, "1");
                 }
@@ -932,10 +932,10 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                         dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
                     } else {
                         int count = Integer.parseInt(dataForSynSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
-                        dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
-//                        if (dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
-//                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, String.valueOf(count));
-//                        }
+//                        dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
+                        if (dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
+                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, String.valueOf(count));
+                        }
                     }
                 }
             }
