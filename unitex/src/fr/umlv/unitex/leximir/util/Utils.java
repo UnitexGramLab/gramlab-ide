@@ -51,6 +51,7 @@ public class Utils {
 
     /**
      * This function read file from path file and return an ArrayList<String>
+     *
      * @param file path of file to open
      * @return
      * @throws IOException
@@ -108,7 +109,7 @@ public class Utils {
         StringBuilder sb = new StringBuilder();
         for (Object[] tab : dicPos) {
             for (Object obj : tab) {
-                sb.append(obj.toString() +";");
+                sb.append(obj.toString() + ";");
             }
             sb.append("\n");
         }
@@ -136,7 +137,10 @@ public class Utils {
             i = 0;
             for (Object obj : objArr) {
                 if (i != 1) {
-                    sb.append(obj.toString()).append(";");
+                    sb.append(obj.toString());
+                    if (i < 3) {
+                        sb.append(";");
+                    }
                 }
                 i++;
             }
@@ -187,22 +191,6 @@ public class Utils {
         return new Object[]{pOs, lemaAll, lema, fSTCode, SynSem, comments, lemmaId, dicFile, dicId};
     }
 
-//    public static String getValueXml(String key) throws IOException, FileNotFoundException, IllegalArgumentException {
-//        File file = new File("configuration.xml");
-//        Properties properties;
-//        try (FileInputStream fileInput = new FileInputStream(file)) {
-//            properties = new Properties();
-//            properties.loadFromXML(fileInput);
-//        }
-//        Enumeration enuKeys = properties.keys();
-//        while (enuKeys.hasMoreElements()) {
-//            String keys = (String) enuKeys.nextElement();
-//            if (keys.equals(key)) {
-//                return properties.getProperty(keys);
-//            }
-//        }
-//        throw new IllegalArgumentException("Key not found in path");
-//    }
     /**
      * this function open terminal and run command
      *
@@ -214,11 +202,20 @@ public class Utils {
         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
         Process p = pb.start();
-        while (p.isAlive()) {
-        	continue;
+        while (isProcessAlive(p)) {
+            continue;
         }
     }
 
+    public static boolean isProcessAlive(Process p) {
+    try {
+        p.exitValue();
+        return false;
+    } catch(IllegalThreadStateException e) {
+        return true;
+    }
+}
+    
     /**
      * This function inflect delas with the fst code which is give in parameter
      *
@@ -254,8 +251,8 @@ public class Utils {
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
-            while (p.isAlive()) {
-            	continue;
+            while (isProcessAlive(p)) {
+                continue;
             }
             new File(DictionaryPath.allDelas + "/DelasTmp.dic").delete();
 

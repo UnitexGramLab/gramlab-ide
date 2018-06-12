@@ -65,16 +65,19 @@ import fr.umlv.unitex.leximir.util.Utils;
  * @author Anas Ait cheikh
  */
 public final class EditorDelas extends javax.swing.JInternalFrame {
+
     private DefaultTableModel tableModel;
-    private DefaultTableModel defaulttableModel ;
-    private boolean unsaved=false;
+    private DefaultTableModel defaulttableModel;
+    private boolean unsaved = false;
 
     public EditorDelas() {
     }
-    
+
     /**
      * Creates new form EditorLadl
-     * @param alldelas if alldelas is true, the programm open all dictionary in delas folder, else the program open dictionary found in configuration
+     *
+     * @param alldelas if alldelas is true, the programm open all dictionary in
+     * delas folder, else the program open dictionary found in configuration
      */
     public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
@@ -85,7 +88,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             tableModel = GridHelper.getOpenEditorforDelas(alldelas, dic);
             JTable table = new JTable(getTableModel());
             RowSorter<DefaultTableModel> sort = new TableRowSorter<>(tableModel);
-            for(String d:DictionaryPath.dictionary){
+            for (String d : DictionaryPath.dictionary) {
                 jComboBoxDic.addItem(d);
             }
             this.getjTable1().setRowSorter(sort);
@@ -93,24 +96,23 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             this.getjTable1().setDefaultRenderer(Object.class, paintGrid());
             jLabel13.setText(String.valueOf(jTable1.getRowCount()));
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            
+
             /*TableRowFilterSupport
             .forTable(table)
             .searchable(true)
             .apply();*/
-            
             final JInternalFrame frame = this;
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
             addInternalFrameListener(new InternalFrameAdapter() {
                 @Override
                 public void internalFrameClosing(InternalFrameEvent e) {
-                    if(unsaved){
-                        int dialogResult = JOptionPane.showConfirmDialog (null, "You "
-                                + "have some unsaved data, do you want to exit?","Exit Delas dictionaries in unicode",JOptionPane.YES_NO_OPTION);
-                        if(dialogResult == JOptionPane.YES_OPTION){
+                    if (unsaved) {
+                        int dialogResult = JOptionPane.showConfirmDialog(null, "You "
+                                + "have some unsaved data, do you want to exit?", "Exit Delas dictionaries in unicode", JOptionPane.YES_NO_OPTION);
+                        if (dialogResult == JOptionPane.YES_OPTION) {
                             frame.dispose();
                         }
-                    }else{
+                    } else {
                         frame.dispose();
                     }
                 }
@@ -121,11 +123,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private DefaultTableCellRenderer paintGrid() {
-        return new DefaultTableCellRenderer()
-        {
+        return new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
-            {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setBackground(row % 2 == 0 ? Color.LIGHT_GRAY : Color.WHITE);
                 c.setForeground(Color.black);
@@ -268,7 +268,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jComboBoxDic.setModel(new javax.swing.DefaultComboBoxModel(new String[] {  }));
+        jComboBoxDic.setModel(new javax.swing.DefaultComboBoxModel(new String[]{}));
 
         jCheckBoxExtract.setText("Exact match");
 
@@ -288,89 +288,85 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel1)
-                        .addGap(77, 77, 77)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldLemma, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonGraph)))
-                .addGap(30, 30, 30)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAll)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel15)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jTextFieldLemmaInv, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldComment, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBoxExtract)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jComboBoxDic, 0, 171, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonMove)
-                        .addGap(18, 18, 18))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jLabel6)
-                        .addContainerGap(88, Short.MAX_VALUE))))
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(44, 44, 44)
+                                                .addComponent(jLabel1)
+                                                .addGap(77, 77, 77)
+                                                .addComponent(jLabel3))
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTextFieldLemma, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonGraph)))
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonAll)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jLabel5)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jLabel15)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jTextFieldLemmaInv, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jTextFieldComment, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jCheckBoxExtract)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addComponent(jComboBoxDic, 0, 171, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonMove)
+                                                .addGap(18, 18, 18))
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                                .addGap(9, 9, 9)
+                                                .addComponent(jLabel6)
+                                                .addContainerGap(88, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel15))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldLemma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonGraph)
-                    .addComponent(jButtonAll)
-                    .addComponent(jTextFieldLemmaInv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonMove)
-                    .addComponent(jComboBoxDic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBoxExtract)
-                    .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel1)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel15))
+                                .addGap(12, 12, 12)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jTextFieldPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldLemma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonGraph)
+                                        .addComponent(jButtonAll)
+                                        .addComponent(jTextFieldLemmaInv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonMove)
+                                        .addComponent(jComboBoxDic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jCheckBoxExtract)
+                                        .addComponent(jTextFieldComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
+                new Object[][]{},
+                new String[]{}
         ));
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
@@ -378,18 +374,18 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1)
+                                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-                .addContainerGap())
+                jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         jLabel7.setText("Search : ");
@@ -404,25 +400,25 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonSearch)
-                .addContainerGap(23, Short.MAX_VALUE))
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButtonSearch)
+                                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonSearch))
-                .addContainerGap(16, Short.MAX_VALUE))
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel7)
+                                        .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonSearch))
+                                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -471,88 +467,88 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel13))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel11)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(74, 74, 74)
-                        .addComponent(jLabel9)
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel10)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Comment)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButtonClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonHelp)))
-                .addGap(18, 18, 18))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(24, 24, 24)
+                                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel12)
+                                                .addGap(2, 2, 2)
+                                                .addComponent(jLabel13))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(97, 97, 97)
+                                                .addComponent(jLabel11)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(26, 26, 26)
+                                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jTextField3))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel8)
+                                                .addGap(74, 74, 74)
+                                                .addComponent(jLabel9)
+                                                .addGap(43, 43, 43)
+                                                .addComponent(jLabel10)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel14))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(Comment)
+                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(31, 31, 31)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton4)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jButtonClear)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jButtonHelp)))
+                                .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel14)
-                            .addComponent(jButtonClear)
-                            .addComponent(jButtonHelp)
-                            .addComponent(jLabel11)
-                            .addComponent(Comment))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel13)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(21, 21, 21)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel8)
+                                                        .addComponent(jLabel9)
+                                                        .addComponent(jLabel10)
+                                                        .addComponent(jLabel14)
+                                                        .addComponent(jButtonClear)
+                                                        .addComponent(jButtonHelp)
+                                                        .addComponent(jLabel11)
+                                                        .addComponent(Comment))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jButton4)
+                                                        .addComponent(jLabel12)
+                                                        .addComponent(jLabel13)
+                                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(46, 46, 46)
+                                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         jScrollPane2.setViewportView(jPanel1);
@@ -680,17 +676,17 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1234, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1234, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         pack();
@@ -709,7 +705,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
-        
+
     }//GEN-LAST:event_jButtonSearchActionPerformed
 
     private void jMenuStatisticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuStatisticsActionPerformed
@@ -717,50 +713,57 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuStatisticsActionPerformed
 
     private void jMenuNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuNewMouseClicked
-        
+
     }//GEN-LAST:event_jMenuNewMouseClicked
 
     private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuStatisticsMouseClicked
-        
-            Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
-            for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String dic = (String) this.getjTable1().getValueAt(i, 7);
-                String value = (String) this.getjTable1().getValueAt(i, 0);
-                if (!dic_POS_stat.containsKey(dic)) {
-                    dic_POS_stat.put(dic, new HashMap<String,String>());
-                    dic_POS_stat.get(dic).put(value, "1");
-                } else {
+
+        Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
+        for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
+            String dic = (String) this.getjTable1().getValueAt(i, 7);
+            String value = (String) this.getjTable1().getValueAt(i, 0);
+            if (!dic_POS_stat.containsKey(dic)) {
+                dic_POS_stat.put(dic, new HashMap<String, String>());
+                dic_POS_stat.get(dic).put(value, "1");
+            } else {
+                if (dic_POS_stat.get(dic).containsKey(value)) {
+                    int count = Integer.parseInt(dic_POS_stat.get(dic).get(value)) + 1;
+                    //dic_POS_stat.get(dic).replace(value, String.valueOf(count));
                     if (dic_POS_stat.get(dic).containsKey(value)) {
-                        int count = Integer.parseInt(dic_POS_stat.get(dic).get(value)) + 1;
-                        dic_POS_stat.get(dic).replace(value, String.valueOf(count));
-                    } else {
-                        dic_POS_stat.get(dic).put(value, "1");
+                        dic_POS_stat.get(dic).put(value, String.valueOf(count));
                     }
-                }
-            }
-            
-            Map<String, String> pOS_stat = new HashMap<>();
-            for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String value = (String) this.getjTable1().getValueAt(i, 0);
-                if (!pOS_stat.containsKey(value)) {
-                    pOS_stat.put(value, "1");
                 } else {
-                    int count = Integer.parseInt(pOS_stat.get(value)) + 1;
-                    pOS_stat.replace(value, String.valueOf(count));
+                    dic_POS_stat.get(dic).put(value, "1");
                 }
             }
-            
-            List<Object[]> dicPos =new ArrayList<Object[]>();
-            dicPos.add( new Object[]{"Dic", "POS", "Number"});
-            for (Map.Entry<String, HashMap<String, String>> f : dic_POS_stat.entrySet()) {
-                String key = f.getKey();
-                for (Map.Entry<String, String> p : f.getValue().entrySet()) {
-                    dicPos.add( new Object[]{key, p.getKey(), p.getValue()});
-                    
+        }
+
+        Map<String, String> pOS_stat = new HashMap<>();
+        for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
+            String value = (String) this.getjTable1().getValueAt(i, 0);
+            if (!pOS_stat.containsKey(value)) {
+                pOS_stat.put(value, "1");
+            } else {
+                int count = Integer.parseInt(pOS_stat.get(value)) + 1;
+                //pOS_stat.replace(value, String.valueOf(count));
+                if (pOS_stat.containsKey(value)) {
+                    pOS_stat.put(value, String.valueOf(count));
                 }
+
             }
-            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                    .newStatisticOutput(dicPos);
+        }
+
+        List<Object[]> dicPos = new ArrayList<Object[]>();
+        dicPos.add(new Object[]{"Dic", "POS", "Number"});
+        for (Map.Entry<String, HashMap<String, String>> f : dic_POS_stat.entrySet()) {
+            String key = f.getKey();
+            for (Map.Entry<String, String> p : f.getValue().entrySet()) {
+                dicPos.add(new Object[]{key, p.getKey(), p.getValue()});
+
+            }
+        }
+        GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                .newStatisticOutput(dicPos);
 //            //String filename = Utils.getValueXml("pathExportStatistics");
 //            String filename = DictionaryPath.statisticsTmpPath;
 //            Utils.exportJtableToCsv(dicPos,filename);
@@ -770,159 +773,151 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jMenuStatisticsMouseClicked
 
     private void jMenuDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuDeleteMouseClicked
-        int dialogResult = JOptionPane.showConfirmDialog (null, "Do you want to delete this row?","Warning",JOptionPane.YES_NO_OPTION);
-        if(dialogResult == JOptionPane.YES_OPTION){
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to delete this row?", "Warning", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
             int t = this.getjTable1().getSelectedRow();
             this.getTableModel().removeRow(t);
             JOptionPane.showMessageDialog(null, "Row deleted !");
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
             this.setUnsaved(true);
         }
-        
-        
+
     }//GEN-LAST:event_jMenuDeleteMouseClicked
 
     private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertAfterActionPerformed
-        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[8];
-            for(int i=0;i<8;i++){
-                obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        if (this.getjTable1().getSelectedRow() != -1) {
+            Object[] obj = new Object[8];
+            for (int i = 0; i < 8; i++) {
+                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"insertAfter",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
+            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "insertAfter", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
             ad.setVisible(true);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jMenuItemInsertAfterActionPerformed
 
     private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertBeforeActionPerformed
-        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[8];
-            for(int i=0;i<8;i++){
-                obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        if (this.getjTable1().getSelectedRow() != -1) {
+            Object[] obj = new Object[8];
+            for (int i = 0; i < 8; i++) {
+                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"insertBefore",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
+            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "insertBefore", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
             ad.setVisible(true);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jMenuItemInsertBeforeActionPerformed
 
     private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuViewMouseClicked
-        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[8];
-            for(int i=0;i<8;i++){
-                obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        if (this.getjTable1().getSelectedRow() != -1) {
+            Object[] obj = new Object[8];
+            for (int i = 0; i < 8; i++) {
+                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-           MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"view",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
+            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "view", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
             ad.setVisible(true);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jMenuViewMouseClicked
 
     private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEditMouseClicked
-        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[8];
-            for(int i=0;i<8;i++){
-                obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        if (this.getjTable1().getSelectedRow() != -1) {
+            Object[] obj = new Object[8];
+            for (int i = 0; i < 8; i++) {
+                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"edit",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
+            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "edit", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
             ad.setVisible(true);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jMenuEditMouseClicked
 
     private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBeforeMouseClicked
-        if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[8];
-            for(int i=0;i<8;i++){
-                obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        if (this.getjTable1().getSelectedRow() != -1) {
+            Object[] obj = new Object[8];
+            for (int i = 0; i < 8; i++) {
+                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"copyBefore",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
+            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "copyBefore", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
             ad.setVisible(true);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jMenuBeforeMouseClicked
 
     private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuAfterMouseClicked
-       if(this.getjTable1().getSelectedRow()!=-1){
-            Object [] obj =new Object[8];
-            for(int i=0;i<8;i++){
-                obj[i]=this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        if (this.getjTable1().getSelectedRow() != -1) {
+            Object[] obj = new Object[8];
+            for (int i = 0; i < 8; i++) {
+                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
             }
-            MenuDelas ad=new MenuDelas(this,this.getjTable1().getSelectedRow(),"copyAfter",this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7),obj);
+            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "copyAfter", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
             ad.setVisible(true);
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jMenuAfterMouseClicked
 
     private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuSaveMouseClicked
-        int dialogResult = JOptionPane.showConfirmDialog (null, "This will overwrite your dictionaries. Are you sure?","Save Delas Dictioneries in Unicode",JOptionPane.YES_NO_OPTION);
-        if(dialogResult == JOptionPane.YES_OPTION){
+        int dialogResult = JOptionPane.showConfirmDialog(null, "This will overwrite your dictionaries. Are you sure?", "Save Delas Dictioneries in Unicode", JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
             BufferedWriter bfw;
-            Map<String,List<String>> fileData=new HashMap<>();
-            for(int row = 0; row < tableModel.getRowCount(); row ++){
-                
+            Map<String, List<String>> fileData = new HashMap<>();
+            for (int row = 0; row < tableModel.getRowCount(); row++) {
+
                 String file = (String) tableModel.getValueAt(row, 7);
                 String lemma = (String) tableModel.getValueAt(row, 1);
                 String fstCode = tableModel.getValueAt(row, 2).toString().concat(tableModel.getValueAt(row, 3).toString());
-                String str = lemma+","+fstCode;
-                String comment =(String) tableModel.getValueAt(row, 4);
-                if(comment!=null && comment.trim().length()>0){
-                    str = str+"//"+tableModel.getValueAt(row, 4);
+                String str = lemma + "," + fstCode;
+                String comment = (String) tableModel.getValueAt(row, 4);
+                if (comment != null && comment.trim().length() > 0) {
+                    str = str + "//" + tableModel.getValueAt(row, 4);
                 }
-                str=str+"\n";
-                if(fileData.containsKey(file)){
+                str = str + "\n";
+                if (fileData.containsKey(file)) {
                     fileData.get(file).add(str);
-                }
-                else{
+                } else {
                     List<String> tmp = new ArrayList<>();
                     tmp.add(str);
                     fileData.put(file, tmp);
                 }
             }
-            for(Map.Entry<String, List<String>> data:fileData.entrySet()){
+            for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
                     //bfw = new BufferedWriter(new FileWriter(Utils.getValueXml("pathDelas")+"/"+data.getKey()));
-                    bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas+"//"+data.getKey()));
-                    for(String lines:data.getValue()){
+                    bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas + "//" + data.getKey()));
+                    for (String lines : data.getValue()) {
                         bfw.write(lines);
                     }
                     bfw.close();
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "error :" + ex.getMessage());
                 }
             }
-             
-             this.setUnsaved(false);
-             JOptionPane.showMessageDialog(null, "Files where saved successfully");
+
+            this.setUnsaved(false);
+            JOptionPane.showMessageDialog(null, "Files where saved successfully");
         }
     }//GEN-LAST:event_jMenuSaveMouseClicked
 
     private void jMenuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuExitMouseClicked
-       if(this.getUnsaved()){
-           int dialogResult = JOptionPane.showConfirmDialog (null, "You " +
-"have some unsaved data, do you want to exit?","Exit Delas dictioneries in unicode",JOptionPane.YES_NO_OPTION);
-            if(dialogResult == JOptionPane.YES_OPTION){
+        if (this.getUnsaved()) {
+            int dialogResult = JOptionPane.showConfirmDialog(null, "You "
+                    + "have some unsaved data, do you want to exit?", "Exit Delas dictioneries in unicode", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
                 this.setVisible(false);
             }
-       }else{
-           this.setVisible(false);
-       }
+        } else {
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_jMenuExitMouseClicked
 
     private void jMenuInflectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInflectMouseClicked
-        if(this.getjTable1().getSelectedRow()!=-1){
+        if (this.getjTable1().getSelectedRow() != -1) {
             try {
                 String lemma = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 1);
                 String fst = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2);
@@ -930,89 +925,86 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             } catch (IOException ex) {
                 Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-        
+
     }//GEN-LAST:event_jMenuInflectMouseClicked
 
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
 
-            Map<String, List<String>> data = new HashMap<>();
-            Map<String, HashMap<String,HashMap<String,String>>> dataForSynSem2 = new HashMap<>();
-            for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
-                String SynSem = (String) this.getjTable1().getValueAt(i, 3);
-                String pos = (String) this.getjTable1().getValueAt(i, 0);
-                if (!data.containsKey(pos)) {
-                    List symSem = new ArrayList<>();
-                    String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
-                    symSem.addAll(Arrays.asList(tmp));
-                    data.put(pos, symSem);
-                } else {
-                    List<String> valueInData = data.get(pos);
-                    String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
-                    valueInData.addAll(Arrays.asList(tmp));
-                    data.put(pos, valueInData);
-                }
-                String SynSemForPos = (String) this.getjTable1().getValueAt(i, 3);
-                
-                String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
-                
-                String realSynSem="";
-                realSynSem = domain[domain.length-1];
-                
-                String domainCategory ="";
-                try{
-                    domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
-                }
-                catch(java.lang.ArrayIndexOutOfBoundsException e){
-                    try{
-                        domainCategory = SynSemForPos.split("=")[1];
-                    }
-                    catch(java.lang.ArrayIndexOutOfBoundsException ex){
-                        if(!SynSemForPos.equals("")){
-                           domainCategory = SynSemForPos.substring(1); 
-                        }
+        Map<String, List<String>> data = new HashMap<>();
+        Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
+        for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
+            String SynSem = (String) this.getjTable1().getValueAt(i, 3);
+            String pos = (String) this.getjTable1().getValueAt(i, 0);
+            if (!data.containsKey(pos)) {
+                List symSem = new ArrayList<>();
+                String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
+                symSem.addAll(Arrays.asList(tmp));
+                data.put(pos, symSem);
+            } else {
+                List<String> valueInData = data.get(pos);
+                String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
+                valueInData.addAll(Arrays.asList(tmp));
+                data.put(pos, valueInData);
+            }
+            String SynSemForPos = (String) this.getjTable1().getValueAt(i, 3);
+
+            String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
+
+            String realSynSem = "";
+            realSynSem = domain[domain.length - 1];
+
+            String domainCategory = "";
+            try {
+                domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
+            } catch (java.lang.ArrayIndexOutOfBoundsException e) {
+                try {
+                    domainCategory = SynSemForPos.split("=")[1];
+                } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
+                    if (!SynSemForPos.equals("")) {
+                        domainCategory = SynSemForPos.substring(1);
                     }
                 }
-                if (!dataForSynSem2.containsKey(pos)) {
-                    dataForSynSem2.put(pos, new HashMap<String,HashMap<String,String>>());
-                    dataForSynSem2.get(pos).put(realSynSem, new HashMap<String,String>());
+            }
+            if (!dataForSynSem2.containsKey(pos)) {
+                dataForSynSem2.put(pos, new HashMap<String, HashMap<String, String>>());
+                dataForSynSem2.get(pos).put(realSynSem, new HashMap<String, String>());
+                dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
+            } else {
+                if (!dataForSynSem2.get(pos).containsKey(realSynSem)) {
+                    dataForSynSem2.get(pos).put(realSynSem, new HashMap<String, String>());
                     dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
                 } else {
-                    if (!dataForSynSem2.get(pos).containsKey(realSynSem)) {
-                        dataForSynSem2.get(pos).put(realSynSem,  new HashMap<String,String>());
+                    if (!dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
                         dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
                     } else {
-                        if(!dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)){
-                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-                        }
-                        else{
-                            int count = Integer.parseInt(dataForSynSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
-                            dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
+                        int count = Integer.parseInt(dataForSynSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
+                        //dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
+                        if (dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
+                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, String.valueOf(count));
                         }
                     }
                 }
             }
-            
-            
+        }
 
-            Map<String, Object[]> statSimSem = new HashMap<>();
-            int v=2;
-            for(Map.Entry<String, HashMap<String, HashMap<String, String>>> t:dataForSynSem2.entrySet()){
-                String key = t.getKey();
-                for(Map.Entry<String, HashMap<String, String>> y:t.getValue().entrySet()){
-                    for(Map.Entry<String, String> u:y.getValue().entrySet()){
-                        //System.out.println(t.getKey()+"\t"+y.getKey()+"\t"+u.getKey()+"\t"+u.getValue());
-                        statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(),u.getKey(), u.getValue()});
-                        v++;
-                    }
+        Map<String, Object[]> statSimSem = new HashMap<>();
+        int v = 2;
+        for (Map.Entry<String, HashMap<String, HashMap<String, String>>> t : dataForSynSem2.entrySet()) {
+            String key = t.getKey();
+            for (Map.Entry<String, HashMap<String, String>> y : t.getValue().entrySet()) {
+                for (Map.Entry<String, String> u : y.getValue().entrySet()) {
+                    //System.out.println(t.getKey()+"\t"+y.getKey()+"\t"+u.getKey()+"\t"+u.getValue());
+                    statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(), u.getKey(), u.getValue()});
+                    v++;
                 }
             }
+        }
 
-            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                    .newStatisticOutput(statSimSem);
+        GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                .newStatisticOutput(statSimSem);
 
     }//GEN-LAST:event_jButtonAllActionPerformed
 
@@ -1027,12 +1019,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
-                if(jCheckBoxExtract.isSelected()){
-                    text="^"+text+"$";
+                if (jCheckBoxExtract.isSelected()) {
+                    text = "^" + text + "$";
+                } else {
+                    if (!text.contains(".") && !text.contains("$")) {
+                        text = "^" + text;
+                    }
                 }
-                else{
-                    if(!text.contains(".")&&!text.contains("$"))text="^"+text;
-                }    
                 RowFilter rowFilter = RowFilter.regexFilter(text, 0);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
@@ -1052,8 +1045,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
-                if(jCheckBoxExtract.isSelected()){
-                    text="^"+text+"$";
+                if (jCheckBoxExtract.isSelected()) {
+                    text = "^" + text + "$";
                 }
                 RowFilter rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
@@ -1074,12 +1067,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
-                if(jCheckBoxExtract.isSelected()){
-                    text="^"+text+"$";
+                if (jCheckBoxExtract.isSelected()) {
+                    text = "^" + text + "$";
+                } else {
+                    if (!text.contains(".") && !text.contains("$")) {
+                        text = "." + text;
+                    }
                 }
-                else{
-                    if(!text.contains(".")&&!text.contains("$"))text="."+text;
-                }    
                 RowFilter rowFilter = RowFilter.regexFilter(text, 3);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
@@ -1099,7 +1093,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
-                if(!text.contains(".")&&!text.contains("$"))text=text+"$";
+                if (!text.contains(".") && !text.contains("$")) {
+                    text = text + "$";
+                }
                 RowFilter rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
@@ -1122,12 +1118,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         rowSorter = new TableRowSorter<>(tableModel);
         this.getjTable1().setRowSorter(rowSorter);
         this.getjTable1().removeAll();
-        List<RowFilter<Object,Object>> filters = new ArrayList<>();
+        List<RowFilter<Object, Object>> filters = new ArrayList<>();
         if (pos.length() != 0) {
             filters.add(RowFilter.regexFilter(pos, 0));
         }
         if (lemma.length() != 0) {
-            
+
             filters.add(RowFilter.regexFilter(lemma, 1));
         }
         if (fst.length() != 0) {
@@ -1146,46 +1142,45 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuDuplicateMouseClicked
-          new DuplicationFinder(this.getjTable1()).execute();
+        new DuplicationFinder(this.getjTable1()).execute();
 
     }//GEN-LAST:event_jMenuDuplicateMouseClicked
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGraphActionPerformed
-        if(this.getjTable1().getSelectedRow()!=-1){
-            
-            String filename = DictionaryPath.inflectionPath+this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2)+".grf";
-            
-            final File[] graphs =new File[1];
+        if (this.getjTable1().getSelectedRow() != -1) {
+
+            String filename = DictionaryPath.inflectionPath + this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2) + ".grf";
+
+            final File[] graphs = new File[1];
             graphs[0] = new File(filename);
-    		for (int i = 0; i < graphs.length; i++) {
-    			String s = graphs[i].getAbsolutePath();
-    			if (!graphs[i].exists() && !s.endsWith(".grf")) {
-    				s = s + ".grf";
-    				graphs[i] = new File(s);
-    				if (!graphs[i].exists()) {
-    					JOptionPane.showMessageDialog(null,
-    							"File " + graphs[i].getAbsolutePath()
-    									+ " does not exist", "Error",
-    							JOptionPane.ERROR_MESSAGE);
-    					continue;
-    				}
-    			}
-    			GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-    					.newGraphFrame(graphs[i]);
-    		}
-        }
-        else{
+            for (int i = 0; i < graphs.length; i++) {
+                String s = graphs[i].getAbsolutePath();
+                if (!graphs[i].exists() && !s.endsWith(".grf")) {
+                    s = s + ".grf";
+                    graphs[i] = new File(s);
+                    if (!graphs[i].exists()) {
+                        JOptionPane.showMessageDialog(null,
+                                "File " + graphs[i].getAbsolutePath()
+                                + " does not exist", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+                }
+                GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+                        .newGraphFrame(graphs[i]);
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
     }//GEN-LAST:event_jButtonGraphActionPerformed
 
     private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveActionPerformed
         String dic = (String) jComboBoxDic.getSelectedItem();
-        for(int i =0 ; i<this.getjTable1().getRowCount();i++){
+        for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
             jTable1.setValueAt(dic, i, 7);
         }
-        JOptionPane.showMessageDialog(null, "there are "+ this.getjTable1().getRowCount()+" to move to "+dic);
-       
+        JOptionPane.showMessageDialog(null, "there are " + this.getjTable1().getRowCount() + " to move to " + dic);
+
     }//GEN-LAST:event_jButtonMoveActionPerformed
 
     private void jButtonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearActionPerformed
@@ -1223,17 +1218,17 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 BufferedWriter bfw;
                 String filename = path;
                 bfw = new BufferedWriter(new FileWriter(filename));
-                for(int row = 0; row < this.getjTable1().getRowCount(); row ++){
+                for (int row = 0; row < this.getjTable1().getRowCount(); row++) {
                     String lemma = (String) this.getjTable1().getValueAt(row, 1);
                     String fstCode = this.getjTable1().getValueAt(row, 2).toString().concat(this.getjTable1().getValueAt(row, 3).toString());
-                    String str = lemma+","+fstCode;
-                    String comment =(String) this.getjTable1().getValueAt(row, 4);
-                    if(comment!=null && comment.trim().length()>0){
-                        str = str+"//"+this.getjTable1().getValueAt(row, 4);
+                    String str = lemma + "," + fstCode;
+                    String comment = (String) this.getjTable1().getValueAt(row, 4);
+                    if (comment != null && comment.trim().length() > 0) {
+                        str = str + "//" + this.getjTable1().getValueAt(row, 4);
                     }
-                    str=str+"\n";
+                    str = str + "\n";
                     bfw.write(str);
-                    
+
                 }
                 bfw.close();
                 JOptionPane.showMessageDialog(null, "Files where saved successfully");
@@ -1260,34 +1255,29 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 String text = textField.getText();
 
                 rowSorter = new TableRowSorter<>(tableModel);
-                
+
                 this.getjTable1().setRowSorter(rowSorter);
-                
+
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    if(jCheckBoxExtract.isSelected()){
-                        text="^"+text+"$";
+                    if (jCheckBoxExtract.isSelected()) {
+                        text = "^" + text + "$";
+                    } else {
+                        if (!text.contains(".") && !text.contains("$")) {
+                            text = "^" + text;
+                        }
                     }
-                    else{
-                        if(!text.contains(".")&&!text.contains("$"))text="^"+text;
-                    }    
                     RowFilter rowFilter = RowFilter.regexFilter(text, 4);// search in column at index 4
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
                 jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
             }
-        }catch(java.util.regex.PatternSyntaxException e){
+        } catch (java.util.regex.PatternSyntaxException e) {
             rowSorter.setRowFilter(null);
         }
     }//GEN-LAST:event_jTextFieldCommentKeyPressed
-
-    
-
-    
-
-    
 
     /**
      * @param args the command line arguments
@@ -1310,11 +1300,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
-         java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new EditorDelas().setVisible(true);
             }
@@ -1381,10 +1371,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextFieldPos;
     private javax.swing.JTextField jTextFieldSearch;
     private javax.swing.JTextField jTextFieldSynSem;
+
     // End of variables declaration//GEN-END:variables
-    public javax.swing.JLabel getJLablel13(){
+    public javax.swing.JLabel getJLablel13() {
         return this.jLabel13;
     }
+
     /**
      * @return the jTable1
      */
@@ -1398,16 +1390,19 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
+
     /**
      * @return the gm
      */
     public DefaultTableModel getDefaultTableModel() {
         return defaulttableModel;
     }
-    public boolean getUnsaved(){
+
+    public boolean getUnsaved() {
         return unsaved;
     }
-    public void setUnsaved(boolean value){
-        this.unsaved=value;
+
+    public void setUnsaved(boolean value) {
+        this.unsaved = value;
     }
 }
