@@ -373,7 +373,8 @@ Printable {
 		f.setStroke(oldStroke);
 		f.setColor(params.getForegroundColor());
 		drawAllTransitions(f, params);
-		drawAllBoxes(f, params);
+		// passing the TaggingModel in params to print out the states
+		drawAllBoxes(f, params, model);
 	}
 
 	@Override
@@ -429,7 +430,7 @@ Printable {
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
 		f.setColor(params.getForegroundColor());
 		drawAllTransitions(f,params);
-		drawAllBoxes(f,params);
+		drawAllBoxes(f,params, model);
 		return Printable.PAGE_EXISTS;
 	}
 
