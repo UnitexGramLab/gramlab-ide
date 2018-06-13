@@ -57,31 +57,7 @@ public class DelasHelper {
         }
         return list;
     }
-    /**
-     * This function return a list of dictionary found in configuration
-     * @return
-     * @throws FileNotFoundException 
-     */
-//    public static ArrayList<String> getDicConfigDelasPath() throws FileNotFoundException, IOException{
-//    	ArrayList<String> list= new ArrayList<>();
-//        File f = new File(DictionaryPath.allDelas+File.separator+"confDelas.conf");
-//        if(f.exists()){
-//            List<String> dic = Utils.readFile(DictionaryPath.allDelas+File.separator+"confDelas.conf");
-//            for(String line : dic ){
-//                String dicName = line.split(",")[0];
-//                if (dicName.endsWith("dic")) {
-//                    list.add(dicName);
-//                }
-//            }
-//            if(list.isEmpty()){
-//                throw new FileNotFoundException("dictionary not found in "+DictionaryPath.allDelas);
-//            }
-//            return list;
-//        }
-//        else{
-//            throw new FileNotFoundException("Configuration file not found in "+DictionaryPath.allDelas);
-//        }
-//    }
+
     /**
      * This function return all line in delas dictionary into Object[][] 
      * @param allDelas if allDelas is true, the function takes all delas in delas folder, else it takes dictionary selected in configuration

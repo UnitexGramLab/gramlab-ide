@@ -799,9 +799,6 @@ public class UnitexFrame extends JFrame {
 		shellLeximir = new AbstractAction("Compile...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
-				//EditorDelas editorDelas = new EditorDelas();
-				//editorDelas.setVisible(true);
 				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newShellDialog();
 			}
@@ -859,9 +856,6 @@ public class UnitexFrame extends JFrame {
 		delasLeximir = new AbstractAction("Edit Delas") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println("path : "+Config.getUnitexToolLogger().getAbsolutePath());
-				//EditorDelas editorDelas = new EditorDelas();
-				//editorDelas.setVisible(true);
 				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newChooseDelasDialog();
 			}
@@ -872,8 +866,6 @@ public class UnitexFrame extends JFrame {
 		delacLeximir = new AbstractAction("Edit Delac") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//EditorDelac editorDelac = new EditorDelac();
-				//editorDelac.setVisible(true);
 				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 				.newChooseDelacDialog();
 			}

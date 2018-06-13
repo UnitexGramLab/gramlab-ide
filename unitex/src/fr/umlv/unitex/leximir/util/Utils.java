@@ -162,9 +162,6 @@ public class Utils {
     }
 
     public static Object[] delasToObject(String lemma, String fstCode, String SynSem, String comment, String Dicname, int valueSelected) {
-        //SynSem = SynSem+"="+fstCode;
-//        String line = lemma + "," + fstCode + SynSem + "//" + comment;
-//        String pOs = DelasHelper.getPosInDelas(line);
 
         String lemmas = lemma;
         String fSTCode = fstCode;
@@ -246,7 +243,6 @@ public class Utils {
                 "-d", DictionaryPath.inflectionPath
             };
 
-            //for(String s:command)System.out.print(s+" ");
             ProcessBuilder pb = new ProcessBuilder(command);
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
