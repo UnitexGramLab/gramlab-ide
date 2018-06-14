@@ -175,7 +175,7 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOpenActionPerformed
+    private void jButtonOpenActionPerformed(java.awt.event.ActionEvent evt) {
         boolean all = jRadioAllDelas.isSelected();
         updateLinks(all);
         if (all) {
@@ -219,9 +219,9 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
             this.setVisible(false);
         }
 
-    }//GEN-LAST:event_jButtonOpenActionPerformed
+    }
 
-    private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseActionPerformed
+    private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("*.dic", "dic");
         fileChooser.setFileFilter(filter);
@@ -233,7 +233,7 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
             jRadioBrowse.setSelected(true);
         }
 
-    }//GEN-LAST:event_jButtonBrowseActionPerformed
+    }
 
     /**
      * @param args the command line arguments

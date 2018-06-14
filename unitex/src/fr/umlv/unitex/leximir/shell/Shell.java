@@ -315,7 +315,7 @@ public class Shell extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {
         if(!isDelas){
             JFileChooser theFileChooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Dic FILES", "dic");
@@ -342,13 +342,13 @@ public class Shell extends javax.swing.JInternalFrame {
                 jTable1.repaint();
             }
         }
-    }//GEN-LAST:event_jButtonSearchActionPerformed
+    }
 
-    private void jButtonQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonQuitActionPerformed
+    private void jButtonQuitActionPerformed(java.awt.event.ActionEvent evt) {
        this.setVisible(false);
-    }//GEN-LAST:event_jButtonQuitActionPerformed
+    }
 
-    private void jButtonDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDoActionPerformed
+    private void jButtonDoActionPerformed(java.awt.event.ActionEvent evt) {
         if(jRadioInflectCompress.isSelected()){
             try {
                 InflectCompressDela();
@@ -365,23 +365,23 @@ public class Shell extends javax.swing.JInternalFrame {
         }else{
             JOptionPane.showMessageDialog(null, "no radio selected");
         }
-    }//GEN-LAST:event_jButtonDoActionPerformed
+    }
 
-    private void jRadioInflectCompressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioInflectCompressMouseClicked
+    private void jRadioInflectCompressMouseClicked(java.awt.event.MouseEvent evt) {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select dela dictionary (dic file)"));
         isDelas=false;
         jTextFieldPath.setEditable(false);
         jTextFieldPath.setBackground(new java.awt.Color(204, 204, 204));
-    }//GEN-LAST:event_jRadioInflectCompressMouseClicked
+    }
 
-    private void jRadioCompressMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jRadioCompressMouseClicked
+    private void jRadioCompressMouseClicked(java.awt.event.MouseEvent evt) {
       jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Select delaf dictionary (dic file)"));
       isDelas=false;
       jTextFieldPath.setEditable(false);
       jTextFieldPath.setBackground(new java.awt.Color(204, 204, 204));
-    }//GEN-LAST:event_jRadioCompressMouseClicked
+    }
 
-    private void jButtonInflectionPathActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInflectionPathActionPerformed
+    private void jButtonInflectionPathActionPerformed(java.awt.event.ActionEvent evt) {
        if(!isDelas){
             JFileChooser theFileChooser = new JFileChooser();
             theFileChooser.setCurrentDirectory(new File(DictionaryPath.inflectionPath));
@@ -395,7 +395,7 @@ public class Shell extends javax.swing.JInternalFrame {
                 jTextFieldInflection.setText(f[0].getAbsolutePath());
             }
         }
-    }//GEN-LAST:event_jButtonInflectionPathActionPerformed
+    }
 
     /**
      * @param args the command line arguments

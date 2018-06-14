@@ -136,7 +136,7 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonSetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSetActionPerformed
+    private void jButtonSetActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -145,9 +145,9 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         File selectedFile = fileChooser.getSelectedFile();
         jTextField1.setText(selectedFile.getAbsolutePath()+File.separator+"statisticsTmp.csv"); 
         }
-    }//GEN-LAST:event_jButtonSetActionPerformed
+    }
 
-    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaveActionPerformed
+    private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
         try{   
         String filename= jTextField1.getText();
         if(this.dicPos==null){
@@ -159,7 +159,7 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
         }
-    }//GEN-LAST:event_jButtonSaveActionPerformed
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

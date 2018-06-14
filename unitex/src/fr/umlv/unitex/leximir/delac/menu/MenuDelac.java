@@ -22,7 +22,6 @@ package fr.umlv.unitex.leximir.delac.menu;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JFrame;
@@ -30,13 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import fr.umlv.unitex.leximir.delac.EditorDelac;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 import fr.umlv.unitex.leximir.util.Utils;
 
 /**
@@ -440,9 +433,9 @@ public class MenuDelac extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
+    private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {
         String valueLemaAll = "";
         String valueLema = "";
         for (int row = 0; row < jTableFLX.getRowCount(); row++) {
@@ -470,9 +463,9 @@ public class MenuDelac extends javax.swing.JFrame {
         jTextFieldLemaAll.setText(valueLemaAll);
         jTextFieldLema.setText(valueLema);
 
-    }//GEN-LAST:event_jButtonRefreshActionPerformed
+    }
 
-    private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuSaveMouseClicked
+    private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {
         try {
             String lemmaAll = jTextFieldLemaAll.getText();
             String FST = jTextFieldCFlx.getText();
@@ -506,10 +499,10 @@ public class MenuDelac extends javax.swing.JFrame {
         } catch (ArrayIndexOutOfBoundsException e) {
             this.dispose();
         }
-    }//GEN-LAST:event_jMenuSaveMouseClicked
+    }
 
   
-    private void jMenuInflectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInflectMouseClicked
+    private void jMenuInflectMouseClicked(java.awt.event.MouseEvent evt) {
         if (jTextFieldLemaAll.getText().equals("") || jTextFieldCFlx.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "something wrong");
         } else {
@@ -525,16 +518,16 @@ public class MenuDelac extends javax.swing.JFrame {
             }
 
         }
-    }//GEN-LAST:event_jMenuInflectMouseClicked
+    }
 
-    private void jButtonAddSimpleFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddSimpleFormActionPerformed
+    private void jButtonAddSimpleFormActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel newmodel = (DefaultTableModel) jTableFLX.getModel();
         newmodel.addRow(new Object[]{jTableFLX.getModel().getRowCount() + 1, "", "", "", "", ""});
-    }//GEN-LAST:event_jButtonAddSimpleFormActionPerformed
+    }
 
-    private void jMenuCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuCloseMouseClicked
+    private void jMenuCloseMouseClicked(java.awt.event.MouseEvent evt) {
         this.setVisible(false);
-    }//GEN-LAST:event_jMenuCloseMouseClicked
+    }
 
 
 
@@ -543,11 +536,7 @@ public class MenuDelac extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

@@ -264,15 +264,15 @@ public class MenuDelas extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelActionPerformed
+    private void jButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {
        this.setVisible(false);
-    }//GEN-LAST:event_jButtonCancelActionPerformed
+    }
 
-    private void jComboBoxDicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxDicActionPerformed
+    private void jComboBoxDicActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxDicActionPerformed
+    }
 
-    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {
 	String lemma = jTextFieldLemma.getText();
     String FST = jTextFieldFST.getText();
     String SynSem = jTextFieldSynSem.getText().equals("")?"":jTextFieldSynSem.getText().substring(0,1).equals("+")?jTextFieldSynSem.getText():"+"+jTextFieldSynSem.getText();
@@ -296,13 +296,13 @@ public class MenuDelas extends javax.swing.JFrame {
     }
     elFrame.setUnsaved(true);
     this.setVisible(false); 
-    }//GEN-LAST:event_jButtonAddActionPerformed
+    }
 
-    private void jTextFieldCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCommentActionPerformed
+    private void jTextFieldCommentActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldCommentActionPerformed
+    }
 
-    private void jButtonInflectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInflectActionPerformed
+    private void jButtonInflectActionPerformed(java.awt.event.ActionEvent evt) {
         if(jTextFieldFST.getText().equals("")||jTextFieldLemma.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Lemma or FST code is empty");
         }
@@ -318,7 +318,7 @@ public class MenuDelas extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
             }
         }
-    }//GEN-LAST:event_jButtonInflectActionPerformed
+    }
 
     /**
      * @param args the command line arguments
