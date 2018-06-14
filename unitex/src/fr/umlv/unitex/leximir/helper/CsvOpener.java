@@ -87,7 +87,6 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         return tmp;
     }
 
-
     private void initComponents() {
     	
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -107,6 +106,6 @@ public class CsvOpener extends javax.swing.JInternalFrame {
 
         pack();
     }
-    
+
     private javax.swing.JScrollPane jScrollPane1;
 }
