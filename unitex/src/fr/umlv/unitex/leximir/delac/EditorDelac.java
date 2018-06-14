@@ -759,7 +759,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {itMouseClicked
+    private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -770,7 +770,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }itMouseClicked
+    }
 
     private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
