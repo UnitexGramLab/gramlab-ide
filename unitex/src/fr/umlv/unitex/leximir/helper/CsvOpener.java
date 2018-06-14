@@ -41,7 +41,7 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         this.csvfile = csvfile;
         initComponents();
         Vector<String> header = this.header();
-        Vector<Vector> data = this.read();
+        Vector<Vector<String>> data = this.read();
         JTable table = new JTable(data, header);
         table.setRowHeight(20);
         JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -67,8 +67,8 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         return null;
     }
 
-    private Vector<Vector> read() {
-        Vector<Vector> tmp = new Vector<Vector>();
+    private Vector<Vector<String>> read() {
+        Vector<Vector<String>> tmp = new Vector<Vector<String>>();
         try {
             try (BufferedReader sourceFile = new BufferedReader(new FileReader(csvfile))) {
                 String s;
@@ -87,10 +87,8 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         return tmp;
     }
 
-
     private void initComponents() {
-
-        buttonGroup1 = new javax.swing.ButtonGroup();
+    	
         jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -109,8 +107,5 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         pack();
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JScrollPane jScrollPane1;
-    // End of variables declaration//GEN-END:variables
 }

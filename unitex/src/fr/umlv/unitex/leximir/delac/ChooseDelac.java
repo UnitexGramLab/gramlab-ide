@@ -59,11 +59,12 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
         lastLink = new File(DictionaryPath.allDela + "/tmp_delac.txt");
         if (lastLink.exists()) {
             try {
-                BufferedReader br = new BufferedReader(new FileReader(lastLink));
-                jTextField1.setText(br.readLine());
-                if (!jTextField1.getText().equals("")) {
-                    jRadioBrowse.setSelected(true);
-                }
+            	try( BufferedReader br = new BufferedReader(new FileReader(lastLink)) ) {
+            		jTextField1.setText(br.readLine());
+            		if (!jTextField1.getText().equals("")) {
+            			jRadioBrowse.setSelected(true);
+            		}
+            	}
             } catch (IOException ex) {
                 Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
             }

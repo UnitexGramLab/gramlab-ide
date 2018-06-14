@@ -105,7 +105,6 @@ public class MenuDelas extends javax.swing.JFrame {
         }
     }
 
-    @SuppressWarnings("unchecked")
 
     private void initComponents() {
 
@@ -116,7 +115,7 @@ public class MenuDelas extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldLemma = new javax.swing.JTextField();
         jTextFieldFST = new javax.swing.JTextField();
-        jComboBoxDic = new javax.swing.JComboBox();
+        jComboBoxDic = new javax.swing.JComboBox<String>();
         jButtonAdd = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -348,7 +347,7 @@ public class MenuDelas extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JButton jButtonInflect;
-    private javax.swing.JComboBox jComboBoxDic;
+    private javax.swing.JComboBox<String> jComboBoxDic;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

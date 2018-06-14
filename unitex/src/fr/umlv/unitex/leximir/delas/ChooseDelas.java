@@ -60,10 +60,11 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         lastLink = new File(DictionaryPath.allDela + "/tmp_delas.txt");
         if (lastLink.exists()) {
             try {
-                BufferedReader br = new BufferedReader(new FileReader(lastLink));
-                jTextField1.setText(br.readLine());
-                if (!jTextField1.getText().equals("")) {
-                    jRadioBrowse.setSelected(true);
+                try( BufferedReader br = new BufferedReader(new FileReader(lastLink)) ) {
+	                jTextField1.setText(br.readLine());
+	                if (!jTextField1.getText().equals("")) {
+	                    jRadioBrowse.setSelected(true);
+	                }
                 }
             } catch (IOException ex) {
                 Logger.getLogger(ChooseDelas.class.getName()).log(Level.SEVERE, null, ex);
