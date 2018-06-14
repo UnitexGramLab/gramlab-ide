@@ -39,7 +39,6 @@ public class MenuDelac extends javax.swing.JFrame {
 
     private EditorDelac editorDelac;
     private Object[] obj;
-    private int valueSelected;
     private boolean edit = false;
     int idedit = 0;
 
@@ -66,18 +65,15 @@ public class MenuDelac extends javax.swing.JFrame {
         this.obj = obj;
         switch (menuSelected) {
             case "insertBefore":
-                this.valueSelected = selectedRow;
                 this.idedit = (int) obj[6];
                 break;
             case "insertAfter":
-                this.valueSelected = selectedRow + 1;
                 this.idedit = ((int) obj[6]) + 1;
                 break;
             case "copyBefore":
                 jTextFieldLema.setText((String) this.obj[2]);
                 jTextFieldLemaAll.setText((String) this.obj[1]);
                 jTextFieldComment.setText((String) this.obj[5]);
-                this.valueSelected = selectedRow;
                 this.idedit = (int) obj[6];
                 completeJtableDelaf((String) this.obj[1]);
                 break;
@@ -85,7 +81,6 @@ public class MenuDelac extends javax.swing.JFrame {
                 jTextFieldLema.setText((String) this.obj[2]);
                 jTextFieldLemaAll.setText((String) this.obj[1]);
                 jTextFieldComment.setText((String) this.obj[5]);
-                this.valueSelected = selectedRow + 1;
                 this.idedit = ((int) obj[6]) + 1;
                 completeJtableDelaf((String) this.obj[1]);
                 break;
@@ -101,7 +96,6 @@ public class MenuDelac extends javax.swing.JFrame {
                 jTextFieldLema.setText((String) this.obj[2]);
                 jTextFieldLemaAll.setText((String) this.obj[1]);
                 jTextFieldComment.setText((String) this.obj[5]);
-                this.valueSelected = selectedRow;
                 this.idedit = (int) obj[6];
                 completeJtableDelaf((String) this.obj[1]);
                 break;

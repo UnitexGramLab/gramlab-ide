@@ -369,12 +369,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jLabel12.setText("No of lines");
 
         jLabel13.setText("jLabel13");
@@ -658,9 +652,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchActionPerformed
+    private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {
         String text = jTextFieldSearch.getText();
         TableRowSorter<DefaultTableModel> rowSorter;
         rowSorter = new TableRowSorter<>(tableModel);
@@ -674,13 +668,13 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
 
-    }//GEN-LAST:event_jButtonSearchActionPerformed
+    }
 
-    private void jMenuNewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuNewMouseClicked
+    private void jMenuNewMouseClicked(java.awt.event.MouseEvent evt) {
 
-    }//GEN-LAST:event_jMenuNewMouseClicked
+    }
 
-    private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuStatisticsMouseClicked
+    private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {
 
         Map<String, HashMap<String, String>> data = new HashMap<>();
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
@@ -713,13 +707,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                 .newStatisticOutput(dicPos);
+    }
 
-        //String filename = Utils.getValueXml("pathExportStatistics");
-//            String filename = DictionaryPath.statisticsTmpPath;
-//            Utils.exportJtableToCsv(dicPos,filename);
-    }//GEN-LAST:event_jMenuStatisticsMouseClicked
-
-    private void jMenuDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuDeleteMouseClicked
+    private void jMenuDeleteMouseClicked(java.awt.event.MouseEvent evt) {
         int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to delete this row?", "Warning", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             int t = this.getjTable1().getSelectedRow();
@@ -727,9 +717,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Row deleted !");
             this.setUnsaved(true);
         }
-    }//GEN-LAST:event_jMenuDeleteMouseClicked
+    }
 
-    private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertAfterActionPerformed
+    private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -740,9 +730,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jMenuItemInsertAfterActionPerformed
+    }
 
-    private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInsertBeforeActionPerformed
+    private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -753,9 +743,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jMenuItemInsertBeforeActionPerformed
+    }
 
-    private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuViewMouseClicked
+    private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -767,9 +757,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jMenuViewMouseClicked
+    }
 
-    private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuEditMouseClicked
+    private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {itMouseClicked
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -780,9 +770,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jMenuEditMouseClicked
+    }itMouseClicked
 
-    private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuBeforeMouseClicked
+    private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -793,9 +783,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jMenuBeforeMouseClicked
+    }
 
-    private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuAfterMouseClicked
+    private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
             Object[] obj = new Object[8];
             for (int i = 0; i < 8; i++) {
@@ -806,9 +796,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jMenuAfterMouseClicked
+    }
 
-    private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuSaveMouseClicked
+    private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {
         int dialogResult = JOptionPane.showConfirmDialog(null, "This will overwrite your dictionaries. Are you sure?", "Save Delac Dictioneries in Unicode", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             BufferedWriter bfw;
@@ -848,9 +838,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             this.setUnsaved(false);
             JOptionPane.showMessageDialog(null, "Files where saved successfully");
         }
-    }//GEN-LAST:event_jMenuSaveMouseClicked
+    }
 
-    private void jMenuExitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuExitMouseClicked
+    private void jMenuExitMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getUnsaved()) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "You "
                     + "have some unsaved data, do you want to exit?", "exit Delac dictioneries in unicode", JOptionPane.YES_NO_OPTION);
@@ -861,9 +851,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             this.setVisible(false);
         }
-    }//GEN-LAST:event_jMenuExitMouseClicked
+    }
 
-    private void jMenuInflectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuInflectMouseClicked
+    private void jMenuInflectMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
 
             try {
@@ -879,9 +869,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
 
-    }//GEN-LAST:event_jMenuInflectMouseClicked
+    }
 
-    private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAllActionPerformed
+    private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {
 
         Map<String, List<String>> data = new HashMap<>();
         Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
@@ -951,10 +941,10 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                 .newStatisticOutput(statSimSem);
 
-    }//GEN-LAST:event_jButtonAllActionPerformed
+    }
 
     @SuppressWarnings("unchecked")
-    private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPosKeyPressed
+    private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
@@ -978,10 +968,10 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
-    }//GEN-LAST:event_jTextFieldPosKeyPressed
+    }
 
     @SuppressWarnings("unchecked")
-    private void jTextFieldLemmaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldLemmaKeyPressed
+    private void jTextFieldLemmaKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
@@ -1007,10 +997,10 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
-    }//GEN-LAST:event_jTextFieldLemmaKeyPressed
+    }
 
     @SuppressWarnings("unchecked")
-    private void jTextFieldFstKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldFstKeyPressed
+    private void jTextFieldFstKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
@@ -1030,9 +1020,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
-    }//GEN-LAST:event_jTextFieldFstKeyPressed
+    }
 
-    private void jTextFieldSynSemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSynSemKeyPressed
+    private void jTextFieldSynSemKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
@@ -1052,13 +1042,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
-    }//GEN-LAST:event_jTextFieldSynSemKeyPressed
+    }
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         String pos = jTextField1.getText();
         String lemma = jTextField2.getText();
         String fst = jTextField3.getText();
@@ -1088,18 +1074,18 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         rowSorter.setRowFilter(rf);
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }
 
-    private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMoveActionPerformed
+    private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {
         String dic = (String) jComboBoxDic.getSelectedItem();
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
             tableModel.setValueAt(dic, i, 7);
         }
         JOptionPane.showMessageDialog(null, "there are " + this.getjTable1().getRowCount() + " to move to " + dic);
 
-    }//GEN-LAST:event_jButtonMoveActionPerformed
+    }
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         if (this.getjTable1().getSelectedRow() != -1) {
 
             String filename = DictionaryPath.inflectionPath + this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 3) + ".grf";
@@ -1125,14 +1111,14 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "No selected value");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }
 
-    private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuDuplicateMouseClicked
+    private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {
         new DuplicationFinder(this.getjTable1()).execute();
 
-    }//GEN-LAST:event_jMenuDuplicateMouseClicked
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         jTextField1.setText("");
         jTextField2.setText("");
         jTextField3.setText("");
@@ -1145,14 +1131,14 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         this.getjTable1().removeAll();
         this.getjTable1().repaint();
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
-    private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpActionPerformed
+    private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {
         Help help = new Help();
         help.setVisible(true);
-    }//GEN-LAST:event_jButtonHelpActionPerformed
+    }
 
-    private void jTextFieldCommentKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldCommentKeyPressed
+    private void jTextFieldCommentKeyPressed(java.awt.event.KeyEvent evt) {
         TableRowSorter<DefaultTableModel> rowSorter = null;
         try {
             if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -1182,9 +1168,9 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         } catch (java.util.regex.PatternSyntaxException e) {
             rowSorter.setRowFilter(null);
         }
-    }//GEN-LAST:event_jTextFieldCommentKeyPressed
+    }
 
-    private void jMenuSaveAsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuSaveAsMouseClicked
+    private void jMenuSaveAsMouseClicked(java.awt.event.MouseEvent evt) {
         File file = null;
         String path = "";
         JFileChooser chooser = new JFileChooser();
@@ -1218,17 +1204,13 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             }
 
         }
-    }//GEN-LAST:event_jMenuSaveAsMouseClicked
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

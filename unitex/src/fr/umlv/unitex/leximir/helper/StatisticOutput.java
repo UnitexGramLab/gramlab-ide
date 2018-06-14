@@ -56,9 +56,6 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
 
     }
 
-
-    @SuppressWarnings("unchecked")
-
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();

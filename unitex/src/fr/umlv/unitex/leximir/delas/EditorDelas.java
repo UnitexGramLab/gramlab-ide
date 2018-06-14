@@ -205,12 +205,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Lemma");
 
-        jTextFieldLemma.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldLemmaActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("FST");
 
         jTextFieldFst.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -264,11 +258,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
         jLabel15.setText("Comment");
 
-        jTextFieldComment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCommentActionPerformed(evt);
-            }
-        });
         jTextFieldComment.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldCommentKeyPressed(evt);
@@ -410,12 +399,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                                         .addComponent(jButtonSearch))
                                 .addContainerGap(16, Short.MAX_VALUE))
         );
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
 
         jButton4.setText("Search multicriteria");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -1089,10 +1072,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {
         String pos = jTextField1.getText();
         String lemma = jTextField2.getText();
@@ -1224,14 +1203,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jTextFieldCommentActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void jTextFieldLemmaActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
     private void jTextFieldCommentKeyPressed(java.awt.event.KeyEvent evt) {
         TableRowSorter<DefaultTableModel> rowSorter = null;
         try {
@@ -1287,7 +1258,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Comment;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButtonAll;
@@ -1348,7 +1318,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextFieldSearch;
     private javax.swing.JTextField jTextFieldSynSem;
 
-    // End of variables declaration//GEN-END:variables
     public javax.swing.JLabel getJLablel13() {
         return this.jLabel13;
     }
