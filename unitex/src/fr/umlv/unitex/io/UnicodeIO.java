@@ -27,6 +27,11 @@ import java.io.OutputStreamWriter;
 
 /**
  * This class provides methods for loading and saving UTF-16LE texts.
+ *
+ * Attention: Only use unicode functions that are available throughout this
+ * class. This is very important, since IO functions do not have the same 
+ * behavior on little-endian and big-endian systems. If you miss a function,
+ * please code it from the primitive functions of this library. 
  * 
  * @author Sébastien Paumier
  */
