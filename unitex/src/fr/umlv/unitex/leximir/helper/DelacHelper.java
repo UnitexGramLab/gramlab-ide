@@ -81,7 +81,7 @@ public class DelacHelper {
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
             if(alldelac)
-            path = DictionaryPath.allDelac+"//"+dela;
+            path = DictionaryPath.allDelac+File.separator+dela;
             else
             path = dela;
             
@@ -103,7 +103,7 @@ public class DelacHelper {
             String dicFile=dela;
             String path="";
             if(alldelac)
-            path = DictionaryPath.allDelac+"//"+dela;
+            path = DictionaryPath.allDelac+File.separator+dela;
             else
             path = dela;
             
@@ -111,10 +111,7 @@ public class DelacHelper {
             for(String s:readFile){
                 StringBuilder sb = new StringBuilder();
                 for (int i = 1; i < s.length(); i++) {
-                    String str = String.valueOf(s.charAt(i));
-                    if(str.matches("^[a-zA-Z0-9áàâäãåçéèêëíì=îïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._\\s-]+$||[$&+'*,:.;\\[?@#\\]/ |)_(-]")){
                         sb.append(s.charAt(i));
-                    }
                 }
                 if (!sb.toString().isEmpty()) {
                     wn_SinSet="";

@@ -175,7 +175,7 @@ public class Utils {
     }
 
     public static Object[] delacToObject(String lemma, String fstCode, String synSem, String comment, String Dicname) {
-        String line = lemma + "," + fstCode + synSem + "//" + comment;
+        String line = lemma + "," + fstCode + synSem + File.separator + comment;
         String pOs = DelacHelper.getPosInDelac(line);
         String lemaAll = lemma;
         String lema = DelacHelper.getLemaInLemaAllDelac(lemaAll);
@@ -229,7 +229,7 @@ public class Utils {
         }
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
             BufferedWriter bfw;
-            bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas + "/DelasTmp.dic"));
+            bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
             bfw.write(lemma);
             bfw.write(",");
             bfw.write(fst);
@@ -237,8 +237,8 @@ public class Utils {
 
             String[] command = {
                 DictionaryPath.unitexLoggerPath, "MultiFlex",
-                DictionaryPath.allDelas + "/DelasTmp.dic",
-                "-o", DictionaryPath.delafPath + "/DelafTmp.dic",
+                DictionaryPath.allDelas +File.separator+ "DelasTmp.dic",
+                "-o", DictionaryPath.delafPath +File.separator+ "DelafTmp.dic",
                 "-a", DictionaryPath.alphabetPath,
                 "-d", DictionaryPath.inflectionPath
             };
@@ -250,10 +250,10 @@ public class Utils {
             while (isProcessAlive(p)) {
                 continue;
             }
-            new File(DictionaryPath.allDelas + "/DelasTmp.dic").delete();
+            new File(DictionaryPath.allDelas + File.separator+ "DelasTmp.dic").delete();
 
             GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-                    .newDelaFrame(new File(DictionaryPath.delafPath + "/DelafTmp.dic"));
+                    .newDelaFrame(new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic"));
 
         } else {
             throw new FileNotFoundException(" FST Graph doesn't exist");

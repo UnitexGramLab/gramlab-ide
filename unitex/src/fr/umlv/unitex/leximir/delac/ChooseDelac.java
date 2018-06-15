@@ -23,20 +23,15 @@ package fr.umlv.unitex.leximir.delac;
 import javax.swing.JFrame;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.PreferencesManager;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import fr.umlv.unitex.leximir.model.DictionaryPath;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  * @author Rojo Rabelisoa
@@ -56,36 +51,18 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
         buttonGroup1.add(jRadioallDelac);
         buttonGroup1.add(jRadioBrowse);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        lastLink = new File(DictionaryPath.allDela + "/tmp_delac.txt");
-        if (lastLink.exists()) {
-            try {
-            	try( BufferedReader br = new BufferedReader(new FileReader(lastLink)) ) {
-            		jTextField1.setText(br.readLine());
-            		if (!jTextField1.getText().equals("")) {
-            			jRadioBrowse.setSelected(true);
-            		}
-            	}
-            } catch (IOException ex) {
-                Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        jTextField1.setText(PreferencesManager.getUserPreferences().getRecentDelac());
+        if (!jTextField1.getText().equals("")) {
+            jRadioBrowse.setSelected(true);
         }
+
     }
 
     private void updateLinks(boolean all) {
-        try {
-            FileWriter bw = new FileWriter(lastLink);
-            if (!all) {
-                bw.write(jTextField1.getText() + "\r\n");
-                bw.close();
-            } else {
-                bw.write("");
-                bw.close();
-            }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ChooseDelac.class.getName()).log(Level.SEVERE, null, ex);
+        if (!all) {
+            PreferencesManager.getUserPreferences().setRecentDelac(jTextField1.getText() + "\r\n");
+        } else {
+            PreferencesManager.getUserPreferences().setRecentDelac(jTextField1.getText() + "");
         }
     }
 
@@ -191,8 +168,10 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
 
                 if (allDFoler.list(filter).length == 0) {
                     JOptionPane.showMessageDialog(null, "No Delac was Found in : " + DictionaryPath.allDelac, "Information", JOptionPane.INFORMATION_MESSAGE);
+
                 } else {
-                    GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                    GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class
+                    )
                             .newEditorDelacDialog(all, null);
                     this.setVisible(false);
                 }
@@ -203,27 +182,31 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
                     allDFoler.mkdirs();
                     if (allDFoler.exists()) {
                         JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
+
                     }
 
-                    GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                    GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class
+                    )
                             .newEditorDelacDialog(all, null);
                     this.setVisible(false);
                 } else {
                     this.jRadioallDelac.setEnabled(false);
                     this.jRadioBrowse.setSelected(true);
+
                 }
             }
         } else {
-            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class
+            )
                     .newEditorDelacDialog(all, new File(jTextField1.getText()));
             this.setVisible(false);
         }
 
     }
 
-    private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBrowseActionPerformed
+    private void jButtonBrowseActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.dic", "dic");
+        PersonalFileFilter filter = new PersonalFileFilter("dic", "*.dic");
         fileChooser.setFileFilter(filter);
         fileChooser.setCurrentDirectory(new File(DictionaryPath.allDela));
         int result = fileChooser.showOpenDialog(this);
@@ -232,37 +215,6 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
             jTextField1.setText(selectedFile.getAbsolutePath());
             jRadioBrowse.setSelected(true);
         }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChooseDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChooseDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChooseDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChooseDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ChooseDelac().setVisible(true);
-            }
-        });
     }
 
     private javax.swing.ButtonGroup buttonGroup1;

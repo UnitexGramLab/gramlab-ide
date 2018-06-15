@@ -812,7 +812,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 String str = lemma + "," + fstCode;
                 String comment = (String) tableModel.getValueAt(row, 5);
                 if (comment != null && comment.trim().length() > 0) {
-                    str = str + "//" + tableModel.getValueAt(row, 5);
+                    str = str + File.separator + tableModel.getValueAt(row, 5);
                 }
                 str = str + "\n";
                 if (fileData.containsKey(file)) {
@@ -826,7 +826,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
                     //bfw = new BufferedWriter(new FileWriter(Utils.getValueXml("pathDelas")+"/"+data.getKey()));
-                    bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelac + "//" + data.getKey()));
+                    bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelac + File.separator + data.getKey()));
                     for (String lines : data.getValue()) {
                         bfw.write(lines);
                     }
@@ -1191,7 +1191,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     String str = lemma + "," + fstCode;
                     String comment = (String) this.getjTable1().getValueAt(row, 5);
                     if (comment != null && comment.trim().length() > 0) {
-                        str = str + "//" + this.getjTable1().getValueAt(row, 5);
+                        str = str + File.separator + this.getjTable1().getValueAt(row, 5);
                     }
                     str = str + "\n";
                     bfw.write(str);
@@ -1205,30 +1205,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
         }
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditorDelac.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditorDelac().setVisible(true);
-            }
-        });
-    }
-
 
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.leximir.shell;
 
+import fr.umlv.unitex.files.PersonalFileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -318,9 +319,9 @@ public class Shell extends javax.swing.JInternalFrame {
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {
         if(!isDelas){
             JFileChooser theFileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("Dic FILES", "dic");
+            PersonalFileFilter filter = new PersonalFileFilter("Dic FILES", "dic");
             theFileChooser.setFileFilter(filter);
-            theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela+"/Dela"));
+            theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela+ File.separator+ "Dela"));
             theFileChooser.setDialogTitle("Search dela dictionary");
             theFileChooser.setMultiSelectionEnabled(true);
             theFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -397,38 +398,6 @@ public class Shell extends javax.swing.JInternalFrame {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Shell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Shell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Shell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Shell.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Shell().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonDo;
     private javax.swing.JButton jButtonInflectionPath;
