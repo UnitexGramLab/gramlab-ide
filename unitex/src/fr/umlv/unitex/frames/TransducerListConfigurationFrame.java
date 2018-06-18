@@ -701,7 +701,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 						commands.addCommand(new Grf2Fst2Command()
 								.grf(graphFile)
 								.enableLoopAndRecursionDetection(true)
-								.alphabetTokenization(f_alphabet));
+								.alphabetTokenization(f_alphabet)
+                .repositories());
 
 					}
 					
