@@ -47,8 +47,7 @@ with your changes. The recommended [workflow](http://rypress.com/tutorials/git/r
     git config --global user.email "john.doe@example.org"
     ```
 
-1. **Commit** your code referring in the [commit message](https://help.github.com/articles/closing-issues-via-commit-messages)
-   the issue you worked on
+1. **Commit** your code following the [Commit Message Guidelines](https://github.com/UnitexGramLab/unitex-doc-contributor-guidelines/blob/master/pages/05.guidelines/01.commits/docs.md)
 
 1. Make sure your fork is **up to date**
 
