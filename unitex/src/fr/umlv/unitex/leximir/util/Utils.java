@@ -24,6 +24,7 @@ import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.Encoding;
+import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.leximir.helper.DelacHelper;
 import java.awt.HeadlessException;
@@ -42,6 +43,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import fr.umlv.unitex.leximir.model.DictionaryPath;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
 
 /**
  * @author Rojo Rabelisoa
@@ -62,7 +66,7 @@ public class Utils {
             @Override
             public void toDo(boolean success) {
                 InputStreamReader inputStreamReader = Encoding.getInputStreamReader(new File(file));
-                try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+                    try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
                     String ligne;
                     while ((ligne = reader.readLine()) != null) {
                         StringBuilder sb = new StringBuilder();
@@ -115,14 +119,15 @@ public class Utils {
         }
         boolean isDone = false;
         try {
-            FileWriter fileWriter = new FileWriter(filename, false);
-            fileWriter.write(sb.toString());
-            fileWriter.close();
+            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+            UnicodeIO.writeString(out, sb.toString());
+            out.close();
             isDone = true;
         } finally {
             if (isDone) {
                 GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                         .newCsvOpener(filename);
+
             }
         }
     }
@@ -148,9 +153,9 @@ public class Utils {
         }
         boolean isDone = false;
         try {
-            FileWriter fileWriter = new FileWriter(filename, false);
-            fileWriter.write(sb.toString());
-            fileWriter.close();
+            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+            UnicodeIO.writeString(out, sb.toString());
+            out.close();
             isDone = true;
         } finally {
             if (isDone) {
@@ -175,7 +180,7 @@ public class Utils {
     }
 
     public static Object[] delacToObject(String lemma, String fstCode, String synSem, String comment, String Dicname) {
-        String line = lemma + "," + fstCode + synSem + File.separator + comment;
+        String line = lemma + "," + fstCode + synSem + "/" + comment;
         String pOs = DelacHelper.getPosInDelac(line);
         String lemaAll = lemma;
         String lema = DelacHelper.getLemaInLemaAllDelac(lemaAll);
@@ -228,12 +233,12 @@ public class Utils {
             delaffolder.mkdir();
         }
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
-            BufferedWriter bfw;
-            bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
-            bfw.write(lemma);
-            bfw.write(",");
-            bfw.write(fst);
-            bfw.close();
+
+            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
+            UnicodeIO.writeString(out, lemma);
+            UnicodeIO.writeString(out, ",");
+            UnicodeIO.writeString(out, fst);
+            out.close();
 
             String[] command = {
                 DictionaryPath.unitexLoggerPath, "MultiFlex",
@@ -270,12 +275,14 @@ public class Utils {
      */
     public static void generateDelaf(String value) throws IOException, HeadlessException {
         String tempPath = DictionaryPath.delafTmpPathDelac;
-        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(tempPath))) {
-            bfw.write(value + ".");
+        try (OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(tempPath))) {
+            UnicodeIO.writeString(out,value + ".");
+            out.close();
         }
         String snt = tempPath.replace(".txt", ".snt");
-        try (BufferedWriter bfw = new BufferedWriter(new FileWriter(snt))) {
-            bfw.write(value + ".");
+        try (OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(snt))) {
+            UnicodeIO.writeString(out,value + ".");
+            out.close();
         }
         String[] cmd1 = {DictionaryPath.unitexLoggerPath, "Normalize", DictionaryPath.delafTmpAbsPathDelac + "text.txt"};
         String[] cmd2 = {DictionaryPath.unitexLoggerPath, "Tokenize", DictionaryPath.delafTmpAbsPathDelac + "text.snt", "-a", DictionaryPath.alphabetPath};

@@ -73,7 +73,6 @@ public class CsvOpener extends javax.swing.JInternalFrame {
             try (BufferedReader sourceFile = new BufferedReader(new FileReader(csvfile))) {
                 String s;
                 for (int i = 1; (s = sourceFile.readLine()) != null; i++) {
-                    System.out.println(s);
                     if (i > 1) {
                         tmp.add(new Vector<String>(Arrays.asList(s.split(";"))));
                     }

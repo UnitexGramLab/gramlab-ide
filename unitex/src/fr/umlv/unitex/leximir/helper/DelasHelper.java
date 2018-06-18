@@ -93,7 +93,7 @@ public class DelasHelper {
         int k=0;
         int lemmaId=0;
         for(String dela:list){
-            String pOs,lemma,fSTCode,SynSem,comment,lemmaInv,wn_SinSet;
+            String pOs,lemma,fSTCode,SynSem,comment,lemmaInv;
             
             String dicFile=dela;
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;

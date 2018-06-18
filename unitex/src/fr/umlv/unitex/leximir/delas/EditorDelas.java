@@ -50,6 +50,7 @@ import javax.swing.table.TableRowSorter;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
+import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.leximir.helper.*;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
@@ -58,6 +59,8 @@ import fr.umlv.unitex.leximir.delas.menu.MenuDelas;
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import fr.umlv.unitex.leximir.util.DuplicationFinder;
 import fr.umlv.unitex.leximir.util.Utils;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 /**
  * @author Rojo Rabelisoa
@@ -833,7 +836,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {
         int dialogResult = JOptionPane.showConfirmDialog(null, "This will overwrite your dictionaries. Are you sure?", "Save Delas Dictioneries in Unicode", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
-            BufferedWriter bfw;
             Map<String, List<String>> fileData = new HashMap<>();
             for (int row = 0; row < tableModel.getRowCount(); row++) {
 
@@ -856,12 +858,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
-                    //bfw = new BufferedWriter(new FileWriter(Utils.getValueXml("pathDelas")+"/"+data.getKey()));
-                    bfw = new BufferedWriter(new FileWriter(DictionaryPath.allDelas + File.separator + data.getKey()));
-                    for (String lines : data.getValue()) {
-                        bfw.write(lines);
+                    String fn=data.getKey().contains(File.separator)?new File(data.getKey()).getName():data.getKey();
+                    try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn))) {
+                        for (String lines : data.getValue()) {
+                            UnicodeIO.writeString(out,lines);
+                        }
                     }
-                    bfw.close();
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "error :" + ex.getMessage());
                 }
@@ -964,7 +966,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             String key = t.getKey();
             for (Map.Entry<String, HashMap<String, String>> y : t.getValue().entrySet()) {
                 for (Map.Entry<String, String> u : y.getValue().entrySet()) {
-                    //System.out.println(t.getKey()+"\t"+y.getKey()+"\t"+u.getKey()+"\t"+u.getValue());
                     statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(), u.getKey(), u.getValue()});
                     v++;
                 }
@@ -1179,22 +1180,20 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             file = chooser.getSelectedFile();
             path = file.getPath();
             try {
-                BufferedWriter bfw;
-                String filename = path;
-                bfw = new BufferedWriter(new FileWriter(filename));
+                String filename = path.endsWith(".dic")?path:path+".dic";
+                OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
                 for (int row = 0; row < this.getjTable1().getRowCount(); row++) {
                     String lemma = (String) this.getjTable1().getValueAt(row, 1);
                     String fstCode = this.getjTable1().getValueAt(row, 2).toString().concat(this.getjTable1().getValueAt(row, 3).toString());
                     String str = lemma + "," + fstCode;
                     String comment = (String) this.getjTable1().getValueAt(row, 4);
                     if (comment != null && comment.trim().length() > 0) {
-                        str = str + File.separator + this.getjTable1().getValueAt(row, 4);
+                        str = str + "/" + this.getjTable1().getValueAt(row, 4);
                     }
                     str = str + "\n";
-                    bfw.write(str);
-
+                    UnicodeIO.writeString(out,str);
                 }
-                bfw.close();
+                out.close();
                 JOptionPane.showMessageDialog(null, "Files where saved successfully");
             } catch (IOException ex) {
                 Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);

@@ -60,9 +60,9 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
 
     private void updateLinks(boolean all) {
         if (!all) {
-            PreferencesManager.getUserPreferences().setRecentDelac(jTextField1.getText() + "\r\n");
+            PreferencesManager.getUserPreferences().setRecentDelac(jTextField1.getText());
         } else {
-            PreferencesManager.getUserPreferences().setRecentDelac(jTextField1.getText() + "");
+            PreferencesManager.getUserPreferences().setRecentDelac("");
         }
     }
 

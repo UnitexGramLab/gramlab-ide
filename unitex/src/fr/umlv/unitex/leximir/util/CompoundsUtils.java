@@ -40,10 +40,7 @@ public class CompoundsUtils {
     public static List<String> getDlfInFile(String value) throws IOException, HeadlessException {
         Utils.generateDelaf(value);
         String path = DictionaryPath.text_sntAbsPath;
-        ArrayList<String> readFile = Utils.readFile(path);
-        for (String s : readFile)
-            System.out.println(s);
-        
+        ArrayList<String> readFile = Utils.readFile(path);        
         return readFile;
     }
 }

@@ -60,9 +60,9 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
 
     private void updateLinks(boolean all) {
         if (!all) {
-            PreferencesManager.getUserPreferences().setRecentDelas(jTextField1.getText() + "\r\n");
+            PreferencesManager.getUserPreferences().setRecentDelas(jTextField1.getText());
         } else {
-            PreferencesManager.getUserPreferences().setRecentDelas(jTextField1.getText() + "");
+            PreferencesManager.getUserPreferences().setRecentDelas("");
         }
     }
 
