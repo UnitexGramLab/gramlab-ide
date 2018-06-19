@@ -319,7 +319,7 @@ public class Shell extends javax.swing.JInternalFrame {
     private void jButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {
         if(!isDelas){
             JFileChooser theFileChooser = new JFileChooser();
-            PersonalFileFilter filter = new PersonalFileFilter("Dic FILES", "dic");
+            PersonalFileFilter filter = new PersonalFileFilter("dic", "Dic FILES");
             theFileChooser.setFileFilter(filter);
             theFileChooser.setCurrentDirectory(new File(DictionaryPath.allDela+ File.separator+ "Dela"));
             theFileChooser.setDialogTitle("Search dela dictionary");
