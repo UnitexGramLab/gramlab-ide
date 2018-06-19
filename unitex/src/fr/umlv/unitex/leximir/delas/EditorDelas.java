@@ -23,9 +23,7 @@ package fr.umlv.unitex.leximir.delas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -207,7 +205,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         });
 
         jLabel1.setText("Lemma");
-
+        jTextFieldLemma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldLemmaKeyPressed(evt);
+            }
+        });
+        
         jLabel3.setText("FST");
 
         jTextFieldFst.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1050,6 +1053,38 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
     }
+    
+    private void jTextFieldLemmaKeyPressed(java.awt.event.KeyEvent evt) {
+        TableRowSorter<DefaultTableModel> rowSorter = null;
+        try {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                JTextField textField = (JTextField) evt.getSource();
+                String text = textField.getText();
+
+                rowSorter = new TableRowSorter<>(tableModel);
+                
+                this.getjTable1().setRowSorter(rowSorter);
+                
+                if (text.trim().length() == 0) {
+                    rowSorter.setRowFilter(null);
+                } else {
+                    if(jCheckBoxExtract.isSelected()){
+                        text="^"+text+"$";
+                    }
+                    else{
+                        if(!text.contains(".")&&!text.contains("$"))text="^"+text;
+                    }    
+                    RowFilter rowFilter = RowFilter.regexFilter(text, 1);// recherche avec la colonne indice 0
+                    rowSorter.setRowFilter(rowFilter);
+                }
+                jTable1.setModel(rowSorter.getModel());
+                jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
+            }
+        }catch(java.util.regex.PatternSyntaxException e){
+            rowSorter.setRowFilter(null);
+        } 
+    }
+    
 
     private void jTextFieldLemmaInvKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
