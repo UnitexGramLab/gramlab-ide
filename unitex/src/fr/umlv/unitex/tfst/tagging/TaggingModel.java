@@ -208,7 +208,7 @@ public class TaggingModel {
 			/*
 			 * If the automaton is not acyclic, then we fail to compute the
 			 * factorization nodes, so we just say that the initial and final
-			 * ones aren.
+			 * ones aren't.
 			 */
 			for (int i = 0; i < factorization.length; i++) {
 				if (boxes[i].type != GenericGraphBox.NORMAL) {
