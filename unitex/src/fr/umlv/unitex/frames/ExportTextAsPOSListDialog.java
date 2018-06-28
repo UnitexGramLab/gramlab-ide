@@ -198,7 +198,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 					}
 				}
 				
-				if (errorList.size() > 0) {
+				if (!errorList.isEmpty()) {
 					StringBuilder sb = new StringBuilder("The following sentence(s) couldn't "
 							+ "be exported: \n");
 					for(int j = 0; j < errorList.size(); j++) {
