@@ -129,7 +129,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         };
     }
 
-
     @SuppressWarnings("unchecked")
 
     private void initComponents() {
@@ -210,7 +209,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 jTextFieldLemmaKeyPressed(evt);
             }
         });
-        
+
         jLabel3.setText("FST");
 
         jTextFieldFst.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -533,16 +532,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(jPanel1);
 
         jMenuNew.setText("New");
-        jMenuNew.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuNewMouseClicked(evt);
-            }
-        });
 
         jMenuItemInsertBefore.setText("Insert before");
         jMenuItemInsertBefore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemInsertBeforeActionPerformed(evt);
+                jMenuItemInsertActionPerformed(evt,"insertBefore");
             }
         });
         jMenuNew.add(jMenuItemInsertBefore);
@@ -550,7 +544,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuItemInsertAfter.setText("Insert after");
         jMenuItemInsertAfter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemInsertAfterActionPerformed(evt);
+                jMenuItemInsertActionPerformed(evt,"insertAfter");
             }
         });
         jMenuNew.add(jMenuItemInsertAfter);
@@ -560,7 +554,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuBefore.setText("Copy before");
         jMenuBefore.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuBeforeMouseClicked(evt);
+                jMenuBeforeAfterMouseClicked(evt,"copyBefore");
             }
         });
         jMenuBar1.add(jMenuBefore);
@@ -568,7 +562,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuAfter.setText("Copy after");
         jMenuAfter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuAfterMouseClicked(evt);
+                jMenuBeforeAfterMouseClicked(evt,"copyAfter");
             }
         });
         jMenuBar1.add(jMenuAfter);
@@ -576,7 +570,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuEdit.setText("Edit");
         jMenuEdit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuEditMouseClicked(evt);
+                jMenuViewEditMouseClicked(evt,"edit");
             }
         });
         jMenuBar1.add(jMenuEdit);
@@ -584,7 +578,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuView.setText("View");
         jMenuView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuViewMouseClicked(evt);
+                jMenuViewEditMouseClicked(evt,"view");
             }
         });
         jMenuBar1.add(jMenuView);
@@ -619,11 +613,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 jMenuStatisticsMouseClicked(evt);
             }
         });
-        jMenuStatistics.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuStatisticsActionPerformed(evt);
-            }
-        });
+
         jMenuBar1.add(jMenuStatistics);
 
         jMenuSave.setText("Save");
@@ -684,15 +674,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
-
-    }
-
-    private void jMenuStatisticsActionPerformed(java.awt.event.ActionEvent evt) {
-
-    }
-
-    private void jMenuNewMouseClicked(java.awt.event.MouseEvent evt) {
-
     }
 
     private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {
@@ -758,91 +739,53 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     }
 
-    private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "insertAfter", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
+    private void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt, String flag) {//insertAfter/insertBefore
+            if (this.getjTable1().getSelectedRow() != -1) {
+                Object[] obj = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+                }
+                MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), flag, this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
+                ad.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No selected value");
+            }      
     }
 
-    private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+    private void jMenuViewEditMouseClicked(java.awt.event.MouseEvent evt, String flag) {
+            if (this.getjTable1().getSelectedRow() != -1) {
+                Object[] obj = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+                }
+                MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), flag, this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
+                ad.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No selected value");
             }
-            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "insertBefore", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
+        } 
+    
+    private void jMenuBeforeAfterMouseClicked(java.awt.event.MouseEvent evt, String flag) {//copyBefore/copyAfter
+            if (this.getjTable1().getSelectedRow() != -1) {
+                Object[] obj = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+                }
+                MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), flag, this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
+                ad.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No selected value");
+            }
+        } 
 
-    private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "view", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "edit", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "copyBefore", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelas ad = new MenuDelas(this, this.getjTable1().getSelectedRow(), "copyAfter", this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 7), obj);
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
 
     private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {
-        int dialogResult = JOptionPane.showConfirmDialog(null, "This will overwrite your dictionaries. Are you sure?", "Save Delas Dictioneries in Unicode", JOptionPane.YES_NO_OPTION);
+        int dialogResult = JOptionPane.showConfirmDialog(null, "This will overwrite your dictionaries. Are you sure?", "Save Delas Dictionaries in Unicode", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             Map<String, List<String>> fileData = new HashMap<>();
             for (int row = 0; row < tableModel.getRowCount(); row++) {
 
-                String file = String.valueOf( tableModel.getValueAt(row, 7));
+                String file = String.valueOf(tableModel.getValueAt(row, 7));
                 String lemma = String.valueOf(tableModel.getValueAt(row, 1));
                 String fstCode = tableModel.getValueAt(row, 2).toString().concat(tableModel.getValueAt(row, 3).toString());
                 String str = lemma + "," + fstCode;
@@ -861,10 +804,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
-                    String fn=data.getKey().contains(File.separator)?new File(data.getKey()).getName():data.getKey();
+                    String fn = data.getKey().contains(File.separator) ? new File(data.getKey()).getName() : data.getKey();
                     try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn))) {
                         for (String lines : data.getValue()) {
-                            UnicodeIO.writeString(out,lines);
+                            UnicodeIO.writeString(out, lines);
                         }
                     }
                 } catch (IOException ex) {
@@ -880,7 +823,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private void jMenuExitMouseClicked(java.awt.event.MouseEvent evt) {
         if (this.getUnsaved()) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "You "
-                    + "have some unsaved data, do you want to exit?", "Exit Delas dictioneries in unicode", JOptionPane.YES_NO_OPTION);
+                    + "have some unsaved data, do you want to exit?", "Exit Delas dictionaries in unicode", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 this.setVisible(false);
             }
@@ -998,7 +941,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         text = "^" + text;
                     }
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 0);// search in column at index 0
+                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 0);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1020,7 +963,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
+                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1046,14 +989,14 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         text = "." + text;
                     }
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 3);// search in column at index 0
+                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 3);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
         }
     }
-    
+
     private void jTextFieldLemmaKeyPressed(java.awt.event.KeyEvent evt) {
         TableRowSorter<DefaultTableModel> rowSorter = null;
         try {
@@ -1062,29 +1005,29 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 String text = textField.getText();
 
                 rowSorter = new TableRowSorter<>(tableModel);
-                
+
                 this.getjTable1().setRowSorter(rowSorter);
-                
+
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    if(jCheckBoxExtract.isSelected()){
-                        text="^"+text+"$";
+                    if (jCheckBoxExtract.isSelected()) {
+                        text = "^" + text + "$";
+                    } else {
+                        if (!text.contains(".") && !text.contains("$")) {
+                            text = "^" + text;
+                        }
                     }
-                    else{
-                        if(!text.contains(".")&&!text.contains("$"))text="^"+text;
-                    }    
-                    RowFilter rowFilter = RowFilter.regexFilter(text, 1);// recherche avec la colonne indice 0
+                    RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// recherche avec la colonne indice 0
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
                 jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
             }
-        }catch(java.util.regex.PatternSyntaxException e){
+        } catch (java.util.regex.PatternSyntaxException e) {
             rowSorter.setRowFilter(null);
-        } 
+        }
     }
-    
 
     private void jTextFieldLemmaInvKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -1100,7 +1043,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 if (!text.contains(".") && !text.contains("$")) {
                     text = text + "$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
+                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1135,7 +1078,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         if (comment.length() != 0) {
             filters.add(RowFilter.regexFilter(comment, 4));
         }
-        RowFilter rf = RowFilter.andFilter(filters);
+        RowFilter<Object, Object> rf = RowFilter.andFilter(filters);
         rowSorter.setRowFilter(rf);
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
@@ -1147,29 +1090,29 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {
-        int index=this.getjTable1().getSelectedRow()!= -1?this.getjTable1().getSelectedRow():0 ;
-        
-            String filename = DictionaryPath.inflectionPath + this.getjTable1().getValueAt(index, 2) + ".grf";
+        int index = this.getjTable1().getSelectedRow() != -1 ? this.getjTable1().getSelectedRow() : 0;
 
-            final File[] graphs = new File[1];
-            graphs[0] = new File(filename);
-            for (int i = 0; i < graphs.length; i++) {
-                String s = graphs[i].getAbsolutePath();
-                if (!graphs[i].exists() && !s.endsWith(".grf")) {
-                    s = s + ".grf";
-                    graphs[i] = new File(s);
-                    if (!graphs[i].exists()) {
-                        JOptionPane.showMessageDialog(null,
-                                "File " + graphs[i].getAbsolutePath()
-                                + " does not exist", "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        continue;
-                    }
+        String filename = DictionaryPath.inflectionPath + this.getjTable1().getValueAt(index, 2) + ".grf";
+
+        final File[] graphs = new File[1];
+        graphs[0] = new File(filename);
+        for (int i = 0; i < graphs.length; i++) {
+            String s = graphs[i].getAbsolutePath();
+            if (!graphs[i].exists() && !s.endsWith(".grf")) {
+                s = s + ".grf";
+                graphs[i] = new File(s);
+                if (!graphs[i].exists()) {
+                    JOptionPane.showMessageDialog(null,
+                            "File " + graphs[i].getAbsolutePath()
+                            + " does not exist", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    continue;
                 }
-                GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-                        .newGraphFrame(graphs[i]);
             }
-        
+            GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+                    .newGraphFrame(graphs[i]);
+        }
+
     }
 
     private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1213,10 +1156,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             file = chooser.getSelectedFile();
             path = file.getPath();
             try {
-                String filename = path.endsWith(".dic")?path:path+".dic";
-                OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+                String filename = path.endsWith(".dic") ? path : path + ".dic";
+                OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filename));
                 for (int row = 0; row < this.getjTable1().getRowCount(); row++) {
-                    String lemma =String.valueOf(this.getjTable1().getValueAt(row, 1));
+                    String lemma = String.valueOf(this.getjTable1().getValueAt(row, 1));
                     String fstCode = this.getjTable1().getValueAt(row, 2).toString().concat(this.getjTable1().getValueAt(row, 3).toString());
                     String str = lemma + "," + fstCode;
                     String comment = String.valueOf(this.getjTable1().getValueAt(row, 4));
@@ -1224,7 +1167,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         str = str + "/" + this.getjTable1().getValueAt(row, 4);
                     }
                     str = str + "\n";
-                    UnicodeIO.writeString(out,str);
+                    UnicodeIO.writeString(out, str);
                 }
                 out.close();
                 JOptionPane.showMessageDialog(null, "Files where saved successfully");
@@ -1256,7 +1199,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                             text = "^" + text;
                         }
                     }
-                    RowFilter rowFilter = RowFilter.regexFilter(text, 4);// search in column at index 4
+                    RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 4);// search in column at index 4
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());

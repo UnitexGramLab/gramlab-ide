@@ -536,7 +536,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuItemInsertBefore.setText("insert before");
         jMenuItemInsertBefore.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemInsertBeforeActionPerformed(evt);
+                jMenuItemInsertActionPerformed(evt,"insertBefore");
             }
         });
         jMenuNew.add(jMenuItemInsertBefore);
@@ -544,7 +544,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuItemInsertAfter.setText("insert after");
         jMenuItemInsertAfter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemInsertAfterActionPerformed(evt);
+                jMenuItemInsertActionPerformed(evt,"insertAfter");
             }
         });
         jMenuNew.add(jMenuItemInsertAfter);
@@ -554,7 +554,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuBefore.setText("Copy before");
         jMenuBefore.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuBeforeMouseClicked(evt);
+                jMenuBeforeAfterMouseClicked(evt,"copyBefore");
             }
         });
         jMenuBar1.add(jMenuBefore);
@@ -562,7 +562,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuAfter.setText("Copy after");
         jMenuAfter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuAfterMouseClicked(evt);
+                jMenuBeforeAfterMouseClicked(evt,"copyAfter");
             }
         });
         jMenuBar1.add(jMenuAfter);
@@ -570,7 +570,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuEdit.setText("Edit");
         jMenuEdit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuEditMouseClicked(evt);
+                jMenuViewEditMouseClicked(evt,"edit");
             }
         });
         jMenuBar1.add(jMenuEdit);
@@ -578,7 +578,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         jMenuView.setText("View");
         jMenuView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuViewMouseClicked(evt);
+                jMenuViewEditMouseClicked(evt,"view");
             }
         });
         jMenuBar1.add(jMenuView);
@@ -722,84 +722,45 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }
 
-    private void jMenuItemInsertAfterActionPerformed(java.awt.event.ActionEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelac ad = new MenuDelac(this, "insertAfter", obj, this.getjTable1().getSelectedRow());
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
+
+    private void jMenuItemInsertActionPerformed(java.awt.event.ActionEvent evt, String flag) {//insertAfter/insertBefore
+            if (this.getjTable1().getSelectedRow() != -1) {
+                Object[] obj = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+                }
+                 MenuDelac ad = new MenuDelac(this, flag, obj, this.getjTable1().getSelectedRow());
+                ad.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No selected value");
+            }      
     }
 
-    private void jMenuItemInsertBeforeActionPerformed(java.awt.event.ActionEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+    private void jMenuViewEditMouseClicked(java.awt.event.MouseEvent evt, String flag) {
+            if (this.getjTable1().getSelectedRow() != -1) {
+                Object[] obj = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+                }
+            MenuDelac ad = new MenuDelac(this, flag, obj, this.getjTable1().getSelectedRow());
+                ad.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No selected value");
             }
-            MenuDelac ad = new MenuDelac(this, "insertBefore", obj, this.getjTable1().getSelectedRow());
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuViewMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+        } 
+    
+    private void jMenuBeforeAfterMouseClicked(java.awt.event.MouseEvent evt, String flag) {//copyBefore/copyAfter
+            if (this.getjTable1().getSelectedRow() != -1) {
+                Object[] obj = new Object[8];
+                for (int i = 0; i < 8; i++) {
+                    obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
+                }
+            MenuDelac ad = new MenuDelac(this, flag, obj, this.getjTable1().getSelectedRow());
+                ad.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No selected value");
             }
-            MenuDelac ad = new MenuDelac(this, "view", obj, this.getjTable1().getSelectedRow());
-            ad.setVisible(true);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuEditMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelac ad = new MenuDelac(this, "edit", obj, this.getjTable1().getSelectedRow());
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuBeforeMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelac ad = new MenuDelac(this, "copyBefore", obj, this.getjTable1().getSelectedRow());
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
-
-    private void jMenuAfterMouseClicked(java.awt.event.MouseEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-            Object[] obj = new Object[8];
-            for (int i = 0; i < 8; i++) {
-                obj[i] = this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), i);
-            }
-            MenuDelac ad = new MenuDelac(this, "copyAfter", obj, this.getjTable1().getSelectedRow());
-            ad.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
-    }
+        } 
 
     private void jMenuSaveMouseClicked(java.awt.event.MouseEvent evt) {
         int dialogResult = JOptionPane.showConfirmDialog(null, "This will overwrite your dictionaries. Are you sure?", "Save Delac Dictioneries in Unicode", JOptionPane.YES_NO_OPTION);
@@ -944,7 +905,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     }
 
-    @SuppressWarnings("unchecked")
     private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -963,7 +923,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                         text = "^" + text;
                     }
                 }
-                RowFilter rowFilter = RowFilter.regexFilter("(?i)" + text, 0);// search column at index 0
+                RowFilter<Object,Object> rowFilter = RowFilter.regexFilter("(?i)" + text, 0);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -971,7 +931,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void jTextFieldLemmaKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -992,7 +951,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                     }
 
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 2);// search column at index 0
+                RowFilter <Object,Object> rowFilter = RowFilter.regexFilter(text, 2);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1000,7 +959,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void jTextFieldFstKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -1015,7 +973,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 3);// search column at index 0
+                RowFilter <Object,Object> rowFilter = RowFilter.regexFilter(text, 3);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1037,7 +995,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
                 }
-                RowFilter rowFilter = RowFilter.regexFilter(text, 4);// search column at index 0
+                RowFilter <Object,Object> rowFilter = RowFilter.regexFilter(text, 4);// search column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1158,7 +1116,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
                             text = "^" + text;
                         }
                     }
-                    RowFilter rowFilter = RowFilter.regexFilter(text, 5);// search column at index 4
+                    RowFilter <Object,Object> rowFilter = RowFilter.regexFilter(text, 5);// search column at index 4
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
