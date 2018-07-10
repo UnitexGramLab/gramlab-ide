@@ -842,13 +842,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             Map<String, List<String>> fileData = new HashMap<>();
             for (int row = 0; row < tableModel.getRowCount(); row++) {
 
-                String file = (String) tableModel.getValueAt(row, 7);
-                String lemma = (String) tableModel.getValueAt(row, 1);
+                String file = String.valueOf( tableModel.getValueAt(row, 7));
+                String lemma = String.valueOf(tableModel.getValueAt(row, 1));
                 String fstCode = tableModel.getValueAt(row, 2).toString().concat(tableModel.getValueAt(row, 3).toString());
                 String str = lemma + "," + fstCode;
-                String comment = (String) tableModel.getValueAt(row, 4);
+                String comment = String.valueOf(tableModel.getValueAt(row, 4));
                 if (comment != null && comment.trim().length() > 0) {
-                    str = str + File.separator + tableModel.getValueAt(row, 4);
+                    str = str + "/" + tableModel.getValueAt(row, 4);
                 }
                 str = str + "\n";
                 if (fileData.containsKey(file)) {
@@ -1147,9 +1147,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {
-        if (this.getjTable1().getSelectedRow() != -1) {
-
-            String filename = DictionaryPath.inflectionPath + this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2) + ".grf";
+        int index=this.getjTable1().getSelectedRow()!= -1?this.getjTable1().getSelectedRow():0 ;
+        
+            String filename = DictionaryPath.inflectionPath + this.getjTable1().getValueAt(index, 2) + ".grf";
 
             final File[] graphs = new File[1];
             graphs[0] = new File(filename);
@@ -1169,9 +1169,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
                         .newGraphFrame(graphs[i]);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "No selected value");
-        }
+        
     }
 
     private void jButtonMoveActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1218,10 +1216,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 String filename = path.endsWith(".dic")?path:path+".dic";
                 OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
                 for (int row = 0; row < this.getjTable1().getRowCount(); row++) {
-                    String lemma = (String) this.getjTable1().getValueAt(row, 1);
+                    String lemma =String.valueOf(this.getjTable1().getValueAt(row, 1));
                     String fstCode = this.getjTable1().getValueAt(row, 2).toString().concat(this.getjTable1().getValueAt(row, 3).toString());
                     String str = lemma + "," + fstCode;
-                    String comment = (String) this.getjTable1().getValueAt(row, 4);
+                    String comment = String.valueOf(this.getjTable1().getValueAt(row, 4));
                     if (comment != null && comment.trim().length() > 0) {
                         str = str + "/" + this.getjTable1().getValueAt(row, 4);
                     }

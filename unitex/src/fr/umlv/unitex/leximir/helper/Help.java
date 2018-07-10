@@ -56,7 +56,7 @@ public class Help extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Instruction for search");
+        jLabel1.setText("Instructions for search");
 
         jLabel2.setText("For text begins with : use ^+text. eg: text begins with ab=^ab");
 

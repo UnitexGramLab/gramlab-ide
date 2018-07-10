@@ -33,7 +33,6 @@ import fr.umlv.unitex.leximir.util.Utils;
  */
 public class MenuDelas extends javax.swing.JFrame {
     private EditorDelas elFrame ;
-    private int valueSelected;
     private boolean edit = false;
     int idedit=0;
     /**
@@ -47,7 +46,7 @@ public class MenuDelas extends javax.swing.JFrame {
         };
     }
     public MenuDelas(EditorDelas el,int selectedRow,String menuSelected,Object dictionary, Object[] obj){
-
+        
         initComponents();
         for(String dic:DictionaryPath.dictionary){
             jComboBoxDic.addItem(dic);
@@ -70,7 +69,6 @@ public class MenuDelas extends javax.swing.JFrame {
                 this.jTextFieldFST.setText((String) obj[2]);
                 this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
-                this.valueSelected = selectedRow;
                 this.idedit = (int) obj[6];
                 jLabelTitle.setText("Insertion value");
                 break;
@@ -79,7 +77,6 @@ public class MenuDelas extends javax.swing.JFrame {
                 this.jTextFieldFST.setText((String) obj[2]);
                 this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
-                this.valueSelected = selectedRow + 1;
                 this.idedit = ((int) obj[6])+1;
                 jLabelTitle.setText("Insertion value");
                 break;
@@ -98,7 +95,6 @@ public class MenuDelas extends javax.swing.JFrame {
                 this.jTextFieldFST.setText((String) obj[2]);
                 this.jTextFieldSynSem.setText((String) obj[3]);
                 this.jTextFieldComment.setText((String) obj[4]);
-                this.valueSelected = selectedRow;
                 this.idedit = (int) obj[6];
                 jLabelTitle.setText("Edit value");
                 break;
@@ -135,12 +131,7 @@ public class MenuDelas extends javax.swing.JFrame {
         jLabel4.setText("Dictionary");
 
         jComboBoxDic.setModel(new javax.swing.DefaultComboBoxModel());
-        jComboBoxDic.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxDicActionPerformed(evt);
-            }
-        });
-
+      
         jButtonAdd.setText("Add");
         jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,11 +148,6 @@ public class MenuDelas extends javax.swing.JFrame {
 
         jLabel5.setText("Comment");
 
-        jTextFieldComment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldCommentActionPerformed(evt);
-            }
-        });
 
         jButtonInflect.setText("Inflect");
         jButtonInflect.addActionListener(new java.awt.event.ActionListener() {
@@ -268,12 +254,10 @@ public class MenuDelas extends javax.swing.JFrame {
        this.setVisible(false);
     }
 
-    private void jComboBoxDicActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {
-	String lemma = jTextFieldLemma.getText();
+    try{    
+    String lemma = jTextFieldLemma.getText();
     String FST = jTextFieldFST.getText();
     String SynSem = jTextFieldSynSem.getText().equals("")?"":jTextFieldSynSem.getText().substring(0,1).equals("+")?jTextFieldSynSem.getText():"+"+jTextFieldSynSem.getText();
     String dic = (String) jComboBoxDic.getSelectedItem();
@@ -282,7 +266,7 @@ public class MenuDelas extends javax.swing.JFrame {
     Object[] row = Utils.delasToObject(lemma,FST,SynSem,comment,dic,idedit);
     if(edit){
         for(int i=0;i<row.length;i++){
-            if(i!=7){
+            if(i!=6){
                elFrame.getTableModel().setValueAt(row[i],idedit,i);
             }
         }
@@ -290,16 +274,15 @@ public class MenuDelas extends javax.swing.JFrame {
        elFrame.getTableModel().insertRow(idedit,row);
        elFrame.getjTable1().setModel(elFrame.getTableModel());
        for(int i=idedit;i<elFrame.getTableModel().getRowCount();i++){
-           elFrame.getTableModel().setValueAt(i,i,7);
+           elFrame.getTableModel().setValueAt(i,i,6);
        }
        elFrame.getJLablel13().setText(String.valueOf(elFrame.getjTable1().getRowCount()));
     }
     elFrame.setUnsaved(true);
     this.setVisible(false); 
-    }
-
-    private void jTextFieldCommentActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    }catch(Exception e){
+    elFrame.setUnsaved(true);
+    this.setVisible(false);     }
     }
 
     private void jButtonInflectActionPerformed(java.awt.event.ActionEvent evt) {

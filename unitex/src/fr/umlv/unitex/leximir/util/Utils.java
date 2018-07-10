@@ -166,31 +166,19 @@ public class Utils {
         }
     }
 
-    public static Object[] delasToObject(String lemma, String fstCode, String SynSem, String comment, String Dicname, int valueSelected) {
 
-        String lemmas = lemma;
-        String fSTCode = fstCode;
-        String pOs = fSTCode.replaceAll("\\d", "");
-        String comments = comment;
-        String lemmaInv = Utils.reverseString(lemma);
+    public static Object[] delasToObject(String lemma, String fstCode, String SynSem, String comment, String Dicname, int valueSelected) {
+        String pOs = fstCode.replaceAll("\\d", "");
         int lemmaId = valueSelected + 1;
-        String dicFile = Dicname;
-        int dicId = 0;
-        return new Object[]{pOs, lemmas, fSTCode, SynSem, comments, lemmaInv, lemmaId, dicFile, dicId};
+        String lemmaInv = Utils.reverseString(lemma);
+        return new Object[]{pOs, lemma, fstCode, SynSem, comment, lemmaInv, lemmaId, Dicname};
     }
 
     public static Object[] delacToObject(String lemma, String fstCode, String synSem, String comment, String Dicname) {
         String line = lemma + "," + fstCode + synSem + "/" + comment;
         String pOs = DelacHelper.getPosInDelac(line);
-        String lemaAll = lemma;
-        String lema = DelacHelper.getLemaInLemaAllDelac(lemaAll);
-        String fSTCode = fstCode;
-        String SynSem = synSem;
-        String comments = comment;
-        int lemmaId = 10;
-        String dicFile = Dicname;
-        int dicId = 0;
-        return new Object[]{pOs, lemaAll, lema, fSTCode, SynSem, comments, lemmaId, dicFile, dicId};
+        String lema = DelacHelper.getLemaInLemaAllDelac(lemma);
+        return new Object[]{pOs, lemma, lema, fstCode, synSem, comment, "", Dicname};
     }
 
     /**

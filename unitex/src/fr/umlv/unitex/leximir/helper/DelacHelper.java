@@ -120,7 +120,7 @@ public class DelacHelper {
                     fSTCode = getFstCodeInDelac(s);
                     SynSem=getSynSemInDelac(s);
                     pOs = getPosInDelac(s);
-                    comment = getCommentInDelas(s);
+                    comment = getCommentInDelac(s);
                     Delac tmp = new Delac(pOs, lemmaAll, lemma, fSTCode, SynSem, comment, lemmaId, dicFile);
                     delacToObject(ob, k, tmp);
                     k++;
@@ -272,22 +272,13 @@ public class DelacHelper {
      * @param text entry delac
      * @return comment of delac
      */
-    public static String getCommentInDelas(String text){
-        try{
-            StringBuilder sb = new StringBuilder();
-            boolean begin=false;
-            for(int i=0;i<text.length();i++){
-                if(text.charAt(i)=='/'){
-                    begin=true;
-                    i=i+2;
-                }
-                if(begin){
-                    sb.append(text.charAt(i));
-                }
-            }
-            return sb.toString();
-        }catch(java.lang.StringIndexOutOfBoundsException e){
-            return"";
+    public static String getCommentInDelac(String text){
+       try{
+            int ind= text.contains("/")?text.indexOf("/")+1:text.length();
+            String ret=text.substring(ind);
+            return ret;
+        } catch(java.lang.StringIndexOutOfBoundsException e) {
+            return "";
         }
     }
     /**

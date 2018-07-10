@@ -206,18 +206,9 @@ public class DelasHelper {
     }
     public static String getCommentInDelas(String text) {
         try{
-            StringBuilder sb = new StringBuilder();
-            boolean begin=false;
-            for(int i=0;i<text.length();i++){
-                if(text.charAt(i)=='/'){
-                    begin=true;
-                    i=i+2;
-                }
-                if(begin){
-                    sb.append(text.charAt(i));
-                }
-            }
-            return sb.toString();
+            int ind= text.contains("/")?text.indexOf("/")+1:text.length();
+            String ret=text.substring(ind);
+            return ret;
         } catch(java.lang.StringIndexOutOfBoundsException e) {
             return "";
         }

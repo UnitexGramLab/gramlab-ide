@@ -109,7 +109,6 @@ public class MenuDelac extends javax.swing.JFrame {
         jTextFieldLemaId.setText(String.valueOf(lemaid));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.jTableFLX.setDefaultRenderer(Object.class, color);
-        this.jTableDelaf.setDefaultRenderer(Object.class, color);
     }
 
     private void completeJtableDelaf(String LemmaAll) {
@@ -124,12 +123,12 @@ public class MenuDelac extends javax.swing.JFrame {
         }
         DefaultTableModel model = new DefaultTableModel();
         model = (DefaultTableModel) jTableFLX.getModel();
-        model.addColumn("RB");
-        model.addColumn("Form");
-        model.addColumn("Lemma");
-        model.addColumn("FST Code");
-        model.addColumn("GramCat");
-        model.addColumn("Separator");
+//        model.addColumn("RB");
+//        model.addColumn("Form");
+//        model.addColumn("Lemma");
+//        model.addColumn("FST Code");
+//        model.addColumn("GramCat");
+//        model.addColumn("Separator");
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             if (word.contains("(")) {
@@ -185,14 +184,12 @@ public class MenuDelac extends javax.swing.JFrame {
         jButtonAddSimpleForm = new javax.swing.JButton();
         jButtonRefresh = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTableDelaf = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuSave = new javax.swing.JMenu();
         jMenuClose = new javax.swing.JMenu();
         jMenuInflect = new javax.swing.JMenu();
         jMenuPrediction = new javax.swing.JMenu();
-        jMenu7 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -302,10 +299,15 @@ public class MenuDelac extends javax.swing.JFrame {
 
         jTableFLX.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                
             },
             new String [] {
-
+        "RB",
+        "Form",
+        "Lemma",
+        "FST Code",
+        "GramCat",
+        "Separator"
             }
         ));
         jScrollPane1.setViewportView(jTableFLX);
@@ -324,11 +326,7 @@ public class MenuDelac extends javax.swing.JFrame {
             }
         });
 
-        jTableDelaf.setAutoCreateRowSorter(true);
-        jTableDelaf.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTableDelaf);
-
-        jLabel12.setText("Defaf<Ctrl+F> - Copy <Ctrl+C>");
+        jLabel12.setText("");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -343,9 +341,9 @@ public class MenuDelac extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -405,9 +403,6 @@ public class MenuDelac extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenuInflect);
-
-        jMenu7.setText("Selected Rule");
-        jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
 
@@ -475,7 +470,7 @@ public class MenuDelac extends javax.swing.JFrame {
             Object[] row = Utils.delacToObject(lemmaAll, FST, SynSem, comment, dic);
             if (edit) {
                 for (int i = 0; i < row.length; i++) {
-                    if (i != 7) {
+                    if (i != 6) {
                         editorDelac.getTableModel().setValueAt(row[i], idedit, i);
                     }
                 }
@@ -483,7 +478,7 @@ public class MenuDelac extends javax.swing.JFrame {
                 editorDelac.getTableModel().insertRow(idedit, row);
                 editorDelac.getjTable1().setModel(editorDelac.getTableModel());
                 for (int i = idedit; i < editorDelac.getTableModel().getRowCount(); i++) {
-                    editorDelac.getTableModel().setValueAt(i, i, 7);
+                    editorDelac.getTableModel().setValueAt(i, i, 6);
                 }
                 editorDelac.getJLablel13().setText(String.valueOf(editorDelac.getjTable1().getRowCount()));
             }
@@ -517,6 +512,7 @@ public class MenuDelac extends javax.swing.JFrame {
     private void jButtonAddSimpleFormActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel newmodel = (DefaultTableModel) jTableFLX.getModel();
         newmodel.addRow(new Object[]{jTableFLX.getModel().getRowCount() + 1, "", "", "", "", ""});
+        jTableFLX.invalidate();
     }
 
     private void jMenuCloseMouseClicked(java.awt.event.MouseEvent evt) {
@@ -536,7 +532,6 @@ public class MenuDelac extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuClose;
     private javax.swing.JMenu jMenuInflect;
@@ -548,7 +543,6 @@ public class MenuDelac extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPaneTable;
-    private javax.swing.JTable jTableDelaf;
     private javax.swing.JTable jTableFLX;
     private javax.swing.JTextField jTextFieldCFlx;
     private javax.swing.JTextField jTextFieldComment;
