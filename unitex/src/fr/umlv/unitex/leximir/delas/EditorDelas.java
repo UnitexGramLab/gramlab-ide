@@ -59,6 +59,7 @@ import fr.umlv.unitex.leximir.util.DuplicationFinder;
 import fr.umlv.unitex.leximir.util.Utils;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 /**
  * @author Rojo Rabelisoa
@@ -805,7 +806,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
                     String fn = data.getKey().contains(File.separator) ? new File(data.getKey()).getName() : data.getKey();
-                    try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn))) {
+                    try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
                         for (String lines : data.getValue()) {
                             UnicodeIO.writeString(out, lines);
                         }
