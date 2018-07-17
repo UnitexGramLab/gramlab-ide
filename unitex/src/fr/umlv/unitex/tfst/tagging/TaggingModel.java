@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import javax.swing.JOptionPane;
 import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.config.ConfigManager;
@@ -137,7 +137,7 @@ public class TaggingModel {
 		renumber = new int[n];
 		//init 
 		tokens = new HashMap<Integer,ArrayList<String>>();
-		//System.out.println("size"+tokens.size());
+		System.out.println("size"+tokens.size());
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
 			if (boxes[i].type == GenericGraphBox.INITIAL)
@@ -146,11 +146,7 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
-		/* new call to updateBounds here */
-		boolean[] visited = new boolean[n] ;
-		//updateBounds(initialState, visited);
 		updateFactorizationNodes();
-		
 		generateAlphabet();
 		System.out.println("REGEX : "+regex);
 		generateTokensList();
@@ -379,44 +375,59 @@ public class TaggingModel {
 		System.out.println("checkingNewText Ending");
 	}
 	
+	
 	/** 
 	 * 
 	 */
-	private void updateBounds( int current, boolean[] visited ) {
+
+//	public void updateBoundsOfNextUseless( TfstGraphBox firstBox, TfstGraphBox SecondBox) {
+//		if( taggingStates[SecondBox.getBoxNumber()] == TaggingState.SELECTED || taggingStates[SecondBox.getBoxNumber()] == TaggingState.NEUTRAL )
+//			return;
+//		Bounds bounds = new Bounds(firstBox.getBounds());
+//		bounds.setStart_in_tokens(bounds.getStart_in_tokens()+2);
+//		bounds.setEnd_in_tokens(bounds.getEnd_in_tokens()+2);
+//		SecondBox.setBounds(bounds);
+//	}
+	
+	private void updateBoundsReversed( int current, boolean[] visited ) {
+		final ArrayList<Integer>[] reverse = computeReverseTransitions();
 		if(visited.length == 0 )
 			return;
-		//final ArrayList<Integer>[] reverse = computeReverseTransitions();
+		
+		if (visited[current])
+			return;
+		visited[current] = true;
+		for (final int destIndex : reverse[current]) {
+			if( boxes[current].type == TfstGraphBox.NORMAL && ( taggingStates[destIndex] == TaggingState.TO_BE_REMOVED || taggingStates[destIndex] == TaggingState.USELESS ) ) {
+				Bounds b = new Bounds(boxes[current].getBounds());
+				b.setStart_in_tokens(b.getStart_in_tokens()-2);
+				b.setEnd_in_tokens(b.getEnd_in_tokens()-2);
+				boxes[destIndex].setBounds(b);
+				
+			}
+			updateBoundsReversed(destIndex, visited);
+		}
+	}
+	
+
+	private void updateBounds( int current, boolean[] visited ) {
+		
+		if(visited.length == 0 )
+			return;
+		
 		if (visited[current])
 			return;
 		visited[current] = true;
 		for (final GenericGraphBox gb : boxes[current].transitions) {
 			final int destIndex = getBoxIndex((TfstGraphBox) gb);
-			System.out.println("current : "+ current +" --> destIndex : "+destIndex);
-			if( boxes[current].type == TfstGraphBox.NORMAL) {
-				Bounds b = boxes[current].getBounds();
-				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
-				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
+
+			if( boxes[current].type == TfstGraphBox.NORMAL && ( taggingStates[destIndex] == TaggingState.TO_BE_REMOVED || taggingStates[destIndex] == TaggingState.USELESS ) ) {
+				Bounds b = new Bounds(boxes[current].getBounds());
+				b.setStart_in_tokens(b.getStart_in_tokens()+2);
+				b.setEnd_in_tokens(b.getEnd_in_tokens()+2);
 				boxes[destIndex].setBounds(b);
-				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
-				if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
-					System.out.println("to check current : "+ current +" --> destIndex : "+destIndex);
-				}
-			}	/*System.err.println("current : "+current
-					+"\tdestIndex : "+destIndex
-					+"\tvisited size : "+visited.length
-					);*/
-			
-//			if( taggingStates[current] == TaggingState.NEUTRAL && taggingStates[destIndex] == TaggingState.SELECTED )
-//				taggingStates[destIndex] = TaggingState.TO_CHECK;
-//			if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
-//				Bounds b = boxes[current].getBounds();
-//				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
-//				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
-//				boxes[destIndex].setBounds(b);
-//				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
-//				taggingStates[destIndex] = TaggingState.NEUTRAL;
-//				
-//			}
+				//System.out.println("box destIndex bounds :\t" + boxes[destIndex].getBounds().toString() +" | " + b.toString());
+			}
 			updateBounds(destIndex, visited);
 		}
 	}
@@ -425,7 +436,7 @@ public class TaggingModel {
 	 */
 	private void updateFactorizationNodes() {
 		
-		if (boxes.length == 0)
+        	if (boxes.length == 0)
 			return;
 		/*
 		 * First, we look for useless states (neither accessible and
@@ -561,12 +572,16 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
+
 					computeFactorizationNodes();
 					System.out.println("USELESS CASE NODES COMPUTING FIRST");
 					/* this is the key location of verification */
 					System.out.println(i+" switched from USELESS to ANYTHING ELSE");
 					checkNewBranch( i );
+
 					
+					/* this is the key location of verification */
+					checkNewBranch(i);
 				}
 			}
 		}
