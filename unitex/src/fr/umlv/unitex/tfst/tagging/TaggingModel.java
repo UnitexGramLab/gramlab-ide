@@ -22,7 +22,11 @@ package fr.umlv.unitex.tfst.tagging;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
@@ -43,6 +47,7 @@ public class TaggingModel {
 	 * We use an array that is a copy of zone's boxes, because we want to keep
 	 * constant indices, even if some boxes are removed
 	 */
+	HashMap<Integer,ArrayList<String>> tokens;
 	TfstGraphBox[] boxes;
 	TaggingState[] taggingStates;
 	int[] renumber;
@@ -105,6 +110,9 @@ public class TaggingModel {
 			} else {
 				
 				updateFactorizationNodes();
+				//updateBoundsReversed(finalState, new boolean[boxes.length]);
+				//updateBounds(initialState, new boolean[boxes.length]);
+				
 			}
 		}
 	}
@@ -119,6 +127,9 @@ public class TaggingModel {
 		taggingStates = new TaggingState[n];
 		factorization = new boolean[n];
 		renumber = new int[n];
+		//init 
+		tokens = new HashMap<Integer,ArrayList<String>>();
+		System.out.println("size"+tokens.size());
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
 			if (boxes[i].type == GenericGraphBox.INITIAL)
@@ -127,51 +138,144 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
-		/* new call to updateBounds here */
-		boolean[] visited = new boolean[n] ;
-		//updateBounds(initialState, visited);
 		updateFactorizationNodes();
+		generateTokensList();
 	}
+	
+	
+	public void generateTokensList() {
+		for( TfstGraphBox gb : boxes ) {
+			if( gb == null )
+				System.out.println(gb.getBoxNumber() +" null");
+			if( gb.getBoxNumber() == 0 || gb.getBoxNumber() == 1)
+				continue;
+			int index = gb.getBounds().getStart_in_tokens();
+			if( !tokens.containsKey( index ) )
+				tokens.put( index, new ArrayList<String>());
+			if( gb.getContent().contains("{")) {
+				if ( !tokens.get(index).contains(gb.getContent().split(",")[0].substring(1)))
+					tokens.get(index).add(gb.getContent().split(",")[0].substring(1));
+			}
+			else {
+				if( !tokens.get(index).contains(gb.getContent()) )
+					tokens.get(index).add(gb.getContent());
+			}
+		}
+		System.out.println(tokens);
+	}
+	
+	void checkNewBranch( int i ){
+		int prev = getPreviousFactorizationNodeIndex(getPreviousFactorizationNodeIndex(i)); // local fix 
+		int next = getNextFactorizationNodeIndex(i);
+		StringBuilder newTokenBranch=new StringBuilder("");
+		int initialI = i;
+		String temp;
+		while( boxes[i].type == TfstGraphBox.NORMAL && taggingStates[i] == TaggingState.USELESS ) {
+			if( boxes[i].getContent().contains("{"))
+				temp = boxes[i].getContent().split(",")[0].substring(1);
+			else {
+				temp = boxes[i].getContent();
+			}
+			System.out.println("i + temp :"+ i +" "+ temp);
+			newTokenBranch.append(temp+" ");
+			setBoxStateInternal(i, TaggingState.NEUTRAL);
+			i = getBoxIndex((TfstGraphBox)(boxes[i].transitions.get(0)));
+			System.out.println("tokens to verify : "+newTokenBranch.toString());
+		}
+
+		/* comparing and updating bounds here */
+		System.out.println("testing time");
+		System.out.println("prev?"+boxes[prev].getContent());
+		System.out.println("next?"+boxes[next].getContent());
+		
+		for( int j = boxes[prev].getBounds().getStart_in_tokens()+2 ; j < boxes[next].getBounds().getStart_in_tokens() ; j=j+2 ) {
+			i = initialI;
+			System.out.println("j ?" + j);
+			boolean isItMatching=false;
+			for ( String s : tokens.get(j) ) {
+				if( s.equals("<E>")) break;
+				if( newTokenBranch.toString().startsWith(s) ) {
+					isItMatching = true;
+					newTokenBranch.delete(0,s.length() ); // l'espace a enlever
+					System.out.println("what's left of new branch: "+newTokenBranch);
+					Bounds b = new Bounds(j,0,0,j,0,0); // j est une valeur temporaire
+					System.out.println("initialI :"+initialI);
+					boxes[initialI].setBounds(b);
+					//i = boxes[i].transitions.get(0).getBoxNumber();
+				}
+			}
+			if( !isItMatching ) {
+				JOptionPane.showMessageDialog(null,
+						"Content of new box isn't matching the content in parallel paths",
+						"please try again",
+						JOptionPane.PLAIN_MESSAGE);
+				boxes[prev].removeTransitionTo(boxes[initialI]);
+				boxes[initialI].removeTransitionTo(boxes[next]);
+				
+			}
+		}
+		
+		
+		
+	/*
+	  JOptionPane.showMessageDialog(null,
+							"Everything looks OK",
+							"OK",
+							JOptionPane.PLAIN_MESSAGE);	
+	 */
+	}
+	
 	
 	/** 
 	 * 
 	 */
+//	public void updateBoundsOfNextUseless( TfstGraphBox firstBox, TfstGraphBox SecondBox) {
+//		if( taggingStates[SecondBox.getBoxNumber()] == TaggingState.SELECTED || taggingStates[SecondBox.getBoxNumber()] == TaggingState.NEUTRAL )
+//			return;
+//		Bounds bounds = new Bounds(firstBox.getBounds());
+//		bounds.setStart_in_tokens(bounds.getStart_in_tokens()+2);
+//		bounds.setEnd_in_tokens(bounds.getEnd_in_tokens()+2);
+//		SecondBox.setBounds(bounds);
+//	}
 	
-	private void updateBounds( int current, boolean[] visited ) {
+	private void updateBoundsReversed( int current, boolean[] visited ) {
+		final ArrayList<Integer>[] reverse = computeReverseTransitions();
 		if(visited.length == 0 )
 			return;
-		//final ArrayList<Integer>[] reverse = computeReverseTransitions();
+		
+		if (visited[current])
+			return;
+		visited[current] = true;
+		for (final int destIndex : reverse[current]) {
+			if( boxes[current].type == TfstGraphBox.NORMAL && ( taggingStates[destIndex] == TaggingState.TO_BE_REMOVED || taggingStates[destIndex] == TaggingState.USELESS ) ) {
+				Bounds b = new Bounds(boxes[current].getBounds());
+				b.setStart_in_tokens(b.getStart_in_tokens()-2);
+				b.setEnd_in_tokens(b.getEnd_in_tokens()-2);
+				boxes[destIndex].setBounds(b);
+				
+			}
+			updateBoundsReversed(destIndex, visited);
+		}
+	}
+	
+	private void updateBounds( int current, boolean[] visited ) {
+		
+		if(visited.length == 0 )
+			return;
+		
 		if (visited[current])
 			return;
 		visited[current] = true;
 		for (final GenericGraphBox gb : boxes[current].transitions) {
 			final int destIndex = getBoxIndex((TfstGraphBox) gb);
-			System.out.println("current : "+ current +" --> destIndex : "+destIndex);
-			if( boxes[current].type == TfstGraphBox.NORMAL) {
-				Bounds b = boxes[current].getBounds();
-				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
-				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
+
+			if( boxes[current].type == TfstGraphBox.NORMAL && ( taggingStates[destIndex] == TaggingState.TO_BE_REMOVED || taggingStates[destIndex] == TaggingState.USELESS ) ) {
+				Bounds b = new Bounds(boxes[current].getBounds());
+				b.setStart_in_tokens(b.getStart_in_tokens()+2);
+				b.setEnd_in_tokens(b.getEnd_in_tokens()+2);
 				boxes[destIndex].setBounds(b);
-				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
-				if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
-					System.out.println("to check current : "+ current +" --> destIndex : "+destIndex);
-				}
-			}	/*System.err.println("current : "+current
-					+"\tdestIndex : "+destIndex
-					+"\tvisited size : "+visited.length
-					);*/
-			
-//			if( taggingStates[current] == TaggingState.NEUTRAL && taggingStates[destIndex] == TaggingState.SELECTED )
-//				taggingStates[destIndex] = TaggingState.TO_CHECK;
-//			if ( taggingStates[destIndex] == TaggingState.TO_CHECK ) {
-//				Bounds b = boxes[current].getBounds();
-//				b.setStart_in_tokens(b.getEnd_in_tokens()+2);
-//				b.setEnd_in_tokens(b.getStart_in_tokens()+2);
-//				boxes[destIndex].setBounds(b);
-//				System.out.println(boxes[destIndex].getBounds().toString() +" " + b.toString());
-//				taggingStates[destIndex] = TaggingState.NEUTRAL;
-//				
-//			}
+				//System.out.println("box destIndex bounds :\t" + boxes[destIndex].getBounds().toString() +" | " + b.toString());
+			}
 			updateBounds(destIndex, visited);
 		}
 	}
@@ -180,6 +284,8 @@ public class TaggingModel {
 	 * 
 	 */
 	private void updateFactorizationNodes() {
+		
+		
 		if (boxes.length == 0)
 			return;
 		/*
@@ -189,7 +295,7 @@ public class TaggingModel {
 		 */
 		markUselessStates();
 		/* Then we look for factorization nodes */
-		/* There should be the real calculus here */
+		/* There should be the real calculus here */ 
 		computeFactorizationNodes();
 		/* And finally, we can mark as selected all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
@@ -316,11 +422,16 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
-					setBoxStateInternal(i, TaggingState.TO_CHECK);
+					
+					/* this is the key location of verification */
+					checkNewBranch(i);
+					
 				}
 			}
 		}
 	}
+	
+	
 	/** @Yass
 	 * This function takes the Initial state and an empty boolean array and recursively checks if the boxes are accessible, ie
 	 * if there's a set of transitions that link the n box to the Initial state.
