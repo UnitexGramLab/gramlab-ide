@@ -70,7 +70,17 @@ public class Bounds {
 		relative_to_global();
 		// System.out.println("2e constructeur: "+global_start_in_chars+" -> "+global_end_in_chars);
 	}
+	/* specific bounds constructor yassine */
+	public Bounds(Bounds bounds) {
+		this.start_in_chars = 0;
+		this.start_in_letters = 0;
+		this.start_in_tokens = bounds.start_in_tokens;
 
+		this.end_in_chars = 0;
+		this.end_in_letters = 0;
+		this.end_in_tokens = bounds.end_in_tokens;
+	}
+	
 	private void global_to_relative() {
 		/*
 		 * We set those values by default for Korean transitions. This may
