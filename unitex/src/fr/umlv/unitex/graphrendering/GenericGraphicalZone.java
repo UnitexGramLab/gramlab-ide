@@ -681,6 +681,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			gr.setColor(GraphDecoratorConfig.DEBUG_COLOR);
 		    gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
 			gr.drawString( model.getBoxState((TfstGraphBox)g).toString(), g.X1 + 5 , g.Y1 - 15 );
+			gr.drawString(model.renumber[i]+" "+model.factorization[i], g.X1 + 5 , g.Y1 - 25);
 			g.draw(gr, params);
 		}
 	}
