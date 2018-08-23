@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -50,9 +51,9 @@ public class TaggingModel {
 	HashMap<Integer,ArrayList<String>> tokens;
 	TfstGraphBox[] boxes;
 	TaggingState[] taggingStates;
-	int[] renumber;
+	public int[] renumber;
 	int[] sortedNodes;
-	boolean[] factorization;
+	public boolean[] factorization;
 	int initialState;
 	int finalState;
 	private boolean linearTfst;
@@ -129,7 +130,7 @@ public class TaggingModel {
 		renumber = new int[n];
 		//init 
 		tokens = new HashMap<Integer,ArrayList<String>>();
-		System.out.println("size"+tokens.size());
+		//System.out.println("size"+tokens.size());
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
 			if (boxes[i].type == GenericGraphBox.INITIAL)
@@ -140,33 +141,53 @@ public class TaggingModel {
 		}
 		updateFactorizationNodes();
 		generateTokensList();
+		System.out.println("TOKENS : "+ tokens);
 	}
 	
-	
+	/*
+	 * for each box we will start at it's starting bound, split the inside based on delimiters and add them to the hashmap. 
+	 * if 2 words split by a comma are found, they will be stored subsequently in the hashmap at the starting bound's value, then +1 and so on. 
+	 */
 	public void generateTokensList() {
 		for( TfstGraphBox gb : boxes ) {
 			if( gb == null )
-				System.out.println(gb.getBoxNumber() +" null");
+				continue;
+			
 			if( gb.getBoxNumber() == 0 || gb.getBoxNumber() == 1)
 				continue;
+			
 			int index = gb.getBounds().getStart_in_tokens();
-			if( !tokens.containsKey( index ) )
-				tokens.put( index, new ArrayList<String>());
-			if( gb.getContent().contains("{")) {
-				if ( !tokens.get(index).contains(gb.getContent().split(",")[0].substring(1)))
-					tokens.get(index).add(gb.getContent().split(",")[0].substring(1));
-			}
+			String temp;
+			String[] tokensList;
+			
+			if( gb.getContent().contains("{")  )
+				temp = gb.getContent().split(",")[0].substring(1);
 			else {
-				if( !tokens.get(index).contains(gb.getContent()) )
-					tokens.get(index).add(gb.getContent());
+				temp = gb.getContent();
 			}
+			System.out.println("temp : "+temp);
+            tokensList = Pattern.compile("\\b").split(temp);
+            System.out.println("tokensList : ");
+            for( String s : tokensList ) {
+            	System.out.println(s);
+            	if( !tokens.containsKey(index) )  
+            		tokens.put(index, new ArrayList<String>());
+            	if( !tokens.get(index).contains(s))
+            		tokens.get(index).add(s);
+            	System.out.println();
+            	index++;
+            }
 		}
-		System.out.println(tokens);
+		 for ( int i=0; i<tokens.size();i++ )
+         	if( !tokens.containsKey(i) ) {
+         		tokens.put( i, new ArrayList<String>());
+         		tokens.get(i).add(" ");
+         	}
 	}
 	
 	void checkNewBranch( int i ){
-		int prev = getPreviousFactorizationNodeIndex(getPreviousFactorizationNodeIndex(i)); // local fix 
-		int next = getNextFactorizationNodeIndex(i);
+		int prev = getPreviousFactorizationNodeIndex(renumber[i]);
+		int next = getNextFactorizationNodeIndex(renumber[i]);
 		StringBuilder newTokenBranch=new StringBuilder("");
 		int initialI = i;
 		String temp;
@@ -184,26 +205,41 @@ public class TaggingModel {
 		}
 
 		/* comparing and updating bounds here */
-		System.out.println("testing time");
-		System.out.println("prev?"+boxes[prev].getContent());
-		System.out.println("next?"+boxes[next].getContent());
-		
+		System.out.println("prev ? "+boxes[prev].getContent());
+		System.out.println("next ? "+boxes[next].getContent());
+		i = initialI;
 		for( int j = boxes[prev].getBounds().getStart_in_tokens()+2 ; j < boxes[next].getBounds().getStart_in_tokens() ; j=j+2 ) {
-			i = initialI;
+			
 			System.out.println("j ?" + j);
 			boolean isItMatching=false;
+//			if( tokens.get(j) == null && newTokenBranch.toString().startsWith(" ") ) {
+//				System.out.println("case space");
+//				newTokenBranch.delete( 0,1 );
+//				isItMatching = true;
+//				break;
+//			}
+//			if( tokens.get(j).equals(",") && newTokenBranch.toString().startsWith(",") ) {
+//				newokenBranch.delete( 0,1 );
+//				isItMatching = true;
+//				break;
+//			}
 			for ( String s : tokens.get(j) ) {
+				System.out.println("testing : "+s+" ?"+newTokenBranch);
 				if( s.equals("<E>")) break;
 				if( newTokenBranch.toString().startsWith(s) ) {
 					isItMatching = true;
-					newTokenBranch.delete(0,s.length() ); // l'espace a enlever
-					System.out.println("what's left of new branch: "+newTokenBranch);
+					newTokenBranch.delete(0,s.length() );
+					if( newTokenBranch.toString().startsWith(" ")) newTokenBranch.delete(0, 1);
+					
+					
 					Bounds b = new Bounds(j,0,0,j,0,0); // j est une valeur temporaire
-					System.out.println("initialI :"+initialI);
-					boxes[initialI].setBounds(b);
-					//i = boxes[i].transitions.get(0).getBoxNumber();
+					System.out.println("box number :"+i);
+					boxes[i].setBounds(b);
+					i = boxes[i].transitions.get(0).getBoxNumber();
+							
 				}
 			}
+			
 			if( !isItMatching ) {
 				JOptionPane.showMessageDialog(null,
 						"Content of new box isn't matching the content in parallel paths",
@@ -284,7 +320,6 @@ public class TaggingModel {
 	 * 
 	 */
 	private void updateFactorizationNodes() {
-		
 		
 		if (boxes.length == 0)
 			return;
@@ -422,9 +457,9 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
-					
+					computeFactorizationNodes();
 					/* this is the key location of verification */
-					checkNewBranch(i);
+					checkNewBranch( i );
 					
 				}
 			}
