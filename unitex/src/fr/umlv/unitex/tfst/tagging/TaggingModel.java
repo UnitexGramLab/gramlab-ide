@@ -137,7 +137,7 @@ public class TaggingModel {
 		renumber = new int[n];
 		//init 
 		tokens = new HashMap<Integer,ArrayList<String>>();
-		System.out.println("size"+tokens.size());
+		//System.out.println("size"+tokens.size());
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
 			if (boxes[i].type == GenericGraphBox.INITIAL)
@@ -181,7 +181,6 @@ public class TaggingModel {
 		}	
 	}
 	
-	
 	/*
 	 * for each box we will start at it's starting bound, split the inside based on delimiters and add them to the hashmap. 
 	 * if 2 words split by a comma are found, they will be stored subsequently in the hashmap at the starting bound's value, then +1 and so on. 
@@ -189,19 +188,15 @@ public class TaggingModel {
 	public void generateTokensList() {
 		//System.out.println("BOXES COUNT : "+boxes.length);
 		for( TfstGraphBox gb : boxes ) {
-			if( taggingStates[gb.getBoxNumber()] == TaggingState.TO_BE_REMOVED || taggingStates[gb.getBoxNumber()] == TaggingState.USELESS )
-				break;
-			//System.out.println("inside "+gb.getBoxNumber());
-			if( gb == null || gb.getContent() == null )
+			if( gb == null )
 				continue;
 			
-			if( gb.getBounds() == null)
+			if( gb.getBoxNumber() == 0 || gb.getBoxNumber() == 1)
 				continue;
 			
 			int index = gb.getBounds().getStart_in_tokens();
-			String temp = null;
-			ArrayList<String> tokensList = new ArrayList<String>();
-			
+			String temp;
+			String[] tokensList;			
 			if( gb.getContent().contains("{")  )
 				temp = gb.getContent().split(",")[0].substring(1);
 			else {
@@ -217,7 +212,7 @@ public class TaggingModel {
 			}
 			System.out.println("content "+temp);
 			
-            if( gb.getBounds().getEnd_in_tokens()
+                        if( gb.getBounds().getEnd_in_tokens()
 			== gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
 				
 	            for( String s : tokensList ) {
@@ -265,8 +260,7 @@ public class TaggingModel {
 			if( taggingStates[b.getBoxNumber()] == TaggingState.USELESS ) {
 				System.out.println("calling computePath");
 				computePath( renumber[b.getBoxNumber()], bfs, new ArrayList<Integer>(),allPaths );
-			}
-				
+			}				
 		}
 		System.out.println("all Paths :");
 		System.out.println(allPaths);
@@ -436,7 +430,7 @@ public class TaggingModel {
 	 */
 	private void updateFactorizationNodes() {
 		
-        	if (boxes.length == 0)
+		if (boxes.length == 0)
 			return;
 		/*
 		 * First, we look for useless states (neither accessible and
@@ -572,7 +566,6 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
-
 					computeFactorizationNodes();
 					System.out.println("USELESS CASE NODES COMPUTING FIRST");
 					/* this is the key location of verification */

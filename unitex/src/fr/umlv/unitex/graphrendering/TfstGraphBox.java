@@ -179,6 +179,9 @@ public class TfstGraphBox extends GenericGraphBox {
 		tokenizeText(s, false);
 		if (!tmp.equals("<E>") && !tmp.equals(",")) {
 			// updating the letters bounds
+			System.out.println("updating letter bounds");
+			
+			System.out.println("tmp = "+tmp);
 			updateBoundsLetters( tmp.split(",")[0].length()-1 );
 			
 			// dimensions of a full box
@@ -191,8 +194,8 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		Y1 = Y - Height / 2;
 		X_out = X + Width + 5;
-		// updating the letters bounds
-		updateBoundsLetters( tmp.length() );
+		
+		
 	}
 	// @Yass
 	public void updateBoundsLetters( int length ) {
@@ -297,6 +300,7 @@ public class TfstGraphBox extends GenericGraphBox {
 			        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
 			        + bounds.getEnd_in_letters();
 			     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());
+			    
 			    }
 		g.setComposite(c);
 		params.setBackgroundColor(old);
