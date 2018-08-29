@@ -22,13 +22,16 @@ package fr.umlv.unitex.tfst.tagging;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
@@ -57,6 +60,7 @@ public class TaggingModel {
 	int initialState;
 	int finalState;
 	private boolean linearTfst;
+	String regex;
 	
 	ActionListener actionListener=new ActionListener() {
 		@Override
@@ -89,6 +93,35 @@ public class TaggingModel {
 	public void unregisterListeners() {
 		zone.removeActionListner(actionListener);
 		zone.removeGraphListener(graphListener);		
+	}
+	
+	
+	void generateAlphabet() {
+		if( regex == null ) {
+			File alphabetFile = ConfigManager.getManager().getAlphabet(null);
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(alphabetFile));
+				String line; 
+				StringBuilder alphabet= new StringBuilder();
+				while ((line = br.readLine()) != null) {
+					if( line.startsWith("#")) {
+						System.out.println("KOREAN SPECIAL CASE "+line.charAt(0)+" "+line.charAt(1));
+						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
+					}
+					alphabet.append(line);
+					
+				}
+				StringBuilder regexBuilder = new StringBuilder();
+				regexBuilder.append("([").append(alphabet.toString())
+					.append("]+|[^").append(alphabet.toString()).append("]+)*");
+				regex = regexBuilder.toString();
+				//System.out.println("REGEX : ");
+				//System.out.println(regex);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {}	
+		}	
 	}
 	
 	
@@ -140,8 +173,11 @@ public class TaggingModel {
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
 		updateFactorizationNodes();
+		generateAlphabet();
+		//System.out.println("REGEX : "+regex);
 		generateTokensList();
 		System.out.println("TOKENS : "+ tokens);
+		
 	}
 	
 	/*
@@ -149,15 +185,17 @@ public class TaggingModel {
 	 * if 2 words split by a comma are found, they will be stored subsequently in the hashmap at the starting bound's value, then +1 and so on. 
 	 */
 	public void generateTokensList() {
+		System.out.println("BOXES COUNT : "+boxes.length);
 		for( TfstGraphBox gb : boxes ) {
-			if( gb == null )
+			//System.out.println("inside "+gb.getBoxNumber());
+			if( gb == null || gb.getContent() == null )
 				continue;
 			
-			if( gb.getBoxNumber() == 0 || gb.getBoxNumber() == 1)
+			if( gb.getBounds() == null)
 				continue;
 			
 			int index = gb.getBounds().getStart_in_tokens();
-			String temp;
+			String temp = null;
 			String[] tokensList;
 			
 			if( gb.getContent().contains("{")  )
@@ -165,92 +203,56 @@ public class TaggingModel {
 			else {
 				temp = gb.getContent();
 			}
-			System.out.println("temp : "+temp);
-            tokensList = Pattern.compile("\\b").split(temp);
-            System.out.println("tokensList : ");
-            for( String s : tokensList ) {
-            	System.out.println(s);
-            	if( !tokens.containsKey(index) )  
+			if(regex == null)
+				System.out.println("regex");
+
+			if(temp == null)
+				System.out.println("regex");
+			//System.out.println("before tokenslist");
+			Pattern pattern = Pattern.compile(regex);
+			//System.out.println("midway");
+            tokensList = pattern.split(temp);
+            //System.out.println("after tokensList");
+			
+            if( gb.getBounds().getEnd_in_tokens()
+			== gb.getBounds().getStart_in_tokens() + tokensList.length - 1) {
+				
+	            for( String s : tokensList ) {
+	            	if( !tokens.containsKey(index) )  
+	            		tokens.put(index, new ArrayList<String>());
+	            	if( !tokens.get(index).contains(s))
+	            		tokens.get(index).add(s);
+	            	index++;
+	            }
+			} else
+			if( gb.getBounds().getEnd_in_tokens()
+			== gb.getBounds().getStart_in_tokens() ){
+				if( !tokens.containsKey(index) )  
             		tokens.put(index, new ArrayList<String>());
-            	if( !tokens.get(index).contains(s))
-            		tokens.get(index).add(s);
-            	System.out.println();
-            	index++;
-            }
+            	if( !tokens.get(index).contains(temp))
+            		tokens.get(index).add(temp);
+			} else {
+				// implicit case where the difference is 0 < D < tokensList.length
+				
+				
+				// TODO
+			}
+			
 		}
-		 for ( int i=0; i<tokens.size();i++ )
-         	if( !tokens.containsKey(i) ) {
-         		tokens.put( i, new ArrayList<String>());
-         		tokens.get(i).add(" ");
-         	}
+		for ( int i=0; i<tokens.size();i++ )
+	    	if( !tokens.containsKey(i) ) {
+	    		tokens.put( i, new ArrayList<String>());
+	    		tokens.get(i).add(" ");
+	    	}
 	}
 	
 	void checkNewBranch( int i ){
 		int prev = getPreviousFactorizationNodeIndex(renumber[i]);
 		int next = getNextFactorizationNodeIndex(renumber[i]);
-		StringBuilder newTokenBranch=new StringBuilder("");
-		int initialI = i;
-		String temp;
-		while( boxes[i].type == TfstGraphBox.NORMAL && taggingStates[i] == TaggingState.USELESS ) {
-			if( boxes[i].getContent().contains("{"))
-				temp = boxes[i].getContent().split(",")[0].substring(1);
-			else {
-				temp = boxes[i].getContent();
-			}
-			System.out.println("i + temp :"+ i +" "+ temp);
-			newTokenBranch.append(temp+" ");
-			setBoxStateInternal(i, TaggingState.NEUTRAL);
-			i = getBoxIndex((TfstGraphBox)(boxes[i].transitions.get(0)));
-			System.out.println("tokens to verify : "+newTokenBranch.toString());
-		}
-
-		/* comparing and updating bounds here */
-		System.out.println("prev ? "+boxes[prev].getContent());
-		System.out.println("next ? "+boxes[next].getContent());
-		i = initialI;
-		for( int j = boxes[prev].getBounds().getStart_in_tokens()+2 ; j < boxes[next].getBounds().getStart_in_tokens() ; j=j+2 ) {
-			
-			System.out.println("j ?" + j);
-			boolean isItMatching=false;
-//			if( tokens.get(j) == null && newTokenBranch.toString().startsWith(" ") ) {
-//				System.out.println("case space");
-//				newTokenBranch.delete( 0,1 );
-//				isItMatching = true;
-//				break;
-//			}
-//			if( tokens.get(j).equals(",") && newTokenBranch.toString().startsWith(",") ) {
-//				newokenBranch.delete( 0,1 );
-//				isItMatching = true;
-//				break;
-//			}
-			for ( String s : tokens.get(j) ) {
-				System.out.println("testing : "+s+" ?"+newTokenBranch);
-				if( s.equals("<E>")) break;
-				if( newTokenBranch.toString().startsWith(s) ) {
-					isItMatching = true;
-					newTokenBranch.delete(0,s.length() );
-					if( newTokenBranch.toString().startsWith(" ")) newTokenBranch.delete(0, 1);
-					
-					
-					Bounds b = new Bounds(j,0,0,j,0,0); // j est une valeur temporaire
-					System.out.println("box number :"+i);
-					boxes[i].setBounds(b);
-					i = boxes[i].transitions.get(0).getBoxNumber();
-							
-				}
-			}
-			
-			if( !isItMatching ) {
-				JOptionPane.showMessageDialog(null,
-						"Content of new box isn't matching the content in parallel paths",
-						"please try again",
-						JOptionPane.PLAIN_MESSAGE);
-				boxes[prev].removeTransitionTo(boxes[initialI]);
-				boxes[initialI].removeTransitionTo(boxes[next]);
-				
-			}
-		}
 		
+		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
+		computeAllPaths( prev, next, allPaths );
+	
 		
 		
 	/*
@@ -262,6 +264,25 @@ public class TaggingModel {
 	}
 	
 	
+	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
+		for( GenericGraphBox b : (boxes[bfp].transitions) ) {
+			System.out.println(b.getContent() + " : renumber : " + renumber[b.getBoxNumber()] + " : normal : "+ b.getBoxNumber());
+			if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED || taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
+				allPaths.add( computePath( b.getBoxNumber(), bfs, new ArrayList<Integer>() ));
+		}
+		System.out.println("allPaths : ");
+		System.out.println(allPaths.toString());
+	}
+	
+	ArrayList<Integer> computePath( int start, int end, ArrayList<Integer> current ) {
+		if( start != end ) {
+			current.add( start );
+			for( GenericGraphBox b : boxes[start].transitions ) {
+				computePath( b.getBoxNumber(), end, current );
+			}
+		}
+		return current;
+	}
 	/** 
 	 * 
 	 */
