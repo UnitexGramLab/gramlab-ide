@@ -27,13 +27,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JOptionPane;
-
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
@@ -96,6 +98,34 @@ public class TaggingModel {
 	public void unregisterListeners() {
 		zone.removeActionListner(actionListener);
 		zone.removeGraphListener(graphListener);		
+	}
+	
+	void generateAlphabet() {
+		if( regex == null ) {
+			File alphabetFile = ConfigManager.getManager().getAlphabet(null);
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(alphabetFile));
+				String line; 
+				StringBuilder alphabet= new StringBuilder();
+				while ((line = br.readLine()) != null) {
+					if( line.startsWith("#")) {
+						System.out.println("KOREAN SPECIAL CASE "+line.charAt(0)+" "+line.charAt(1));
+						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
+					}
+					alphabet.append(line);
+					
+				}
+				StringBuilder regexBuilder = new StringBuilder();
+				regexBuilder.append("([").append(alphabet.toString())
+					.append("]+|[^").append(alphabet.toString()).append("]+)*");
+				regex = regexBuilder.toString();
+				//System.out.println("REGEX : ");
+				//System.out.println(regex);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {}	
+		}	
 	}
 	
 	/** @Yass
@@ -186,23 +216,23 @@ public class TaggingModel {
 	 * if 2 words split by a comma are found, they will be stored subsequently in the hashmap at the starting bound's value, then +1 and so on. 
 	 */
 	public void generateTokensList() {
-		//System.out.println("BOXES COUNT : "+boxes.length);
+		System.out.println("BOXES COUNT : "+boxes.length);
 		for( TfstGraphBox gb : boxes ) {
-			if( gb == null )
+			//System.out.println("inside "+gb.getBoxNumber());
+			if( gb == null || gb.getContent() == null )
 				continue;
 			
-			if( gb.getBoxNumber() == 0 || gb.getBoxNumber() == 1)
+			if( gb.getBounds() == null)
 				continue;
 			
 			int index = gb.getBounds().getStart_in_tokens();
-			String temp;
-			String[] tokensList;			
+			String temp = null;
+			String[] tokensList;
 			if( gb.getContent().contains("{")  )
 				temp = gb.getContent().split(",")[0].substring(1);
 			else {
 				temp = gb.getContent();
 			}
-
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(temp);
 			
@@ -214,7 +244,19 @@ public class TaggingModel {
 			
                         if( gb.getBounds().getEnd_in_tokens()
 			== gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
-				
+			if(regex == null)
+				System.out.println("regex");
+
+			if(temp == null)
+				System.out.println("regex");
+			//System.out.println("before tokenslist");
+			Pattern pattern = Pattern.compile(regex);
+			//System.out.println("midway");
+            tokensList = pattern.split(temp);
+            //System.out.println("after tokensList");
+			
+            if( gb.getBounds().getEnd_in_tokens()
+			== gb.getBounds().getStart_in_tokens() + tokensList.length - 1) {
 	            for( String s : tokensList ) {
 	            	if( !tokens.containsKey(index) )  
 	            		tokens.put(index, new ArrayList<String>());
@@ -241,17 +283,15 @@ public class TaggingModel {
 	    	if( !tokens.containsKey(i) ) {
 	    		tokens.put( i, new ArrayList<String>());
 	    		tokens.get(i).add(" ");
-	    }
+	    	}
 	}
 	
-
+	void checkNewBranch( int i ){
+		int prev = getPreviousFactorizationNodeIndex(renumber[i]);
+		int next = getNextFactorizationNodeIndex(renumber[i]);
+		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
+		computeAllPaths( prev, next, allPaths );
 	
-	
-	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
-		for(int i1=0;i1<factorization.length;i1++)
-			System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-		System.out.println();
-		
 		
 		System.out.println("computeAllPaths Start"); 
 		for( GenericGraphBox b : (boxes[sortedNodes[bfp]].transitions) ) {
@@ -370,6 +410,25 @@ public class TaggingModel {
 	}
 	
 	
+	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
+		for( GenericGraphBox b : (boxes[bfp].transitions) ) {
+			System.out.println(b.getContent() + " : renumber : " + renumber[b.getBoxNumber()] + " : normal : "+ b.getBoxNumber());
+			if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED || taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
+				allPaths.add( computePath( b.getBoxNumber(), bfs, new ArrayList<Integer>() ));
+		}
+		System.out.println("allPaths : ");
+		System.out.println(allPaths.toString());
+	}
+	
+	ArrayList<Integer> computePath( int start, int end, ArrayList<Integer> current ) {
+		if( start != end ) {
+			current.add( start );
+			for( GenericGraphBox b : boxes[start].transitions ) {
+				computePath( b.getBoxNumber(), end, current );
+			}
+		}
+		return current;
+	}
 	/** 
 	 * 
 	 */
