@@ -179,9 +179,6 @@ public class TfstGraphBox extends GenericGraphBox {
 		tokenizeText(s, false);
 		if (!tmp.equals("<E>") && !tmp.equals(",")) {
 			// updating the letters bounds
-			System.out.println("updating letter bounds");
-			
-			System.out.println("tmp = "+tmp);
 			updateBoundsLetters( tmp.split(",")[0].length()-1 );
 			
 			// dimensions of a full box
