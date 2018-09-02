@@ -24,17 +24,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.tfst.Bounds;
 
@@ -61,7 +64,7 @@ public class TaggingModel {
 	int finalState;
 	private boolean linearTfst;
 	String regex;
-	
+	File alphabetFile;
 	ActionListener actionListener=new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -97,29 +100,29 @@ public class TaggingModel {
 	
 	
 	void generateAlphabet() {
-		if( regex == null ) {
-			File alphabetFile = ConfigManager.getManager().getAlphabet(null);
+		if( regex == null || !alphabetFile.equals(ConfigManager.getManager().getAlphabet(null))) { 
+			// switching languages must also switch this
+			alphabetFile = ConfigManager.getManager().getAlphabet(null);
 			try {
-				BufferedReader br = new BufferedReader(new FileReader(alphabetFile));
-				String line; 
 				StringBuilder alphabet= new StringBuilder();
-				while ((line = br.readLine()) != null) {
+				
+				BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream(alphabetFile) , "UTF16"));
+				String line; 
+				while ((line = br.readLine()) != null && !line.equals("\r\n")) {
 					if( line.startsWith("#")) {
 						System.out.println("KOREAN SPECIAL CASE "+line.charAt(0)+" "+line.charAt(1));
 						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
 					}
-					alphabet.append(line);
-					
+		
+					alphabet.append(line.trim());
 				}
 				StringBuilder regexBuilder = new StringBuilder();
 				regexBuilder.append("([").append(alphabet.toString())
 					.append("]+|[^").append(alphabet.toString()).append("]+)*");
 				regex = regexBuilder.toString();
-				//System.out.println("REGEX : ");
-				//System.out.println(regex);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				 //TODO Auto-generated catch block
+				System.out.println("exception");
 			} finally {}	
 		}	
 	}
@@ -173,10 +176,11 @@ public class TaggingModel {
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
 		updateFactorizationNodes();
+		
 		generateAlphabet();
 		//System.out.println("REGEX : "+regex);
 		generateTokensList();
-		System.out.println("TOKENS : "+ tokens);
+		//System.out.println("TOKENS : "+ tokens);
 		
 	}
 	
@@ -185,7 +189,7 @@ public class TaggingModel {
 	 * if 2 words split by a comma are found, they will be stored subsequently in the hashmap at the starting bound's value, then +1 and so on. 
 	 */
 	public void generateTokensList() {
-		System.out.println("BOXES COUNT : "+boxes.length);
+		//System.out.println("BOXES COUNT : "+boxes.length);
 		for( TfstGraphBox gb : boxes ) {
 			//System.out.println("inside "+gb.getBoxNumber());
 			if( gb == null || gb.getContent() == null )
@@ -196,23 +200,16 @@ public class TaggingModel {
 			
 			int index = gb.getBounds().getStart_in_tokens();
 			String temp = null;
-			String[] tokensList;
+			String[] tokensList ;
 			
 			if( gb.getContent().contains("{")  )
 				temp = gb.getContent().split(",")[0].substring(1);
 			else {
 				temp = gb.getContent();
 			}
-			if(regex == null)
-				System.out.println("regex");
 
-			if(temp == null)
-				System.out.println("regex");
-			//System.out.println("before tokenslist");
 			Pattern pattern = Pattern.compile(regex);
-			//System.out.println("midway");
-            tokensList = pattern.split(temp);
-            //System.out.println("after tokensList");
+			tokensList = pattern.split(temp);
 			
             if( gb.getBounds().getEnd_in_tokens()
 			== gb.getBounds().getStart_in_tokens() + tokensList.length - 1) {
@@ -243,16 +240,21 @@ public class TaggingModel {
 	    	if( !tokens.containsKey(i) ) {
 	    		tokens.put( i, new ArrayList<String>());
 	    		tokens.get(i).add(" ");
-	    	}
+	    }
 	}
 	
 	void checkNewBranch( int i ){
 		int prev = getPreviousFactorizationNodeIndex(renumber[i]);
 		int next = getNextFactorizationNodeIndex(renumber[i]);
-		
+		//System.out.println("i renumberI prev next "+i+renumber[i]+prev+renumber[prev]+next+renumber[next]);
 		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
+		
 		computeAllPaths( prev, next, allPaths );
-	
+		System.out.println("allPaths : ");
+		System.out.println(allPaths.toString());
+		
+
+		checkingNewText(prev, next,allPaths);
 		
 		
 	/*
@@ -263,25 +265,58 @@ public class TaggingModel {
 	 */
 	}
 	
+	void checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
+		int index = boxes[bfp].getBounds().getEnd_in_tokens();
+		int end = boxes[bfs].getBounds().getStart_in_tokens();
+		for( ArrayList<Integer> e : allPaths ) {
+			for( Integer i : e ) {
+				System.out.println("i / bfp / bfs "+i+" "+renumber[bfp]+" "+renumber[bfs]);
+				
+				String[] otherTokens = boxes[i].getContent().split(regex);
+				if( otherTokens.length == 1 )
+					for( int j = index; j< end; j++) {
+						if( tokens.get(j).contains(otherTokens[0])) {
+							System.out.println(otherTokens[0]);
+							boxes[i].setBounds( new Bounds(j,0,0,j,otherTokens.length,0));
+						}
+					}
+					if( boxes[i].getBounds() == null ) {
+						JOptionPane.showMessageDialog(null,
+								"ERROR",
+								"OK",
+								JOptionPane.PLAIN_MESSAGE);	
+						
+					}
+				if( otherTokens.length > 1 )
+					for( int k = 0; k< otherTokens.length;k++) {
+						for( int j = index; j< end; j++) {
+							if( tokens.get(j).contains(otherTokens[k])) {
+								boxes[i].setBounds( new Bounds(j,0,0,j+otherTokens.length,otherTokens.length,0));
+							}
+						}		
+					}
+					
+			}
+		}
+	}
 	
 	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
 		for( GenericGraphBox b : (boxes[bfp].transitions) ) {
-			System.out.println(b.getContent() + " : renumber : " + renumber[b.getBoxNumber()] + " : normal : "+ b.getBoxNumber());
-			if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED || taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
-				allPaths.add( computePath( b.getBoxNumber(), bfs, new ArrayList<Integer>() ));
-		}
-		System.out.println("allPaths : ");
-		System.out.println(allPaths.toString());
+			if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED && taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
+				computePath( b.getBoxNumber(), bfs, new ArrayList<Integer>(),allPaths );
+		}	
 	}
 	
-	ArrayList<Integer> computePath( int start, int end, ArrayList<Integer> current ) {
+	void computePath( int start, int end, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> allPaths ) {
 		if( start != end ) {
 			current.add( start );
 			for( GenericGraphBox b : boxes[start].transitions ) {
-				computePath( b.getBoxNumber(), end, current );
+				if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED && taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
+					computePath( b.getBoxNumber(), end, new ArrayList<Integer>(current), allPaths);
 			}
 		}
-		return current;
+		if( boxes[start].transitions.get(0).getBoxNumber() == end )
+			allPaths.add( current );
 	}
 	/** 
 	 * 
@@ -534,6 +569,7 @@ public class TaggingModel {
 		if (pos == 0)
 			return boxIndex;
 		do {
+			System.out.println("pos : "+pos);
 			pos--;
 		} while (!factorization[sortedNodes[pos]]);
 		return sortedNodes[pos];
