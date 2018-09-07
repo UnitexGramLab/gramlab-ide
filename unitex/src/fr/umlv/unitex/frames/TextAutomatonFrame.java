@@ -676,18 +676,18 @@ public class TextAutomatonFrame extends TfstFrame {
 							// if normal
 						}
 					} else if ( b.getBounds() != null && nextBox.getBounds() != null) {
-						int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
-						System.out.println(b.getBoxNumber()+" "+b.getContentText());
-						System.out.println("diff = nextBounds - currentBounds : "+diff+" = "+nextBox.getBounds().getStart_in_tokens()+" - "+
-								b.getBounds().getStart_in_tokens());
-						if (diff > 2 || diff <= 0) {
-							System.out.println("dans le cas d'erreur de diff = 2 ou = 0");
-							errorCount++;
-							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
-						} else if (nextBox.getBounds().equals(b.getBounds())){
-							errorCount++;
-							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
-						}
+//						int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
+//						System.out.println(b.getBoxNumber()+" "+b.getContentText());
+//						System.out.println("diff = nextBounds - currentBounds : "+diff+" = "+nextBox.getBounds().getStart_in_tokens()+" - "+
+//								b.getBounds().getStart_in_tokens());
+//						if (diff > 2 || diff <= 0) {
+//							System.out.println("dans le cas d'erreur de diff = 2 ou = 0");
+//							errorCount++;
+//							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
+//						} else if (nextBox.getBounds().equals(b.getBounds())){
+//							errorCount++;
+//							checkList.add("Error: the box \"" + b.getContentText() + "\" has incorrect transition with the box \"");
+//						}
 					}
 				}
 			}
