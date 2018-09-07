@@ -116,7 +116,7 @@ public class TaggingModel {
 						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
 					}
 		
-					alphabet.append(line.trim());
+					alphabet.append("(").append(line.trim()).append(")");
 				}
 				StringBuilder regexBuilder = new StringBuilder();
 				regexBuilder.append("([").append(alphabet.toString())
@@ -178,7 +178,6 @@ public class TaggingModel {
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
 		updateFactorizationNodes();
-		
 		generateAlphabet();
 		System.out.println("REGEX : "+regex);
 		generateTokensList();
@@ -282,9 +281,10 @@ public class TaggingModel {
 	}
 	
 	void checkNewBranch( int i ){
+		System.out.println("checkNewBranch Start");
 		int prev = getPreviousFactorizationNodeIndex(renumber[i]);
 		int next = getNextFactorizationNodeIndex(renumber[i]);
-		//System.out.println("i renumberI prev next "+i+renumber[i]+prev+renumber[prev]+next+renumber[next]);
+		//System.out.println("i renumberI prev next "+i+" "+renumber[i]+" "+prev+" "+renumber[prev]+" "+next+" "+renumber[next]);
 		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
 		
 		computeAllPaths( prev, next, allPaths );
@@ -411,8 +411,11 @@ public class TaggingModel {
 	}
 	
 	void checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
+		System.out.println("checkingNewText Start");
 		int index = boxes[bfp].getBounds().getEnd_in_tokens();
 		int end = boxes[bfs].getBounds().getStart_in_tokens();
+		if( allPaths.isEmpty() )
+			return;
 		for( ArrayList<Integer> e : allPaths ) {
 			for( Integer i : e ) {
 				System.out.println("i / bfp / bfs "+i+" "+renumber[bfp]+" "+renumber[bfs]);
@@ -443,25 +446,39 @@ public class TaggingModel {
 					
 			}
 		}
+		System.out.println("checkingNewText Ending");
 	}
 	
 	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
+		
+		//System.out.println("computeAllPaths Start"); 
 		for( GenericGraphBox b : (boxes[bfp].transitions) ) {
-			if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED && taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
+			System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
+			if( true /*taggingStates[b.getBoxNumber()] == TaggingState.USELESS */) {
+				System.out.println("It iS USELESS");
 				computePath( b.getBoxNumber(), bfs, new ArrayList<Integer>(),allPaths );
-		}	
+			}
+				
+		}
+		//System.out.println("all Paths :");
+//		System.out.println(allPaths);
+//		System.out.println("computeAllPaths Ending");
 	}
 	
 	void computePath( int start, int end, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> allPaths ) {
 		if( start != end ) {
 			current.add( start );
 			for( GenericGraphBox b : boxes[start].transitions ) {
-				if( taggingStates[b.getBoxNumber()] != TaggingState.SELECTED && taggingStates[b.getBoxNumber()] != TaggingState.NEUTRAL )
+				if( true/*taggingStates[b.getBoxNumber()] == TaggingState.USELESS */) {
+					//System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
 					computePath( b.getBoxNumber(), end, new ArrayList<Integer>(current), allPaths);
+				}
 			}
 		}
-		if( boxes[start].transitions.get(0).getBoxNumber() == end )
-			allPaths.add( current );
+		if( start == end ) {
+			//System.out.println("full branch : "+current);
+			//allPaths.add( current );
+		}
 	}
 	/** 
 	 * 
@@ -659,8 +676,15 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
+					for(int i1=0;i1<factorization.length;i1++)
+						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
+					System.out.println();
 					computeFactorizationNodes();
-					System.out.println("USELESS CASE NODES COMPUTING FIRST");
+
+					for(int i1=0;i1<factorization.length;i1++)
+						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
+					System.out.println();
+					
 					/* this is the key location of verification */
 					System.out.println(i+" switched from USELESS to ANYTHING ELSE");
 					checkNewBranch( i );
@@ -719,7 +743,6 @@ public class TaggingModel {
 		if (pos == 0)
 			return boxIndex;
 		do {
-			System.out.println("pos : "+pos);
 			pos--;
 		} while (!factorization[sortedNodes[pos]]);
 		return sortedNodes[pos];
