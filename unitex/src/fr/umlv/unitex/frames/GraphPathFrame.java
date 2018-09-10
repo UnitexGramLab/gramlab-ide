@@ -26,10 +26,13 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -39,6 +42,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -47,6 +51,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.PreferencesListener;
@@ -54,11 +59,13 @@ import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
+import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.text.BigTextList;
 import fr.umlv.unitex.utils.KeyUtil;
+import fr.umlv.unitex.frames.UnitexFrame;
 
 /**
  * This class defines a frame that allows the user to show paths of a graph.
@@ -70,12 +77,18 @@ public class GraphPathFrame extends JInternalFrame {
 	final JTextField graphName = new JTextField();
 	final JTextField outputFileName = new JTextField();
 	JCheckBox limit;
+	JCheckBox flattenGraph;
 	JTextField limitSize;
 	JRadioButton ignoreOutputs;
 	JRadioButton separateOutputs;
 	JRadioButton mergeOutputs;
 	JRadioButton exploreRecursively;
 	JRadioButton onlyPaths;
+	MultiCommands preprocessCommands;
+	// default values for the flatten command
+	Boolean flattenMode = false;
+	String flattenDepth = "10";
+	
 	ListDataListener listListener = new ListDataListener() {
 		@Override
 		public void intervalRemoved(ListDataEvent e) {
@@ -116,7 +129,7 @@ public class GraphPathFrame extends JInternalFrame {
 	}
 
 	private JPanel constructTopPanel() {
-		final JPanel top = new JPanel(new GridLayout(7, 1));
+		final JPanel top = new JPanel(new GridLayout(8, 1));
 		top.add(constructGraphNamePanel());
 		top.add(constructListFileNamePanel());
 		final ButtonGroup bg = new ButtonGroup();
@@ -131,6 +144,7 @@ public class GraphPathFrame extends JInternalFrame {
 		top.add(mergeOutputs);
 		top.add(constructDownPanel());
 		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		final JPanel flattenPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		final ButtonGroup pathWithSubGraph = new ButtonGroup();
 		final JLabel explorationLabel = new JLabel("Explore subgraphs: ");
 		onlyPaths = new JRadioButton("Recursively", true);
@@ -156,6 +170,8 @@ public class GraphPathFrame extends JInternalFrame {
 		top1.add(explorationLabel);
 		top1.add(onlyPaths);
 		top1.add(exploreRecursively);
+		flattenPanel.add(constructFlattenGraphPanel());
+		top.add(flattenPanel);
 		top.add(top1);
 		return top;
 	}
@@ -190,9 +206,28 @@ public class GraphPathFrame extends JInternalFrame {
 				} else {
 					cmd = cmd.separateOutputs(separateOutputs.isSelected());
 				}
-				grfCmd.grf(new File(graphName.getText()))
+				// check if flatten was checked or not
+				if( !flattenGraph.isSelected() ) {
+					grfCmd.grf(new File(graphName.getText()))
 						.enableLoopAndRecursionDetection(true).repositories()
 						.emitEmptyGraphWarning().displayGraphNames();
+				} else if ( preprocessCommands == null ) {
+					// if no specific option were given, preprocess with default
+					File graphFile = new File(graphName.getText());
+					String name_fst2 = FileUtil.getFileNameWithoutExtension(graphFile);
+					name_fst2 = name_fst2 + ".fst2";
+					final MultiCommands commands = new MultiCommands();
+					commands.addCommand(new Grf2Fst2Command().grf(graphFile)
+							.enableLoopAndRecursionDetection(true)
+							.tokenizationMode(null, graphFile).repositories()
+							.emitEmptyGraphWarning().displayGraphNames());
+					commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
+							.resultType(flattenMode).depth(Integer.parseInt(flattenDepth)));
+				}
+				else {
+					Launcher.exec(preprocessCommands, false);
+				}
+				
 				fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
 						.getText()) + ".fst2");
 				if (onlyPaths.isSelected()) {
@@ -210,7 +245,9 @@ public class GraphPathFrame extends JInternalFrame {
 					cmd = cmd.listsOfSubgraph(fst2);
 				}
 				final MultiCommands commands = new MultiCommands();
-				commands.addCommand(grfCmd);
+				if ( !flattenGraph.isSelected() ) {
+					commands.addCommand(grfCmd);
+				}
 				commands.addCommand(cmd);
 				textArea.reset();
 				Launcher.exec(commands, true, new ShowPathsDo(list), false,true);
@@ -255,6 +292,48 @@ public class GraphPathFrame extends JInternalFrame {
 		panel.add(limit, BorderLayout.WEST);
 		panel.add(limitSize, BorderLayout.CENTER);
 		panel.add(new JLabel("   "), BorderLayout.EAST);
+		return panel;
+	}
+	
+	private JPanel constructFlattenGraphPanel() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		flattenGraph = new JCheckBox(" Flatten graphs ");
+		panel.add(flattenGraph, BorderLayout.WEST);
+		
+		final JPanel button = new JPanel(new GridLayout(1, 1));
+		
+		final Action flattenOptionAction = new AbstractAction("flattening options") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File graphFile = new File(graphName.getText());
+				Map<String,Object> flattenOptions = UnitexFrame
+						.flattenGraph(graphFile,flattenMode,flattenDepth);
+				if( flattenOptions != null ) {
+				// unpack the commands and its options
+					preprocessCommands = (MultiCommands) flattenOptions.get("commands");
+					flattenMode = (boolean) flattenOptions.get("flattenMode");
+					flattenDepth = (String) flattenOptions.get("flattenDepth");
+				}
+			}
+		};
+		final JButton flattenOption = new JButton(flattenOptionAction);
+		flattenOption.setEnabled(false);
+		
+		final ItemListener flattenCheckBox = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if ( flattenGraph.isSelected() ) {
+					flattenOption.setEnabled(true);
+				} else {
+					flattenOption.setEnabled(false);
+				}
+			}
+		};
+		
+		flattenGraph.addItemListener(flattenCheckBox);
+		button.add(flattenOption);
+		panel.add(button, BorderLayout.EAST);
+		
 		return panel;
 	}
 
