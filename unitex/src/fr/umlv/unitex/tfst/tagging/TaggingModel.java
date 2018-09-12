@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -37,7 +38,6 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
-import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.tfst.Bounds;
 
@@ -99,34 +99,6 @@ public class TaggingModel {
 	}
 	
 	
-	void generateAlphabet() {
-		if( regex == null || !alphabetFile.equals(ConfigManager.getManager().getAlphabet(null))) { 
-			// switching languages must also switch this
-			alphabetFile = ConfigManager.getManager().getAlphabet(null);
-			try {
-				StringBuilder alphabet= new StringBuilder();
-				
-				BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream(alphabetFile) , "UTF16"));
-				String line; 
-				while ((line = br.readLine()) != null && !line.equals("\r\n")) {
-					if( line.startsWith("#")) {
-						System.out.println("KOREAN SPECIAL CASE "+line.charAt(0)+" "+line.charAt(1));
-						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
-					}
-		
-					alphabet.append("(").append(line.trim()).append(")");
-				}
-				StringBuilder regexBuilder = new StringBuilder();
-				regexBuilder.append("([").append(alphabet.toString())
-					.append("]+|[^").append(alphabet.toString()).append("]+)*");
-				regex = regexBuilder.toString();
-			} catch (IOException e) {
-				 //TODO Auto-generated catch block
-				System.out.println("exception");
-			} finally {}	
-		}	
-	}
-	
 	
 	/** @Yass
 	 * This basically checks if a new box was created, if yes, it resets the model, otherwise it updates the factorization Nodes.
@@ -159,6 +131,7 @@ public class TaggingModel {
 	 * This method resets the various arrays used in this class by applying all the graphBoxes, including new ones, in them.
 	 */
 	public void resetModel() {
+		System.out.println("RESET MODEL FIRST");
 		final int n = zone.graphBoxes.size();
 		boxes = new TfstGraphBox[n];
 		taggingStates = new TaggingState[n];
@@ -177,12 +150,42 @@ public class TaggingModel {
 		}
 		updateFactorizationNodes();
 		
-		//generateAlphabet();
-//		System.out.println("REGEX : "+regex);
-//		generateTokensList();
-//		System.out.println("TOKENS : "+ tokens);
+		generateAlphabet();
+		System.out.println("REGEX : "+regex);
+		generateTokensList();
+		System.out.println("TOKENS : "+ tokens);
 //		
 	}
+	
+
+	void generateAlphabet() {
+		if( regex == null || !alphabetFile.equals(ConfigManager.getManager().getAlphabet(null))) { 
+			// switching languages must also switch this
+			alphabetFile = ConfigManager.getManager().getAlphabet(null);
+			try {
+				StringBuilder alphabet= new StringBuilder();
+				
+				BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream(alphabetFile) , "UTF16"));
+				String line; 
+				while ((line = br.readLine()) != null && !line.equals("\r\n")) {
+					if( line.startsWith("#")) {
+						System.out.println("KOREAN SPECIAL CASE "+line.charAt(0)+" "+line.charAt(1));
+						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
+					}
+		
+					alphabet.append(line.trim());
+				}
+				StringBuilder regexBuilder = new StringBuilder();
+				regexBuilder.append("([").append(alphabet.toString())
+					.append("]+|[^").append(alphabet.toString()).append("]+)");
+				regex = regexBuilder.toString();
+			} catch (IOException e) {
+				 //TODO Auto-generated catch block
+				System.out.println("exception");
+			} finally {}	
+		}	
+	}
+	
 	
 	/*
 	 * for each box we will start at it's starting bound, split the inside based on delimiters and add them to the hashmap. 
@@ -245,13 +248,13 @@ public class TaggingModel {
 	
 	void checkNewBranch( int i ){
 		System.out.println("checkNewBranch Start");
-		int prev = getPreviousFactorizationNodeIndex(renumber[i]);
-		int next = getNextFactorizationNodeIndex(renumber[i]);
+		int prev = getPreviousFactorizationNodeIndex(i);
+		int next = getNextFactorizationNodeIndex(i);
 		//System.out.println("i renumberI prev next "+i+" "+renumber[i]+" "+prev+" "+renumber[prev]+" "+next+" "+renumber[next]);
 		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
 		
-		computeAllPaths( prev, next, allPaths );
-		checkingNewText(prev, next, allPaths);
+		computeAllPaths( renumber[prev], renumber[next], allPaths );
+		checkingNewText(renumber[prev], renumber[next], allPaths);
 		
 		int n = zone.graphBoxes.size();
 		for (int i1 = 0; i1 < n; i1++) {
@@ -264,82 +267,92 @@ public class TaggingModel {
 		}
 		updateFactorizationNodes();
 		System.out.println("checkNewBranch Ending");
-	/*
-	  JOptionPane.showMessageDialog(null,
-							"Everything looks OK",
-							"OK",
-							JOptionPane.PLAIN_MESSAGE);	
-	 */
 	}
 	
 	void checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
 		System.out.println("checkingNewText Start");
-		int index = boxes[bfp].getBounds().getEnd_in_tokens();
-		int end = boxes[bfs].getBounds().getStart_in_tokens();
+		int index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens();
+		int end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens();
+		
 		if( allPaths.isEmpty() )
 			return;
+		
 		for( ArrayList<Integer> e : allPaths ) {
+			System.out.println("checking text in path : "+e.toString());
 			for( Integer i : e ) {
-				System.out.println("i / bfp / bfs "+i+" "+renumber[bfp]+" "+renumber[bfs]);
+				ArrayList<String> otherTokens = new ArrayList<String>();
+				String stringToMatch = boxes[sortedNodes[i]].getContent().toString();
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(stringToMatch);
 				
-				String[] otherTokens = boxes[i].getContent().split(regex);
-				if( otherTokens.length == 1 )
+				while( matcher.find() ) {
+					System.out.println(matcher.group());
+					otherTokens.add(matcher.group());
+				}
+				
+				if( otherTokens.size() == 1 )
 					for( int j = index; j< end; j++) {
-						if( tokens.get(j).contains(otherTokens[0])) {
-							System.out.println(otherTokens[0]);
-							boxes[i].setBounds( new Bounds(j,0,0,j,otherTokens.length,0));
+						if( tokens.get(j).contains(otherTokens.get(0))) {
+							System.out.println(otherTokens.get(0));
+							boxes[sortedNodes[i]].setBounds( new Bounds(j,0,0,j,otherTokens.size(),0));
 						}
 					}
-					if( boxes[i].getBounds() == null ) {
+					if( boxes[sortedNodes[i]].getBounds() == null ) {
 						JOptionPane.showMessageDialog(null,
 								"ERROR",
 								"OK",
 								JOptionPane.PLAIN_MESSAGE);	
 						
 					}
-				if( otherTokens.length > 1 )
-					for( int k = 0; k< otherTokens.length;k++) {
+				if( otherTokens.size() > 1 )
+					for( int k = 0; k< otherTokens.size();k++) {
 						for( int j = index; j< end; j++) {
-							if( tokens.get(j).contains(otherTokens[k])) {
-								boxes[i].setBounds( new Bounds(j,0,0,j+otherTokens.length,otherTokens.length,0));
+							if( tokens.get(j).contains(otherTokens.get(k))) {
+								boxes[sortedNodes[i]].setBounds( new Bounds(j,0,0,j+otherTokens.size(),otherTokens.size(),0));
 							}
 						}		
 					}
-					
 			}
 		}
 		System.out.println("checkingNewText Ending");
 	}
 	
+	
+	
 	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
+		for(int i1=0;i1<factorization.length;i1++)
+			System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
+		System.out.println();
 		
-		//System.out.println("computeAllPaths Start"); 
-		for( GenericGraphBox b : (boxes[bfp].transitions) ) {
+		
+		System.out.println("computeAllPaths Start"); 
+		for( GenericGraphBox b : (boxes[sortedNodes[bfp]].transitions) ) {
 			System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
-			if( true /*taggingStates[b.getBoxNumber()] == TaggingState.USELESS */) {
-				System.out.println("It iS USELESS");
-				computePath( b.getBoxNumber(), bfs, new ArrayList<Integer>(),allPaths );
+			System.out.println("renumber[b] / bfp / bfs "+renumber[b.getBoxNumber()]+" "+bfp+" "+bfs);
+			if( taggingStates[b.getBoxNumber()] == TaggingState.USELESS ) {
+				System.out.println("calling computePath");
+				computePath( renumber[b.getBoxNumber()], bfs, new ArrayList<Integer>(),allPaths );
 			}
 				
 		}
-		//System.out.println("all Paths :");
-//		System.out.println(allPaths);
-//		System.out.println("computeAllPaths Ending");
+		System.out.println("all Paths :");
+		System.out.println(allPaths);
+		System.out.println("computeAllPaths Ending");
 	}
 	
 	void computePath( int start, int end, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> allPaths ) {
+		System.out.println("start end "+start+" "+end);
 		if( start != end ) {
 			current.add( start );
-			for( GenericGraphBox b : boxes[start].transitions ) {
-				if( true/*taggingStates[b.getBoxNumber()] == TaggingState.USELESS */) {
-					//System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
-					computePath( b.getBoxNumber(), end, new ArrayList<Integer>(current), allPaths);
-				}
+			for( GenericGraphBox b : boxes[sortedNodes[start]].transitions ) {
+				System.out.println("start renumber[start] b renumber[b] "+sortedNodes[start]+" "+start+" "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
+					System.out.println("calling computePath recurcive");
+					computePath( renumber[b.getBoxNumber()], end, new ArrayList<Integer>(current), allPaths);
 			}
 		}
 		if( start == end ) {
-			//System.out.println("full branch : "+current);
-			//allPaths.add( current );
+			System.out.println("full branch : "+current);
+			allPaths.add( current );
 		}
 	}
 	/** 
@@ -537,14 +550,9 @@ public class TaggingModel {
 					 * set its state to [TO_BE_REMOVED] TO_CHECK as in to be checked 
 					 * 
 					 */
-					for(int i1=0;i1<factorization.length;i1++)
-						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-					System.out.println();
-					computeFactorizationNodes();
-					for(int i1=0;i1<factorization.length;i1++)
-						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-					System.out.println();
 					
+					computeFactorizationNodes();
+					System.out.println("USELESS CASE NODES COMPUTING FIRST");
 					/* this is the key location of verification */
 					System.out.println(i+" switched from USELESS to ANYTHING ELSE");
 					checkNewBranch( i );
