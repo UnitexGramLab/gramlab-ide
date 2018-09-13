@@ -944,7 +944,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                     else if (line.indexOf("#/{") > -1) { //signature of graph B
                         continue;
                     }
-                    if(errFound == 1 && line.trim().startsWith("the automate")) {
+                    if(errFound == 1 && line.trim().startsWith("automaton")) {
                         JOptionPane.showMessageDialog(null,"Braces are not well formed in " + line.substring(0,line.indexOf(',')));
                         break;
                     }
