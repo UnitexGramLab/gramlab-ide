@@ -302,7 +302,7 @@ public class GraphPathFrame extends JInternalFrame {
 		
 		final JPanel button = new JPanel(new GridLayout(1, 1));
 		
-		final Action flattenOptionAction = new AbstractAction("flattening options") {
+		final Action flattenOptionAction = new AbstractAction("Flattening options") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				File graphFile = new File(graphName.getText());
