@@ -1478,6 +1478,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                     getGraph()) + "autolst.txt");
         pathCmd = pathCmd
                     .noLimit()
+                    .noLoopCheck()
                     .separateOutputs(true)
 				    .listsOfSubgraph(fst2);
         final Grf2Fst2Command grfCommand = new Grf2Fst2Command()

@@ -168,6 +168,7 @@ public class GraphPathFrame extends JInternalFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Fst2ListCommand cmd = new Fst2ListCommand();
+				cmd = cmd.noLoopCheck();
 				final Grf2Fst2Command grfCmd = new Grf2Fst2Command();
 				File fst2;
 				File list; /* output file name */
