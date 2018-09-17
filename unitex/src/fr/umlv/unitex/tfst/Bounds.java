@@ -72,12 +72,12 @@ public class Bounds {
 	}
 	/* specific bounds constructor yassine */
 	public Bounds(Bounds bounds) {
-		this.start_in_chars = 0;
-		this.start_in_letters = 0;
+		this.start_in_chars = bounds.start_in_chars;
+		this.start_in_letters = bounds.start_in_letters;
 		this.start_in_tokens = bounds.start_in_tokens;
 
-		this.end_in_chars = 0;
-		this.end_in_letters = 0;
+		this.end_in_chars = bounds.end_in_chars;
+		this.end_in_letters = bounds.end_in_letters;
 		this.end_in_tokens = bounds.end_in_tokens;
 	}
 	
