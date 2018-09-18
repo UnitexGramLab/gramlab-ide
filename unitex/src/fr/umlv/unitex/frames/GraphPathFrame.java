@@ -111,6 +111,7 @@ public class GraphPathFrame extends JInternalFrame {
 		super("Explore graph paths", true,true);
 		setContentPane(constructPanel());
 		pack();
+		graphName.setEditable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		textArea.setFont(ConfigManager.getManager().getTextFont(null));
 		PreferencesManager.addPreferencesListener(new PreferencesListener() {
