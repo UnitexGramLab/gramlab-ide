@@ -45,6 +45,11 @@ public class Fst2ListCommand extends CommandBuilder {
 	public Fst2ListCommand noLimit() {
 		return this;
 	}
+	
+	public Fst2ListCommand noLoopCheck() {
+		element("-d");
+		return this;
+	}
 
 	public Fst2ListCommand mode(String s) { // multi or single
 		element("-t");
