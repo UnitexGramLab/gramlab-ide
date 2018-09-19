@@ -145,7 +145,7 @@ public class GraphPathFrame extends JInternalFrame {
 		top.add(mergeOutputs);
 		top.add(constructDownPanel());
 		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		final JPanel flattenPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		final JPanel flattenPanel = new JPanel(new BorderLayout());
 		final ButtonGroup pathWithSubGraph = new ButtonGroup();
 		final JLabel explorationLabel = new JLabel("Explore subgraphs: ");
 		onlyPaths = new JRadioButton("Recursively", true);
@@ -171,7 +171,7 @@ public class GraphPathFrame extends JInternalFrame {
 		top1.add(explorationLabel);
 		top1.add(onlyPaths);
 		top1.add(exploreRecursively);
-		flattenPanel.add(constructFlattenGraphPanel());
+		flattenPanel.add(constructFlattenGraphPanel(),BorderLayout.WEST);
 		top.add(flattenPanel);
 		top.add(top1);
 		return top;
