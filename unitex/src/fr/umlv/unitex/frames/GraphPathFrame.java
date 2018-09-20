@@ -69,6 +69,7 @@ public class GraphPathFrame extends JInternalFrame {
 	final BigTextList textArea = new BigTextList();
 	final JTextField graphName = new JTextField();
 	final JTextField outputFileName = new JTextField();
+	JCheckBox loopCheckBox;
 	JCheckBox limit;
 	JTextField limitSize;
 	JRadioButton ignoreOutputs;
@@ -117,7 +118,7 @@ public class GraphPathFrame extends JInternalFrame {
 	}
 
 	private JPanel constructTopPanel() {
-		final JPanel top = new JPanel(new GridLayout(7, 1));
+		final JPanel top = new JPanel(new GridLayout(8, 1));
 		top.add(constructGraphNamePanel());
 		top.add(constructListFileNamePanel());
 		final ButtonGroup bg = new ButtonGroup();
@@ -132,8 +133,10 @@ public class GraphPathFrame extends JInternalFrame {
 		top.add(mergeOutputs);
 		top.add(constructDownPanel());
 		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		final JPanel loopcheckPanel = new JPanel(new BorderLayout());
 		final ButtonGroup pathWithSubGraph = new ButtonGroup();
 		final JLabel explorationLabel = new JLabel("Explore subgraphs: ");
+		loopCheckBox = new JCheckBox("Check for loops");
 		onlyPaths = new JRadioButton("Recursively", true);
 		exploreRecursively = new JRadioButton(
 				"Independently, printing names of called subgraphs");
@@ -154,9 +157,11 @@ public class GraphPathFrame extends JInternalFrame {
 		
 		pathWithSubGraph.add(onlyPaths);
 		pathWithSubGraph.add(exploreRecursively);
+		loopcheckPanel.add(loopCheckBox);
 		top1.add(explorationLabel);
 		top1.add(onlyPaths);
 		top1.add(exploreRecursively);
+		top.add(loopcheckPanel,BorderLayout.WEST);
 		top.add(top1);
 		return top;
 	}
@@ -164,6 +169,7 @@ public class GraphPathFrame extends JInternalFrame {
 	private JPanel constructDownPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(constructLimitPanel(), BorderLayout.CENTER);
+		
 		final JPanel buttons = new JPanel(new GridLayout(1, 2));
 		final Action goAction = new AbstractAction("GO") {
 			@Override
@@ -185,6 +191,9 @@ public class GraphPathFrame extends JInternalFrame {
 					cmd = cmd.limit(n);
 				} else {
 					cmd = cmd.noLimit();
+				}
+				if ( !loopCheckBox.isSelected() ) {
+					cmd = cmd.noLoopCheck();
 				}
 				if (ignoreOutputs.isSelected()) {
 					cmd = cmd.ignoreOutputs();
