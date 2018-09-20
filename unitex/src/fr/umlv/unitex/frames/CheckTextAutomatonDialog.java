@@ -62,8 +62,6 @@ public class CheckTextAutomatonDialog extends JDialog {
         errorCount++;
       }
     }
-
-
     setResizable(false);
     setContentPane(constructPanel());
     setModalityType(ModalityType.MODELESS);
@@ -74,7 +72,6 @@ public class CheckTextAutomatonDialog extends JDialog {
   }
 
   private void createListeners() {
-
     closeButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -89,6 +86,7 @@ public class CheckTextAutomatonDialog extends JDialog {
 
   private Container constructPanel() {
     final JPanel panel1 = new JPanel();
+    panel1.setMinimumSize(new Dimension(350, 100));
     panel1.setLayout(new GridBagLayout());
     final JPanel spacer1 = new JPanel();
     GridBagConstraints gbc;
@@ -164,8 +162,8 @@ public class CheckTextAutomatonDialog extends JDialog {
     return panel1;
   }
 
-  public void updateDialog() {
-  }
+
+  public void updateDialog() {}
   public static CheckTextAutomatonDialog createCheckTextAutomatonDialog(ArrayList<String> checkList) {
     return new CheckTextAutomatonDialog(checkList);
   }

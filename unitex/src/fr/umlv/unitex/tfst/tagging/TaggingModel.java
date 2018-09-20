@@ -27,10 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -423,7 +419,6 @@ public class TaggingModel {
 			updateBounds(destIndex, visited);
 		}
 	}
-
 	/**
 	 * 
 	 */
@@ -572,15 +567,11 @@ public class TaggingModel {
 
 					for(int i1=0;i1<factorization.length;i1++)
 						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-					System.out.println();
-					
+					System.out.println();					
 					computeFactorizationNodes();
 					System.out.println("USELESS CASE NODES COMPUTING FIRST");
 					/* this is the key location of verification */
 					System.out.println(i+" switched from USELESS to ANYTHING ELSE");
-					checkNewBranch( i );
-
-					
 					/* this is the key location of verification */
 					checkNewBranch(i);
 				}
