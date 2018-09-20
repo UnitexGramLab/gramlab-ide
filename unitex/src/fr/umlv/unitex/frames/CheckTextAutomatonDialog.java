@@ -168,6 +168,5 @@ public class CheckTextAutomatonDialog extends JDialog {
   }
   public static CheckTextAutomatonDialog createCheckTextAutomatonDialog(ArrayList<String> checkList) {
     return new CheckTextAutomatonDialog(checkList);
-        Check dialog now displays all errors
   }
 }

@@ -11,13 +11,6 @@ public class CheckTextAutomatonDialogFactory {
 
   CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
     dialog = CheckTextAutomatonDialog.createCheckTextAutomatonDialog(checkList);
-
-  CheckTextAutomatonDialog newCheckTextAutomatonDialog() {
-    if (dialog == null) {
-      dialog = CheckTextAutomatonDialog.createCheckTextAutomatonDialog();
-    } else {
-      dialog.updateDialog();
-    }
     return dialog;
   }
 }

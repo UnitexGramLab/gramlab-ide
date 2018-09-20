@@ -100,34 +100,6 @@ public class TaggingModel {
 		zone.removeGraphListener(graphListener);		
 	}
 	
-	void generateAlphabet() {
-		if( regex == null || !alphabetFile.equals(ConfigManager.getManager().getAlphabet(null))) { 
-			// switching languages must also switch this
-			alphabetFile = ConfigManager.getManager().getAlphabet(null);
-			try {
-				StringBuilder alphabet= new StringBuilder();
-				
-				BufferedReader br = new BufferedReader( new InputStreamReader( new FileInputStream(alphabetFile) , "UTF16"));
-				String line; 
-				while ((line = br.readLine()) != null && !line.equals("\r\n")) {
-					if( line.startsWith("#")) {
-						System.out.println("KOREAN SPECIAL CASE "+line.charAt(0)+" "+line.charAt(1));
-						alphabet.append(line.charAt(0)).append("-").append(line.charAt(1));
-					}
-		
-					alphabet.append("(").append(line.trim()).append(")");
-				}
-				StringBuilder regexBuilder = new StringBuilder();
-				regexBuilder.append("([").append(alphabet.toString())
-					.append("]+|[^").append(alphabet.toString()).append("]+)*");
-				regex = regexBuilder.toString();
-			} catch (IOException e) {
-				 //TODO Auto-generated catch block
-				System.out.println("exception");
-			} finally {}	
-		}	
-	}
-
 	/** @Yass
 	 * This basically checks if a new box was created, if yes, it resets the model, otherwise it updates the factorization Nodes.
 	 * This method must be called when the sentence automaton has been modified,
@@ -247,18 +219,7 @@ public class TaggingModel {
 			== gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
 			if(regex == null)
 				System.out.println("regex");
-			Pattern pattern = Pattern.compile(regex);
-			Matcher matcher = pattern.matcher(temp);
-			
-			while( matcher.find() ) {
-				System.out.println( matcher.group());
-				tokensList.add(matcher.group());
-			}
-			System.out.println("content "+temp);
-			
-            if( gb.getBounds().getEnd_in_tokens()
-			== gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
-	            for( String s : tokensList ) {
+		    for( String s : tokensList ) {
 	            	if( !tokens.containsKey(index) )  
 	            		tokens.put(index, new ArrayList<String>());
 	            	if( !tokens.get(index).contains(s))
@@ -287,9 +248,6 @@ public class TaggingModel {
 	    }
 	}
 	
-
-	
-	
 	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
 		for(int i1=0;i1<factorization.length;i1++)
 			System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
@@ -305,49 +263,6 @@ public class TaggingModel {
 				computePath( renumber[b.getBoxNumber()], bfs, new ArrayList<Integer>(),allPaths );
 			}
 				
-		}
-		System.out.println("all Paths :");
-		System.out.println(allPaths);
-		System.out.println("computeAllPaths Ending");
-	}
-	
-	void computePath( int start, int end, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> allPaths ) {
-		System.out.println("start end "+start+" "+end);
-		if( start != end ) {
-			current.add( start );
-			for( GenericGraphBox b : boxes[sortedNodes[start]].transitions ) {
-				System.out.println("start renumber[start] b renumber[b] "+sortedNodes[start]+" "+start+" "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
-					System.out.println("calling computePath recurcive");
-					computePath( renumber[b.getBoxNumber()], end, new ArrayList<Integer>(current), allPaths);
-			}
-		}
-		if( start == end ) {
-			System.out.println("full branch : "+current);
-			allPaths.add( current );
-		}
-	}
-	
-	void checkNewBranch( int i ){
-		System.out.println("checkNewBranch Start");
-		int prev = getPreviousFactorizationNodeIndex(i);
-		int next = getNextFactorizationNodeIndex(i);
-		//System.out.println("i renumberI prev next "+i+" "+renumber[i]+" "+prev+" "+renumber[prev]+" "+next+" "+renumber[next]);
-		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
-		computeAllPaths( prev, next, allPaths );
-		System.out.println("allPaths : ");
-		System.out.println(allPaths.toString());
-		
-
-		checkingNewText(prev, next,allPaths);
-		
-		System.out.println("computeAllPaths Start"); 
-		for( GenericGraphBox b : (boxes[sortedNodes[bfp]].transitions) ) {
-			System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
-			System.out.println("renumber[b] / bfp / bfs "+renumber[b.getBoxNumber()]+" "+bfp+" "+bfs);
-			if( taggingStates[b.getBoxNumber()] == TaggingState.USELESS ) {
-				System.out.println("calling computePath");
-				computePath( renumber[b.getBoxNumber()], bfs, new ArrayList<Integer>(),allPaths );
-			}				
 		}
 		System.out.println("all Paths :");
 		System.out.println(allPaths);
@@ -453,65 +368,6 @@ public class TaggingModel {
 		System.out.println("checkingNewText Ending");
 	}
 	
-	void checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
-		System.out.println("checkingNewText Start");
-		int index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens();
-		int end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens();
-		if( allPaths.isEmpty() )
-			return;
-		
-		for( ArrayList<Integer> e : allPaths ) {
-			System.out.println("checking text in path : "+e.toString());
-			for( Integer i : e ) {
-				j++;
-				int newStart = j;
-				ArrayList<String> otherTokens = new ArrayList<String>();
-				String stringToMatch;
-				if( boxes[sortedNodes[i]].getContent().contains("{")  )
-					stringToMatch = boxes[sortedNodes[i]].getContent().split(",")[0].substring(1);
-				else {
-					stringToMatch = boxes[sortedNodes[i]].getContent();
-				}
-				
-				
-				Pattern pattern = Pattern.compile(regex);
-				Matcher matcher = pattern.matcher(stringToMatch);
-				
-				while( matcher.find() ) {
-					System.out.println("renumber[b] word "+i+" "+matcher.group());
-					otherTokens.add(matcher.group());
-				}
-				int k = 0 ;
-				while( j < end && k < otherTokens.size() ) {
-					System.out.println("Comparing : "+ tokens.get(j).toString() + " vs " + otherTokens.get(k) );
-					System.out.println("j k "+j+" "+k);
-					
-					if( tokens.get(j).contains( otherTokens.get(k)) ) {
-						System.out.println("true");
-						Bounds temp = boxes[sortedNodes[i]].getBounds();
-						if( j == newStart )
-							temp.setStart_in_tokens(j);
-						temp.setEnd_in_tokens(j);
-						j++;
-						k++;	
-					} else {
-						JOptionPane.showMessageDialog(null,
-								boxes[sortedNodes[i]].getContent()+" isn't an acceptable token",
-								"Matching Error",
-								JOptionPane.PLAIN_MESSAGE);
-						
-						return;
-					}
-				}
-			}
-		}
-		JOptionPane.showMessageDialog(null,
-				"Correct Matching",
-				"Branch is acceptable",
-				JOptionPane.PLAIN_MESSAGE);
-		
-		System.out.println("checkingNewText Ending");
-	}
 	
 	/** 
 	 * 
