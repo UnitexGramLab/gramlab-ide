@@ -38,6 +38,7 @@ import javax.swing.undo.UndoableEditSupport;
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
+import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.grf.GraphMetaData;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
@@ -45,6 +46,7 @@ import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
 import fr.umlv.unitex.listeners.GraphTextListener;
+import fr.umlv.unitex.tfst.tagging.TaggingModel;
 import fr.umlv.unitex.undo.*;
 
 /**
@@ -643,14 +645,14 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g.drawTransition(gr, temp, params);
 		}
 	}
-
+	
 	/**
 	 * Draws all boxes of the graph
 	 *
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawAllBoxes(Graphics2D gr, DrawGraphParams params) {
+	void drawAllBoxes(Graphics2D gr, DrawGraphParams params	) {
 		int i, L;
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())
@@ -658,6 +660,28 @@ public abstract class GenericGraphicalZone extends JComponent {
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
+			g.draw(gr, params);
+		}
+	}
+	
+	/**
+	 * Draws all boxes of the graph
+	 *
+	 * @param gr
+	 *            the graphical context
+	 */
+	void drawAllBoxes(Graphics2D gr, DrawGraphParams params, TaggingModel model	) {
+		int i, L;
+		GenericGraphBox g;
+		if (graphBoxes.isEmpty())
+			return;
+		L = graphBoxes.size();
+		for (i = 0; i < L; i++) {
+			g = graphBoxes.get(i);
+			gr.setColor(GraphDecoratorConfig.DEBUG_COLOR);
+		    gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
+			gr.drawString( model.getBoxState((TfstGraphBox)g).toString(), g.X1 + 5 , g.Y1 - 15 );
+			gr.drawString(model.renumber[i]+" "+model.factorization[i], g.X1 + 5 , g.Y1 - 25);
 			g.draw(gr, params);
 		}
 	}

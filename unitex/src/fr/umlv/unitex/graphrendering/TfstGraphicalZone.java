@@ -57,7 +57,7 @@ import fr.umlv.unitex.undo.SelectEdit;
  * @author Sébastien Paumier
  */
 public class TfstGraphicalZone extends GenericGraphicalZone implements
-		Printable {
+Printable {
 
 	TaggingModel model;
 	int sentence=-1;
@@ -81,7 +81,12 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			addMouseListener(new FstGraphMouseListener());
 		}
 	}
-
+	
+	/*
+	 * This function creates a generic box of NORMAL type, meaning it can have ingoing or outgoing transitions.
+	 * This is the most used function instead of newBox just below
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#createBox(int, int)
+	 */
 	@Override
 	protected GenericGraphBox createBox(int x, int y) {
 		final TfstGraphBox g = new TfstGraphBox(x, y, 2, this);
@@ -89,7 +94,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		addBox(g);
 		return g;
 	}
-
+	
+	/*
+	 * This function creates a generic box of the input type.
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#newBox(int, int, int, fr.umlv.unitex.graphrendering.GenericGraphicalZone)
+	 */
 	@Override
 	protected GenericGraphBox newBox(int x, int y, int type,
 			GenericGraphicalZone p) {
@@ -109,25 +118,29 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		public void mouseClicked(MouseEvent e) {
 			int boxSelected;
 			TfstGraphBox b;
-			if (e.isShiftDown()) {
-				// Shift+click
-				// reverse transitions
-				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
-						(int) (e.getY() / scaleFactor));
-				if (boxSelected != -1) {
-					// if we click on a box
-					b = (TfstGraphBox) graphBoxes.get(boxSelected);
-					if (!selectedBoxes.isEmpty()) {
-						// if there are selected boxes, we rely them to the
-						// current
-						addReverseTransitionsFromSelectedBoxes(b);
-						unSelectAllBoxes();
-					}
-				} else {
-					// simple click not on a box
-					unSelectAllBoxes();
-				}
-			} else if (e.isControlDown() || e.getButton() == MouseEvent.BUTTON3) {
+			
+//			if (e.isShiftDown() && e.getButton() == MouseEvent.BUTTON1) {
+//				// nothing happens with the shift button
+//				// Shift+click
+//				// reverse transitions
+//				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+//				if (boxSelected != -1) {
+//					// if we click on a box
+//					b = (TfstGraphBox) graphBoxes.get(boxSelected);
+//					if (!selectedBoxes.isEmpty()) {
+//						// if there are selected boxes, we rely them to the
+//						// current
+//						addReverseTransitionsFromSelectedBoxes(b);
+//						unSelectAllBoxes();
+//					}
+//				} else {
+//					// nothing happens
+//				}
+//			} else
+			
+			
+			
+			if (e.isControlDown() && e.getButton() == MouseEvent.BUTTON1) {
 				/*
 				 * In the text automaton, Ctrl+click is used to select a box for
 				 * tagging
@@ -138,6 +151,22 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					// if we click on a box
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
 					model.selectBox(b);
+				} else {
+//					if (selectedBoxes.size() == 1) {
+//						TfstGraphBox selected = (TfstGraphBox) selectedBoxes.get(0);
+//						unSelectAllBoxes();
+//						b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+//						Bounds bounds = selected.getBounds();
+//						b.setBounds(new Bounds(bounds.getStart_in_tokens(), bounds.getStart_in_chars(),
+//						bounds.getStart_in_letters(), bounds.getEnd_in_tokens(), bounds.getEnd_in_chars(),
+//						bounds.getEnd_in_letters()));
+//					} else {
+					unSelectAllBoxes();
+					// here we create a box on the mouse's click position
+					b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+					// Coordinates set to zeros.
+					Bounds bounds = new Bounds(0, 0, 0, 0, 0, 0);
+					b.setBounds(bounds);
 				}
 			} else {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
@@ -148,18 +177,30 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					if (!selectedBoxes.isEmpty()) {
 						// if there are selected boxes, we rely them to the
 						// current
-            // we make sure that the new transition will not
-            // create a cycle
-            boolean changeIsValid = false;
-            for(GenericGraphBox box : selectedBoxes) {
-              ArrayList<GenericGraphBox> newTransition = new ArrayList<GenericGraphBox>();
-              newTransition.add(b);
-              changeIsValid = !isCycle(box, newTransition);
-            }
-            if(changeIsValid) {
-              addTransitionsFromSelectedBoxes(b, true);
-              unSelectAllBoxes();
-            }
+						// we make sure that the new transition will not
+						// create a cycle
+						boolean changeIsValid = false;
+						for(GenericGraphBox box : selectedBoxes) {
+							ArrayList<GenericGraphBox> newTransition = new ArrayList<GenericGraphBox>();
+							newTransition.add(b);
+
+							/* same token / different token transition drawing */
+							//model.updateBoundsOfNextUseless( (TfstGraphBox)box, b);
+							
+							changeIsValid = !isCycle(box, newTransition);
+						}
+
+						if(changeIsValid) {
+							System.out.println("b selectedBoxes0index size "+b.getBoxNumber()+" "+selectedBoxes.get(0).getBoxNumber()+" "+selectedBoxes.size());
+							if( !selectedBoxes.get(0).transitions.contains(b) && model.getBoxState(b) != TaggingState.SELECTED ) {
+								if( e.getButton() == MouseEvent.BUTTON1 )
+									model.updateBoundsDiffToken(selectedBoxes,b);
+								if( e.getButton() == MouseEvent.BUTTON3 )
+									model.updateBoundsSameToken(selectedBoxes,b);
+							}
+							addTransitionsFromSelectedBoxes(b, true);
+							unSelectAllBoxes();
+						}
 					} else {
 						// if not, we just select this one
 						b.setSelected(true);
@@ -306,7 +347,15 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		DrawGraphParams params = defaultDrawParams();
 		drawGraph(f,params);
 	}
-
+	
+	/** @Yass
+	 *	
+	 *	@param f
+	 *			blank TODO
+	 *	@param params
+	 *			blank TODO
+	 *
+	 */
 	@Override
 	public void drawGraph(Graphics2D f, DrawGraphParams params) {
 		f.setRenderingHint(
@@ -335,7 +384,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		f.setStroke(oldStroke);
 		f.setColor(params.getForegroundColor());
 		drawAllTransitions(f, params);
-		drawAllBoxes(f, params);
+		// passing the TaggingModel in params to print out the states
+		drawAllBoxes(f, params, model);
 	}
 
 	@Override
@@ -391,7 +441,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		f.drawRect(9, 9, getWidth() - 18, getHeight() - 18);
 		f.setColor(params.getForegroundColor());
 		drawAllTransitions(f,params);
-		drawAllBoxes(f,params);
+		drawAllBoxes(f,params, model);
 		return Printable.PAGE_EXISTS;
 	}
 

@@ -185,6 +185,7 @@ public class GenericGraphBox {
 	int identificationNumber; // number used to numerote the state
 
   private boolean highlight = false;
+  private boolean isModified = false;
 
 	/**
 	 * Constructs a new box
@@ -1683,6 +1684,14 @@ public class GenericGraphBox {
 
 	public boolean isStandaloneBox() {
 		return standaloneBox;
+	}
+	
+	public boolean isModified() {
+		return isModified;
+	}
+
+	public void setModified(boolean modified) {
+		isModified = modified;
 	}
 
 	public int getType() {

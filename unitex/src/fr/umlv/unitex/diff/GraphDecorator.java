@@ -249,7 +249,12 @@ public class GraphDecorator {
 		}
 		return c;
 	}
-	
+	/** @Yass this will contain the coloring of french graphes.
+	 * 
+	 * @param boxNumber
+	 * @param c
+	 * @return
+	 */
 	public Color getBoxBackgroundColor(int boxNumber, Color c) {
 		// If the background isn't already set from TfstGraphBox for untagged korean tokens
 		// This case may happen when a token is both untagged and SELECTED
