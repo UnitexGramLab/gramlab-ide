@@ -298,8 +298,11 @@ public class GraphPathFrame extends JInternalFrame {
 	
 	private JPanel constructFlattenGraphPanel() {
 		final JPanel panel = new JPanel(new BorderLayout());
-		flattenGraph = new JCheckBox(" Flatten graphs ");
+		flattenGraph = new JCheckBox("Flatten graphs ");
+		
 		panel.add(flattenGraph, BorderLayout.WEST);
+		// add space to align option button and limit text area
+		panel.add(new JLabel("                           "));
 		
 		final JPanel button = new JPanel(new GridLayout(1, 1));
 		
