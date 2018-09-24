@@ -175,9 +175,9 @@ public class GraphPathFrame extends JInternalFrame {
 		top1.add(explorationLabel);
 		top1.add(onlyPaths);
 		top1.add(exploreRecursively);
-		top.add(loopcheckPanel,BorderLayout.WEST);
 		flattenPanel.add(constructFlattenGraphPanel(),BorderLayout.WEST);
 		top.add(flattenPanel);
+		top.add(loopcheckPanel,BorderLayout.WEST);
 		top.add(top1);
 		return top;
 	}
