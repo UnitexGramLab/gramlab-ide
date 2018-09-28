@@ -71,7 +71,7 @@ for contribution guidelines and instructions.
 This program is licensed under the [GNU Lesser General Public License version 2.1](/LICENSE). 
 Contact unitex-devel@univ-mlv.fr for further inquiries.
 
---
+---
 
 Copyright (C) 2018 Université Paris-Est Marne-la-Vallée
 
