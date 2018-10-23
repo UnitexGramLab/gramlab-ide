@@ -1,4 +1,4 @@
-/*
+/**
  * Unitex
  *
  * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
@@ -18,44 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  *
  */
+
 package fr.umlv.unitex.frames;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.Map;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
-import fr.umlv.unitex.config.ConfigManager;
-import fr.umlv.unitex.config.PreferencesListener;
-import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -63,34 +29,50 @@ import fr.umlv.unitex.process.commands.FlattenCommand;
 import fr.umlv.unitex.process.commands.Fst2ListCommand;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
-import fr.umlv.unitex.text.BigTextList;
-import fr.umlv.unitex.utils.KeyUtil;
-import fr.umlv.unitex.frames.UnitexFrame;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
+import java.util.Map;
+import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
-/**
- * This class defines a frame that allows the user to show paths of a graph.
- * 
- * @author Sébastien Paumier 11.11.2005 modified HyunGue HUH
- */
+
 public class GraphPathFrame extends JInternalFrame {
-	final BigTextList textArea = new BigTextList();
-	final JTextField graphName = new JTextField();
-	final JTextField outputFileName = new JTextField();
-	JCheckBox loopCheckBox;
-	JCheckBox limit;
-	JCheckBox flattenGraph;
-	JTextField limitSize;
-	JRadioButton ignoreOutputs;
-	JRadioButton separateOutputs;
-	JRadioButton mergeOutputs;
-	JRadioButton exploreRecursively;
-	JRadioButton onlyPaths;
-	MultiCommands preprocessCommands;
-	// default values for the flatten command
-	Boolean flattenMode = false;
-	String flattenDepth = "10";
-	
-	ListDataListener listListener = new ListDataListener() {
+    MultiCommands preprocessCommands;
+    Boolean flattenMode = false;
+    String flattenDepth = "10";
+		
+    final ItemListener flattenCheckBoxListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                    if ( flattenCheckbox.isSelected() ) {
+                            flattenOptionButton.setEnabled(true);
+                    } else {
+                            flattenOptionButton.setEnabled(false);
+                    }
+            }
+    };
+    
+    final ItemListener maxSeqListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                    if ( maxSeqCheckbox.isSelected() ) {
+                            maxSeqSpinner.setEnabled(true);
+                    } else {
+                            maxSeqSpinner.setEnabled(false);
+                    }
+            }
+    };
+    
+    ListDataListener listListener = new ListDataListener() {
 		@Override
 		public void intervalRemoved(ListDataEvent e) {
 			/* */
@@ -98,7 +80,7 @@ public class GraphPathFrame extends JInternalFrame {
 
 		@Override
 		public void intervalAdded(ListDataEvent e) {
-			final int n = textArea.getModel().getSize();
+			final int n = outputArea.getModel().getSize();
 			setTitle(n + " line" + (n > 1 ? "s" : ""));
 		}
 
@@ -108,302 +90,448 @@ public class GraphPathFrame extends JInternalFrame {
 		}
 	};
 
-	GraphPathFrame() {
-		super("Explore graph paths", true,true);
-		setContentPane(constructPanel());
-		pack();
-		graphName.setEditable(false);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		textArea.setFont(ConfigManager.getManager().getTextFont(null));
-		PreferencesManager.addPreferencesListener(new PreferencesListener() {
-			@Override
-			public void preferencesChanged(String language) {
-				textArea.setFont(ConfigManager.getManager().getTextFont(null));
-			}
-		});
-	}
+    /**
+     * Creates new form GPF
+     */
+    public GraphPathFrame() {
+        initComponents();
+    }
 
-	private JPanel constructPanel() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(constructTopPanel(), BorderLayout.NORTH);
-		panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-		return panel;
-	}
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-	private JPanel constructTopPanel() {
-		final JPanel top = new JPanel(new GridLayout(9, 1));
-		top.add(constructGraphNamePanel());
-		top.add(constructListFileNamePanel());
-		final ButtonGroup bg = new ButtonGroup();
-		ignoreOutputs = new JRadioButton("Ignore outputs", true);
-		separateOutputs = new JRadioButton("Separate inputs and outputs");
-		mergeOutputs = new JRadioButton("Merge inputs and outputs");
-		bg.add(ignoreOutputs);
-		bg.add(separateOutputs);
-		bg.add(mergeOutputs);
-		top.add(ignoreOutputs);
-		top.add(separateOutputs);
-		top.add(mergeOutputs);
-		top.add(constructDownPanel());
-		final JPanel top1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		final JPanel loopcheckPanel = new JPanel(new BorderLayout());
-		final JPanel flattenPanel = new JPanel(new BorderLayout());
-		final ButtonGroup pathWithSubGraph = new ButtonGroup();
-		final JLabel explorationLabel = new JLabel("Explore subgraphs: ");
-		loopCheckBox = new JCheckBox("Check for loops");
-		onlyPaths = new JRadioButton("Recursively", true);
-		exploreRecursively = new JRadioButton(
-				"Independently, printing names of called subgraphs");
-		
-		// issue #61 add listeners to change default output file name based on user selection
-		onlyPaths.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphName
-						.getText()) + "-recursive-paths.txt");
-			}
-		});
-		exploreRecursively.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphName
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        graphFileLabel = new javax.swing.JLabel();
+        outputFileLabel = new javax.swing.JLabel();
+        inputGraphName = new javax.swing.JTextField();
+        outputFileName = new javax.swing.JTextField();
+        setFileButton = new javax.swing.JButton();
+        optionSeparator = new javax.swing.JSeparator();
+        optionLabel = new javax.swing.JLabel();
+        outputsLabel = new javax.swing.JLabel();
+        ignoreOutputsButton = new javax.swing.JRadioButton();
+        splitOutputsButton = new javax.swing.JRadioButton();
+        mergeOutputsButton = new javax.swing.JRadioButton();
+        exploreLabel = new javax.swing.JLabel();
+        exploreRecButton = new javax.swing.JRadioButton();
+        exploreIndepButton = new javax.swing.JRadioButton();
+        maxSeqCheckbox = new javax.swing.JCheckBox();
+        maxSeqSpinner = new javax.swing.JSpinner();
+        flattenCheckbox = new javax.swing.JCheckBox();
+        flattenOptionButton = new javax.swing.JButton();
+        checkLoopsCheckbox = new javax.swing.JCheckBox();
+        resultLabel = new javax.swing.JLabel();
+        helpButton = new javax.swing.JButton();
+        runButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        resultSeparator = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        outputArea = new fr.umlv.unitex.text.BigTextList();
+
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Explore graph paths");
+        setToolTipText("");
+
+        graphFileLabel.setText("Graph:");
+
+        outputFileLabel.setText("Output file:");
+
+        inputGraphName.setEditable(false);
+        inputGraphName.setText("jTextField1");
+        inputGraphName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputGraphNameActionPerformed(evt);
+            }
+        });
+
+        outputFileName.setText("jTextField1");
+
+        setFileButton.setText("Set File");
+
+        optionLabel.setText("Options");
+
+        outputsLabel.setText("Outputs:");
+
+        buttonGroup1.add(ignoreOutputsButton);
+        ignoreOutputsButton.setSelected(true);
+        ignoreOutputsButton.setText("Ignore");
+
+        buttonGroup1.add(splitOutputsButton);
+        splitOutputsButton.setText("Split inputs and outputs");
+
+        buttonGroup1.add(mergeOutputsButton);
+        mergeOutputsButton.setText("Merge inputs and outputs");
+
+        exploreLabel.setText("Explore subraphs:");
+
+        buttonGroup2.add(exploreRecButton);
+        exploreRecButton.setSelected(true);
+        exploreRecButton.setText("Recursively");
+        exploreRecButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exploreRecButtonActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(exploreIndepButton);
+        exploreIndepButton.setText("Independently, printing names of called subgraphs");
+        exploreIndepButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exploreIndepButtonActionPerformed(evt);
+            }
+        });
+
+        maxSeqCheckbox.setText("Max sequences:");
+        maxSeqCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                maxSeqCheckboxActionPerformed(evt);
+            }
+        });
+
+        maxSeqSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        maxSeqSpinner.setEnabled(false);
+
+        flattenCheckbox.setText("Flatten graphs");
+        flattenCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flattenCheckboxActionPerformed(evt);
+            }
+        });
+
+        flattenOptionButton.setText("Options");
+        flattenOptionButton.setEnabled(false);
+        flattenOptionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flattenOptionButtonActionPerformed(evt);
+            }
+        });
+
+        checkLoopsCheckbox.setText("Check for loops");
+        checkLoopsCheckbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkLoopsCheckboxActionPerformed(evt);
+            }
+        });
+
+        resultLabel.setText("Results");
+
+        helpButton.setText("Help");
+        helpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpButtonActionPerformed(evt);
+            }
+        });
+
+        runButton.setText("Run");
+        runButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runButtonActionPerformed(evt);
+            }
+        });
+
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setViewportView(outputArea);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(75, 75, 75)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(optionSeparator)
+                    .addComponent(optionLabel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(graphFileLabel)
+                            .addComponent(outputFileLabel))
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(outputFileName)
+                                .addGap(18, 18, 18)
+                                .addComponent(setFileButton))
+                            .addComponent(inputGraphName)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(outputsLabel)
+                            .addComponent(exploreLabel)
+                            .addComponent(maxSeqCheckbox))
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ignoreOutputsButton)
+                                    .addComponent(exploreRecButton))
+                                .addGap(38, 38, 38)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(exploreIndepButton)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(splitOutputsButton)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(flattenCheckbox)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(flattenOptionButton)))
+                                        .addGap(40, 40, 40)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(checkLoopsCheckbox)
+                                            .addComponent(mergeOutputsButton)))))
+                            .addComponent(maxSeqSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(resultLabel)
+                    .addComponent(resultSeparator)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(helpButton)
+                        .addGap(535, 535, 535)
+                        .addComponent(cancelButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(runButton)))
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(graphFileLabel)
+                    .addComponent(inputGraphName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(outputFileLabel)
+                    .addComponent(outputFileName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(setFileButton))
+                .addGap(16, 16, 16)
+                .addComponent(optionLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(optionSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(outputsLabel)
+                    .addComponent(ignoreOutputsButton)
+                    .addComponent(splitOutputsButton)
+                    .addComponent(mergeOutputsButton))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(exploreLabel)
+                    .addComponent(exploreRecButton)
+                    .addComponent(exploreIndepButton))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(maxSeqCheckbox)
+                    .addComponent(maxSeqSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(flattenCheckbox)
+                    .addComponent(flattenOptionButton)
+                    .addComponent(checkLoopsCheckbox))
+                .addGap(18, 18, 18)
+                .addComponent(resultLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(resultSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(helpButton)
+                    .addComponent(runButton)
+                    .addComponent(cancelButton))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void maxSeqCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxSeqCheckboxActionPerformed
+        if ( maxSeqCheckbox.isSelected() ) {
+                            maxSeqSpinner.setEnabled(true);
+        } else {
+                maxSeqSpinner.setEnabled(false);
+        }
+    }//GEN-LAST:event_maxSeqCheckboxActionPerformed
+
+    private void flattenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenCheckboxActionPerformed
+        if ( flattenCheckbox.isSelected() ) {
+                            flattenOptionButton.setEnabled(true);
+        } else {
+                flattenOptionButton.setEnabled(false);
+        }
+    }//GEN-LAST:event_flattenCheckboxActionPerformed
+
+    private void helpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_helpButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        close();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void exploreRecButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreRecButtonActionPerformed
+        outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
+                            .getText()) + "-recursive-paths.txt");
+    }//GEN-LAST:event_exploreRecButtonActionPerformed
+
+    private void inputGraphNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputGraphNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputGraphNameActionPerformed
+
+    private void exploreIndepButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreIndepButtonActionPerformed
+        outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
 						.getText()) + "-paths.txt");
-			}
-		});
-		
-		pathWithSubGraph.add(onlyPaths);
-		pathWithSubGraph.add(exploreRecursively);
-		loopcheckPanel.add(loopCheckBox);
-		top1.add(explorationLabel);
-		top1.add(onlyPaths);
-		top1.add(exploreRecursively);
-		flattenPanel.add(constructFlattenGraphPanel(),BorderLayout.WEST);
-		top.add(flattenPanel);
-		top.add(loopcheckPanel,BorderLayout.WEST);
-		top.add(top1);
-		return top;
-	}
+    }//GEN-LAST:event_exploreIndepButtonActionPerformed
 
-	private JPanel constructDownPanel() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(constructLimitPanel(), BorderLayout.CENTER);
-		
-		final JPanel buttons = new JPanel(new GridLayout(1, 2));
-		final Action goAction = new AbstractAction("GO") {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				Fst2ListCommand cmd = new Fst2ListCommand();
-				final Grf2Fst2Command grfCmd = new Grf2Fst2Command();
-				File fst2;
-				File list; /* output file name */
-				int n;
-				if (limit.isSelected()) {
-					try {
-						n = Integer.parseInt(limitSize.getText());
-					} catch (final NumberFormatException e) {
-						JOptionPane.showMessageDialog(null,
-								"You must specify a valid limit", "Error",
-								JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					cmd = cmd.limit(n);
-				} else {
-					cmd = cmd.noLimit();
-				}
-				if ( !loopCheckBox.isSelected() ) {
-					cmd = cmd.noLoopCheck();
-				}
-				if (ignoreOutputs.isSelected()) {
-					cmd = cmd.ignoreOutputs();
-				} else {
-					cmd = cmd.separateOutputs(separateOutputs.isSelected());
-				}
-				// check if flatten was checked or not
-				if( !flattenGraph.isSelected() ) {
-					grfCmd.grf(new File(graphName.getText()))
-						.enableLoopAndRecursionDetection(true).repositories()
-						.emitEmptyGraphWarning().displayGraphNames();
-				} else if ( preprocessCommands == null ) {
-					// if no specific option were given, preprocess with default
-					File graphFile = new File(graphName.getText());
-					String name_fst2 = FileUtil.getFileNameWithoutExtension(graphFile);
-					name_fst2 = name_fst2 + ".fst2";
-					final MultiCommands commands = new MultiCommands();
-					commands.addCommand(new Grf2Fst2Command().grf(graphFile)
-							.enableLoopAndRecursionDetection(true)
-							.tokenizationMode(null, graphFile).repositories()
-							.emitEmptyGraphWarning().displayGraphNames());
-					commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
-							.resultType(flattenMode).depth(Integer.parseInt(flattenDepth)));
-				}
-				else {
-					Launcher.exec(preprocessCommands, false);
-				}
-				
-				fst2 = new File(FileUtil.getFileNameWithoutExtension(graphName
-						.getText()) + ".fst2");
-				if (onlyPaths.isSelected()) {
-					// set file to user input
-					list = new File(outputFileName.getText());
-					cmd = cmd.listOfPaths(fst2, list);
-				} else {
-					// we can't set non recursive file name to user selection yet because the name is hard coded in UnitexToolLogger (Fst2List.cpp line 1230)
-					// if we change it here ShowPathsDo will throw a FileNotFoundException 
-					// we will rename the file once the UnitexToolLogger process has completed
-					// alternatively that process could be changed to remove the hard coding
-					list = new File(
-							FileUtil.getFileNameWithoutExtension(graphName
-									.getText()) + "autolst.txt");
-					cmd = cmd.listsOfSubgraph(fst2);
-				}
-				final MultiCommands commands = new MultiCommands();
-				if ( !flattenGraph.isSelected() ) {
-					commands.addCommand(grfCmd);
-				}
-				commands.addCommand(cmd);
-				textArea.reset();
-				Launcher.exec(commands, true, new ShowPathsDo(list), false,true);
-			}
-		};
-		final JButton GO = new JButton(goAction);
-		buttons.add(GO);
-		final Action cancelAction = new AbstractAction("Cancel") {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				close();
-			}
-		};
-		final JButton CANCEL = new JButton(cancelAction);
-		buttons.add(CANCEL);
-		panel.add(buttons, BorderLayout.EAST);
-		KeyUtil.addCRListener(GO);
-		KeyUtil.addCRListener(CANCEL);
-		KeyUtil.addEscListener(panel, CANCEL);
-		return panel;
-	}
-	
-	@Override
-	public void dispose() {
-		textArea.reset();
-		textArea.clearSelection();
-		textArea.getModel().removeListDataListener(listListener);
-	}
-	
-	void close() {
-		setVisible(false);
-		textArea.reset();
-		textArea.clearSelection();
-		textArea.getModel().removeListDataListener(listListener);
-	}
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        Fst2ListCommand cmd = new Fst2ListCommand();
+        final Grf2Fst2Command grfCmd = new Grf2Fst2Command();
+        File fst2;
+        File list; /* output file name */
+        int n;
+        if (maxSeqCheckbox.isSelected()) {
+                try {
+                    maxSeqSpinner.commitEdit();
+                    n = (Integer) maxSeqSpinner.getValue();
+                } catch (final NumberFormatException | ParseException e) {
+                        JOptionPane.showMessageDialog(null,
+                                        "You must specify a valid limit", "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                        return;
+                }
+                cmd = cmd.limit(n);
+        } else {
+                cmd = cmd.noLimit();
+        }
+        if ( !checkLoopsCheckbox.isSelected() ) {
+                cmd = cmd.noLoopCheck();
+        }
+        if (ignoreOutputsButton.isSelected()) {
+                cmd = cmd.ignoreOutputs();
+        } else {
+                cmd = cmd.separateOutputs(splitOutputsButton.isSelected());
+        }
+        // check if flatten was checked or not
+        if( !flattenCheckbox.isSelected() ) {
+                grfCmd.grf(new File(inputGraphName.getText()))
+                        .enableLoopAndRecursionDetection(true).repositories()
+                        .emitEmptyGraphWarning().displayGraphNames();
+        } else if ( preprocessCommands == null ) {
+                // if no specific option were given, preprocess with default
+                File graphFile = new File(inputGraphName.getText());
+                String name_fst2 = FileUtil.getFileNameWithoutExtension(graphFile);
+                name_fst2 = name_fst2 + ".fst2";
+                final MultiCommands commands = new MultiCommands();
+                commands.addCommand(new Grf2Fst2Command().grf(graphFile)
+                                .enableLoopAndRecursionDetection(true)
+                                .tokenizationMode(null, graphFile).repositories()
+                                .emitEmptyGraphWarning().displayGraphNames());
+                commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
+                                .resultType(flattenMode).depth(Integer.parseInt(flattenDepth)));
+        }
+        else {
+                Launcher.exec(preprocessCommands, false);
+        }
 
-	private JPanel constructLimitPanel() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		limit = new JCheckBox("Maximum number of sequences: ", true);
-		limitSize = new JTextField("100");
-		limitSize.setPreferredSize(new Dimension(50, 20));
-		panel.add(limit, BorderLayout.WEST);
-		panel.add(limitSize, BorderLayout.CENTER);
-		panel.add(new JLabel("   "), BorderLayout.EAST);
-		return panel;
-	}
-	
-	private JPanel constructFlattenGraphPanel() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		flattenGraph = new JCheckBox("Flatten graphs ");
-		
-		panel.add(flattenGraph, BorderLayout.WEST);
-		// add space to align option button and limit text area
-		panel.add(new JLabel("                           "));
-		
-		final JPanel button = new JPanel(new GridLayout(1, 1));
-		
-		final Action flattenOptionAction = new AbstractAction("Flattening options") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				File graphFile = new File(graphName.getText());
-				Map<String,Object> flattenOptions = UnitexFrame
-						.flattenGraph(graphFile,flattenMode,flattenDepth);
-				if( flattenOptions != null ) {
-				// unpack the commands and its options
-					preprocessCommands = (MultiCommands) flattenOptions.get("commands");
-					flattenMode = (boolean) flattenOptions.get("flattenMode");
-					flattenDepth = (String) flattenOptions.get("flattenDepth");
-				}
-			}
-		};
-		final JButton flattenOption = new JButton(flattenOptionAction);
-		flattenOption.setEnabled(false);
-		
-		final ItemListener flattenCheckBox = new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if ( flattenGraph.isSelected() ) {
-					flattenOption.setEnabled(true);
-				} else {
-					flattenOption.setEnabled(false);
-				}
-			}
-		};
-		
-		flattenGraph.addItemListener(flattenCheckBox);
-		button.add(flattenOption);
-		panel.add(button, BorderLayout.EAST);
-		
-		return panel;
-	}
+        fst2 = new File(FileUtil.getFileNameWithoutExtension(inputGraphName
+                        .getText()) + ".fst2");
+        if (exploreRecButton.isSelected()) {
+                // set file to user input
+                list = new File(outputFileName.getText());
+                cmd = cmd.listOfPaths(fst2, list);
+        } else {
+                // we can't set non recursive file name to user selection yet because the name is hard coded in UnitexToolLogger (Fst2List.cpp line 1230)
+                // if we change it here ShowPathsDo will throw a FileNotFoundException 
+                // we will rename the file once the UnitexToolLogger process has completed
+                // alternatively that process could be changed to remove the hard coding
+                list = new File(
+                                FileUtil.getFileNameWithoutExtension(inputGraphName
+                                                .getText()) + "autolst.txt");
+                cmd = cmd.listsOfSubgraph(fst2);
+        }
+        final MultiCommands commands = new MultiCommands();
+        if ( !flattenCheckbox.isSelected() ) {
+                commands.addCommand(grfCmd);
+        }
+        commands.addCommand(cmd);
+        outputArea.reset();
+        Launcher.exec(commands, true, new ShowPathsDo(list), false,true);
+    }//GEN-LAST:event_runButtonActionPerformed
 
-	private JPanel constructGraphNamePanel() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new JLabel("       Graph: "), BorderLayout.WEST);
-		panel.add(graphName, BorderLayout.CENTER);
-		return panel;
-	}
-	
-	/**
-	 * Constructs panel with list file output location and browse button to allow user to select other file/location
-	 * issue #61
-	 */
-	private JPanel constructListFileNamePanel() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new JLabel(" Output file: "), BorderLayout.WEST);
-		panel.add(outputFileName, BorderLayout.CENTER);
-		
-		
-		final JPanel button = new JPanel(new GridLayout(1, 1));
-		
-		final Action setFileAction = new AbstractAction("Set File") {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				openOutputFile();
-			}
-		};
-		final JButton setFile = new JButton(setFileAction);
-		button.add(setFile);
-		panel.add(button, BorderLayout.EAST);
-		
-		return panel;
-	}
-	
-	private void openOutputFile() {
-		final int returnVal = Config.getExploreGraphOutputDialogBox().showOpenDialog(this);
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			// we return if the user has clicked on CANCEL
-			return;
-		}
-		final String name;
-		try {
-			name = Config.getExploreGraphOutputDialogBox().getSelectedFile()
-					.getCanonicalPath();
-		} catch (final IOException e) {
-			return;
-		}
-		outputFileName.setText(name);
-	}
-	
-	public void setOutputFileDefaultName(String graphFileName) {
-		outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphFileName) + "-recursive-paths.txt");
-	}
+    private void flattenOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenOptionButtonActionPerformed
+        File graphFile = new File(inputGraphName.getText());
+        Map<String,Object> flattenOptions = UnitexFrame
+                        .flattenGraph(graphFile,flattenMode,flattenDepth);
+        if( flattenOptions != null ) {
+        // unpack the commands and its options
+                preprocessCommands = (MultiCommands) flattenOptions.get("commands");
+                flattenMode = (boolean) flattenOptions.get("flattenMode");
+                flattenDepth = (String) flattenOptions.get("flattenDepth");
+        }
+    }//GEN-LAST:event_flattenOptionButtonActionPerformed
 
+    private void checkLoopsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLoopsCheckboxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkLoopsCheckboxActionPerformed
 
-	class ShowPathsDo implements ToDo {
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GraphPathFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GraphPathFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GraphPathFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GraphPathFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GraphPathFrame().setVisible(true);
+            }
+        });
+        
+    }
+    
+    void close() {
+        setVisible(false);
+        outputArea.reset();
+        outputArea.clearSelection();
+        outputArea.getModel().removeListDataListener(listListener);
+    }
+    
+    class ShowPathsDo implements ToDo {
 		private final File name;
 
 		ShowPathsDo(File name) {
@@ -412,8 +540,8 @@ public class GraphPathFrame extends JInternalFrame {
 
 		@Override
 		public void toDo(boolean success) {
-			textArea.load(name);
-			textArea.getModel().addListDataListener(listListener);
+			outputArea.load(name);
+			outputArea.getModel().addListDataListener(listListener);
 			
 			try {
 				// issue #61 - recursive path option invokes UnitexToolLogger which hard codes the name of the output file to GraphNameautolst.txt 
@@ -430,4 +558,60 @@ public class GraphPathFrame extends JInternalFrame {
 			} 
 		}
 	}
+    
+    void setInputGraphName(String string) {
+        inputGraphName.setText(string);
+    }
+    
+    public void setOutputFileDefaultName(String graphFileName) {
+        outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphFileName) + "-recursive-paths.txt");
+    }
+    
+    private void openOutputFile() {
+        final int returnVal = Config.getExploreGraphOutputDialogBox().showOpenDialog(this);
+        if (returnVal != JFileChooser.APPROVE_OPTION) {
+                // we return if the user has clicked on CANCEL
+                return;
+        }
+        final String name;
+        try {
+                name = Config.getExploreGraphOutputDialogBox().getSelectedFile()
+                                .getCanonicalPath();
+        } catch (final IOException e) {
+                return;
+        }
+        outputFileName.setText(name);
+    }
+    
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JCheckBox checkLoopsCheckbox;
+    private javax.swing.JRadioButton exploreIndepButton;
+    private javax.swing.JLabel exploreLabel;
+    private javax.swing.JRadioButton exploreRecButton;
+    private javax.swing.JCheckBox flattenCheckbox;
+    private javax.swing.JButton flattenOptionButton;
+    private javax.swing.JLabel graphFileLabel;
+    private javax.swing.JButton helpButton;
+    private javax.swing.JRadioButton ignoreOutputsButton;
+    private javax.swing.JTextField inputGraphName;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JCheckBox maxSeqCheckbox;
+    private javax.swing.JSpinner maxSeqSpinner;
+    private javax.swing.JRadioButton mergeOutputsButton;
+    private javax.swing.JLabel optionLabel;
+    private javax.swing.JSeparator optionSeparator;
+    private fr.umlv.unitex.text.BigTextList outputArea;
+    private javax.swing.JLabel outputFileLabel;
+    private javax.swing.JTextField outputFileName;
+    private javax.swing.JLabel outputsLabel;
+    private javax.swing.JLabel resultLabel;
+    private javax.swing.JSeparator resultSeparator;
+    private javax.swing.JButton runButton;
+    private javax.swing.JButton setFileButton;
+    private javax.swing.JRadioButton splitOutputsButton;
+    // End of variables declaration//GEN-END:variables
 }
