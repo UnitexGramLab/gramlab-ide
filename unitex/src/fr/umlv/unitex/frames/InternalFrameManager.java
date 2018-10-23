@@ -596,7 +596,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		if (d == null)
 			return null;
 		final File f = gf.getGraph();
-		d.graphName.setText(f.getAbsolutePath());
+		d.setInputGraphName(f.getAbsolutePath());
 		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
 		return d;
