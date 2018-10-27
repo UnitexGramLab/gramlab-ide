@@ -35,7 +35,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jScrollPane2" pref="0" max="32767" attributes="0"/>
                   <Component id="optionSeparator" max="32767" attributes="0"/>
@@ -45,14 +45,14 @@
                           <Component id="graphFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="outputFileLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="outputFileName" max="32767" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="setFileButton" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="inputGraphName" max="32767" attributes="0"/>
+                          <Component id="inputGraphName" min="-2" pref="682" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -64,45 +64,41 @@
                       </Group>
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Component id="ignoreOutputsButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="exploreRecButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxSeqSpinner" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="exploreIndepButton" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="ignoreOutputsButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="exploreRecButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="exploreIndepButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="splitOutputsButton" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="splitOutputsButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="flattenCheckbox" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="flattenOptionButton" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="checkLoopsCheckbox" min="-2" max="-2" attributes="0"/>
-                                          <Component id="mergeOutputsButton" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="flattenCheckbox" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="flattenOptionButton" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
+                              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="checkLoopsCheckbox" min="-2" max="-2" attributes="0"/>
+                                  <Component id="mergeOutputsButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <Component id="maxSeqSpinner" min="-2" pref="52" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="resultLabel" min="-2" max="-2" attributes="0"/>
                   <Component id="resultSeparator" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="helpButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="535" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="runButton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="43" max="32767" attributes="0"/>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -150,14 +146,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="resultSeparator" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-              <Component id="jScrollPane2" min="-2" pref="139" max="-2" attributes="0"/>
+              <Component id="jScrollPane2" pref="151" max="32767" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="helpButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="runButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="runButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -177,6 +173,9 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="jTextField1"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[70, 25]"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inputGraphNameActionPerformed"/>
@@ -185,12 +184,19 @@
     <Component class="javax.swing.JTextField" name="outputFileName">
       <Properties>
         <Property name="text" type="java.lang.String" value="jTextField1"/>
+        <Property name="name" type="java.lang.String" value="" noResource="true"/>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[70, 25]"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="setFileButton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Set File"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setFileButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSeparator" name="optionSeparator">
     </Component>
@@ -271,6 +277,9 @@
           <SpinnerModel initial="0" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
+        <Property name="value" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="50" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="flattenCheckbox">

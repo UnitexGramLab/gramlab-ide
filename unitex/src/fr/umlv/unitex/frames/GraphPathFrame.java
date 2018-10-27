@@ -149,6 +149,7 @@ public class GraphPathFrame extends JInternalFrame {
 
         inputGraphName.setEditable(false);
         inputGraphName.setText("jTextField1");
+        inputGraphName.setPreferredSize(new java.awt.Dimension(70, 25));
         inputGraphName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 inputGraphNameActionPerformed(evt);
@@ -156,8 +157,15 @@ public class GraphPathFrame extends JInternalFrame {
         });
 
         outputFileName.setText("jTextField1");
+        outputFileName.setName(""); // NOI18N
+        outputFileName.setPreferredSize(new java.awt.Dimension(70, 25));
 
         setFileButton.setText("Set File");
+        setFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setFileButtonActionPerformed(evt);
+            }
+        });
 
         optionLabel.setText("Options");
 
@@ -201,6 +209,7 @@ public class GraphPathFrame extends JInternalFrame {
 
         maxSeqSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         maxSeqSpinner.setEnabled(false);
+        maxSeqSpinner.setValue(50);
 
         flattenCheckbox.setText("Flatten graphs");
         flattenCheckbox.addActionListener(new java.awt.event.ActionListener() {
@@ -254,7 +263,7 @@ public class GraphPathFrame extends JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(75, 75, 75)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(optionSeparator)
@@ -263,13 +272,13 @@ public class GraphPathFrame extends JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(graphFileLabel)
                             .addComponent(outputFileLabel))
-                        .addGap(58, 58, 58)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(outputFileName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(outputFileName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(setFileButton))
-                            .addComponent(inputGraphName)))
+                            .addComponent(inputGraphName, javax.swing.GroupLayout.PREFERRED_SIZE, 682, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -278,34 +287,32 @@ public class GraphPathFrame extends JInternalFrame {
                             .addComponent(maxSeqCheckbox))
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ignoreOutputsButton)
+                            .addComponent(exploreRecButton)
+                            .addComponent(maxSeqSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(exploreIndepButton)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ignoreOutputsButton)
-                                    .addComponent(exploreRecButton))
-                                .addGap(38, 38, 38)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(exploreIndepButton)
+                                    .addComponent(splitOutputsButton)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(splitOutputsButton)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(flattenCheckbox)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(flattenOptionButton)))
-                                        .addGap(40, 40, 40)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(checkLoopsCheckbox)
-                                            .addComponent(mergeOutputsButton)))))
-                            .addComponent(maxSeqSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(flattenCheckbox)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(flattenOptionButton)))
+                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(checkLoopsCheckbox)
+                                    .addComponent(mergeOutputsButton)))))
                     .addComponent(resultLabel)
                     .addComponent(resultSeparator)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(helpButton)
-                        .addGap(535, 535, 535)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cancelButton)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(runButton)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,13 +353,13 @@ public class GraphPathFrame extends JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(helpButton)
-                    .addComponent(runButton)
-                    .addComponent(cancelButton))
-                .addContainerGap(30, Short.MAX_VALUE))
+                    .addComponent(cancelButton)
+                    .addComponent(runButton))
+                .addContainerGap())
         );
 
         pack();
@@ -486,6 +493,10 @@ public class GraphPathFrame extends JInternalFrame {
     private void checkLoopsCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkLoopsCheckboxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkLoopsCheckboxActionPerformed
+
+    private void setFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setFileButtonActionPerformed
+        openOutputFile();
+    }//GEN-LAST:event_setFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
