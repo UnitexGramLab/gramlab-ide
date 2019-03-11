@@ -20,6 +20,34 @@ import fr.umlv.unitex.config.Config;
  */
 public class HelpMenuBuilder {
 
+  /**
+   * Opens an URI using desktop.browse() or xdg-open as fallback
+   * @author martinec
+   */
+  static void openUri(String uri) {
+    if (Desktop.isDesktopSupported() &&
+        Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+      Desktop desktop = Desktop.getDesktop();
+      try {
+        desktop.browse(new URI(uri));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    } else if (Config.getSystem() != Config.WINDOWS_SYSTEM) {
+        try {
+          String openCommand = Config.getSystem() == Config.MAC_OS_X_SYSTEM ?
+                               "open" : "xdg-open";
+          final Process p = Runtime.getRuntime().exec(new String[] { openCommand, uri });
+          try {
+            p.waitFor();
+          } catch (final java.lang.InterruptedException e) {
+            e.printStackTrace();
+          }
+        } catch (final java.io.IOException e) {
+        }
+    }
+  }
+
   public static JMenu build(File appDir) {
     JMenu helpMenu = new JMenu("Help");
 
@@ -48,17 +76,11 @@ public class HelpMenuBuilder {
             if (manual.getName().contains(".pdf")) {
               JMenuItem manualAction = new JMenuItem(
                   manualDirContent.getName());
-              manualAction
+                  manualAction
                   .addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(
-                        ActionEvent e) {
-                      try {
-                        Desktop.getDesktop().open(
-                            manual);
-                      } catch (Exception exception) {
-                        exception.printStackTrace();
-                      }
+                    public void actionPerformed(ActionEvent e) {
+                      openUri(manual.toURI().toString());
                     }
                   });
               manuals.add(manualAction);
@@ -68,34 +90,6 @@ public class HelpMenuBuilder {
       }
     }
     return manuals;
-  }
-
-  /**
-   * Opens an URI using desktop.browse() or xdg-open as fallback
-   * @author martinec
-   */
-  static void openUri(String uri) {
-    if (Desktop.isDesktopSupported() &&
-        Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-      Desktop desktop = Desktop.getDesktop();
-      try {
-        desktop.browse(new URI(uri));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    } else if (Config.getSystem() != Config.WINDOWS_SYSTEM) {
-        try {
-          String openCommand = Config.getSystem() == Config.MAC_OS_X_SYSTEM ?
-                               "open" : "xdg-open";
-          final Process p = Runtime.getRuntime().exec(new String[] { openCommand, uri });
-          try {
-            p.waitFor();
-          } catch (final java.lang.InterruptedException e) {
-            e.printStackTrace();
-          }
-        } catch (final java.io.IOException e) {
-        }
-    }
   }
 
   static JMenuItem buildWebsiteMenuItem() {
