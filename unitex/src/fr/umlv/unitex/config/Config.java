@@ -187,6 +187,10 @@ public class Config {
      */
     private static JFileChooser corpusDialogBox;
     /**
+     * Dialog box used to open  ".snt" text files
+     */
+    private static JFileChooser taggedCorpusDialogBox;
+    /**
      * Dialog box used to open DELAF dictionaries. The file filter of this
      * dialog box accepts ".dic" files, and also "dlf" and "dlc" files, that are
      * text dictionaries.
@@ -423,18 +427,18 @@ public class Config {
     }
 
     public static JFileChooser getTaggedCorpusDialogBox() {
-        if (corpusDialogBox != null) {
-            return corpusDialogBox;
+        if (taggedCorpusDialogBox != null) {
+            return taggedCorpusDialogBox;
         }
-        corpusDialogBox = new JFileChooser();
+        taggedCorpusDialogBox = new JFileChooser();
         PersonalFileFilter sntFilter = new PersonalFileFilter("snt",
                                        "Unitex Text Files");
-        corpusDialogBox.addChoosableFileFilter(sntFilter);
-        corpusDialogBox.setFileFilter(sntFilter);
-        corpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        corpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
-        corpusDialogBox.setMultiSelectionEnabled(false);
-        return corpusDialogBox;
+        taggedCorpusDialogBox.addChoosableFileFilter(sntFilter);
+        taggedCorpusDialogBox.setFileFilter(sntFilter);
+        taggedCorpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+        taggedCorpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
+        taggedCorpusDialogBox.setMultiSelectionEnabled(false);
+        return taggedCorpusDialogBox;
     }
 
     public static JFileChooser getInflectDialogBox(File dir) {
@@ -606,6 +610,8 @@ public class Config {
                     .getCurrentGraphDir(), "Preprocessing"), "Replace"));
         if (corpusDialogBox != null)
             corpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
+        if (taggedCorpusDialogBox != null)
+            taggedCorpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
         if (delaDialogBox != null)
             delaDialogBox.setCurrentDirectory(new File(Config
                     .getUserCurrentLanguageDir(), "Dela"));

@@ -417,7 +417,7 @@ public class UnitexFrame extends JFrame {
 				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
 				  return;
 				}
-				JFileChooser fc = Config.getCorpusDialogBox();
+				JFileChooser fc = Config.getTaggedCorpusDialogBox();
 				fc.setMultiSelectionEnabled(false);
 				fc.setDialogType(JFileChooser.SAVE_DIALOG);
 				File file;
@@ -1717,14 +1717,14 @@ public class UnitexFrame extends JFrame {
 	 * is opened with a call to the <code>Text.loadCorpus(String)</code> method.
 	 */
 	void openTaggedText() {
-		Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
+		Config.getTaggedCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
 		final int returnVal = Config.getTaggedCorpusDialogBox().showOpenDialog(
 				this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		final File f = Config.getCorpusDialogBox().getSelectedFile();
+		final File f = Config.getTaggedCorpusDialogBox().getSelectedFile();
 		if (!f.exists()) {
 			JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
 					+ " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
