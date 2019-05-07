@@ -19,7 +19,7 @@ GramLab is the Integrated Development Environment (IDE) of [Unitex/GramLab][unit
 To install and test the IDE you need first to download the [Unitex Core][unitex-core] 
 executable (`UnitexToolLogger`). The easiest way to do this is to grab a full 
 [Unitex/GramLab release](https://unitexgramlab.org/releases/latest-stable/) 
-for your plaftform. After this you should do:
+for your platform. After this you should do:
 
     cd gramlab-ide
     export UNITEX_BUILD_RELEASE_DIR=/path/to/unitexgramlab-release
