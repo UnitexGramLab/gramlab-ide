@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,6 +43,11 @@ public class Fst2ListCommand extends CommandBuilder {
 	}
 
 	public Fst2ListCommand noLimit() {
+		return this;
+	}
+
+	public Fst2ListCommand noLoopCheck() {
+		element("-d");
 		return this;
 	}
 

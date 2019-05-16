@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -159,7 +159,6 @@ public class TextAutomatonFrame extends TfstFrame {
 	private JButton buildTokensButton;
 	private JButton undoButton;
 	private JButton redoButton;
-
 	private UndoManager manager = new UndoManager();
 
 	TextAutomatonFrame() {
@@ -521,7 +520,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	}
 
 	private JPanel constructCornerPanel() {
-		final JPanel cornerPanel = new JPanel(new GridLayout(9, 1));
+		final JPanel cornerPanel = new JPanel(new GridLayout(8, 1));
 		cornerPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 		cornerPanel.add(sentence_count_label);
 		final JPanel middle = new JPanel(new BorderLayout());
@@ -540,7 +539,7 @@ public class TextAutomatonFrame extends TfstFrame {
 				checkGraph();
 				if (!checkList.isEmpty()) {
 					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
-				
+
 				if (!isGraphValid()) {
 =======
 >>>>>>> 192b0c932755730261274d760f8ce544daec6fbc
@@ -576,15 +575,15 @@ public class TextAutomatonFrame extends TfstFrame {
 		revertSentenceGraph = new JButton(revertSentenceAction);
 		revertSentenceGraph.setVisible(false);
 		cornerPanel.add(revertSentenceGraph);
-		undoButton = new JButton("Undo");
-		undoButton.setEnabled(false);
-		undoButton.addActionListener(new UndoIt());
-		cornerPanel.add(undoButton);
-		redoButton = new JButton("Redo");
-		redoButton.setEnabled(false);
-		redoButton.addActionListener(new RedoIt());
-		cornerPanel.add(redoButton);
-		buildTokensButton = new JButton("Token");
+	    undoButton = new JButton("Undo");
+	    undoButton.setEnabled(false);
+	    undoButton.addActionListener(new UndoIt());
+	    cornerPanel.add(undoButton);
+	    redoButton = new JButton("Redo");
+	    redoButton.setEnabled(false);
+	    redoButton.addActionListener(new RedoIt());
+	    cornerPanel.add(redoButton);
+	    buildTokensButton = new JButton("Token");
 		buildTokensButton.setEnabled(true);
 		buildTokensButton.addActionListener(new AbstractAction() {
 			@Override
@@ -651,7 +650,6 @@ public class TextAutomatonFrame extends TfstFrame {
 				graphicalZone.removeBoxes(boxes);
 			}
 		});
-		cornerPanel.add(deleteStates);
 		buildTokensButton = new JButton("Check");
 		buildTokensButton.setEnabled(true);
 		buildTokensButton.addActionListener(new AbstractAction() {
@@ -671,22 +669,22 @@ public class TextAutomatonFrame extends TfstFrame {
 			}
 		});
 		cornerPanel.add(buildTokensButton);
+		cornerPanel.add(deleteStates);
 		return cornerPanel;
 	}
+	
+	 private boolean isGraphValid() {
+         return checkGraph() == 0;
+	 }
 
-    private boolean isGraphValid() {
-            return checkGraph() == 0;
-    }
-
-      private void reinitializeUndoManager() {
-        graphicalZone.removeUndoableEditListener(manager);
-        manager = new UndoManager();
-        manager.setLimit(-1);
-        graphicalZone.addUndoableEditListener(manager);
-        updateDoUndoButtons();
-      }
-
-
+	private void reinitializeUndoManager() {
+		graphicalZone.removeUndoableEditListener(manager);
+		manager = new UndoManager();
+		manager.setLimit(-1);
+		graphicalZone.addUndoableEditListener(manager);
+		updateDoUndoButtons();
+	}
+	
 	private int checkGraph() {
 		String text = sentenceTextArea.getText();
 		int errorCount = 0;
@@ -807,6 +805,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			checkContent(nextBox, nextIndex, box.getBounds());
 		}
 	}
+
 
 	/**
 	 * Shows the frame
