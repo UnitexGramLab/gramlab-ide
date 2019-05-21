@@ -138,13 +138,7 @@ public abstract class InternalFrameManager implements FrameManager {
 			desktop.add(f, LAYER);
 		}
 	}
-	/**
-	 * this function appears to be updating the main Unitex frame, 
-	 * Background or non existent frames passed as arguments get drawn on the foreground.
-	 * @param f
-	 *    the frame intended to be  in the foreground with focus.
-	 * @return
-	 */
+
 	protected JInternalFrame setup(JInternalFrame f) {
 		return setup(f, false, false);
 	}
@@ -351,10 +345,8 @@ public abstract class InternalFrameManager implements FrameManager {
 
 	public DelaFrame newDelaFrame(File dela) {
 		DelaFrame f = delaFrameFactory.getFrameIfExists(dela);
-		if (f != null) {
-			setup(f);
+		if (f != null)
 			return f;
-		}	
 		f = new DelaFrame();
 		f.loadDela(dela);
 		delaFrameFactory.addFrame(f);

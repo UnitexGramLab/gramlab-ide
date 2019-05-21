@@ -308,7 +308,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     public void actionPerformed(ActionEvent e) {
                         surroundWithBoxes(
                             (ArrayList<GenericGraphBox>) selectedBoxes.clone(),
-                            "$G/{", "<E>/}");
+                            "$G/{", null);
                     }
                 };
                 addGenericGraphIndicator.setEnabled(false);
@@ -1043,7 +1043,6 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					box2, edit);
 			graphBoxes.add(outputBox);
 		}
-		unSelectAllBoxes();
 		postEdit(edit);
 		fireGraphChanged(true);
 	}

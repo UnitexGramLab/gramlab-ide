@@ -177,10 +177,7 @@ public class TfstGraphBox extends GenericGraphBox {
 		lines.clear();
 		greyed.clear();
 		tokenizeText(s, false);
-		if (!tmp.equals("<E>") && !tmp.equals(",")) {
-			// updating the letters bounds
-			updateBoundsLetters( tmp.split(",")[0].length()-1 );
-			
+		if (!tmp.equals("<E>")) {
 			// dimensions of a full box
 			Width = maxLineWidth() + 10;
 			Height = n_lines * get_h_ligne() + 6;
@@ -191,13 +188,6 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		Y1 = Y - Height / 2;
 		X_out = X + Width + 5;
-		
-		
-	}
-	// @Yass
-	public void updateBoundsLetters( int length ) {
-		if( bounds != null && length>0 )
-			bounds.setEnd_in_chars( length-1 );
 	}
 
 	public void setContentWithBounds(String s) {
@@ -280,8 +270,9 @@ public class TfstGraphBox extends GenericGraphBox {
 	@Override
 	void drawOther(Graphics2D g, DrawGraphParams params) {
 		final Color old = params.getBackgroundColor();
-		if ( isUntaggedToken(content)) {
-			params.setBackgroundColor(GraphDecoratorConfig.UNTAGGED_TOKEN_COLOR);
+		if (ConfigManager.getManager().isKorean(null)
+				&& isKoreanUntaggedToken(content)) {
+			params.setBackgroundColor(GraphDecoratorConfig.KOREAN_UNTAGGED_TOKEN_COLOR);
 		}
 		final Composite c = g.getComposite();
 		if (parentGraphicalZone.decorator != null) {
@@ -289,20 +280,11 @@ public class TfstGraphBox extends GenericGraphBox {
 					getBoxNumber(), c));
 		}
 		super.drawOther(g, params);
-		if (bounds != null) {
-					  g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
-			      g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
-			      String boundsString = bounds.getStart_in_tokens() + ". " + bounds.getStart_in_chars() + ". " + bounds.getStart_in_letters()
-			        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
-			        + bounds.getEnd_in_letters();
-			     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());
-			    
-			    }
 		g.setComposite(c);
 		params.setBackgroundColor(old);
 	}
 
-	private boolean isUntaggedToken(String s) {
+	private boolean isKoreanUntaggedToken(String s) {
 		return !s.equals("<E>") && s.charAt(0) != '{';
 	}
 

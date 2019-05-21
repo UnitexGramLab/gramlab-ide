@@ -203,8 +203,9 @@ public class GraphDecorator {
 			return GraphDecoratorConfig.SHADED;
 		}
 		if (model != null && model.isLinearTfst()) {
-			return GraphDecoratorConfig.LINEAR_TFST;
-			
+			if (!ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.LINEAR_TFST;
+			}
 		}
 		return c;
 	}
@@ -225,10 +226,16 @@ public class GraphDecorator {
 		if (hasMoved(boxNumber))
 			return GraphDecoratorConfig.STROKE;
 		if (boxNumber == currentBox) {
-			return GraphDecoratorConfig.HIGHLIGHT_STROKE;
+			if (ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.KOREAN_HIGHLIGHT_STROKE;
+			} else {
+				return GraphDecoratorConfig.STROKE;
+			}
 		}
 		if (model != null && model.isSelected(boxNumber)) {
-			return GraphDecoratorConfig.STROKE;
+			if (!ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.STROKE;
+			}
 		}
 		return s;
 	}
@@ -241,30 +248,31 @@ public class GraphDecorator {
 		if (hasMoved(boxNumber))
 			return GraphDecoratorConfig.MOVED;
 		if (boxNumber == currentBox) {
-			return GraphDecoratorConfig.STANDARD_HIGHLIGHT;
-			//return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
+			if (ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.KOREAN_HIGHLIGHT;
+			} else {
+				return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
 			}
+		}
 		if (model != null && model.isLinearTfst()) {
-			return GraphDecoratorConfig.LINEAR_TFST;
+			if (!ConfigManager.getManager().isKorean(null)) {
+				return GraphDecoratorConfig.LINEAR_TFST;
+			}
 		}
 		return c;
 	}
-	/** @Yass this will contain the coloring of french graphes.
-	 * 
-	 * @param boxNumber
-	 * @param c
-	 * @return
-	 */
+	
 	public Color getBoxBackgroundColor(int boxNumber, Color c) {
 		// If the background isn't already set from TfstGraphBox for untagged korean tokens
 		// This case may happen when a token is both untagged and SELECTED
-		if (model != null && c != GraphDecoratorConfig.UNTAGGED_TOKEN_COLOR) {
+		if (model != null && ConfigManager.getManager().isKorean(null)
+				&& c != GraphDecoratorConfig.KOREAN_UNTAGGED_TOKEN_COLOR) {
 			// Displaying a different background color when the graph is linear
 			if (model.isLinearTfst()) {
-				return GraphDecoratorConfig.LINEAR_TFST;
+				return GraphDecoratorConfig.KOREAN_LINEAR_TFST;
 			}
 			if (TaggingState.SELECTED == model.getBoxStateTfst(boxNumber)) {
-				return GraphDecoratorConfig.UNAMBIGUOUS_TOKEN_COLOR;
+				return GraphDecoratorConfig.UNAMBIGUOUS_KOREAN;
 			}
 		}
 		return c;

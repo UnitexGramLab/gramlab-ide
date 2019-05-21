@@ -51,6 +51,7 @@ public class CheckTextAutomatonDialog extends JDialog {
     }
   }
 
+
   private CheckTextAutomatonDialog(ArrayList<String> checkList) {
     super(UnitexFrame.mainFrame, "Check TextAutomaton", true);
     this.checkList = checkList;
@@ -162,8 +163,6 @@ public class CheckTextAutomatonDialog extends JDialog {
     return panel1;
   }
 
-
-  public void updateDialog() {}
   public static CheckTextAutomatonDialog createCheckTextAutomatonDialog(ArrayList<String> checkList) {
     return new CheckTextAutomatonDialog(checkList);
   }

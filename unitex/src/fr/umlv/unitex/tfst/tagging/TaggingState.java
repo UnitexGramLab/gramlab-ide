@@ -27,10 +27,8 @@ public enum TaggingState {
 	 * The box is competing with a selected box and so, must be discarded
 	 */
 	TO_BE_REMOVED,
-	/* The box is neither accessible and co-accessible */
+	/* The box is not both accessible and co-accessible */
 	USELESS,
 	/* None of previous cases */
-	NEUTRAL,
-	/* new tag, used when a new branch ie series of boxes connected with transitions gets connected to the main graph */
-	TO_CHECK,
+	NEUTRAL
 }

@@ -29,10 +29,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
@@ -119,7 +117,6 @@ public class ExportTextAsPOSListDialog extends JDialog {
 				final File sentenceTok = new File(sntDir, "foo.tok");
 				final TfstTableModel model = new TfstTableModel(filter,
 						delafStyle);
-				final ArrayList<Integer> errorList = new ArrayList<>();
 				try {
 					final OutputStreamWriter writer = encoding
 							.getOutputStreamWriter(output);
@@ -133,10 +130,6 @@ public class ExportTextAsPOSListDialog extends JDialog {
 						final String text = readSentenceText(sentenceText);
 						TokensInfo.loadTokensInfo(sentenceTok, text);
 						final GraphIO g = GraphIO.loadGraph(tmpGrf, true, true);
-						if (g == null) {
-							errorList.add(i);
-							continue;
-						}
 						model.init(g.getBoxes());
 						if (model.getRowCount() == 0) {
 							/*
@@ -151,7 +144,7 @@ public class ExportTextAsPOSListDialog extends JDialog {
 							for (int j = 0; j < model.getRowCount(); j++) {
 								final TokenTags t = model.getTokenTags(j);
 								UnicodeIO.writeString(writer, t.toString()
-									+ " ");
+										+ " ");
 							}
 						/* And we add a sentence delimiter */
 						UnicodeIO.writeString(writer, "{S}\n");
@@ -196,17 +189,6 @@ public class ExportTextAsPOSListDialog extends JDialog {
 					} catch (final InvocationTargetException e) {
 						e.printStackTrace();
 					}
-				}
-				
-				if (!errorList.isEmpty()) {
-					StringBuilder sb = new StringBuilder("The following sentence(s) couldn't "
-							+ "be exported: \n");
-					for(int j = 0; j < errorList.size(); j++) {
-						sb.append("Sentence #").append(errorList.get(j)).append("\n");
-					}
-					JOptionPane.showMessageDialog(null,
-							sb.toString(), "Warning",
-							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}).start();
