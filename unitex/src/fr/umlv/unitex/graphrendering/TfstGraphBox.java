@@ -56,6 +56,8 @@ public class TfstGraphBox extends GenericGraphBox {
 	public TfstGraphBox(int x, int y, int type, TfstGraphicalZone p) {
 		super(x, y, type, p);
 	}
+	
+	
 
 	/**
 	 * Takes a <code>String</code> representing the box content and tokenizes it

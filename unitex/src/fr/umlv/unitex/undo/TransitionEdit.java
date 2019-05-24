@@ -31,19 +31,18 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
  */
 public class TransitionEdit extends AbstractUndoableEdit {
 	/**
-	 * boxe from transition starts
+	 * box from transition starts
 	 */
 	private final GenericGraphBox srcBoxe;
-	private final GenericGraphBox /** boxe where tanstion go */
-	dstBoxe;
+	private final GenericGraphBox dstBoxe; /** box where transition go */
 
 	/**
-	 * constuct a Transition Edit
+	 * construct a Transition Edit
 	 * 
 	 * @param srcBoxe
-	 *            boxe from transition starts
+	 *            box from transition starts
 	 * @param dstBoxe
-	 *            boxe where tanstion go
+	 *            box where transition go
 	 */
 	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
 		this.srcBoxe = srcBoxe;

@@ -72,6 +72,8 @@ public class Bounds {
 	}
 	/* specific bounds constructor yassine */
 	public Bounds(Bounds bounds) {
+		if(bounds == null)
+			return;
 		this.start_in_chars = bounds.start_in_chars;
 		this.start_in_letters = bounds.start_in_letters;
 		this.start_in_tokens = bounds.start_in_tokens;

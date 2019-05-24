@@ -305,11 +305,24 @@ public class TaggingModel {
 	
 	void checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
 		System.out.println("checkingNewText Start");
-		int index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens();
-		int end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens();
-		int j = index+1; // +2 by default, to be changed
+		
 		if( allPaths.isEmpty() )
 			return;
+		
+		int index, end;
+		
+		if(boxes[sortedNodes[bfp]].getBounds() != null)
+			index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens(); // lève une exception
+		else
+			index = 1;
+		
+		if(boxes[sortedNodes[bfs]].getBounds() != null)
+			end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens(); // lève une exception
+		else
+			end = allPaths.size();
+		
+		int j = index+1; // +2 by default, to be changed
+		
 		
 		for( ArrayList<Integer> e : allPaths ) {
 			System.out.println("checking text in path : "+e.toString());
@@ -965,16 +978,25 @@ public class TaggingModel {
 
 
 	public void updateBoundsDiffToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
-		Bounds temp = new Bounds(boxes[selectedBoxes.get(0).getBoxNumber()].getBounds());
+		int t = selectedBoxes.get(0).getBoxNumber();
+		Bounds temp;
+		if(t > boxes.length)
+			temp = new Bounds(b.getBounds().getGlobal_start_in_chars(), b.getBounds().getGlobal_end_in_chars());
+		else
+			temp = new Bounds(boxes[t].getBounds());
 		int i = 2;
 		if( b.getContent().equals("-") || b.getContent().equals("/") || b.getContent().equals("'") )
 			i=1;
 		temp.setStart_in_tokens(temp.getStart_in_tokens()+i);
-		temp.setStart_in_letters(b.getBounds().getStart_in_letters());
-		temp.setStart_in_chars(b.getBounds().getStart_in_chars());
+		
+		if(b.getBounds() != null) {
+			temp.setStart_in_letters(b.getBounds().getStart_in_letters());
+			temp.setStart_in_chars(b.getBounds().getStart_in_chars());
+			temp.setEnd_in_letters(b.getBounds().getEnd_in_letters());
+			temp.setEnd_in_chars(b.getBounds().getEnd_in_chars());
+		}
 		temp.setEnd_in_tokens(temp.getEnd_in_tokens()+i);
-		temp.setEnd_in_letters(b.getBounds().getEnd_in_letters());
-		temp.setEnd_in_chars(b.getBounds().getEnd_in_chars());
+		
 		b.setBounds( temp );
 	}
 	
