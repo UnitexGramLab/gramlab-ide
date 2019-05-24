@@ -106,7 +106,7 @@ import fr.umlv.unitex.utils.KeyUtil;
  * <p/>
  * <p/>
  * </P>
- * 
+ *
  * @author David Nott
  */
 public class TransducerListConfigurationFrame extends JInternalFrame implements
@@ -345,9 +345,9 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 						try {
 							final ConfigurationFileAnalyser cfa = new ConfigurationFileAnalyser(
 									line);
-							// ***final Object[] o = { DataList.UNRANKED, cfa.getFileName(), 
+							// ***final Object[] o = { DataList.UNRANKED, cfa.getFileName(),
 							// ***		cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isDisabled(), cfa.isStar() };
-							final Object[] o = { DataList.UNRANKED, cfa.isDisabled(), cfa.getFileName(), 
+							final Object[] o = { DataList.UNRANKED, cfa.isDisabled(), cfa.getFileName(),
 										cfa.isMergeMode(), cfa.isReplaceMode(), cfa.isStar(), cfa.isGeneric() };
 							tableModel.addRow(o);
 							if (cfa.isCommentFound()) {
@@ -403,7 +403,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * Constructs and return a panel of buttons for user interaction with the
 	 * table. <code>ConfigurationFrame</code> is added as listener for all
 	 * buttons.
-	 * 
+	 *
 	 * @return the panel with all the buttons
 	 */
 	JPanel create_panel() {
@@ -503,7 +503,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 	 * or <code>bottom</code>. Except with the <code>delete</code> event,
 	 * selection is kept on the same logical row (to oppose to the same row
 	 * index). When a selected row is moved, selection moves with it.
-	 * 
+	 *
 	 * @param a
 	 *            Action event notified to this class.
 	 */
@@ -599,7 +599,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			
 			final File selected_file = fileBrowse.getSelectedFile();
 			
-						
+			
 			
 			if (selected_file != null) {
 				try {
@@ -630,7 +630,7 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			if (table.getSelectedRow() != -1) {
 				final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
 				final File graph = new File(Config.getCurrentGraphDir(),(String) model.getValueAt(
-							table.getSelectedRow(), 
+							table.getSelectedRow(),
 							model.getNameIndex()));
 				viewGraph(graph);
 			} else {
@@ -701,7 +701,8 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 						commands.addCommand(new Grf2Fst2Command()
 								.grf(graphFile)
 								.enableLoopAndRecursionDetection(true)
-								.alphabetTokenization(f_alphabet));
+								.alphabetTokenization(f_alphabet)
+                .repositories());
 
 					}
 					
@@ -780,8 +781,14 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 
 	void saveListToFile() {
 		try {
-			final BufferedWriter fw = new BufferedWriter(new FileWriter(
-					Config.getCurrentTransducerList()));
+		  File file = Config.getCurrentTransducerList();
+		  final String transducerFileName = file.getAbsolutePath();
+		  
+		  if (!transducerFileName.endsWith(".csc")) {
+		      file = new File(transducerFileName + ".csc");
+      }
+		  
+			final BufferedWriter fw = new BufferedWriter(new FileWriter(file));
 			for (int i = 0; i < table.getModel().getRowCount(); i++) {
 				final TransducerListTableModel model = (TransducerListTableModel) table.getModel();
 				final String fileName = (String) table.getValueAt(i, model.getNameIndex());
