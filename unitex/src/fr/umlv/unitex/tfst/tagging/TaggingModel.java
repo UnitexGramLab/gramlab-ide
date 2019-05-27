@@ -148,7 +148,9 @@ public class TaggingModel {
 		generateAlphabet();
 		System.out.println("REGEX : "+regex);
 		generateTokensList();
-		System.out.println("TOKENS : "+ tokens);	
+		System.out.println("TOKENS : "+ tokens);
+		zone.unSelectAllBoxes();
+		
 	}
 	
 	void generateAlphabet() {

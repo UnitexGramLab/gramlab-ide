@@ -572,6 +572,7 @@ Printable {
 
 	public void resetAllStateSelections() {
 		stateSelection.clear();
+		unSelectAllBoxes();
 	}
 
 	public Integer[] getModifiedSentenceIndices() {

@@ -1325,6 +1325,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		if (nextSentence > sentence_count) {
 			nextSentence = nextSentence % sentence_count;
 		}
+		
 		spinnerModel.setValue(new Integer(nextSentence));
 	}
 
