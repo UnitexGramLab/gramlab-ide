@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -533,8 +533,9 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final ArrayList<GenericGraphBox> editBoxes = new ArrayList<GenericGraphBox>();
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
-			if (g.addTransitionTo(dest))
+			if (g.addTransitionTo(dest)) {
 				editBoxes.add(g);
+			}
 		}
 		if (save && !editBoxes.isEmpty()) {
 			final UndoableEdit edit = new TransitionGroupEdit(editBoxes, dest,
@@ -542,6 +543,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 		}
 	}
+	
 
 	/**
 	 * Adds transitions from a specified graph box to all selected boxes
@@ -645,14 +647,14 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g.drawTransition(gr, temp, params);
 		}
 	}
-	
+
 	/**
 	 * Draws all boxes of the graph
 	 *
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawAllBoxes(Graphics2D gr, DrawGraphParams params	) {
+	void drawAllBoxes(Graphics2D gr, DrawGraphParams params) {
 		int i, L;
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())

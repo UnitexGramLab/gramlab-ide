@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,11 @@ package fr.umlv.unitex.undo;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
+import fr.umlv.unitex.graphrendering.GraphicalZone;
 
 /**
  * class uses to save the state of the graph before add a transition
@@ -31,39 +35,33 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
  */
 public class TransitionEdit extends AbstractUndoableEdit {
 	/**
-	 * boxe from transition starts
+	 * box from transition starts
 	 */
 	private final GenericGraphBox srcBoxe;
-	private final GenericGraphBox /** boxe where tanstion go */
-	dstBoxe;
-	private final boolean isModified;
+	private final GenericGraphBox dstBoxe; /** box where transition go */
 
 	/**
-	 * constuct a Transition Edit
+	 * construct a Transition Edit
 	 * 
 	 * @param srcBoxe
-	 *            boxe from transition starts
+	 *            box from transition starts
 	 * @param dstBoxe
-	 *            boxe where tanstion go
+	 *            box where transition go
 	 */
 	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
 		this.srcBoxe = srcBoxe;
 		this.dstBoxe = dstBoxe;
-		this.isModified = srcBoxe.isModified();
-		srcBoxe.setModified(true);
 	}
 
 	@Override
 	public void undo() {
 		super.undo();
 		srcBoxe.addTransitionTo(dstBoxe);
-		srcBoxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		srcBoxe.addTransitionTo(dstBoxe);
-		srcBoxe.setModified(true);
 	}
 }

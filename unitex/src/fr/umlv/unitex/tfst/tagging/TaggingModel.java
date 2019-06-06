@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@
 package fr.umlv.unitex.tfst.tagging;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
+
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
@@ -60,6 +63,18 @@ public class TaggingModel {
 	public boolean[] factorization;
 	int initialState;
 	int finalState;
+	
+	GenericGraphBox lastTransitionPrevious;
+	GenericGraphBox lastTransitionNext;
+	
+	/*The 2 next fields are used to keep all sentences in the automaton and their path
+	 * The first element of lstTok is the first sentence possible in the automaton 
+	 * between 2 factorizations nodes and the first element in lstPath is the 
+	 * path to have the sentence (the path is compose of all number of boxes of the path 
+	 * */
+	private ArrayList<String> lstTok = new ArrayList<String>();
+	private ArrayList<String> lstPath = new ArrayList<>();
+	
 	private boolean linearTfst;
 	String regex;
 	File alphabetFile;
@@ -76,6 +91,9 @@ public class TaggingModel {
 			updateModel();
 		}
 	};
+
+	
+
 	
 	
 
@@ -148,7 +166,9 @@ public class TaggingModel {
 		generateAlphabet();
 		System.out.println("REGEX : "+regex);
 		generateTokensList();
-		System.out.println("TOKENS : "+ tokens);	
+		System.out.println("TOKENS : "+ tokens);
+		zone.unSelectAllBoxes();
+		
 	}
 	
 	void generateAlphabet() {
@@ -233,7 +253,8 @@ public class TaggingModel {
 				// implicit case where the difference is 0 < D < tokensList.length
 				System.out.println("in the 3rd option");
 				System.out.println(tokensList.size());
-				// TODO
+				tokens.put(index, new ArrayList<String>());
+				tokens.get(index).add(temp);
 			}
 			
 		}
@@ -245,12 +266,14 @@ public class TaggingModel {
 	}
 	
 	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
+		System.out.println("-----> computeAllPaths Start"); 
+		
 		for(int i1=0;i1<factorization.length;i1++)
 			System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
 		System.out.println();
 		
 		
-		System.out.println("computeAllPaths Start"); 
+		
 		for( GenericGraphBox b : (boxes[sortedNodes[bfp]].transitions) ) {
 			System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
 			System.out.println("renumber[b] / bfp / bfs "+renumber[b.getBoxNumber()]+" "+bfp+" "+bfs);
@@ -262,7 +285,7 @@ public class TaggingModel {
 		}
 		System.out.println("all Paths :");
 		System.out.println(allPaths);
-		System.out.println("computeAllPaths Ending");
+		System.out.println("-----> computeAllPaths Ending");
 	}
 	
 	void computePath( int start, int end, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> allPaths ) {
@@ -282,13 +305,13 @@ public class TaggingModel {
 	}
 	
 	void checkNewBranch( int i ){
-		System.out.println("checkNewBranch Start");
+		System.out.println("-----> checkNewBranch Start");
 		int prev = getPreviousFactorizationNodeIndex(i);
 		int next = getNextFactorizationNodeIndex(i);
-		//System.out.println("i renumberI prev next "+i+" "+renumber[i]+" "+prev+" "+renumber[prev]+" "+next+" "+renumber[next]);
+		System.err.println("i renumberI prev next - i :"+i+" renumber[i] :"+renumber[i]+" prev :"+prev+" renumber[prev] :"+renumber[prev]+" next :"+next+" renumber[next] "+renumber[next]);
 		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
 		computeAllPaths( renumber[prev], renumber[next], allPaths );
-		checkingNewText(renumber[prev], renumber[next], allPaths);
+		boolean b = checkingNewText(renumber[prev], renumber[next], allPaths);
 		
 		int n = zone.graphBoxes.size();
 		for (int i1 = 0; i1 < n; i1++) {
@@ -300,23 +323,148 @@ public class TaggingModel {
 			taggingStates[i1] = TaggingState.NEUTRAL;
 		}
 		updateFactorizationNodes();
-		System.out.println("checkNewBranch Ending");
+		if(b == false) { 
+			// TODO
+		}
+		System.out.println("-----> checkNewBranch Ending");
 	}
 	
-	void checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
-		System.out.println("checkingNewText Start");
-		int index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens();
-		int end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens();
-		int j = index+1; // +2 by default, to be changed
+	int findStartTokenOfLastBoxe(TfstGraphBox [] tfst) {
+		int last = 0, size = tfst.length;
+		for(int i = 0; i < size; i++) {
+			if(tfst[i].getBounds() != null) {
+				if(tfst[i].getBounds().getEnd_in_tokens() > last) {
+					last = tfst[i].getBounds().getEnd_in_tokens();
+				}
+			}
+		}
+		
+		return last;
+	}
+	
+	
+	/** @Aissa
+	 * 
+	 * This function is used to find all sentences between the 2 factorizations box 
+	 * (one at the beginning of the branch and one at the end)
+	 * It constructs the sentence and the path (composed of the number of boxes of the path)
+	 * It puts the sentence in the ArrayList lstTok and the path in lstPath
+	 * 
+	 * @param begin 
+	 * 				the GenericGraphBox of the previous factorization box
+	 * 
+	 * @param end 
+	 * 				the GenericGraphBox of the next factorization box
+	 * 
+	 * @param sb
+	 * 				the StringBuilder which will contain the sentence of the current path
+	 * 
+	 * @param b
+	 * 				the current GenericGraphBox 
+	 * 
+	 * @param path
+	 * 				the StringBuilder which will contain the actual path 
+	 * 
+	 * @return
+	 */
+	void findString(GenericGraphBox begin, GenericGraphBox end, StringBuilder sb, GenericGraphBox b, StringBuilder path) {
+		int num_box = b.getBoxNumber();	
+		
+		if(end.equals(b)) {
+			if(b.type != GenericGraphBox.FINAL) 
+				sb.append(boxes[num_box].getContentText());
+			path.append(renumber[num_box]);
+			lstTok.add(sb.toString());
+			lstPath.add(path.toString());
+			return ;
+		}
+		
+		int nb_transition_out = b.transitions.size();
+		path.append(renumber[num_box]).append(" - ");
+				
+		if(boxes[num_box].type != GenericGraphBox.INITIAL && !boxes[num_box].getContentText().equals("<E>"))
+			sb.append(boxes[num_box].getContentText());
+		
+		for(int i = 0; i < nb_transition_out; i++) {
+			int num_next_box = b.transitions.get(i).getBoxNumber();
+			int start = sb.length();
+			int startPath = path.length();
+			if(taggingStates[num_next_box] != TaggingState.USELESS
+					|| boxes[num_next_box].equals(end)) {
+				if(boxes[num_box].type != GenericGraphBox.INITIAL 
+						&& boxes[num_next_box].type != GenericGraphBox.FINAL
+						&& (boxes[num_box].getBounds().getEnd_in_tokens() 
+						== boxes[num_next_box].getBounds().getStart_in_tokens() - 2)) {
+					sb.append(" ");
+				}
+				findString(begin, end, sb, b.transitions.get(i), path);
+				int last = sb.length();
+				sb.delete(start, last);
+				path.delete(startPath, path.length());
+			}
+		}
+	}
+	
+	/* Display all elements of the HashMap 'tokens' */
+	void displayTokensHash() {
+		System.err.println("Display tokens");
+		tokens.keySet().forEach(x -> {
+			System.out.println("Key : " + x + " tokens[" + x + "] = " + tokens.get(x) + tokens.get(x).size());
+		});	
+	}
+	
+	
+	/* NOT FINISHED */
+	boolean checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
+		
+		displayTokensHash();
+		
+		System.out.println("-----> checkingNewText Start");
+		
+		StringBuilder sb = new StringBuilder();
+		
 		if( allPaths.isEmpty() )
-			return;
+			return false;
+		
+		int index, end, last_start_token;
+				
+		if(boxes[sortedNodes[bfp]].getBounds() != null) {
+			index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens(); // Exception here
+		}
+		else if(boxes[sortedNodes[bfp]].type == GenericGraphBox.FINAL) {
+			System.err.println("Impossible to connect the final box to another");
+			return false;
+		}
+		else{
+			index = -1; // first tokens, so he is the number 0
+		}
+		
+		if(boxes[sortedNodes[bfs]].getBounds() != null) {
+			end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens(); // Exception here
+		}		
+		else if(boxes[sortedNodes[bfs]].type == GenericGraphBox.INITIAL) {
+			System.err.println("Impossible to connect a box to the initial box");
+			return false;
+		}
+		else {
+			end = findStartTokenOfLastBoxe(boxes);
+		}
+		
+		last_start_token = index;
+		
+		findString(boxes[sortedNodes[bfp]], boxes[sortedNodes[bfs]], new StringBuilder(), boxes[sortedNodes[bfp]], new StringBuilder());
+		displayAllSentence();
+		
+		System.out.println("INDEX = " + index + " END = " + end);
+		//int j = index+1; // +2 by default, to be changed
+		ArrayList<String> otherTokens = new ArrayList<String>();
 		
 		for( ArrayList<Integer> e : allPaths ) {
 			System.out.println("checking text in path : "+e.toString());
 			for( Integer i : e ) {
-				j++;
-				int newStart = j;
-				ArrayList<String> otherTokens = new ArrayList<String>();
+				/*j++;
+				int newStart = j;*/
+				
 				String stringToMatch;
 				if( boxes[sortedNodes[i]].getContent().contains("{")  )
 					stringToMatch = boxes[sortedNodes[i]].getContent().split(",")[0].substring(1);
@@ -332,12 +480,23 @@ public class TaggingModel {
 					System.out.println("renumber[b] word "+i+" "+matcher.group());
 					otherTokens.add(matcher.group());
 				}
-				int k = 0 ;
+
+				if(boxes[sortedNodes[i]].getBounds().getStart_in_tokens() - last_start_token == 2)
+					sb.append(" ");
+				
+				sb.append(stringToMatch);
+				last_start_token = boxes[sortedNodes[i]].getBounds().getStart_in_tokens();
+				
+				
+				/*int k = 0;
 				while( j < end && k < otherTokens.size() ) {
-					System.out.println("Comparing : "+ tokens.get(j).toString() + " vs " + otherTokens.get(k) );
-					System.out.println("j k "+j+" "+k);
+					System.out.println("j : " + j + " k : " + k + " end : " + end + " size : " + otherTokens.size());
+					for(int tmp = 0; tmp < tokens.get(tmp).size(); tmp++)
+						System.out.println("tokens[" + tmp + "] = " + tokens.get(tmp));
 					
-					if( tokens.get(j).contains( otherTokens.get(k)) ) {
+					if(tokens.get(j) != null && otherTokens.get(k) != null)
+						System.out.println("Comparing : "+ tokens.get(j).toString() + " vs " + otherTokens.get(k) );
+					if(tokens.get(j) != null && tokens.get(j).contains( otherTokens.get(k)) ) {
 						System.out.println("true");
 						Bounds temp = boxes[sortedNodes[i]].getBounds();
 						if( j == newStart )
@@ -346,37 +505,209 @@ public class TaggingModel {
 						j++;
 						k++;	
 					} else {
+						System.out.println("false");
 						JOptionPane.showMessageDialog(null,
 								boxes[sortedNodes[i]].getContent()+" isn't an acceptable token",
 								"Matching Error",
 								JOptionPane.PLAIN_MESSAGE);
-						
-						return;
+						displayTokensHash();
+						return ;
 					}
-				}
+				}*/
 			}
 		}
-		JOptionPane.showMessageDialog(null,
-				"Correct Matching",
-				"Branch is acceptable",
-				JOptionPane.PLAIN_MESSAGE);
 		
-		System.out.println("checkingNewText Ending");
+		if(end - last_start_token == 2)
+			sb.append(" ");
+		
+		
+		lstTok.clear();
+		lstPath.clear();
+		System.err.println("Chaine 2 : \"" + sb.toString() + "\" ");
+		System.out.println("OtherToken : " + otherTokens);
+		if(sb.toString().equals("")) {
+			JOptionPane.showMessageDialog(null,
+					"Correct Matching",
+					"Branch is acceptable",
+					JOptionPane.PLAIN_MESSAGE);
+			return true;
+			
+		}
+		else{
+			JOptionPane.showMessageDialog(null,
+					"Error matching",
+					"Matching Error",
+					JOptionPane.PLAIN_MESSAGE);
+			return false;
+		}
 	}
 	
 	
-	/** 
-	 * 
-	 */
+	boolean checkingNewText2( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
+		
+		displayTokensHash();
+		
+		System.out.println("-----> checkingNewText Start");
+		
+		StringBuilder sb = new StringBuilder();
+		
+		if( allPaths.isEmpty() )
+			return false;
+		
+		int index, end, last_start_token;
+				
+		if(boxes[sortedNodes[bfp]].getBounds() != null) {
+			index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens(); // Exception here
+		}
+		else if(boxes[sortedNodes[bfp]].type == GenericGraphBox.FINAL) {
+			System.err.println("Impossible to connect the final box to another");
+			return false;
+		}
+		else{
+			index = -1; // first tokens, so he is the number 0
+		}
+		
+		if(boxes[sortedNodes[bfs]].getBounds() != null) {
+			end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens(); // Exception here
+		}		
+		else if(boxes[sortedNodes[bfs]].type == GenericGraphBox.INITIAL) {
+			System.err.println("Impossible to connect a box to the initial box");
+			return false;
+		}
+		else {
+			end = findStartTokenOfLastBoxe(boxes);
+		}
+		
+		last_start_token = index;
+		
+		findString(boxes[sortedNodes[bfp]], boxes[sortedNodes[bfs]], new StringBuilder(), boxes[sortedNodes[bfp]], new StringBuilder());
+		displayAllSentence();
+		
+		System.out.println("INDEX = " + index + " END = " + end);
+		//int j = index+1; // +2 by default, to be changed
+		ArrayList<String> otherTokens = new ArrayList<String>();
+		
+		for( ArrayList<Integer> e : allPaths ) {
+			System.out.println("checking text in path : "+e.toString());
+			for( Integer i : e ) {
+				/*j++;
+				int newStart = j;*/
+				
+				String stringToMatch;
+				if( boxes[sortedNodes[i]].getContent().contains("{")  )
+					stringToMatch = boxes[sortedNodes[i]].getContent().split(",")[0].substring(1);
+				else {
+					stringToMatch = boxes[sortedNodes[i]].getContent();
+				}
+				
+				
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(stringToMatch);
+				
+				while( matcher.find() ) {
+					System.out.println("renumber[b] word "+i+" "+matcher.group());
+					otherTokens.add(matcher.group());
+				}
 
-//	public void updateBoundsOfNextUseless( TfstGraphBox firstBox, TfstGraphBox SecondBox) {
-//		if( taggingStates[SecondBox.getBoxNumber()] == TaggingState.SELECTED || taggingStates[SecondBox.getBoxNumber()] == TaggingState.NEUTRAL )
-//			return;
-//		Bounds bounds = new Bounds(firstBox.getBounds());
-//		bounds.setStart_in_tokens(bounds.getStart_in_tokens()+2);
-//		bounds.setEnd_in_tokens(bounds.getEnd_in_tokens()+2);
-//		SecondBox.setBounds(bounds);
-//	}
+				if(boxes[sortedNodes[i]].getBounds().getStart_in_tokens() - last_start_token == 2)
+					sb.append(" ");
+				
+				sb.append(stringToMatch);
+				last_start_token = boxes[sortedNodes[i]].getBounds().getStart_in_tokens();
+				
+				
+				/*int k = 0;
+				while( j < end && k < otherTokens.size() ) {
+					System.out.println("j : " + j + " k : " + k + " end : " + end + " size : " + otherTokens.size());
+					for(int tmp = 0; tmp < tokens.get(tmp).size(); tmp++)
+						System.out.println("tokens[" + tmp + "] = " + tokens.get(tmp));
+					
+					if(tokens.get(j) != null && otherTokens.get(k) != null)
+						System.out.println("Comparing : "+ tokens.get(j).toString() + " vs " + otherTokens.get(k) );
+					if(tokens.get(j) != null && tokens.get(j).contains( otherTokens.get(k)) ) {
+						System.out.println("true");
+						Bounds temp = boxes[sortedNodes[i]].getBounds();
+						if( j == newStart )
+							temp.setStart_in_tokens(j);
+						temp.setEnd_in_tokens(j);
+						j++;
+						k++;	
+					} else {
+						System.out.println("false");
+						JOptionPane.showMessageDialog(null,
+								boxes[sortedNodes[i]].getContent()+" isn't an acceptable token",
+								"Matching Error",
+								JOptionPane.PLAIN_MESSAGE);
+						displayTokensHash();
+						return ;
+					}
+				}*/
+			}
+		}
+		
+		if(end - last_start_token == 2)
+			sb.append(" ");
+		
+		
+		lstTok.clear();
+		lstPath.clear();
+		System.err.println("Chaine 2 : \"" + sb.toString() + "\" ");
+		System.out.println("OtherToken : " + otherTokens);
+		if(sb.toString().equals("")) {
+			JOptionPane.showMessageDialog(null,
+					"Correct Matching",
+					"Branch is acceptable",
+					JOptionPane.PLAIN_MESSAGE);
+			return true;
+			
+		}
+		else{
+			JOptionPane.showMessageDialog(null,
+					"Error matching",
+					"Matching Error",
+					JOptionPane.PLAIN_MESSAGE);
+			return false;
+		}
+	}
+	
+	
+	/* Diplay all sentences in lstTok and their path in lstPath */
+	private void displayAllSentence() {
+		System.out.println("Diplaying list token");
+		for (int i = 0; i < lstTok.size(); i++) {
+			System.out.println("Sentence " + (i+1) + " : \"" + lstTok.get(i) + "\" -> " + lstPath.get(i));
+		}
+		System.out.println("Finish displaying");
+	}
+
+	
+	private boolean allSameTransitionOut(GenericGraphBox box) {
+		if(!box.hasOutgoingTransitions
+				|| box.type == GenericGraphBox.INITIAL 
+				|| box.type == GenericGraphBox.FINAL)
+			return true;
+		
+		int endPrevious = boxes[box.getBoxNumber()].getBounds().getEnd_in_tokens();
+		int beginNext = boxes[box.transitions.get(0).getBoxNumber()].getBounds().getStart_in_tokens();
+		int difference = endPrevious - beginNext;
+		for (GenericGraphBox b : box.transitions) {
+			beginNext = boxes[b.getBoxNumber()].getBounds().getStart_in_tokens();
+			if(difference != (endPrevious - beginNext))
+				return false;
+		}			
+		return true;
+	}
+
+
+	/*
+	public void updateBoundsOfNextUseless( TfstGraphBox firstBox, TfstGraphBox SecondBox) {
+		if( taggingStates[SecondBox.getBoxNumber()] == TaggingState.SELECTED || taggingStates[SecondBox.getBoxNumber()] == TaggingState.NEUTRAL )
+			return;
+		Bounds bounds = new Bounds(firstBox.getBounds());
+		bounds.setStart_in_tokens(bounds.getStart_in_tokens()+2);
+		bounds.setEnd_in_tokens(bounds.getEnd_in_tokens()+2);
+		SecondBox.setBounds(bounds);
+	}*/
 	
 	private void updateBoundsReversed( int current, boolean[] visited ) {
 		final ArrayList<Integer>[] reverse = computeReverseTransitions();
@@ -963,18 +1294,40 @@ public class TaggingModel {
 		taggingStates=selection;
 	}
 
-
 	public void updateBoundsDiffToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
-		Bounds temp = new Bounds(boxes[selectedBoxes.get(0).getBoxNumber()].getBounds());
+		int t = selectedBoxes.get(0).getBoxNumber();
+		System.err.println("The value of " + t + " is bigger than the number of boxes");
+		Bounds temp;
+		if(t > boxes.length)
+			temp = new Bounds(b.getBounds().getGlobal_start_in_chars(), b.getBounds().getGlobal_end_in_chars());
+		else
+			temp = new Bounds(boxes[t].getBounds());
+		
 		int i = 2;
-		if( b.getContent().equals("-") || b.getContent().equals("/") || b.getContent().equals("'") )
-			i=1;
+		
+		int j = 0;
+		
+		if( b.getContent().equals("-") || b.getContent().equals("/") || b.getContent().equals("'") 
+				|| b.getContent().equals(".") || b.getContent().equals(","))
+			i = 1;
+		
+		if(b.getContent().contains(" "))
+			j = 2;
+		
 		temp.setStart_in_tokens(temp.getStart_in_tokens()+i);
-		temp.setStart_in_letters(b.getBounds().getStart_in_letters());
-		temp.setStart_in_chars(b.getBounds().getStart_in_chars());
-		temp.setEnd_in_tokens(temp.getEnd_in_tokens()+i);
-		temp.setEnd_in_letters(b.getBounds().getEnd_in_letters());
-		temp.setEnd_in_chars(b.getBounds().getEnd_in_chars());
+		
+		if(b.getBounds() != null) {
+			temp.setStart_in_letters(b.getBounds().getStart_in_letters());
+			temp.setStart_in_chars(b.getBounds().getStart_in_chars());
+			temp.setEnd_in_letters(b.getBounds().getEnd_in_letters());
+			temp.setEnd_in_chars(b.getBounds().getEnd_in_chars());
+		}
+		if(t == 0) {
+			temp.setStart_in_tokens(0);
+		}
+		
+		temp.setEnd_in_tokens(temp.getStart_in_tokens()+j);
+		
 		b.setBounds( temp );
 	}
 	

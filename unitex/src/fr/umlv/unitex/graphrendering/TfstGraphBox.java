@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,6 +56,8 @@ public class TfstGraphBox extends GenericGraphBox {
 	public TfstGraphBox(int x, int y, int type, TfstGraphicalZone p) {
 		super(x, y, type, p);
 	}
+	
+	
 
 	/**
 	 * Takes a <code>String</code> representing the box content and tokenizes it
@@ -191,14 +193,14 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		Y1 = Y - Height / 2;
 		X_out = X + Width + 5;
-		
-		
 	}
+	
 	// @Yass
-	public void updateBoundsLetters( int length ) {
-		if( bounds != null && length>0 )
-			bounds.setEnd_in_chars( length-1 );
-	}
+		public void updateBoundsLetters( int length ) {
+			if( bounds != null && length>0 )
+				bounds.setEnd_in_chars( length-1 );
+		}
+
 
 	public void setContentWithBounds(String s) {
 		if (type == FINAL)
@@ -290,14 +292,14 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		super.drawOther(g, params);
 		if (bounds != null) {
-					  g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
-			      g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
-			      String boundsString = bounds.getStart_in_tokens() + ". " + bounds.getStart_in_chars() + ". " + bounds.getStart_in_letters()
-			        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
-			        + bounds.getEnd_in_letters();
-			     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());
-			    
-			    }
+			  g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
+	      g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
+	      String boundsString = bounds.getStart_in_tokens() + ". " + bounds.getStart_in_chars() + ". " + bounds.getStart_in_letters()
+	        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
+	        + bounds.getEnd_in_letters();
+	     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());
+	    
+	    }
 		g.setComposite(c);
 		params.setBackgroundColor(old);
 	}
@@ -305,7 +307,7 @@ public class TfstGraphBox extends GenericGraphBox {
 	private boolean isUntaggedToken(String s) {
 		return !s.equals("<E>") && s.charAt(0) != '{';
 	}
-
+	
 	public String getContentText() {
 		if (content.startsWith("{")) {
 			int index = content.indexOf(",");

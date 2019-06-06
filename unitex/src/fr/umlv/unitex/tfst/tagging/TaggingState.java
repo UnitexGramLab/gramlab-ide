@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ public enum TaggingState {
 	 * The box is competing with a selected box and so, must be discarded
 	 */
 	TO_BE_REMOVED,
-	/* The box is neither accessible and co-accessible */
+	/* The box is not both accessible and co-accessible */
 	USELESS,
 	/* None of previous cases */
 	NEUTRAL,

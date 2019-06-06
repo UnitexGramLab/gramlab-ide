@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -249,12 +249,7 @@ public class GraphDecorator {
 		}
 		return c;
 	}
-	/** @Yass this will contain the coloring of french graphes.
-	 * 
-	 * @param boxNumber
-	 * @param c
-	 * @return
-	 */
+	
 	public Color getBoxBackgroundColor(int boxNumber, Color c) {
 		// If the background isn't already set from TfstGraphBox for untagged korean tokens
 		// This case may happen when a token is both untagged and SELECTED
