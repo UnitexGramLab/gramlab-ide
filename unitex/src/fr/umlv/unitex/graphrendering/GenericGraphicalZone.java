@@ -516,6 +516,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 	boolean singleDragging = false;
 	GenericGraphBox singleDraggedBox;
 
+	/* These fields are here to have the 2 boxes of the last transition */
+	private GenericGraphBox lastTransitionBoxePrevious;
+	private GenericGraphBox lastTransitionBoxeNext;
+
 	/**
 	 * Adds transitions from all selected boxes to a specified graph box
 	 *
@@ -535,6 +539,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = selectedBoxes.get(i);
 			if (g.addTransitionTo(dest)) {
 				editBoxes.add(g);
+				lastTransitionBoxePrevious = g;
+				lastTransitionBoxeNext = dest;
 			}
 		}
 		if (save && !editBoxes.isEmpty()) {
@@ -544,6 +550,19 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 	}
 	
+	/** @Aissa
+	 * 
+	 * Remove the last transition of the automaton
+	 * 
+	 */
+	public void removeLastTransition() {
+		final ArrayList<GenericGraphBox> editBoxes = new ArrayList<GenericGraphBox>();
+		lastTransitionBoxePrevious.addTransitionTo(lastTransitionBoxeNext);
+		editBoxes.add(lastTransitionBoxePrevious);
+		final UndoableEdit edit = new TransitionGroupEdit(editBoxes, lastTransitionBoxeNext,
+				this);
+		postEdit(edit);
+	}
 
 	/**
 	 * Adds transitions from a specified graph box to all selected boxes

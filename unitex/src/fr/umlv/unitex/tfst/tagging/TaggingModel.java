@@ -324,7 +324,8 @@ public class TaggingModel {
 		}
 		updateFactorizationNodes();
 		if(b == false) { 
-			// TODO
+			// The new branch is not correct, we remove the last transition
+			zone.removeLastTransition();
 		}
 		System.out.println("-----> checkNewBranch Ending");
 	}
