@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -645,14 +645,14 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g.drawTransition(gr, temp, params);
 		}
 	}
-
+	
 	/**
 	 * Draws all boxes of the graph
 	 *
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawAllBoxes(Graphics2D gr, DrawGraphParams params) {
+	void drawAllBoxes(Graphics2D gr, DrawGraphParams params	) {
 		int i, L;
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())

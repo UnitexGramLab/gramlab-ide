@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ public class GraphDecoratorConfig {
 	public static final Color SHADED = new Color(0f, 0f, 0f, SHADE_ALPHA);
 	public static final Composite SHADE_COMPOSITE = AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, SHADE_ALPHA);
-	
+
 	//public static final Color LINEAR_TFST = new Color(0xFC, 0xE4, 0x00);
 	public static final Color LINEAR_TFST = new Color(0xCA, 0xE4, 0xEB);
 	public static final Color UNAMBIGUOUS_TOKEN_COLOR = new Color(0xCC, 0xEB, 0x94);

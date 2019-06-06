@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,33 +31,39 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
  */
 public class TransitionEdit extends AbstractUndoableEdit {
 	/**
-	 * box from transition starts
+	 * boxe from transition starts
 	 */
 	private final GenericGraphBox srcBoxe;
-	private final GenericGraphBox dstBoxe; /** box where transition go */
+	private final GenericGraphBox /** boxe where tanstion go */
+	dstBoxe;
+	private final boolean isModified;
 
 	/**
-	 * construct a Transition Edit
+	 * constuct a Transition Edit
 	 * 
 	 * @param srcBoxe
-	 *            box from transition starts
+	 *            boxe from transition starts
 	 * @param dstBoxe
-	 *            box where transition go
+	 *            boxe where tanstion go
 	 */
 	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
 		this.srcBoxe = srcBoxe;
 		this.dstBoxe = dstBoxe;
+		this.isModified = srcBoxe.isModified();
+		srcBoxe.setModified(true);
 	}
 
 	@Override
 	public void undo() {
 		super.undo();
 		srcBoxe.addTransitionTo(dstBoxe);
+		srcBoxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		srcBoxe.addTransitionTo(dstBoxe);
+		srcBoxe.setModified(true);
 	}
 }

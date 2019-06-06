@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,8 +24,7 @@ import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
+import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -598,7 +597,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		if (d == null)
 			return null;
 		final File f = gf.getGraph();
-		d.setInputGraphName(f.getAbsolutePath());
+		d.graphName.setText(f.getAbsolutePath());
 		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
 		return d;
@@ -940,7 +939,7 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void updateTextAutomatonFindAndReplaceDialog() {
 		textAutomatonFindAndReplaceFactory.update();
 	}
-	
+
 	public CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
 		final CheckTextAutomatonDialog d = checkTextAutomatonDialogFactory.newCheckTextAutomatonDialog(checkList);
 		if (d == null) {

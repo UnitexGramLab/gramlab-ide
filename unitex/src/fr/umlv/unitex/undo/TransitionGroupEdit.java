@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@
 package fr.umlv.unitex.undo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
@@ -28,21 +29,21 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
- * class uses to save the state of the graph before add transitions to a box
+ * class uses to save the state of the graph before add transitions to a boxe
  * 
  * @author Decreton Julien
  */
 public class TransitionGroupEdit extends AbstractUndoableEdit {
 	/**
-	 * box selected in the graph
+	 * boxes selected in the graph
 	 */
 	private final ArrayList<GenericGraphBox> selectedBoxes;
 	/**
-	 * box selected in the graph before adding a transition
+	 * boxes selected in the graph before adding a transition
 	 */
 	private final ArrayList<GenericGraphBox> oldSelectedBoxes;
 	/**
-	 * transition destination box
+	 * transition destination boxe
 	 */
 	private final GenericGraphBox dst;
 	/**
@@ -50,13 +51,15 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	 */
 	private final GenericGraphicalZone zone;
 
+	private final HashMap<GenericGraphBox, Boolean> isModified;
+
 	/**
 	 * @param selectedBoxes
 	 *            selected boxes in the graph
 	 * @param dst
-	 *            destination box
+	 *            destination boxe
 	 * @param zone
-	 *            the zone where remove the box
+	 *            the zone where remove the boxe
 	 */
 	@SuppressWarnings("unchecked")
 	public TransitionGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
@@ -64,8 +67,13 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		this.selectedBoxes = selectedBoxes;
 		this.oldSelectedBoxes = (ArrayList<GenericGraphBox>) selectedBoxes
 				.clone();
+		this.isModified = new HashMap<>();
 		this.dst = dst;
 		this.zone = zone;
+		for(GenericGraphBox b : oldSelectedBoxes) {
+			isModified.put(b, b.isModified());
+			b.setModified(true);
+		}
 	}
 
 	@Override
@@ -75,10 +83,11 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		for (final GenericGraphBox oldSelectedBoxe : oldSelectedBoxes) {
 			g = oldSelectedBoxe;
 			g.addTransitionTo(dst);
-			// select this box
+			// select this boxe
 			g.setSelected(true);
 			selectedBoxes.add(g);
 			zone.initText(g.getContent());
+			g.setModified(isModified.get(g));
 		}
 	}
 
@@ -92,6 +101,7 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 			// unselect this boxe
 			g.setSelected(false);
 			selectedBoxes.remove(g);
+			g.setModified(true);
 		}
 	}
 }

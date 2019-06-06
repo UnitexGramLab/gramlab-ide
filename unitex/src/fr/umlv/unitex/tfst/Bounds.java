@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -72,8 +72,6 @@ public class Bounds {
 	}
 	/* specific bounds constructor yassine */
 	public Bounds(Bounds bounds) {
-		if(bounds == null)
-			return;
 		this.start_in_chars = bounds.start_in_chars;
 		this.start_in_letters = bounds.start_in_letters;
 		this.start_in_tokens = bounds.start_in_tokens;

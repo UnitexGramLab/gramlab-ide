@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -187,10 +187,6 @@ public class Config {
      */
     private static JFileChooser corpusDialogBox;
     /**
-     * Dialog box used to open  ".snt" text files
-     */
-    private static JFileChooser taggedCorpusDialogBox;
-    /**
      * Dialog box used to open DELAF dictionaries. The file filter of this
      * dialog box accepts ".dic" files, and also "dlf" and "dlc" files, that are
      * text dictionaries.
@@ -321,12 +317,10 @@ public class Config {
         if (sentenceDialogBox != null)
             return sentenceDialogBox;
         sentenceDialogBox = new JFileChooser();
+        sentenceDialogBox.addChoosableFileFilter(new PersonalFileFilter("fst2",
+                "Unicode Compiled Graphs"));
         sentenceDialogBox.addChoosableFileFilter(new PersonalFileFilter("grf",
                 "Unicode Graphs"));
-        PersonalFileFilter fstFilter = new PersonalFileFilter("fst2",
-                                           "Unicode Compiled Graphs");
-        sentenceDialogBox.addChoosableFileFilter(fstFilter);
-        sentenceDialogBox.setFileFilter(fstFilter);
         sentenceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         File f = new File(
                 ConfigManager.getManager().getCurrentGraphDirectory(),
@@ -341,12 +335,10 @@ public class Config {
         if (replaceDialogBox != null)
             return replaceDialogBox;
         replaceDialogBox = new JFileChooser();
+        replaceDialogBox.addChoosableFileFilter(new PersonalFileFilter("fst2",
+                "Unicode Compiled Graphs"));
         replaceDialogBox.addChoosableFileFilter(new PersonalFileFilter("grf",
                 "Unicode Graphs"));
-        PersonalFileFilter fstFilter = new PersonalFileFilter("fst2",
-                                           "Unicode Compiled Graphs");
-        replaceDialogBox.addChoosableFileFilter(fstFilter);
-        replaceDialogBox.setFileFilter(fstFilter);
         replaceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         File f = new File(
                 ConfigManager.getManager().getCurrentGraphDirectory(),
@@ -361,12 +353,10 @@ public class Config {
         if (normDialogBox != null)
             return normDialogBox;
         normDialogBox = new JFileChooser();
+        normDialogBox.addChoosableFileFilter(new PersonalFileFilter("fst2",
+                "Unicode Compiled Graphs"));
         normDialogBox.addChoosableFileFilter(new PersonalFileFilter("grf",
                 "Unicode Graphs"));
-        PersonalFileFilter fstFilter = new PersonalFileFilter("fst2",
-                                           "Unicode Compiled Graphs");
-        normDialogBox.addChoosableFileFilter(fstFilter);
-        normDialogBox.setFileFilter(fstFilter);
         normDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         final File f = new File(ConfigManager.getManager()
                 .getCurrentGraphDirectory(), "Normalization");
@@ -379,10 +369,8 @@ public class Config {
         if (taggerDataDialogBox != null)
             return taggerDataDialogBox;
         taggerDataDialogBox = new JFileChooser();
-        PersonalFileFilter fstFilter = new PersonalFileFilter("fst2",
-                                           "Unicode Compiled Graphs");
-        taggerDataDialogBox.addChoosableFileFilter(fstFilter);
-        taggerDataDialogBox.setFileFilter(fstFilter);
+        taggerDataDialogBox.addChoosableFileFilter(new PersonalFileFilter(
+                "fst2", "Unicode Compiled Graphs"));
         taggerDataDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         taggerDataDialogBox.setCurrentDirectory(new File(Config
                 .getUserCurrentLanguageDir(), "Dela"));
@@ -394,10 +382,8 @@ public class Config {
         if (delaDialogBox != null)
             return delaDialogBox;
         delaDialogBox = new JFileChooser();
-        PersonalFileFilter dicFilter = new PersonalFileFilter("dic",
-                                           "Unicode DELA Dictionaries");
-        delaDialogBox.addChoosableFileFilter(dicFilter);
-        delaDialogBox.setFileFilter(dicFilter);
+        delaDialogBox.addChoosableFileFilter(new PersonalFileFilter("dic",
+                "Unicode DELA Dictionaries"));
         delaDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         delaDialogBox.setCurrentDirectory(new File(Config
                 .getUserCurrentLanguageDir(), "Dela"));
@@ -410,16 +396,14 @@ public class Config {
             return corpusDialogBox;
         }
         corpusDialogBox = new JFileChooser();
+        corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("txt",
+                "Raw Unicode Texts"));
         corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("xml",
-                "XML Files"));
+                "XML files"));
         corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("html",
-                "HTML Files"));
+                "HTML files"));
         corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("snt",
-                "Unitex Text Files"));
-        PersonalFileFilter txtFilter = new PersonalFileFilter("txt",
-                                           "Text Files");
-        corpusDialogBox.addChoosableFileFilter(txtFilter);
-        corpusDialogBox.setFileFilter(txtFilter);
+                "Unitex Texts"));
         corpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         corpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
         corpusDialogBox.setMultiSelectionEnabled(false);
@@ -427,18 +411,16 @@ public class Config {
     }
 
     public static JFileChooser getTaggedCorpusDialogBox() {
-        if (taggedCorpusDialogBox != null) {
-            return taggedCorpusDialogBox;
+        if (corpusDialogBox != null) {
+            return corpusDialogBox;
         }
-        taggedCorpusDialogBox = new JFileChooser();
-        PersonalFileFilter sntFilter = new PersonalFileFilter("snt",
-                                       "Unitex Text Files");
-        taggedCorpusDialogBox.addChoosableFileFilter(sntFilter);
-        taggedCorpusDialogBox.setFileFilter(sntFilter);
-        taggedCorpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
-        taggedCorpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
-        taggedCorpusDialogBox.setMultiSelectionEnabled(false);
-        return taggedCorpusDialogBox;
+        corpusDialogBox = new JFileChooser();
+        corpusDialogBox.addChoosableFileFilter(new PersonalFileFilter("snt",
+                "Unitex Texts"));
+        corpusDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
+        corpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
+        corpusDialogBox.setMultiSelectionEnabled(false);
+        return corpusDialogBox;
     }
 
     public static JFileChooser getInflectDialogBox(File dir) {
@@ -459,10 +441,8 @@ public class Config {
         if (tableDialogBox != null)
             return tableDialogBox;
         tableDialogBox = new JFileChooser();
-        PersonalFileFilter tableFilter = new PersonalFileFilter("txt",
-                                         "Unicode Text Tables");
-        tableDialogBox.addChoosableFileFilter(tableFilter);
-        tableDialogBox.setFileFilter(tableFilter);
+        tableDialogBox.setFileFilter(new PersonalFileFilter("txt",
+                "Unicode Text Tables"));
         tableDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         tableDialogBox.setCurrentDirectory(Config.getUserCurrentLanguageDir());
         return tableDialogBox;
@@ -496,7 +476,7 @@ public class Config {
     	if (jFileChooser != null)
             return jFileChooser;
         jFileChooser = new JFileChooser();
-        final PersonalFileFilter fileFilter=new PersonalFileFilter(extension,
+        PersonalFileFilter fileFilter=new PersonalFileFilter(extension,
                 description); 
         jFileChooser.addChoosableFileFilter(fileFilter);
         jFileChooser.setFileFilter(fileFilter);
@@ -514,7 +494,7 @@ public class Config {
     		chooser = getFileEditionDialogBox();
     	else if(extension.equals("txt"))
     		chooser = initializeJFileChooser(txtFileEditionDialogBox,"txt",
-    				"Text Files (*.txt)", "Corpus");
+    				"Text files (*.txt)", "Corpus");
     	else if(extension.equals("dic"))
 			chooser = initializeJFileChooser(dicFileEditionDialogBox,"dic",
 					"Unicode DELA Dictionaries  (*.dic)", "Dela");
@@ -530,10 +510,8 @@ public class Config {
         if (fst2UnambigDialogBox != null)
             return fst2UnambigDialogBox;
         fst2UnambigDialogBox = new JFileChooser();
-        PersonalFileFilter txtFilter = new PersonalFileFilter("txt",
-                                          "Text Files");
-        fst2UnambigDialogBox.addChoosableFileFilter(txtFilter);
-        fst2UnambigDialogBox.setFileFilter(txtFilter);
+        fst2UnambigDialogBox.setFileFilter(new PersonalFileFilter("txt",
+                "Unicode Text File"));
         fst2UnambigDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         fst2UnambigDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
         fst2UnambigDialogBox.setMultiSelectionEnabled(false);
@@ -553,10 +531,8 @@ public class Config {
                     .getAbsolutePath()) == -1) {
             transducerListDialogBox.setCurrentDirectory(Config.getCassysDir());
         }
-        PersonalFileFilter cscFilter = new PersonalFileFilter("csc",
-                                           "CaSCade configuration File");
-        transducerListDialogBox.addChoosableFileFilter(cscFilter);
-        transducerListDialogBox.setFileFilter(cscFilter);
+        transducerListDialogBox.setFileFilter(new PersonalFileFilter("csc",
+                "CaSCade configuration File"));
         transducerListDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         // transducerListDialogBox.setCurrentDirectory(Config.getCassysDir());
         transducerListDialogBox.setMultiSelectionEnabled(false);
@@ -568,10 +544,7 @@ public class Config {
         if (exploreGraphOutputDialogBox != null)
             return exploreGraphOutputDialogBox;
         exploreGraphOutputDialogBox = new JFileChooser();
-        PersonalFileFilter txtFilter =new PersonalFileFilter("txt",
-                                          "Text Files");
-        sentenceDialogBox.addChoosableFileFilter(txtFilter);
-        sentenceDialogBox.setFileFilter(txtFilter);
+        exploreGraphOutputDialogBox.setFileFilter(new PersonalFileFilter("txt", "Unicode Text File"));
         exploreGraphOutputDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
         exploreGraphOutputDialogBox.setCurrentDirectory(Config.getUserCurrentLanguageDir());
         exploreGraphOutputDialogBox.setMultiSelectionEnabled(false);
@@ -581,10 +554,7 @@ public class Config {
     public static JFileChooser getConcordanceDialogBox() {
         if(concordanceDialogBox == null) {
             concordanceDialogBox = new JFileChooser(Config.getCurrentSntDir());
-            PersonalFileFilter htmlFilter = new PersonalFileFilter("html",
-                                                "HTML Files");
-            concordanceDialogBox.addChoosableFileFilter(htmlFilter);
-            concordanceDialogBox.setFileFilter(htmlFilter);
+            concordanceDialogBox.setFileFilter(new PersonalFileFilter("html", "HTML files"));
             concordanceDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
             concordanceDialogBox.setMultiSelectionEnabled(false);
         }
@@ -610,8 +580,6 @@ public class Config {
                     .getCurrentGraphDir(), "Preprocessing"), "Replace"));
         if (corpusDialogBox != null)
             corpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
-        if (taggedCorpusDialogBox != null)
-            taggedCorpusDialogBox.setCurrentDirectory(Config.getCurrentCorpusDir());
         if (delaDialogBox != null)
             delaDialogBox.setCurrentDirectory(new File(Config
                     .getUserCurrentLanguageDir(), "Dela"));

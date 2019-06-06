@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
- * class uses to save the state of the graph before a box text edit
+ * class uses to save the state of the graph before a boxe text edit
  * 
  * @author Decreton Julien
  */
@@ -35,23 +35,25 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 	 * text before editing
 	 */
 	private final String oldText;
-	private final String newText; /** text to put in the box */
+	private final String /** text to put in the boxe */
+	newText;
 	/**
-	 * box where change text
+	 * boxe where change text
 	 */
 	private final GenericGraphBox boxe;
 	/**
 	 * zone where the graph is drawn
 	 */
 	private final GenericGraphicalZone zone;
+	private final boolean isModified;
 
 	/**
-	 * construct an edit to redo and undo a text edition in a box
+	 * contruct an edit to redo and undo a text edition in a boxe
 	 * 
 	 * @param boxe
-	 *            the box where add the text
+	 *            the boxe where add the text
 	 * @param text
-	 *            the text to add in the box
+	 *            the text to add in the boxe
 	 * @param zone
 	 *            the zone where boxes are drawn
 	 */
@@ -61,6 +63,8 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		this.newText = text;
 		this.zone = zone;
 		oldText = boxe.getContent();
+		this.isModified = boxe.isModified();
+		boxe.setModified(true);
 	}
 
 	@Override
@@ -70,11 +74,13 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		boxe.setSelected(true);
 		zone.getSelectedBoxes().add(boxe);
 		zone.initText(boxe.getContent());
+		boxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		boxe.setContent(newText);
+		boxe.setModified(true);
 	}
 }
