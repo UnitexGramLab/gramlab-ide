@@ -96,13 +96,21 @@ public class DelasHelper {
             String pOs,lemma,fSTCode,SynSem,comment,lemmaInv;
             
             String dicFile=dela;
+            /*if(!allDelas) {
+            	
+            }*/
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
             if(allDelas)
-            path = DictionaryPath.allDelas+File.separator+dela;
-            else
-            path = dela;
-            
+            	path = DictionaryPath.allDelas+File.separator+dela;
+            else {
+	            path = dela;
+	           /* String[] tmp = dicFile.split("/|\\");
+	        	dicFile = tmp[tmp.length-1];*/
+	            
+	            //The purpose of the next line is to print only the name of the dictionary instead of the absolute path which if more readable
+	            //dicFile = new File(path).getName();
+	        }
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 lemma=getLemaInDelas(s);

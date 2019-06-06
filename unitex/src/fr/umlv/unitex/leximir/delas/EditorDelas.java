@@ -70,6 +70,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private DefaultTableModel tableModel;
     private DefaultTableModel defaulttableModel;
     private boolean unsaved = false;
+    private boolean alldelas;
 
     public EditorDelas() {
     }
@@ -82,6 +83,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      */
     public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
+        this.alldelas = alldelas;
         try {
             initComponents();
             DictionaryPath.dictionary.clear();
@@ -805,14 +807,29 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
-                    String fn = data.getKey().contains(File.separator) ? new File(data.getKey()).getName() : data.getKey();
-                    try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
+                	if(alldelas == true) {
+                		String fn = data.getKey().contains(File.separator) ? new File(data.getKey()).getName() : data.getKey();
+                		try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
+                            for (String lines : data.getValue()) {
+                                UnicodeIO.writeString(out, lines);
+                            }
+                        }
+                	}else {
+                		String fn = data.getKey();
+                		try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream( fn),Charset.defaultCharset())) {
+                            for (String lines : data.getValue()) {
+                                UnicodeIO.writeString(out, lines);
+                            }
+                        }
+                	}
+                   /* try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
                         for (String lines : data.getValue()) {
                             UnicodeIO.writeString(out, lines);
                         }
-                    }
+                    }*/
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "error :" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "error :" + ex.getMessage() + "\nNo changes were done.");
+                    return;
                 }
             }
 
