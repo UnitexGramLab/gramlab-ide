@@ -70,10 +70,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private DefaultTableModel tableModel;
     private DefaultTableModel defaulttableModel;
     private boolean unsaved = false;
-    private boolean alldelas;
-
-    public EditorDelas() {
-    }
+    private String workingDirectory;
 
     /**
      * Creates new form EditorLadl
@@ -83,7 +80,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      */
     public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
-        this.alldelas = alldelas;
+        initWorkingDirectory(alldelas, dic);
+        System.out.println("Working directory : " + workingDirectory);
         try {
             initComponents();
             DictionaryPath.dictionary.clear();
@@ -118,6 +116,19 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         } catch (IOException ex) {
             Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void initWorkingDirectory(boolean alldelas, File dic) {
+       	if(alldelas) {
+       		this.workingDirectory = DictionaryPath.allDelas;
+    	}else {
+    		if(dic.getParent() == null) {
+    			this.workingDirectory = DictionaryPath.allDelas;
+    		}else {
+    			this.workingDirectory = dic.getParent() + File.separator;
+    		}
+    	}
+    	return;
     }
 
     private DefaultTableCellRenderer paintGrid() {
@@ -195,6 +206,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuSave = new javax.swing.JMenu();
         jMenuSaveAs = new javax.swing.JMenu();
         jMenuExit = new javax.swing.JMenu();
+        
+        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -428,6 +441,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jLabel10.setText("FST Code");
 
         jLabel9.setText("Lemma");
+        
+        jLabel16.setText("Working Directory : " + workingDirectory);
 
         jButtonClear.setText("Clear");
         jButtonClear.addActionListener(new java.awt.event.ActionListener() {
@@ -807,26 +822,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
-                	if(alldelas == true) {
-                		String fn = data.getKey().contains(File.separator) ? new File(data.getKey()).getName() : data.getKey();
-                		try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
-                            for (String lines : data.getValue()) {
-                                UnicodeIO.writeString(out, lines);
-                            }
-                        }
-                	}else {
-                		String fn = data.getKey();
-                		try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream( fn),Charset.defaultCharset())) {
-                            for (String lines : data.getValue()) {
-                                UnicodeIO.writeString(out, lines);
-                            }
-                        }
+                	String fn = data.getKey();
+                	try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(workingDirectory + fn),Charset.defaultCharset())) {
+                		for (String lines : data.getValue()) {
+                			UnicodeIO.writeString(out, lines);
+                		}
                 	}
-                   /* try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
-                        for (String lines : data.getValue()) {
-                            UnicodeIO.writeString(out, lines);
-                        }
-                    }*/
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(null, "error :" + ex.getMessage() + "\nNo changes were done.");
                     return;
@@ -1245,6 +1246,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
