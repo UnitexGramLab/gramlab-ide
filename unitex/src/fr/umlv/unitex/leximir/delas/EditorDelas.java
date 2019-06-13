@@ -80,9 +80,15 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      */
     public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
-        initWorkingDirectory(alldelas, dic);
-        System.out.println("Working directory : " + workingDirectory);
+        
+        /* This if checks if the user used the option of opening only one dictionary with "Browse" but didn't select any dictionary*/
+        if(!alldelas && dic.toString().isEmpty()) {
+        	JOptionPane.showMessageDialog(null, "No dictionary selected");
+        	return;
+        }
+        
         try {
+        	initWorkingDirectory(alldelas, dic);
             initComponents();
             DictionaryPath.dictionary.clear();
             this.setTitle("LeXimir Editor for Dela dictionaries of simple words");
@@ -118,6 +124,15 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
     }
     
+    /**
+     * Set the working directory depending on the path given in parameter. If the user decided to open all dictionaries from the default 
+     * directory (Dela/Delas/), the working directory is set to the default directory, otherwise it is set to the directory that contains 
+     * the dictionary opened as a specific file with "Browse".
+     * 
+     * @param alldelas if alldelas is true, the working directory is set to the default Dela/Delas/ directory
+     * @param dic the path of the directory/dictionary opened
+     */
+    
     private void initWorkingDirectory(boolean alldelas, File dic) {
        	if(alldelas) {
        		this.workingDirectory = DictionaryPath.allDelas;
@@ -128,6 +143,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     			this.workingDirectory = dic.getParent() + File.separator;
     		}
     	}
+       	System.out.println("Working directory : " + workingDirectory);
     	return;
     }
 
