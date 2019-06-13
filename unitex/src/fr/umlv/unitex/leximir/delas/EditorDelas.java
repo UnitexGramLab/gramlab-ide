@@ -81,12 +81,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
         
-        /* This if checks if the user used the option of opening only one dictionary with "Browse" but didn't select any dictionary*/
-        if(!alldelas && dic.toString().isEmpty()) {
-        	JOptionPane.showMessageDialog(null, "No dictionary selected");
-        	return;
-        }
-        
         try {
         	initWorkingDirectory(alldelas, dic);
             initComponents();
