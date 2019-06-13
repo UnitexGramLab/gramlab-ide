@@ -186,7 +186,7 @@ public class GenericGraphBox {
 
 	private boolean highlight = false;
 	private boolean isModified = false;
-
+	
 	/**
 	 * Constructs a new box
 	 *

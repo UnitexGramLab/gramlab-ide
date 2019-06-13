@@ -49,6 +49,34 @@ import fr.umlv.unitex.tfst.Bounds;
  * @author paumier
  */
 public class TaggingModel {
+	
+	public class Context{
+		ArrayList<Integer> path = new ArrayList<>();
+		int pos;
+		int currentBox;
+		public boolean space;
+		
+		public Context(String s) {
+			String [] tmp = s.split("-");
+			for (String string : tmp) {
+				path.add(Integer.valueOf(string));
+			}
+			pos = 0;
+			currentBox = 1;
+			space = false;
+		}
+
+		public void display() {
+			System.out.println("\n\n\nDISPLAYING\n\n");
+			System.out.println("path : " + path + "\npos : " + pos + "\ncurrentBox : " + currentBox
+					+ "\nnum box : " + path.get(currentBox) + "\ntexte : " + getTextBoxe(boxes[sortedNodes[path.get(currentBox)]]));
+			
+		}
+		
+		
+		
+		
+	}
 	TfstGraphicalZone zone;
 
 	/*
@@ -63,6 +91,8 @@ public class TaggingModel {
 	public boolean[] factorization;
 	int initialState;
 	int finalState;
+	
+	ArrayList<Context> lstContext = new ArrayList<>();
 	
 	GenericGraphBox lastTransitionPrevious;
 	GenericGraphBox lastTransitionNext;
@@ -168,6 +198,8 @@ public class TaggingModel {
 		generateTokensList();
 		System.out.println("TOKENS : "+ tokens);
 		zone.unSelectAllBoxes();
+		lstTok.clear();
+		lstPath.clear();
 		
 	}
 	
@@ -267,25 +299,18 @@ public class TaggingModel {
 	
 	void computeAllPaths( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ){
 		System.out.println("-----> computeAllPaths Start"); 
-		
-		for(int i1=0;i1<factorization.length;i1++)
-			System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-		System.out.println();
-		
-		
+				
 		
 		for( GenericGraphBox b : (boxes[sortedNodes[bfp]].transitions) ) {
-			System.out.println("b renumber[b] "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
-			System.out.println("renumber[b] / bfp / bfs "+renumber[b.getBoxNumber()]+" "+bfp+" "+bfs);
-			if( taggingStates[b.getBoxNumber()] == TaggingState.USELESS ) {
-				System.out.println("calling computePath");
+			System.out.println("TESSSSXXXXXXTE : " + boxes[renumber[b.getBoxNumber()]].getBoxNumber());
+			if(containsUseless(bfs, boxes[sortedNodes[renumber[b.getBoxNumber()]]])) {
 				computePath( renumber[b.getBoxNumber()], bfs, new ArrayList<Integer>(),allPaths );
 			}
 				
 		}
+		
 		System.out.println("all Paths :");
 		System.out.println(allPaths);
-		System.out.println("-----> computeAllPaths Ending");
 	}
 	
 	void computePath( int start, int end, ArrayList<Integer> current, ArrayList<ArrayList<Integer>> allPaths ) {
@@ -295,13 +320,35 @@ public class TaggingModel {
 			for( GenericGraphBox b : boxes[sortedNodes[start]].transitions ) {
 				System.out.println("start renumber[start] b renumber[b] "+sortedNodes[start]+" "+start+" "+b.getBoxNumber()+" "+renumber[b.getBoxNumber()]+" "+taggingStates[b.getBoxNumber()]);
 					System.out.println("calling computePath recurcive");
-					computePath( renumber[b.getBoxNumber()], end, new ArrayList<Integer>(current), allPaths);
+					if(containsUseless(end, boxes[sortedNodes[renumber[b.getBoxNumber()]]]));
+						computePath( renumber[b.getBoxNumber()], end, new ArrayList<Integer>(current), allPaths);
 			}
 		}
 		if( start == end ) {
 			System.out.println("full branch : "+current);
 			allPaths.add( current );
 		}
+	}
+	
+	boolean containsUseless(int end, GenericGraphBox current) {
+		
+		System.out.println(getTextBoxe(current) + "  " + current.getBoxNumber());
+		
+		if(current.equals(boxes[sortedNodes[end]]))
+			return false;
+		
+		for (GenericGraphBox box : current.transitions) {
+			if(taggingStates[box.getBoxNumber()] == TaggingState.USELESS) {
+				System.out.println(box.getBoxNumber() + " USELESS ");
+				return true;
+			}
+			if(containsUseless(end, box))
+				return true;
+		}
+		
+		
+		
+		return false;
 	}
 	
 	void checkNewBranch( int i ){
@@ -311,7 +358,18 @@ public class TaggingModel {
 		System.err.println("i renumberI prev next - i :"+i+" renumber[i] :"+renumber[i]+" prev :"+prev+" renumber[prev] :"+renumber[prev]+" next :"+next+" renumber[next] "+renumber[next]);
 		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
 		computeAllPaths( renumber[prev], renumber[next], allPaths );
-		boolean b = checkingNewText(renumber[prev], renumber[next], allPaths);
+		lstTok.clear();
+		lstPath.clear();
+		findString(boxes[sortedNodes[renumber[prev]]], boxes[sortedNodes[renumber[next]]], new StringBuilder(), boxes[sortedNodes[renumber[prev]]], new StringBuilder());
+		lstContext.clear();
+		for (String arrayList : lstPath) {
+			lstContext.add(new Context(arrayList));
+		}
+		
+		displayAllSentence();
+		
+		boolean b = verifyPath(allPaths, sortedNodes[renumber[prev]], sortedNodes[renumber[next]], lstContext);
+		//boolean b = checkingTextUpdateBox(boxes[sortedNodes[renumber[prev]]], boxes[sortedNodes[renumber[next]]], boxes[sortedNodes[renumber[prev]]], allPaths);
 		
 		int n = zone.graphBoxes.size();
 		for (int i1 = 0; i1 < n; i1++) {
@@ -330,6 +388,173 @@ public class TaggingModel {
 		System.out.println("-----> checkNewBranch Ending");
 	}
 	
+	private boolean verifyPath(ArrayList<ArrayList<Integer>> allPaths, int bfp, int bfs, ArrayList<Context> lstContext2) {
+		int newBegin;
+		
+		for (int i = 0; i < boxes.length; i++) {
+			System.out.println("Box N°" + renumber[i] + " : " + getTextBoxe(boxes[i]));
+		}
+		
+		System.out.println("BEGIN VERIFY");
+		for (ArrayList<Integer> lst : allPaths) {
+			lstContext.clear();
+			for (String arrayList : lstPath) {
+				lstContext.add(new Context(arrayList));
+			}
+			ArrayList<Context> copyContext = (ArrayList<Context>) lstContext.clone();
+			
+			for (int i = 0; i < lst.size(); i++) {
+				for (Context context : copyContext) {
+					if(context.currentBox >= context.path.size()) {
+						JOptionPane.showMessageDialog(null,
+								"Too much box or not enough",
+								"Matching Error",
+								JOptionPane.PLAIN_MESSAGE);
+						return false;
+					}
+				}
+				
+				if(boxes[sortedNodes[bfp]].type == GenericGraphBox.INITIAL)
+					newBegin = 0;				
+				else if(i == 0) {
+					newBegin = findNextTokenNumber(boxes[sortedNodes[bfp]]) - boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens();
+				}
+				else
+					newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getEnd_in_tokens() + findNewBegin(lstContext);
+				System.out.println("new begin find !!!");
+				if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.USELESS
+						|| taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_BE_REMOVED)
+					boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
+				
+				if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
+					JOptionPane.showMessageDialog(null,
+							getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
+							"Matching Error",
+							JOptionPane.PLAIN_MESSAGE);
+					return false;
+				}
+				System.out.println("Searching END");
+				if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.USELESS
+						|| taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_BE_REMOVED)
+					boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[lst.get(i)]	));
+				System.out.println("NEW END FIND !!");
+			}
+			
+			for (Context context : copyContext) {
+				if(context.currentBox >= context.path.size() || !boxes[sortedNodes[context.path.get(context.currentBox)]].equals(boxes[bfs])) {
+					JOptionPane.showMessageDialog(null,
+							"Too much box or not enough",
+							"Matching Error",
+							JOptionPane.PLAIN_MESSAGE);
+					return false;
+				}
+			}
+		}
+		JOptionPane.showMessageDialog(null,
+				"Correct Matching",
+				"Branch is acceptable",
+				JOptionPane.PLAIN_MESSAGE);
+		return true;
+		
+	
+	}
+
+
+	private int findNewBegin(ArrayList<Context> lstContext2) {
+		for (Context context : lstContext2) {
+			if(context.pos == 0) {
+				context.space = false;
+				System.out.println("NUM - " + context.path.get(context.currentBox) + " START - " + boxes[sortedNodes[context.path.get(context.currentBox)]].getBounds().getStart_in_tokens() +" LAST - " + boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds().getEnd_in_tokens());
+				return boxes[sortedNodes[context.path.get(context.currentBox)]].getBounds().getStart_in_tokens() -
+						boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds().getEnd_in_tokens();
+		
+			}
+		}
+		return -1;
+		
+	}
+
+	
+	private boolean verifyBox(GenericGraphBox box, ArrayList<Context> copyContext) {
+		
+		String txt = getTextBoxe(box);
+		int size = txt.length();
+		ArrayList<Context> ctxtRemove = new ArrayList<>();
+		
+		if(txt.equals("<E>"))
+			//TODO
+			return true;
+		
+		for (Context context : copyContext) {
+			if(context.currentBox >= context.path.size()) {
+				System.out.println("too long");
+				ctxtRemove.add(context);
+				continue;
+			}
+			int numBox = context.path.get(context.currentBox);
+			String txtBis = getTextBoxe(boxes[sortedNodes[numBox]]);
+			for(int i = 0; i < size; i++) {
+				if(context.currentBox >= context.path.size()) {
+					System.out.println("error");
+					ctxtRemove.add(context);
+					break;
+				}
+				numBox = context.path.get(context.currentBox);
+				txtBis = getTextBoxe(boxes[sortedNodes[numBox]]);
+				context.display();
+				
+				if(context.space == true) {
+					if(txt.charAt(i) != ' ') {
+						System.out.println("rmv 1" );
+						ctxtRemove.add(context);
+					}
+					
+					context.space = false;
+					
+				}
+				else {
+					if(context.pos >= txtBis.length()) {
+						context.pos = 0;
+						context.currentBox ++;
+					
+					}
+					System.out.println("size - " + context.pos + " - " + txtBis.length());
+					
+					System.out.println("compare " + txt.charAt(i) + " and " +  txtBis.charAt(context.pos));
+					if(txt.charAt(i) != txtBis.charAt(context.pos)) {
+						System.out.println("rmv2");
+						ctxtRemove.add(context);
+					}
+					
+					context.pos ++;
+					if(context.pos >= txtBis.length()) {
+						if(context.currentBox + 1 < context.path.size() && boxes[sortedNodes[context.path.get(context.currentBox+1)]].getBounds().getStart_in_tokens() -
+								boxes[sortedNodes[numBox]].getBounds().getEnd_in_tokens() == 2)
+							context.space = true;
+						context.pos = 0;
+						context.currentBox ++;
+						
+					}
+				}
+					
+				
+				
+			}
+			
+
+		}
+		
+		for (Context context : ctxtRemove) {
+			copyContext.remove(context);
+		}
+		
+		if(copyContext.isEmpty())
+			return false;
+		
+		return true;
+	}
+
+
 	int findStartTokenOfLastBoxe(TfstGraphBox [] tfst) {
 		int last = 0, size = tfst.length;
 		for(int i = 0; i < size; i++) {
@@ -381,7 +606,7 @@ public class TaggingModel {
 		}
 		
 		int nb_transition_out = b.transitions.size();
-		path.append(renumber[num_box]).append(" - ");
+		path.append(renumber[num_box]).append("-");
 				
 		if(boxes[num_box].type != GenericGraphBox.INITIAL && !boxes[num_box].getContentText().equals("<E>"))
 			sb.append(boxes[num_box].getContentText());
@@ -414,7 +639,46 @@ public class TaggingModel {
 		});	
 	}
 	
+	String getTextBoxe(GenericGraphBox box) {
+		if(box.getContent().contains("{")  )
+			return box.getContent().split(",")[0].substring(1);
+		else {
+			return box.getContent();
+		}
+	}
 	
+
+
+
+
+	private int findLastToken(GenericGraphBox current) {
+		String txt = getTextBoxe(current);
+		System.out.println("TEEEEEEXTE  : " + txt);
+		int size = txt.length();
+		int last = 0;
+		for(int i = 0; i < size; i++) {
+			if(txt.charAt(i) == ' ' && i <= size-2 && txt.charAt(i+1) != ' ')
+				last += 2;
+		}
+		return boxes[sortedNodes[current.getBoxNumber()]].getBounds().getStart_in_tokens() + last;
+	}
+
+
+  
+
+
+	private int findNextTokenNumber(GenericGraphBox box) {
+		for (GenericGraphBox b : box.transitions) {
+			if(taggingStates[b.getBoxNumber()] != TaggingState.USELESS)
+				return boxes[b.getBoxNumber()].getBounds().getStart_in_tokens();
+		}
+		
+		
+		
+		return 0;
+	}
+
+
 	/* NOT FINISHED */
 	boolean checkingNewText( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
 		
@@ -489,32 +753,6 @@ public class TaggingModel {
 				last_start_token = boxes[sortedNodes[i]].getBounds().getStart_in_tokens();
 				
 				
-				/*int k = 0;
-				while( j < end && k < otherTokens.size() ) {
-					System.out.println("j : " + j + " k : " + k + " end : " + end + " size : " + otherTokens.size());
-					for(int tmp = 0; tmp < tokens.get(tmp).size(); tmp++)
-						System.out.println("tokens[" + tmp + "] = " + tokens.get(tmp));
-					
-					if(tokens.get(j) != null && otherTokens.get(k) != null)
-						System.out.println("Comparing : "+ tokens.get(j).toString() + " vs " + otherTokens.get(k) );
-					if(tokens.get(j) != null && tokens.get(j).contains( otherTokens.get(k)) ) {
-						System.out.println("true");
-						Bounds temp = boxes[sortedNodes[i]].getBounds();
-						if( j == newStart )
-							temp.setStart_in_tokens(j);
-						temp.setEnd_in_tokens(j);
-						j++;
-						k++;	
-					} else {
-						System.out.println("false");
-						JOptionPane.showMessageDialog(null,
-								boxes[sortedNodes[i]].getContent()+" isn't an acceptable token",
-								"Matching Error",
-								JOptionPane.PLAIN_MESSAGE);
-						displayTokensHash();
-						return ;
-					}
-				}*/
 			}
 		}
 		
@@ -526,135 +764,7 @@ public class TaggingModel {
 		lstPath.clear();
 		System.err.println("Chaine 2 : \"" + sb.toString() + "\" ");
 		System.out.println("OtherToken : " + otherTokens);
-		if(sb.toString().equals("")) {
-			JOptionPane.showMessageDialog(null,
-					"Correct Matching",
-					"Branch is acceptable",
-					JOptionPane.PLAIN_MESSAGE);
-			return true;
-			
-		}
-		else{
-			JOptionPane.showMessageDialog(null,
-					"Error matching",
-					"Matching Error",
-					JOptionPane.PLAIN_MESSAGE);
-			return false;
-		}
-	}
-	
-	
-	boolean checkingNewText2( int bfp, int bfs, ArrayList<ArrayList<Integer>> allPaths ) {
-		
-		displayTokensHash();
-		
-		System.out.println("-----> checkingNewText Start");
-		
-		StringBuilder sb = new StringBuilder();
-		
-		if( allPaths.isEmpty() )
-			return false;
-		
-		int index, end, last_start_token;
-				
-		if(boxes[sortedNodes[bfp]].getBounds() != null) {
-			index = boxes[sortedNodes[bfp]].getBounds().getEnd_in_tokens(); // Exception here
-		}
-		else if(boxes[sortedNodes[bfp]].type == GenericGraphBox.FINAL) {
-			System.err.println("Impossible to connect the final box to another");
-			return false;
-		}
-		else{
-			index = -1; // first tokens, so he is the number 0
-		}
-		
-		if(boxes[sortedNodes[bfs]].getBounds() != null) {
-			end = boxes[sortedNodes[bfs]].getBounds().getStart_in_tokens(); // Exception here
-		}		
-		else if(boxes[sortedNodes[bfs]].type == GenericGraphBox.INITIAL) {
-			System.err.println("Impossible to connect a box to the initial box");
-			return false;
-		}
-		else {
-			end = findStartTokenOfLastBoxe(boxes);
-		}
-		
-		last_start_token = index;
-		
-		findString(boxes[sortedNodes[bfp]], boxes[sortedNodes[bfs]], new StringBuilder(), boxes[sortedNodes[bfp]], new StringBuilder());
-		displayAllSentence();
-		
-		System.out.println("INDEX = " + index + " END = " + end);
-		//int j = index+1; // +2 by default, to be changed
-		ArrayList<String> otherTokens = new ArrayList<String>();
-		
-		for( ArrayList<Integer> e : allPaths ) {
-			System.out.println("checking text in path : "+e.toString());
-			for( Integer i : e ) {
-				/*j++;
-				int newStart = j;*/
-				
-				String stringToMatch;
-				if( boxes[sortedNodes[i]].getContent().contains("{")  )
-					stringToMatch = boxes[sortedNodes[i]].getContent().split(",")[0].substring(1);
-				else {
-					stringToMatch = boxes[sortedNodes[i]].getContent();
-				}
-				
-				
-				Pattern pattern = Pattern.compile(regex);
-				Matcher matcher = pattern.matcher(stringToMatch);
-				
-				while( matcher.find() ) {
-					System.out.println("renumber[b] word "+i+" "+matcher.group());
-					otherTokens.add(matcher.group());
-				}
-
-				if(boxes[sortedNodes[i]].getBounds().getStart_in_tokens() - last_start_token == 2)
-					sb.append(" ");
-				
-				sb.append(stringToMatch);
-				last_start_token = boxes[sortedNodes[i]].getBounds().getStart_in_tokens();
-				
-				
-				/*int k = 0;
-				while( j < end && k < otherTokens.size() ) {
-					System.out.println("j : " + j + " k : " + k + " end : " + end + " size : " + otherTokens.size());
-					for(int tmp = 0; tmp < tokens.get(tmp).size(); tmp++)
-						System.out.println("tokens[" + tmp + "] = " + tokens.get(tmp));
-					
-					if(tokens.get(j) != null && otherTokens.get(k) != null)
-						System.out.println("Comparing : "+ tokens.get(j).toString() + " vs " + otherTokens.get(k) );
-					if(tokens.get(j) != null && tokens.get(j).contains( otherTokens.get(k)) ) {
-						System.out.println("true");
-						Bounds temp = boxes[sortedNodes[i]].getBounds();
-						if( j == newStart )
-							temp.setStart_in_tokens(j);
-						temp.setEnd_in_tokens(j);
-						j++;
-						k++;	
-					} else {
-						System.out.println("false");
-						JOptionPane.showMessageDialog(null,
-								boxes[sortedNodes[i]].getContent()+" isn't an acceptable token",
-								"Matching Error",
-								JOptionPane.PLAIN_MESSAGE);
-						displayTokensHash();
-						return ;
-					}
-				}*/
-			}
-		}
-		
-		if(end - last_start_token == 2)
-			sb.append(" ");
-		
-		
-		lstTok.clear();
-		lstPath.clear();
-		System.err.println("Chaine 2 : \"" + sb.toString() + "\" ");
-		System.out.println("OtherToken : " + otherTokens);
-		if(sb.toString().equals("")) {
+		if(!sb.toString().equals("")) {
 			JOptionPane.showMessageDialog(null,
 					"Correct Matching",
 					"Branch is acceptable",
@@ -679,24 +789,6 @@ public class TaggingModel {
 			System.out.println("Sentence " + (i+1) + " : \"" + lstTok.get(i) + "\" -> " + lstPath.get(i));
 		}
 		System.out.println("Finish displaying");
-	}
-
-	
-	private boolean allSameTransitionOut(GenericGraphBox box) {
-		if(!box.hasOutgoingTransitions
-				|| box.type == GenericGraphBox.INITIAL 
-				|| box.type == GenericGraphBox.FINAL)
-			return true;
-		
-		int endPrevious = boxes[box.getBoxNumber()].getBounds().getEnd_in_tokens();
-		int beginNext = boxes[box.transitions.get(0).getBoxNumber()].getBounds().getStart_in_tokens();
-		int difference = endPrevious - beginNext;
-		for (GenericGraphBox b : box.transitions) {
-			beginNext = boxes[b.getBoxNumber()].getBounds().getStart_in_tokens();
-			if(difference != (endPrevious - beginNext))
-				return false;
-		}			
-		return true;
 	}
 
 
@@ -1295,7 +1387,7 @@ public class TaggingModel {
 		taggingStates=selection;
 	}
 
-	public void updateBoundsDiffToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
+	/*public void updateBoundsDiffToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
 		int t = selectedBoxes.get(0).getBoxNumber();
 		System.err.println("The value of " + t + " is bigger than the number of boxes");
 		Bounds temp;
@@ -1334,6 +1426,6 @@ public class TaggingModel {
 	
 	public void updateBoundsSameToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
 		b.setBounds( new Bounds(boxes[selectedBoxes.get(0).getBoxNumber()].getBounds()) );
-	}
+	}*/
 	
 }

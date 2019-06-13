@@ -40,6 +40,13 @@ import fr.umlv.unitex.tfst.Bounds;
  */
 public class TfstGraphBox extends GenericGraphBox {
 	private Bounds bounds;
+	
+	@Override
+	public TfstGraphBox clone() {
+		TfstGraphBox tmp = new TfstGraphBox(this.X, this.Y, this.type, (TfstGraphicalZone) this.parentGraphicalZone);
+		tmp.bounds = new Bounds(this.bounds);
+		return tmp;
+	}
 
 	/**
 	 * Constructs a new box

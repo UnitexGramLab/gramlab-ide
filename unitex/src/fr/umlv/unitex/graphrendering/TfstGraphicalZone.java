@@ -1,5 +1,5 @@
 /*
- * Unitex
+  * Unitex
  *
  * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
@@ -61,6 +61,7 @@ Printable {
 
 	TaggingModel model;
 	int sentence=-1;
+	
 
 	/**
 	 * Constructs a new <code>TfstGraphicalZone</code>.
@@ -193,10 +194,10 @@ Printable {
 						if(changeIsValid) {
 							System.out.println("b selectedBoxes0index size "+b.getBoxNumber()+" "+selectedBoxes.get(0).getBoxNumber()+" "+selectedBoxes.size());
 							if( !selectedBoxes.get(0).transitions.contains(b) && model.getBoxState(b) != TaggingState.SELECTED ) {
-								if( e.getButton() == MouseEvent.BUTTON1 )
+								/*if( e.getButton() == MouseEvent.BUTTON1 )
 									model.updateBoundsDiffToken(selectedBoxes,b);
 								if( e.getButton() == MouseEvent.BUTTON3 )
-									model.updateBoundsSameToken(selectedBoxes,b);
+									model.updateBoundsSameToken(selectedBoxes,b);*/
 							}
 							addTransitionsFromSelectedBoxes(b, true);
 							unSelectAllBoxes();
@@ -215,6 +216,7 @@ Printable {
 			}
 			fireGraphChanged(false);
 		}
+		
 
 		@Override
 		public void mousePressed(MouseEvent e) {
