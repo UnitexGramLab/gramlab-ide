@@ -188,7 +188,12 @@ public class TfstGraphBox extends GenericGraphBox {
 		tokenizeText(s, false);
 		if (!tmp.equals("<E>") && !tmp.equals(",")) {
 			// updating the letters bounds
-			updateBoundsLetters( tmp.split(",")[0].length()-1 );
+			if(tmp.contains("{")  )
+				updateBoundsLetters( tmp.split(",")[0].length()-1 );
+			else {
+				updateBoundsLetters( tmp.length() );
+			}
+			
 			
 			// dimensions of a full box
 			Width = maxLineWidth() + 10;
