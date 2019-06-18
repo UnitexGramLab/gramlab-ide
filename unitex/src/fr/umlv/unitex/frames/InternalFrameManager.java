@@ -46,6 +46,13 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
+import java.util.List;
+import java.util.Map;
+import fr.umlv.unitex.leximir.delas.*;
+import fr.umlv.unitex.leximir.delac.*;
+import fr.umlv.unitex.leximir.helper.*;
+import fr.umlv.unitex.leximir.shell.*;
+
 
 /**
  * This class is responsible for managing all internal frames in Unitex and GramLab main
@@ -107,6 +114,13 @@ public abstract class InternalFrameManager implements FrameManager {
   private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
   private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
+    private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
+    private final ShellFactory shellFactory = new ShellFactory();
+    private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
+    private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
+    private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
+    private final StatisticOutputFactory statisticOutputFactory = new StatisticOutputFactory();
+    private final CsvOpenerFactory csvOpenerFactory = new CsvOpenerFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -196,6 +210,81 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void saveAllGraphFrames() {
 		graphFrameFactory.saveAllFrames();
 	}
+	
+	
+    public ChooseDelas newChooseDelasDialog() {
+
+        final ChooseDelas d = chooseDelasFactory.newChooseDelasDialog();
+        if (d == null) {
+            return null;
+        }
+        setup(d);
+        return d;
+    }
+
+    public ChooseDelac newChooseDelacDialog() {
+        final ChooseDelac d = chooseDelacFactory.newChooseDelacDialog();
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+
+    public Shell newShellDialog() {
+        final Shell d = shellFactory.newShellDialog();
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public EditorDelas newEditorDelasDialog(boolean alldelas, File dic) {
+        final EditorDelas d = editorDelasFactory.newEditorDelasDialog(alldelas, dic);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public StatisticOutput newStatisticOutput(List<Object[]> dicPos) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public CsvOpener newCsvOpener(String Csvfile) {
+        final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(Csvfile);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public EditorDelac newEditorDelacDialog(boolean alldelac, File dic) {
+        final EditorDelac d = editorDelacFactory.newEditorDelacDialog(alldelac, dic);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
 
 	/**
 	 * This method implements the functionality to minimize the currently focused frame.
