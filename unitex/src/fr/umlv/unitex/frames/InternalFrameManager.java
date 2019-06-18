@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -685,7 +685,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		if (d == null)
 			return null;
 		final File f = gf.getGraph();
-		d.graphName.setText(f.getAbsolutePath());
+		d.setInputGraphName(f.getAbsolutePath());
 		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
 		return d;

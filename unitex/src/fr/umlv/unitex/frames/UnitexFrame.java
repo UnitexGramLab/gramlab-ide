@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -419,7 +419,7 @@ public class UnitexFrame extends JFrame {
 				if (Config.getCurrentSnt() == null || Config.getCurrentSntDir() == null) {
 				  return;
 				}
-				JFileChooser fc = Config.getCorpusDialogBox();
+				JFileChooser fc = Config.getTaggedCorpusDialogBox();
 				fc.setMultiSelectionEnabled(false);
 				fc.setDialogType(JFileChooser.SAVE_DIALOG);
 				File file;
@@ -1760,14 +1760,14 @@ public class UnitexFrame extends JFrame {
 	 * is opened with a call to the <code>Text.loadCorpus(String)</code> method.
 	 */
 	void openTaggedText() {
-		Config.getCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
+		Config.getTaggedCorpusDialogBox().setDialogType(JFileChooser.OPEN_DIALOG);
 		final int returnVal = Config.getTaggedCorpusDialogBox().showOpenDialog(
 				this);
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			// we return if the user has clicked on CANCEL
 			return;
 		}
-		final File f = Config.getCorpusDialogBox().getSelectedFile();
+		final File f = Config.getTaggedCorpusDialogBox().getSelectedFile();
 		if (!f.exists()) {
 			JOptionPane.showMessageDialog(null, "File " + f.getAbsolutePath()
 					+ " does not exist", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1932,6 +1932,82 @@ public class UnitexFrame extends JFrame {
 					.resultType(!rtn.isSelected()).depth(depthValue));
 			Launcher.exec(commands, false);
 		}
+	}
+	
+	/**
+	 * Shows a window that offers the user to flatten a graph. This method 
+	 * allows `compile and flatten` to be used inside another frame such as 
+	 * 'explore graph paths'
+	 * @param flattenMode false for equivalent to fst2, true for finite state transducer
+	 * @param flattenDepth maximum
+	 * @return Map containing the commands and options to allow saving the options selected
+	 */
+	public static Map<String,Object> flattenGraph(File grf,boolean flattenMode,String flattenDepth) {
+		if (grf == null) {
+			JOptionPane.showMessageDialog(null,
+					"Cannot compile a graph with no name", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+		final JPanel mainpane = new JPanel();
+		mainpane.setLayout(new BorderLayout());
+		final JPanel pane = new JPanel();
+		pane.setLayout(new GridLayout(2, 1));
+		pane.setBorder(new TitledBorder("Expected result grammar format:"));
+		final JRadioButton rtn = new JRadioButton(
+				"equivalent FST2 (subgraph calls may remain)");
+		final JRadioButton fst = new JRadioButton(
+				"Finite State Transducer (can be just an approximation)");
+		final ButtonGroup bg = new ButtonGroup();
+		bg.add(rtn);
+		bg.add(fst);
+		if( !flattenMode ) {
+			rtn.setSelected(true);
+		} else {
+			fst.setSelected(true);
+		}
+		final JPanel subpane = new JPanel();
+		subpane.setBorder(new TitledBorder("Flattening depth:"));
+		subpane.setLayout(new FlowLayout(SwingConstants.HORIZONTAL));
+		subpane.add(new JLabel("Maximum flattening depth: "));
+		final JTextField depth = new JTextField(flattenDepth);
+		subpane.add(depth);
+		pane.add(rtn);
+		pane.add(fst);
+		mainpane.add(pane, BorderLayout.CENTER);
+		mainpane.add(subpane, BorderLayout.SOUTH);
+		final String[] options = { "OK", "Cancel" };
+		if (0 == JOptionPane.showOptionDialog(null, mainpane,
+				"Flatten", JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, options, options[0])) {
+			int depthValue;
+			try {
+				depthValue = Integer.parseInt(depth.getText());
+			} catch (final NumberFormatException e) {
+				depthValue = -1;
+			}
+			if (depthValue < 1) {
+				JOptionPane.showMessageDialog(null, "Invalid depth value",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+			String name_fst2 = FileUtil.getFileNameWithoutExtension(grf);
+			name_fst2 = name_fst2 + ".fst2";
+			final MultiCommands commands = new MultiCommands();
+			commands.addCommand(new Grf2Fst2Command().grf(grf)
+					.enableLoopAndRecursionDetection(true)
+					.tokenizationMode(null, grf).repositories()
+					.emitEmptyGraphWarning().displayGraphNames());
+			commands.addCommand(new FlattenCommand().fst2(new File(name_fst2))
+					.resultType(!rtn.isSelected()).depth(depthValue));
+			
+			Map<String,Object> result = new HashMap<>();
+			result.put("commands", commands);
+			result.put("flattenMode", !rtn.isSelected());
+			result.put("flattenDepth", depth.getText());
+			return result;
+		}
+		return null;
 	}
 
 	/**

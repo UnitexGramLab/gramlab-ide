@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -270,9 +270,8 @@ public class TfstGraphBox extends GenericGraphBox {
 	@Override
 	void drawOther(Graphics2D g, DrawGraphParams params) {
 		final Color old = params.getBackgroundColor();
-		if (ConfigManager.getManager().isKorean(null)
-				&& isKoreanUntaggedToken(content)) {
-			params.setBackgroundColor(GraphDecoratorConfig.KOREAN_UNTAGGED_TOKEN_COLOR);
+		if ( isUntaggedToken(content)) {
+			params.setBackgroundColor(GraphDecoratorConfig.UNTAGGED_TOKEN_COLOR);
 		}
 		final Composite c = g.getComposite();
 		if (parentGraphicalZone.decorator != null) {
@@ -284,7 +283,7 @@ public class TfstGraphBox extends GenericGraphBox {
 		params.setBackgroundColor(old);
 	}
 
-	private boolean isKoreanUntaggedToken(String s) {
+	private boolean isUntaggedToken(String s) {
 		return !s.equals("<E>") && s.charAt(0) != '{';
 	}
 

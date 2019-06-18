@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
@@ -49,6 +49,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.filechooser.FileFilter;
 
 import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
@@ -56,11 +57,12 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.editor.EditionTextArea;
 import fr.umlv.unitex.editor.FileEditionMenu;
 import fr.umlv.unitex.editor.FileManager;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.utils.KeyUtil;
 
 /*
  * This class is used to display the text
- *  
+ *
  */
 public class FileEditionTextFrame extends TabbableInternalFrame {
 	/**
@@ -372,6 +374,9 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 	void saveFile(File f) {
 		if (f == null) {
 			final JFileChooser chooser = new JFileChooser();
+			chooser.addChoosableFileFilter(new PersonalFileFilter("txt", "Text File"));
+			chooser.addChoosableFileFilter(new PersonalFileFilter("dic", "Dictionary file"));
+			chooser.addChoosableFileFilter(new PersonalFileFilter("csc", "CasSys configuration file"));
 			if (file!=null) {
 				chooser.setCurrentDirectory(file.getParentFile());
 			} else {
@@ -386,6 +391,17 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 				return;
 			}
 			f = chooser.getSelectedFile();
+			final FileFilter selectedFilter = chooser.getFileFilter();
+			
+			if (selectedFilter instanceof PersonalFileFilter) {
+			    final PersonalFileFilter selectedPersonalFilter = (PersonalFileFilter) selectedFilter;
+          final String selectedExtension = selectedPersonalFilter.getExtension();
+          final String selectedFileName = f.getAbsolutePath();
+          
+          if (!selectedFileName.endsWith(selectedExtension)) {
+            f = new File(selectedFileName + selectedExtension);
+          }
+      }
 		}
 		this.file = f;
 		setTitle(f.getAbsolutePath());
@@ -399,7 +415,7 @@ public class FileEditionTextFrame extends TabbableInternalFrame {
 
 	/**
 	 * Returns the text.
-	 * 
+	 *
 	 * @return MyTextArea
 	 */
 	public EditionTextArea getText() {

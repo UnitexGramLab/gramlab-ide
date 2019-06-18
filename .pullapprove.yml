@@ -1,34 +1,34 @@
-version: 2
-approve_by_comment: true
-approve_regex: '^(Approved|:\+1:|:lgtm:|lgtm|LGTM)'
-reject_regex:  '^(Rejected|:\-1:)'
-reset_on_push: false
+version: 3
 groups:
-  core-committers:
-    required: 1
-    teams:
-      - core
-    conditions:
-      labels:
-        - needs:review-core
   ide-committers:
-    required: 1
-    teams:
-      - ide
+    reviews:
+      required: 1
+    reviewers:
+      teams:
+        - ide
     conditions:
-      branches:
-        - master
+      - "base.ref == 'master'"
+  core-committers:
+    reviews:  
+      required: 1
+    reviewers:      
+      teams:
+        - core
+    conditions:
+      - "'needs:review-core' in labels"
   lingua-committers:
-    required: 1
-    teams:
-      - lingua
+    reviews:
+      required: 1
+    reviewers:      
+      teams:
+        - lingua
     conditions:
-      labels:
-        - needs:review-lingua
+      - "'needs:review-lingua' in labels"
   ide-interns:
-    required: 1
-    teams:
-      - ide-interns
+    reviews:
+      required: 1
+    reviewers:
+      teams:
+        - ide-interns
     conditions:
-      labels:
-        - needs:review-ide-interns
+      - "'needs:review-ide-interns' in labels"

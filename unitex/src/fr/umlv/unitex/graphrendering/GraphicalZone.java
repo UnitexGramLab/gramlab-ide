@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -308,7 +308,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
                     public void actionPerformed(ActionEvent e) {
                         surroundWithBoxes(
                             (ArrayList<GenericGraphBox>) selectedBoxes.clone(),
-                            "$G/{", null);
+                            "$G/{", "<E>/}");
                     }
                 };
                 addGenericGraphIndicator.setEnabled(false);
@@ -1043,6 +1043,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 					box2, edit);
 			graphBoxes.add(outputBox);
 		}
+		unSelectAllBoxes();
 		postEdit(edit);
 		fireGraphChanged(true);
 	}

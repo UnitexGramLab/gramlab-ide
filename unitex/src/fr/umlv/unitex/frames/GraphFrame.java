@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -944,7 +944,7 @@ public class GraphFrame extends KeyedInternalFrame<File> {
                     else if (line.indexOf("#/{") > -1) { //signature of graph B
                         continue;
                     }
-                    if(errFound == 1 && line.trim().startsWith("the automate")) {
+                    if(errFound == 1 && line.trim().startsWith("automaton")) {
                         JOptionPane.showMessageDialog(null,"Braces are not well formed in " + line.substring(0,line.indexOf(',')));
                         break;
                     }
