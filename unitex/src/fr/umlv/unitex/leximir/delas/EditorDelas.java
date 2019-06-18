@@ -46,8 +46,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.leximir.helper.*;
 import javax.swing.JInternalFrame;
@@ -218,6 +220,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuExit = new javax.swing.JMenu();
         
         jLabel16 = new javax.swing.JLabel();
+        jLabel16.setText("Working Directory :");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -381,14 +384,14 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1)
-                                .addContainerGap())
+                                .addComponent(jScrollPane1))
         );
         jPanel4Layout.setVerticalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,7 +455,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
         jLabel9.setText("Lemma");
         
-        jLabel16.setText("Working Directory : " + workingDirectory);
 
         jButtonClear.setText("Clear");
         jButtonClear.addActionListener(new java.awt.event.ActionListener() {
@@ -830,10 +832,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     fileData.put(file, tmp);
                 }
             }
+            Encoding e = ConfigManager.getManager().getEncoding(null);
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
                 	String fn = data.getKey();
-                	try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(workingDirectory + fn),Charset.defaultCharset())) {
+                    File dic = new File(workingDirectory + fn);
+                	try (OutputStreamWriter out = e.getOutputStreamWriter(dic)) {
                 		for (String lines : data.getValue()) {
                 			UnicodeIO.writeString(out, lines);
                 		}
@@ -1186,7 +1190,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             path = file.getPath();
             try {
                 String filename = path.endsWith(".dic") ? path : path + ".dic";
-                OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filename));
+                Encoding e = ConfigManager.getManager().getEncoding(null);
+                File dic = new File(filename);
+                OutputStreamWriter out = e.getOutputStreamWriter(dic);
                 for (int row = 0; row < this.getjTable1().getRowCount(); row++) {
                     String lemma = String.valueOf(this.getjTable1().getValueAt(row, 1));
                     String fstCode = this.getjTable1().getValueAt(row, 2).toString().concat(this.getjTable1().getValueAt(row, 3).toString());
