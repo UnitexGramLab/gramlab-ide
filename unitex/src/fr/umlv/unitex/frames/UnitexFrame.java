@@ -45,6 +45,8 @@ import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
+import fr.umlv.unitex.leximir.delac.EditorDelac;
+import fr.umlv.unitex.leximir.delas.EditorDelas;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -288,9 +290,9 @@ public class UnitexFrame extends JFrame {
 		menuBar.add(windows);
 		menuBar.add(help);
 		menuBar.add(info);
+		menuBar.add(info);
 		setJMenuBar(menuBar);
 	}
-
 	Action openText;
 	Action openTaggedText;
 	Action preprocessText;
@@ -469,6 +471,7 @@ public class UnitexFrame extends JFrame {
 		preprocessText.setEnabled(false);
 		textMenu.add(new JMenuItem(preprocessText));
 		textMenu.addSeparator();
+
 		changeLang = new AbstractAction("Change Language...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -716,6 +719,11 @@ public class UnitexFrame extends JFrame {
 	AbstractAction transliterate;
 	AbstractAction sortDictionary;
 	AbstractAction inflect;
+	AbstractAction delasLeximir;
+	AbstractAction confDelaLeximir;
+	AbstractAction delacStrategyLeximir;
+	AbstractAction shellLeximir;
+	AbstractAction delacLeximir;
 	AbstractAction compressIntoFST;
 	AbstractAction closeDela;
 
@@ -787,7 +795,16 @@ public class UnitexFrame extends JFrame {
 			}
 		});
 		delaMenu.add(openRecent);
-
+		//for shell
+		shellLeximir = new AbstractAction("Compile...") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newShellDialog();
+			}
+		};
+		shellLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(shellLeximir));
 
 		final JMenuItem lookup = new JMenuItem("Lookup...");
 		lookup.addActionListener(new ActionListener() {
@@ -834,6 +851,32 @@ public class UnitexFrame extends JFrame {
 		};
 		sortDictionary.setEnabled(false);
 		delaMenu.add(new JMenuItem(sortDictionary));
+		delaMenu.addSeparator();
+		// for delas Menu
+		delasLeximir = new AbstractAction("Edit Delas") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newChooseDelasDialog();
+			}
+		};
+		delasLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(delasLeximir));
+		// for delac Menu confDelaLeximir
+		delacLeximir = new AbstractAction("Edit Delac") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+				.newChooseDelacDialog();
+			}
+		};
+		delacLeximir.setEnabled(true);
+		delaMenu.add(new JMenuItem(delacLeximir));
+		
+		
+		//end 
+		
+		delaMenu.addSeparator();
 		inflect = new AbstractAction("Inflect...") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
