@@ -588,22 +588,17 @@ public class TextAutomatonFrame extends TfstFrame {
 		buildTokensButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("============================");
-				System.out.println("size:" + graphicalZone.getBoxes().size());
 				GenericGraphBox b = graphicalZone.getBoxes().get(0);
-				System.out.println("1: "+b.getContent());
 				int i = 2;
 				while(b.getType() != 1) {
 					if (b.getTransitions().size() == 1) {
 						b = b.getTransitions().get(0);
-						System.out.println(i+": "+b.getContent());
 						i++;
 					} else {
-						System.out.println("Ambi");
+						
 						return;
 					}
 				}
-				System.out.println("============================");
 			}
 		});
 		cornerPanel.add(buildTokensButton);

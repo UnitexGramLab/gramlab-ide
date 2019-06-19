@@ -192,13 +192,7 @@ Printable {
 						}
 
 						if(changeIsValid) {
-							System.out.println("b selectedBoxes0index size "+b.getBoxNumber()+" "+selectedBoxes.get(0).getBoxNumber()+" "+selectedBoxes.size());
-							if( !selectedBoxes.get(0).transitions.contains(b) && model.getBoxState(b) != TaggingState.SELECTED ) {
-								/*if( e.getButton() == MouseEvent.BUTTON1 )
-									model.updateBoundsDiffToken(selectedBoxes,b);
-								if( e.getButton() == MouseEvent.BUTTON3 )
-									model.updateBoundsSameToken(selectedBoxes,b);*/
-							}
+							
 							addTransitionsFromSelectedBoxes(b, true);
 							unSelectAllBoxes();
 						}
