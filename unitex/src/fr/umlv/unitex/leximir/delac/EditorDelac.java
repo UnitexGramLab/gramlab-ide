@@ -80,7 +80,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     /**
      * Creates new form EditorLadl
      *
-     * @param alldelac if alldelas is true, the program open all dictionaries in
+     * @param alldelac if alldelac is true, the program open all dictionaries in
      * delac folder,
      */
     public EditorDelac(boolean alldelac, File dic) {

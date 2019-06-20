@@ -870,7 +870,8 @@ public class UnitexFrame extends JFrame {
 				.newChooseDelacDialog();
 			}
 		};
-		delacLeximir.setEnabled(true);
+		/*The DELAC part is not finished*/
+		delacLeximir.setEnabled(false);
 		delaMenu.add(new JMenuItem(delacLeximir));
 		
 		
