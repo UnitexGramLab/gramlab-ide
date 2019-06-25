@@ -1066,23 +1066,23 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jTextFieldLemmaInvKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        	StringBuilder sb = new StringBuilder();
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
             TableRowSorter<DefaultTableModel> rowSorter;
             rowSorter = new TableRowSorter<>(tableModel);
             this.getjTable1().setRowSorter(rowSorter);
             this.getjTable1().removeAll();
-            sb.append(text);
-            sb.reverse();
-            text = sb.toString();
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
-                if (!text.contains(".") && !text.contains("$")) {
-                    text = text + "$";
+            	if (jCheckBoxExtract.isSelected()) {
+            		text = "^" + text + "$";
+            	}else { 
+            		if (!text.contains(".") && !text.contains("$")) {
+            			text = "^" + text;
+            		}
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
+                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 5);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
