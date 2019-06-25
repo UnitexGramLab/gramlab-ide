@@ -182,11 +182,10 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
                     allDFoler.mkdirs();
                     if (allDFoler.exists()) {
                         JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
-
+                        return;
                     }
 
-                    GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class
-                    )
+                    GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                             .newEditorDelacDialog(all, null);
                     this.setVisible(false);
                 } else {
@@ -196,9 +195,14 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
                 }
             }
         } else {
-            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class
-            )
-                    .newEditorDelacDialog(all, new File(jTextField1.getText()));
+        	File dic = new File(jTextField1.getText());
+        	/* This if checks if the user used the option of opening only one dictionary with "Browse" but didn't select any dictionary*/
+        	if(dic.toString().isEmpty()) {
+            	JOptionPane.showMessageDialog(null, "No dictionary selected");
+            	return;
+            }
+            GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+            	.newEditorDelacDialog(all, new File(jTextField1.getText()));
             this.setVisible(false);
         }
 

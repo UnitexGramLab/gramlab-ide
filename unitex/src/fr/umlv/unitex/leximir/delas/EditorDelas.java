@@ -73,6 +73,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private DefaultTableModel defaulttableModel;
     private boolean unsaved = false;
     private String workingDirectory;
+    private static String statisticDirectory = DictionaryPath.statisticsDelasPath;
+    
 
     /**
      * Creates new form EditorLadl
@@ -753,7 +755,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         }
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(dicPos);
+                .newStatisticOutput(dicPos, true);
 
     }
 
@@ -952,7 +954,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         }
 
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(statSimSem);
+                .newStatisticOutput(statSimSem, true);
 
     }
 
@@ -1064,12 +1066,16 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private void jTextFieldLemmaInvKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        	StringBuilder sb = new StringBuilder();
             JTextField textField = (JTextField) evt.getSource();
             String text = textField.getText();
             TableRowSorter<DefaultTableModel> rowSorter;
             rowSorter = new TableRowSorter<>(tableModel);
             this.getjTable1().setRowSorter(rowSorter);
             this.getjTable1().removeAll();
+            sb.append(text);
+            sb.reverse();
+            text = sb.toString();
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
@@ -1329,6 +1335,14 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      */
     public DefaultTableModel getDefaultTableModel() {
         return defaulttableModel;
+    }
+    
+    public static String getStatisticDirectory() {
+    	return statisticDirectory;
+    }
+    
+    public static void setStatisticDirectory(String folder) {
+    	statisticDirectory = folder;
     }
 
     public boolean getUnsaved() {

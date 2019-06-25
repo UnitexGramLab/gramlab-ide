@@ -73,6 +73,8 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
 
     private DefaultTableModel tableModel;
     private boolean unsaved = false;
+    
+    private static String statisticDirectory = DictionaryPath.statisticsDelacPath;
 
     public EditorDelac() {
     }
@@ -710,7 +712,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
 
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(dicPos);
+                .newStatisticOutput(dicPos, false);
     }
 
     private void jMenuDeleteMouseClicked(java.awt.event.MouseEvent evt) {
@@ -902,7 +904,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         }
 
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(statSimSem);
+                .newStatisticOutput(statSimSem, false);
 
     }
 
@@ -1239,6 +1241,15 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
         return tableModel;
     }
 
+    public static String getStatisticDirectory() {
+    	return statisticDirectory;
+    }
+    
+    public static void setStatisticDirectory(String folder) {
+    	statisticDirectory = folder;
+    }
+
+    
     public boolean getUnsaved() {
         return unsaved;
     }

@@ -135,7 +135,7 @@ public class Utils {
     public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         int i = 0;
-        sb.append("POS;SynSem;Count\n");
+        sb.append("POS;FST code;Count\n");
         Set<String> keysets = simSem.keySet();
         for (String key : keysets) {
             Object[] objArr = simSem.get(key);

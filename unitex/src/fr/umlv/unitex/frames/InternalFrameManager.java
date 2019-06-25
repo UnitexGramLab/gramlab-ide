@@ -250,8 +250,8 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public StatisticOutput newStatisticOutput(List<Object[]> dicPos) {
-        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos);
+    public StatisticOutput newStatisticOutput(List<Object[]> dicPos, boolean isDelas) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos, isDelas);
         if (d == null) {
             return null;
         }
@@ -259,8 +259,8 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem) {
-        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem);
+    public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem, boolean isDelas) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem, isDelas);
         if (d == null) {
             return null;
         }

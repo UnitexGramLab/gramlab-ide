@@ -29,6 +29,8 @@ import java.io.File;
  */
 public class DictionaryPath {
     public static ArrayList<String> dictionary= new ArrayList<>();
+    public static final String statisticsDelasPath = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"Dela"+File.separator+"Delas"+File.separator+"Statistics"+File.separator;
+    public static final String statisticsDelacPath = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"Dela"+File.separator+"Delac"+File.separator+"Statistics"+File.separator;   
     public static final String allDelafAbsPath = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"Dela"+File.separator;
     public static final String delafTmpPathDelac = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"text.txt";
     public static final String delafTmpAbsPathDelac = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator;

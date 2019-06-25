@@ -156,8 +156,8 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         boolean all = jRadioAllDelas.isSelected();
         updateLinks(all);
         if (all) {
-            File allDFoler = new File(DictionaryPath.allDelas);
-            if (allDFoler.exists()) {
+            File allDFolder = new File(DictionaryPath.allDelas);
+            if (allDFolder.exists()) {
 
                 FilenameFilter filter = new FilenameFilter() {
                     @Override
@@ -166,7 +166,7 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
                     }
                 };
 
-                if (allDFoler.list(filter).length == 0) {
+                if (allDFolder.list(filter).length == 0) {
                     JOptionPane.showMessageDialog(null, "No Delas was Found in : " + DictionaryPath.allDelas, "Information", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
@@ -177,8 +177,8 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
                 int reply = JOptionPane.showConfirmDialog(null, "No Delas folder found in Dela folder \nCreate Delas folder?", title,
                         JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
-                    allDFoler.mkdirs();
-                    if (allDFoler.exists()) {
+                    allDFolder.mkdirs();
+                    if (allDFolder.exists()) {
                         JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
                     }
 
