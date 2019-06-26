@@ -185,8 +185,9 @@ public class TaggingModel {
 		//System.out.println("size"+tokens.size());
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
-			if (boxes[i].type == GenericGraphBox.INITIAL)
+			if (boxes[i].type == GenericGraphBox.INITIAL) {
 				initialState = i;
+			}
 			else if (boxes[i].type == GenericGraphBox.FINAL)
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
@@ -314,7 +315,9 @@ public class TaggingModel {
 		
 		for (ArrayList<Integer> arrayList : allPaths) {
 			for (int i = 0; i < arrayList.size(); i++) {
-				setBoxStateInternal(sortedNodes[arrayList.get(i)], TaggingState.TO_CHECK);
+				if(taggingStates[sortedNodes[arrayList.get(i)]] != TaggingState.NEUTRAL
+						&& taggingStates[sortedNodes[arrayList.get(i)]] != TaggingState.SELECTED)
+					setBoxStateInternal(sortedNodes[arrayList.get(i)], TaggingState.TO_CHECK);
 			}
 			
 		}
@@ -381,6 +384,18 @@ public class TaggingModel {
 		lstContext.clear();
 		for (String arrayList : lstPath) 
 			lstContext.add(new Context(arrayList));
+		
+		for (Context c : lstContext) {
+			for (int i = 0; i < c.path.size(); i++) {
+				if(getTextBoxe(boxes[sortedNodes[c.path.get(i)]]).equals("<E>")
+						&& (boxes[sortedNodes[c.path.get(i)]]).type != GenericGraphBox.INITIAL
+					&& (boxes[sortedNodes[c.path.get(i)]]).type != GenericGraphBox.FINAL) {
+					if(c.currentBox > i)
+						c.currentBox--;
+					c.path.remove(i);
+				}
+			}
+		}
 	}
 	
 	/** This function checks if the new branch can be add to the automaton or not
@@ -389,21 +404,38 @@ public class TaggingModel {
 	void checkNewBranch( int i ){
 		int prev = getPreviousFactorizationNodeIndex(i);
 		int next = getNextFactorizationNodeIndex(i);
-		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();
+		ArrayList<ArrayList<Integer>> allPaths = new ArrayList<>();		
 		
 		computeAllPaths( renumber[prev], renumber[next], allPaths );
 		clearList();
 		findString(boxes[sortedNodes[renumber[prev]]], boxes[sortedNodes[renumber[next]]], new StringBuilder(), boxes[sortedNodes[renumber[prev]]], new StringBuilder());
 		createLstContext();
+		
+		int cpt = 0;
+		for (Context c : lstContext) {
+			cpt++;
+			c.display();
+		}
+		
+		if(cpt == 0) {
+			JOptionPane.showMessageDialog(null,
+					"Correct Matching",
+					"Branch is acceptable",
+					JOptionPane.PLAIN_MESSAGE);
+			return;
+		}
+		
 		TaggingState[] taggingStatesTmp = new TaggingState[taggingStates.length];
 		copyStates(taggingStates, taggingStatesTmp);
 		
-		boolean b = verifyPath(allPaths, sortedNodes[renumber[prev]], sortedNodes[renumber[next]]);
+		
+		boolean b = verifyAllPath(allPaths, sortedNodes[renumber[prev]], sortedNodes[renumber[next]]);
 		int n = zone.graphBoxes.size();
 		for (int i1 = 0; i1 < n; i1++) {
 			boxes[i1] = (TfstGraphBox) zone.graphBoxes.get(i1);
-			if (boxes[i1].type == GenericGraphBox.INITIAL)
+			if (boxes[i1].type == GenericGraphBox.INITIAL) {
 				initialState = i1;
+			}
 			else if (boxes[i1].type == GenericGraphBox.FINAL)
 				finalState = i1;
 			taggingStates[i1] = TaggingState.NEUTRAL;
@@ -426,7 +458,7 @@ public class TaggingModel {
 	}
 
 
-	private boolean verifyPath(ArrayList<ArrayList<Integer>> allPaths, int bfp, int bfs) {
+	private boolean verifyAllPath(ArrayList<ArrayList<Integer>> allPaths, int bfp, int bfs) {
 		int newBegin;
 		
 		for (ArrayList<Integer> lst : allPaths) {
@@ -434,75 +466,110 @@ public class TaggingModel {
 			ArrayList<Context> copyContext = (ArrayList<Context>) lstContext.clone();
 			
 			for (int i = 0; i < lst.size(); i++) {
-				for (Context context : copyContext) {
-					if(context.currentBox >= context.path.size()) {
-						JOptionPane.showMessageDialog(null,
-								"Too much box or not enough",
-								"Matching Error",
-								JOptionPane.PLAIN_MESSAGE);
-						return false;
-					}
-				}
-				
-				if(boxes[bfp].type == GenericGraphBox.INITIAL && i == 0)
-					newBegin = 0;				
-				else if(i == 0) 
-					newBegin = findNextTokenNumber(boxes[bfp]);
-				else 
-					newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getEnd_in_tokens() + findNewBegin(lstContext);
-				
-				if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK)
-					boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
-				if(boxes[sortedNodes[lst.get(i)]].getBounds().getStart_in_letters() == 1 
-						|| boxes[sortedNodes[lst.get(i)]].getBounds().getEnd_in_letters() == 1 ) {
-					if(!verifyBoxKorean(boxes[sortedNodes[lst.get(i)]], copyContext)) {
-						JOptionPane.showMessageDialog(null,
-								getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
-								"Matching Error",
-								JOptionPane.PLAIN_MESSAGE);
-						return false;
+				if(getTextBoxe(boxes[sortedNodes[lst.get(i)]]).equals("<E>")) {
+					newBegin = findPreviousTokenStart(boxes[sortedNodes[lst.get(i)]]);
+					boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_chars(2);
+					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK) {
+						boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
 					}
 				}
 				else {
-					
-					if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
-						JOptionPane.showMessageDialog(null,
-								getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
-								"Matching Error",
-								JOptionPane.PLAIN_MESSAGE);
-						return false;
+					for (Context context : copyContext) {
+						if(context.currentBox >= context.path.size()) {
+							JOptionPane.showMessageDialog(null,
+									"Too much box or not enough",
+									"Matching Error",
+									JOptionPane.PLAIN_MESSAGE);
+							return false;
+						}
 					}
-				}
-				
-				if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK) {
-					boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
+					if(boxes[bfp].type == GenericGraphBox.INITIAL && i == 0) {
+						newBegin = 0;				
+					}
+					else if(i == 0) {
+						newBegin = findNextTokenNumber(boxes[bfp]);
+					}
+					else	
+						newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getEnd_in_tokens() + findNewBegin(lstContext);
 					
+					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK)
+						boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
+					if(boxes[sortedNodes[lst.get(i)]].getBounds().getStart_in_letters() == 1 
+							|| boxes[sortedNodes[lst.get(i)]].getBounds().getEnd_in_letters() == 1 ) {
+						if(!verifyBoxKorean(boxes[sortedNodes[lst.get(i)]], copyContext)) {
+							JOptionPane.showMessageDialog(null,
+									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
+									"Matching Error",
+									JOptionPane.PLAIN_MESSAGE);
+							return false;
+						}
+					}
+					else {
+						
+						if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
+							JOptionPane.showMessageDialog(null,
+									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
+									"Matching Error",
+									JOptionPane.PLAIN_MESSAGE);
+							return false;
+						}
+					}
+					
+					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK) {
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
+						
+					}
 				}
 			}
 			
+			
 			for (Context context : copyContext) {
-				if(context.currentBox >= context.path.size() || !boxes[sortedNodes[context.path.get(context.currentBox)]].equals(boxes[bfs])) {
+				if(context.currentBox < context.path.size() && boxes[sortedNodes[context.path.get(context.currentBox)]].equals(boxes[bfs])) {
 					JOptionPane.showMessageDialog(null,
-							"Too much box or not enough",
-							"Matching Error",
+							"Correct Matching",
+							"Branch is acceptable",
 							JOptionPane.PLAIN_MESSAGE);
-					return false;
+					return true;
 				}
 			}
 		}
-		
 		JOptionPane.showMessageDialog(null,
-				"Correct Matching",
-				"Branch is acceptable",
+				"Too muching box or not enough",
+				"Matching Error",
 				JOptionPane.PLAIN_MESSAGE);
-		return true;
+		return false;
+		
 	}
 	
 
 	
+	private int findPreviousTokenStart(TfstGraphBox box) {
+		String txt = getTextBoxe(box);
+		if(txt.equals("<E>")) {
+			if(findPreviousBox(box).getBounds() != null) {
+				return findPreviousBox(box).getBounds().getStart_in_tokens();
+			}
+		}
+		return 0;
+	}
+
+
 	private boolean verifyBoxKorean(GenericGraphBox box, ArrayList<Context> copyContext) {
 		// TODO
 		return false;
+	}
+	
+	private TfstGraphBox findPreviousBox(GenericGraphBox current) {
+		for (int i = 0; i < boxes.length; i++) {
+			for (GenericGraphBox next : boxes[i].transitions) {
+				if(next.equals(current)) {
+					return boxes[i];
+				}
+			}
+		}
+		
+		return null;
 	}
 
 
@@ -522,12 +589,17 @@ public class TaggingModel {
 	 * 			
 	 */	
 	private int findLastToken(GenericGraphBox current, ArrayList<Context> lstContext) {
+		String txt = getTextBoxe(current);
+		if(txt.equals("<E>")) {
+			if(findPreviousBox(current).getBounds() != null)
+				return findPreviousBox(current).getBounds().getEnd_in_tokens();
+		}
+		
 		for (Context context : lstContext) {
 			if(context.pos == 0 && context.currentBox > 1)
 				return boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds().getEnd_in_tokens();
 		}
 		
-		String txt = getTextBoxe(current);
 		int size = txt.length();
 		int last = 0;
 		for(int i = 0; i < size; i++) {
@@ -598,16 +670,17 @@ public class TaggingModel {
 		ArrayList<Context> ctxtRemove = new ArrayList<>();
 		
 		if(txt.equals("<E>"))
-			//TODO
 			return true;
 		
 		for (Context context : copyContext) {
+			
 			if(context.currentBox >= context.path.size()) {
 				ctxtRemove.add(context);
 				continue;
 			}
 			int numBox = context.path.get(context.currentBox);
 			String txtBis = getTextBoxe(boxes[sortedNodes[numBox]]);
+				
 			for(int i = 0; i < size; i++) {
 				if(context.currentBox >= context.path.size()) {
 					ctxtRemove.add(context);
@@ -615,6 +688,7 @@ public class TaggingModel {
 				}
 				numBox = context.path.get(context.currentBox);
 				txtBis = getTextBoxe(boxes[sortedNodes[numBox]]);
+
 				if(context.space == true && i != 0) {
 					if(txt.charAt(i) != ' ') 
 						ctxtRemove.add(context);
@@ -644,6 +718,9 @@ public class TaggingModel {
 				context.pos++;
 			}
 		}
+		
+		if(taggingStates[box.getBoxNumber()] != TaggingState.TO_CHECK)
+			return true;
 		
 		for (Context context : ctxtRemove)
 			copyContext.remove(context);
@@ -701,7 +778,7 @@ public class TaggingModel {
 			int num_next_box = b.transitions.get(i).getBoxNumber();
 			int start = sb.length();
 			int startPath = path.length();
-			if(taggingStates[num_next_box] != TaggingState.USELESS
+			if(taggingStates[num_next_box] != TaggingState.TO_CHECK
 					|| boxes[num_next_box].equals(end)) {
 				if(boxes[num_box].type != GenericGraphBox.INITIAL 
 						&& boxes[num_next_box].type != GenericGraphBox.FINAL
@@ -911,15 +988,18 @@ public class TaggingModel {
 		 * 
 		 */
 		markUselessStates();
+		
 		/* Then we look for factorization nodes */
 		/* There should be the real calculus here */ 
 		computeFactorizationNodes();
 		/* And finally, we can mark as selected all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
 			if (factorization[i] || taggingStates[i] == TaggingState.SELECTED) {
-				selectBox(boxes[i]);
+				selectBox(i);
 			}
-}
+		}
+		markUselessStates();
+
 	}
 	
 	/**
@@ -934,7 +1014,7 @@ public class TaggingModel {
 			 * ones aren't.
 			 */
 			for (int i = 0; i < factorization.length; i++) {
-				if (boxes[i].type != GenericGraphBox.NORMAL) {
+				if (boxes[i].type != GenericGraphBox.NORMAL && taggingStates[i] != TaggingState.USELESS) {
 					factorization[i] = true;
 				} else {
 					factorization[i] = false;
@@ -947,7 +1027,10 @@ public class TaggingModel {
 		 * nodes
 		 */
 		for (int i = 0; i < factorization.length; i++) {
-			factorization[i] = true;
+			if(taggingStates[i] != TaggingState.USELESS)
+				factorization[i] = true;
+			else
+				factorization[i] = false;
 		}
 		/*
 		 * We have to test if there is a transition from i to j, but with i and
@@ -1040,18 +1123,7 @@ public class TaggingModel {
 					 * 
 					 */
 					
-				for(int i1=0;i1<factorization.length;i1++)
-						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-					System.out.println();
 					computeFactorizationNodes();
-
-					for(int i1=0;i1<factorization.length;i1++)
-						System.out.print(i1+":"+renumber[i1]+":"+factorization[i1]+"\t");
-					System.out.println();					
-					computeFactorizationNodes();
-					System.out.println("USELESS CASE NODES COMPUTING FIRST");
-					/* this is the key location of verification */
-					System.out.println(i+" switched from USELESS to ANYTHING ELSE");
 					/* this is the key location of verification */
 					checkNewBranch(i);
 				}

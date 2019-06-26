@@ -342,6 +342,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
 			if (g.type == 2) {
+				System.out.println("HERRRE");
 				graphBoxes.remove(g);
 			}
 			removeTransitionsToSelected();

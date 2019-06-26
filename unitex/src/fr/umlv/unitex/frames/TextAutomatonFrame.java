@@ -694,7 +694,6 @@ public class TextAutomatonFrame extends TfstFrame {
 			checkContent(nextBox, 0, firstBox.getBounds());
 		}
 		System.out.println("End");*/
-		System.out.println("size of boxes : "+ graphicalZone.getBoxes().size());
 		for (int i = 0; i < graphicalZone.getBoxes().size(); i++) {
 			TfstGraphBox b = (TfstGraphBox) graphicalZone.getBoxes().get(i);
 			// if the box is not final then it should have at least one transition
@@ -712,16 +711,13 @@ public class TextAutomatonFrame extends TfstFrame {
 				for (int j = 0; j < b.getTransitions().size(); j++) {
 					TfstGraphBox nextBox = (TfstGraphBox) b.getTransitions().get(j);
 					if (b.getBounds() == null) {
-						System.out.println(b.getBoxNumber()+" had bounds null");
 						// start & end
 						// if initial
 						if (b.getType() == 0 && (nextBox.getBounds() == null || nextBox.getBounds().getStart_in_tokens() != 0)) {
-							System.out.println(b.getBoxNumber()+" cas initial");
 							errorCount++;
 							checkList.add("Error: the first box has incorrect outgoing transition(s)");
 							// if final
 						} else if (b.getType() == 1) {
-							System.out.println(b.getBoxNumber()+" cas final");
 							errorCount++;
 							checkList.add("Error: the last box must not have outgoing transition(s)");
 							// if normal
@@ -743,7 +739,6 @@ public class TextAutomatonFrame extends TfstFrame {
 				}
 			}
 		}
-		System.out.println("erroroCount : "+errorCount);
 		return errorCount;
 	}
 
