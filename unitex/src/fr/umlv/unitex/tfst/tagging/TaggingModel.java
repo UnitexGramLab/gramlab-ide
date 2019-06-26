@@ -94,8 +94,6 @@ public class TaggingModel {
 	
 	ArrayList<Context> lstContext = new ArrayList<>();
 	
-	GenericGraphBox lastTransitionPrevious;
-	GenericGraphBox lastTransitionNext;
 	
 	/*The 2 next fields are used to keep all sentences in the automaton and their path
 	 * The first element of lstTok is the first sentence possible in the automaton 
@@ -418,8 +416,9 @@ public class TaggingModel {
 		}
 		
 		if(cpt == 0) {
+			// There is no path in the automaton, so we create the first with any path
 			JOptionPane.showMessageDialog(null,
-					"Correct Matching",
+					"First Matching",
 					"Branch is acceptable",
 					JOptionPane.PLAIN_MESSAGE);
 			return;
@@ -535,14 +534,13 @@ public class TaggingModel {
 			}
 		}
 		JOptionPane.showMessageDialog(null,
-				"Too muching box or not enough",
+				"Too much box or not enough",
 				"Matching Error",
 				JOptionPane.PLAIN_MESSAGE);
 		return false;
 		
 	}
 	
-
 	
 	private int findPreviousTokenStart(TfstGraphBox box) {
 		String txt = getTextBoxe(box);
@@ -1190,7 +1188,9 @@ public class TaggingModel {
 			return boxIndex;
 		do {
 			pos++;
-		} while (!factorization[sortedNodes[pos]]);
+		} while (pos < factorization.length && !factorization[sortedNodes[pos]]);
+		if(pos == factorization.length)
+			return sortedNodes[1];
 		return sortedNodes[pos];
 	}
 
