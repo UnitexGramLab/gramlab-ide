@@ -271,6 +271,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 	}
 
+
 	protected void removeBox(GenericGraphBox box) {
 		graphBoxes.remove(box);
 		for (final GenericGraphBox b : graphBoxes) {
@@ -279,9 +280,11 @@ public abstract class GenericGraphicalZone extends JComponent {
 	}
 
 	public void removeBoxes(ArrayList<GenericGraphBox> boxes) {
+		final AbstractUndoableEdit edit = new DeleteBoxGroupEdit(boxes, graphBoxes, this);
 		for (final GenericGraphBox b : boxes) {
 			removeBox(b);
 		}
+	    postEdit(edit);
 		fireGraphChanged(true);
 		repaint();
 	}
@@ -342,7 +345,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
 			if (g.type == 2) {
-				System.out.println("HERRRE");
 				graphBoxes.remove(g);
 			}
 			removeTransitionsToSelected();

@@ -237,6 +237,10 @@ public class GenericGraphBox {
 		hasIncomingTransitions = 0;
 		identificationNumber = -1;
 	}
+	
+	
+	
+	
 
 	public int getBoxNumber() {
 		return parentGraphicalZone.graphBoxes.indexOf(this);

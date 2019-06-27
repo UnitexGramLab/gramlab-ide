@@ -77,6 +77,7 @@ public class TaggingModel {
 		
 		
 	}
+	
 	TfstGraphicalZone zone;
 
 	/*
@@ -412,11 +413,10 @@ public class TaggingModel {
 		int cpt = 0;
 		for (Context c : lstContext) {
 			cpt++;
-			c.display();
 		}
 		
 		if(cpt == 0) {
-			// There is no path in the automaton, so we create the first with any path
+			// There is no path in the automaton, so we create the first with any text
 			JOptionPane.showMessageDialog(null,
 					"First Matching",
 					"Branch is acceptable",

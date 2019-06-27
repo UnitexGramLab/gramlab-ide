@@ -70,7 +70,7 @@ public class RemoveBoxEdit extends AbstractUndoableEdit {
 		transitionsToBoxe = zone.getTransitionTo(boxe);
 		itSelfTransition = boxe.hasTransitionToItself();
 	}
-
+	
 	@Override
 	public void undo() {
 		super.undo();
