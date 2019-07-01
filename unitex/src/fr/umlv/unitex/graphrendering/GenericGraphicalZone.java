@@ -177,7 +177,22 @@ public abstract class GenericGraphicalZone extends JComponent {
 			final UndoableEdit edit = new AddBoxEdit(g, graphBoxes, this);
 			postEdit(edit);
 		}
-		graphBoxes.add(g);
+		final Object[] options_on_exit = { "Yes", "No" };
+		int n = JOptionPane
+				.showOptionDialog(
+						null,
+						"Create box will unselect \"selected\" boxes, do you want to continue ?",
+						"", JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null,
+						options_on_exit, options_on_exit[0]);
+		
+		if (n == JOptionPane.CLOSED_OPTION)
+			return;
+		
+		if (n == 0) {
+			graphBoxes.add(g);
+		}
+		
 	}
 
 	protected abstract GenericGraphBox createBox(int x, int y);
@@ -339,6 +354,18 @@ public abstract class GenericGraphicalZone extends JComponent {
 		if (selectedBoxes.isEmpty())
 			return;
 		L = selectedBoxes.size();
+		final Object[] options_on_exit = { "Yes", "No" };
+		int n = JOptionPane
+				.showOptionDialog(
+						null,
+						"Removing box will unselect \"selected\" boxes, do you want to continue ?",
+						"", JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null,
+						options_on_exit, options_on_exit[0]);
+		
+		if (n == JOptionPane.CLOSED_OPTION || n != 0)
+			return;
+		
 		final UndoableEdit edit = new DeleteBoxGroupEdit(selectedBoxes,
 				graphBoxes, this);
 		postEdit(edit);

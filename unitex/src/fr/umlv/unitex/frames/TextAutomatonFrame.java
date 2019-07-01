@@ -161,7 +161,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	private JButton redoButton;
 	private UndoManager manager = new UndoManager();
 
-	TextAutomatonFrame() {
+	TextAutomatonFrame() {		
 		super("FST-Text", true, true, true, true);
 		DropTargetManager.getDropTarget().newDropTarget(this);
 		setContentPane(constructPanel());
@@ -570,6 +570,7 @@ public class TextAutomatonFrame extends TfstFrame {
 				if (f2.exists())
 					f2.delete();
 				loadSentence(n);
+				graphicalZone.clearStateSelection(n);
 			}
 		};
 		revertSentenceGraph = new JButton(revertSentenceAction);
