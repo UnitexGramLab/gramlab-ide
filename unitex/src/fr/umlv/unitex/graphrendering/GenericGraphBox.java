@@ -35,6 +35,7 @@ import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
 import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.frames.GraphFrame;
+import fr.umlv.unitex.tfst.tagging.TaggingState;
 
 /**
  * This class describes a box of a graph or a sentence graph.
@@ -174,6 +175,9 @@ public class GenericGraphBox {
 	/**
 	 * <code>GenericGraphicalZone</code> object that contains the box
 	 */
+	
+	public TaggingState state;
+	
 	GenericGraphicalZone parentGraphicalZone;
 	public ArrayList<GenericGraphBox> transitions;
 	public static final Font variableFont = new Font("Times New Roman",

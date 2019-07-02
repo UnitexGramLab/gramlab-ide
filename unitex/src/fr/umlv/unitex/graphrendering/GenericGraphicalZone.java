@@ -26,10 +26,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JViewport;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.AbstractUndoableEdit;
 import javax.swing.undo.UndoableEdit;
@@ -39,7 +41,11 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
-import fr.umlv.unitex.exceptions.*;
+import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
+import fr.umlv.unitex.exceptions.MissingGraphNameException;
+import fr.umlv.unitex.exceptions.NoClosingQuoteException;
+import fr.umlv.unitex.exceptions.NoClosingRoundBracketException;
+import fr.umlv.unitex.exceptions.NoClosingSupException;
 import fr.umlv.unitex.grf.GraphMetaData;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
@@ -47,7 +53,16 @@ import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
 import fr.umlv.unitex.listeners.GraphTextListener;
 import fr.umlv.unitex.tfst.tagging.TaggingModel;
-import fr.umlv.unitex.undo.*;
+import fr.umlv.unitex.tfst.tagging.TaggingState;
+import fr.umlv.unitex.undo.AddBoxEdit;
+import fr.umlv.unitex.undo.BoxGroupTextEdit;
+import fr.umlv.unitex.undo.BoxTextEdit;
+import fr.umlv.unitex.undo.DeleteBoxGroupEdit;
+import fr.umlv.unitex.undo.RemoveBoxEdit;
+import fr.umlv.unitex.undo.SelectEdit;
+import fr.umlv.unitex.undo.TransitionEdit;
+import fr.umlv.unitex.undo.TransitionGroupEdit;
+import fr.umlv.unitex.undo.TranslationEdit;
 
 /**
  * This class describes a component on which a graph can be drawn.
@@ -178,20 +193,21 @@ public abstract class GenericGraphicalZone extends JComponent {
 			postEdit(edit);
 		}
 		final Object[] options_on_exit = { "Yes", "No" };
-		int n = JOptionPane
-				.showOptionDialog(
-						null,
-						"Create box will unselect \"selected\" boxes, do you want to continue ?",
-						"", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null,
-						options_on_exit, options_on_exit[0]);
-		
-		if (n == JOptionPane.CLOSED_OPTION)
-			return;
-		
-		if (n == 0) {
-			graphBoxes.add(g);
+		if(containsToBeRemoved(graphBoxes)) {
+			int n = JOptionPane
+					.showOptionDialog(
+							null,
+							"Create box will unselect \"selected\" boxes, do you want to continue ?",
+							"", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null,
+							options_on_exit, options_on_exit[0]);
+			
+			if (n == JOptionPane.CLOSED_OPTION || n != 0)
+				return;
 		}
+		
+		graphBoxes.add(g);
+		
 		
 	}
 
@@ -355,16 +371,18 @@ public abstract class GenericGraphicalZone extends JComponent {
 			return;
 		L = selectedBoxes.size();
 		final Object[] options_on_exit = { "Yes", "No" };
-		int n = JOptionPane
-				.showOptionDialog(
-						null,
-						"Removing box will unselect \"selected\" boxes, do you want to continue ?",
-						"", JOptionPane.YES_NO_CANCEL_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null,
-						options_on_exit, options_on_exit[0]);
-		
-		if (n == JOptionPane.CLOSED_OPTION || n != 0)
-			return;
+		if(containsToBeRemoved(graphBoxes)) {
+			int n = JOptionPane
+					.showOptionDialog(
+							null,
+							"Removing box will unselect \"selected\" boxes, do you want to continue ?",
+							"", JOptionPane.YES_NO_CANCEL_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null,
+							options_on_exit, options_on_exit[0]);
+			
+			if (n == JOptionPane.CLOSED_OPTION || n != 0)
+				return;
+		}
 		
 		final UndoableEdit edit = new DeleteBoxGroupEdit(selectedBoxes,
 				graphBoxes, this);
@@ -378,6 +396,14 @@ public abstract class GenericGraphicalZone extends JComponent {
 		}
 		unSelectAllBoxes();
 		repaint();
+	}
+
+	private boolean containsToBeRemoved(ArrayList<GenericGraphBox> graphBoxes2) {
+		for (GenericGraphBox genericGraphBox : graphBoxes2) {
+			if(genericGraphBox.state == TaggingState.TO_BE_REMOVED)
+				return true;
+		}
+		return false;
 	}
 
 	/**

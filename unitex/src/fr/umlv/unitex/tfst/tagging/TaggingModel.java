@@ -21,13 +21,13 @@
 package fr.umlv.unitex.tfst.tagging;
 
 import java.awt.event.ActionEvent;
-
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -40,7 +40,6 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphBox;
 import fr.umlv.unitex.graphrendering.TfstGraphicalZone;
 import fr.umlv.unitex.listeners.GraphListener;
-import fr.umlv.unitex.tfst.Bounds;
 
 /**
  * This class is used to know whether a sentence automaton box has been
@@ -70,12 +69,7 @@ public class TaggingModel {
 			System.out.println("\n\n\nDISPLAYING\n\n");
 			System.out.println("path : " + path + "\npos : " + pos + "\ncurrentBox : " + currentBox
 					+ "\nnum box : " + path.get(currentBox) + "\ntexte : " + getTextBoxe(boxes[sortedNodes[path.get(currentBox)]]));
-			
 		}
-		
-		
-		
-		
 	}
 	
 	TfstGraphicalZone zone;
@@ -248,12 +242,13 @@ public class TaggingModel {
 			else {
 				temp = gb.getContent();
 			}
-			Pattern pattern = Pattern.compile(regex);
+			/* ERROR WITH KOREAN MODE
+			 * Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(temp);
 			
 			while( matcher.find() ) {
 				tokensList.add(matcher.group());
-			}
+			}*/
 			
                         if( gb.getBounds().getEnd_in_tokens()
 			== gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
@@ -494,11 +489,11 @@ public class TaggingModel {
 					
 					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK)
 						boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
-					if(boxes[sortedNodes[lst.get(i)]].getBounds().getStart_in_letters() == 1 
-							|| boxes[sortedNodes[lst.get(i)]].getBounds().getEnd_in_letters() == 1 ) {
+					if(boxes[sortedNodes[lst.get(i)]].getBounds().getStart_in_letters() > 0 
+							|| boxes[sortedNodes[lst.get(i)]].getBounds().getEnd_in_letters() > 0 ) {
 						if(!verifyBoxKorean(boxes[sortedNodes[lst.get(i)]], copyContext)) {
 							JOptionPane.showMessageDialog(null,
-									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
+									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + "coréen isn't correct",
 									"Matching Error",
 									JOptionPane.PLAIN_MESSAGE);
 							return false;
@@ -508,7 +503,7 @@ public class TaggingModel {
 						
 						if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
 							JOptionPane.showMessageDialog(null,
-									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
+									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + "not coréen isn't correct",
 									"Matching Error",
 									JOptionPane.PLAIN_MESSAGE);
 							return false;
@@ -555,6 +550,9 @@ public class TaggingModel {
 
 	private boolean verifyBoxKorean(GenericGraphBox box, ArrayList<Context> copyContext) {
 		// TODO
+		String s = getTextBoxe(box);
+		String s2 = Normalizer.normalize("\uD4DB", Normalizer.Form.NFD);
+		System.out.println("hangul" + s + " jamo -> " + s2);
 		return false;
 	}
 	
@@ -1406,6 +1404,7 @@ public class TaggingModel {
 		if (boxIndex == initialState || boxIndex == finalState)
 			return;
 		taggingStates[boxIndex] = state;
+		boxes[boxIndex].state = state;
 	}
 
 	int getBoxIndex(TfstGraphBox b) {
