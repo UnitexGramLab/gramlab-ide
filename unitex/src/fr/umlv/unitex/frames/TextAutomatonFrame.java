@@ -633,7 +633,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			}
 		});
 		cornerPanel.add(elagButton);
-		final JButton deleteStates = new JButton("Remove greyed states");
+		final JButton deleteStates = new JButton("Remove greyed boxes");
 		deleteStates.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
