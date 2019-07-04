@@ -219,6 +219,7 @@ public class GraphBox extends GenericGraphBox {
 	public void setContent(String s) {
 		if (type == GenericGraphBox.FINAL)
 			return; // nothing to do if we consider the final state
+		
 		content = s;
 		if (s.equals("")) {
 			throw new IllegalStateException(

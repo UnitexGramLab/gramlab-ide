@@ -30,8 +30,6 @@ import java.io.InputStreamReader;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -162,12 +160,14 @@ public class TaggingModel {
 			}
 		}
 	}
-
+	
+	
 	/** @Yass
 	 * This method must be called when a new sentence automaton has been loaded.
 	 * This method resets the various arrays used in this class by applying all the graphBoxes, including new ones, in them.
 	 */
 	public void resetModel() {
+		StringBuilder s = new StringBuilder();
 		final int n = zone.graphBoxes.size();
 		boxes = new TfstGraphBox[n];
 		taggingStates = new TaggingState[n];
@@ -184,6 +184,7 @@ public class TaggingModel {
 			else if (boxes[i].type == GenericGraphBox.FINAL)
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
+			boxes[i].state = TaggingState.NEUTRAL;
 		}
 		updateFactorizationNodes();
 		generateAlphabet();
@@ -433,6 +434,7 @@ public class TaggingModel {
 			else if (boxes[i1].type == GenericGraphBox.FINAL)
 				finalState = i1;
 			taggingStates[i1] = TaggingState.NEUTRAL;
+			boxes[i].state = TaggingState.NEUTRAL;
 		}
 		
 		updateFactorizationNodes();
@@ -484,35 +486,39 @@ public class TaggingModel {
 					else if(i == 0) {
 						newBegin = findNextTokenNumber(boxes[bfp]);
 					}
-					else	
-						newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getEnd_in_tokens() + findNewBegin(lstContext);
-					
+					else {
+						int tmp = findNewBegin(lstContext);
+						if(tmp != -1)
+							newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getEnd_in_tokens() + tmp;
+						else
+							newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getStart_in_tokens();
+					}
 					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK)
 						boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
-					if(boxes[sortedNodes[lst.get(i)]].getBounds().getStart_in_letters() > 0 
-							|| boxes[sortedNodes[lst.get(i)]].getBounds().getEnd_in_letters() > 0 ) {
-						if(!verifyBoxKorean(boxes[sortedNodes[lst.get(i)]], copyContext)) {
-							JOptionPane.showMessageDialog(null,
-									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + "coréen isn't correct",
-									"Matching Error",
-									JOptionPane.PLAIN_MESSAGE);
-							return false;
-						}
-					}
-					else {
+					
 						
-						if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
-							JOptionPane.showMessageDialog(null,
-									getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + "not coréen isn't correct",
-									"Matching Error",
-									JOptionPane.PLAIN_MESSAGE);
-							return false;
-						}
+					if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
+						JOptionPane.showMessageDialog(null,
+								getTextBoxe(boxes[sortedNodes[lst.get(i)]]) + " isn't correct",
+								"Matching Error",
+								JOptionPane.PLAIN_MESSAGE);
+						return false;
 					}
+					
 					
 					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK) {
 						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
 						
+					}
+					
+					if(true) {
+						//TODO
+						String s = Normalizer.normalize(getTextBoxe(boxes[sortedNodes[lst.get(i)]]), Normalizer.Form.NFKD);
+						StringBuilder sb = new StringBuilder();
+						System.out.println("s : " + s + " " + s.length());
+						sb.append(s.charAt(s.length()-1));
+						System.out.println("sb : " + sb);
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_letters(Normalizer.normalize(sb, Normalizer.Form.NFD).length()-1);
 					}
 				}
 			}
@@ -545,15 +551,6 @@ public class TaggingModel {
 			}
 		}
 		return 0;
-	}
-
-
-	private boolean verifyBoxKorean(GenericGraphBox box, ArrayList<Context> copyContext) {
-		// TODO
-		String s = getTextBoxe(box);
-		String s2 = Normalizer.normalize("\uD4DB", Normalizer.Form.NFD);
-		System.out.println("hangul" + s + " jamo -> " + s2);
-		return false;
 	}
 	
 	private TfstGraphBox findPreviousBox(GenericGraphBox current) {
@@ -661,7 +658,7 @@ public class TaggingModel {
 
 	
 	private boolean verifyBox(GenericGraphBox box, ArrayList<Context> copyContext) {
-		String txt = getTextBoxe(box);
+		String txt = Normalizer.normalize(getTextBoxe(box), Normalizer.Form.NFD);
 		int size = txt.length();
 		ArrayList<Context> ctxtRemove = new ArrayList<>();
 		
@@ -675,7 +672,7 @@ public class TaggingModel {
 				continue;
 			}
 			int numBox = context.path.get(context.currentBox);
-			String txtBis = getTextBoxe(boxes[sortedNodes[numBox]]);
+			String txtBis = Normalizer.normalize(getTextBoxe(boxes[sortedNodes[numBox]]), Normalizer.Form.NFD);
 				
 			for(int i = 0; i < size; i++) {
 				if(context.currentBox >= context.path.size()) {
@@ -683,7 +680,7 @@ public class TaggingModel {
 					break;
 				}
 				numBox = context.path.get(context.currentBox);
-				txtBis = getTextBoxe(boxes[sortedNodes[numBox]]);
+				txtBis =  Normalizer.normalize(getTextBoxe(boxes[sortedNodes[numBox]]), Normalizer.Form.NFD);
 
 				if(context.space == true && i != 0) {
 					if(txt.charAt(i) != ' ') 

@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.text.Normalizer;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -178,7 +179,10 @@ public class TfstGraphBox extends GenericGraphBox {
 	public void setContent(String s) {
 		if (type == FINAL)
 			return; // nothing to do if we consider the final state
-		content = s;
+		if(s.equals("<E>"))
+			content = s;
+		else // only if the language is Korean ? 
+			content = Normalizer.normalize(s, Normalizer.Form.NFKD);
 		String tmp = "";
 		n_lines = 0;
 		tmp = s;
