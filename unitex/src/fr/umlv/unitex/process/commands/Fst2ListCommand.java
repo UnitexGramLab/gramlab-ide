@@ -46,6 +46,11 @@ public class Fst2ListCommand extends CommandBuilder {
 		return this;
 	}
 
+	public Fst2ListCommand korean() {
+		element("-K");
+		return this;
+	}
+
 	public Fst2ListCommand noLoopCheck() {
 		element("-d");
 		return this;
