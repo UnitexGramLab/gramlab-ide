@@ -480,10 +480,7 @@ public class TaggingModel {
 							return false;
 						}
 					}
-					if(boxes[bfp].type == GenericGraphBox.INITIAL && i == 0) {
-						newBegin = 0;				
-					}
-					else if(i == 0) {
+					if(i == 0) {
 						newBegin = findNextTokenNumber(boxes[bfp]);
 					}
 					else {
@@ -510,15 +507,23 @@ public class TaggingModel {
 						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
 						
 					}
-					
-					if(true) {
-						//TODO
-						String s = Normalizer.normalize(getTextBoxe(boxes[sortedNodes[lst.get(i)]]), Normalizer.Form.NFKD);
-						StringBuilder sb = new StringBuilder();
-						System.out.println("s : " + s + " " + s.length());
-						sb.append(s.charAt(s.length()-1));
-						System.out.println("sb : " + sb);
-						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_letters(Normalizer.normalize(sb, Normalizer.Form.NFD).length()-1);
+					String s = Normalizer.normalize(getTextBoxe(boxes[sortedNodes[lst.get(i)]]), Normalizer.Form.NFKC);
+					StringBuilder sb = new StringBuilder();
+					sb.append(s.charAt(s.length()-1));
+					String tmp = Normalizer.normalize(sb, Normalizer.Form.NFD);
+					if(isKorean(tmp.charAt(0))) {
+						
+						
+						int cpt = 0;
+						for(int k = 0; k < tmp.length(); k++) {
+							if(isSimpleKoreanLetter(tmp.charAt(k))) {
+								cpt += 1;
+							}
+							else {
+								cpt += 2;
+							}
+						}
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_letters(cpt-1);
 					}
 				}
 			}
@@ -543,6 +548,23 @@ public class TaggingModel {
 	}
 	
 	
+	private boolean isKorean(char c) {
+		if((c >= 'ᄀ' &&  c <=  'ᇿ' ) ||  (c >= 'ㄱ' && c <= 'ㆎ') )
+			return true;
+		
+		return false;
+	}
+
+
+	private boolean isSimpleKoreanLetter(char c) {
+		String singleLetters = " ᄀ    ᆨ    ㄱ     ᄂ   ᆫ     ㄴ    ᄃ    ᆮ    ㄷ    ᄅ     ᆯ    ㄹ     ᄆ     ᆷ      ㅁ     ᄇ     ᆸ    ㅂ  ᄉ    ᆺ   ㅅ    ᄋ    ᆼ      ㅇ     ᄌ     ᆽ    ㅈ     ᄎ     ᆾ     ㅊ      ᄏ      ᆿ       ㅋ   ᄐ     ᇀ    ㅌ    ᄑ    ᇁ    ㅍ  ᄒ     ᇂ      ㅎ       ᅡ      ㅏ     ᅣ     ㅑ    ᅥ     ㅓ        ᅩ     ㅗ     ᅭ     ㅛ      ᅮ     ㅜ      ᅲ    ㅠ    ᅳ      ㅡ        ᅵ      ㅣ    ";
+		singleLetters = Normalizer.normalize(singleLetters, Normalizer.Form.NFD);
+		singleLetters = Normalizer.normalize(singleLetters, Normalizer.Form.NFKC);
+		singleLetters = Normalizer.normalize(singleLetters, Normalizer.Form.NFD);
+		return singleLetters.indexOf(c) >= 0;
+	}
+
+
 	private int findPreviousTokenStart(TfstGraphBox box) {
 		String txt = getTextBoxe(box);
 		if(txt.equals("<E>")) {
