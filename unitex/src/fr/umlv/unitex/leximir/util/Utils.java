@@ -21,6 +21,7 @@
 package fr.umlv.unitex.leximir.util;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.Encoding;
@@ -41,6 +42,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
 
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import java.io.FileOutputStream;
@@ -135,7 +138,7 @@ public class Utils {
     public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         int i = 0;
-        sb.append("POS;FST code;Count\n");
+        sb.append("POS;Markers;Count\n");
         Set<String> keysets = simSem.keySet();
         for (String key : keysets) {
             Object[] objArr = simSem.get(key);
@@ -220,9 +223,18 @@ public class Utils {
         if (!delaffolder.exists()) {
             delaffolder.mkdir();
         }
+        Encoding e = ConfigManager.getManager().getEncoding(null);
+        
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
-
-            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
+        	
+        	OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
+        	//OutputStreamWriter out = e.getOutputStreamWriter(new File(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
+        	
+        	new File(DictionaryPath.delafPath+File.separator+ "DelafTmp.dic").createNewFile();
+        	
+        //	OutputStreamWriter outf= new OutputStreamWriter(new FileOutputStream());
+        //	outf.close();
+        	 
             UnicodeIO.writeString(out, lemma);
             UnicodeIO.writeString(out, ",");
             UnicodeIO.writeString(out, fst);
@@ -233,22 +245,34 @@ public class Utils {
                 DictionaryPath.allDelas +File.separator+ "DelasTmp.dic",
                 "-o", DictionaryPath.delafPath +File.separator+ "DelafTmp.dic",
                 "-a", DictionaryPath.alphabetPath,
-                "-d", DictionaryPath.inflectionPath
+                "-d", DictionaryPath.inflectionPath,
+                "-q", e.toString()
             };
-
+            
             ProcessBuilder pb = new ProcessBuilder(command);
+            
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
+            
             while (isProcessAlive(p)) {
                 continue;
             }
             new File(DictionaryPath.allDelas + File.separator+ "DelasTmp.dic").delete();
-
+            
+            /*This is for testing ---
+            if (new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic").exists()) {
+            	JOptionPane.showMessageDialog(null, "DELAF WAS CREATED");
+            }else {
+            	JOptionPane.showMessageDialog(null, "DELAF DOES NOT EXIST !!!! ");
+            }
+            ---*/
+            
             GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
                     .newDelaFrame(new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic"));
 
         } else {
+        	JOptionPane.showMessageDialog(null, "The graph " + fst + ".grf was not found.");
             throw new FileNotFoundException(" FST Graph doesn't exist");
         }
 

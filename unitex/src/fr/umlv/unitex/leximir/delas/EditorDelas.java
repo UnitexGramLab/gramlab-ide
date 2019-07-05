@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -271,7 +272,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel5.setText("Lemma Inverted");
+        jLabel5.setText("Inverted Lemma");
 
         jTextFieldLemmaInv.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -851,7 +852,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
 
             this.setUnsaved(false);
-            JOptionPane.showMessageDialog(null, "Files where saved successfully");
+            JOptionPane.showMessageDialog(null, "File was saved successfully");
         }
     }
 
@@ -882,32 +883,96 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     }
 
+    //TODO Trouver une manière de mieux split les + pour les synsem
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {
-
+    	
         Map<String, List<String>> data = new HashMap<>();
         Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
+        HashMap<String, HashMap<String, String>> results = new HashMap<>();
+        
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
             String SynSem = (String) this.getjTable1().getValueAt(i, 3);
             String pos = (String) this.getjTable1().getValueAt(i, 0);
             if (!data.containsKey(pos)) {
                 List<String> symSem = new ArrayList<>();
-                String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
-                symSem.addAll(Arrays.asList(tmp));
+                String[] tmp = SynSem.split(Pattern.quote("+"));
+                List<String> markers = new LinkedList<>(Arrays.asList(tmp));
+                markers.remove(0);
+                for(String elem : markers) {
+                	if(!symSem.contains(elem)){
+                		symSem.add(elem);
+                	}
+                }
                 data.put(pos, symSem);
             } else {
                 List<String> valueInData = data.get(pos);
-                String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
-                valueInData.addAll(Arrays.asList(tmp));
+                String[] tmp = SynSem.split(Pattern.quote("+"));
+                List<String> markers = new LinkedList<>(Arrays.asList(tmp));
+                markers.remove(0);
+                for(String elem : markers) {
+                	if(!valueInData.contains(elem)){
+                        valueInData.add(elem);
+                	}
+                }
                 data.put(pos, valueInData);
             }
+            
+            if(!results.containsKey(pos)) {
+            	results.put(pos, new HashMap<String, String>());
+            }
+            for(String elem : data.get(pos)) {
+            	if(!results.get(pos).containsKey(elem)) {
+            		results.get(pos).put(elem, "1");
+            	} else {
+            		int count = Integer.parseInt(results.get(pos).get(elem)) + 1;
+            		results.get(pos).replace(elem, String.valueOf(count));
+            	}            	
+        	}
+            data.clear();
+           // System.out.println(results);
+        }
+
+        Map<String, Object[]> statSimSem = new HashMap<>();
+        int v = 2;
+            
+        for(Map.Entry<String, HashMap<String, String>> t : results.entrySet()) {
+            String key = t.getKey();
+            for(Map.Entry<String, String> y : t.getValue().entrySet()) {
+            	String marker = y.getKey();
+            	String number = y.getValue();
+            	statSimSem.put(String.valueOf(v), new Object[] {key, "", marker, number});
+            	v++;
+            }
+        } 
+           
+       /* for (Map.Entry<String, Object[]> t : statSimSem.entrySet()) {
+            System.out.println(t.getKey() + " -> " + Arrays.asList(t.getValue()));
+        }*/
+
+        GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+                     .newStatisticOutput(statSimSem, true);
+            
+   }
+            /*
+            for (Map.Entry<String, HashMap<String, HashMap<String, String>>> t : dataForSynSem2.entrySet()) {
+                String key = t.getKey();
+                for (Map.Entry<String, HashMap<String, String>> y : t.getValue().entrySet()) {
+                    for (Map.Entry<String, String> u : y.getValue().entrySet()) {
+                        statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(), u.getKey(), u.getValue()});
+                        v++;
+                    }
+                }
+            }*/
+            
+            
+           
+             /*
             String SynSemForPos = (String) this.getjTable1().getValueAt(i, 3);
-
             String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
-
             String realSynSem = "";
             realSynSem = domain[domain.length - 1];
-
             String domainCategory = "";
+            
             try {
                 domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
             } catch (java.lang.ArrayIndexOutOfBoundsException e) {
@@ -952,11 +1017,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 }
             }
         }
+        
+        
 
-        GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(statSimSem, true);
-
-    }
+    }*/
 
     private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -972,7 +1036,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
                 } else {
-                    if (!text.contains(".") && !text.contains("$")) {
+                    if (!text.contains(".") && !text.contains("$") && !text.contains("[") && !text.contains("]")) {
                         text = "^" + text;
                     }
                 }
@@ -997,6 +1061,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             } else {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
+                }else {
+                	if (!text.contains(".") && !text.contains("$") && !text.contains("[") && !text.contains("]")) {
+                		text = "^" + text;
+                	}
                 }
                 RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
@@ -1049,7 +1117,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     if (jCheckBoxExtract.isSelected()) {
                         text = "^" + text + "$";
                     } else {
-                        if (!text.contains(".") && !text.contains("$")) {
+                        if (!text.contains(".") && !text.contains("$") && !text.contains("[") && !text.contains("]")) {
                             text = "^" + text;
                         }
                     }
@@ -1079,10 +1147,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             		text = "^" + text + "$";
             	}else { 
             		if (!text.contains(".") && !text.contains("$")) {
-            			text = "^" + text;
+            			text = text + "$";
             		}
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 5);// search in column at index 0
+                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1124,8 +1192,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {
-        new DuplicationFinder(this.getjTable1()).execute();
-
+    	new DuplicationFinder(getjTable1()).execute();
     }
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {

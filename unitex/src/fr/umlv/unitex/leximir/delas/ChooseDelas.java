@@ -196,6 +196,9 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         	if(dic.toString().isEmpty()) {
             	JOptionPane.showMessageDialog(null, "No dictionary selected");
             	return;
+            }else if(!dic.exists()){
+            	JOptionPane.showMessageDialog(null, "This dictionary doesn't exist");
+            	return;
             }
             GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                     .newEditorDelasDialog(all, dic);
