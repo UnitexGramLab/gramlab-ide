@@ -153,7 +153,7 @@ public class TaggingModel {
 				resetModel();
 			} else {
 				
-				updateFactorizationNodes();
+				updateNodes();
 				//updateBoundsReversed(finalState, new boolean[boxes.length]);
 				//updateBounds(initialState, new boolean[boxes.length]);
 				
@@ -186,7 +186,7 @@ public class TaggingModel {
 			taggingStates[i] = TaggingState.NEUTRAL;
 			boxes[i].state = TaggingState.NEUTRAL;
 		}
-		updateFactorizationNodes();
+		updateNodes();
 		generateAlphabet();
 		generateTokensList();
 		zone.unSelectAllBoxes();
@@ -437,7 +437,7 @@ public class TaggingModel {
 			boxes[i].state = TaggingState.NEUTRAL;
 		}
 		
-		updateFactorizationNodes();
+		updateNodes();
 		
 		if(b == false)  {
 			zone.removeLastTransition();
@@ -527,8 +527,7 @@ public class TaggingModel {
 					}
 				}
 			}
-			
-			
+		
 			for (Context context : copyContext) {
 				if(context.currentBox < context.path.size() && boxes[sortedNodes[context.path.get(context.currentBox)]].equals(boxes[bfs])) {
 					JOptionPane.showMessageDialog(null,
@@ -994,7 +993,7 @@ public class TaggingModel {
 	/**
 	 * 
 	 */
-	private void updateFactorizationNodes() {
+	private void updateNodes() {
 		if (boxes.length == 0)
 			return;
 		/*
