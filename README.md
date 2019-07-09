@@ -5,7 +5,7 @@
 GramLab is the Integrated Development Environment (IDE) of [Unitex/GramLab][unitex].
 
 <p align="center">
-  <img src="http://www-igm.univ-mlv.fr/~unitex/img/gramlab-ide.png" width="70%" height="70%" alt="GramLab IDE"/>
+  <img src="https://unitexgramlab.org/img/gramlab-ide.png" width="70%" height="70%" alt="GramLab IDE"/>
 </p>
 
 ## How to Build
@@ -89,5 +89,5 @@ Contact unitex-devel@univ-mlv.fr for further inquiries.
 
 Copyright (C) 2019 Université Paris-Est Marne-la-Vallée
 
-[unitex]:  http://unitexgramlab.org
+[unitex]:  https://unitexgramlab.org
 [unitex-core]: https://github.com/UnitexGramLab/unitex-core
