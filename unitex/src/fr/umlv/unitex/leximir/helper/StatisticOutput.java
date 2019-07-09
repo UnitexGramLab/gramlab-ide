@@ -178,7 +178,7 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
 	        if(this.dicPos==null){
 	            Utils.exportStatAllToCsv(statSimSem,filename);
 	        }else{
-	            Utils.exportJtableToCsv(this.dicPos,filename);    
+	            Utils.exportJtableToCsv(this.dicPos,filename);
 	            }
 	        this.setVisible(false);
         } catch (IOException ex) {

@@ -883,11 +883,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     }
 
-    //TODO Trouver une manière de mieux split les + pour les synsem
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {
     	
         Map<String, List<String>> data = new HashMap<>();
-        Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
+       // Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
         HashMap<String, HashMap<String, String>> results = new HashMap<>();
         
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
@@ -929,7 +928,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             	}            	
         	}
             data.clear();
-           // System.out.println(results);
         }
 
         Map<String, Object[]> statSimSem = new HashMap<>();

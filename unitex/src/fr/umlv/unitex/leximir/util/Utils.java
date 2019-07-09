@@ -37,9 +37,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -122,7 +126,8 @@ public class Utils {
         }
         boolean isDone = false;
         try {
-            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+        	Encoding e = ConfigManager.getManager().getEncoding(null);
+            OutputStreamWriter out = e.getOutputStreamWriter(new File(filename));
             UnicodeIO.writeString(out, sb.toString());
             out.close();
             isDone = true;
@@ -156,8 +161,11 @@ public class Utils {
         }
         boolean isDone = false;
         try {
-            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+        	Encoding e = ConfigManager.getManager().getEncoding(null);
+            OutputStreamWriter out = e.getOutputStreamWriter(new File(filename));
             UnicodeIO.writeString(out, sb.toString());
+        	/*OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+        	UnicodeIO.writeString(out, sb.toString());*/
             out.close();
             isDone = true;
         } finally {
@@ -234,7 +242,7 @@ public class Utils {
         	
         //	OutputStreamWriter outf= new OutputStreamWriter(new FileOutputStream());
         //	outf.close();
-        	 
+        	
             UnicodeIO.writeString(out, lemma);
             UnicodeIO.writeString(out, ",");
             UnicodeIO.writeString(out, fst);

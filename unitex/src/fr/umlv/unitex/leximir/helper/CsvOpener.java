@@ -21,13 +21,26 @@
 package fr.umlv.unitex.leximir.helper;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Vector;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.leximir.model.DictionaryPath;
 
 /**
  * @author Anas Ait cheikh
@@ -42,7 +55,14 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         initComponents();
         Vector<String> header = this.header();
         Vector<Vector<String>> data = this.read();
-        JTable table = new JTable(data, header);
+        DefaultTableModel tableModel = new DefaultTableModel(data,header);
+        
+        JTable table = new JTable(tableModel);
+        
+        RowSorter<DefaultTableModel> sort = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sort);
+                
+        table.setModel(tableModel);
         table.setRowHeight(20);
         JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -53,7 +73,8 @@ public class CsvOpener extends javax.swing.JInternalFrame {
 
     private Vector<String> header() {
         try {
-            try (BufferedReader sourceFile = new BufferedReader(new FileReader(csvfile))) {
+            try (BufferedReader sourceFile = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(csvfile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
                 String s;
                 if ((s = sourceFile.readLine()) != null) {
                     return new Vector<String>(Arrays.asList(s.split(";")));
@@ -70,7 +91,8 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     private Vector<Vector<String>> read() {
         Vector<Vector<String>> tmp = new Vector<Vector<String>>();
         try {
-            try (BufferedReader sourceFile = new BufferedReader(new FileReader(csvfile))) {
+            try (BufferedReader sourceFile = new BufferedReader(
+                    new InputStreamReader(new FileInputStream(csvfile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
                 String s;
                 for (int i = 1; (s = sourceFile.readLine()) != null; i++) {
                     if (i > 1) {
@@ -83,9 +105,29 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        sort(tmp);
+        
         return tmp;
     }
 
+    private void sort(Vector<Vector<String>> vectors) {
+    	Collections.sort(vectors, new Comparator<Vector<String>>(){
+            @Override  public int compare(Vector<String> v1, Vector<String> v2) {
+                return v1.get(0).compareTo(v2.get(0)); 
+        }});
+    	/*
+    	String pos = vectors.get(1).get(0);
+    	Integer lastPos = 1;
+    	for(int index = 2; index < vectors.size(); index++) {
+    		if(!pos.equals(vectors.get(index).get(0))) {
+    			innerSort(vectors,lastPos,index-1);
+    			pos = vectors.get(index).get(0);
+    			lastPos = index;
+    		}
+    	}*/
+    }
+    
     private void initComponents() {
     	
         jScrollPane1 = new javax.swing.JScrollPane();
