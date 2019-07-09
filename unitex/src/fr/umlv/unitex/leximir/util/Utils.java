@@ -48,6 +48,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import java.io.FileOutputStream;
@@ -176,6 +177,34 @@ public class Utils {
             }
         }
     }
+    
+    public static void exportDatasInDictionary(JTable results, File file) throws IOException, FileNotFoundException{
+		List<String> toSave = new ArrayList<String>();
+		
+		for (int row = 0; row < results.getRowCount(); row++) {
+			String lemma = String.valueOf(results.getValueAt(row, 1));
+            String fstCode = results.getValueAt(row, 2).toString().concat(results.getValueAt(row, 3).toString());
+            String str = lemma + "," + fstCode;
+            String comment = String.valueOf(results.getValueAt(row, 4));
+            if (comment != null && comment.trim().length() > 0) {
+                str = str + "/" + results.getValueAt(row, 4);
+            }
+            str = str + "\n";
+            toSave.add(str);
+		}
+		
+		Encoding e = ConfigManager.getManager().getEncoding(null);
+		try {
+            try (OutputStreamWriter out = e.getOutputStreamWriter(file)) {
+        		for (String lines : toSave) {
+        			UnicodeIO.writeString(out, lines);
+        		}
+        	}
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "error :" + ex.getMessage() + "\nThe duplicates were not saved.");
+            return;
+        }
+	}
 
 
     public static Object[] delasToObject(String lemma, String fstCode, String SynSem, String comment, String Dicname, int valueSelected) {
@@ -328,4 +357,6 @@ public class Utils {
         Utils.runCommandTerminal(cmd2);
         Utils.runCommandTerminal(cmd3);
     }
+
+	
 }

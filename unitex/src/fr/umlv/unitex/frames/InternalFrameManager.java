@@ -120,6 +120,7 @@ public abstract class InternalFrameManager implements FrameManager {
     private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
     private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
     private final StatisticOutputFactory statisticOutputFactory = new StatisticOutputFactory();
+    private final DuplicateOutputFactory duplicateOutputFactory = new DuplicateOutputFactory();
     private final CsvOpenerFactory csvOpenerFactory = new CsvOpenerFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
@@ -266,6 +267,15 @@ public abstract class InternalFrameManager implements FrameManager {
         }
         setup(d, true);
         return d;
+    }
+
+    public DuplicateOutput newDuplicateOutput(JTable results, boolean isDelas) {
+    	final DuplicateOutput d = duplicateOutputFactory.newDuplicateOutputDialog(results, isDelas);
+    	if(d == null) {
+    		return null;
+    	}
+    	setup(d, true);
+    	return d;
     }
 
     public CsvOpener newCsvOpener(String Csvfile) {

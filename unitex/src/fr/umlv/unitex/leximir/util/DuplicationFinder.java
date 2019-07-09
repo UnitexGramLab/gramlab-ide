@@ -40,7 +40,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Anas Ait cheikh
  */
 public class DuplicationFinder extends SwingWorker<Integer, Object> {
-    JTable jtableRes;
+    public JTable jtableRes;
     JTable jtableSrc;
     private JFrame frame = new JFrame();
     private JDialog dialog = new JDialog(frame, "Processing data", true);
@@ -150,6 +150,10 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
         } else {
             JOptionPane.showMessageDialog(null, "No duplication where found !", "Duplication", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+    
+    public JTable getResult() {
+    	return jtableRes;
     }
 
 }

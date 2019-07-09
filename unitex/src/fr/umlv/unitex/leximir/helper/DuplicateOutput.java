@@ -27,60 +27,44 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import fr.umlv.unitex.leximir.delac.EditorDelac;
 import fr.umlv.unitex.leximir.delas.EditorDelas;
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import fr.umlv.unitex.leximir.util.Utils;
 
-/**
- *
- * @author Anas Ait cheikh
- */
-public class StatisticOutput extends javax.swing.JInternalFrame {
+public class DuplicateOutput extends javax.swing.JInternalFrame  {
+	
+	private JTable results;
+	private final boolean isDelas;
 
-    private List<Object[]> dicPos;
-    
-    Map<String, Object[]> statSimSem;
-    
-    private boolean isDelas;  //isDelas tells the Statistic class if the stats are being made for the delas editor or the delac editor, true for delas and false for delac 
-    
-    public StatisticOutput(List<Object[]> dicPos, boolean isDelas) {
-        super("Set output folder", true, true, true, true);
-        this.isDelas = isDelas;
-        initComponents();
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.dicPos=dicPos;
-        this.statSimSem=null;
-    }
-    public StatisticOutput(Map<String, Object[]> statSimSem2, boolean isDelas) {
-        super("Set output folder", true, true, true, true);
-        this.isDelas = isDelas;
-        initComponents();
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.dicPos=null;
-        this.statSimSem=statSimSem2;
-    }
+	public DuplicateOutput(JTable results, boolean isDelas) {
+		super("Set output folder", true, true, true, true);
+		this.isDelas =isDelas;
+		initComponents();
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.results = results;
+	}
 
-    private void initComponents() {
-
-        buttonGroup1 = new javax.swing.ButtonGroup();
+	private void initComponents() {
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jButtonSet = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        String outputStatsFile;
+        
+        String outputFile;
         
         if(isDelas == true) {
-        	outputStatsFile = EditorDelas.getStatisticDirectory()+DictionaryPath.statisticsTmpPath;
+        	outputFile = EditorDelas.getStatisticDirectory() + DictionaryPath.duplicatesTmpPath;
         }else {
-        	outputStatsFile = EditorDelac.getStatisticDirectory()+DictionaryPath.statisticsTmpPath;
+        	outputFile = EditorDelac.getStatisticDirectory() + DictionaryPath.duplicatesTmpPath;
         }
-
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setText(outputStatsFile); 
+        jTextField1.setText(outputFile); 
 
         jButtonSet.setText("Set");
         jButtonSet.addActionListener(new java.awt.event.ActionListener() {
@@ -95,8 +79,8 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
                 jButtonSaveActionPerformed(evt);
             }
         });
-
-        jLabel2.setText("Select output folder");
+        
+        jLabel2.setText("Select output folder to save the duplicates");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -146,8 +130,12 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-
+	}
+	
+	
+	
+	
+	
     private void jButtonSetActionPerformed(java.awt.event.ActionEvent evt) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -155,14 +143,19 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
 	        File selectedFile = fileChooser.getSelectedFile();
-	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
-	        jTextField1.setText(EditorDelas.getStatisticDirectory()+"statisticsTmp.csv");
+	        if(isDelas) {
+	        	EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
+	        	jTextField1.setText(EditorDelas.getStatisticDirectory() + DictionaryPath.duplicatesTmpPath);
+	        }else {
+	        	EditorDelac.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
+		        jTextField1.setText(EditorDelac.getStatisticDirectory() + DictionaryPath.duplicatesTmpPath);
+	        }
 	        
         }
     }
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        try{   
+    	try{   
         	String filename= jTextField1.getText();
         	File saveFolder = new File(new File(filename).getParent());
         	if(!saveFolder.exists()) {
@@ -175,20 +168,19 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
                      }
                  }
         	}
-	        if(this.dicPos==null){
-	            Utils.exportStatAllToCsv(statSimSem,filename);
+	        if(this.results!=null){
+	        	Utils.exportDatasInDictionary(results, new File(filename));
 	        }else{
-	            Utils.exportJtableToCsv(this.dicPos,filename);
-	            }
+	        	JOptionPane.showMessageDialog(null, "Error : nothing to save");
+	        }
 	        this.setVisible(false);
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
         }
     }
-
+	
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButtonSave;
     private javax.swing.JButton jButtonSet;
     private javax.swing.JLabel jLabel2;

@@ -1190,8 +1190,25 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {
-    	new DuplicationFinder(getjTable1()).execute();
+    	final DuplicationFinder dup = new DuplicationFinder(getjTable1());
+    	dup.execute();
+    	
+    	final class CheckFinish implements Runnable{
+    		@Override
+    		public void run() {
+        		while(!dup.isDone());
+        		if(dup.jtableRes.getModel().getRowCount()>0) {
+        			GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+        				.newDuplicateOutput(dup.getResult(), true);
+        		}
+            }
+    	}
+    	
+    	Thread t = new Thread(new CheckFinish());
+    	t.start();
     }
+    
+    
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {
         int index = this.getjTable1().getSelectedRow() != -1 ? this.getjTable1().getSelectedRow() : 0;

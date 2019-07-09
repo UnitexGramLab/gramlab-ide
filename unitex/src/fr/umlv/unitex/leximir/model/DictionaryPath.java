@@ -42,5 +42,6 @@ public class DictionaryPath {
     public static final String allDelas = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"Dela"+File.separator+"Delas"+File.separator;
     public static final String allDelac = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"Dela"+File.separator+"Delac"+File.separator;
     public static final String statisticsTmpPath = "statisticsTmp.csv";
+    public static final String duplicatesTmpPath = "duplicatesTmp.dic";
     public static final String delafPath = Config.getUserDir().toString()+File.separator+Config.getCurrentLanguage()+File.separator+"Dela"+File.separator+"Delaf";
 }
