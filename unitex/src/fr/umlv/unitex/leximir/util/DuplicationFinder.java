@@ -175,8 +175,6 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
 	            	if(jtableRes.getModel().getRowCount()>0) {
 	            		GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
 	            			.newDuplicateOutput(getResult(), true);
-	            	}else {
-	            		System.out.println("ELSE ");
 	            	}
         			
                 }
