@@ -1193,19 +1193,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     	final DuplicationFinder dup = new DuplicationFinder(getjTable1());
     	dup.execute();
     	
-    	final class CheckFinish implements Runnable{
-    		@Override
-    		public void run() {
-        		while(!dup.isDone());
-        		if(dup.jtableRes.getModel().getRowCount()>0) {
-        			GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-        				.newDuplicateOutput(dup.getResult(), true);
-        		}
-            }
-    	}
     	
-    	Thread t = new Thread(new CheckFinish());
-    	t.start();
+    	
     }
     
     

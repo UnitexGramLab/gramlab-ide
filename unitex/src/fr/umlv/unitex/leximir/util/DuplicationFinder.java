@@ -24,6 +24,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.leximir.helper.MenuDuplicate;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -48,11 +51,17 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
     private JLabel l = new JLabel("Please wait while processing data ...");
     private JPanel p = new JPanel();
     private JButton b = new JButton("Cancel");
+    
+    private final Object lock = new Object();
+    
+    private enum State{PENDING, DONE};
+    
+    private static State state;
 
     public DuplicationFinder(JTable src) {
 
         jtableSrc = src;
-        
+        state = State.PENDING;
         jtableRes = new JTable();
         jtableRes.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
@@ -135,8 +144,10 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
                 }
             }
         }
-        
-        
+        synchronized(lock){
+        	state = State.DONE;        	
+            lock.notify();
+        }
         jtableRes.repaint();
         return 0;
 
@@ -147,6 +158,32 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
         dialog.dispose();
         if(this.jtableRes.getModel().getRowCount()>0) {
             new MenuDuplicate(this.jtableRes);
+
+        	final class CheckFinish implements Runnable{
+        		@Override
+        		public void run() {
+        			synchronized(lock) {
+	            		while(!isOver()) {
+	            			try {
+	            				lock.wait();
+	            			}catch(InterruptedException e) {
+	            				System.out.println("Interrupted while waiting for the finder to finish: " + e );
+	            				return;
+	            			}
+	            		}
+        			}
+	            	if(jtableRes.getModel().getRowCount()>0) {
+	            		GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
+	            			.newDuplicateOutput(getResult(), true);
+	            	}else {
+	            		System.out.println("ELSE ");
+	            	}
+        			
+                }
+        	}
+        	
+        	Thread t = new Thread(new CheckFinish());
+        	t.start();
         } else {
             JOptionPane.showMessageDialog(null, "No duplication where found !", "Duplication", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -155,5 +192,13 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
     public JTable getResult() {
     	return jtableRes;
     }
+
+	private boolean isOver() {
+		if(state == State.DONE)
+			return true;
+		else{
+			return false;	
+		}
+	}
 
 }
