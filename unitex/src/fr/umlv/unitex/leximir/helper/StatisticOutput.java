@@ -73,9 +73,9 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         String outputStatsFile;
         
         if(isDelas == true) {
-        	outputStatsFile = EditorDelas.getStatisticDirectory()+DictionaryPath.statisticsTmpPath;
+        	outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
         }else {
-        	outputStatsFile = EditorDelac.getStatisticDirectory()+DictionaryPath.statisticsTmpPath;
+        	outputStatsFile = EditorDelac.getStatisticDirectory()+"statisticsTmp.csv";
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

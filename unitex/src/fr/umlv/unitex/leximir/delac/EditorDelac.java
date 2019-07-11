@@ -1074,22 +1074,7 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     }
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {
-    	final DuplicationFinder dup = new DuplicationFinder(getjTable1());
-    	dup.execute();
-    	
-    	final class CheckFinish implements Runnable{
-    		@Override
-    		public void run() {
-        		while(!dup.isDone());
-        		if(dup.jtableRes.getModel().getRowCount()>0) {
-        			GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-        				.newDuplicateOutput(dup.getResult(), false);
-        		}
-            }
-    	}
-    	
-    	Thread t = new Thread(new CheckFinish());
-    	t.start();
+        new DuplicationFinder(this.getjTable1()).execute();
 
     }
 

@@ -1190,14 +1190,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {
-    	final DuplicationFinder dup = new DuplicationFinder(getjTable1());
-    	dup.execute();
-    	
-    	
-    	
+    	new DuplicationFinder(getjTable1()).execute();
     }
-    
-    
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {
         int index = this.getjTable1().getSelectedRow() != -1 ? this.getjTable1().getSelectedRow() : 0;
