@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,11 @@ import java.io.OutputStreamWriter;
 
 /**
  * This class provides methods for loading and saving UTF-16LE texts.
+ *
+ * Attention: Only use unicode functions that are available throughout this
+ * class. This is very important, since IO functions do not have the same 
+ * behavior on little-endian and big-endian systems. If you miss a function,
+ * please code it from the primitive functions of this library. 
  * 
  * @author Sébastien Paumier
  */

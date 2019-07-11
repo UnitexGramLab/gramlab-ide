@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,6 @@ public class TransitionEdit extends AbstractUndoableEdit {
 	private final GenericGraphBox srcBoxe;
 	private final GenericGraphBox /** boxe where tanstion go */
 	dstBoxe;
-	private final boolean isModified;
 
 	/**
 	 * constuct a Transition Edit
@@ -49,21 +48,17 @@ public class TransitionEdit extends AbstractUndoableEdit {
 	public TransitionEdit(GenericGraphBox srcBoxe, GenericGraphBox dstBoxe) {
 		this.srcBoxe = srcBoxe;
 		this.dstBoxe = dstBoxe;
-		this.isModified = srcBoxe.isModified();
-		srcBoxe.setModified(true);
 	}
 
 	@Override
 	public void undo() {
 		super.undo();
 		srcBoxe.addTransitionTo(dstBoxe);
-		srcBoxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		srcBoxe.addTransitionTo(dstBoxe);
-		srcBoxe.setModified(true);
 	}
 }

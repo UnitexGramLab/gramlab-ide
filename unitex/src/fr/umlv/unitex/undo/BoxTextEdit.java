@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,6 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 	 * zone where the graph is drawn
 	 */
 	private final GenericGraphicalZone zone;
-	private final boolean isModified;
 
 	/**
 	 * contruct an edit to redo and undo a text edition in a boxe
@@ -63,8 +62,6 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		this.newText = text;
 		this.zone = zone;
 		oldText = boxe.getContent();
-		this.isModified = boxe.isModified();
-		boxe.setModified(true);
 	}
 
 	@Override
@@ -74,13 +71,11 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 		boxe.setSelected(true);
 		zone.getSelectedBoxes().add(boxe);
 		zone.initText(boxe.getContent());
-		boxe.setModified(isModified);
 	}
 
 	@Override
 	public void redo() {
 		super.redo();
 		boxe.setContent(newText);
-		boxe.setModified(true);
 	}
 }

@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -203,9 +203,8 @@ public class GraphDecorator {
 			return GraphDecoratorConfig.SHADED;
 		}
 		if (model != null && model.isLinearTfst()) {
-			if (!ConfigManager.getManager().isKorean(null)) {
-				return GraphDecoratorConfig.LINEAR_TFST;
-			}
+			return GraphDecoratorConfig.LINEAR_TFST;
+			
 		}
 		return c;
 	}
@@ -226,16 +225,10 @@ public class GraphDecorator {
 		if (hasMoved(boxNumber))
 			return GraphDecoratorConfig.STROKE;
 		if (boxNumber == currentBox) {
-			if (ConfigManager.getManager().isKorean(null)) {
-				return GraphDecoratorConfig.KOREAN_HIGHLIGHT_STROKE;
-			} else {
-				return GraphDecoratorConfig.STROKE;
-			}
+			return GraphDecoratorConfig.HIGHLIGHT_STROKE;
 		}
 		if (model != null && model.isSelected(boxNumber)) {
-			if (!ConfigManager.getManager().isKorean(null)) {
-				return GraphDecoratorConfig.STROKE;
-			}
+			return GraphDecoratorConfig.STROKE;
 		}
 		return s;
 	}
@@ -248,16 +241,11 @@ public class GraphDecorator {
 		if (hasMoved(boxNumber))
 			return GraphDecoratorConfig.MOVED;
 		if (boxNumber == currentBox) {
-			if (ConfigManager.getManager().isKorean(null)) {
-				return GraphDecoratorConfig.KOREAN_HIGHLIGHT;
-			} else {
-				return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
+			return GraphDecoratorConfig.STANDARD_HIGHLIGHT;
+			//return GraphDecoratorConfig.DEBUG_HIGHLIGHT;
 			}
-		}
 		if (model != null && model.isLinearTfst()) {
-			if (!ConfigManager.getManager().isKorean(null)) {
-				return GraphDecoratorConfig.LINEAR_TFST;
-			}
+			return GraphDecoratorConfig.LINEAR_TFST;
 		}
 		return c;
 	}
@@ -265,14 +253,13 @@ public class GraphDecorator {
 	public Color getBoxBackgroundColor(int boxNumber, Color c) {
 		// If the background isn't already set from TfstGraphBox for untagged korean tokens
 		// This case may happen when a token is both untagged and SELECTED
-		if (model != null && ConfigManager.getManager().isKorean(null)
-				&& c != GraphDecoratorConfig.KOREAN_UNTAGGED_TOKEN_COLOR) {
+		if (model != null && c != GraphDecoratorConfig.UNTAGGED_TOKEN_COLOR) {
 			// Displaying a different background color when the graph is linear
 			if (model.isLinearTfst()) {
-				return GraphDecoratorConfig.KOREAN_LINEAR_TFST;
+				return GraphDecoratorConfig.LINEAR_TFST;
 			}
 			if (TaggingState.SELECTED == model.getBoxStateTfst(boxNumber)) {
-				return GraphDecoratorConfig.UNAMBIGUOUS_KOREAN;
+				return GraphDecoratorConfig.UNAMBIGUOUS_TOKEN_COLOR;
 			}
 		}
 		return c;

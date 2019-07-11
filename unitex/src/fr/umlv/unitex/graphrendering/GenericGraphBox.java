@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -185,7 +185,6 @@ public class GenericGraphBox {
 	int identificationNumber; // number used to numerote the state
 
   private boolean highlight = false;
-  private boolean isModified = false;
 
 	/**
 	 * Constructs a new box
@@ -1252,9 +1251,7 @@ public class GenericGraphBox {
 		if (n_lines == 0) {
 			if (parentGraphicalZone.decorator != null
 					&& parentGraphicalZone.decorator.isLinearTfst()) {
-				if (!ConfigManager.getManager().isKorean(null)) {
-					g.setColor(GraphDecoratorConfig.LINEAR_TFST);
-				}
+				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
 			}
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in + 15, Y_in);
 			if (!parentGraphicalZone.getGraphPresentationInfo().isRightToLeft())
@@ -1278,9 +1275,7 @@ public class GenericGraphBox {
 		// and the triangle if necessary
 		if (parentGraphicalZone.decorator != null
 				&& parentGraphicalZone.decorator.isLinearTfst()) {
-			if (!ConfigManager.getManager().isKorean(null)) {
-				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
-			}
+			g.setColor(GraphDecoratorConfig.LINEAR_TFST);
 		} else {
 			g.setColor(params.getForegroundColor());
 		}
@@ -1435,9 +1430,7 @@ public class GenericGraphBox {
 		final Color old = g.getColor();
 		if (parentGraphicalZone.decorator != null
 				&& parentGraphicalZone.decorator.isLinearTfst()) {
-			if (!ConfigManager.getManager().isKorean(null)) {
-				g.setColor(GraphDecoratorConfig.LINEAR_TFST);
-			}
+		g.setColor(GraphDecoratorConfig.LINEAR_TFST);
 		}
 		if (!parentGraphicalZone.getGraphPresentationInfo().isRightToLeft())
 			GraphicalToolBox.drawLine(g, X_in, Y_in, X_in - 10, Y_in);
@@ -1690,14 +1683,6 @@ public class GenericGraphBox {
 
 	public boolean isStandaloneBox() {
 		return standaloneBox;
-	}
-	
-	public boolean isModified() {
-		return isModified;
-	}
-
-	public void setModified(boolean modified) {
-		isModified = modified;
 	}
 
 	public int getType() {

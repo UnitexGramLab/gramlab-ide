@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2018 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -107,7 +107,6 @@ public abstract class InternalFrameManager implements FrameManager {
   private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
   private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
-	private final CheckTextAutomatonDialogFactory checkTextAutomatonDialogFactory = new CheckTextAutomatonDialogFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -138,7 +137,13 @@ public abstract class InternalFrameManager implements FrameManager {
 			desktop.add(f, LAYER);
 		}
 	}
-
+	/**
+	 * this function appears to be updating the main Unitex frame, 
+	 * Background or non existent frames passed as arguments get drawn on the foreground.
+	 * @param f
+	 *    the frame intended to be  in the foreground with focus.
+	 * @return
+	 */
 	protected JInternalFrame setup(JInternalFrame f) {
 		return setup(f, false, false);
 	}
@@ -345,8 +350,10 @@ public abstract class InternalFrameManager implements FrameManager {
 
 	public DelaFrame newDelaFrame(File dela) {
 		DelaFrame f = delaFrameFactory.getFrameIfExists(dela);
-		if (f != null)
+		if (f != null) {
+			setup(f);
 			return f;
+		}	
 		f = new DelaFrame();
 		f.loadDela(dela);
 		delaFrameFactory.addFrame(f);
@@ -589,7 +596,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		if (d == null)
 			return null;
 		final File f = gf.getGraph();
-		d.graphName.setText(f.getAbsolutePath());
+		d.setInputGraphName(f.getAbsolutePath());
 		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
 		return d;
@@ -930,14 +937,5 @@ public abstract class InternalFrameManager implements FrameManager {
 
 	public void updateTextAutomatonFindAndReplaceDialog() {
 		textAutomatonFindAndReplaceFactory.update();
-	}
-
-	public CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
-		final CheckTextAutomatonDialog d = checkTextAutomatonDialogFactory.newCheckTextAutomatonDialog(checkList);
-		if (d == null) {
-			return null;
-		}
-		d.setVisible(true);
-		return d;
 	}
 }
