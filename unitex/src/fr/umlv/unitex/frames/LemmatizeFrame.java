@@ -238,7 +238,7 @@ public class LemmatizeFrame extends TfstFrame {
 				 * right click
 				 */
 				int index=getBoxToSelectIndex(lemma,matchStartInTokens);
-				graphicalZone.getTaggingModel().selectBox(index);
+				graphicalZone.getTaggingModel().preferBox(index);
 				graphicalZone.repaint();
 				graphicalZone.unsureBoxIsVisible(index);
 			}
@@ -288,7 +288,7 @@ public class LemmatizeFrame extends TfstFrame {
 						 */
 						return;
 					}
-					graphicalZone.getTaggingModel().selectBox(index);
+					graphicalZone.getTaggingModel().preferBox(index);
 					graphicalZone.saveStateSelection(res[2]);
 					graphicalZone.repaint();
 					graphicalZone.unsureBoxIsVisible(index);

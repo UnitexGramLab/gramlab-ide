@@ -137,7 +137,7 @@ public class TaggingModel {
 		/* Then we look for factorization nodes */
 		/* There should be the real calculus here */
 		computeFactorizationNodes();
-		/* And finally, we can mark as selected all factorization nodes */
+		/* And finally, we can mark as preferred all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
 			if (factorization[i] || taggingStates[i] == TaggingState.PREFERRED) {
 				selectBox(boxes[i]);
@@ -312,10 +312,10 @@ public class TaggingModel {
 		if (n == -1)
 			throw new IllegalStateException(
 					"Should not be selecting an unknown box");
-		selectBox(n);
+		preferBox(n);
 	}
 	
-	public void selectBox(int n) {
+	public void preferBox(int n) {
 		if (taggingStates[n] == TaggingState.USELESS) {
 			/*
 			 * There is no point in selecting a box that cannot be part the
@@ -343,7 +343,7 @@ public class TaggingModel {
 			return;
 		for (final GenericGraphBox gb : boxes[n].transitions) {
 			final int destIndex = getBoxIndex((TfstGraphBox) gb);
-			if (!isToBeRemovedModelIndex(destIndex))
+			if (!isNotPreferredModelIndex(destIndex))
 				return;
 		}
 		/*
@@ -385,7 +385,7 @@ public class TaggingModel {
 		if (n == limit)
 			return;
 		for (final Integer srcIndex : reverse[n]) {
-			if (!isToBeRemovedModelIndex(srcIndex))
+			if (!isNotPreferredModelIndex(srcIndex))
 				return;
 		}
 		/* See similar comment in contaminateFollowers */
@@ -554,22 +554,22 @@ public class TaggingModel {
 		return getBoxState(box);
 	}
 
-	public boolean isSelected(int boxIndex) {
+	public boolean isPreferred(int boxIndex) {
 		return TaggingState.PREFERRED == getBoxStateTfst(boxIndex);
 	}
 
-	public boolean isToBeRemoved(TfstGraphBox box) {
+	public boolean isNotPreferred(TfstGraphBox box) {
 		final int boxIndex = getBoxIndex(box);
 		final TaggingState s = taggingStates[boxIndex];
 		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
-	public boolean isToBeRemovedTfstIndex(int boxIndex) {
+	public boolean isNotPreferredTfstIndex(int boxIndex) {
 		final TaggingState s = getBoxStateTfst(boxIndex);
 		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
-	public boolean isToBeRemovedModelIndex(int boxIndex) {
+	public boolean isNotPreferredModelIndex(int boxIndex) {
 		final TaggingState s = taggingStates[boxIndex];
 		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
@@ -586,7 +586,7 @@ public class TaggingModel {
 			/* We explore all outgoing transitions */
 			for (final GenericGraphBox gb : b.transitions) {
 				final int destIndex = getBoxIndex((TfstGraphBox) gb);
-				if (!isToBeRemovedModelIndex(destIndex)) {
+				if (!isNotPreferredModelIndex(destIndex)) {
 					if (selectedOutgoing == -1) {
 						selectedOutgoing = destIndex;
 					} else {
