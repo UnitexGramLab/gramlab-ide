@@ -101,7 +101,7 @@ public class TaggingModel {
 				 */
 				resetModel();
 			} else {
-				updateFactorizationNodes();
+				updateNodes();
 			}
 		}
 	}
@@ -123,10 +123,10 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
-		updateFactorizationNodes();
+		updateNodes();
 	}
 
-	private void updateFactorizationNodes() {
+	private void updateNodes() {
 		if (boxes.length == 0)
 			return;
 		/*
@@ -139,7 +139,7 @@ public class TaggingModel {
 		computeFactorizationNodes();
 		/* And finally, we can mark as selected all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
-			if (factorization[i] || taggingStates[i] == TaggingState.SELECTED) {
+			if (factorization[i] || taggingStates[i] == TaggingState.PREFERRED) {
 				selectBox(boxes[i]);
 			}
 		}
@@ -249,7 +249,7 @@ public class TaggingModel {
 					 * If the state used to be useless but is not anymore, we
 					 * set its state to TO_BE_REMOVED
 					 */
-					setBoxStateInternal(i, TaggingState.TO_BE_REMOVED);
+					setBoxStateInternal(i, TaggingState.NOT_PREFERRED);
 				}
 			}
 		}
@@ -323,7 +323,7 @@ public class TaggingModel {
 			 */
 			return;
 		}
-		setBoxStateInternal(n, TaggingState.SELECTED);
+		setBoxStateInternal(n, TaggingState.PREFERRED);
 		updateAlternativePaths(n);
 		contaminateFollowers(n, getNextFactorizationNodeIndex(n));
 		contaminateFollowers2(n, getNextFactorizationNodeIndex(n));
@@ -353,7 +353,7 @@ public class TaggingModel {
 		 */
 		for (final GenericGraphBox gb : boxes[n].transitions) {
 			final int destIndex = getBoxIndex((TfstGraphBox) gb);
-			if (getBoxStateTfst(destIndex) == TaggingState.TO_BE_REMOVED) {
+			if (getBoxStateTfst(destIndex) == TaggingState.NOT_PREFERRED) {
 				setBoxStateInternal(destIndex, TaggingState.NEUTRAL);
 				contaminateFollowers(destIndex, limit);
 			}
@@ -370,7 +370,7 @@ public class TaggingModel {
 		if (boxes[n].transitions.size() == 1) {
 			final int destIndex = getBoxIndex((TfstGraphBox) boxes[n].transitions
 					.get(0));
-			setBoxStateInternal(destIndex, TaggingState.SELECTED);
+			setBoxStateInternal(destIndex, TaggingState.PREFERRED);
 			contaminateFollowers2(destIndex, limit);
 		}
 	}
@@ -390,7 +390,7 @@ public class TaggingModel {
 		}
 		/* See similar comment in contaminateFollowers */
 		for (final Integer srcIndex : reverse[n]) {
-			if (getBoxStateTfst(srcIndex) == TaggingState.TO_BE_REMOVED) {
+			if (getBoxStateTfst(srcIndex) == TaggingState.NOT_PREFERRED) {
 				setBoxStateInternal(srcIndex, TaggingState.NEUTRAL);
 				contaminateAncestors(srcIndex, limit, reverse);
 			}
@@ -407,7 +407,7 @@ public class TaggingModel {
 			return;
 		if (reverse[n].size() == 1) {
 			final int srcIndex = reverse[n].get(0);
-			setBoxStateInternal(srcIndex, TaggingState.SELECTED);
+			setBoxStateInternal(srcIndex, TaggingState.PREFERRED);
 			contaminateAncestors2(srcIndex, limit, reverse);
 		}
 	}
@@ -460,7 +460,7 @@ public class TaggingModel {
 		unmark(boxIndex, b, toBeKept, visited);
 		for (int i = 0; i < toBeKept.length; i++) {
 			if (!toBeKept[i]) {
-				setBoxStateInternal(i, TaggingState.TO_BE_REMOVED);
+				setBoxStateInternal(i, TaggingState.NOT_PREFERRED);
 			}
 		}
 	}
@@ -555,23 +555,23 @@ public class TaggingModel {
 	}
 
 	public boolean isSelected(int boxIndex) {
-		return TaggingState.SELECTED == getBoxStateTfst(boxIndex);
+		return TaggingState.PREFERRED == getBoxStateTfst(boxIndex);
 	}
 
 	public boolean isToBeRemoved(TfstGraphBox box) {
 		final int boxIndex = getBoxIndex(box);
 		final TaggingState s = taggingStates[boxIndex];
-		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
+		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
 	public boolean isToBeRemovedTfstIndex(int boxIndex) {
 		final TaggingState s = getBoxStateTfst(boxIndex);
-		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
+		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
 	public boolean isToBeRemovedModelIndex(int boxIndex) {
 		final TaggingState s = taggingStates[boxIndex];
-		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
+		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
 	public void updateAutomatonLinearity() {
