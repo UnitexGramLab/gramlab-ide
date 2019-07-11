@@ -258,7 +258,7 @@ public class GraphDecorator {
 			if (model.isLinearTfst()) {
 				return GraphDecoratorConfig.LINEAR_TFST;
 			}
-			if (TaggingState.SELECTED == model.getBoxStateTfst(boxNumber)) {
+			if (TaggingState.PREFERRED == model.getBoxStateTfst(boxNumber)) {
 				return GraphDecoratorConfig.UNAMBIGUOUS_TOKEN_COLOR;
 			}
 		}
@@ -278,7 +278,7 @@ public class GraphDecorator {
 				|| hasBeenRemoved(boxNumber)
 				|| hasMoved(boxNumber)
 				|| boxNumber == currentBox
-				|| (model != null && TaggingState.SELECTED == model
+				|| (model != null && TaggingState.PREFERRED == model
 						.getBoxStateTfst(boxNumber));
 	}
 
