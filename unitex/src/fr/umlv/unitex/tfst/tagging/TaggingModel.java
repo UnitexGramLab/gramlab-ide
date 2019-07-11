@@ -247,7 +247,7 @@ public class TaggingModel {
 				if (taggingStates[i] == TaggingState.USELESS) {
 					/*
 					 * If the state used to be useless but is not anymore, we
-					 * set its state to TO_BE_REMOVED
+					 * set its state to NOT_PREFERRED
 					 */
 					setBoxStateInternal(i, TaggingState.NOT_PREFERRED);
 				}
@@ -335,7 +335,7 @@ public class TaggingModel {
 
 	/**
 	 * Once we have set n as a selected box, we look if all its outgoing
-	 * transitions point to TO_BE_REMOVED states. If so, those states are
+	 * transitions point to NOT_PREFERRED states. If so, those states are
 	 * recursively made neutral.
 	 */
 	private void contaminateFollowers(int n, int limit) {
@@ -347,8 +347,8 @@ public class TaggingModel {
 				return;
 		}
 		/*
-		 * If we get here, it means that all reachable states were TO_BE_REMOVED
-		 * or USELESS. Then, we have to make all the TO_BE_REMOVED ones neutral,
+		 * If we get here, it means that all reachable states were NOT_PREFERRED
+		 * or USELESS. Then, we have to make all the NOT_PREFERRED ones neutral,
 		 * otherwise, there wouldn't exist any path from n to the limit node
 		 */
 		for (final GenericGraphBox gb : boxes[n].transitions) {
@@ -377,7 +377,7 @@ public class TaggingModel {
 
 	/**
 	 * Once we have set n as a selected box, we look if all its incoming
-	 * transitions point to TO_BE_REMOVED states. If so, those states are
+	 * transitions point to NOT_PREFERRED states. If so, those states are
 	 * recursively made neutral.
 	 */
 	private void contaminateAncestors(int n, int limit,
@@ -451,7 +451,7 @@ public class TaggingModel {
 		 */
 		update(a, b, boxIndex, toBeKept, visited);
 		/*
-		 * Finally, we actually set TO_BE_REMOVED status for states that remain
+		 * Finally, we actually set NOT_PREFERRED status for states that remain
 		 * marked
 		 */
 		for (int i = 0; i < visited.length; i++) {
@@ -480,7 +480,7 @@ public class TaggingModel {
 
 	/**
 	 * current and limit are nodes and n is a selected box. current will be mark
-	 * as TO_BE_REMOVED if there is no path from it n.
+	 * as NOT_PREFERRED if there is no path from it n.
 	 */
 	private boolean update(int current, int limit, int n, boolean[] toBeKept,
 			boolean[] visited) {
