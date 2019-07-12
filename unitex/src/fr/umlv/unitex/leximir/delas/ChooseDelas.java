@@ -166,7 +166,7 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
                     }
                 };
 
-                if (allDFolder.list(filter).length == 0) 
+                if (allDFolder.list(filter).length == 0) {
                     JOptionPane.showMessageDialog(null, "No Delas was Found in : " + DictionaryPath.allDelas, "Information", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
