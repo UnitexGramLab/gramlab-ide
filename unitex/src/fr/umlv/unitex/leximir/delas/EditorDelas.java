@@ -850,7 +850,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
 
             this.setUnsaved(false);
-            JOptionPane.showMessageDialog(null, "File was saved successfully");
+            JOptionPane.showMessageDialog(null, "The files were successfully saved");
         }
     }
 
@@ -1200,7 +1200,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     UnicodeIO.writeString(out, str);
                 }
                 out.close();
-                JOptionPane.showMessageDialog(null, "Files where saved successfully");
+                JOptionPane.showMessageDialog(null, "The file was successfully saved");
             } catch (IOException ex) {
                 Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }
