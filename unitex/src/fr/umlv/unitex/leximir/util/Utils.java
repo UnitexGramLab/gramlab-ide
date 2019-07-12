@@ -231,9 +231,12 @@ public class Utils {
         
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
         	
-        	  OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
-          	new File(DictionaryPath.delafPath+File.separator+ "DelafTmp.dic").createNewFile();
-       
+        	File tmp = File.createTempFile("DELASTmp", ".dic",new File(DictionaryPath.allDelas));
+        	OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(tmp));
+        	        	
+          	File result = new File(DictionaryPath.delafPath+File.separator+ "DelafTmp.dic");
+          	result.createNewFile();
+          	
             UnicodeIO.writeString(out, lemma);
             UnicodeIO.writeString(out, ",");
             UnicodeIO.writeString(out, fst);
@@ -241,7 +244,7 @@ public class Utils {
 
             String[] command = {
                 DictionaryPath.unitexLoggerPath, "MultiFlex",
-                DictionaryPath.allDelas +File.separator+ "DelasTmp.dic",
+                tmp.getAbsolutePath(),
                 "-o", DictionaryPath.delafPath +File.separator+ "DelafTmp.dic",
                 "-a", DictionaryPath.alphabetPath,
                 "-d", DictionaryPath.inflectionPath,
@@ -257,10 +260,10 @@ public class Utils {
             while (isProcessAlive(p)) {
                 continue;
             }
-            new File(DictionaryPath.allDelas + File.separator+ "DelasTmp.dic").delete();
+            tmp.delete();
 
             GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-                    .newDelaFrame(new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic"));
+                    .newDelaFrame(result);
 
         } else {
         	JOptionPane.showMessageDialog(null, "The graph " + fst + ".grf was not found.");
