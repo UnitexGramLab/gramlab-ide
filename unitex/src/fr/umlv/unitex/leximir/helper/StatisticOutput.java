@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
 import fr.umlv.unitex.leximir.delac.EditorDelac;
 import fr.umlv.unitex.leximir.delas.EditorDelas;
 import fr.umlv.unitex.leximir.model.DictionaryPath;

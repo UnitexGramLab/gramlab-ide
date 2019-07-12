@@ -67,8 +67,7 @@ public class DelasHelper {
      */
     public static Object[][] getAllDelasFromDicToObject(boolean allDelas,File dic) throws FileNotFoundException, IOException {
         List<String> list= new ArrayList<>();
-
-    	
+      
         if(allDelas){
             list = getDicDelasPath(DictionaryPath.allDelas);
         }
@@ -101,17 +100,13 @@ public class DelasHelper {
             String pOs,lemma,fSTCode,SynSem,comment,lemmaInv;
             
             String dicFile=dela;
-            /*if(!allDelas) {
-            	
-            }*/
-            //String path = Utils.getValueXml("pathDelas")+"/"+dela;
+          
             String path = "";
             if(allDelas)
             	path = DictionaryPath.allDelas+File.separator+dela;
             else {
 	            path = dela;
 	           	            
-	            //The purpose of the next line is to print only the name of the dictionary instead of the absolute path which if more readable
 	            dicFile = new File(path).getName();
 	            
 	        }

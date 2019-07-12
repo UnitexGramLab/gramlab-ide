@@ -387,7 +387,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
 
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -457,7 +456,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jLabel10.setText("FST Code");
 
         jLabel9.setText("Lemma");
-        
 
         jButtonClear.setText("Clear");
         jButtonClear.addActionListener(new java.awt.event.ActionListener() {
@@ -886,9 +884,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {
     	
         Map<String, List<String>> data = new HashMap<>();
-       // Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
         HashMap<String, HashMap<String, String>> results = new HashMap<>();
-        
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
             String SynSem = (String) this.getjTable1().getValueAt(i, 3);
             String pos = (String) this.getjTable1().getValueAt(i, 0);
@@ -942,84 +938,12 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             	v++;
             }
         } 
-           
-       /* for (Map.Entry<String, Object[]> t : statSimSem.entrySet()) {
-            System.out.println(t.getKey() + " -> " + Arrays.asList(t.getValue()));
-        }*/
-
+                  
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                      .newStatisticOutput(statSimSem, true);
             
    }
-            /*
-            for (Map.Entry<String, HashMap<String, HashMap<String, String>>> t : dataForSynSem2.entrySet()) {
-                String key = t.getKey();
-                for (Map.Entry<String, HashMap<String, String>> y : t.getValue().entrySet()) {
-                    for (Map.Entry<String, String> u : y.getValue().entrySet()) {
-                        statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(), u.getKey(), u.getValue()});
-                        v++;
-                    }
-                }
-            }*/
             
-            
-           
-             /*
-            String SynSemForPos = (String) this.getjTable1().getValueAt(i, 3);
-            String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
-            String realSynSem = "";
-            realSynSem = domain[domain.length - 1];
-            String domainCategory = "";
-            
-            try {
-                domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
-            } catch (java.lang.ArrayIndexOutOfBoundsException e) {
-                try {
-                    domainCategory = SynSemForPos.split("=")[1];
-                } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
-                    if (!SynSemForPos.equals("")) {
-                        domainCategory = SynSemForPos.substring(1);
-                    }
-                }
-            }
-            if (!dataForSynSem2.containsKey(pos)) {
-                dataForSynSem2.put(pos, new HashMap<String, HashMap<String, String>>());
-                dataForSynSem2.get(pos).put(realSynSem, new HashMap<String, String>());
-                dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-            } else {
-                if (!dataForSynSem2.get(pos).containsKey(realSynSem)) {
-                    dataForSynSem2.get(pos).put(realSynSem, new HashMap<String, String>());
-                    dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-                } else {
-                    if (!dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
-                        dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-                    } else {
-                        int count = Integer.parseInt(dataForSynSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
-                        //dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
-                        if (dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
-                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, String.valueOf(count));
-                        }
-                    }
-                }
-            }
-        }
-
-        Map<String, Object[]> statSimSem = new HashMap<>();
-        int v = 2;
-        for (Map.Entry<String, HashMap<String, HashMap<String, String>>> t : dataForSynSem2.entrySet()) {
-            String key = t.getKey();
-            for (Map.Entry<String, HashMap<String, String>> y : t.getValue().entrySet()) {
-                for (Map.Entry<String, String> u : y.getValue().entrySet()) {
-                    statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(), u.getKey(), u.getValue()});
-                    v++;
-                }
-            }
-        }
-        
-        
-
-    }*/
-
     private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();

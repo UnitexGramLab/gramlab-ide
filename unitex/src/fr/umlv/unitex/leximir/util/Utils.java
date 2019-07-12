@@ -46,9 +46,7 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
-
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -164,8 +162,6 @@ public class Utils {
         	Encoding e = ConfigManager.getManager().getEncoding(null);
             OutputStreamWriter out = e.getOutputStreamWriter(new File(filename));
             UnicodeIO.writeString(out, sb.toString());
-        	/*OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
-        	UnicodeIO.writeString(out, sb.toString());*/
             out.close();
             isDone = true;
         } finally {
@@ -235,14 +231,9 @@ public class Utils {
         
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
         	
-        	OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
-        	//OutputStreamWriter out = e.getOutputStreamWriter(new File(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
-        	
-        	new File(DictionaryPath.delafPath+File.separator+ "DelafTmp.dic").createNewFile();
-        	
-        //	OutputStreamWriter outf= new OutputStreamWriter(new FileOutputStream());
-        //	outf.close();
-        	
+        	  OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
+          	new File(DictionaryPath.delafPath+File.separator+ "DelafTmp.dic").createNewFile();
+       
             UnicodeIO.writeString(out, lemma);
             UnicodeIO.writeString(out, ",");
             UnicodeIO.writeString(out, fst);
@@ -267,15 +258,7 @@ public class Utils {
                 continue;
             }
             new File(DictionaryPath.allDelas + File.separator+ "DelasTmp.dic").delete();
-            
-            /*This is for testing ---
-            if (new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic").exists()) {
-            	JOptionPane.showMessageDialog(null, "DELAF WAS CREATED");
-            }else {
-            	JOptionPane.showMessageDialog(null, "DELAF DOES NOT EXIST !!!! ");
-            }
-            ---*/
-            
+
             GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
                     .newDelaFrame(new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic"));
 

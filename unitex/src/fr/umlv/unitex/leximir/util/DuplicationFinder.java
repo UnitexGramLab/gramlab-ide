@@ -52,7 +52,6 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
     public DuplicationFinder(JTable src) {
 
         jtableSrc = src;
-        
         jtableRes = new JTable();
         jtableRes.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
@@ -91,20 +90,6 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
         dialog.setVisible(true);
         
     }
-    /*
-    public static boolean areAllTrue(String[] text1, String[] text2) {
-        int numberSame = 0;
-        for (String a : text1) {
-            for (String b : text2) {
-                if (a.equals(b)) {
-                    numberSame++;
-                    break;
-                }
-            }
-        }
-        return numberSame == text1.length || numberSame == text1.length - 1;
-    }
-    */
     
     /**
      * This function search the table for any duplicate values and 
@@ -119,15 +104,12 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
             String fst = jtableSrc.getValueAt(i, 2).toString();
             String SynSem = jtableSrc.getValueAt(i, 3).toString();
             String dic = jtableSrc.getValueAt(i, 7).toString();
-           /* String[] SynSems = SynSem.split("(=)|(\\+=)");*/
             for (int j = i + 1; j < jtableSrc.getRowCount(); j++) {
                 String lemaCompare = jtableSrc.getValueAt(j, 1).toString();
                 String fstCompare = jtableSrc.getValueAt(j, 2).toString();
                 String SynSemCompare = jtableSrc.getValueAt(j, 3).toString();
                 String dicCompare = jtableSrc.getValueAt(j, 7).toString();
-                /*String[] SynSemCompares = SynSemCompare.split("()=|(\\+=)");*/
-                if (lemaCompare.equals(lema) && fstCompare.equals(fst)
-                        /*&& areAllTrue(SynSems, SynSemCompares)*/) {
+                if (lemaCompare.equals(lema) && fstCompare.equals(fst)) {
                     Object[] rowCompare = new Object[]{j, lemaCompare, fstCompare, SynSemCompare, dicCompare};
                     Object[] row = new Object[]{i, lema, fst, SynSem, dic};
                     tableModel.addRow(row);
@@ -135,8 +117,6 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
                 }
             }
         }
-        
-        
         jtableRes.repaint();
         return 0;
 

@@ -116,16 +116,6 @@ public class CsvOpener extends javax.swing.JInternalFrame {
             @Override  public int compare(Vector<String> v1, Vector<String> v2) {
                 return v1.get(0).compareTo(v2.get(0)); 
         }});
-    	/*
-    	String pos = vectors.get(1).get(0);
-    	Integer lastPos = 1;
-    	for(int index = 2; index < vectors.size(); index++) {
-    		if(!pos.equals(vectors.get(index).get(0))) {
-    			innerSort(vectors,lastPos,index-1);
-    			pos = vectors.get(index).get(0);
-    			lastPos = index;
-    		}
-    	}*/
     }
     
     private void initComponents() {

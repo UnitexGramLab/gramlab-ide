@@ -250,6 +250,7 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
+
     public StatisticOutput newStatisticOutput(List<Object[]> dicPos, boolean isDelas) {
         final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos, isDelas);
         if (d == null) {

@@ -1249,7 +1249,6 @@ public final class EditorDelac extends javax.swing.JInternalFrame {
     	statisticDirectory = folder;
     }
 
-    
     public boolean getUnsaved() {
         return unsaved;
     }
