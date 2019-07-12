@@ -920,7 +920,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             		results.get(pos).put(elem, "1");
             	} else {
             		int count = Integer.parseInt(results.get(pos).get(elem)) + 1;
-            		results.get(pos).replace(elem, String.valueOf(count));
+            		results.get(pos).put(elem, String.valueOf(count));
             	}            	
         	}
             data.clear();
