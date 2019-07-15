@@ -196,7 +196,7 @@ public class ChooseDelac extends javax.swing.JInternalFrame {
             }
         } else {
         	File dic = new File(jTextField1.getText());
-        	/* This if checks if the user used the option of opening only one dictionary with "Browse" but didn't select any dictionary*/
+        	/* This checks if the user used the option of opening only one dictionary with "Browse" but didn't select any dictionary*/
         	if(dic.toString().isEmpty()) {
             	JOptionPane.showMessageDialog(null, "No dictionary selected");
             	return;
