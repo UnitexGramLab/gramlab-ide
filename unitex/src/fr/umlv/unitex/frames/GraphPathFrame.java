@@ -428,8 +428,8 @@ public class GraphPathFrame extends JInternalFrame {
                 cmd = cmd.noLoopCheck();
         }
         if (ConfigManager.getManager().isKorean(null)) {
-			cmd = cmd.korean();
-		}
+                cmd = cmd.korean();
+        }
         if (ignoreOutputsButton.isSelected()) {
                 cmd = cmd.ignoreOutputs();
         } else {
