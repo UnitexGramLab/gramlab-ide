@@ -233,9 +233,8 @@ public class Utils {
         	
         	File tmp = File.createTempFile("DELASTmp", ".dic",new File(DictionaryPath.allDelas));
         	OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(tmp));
-        	        	
-          	File result = new File(DictionaryPath.delafPath+File.separator+ "DelafTmp.dic");
-          	result.createNewFile();
+        	   
+        	File result = File.createTempFile("DelafTmp", ".dic",new File(DictionaryPath.delafPath));
           	
             UnicodeIO.writeString(out, lemma);
             UnicodeIO.writeString(out, ",");
@@ -245,7 +244,7 @@ public class Utils {
             String[] command = {
                 DictionaryPath.unitexLoggerPath, "MultiFlex",
                 tmp.getAbsolutePath(),
-                "-o", DictionaryPath.delafPath +File.separator+ "DelafTmp.dic",
+                "-o", DictionaryPath.delafPath +File.separator+ result.getName(),
                 "-a", DictionaryPath.alphabetPath,
                 "-d", DictionaryPath.inflectionPath,
                 "-q", e.toString()
