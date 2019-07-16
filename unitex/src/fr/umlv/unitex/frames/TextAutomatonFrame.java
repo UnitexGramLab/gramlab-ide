@@ -802,6 +802,7 @@ public class TextAutomatonFrame extends TfstFrame {
 	 * Shows the frame
 	 */
 	boolean loadTfst() {
+		//TODO
 		text_tfst = new File(Config.getCurrentSntDir(), "text.tfst");
 		if (!text_tfst.exists()) {
 			return false;
@@ -821,6 +822,8 @@ public class TextAutomatonFrame extends TfstFrame {
 		sentence_count_label.setText(s);
 		spinnerModel.setMaximum(sentence_count);
 		spinnerModel.setValue(new Integer(1));
+		for(int i = 1; i < getSentenceCount(); i++) 
+			graphicalZone.clearStateSelection(i);
 		if (sentence_count == 1) {
 			/*
 			 * The sentence_count!=1, spinnerModel.setValue does the job.
