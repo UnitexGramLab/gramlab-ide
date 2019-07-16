@@ -664,13 +664,17 @@ public class TaggingModel {
 				
 				context.space = false;
 		}
+		
 		if(hasSpace)
 			return 2;
 		
 		for (Context context : lstContext) {
 			if(context.pos == 0) {
-				return boxes[sortedNodes[context.path.get(context.currentBox)]].getBounds().getStart_in_tokens() -
-						boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds().getEnd_in_tokens();
+				if(boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds() != null)
+					return boxes[sortedNodes[context.path.get(context.currentBox)]].getBounds().getStart_in_tokens() -
+							boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds().getEnd_in_tokens();
+				else
+					return boxes[sortedNodes[context.path.get(context.currentBox)]].getBounds().getStart_in_tokens();
 		
 			}
 		}
@@ -806,14 +810,6 @@ public class TaggingModel {
 				path.delete(startPath, path.length());
 			}
 		}
-	}
-	
-	/* Display all elements of the HashMap 'tokens' */
-	void displayTokensHash() {
-		System.out.println("Display tokens");
-		tokens.keySet().forEach(x -> {
-			System.out.println("Key : " + x + " tokens[" + x + "] = " + tokens.get(x) + tokens.get(x).size());
-		});	
 	}
 	
 	/* Return the text contains in the box */
