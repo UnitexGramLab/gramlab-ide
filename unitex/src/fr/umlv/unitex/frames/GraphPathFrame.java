@@ -22,6 +22,7 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -425,6 +426,9 @@ public class GraphPathFrame extends JInternalFrame {
         }
         if ( !checkLoopsCheckbox.isSelected() ) {
                 cmd = cmd.noLoopCheck();
+        }
+        if (ConfigManager.getManager().isKorean(null)) {
+                cmd = cmd.korean();
         }
         if (ignoreOutputsButton.isSelected()) {
                 cmd = cmd.ignoreOutputs();
