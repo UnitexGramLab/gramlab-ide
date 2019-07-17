@@ -563,6 +563,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(jPanel1);
 
         jMenuNew.setText("New");
+        jMenuNew.addMouseListener(new java.awt.event.MouseAdapter() {            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuNew.doClick();
+            }
+        });
 
         jMenuItemInsertBefore.setText("Insert before");
         jMenuItemInsertBefore.addActionListener(new java.awt.event.ActionListener() {
@@ -577,6 +582,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemInsertActionPerformed(evt,"insertAfter");
             }
+
         });
         jMenuNew.add(jMenuItemInsertAfter);
 
@@ -587,6 +593,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuBeforeAfterMouseClicked(evt,"copyBefore");
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuBefore.doClick();
+            }
         });
         jMenuBar1.add(jMenuBefore);
 
@@ -594,6 +604,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuAfter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuBeforeAfterMouseClicked(evt,"copyAfter");
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuAfter.doClick();
             }
         });
         jMenuBar1.add(jMenuAfter);
@@ -603,6 +617,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuViewEditMouseClicked(evt,"edit");
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuEdit.doClick();
+            }
         });
         jMenuBar1.add(jMenuEdit);
 
@@ -610,6 +628,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuViewEditMouseClicked(evt,"view");
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuView.doClick();
             }
         });
         jMenuBar1.add(jMenuView);
@@ -619,6 +641,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuDeleteMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuDelete.doClick();
+            }
         });
         jMenuBar1.add(jMenuDelete);
 
@@ -626,6 +652,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuInflect.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuInflectMouseClicked(evt);
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuInflect.doClick();
             }
         });
         jMenuBar1.add(jMenuInflect);
@@ -635,6 +665,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuDuplicateMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuDuplicate.doClick();
+            }
         });
         jMenuBar1.add(jMenuDuplicate);
 
@@ -642,6 +676,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuStatisticsMouseClicked(evt);
+            } 
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuStatistics.doClick();
             }
         });
 
@@ -652,6 +690,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuSaveMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuSave.doClick();
+            }
         });
         jMenuBar1.add(jMenuSave);
 
@@ -660,6 +702,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuSaveAsMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuSaveAs.doClick();
+            }
         });
         jMenuBar1.add(jMenuSaveAs);
 
@@ -667,6 +713,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuExit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuExitMouseClicked(evt);
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuExit.doClick();
             }
         });
         jMenuBar1.add(jMenuExit);

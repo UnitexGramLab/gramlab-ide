@@ -27,9 +27,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import fr.umlv.unitex.leximir.delac.EditorDelac;
 import fr.umlv.unitex.leximir.delas.EditorDelas;
-import fr.umlv.unitex.leximir.model.DictionaryPath;
 import fr.umlv.unitex.leximir.util.Utils;
 
 /**
@@ -42,11 +40,8 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
     
     Map<String, Object[]> statSimSem;
     
-    private boolean isDelas;  //isDelas tells the Statistic class if the stats are being made for the delas editor or the delac editor, true for delas and false for delac 
-    
     public StatisticOutput(List<Object[]> dicPos, boolean isDelas) {
         super("Set output folder", true, true, true, true);
-        this.isDelas = isDelas;
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dicPos=dicPos;
@@ -54,7 +49,6 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
     }
     public StatisticOutput(Map<String, Object[]> statSimSem2, boolean isDelas) {
         super("Set output folder", true, true, true, true);
-        this.isDelas = isDelas;
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dicPos=null;
@@ -71,12 +65,8 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         String outputStatsFile;
         
-        if(isDelas == true) {
-        	outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
-        }else {
-        	outputStatsFile = EditorDelac.getStatisticDirectory()+"statisticsTmp.csv";
-        }
-
+        outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTextField1.setText(outputStatsFile); 

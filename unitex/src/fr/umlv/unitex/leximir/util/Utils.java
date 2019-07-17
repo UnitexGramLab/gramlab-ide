@@ -27,29 +27,20 @@ import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.leximir.helper.DelacHelper;
-import java.awt.HeadlessException;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 /**
@@ -181,14 +172,7 @@ public class Utils {
         return new Object[]{pOs, lemma, fstCode, SynSem, comment, lemmaInv, lemmaId, Dicname};
     }
 
-    public static Object[] delacToObject(String lemma, String fstCode, String synSem, String comment, String Dicname) {
-        String line = lemma + "," + fstCode + synSem + "/" + comment;
-        String pOs = DelacHelper.getPosInDelac(line);
-        String lema = DelacHelper.getLemaInLemaAllDelac(lemma);
-        return new Object[]{pOs, lemma, lema, fstCode, synSem, comment, "", Dicname};
-    }
-
-    /**
+   /**
      * this function open terminal and run command
      *
      * @param command
@@ -269,48 +253,5 @@ public class Utils {
             throw new FileNotFoundException(" FST Graph doesn't exist");
         }
 
-    }
-
-    /**
-     * This function generate delaf from an entry of delas(c) into snt_txt/dlf
-     *
-     * @param value entry of delas(c)
-     * @throws IOException
-     * @throws HeadlessException
-     */
-    public static void generateDelaf(String value) throws IOException, HeadlessException {
-        String tempPath = DictionaryPath.delafTmpPathDelac;
-        try (OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(tempPath))) {
-            UnicodeIO.writeString(out,value + ".");
-            out.close();
-        }
-        String snt = tempPath.replace(".txt", ".snt");
-        try (OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(snt))) {
-            UnicodeIO.writeString(out,value + ".");
-            out.close();
-        }
-        String[] cmd1 = {DictionaryPath.unitexLoggerPath, "Normalize", DictionaryPath.delafTmpAbsPathDelac + "text.txt"};
-        String[] cmd2 = {DictionaryPath.unitexLoggerPath, "Tokenize", DictionaryPath.delafTmpAbsPathDelac + "text.snt", "-a", DictionaryPath.alphabetPath};
-        List<String> allDela = new ArrayList<>();
-        File folder = new File(DictionaryPath.allDelafAbsPath);
-        File[] listOfFiles = folder.listFiles();
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                if (file.getName().endsWith(".bin")) {
-                    allDela.add(DictionaryPath.allDelafAbsPath + file.getName());
-                }
-            }
-        }
-        String[] cmdTmp = {DictionaryPath.unitexLoggerPath, "Dico", "-t", DictionaryPath.delafTmpAbsPathDelac + "text.snt", "-a", DictionaryPath.alphabetPath};
-        String[] cmd3 = new String[cmdTmp.length + allDela.size()];
-        System.arraycopy(cmdTmp, 0, cmd3, 0, cmdTmp.length);
-        int indiceCmd = cmdTmp.length;
-        for (String alldela : allDela) {
-            cmd3[indiceCmd] = alldela;
-            indiceCmd++;
-        }
-        Utils.runCommandTerminal(cmd1);
-        Utils.runCommandTerminal(cmd2);
-        Utils.runCommandTerminal(cmd3);
     }
 }
