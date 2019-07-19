@@ -216,7 +216,7 @@ public class Utils {
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
         	
         	File tmp = File.createTempFile("DELASTmp", ".dic",new File(DictionaryPath.allDelas));
-        	OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(tmp));
+        	OutputStreamWriter out= e.getOutputStreamWriter(tmp);
         	   
         	File result = File.createTempFile("DelafTmp", ".dic",new File(DictionaryPath.delafPath));
           	
@@ -243,6 +243,7 @@ public class Utils {
             while (isProcessAlive(p)) {
                 continue;
             }
+            
             tmp.delete();
 
             GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
