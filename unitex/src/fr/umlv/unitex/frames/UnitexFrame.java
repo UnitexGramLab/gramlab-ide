@@ -719,9 +719,7 @@ public class UnitexFrame extends JFrame {
 	AbstractAction inflect;
 	AbstractAction delasLeximir;
 	AbstractAction confDelaLeximir;
-	AbstractAction delacStrategyLeximir;
 	AbstractAction shellLeximir;
-	AbstractAction delacLeximir;
 	AbstractAction compressIntoFST;
 	AbstractAction closeDela;
 

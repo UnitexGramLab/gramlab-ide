@@ -119,7 +119,7 @@ public class DelasHelper {
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
                 Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, lemmaId, dicFile);
-                delacToObject(ob, k, tmp);
+                delasToObject(ob, k, tmp);
                 k++;
                 lemmaId=lemmaId+1;
                 
@@ -128,7 +128,7 @@ public class DelasHelper {
         return ob;
     }
 
-    private static void delacToObject(Object[][] ob, int k, Delas tmp) {
+    private static void delasToObject(Object[][] ob, int k, Delas tmp) {
         ob[k][0]=tmp.getpOS();
         ob[k][1]=tmp.getLemma();
         ob[k][2]=tmp.getfSTCode();
