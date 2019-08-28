@@ -252,7 +252,7 @@ public class GraphDecorator {
 	
 	public Color getBoxBackgroundColor(int boxNumber, Color c) {
 		// If the background isn't already set from TfstGraphBox for untagged korean tokens
-		// This case may happen when a token is both untagged and SELECTED
+		// This case may happen when a token is both untagged and PREFERRED
 		if (model != null && c != GraphDecoratorConfig.UNTAGGED_TOKEN_COLOR) {
 			// Displaying a different background color when the graph is linear
 			if (model.isLinearTfst()) {

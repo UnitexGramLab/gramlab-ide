@@ -663,7 +663,7 @@ public class LemmatizeFrame extends TfstFrame {
 					loadSentence(n);
 					final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
 					for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
-						if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
+						if (graphicalZone.isBoxNotPreferred((TfstGraphBox) gb)) {
 							boxes.add(gb);
 						}
 					}

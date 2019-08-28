@@ -101,7 +101,7 @@ public class TaggingModel {
 				 */
 				resetModel();
 			} else {
-				updateNodes();
+				 updateNodes();
 			}
 		}
 	}
@@ -123,10 +123,10 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
-		updateNodes();
+		 updateNodes();
 	}
 
-	private void updateNodes() {
+	private void  updateNodes() {
 		if (boxes.length == 0)
 			return;
 		/*
@@ -140,7 +140,7 @@ public class TaggingModel {
 		/* And finally, we can mark as preferred all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
 			if (factorization[i] || taggingStates[i] == TaggingState.PREFERRED) {
-				selectBox(boxes[i]);
+				preferBox(boxes[i]);
 			}
 		}
 	}
@@ -307,18 +307,18 @@ public class TaggingModel {
 
 	
 	
-	public void selectBox(TfstGraphBox b) {
+	public void preferBox(TfstGraphBox b) {
 		final int n = getBoxIndex(b);
 		if (n == -1)
 			throw new IllegalStateException(
-					"Should not be selecting an unknown box");
+					"Should not be preffering an unknown box");
 		preferBox(n);
 	}
 	
 	public void preferBox(int n) {
 		if (taggingStates[n] == TaggingState.USELESS) {
 			/*
-			 * There is no point in selecting a box that cannot be part the
+			 * There is no point in preferring a box that cannot be part the
 			 * final remaining path
 			 */
 			return;
@@ -334,7 +334,7 @@ public class TaggingModel {
 	}
 
 	/**
-	 * Once we have set n as a selected box, we look if all its outgoing
+	 * Once we have set n as a preferred box, we look if all its outgoing
 	 * transitions point to NOT_PREFERRED states. If so, those states are
 	 * recursively made neutral.
 	 */
@@ -361,8 +361,8 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If there is only one outgoing transition from a selected state, then this
-	 * state must be selected as well.
+	 * If there is only one outgoing transition from a preferred state, then this
+	 * state must be preferred as well.
 	 */
 	private void contaminateFollowers2(int n, int limit) {
 		if (n == limit)
@@ -376,7 +376,7 @@ public class TaggingModel {
 	}
 
 	/**
-	 * Once we have set n as a selected box, we look if all its incoming
+	 * Once we have set n as a preferred box, we look if all its incoming
 	 * transitions point to NOT_PREFERRED states. If so, those states are
 	 * recursively made neutral.
 	 */
@@ -398,8 +398,8 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If there is only one incoming transition from a selected state, then this
-	 * state must be selected as well.
+	 * If there is only one incoming transition from a preferred state, then this
+	 * state must be preferred as well.
 	 */
 	private void contaminateAncestors2(int n, int limit,
 			ArrayList<Integer>[] reverse) {
@@ -432,7 +432,7 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If we select a box that is not a factorization node, then we have to
+	 * If we prefer a box that is not a factorization node, then we have to
 	 * update the state of boxes on alternative paths
 	 */
 	private void updateAlternativePaths(int boxIndex) {
@@ -447,7 +447,7 @@ public class TaggingModel {
 		}
 		/*
 		 * We have marked candidates, but now we have to unmark states that can
-		 * be reached from the selected box
+		 * be reached from the preferred box
 		 */
 		update(a, b, boxIndex, toBeKept, visited);
 		/*
@@ -479,7 +479,7 @@ public class TaggingModel {
 	}
 
 	/**
-	 * current and limit are nodes and n is a selected box. current will be mark
+	 * current and limit are nodes and n is a preferred box. current will be mark
 	 * as NOT_PREFERRED if there is no path from it n.
 	 */
 	private boolean update(int current, int limit, int n, boolean[] toBeKept,
