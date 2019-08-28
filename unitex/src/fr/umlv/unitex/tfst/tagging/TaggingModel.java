@@ -311,14 +311,14 @@ public class TaggingModel {
 		final int n = getBoxIndex(b);
 		if (n == -1)
 			throw new IllegalStateException(
-					"Should not be preffering an unknown box");
+					"Should not be preferring an unknown box");
 		preferBox(n);
 	}
 	
 	public void preferBox(int n) {
 		if (taggingStates[n] == TaggingState.USELESS) {
 			/*
-			 * There is no point in preferring a box that cannot be part the
+			 * There is no point in preferring a box that cannot be part of the
 			 * final remaining path
 			 */
 			return;
@@ -361,7 +361,7 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If there is only one outgoing transition from a preferred state, then this
+	 * If there is only one outgoing transition into a preferred state, then this
 	 * state must be preferred as well.
 	 */
 	private void contaminateFollowers2(int n, int limit) {
@@ -591,7 +591,7 @@ public class TaggingModel {
 						selectedOutgoing = destIndex;
 					} else {
 						/*
-						 * It's the second transition to a selected or neutral
+						 * It's the second transition to a preferred or neutral
 						 * state, so we don't have a linear automaton
 						 */
 						return false;
