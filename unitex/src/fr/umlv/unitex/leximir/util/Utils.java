@@ -105,7 +105,7 @@ public class Utils {
      * @param dicPos is the list of the element to export
      * @param filename the name of the csv file
      */
-    public static void exportJtableToCsv(List<Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
+    public static void exportJtableToCsv(List<Object[]> dicPos, String filename, String title) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         for (Object[] tab : dicPos) {
             for (Object obj : tab) {
@@ -123,13 +123,13 @@ public class Utils {
         } finally {
             if (isDone) {
                 GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                        .newCsvOpener(filename);
+                        .newCsvOpener(filename, title);
 
             }
         }
     }
 
-    public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename) throws IOException, FileNotFoundException {
+    public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename, String title) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         int i = 0;
         sb.append("POS;Markers;Count\n");
@@ -158,7 +158,7 @@ public class Utils {
         } finally {
             if (isDone) {
                 GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                        .newCsvOpener(filename);
+                        .newCsvOpener(filename, title);
 
             }
         }
