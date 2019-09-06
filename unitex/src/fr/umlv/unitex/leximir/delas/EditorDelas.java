@@ -1142,19 +1142,33 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         this.getjTable1().removeAll();
         List<RowFilter<Object, Object>> filters = new ArrayList<>();
         if (pos.length() != 0) {
+        	if (!pos.contains(".") && !pos.contains("$") && !pos.contains("[") && !pos.contains("]")) {
+        		pos = "^" + pos;
+        	}
             filters.add(RowFilter.regexFilter(pos, 0));
         }
         if (lemma.length() != 0) {
-
+        	if (!lemma.contains(".") && !lemma.contains("$") && !lemma.contains("[") && !lemma.contains("]")) {
+        		lemma = "^" + lemma;
+        	}
             filters.add(RowFilter.regexFilter(lemma, 1));
         }
         if (fst.length() != 0) {
+        	if (!fst.contains(".") && !fst.contains("$") && !fst.contains("[") && !fst.contains("]")) {
+        		fst = "^" + fst;
+        	}
             filters.add(RowFilter.regexFilter(fst, 2));
         }
         if (SynSem.length() != 0) {
+        	if (!SynSem.contains(".") && !SynSem.contains("$") && !SynSem.contains("[") && !SynSem.contains("]")) {
+        		SynSem = "^" + SynSem;
+        	}
             filters.add(RowFilter.regexFilter(SynSem, 3));
         }
         if (comment.length() != 0) {
+        	if (!comment.contains(".") && !comment.contains("$") && !comment.contains("[") && !comment.contains("]")) {
+        		comment = "^" + comment;
+        	}
             filters.add(RowFilter.regexFilter(comment, 4));
         }
         RowFilter<Object, Object> rf = RowFilter.andFilter(filters);
