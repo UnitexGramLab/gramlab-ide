@@ -166,10 +166,10 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         	}
 	        if(this.dicPos==null){
 	        	/*This is the stats by POS and markers*/
-	            Utils.exportStatAllToCsv(statSimSem,filename,"Statistics by POS and by Markers");
+	            Utils.exportStatAllToCsv(statSimSem,filename,"Statistics by POS and SynSem Feature");
 	        }else{
 	        	/*This is the stats by filename and POS*/
-	            Utils.exportJtableToCsv(this.dicPos,filename,"Statistics by Filename and by POS");
+	            Utils.exportJtableToCsv(this.dicPos,filename,"Statistics by filename and POS");
 	            }
 	        this.setVisible(false);
         } catch (IOException ex) {

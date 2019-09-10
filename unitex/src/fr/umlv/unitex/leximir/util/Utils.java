@@ -107,12 +107,15 @@ public class Utils {
      */
     public static void exportJtableToCsv(List<Object[]> dicPos, String filename, String title) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
+        sb.append("filename;POS;count\n");
+        dicPos.remove(0);
         for (Object[] tab : dicPos) {
             for (Object obj : tab) {
                 sb.append(obj.toString() + ";");
             }
             sb.append("\n");
         }
+        
         boolean isDone = false;
         try {
         	Encoding e = ConfigManager.getManager().getEncoding(null);
@@ -132,7 +135,7 @@ public class Utils {
     public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename, String title) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         int i = 0;
-        sb.append("POS;Markers;Count\n");
+        sb.append("POS;SynSem;count\n");
         Set<String> keysets = simSem.keySet();
         for (String key : keysets) {
             Object[] objArr = simSem.get(key);

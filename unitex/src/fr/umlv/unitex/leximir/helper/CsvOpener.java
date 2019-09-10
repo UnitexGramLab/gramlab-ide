@@ -32,9 +32,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -62,9 +64,12 @@ public class CsvOpener extends javax.swing.JInternalFrame {
         
         RowSorter<DefaultTableModel> sort = new TableRowSorter<>(tableModel);
         table.setRowSorter(sort);
-                
+        
         table.setModel(tableModel);
         table.setRowHeight(20);
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.setContentPane(scrollpane);

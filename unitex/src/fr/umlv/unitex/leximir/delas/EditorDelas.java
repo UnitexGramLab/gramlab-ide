@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -174,7 +175,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldSynSem = new javax.swing.JTextField();
         jButtonGraph = new javax.swing.JButton();
-        jButtonAll = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldLemmaInv = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -210,6 +210,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuNew = new javax.swing.JMenu();
         jMenuItemInsertBefore = new javax.swing.JMenuItem();
         jMenuItemInsertAfter = new javax.swing.JMenuItem();
+        jMenuItemStatsFilePOS = new javax.swing.JMenuItem();
+        jMenuItemStatsPOSMarker = new javax.swing.JMenuItem();
         jMenuBefore = new javax.swing.JMenu();
         jMenuAfter = new javax.swing.JMenu();
         jMenuEdit = new javax.swing.JMenu();
@@ -262,13 +264,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jButtonGraph.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGraphActionPerformed(evt);
-            }
-        });
-
-        jButtonAll.setText("Statistics on table");
-        jButtonAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAllActionPerformed(evt);
             }
         });
 
@@ -327,8 +322,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel4)
                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                 .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonAll)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel3Layout.createSequentialGroup()
@@ -372,7 +366,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                                         .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonGraph)
-                                        .addComponent(jButtonAll)
                                         .addComponent(jTextFieldLemmaInv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonMove)
                                         .addComponent(jComboBoxDic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -674,14 +667,26 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
         jMenuStatistics.setText("Statistics");
         jMenuStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuStatisticsMouseClicked(evt);
-            } 
-            
             public void mouseEntered(java.awt.event.MouseEvent e) {
             	jMenuStatistics.doClick();
             }
         });
+        
+        jMenuItemStatsFilePOS.setText("by filename and POS");
+        jMenuItemStatsFilePOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	jMenuStatisticsMouseClicked(evt);
+            }
+        });
+        jMenuStatistics.add(jMenuItemStatsFilePOS);
+        
+        jMenuItemStatsPOSMarker.setText("by POS and SynSem Feature");
+        jMenuItemStatsPOSMarker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAllActionPerformed(evt);
+            }
+        });
+        jMenuStatistics.add(jMenuItemStatsPOSMarker);
 
         jMenuBar1.add(jMenuStatistics);
 
@@ -748,16 +753,23 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         rowSorter = new TableRowSorter<>(tableModel);
         this.getjTable1().setRowSorter(rowSorter);
         this.getjTable1().removeAll();
-        if (text.length() == 0) {
-            rowSorter.setRowFilter(null);
-        } else {
-            rowSorter.setRowFilter(RowFilter.regexFilter(text));
+       
+        try {
+	        if (text.length() == 0) {
+	            rowSorter.setRowFilter(null);
+	        } else {
+	            rowSorter.setRowFilter(RowFilter.regexFilter(text));
+	        }
+        }catch(PatternSyntaxException e) {
+        	JOptionPane.showMessageDialog(null, "Error in regular expression");
+            return;
         }
+            
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
     }
 
-    private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {
+    private void jMenuStatisticsMouseClicked(java.awt.event.ActionEvent evt) {
 
         Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
@@ -1012,8 +1024,15 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         text = "^" + text;
                     }
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 0);// search in column at index 0
+                RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 0);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
+                
             }
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
@@ -1038,7 +1057,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 		text = "^" + text;
                 	}
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
+                RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 2);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1064,7 +1089,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         text = "." + text;
                     }
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 3);// search in column at index 0
+                RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 3);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1093,7 +1124,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                             text = "^" + text;
                         }
                     }
-                    RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// recherche avec la colonne indice 0
+                    RowFilter<Object, Object> rowFilter;
+                    try {
+                    	rowFilter = RowFilter.regexFilter(text, 1);
+                    }catch(PatternSyntaxException e) {
+                    	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                    	return;
+                    }
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
@@ -1122,7 +1159,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             			text = text + "$";
             		}
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
+            	RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 1);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1141,35 +1184,40 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         this.getjTable1().setRowSorter(rowSorter);
         this.getjTable1().removeAll();
         List<RowFilter<Object, Object>> filters = new ArrayList<>();
-        if (pos.length() != 0) {
-        	if (!pos.contains(".") && !pos.contains("$") && !pos.contains("[") && !pos.contains("]")) {
-        		pos = "^" + pos;
-        	}
-            filters.add(RowFilter.regexFilter(pos, 0));
-        }
-        if (lemma.length() != 0) {
-        	if (!lemma.contains(".") && !lemma.contains("$") && !lemma.contains("[") && !lemma.contains("]")) {
-        		lemma = "^" + lemma;
-        	}
-            filters.add(RowFilter.regexFilter(lemma, 1));
-        }
-        if (fst.length() != 0) {
-        	if (!fst.contains(".") && !fst.contains("$") && !fst.contains("[") && !fst.contains("]")) {
-        		fst = "^" + fst;
-        	}
-            filters.add(RowFilter.regexFilter(fst, 2));
-        }
-        if (SynSem.length() != 0) {
-        	if (!SynSem.contains(".") && !SynSem.contains("$") && !SynSem.contains("[") && !SynSem.contains("]")) {
-        		SynSem = "^" + SynSem;
-        	}
-            filters.add(RowFilter.regexFilter(SynSem, 3));
-        }
-        if (comment.length() != 0) {
-        	if (!comment.contains(".") && !comment.contains("$") && !comment.contains("[") && !comment.contains("]")) {
-        		comment = "^" + comment;
-        	}
-            filters.add(RowFilter.regexFilter(comment, 4));
+        try {
+	        if (pos.length() != 0) {
+	        	if (!pos.contains(".") && !pos.contains("$") && !pos.contains("[") && !pos.contains("]")) {
+	        		pos = "^" + pos;
+	        	}
+	            filters.add(RowFilter.regexFilter(pos, 0));
+	        }
+	        if (lemma.length() != 0) {
+	        	if (!lemma.contains(".") && !lemma.contains("$") && !lemma.contains("[") && !lemma.contains("]")) {
+	        		lemma = "^" + lemma;
+	        	}
+	            filters.add(RowFilter.regexFilter(lemma, 1));
+	        }
+	        if (fst.length() != 0) {
+	        	if (!fst.contains(".") && !fst.contains("$") && !fst.contains("[") && !fst.contains("]")) {
+	        		fst = "^" + fst;
+	        	}
+	            filters.add(RowFilter.regexFilter(fst, 2));
+	        }
+	        if (SynSem.length() != 0) {
+	        	if (!SynSem.contains(".") && !SynSem.contains("$") && !SynSem.contains("[") && !SynSem.contains("]")) {
+	        		SynSem = "^" + SynSem;
+	        	}
+	            filters.add(RowFilter.regexFilter(SynSem, 3));
+	        }
+	        if (comment.length() != 0) {
+	        	if (!comment.contains(".") && !comment.contains("$") && !comment.contains("[") && !comment.contains("]")) {
+	        		comment = "^" + comment;
+	        	}
+	            filters.add(RowFilter.regexFilter(comment, 4));
+	        }
+        }catch(PatternSyntaxException e) {
+        	JOptionPane.showMessageDialog(null, "Error in regular expression");
+        	return;
         }
         RowFilter<Object, Object> rf = RowFilter.andFilter(filters);
         rowSorter.setRowFilter(rf);
@@ -1266,7 +1314,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 out.close();
                 JOptionPane.showMessageDialog(null, "The file was successfully saved");
             } catch (IOException ex) {
-                Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
+            	Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -1293,7 +1341,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                             text = "^" + text;
                         }
                     }
-                    RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 4);// search in column at index 4
+                    RowFilter<Object, Object> rowFilter;
+                    try {
+                    	rowFilter = RowFilter.regexFilter(text, 4);
+                    }catch(PatternSyntaxException e) {
+                    	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                    	return;
+                    }
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
@@ -1306,7 +1360,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private javax.swing.JLabel Comment;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButtonAll;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonGraph;
     private javax.swing.JButton jButtonHelp;
@@ -1340,6 +1393,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JMenu jMenuInflect;
     private javax.swing.JMenuItem jMenuItemInsertAfter;
     private javax.swing.JMenuItem jMenuItemInsertBefore;
+    private javax.swing.JMenuItem jMenuItemStatsFilePOS;
+    private javax.swing.JMenuItem jMenuItemStatsPOSMarker;
     private javax.swing.JMenu jMenuNew;
     private javax.swing.JMenu jMenuSave;
     private javax.swing.JMenu jMenuSaveAs;

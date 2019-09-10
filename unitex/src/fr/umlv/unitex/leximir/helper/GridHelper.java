@@ -38,7 +38,7 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException {
         
-        String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Inv Lemma","Lemma ID","Dict. File"};
+        String[] entete = {"POS","Lemma","FST Code","SynSem Feature","Comment","Inv Lemma","Lemma ID","Dict. File"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
         return new DefaultTableModel(data,entete);
     }
