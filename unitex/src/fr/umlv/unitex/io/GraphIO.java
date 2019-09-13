@@ -1013,7 +1013,7 @@ public class GraphIO {
 						foo = "<E>";
 						N = 0;
 					}
-					if (!foo.equals("<E>")) {
+					if (i >= 2) {
 						if (g.getBounds() != null) {
 							foo = foo + "/" + g.getBounds();
 						} else {

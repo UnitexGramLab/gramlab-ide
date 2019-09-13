@@ -151,7 +151,7 @@ Printable {
 				if (boxSelected != -1) {
 					// if we click on a box
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
-					model.selectBox(b);
+					model.preferBox(b);
 				} else {
 //					if (selectedBoxes.size() == 1) {
 //						TfstGraphBox selected = (TfstGraphBox) selectedBoxes.get(0);
@@ -162,12 +162,21 @@ Printable {
 //						bounds.getStart_in_letters(), bounds.getEnd_in_tokens(), bounds.getEnd_in_chars(),
 //						bounds.getEnd_in_letters()));
 //					} else {
-					unSelectAllBoxes();
+					//unSelectAllBoxes();
 					// here we create a box on the mouse's click position
 					b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
 					// Coordinates set to zeros.
 					Bounds bounds = new Bounds(0, 0, 0, 0, 0, 0);
 					b.setBounds(bounds);
+					for(GenericGraphBox box : selectedBoxes) {
+						box.addTransitionTo(b);
+					}
+					unSelectAllBoxes();
+					b.setSelected(true);
+					postEdit(new SelectEdit(selectedBoxes));
+					selectedBoxes.add(b);
+					fireGraphTextChanged(b.getContent());
+					fireGraphChanged(false);
 				}
 			} else {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
@@ -518,8 +527,8 @@ Printable {
 		repaint();
 	}
 
-	public boolean isBoxToBeRemoved(TfstGraphBox box) {
-		return model.isToBeRemoved(box);
+	public boolean isBoxNotPreferred(TfstGraphBox box) {
+		return model.isNotPreferred(box);
 	}
 
 	public void clearStateSelection(int n) {

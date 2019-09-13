@@ -308,12 +308,12 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		super.drawOther(g, params);
 		if (bounds != null) {
-			  g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
+			 /*g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
 	      g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
 	      String boundsString = bounds.getStart_in_tokens() + ". " + bounds.getStart_in_chars() + ". " + bounds.getStart_in_letters()
 	        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
 	        + bounds.getEnd_in_letters();
-	     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());
+	     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());*/
 	    
 	    }
 		g.setComposite(c);

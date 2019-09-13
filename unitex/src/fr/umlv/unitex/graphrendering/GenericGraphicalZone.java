@@ -197,7 +197,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			int n = JOptionPane
 					.showOptionDialog(
 							null,
-							"Create box will unselect \"selected\" boxes, do you want to continue ?",
+							"Create box will unmark \"preferred\" boxes, do you want to continue ?",
 							"", JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null,
 							options_on_exit, options_on_exit[0]);
@@ -375,7 +375,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			int n = JOptionPane
 					.showOptionDialog(
 							null,
-							"Removing box will unselect \"selected\" boxes, do you want to continue ?",
+							"Removing box will unmark \"preferred\" boxes, do you want to continue ?",
 							"", JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null,
 							options_on_exit, options_on_exit[0]);
@@ -400,7 +400,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 
 	private boolean containsToBeRemoved(ArrayList<GenericGraphBox> graphBoxes2) {
 		for (GenericGraphBox genericGraphBox : graphBoxes2) {
-			if(genericGraphBox.state == TaggingState.TO_BE_REMOVED)
+			if(genericGraphBox.state == TaggingState.NOT_PREFERRED)
 				return true;
 		}
 		return false;
@@ -593,7 +593,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		final ArrayList<GenericGraphBox> editBoxes = new ArrayList<GenericGraphBox>();
 		for (i = 0; i < L; i++) {
 			g = selectedBoxes.get(i);
-			if (g.addTransitionTo(dest)) {
+			if (dest.type != GenericGraphBox.INITIAL && g.addTransitionTo(dest)) {
 				editBoxes.add(g);
 				lastTransitionBoxePrevious = g;
 				lastTransitionBoxeNext = dest;
@@ -755,10 +755,10 @@ public abstract class GenericGraphicalZone extends JComponent {
 		L = graphBoxes.size();
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
-			gr.setColor(GraphDecoratorConfig.DEBUG_COLOR);
-		    gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
-			gr.drawString( model.getBoxState((TfstGraphBox)g).toString(), g.X1 + 5 , g.Y1 - 15 );
-			gr.drawString(model.renumber[i]+" "+model.factorization[i], g.X1 + 5 , g.Y1 - 25);
+			//gr.setColor(GraphDecoratorConfig.DEBUG_COLOR);
+		   // gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
+			//gr.drawString( model.getBoxState((TfstGraphBox)g).toString(), g.X1 + 5 , g.Y1 - 15 );
+			//gr.drawString(model.renumber[i]+" "+model.factorization[i], g.X1 + 5 , g.Y1 - 25);
 			g.draw(gr, params);
 		}
 	}

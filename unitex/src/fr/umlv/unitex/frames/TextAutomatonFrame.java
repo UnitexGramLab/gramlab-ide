@@ -546,15 +546,19 @@ public class TextAutomatonFrame extends TfstFrame {
 					spinnerModel.setValue(new Integer(currentSentenceNumber));
 					return;
 				}*/
-				checkGraph();
-				if (!checkList.isEmpty()) {
-					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
+				if(containsEmptyState()) {
 					spinnerModel.setValue(new Integer(currentSentenceNumber));
+					JOptionPane.showMessageDialog(null,
+							"Warning: the automaton can't contains empty boxes",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
 					return;
+					
 				}
 				loadSentence(spinnerModel.getNumber().intValue());
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
+
 		});
 		spinner = new JSpinner(spinnerModel);
 		middle.add(spinner, BorderLayout.CENTER);
@@ -606,6 +610,14 @@ public class TextAutomatonFrame extends TfstFrame {
 		final Action saveAction = new AbstractAction("Save") {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if(containsEmptyState()) {
+					JOptionPane.showMessageDialog(null,
+							"Warning: the automaton can't contains empty boxes",
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+					
+				}
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
 				.closeTextAutomatonFrame();
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
@@ -639,7 +651,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			public void actionPerformed(ActionEvent e) {
 				final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
 				for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
-					if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
+					if (graphicalZone.isBoxNotPreferred((TfstGraphBox) gb)) {
 						boxes.add(gb);
 					}
 				}
@@ -667,6 +679,14 @@ public class TextAutomatonFrame extends TfstFrame {
 		cornerPanel.add(buildTokensButton);
 		cornerPanel.add(deleteStates);
 		return cornerPanel;
+	}
+	
+
+	private boolean containsEmptyState() {
+		for(int i = 0; i < graphicalZone.graphBoxes.size(); i++)
+			if(graphicalZone.graphBoxes.get(i).getContent().equals("<E>") && graphicalZone.graphBoxes.get(i).type == GenericGraphBox.NORMAL)
+				return true;
+		return false;
 	}
 	
 	 private boolean isGraphValid() {
