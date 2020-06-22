@@ -188,9 +188,10 @@ public class GenericGraphBox {
 	 */
 	int identificationNumber; // number used to numerote the state
 
+
 	private boolean highlight = false;
 	private boolean isModified = false;
-	
+
 	/**
 	 * Constructs a new box
 	 *

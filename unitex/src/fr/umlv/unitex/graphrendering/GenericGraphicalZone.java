@@ -64,6 +64,7 @@ import fr.umlv.unitex.undo.TransitionEdit;
 import fr.umlv.unitex.undo.TransitionGroupEdit;
 import fr.umlv.unitex.undo.TranslationEdit;
 
+
 /**
  * This class describes a component on which a graph can be drawn.
  *
@@ -747,7 +748,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 * @param gr
 	 *            the graphical context
 	 */
-	void drawAllBoxes(Graphics2D gr, DrawGraphParams params, TaggingModel model	) {
+	void drawAllBoxes(Graphics2D gr, DrawGraphParams params) {
 		int i, L;
 		GenericGraphBox g;
 		if (graphBoxes.isEmpty())
@@ -756,7 +757,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 		for (i = 0; i < L; i++) {
 			g = graphBoxes.get(i);
 			//gr.setColor(GraphDecoratorConfig.DEBUG_COLOR);
-		   // gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
+		    //gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
 			//gr.drawString( model.getBoxState((TfstGraphBox)g).toString(), g.X1 + 5 , g.Y1 - 15 );
 			//gr.drawString(model.renumber[i]+" "+model.factorization[i], g.X1 + 5 , g.Y1 - 25);
 			g.draw(gr, params);

@@ -72,7 +72,8 @@ public class Bounds {
 		relative_to_global();
 		// System.out.println("2e constructeur: "+global_start_in_chars+" -> "+global_end_in_chars);
 	}
-	/* specific bounds constructor yassine */
+
+	/* specific bounds constructor */
 	public Bounds(Bounds bounds) {
 		if(bounds == null) {
 			System.err.println("Bound is null");
@@ -87,6 +88,7 @@ public class Bounds {
 		this.end_in_tokens = bounds.end_in_tokens;
 	}
 	
+
 	private void global_to_relative() {
 		/*
 		 * We set those values by default for Korean transitions. This may
@@ -187,31 +189,6 @@ public class Bounds {
 	public int getEnd_in_letters() {
 		return end_in_letters;
 	}
-	
-	public void setStart_in_tokens( int value ) {
-		start_in_tokens = value ;
-	}
-
-	public void setStart_in_chars( int value ) {
-		start_in_chars = value ;
-	}
-
-	public void setStart_in_letters( int value ) {
-		start_in_letters = value ;
-	}
-
-	public void setEnd_in_tokens( int value ) {
-		end_in_tokens = value ;
-	}
-
-	public void setEnd_in_chars( int value ) {
-		end_in_chars = value ;
-	}
-
-	public void setEnd_in_letters( int value ) {
-		end_in_letters = value ;
-	}
-
 
 	@Override
 	public String toString() {

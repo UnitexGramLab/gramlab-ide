@@ -197,8 +197,6 @@ public class TfstGraphBox extends GenericGraphBox {
 			else {
 				updateBoundsLetters( tmp.length() );
 			}
-			
-			
 			// dimensions of a full box
 			Width = maxLineWidth() + 10;
 			Height = n_lines * get_h_ligne() + 6;
@@ -211,11 +209,11 @@ public class TfstGraphBox extends GenericGraphBox {
 		X_out = X + Width + 5;
 	}
 	
-	// @Yass
-		public void updateBoundsLetters( int length ) {
-			if( bounds != null && length>0 )
-				bounds.setEnd_in_chars( length-1 );
-		}
+	public void updateBoundsLetters( int length ) {
+		if( bounds != null && length>0 )
+			bounds.setEnd_in_chars( length-1 );
+	}
+
 
 
 	public void setContentWithBounds(String s) {
@@ -331,5 +329,6 @@ public class TfstGraphBox extends GenericGraphBox {
 		}	
 		return content;
 	}
+
 
 }

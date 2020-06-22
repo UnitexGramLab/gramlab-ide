@@ -38,7 +38,8 @@ public class TransitionEdit extends AbstractUndoableEdit {
 	 * box from transition starts
 	 */
 	private final GenericGraphBox srcBoxe;
-	private final GenericGraphBox dstBoxe; /** box where transition go */
+	private final GenericGraphBox dstBoxe; /** box where transition goes */
+
 
 	/**
 	 * construct a Transition Edit
