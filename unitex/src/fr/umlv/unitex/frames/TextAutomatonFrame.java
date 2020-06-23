@@ -553,7 +553,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			public void actionPerformed(ActionEvent e) {
 				final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
 				for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
-					if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
+					if (graphicalZone.isBoxNotPreferred((TfstGraphBox) gb)) {
 						boxes.add(gb);
 					}
 				}

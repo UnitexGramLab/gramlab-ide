@@ -137,7 +137,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 				if (boxSelected != -1) {
 					// if we click on a box
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
-					model.selectBox(b);
+					model.preferBox(b);
 				}
 			} else {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
@@ -472,8 +472,8 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		repaint();
 	}
 
-	public boolean isBoxToBeRemoved(TfstGraphBox box) {
-		return model.isToBeRemoved(box);
+	public boolean isBoxNotPreferred(TfstGraphBox box) {
+		return model.isNotPreferred(box);
 	}
 
 	public void clearStateSelection(int n) {
