@@ -83,6 +83,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		}
 	}
 
+	/*
+	 * This function creates a generic box of NORMAL type, meaning it can have ingoing or outgoing transitions.
+	 * This is the most used function instead of newBox just below
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#createBox(int, int)
+	 */
 	@Override
 	protected GenericGraphBox createBox(int x, int y) {
 		final TfstGraphBox g = new TfstGraphBox(x, y, 2, this);
@@ -90,7 +95,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		addBox(g);
 		return g;
 	}
-
+	
+	/*
+	 * This function creates a generic box of the input type.
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#newBox(int, int, int, fr.umlv.unitex.graphrendering.GenericGraphicalZone)
+	 */
 	@Override
 	protected GenericGraphBox newBox(int x, int y, int type,
 			GenericGraphicalZone p) {
