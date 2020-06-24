@@ -741,28 +741,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g.draw(gr, params);
 		}
 	}
-	
-	/**
-	 * Draws all boxes of the graph
-	 *
-	 * @param gr
-	 *            the graphical context
-	 */
-	void drawAllBoxes(Graphics2D gr, DrawGraphParams params) {
-		int i, L;
-		GenericGraphBox g;
-		if (graphBoxes.isEmpty())
-			return;
-		L = graphBoxes.size();
-		for (i = 0; i < L; i++) {
-			g = graphBoxes.get(i);
-			//gr.setColor(GraphDecoratorConfig.DEBUG_COLOR);
-		    //gr.setFont(this.getGraphPresentationInfo().getOutput().getFont());
-			//gr.drawString( model.getBoxState((TfstGraphBox)g).toString(), g.X1 + 5 , g.Y1 - 15 );
-			//gr.drawString(model.renumber[i]+" "+model.factorization[i], g.X1 + 5 , g.Y1 - 25);
-			g.draw(gr, params);
-		}
-	}
 
 	/**
 	 * Draws the grid of the graph if the <code>isGrid</code> field is set to

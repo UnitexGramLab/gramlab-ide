@@ -42,6 +42,7 @@ import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.Log;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.*;
+import fr.umlv.unitex.tfst.Bounds;
 import fr.umlv.unitex.tfst.TagFilter;
 import fr.umlv.unitex.tfst.TfstTableModel;
 import fr.umlv.unitex.tfst.TokensInfo;

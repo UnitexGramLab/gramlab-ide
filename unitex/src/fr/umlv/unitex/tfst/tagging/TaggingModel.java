@@ -77,6 +77,7 @@ public class TaggingModel {
 	 * We use an array that is a copy of zone's boxes, because we want to keep
 	 * constant indices, even if some boxes are removed
 	 */
+	HashMap<Integer,ArrayList<String>> tokens;
 	TfstGraphBox[] boxes;
 	TaggingState[] taggingStates;
 	int[] renumber;
@@ -97,7 +98,8 @@ public class TaggingModel {
 	private ArrayList<String> lstPath = new ArrayList<>();
 	
 	private boolean linearTfst;
-	
+	String regex;
+	File alphabetFile;
 	ActionListener actionListener=new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -135,7 +137,8 @@ public class TaggingModel {
 	}
 	
 	
-	/**
+	/** @Yass
+	 * This basically checks if a new box was created, if yes, it resets the model, otherwise it updates the factorization Nodes.
 	 * This method must be called when the sentence automaton has been modified,
 	 * either by a box removal, or by a transition added or removed.
 	 */
@@ -160,8 +163,9 @@ public class TaggingModel {
 	}
 	
 	
-	/** 
+	/** @Yass
 	 * This method must be called when a new sentence automaton has been loaded.
+	 * This method resets the various arrays used in this class by applying all the graphBoxes, including new ones, in them.
 	 */
 	public void resetModel() {
 		final int n = zone.graphBoxes.size();
@@ -169,6 +173,8 @@ public class TaggingModel {
 		taggingStates = new TaggingState[n];
 		factorization = new boolean[n];
 		renumber = new int[n];
+		//init 
+		tokens = new HashMap<Integer,ArrayList<String>>();
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
 			if (boxes[i].type == GenericGraphBox.INITIAL) {
