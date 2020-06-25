@@ -410,6 +410,7 @@ public class GraphPathFrame extends JInternalFrame {
         File fst2;
         File list; /* output file name */
         int n;
+        cmd = cmd.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
         if (maxSeqCheckbox.isSelected()) {
                 try {
                     maxSeqSpinner.commitEdit();
