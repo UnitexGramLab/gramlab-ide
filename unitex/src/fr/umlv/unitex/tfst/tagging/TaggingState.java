@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,12 +21,11 @@
 package fr.umlv.unitex.tfst.tagging;
 
 public enum TaggingState {
-	/* The box has been selected by the user */
-	SELECTED,
-	/*
-	 * The box is competing with a selected box and so, must be discarded
-	 */
-	TO_BE_REMOVED,
+	/* The box is accessible and co-accessible, 
+	 * and it has been marked as preferred by the user or is a factorization node*/
+	PREFERRED,
+	/* The box is accessible and co-accessible and is competing with a preferred box */
+	NOT_PREFERRED,
 	/* The box is not both accessible and co-accessible */
 	USELESS,
 	/* None of previous cases */

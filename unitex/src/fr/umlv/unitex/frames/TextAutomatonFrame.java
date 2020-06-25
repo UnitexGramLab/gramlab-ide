@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -553,7 +553,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			public void actionPerformed(ActionEvent e) {
 				final ArrayList<GenericGraphBox> boxes = new ArrayList<GenericGraphBox>();
 				for (final GenericGraphBox gb : graphicalZone.graphBoxes) {
-					if (graphicalZone.isBoxToBeRemoved((TfstGraphBox) gb)) {
+					if (graphicalZone.isBoxNotPreferred((TfstGraphBox) gb)) {
 						boxes.add(gb);
 					}
 				}

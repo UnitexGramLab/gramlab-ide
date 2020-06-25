@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -198,8 +198,8 @@ public class GraphDecorator {
 		if (transitionRemoved(boxNumber, destNumber))
 			return GraphDecoratorConfig.REMOVED;
 		if (model != null
-				&& (model.isToBeRemovedTfstIndex(boxNumber) || model
-						.isToBeRemovedTfstIndex(destNumber))) {
+				&& (model.isNotPreferredTfstIndex(boxNumber) || model
+						.isNotPreferredTfstIndex(destNumber))) {
 			return GraphDecoratorConfig.SHADED;
 		}
 		if (model != null && model.isLinearTfst()) {
@@ -227,7 +227,7 @@ public class GraphDecorator {
 		if (boxNumber == currentBox) {
 			return GraphDecoratorConfig.HIGHLIGHT_STROKE;
 		}
-		if (model != null && model.isSelected(boxNumber)) {
+		if (model != null && model.isPreferred(boxNumber)) {
 			return GraphDecoratorConfig.STROKE;
 		}
 		return s;
@@ -252,13 +252,13 @@ public class GraphDecorator {
 	
 	public Color getBoxBackgroundColor(int boxNumber, Color c) {
 		// If the background isn't already set from TfstGraphBox for untagged korean tokens
-		// This case may happen when a token is both untagged and SELECTED
+		// This case may happen when a token is both untagged and PREFERRED
 		if (model != null && c != GraphDecoratorConfig.UNTAGGED_TOKEN_COLOR) {
 			// Displaying a different background color when the graph is linear
 			if (model.isLinearTfst()) {
 				return GraphDecoratorConfig.LINEAR_TFST;
 			}
-			if (TaggingState.SELECTED == model.getBoxStateTfst(boxNumber)) {
+			if (TaggingState.PREFERRED == model.getBoxStateTfst(boxNumber)) {
 				return GraphDecoratorConfig.UNAMBIGUOUS_TOKEN_COLOR;
 			}
 		}
@@ -278,7 +278,7 @@ public class GraphDecorator {
 				|| hasBeenRemoved(boxNumber)
 				|| hasMoved(boxNumber)
 				|| boxNumber == currentBox
-				|| (model != null && TaggingState.SELECTED == model
+				|| (model != null && TaggingState.PREFERRED == model
 						.getBoxStateTfst(boxNumber));
 	}
 
@@ -293,7 +293,7 @@ public class GraphDecorator {
 	}
 
 	public Composite getBoxComposite(int boxNumber, Composite c) {
-		if (model != null && model.isToBeRemovedTfstIndex(boxNumber))
+		if (model != null && model.isNotPreferredTfstIndex(boxNumber))
 			return GraphDecoratorConfig.SHADE_COMPOSITE;
 		return c;
 	}
