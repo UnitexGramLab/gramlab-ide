@@ -152,7 +152,7 @@ public class UserPreferences {
 			return false;
 		}
 		return true;
-	}                   
+	}
 
 	private boolean setRecentGraphs(List<File> l) {
 		java.util.prefs.Preferences gp = recentGraphsPrefs();

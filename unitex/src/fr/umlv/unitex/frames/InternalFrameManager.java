@@ -256,7 +256,7 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public CsvOpener newCsvOpener(String Csvfile, String title) {
+    public CsvOpener newCsvOpener(String csvfile, String title) {
         final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(Csvfile, title);
         if (d == null) {
             return null;

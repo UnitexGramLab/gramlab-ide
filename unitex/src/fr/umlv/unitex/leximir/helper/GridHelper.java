@@ -38,9 +38,9 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException {
         
-        String[] entete = {"POS","Lemma","FST Code","SynSem Feature","Comment","Inv Lemma","Lemma ID","Dict. File"};
+        String[] header = {"POS","Lemma","FST Code","SynSem Feature","Comment","Inv Lemma","Lemma ID","Dict. File"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
-        return new DefaultTableModel(data,entete);
+        return new DefaultTableModel(data,header);
     }
     /**
      * This function complete Jtable of Delaf with Fst Code
@@ -48,8 +48,8 @@ public class GridHelper {
      * @throws IOException 
      */
     public static DefaultTableModel getDelafInDelacForDelac() throws IOException {
-        String[] entete = {"delaf entry","POS","lemma","Gram cats","FST graph"};
+        String[] header = {"delaf entry","POS","lemma","Gram cats","FST graph"};
         Object[][] data = DelafHelper.getAllDelafFromDelacToObject();
-        return new DefaultTableModel(data,entete);
+        return new DefaultTableModel(data,header);
     }
 }

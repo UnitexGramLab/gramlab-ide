@@ -80,11 +80,11 @@ public class DelasHelper {
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
-            if(allDelas)
-            	path = DictionaryPath.allDelas+File.separator+dela;
-            else
-            	path = dela;
-
+            if(allDelas){
+                path = DictionaryPath.allDelas + File.separator + dela;
+            }else{
+                path = dela;
+            }
             ArrayList<String> readFile = Utils.readFile(path);
             count += readFile.size();
             if(allDelas) 
@@ -102,9 +102,9 @@ public class DelasHelper {
             String dicFile=dela;
           
             String path = "";
-            if(allDelas)
-            	path = DictionaryPath.allDelas+File.separator+dela;
-            else {
+            if(allDelas){
+            	path = DictionaryPath.allDelas + File.separator+dela;
+            }else {
 	            path = dela;
 	           	            
 	            dicFile = new File(path).getName();
@@ -112,16 +112,16 @@ public class DelasHelper {
 	        }
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
-                lemma=getLemaInDelas(s);
-                lemmaInv=Utils.reverseString(lemma);
-                SynSem=getSynSemInDelas(s);
+                lemma = getLemaInDelas(s);
+                lemmaInv = Utils.reverseString(lemma);
+                SynSem = getSynSemInDelas(s);
                 fSTCode = getFstCodeInDelas(s);
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
                 Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, lemmaId, dicFile);
                 delasToObject(ob, k, tmp);
                 k++;
-                lemmaId=lemmaId+1;
+                lemmaId = lemmaId + 1;
                 
             }
         }
@@ -129,14 +129,14 @@ public class DelasHelper {
     }
 
     private static void delasToObject(Object[][] ob, int k, Delas tmp) {
-        ob[k][0]=tmp.getpOS();
-        ob[k][1]=tmp.getLemma();
-        ob[k][2]=tmp.getfSTCode();
-        ob[k][3]=tmp.getSimSem();
-        ob[k][4]=tmp.getComment();
-        ob[k][5]=tmp.getLemmaInv();
-        ob[k][6]=tmp.getLemmaId();
-        ob[k][7]=tmp.getDicFile();
+        ob[k][0] = tmp.getpOS();
+        ob[k][1] = tmp.getLemma();
+        ob[k][2] = tmp.getfSTCode();
+        ob[k][3] = tmp.getSimSem();
+        ob[k][4] = tmp.getComment();
+        ob[k][5] = tmp.getLemmaInv();
+        ob[k][6] = tmp.getLemmaId();
+        ob[k][7] = tmp.getDicFile();
     }
     
     public static String getLemaInDelas(String text) {
@@ -152,7 +152,7 @@ public class DelasHelper {
     public static String getSynSemInDelas(String text) {
         try{
             StringBuilder sb = new StringBuilder();
-            boolean begin=false;
+            boolean begin = false;
             for(int i=0;i<text.length();i++){
 
                 if(begin){
@@ -163,7 +163,7 @@ public class DelasHelper {
                 }
                 else{
                     if(text.charAt(i)=='+'){
-                        begin=true;
+                        begin = true;
                         sb.append(text.charAt(i));
                     }
                 }
@@ -175,10 +175,10 @@ public class DelasHelper {
     }
     public static String getFstCodeInDelas(String text) {
         StringBuilder sb = new StringBuilder();
-        boolean begin=false;
+        boolean begin = false;
         for(int i=0;i<text.length();i++){
             if(text.charAt(i)==','){
-                begin=true;
+                begin = true;
                 i++;
             }
             if(begin){
@@ -192,10 +192,10 @@ public class DelasHelper {
     }
     public static String getPosInDelas(String text) {
         StringBuilder sb = new StringBuilder();
-        boolean begin=false;
+        boolean begin = false;
         for(int i=0;i<text.length();i++){
             if(text.charAt(i)==','){
-                begin=true;
+                begin = true;
                 i++;
             }
             if(begin){
@@ -213,8 +213,8 @@ public class DelasHelper {
     }
     public static String getCommentInDelas(String text) {
         try{
-            int ind= text.contains("/")?text.indexOf("/")+1:text.length();
-            String ret=text.substring(ind);
+            int ind = text.contains("/") ? text.indexOf("/") + 1 : text.length();
+            String ret = text.substring(ind);
             return ret;
         } catch(java.lang.StringIndexOutOfBoundsException e) {
             return "";

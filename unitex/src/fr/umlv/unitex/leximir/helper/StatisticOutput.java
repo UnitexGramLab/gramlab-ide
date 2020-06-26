@@ -63,14 +63,10 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         jButtonSet = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        String outputStatsFile;
-        
-        outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
         
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setText(outputStatsFile); 
-
+        jTextField1.setText(EditorDelas.getStatisticDirectory()+"statisticsTmp.csv"); 
         jButtonSet.setText("Set");
         jButtonSet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

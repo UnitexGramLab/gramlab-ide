@@ -95,14 +95,14 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     }
 
     private Vector<Vector<String>> read() {
-        Vector<Vector<String>> tmp = new Vector<Vector<String>>();
+        Vector<Vector<String>> csvReader = new Vector<Vector<String>>();
         try {
             try (BufferedReader sourceFile = new BufferedReader(
                     new InputStreamReader(new FileInputStream(csvfile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
                 String s;
                 for (int i = 1; (s = sourceFile.readLine()) != null; i++) {
                     if (i > 1) {
-                        tmp.add(new Vector<String>(Arrays.asList(s.split(";"))));
+                        csvReader.add(new Vector<String>(Arrays.asList(s.split(";"))));
                     }
                 }
             }
@@ -112,9 +112,9 @@ public class CsvOpener extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
         
-        sort(tmp);
+        sort(csvReader);
         
-        return tmp;
+        return csvReader;
     }
 
     private void sort(Vector<Vector<String>> vectors) {
