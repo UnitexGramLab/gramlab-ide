@@ -178,10 +178,10 @@ public class GraphPathFrame extends JInternalFrame {
         ignoreOutputsButton.setText("Ignore");
 
         buttonGroup1.add(splitOutputsButton);
-        splitOutputsButton.setText("Separate inputs and outputs");
+        splitOutputsButton.setText("Split inputs and outputs");
 
         buttonGroup1.add(mergeOutputsButton);
-        mergeOutputsButton.setText("Alternate inputs and outputs");
+        mergeOutputsButton.setText("Merge inputs and outputs");
 
         exploreLabel.setText("Explore subraphs:");
 
@@ -375,8 +375,6 @@ public class GraphPathFrame extends JInternalFrame {
         );
 
         pack();
-        System.err.println("principale " + " " + makeDicCheckBox.isSelected());
-        makeDicCheckboxActionPerformed(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void maxSeqCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxSeqCheckboxActionPerformed
@@ -404,7 +402,6 @@ public class GraphPathFrame extends JInternalFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void exploreRecButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreRecButtonActionPerformed
-        System.err.println("exploreRecButtonActionPerformed : " + makeDicCheckBox.isSelected());
     	if(!makeDicCheckBox.isSelected()) {
             outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
                           .getText()) + "-recursive-paths.txt");
@@ -648,7 +645,6 @@ public class GraphPathFrame extends JInternalFrame {
              outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
                      .getText()) + "-paths.dic");
          }
-        //outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphFileName) + "-recursive-paths.txt");
     }
     
     private void openOutputFile() {
