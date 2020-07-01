@@ -61,15 +61,6 @@ public class Fst2ListCommand extends CommandBuilder {
 		return this;
 	}
 
-	public Fst2ListCommand morphologicalDic(ArrayList<File> dicList) {
-		if (dicList != null && !dicList.isEmpty()) {
-			for (final File f : dicList) {
-				protectElement("-D" + f.getAbsolutePath());
-			}
-		}
-		return this;
-	}
-
 	public Fst2ListCommand noLimit() {
 		return this;
 	}

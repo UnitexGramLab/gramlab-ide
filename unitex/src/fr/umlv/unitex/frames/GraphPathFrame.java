@@ -379,7 +379,7 @@ public class GraphPathFrame extends JInternalFrame {
 
     private void maxSeqCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxSeqCheckboxActionPerformed
         if ( maxSeqCheckbox.isSelected() ) {
-                            maxSeqSpinner.setEnabled(true);
+                maxSeqSpinner.setEnabled(true);
         } else {
                 maxSeqSpinner.setEnabled(false);
         }
@@ -387,7 +387,7 @@ public class GraphPathFrame extends JInternalFrame {
 
     private void flattenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenCheckboxActionPerformed
         if ( flattenCheckbox.isSelected() ) {
-                            flattenOptionButton.setEnabled(true);
+                flattenOptionButton.setEnabled(true);
         } else {
                 flattenOptionButton.setEnabled(false);
         }
@@ -637,13 +637,14 @@ public class GraphPathFrame extends JInternalFrame {
     }
     
     public void setOutputFileDefaultName(String graphFileName) {
+    	String extension = makeDicCheckBox.isSelected() ? ".dic" : ".txt";
     	 if(exploreRecButton.isSelected()) {
              outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                     .getText()) + "-recursive-paths.dic");
+                     .getText()) + "-recursive-paths" + extension);
          }
          else {
              outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                     .getText()) + "-paths.dic");
+                     .getText()) + "-paths" + extension);
          }
     }
     
