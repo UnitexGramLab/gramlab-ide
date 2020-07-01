@@ -1,7 +1,7 @@
 /**
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -477,7 +477,7 @@ public class GraphPathFrame extends JInternalFrame {
         } else {
                 cmd = cmd.noLimit();
         }
-	if(makeDicCheckBox.isSelected()) {
+        if(makeDicCheckBox.isSelected()) {
                 cmd = cmd.makeDic();
         }
         else {
@@ -488,11 +488,11 @@ public class GraphPathFrame extends JInternalFrame {
 	        }
         }
         if (ConfigManager.getManager().isKorean(null)) {
-			cmd = cmd.korean();
-	}
+			      cmd = cmd.korean();
+	      }
         if ( !checkLoopsCheckbox.isSelected() ) {
             cmd = cmd.noLoopCheck();
-	}
+	      }
         // check if flatten was checked or not
         if( !flattenCheckbox.isSelected() ) {
                 grfCmd.grf(new File(inputGraphName.getText()))
