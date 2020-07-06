@@ -652,7 +652,6 @@ public class TaggingModel {
 			if(taggingStates[next.getBoxNumber()] != TaggingState.USELESS)
 				return boxes[next.getBoxNumber()].getBounds().getStart_in_tokens();
 		}
-		
 		return 0;
 	}
 
@@ -979,7 +978,6 @@ public class TaggingModel {
 					 * If the state used to be useless but is not anymore, we
 					 * set its state to [NOT_PREFERRED] TO_CHECK as in to be checked 
 					 */
-					
 					computeFactorizationNodes();
 					/* this is the key location of verification */
 					checkNewBranch(i);
