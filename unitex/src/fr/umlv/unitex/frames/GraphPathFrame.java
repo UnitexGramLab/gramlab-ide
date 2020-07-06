@@ -1,7 +1,7 @@
 /**
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,7 @@
 package fr.umlv.unitex.frames;
 
 import fr.umlv.unitex.config.Config;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
@@ -409,6 +410,7 @@ public class GraphPathFrame extends JInternalFrame {
         File fst2;
         File list; /* output file name */
         int n;
+        cmd = cmd.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null));
         if (maxSeqCheckbox.isSelected()) {
                 try {
                     maxSeqSpinner.commitEdit();
@@ -425,6 +427,9 @@ public class GraphPathFrame extends JInternalFrame {
         }
         if ( !checkLoopsCheckbox.isSelected() ) {
                 cmd = cmd.noLoopCheck();
+        }
+        if (ConfigManager.getManager().isKorean(null)) {
+                cmd = cmd.korean();
         }
         if (ignoreOutputsButton.isSelected()) {
                 cmd = cmd.ignoreOutputs();

@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -153,11 +153,8 @@ public class TaggingModel {
 				 * eveything
 				 */
 				resetModel();
-			} else {				
-				updateNodes();
-				//updateBoundsReversed(finalState, new boolean[boxes.length]);
-				//updateBounds(initialState, new boolean[boxes.length]);
-				
+			} else {
+				 updateNodes();
 			}
 		}
 	}
@@ -847,10 +844,6 @@ public class TaggingModel {
 		System.out.println("Finish displaying");
 	}
 	
-	
-	/**
-	 * 
-	 */
 	private void  updateNodes() {
 		if (boxes.length == 0)
 			return;
@@ -866,7 +859,7 @@ public class TaggingModel {
 		/* And finally, we can mark as preferred all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
 			if (factorization[i] || taggingStates[i] == TaggingState.PREFERRED) {
-				preferBox(i);
+				preferBox(boxes[i]);
 			}
 		}
 		markUselessStates();
@@ -985,7 +978,6 @@ public class TaggingModel {
 					/*
 					 * If the state used to be useless but is not anymore, we
 					 * set its state to [NOT_PREFERRED] TO_CHECK as in to be checked 
-					 * 
 					 */
 					
 					computeFactorizationNodes();

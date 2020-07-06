@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,6 +21,7 @@
 package fr.umlv.unitex.process.commands;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * @author Sébastien Paumier
@@ -42,7 +43,21 @@ public class Fst2ListCommand extends CommandBuilder {
 		return this;
 	}
 
+	public Fst2ListCommand morphologicalDic(ArrayList<File> dicList) {
+		if (dicList != null && !dicList.isEmpty()) {
+			for (final File f : dicList) {
+				protectElement("-D" + f.getAbsolutePath());
+			}
+		}
+		return this;
+	}
+
 	public Fst2ListCommand noLimit() {
+		return this;
+	}
+
+	public Fst2ListCommand korean() {
+		element("-K");
 		return this;
 	}
 
