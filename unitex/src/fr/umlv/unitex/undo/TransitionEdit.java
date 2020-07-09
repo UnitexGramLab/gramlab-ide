@@ -22,11 +22,7 @@ package fr.umlv.unitex.undo;
 
 import javax.swing.undo.AbstractUndoableEdit;
 
-import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
-import fr.umlv.unitex.frames.GraphFrame;
-import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.graphrendering.GenericGraphBox;
-import fr.umlv.unitex.graphrendering.GraphicalZone;
 
 /**
  * class uses to save the state of the graph before add a transition
