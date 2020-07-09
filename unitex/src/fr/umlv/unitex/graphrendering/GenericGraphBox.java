@@ -188,7 +188,6 @@ public class GenericGraphBox {
 	 */
 	int identificationNumber; // number used to numerote the state
 
-
 	private boolean highlight = false;
 	private boolean isModified = false;
 
@@ -243,10 +242,6 @@ public class GenericGraphBox {
 		identificationNumber = -1;
 	}
 	
-	
-	
-	
-
 	public int getBoxNumber() {
 		return parentGraphicalZone.graphBoxes.indexOf(this);
 	}
@@ -448,8 +443,7 @@ public class GenericGraphBox {
 			// an interval loop
 			if (g == this && !getRangeOutput(transduction).equals("")
 					&& parentGraphicalZone != null) {
-				JOptionPane
-				.showMessageDialog(
+				JOptionPane.showMessageDialog(
 						null,
 						"Setting a loop on a box containing a range definition is not allowed.",
 						"Error", JOptionPane.ERROR_MESSAGE);
@@ -966,9 +960,9 @@ public class GenericGraphBox {
 			if (!l.equals("")) {
 				final TextLayout textlayout = new TextLayout(l,
 						parentGraphicalZone.getGraphPresentationInfo()
-						.getInput().getFont(), g.getFontRenderContext());
+							.getInput().getFont(), g.getFontRenderContext());
 				textlayout
-				.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
+					.draw(g, X1 + 5, Y1 - descent + 3 + (i + 1) * h_ligne);
 			}
 		}
 		// prints the transduction, if exists
@@ -1021,8 +1015,7 @@ public class GenericGraphBox {
 			g.setColor(params.getForegroundColor());
 		} else {
 			final int boxNumber = getBoxNumber();
-			final JLabel r = parentGraphicalZone.decorator
-					.getCoverageInfoLabel(boxNumber);
+			final JLabel r = parentGraphicalZone.decorator.getCoverageInfoLabel(boxNumber);
 			if (r != null) {
 				final TextLayout textlayout = new TextLayout(r.getText(),
 						parentGraphicalZone.getGraphPresentationInfo()
@@ -1067,13 +1060,14 @@ public class GenericGraphBox {
 				.getFont());
 
 		final int yShift = outputVariable ?
-				Height + g.getFontMetrics().getHeight() :
-					- g.getFontMetrics().getHeight() / 2;
+			Height + g.getFontMetrics().getHeight() :
+			- g.getFontMetrics().getHeight() / 2;
 
-				final int xShift = closeVariable ? g.getFontMetrics().charWidth('|')/2:
-					g.getFontMetrics().charWidth('|')*2;
+		final int xShift = closeVariable ? 
+			g.getFontMetrics().charWidth('|')/2:
+			g.getFontMetrics().charWidth('|')*2;
 
-				g.drawString(transduction, X1 + xShift, Y1 + yShift);
+		g.drawString(transduction, X1 + xShift, Y1 + yShift);
 	}
 
 	private void drawVariableSelected(Graphics2D g, DrawGraphParams params) {
