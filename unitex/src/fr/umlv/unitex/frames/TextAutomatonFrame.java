@@ -122,7 +122,6 @@ public class TextAutomatonFrame extends TfstFrame {
 	private JButton redoButton;
 	private UndoManager manager = new UndoManager();
 
-
 	TextAutomatonFrame() {		
 		super("FST-Text", true, true, true, true);
 		DropTargetManager.getDropTarget().newDropTarget(this);
@@ -507,7 +506,6 @@ public class TextAutomatonFrame extends TfstFrame {
 				loadSentence(spinnerModel.getNumber().intValue());
 				GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).updateTextAutomatonFindAndReplaceDialog();
 			}
-
 		});
 		spinner = new JSpinner(spinnerModel);
 		middle.add(spinner, BorderLayout.CENTER);
@@ -549,7 +547,6 @@ public class TextAutomatonFrame extends TfstFrame {
 						b = b.getTransitions().get(0);
 						i++;
 					} else {
-						
 						return;
 					}
 				}
@@ -629,7 +626,6 @@ public class TextAutomatonFrame extends TfstFrame {
 		cornerPanel.add(deleteStates);
 		return cornerPanel;
 	}
-	
 
 	private boolean containsEmptyState() {
 		for(int i = 0; i < graphicalZone.graphBoxes.size(); i++)
@@ -649,7 +645,6 @@ public class TextAutomatonFrame extends TfstFrame {
 		graphicalZone.addUndoableEditListener(manager);
 		updateDoUndoButtons();
 	}
-
 	
 	private int checkGraph() {
 		String text = sentenceTextArea.getText();
@@ -766,7 +761,6 @@ public class TextAutomatonFrame extends TfstFrame {
 			checkContent(nextBox, nextIndex, box.getBounds());
 		}
 	}
-
 
   /**
 	 * Shows the frame
@@ -1226,61 +1220,61 @@ public class TextAutomatonFrame extends TfstFrame {
 		return graphicalZone;
 	}
 
-  public UndoManager getManager() {
-    return manager;
-  }
+  	public UndoManager getManager() {
+    	return manager;
+  	}
 
-  private void updateDoUndoButtons() {
-    if (undoButton != null && redoButton != null) {
-      undoButton.setEnabled(getManager().canUndo());
-      redoButton.setEnabled(getManager().canRedo());
-    }
-  }
+  	private void updateDoUndoButtons() {
+    	if (undoButton != null && redoButton != null) {
+      		undoButton.setEnabled(getManager().canUndo());
+      		redoButton.setEnabled(getManager().canRedo());
+    	}
+  	}
 
-  @Override
-  public void repaint() {
-    super.repaint();
-    updateDoUndoButtons();
-  }
+  	@Override
+  	public void repaint() {
+    	super.repaint();
+    	updateDoUndoButtons();
+  	}
 
-  class UndoIt implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent ev) {
-      undo();
-    }
-  }
+  	class UndoIt implements ActionListener {
+    	@Override
+    	public void actionPerformed(ActionEvent ev) {
+     		undo();
+    	}
+  	}
 
-  public void undo() {
-    try {
-      if (getManager().canUndo()) {
-        getManager().undo();
-      }
-    } catch (final CannotUndoException ex) {
-      ex.printStackTrace();
-    } finally {
-      graphicalZone.unSelectAllBoxes();
-      repaint();
-    }
-  }
+  	public void undo() {
+    	try {
+      		if (getManager().canUndo()) {
+        		getManager().undo();
+      		}
+    	} catch (final CannotUndoException ex) {
+      		ex.printStackTrace();
+    	} finally {
+      		graphicalZone.unSelectAllBoxes();
+      		repaint();
+    	}
+  	}
 
-  class RedoIt implements ActionListener {
-    @Override
-    public void actionPerformed(ActionEvent ev) {
-      redo();
-    }
-  }
+  	class RedoIt implements ActionListener {
+    	@Override
+    	public void actionPerformed(ActionEvent ev) {
+      	redo();
+    	}
+  	}
 
-  public void redo() {
-    try {
-      if (getManager().canRedo()) {
-        getManager().redo();
-      }
-    } catch (final CannotRedoException ex) {
-      /* */
-    } finally {
-      repaint();
-    }
-  }
+  	public void redo() {
+    	try {
+      		if (getManager().canRedo()) {
+        		getManager().redo();
+      		}
+    	} catch (final CannotRedoException ex) {
+      	/* */
+    	} finally {
+      		repaint();
+    	}
+  	}
 
 	public void loadNextSentence() {
 		int currentSentence = spinnerModel.getNumber().intValue();

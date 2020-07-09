@@ -45,5 +45,4 @@ public class GraphDecoratorConfig {
 	public static final Color UNTAGGED_TOKEN_COLOR = new Color(0xCC, 0xCC, 0xFF);
 	public static final Stroke STROKE = new BasicStroke(3);
 	public static final Stroke HIGHLIGHT_STROKE = new BasicStroke(5);
-	//public static final Color DEBUG_COLOR = Color.GRAY;
 }

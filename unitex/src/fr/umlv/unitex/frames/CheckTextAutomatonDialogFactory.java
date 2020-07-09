@@ -7,10 +7,10 @@ import java.util.ArrayList;
  */
 public class CheckTextAutomatonDialogFactory {
 
-  private CheckTextAutomatonDialog dialog;
+  	private CheckTextAutomatonDialog dialog;
 
-  CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
-    dialog = CheckTextAutomatonDialog.createCheckTextAutomatonDialog(checkList);
-    return dialog;
-  }
+  	CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
+    	dialog = CheckTextAutomatonDialog.createCheckTextAutomatonDialog(checkList);
+    	return dialog;
+  	}
 }
