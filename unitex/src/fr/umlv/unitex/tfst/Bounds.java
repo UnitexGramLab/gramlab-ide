@@ -40,8 +40,6 @@ public class Bounds {
 	/* Special information for Korean */
 	private int start_in_letters;
 	private int end_in_letters;
-	
-	
 
 	public Bounds(int global_start_in_chars, int global_end_in_chars) {
 		// System.out.println(global_start_in_chars+" -> "+global_end_in_chars);
@@ -217,7 +215,8 @@ public class Bounds {
 	@Override
 	public String toString() {
 		return " " + start_in_tokens + " " + start_in_chars + " " + start_in_letters + " " 
-	+ end_in_tokens + " " + end_in_chars + " " + end_in_letters;
+			+ end_in_tokens + " " + end_in_chars + " " 
+			+ end_in_letters;
 	}
 
 	@Override

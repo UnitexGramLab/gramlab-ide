@@ -85,9 +85,9 @@ public class TaggingModel {
 	boolean[] factorization;
 	int initialState;
 	int finalState;
-	
+	private boolean linearTfst;
+
 	ArrayList<Context> lstContext = new ArrayList<>();
-	
 	
 	/*The 2 next fields are used to keep all sentences in the automaton and their path
 	 * The first element of lstTok is the first sentence possible in the automaton 
@@ -97,7 +97,6 @@ public class TaggingModel {
 	private ArrayList<String> lstTok = new ArrayList<String>();
 	private ArrayList<String> lstPath = new ArrayList<>();
 	
-	private boolean linearTfst;
 	String regex;
 	File alphabetFile;
 	ActionListener actionListener=new ActionListener() {
@@ -114,18 +113,12 @@ public class TaggingModel {
 		}
 	};
 
-	
-
-	
-	
-
 	public TaggingModel(TfstGraphicalZone zone) {
 		this.zone = zone;
 		registerListeners();
 		resetModel();
 	}
 
-	
 	public void registerListeners() {
 		zone.addActionListner(actionListener);
 		zone.addGraphListener(graphListener);		
@@ -135,7 +128,6 @@ public class TaggingModel {
 		zone.removeActionListner(actionListener);
 		zone.removeGraphListener(graphListener);		
 	}
-	
 	
 	/** @Yass
 	 * This basically checks if a new box was created, if yes, it resets the model, otherwise it updates the factorization Nodes.
@@ -158,7 +150,6 @@ public class TaggingModel {
 			}
 		}
 	}
-	
 	
 	/** @Yass
 	 * This method must be called when a new sentence automaton has been loaded.
@@ -278,7 +269,6 @@ public class TaggingModel {
 	    }
 	}
 	
-	
 	/**  This function creates all the paths we can have between the first box
 	 *  "bfp" and the last box "bfs" and put them in allPaths. Then, it keeps only
 	 *  paths which contains at least a box which is tagged USELESS
@@ -314,7 +304,6 @@ public class TaggingModel {
 		}
 	}
 	
-
 	/** @Aissa
 	 * 
 	 * This function checks if the at least one box of the boxes in arrayList
@@ -334,7 +323,6 @@ public class TaggingModel {
 		return false;
 	}
 
-	
 	/** This function creates all paths between the first box bfp and the last box bfs 
 	 * Put a path in "current"
 	 * When the path is complete, put it in allPaths
@@ -364,12 +352,10 @@ public class TaggingModel {
 		}
 	}
 	
-	
 	void clearList() {
 		lstTok.clear();
 		lstPath.clear();
 	}
-	
 	
 	void createLstContext() {
 		lstContext.clear();
@@ -438,12 +424,10 @@ public class TaggingModel {
 		
 	}
 	
-	
 	private void copyStates(TaggingState[] src, TaggingState[] dst) {
 		for(int i = 0; i < dst.length; i++) 
 			dst[i] = TaggingState.NEUTRAL;
 	}
-
 
 	private boolean verifyAllPath(ArrayList<ArrayList<Integer>> allPaths, int bfp, int bfs) {
 		int newBegin;
@@ -566,7 +550,6 @@ public class TaggingModel {
 		return false;
 	}
 
-
 	private boolean isSimpleKoreanLetter(char c) {
 		String singleLetters = " ᄀ    ᆨ    ㄱ     ᄂ   ᆫ     ㄴ    ᄃ    ᆮ    ㄷ    ᄅ     ᆯ    ㄹ     ᄆ     ᆷ      ㅁ     ᄇ     ᆸ    ㅂ  ᄉ    ᆺ   ㅅ    ᄋ    ᆼ      ㅇ     ᄌ     ᆽ    ㅈ     ᄎ     ᆾ     ㅊ      ᄏ      ᆿ       ㅋ   ᄐ     ᇀ    ㅌ    ᄑ    ᇁ    ㅍ  ᄒ     ᇂ      ㅎ       ᅡ      ㅏ     ᅣ     ㅑ    ᅥ     ㅓ        ᅩ     ㅗ     ᅭ     ㅛ      ᅮ     ㅜ      ᅲ    ㅠ    ᅳ      ㅡ        ᅵ      ㅣ    ";
 		singleLetters = Normalizer.normalize(singleLetters, Normalizer.Form.NFD);
@@ -574,7 +557,6 @@ public class TaggingModel {
 		singleLetters = Normalizer.normalize(singleLetters, Normalizer.Form.NFD);
 		return singleLetters.indexOf(c) >= 0;
 	}
-
 
 	private int findPreviousTokenStart(TfstGraphBox box) {
 		String txt = getTextBoxe(box);
@@ -597,7 +579,6 @@ public class TaggingModel {
 		
 		return null;
 	}
-
 
 	/** @Aissa
 	 * 
@@ -692,13 +673,10 @@ public class TaggingModel {
 		return -1;
 	}
 
-	
 	private boolean verifyBox(GenericGraphBox box, ArrayList<Context> copyContext) {
 		String txt = Normalizer.normalize(getTextBoxe(box), Normalizer.Form.NFD);
 		int size = txt.length();
 		ArrayList<Context> ctxtRemove = new ArrayList<>();
-		
-		
 		if(txt.equals("<E>"))
 			return true;
 		
@@ -851,7 +829,6 @@ public class TaggingModel {
 		 * co-accessible)
 		 */
 		markUselessStates();
-		
 		/* Then we look for factorization nodes */
 		/* There should be the real calculus here */
 		computeFactorizationNodes();
@@ -862,7 +839,6 @@ public class TaggingModel {
 			}
 		}
 		markUselessStates();
-
 	}
 
 	private void computeFactorizationNodes() {
@@ -983,7 +959,7 @@ public class TaggingModel {
 					checkNewBranch(i);
 				}
 			}
-}
+		}
 	}
 
 	private void checkAccessibility(int current, boolean[] visited) {

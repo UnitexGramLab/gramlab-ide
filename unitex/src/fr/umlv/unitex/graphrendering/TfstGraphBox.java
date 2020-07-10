@@ -65,8 +65,6 @@ public class TfstGraphBox extends GenericGraphBox {
 		super(x, y, type, p);
 	}
 	
-	
-
 	/**
 	 * Takes a <code>String</code> representing the box content and tokenizes it
 	 * to divide it into several lines
@@ -214,8 +212,6 @@ public class TfstGraphBox extends GenericGraphBox {
 			bounds.setEnd_in_chars( length-1 );
 	}
 
-
-
 	public void setContentWithBounds(String s) {
 		if (type == FINAL)
 			return; // nothing to do if we consider the final state
@@ -329,6 +325,4 @@ public class TfstGraphBox extends GenericGraphBox {
 		}	
 		return content;
 	}
-
-
 }

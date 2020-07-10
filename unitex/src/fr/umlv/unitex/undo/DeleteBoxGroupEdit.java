@@ -86,7 +86,6 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 			final ArrayList<GenericGraphBox> boxeTransitionsTo = zone.getTransitionTo(g);
 			final ArrayList<GenericGraphBox> boxeTransitionsFrom = (ArrayList<GenericGraphBox>) g
 					.getTransitions().clone();
-
 			selectedBoxesAndTransitionsTo.put(g, boxeTransitionsTo);
 			selectedBoxesAndTransitionsFrom.put(g, boxeTransitionsFrom);
 		}

@@ -41,28 +41,17 @@ import fr.umlv.unitex.MyCursors;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.diff.GraphDecorator;
 import fr.umlv.unitex.diff.GraphDecoratorConfig;
-import fr.umlv.unitex.exceptions.BackSlashAtEndOfLineException;
-import fr.umlv.unitex.exceptions.MissingGraphNameException;
-import fr.umlv.unitex.exceptions.NoClosingQuoteException;
-import fr.umlv.unitex.exceptions.NoClosingRoundBracketException;
-import fr.umlv.unitex.exceptions.NoClosingSupException;
+import fr.umlv.unitex.exceptions.*;
 import fr.umlv.unitex.grf.GraphMetaData;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.GraphIO;
 import fr.umlv.unitex.listeners.GraphListener;
 import fr.umlv.unitex.listeners.GraphTextEvent;
 import fr.umlv.unitex.listeners.GraphTextListener;
+import fr.umlv.unitex.undo.*;
 import fr.umlv.unitex.tfst.tagging.TaggingModel;
 import fr.umlv.unitex.tfst.tagging.TaggingState;
-import fr.umlv.unitex.undo.AddBoxEdit;
-import fr.umlv.unitex.undo.BoxGroupTextEdit;
-import fr.umlv.unitex.undo.BoxTextEdit;
-import fr.umlv.unitex.undo.DeleteBoxGroupEdit;
-import fr.umlv.unitex.undo.RemoveBoxEdit;
-import fr.umlv.unitex.undo.SelectEdit;
-import fr.umlv.unitex.undo.TransitionEdit;
-import fr.umlv.unitex.undo.TransitionGroupEdit;
-import fr.umlv.unitex.undo.TranslationEdit;
+
 
 
 /**
@@ -206,10 +195,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			if (n == JOptionPane.CLOSED_OPTION || n != 0)
 				return;
 		}
-		
 		graphBoxes.add(g);
-		
-		
 	}
 
 	protected abstract GenericGraphBox createBox(int x, int y);
@@ -302,7 +288,6 @@ public abstract class GenericGraphicalZone extends JComponent {
 			}
 		}
 	}
-
 
 	protected void removeBox(GenericGraphBox box) {
 		graphBoxes.remove(box);

@@ -1,5 +1,5 @@
 /*
-  * Unitex
+ * Unitex
  *
  * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
@@ -61,7 +61,6 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 
 	TaggingModel model;
 	int sentence=-1;
-	
 
 	/**
 	 * Constructs a new <code>TfstGraphicalZone</code>.
@@ -216,7 +215,6 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			fireGraphChanged(false);
 		}
 		
-
 		@Override
 		public void mousePressed(MouseEvent e) {
 			int selectedBox;
