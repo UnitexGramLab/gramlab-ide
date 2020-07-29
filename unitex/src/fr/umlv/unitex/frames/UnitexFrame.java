@@ -45,8 +45,6 @@ import fr.umlv.unitex.project.UnitexProject;
 import fr.umlv.unitex.project.manager.UnitexProjectManager;
 import fr.umlv.unitex.text.Text;
 import fr.umlv.unitex.utils.UnitexHelpMenuBuilder;
-import fr.umlv.unitex.leximir.delac.EditorDelac;
-import fr.umlv.unitex.leximir.delas.EditorDelas;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -721,9 +719,7 @@ public class UnitexFrame extends JFrame {
 	AbstractAction inflect;
 	AbstractAction delasLeximir;
 	AbstractAction confDelaLeximir;
-	AbstractAction delacStrategyLeximir;
 	AbstractAction shellLeximir;
-	AbstractAction delacLeximir;
 	AbstractAction compressIntoFST;
 	AbstractAction closeDela;
 
@@ -862,20 +858,7 @@ public class UnitexFrame extends JFrame {
 		};
 		delasLeximir.setEnabled(true);
 		delaMenu.add(new JMenuItem(delasLeximir));
-		// for delac Menu confDelaLeximir
-		delacLeximir = new AbstractAction("Edit Delac") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-				.newChooseDelacDialog();
-			}
-		};
-		delacLeximir.setEnabled(true);
-		delaMenu.add(new JMenuItem(delacLeximir));
-		
-		
-		//end 
-		
+				
 		delaMenu.addSeparator();
 		inflect = new AbstractAction("Inflect...") {
 			@Override

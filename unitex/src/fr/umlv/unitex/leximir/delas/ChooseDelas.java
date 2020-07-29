@@ -79,7 +79,7 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jRadioAllDelas.setText("Open all Delas in Delas folder");
+        jRadioAllDelas.setText("Open all DELAS in DELAS folder");
 
         jButtonOpen.setText("Open");
         jButtonOpen.addActionListener(new java.awt.event.ActionListener() {
@@ -156,8 +156,8 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
         boolean all = jRadioAllDelas.isSelected();
         updateLinks(all);
         if (all) {
-            File allDFoler = new File(DictionaryPath.allDelas);
-            if (allDFoler.exists()) {
+            File allDFolder = new File(DictionaryPath.allDelas);
+            if (allDFolder.exists()) {
 
                 FilenameFilter filter = new FilenameFilter() {
                     @Override
@@ -166,20 +166,20 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
                     }
                 };
 
-                if (allDFoler.list(filter).length == 0) {
-                    JOptionPane.showMessageDialog(null, "No Delas was Found in : " + DictionaryPath.allDelas, "Information", JOptionPane.INFORMATION_MESSAGE);
+                if (allDFolder.list(filter).length == 0) {
+                    JOptionPane.showMessageDialog(null, "No DELAS file was found in :" + DictionaryPath.allDelas, "Information", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
                             .newEditorDelasDialog(all, null);
                     this.setVisible(false);
                 }
             } else {
-                int reply = JOptionPane.showConfirmDialog(null, "No Delas folder found in Dela folder \nCreate Delas folder?", title,
+                int reply = JOptionPane.showConfirmDialog(null, "No DELAS folder found in DELA folder \nCreate DELAS folder?", title,
                         JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION) {
-                    allDFoler.mkdirs();
-                    if (allDFoler.exists()) {
-                        JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
+                    allDFolder.mkdirs();
+                    if (allDFolder.exists()) {
+                        JOptionPane.showMessageDialog(null, "The folder has been successfully created!", "Information", JOptionPane.INFORMATION_MESSAGE);
                     }
 
                     GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
@@ -191,8 +191,17 @@ public class ChooseDelas extends javax.swing.JInternalFrame {
                 }
             }
         } else {
+        	File dic = new File(jTextField1.getText());
+        	/* This if checks if the user used the option of opening only one dictionary with "Browse" but didn't select any dictionary*/
+        	if(dic.toString().isEmpty()) {
+            	JOptionPane.showMessageDialog(null, "No dictionary is selected");
+            	return;
+            }else if(!dic.exists()){
+            	JOptionPane.showMessageDialog(null, "The selected dictionary doesn't exist");
+            	return;
+            }
             GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                    .newEditorDelasDialog(all, new File(jTextField1.getText()));
+                    .newEditorDelasDialog(all, dic);
             this.setVisible(false);
         }
 

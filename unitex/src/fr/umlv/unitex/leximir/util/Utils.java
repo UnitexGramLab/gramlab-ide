@@ -21,18 +21,15 @@
 package fr.umlv.unitex.leximir.util;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
 import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.process.ToDo;
-import fr.umlv.unitex.leximir.helper.DelacHelper;
-import java.awt.HeadlessException;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -41,10 +38,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.swing.JOptionPane;
 import fr.umlv.unitex.leximir.model.DictionaryPath;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 /**
@@ -109,33 +105,37 @@ public class Utils {
      * @param dicPos is the list of the element to export
      * @param filename the name of the csv file
      */
-    public static void exportJtableToCsv(List<Object[]> dicPos, String filename) throws IOException, FileNotFoundException {
+    public static void exportJtableToCsv(List<Object[]> dicPos, String filename, String title) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
+        sb.append("filename;POS;count\n");
+        dicPos.remove(0);
         for (Object[] tab : dicPos) {
             for (Object obj : tab) {
                 sb.append(obj.toString() + ";");
             }
             sb.append("\n");
         }
+        
         boolean isDone = false;
         try {
-            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+        	Encoding e = ConfigManager.getManager().getEncoding(null);
+            OutputStreamWriter out = e.getOutputStreamWriter(new File(filename));
             UnicodeIO.writeString(out, sb.toString());
             out.close();
             isDone = true;
         } finally {
             if (isDone) {
                 GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                        .newCsvOpener(filename);
+                        .newCsvOpener(filename, title);
 
             }
         }
     }
 
-    public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename) throws IOException, FileNotFoundException {
+    public static void exportStatAllToCsv(Map<String, Object[]> simSem, String filename, String title) throws IOException, FileNotFoundException {
         StringBuilder sb = new StringBuilder();
         int i = 0;
-        sb.append("POS;SynSem;Count\n");
+        sb.append("POS;SynSem;count\n");
         Set<String> keysets = simSem.keySet();
         for (String key : keysets) {
             Object[] objArr = simSem.get(key);
@@ -153,14 +153,15 @@ public class Utils {
         }
         boolean isDone = false;
         try {
-            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(filename));
+        	Encoding e = ConfigManager.getManager().getEncoding(null);
+            OutputStreamWriter out = e.getOutputStreamWriter(new File(filename));
             UnicodeIO.writeString(out, sb.toString());
             out.close();
             isDone = true;
         } finally {
             if (isDone) {
                 GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                        .newCsvOpener(filename);
+                        .newCsvOpener(filename, title);
 
             }
         }
@@ -174,14 +175,7 @@ public class Utils {
         return new Object[]{pOs, lemma, fstCode, SynSem, comment, lemmaInv, lemmaId, Dicname};
     }
 
-    public static Object[] delacToObject(String lemma, String fstCode, String synSem, String comment, String Dicname) {
-        String line = lemma + "," + fstCode + synSem + "/" + comment;
-        String pOs = DelacHelper.getPosInDelac(line);
-        String lema = DelacHelper.getLemaInLemaAllDelac(lemma);
-        return new Object[]{pOs, lemma, lema, fstCode, synSem, comment, "", Dicname};
-    }
-
-    /**
+   /**
      * this function open terminal and run command
      *
      * @param command
@@ -220,9 +214,15 @@ public class Utils {
         if (!delaffolder.exists()) {
             delaffolder.mkdir();
         }
+        Encoding e = ConfigManager.getManager().getEncoding(null);
+        
         if (new File(DictionaryPath.inflectionPath + fst + ".grf").exists()) {
-
-            OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas +File.separator+ "DelasTmp.dic"));
+        	
+        	File tmp = File.createTempFile("DELASTmp", ".dic",new File(DictionaryPath.allDelas));
+        	OutputStreamWriter out= e.getOutputStreamWriter(tmp);
+        	   
+        	File result = File.createTempFile("DelafTmp", ".dic",new File(DictionaryPath.delafPath));
+          	
             UnicodeIO.writeString(out, lemma);
             UnicodeIO.writeString(out, ",");
             UnicodeIO.writeString(out, fst);
@@ -230,70 +230,32 @@ public class Utils {
 
             String[] command = {
                 DictionaryPath.unitexLoggerPath, "MultiFlex",
-                DictionaryPath.allDelas +File.separator+ "DelasTmp.dic",
-                "-o", DictionaryPath.delafPath +File.separator+ "DelafTmp.dic",
+                tmp.getAbsolutePath(),
+                "-o", DictionaryPath.delafPath +File.separator+ result.getName(),
                 "-a", DictionaryPath.alphabetPath,
-                "-d", DictionaryPath.inflectionPath
+                "-d", DictionaryPath.inflectionPath,
+                "-q", e.toString()
             };
-
+            
             ProcessBuilder pb = new ProcessBuilder(command);
+            
             pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
             pb.redirectError(ProcessBuilder.Redirect.INHERIT);
             Process p = pb.start();
+            
             while (isProcessAlive(p)) {
                 continue;
             }
-            new File(DictionaryPath.allDelas + File.separator+ "DelasTmp.dic").delete();
+            
+            tmp.delete();
 
             GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
-                    .newDelaFrame(new File(DictionaryPath.delafPath +File.separator+ "DelafTmp.dic"));
+                    .newDelaFrame(result);
 
         } else {
+        	JOptionPane.showMessageDialog(null, "The graph " + fst + ".grf was not found.");
             throw new FileNotFoundException(" FST Graph doesn't exist");
         }
 
-    }
-
-    /**
-     * This function generate delaf from an entry of delas(c) into snt_txt/dlf
-     *
-     * @param value entry of delas(c)
-     * @throws IOException
-     * @throws HeadlessException
-     */
-    public static void generateDelaf(String value) throws IOException, HeadlessException {
-        String tempPath = DictionaryPath.delafTmpPathDelac;
-        try (OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(tempPath))) {
-            UnicodeIO.writeString(out,value + ".");
-            out.close();
-        }
-        String snt = tempPath.replace(".txt", ".snt");
-        try (OutputStreamWriter out= new OutputStreamWriter(new FileOutputStream(snt))) {
-            UnicodeIO.writeString(out,value + ".");
-            out.close();
-        }
-        String[] cmd1 = {DictionaryPath.unitexLoggerPath, "Normalize", DictionaryPath.delafTmpAbsPathDelac + "text.txt"};
-        String[] cmd2 = {DictionaryPath.unitexLoggerPath, "Tokenize", DictionaryPath.delafTmpAbsPathDelac + "text.snt", "-a", DictionaryPath.alphabetPath};
-        List<String> allDela = new ArrayList<>();
-        File folder = new File(DictionaryPath.allDelafAbsPath);
-        File[] listOfFiles = folder.listFiles();
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                if (file.getName().endsWith(".bin")) {
-                    allDela.add(DictionaryPath.allDelafAbsPath + file.getName());
-                }
-            }
-        }
-        String[] cmdTmp = {DictionaryPath.unitexLoggerPath, "Dico", "-t", DictionaryPath.delafTmpAbsPathDelac + "text.snt", "-a", DictionaryPath.alphabetPath};
-        String[] cmd3 = new String[cmdTmp.length + allDela.size()];
-        System.arraycopy(cmdTmp, 0, cmd3, 0, cmdTmp.length);
-        int indiceCmd = cmdTmp.length;
-        for (String alldela : allDela) {
-            cmd3[indiceCmd] = alldela;
-            indiceCmd++;
-        }
-        Utils.runCommandTerminal(cmd1);
-        Utils.runCommandTerminal(cmd2);
-        Utils.runCommandTerminal(cmd3);
     }
 }

@@ -29,13 +29,13 @@ import java.util.Map;
 public class StatisticOutputFactory {
 	private StatisticOutput dialog;
 
-	public StatisticOutput newStatisticOutputDialog(List<Object[]> dicPos) {
-		dialog = new StatisticOutput(dicPos);
+	public StatisticOutput newStatisticOutputDialog(List<Object[]> dicPos, boolean isDelas) {
+		dialog = new StatisticOutput(dicPos, isDelas);
 		return dialog;
 	}
         
-	public StatisticOutput newStatisticOutputDialog(Map<String, Object[]> statSimSem) {
-		dialog = new StatisticOutput(statSimSem);
+	public StatisticOutput newStatisticOutputDialog(Map<String, Object[]> statSimSem, boolean isDelas) {
+		dialog = new StatisticOutput(statSimSem, isDelas);
 		return dialog;
 	}
 }

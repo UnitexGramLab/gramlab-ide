@@ -22,7 +22,6 @@ package fr.umlv.unitex.leximir.helper;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -39,19 +38,8 @@ public class GridHelper {
      */
     public static DefaultTableModel getOpenEditorforDelas(boolean alldelas,File dic) throws IOException {
         
-        String[] entete = {"POS","Lemma","FST Code","SynSem","Comment","Lemma lnv","Lemma ID","Dict. File"};
+        String[] entete = {"POS","Lemma","FST Code","SynSem Feature","Comment","Inv Lemma","Lemma ID","Dict. File"};
         Object[][] data = DelasHelper.getAllDelasFromDicToObject(alldelas,dic);
-        return new DefaultTableModel(data,entete);
-    }
-    /**
-     * This function complete Jtable of Delac dictionary
-     * @return 
-     * @throws IOException 
-     */
-    public static DefaultTableModel getOpenEditorforDelac(boolean alldelac, File dic) throws IOException {
-        
-        String[] entete = {"POS","Comp.Lemma all","Comp.Lemma","FST Code","SynSem","Comment","Lemma ID","Dict. File"};
-        Object[][] data = DelacHelper.getAllDelacFromDicToObject(alldelac, dic);
         return new DefaultTableModel(data,entete);
     }
     /**
@@ -62,36 +50,6 @@ public class GridHelper {
     public static DefaultTableModel getDelafInDelacForDelac() throws IOException {
         String[] entete = {"delaf entry","POS","lemma","Gram cats","FST graph"};
         Object[][] data = DelafHelper.getAllDelafFromDelacToObject();
-        return new DefaultTableModel(data,entete);
-    }
-    /**
-     * This function complete  jTableFLX in Menu Delac to manage simple word in compound words
-     * @return 
-     * @throws IOException 
-     */
-    public static DefaultTableModel getDataforjTableFlx(String lema) throws IOException {
-        String[] entete = {"RB", "Form", "Lemma", "FST code", "Gram cat", "Separator"};
-        Object[][] data = DelacHelper.completeJTableFLX(lema);
-        return new DefaultTableModel(data,entete);
-    }
-    /**
-     * This function complete jtable of delaf
-     * @return 
-     * @throws IOException 
-     */
-    public static DefaultTableModel getDataforjTableDlf(List<String> dlf) throws IOException {
-        Object[][] data = DelacHelper.completeJTableDlf(dlf);
-        String[] entete = {"Delaf entry", "Lemma", "POS", "Features"};
-        return new DefaultTableModel(data,entete);
-    }
-    /**
-     * Array to display data from jTableDlf
-     * @return 
-     * @throws IOException 
-     */
-    public static DefaultTableModel getDataforjTablePredict(List<String> predict) throws IOException {
-        Object[][] data = DelacHelper.completeJTablePredict(predict);
-        String[] entete = {"words", "FST", "Rule","Spec/Gen","ID RULE","SynSem"};
         return new DefaultTableModel(data,entete);
     }
 }

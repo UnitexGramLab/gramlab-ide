@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import fr.umlv.unitex.leximir.delas.EditorDelas;
 import fr.umlv.unitex.leximir.util.Utils;
 
 /**
@@ -39,21 +40,19 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
     
     Map<String, Object[]> statSimSem;
     
-    public StatisticOutput(List<Object[]> dicPos) {
+    public StatisticOutput(List<Object[]> dicPos, boolean isDelas) {
         super("Set output folder", true, true, true, true);
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dicPos=dicPos;
         this.statSimSem=null;
-
     }
-        public StatisticOutput(Map<String, Object[]> statSimSem2) {
+    public StatisticOutput(Map<String, Object[]> statSimSem2, boolean isDelas) {
         super("Set output folder", true, true, true, true);
         initComponents();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dicPos=null;
         this.statSimSem=statSimSem2;
-
     }
 
     private void initComponents() {
@@ -64,8 +63,13 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         jButtonSet = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-
+        String outputStatsFile;
+        
+        outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jTextField1.setText(outputStatsFile); 
 
         jButtonSet.setText("Set");
         jButtonSet.addActionListener(new java.awt.event.ActionListener() {
@@ -139,20 +143,35 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-        File selectedFile = fileChooser.getSelectedFile();
-        jTextField1.setText(selectedFile.getAbsolutePath()+File.separator+"statisticsTmp.csv"); 
+	        File selectedFile = fileChooser.getSelectedFile();
+	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
+	        jTextField1.setText(EditorDelas.getStatisticDirectory()+"statisticsTmp.csv");
+	        
         }
     }
 
     private void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
         try{   
-        String filename= jTextField1.getText();
-        if(this.dicPos==null){
-            Utils.exportStatAllToCsv(statSimSem,filename);
-        }else{
-            Utils.exportJtableToCsv(this.dicPos,filename);    
-            }
-        this.setVisible(false);
+        	String filename= jTextField1.getText();
+        	File saveFolder = new File(new File(filename).getParent());
+        	if(!saveFolder.exists()) {
+        		 int reply = JOptionPane.showConfirmDialog(null, "This folder doesn't exist yet \nCreate this folder?", title,
+                         JOptionPane.YES_NO_OPTION);
+                 if (reply == JOptionPane.YES_OPTION) {
+                     saveFolder.mkdirs();
+                     if (saveFolder.exists()) {
+                         JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
+                     }
+                 }
+        	}
+	        if(this.dicPos==null){
+	        	/*This is the stats by POS and markers*/
+	            Utils.exportStatAllToCsv(statSimSem,filename,"Statistics by POS and SynSem Feature");
+	        }else{
+	        	/*This is the stats by filename and POS*/
+	            Utils.exportJtableToCsv(this.dicPos,filename,"Statistics by filename and POS");
+	            }
+	        this.setVisible(false);
         } catch (IOException ex) {
            JOptionPane.showMessageDialog(null, "Error : "+ex.getMessage());
         }

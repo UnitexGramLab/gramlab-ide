@@ -37,13 +37,13 @@ import fr.umlv.unitex.leximir.util.Utils;
  */
 public class DelasHelper {
     /**
-     * This function return a list of dictionary in directory
+     * This function return a list of dictionary in directory path
      * @return
      * @throws FileNotFoundException 
      */
-    public static ArrayList<String> getDicDelasPath() throws FileNotFoundException, IOException {
+    public static ArrayList<String> getDicDelasPath(String path) throws FileNotFoundException, IOException {
         ArrayList<String> list= new ArrayList<>();
-        File folder = new File(DictionaryPath.allDelas);
+        File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
@@ -53,7 +53,7 @@ public class DelasHelper {
             } 
         }
         if(list.isEmpty()){
-            throw new FileNotFoundException("dictonnary not found");
+            throw new FileNotFoundException("dictionary not found");
         }
         return list;
     }
@@ -67,8 +67,9 @@ public class DelasHelper {
      */
     public static Object[][] getAllDelasFromDicToObject(boolean allDelas,File dic) throws FileNotFoundException, IOException {
         List<String> list= new ArrayList<>();
+      
         if(allDelas){
-            list = getDicDelasPath();
+            list = getDicDelasPath(DictionaryPath.allDelas);
         }
         else if(dic!=null){
             list = Arrays.asList(dic.getAbsolutePath().toString());
@@ -80,13 +81,16 @@ public class DelasHelper {
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
             if(allDelas)
-            path = DictionaryPath.allDelas+File.separator+dela;
+            	path = DictionaryPath.allDelas+File.separator+dela;
             else
-            path = dela;
+            	path = dela;
 
             ArrayList<String> readFile = Utils.readFile(path);
             count += readFile.size();
-            DictionaryPath.dictionary.add(dela);
+            if(allDelas) 
+            	DictionaryPath.dictionary.add(dela);
+            else
+            	DictionaryPath.dictionary.add(new File(dela).getName());
         }
         
         Object[][] ob = new Object[count][lf.length];
@@ -96,13 +100,16 @@ public class DelasHelper {
             String pOs,lemma,fSTCode,SynSem,comment,lemmaInv;
             
             String dicFile=dela;
-            //String path = Utils.getValueXml("pathDelas")+"/"+dela;
-            String path="";
+          
+            String path = "";
             if(allDelas)
-            path = DictionaryPath.allDelas+File.separator+dela;
-            else
-            path = dela;
-            
+            	path = DictionaryPath.allDelas+File.separator+dela;
+            else {
+	            path = dela;
+	           	            
+	            dicFile = new File(path).getName();
+	            
+	        }
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
                 lemma=getLemaInDelas(s);
@@ -112,7 +119,7 @@ public class DelasHelper {
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
                 Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, lemmaId, dicFile);
-                delacToObject(ob, k, tmp);
+                delasToObject(ob, k, tmp);
                 k++;
                 lemmaId=lemmaId+1;
                 
@@ -121,7 +128,7 @@ public class DelasHelper {
         return ob;
     }
 
-    private static void delacToObject(Object[][] ob, int k, Delas tmp) {
+    private static void delasToObject(Object[][] ob, int k, Delas tmp) {
         ob[k][0]=tmp.getpOS();
         ob[k][1]=tmp.getLemma();
         ob[k][2]=tmp.getfSTCode();
