@@ -49,7 +49,6 @@ import fr.umlv.unitex.tfst.TagFilter;
 import java.util.List;
 import java.util.Map;
 import fr.umlv.unitex.leximir.delas.*;
-import fr.umlv.unitex.leximir.delac.*;
 import fr.umlv.unitex.leximir.helper.*;
 import fr.umlv.unitex.leximir.shell.*;
 
@@ -116,8 +115,6 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
     private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
     private final ShellFactory shellFactory = new ShellFactory();
-    private final ChooseDelacFactory chooseDelacFactory = new ChooseDelacFactory();
-    private final EditorDelacFactory editorDelacFactory = new EditorDelacFactory();
     private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
     private final StatisticOutputFactory statisticOutputFactory = new StatisticOutputFactory();
     private final CsvOpenerFactory csvOpenerFactory = new CsvOpenerFactory();
@@ -222,16 +219,6 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public ChooseDelac newChooseDelacDialog() {
-        final ChooseDelac d = chooseDelacFactory.newChooseDelacDialog();
-        if (d == null) {
-            return null;
-        }
-        setup(d, true);
-        return d;
-    }
-
-
     public Shell newShellDialog() {
         final Shell d = shellFactory.newShellDialog();
         if (d == null) {
@@ -250,8 +237,9 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public StatisticOutput newStatisticOutput(List<Object[]> dicPos) {
-        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos);
+
+    public StatisticOutput newStatisticOutput(List<Object[]> dicPos, boolean isDelas) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos, isDelas);
         if (d == null) {
             return null;
         }
@@ -259,8 +247,8 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem) {
-        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem);
+    public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem, boolean isDelas) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem, isDelas);
         if (d == null) {
             return null;
         }
@@ -268,17 +256,8 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public CsvOpener newCsvOpener(String Csvfile) {
-        final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(Csvfile);
-        if (d == null) {
-            return null;
-        }
-        setup(d, true);
-        return d;
-    }
-
-    public EditorDelac newEditorDelacDialog(boolean alldelac, File dic) {
-        final EditorDelac d = editorDelacFactory.newEditorDelacDialog(alldelac, dic);
+    public CsvOpener newCsvOpener(String Csvfile, String title) {
+        final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(Csvfile, title);
         if (d == null) {
             return null;
         }

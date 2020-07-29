@@ -186,7 +186,9 @@ public class TextAsListModelImpl extends AbstractListModel {
 		builder.setLength(0);
 		final int start = interval.getStartInChars();
 		final int end = interval.getEndInChars();
+		
 		mappedBuffer.position(interval.getStartInBytes());
+		
 		for (int pos = start; pos <= end; pos++) {
 			final int c = encoding.readChar(mappedBuffer);
 			if (c != '\r' && c != '\n') {

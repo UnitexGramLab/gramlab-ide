@@ -28,11 +28,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -46,8 +48,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.frames.InternalFrameManager;
 import fr.umlv.unitex.frames.UnitexInternalFrameManager;
+import fr.umlv.unitex.io.Encoding;
 import fr.umlv.unitex.io.UnicodeIO;
 import fr.umlv.unitex.leximir.helper.*;
 import javax.swing.JInternalFrame;
@@ -70,9 +74,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private DefaultTableModel tableModel;
     private DefaultTableModel defaulttableModel;
     private boolean unsaved = false;
-
-    public EditorDelas() {
-    }
+    private String workingDirectory;
+    private static String statisticDirectory = DictionaryPath.statisticsDelasPath;
+    
 
     /**
      * Creates new form EditorLadl
@@ -82,7 +86,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      */
     public EditorDelas(boolean alldelas, File dic) {
         super("LeXimir Editor for Dela dictionaries of simple words", true, true, true, true);
+        
         try {
+        	initWorkingDirectory(alldelas, dic);
             initComponents();
             DictionaryPath.dictionary.clear();
             this.setTitle("LeXimir Editor for Dela dictionaries of simple words");
@@ -117,6 +123,29 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * Set the working directory depending on the path given in parameter. If the user decided to open all dictionaries from the default 
+     * directory (Dela/Delas/), the working directory is set to the default directory, otherwise it is set to the directory that contains 
+     * the dictionary opened as a specific file with "Browse".
+     * 
+     * @param alldelas if alldelas is true, the working directory is set to the default Dela/Delas/ directory
+     * @param dic the path of the directory/dictionary opened
+     */
+    
+    private void initWorkingDirectory(boolean alldelas, File dic) {
+       	if(alldelas) {
+       		this.workingDirectory = DictionaryPath.allDelas;
+    	}else {
+    		if(dic.getParent() == null) {
+    			this.workingDirectory = DictionaryPath.allDelas;
+    		}else {
+    			this.workingDirectory = dic.getParent() + File.separator;
+    		}
+    	}
+       	System.out.println("Working directory : " + workingDirectory);
+    	return;
+    }
 
     private DefaultTableCellRenderer paintGrid() {
         return new DefaultTableCellRenderer() {
@@ -146,7 +175,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldSynSem = new javax.swing.JTextField();
         jButtonGraph = new javax.swing.JButton();
-        jButtonAll = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jTextFieldLemmaInv = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -182,6 +210,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuNew = new javax.swing.JMenu();
         jMenuItemInsertBefore = new javax.swing.JMenuItem();
         jMenuItemInsertAfter = new javax.swing.JMenuItem();
+        jMenuItemStatsFilePOS = new javax.swing.JMenuItem();
+        jMenuItemStatsPOSMarker = new javax.swing.JMenuItem();
         jMenuBefore = new javax.swing.JMenu();
         jMenuAfter = new javax.swing.JMenu();
         jMenuEdit = new javax.swing.JMenu();
@@ -193,6 +223,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuSave = new javax.swing.JMenu();
         jMenuSaveAs = new javax.swing.JMenu();
         jMenuExit = new javax.swing.JMenu();
+        
+        jLabel16 = new javax.swing.JLabel();
+        jLabel16.setText("Working Directory :");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -234,14 +267,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         });
 
-        jButtonAll.setText("Statistics on table");
-        jButtonAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAllActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("Lemma Inverted");
+        jLabel5.setText("Inverted Lemma");
 
         jTextFieldLemmaInv.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -296,8 +322,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel4)
                                         .addGroup(jPanel3Layout.createSequentialGroup()
                                                 .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonAll)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel3Layout.createSequentialGroup()
@@ -341,7 +366,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                                         .addComponent(jTextFieldFst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextFieldSynSem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonGraph)
-                                        .addComponent(jButtonAll)
                                         .addComponent(jTextFieldLemmaInv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jButtonMove)
                                         .addComponent(jComboBoxDic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -362,8 +386,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1)
-                                .addContainerGap())
+                                .addComponent(jScrollPane1))
         );
         jPanel4Layout.setVerticalGroup(
                 jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -533,6 +556,11 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(jPanel1);
 
         jMenuNew.setText("New");
+        jMenuNew.addMouseListener(new java.awt.event.MouseAdapter() {            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuNew.doClick();
+            }
+        });
 
         jMenuItemInsertBefore.setText("Insert before");
         jMenuItemInsertBefore.addActionListener(new java.awt.event.ActionListener() {
@@ -547,6 +575,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemInsertActionPerformed(evt,"insertAfter");
             }
+
         });
         jMenuNew.add(jMenuItemInsertAfter);
 
@@ -557,6 +586,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuBeforeAfterMouseClicked(evt,"copyBefore");
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuBefore.doClick();
+            }
         });
         jMenuBar1.add(jMenuBefore);
 
@@ -564,6 +597,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuAfter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuBeforeAfterMouseClicked(evt,"copyAfter");
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuAfter.doClick();
             }
         });
         jMenuBar1.add(jMenuAfter);
@@ -573,6 +610,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuViewEditMouseClicked(evt,"edit");
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuEdit.doClick();
+            }
         });
         jMenuBar1.add(jMenuEdit);
 
@@ -580,6 +621,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuView.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuViewEditMouseClicked(evt,"view");
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuView.doClick();
             }
         });
         jMenuBar1.add(jMenuView);
@@ -589,6 +634,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuDeleteMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuDelete.doClick();
+            }
         });
         jMenuBar1.add(jMenuDelete);
 
@@ -596,6 +645,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuInflect.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuInflectMouseClicked(evt);
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuInflect.doClick();
             }
         });
         jMenuBar1.add(jMenuInflect);
@@ -605,15 +658,35 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuDuplicateMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuDuplicate.doClick();
+            }
         });
         jMenuBar1.add(jMenuDuplicate);
 
         jMenuStatistics.setText("Statistics");
         jMenuStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuStatisticsMouseClicked(evt);
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuStatistics.doClick();
             }
         });
+        
+        jMenuItemStatsFilePOS.setText("by filename and POS");
+        jMenuItemStatsFilePOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	jMenuStatisticsMouseClicked(evt);
+            }
+        });
+        jMenuStatistics.add(jMenuItemStatsFilePOS);
+        
+        jMenuItemStatsPOSMarker.setText("by POS and SynSem Feature");
+        jMenuItemStatsPOSMarker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAllActionPerformed(evt);
+            }
+        });
+        jMenuStatistics.add(jMenuItemStatsPOSMarker);
 
         jMenuBar1.add(jMenuStatistics);
 
@@ -621,6 +694,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuSave.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuSaveMouseClicked(evt);
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuSave.doClick();
             }
         });
         jMenuBar1.add(jMenuSave);
@@ -630,6 +707,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuSaveAsMouseClicked(evt);
             }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuSaveAs.doClick();
+            }
         });
         jMenuBar1.add(jMenuSaveAs);
 
@@ -637,6 +718,10 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         jMenuExit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenuExitMouseClicked(evt);
+            }
+            
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+            	jMenuExit.doClick();
             }
         });
         jMenuBar1.add(jMenuExit);
@@ -668,16 +753,23 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         rowSorter = new TableRowSorter<>(tableModel);
         this.getjTable1().setRowSorter(rowSorter);
         this.getjTable1().removeAll();
-        if (text.length() == 0) {
-            rowSorter.setRowFilter(null);
-        } else {
-            rowSorter.setRowFilter(RowFilter.regexFilter(text));
+       
+        try {
+	        if (text.length() == 0) {
+	            rowSorter.setRowFilter(null);
+	        } else {
+	            rowSorter.setRowFilter(RowFilter.regexFilter(text));
+	        }
+        }catch(PatternSyntaxException e) {
+        	JOptionPane.showMessageDialog(null, "Error in regular expression");
+            return;
         }
+            
         jTable1.setModel(rowSorter.getModel());
         jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
     }
 
-    private void jMenuStatisticsMouseClicked(java.awt.event.MouseEvent evt) {
+    private void jMenuStatisticsMouseClicked(java.awt.event.ActionEvent evt) {
 
         Map<String, HashMap<String, String>> dic_POS_stat = new HashMap<>();
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
@@ -724,7 +816,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             }
         }
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(dicPos);
+                .newStatisticOutput(dicPos, true);
 
     }
 
@@ -803,21 +895,24 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     fileData.put(file, tmp);
                 }
             }
+            Encoding e = ConfigManager.getManager().getEncoding(null);
             for (Map.Entry<String, List<String>> data : fileData.entrySet()) {
                 try {
-                    String fn = data.getKey().contains(File.separator) ? new File(data.getKey()).getName() : data.getKey();
-                    try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(DictionaryPath.allDelas + File.separator + fn),Charset.defaultCharset())) {
-                        for (String lines : data.getValue()) {
-                            UnicodeIO.writeString(out, lines);
-                        }
-                    }
+                	String fn = data.getKey();
+                    File dic = new File(workingDirectory + fn);
+                	try (OutputStreamWriter out = e.getOutputStreamWriter(dic)) {
+                		for (String lines : data.getValue()) {
+                			UnicodeIO.writeString(out, lines);
+                		}
+                	}
                 } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "error :" + ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "error :" + ex.getMessage() + "\nNo changes were done.");
+                    return;
                 }
             }
 
             this.setUnsaved(false);
-            JOptionPane.showMessageDialog(null, "Files where saved successfully");
+            JOptionPane.showMessageDialog(null, "The files were successfully saved");
         }
     }
 
@@ -849,81 +944,68 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jButtonAllActionPerformed(java.awt.event.ActionEvent evt) {
-
+    	
         Map<String, List<String>> data = new HashMap<>();
-        Map<String, HashMap<String, HashMap<String, String>>> dataForSynSem2 = new HashMap<>();
+        HashMap<String, HashMap<String, String>> results = new HashMap<>();
         for (int i = 0; i < this.getjTable1().getRowCount(); i++) {
             String SynSem = (String) this.getjTable1().getValueAt(i, 3);
             String pos = (String) this.getjTable1().getValueAt(i, 0);
             if (!data.containsKey(pos)) {
                 List<String> symSem = new ArrayList<>();
-                String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
-                symSem.addAll(Arrays.asList(tmp));
+                String[] tmp = SynSem.split(Pattern.quote("+"));
+                List<String> markers = new LinkedList<>(Arrays.asList(tmp));
+                markers.remove(0);
+                for(String elem : markers) {
+                	if(!symSem.contains(elem)){
+                		symSem.add(elem);
+                	}
+                }
                 data.put(pos, symSem);
             } else {
                 List<String> valueInData = data.get(pos);
-                String[] tmp = SynSem.split("=")[0].split(Pattern.quote("+"));
-                valueInData.addAll(Arrays.asList(tmp));
+                String[] tmp = SynSem.split(Pattern.quote("+"));
+                List<String> markers = new LinkedList<>(Arrays.asList(tmp));
+                markers.remove(0);
+                for(String elem : markers) {
+                	if(!valueInData.contains(elem)){
+                        valueInData.add(elem);
+                	}
+                }
                 data.put(pos, valueInData);
             }
-            String SynSemForPos = (String) this.getjTable1().getValueAt(i, 3);
-
-            String[] domain = SynSemForPos.split("=")[0].split(Pattern.quote("+"));
-
-            String realSynSem = "";
-            realSynSem = domain[domain.length - 1];
-
-            String domainCategory = "";
-            try {
-                domainCategory = SynSemForPos.split("=")[1].split(Pattern.quote("+"))[0];
-            } catch (java.lang.ArrayIndexOutOfBoundsException e) {
-                try {
-                    domainCategory = SynSemForPos.split("=")[1];
-                } catch (java.lang.ArrayIndexOutOfBoundsException ex) {
-                    if (!SynSemForPos.equals("")) {
-                        domainCategory = SynSemForPos.substring(1);
-                    }
-                }
+            
+            if(!results.containsKey(pos)) {
+            	results.put(pos, new HashMap<String, String>());
             }
-            if (!dataForSynSem2.containsKey(pos)) {
-                dataForSynSem2.put(pos, new HashMap<String, HashMap<String, String>>());
-                dataForSynSem2.get(pos).put(realSynSem, new HashMap<String, String>());
-                dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-            } else {
-                if (!dataForSynSem2.get(pos).containsKey(realSynSem)) {
-                    dataForSynSem2.get(pos).put(realSynSem, new HashMap<String, String>());
-                    dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-                } else {
-                    if (!dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
-                        dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, "1");
-                    } else {
-                        int count = Integer.parseInt(dataForSynSem2.get(pos).get(realSynSem).get(domainCategory)) + 1;
-                        //dataForSynSem2.get(pos).get(realSynSem).replace(domainCategory, String.valueOf(count));
-                        if (dataForSynSem2.get(pos).get(realSynSem).containsKey(domainCategory)) {
-                            dataForSynSem2.get(pos).get(realSynSem).put(domainCategory, String.valueOf(count));
-                        }
-                    }
-                }
-            }
+            for(String elem : data.get(pos)) {
+            	if(!results.get(pos).containsKey(elem)) {
+            		results.get(pos).put(elem, "1");
+            	} else {
+            		int count = Integer.parseInt(results.get(pos).get(elem)) + 1;
+            		results.get(pos).put(elem, String.valueOf(count));
+            	}            	
+        	}
+            data.clear();
         }
 
         Map<String, Object[]> statSimSem = new HashMap<>();
         int v = 2;
-        for (Map.Entry<String, HashMap<String, HashMap<String, String>>> t : dataForSynSem2.entrySet()) {
+            
+        for(Map.Entry<String, HashMap<String, String>> t : results.entrySet()) {
             String key = t.getKey();
-            for (Map.Entry<String, HashMap<String, String>> y : t.getValue().entrySet()) {
-                for (Map.Entry<String, String> u : y.getValue().entrySet()) {
-                    statSimSem.put(String.valueOf(v), new Object[]{key, y.getKey(), u.getKey(), u.getValue()});
-                    v++;
-                }
+            for(Map.Entry<String, String> y : t.getValue().entrySet()) {
+            	String marker = y.getKey();
+            	String number = y.getValue();
+            	statSimSem.put(String.valueOf(v), new Object[] {key, "", marker, number});
+            	v++;
             }
-        }
-
+        } 
+                  
         GlobalProjectManager.search(null).getFrameManagerAs(UnitexInternalFrameManager.class)
-                .newStatisticOutput(statSimSem);
-
-    }
-
+                     .newStatisticOutput(statSimSem, true);
+            
+   }
+            
     private void jTextFieldPosKeyPressed(java.awt.event.KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             JTextField textField = (JTextField) evt.getSource();
@@ -938,12 +1020,19 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
                 } else {
-                    if (!text.contains(".") && !text.contains("$")) {
+                    if (!text.contains(".") && !text.contains("$") && !text.contains("[") && !text.contains("]")) {
                         text = "^" + text;
                     }
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 0);// search in column at index 0
+                RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 0);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
+                
             }
             jTable1.setModel(rowSorter.getModel());
             jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
@@ -963,8 +1052,18 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             } else {
                 if (jCheckBoxExtract.isSelected()) {
                     text = "^" + text + "$";
+                }else {
+                	if (!text.contains(".") && !text.contains("$") && !text.contains("[") && !text.contains("]")) {
+                		text = "^" + text;
+                	}
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 2);// search in column at index 0
+                RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 2);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -990,7 +1089,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                         text = "." + text;
                     }
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 3);// search in column at index 0
+                RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 3);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1015,11 +1120,17 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     if (jCheckBoxExtract.isSelected()) {
                         text = "^" + text + "$";
                     } else {
-                        if (!text.contains(".") && !text.contains("$")) {
+                        if (!text.contains(".") && !text.contains("$") && !text.contains("[") && !text.contains("]")) {
                             text = "^" + text;
                         }
                     }
-                    RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// recherche avec la colonne indice 0
+                    RowFilter<Object, Object> rowFilter;
+                    try {
+                    	rowFilter = RowFilter.regexFilter(text, 1);
+                    }catch(PatternSyntaxException e) {
+                    	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                    	return;
+                    }
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
@@ -1041,10 +1152,20 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             if (text.trim().length() == 0) {
                 rowSorter.setRowFilter(null);
             } else {
-                if (!text.contains(".") && !text.contains("$")) {
-                    text = text + "$";
+            	if (jCheckBoxExtract.isSelected()) {
+            		text = "^" + text + "$";
+            	}else { 
+            		if (!text.contains(".") && !text.contains("$")) {
+            			text = text + "$";
+            		}
                 }
-                RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 1);// search in column at index 0
+            	RowFilter<Object, Object> rowFilter;
+                try {
+                	rowFilter = RowFilter.regexFilter(text, 1);
+                }catch(PatternSyntaxException e) {
+                	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                	return;
+                }
                 rowSorter.setRowFilter(rowFilter);
             }
             jTable1.setModel(rowSorter.getModel());
@@ -1063,21 +1184,40 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
         this.getjTable1().setRowSorter(rowSorter);
         this.getjTable1().removeAll();
         List<RowFilter<Object, Object>> filters = new ArrayList<>();
-        if (pos.length() != 0) {
-            filters.add(RowFilter.regexFilter(pos, 0));
-        }
-        if (lemma.length() != 0) {
-
-            filters.add(RowFilter.regexFilter(lemma, 1));
-        }
-        if (fst.length() != 0) {
-            filters.add(RowFilter.regexFilter(fst, 2));
-        }
-        if (SynSem.length() != 0) {
-            filters.add(RowFilter.regexFilter(SynSem, 3));
-        }
-        if (comment.length() != 0) {
-            filters.add(RowFilter.regexFilter(comment, 4));
+        try {
+	        if (pos.length() != 0) {
+	        	if (!pos.contains(".") && !pos.contains("$") && !pos.contains("[") && !pos.contains("]")) {
+	        		pos = "^" + pos;
+	        	}
+	            filters.add(RowFilter.regexFilter(pos, 0));
+	        }
+	        if (lemma.length() != 0) {
+	        	if (!lemma.contains(".") && !lemma.contains("$") && !lemma.contains("[") && !lemma.contains("]")) {
+	        		lemma = "^" + lemma;
+	        	}
+	            filters.add(RowFilter.regexFilter(lemma, 1));
+	        }
+	        if (fst.length() != 0) {
+	        	if (!fst.contains(".") && !fst.contains("$") && !fst.contains("[") && !fst.contains("]")) {
+	        		fst = "^" + fst;
+	        	}
+	            filters.add(RowFilter.regexFilter(fst, 2));
+	        }
+	        if (SynSem.length() != 0) {
+	        	if (!SynSem.contains(".") && !SynSem.contains("$") && !SynSem.contains("[") && !SynSem.contains("]")) {
+	        		SynSem = "^" + SynSem;
+	        	}
+	            filters.add(RowFilter.regexFilter(SynSem, 3));
+	        }
+	        if (comment.length() != 0) {
+	        	if (!comment.contains(".") && !comment.contains("$") && !comment.contains("[") && !comment.contains("]")) {
+	        		comment = "^" + comment;
+	        	}
+	            filters.add(RowFilter.regexFilter(comment, 4));
+	        }
+        }catch(PatternSyntaxException e) {
+        	JOptionPane.showMessageDialog(null, "Error in regular expression");
+        	return;
         }
         RowFilter<Object, Object> rf = RowFilter.andFilter(filters);
         rowSorter.setRowFilter(rf);
@@ -1086,8 +1226,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jMenuDuplicateMouseClicked(java.awt.event.MouseEvent evt) {
-        new DuplicationFinder(this.getjTable1()).execute();
-
+    	new DuplicationFinder(getjTable1()).execute();
     }
 
     private void jButtonGraphActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1158,7 +1297,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
             path = file.getPath();
             try {
                 String filename = path.endsWith(".dic") ? path : path + ".dic";
-                OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(filename));
+                Encoding e = ConfigManager.getManager().getEncoding(null);
+                File dic = new File(filename);
+                OutputStreamWriter out = e.getOutputStreamWriter(dic);
                 for (int row = 0; row < this.getjTable1().getRowCount(); row++) {
                     String lemma = String.valueOf(this.getjTable1().getValueAt(row, 1));
                     String fstCode = this.getjTable1().getValueAt(row, 2).toString().concat(this.getjTable1().getValueAt(row, 3).toString());
@@ -1171,9 +1312,9 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                     UnicodeIO.writeString(out, str);
                 }
                 out.close();
-                JOptionPane.showMessageDialog(null, "Files where saved successfully");
+                JOptionPane.showMessageDialog(null, "The file was successfully saved");
             } catch (IOException ex) {
-                Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
+            	Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -1200,7 +1341,13 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                             text = "^" + text;
                         }
                     }
-                    RowFilter<Object, Object> rowFilter = RowFilter.regexFilter(text, 4);// search in column at index 4
+                    RowFilter<Object, Object> rowFilter;
+                    try {
+                    	rowFilter = RowFilter.regexFilter(text, 4);
+                    }catch(PatternSyntaxException e) {
+                    	JOptionPane.showMessageDialog(null, "Error in regular expression");
+                    	return;
+                    }
                     rowSorter.setRowFilter(rowFilter);
                 }
                 jTable1.setModel(rowSorter.getModel());
@@ -1213,7 +1360,6 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
 
     private javax.swing.JLabel Comment;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButtonAll;
     private javax.swing.JButton jButtonClear;
     private javax.swing.JButton jButtonGraph;
     private javax.swing.JButton jButtonHelp;
@@ -1228,6 +1374,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1246,6 +1393,8 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     private javax.swing.JMenu jMenuInflect;
     private javax.swing.JMenuItem jMenuItemInsertAfter;
     private javax.swing.JMenuItem jMenuItemInsertBefore;
+    private javax.swing.JMenuItem jMenuItemStatsFilePOS;
+    private javax.swing.JMenuItem jMenuItemStatsPOSMarker;
     private javax.swing.JMenu jMenuNew;
     private javax.swing.JMenu jMenuSave;
     private javax.swing.JMenu jMenuSaveAs;
@@ -1294,6 +1443,14 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
      */
     public DefaultTableModel getDefaultTableModel() {
         return defaulttableModel;
+    }
+    
+    public static String getStatisticDirectory() {
+    	return statisticDirectory;
+    }
+    
+    public static void setStatisticDirectory(String folder) {
+    	statisticDirectory = folder;
     }
 
     public boolean getUnsaved() {

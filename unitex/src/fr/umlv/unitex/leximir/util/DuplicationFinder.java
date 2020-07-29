@@ -56,7 +56,7 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
         jtableRes.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                    "Duplucate value", "Lemma", "Fst", "SynSem", "dic"
+                    "Duplicate value", "Lemma", "Fst", "SynSem", "dic"
                 }
         ) {
             boolean[] canEdit = new boolean[]{
@@ -88,19 +88,7 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
         dialog.setModal(false);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-    }
-
-    public static boolean areAllTrue(String[] text1, String[] text2) {
-        int numberSame = 0;
-        for (String a : text1) {
-            for (String b : text2) {
-                if (a.equals(b)) {
-                    numberSame++;
-                    break;
-                }
-            }
-        }
-        return numberSame == text1.length || numberSame == text1.length - 1;
+        
     }
     
     /**
@@ -110,20 +98,18 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
     @Override
     protected Integer doInBackground() throws Exception {
         DefaultTableModel tableModel = (DefaultTableModel) jtableRes.getModel();
+       
         for (int i = 0; i < jtableSrc.getRowCount() - 1; i++) {
-            String lema = jtableSrc.getModel().getValueAt(i, 1).toString();
-            String fst = jtableSrc.getModel().getValueAt(i, 2).toString();
-            String SynSem = jtableSrc.getModel().getValueAt(i, 3).toString();
-            String dic = jtableSrc.getModel().getValueAt(i, 7).toString();
-            String[] SynSems = SynSem.split("(=)|(\\+)");
+            String lema = jtableSrc.getValueAt(i, 1).toString();
+            String fst = jtableSrc.getValueAt(i, 2).toString();
+            String SynSem = jtableSrc.getValueAt(i, 3).toString();
+            String dic = jtableSrc.getValueAt(i, 7).toString();
             for (int j = i + 1; j < jtableSrc.getRowCount(); j++) {
-                String lemaCompare = jtableSrc.getModel().getValueAt(j, 1).toString();
-                String fstCompare = jtableSrc.getModel().getValueAt(j, 2).toString();
-                String SynSemCompare = jtableSrc.getModel().getValueAt(j, 3).toString();
-                String dicCompare = jtableSrc.getModel().getValueAt(j, 7).toString();
-                String[] SynSemCompares = SynSemCompare.split("()=|(\\+)");
-                if (lemaCompare.equals(lema) && fstCompare.equals(fst)
-                        && areAllTrue(SynSems, SynSemCompares)) {
+                String lemaCompare = jtableSrc.getValueAt(j, 1).toString();
+                String fstCompare = jtableSrc.getValueAt(j, 2).toString();
+                String SynSemCompare = jtableSrc.getValueAt(j, 3).toString();
+                String dicCompare = jtableSrc.getValueAt(j, 7).toString();
+                if (lemaCompare.equals(lema) && fstCompare.equals(fst)) {
                     Object[] rowCompare = new Object[]{j, lemaCompare, fstCompare, SynSemCompare, dicCompare};
                     Object[] row = new Object[]{i, lema, fst, SynSem, dic};
                     tableModel.addRow(row);
