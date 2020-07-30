@@ -431,8 +431,8 @@ public class GraphPathFrame extends JInternalFrame {
         if(makeDicCheckBox.isSelected()) {
                 separateOutputsButton.setEnabled(false);
                 alternateOutputsButton.setEnabled(false);
-                separateOutputsButton.setSelected(true);
                 ignoreOutputsButton.setEnabled(false);
+                separateOutputsButton.setSelected(true);
             if(exploreRecButton.isSelected()) {
                 outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
                         .getText()) + "-recursive-paths.dic");
