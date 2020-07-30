@@ -402,7 +402,7 @@ public class GraphPathFrame extends JInternalFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void exploreRecButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreRecButtonActionPerformed
-    	if(!makeDicCheckBox.isSelected()) {
+        if(!makeDicCheckBox.isSelected()) {
             outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
                           .getText()) + "-recursive-paths.txt");
         }
@@ -479,7 +479,7 @@ public class GraphPathFrame extends JInternalFrame {
                 cmd = cmd.noLimit();
         }
         if(makeDicCheckBox.isSelected()) {
-                cmd = cmd.makeDic();
+              cmd = cmd.makeDic();
         }
         else {
 	        if (ignoreOutputsButton.isSelected()) {
