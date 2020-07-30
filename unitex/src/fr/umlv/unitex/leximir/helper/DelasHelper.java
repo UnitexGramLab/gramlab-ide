@@ -80,17 +80,21 @@ public class DelasHelper {
         for(String dela:list){
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
-            if(allDelas)
-            	path = DictionaryPath.allDelas+File.separator+dela;
-            else
+            if(allDelas){
+            	path = DictionaryPath.allDelas+File.separator + dela;
+            }
+            else{
             	path = dela;
+            }
 
             ArrayList<String> readFile = Utils.readFile(path);
             count += readFile.size();
-            if(allDelas) 
+            if(allDelas) {
             	DictionaryPath.dictionary.add(dela);
-            else
+            }
+            else{
             	DictionaryPath.dictionary.add(new File(dela).getName());
+            }
         }
         
         Object[][] ob = new Object[count][lf.length];
@@ -112,16 +116,16 @@ public class DelasHelper {
 	        }
             ArrayList<String> readFile = Utils.readFile(path);
             for(String s:readFile){
-                lemma=getLemaInDelas(s);
-                lemmaInv=Utils.reverseString(lemma);
-                SynSem=getSynSemInDelas(s);
+                lemma = getLemaInDelas(s);
+                lemmaInv = Utils.reverseString(lemma);
+                SynSem = getSynSemInDelas(s);
                 fSTCode = getFstCodeInDelas(s);
                 pOs = getPosInDelas(s);
                 comment = getCommentInDelas(s);
                 Delas tmp = new Delas(pOs, lemma, fSTCode, SynSem, comment, lemmaInv, lemmaId, dicFile);
                 delasToObject(ob, k, tmp);
                 k++;
-                lemmaId=lemmaId+1;
+                lemmaId = lemmaId+1;
                 
             }
         }
@@ -129,14 +133,14 @@ public class DelasHelper {
     }
 
     private static void delasToObject(Object[][] ob, int k, Delas tmp) {
-        ob[k][0]=tmp.getpOS();
-        ob[k][1]=tmp.getLemma();
-        ob[k][2]=tmp.getfSTCode();
-        ob[k][3]=tmp.getSimSem();
-        ob[k][4]=tmp.getComment();
-        ob[k][5]=tmp.getLemmaInv();
-        ob[k][6]=tmp.getLemmaId();
-        ob[k][7]=tmp.getDicFile();
+        ob[k][0] = tmp.getpOS();
+        ob[k][1] = tmp.getLemma();
+        ob[k][2] = tmp.getfSTCode();
+        ob[k][3] = tmp.getSimSem();
+        ob[k][4] = tmp.getComment();
+        ob[k][5] = tmp.getLemmaInv();
+        ob[k][6] = tmp.getLemmaId();
+        ob[k][7] = tmp.getDicFile();
     }
     
     public static String getLemaInDelas(String text) {

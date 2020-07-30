@@ -110,8 +110,8 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
 	private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
-  private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
-  private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
+  	private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
+  	private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
     private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
     private final ShellFactory shellFactory = new ShellFactory();
@@ -256,8 +256,8 @@ public abstract class InternalFrameManager implements FrameManager {
         return d;
     }
 
-    public CsvOpener newCsvOpener(String Csvfile, String title) {
-        final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(Csvfile, title);
+    public CsvOpener newCsvOpener(String csvFile, String title) {
+        final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(csvFile, title);
         if (d == null) {
             return null;
         }
