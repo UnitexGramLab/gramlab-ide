@@ -379,7 +379,7 @@ public class GraphPathFrame extends JInternalFrame {
 
     private void maxSeqCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxSeqCheckboxActionPerformed
         if ( maxSeqCheckbox.isSelected() ) {
-                            maxSeqSpinner.setEnabled(true);
+                maxSeqSpinner.setEnabled(true);
         } else {
                 maxSeqSpinner.setEnabled(false);
         }
@@ -387,7 +387,7 @@ public class GraphPathFrame extends JInternalFrame {
 
     private void flattenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenCheckboxActionPerformed
         if ( flattenCheckbox.isSelected() ) {
-                            flattenOptionButton.setEnabled(true);
+                flattenOptionButton.setEnabled(true);
         } else {
                 flattenOptionButton.setEnabled(false);
         }
@@ -432,6 +432,7 @@ public class GraphPathFrame extends JInternalFrame {
                 separateOutputsButton.setEnabled(false);
                 alternateOutputsButton.setEnabled(false);
                 ignoreOutputsButton.setEnabled(false);
+                separateOutputsButton.setSelected(true);
             if(exploreRecButton.isSelected()) {
                 outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
                         .getText()) + "-recursive-paths.dic");
@@ -477,23 +478,22 @@ public class GraphPathFrame extends JInternalFrame {
         } else {
                 cmd = cmd.noLimit();
         }
-	if(makeDicCheckBox.isSelected()) {
-                cmd = cmd.makeDic();
+        if(makeDicCheckBox.isSelected()) {
+              cmd = cmd.makeDic();
+        }
+        else {
+	        if (ignoreOutputsButton.isSelected()) {
+	            cmd = cmd.ignoreOutputs();
+	        } else {
+	            cmd = cmd.separateOutputs(separateOutputsButton.isSelected());
+	        }
         }
         if (ConfigManager.getManager().isKorean(null)) {
-                cmd = cmd.korean();
-        }
-        if (ignoreOutputsButton.isSelected()) {
-                cmd = cmd.ignoreOutputs();
-        } else {
-                cmd = cmd.separateOutputs(splitOutputsButton.isSelected());
-        }
-        if (ConfigManager.getManager().isKorean(null)) {
-			cmd = cmd.korean();
-	}
+			      cmd = cmd.korean();
+	      }
         if ( !checkLoopsCheckbox.isSelected() ) {
             cmd = cmd.noLoopCheck();
-	}
+	      }
         // check if flatten was checked or not
         if( !flattenCheckbox.isSelected() ) {
                 grfCmd.grf(new File(inputGraphName.getText()))
@@ -638,7 +638,15 @@ public class GraphPathFrame extends JInternalFrame {
     }
     
     public void setOutputFileDefaultName(String graphFileName) {
-        outputFileName.setText(FileUtil.getFileNameWithoutExtension(graphFileName) + "-recursive-paths.txt");
+    	String extension = makeDicCheckBox.isSelected() ? ".dic" : ".txt";
+    	 if(exploreRecButton.isSelected()) {
+             outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
+                     .getText()) + "-recursive-paths" + extension);
+         }
+         else {
+             outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
+                     .getText()) + "-paths" + extension);
+         }
     }
     
     private void openOutputFile() {
