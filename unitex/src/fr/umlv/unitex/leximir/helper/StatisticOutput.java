@@ -29,6 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import fr.umlv.unitex.leximir.delas.EditorDelas;
 import fr.umlv.unitex.leximir.util.Utils;
+import fr.umlv.unitex.leximir.model.DictionaryPath;
 
 /**
  *
@@ -63,14 +64,10 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         jButtonSet = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        String outputStatsFile;
-        
-        outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
         
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setText(outputStatsFile); 
-
+        jTextField1.setText(EditorDelas.getStatisticDirectory() + DictionaryPath.statisticsTmpPath); 
         jButtonSet.setText("Set");
         jButtonSet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,7 +142,7 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
 	        File selectedFile = fileChooser.getSelectedFile();
 	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
-	        jTextField1.setText(EditorDelas.getStatisticDirectory()+"statisticsTmp.csv");
+	        jTextField1.setText(EditorDelas.getStatisticDirectory()+DictionaryPath.statisticsTmpPath);
 	        
         }
     }

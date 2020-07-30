@@ -145,8 +145,8 @@ public class DelasHelper {
     
     public static String getLemaInDelas(String text) {
         StringBuilder sb = new StringBuilder();
-        for(int i=0;i<text.length();i++){
-            if(text.charAt(i)==','){
+        for(int i = 0; i < text.length(); i++){
+            if(text.charAt(i) == ','){
                 break;
             }
             sb.append(text.charAt(i));
@@ -156,17 +156,17 @@ public class DelasHelper {
     public static String getSynSemInDelas(String text) {
         try{
             StringBuilder sb = new StringBuilder();
-            boolean begin=false;
-            for(int i=0;i<text.length();i++){
+            boolean begin = false;
+            for(int i = 0;i < text.length(); i++){
 
                 if(begin){
-                    if(text.charAt(i)=='/'){
+                    if(text.charAt(i) == '/'){
                         break;
                     }
                     sb.append(text.charAt(i));
                 }
                 else{
-                    if(text.charAt(i)=='+'){
+                    if(text.charAt(i) == '+'){
                         begin=true;
                         sb.append(text.charAt(i));
                     }
@@ -180,13 +180,13 @@ public class DelasHelper {
     public static String getFstCodeInDelas(String text) {
         StringBuilder sb = new StringBuilder();
         boolean begin=false;
-        for(int i=0;i<text.length();i++){
-            if(text.charAt(i)==','){
-                begin=true;
+        for(int i = 0; i < text.length(); i++){
+            if(text.charAt(i) == ','){
+                begin = true;
                 i++;
             }
             if(begin){
-                if(text.charAt(i)=='+'||text.charAt(i)=='/'||text.charAt(i)=='!'||text.charAt(i)=='['||text.charAt(i)=='='){
+                if(text.charAt(i) == '+'||text.charAt(i) == '/'||text.charAt(i) == '!'||text.charAt(i) == '['||text.charAt(i) == '='){
                     break;
                 }
                 sb.append(text.charAt(i));
@@ -196,18 +196,18 @@ public class DelasHelper {
     }
     public static String getPosInDelas(String text) {
         StringBuilder sb = new StringBuilder();
-        boolean begin=false;
-        for(int i=0;i<text.length();i++){
-            if(text.charAt(i)==','){
-                begin=true;
+        boolean begin = false;
+        for(int i = 0; i < text.length(); i++){
+            if(text.charAt(i) == ','){
+                begin = true;
                 i++;
             }
             if(begin){
-                char charInt=text.charAt(i);   
-                if(charInt>=48 && charInt<=57){
+                char charInt = text.charAt(i);   
+                if(charInt >= 48 && charInt <= 57){
                     break;
                 }
-                if(charInt=='/'||charInt=='+'){
+                if(charInt == '/'||charInt == '+'){
                     break;
                 }
                 sb.append(text.charAt(i));
@@ -217,8 +217,8 @@ public class DelasHelper {
     }
     public static String getCommentInDelas(String text) {
         try{
-            int ind= text.contains("/")?text.indexOf("/")+1:text.length();
-            String ret=text.substring(ind);
+            int ind = text.contains("/") ? text.indexOf("/") + 1 : text.length();
+            String ret = text.substring(ind);
             return ret;
         } catch(java.lang.StringIndexOutOfBoundsException e) {
             return "";
