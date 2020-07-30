@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2020 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -101,7 +101,7 @@ public class TaggingModel {
 				 */
 				resetModel();
 			} else {
-				updateFactorizationNodes();
+				 updateNodes();
 			}
 		}
 	}
@@ -123,10 +123,10 @@ public class TaggingModel {
 				finalState = i;
 			taggingStates[i] = TaggingState.NEUTRAL;
 		}
-		updateFactorizationNodes();
+		 updateNodes();
 	}
 
-	private void updateFactorizationNodes() {
+	private void  updateNodes() {
 		if (boxes.length == 0)
 			return;
 		/*
@@ -137,10 +137,10 @@ public class TaggingModel {
 		/* Then we look for factorization nodes */
 		/* There should be the real calculus here */
 		computeFactorizationNodes();
-		/* And finally, we can mark as selected all factorization nodes */
+		/* And finally, we can mark as preferred all factorization nodes */
 		for (int i = 0; i < factorization.length; i++) {
-			if (factorization[i] || taggingStates[i] == TaggingState.SELECTED) {
-				selectBox(boxes[i]);
+			if (factorization[i] || taggingStates[i] == TaggingState.PREFERRED) {
+				preferBox(boxes[i]);
 			}
 		}
 	}
@@ -247,9 +247,9 @@ public class TaggingModel {
 				if (taggingStates[i] == TaggingState.USELESS) {
 					/*
 					 * If the state used to be useless but is not anymore, we
-					 * set its state to TO_BE_REMOVED
+					 * set its state to NOT_PREFERRED
 					 */
-					setBoxStateInternal(i, TaggingState.TO_BE_REMOVED);
+					setBoxStateInternal(i, TaggingState.NOT_PREFERRED);
 				}
 			}
 		}
@@ -307,23 +307,23 @@ public class TaggingModel {
 
 	
 	
-	public void selectBox(TfstGraphBox b) {
+	public void preferBox(TfstGraphBox b) {
 		final int n = getBoxIndex(b);
 		if (n == -1)
 			throw new IllegalStateException(
-					"Should not be selecting an unknown box");
-		selectBox(n);
+					"Should not be preferring an unknown box");
+		preferBox(n);
 	}
 	
-	public void selectBox(int n) {
+	public void preferBox(int n) {
 		if (taggingStates[n] == TaggingState.USELESS) {
 			/*
-			 * There is no point in selecting a box that cannot be part the
+			 * There is no point in preferring a box that cannot be part of the
 			 * final remaining path
 			 */
 			return;
 		}
-		setBoxStateInternal(n, TaggingState.SELECTED);
+		setBoxStateInternal(n, TaggingState.PREFERRED);
 		updateAlternativePaths(n);
 		contaminateFollowers(n, getNextFactorizationNodeIndex(n));
 		contaminateFollowers2(n, getNextFactorizationNodeIndex(n));
@@ -334,8 +334,8 @@ public class TaggingModel {
 	}
 
 	/**
-	 * Once we have set n as a selected box, we look if all its outgoing
-	 * transitions point to TO_BE_REMOVED states. If so, those states are
+	 * Once we have set n as a preferred box, we look if all its outgoing
+	 * transitions point to NOT_PREFERRED states. If so, those states are
 	 * recursively made neutral.
 	 */
 	private void contaminateFollowers(int n, int limit) {
@@ -343,17 +343,17 @@ public class TaggingModel {
 			return;
 		for (final GenericGraphBox gb : boxes[n].transitions) {
 			final int destIndex = getBoxIndex((TfstGraphBox) gb);
-			if (!isToBeRemovedModelIndex(destIndex))
+			if (!isNotPreferredModelIndex(destIndex))
 				return;
 		}
 		/*
-		 * If we get here, it means that all reachable states were TO_BE_REMOVED
-		 * or USELESS. Then, we have to make all the TO_BE_REMOVED ones neutral,
+		 * If we get here, it means that all reachable states were NOT_PREFERRED
+		 * or USELESS. Then, we have to make all the NOT_PREFERRED ones neutral,
 		 * otherwise, there wouldn't exist any path from n to the limit node
 		 */
 		for (final GenericGraphBox gb : boxes[n].transitions) {
 			final int destIndex = getBoxIndex((TfstGraphBox) gb);
-			if (getBoxStateTfst(destIndex) == TaggingState.TO_BE_REMOVED) {
+			if (getBoxStateTfst(destIndex) == TaggingState.NOT_PREFERRED) {
 				setBoxStateInternal(destIndex, TaggingState.NEUTRAL);
 				contaminateFollowers(destIndex, limit);
 			}
@@ -361,8 +361,8 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If there is only one outgoing transition from a selected state, then this
-	 * state must be selected as well.
+	 * If there is only one outgoing transition into a preferred state, then this
+	 * state must be preferred as well.
 	 */
 	private void contaminateFollowers2(int n, int limit) {
 		if (n == limit)
@@ -370,14 +370,14 @@ public class TaggingModel {
 		if (boxes[n].transitions.size() == 1) {
 			final int destIndex = getBoxIndex((TfstGraphBox) boxes[n].transitions
 					.get(0));
-			setBoxStateInternal(destIndex, TaggingState.SELECTED);
+			setBoxStateInternal(destIndex, TaggingState.PREFERRED);
 			contaminateFollowers2(destIndex, limit);
 		}
 	}
 
 	/**
-	 * Once we have set n as a selected box, we look if all its incoming
-	 * transitions point to TO_BE_REMOVED states. If so, those states are
+	 * Once we have set n as a preferred box, we look if all its incoming
+	 * transitions point to NOT_PREFERRED states. If so, those states are
 	 * recursively made neutral.
 	 */
 	private void contaminateAncestors(int n, int limit,
@@ -385,12 +385,12 @@ public class TaggingModel {
 		if (n == limit)
 			return;
 		for (final Integer srcIndex : reverse[n]) {
-			if (!isToBeRemovedModelIndex(srcIndex))
+			if (!isNotPreferredModelIndex(srcIndex))
 				return;
 		}
 		/* See similar comment in contaminateFollowers */
 		for (final Integer srcIndex : reverse[n]) {
-			if (getBoxStateTfst(srcIndex) == TaggingState.TO_BE_REMOVED) {
+			if (getBoxStateTfst(srcIndex) == TaggingState.NOT_PREFERRED) {
 				setBoxStateInternal(srcIndex, TaggingState.NEUTRAL);
 				contaminateAncestors(srcIndex, limit, reverse);
 			}
@@ -398,8 +398,8 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If there is only one incoming transition from a selected state, then this
-	 * state must be selected as well.
+	 * If there is only one incoming transition from a preferred state, then this
+	 * state must be preferred as well.
 	 */
 	private void contaminateAncestors2(int n, int limit,
 			ArrayList<Integer>[] reverse) {
@@ -407,7 +407,7 @@ public class TaggingModel {
 			return;
 		if (reverse[n].size() == 1) {
 			final int srcIndex = reverse[n].get(0);
-			setBoxStateInternal(srcIndex, TaggingState.SELECTED);
+			setBoxStateInternal(srcIndex, TaggingState.PREFERRED);
 			contaminateAncestors2(srcIndex, limit, reverse);
 		}
 	}
@@ -432,7 +432,7 @@ public class TaggingModel {
 	}
 
 	/**
-	 * If we select a box that is not a factorization node, then we have to
+	 * If we prefer a box that is not a factorization node, then we have to
 	 * update the state of boxes on alternative paths
 	 */
 	private void updateAlternativePaths(int boxIndex) {
@@ -447,11 +447,11 @@ public class TaggingModel {
 		}
 		/*
 		 * We have marked candidates, but now we have to unmark states that can
-		 * be reached from the selected box
+		 * be reached from the preferred box
 		 */
 		update(a, b, boxIndex, toBeKept, visited);
 		/*
-		 * Finally, we actually set TO_BE_REMOVED status for states that remain
+		 * Finally, we actually set NOT_PREFERRED status for states that remain
 		 * marked
 		 */
 		for (int i = 0; i < visited.length; i++) {
@@ -460,7 +460,7 @@ public class TaggingModel {
 		unmark(boxIndex, b, toBeKept, visited);
 		for (int i = 0; i < toBeKept.length; i++) {
 			if (!toBeKept[i]) {
-				setBoxStateInternal(i, TaggingState.TO_BE_REMOVED);
+				setBoxStateInternal(i, TaggingState.NOT_PREFERRED);
 			}
 		}
 	}
@@ -479,8 +479,8 @@ public class TaggingModel {
 	}
 
 	/**
-	 * current and limit are nodes and n is a selected box. current will be mark
-	 * as TO_BE_REMOVED if there is no path from it n.
+	 * current and limit are nodes and n is a preferred box. current will be mark
+	 * as NOT_PREFERRED if there is no path from it n.
 	 */
 	private boolean update(int current, int limit, int n, boolean[] toBeKept,
 			boolean[] visited) {
@@ -554,24 +554,24 @@ public class TaggingModel {
 		return getBoxState(box);
 	}
 
-	public boolean isSelected(int boxIndex) {
-		return TaggingState.SELECTED == getBoxStateTfst(boxIndex);
+	public boolean isPreferred(int boxIndex) {
+		return TaggingState.PREFERRED == getBoxStateTfst(boxIndex);
 	}
 
-	public boolean isToBeRemoved(TfstGraphBox box) {
+	public boolean isNotPreferred(TfstGraphBox box) {
 		final int boxIndex = getBoxIndex(box);
 		final TaggingState s = taggingStates[boxIndex];
-		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
+		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
-	public boolean isToBeRemovedTfstIndex(int boxIndex) {
+	public boolean isNotPreferredTfstIndex(int boxIndex) {
 		final TaggingState s = getBoxStateTfst(boxIndex);
-		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
+		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
-	public boolean isToBeRemovedModelIndex(int boxIndex) {
+	public boolean isNotPreferredModelIndex(int boxIndex) {
 		final TaggingState s = taggingStates[boxIndex];
-		return TaggingState.TO_BE_REMOVED == s || TaggingState.USELESS == s;
+		return TaggingState.NOT_PREFERRED == s || TaggingState.USELESS == s;
 	}
 
 	public void updateAutomatonLinearity() {
@@ -586,12 +586,12 @@ public class TaggingModel {
 			/* We explore all outgoing transitions */
 			for (final GenericGraphBox gb : b.transitions) {
 				final int destIndex = getBoxIndex((TfstGraphBox) gb);
-				if (!isToBeRemovedModelIndex(destIndex)) {
+				if (!isNotPreferredModelIndex(destIndex)) {
 					if (selectedOutgoing == -1) {
 						selectedOutgoing = destIndex;
 					} else {
 						/*
-						 * It's the second transition to a selected or neutral
+						 * It's the second transition to a preferred or neutral
 						 * state, so we don't have a linear automaton
 						 */
 						return false;
