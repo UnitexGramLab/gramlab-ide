@@ -379,7 +379,7 @@ public class GraphPathFrame extends JInternalFrame {
 
     private void maxSeqCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maxSeqCheckboxActionPerformed
         if ( maxSeqCheckbox.isSelected() ) {
-                            maxSeqSpinner.setEnabled(true);
+                maxSeqSpinner.setEnabled(true);
         } else {
                 maxSeqSpinner.setEnabled(false);
         }
@@ -387,7 +387,7 @@ public class GraphPathFrame extends JInternalFrame {
 
     private void flattenCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenCheckboxActionPerformed
         if ( flattenCheckbox.isSelected() ) {
-                            flattenOptionButton.setEnabled(true);
+                flattenOptionButton.setEnabled(true);
         } else {
                 flattenOptionButton.setEnabled(false);
         }
@@ -431,6 +431,7 @@ public class GraphPathFrame extends JInternalFrame {
         if(makeDicCheckBox.isSelected()) {
                 separateOutputsButton.setEnabled(false);
                 alternateOutputsButton.setEnabled(false);
+                separateOutputsButton.setSelected(true);
                 ignoreOutputsButton.setEnabled(false);
             if(exploreRecButton.isSelected()) {
                 outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
