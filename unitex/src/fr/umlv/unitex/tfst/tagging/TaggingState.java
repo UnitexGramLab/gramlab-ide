@@ -28,8 +28,8 @@ public enum TaggingState {
 	NOT_PREFERRED,
 	/* The box is not both accessible and co-accessible */
 	USELESS,
+	/* The box is accessible and co-accessible but hasn't been validated yet*/
+	TO_CHECK,
 	/* None of previous cases */
 	NEUTRAL,
-	/* new tag, used when a new branch ie series of boxes connected with transitions gets connected to the main graph */
-	TO_CHECK,
 }
