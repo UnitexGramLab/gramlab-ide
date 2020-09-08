@@ -81,7 +81,7 @@ public class DelasHelper {
             //String path = Utils.getValueXml("pathDelas")+"/"+dela;
             String path="";
             if(allDelas){
-            	path = DictionaryPath.allDelas+File.separator + dela;
+            	path = DictionaryPath.allDelas + File.separator + dela;
             }
             else{
             	path = dela;

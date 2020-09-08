@@ -96,7 +96,7 @@ public class UserPreferences {
 		} catch (IllegalStateException e) {
 			return null;
 		}
-	}        
+	}
         
 	public List<File> getRecentGraphs() {
 		List<File> l = new ArrayList<File>();
@@ -119,7 +119,7 @@ public class UserPreferences {
 		}
 		return l;
 	}
-        
+
 	public String getRecentDelas() {
 		java.util.prefs.Preferences gp = recentDelasPrefs();
                  String val="";
@@ -137,7 +137,7 @@ public class UserPreferences {
 			return "";
 		}
 		return val;
-	}        
+	}
 
 	public boolean setRecentDelas(String link) {
 		java.util.prefs.Preferences gp = recentDelasPrefs();
@@ -152,7 +152,7 @@ public class UserPreferences {
 			return false;
 		}
 		return true;
-	}               
+	}
 
 	private boolean setRecentGraphs(List<File> l) {
 		java.util.prefs.Preferences gp = recentGraphsPrefs();

@@ -141,8 +141,8 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
 	        File selectedFile = fileChooser.getSelectedFile();
-	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
-	        jTextField1.setText(EditorDelas.getStatisticDirectory()+DictionaryPath.statisticsTmpPath);
+	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath() + File.separator);
+	        jTextField1.setText(EditorDelas.getStatisticDirectory() + DictionaryPath.statisticsTmpPath);
 	        
         }
     }
