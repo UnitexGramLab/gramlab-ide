@@ -294,11 +294,11 @@ public class MenuDelas extends javax.swing.JFrame {
                 String lemma =jTextFieldLemma.getText() ;
                 String fst = jTextFieldFST.getText();
                 Utils.InflectDelas(lemma, fst);
-                JOptionPane.showMessageDialog(null, "done");
+                JOptionPane.showMessageDialog(null, "Done");
             } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error :"+ex.getMessage());
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "error :"+ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error :"+ex.getMessage());
             }
         }
     }

@@ -821,14 +821,18 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
     }
 
     private void jMenuDeleteMouseClicked(java.awt.event.MouseEvent evt) {
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to delete this row?", "Warning", JOptionPane.YES_NO_OPTION);
-        if (dialogResult == JOptionPane.YES_OPTION) {
-            int t = this.getjTable1().getSelectedRow();
-            this.getTableModel().removeRow(t);
-            JOptionPane.showMessageDialog(null, "Row deleted !");
-            jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
-            this.setUnsaved(true);
-        }
+    	if (this.getjTable1().getSelectedRow() != -1) {
+    		int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to delete this row?", "Warning", JOptionPane.YES_NO_OPTION);
+    		if (dialogResult == JOptionPane.YES_OPTION) {
+    			int t = this.getjTable1().getSelectedRow();
+    			this.getTableModel().removeRow(t);
+    			JOptionPane.showMessageDialog(null, "Row deleted !");
+    			jLabel13.setText(String.valueOf(this.getjTable1().getRowCount()));
+    			this.setUnsaved(true);
+    		}
+    	} else {
+            JOptionPane.showMessageDialog(null, "No selected value");
+        }  
 
     }
 
@@ -934,6 +938,7 @@ public final class EditorDelas extends javax.swing.JInternalFrame {
                 String lemma = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 1);
                 String fst = (String) this.getjTable1().getValueAt(this.getjTable1().getSelectedRow(), 2);
                 Utils.InflectDelas(lemma, fst);
+                JOptionPane.showMessageDialog(null, "Done");
             } catch (IOException ex) {
                 Logger.getLogger(EditorDelas.class.getName()).log(Level.SEVERE, null, ex);
             }

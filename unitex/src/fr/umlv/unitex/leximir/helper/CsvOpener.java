@@ -49,12 +49,12 @@ import fr.umlv.unitex.leximir.model.DictionaryPath;
  */
 public class CsvOpener extends javax.swing.JInternalFrame {
 
-    private final String csvfile;
+    private final String csvFile;
 
-    public CsvOpener(String csvfile, String title) {
+    public CsvOpener(String csvFile, String title) {
     	
         super(title, true, true, true, true);
-        this.csvfile = csvfile;
+        this.csvFile = csvFile;
         initComponents();
         Vector<String> header = this.header();
         Vector<Vector<String>> data = this.read();
@@ -80,14 +80,14 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     private Vector<String> header() {
         try {
             try (BufferedReader sourceFile = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(csvfile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
+                    new InputStreamReader(new FileInputStream(csvFile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
                 String s;
                 if ((s = sourceFile.readLine()) != null) {
                     return new Vector<String>(Arrays.asList(s.split(";")));
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("No file " + csvfile + " was found.");
+            System.err.println("No file " + csvFile + " was found.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,26 +95,26 @@ public class CsvOpener extends javax.swing.JInternalFrame {
     }
 
     private Vector<Vector<String>> read() {
-        Vector<Vector<String>> tmp = new Vector<Vector<String>>();
+        Vector<Vector<String>> csvReader = new Vector<Vector<String>>();
         try {
             try (BufferedReader sourceFile = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(csvfile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
+                    new InputStreamReader(new FileInputStream(csvFile), ConfigManager.getManager().getEncoding(null).getCharset()))) {
                 String s;
                 for (int i = 1; (s = sourceFile.readLine()) != null; i++) {
                     if (i > 1) {
-                        tmp.add(new Vector<String>(Arrays.asList(s.split(";"))));
+                        csvReader.add(new Vector<String>(Arrays.asList(s.split(";"))));
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("No file " + csvfile + " was found.");
+            System.err.println("No file " + csvFile + " was found.");
         } catch (IOException e) {
             e.printStackTrace();
         }
         
-        sort(tmp);
+        sort(csvReader);
         
-        return tmp;
+        return csvReader;
     }
 
     private void sort(Vector<Vector<String>> vectors) {
