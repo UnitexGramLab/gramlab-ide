@@ -152,12 +152,12 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         	String filename= jTextField1.getText();
         	File saveFolder = new File(new File(filename).getParent());
         	if(!saveFolder.exists()) {
-        		 int reply = JOptionPane.showConfirmDialog(null, "This folder \""+saveFolder.getName() +"\" doesn't exist yet \nCreate this folder?", title,
+        		 int reply = JOptionPane.showConfirmDialog(null, "This folder \""+saveFolder.getName() +"\" doesn't exist yet! \nCreate this folder?", title,
                          JOptionPane.YES_NO_OPTION);
                  if (reply == JOptionPane.YES_OPTION) {
                      saveFolder.mkdirs();
                      if (saveFolder.exists()) {
-                         JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
+                         JOptionPane.showMessageDialog(null, "Folder created successfully!", "Information", JOptionPane.INFORMATION_MESSAGE);
                      }
                  }
                  else{
