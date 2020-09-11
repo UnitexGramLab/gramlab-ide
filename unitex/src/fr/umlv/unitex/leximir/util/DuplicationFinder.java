@@ -128,7 +128,7 @@ public class DuplicationFinder extends SwingWorker<Integer, Object> {
         if(this.jtableRes.getModel().getRowCount()>0) {
             new MenuDuplicate(this.jtableRes);
         } else {
-            JOptionPane.showMessageDialog(null, "No duplication found !", "Duplication", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No duplication found!", "Duplication", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
