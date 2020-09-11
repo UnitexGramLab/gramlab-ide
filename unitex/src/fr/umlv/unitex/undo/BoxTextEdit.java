@@ -26,7 +26,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
- * class uses to save the state of the graph before a box text edit
+ * class used to save the state of the graph before a box text edit
  * 
  * @author Decreton Julien
  */
@@ -37,7 +37,7 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 	private final String oldText;
 	private final String newText; /** text to put in the box */
 	/**
-	 * box where change text
+	 * box where text will change
 	 */
 	private final GenericGraphBox boxe;
 	/**
@@ -49,7 +49,7 @@ public class BoxTextEdit extends AbstractUndoableEdit {
 	 * construct an edit to redo and undo a text edition in a box
 	 * 
 	 * @param boxe
-	 *            the box where add the text
+	 *            the box where text will change
 	 * @param text
 	 *            the text to add in the box
 	 * @param zone

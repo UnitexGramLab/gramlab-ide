@@ -181,7 +181,7 @@ public class GenericGraphBox {
 	GenericGraphicalZone parentGraphicalZone;
 	public ArrayList<GenericGraphBox> transitions;
 	public static final Font variableFont = new Font("Times New Roman",
-			Font.ITALIC, 30);
+			Font.BOLD, 30);
 	Graphics2D context;
 	/**
 	 * Number of the box
@@ -256,13 +256,12 @@ public class GenericGraphBox {
 			String name = null;
 			if (s.startsWith(":$")) {
 				int pos = s.indexOf(':', 2);
-				if (pos == -1
-						|| (s.indexOf('/', 2) != -1 && pos > s.indexOf('/', 2))) {
+				if (pos == -1 || 
+					(s.indexOf('/', 2) != -1 && pos > s.indexOf('/', 2))) {
 					pos = s.indexOf('/', 2);
 				}
-				if (pos == -1
-						|| (s.indexOf('\\', 2) != -1 && pos > s
-						.indexOf('\\', 2))) {
+				if (pos == -1 || 
+					(s.indexOf('\\', 2) != -1 && pos > s.indexOf('\\', 2))) {
 					pos = s.indexOf('\\', 2);
 				}
 				if (pos != -1) {
@@ -403,8 +402,7 @@ public class GenericGraphBox {
 					// if we try to open a subgraph inside a newly created graph
 					// with no name
 					f = null;
-					JOptionPane
-					.showMessageDialog(
+					JOptionPane.showMessageDialog(
 							null,
 							"Cannot resolve relative graph path:\n\n"
 									+ s
@@ -1018,8 +1016,8 @@ public class GenericGraphBox {
 			final JLabel r = parentGraphicalZone.decorator.getCoverageInfoLabel(boxNumber);
 			if (r != null) {
 				final TextLayout textlayout = new TextLayout(r.getText(),
-						parentGraphicalZone.getGraphPresentationInfo()
-						.getInput().getFont(), g.getFontRenderContext());
+						parentGraphicalZone.getGraphPresentationInfo().getInput().getFont(),
+						g.getFontRenderContext());
 				g.setColor(r.getForeground());
 				g.setFont(r.getFont());
 				textlayout.draw(g, X1 + 2 + getRangeShift(g), Y1 - 5);
@@ -1064,8 +1062,8 @@ public class GenericGraphBox {
 			- g.getFontMetrics().getHeight() / 2;
 
 		final int xShift = closeVariable ? 
-			g.getFontMetrics().charWidth('|')/2:
-			g.getFontMetrics().charWidth('|')*2;
+			g.getFontMetrics().charWidth('|') / 2:
+			g.getFontMetrics().charWidth('|') * 2;
 
 		g.drawString(transduction, X1 + xShift, Y1 + yShift);
 	}
@@ -1075,37 +1073,34 @@ public class GenericGraphBox {
 		final int yShift = outputVariable ?
 				Height + g.getFontMetrics().getHeight() :
 					- g.getFontMetrics().getHeight() / 2;
-				final int yFillShift = outputVariable ?
-						Height   + g.getFontMetrics().getDescent() :
-							- Height/2 - g.getFontMetrics().getDescent()/2;
-						final int xShift = closeVariable ? g.getFontMetrics().charWidth('|')/2:
-							g.getFontMetrics().charWidth('|')*2;
-						if (parentGraphicalZone.decorator != null) {
-							c = parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),
-									c);
-						}
-						g.setColor(c);
-						GraphicalToolBox.fillRect(g, X1, Y1, Width, Height);
-						g.setColor(params.getCommentColor());
-						g.setFont(variableFont);
-						g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
-								+ get_h_variable_ligne());
-						g.setColor(params.getSelectedColor());
-						GraphicalToolBox.fillRect(
-								g,
-								X1 + xShift,
-								Y1 + yFillShift,
-								g.getFontMetrics(
-										parentGraphicalZone.getGraphPresentationInfo()
-										.getOutput().getFont()).stringWidth(
-												transduction),
-								g.getFontMetrics(
-										parentGraphicalZone.getGraphPresentationInfo()
-										.getOutput().getFont()).getHeight() - 1);
-						g.setColor(params.getBackgroundColor());
-						g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput()
-								.getFont());
-						g.drawString(transduction, X1 + xShift, Y1 + yShift);
+		final int yFillShift = outputVariable ?
+				Height   + g.getFontMetrics().getDescent() :
+					- Height/2 - g.getFontMetrics().getDescent()/2;
+		final int xShift = closeVariable ? g.getFontMetrics().charWidth('|')/2:
+				g.getFontMetrics().charWidth('|')*2;
+		if (parentGraphicalZone.decorator != null) {
+			c = parentGraphicalZone.decorator.getBoxOutputColor(getBoxNumber(),c);
+		}
+		g.setColor(c);
+		GraphicalToolBox.fillRect(g, X1, Y1, Width, Height);
+		g.setColor(params.getCommentColor());
+		g.setFont(variableFont);
+		g.drawString(lines.get(0), X1 + 5, Y1 - g.getFontMetrics().getDescent()
+			+ get_h_variable_ligne());
+		g.setColor(params.getSelectedColor());
+		GraphicalToolBox.fillRect(
+			g,
+			X1 + xShift,
+			Y1 + yFillShift,
+			g.getFontMetrics(
+				parentGraphicalZone.getGraphPresentationInfo()
+				.getOutput().getFont()).stringWidth(transduction),
+				g.getFontMetrics(
+					parentGraphicalZone.getGraphPresentationInfo()
+					.getOutput().getFont()).getHeight() - 1);
+		g.setColor(params.getBackgroundColor());
+		g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
+		g.drawString(transduction, X1 + xShift, Y1 + yShift);
 	}
 
 	private void drawVariableStandalone(Graphics2D g, DrawGraphParams params) {

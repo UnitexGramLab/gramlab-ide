@@ -187,7 +187,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			int n = JOptionPane
 					.showOptionDialog(
 							null,
-							"Create box will unmark \"preferred\" boxes, do you want to continue ?",
+							"Create box will unmark \"preferred\" boxes, do you want to continue?",
 							"", JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null,
 							options_on_exit, options_on_exit[0]);
@@ -361,7 +361,7 @@ public abstract class GenericGraphicalZone extends JComponent {
 			int n = JOptionPane
 					.showOptionDialog(
 							null,
-							"Removing box will unmark \"preferred\" boxes, do you want to continue ?",
+							"Removing box will unmark \"preferred\" boxes, do you want to continue?",
 							"", JOptionPane.YES_NO_CANCEL_OPTION,
 							JOptionPane.QUESTION_MESSAGE, null,
 							options_on_exit, options_on_exit[0]);
@@ -559,8 +559,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 	GenericGraphBox singleDraggedBox;
 
 	/* These fields are here to have the 2 boxes of the last transition */
-	private GenericGraphBox lastTransitionBoxePrevious;
-	private GenericGraphBox lastTransitionBoxeNext;
+	private GenericGraphBox lastTransitionBoxPrevious;
+	private GenericGraphBox lastTransitionBoxNext;
 
 	/**
 	 * Adds transitions from all selected boxes to a specified graph box
@@ -581,8 +581,8 @@ public abstract class GenericGraphicalZone extends JComponent {
 			g = selectedBoxes.get(i);
 			if (dest.type != GenericGraphBox.INITIAL && g.addTransitionTo(dest)) {
 				editBoxes.add(g);
-				lastTransitionBoxePrevious = g;
-				lastTransitionBoxeNext = dest;
+				lastTransitionBoxPrevious = g;
+				lastTransitionBoxNext = dest;
 			}
 		}
 		if (save && !editBoxes.isEmpty()) {
@@ -599,9 +599,9 @@ public abstract class GenericGraphicalZone extends JComponent {
 	 */
 	public void removeLastTransition() {
 		final ArrayList<GenericGraphBox> editBoxes = new ArrayList<GenericGraphBox>();
-		lastTransitionBoxePrevious.addTransitionTo(lastTransitionBoxeNext);
-		editBoxes.add(lastTransitionBoxePrevious);
-		final UndoableEdit edit = new TransitionGroupEdit(editBoxes, lastTransitionBoxeNext,
+		lastTransitionBoxPrevious.addTransitionTo(lastTransitionBoxNext);
+		editBoxes.add(lastTransitionBoxPrevious);
+		final UndoableEdit edit = new TransitionGroupEdit(editBoxes, lastTransitionBoxNext,
 				this);
 		postEdit(edit);
 	}

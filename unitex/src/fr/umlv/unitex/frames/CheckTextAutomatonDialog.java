@@ -37,7 +37,7 @@ public class CheckTextAutomatonDialog extends JDialog {
         		imageIcon = new ImageIcon(
           			MyCursors.class.getResource("warning.png"));
       		}
-      		setBorder(new EmptyBorder(2,5,2,5));
+      		setBorder(new EmptyBorder(2, 5, 2, 5));
       		setIcon(imageIcon);
       		setText(value);
       		if (isSelected) {

@@ -175,12 +175,15 @@ public class TfstGraphBox extends GenericGraphBox {
 	 */
 	@Override
 	public void setContent(String s) {
-		if (type == FINAL)
+		if (type == FINAL){
 			return; // nothing to do if we consider the final state
-		if(s.equals("<E>"))
+		}
+		if(s.equals("<E>")){
 			content = s;
-		else // only if the language is Korean ? 
+		}
+		else{ // only if the language is Korean ? TODO for efficiency
 			content = Normalizer.normalize(s, Normalizer.Form.NFKD);
+		}
 		String tmp = "";
 		n_lines = 0;
 		tmp = s;
@@ -191,7 +194,7 @@ public class TfstGraphBox extends GenericGraphBox {
 		if (!tmp.equals("<E>") && !tmp.equals(",")) {
 			// updating the letters bounds
 			if(tmp.contains("{")  )
-				updateBoundsLetters( tmp.split(",")[0].length()-1 );
+				updateBoundsLetters( tmp.split(",")[0].length() - 1 );
 			else {
 				updateBoundsLetters( tmp.length() );
 			}
@@ -208,8 +211,8 @@ public class TfstGraphBox extends GenericGraphBox {
 	}
 	
 	public void updateBoundsLetters( int length ) {
-		if( bounds != null && length>0 )
-			bounds.setEnd_in_chars( length-1 );
+		if( bounds != null && length > 0 )
+			bounds.setEnd_in_chars( length - 1 );
 	}
 
 	public void setContentWithBounds(String s) {
@@ -302,12 +305,13 @@ public class TfstGraphBox extends GenericGraphBox {
 		}
 		super.drawOther(g, params);
 		if (bounds != null) {
-			 /*g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
-	      g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
-	      String boundsString = bounds.getStart_in_tokens() + ". " + bounds.getStart_in_chars() + ". " + bounds.getStart_in_letters()
+			 /* USEFULL only for debugging
+			g.setColor(GraphDecoratorConfig.DEBUG_COLOR);
+	      	g.setFont(parentGraphicalZone.getGraphPresentationInfo().getOutput().getFont());
+	      	String boundsString = bounds.getStart_in_tokens() + ". " + bounds.getStart_in_chars() + ". " + bounds.getStart_in_letters()
 	        + " - " + bounds.getEnd_in_tokens() + ". " + bounds.getEnd_in_chars() + ". "
 	        + bounds.getEnd_in_letters();
-	     g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());*/
+	     	g.drawString(boundsString, X1 + 5, Y1 + Height + 15 + g.getFontMetrics().getHeight());*/
 	    
 	    }
 		g.setComposite(c);
@@ -321,7 +325,7 @@ public class TfstGraphBox extends GenericGraphBox {
 	public String getContentText() {
 		if (content.startsWith("{")) {
 			int index = content.indexOf(",");
-		return content.substring(1, index);
+			return content.substring(1, index);
 		}	
 		return content;
 	}

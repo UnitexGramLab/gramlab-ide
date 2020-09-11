@@ -497,7 +497,7 @@ public class TextAutomatonFrame extends TfstFrame {
 				if(containsEmptyState()) {
 					spinnerModel.setValue(new Integer(currentSentenceNumber));
 					JOptionPane.showMessageDialog(null,
-							"Warning: the automaton can't contains empty boxes",
+							"Warning: the automaton can't contain empty boxes",
 							"Warning",
 							JOptionPane.WARNING_MESSAGE);
 					return;
@@ -559,7 +559,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(containsEmptyState()) {
 					JOptionPane.showMessageDialog(null,
-							"Warning: the automaton can't contains empty boxes",
+							"Warning: the automaton can't contain empty boxes",
 							"Warning",
 							JOptionPane.WARNING_MESSAGE);
 					return;
@@ -617,10 +617,11 @@ public class TextAutomatonFrame extends TfstFrame {
 							"OK",
 							JOptionPane.PLAIN_MESSAGE);
 				} else {
-					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
+					final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null)
+														.getFrameManagerAs(InternalFrameManager.class)
+														.newCheckTextAutomatonDialog(checkList);
 				}
         final CheckTextAutomatonDialog dialog = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).newCheckTextAutomatonDialog(checkList);
-        //checkGraph();
 			}
 		});
 		cornerPanel.add(deleteStates);
@@ -653,7 +654,7 @@ public class TextAutomatonFrame extends TfstFrame {
 			return 0;
 		}
 		checkList.clear();
-		// New check need text.cod in order to improve performance
+		// TODO for effiency
 		/*TfstGraphBox firstBox = (TfstGraphBox) graphicalZone.getBoxes().get(0);
 		for (int i = 0; i < firstBox.getTransitions().size(); i++) {
 			TfstGraphBox nextBox =(TfstGraphBox) firstBox.getTransitions().get(i);
@@ -685,10 +686,10 @@ public class TextAutomatonFrame extends TfstFrame {
 							// if final
 						} else if (b.getType() == 1) {
 							errorCount++;
-							checkList.add("Error: the last box must not have outgoing transition(s)");
-							// if normal
-						}
+							checkList.add("Error: the last box must not have outgoing transition(s)");		
+						} // if normal
 					} else if ( b.getBounds() != null && nextBox.getBounds() != null) {
+//						Only for Debugging
 //						int diff = nextBox.getBounds().getStart_in_tokens() - b.getBounds().getStart_in_tokens();
 //						System.out.println(b.getBoxNumber()+" "+b.getContentText());
 //						System.out.println("diff = nextBounds - currentBounds : "+diff+" = "+nextBox.getBounds().getStart_in_tokens()+" - "+
@@ -708,6 +709,7 @@ public class TextAutomatonFrame extends TfstFrame {
 		return errorCount;
 	}
 
+	// usefull later for efficiency
 	private void checkContent(TfstGraphBox box, int textIndex, Bounds bounds) {
 		// if last box then we are finished
 		if (box.getType() == 1) {

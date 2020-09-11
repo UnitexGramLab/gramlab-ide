@@ -28,17 +28,17 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
- * class uses to save the state of the graph before add transitions to a box
+ * class used to save the state of the graph before add transitions to boxes
  * 
  * @author Decreton Julien
  */
 public class TransitionGroupEdit extends AbstractUndoableEdit {
 	/**
-	 * box selected in the graph
+	 * boxes selected in the graph
 	 */
 	private final ArrayList<GenericGraphBox> selectedBoxes;
 	/**
-	 * box selected in the graph before adding a transition
+	 * boxes selected in the graph before adding a transition
 	 */
 	private final ArrayList<GenericGraphBox> oldSelectedBoxes;
 	/**
@@ -56,7 +56,7 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	 * @param dst
 	 *            destination box
 	 * @param zone
-	 *            the zone where remove the box
+	 *            the zone where the graph is drawn
 	 */
 	@SuppressWarnings("unchecked")
 	public TransitionGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,

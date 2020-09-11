@@ -180,8 +180,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					// if we click on a box
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
 					if (!selectedBoxes.isEmpty()) {
-						// if there are selected boxes, we rely them to the
-						// current
+						// if there are selected boxes, we connect them to b
 						// we make sure that the new transition will not
 						// create a cycle
 						boolean changeIsValid = false;

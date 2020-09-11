@@ -79,7 +79,7 @@ public class DeleteBoxGroupEdit extends AbstractUndoableEdit {
 				.clone();
 		this.boxes = graphBoxes;
 		this.zone = zone;
-		// get, for each deleted boxes the box which have transition to it
+		// get, for each deleted boxes the box connected with it
 		GenericGraphBox g;
 		for (final Object selectedBoxe : oldSelectedBoxes) {
 			g = (GenericGraphBox) selectedBoxe;

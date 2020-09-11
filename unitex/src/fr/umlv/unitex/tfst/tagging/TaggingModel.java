@@ -64,6 +64,9 @@ public class TaggingModel {
 			space = false;
 		}
 
+		/*
+		* Only for debugging
+		*/
 		public void display() {
 			System.out.println("\n\n\nDISPLAYING\n\n");
 			System.out.println("path : " + path + "\npos : " + pos + "\ncurrentBox : " + currentBox
@@ -77,7 +80,7 @@ public class TaggingModel {
 	 * We use an array that is a copy of zone's boxes, because we want to keep
 	 * constant indices, even if some boxes are removed
 	 */
-	HashMap<Integer,ArrayList<String>> tokens;
+	HashMap<Integer, ArrayList<String>> tokens;
 	TfstGraphBox[] boxes;
 	TaggingState[] taggingStates;
 	int[] renumber;
@@ -89,10 +92,10 @@ public class TaggingModel {
 
 	ArrayList<Context> lstContext = new ArrayList<>();
 	
-	/*The 2 next fields are used to keep all sentences in the automaton and their path
-	 * The first element of lstTok is the first sentence possible in the automaton 
+	/*The next 2 fields are used to keep all sentences in the automaton and their path
+	 * The first element of lstTok is the text of the first path 
 	 * between 2 factorizations nodes and the first element in lstPath is the 
-	 * path to have the sentence (the path is compose of all number of boxes of the path 
+	 * path (composed of box numbers)
 	 * */
 	private ArrayList<String> lstTok = new ArrayList<String>();
 	private ArrayList<String> lstPath = new ArrayList<>();
@@ -160,16 +163,16 @@ public class TaggingModel {
 		boxes = new TfstGraphBox[n];
 		taggingStates = new TaggingState[n];
 		factorization = new boolean[n];
-		renumber = new int[n];
-		//init 
+		renumber = new int[n]; 
 		tokens = new HashMap<Integer,ArrayList<String>>();
 		for (int i = 0; i < n; i++) {
 			boxes[i] = (TfstGraphBox) zone.graphBoxes.get(i);
 			if (boxes[i].type == GenericGraphBox.INITIAL) {
 				initialState = i;
 			}
-			else if (boxes[i].type == GenericGraphBox.FINAL)
+			else if (boxes[i].type == GenericGraphBox.FINAL){
 				finalState = i;
+			}
 			taggingStates[i] = TaggingState.NEUTRAL;
 			boxes[i].state = TaggingState.NEUTRAL;
 		}
@@ -209,8 +212,7 @@ public class TaggingModel {
 	}
 	
 	/*
-	 * for each box we will start at it's starting bound, split the inside based on delimiters and add them to the hashmap. 
-	 * if 2 words split by a comma are found, they will be stored subsequently in the hashmap at the starting bound's value, then +1 and so on. 
+	 * for each box we will start at its starting bound, split the inside based on delimiters and add them to the hashmap. 
 	 */
 	public void generateTokensList() {
 		for( TfstGraphBox gb : boxes ) {
@@ -225,11 +227,7 @@ public class TaggingModel {
 			int index = gb.getBounds().getStart_in_tokens();
 			String temp = null;
 			ArrayList<String> tokensList = new ArrayList<String>();
-			if( gb.getContent().contains("{")  )
-				temp = gb.getContent().split(",")[0].substring(1);
-			else {
-				temp = gb.getContent();
-			}
+			temp = gb.getContentText();
 			/* ERROR WITH KOREAN MODE
 			 * Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(temp);
@@ -238,23 +236,24 @@ public class TaggingModel {
 				tokensList.add(matcher.group());
 			}*/
 			
-                        if( gb.getBounds().getEnd_in_tokens()
-			== gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
-			
-		    for( String s : tokensList ) {
-	            	if( !tokens.containsKey(index) )  
+            if( gb.getBounds().getEnd_in_tokens() == 
+            	gb.getBounds().getStart_in_tokens() + tokensList.size() - 1) {
+		    	for( String s : tokensList ) {
+	            	if( !tokens.containsKey(index) ) {
 	            		tokens.put(index, new ArrayList<String>());
-	            	if( !tokens.get(index).contains(s))
+	            	}
+	            	if( !tokens.get(index).contains(s)){
 	            		tokens.get(index).add(s);
+	            	}
 	            	index++;
 	            }
-			} else
-			if( gb.getBounds().getEnd_in_tokens()
-			== gb.getBounds().getStart_in_tokens() ){
-				if( !tokens.containsKey(index) )  
+			} else if( gb.getBounds().getEnd_in_tokens() == gb.getBounds().getStart_in_tokens() ){
+				if( !tokens.containsKey(index) ){
             		tokens.put(index, new ArrayList<String>());
-            	if( !tokens.get(index).contains(temp))
+				}
+            	if( !tokens.get(index).contains(temp)){
             		tokens.get(index).add(temp);
+            	}
 			} else {
 				// implicit case where the difference is 0 < D < tokensList.length
 				tokens.put(index, new ArrayList<String>());
@@ -262,16 +261,17 @@ public class TaggingModel {
 			}
 			
 		}
-		for ( int i=0; i<tokens.size();i++ )
+		for ( int i = 0; i < tokens.size(); i++ ){
 	    	if( !tokens.containsKey(i) ) {
 	    		tokens.put( i, new ArrayList<String>());
 	    		tokens.get(i).add(" ");
+			}
 	    }
 	}
 	
 	/**  This function creates all the paths we can have between the first box
-	 *  "bfp" and the last box "bfs" and put them in allPaths. Then, it keeps only
-	 *  paths which contains at least a box which is tagged USELESS
+	 *  "bfp" and the last box "bfs" (factorization nodes) and put them in allPaths. Then, it keeps only
+	 *  paths that contain at least a box which is tagged USELESS and set its state to TO_CHECK
 	 * 
 	 * @param bfp 
 	 * 			The number of the first box in the path
@@ -288,17 +288,19 @@ public class TaggingModel {
 		computePath(boxes[sortedNodes[bfp]], boxes[sortedNodes[bfs]], new ArrayList<Integer>(), allPaths);
  		for (int tmp = 0; tmp < allPaths.size(); tmp++) {
 			allPaths.get(tmp).remove(0);
-			if(!containsUseless(allPaths.get(tmp)))
+			if(!containsUseless(allPaths.get(tmp))){
 				lstRemove.add(allPaths.get(tmp));
+			}
 		}
-		for(int i = 0; i < lstRemove.size(); i++)
+		for(int i = 0; i < lstRemove.size(); i++){
 			allPaths.remove(lstRemove.get(i));
+		}
 		
 		for (ArrayList<Integer> arrayList : allPaths) {
 			for (int i = 0; i < arrayList.size(); i++) {
-				if(taggingStates[sortedNodes[arrayList.get(i)]] != TaggingState.NEUTRAL
-						&& taggingStates[sortedNodes[arrayList.get(i)]] != TaggingState.PREFERRED)
+				if(taggingStates[sortedNodes[arrayList.get(i)]] == TaggingState.USELESS){
 					setBoxStateInternal(sortedNodes[arrayList.get(i)], TaggingState.TO_CHECK);
+				}		
 			}
 			
 		}
@@ -306,11 +308,11 @@ public class TaggingModel {
 	
 	/** @Aissa
 	 * 
-	 * This function checks if the at least one box of the boxes in arrayList
+	 * This function checks if at least one box of the boxes in arrayList
 	 * is in state "USELESS"
 	 * 
 	 * @param arrayList 
-	 * 			ArrayList of the number of each boxes of the path
+	 * 			ArrayList of the number of each box of the path
 	 * 
 	 * @return  true if at least one box is USELESS
 	 * 			false if not
@@ -328,22 +330,22 @@ public class TaggingModel {
 	 * When the path is complete, put it in allPaths
 	 * Then we restart
 	 * 
-	 * @param bfp 
+	 * @param box
 	 * 			The first box in the path
 	 * 
-	 * @param bfs
+	 * @param last
 	 * 			The last box in the path
 	 * 
-	 * @param current
+	 * @param currentPath
 	 * 			The list of boxes of the current path
 	 * 
 	 * @param allPath
 	 * 			The list of all paths between the box bfp and bfs
 	 */	
 	void computePath(GenericGraphBox box, GenericGraphBox last, ArrayList<Integer> currentPath, ArrayList<ArrayList<Integer>> allPaths) {
-		if(box.equals(last))
+		if(box.equals(last)){
 			allPaths.add(currentPath);
-		else {
+		} else {
 			currentPath.add(renumber[box.getBoxNumber()]);
 			for (GenericGraphBox next : box.transitions) {
 				computePath(boxes[next.getBoxNumber()], last, new ArrayList<Integer>(currentPath), allPaths);
@@ -359,24 +361,26 @@ public class TaggingModel {
 	
 	void createLstContext() {
 		lstContext.clear();
-		for (String arrayList : lstPath) 
+		for (String arrayList : lstPath){
 			lstContext.add(new Context(arrayList));
-		
+		}
 		for (Context c : lstContext) {
 			for (int i = 0; i < c.path.size(); i++) {
-				if(getTextBoxe(boxes[sortedNodes[c.path.get(i)]]).equals("<E>")
+				if (getTextBoxe(boxes[sortedNodes[c.path.get(i)]]).equals("<E>")
 						&& (boxes[sortedNodes[c.path.get(i)]]).type != GenericGraphBox.INITIAL
 					&& (boxes[sortedNodes[c.path.get(i)]]).type != GenericGraphBox.FINAL) {
-					if(c.currentBox > i)
+					if (c.currentBox > i){
 						c.currentBox--;
+					}
 					c.path.remove(i);
 				}
 			}
 		}
 	}
 	
-	/** This function checks if the new branch can be add to the automaton or not
-	 * If it's not, we remove the last transition in the automaton
+	/** This function checks if the new branch can be added to the automaton or not
+	 * If it can't, we remove the last transition in the automaton
+	 * If the modification is validated, the box state is set to NEUTRAL
 	 */		
 	void checkNewBranch( int i ){
 		int prev = getPreviousFactorizationNodeIndex(i);
@@ -385,7 +389,8 @@ public class TaggingModel {
 		
 		computeAllPaths( renumber[prev], renumber[next], allPaths );
 		clearList();
-		findString(boxes[sortedNodes[renumber[prev]]], boxes[sortedNodes[renumber[next]]], new StringBuilder(), boxes[sortedNodes[renumber[prev]]], new StringBuilder());
+		findString(boxes[sortedNodes[renumber[prev]]], boxes[sortedNodes[renumber[next]]], 
+			new StringBuilder(), boxes[sortedNodes[renumber[prev]]], new StringBuilder());
 		createLstContext();
 		
 		int cpt = 0;
@@ -397,10 +402,6 @@ public class TaggingModel {
 			return;
 		}
 		
-		TaggingState[] taggingStatesTmp = new TaggingState[taggingStates.length];
-		copyStates(taggingStates, taggingStatesTmp);
-		
-		
 		boolean b = verifyAllPath(allPaths, sortedNodes[renumber[prev]], sortedNodes[renumber[next]]);
 		int n = zone.graphBoxes.size();
 		for (int i1 = 0; i1 < n; i1++) {
@@ -408,8 +409,9 @@ public class TaggingModel {
 			if (boxes[i1].type == GenericGraphBox.INITIAL) {
 				initialState = i1;
 			}
-			else if (boxes[i1].type == GenericGraphBox.FINAL)
+			else if (boxes[i1].type == GenericGraphBox.FINAL) {
 				finalState = i1;
+			}
 			taggingStates[i1] = TaggingState.NEUTRAL;
 			boxes[i].state = TaggingState.NEUTRAL;
 		}
@@ -417,16 +419,17 @@ public class TaggingModel {
 		
 		if(b == false)  {
 			zone.removeLastTransition();
-			copyStates(taggingStatesTmp, taggingStates);
+			setNeutral(taggingStates);
 		}
 
 		updateNodes();
 		
 	}
 	
-	private void copyStates(TaggingState[] src, TaggingState[] dst) {
-		for(int i = 0; i < dst.length; i++) 
+	private void setNeutral(TaggingState[] dst) {
+		for(int i = 0; i < dst.length; i++) {
 			dst[i] = TaggingState.NEUTRAL;
+		}
 	}
 
 	private boolean verifyAllPath(ArrayList<ArrayList<Integer>> allPaths, int bfp, int bfs) {
@@ -443,7 +446,8 @@ public class TaggingModel {
 					boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_chars(2);
 					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK) {
 						boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
-						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]],
+						 copyContext));
 					}
 				}
 				else {					
@@ -462,15 +466,15 @@ public class TaggingModel {
 					}
 					else {
 						int tmp = findNewBegin(lstContext);
-						if(tmp != -1)
+						if(tmp != -1){
 							newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getEnd_in_tokens() + tmp;
-						else
+						} else {
 							newBegin = boxes[sortedNodes[lst.get(i-1)]].getBounds().getStart_in_tokens();
+						}
 					}
-					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK)
+					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK){
 						boxes[sortedNodes[lst.get(i)]].getBounds().setStart_in_tokens(newBegin);
-					
-						
+					}	
 					if(!verifyBox(boxes[sortedNodes[lst.get(i)]], copyContext)) {
 						String sentence = findSequence(lst);
 						JOptionPane.showMessageDialog(null,
@@ -482,12 +486,13 @@ public class TaggingModel {
 					
 					
 					if(taggingStates[sortedNodes[lst.get(i)]] == TaggingState.TO_CHECK) {
-						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], copyContext));
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_tokens(findLastToken(boxes[sortedNodes[lst.get(i)]], 
+							copyContext));
 						
 					}
 					String s = Normalizer.normalize(getTextBoxe(boxes[sortedNodes[lst.get(i)]]), Normalizer.Form.NFKC);
 					StringBuilder sb = new StringBuilder();
-					sb.append(s.charAt(s.length()-1));
+					sb.append(s.charAt(s.length() - 1));
 					String tmp = Normalizer.normalize(sb, Normalizer.Form.NFD);
 					if(isKorean(tmp.charAt(0))) {
 						
@@ -501,14 +506,15 @@ public class TaggingModel {
 								cpt += 2;
 							}
 						}
-						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_letters(cpt-1);
+						boxes[sortedNodes[lst.get(i)]].getBounds().setEnd_in_letters(cpt - 1);
 					}
 				}
 				lstText = lst;
 			}
 		
 			for (Context context : copyContext) {
-				if(context.currentBox < context.path.size() && boxes[sortedNodes[context.path.get(context.currentBox)]].equals(boxes[bfs])) {
+				if(context.currentBox < context.path.size() && 
+					boxes[sortedNodes[context.path.get(context.currentBox)]].equals(boxes[bfs])) {
 					return true;
 				}
 			}
@@ -523,7 +529,7 @@ public class TaggingModel {
 	}
 	
 	/**
-	 * Find the sentence of the new path and return it
+	 * Find the text of the new path and returns it
 	 * 
 	 * @param lst
 	 * @return the sequence of the path
@@ -531,13 +537,14 @@ public class TaggingModel {
 	private String findSequence(ArrayList<Integer> lst) {
 		StringBuilder sb = new StringBuilder();
 		int tmp = 0;
-		for(Integer in : lst) {
-			
-			if(boxes[sortedNodes[in]].getBounds().getStart_in_tokens() - tmp == 2)
+		for(Integer in : lst) {	
+			if(boxes[sortedNodes[in]].getBounds().getStart_in_tokens() - tmp == 2){
 				sb.append(" ");
+			}
 			tmp = boxes[sortedNodes[in]].getBounds().getEnd_in_tokens();
-			if(!getTextBoxe(boxes[sortedNodes[in]]).equals("<E>"))
+			if(!getTextBoxe(boxes[sortedNodes[in]]).equals("<E>")){
 				sb.append(getTextBoxe(boxes[sortedNodes[in]]));
+			}
 		}
 		return sb.toString();
 	}
@@ -582,8 +589,8 @@ public class TaggingModel {
 
 	/** @Aissa
 	 * 
-	 * This function finds the last coordinated of each previous boxes of boxes in lstContext 
-	 * If no one is corresponding with the coordinated, we compute the value with the number
+	 * This function finds the end coordinate of each direct predecessor of boxes in lstContext 
+	 * If no one is corresponding with the coordinate, we compute the value with the number
 	 * of characters
 	 * 
 	 * @param current
@@ -603,15 +610,17 @@ public class TaggingModel {
 		}
 		
 		for (Context context : lstContext) {
-			if(context.pos == 0 && context.currentBox > 1)
+			if(context.pos == 0 && context.currentBox > 1){
 				return boxes[sortedNodes[context.path.get(context.currentBox - 1)]].getBounds().getEnd_in_tokens();
+			}
 		}
 		
 		int size = txt.length();
 		int last = 0;
 		for(int i = 0; i < size; i++) {
-			if(txt.charAt(i) == ' ' && i <= size-2 && txt.charAt(i+1) != ' ')
+			if(txt.charAt(i) == ' ' && i <= size-2 && txt.charAt(i+1) != ' ') {
 				last += 2;
+			}
 		}
 		return boxes[current.getBoxNumber()].getBounds().getStart_in_tokens() + last;
 	}
@@ -619,7 +628,7 @@ public class TaggingModel {
 
 	/** @Aissa
 	 * 
-	 * This function finds the first coordinated of one of the next box of the current one
+	 * This function finds the first coordinate of one of the next box of the current one
 	 * which is not tagged USELESS
 	 * 
 	 * @param current
@@ -630,8 +639,9 @@ public class TaggingModel {
 	 */		
 	private int findNextTokenNumber(GenericGraphBox current) {
 		for (GenericGraphBox next : current.transitions) {
-			if(taggingStates[next.getBoxNumber()] != TaggingState.USELESS)
+			if(taggingStates[next.getBoxNumber()] != TaggingState.USELESS){
 				return boxes[next.getBoxNumber()].getBounds().getStart_in_tokens();
+			}
 		}
 		return 0;
 	}
@@ -645,15 +655,15 @@ public class TaggingModel {
 	 * @param lstContext
 	 * 			The list of all context
 	 * 
-	 * @return the first coordinated of the current box
+	 * @return the distance with the first coordinated of the current box
 	 */		
 	private int findNewBegin(ArrayList<Context> lstContext) {
 		boolean hasSpace = false;
 		
 		for (Context context : lstContext) {
-				if(context.space)
+				if(context.space){
 					hasSpace = true;
-				
+				}
 				context.space = false;
 		}
 		
@@ -698,8 +708,9 @@ public class TaggingModel {
 				txtBis =  Normalizer.normalize(getTextBoxe(boxes[sortedNodes[numBox]]), Normalizer.Form.NFD);
 
 				if(context.space == true && i != 0) {
-					if(txt.charAt(i) != ' ') 
+					if(txt.charAt(i) != ' ') {
 						ctxtRemove.add(context);
+					}
 					context.space = false;
 				}
 				else {
@@ -712,10 +723,12 @@ public class TaggingModel {
 					}
 					context.pos ++;
 					if(context.pos >= txtBis.length()) {
-						if(context.currentBox + 1 < context.path.size() && boxes[sortedNodes[context.path.get(context.currentBox+1)]].type != GenericGraphBox.FINAL
-								&& boxes[sortedNodes[context.path.get(context.currentBox+1)]].getBounds().getStart_in_tokens() -
-								boxes[sortedNodes[numBox]].getBounds().getEnd_in_tokens() == 2)
+						if(context.currentBox + 1 < context.path.size() && 
+								boxes[sortedNodes[context.path.get(context.currentBox+1)]].type != GenericGraphBox.FINAL &&
+					 			boxes[sortedNodes[context.path.get(context.currentBox+1)]].getBounds().getStart_in_tokens() -
+								boxes[sortedNodes[numBox]].getBounds().getEnd_in_tokens() == 2){
 							context.space = true;
+						}	
 						context.pos = 0;
 						context.currentBox ++;
 					}
@@ -727,14 +740,17 @@ public class TaggingModel {
 			}
 		}
 		
-		if(taggingStates[box.getBoxNumber()] != TaggingState.TO_CHECK)
+		if(taggingStates[box.getBoxNumber()] != TaggingState.TO_CHECK){
 			return true;
+		}
 		
-		for (Context context : ctxtRemove)
+		for (Context context : ctxtRemove){
 			copyContext.remove(context);
+		}
 
-		if(copyContext.isEmpty())
+		if(copyContext.isEmpty()){
 			return false;
+		}
 		
 		return true;
 	}
@@ -742,9 +758,9 @@ public class TaggingModel {
 	
 	/** @Aissa
 	 * 
-	 * This function is used to find all sentences between the 2 factorizations box 
+	 * This function is used to find all sequences between the 2 factorization nodes
 	 * (one at the beginning of the branch and one at the end)
-	 * It constructs the sentence and the path (composed of the number of boxes of the path)
+	 * It constructs the sentence and the path (composed of the number of each box in the path)
 	 * It puts the sentence in the ArrayList lstTok and the path in lstPath
 	 * 
 	 * @param begin 
@@ -768,8 +784,9 @@ public class TaggingModel {
 		int num_box = b.getBoxNumber();	
 		
 		if(end.equals(b)) {
-			if(b.type != GenericGraphBox.FINAL) 
+			if(b.type != GenericGraphBox.FINAL) {
 				sb.append(boxes[num_box].getContentText());
+			}
 			path.append(renumber[num_box]);
 			lstTok.add(sb.toString());
 			lstPath.add(path.toString());
@@ -779,8 +796,9 @@ public class TaggingModel {
 		int nb_transition_out = b.transitions.size();
 		path.append(renumber[num_box]).append("-");
 				
-		if(boxes[num_box].type != GenericGraphBox.INITIAL && !boxes[num_box].getContentText().equals("<E>"))
+		if(boxes[num_box].type != GenericGraphBox.INITIAL && !boxes[num_box].getContentText().equals("<E>")){
 			sb.append(boxes[num_box].getContentText());
+		}
 		
 		for(int i = 0; i < nb_transition_out; i++) {
 			int num_next_box = b.transitions.get(i).getBoxNumber();
@@ -802,17 +820,18 @@ public class TaggingModel {
 		}
 	}
 	
-	/* Return the text contains in the box */
+	/* Return the text contained in the box */
 	String getTextBoxe(GenericGraphBox box) {
-		if(box.getContent().contains("{")  )
+		if(box.getContent().contains("{")  ){
 			return box.getContent().split(",")[0].substring(1);
-		else {
+		} else {
 			return box.getContent();
 		}
 	}
 	
 	
-	/* Diplay all sentences in lstTok and their path in lstPath */
+	/* Only for debugging 
+	Diplay all sentences in lstTok and their path in lstPath */
 	private void displayAllSentence() {
 		System.out.println("Diplaying list token");
 		for (int i = 0; i < lstTok.size(); i++) {
@@ -850,11 +869,7 @@ public class TaggingModel {
 			 * ones are
 			 */
 			for (int i = 0; i < factorization.length; i++) {
-				if (boxes[i].type != GenericGraphBox.NORMAL && taggingStates[i] != TaggingState.USELESS) {
-					factorization[i] = true;
-				} else {
-					factorization[i] = false;
-				}
+				factorization[i] = (boxes[i].type != GenericGraphBox.NORMAL && taggingStates[i] != TaggingState.USELESS);
 			}
 			return;
 		}
@@ -878,7 +893,8 @@ public class TaggingModel {
 			for (int j = 1; j < boxes.length; j++) {
 				final int realStateJ = sortedNodes[j];
 				final TfstGraphBox destBox = boxes[realStateJ];
-				if (srcBox.transitions.contains(destBox) && (destBox.hasOutgoingTransitions || destBox.type == GenericGraphBox.FINAL)) {
+				if (srcBox.transitions.contains(destBox) && (destBox.hasOutgoingTransitions || 
+					destBox.type == GenericGraphBox.FINAL)) {
 					for (int k = i + 1; k < j; k++) {
 						/*
 						 * We can do this only because we have performed a
@@ -936,7 +952,7 @@ public class TaggingModel {
 	
 	/** @Yass
 	 * Goes through the boxes, checking accessibility and coaccessiblity, and then tagging them
-	 * USELESS if they're neither of those.
+	 * USELESS if they're not both.
 	 * or NOT_PREFERRED if they were USELESS but became either of those or both. 
 	 */
 	private void markUselessStates() {
@@ -952,7 +968,7 @@ public class TaggingModel {
 				if (taggingStates[i] == TaggingState.USELESS) {
 					/*
 					 * If the state used to be useless but is not anymore, we
-					 * set its state to [NOT_PREFERRED] TO_CHECK as in to be checked 
+					 * set its state to TO_CHECK 
 					 */
 					computeFactorizationNodes();
 					/* this is the key location of verification */
@@ -1334,46 +1350,5 @@ public class TaggingModel {
 		}
 		taggingStates=selection;
 	}
-
-	/*public void updateBoundsDiffToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
-		int t = selectedBoxes.get(0).getBoxNumber();
-		System.err.println("The value of " + t + " is bigger than the number of boxes");
-		Bounds temp;
-		if(t > boxes.length)
-			temp = new Bounds(b.getBounds().getGlobal_start_in_chars(), b.getBounds().getGlobal_end_in_chars());
-		else
-			temp = new Bounds(boxes[t].getBounds());
-		
-		int i = 2;
-		
-		int j = 0;
-		
-		if( b.getContent().equals("-") || b.getContent().equals("/") || b.getContent().equals("'") 
-				|| b.getContent().equals(".") || b.getContent().equals(","))
-			i = 1;
-		
-		if(b.getContent().contains(" "))
-			j = 2;
-		
-		temp.setStart_in_tokens(temp.getStart_in_tokens()+i);
-		
-		if(b.getBounds() != null) {
-			temp.setStart_in_letters(b.getBounds().getStart_in_letters());
-			temp.setStart_in_chars(b.getBounds().getStart_in_chars());
-			temp.setEnd_in_letters(b.getBounds().getEnd_in_letters());
-			temp.setEnd_in_chars(b.getBounds().getEnd_in_chars());
-		}
-		if(t == 0) {
-			temp.setStart_in_tokens(0);
-		}
-		
-		temp.setEnd_in_tokens(temp.getStart_in_tokens()+j);
-		
-		b.setBounds( temp );
-	}
-	
-	public void updateBoundsSameToken(ArrayList<GenericGraphBox> selectedBoxes, TfstGraphBox b) {
-		b.setBounds( new Bounds(boxes[selectedBoxes.get(0).getBoxNumber()].getBounds()) );
-	}*/
 	
 }
