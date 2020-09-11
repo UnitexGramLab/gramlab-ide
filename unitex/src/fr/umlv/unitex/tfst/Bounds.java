@@ -71,6 +71,22 @@ public class Bounds {
 		// System.out.println("2e constructeur: "+global_start_in_chars+" -> "+global_end_in_chars);
 	}
 
+	/* specific bounds constructor */
+	public Bounds(Bounds bounds) {
+		if(bounds == null) {
+			System.err.println("Bound is null");
+			return;
+		}
+		this.start_in_chars = bounds.start_in_chars;
+		this.start_in_letters = bounds.start_in_letters;
+		this.start_in_tokens = bounds.start_in_tokens;
+
+		this.end_in_chars = bounds.end_in_chars;
+		this.end_in_letters = bounds.end_in_letters;
+		this.end_in_tokens = bounds.end_in_tokens;
+	}
+	
+
 	private void global_to_relative() {
 		/*
 		 * We set those values by default for Korean transitions. This may
@@ -172,11 +188,35 @@ public class Bounds {
 		return end_in_letters;
 	}
 
+	public void setStart_in_tokens( int value ) {
+		start_in_tokens = value ;
+	}
+
+	public void setStart_in_chars( int value ) {
+		start_in_chars = value ;
+	}
+
+	public void setStart_in_letters( int value ) {
+		start_in_letters = value ;
+	}
+
+	public void setEnd_in_tokens( int value ) {
+		end_in_tokens = value ;
+	}
+
+	public void setEnd_in_chars( int value ) {
+		end_in_chars = value ;
+	}
+
+	public void setEnd_in_letters( int value ) {
+		end_in_letters = value ;
+	}
+
 	@Override
 	public String toString() {
-		return start_in_tokens + " " + start_in_chars + " " + start_in_letters
-				+ " " + end_in_tokens + " " + end_in_chars + " "
-				+ end_in_letters;
+		return " " + start_in_tokens + " " + start_in_chars + " " + start_in_letters + " " 
+			+ end_in_tokens + " " + end_in_chars + " " 
+			+ end_in_letters;
 	}
 
 	@Override

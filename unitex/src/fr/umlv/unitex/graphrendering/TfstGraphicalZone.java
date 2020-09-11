@@ -82,6 +82,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		}
 	}
 
+	/*
+	 * This function creates a generic box of NORMAL type, meaning it can have ingoing or outgoing transitions.
+	 * This is the most used function instead of newBox just below
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#createBox(int, int)
+	 */
 	@Override
 	protected GenericGraphBox createBox(int x, int y) {
 		final TfstGraphBox g = new TfstGraphBox(x, y, 2, this);
@@ -89,7 +94,11 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 		addBox(g);
 		return g;
 	}
-
+	
+	/*
+	 * This function creates a generic box of the input type.
+	 * @see fr.umlv.unitex.graphrendering.GenericGraphicalZone#newBox(int, int, int, fr.umlv.unitex.graphrendering.GenericGraphicalZone)
+	 */
 	@Override
 	protected GenericGraphBox newBox(int x, int y, int type,
 			GenericGraphicalZone p) {
@@ -138,6 +147,31 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					// if we click on a box
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
 					model.preferBox(b);
+				} else {
+//					if (selectedBoxes.size() == 1) {
+//						TfstGraphBox selected = (TfstGraphBox) selectedBoxes.get(0);
+//						unSelectAllBoxes();
+//						b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+//						Bounds bounds = selected.getBounds();
+//						b.setBounds(new Bounds(bounds.getStart_in_tokens(), bounds.getStart_in_chars(),
+//						bounds.getStart_in_letters(), bounds.getEnd_in_tokens(), bounds.getEnd_in_chars(),
+//						bounds.getEnd_in_letters()));
+//					} else {
+					//unSelectAllBoxes();
+					// here we create a box on the mouse's click position
+					b = (TfstGraphBox) createBox((int) (e.getX() / scaleFactor), (int) (e.getY() / scaleFactor));
+					// Coordinates set to zeros.
+					Bounds bounds = new Bounds(0, 0, 0, 0, 0, 0);
+					b.setBounds(bounds);
+					for(GenericGraphBox box : selectedBoxes) {
+						box.addTransitionTo(b);
+					}
+					unSelectAllBoxes();
+					b.setSelected(true);
+					postEdit(new SelectEdit(selectedBoxes));
+					selectedBoxes.add(b);
+					fireGraphTextChanged(b.getContent());
+					fireGraphChanged(false);
 				}
 			} else {
 				boxSelected = getSelectedBox((int) (e.getX() / scaleFactor),
@@ -146,20 +180,25 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 					// if we click on a box
 					b = (TfstGraphBox) graphBoxes.get(boxSelected);
 					if (!selectedBoxes.isEmpty()) {
-						// if there are selected boxes, we rely them to the
-						// current
-            // we make sure that the new transition will not
-            // create a cycle
-            boolean changeIsValid = false;
-            for(GenericGraphBox box : selectedBoxes) {
-              ArrayList<GenericGraphBox> newTransition = new ArrayList<GenericGraphBox>();
-              newTransition.add(b);
-              changeIsValid = !isCycle(box, newTransition);
-            }
-            if(changeIsValid) {
-              addTransitionsFromSelectedBoxes(b, true);
-              unSelectAllBoxes();
-            }
+						// if there are selected boxes, we connect them to b
+						// we make sure that the new transition will not
+						// create a cycle
+						boolean changeIsValid = false;
+						for(GenericGraphBox box : selectedBoxes) {
+							ArrayList<GenericGraphBox> newTransition = new ArrayList<GenericGraphBox>();
+							newTransition.add(b);
+
+							/* same token / different token transition drawing */
+							//model.updateBoundsOfNextUseless( (TfstGraphBox)box, b);
+							
+							changeIsValid = !isCycle(box, newTransition);
+						}
+
+						if(changeIsValid) {
+							
+							addTransitionsFromSelectedBoxes(b, true);
+							unSelectAllBoxes();
+						}
 					} else {
 						// if not, we just select this one
 						b.setSelected(true);
@@ -174,7 +213,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 			}
 			fireGraphChanged(false);
 		}
-
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			int selectedBox;
@@ -522,6 +561,7 @@ public class TfstGraphicalZone extends GenericGraphicalZone implements
 
 	public void resetAllStateSelections() {
 		stateSelection.clear();
+		unSelectAllBoxes();
 	}
 
 	public Integer[] getModifiedSentenceIndices() {

@@ -651,7 +651,7 @@ public class LemmatizeFrame extends TfstFrame {
 			}
 		};
 		final JButton rebuildTfstButton = new JButton(rebuildAction);
-		final JButton deleteStates = new JButton("Remove greyed states");
+		final JButton deleteStates = new JButton("Remove greyed boxes");
 		deleteStates.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

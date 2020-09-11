@@ -1007,22 +1007,22 @@ public class GraphIO {
 				UnicodeIO.writeChar(writer, '"');
 				int N = g.getTransitions().size();
 				if (g.getType() != GenericGraphBox.FINAL) {
-					String foo = g.getContent();
+					String content = g.getContent();
 					if (i == 2
-							&& foo.equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED")) {
-						foo = "<E>";
+							&& content.equals("THIS SENTENCE AUTOMATON HAS BEEN EMPTIED")) {
+						content = "<E>";
 						N = 0;
 					}
-					if (!foo.equals("<E>")) {
+					if (i >= 2) {
 						if (g.getBounds() != null) {
-							foo = foo + "/" + g.getBounds();
+							content = content + "/" + g.getBounds();
 						} else {
 							/* Should not happen */
 							throw new AssertionError(
 									"Bounds should not be null for a box content != <E>");
 						}
 					}
-					writeBoxContent(writer, foo);
+					writeBoxContent(writer, content);
 				}
 				UnicodeIO.writeString(
 						writer,
