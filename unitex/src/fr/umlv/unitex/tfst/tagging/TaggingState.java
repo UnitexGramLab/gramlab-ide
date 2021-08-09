@@ -21,13 +21,15 @@
 package fr.umlv.unitex.tfst.tagging;
 
 public enum TaggingState {
-	/* The box is accessible and co-accessible, 
+	/* The box is accessible, co-accessible, has been validated 
 	 * and it has been marked as preferred by the user or is a factorization node*/
 	PREFERRED,
 	/* The box is accessible and co-accessible and is competing with a preferred box */
 	NOT_PREFERRED,
 	/* The box is not both accessible and co-accessible */
 	USELESS,
+	/* The box is accessible and co-accessible but hasn't been validated yet*/
+	TO_CHECK,
 	/* None of previous cases */
-	NEUTRAL
+	NEUTRAL,
 }
