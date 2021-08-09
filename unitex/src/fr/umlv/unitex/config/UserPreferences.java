@@ -27,6 +27,7 @@ public class UserPreferences {
 	private static final int MAX_RECENT_TEXTS = 20;
 	
 	private static final String ID_RECENT_DICTIONARIES_NODE = "recent_dictionaries";
+    private static final String ID_RECENT_DELAS_NODE = "recent_delas";
 	private static final String PREFIX_ID_RECENT_DICTIONARY = "dict";
 	private static final int MAX_RECENT_DICTIONARIES = 20;
 
@@ -87,6 +88,16 @@ public class UserPreferences {
 		}
 	}
 
+	private java.util.prefs.Preferences recentDelasPrefs() {
+		if (prefs == null)
+			return null;
+		try {
+			return prefs.node(ID_RECENT_DELAS_NODE);
+		} catch (IllegalStateException e) {
+			return null;
+		}
+	}
+        
 	public List<File> getRecentGraphs() {
 		List<File> l = new ArrayList<File>();
 		java.util.prefs.Preferences gp = recentGraphsPrefs();
@@ -107,6 +118,40 @@ public class UserPreferences {
 			return null;
 		}
 		return l;
+	}
+
+	public String getRecentDelas() {
+		java.util.prefs.Preferences gp = recentDelasPrefs();
+                 String val="";
+		try {
+                    if (gp == null || gp.keys().length==0)
+                         return "";
+                    
+                    String[] keys = gp.keys();
+                    Arrays.sort(keys);
+                    val = gp.get(keys[0], null);
+			
+		} catch (BackingStoreException e) {
+			return "";
+		} catch (IllegalStateException e) {
+			return "";
+		}
+		return val;
+	}
+
+	public boolean setRecentDelas(String link) {
+		java.util.prefs.Preferences gp = recentDelasPrefs();
+		if (gp == null)
+			return false;
+		try {
+                    gp.clear();
+                    gp.put(ID_RECENT_DELAS_NODE, link);			
+		} catch (BackingStoreException e) {
+			return false;
+		} catch (IllegalStateException e) {
+			return false;
+		}
+		return true;
 	}
 
 	private boolean setRecentGraphs(List<File> l) {
