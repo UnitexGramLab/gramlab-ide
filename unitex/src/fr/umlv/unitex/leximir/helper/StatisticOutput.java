@@ -29,6 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import fr.umlv.unitex.leximir.delas.EditorDelas;
 import fr.umlv.unitex.leximir.util.Utils;
+import fr.umlv.unitex.leximir.model.DictionaryPath;
 
 /**
  *
@@ -63,14 +64,10 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         jButtonSet = new javax.swing.JButton();
         jButtonSave = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        String outputStatsFile;
-        
-        outputStatsFile = EditorDelas.getStatisticDirectory()+"statisticsTmp.csv";
         
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTextField1.setText(outputStatsFile); 
-
+        jTextField1.setText(EditorDelas.getStatisticDirectory() + DictionaryPath.statisticsTmpPath); 
         jButtonSet.setText("Set");
         jButtonSet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,8 +141,8 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
 	        File selectedFile = fileChooser.getSelectedFile();
-	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath()+File.separator);
-	        jTextField1.setText(EditorDelas.getStatisticDirectory()+"statisticsTmp.csv");
+	        EditorDelas.setStatisticDirectory(selectedFile.getAbsolutePath() + File.separator);
+	        jTextField1.setText(EditorDelas.getStatisticDirectory() + DictionaryPath.statisticsTmpPath);
 	        
         }
     }
@@ -155,13 +152,16 @@ public class StatisticOutput extends javax.swing.JInternalFrame {
         	String filename= jTextField1.getText();
         	File saveFolder = new File(new File(filename).getParent());
         	if(!saveFolder.exists()) {
-        		 int reply = JOptionPane.showConfirmDialog(null, "This folder doesn't exist yet \nCreate this folder?", title,
+        		 int reply = JOptionPane.showConfirmDialog(null, "This folder \""+saveFolder.getName() +"\" doesn't exist yet! \nCreate this folder?", title,
                          JOptionPane.YES_NO_OPTION);
                  if (reply == JOptionPane.YES_OPTION) {
                      saveFolder.mkdirs();
                      if (saveFolder.exists()) {
-                         JOptionPane.showMessageDialog(null, "The folder created successfully !", "Information", JOptionPane.INFORMATION_MESSAGE);
+                         JOptionPane.showMessageDialog(null, "Folder created successfully!", "Information", JOptionPane.INFORMATION_MESSAGE);
                      }
+                 }
+                 else{
+                	 return;
                  }
         	}
 	        if(this.dicPos==null){

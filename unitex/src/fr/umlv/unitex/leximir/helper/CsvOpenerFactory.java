@@ -26,8 +26,8 @@ package fr.umlv.unitex.leximir.helper;
 public class CsvOpenerFactory {
 	private CsvOpener dialog;
 
-	public CsvOpener newCsvOpenerDialog(String csvfile, String title) {
-		dialog = new CsvOpener(csvfile, title);
+	public CsvOpener newCsvOpenerDialog(String csvFile, String title) {
+		dialog = new CsvOpener(csvFile, title);
 		return dialog;
 	}
         
