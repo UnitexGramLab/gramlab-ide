@@ -87,7 +87,7 @@ Contact unitex-devel@univ-mlv.fr for further inquiries.
 
 ---
 
-Copyright (C) 2020 Université Paris-Est Marne-la-Vallée
+Copyright (C) 2021 Université Paris-Est Marne-la-Vallée
 
 [unitex]:  https://unitexgramlab.org
 [unitex-core]: https://github.com/UnitexGramLab/unitex-core
