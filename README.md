@@ -1,4 +1,4 @@
-# Unitex/GramLab IDE  [![Build Status](https://travis-ci.org/UnitexGramLab/gramlab-ide.svg?branch=master)](https://travis-ci.org/UnitexGramLab/gramlab-ide)
+# Unitex/GramLab IDE  [![Build Status](https://travis-ci.com/UnitexGramLab/gramlab-ide.svg?branch=master)](https://travis-ci.com/UnitexGramLab/gramlab-ide)
 
 > [Unitex/GramLab][unitex] is the open source, cross-platform, multilingual, lexicon- and grammar-based corpus processing suite
 
