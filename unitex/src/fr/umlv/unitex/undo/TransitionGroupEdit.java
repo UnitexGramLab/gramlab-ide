@@ -28,7 +28,7 @@ import fr.umlv.unitex.graphrendering.GenericGraphBox;
 import fr.umlv.unitex.graphrendering.GenericGraphicalZone;
 
 /**
- * class uses to save the state of the graph before add transitions to a boxe
+ * class used to save the state of the graph before add transitions to boxes
  * 
  * @author Decreton Julien
  */
@@ -42,7 +42,7 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	 */
 	private final ArrayList<GenericGraphBox> oldSelectedBoxes;
 	/**
-	 * transition destination boxe
+	 * transition destination box
 	 */
 	private final GenericGraphBox dst;
 	/**
@@ -54,9 +54,9 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 	 * @param selectedBoxes
 	 *            selected boxes in the graph
 	 * @param dst
-	 *            destination boxe
+	 *            destination box
 	 * @param zone
-	 *            the zone where remove the boxe
+	 *            the zone where the graph is drawn
 	 */
 	@SuppressWarnings("unchecked")
 	public TransitionGroupEdit(ArrayList<GenericGraphBox> selectedBoxes,
@@ -75,7 +75,7 @@ public class TransitionGroupEdit extends AbstractUndoableEdit {
 		for (final GenericGraphBox oldSelectedBoxe : oldSelectedBoxes) {
 			g = oldSelectedBoxe;
 			g.addTransitionTo(dst);
-			// select this boxe
+			// select this box
 			g.setSelected(true);
 			selectedBoxes.add(g);
 			zone.initText(g.getContent());

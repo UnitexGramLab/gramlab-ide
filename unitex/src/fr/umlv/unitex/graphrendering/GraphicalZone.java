@@ -1380,7 +1380,7 @@ public class GraphicalZone extends GenericGraphicalZone implements Printable {
 				// then, the only selected box is the new one
 				unSelectAllBoxes();
 				b.setSelected(true);
-        b.setHighlight(false);
+				b.setHighlight(false);
 				selectedBoxes.add(b);
 				fireGraphTextChanged(b.content); /* Should be "<E>" */
 				fireGraphChanged(true);

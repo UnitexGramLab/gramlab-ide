@@ -46,6 +46,12 @@ import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.svn.SvnMonitor;
 import fr.umlv.unitex.tfst.TagFilter;
+import java.util.List;
+import java.util.Map;
+import fr.umlv.unitex.leximir.delas.*;
+import fr.umlv.unitex.leximir.helper.*;
+import fr.umlv.unitex.leximir.shell.*;
+
 
 /**
  * This class is responsible for managing all internal frames in Unitex and GramLab main
@@ -104,9 +110,15 @@ public abstract class InternalFrameManager implements FrameManager {
 	private final GraphAlignmentDialogFactory graphAlignmentDialogFactory = new GraphAlignmentDialogFactory();
 	private final GraphSizeDialogFactory graphSizeDialogFactory = new GraphSizeDialogFactory();
 	private final ExportTextAsPOSListDialogFactory exportTextAsPOSListDialogFactory = new ExportTextAsPOSListDialogFactory();
-  private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
-  private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
+  	private final FindAndReplaceDialogFactory findAndReplaceFactory = new FindAndReplaceDialogFactory();
+  	private final TextAutomatonFindAndReplaceDialogFactory textAutomatonFindAndReplaceFactory = new TextAutomatonFindAndReplaceDialogFactory();
 	private final TextAutomatonTagFilterDialogFactory textAutomatonTagFilterFactory = new TextAutomatonTagFilterDialogFactory();
+	private final CheckTextAutomatonDialogFactory checkTextAutomatonDialogFactory = new CheckTextAutomatonDialogFactory();
+    private final ChooseDelasFactory chooseDelasFactory = new ChooseDelasFactory();
+    private final ShellFactory shellFactory = new ShellFactory();
+    private final EditorDelasFactory editorDelasFactory = new EditorDelasFactory();
+    private final StatisticOutputFactory statisticOutputFactory = new StatisticOutputFactory();
+    private final CsvOpenerFactory csvOpenerFactory = new CsvOpenerFactory();
 
 	public InternalFrameManager(JDesktopPane desktop) {
 		this.desktop = desktop;
@@ -196,6 +208,63 @@ public abstract class InternalFrameManager implements FrameManager {
 	public void saveAllGraphFrames() {
 		graphFrameFactory.saveAllFrames();
 	}
+	
+	
+    public ChooseDelas newChooseDelasDialog() {
+
+        final ChooseDelas d = chooseDelasFactory.newChooseDelasDialog();
+        if (d == null) {
+            return null;
+        }
+        setup(d);
+        return d;
+    }
+
+    public Shell newShellDialog() {
+        final Shell d = shellFactory.newShellDialog();
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public EditorDelas newEditorDelasDialog(boolean alldelas, File dic) {
+        final EditorDelas d = editorDelasFactory.newEditorDelasDialog(alldelas, dic);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+
+    public StatisticOutput newStatisticOutput(List<Object[]> dicPos, boolean isDelas) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(dicPos, isDelas);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public StatisticOutput newStatisticOutput(Map<String, Object[]> statSimSem, boolean isDelas) {
+        final StatisticOutput d = statisticOutputFactory.newStatisticOutputDialog(statSimSem, isDelas);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
+
+    public CsvOpener newCsvOpener(String csvFile, String title) {
+        final CsvOpener d = csvOpenerFactory.newCsvOpenerDialog(csvFile, title);
+        if (d == null) {
+            return null;
+        }
+        setup(d, true);
+        return d;
+    }
 
 	/**
 	 * This method implements the functionality to minimize the currently focused frame.
@@ -937,5 +1006,14 @@ public abstract class InternalFrameManager implements FrameManager {
 
 	public void updateTextAutomatonFindAndReplaceDialog() {
 		textAutomatonFindAndReplaceFactory.update();
+	}
+	
+	public CheckTextAutomatonDialog newCheckTextAutomatonDialog(ArrayList<String> checkList) {
+		final CheckTextAutomatonDialog d = checkTextAutomatonDialogFactory.newCheckTextAutomatonDialog(checkList);
+		if (d == null) {
+			return null;
+		}
+		d.setVisible(true);
+		return d;
 	}
 }
