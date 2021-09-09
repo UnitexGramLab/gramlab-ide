@@ -1,7 +1,7 @@
 /*
  * Unitex
  *
- * Copyright (C) 2001-2021 UniversitÃ© Paris-Est Marne-la-VallÃ©e <unitex@univ-mlv.fr>
+ * Copyright (C) 2001-2019 Université Paris-Est Marne-la-Vallée <unitex@univ-mlv.fr>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ import fr.umlv.unitex.utils.KeyUtil;
 /**
  * This class describes the XAlign parameter frame.
  * 
- * @author SÃ©bastien Paumier
+ * @author Sébastien Paumier
  */
 public class XAlignConfigFrame extends JInternalFrame {
 	XAlignConfigFrame() {
@@ -84,11 +84,19 @@ public class XAlignConfigFrame extends JInternalFrame {
 		return chooser;
 	}
 
-	JFileChooser saveXMLChooser() {
+	JFileChooser saveXMLChooserTarget() {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new PersonalFileFilter("xml", "TEI text"));
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		chooser.setCurrentDirectory(Config.getUserDir());
+		chooser.setCurrentDirectory(folderLocationTarget);
+		chooser.setMultiSelectionEnabled(false);
+		return chooser;
+	}
+	JFileChooser saveXMLChooserSource() {
+		final JFileChooser chooser = new JFileChooser();
+		chooser.addChoosableFileFilter(new PersonalFileFilter("xml", "TEI text"));
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		chooser.setCurrentDirectory(folderLocationSource);
 		chooser.setMultiSelectionEnabled(false);
 		return chooser;
 	}
@@ -96,6 +104,8 @@ public class XAlignConfigFrame extends JInternalFrame {
 	private final JTextField text1 = new JTextField();
 	private final JTextField text2 = new JTextField();
 	private final JTextField alignment = new JTextField();
+	File folderLocationSource = new File(Config.getUserDir(), "");
+	File folderLocationTarget = new File(Config.getUserDir(), "");
 
 	private JPanel constructPanel() {
 		final JPanel panel = new JPanel(new GridLayout(4, 1));
@@ -135,7 +145,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 
 	void loadFiles() {
 		final MultiCommands commands = new MultiCommands();
-		String s = text1.getText();
+		String s = folderLocationSource.getAbsolutePath();
 		if ("".equals(s)) {
 			JOptionPane.showMessageDialog(null, "You must set the source text",
 					"Error", JOptionPane.ERROR_MESSAGE);
@@ -156,7 +166,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 							"Your source file is a .txt one. Please select the\n"
 									+ "destination file to be used by XAlign (TEI format).",
 							"", JOptionPane.INFORMATION_MESSAGE);
-			final JFileChooser chooser = saveXMLChooser();
+			final JFileChooser chooser = saveXMLChooserSource();
 			final int returnVal = chooser.showSaveDialog(null);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				// we return if the user has clicked on CANCEL
@@ -201,7 +211,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 		} else {
 			xmlSourceFile = source;
 		}
-		s = text2.getText();
+		s = folderLocationTarget.getAbsolutePath();
 		if ("".equals(s)) {
 			JOptionPane.showMessageDialog(null, "You must set the target text",
 					"Error", JOptionPane.ERROR_MESSAGE);
@@ -222,7 +232,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 							"Your target file is a .txt one. Please select the\n"
 									+ "destination file to be used by XAlign (TEI format).",
 							"", JOptionPane.INFORMATION_MESSAGE);
-			final JFileChooser chooser = saveXMLChooser();
+			final JFileChooser chooser = saveXMLChooserTarget();
 			final int returnVal = chooser.showSaveDialog(null);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				// we return if the user has clicked on CANCEL
@@ -298,7 +308,7 @@ public class XAlignConfigFrame extends JInternalFrame {
 			toDo.toDo(true);
 		}
 	}
-
+	
 	private JPanel buildPanel(String s, final JTextField text,
 			final JFileChooser chooser) {
 		final JPanel p = new JPanel(new BorderLayout());
@@ -315,6 +325,14 @@ public class XAlignConfigFrame extends JInternalFrame {
 					return;
 				}
 				text.setText(chooser.getSelectedFile().getAbsolutePath());
+				if ( s == "Source text") {
+					text.setText(chooser.getSelectedFile().getAbsolutePath());
+					folderLocationSource = chooser.getSelectedFile();
+				}
+				else if ( s == "Target text" ) {
+					text.setText(chooser.getSelectedFile().getAbsolutePath());
+					folderLocationTarget = chooser.getSelectedFile();
+				}
 			}
 		});
 		p.add(button, BorderLayout.EAST);

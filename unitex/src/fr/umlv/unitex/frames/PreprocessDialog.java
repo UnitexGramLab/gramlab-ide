@@ -177,13 +177,45 @@ public class PreprocessDialog extends JDialog {
 		sentenceCheck.setMnemonic(KeyEvent.VK_M);
 		replaceCheck.setMnemonic(KeyEvent.VK_R);
 		preprocessingUntaggedText.add(noSeparatorNormalization);
-		preprocessingUntaggedText.add(constructGenericPanel(sentenceCheck,
+		preprocessingUntaggedText.add(constructGenericPanelSentence(sentenceCheck,
 				sentenceName, true));
 		preprocessingUntaggedText.add(constructGenericPanel(replaceCheck,
-				replaceName, false));
+				replaceName, true));
 		return preprocessingCurrent = preprocessingUntaggedText;
 	}
 
+	
+	private JPanel constructGenericPanelSentence(final JCheckBox checkBoxSentence,
+			final JTextField textFieldSentence, final boolean mnemonicTokenSentence) {
+		final JPanel panel = new JPanel(new BorderLayout());
+		checkBoxSentence.setPreferredSize(new Dimension(190, checkBoxSentence
+				.getPreferredSize().height));
+		panel.add(checkBoxSentence, BorderLayout.WEST);
+		textFieldSentence.setPreferredSize(new Dimension(150, textFieldSentence
+				.getPreferredSize().height));
+		panel.add(textFieldSentence, BorderLayout.CENTER);
+		final Action setActionSentence = new AbstractAction("Set...") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser chooser = Config.getSentenceDialogBox();
+				final int returnVal = chooser.showOpenDialog(null);
+				if (returnVal != JFileChooser.APPROVE_OPTION) {
+					// we return if the user has clicked on cancel
+					return;
+				}
+				textFieldSentence.setText(chooser.getSelectedFile().getAbsolutePath());
+			}
+		};
+		final JButton setSentence = new JButton(setActionSentence);
+		if (mnemonicTokenSentence) {
+			setSentence.setMnemonic(KeyEvent.VK_E);
+		} else {
+			setSentence.setMnemonic(KeyEvent.VK_S);
+		}
+		panel.add(setSentence, BorderLayout.EAST);
+		return panel;
+	}
+	
 	private JPanel constructGenericPanel(final JCheckBox checkBox,
 			final JTextField textField, final boolean mnemonicToken) {
 		final JPanel panel = new JPanel(new BorderLayout());
@@ -214,6 +246,7 @@ public class PreprocessDialog extends JDialog {
 		panel.add(setReplace, BorderLayout.EAST);
 		return panel;
 	}
+		
 
 	private JPanel constructTokenizingPanel() {
 		final JPanel tokenizingPanel = new JPanel(new GridLayout(2, 1));
