@@ -115,7 +115,7 @@ public class Config {
     private static String currentSystemName;
     /**
      * Path of the user's current sentence delimitation graph
-     * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Sentence/grf</code>
+     * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Sentence/Sentence.grf</code>
      */
     private static File currentSentenceGraph;
     /**
@@ -1020,10 +1020,11 @@ public class Config {
     /**
      * Sets the user directory
      *
-     * @param s
+     * @param folder_Location
      *            directory's path
      */
-    private static void setUserDir(File s) {
+    
+    public static void setUserDir(File s) {
         userDir = s;
         if (!userDir.exists()) {
             // if the directory does not exists, we create it
@@ -1464,8 +1465,8 @@ public class Config {
     private static void setDefaultPreprocessingGraphs() {
         File sentence = new File(getUserCurrentLanguageDir(), "Graphs");
         sentence = new File(sentence, "Preprocessing");
-        File replace = new File(sentence, "Replace");
-        sentence = new File(sentence, "Sentence");
+        File replace = new File(getUserCurrentLanguageDir(), "Replace");
+        replace = new File(replace, "Replace");
         if (getCurrentLanguage().equals("Thai")) {
             // this is an exception because we do not have anymore
             // the .grf file
@@ -1641,4 +1642,5 @@ public class Config {
         }
         return monitor;
     }
+    
 }
