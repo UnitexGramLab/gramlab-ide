@@ -98,7 +98,7 @@ public class Fst2ListCommand extends CommandBuilder {
 		element("s");
 		element("-f");
 		element(separate ? "s" : "a");
-		element("-s0");
+		element("--io_separator");
 		protectElement("/");
 		return this;
 	}
