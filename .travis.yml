@@ -1,5 +1,5 @@
 os: linux
-dist: trusty
+dist: focal
 
 # language: instructs travis what compilers && environment to set up in build matrix
 language: java
