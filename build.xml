@@ -61,7 +61,7 @@
     </subant>
 		<!-- Compile the java code from ${src} into ${build} -->
 		<echo message="classpath=${dist}/Unitex.jar"/>
-		<javac release="8" encoding="UTF-8" srcdir="${src}" destdir="${build}" classpath="${dist}/Unitex.jar" includeAntRuntime="false"/>
+		<javac target="1.8" source="1.8" release="8" encoding="UTF-8" srcdir="${src}" destdir="${build}" classpath="${dist}/Unitex.jar" includeAntRuntime="false"/>
 	</target>
 
 
