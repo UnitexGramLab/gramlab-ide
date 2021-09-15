@@ -1,5 +1,5 @@
 os: linux
-dist: trusty
+dist: xenial
 
 # sudo: false instructs Travis to build our project in a docker VM (faster)
 sudo: false
@@ -7,10 +7,10 @@ sudo: false
 # language: instructs travis what compilers && environment to set up in build matrix
 language: java
 
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
+#addons:
+  #apt:
+    #packages:
+      #- oracle-java9-installer
 
 # Travis CI clones repositories to a depth of 50 commits
 git:
@@ -19,8 +19,7 @@ git:
 # to test against multiple JDKs 
 jdk:
   - oraclejdk9
-  - oraclejdk8
-  - openjdk7
+  - openjdk11
 
 notifications:
   email:
