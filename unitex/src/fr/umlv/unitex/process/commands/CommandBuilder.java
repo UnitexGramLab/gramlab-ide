@@ -115,11 +115,11 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 		switch (ConfigManager.getManager().getEncoding(null)) {
 		case UTF8:
-			return "-qutf8-no-bom";
+			return "-qutf8-no-bom --locate_argument=--stack_max=8000 --locate_argument=--max_matches_per_subgraph=800 --locate_argument=--max_matches_at_token_pos=8000\r\n";
 		case UTF16LE:
-			return null;
+			return "--locate_argument=--stack_max=8000 --locate_argument=--max_matches_per_subgraph=800 --locate_argument=--max_matches_at_token_pos=8000\r\n";
 		case UTF16BE:
-			return "-qutf16be-bom";
+			return "-qutf16be-bom --locate_argument=--stack_max=8000 --locate_argument=--max_matches_per_subgraph=800 --locate_argument=--max_matches_at_token_pos=8000\r\n";
 		}
 		return null;
 	}
