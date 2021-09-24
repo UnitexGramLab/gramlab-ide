@@ -1,16 +1,13 @@
 os: linux
-dist: trusty
-
-# sudo: false instructs Travis to build our project in a docker VM (faster)
-sudo: false
+dist: focal
 
 # language: instructs travis what compilers && environment to set up in build matrix
 language: java
 
-addons:
-  apt:
-    packages:
-      - oracle-java8-installer
+#addons:
+  #apt:
+    #packages:
+      #- oracle-java9-installer
 
 # Travis CI clones repositories to a depth of 50 commits
 git:
@@ -19,8 +16,7 @@ git:
 # to test against multiple JDKs 
 jdk:
   - oraclejdk9
-  - oraclejdk8
-  - openjdk7
+  - oraclejdk11
 
 notifications:
   email:
@@ -33,4 +29,6 @@ notifications:
     secure: R/NOIQPMOck41uie9B64j7NWsEypC9MEj1gfO8uJeNiEo/HKQ2bEAtDwfV158riu3ysOJIMLRnuqJ1fk2FI/yoct50vXV6v9KVaEJYARl/HMnXMLfiZ76twv0ozWzH8r/SnOYEDo7wDmrWXI7A2FxcFhpkHCWiKMg0K10aPBSEvcxx4kyFBqzFT/7zFY6ZebF10XoqyaKcDCwr79OoEAYpGaSCz2nbWmZVLExehJrDjubkia2PIo7iPFixe/AeREhJ/KH7l9FNCC/STS58IkByE7Tw0Wc+9LkPHZjvrsku3G7En8pt1aWQRqHrHrnpUGr7o6zlJsjitzaN8eHdMRvF2WnCTLyDK3SetTOkeXL5k1mNaDCMfjTN6G5Uf+eF7Ggo70P3I2SRwJ8h0Z5Qpnt9LLa2et/IMfApzop1kYv5xranrwPYhiLjCo8A1YhHsL4528Quj9Ra/Zblsxt4hei/HVBqNXEkE6+W8aDeGAx3YVhv3L2UAKD/9lQChFE4FP5Gux59XX+0cD/FuLDmH0BH3QZZOdNG8XiPpFuS+XmU2ORNTuv99gE4Jp0To7ytjgcMFV0B/etnFIopfy8A9t7qmOPIzpG1HGEF5r1biBSNFLPIx+Q09/P0bzsyhS3y1VJ4CvDyJQXGFj1SoweH3Ky5ua1Eh8Sw2ft3L4eHyaFY8=
 
 # overwrite the default build step
-script: ant
+script:
+  - ant -version
+  - ant
