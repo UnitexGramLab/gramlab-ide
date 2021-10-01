@@ -58,6 +58,7 @@ https://github.com/UnitexGramLab/unitex-doc-contributor-guidelines/blob/master/p
 - [ ] My code compiles
 - [ ] My code does not generate new warnings
 - [ ] My code only implements a single fix or feature
+- [ ] My code does not contain any changes unrelated to the fix or feature
 - [ ] My code follows the code style of this project
 - [ ] My code includes javadoc/doxygen where appropriate
 - [ ] My code is well factored, so that there is not repetitive code in the wild
@@ -69,3 +70,5 @@ https://github.com/UnitexGramLab/unitex-doc-contributor-guidelines/blob/master/p
 - [ ] I understand that all commits on my pull request will be squashed to a single good one
 - [ ] All above points were checked and are marked
 <!-- Check if all the points above have an `x`, if so you can submit your PR for review -->
+
+
