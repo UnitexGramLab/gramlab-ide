@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
@@ -115,15 +116,25 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 		switch (ConfigManager.getManager().getEncoding(null)) {
 		case UTF8:
-			return "-qutf8-no-bom --locate_argument=--stack_max=8000 --locate_argument=--max_matches_per_subgraph=800 --locate_argument=--max_matches_at_token_pos=8000\r\n";
+			return "-qutf8-no-bom";
 		case UTF16LE:
-			return "--locate_argument=--stack_max=8000 --locate_argument=--max_matches_per_subgraph=800 --locate_argument=--max_matches_at_token_pos=8000\r\n";
+			return null;
 		case UTF16BE:
-			return "-qutf16be-bom --locate_argument=--stack_max=8000 --locate_argument=--max_matches_per_subgraph=800 --locate_argument=--max_matches_at_token_pos=8000\r\n";
+			return "-qutf16be-bom";
 		}
 		return null;
 	}
-
+	
+	public static String maxMatchesPerSubgraph() {
+		Preferences.setMaxMatchesPerSubgraph(" --locate_argument=--max_matches_per_subgraph=800");
+		return "800";
+	}
+	
+	public static String maxMatchesPerToken() {
+		Preferences.setMaxMatchesPerToken(" --locate_argument=--max_matches_at_token_pos=8000");
+		return "8000";
+	}
+		
 	public void time(File f) {
 		list.add(programNamePosition, "\"--time=" + f.getAbsolutePath() + "\"");
 		programNamePosition++;
