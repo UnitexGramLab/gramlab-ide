@@ -193,8 +193,9 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						null);
 				final File f_transducer = fc.getSelectedFile();
 				final File f_target = Config.getCurrentSnt();
-				final String maxMatchesSubgraph = CommandBuilder.maxMatchesPerSubgraph();
-				final String maxMatchesToken = CommandBuilder.maxMatchesPerToken();
+				
+				String maxMatchesSubgraph = Preferences.getMaxMatchesPerSubgraph();
+				String maxMatchesToken = Preferences.getMaxMatchesPerToken();
 				CassysCommand com = new CassysCommand()
 						.alphabet(f_alphabet)
 						.targetText(f_target)
