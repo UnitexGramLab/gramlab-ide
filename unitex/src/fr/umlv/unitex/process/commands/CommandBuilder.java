@@ -125,14 +125,14 @@ public abstract class CommandBuilder implements AbstractCommand {
 		return null;
 	}
 	
-	public static String maxMatchesPerSubgraph() {
-		Preferences.setMaxMatchesPerSubgraph(" --locate_argument=--max_matches_per_subgraph=800");
-		return "800";
+	public String maxMatchesPerSubgraph() {
+		String maxMatchesPerSubgraph = Preferences.getMaxMatchesPerSubgraph();
+		return maxMatchesPerSubgraph;
 	}
 	
-	public static String maxMatchesPerToken() {
-		Preferences.setMaxMatchesPerToken(" --locate_argument=--max_matches_at_token_pos=8000");
-		return "8000";
+	public String maxMatchesPerToken() {
+		String maxMatchesPerToken = Preferences.getMaxMatchesPerToken();
+		return maxMatchesPerToken;
 	}
 		
 	public void time(File f) {

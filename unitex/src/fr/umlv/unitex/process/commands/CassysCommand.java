@@ -61,11 +61,11 @@ public class CassysCommand extends CommandBuilder {
 	}
 
 	public CassysCommand maxMatchesPerSubgraph(String maxMatchesSubgraph) {
-		protectElement("--locate_argument=--max_matches_per_subgraph=" + maxMatchesSubgraph);
+		protectElement(maxMatchesSubgraph);
 		 return this;
 	}
 	public CassysCommand maxMatchesPerToken(String maxMatchesToken) {
-		protectElement("--locate_argument=--max_matches_at_token_pos=" + maxMatchesToken);
+		protectElement(maxMatchesToken);
 		return this;
 	}
 
