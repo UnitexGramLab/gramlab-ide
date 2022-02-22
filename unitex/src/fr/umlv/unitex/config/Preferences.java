@@ -119,8 +119,8 @@ public class Preferences {
 	 * locate_argument for max matches size
 	 */
 	
-	public static String maxMatchesPerSubgraph = " --locate_argument=--max_matches_per_subgraph=800";
-	public static String maxMatchesPerToken = " --locate_argument=--max_matches_at_token_pos=8000";
+	public static String maxMatchesPerSubgraph = "--locate_argument=--max_matches_per_subgraph=800";
+	public static String maxMatchesPerToken = "--locate_argument=--max_matches_at_token_pos=8000";
 	
 	/**
 	 * Properties for current language
@@ -622,12 +622,12 @@ public class Preferences {
 		return maxMatchesPerToken;
 	}
 	
-	public static void setMaxMatchesPerSubgraph(String maxMatches) {
-		maxMatches = maxMatchesPerSubgraph;
+	public static String setMaxMatchesPerSubgraph(String maxMatches) {
+		return maxMatches = maxMatchesPerSubgraph;
 	}
 
-	public static void setMaxMatchesPerToken(String maxMatches) {
-		maxMatches = maxMatchesPerToken;
+	public static String setMaxMatchesPerToken(String maxMatches) {
+		return maxMatches = maxMatchesPerToken;
 	}
 
 }
