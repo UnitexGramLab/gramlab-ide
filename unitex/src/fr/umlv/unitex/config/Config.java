@@ -76,7 +76,7 @@ public class Config {
      */
     private static File applicationDir;
     private static File unitexToolLogger;
-
+    
     /**
      * Path of the directory <code>.../Unitex</code>
      */
@@ -489,7 +489,7 @@ public class Config {
         fileEditionDialogBox.setDialogTitle("Select a file to edit");
         return fileEditionDialogBox;
     }
-
+    
     public static JFileChooser initializeJFileChooser(JFileChooser jFileChooser,
     		String extension, String description, String subfolder)
     {
@@ -497,7 +497,7 @@ public class Config {
             return jFileChooser;
         jFileChooser = new JFileChooser();
         final PersonalFileFilter fileFilter=new PersonalFileFilter(extension,
-                description);
+                description); 
         jFileChooser.addChoosableFileFilter(fileFilter);
         jFileChooser.setFileFilter(fileFilter);
         jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -507,7 +507,7 @@ public class Config {
         jFileChooser.setDialogTitle("Select a file to edit");
         return jFileChooser;
     }
-
+    
     public static JFileChooser getFileEditionDialogBox(String extension) {
     	JFileChooser chooser;
     	if(extension == null)
@@ -563,15 +563,13 @@ public class Config {
         //transducerListDialogBox.setControlButtonsAreShown(false);
         return transducerListDialogBox;
     }
-
+    
     public static JFileChooser getExploreGraphOutputDialogBox() {
         if (exploreGraphOutputDialogBox != null)
             return exploreGraphOutputDialogBox;
         exploreGraphOutputDialogBox = new JFileChooser();
         PersonalFileFilter txtFilter =new PersonalFileFilter("txt",
                                           "Text Files");
-        if (sentenceDialogBox == null)
-            sentenceDialogBox = getSentenceDialogBox();
         sentenceDialogBox.addChoosableFileFilter(txtFilter);
         sentenceDialogBox.setFileFilter(txtFilter);
         exploreGraphOutputDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
@@ -846,7 +844,7 @@ public class Config {
       try {
           CommandBuilder cmd = new VersionInfoCommand().getSemver();
           String[] comm = cmd.getCommandArguments(true);
-
+          
           final Process p = Runtime.getRuntime().exec(comm);
           final BufferedReader in = new BufferedReader(
                   new InputStreamReader(p.getInputStream(), "UTF8"));
@@ -886,13 +884,13 @@ public class Config {
 
     /**
      * Setup the UnitexToolLogger executable
-     *
+     * 
      * @param path
      *            external programs directory
      *
      * @author martinec
      */
-    public static File setupUnitexToolLogger(File path) {
+    public static File setupUnitexToolLogger(File path) {        
         // define the default unitexToolLogger path
         File UnitexToolLogger = new File(path, "UnitexToolLogger" +
         (Config.getSystem() == Config.WINDOWS_SYSTEM ? ".exe" : ""));
@@ -901,7 +899,7 @@ public class Config {
         // Windows, try to install it
         if(!UnitexToolLogger.exists() &&
             Config.getSystem() != Config.WINDOWS_SYSTEM) {
-            // define the default setup script path
+            // define the default setup script path    
             File setupScript = new File(path, "install" + File.separatorChar + "setup");
             if(setupScript.exists()) {
                 // setup ProcessBuilder
@@ -911,36 +909,36 @@ public class Config {
                 StringBuilder sb = new StringBuilder();
                 sb.append(setupScript.getAbsolutePath()).append(' ');
                 sb.append("> ").append("install" + File.separatorChar + "setup.log");
-                String cmd[] = new String[] { "sh", "-c", sb.toString() };
+                String cmd[] = new String[] { "sh", "-c", sb.toString() };                
                 final ProcessBuilder pb = new ProcessBuilder(cmd);
-
+                
                 // Java 7+ only
                 //final ProcessBuilder pb = new ProcessBuilder(setupScript.getAbsolutePath());
                 //pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
 
                 pb.directory(path);
                 pb.redirectErrorStream(true);
-
+                
                 // show a "Please wait" message dialog. This was adapted from
                 // @source http://www.coding-dude.com/wp/java/modal-progress-bar-dialog-java-swing
                 java.awt.Frame f=null;
 
                 final JDialog dlgProgress = new JDialog(f, "Please wait until installation is finished", true);
                 dlgProgress.setAlwaysOnTop(true);
-
+                
                 JLabel lblStatus = new JLabel("Compiling " + UnitexToolLogger.getName() + "...");
-
+                
                 JProgressBar pbProgress = new JProgressBar(0, 100);
                 pbProgress.setIndeterminate(true);
 
                 dlgProgress.add(BorderLayout.NORTH, lblStatus);
                 dlgProgress.add(BorderLayout.CENTER, pbProgress);
-
+                
                 // prevent the user from closing the dialog
                 dlgProgress.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
                 dlgProgress.setSize(400, 90);
-
+            
                 // center on screen
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 dlgProgress.setLocation((screenSize.width  - dlgProgress.getWidth())  / 2,
@@ -951,20 +949,20 @@ public class Config {
                  @Override
                  protected Void doInBackground() throws Exception {
                   // execute the setup script
-                  try {
+                  try {                  
                       // star script
                       Process p = pb.start();
                       // wait to finish
                       p.waitFor();
                   } catch (Exception e) {
                       // do nothing
-                  }
+                  } 
                   return null;
                  }
 
                  @Override
                  protected void done() {
-                    //close the modal dialog
+                    //close the modal dialog 
                     dlgProgress.dispose();
                  }
                 };
@@ -975,7 +973,7 @@ public class Config {
                 dlgProgress.setVisible(true);
             }
         }
-
+        
         // check if UnitexToolLogger exists
         if(!UnitexToolLogger.exists()) {
           JOptionPane.showMessageDialog(null,
@@ -985,7 +983,7 @@ public class Config {
                                     UnitexToolLogger.getName() + " not found",
                                     JOptionPane.INFORMATION_MESSAGE);
         }
-
+        
         return UnitexToolLogger;
     }
 
@@ -1306,7 +1304,7 @@ public class Config {
         final TreeSet<String> languages = new TreeSet<String>();
         collectLanguage(getUnitexDir(), languages);
         collectLanguage(getUserDir(), languages);
-
+        
         String [] langArr = languages.toArray(new String[0]);
         int defaultLangIndex = -1;
         String preferedLanguage = PreferencesManager.getUserPreferences().getPreferedLanguage();
@@ -1314,16 +1312,16 @@ public class Config {
         	for(int i=0; i<langArr.length &&  defaultLangIndex == -1; i++)
         		if(preferedLanguage.equals(langArr[i]))
         				defaultLangIndex = i;
-
+        		
         final JComboBox langList = new JComboBox(langArr);
         if(defaultLangIndex != -1)
         	langList.setSelectedIndex(defaultLangIndex);
-
+        
         p.add(new JLabel("User: " + getUserName()));
         p.add(new JLabel("Choose the language you want"));
         p.add(new JLabel("to work on:"));
         p.add(langList);
-
+        
         final JFrame frame = new JFrame();
         frame.setAlwaysOnTop(true);
         final String[] options = { "OK", "Exit" };
@@ -1335,7 +1333,7 @@ public class Config {
         String selectedItem = (String) (langList.getSelectedItem());
         setCurrentLanguage(selectedItem);
         PreferencesManager.getUserPreferences().setPreferedLanguage(selectedItem);
-
+        
     }
 
     /**
