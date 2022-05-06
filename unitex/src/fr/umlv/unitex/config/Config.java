@@ -570,8 +570,9 @@ public class Config {
         exploreGraphOutputDialogBox = new JFileChooser();
         PersonalFileFilter txtFilter =new PersonalFileFilter("txt",
                                           "Text Files");
-        if (sentenceDialogBox == null)
+        if (sentenceDialogBox == null) {
             sentenceDialogBox = getSentenceDialogBox();
+        }
         sentenceDialogBox.addChoosableFileFilter(txtFilter);
         sentenceDialogBox.setFileFilter(txtFilter);
         exploreGraphOutputDialogBox.setDialogType(JFileChooser.OPEN_DIALOG);
