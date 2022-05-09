@@ -15,7 +15,6 @@ git:
 
 # to test against multiple JDKs 
 jdk:
-  - oraclejdk9
   - oraclejdk11
 
 notifications:
