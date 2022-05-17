@@ -507,7 +507,8 @@ public class GraphPathFrame extends JInternalFrame implements
     }//GEN-LAST:event_inputGraphNameActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
-        if (currentFrame == null || currentFrame.getGraph() == null) {
+        if (inputGraphName.getSelectedItem() == null ||
+          ((GraphFrame) inputGraphName.getSelectedItem()).getGraph() == null) {
             JOptionPane.showMessageDialog(UnitexFrame.mainFrame, 
               "Cannot explore graph paths for graph with no name, save the graph first", "Error",
               JOptionPane.ERROR_MESSAGE);
