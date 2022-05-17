@@ -656,17 +656,10 @@ public abstract class InternalFrameManager implements FrameManager {
 	}
 
 	public GraphPathFrame newGraphPathFrame() {
-		final GraphFrame gf = getCurrentFocusedGraphFrame();
-		if (gf == null) {
-			return null;
-		}
 		final GraphPathFrame d = (GraphPathFrame) setup(graphPathFrameFactory
 				.newFrame(),true);
 		if (d == null)
 			return null;
-		final File f = gf.getGraph();
-		d.setInputGraphName(f.getAbsolutePath());
-		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
 		return d;
 	}
