@@ -38,17 +38,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 
-public class GraphPathFrame extends JInternalFrame {
+public class GraphPathFrame extends JInternalFrame implements
+  MultiInstanceFrameFactoryObserver<GraphFrame> {
     private List<GraphFrame> graphFrames;
     private GraphFrame currentFrame;
     MultiCommands preprocessCommands;
@@ -116,6 +122,7 @@ public class GraphPathFrame extends JInternalFrame {
             currentFrame = graphFrames.get(0);
         }
         initComponents();
+        fillComboBox();
         setOutputFileDefaultName(currentFrame);
     }
 
@@ -657,6 +664,59 @@ public class GraphPathFrame extends JInternalFrame {
         outputArea.getModel().removeListDataListener(listListener);
     }
     
+    @Override
+    public void onUpdate(ArrayList<GraphFrame> frames) {
+        if (frames == null || frames.isEmpty()) {
+            dispose();
+            return;
+        }
+        graphFrames = frames;
+        currentFrame = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedGraphFrame();
+        if (currentFrame == null || currentFrame.getGraph() == null) {
+            currentFrame = graphFrames.get(0);
+        }
+        fillComboBox();
+        setOutputFileDefaultName(currentFrame);
+    }
+
+    private void fillComboBox() {
+        ComboBoxToolTipRenderer renderer = new ComboBoxToolTipRenderer();
+        ArrayList<String> tooltips = new ArrayList<String>();
+        DefaultComboBoxModel<GraphFrame> model = new DefaultComboBoxModel<GraphFrame>();
+        for (GraphFrame f : graphFrames) {
+            model.addElement(f);
+            if (f.getGraph() == null) {
+                tooltips.add(f.toString());
+            }
+            else {
+                tooltips.add(f.getGraph().getPath());
+            }
+        }
+        renderer.setTooltips(tooltips);
+        inputGraphName.setRenderer(renderer);
+        inputGraphName.setModel(model);
+    }
+
+    public class ComboBoxToolTipRenderer extends DefaultListCellRenderer {
+  
+        private ArrayList<String> tooltips;
+        @Override
+        public JComponent getListCellRendererComponent(JList list, Object value,
+          int index, boolean isSelected, boolean cellHasFocus) {
+            JComponent comp = (JComponent) super.getListCellRendererComponent(list,
+              value, index, isSelected, cellHasFocus);
+      
+            if (-1 < index && null != value && null != tooltips) {
+              list.setToolTipText(tooltips.get(index));
+            }
+            return comp;
+        }
+        public void setTooltips(ArrayList<String> tooltips) {
+          this.tooltips = tooltips;
+        }
+    }
+
     class ShowPathsDo implements ToDo {
 		private final File name;
 

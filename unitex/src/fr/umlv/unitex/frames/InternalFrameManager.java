@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.frames;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
@@ -661,6 +662,7 @@ public abstract class InternalFrameManager implements FrameManager {
 		if (d == null)
 			return null;
 		d.setVisible(true);
+    GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(d);
 		return d;
 	}
 	
