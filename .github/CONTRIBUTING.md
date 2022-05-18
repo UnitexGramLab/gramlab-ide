@@ -4,7 +4,21 @@
 
 You are welcome to contribute by [forking this repository](https://help.github.com/articles/fork-a-repo/)
 and [sending pull requests](https://help.github.com/articles/using-pull-requests/)
-with your changes. The recommended [workflow](http://rypress.com/tutorials/git/rebasing) to contribute is:
+with your changes. 
+
+### Learn Git
+
+If you want to contribute to this project, you need first learn about git. Here are some great resources to learn git and GitHub:
+
+- https://gitimmersion.com
+- https://learngitbranching.js.org/
+- http://marklodato.github.io/visual-git-guide/index-en.html
+- http://ndpsoftware.com/git-cheatsheet.html
+- https://github.com/progit/progit2/releases/latest/download/progit.pdf
+
+### Recommended Git Workflow
+
+The recommended workflow to contribute is:
 
 1. [Fork us](https://github.com/UnitexGramLab/gramlab-ide/fork)
 
