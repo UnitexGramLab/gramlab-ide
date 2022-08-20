@@ -20,6 +20,7 @@
  */
 package fr.umlv.unitex.frames;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.util.ArrayList;
@@ -656,18 +657,12 @@ public abstract class InternalFrameManager implements FrameManager {
 	}
 
 	public GraphPathFrame newGraphPathFrame() {
-		final GraphFrame gf = getCurrentFocusedGraphFrame();
-		if (gf == null) {
-			return null;
-		}
 		final GraphPathFrame d = (GraphPathFrame) setup(graphPathFrameFactory
 				.newFrame(),true);
 		if (d == null)
 			return null;
-		final File f = gf.getGraph();
-		d.setInputGraphName(f.getAbsolutePath());
-		d.setOutputFileDefaultName(f.getAbsolutePath());
 		d.setVisible(true);
+    GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class).addObserver(d);
 		return d;
 	}
 	

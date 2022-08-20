@@ -1139,22 +1139,8 @@ public class UnitexFrame extends JFrame {
 		explorePaths.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final GraphFrame f = GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class)
-						.getCurrentFocusedGraphFrame();
-				if (f != null) {
-
-					if (f.getGraph() == null) {
-						JOptionPane.showMessageDialog(null,
-								"Cannot explore graph paths for graph with no name", "Error",
-								JOptionPane.ERROR_MESSAGE);
-						return;
-					}
-					else {
-						GlobalProjectManager.search(null)
-						.getFrameManagerAs(InternalFrameManager.class).newGraphPathFrame();
-					}
-				}
+        GlobalProjectManager.search(null)
+        .getFrameManagerAs(InternalFrameManager.class).newGraphPathFrame();
 			}
 		});
 
@@ -1214,6 +1200,25 @@ public class UnitexFrame extends JFrame {
 		tools.add(graphCollection);
 		tools.addSeparator();
 		tools.add(svn);
+    tools.addMenuListener(new MenuAdapter() {
+      @Override
+      public void menuSelected(MenuEvent e) {
+        final GraphFrame f = GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedGraphFrame();
+        boolean existsFocusedGrFrame = f != null;
+        boolean existsAnyGrFrame = GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getGraphFrames().size() != 0;
+        sortNodeLabel.setEnabled(existsFocusedGrFrame);
+        explorePaths.setEnabled(existsAnyGrFrame);
+        verifyBraces.setEnabled(existsFocusedGrFrame);
+        compileFST.setEnabled(existsFocusedGrFrame);
+        flatten.setEnabled(existsFocusedGrFrame);
+        graphCollection.setEnabled(existsFocusedGrFrame);
+        svn.setEnabled(existsFocusedGrFrame);
+      }
+    });
 		graphMenu.add(tools);
 		final JMenu format = new JMenu("Format");
 		final JMenuItem alignment = new JMenuItem("Alignment...");
@@ -1484,7 +1489,7 @@ public class UnitexFrame extends JFrame {
 				printAll.setEnabled(existsAnyGrFrame);
 				undo.setEnabled(existsFocusedGrFrame);
 				redo.setEnabled(existsFocusedGrFrame);
-				tools.setEnabled(existsFocusedGrFrame);
+				tools.setEnabled(existsAnyGrFrame);
 				format.setEnabled(existsFocusedGrFrame);
 				zoom.setEnabled(existsFocusedGrFrame);
 				findAndReplace.setEnabled(existsAnyGrFrame);
