@@ -4,7 +4,21 @@
 
 You are welcome to contribute by [forking this repository](https://help.github.com/articles/fork-a-repo/)
 and [sending pull requests](https://help.github.com/articles/using-pull-requests/)
-with your changes. The recommended [workflow](http://rypress.com/tutorials/git/rebasing) to contribute is:
+with your changes. 
+
+### Learn Git
+
+If you want to contribute to this project, you need first learn about git. Here are some great resources to learn git and GitHub:
+
+- https://gitimmersion.com
+- https://learngitbranching.js.org/
+- http://marklodato.github.io/visual-git-guide/index-en.html
+- http://ndpsoftware.com/git-cheatsheet.html
+- https://github.com/progit/progit2/releases/latest/download/progit.pdf
+
+### Recommended Git Workflow
+
+The recommended workflow to contribute is:
 
 1. [Fork us](https://github.com/UnitexGramLab/gramlab-ide/fork)
 
@@ -29,11 +43,31 @@ with your changes. The recommended [workflow](http://rypress.com/tutorials/git/r
     git checkout -b my-changes origin/master
     ```
 
-   Use a short and descriptive name for your branch. If you are developing a new
+   Use a short and descriptive name for your branch. If you plan to develop a new
    feature or enhancement, name your branch as `feature/DESCRIPTIVE-NAME`, if
-   you are fixing a bug, name your branch as `fix/N` where `N` corresponds to
+   you plan to fix a bug, name your branch as `fix/N` where `N` corresponds to
    an [issue number](https://github.com/UnitexGramLab/gramlab-ide/issues),
    e.g. `fix/5`
+
+1. Install and test the IDE
+
+   To install and test the IDE you need first to download the [Unitex Core][unitex-core] 
+   executable (`UnitexToolLogger`). The easiest way to do this is to grab a full 
+   [Unitex/GramLab release](https://unitexgramlab.org/releases/latest-stable/) 
+   for your platform. After this you should do:
+
+    ```
+    cd gramlab-ide
+    export UNITEX_BUILD_RELEASE_DIR=/path/to/unitexgramlab-release
+    ant install
+    ```
+
+   Before testing,
+   -   make sure that `UnitexToolLogger` is 
+   located at `/path/to/unitexgramlab-release/App/UnitexToolLogger`,
+   - download one or several of the available languages directly
+   from https://unitexgramlab.org/releases/latest-stable/lingua/
+   into `/path/to/unitexgramlab-release/`, as sibling directories to `App`.
 
 1. For non-trivial changes, if it doesn't already exist, create a
    [**new issue**](https://github.com/UnitexGramLab/gramlab-ide/issues/new)
@@ -70,3 +104,6 @@ with your changes. The recommended [workflow](http://rypress.com/tutorials/git/r
     ```
 
 1. Go to ``https://github.com/YOUR_GITHUB_USERNAME/gramlab-ide`` and [Request a pull](https://github.com/UnitexGramLab/gramlab-ide/pulls)
+
+[unitex]:  https://unitexgramlab.org
+[unitex-core]: https://github.com/UnitexGramLab/unitex-core
