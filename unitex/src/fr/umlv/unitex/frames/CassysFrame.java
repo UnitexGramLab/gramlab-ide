@@ -24,12 +24,14 @@ import fr.umlv.unitex.cassys.ShareTransducerList.RequiredDirectoryNotExist;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.files.FileUtil;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.ToDo;
 import fr.umlv.unitex.process.ToDoBeforeSingleCommand;
 import fr.umlv.unitex.process.commands.CassysCommand;
+import fr.umlv.unitex.process.commands.CommandBuilder;
 import fr.umlv.unitex.process.commands.MultiCommands;
 import fr.umlv.unitex.utils.KeyUtil;
 import fr.umlv.unitex.config.Config;
@@ -191,6 +193,9 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						null);
 				final File f_transducer = fc.getSelectedFile();
 				final File f_target = Config.getCurrentSnt();
+				
+				String maxMatchesSubgraph = Preferences.getMaxMatchesPerSubgraph();
+				String maxMatchesToken = Preferences.getMaxMatchesPerToken();
 				CassysCommand com = new CassysCommand()
 						.alphabet(f_alphabet)
 						.targetText(f_target)
@@ -198,8 +203,10 @@ public class CassysFrame extends JInternalFrame implements ActionListener {
 						.morphologicalDic(ConfigManager.getManager().morphologicalDictionaries(null))
 						.separatorsToSystem()
 						.transducerDir(Config.getCurrentGraphDir())
-                                                .inputOffset(new File(Config.getCurrentSntDir(), "normalize.out.offsets"));
-                                                                                              
+                        .inputOffset(new File(Config.getCurrentSntDir(), "normalize.out.offsets"))
+                        .maxMatchesPerSubgraph(maxMatchesSubgraph)
+                        .maxMatchesPerToken(maxMatchesToken);
+                                                                                    
 				com.setWhatToDoBefore(new BeforeCassysDo(f_target.getAbsolutePath()));
 				
 				cassysCommand.addCommand(com);

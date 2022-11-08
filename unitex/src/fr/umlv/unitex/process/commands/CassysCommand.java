@@ -3,6 +3,8 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
+import fr.umlv.unitex.config.ConfigManager;
+
 public class CassysCommand extends CommandBuilder {
 	public CassysCommand() {
 		super("Cassys");
@@ -55,6 +57,15 @@ public class CassysCommand extends CommandBuilder {
 
 	public CassysCommand cleanupIntermediateFiles() {
 		element("-b");
+		return this;
+	}
+
+	public CassysCommand maxMatchesPerSubgraph(String maxMatchesSubgraph) {
+		protectElement(maxMatchesSubgraph);
+		 return this;
+	}
+	public CassysCommand maxMatchesPerToken(String maxMatchesToken) {
+		protectElement(maxMatchesToken);
 		return this;
 	}
 

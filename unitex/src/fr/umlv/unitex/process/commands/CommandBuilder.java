@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
@@ -123,7 +124,17 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 		return null;
 	}
-
+	
+	public String maxMatchesPerSubgraph() {
+		String maxMatchesPerSubgraph = Preferences.getMaxMatchesPerSubgraph();
+		return maxMatchesPerSubgraph;
+	}
+	
+	public String maxMatchesPerToken() {
+		String maxMatchesPerToken = Preferences.getMaxMatchesPerToken();
+		return maxMatchesPerToken;
+	}
+		
 	public void time(File f) {
 		list.add(programNamePosition, "\"--time=" + f.getAbsolutePath() + "\"");
 		programNamePosition++;

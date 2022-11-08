@@ -116,6 +116,13 @@ public class Preferences {
 	private Encoding encoding;
 
 	/**
+	 * locate_argument for max matches size
+	 */
+	
+	public static String maxMatchesPerSubgraph = "--locate_argument=--max_matches_per_subgraph=800";
+	public static String maxMatchesPerToken = "--locate_argument=--max_matches_at_token_pos=8000";
+	
+	/**
 	 * Properties for current language
 	 */
 	protected static final Properties defaultProperties = new Properties();
@@ -605,6 +612,22 @@ public class Preferences {
 
 	public FontInfo getConcordanceFont() {
 		return concordanceFont;
+	}
+
+	public static String getMaxMatchesPerSubgraph() {
+		return maxMatchesPerSubgraph;
+	}
+
+	public static String getMaxMatchesPerToken() {
+		return maxMatchesPerToken;
+	}
+	
+	public static String setMaxMatchesPerSubgraph(String maxMatches) {
+		return maxMatches = maxMatchesPerSubgraph;
+	}
+
+	public static String setMaxMatchesPerToken(String maxMatches) {
+		return maxMatches = maxMatchesPerToken;
 	}
 
 }
