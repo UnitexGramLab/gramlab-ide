@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import fr.umlv.unitex.config.InjectedVariable;
+import fr.umlv.unitex.config.Preferences;
 
 /**
  * @author Sébastien Paumier
@@ -155,18 +156,18 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 
-	public LocateCommand maxExplorationSteps(int matches) {
-		element("--stack_max=" + matches);
+	public LocateCommand maxExplorationSteps() {
+		element("--stack_max=" + Preferences.getMaxExplorationSteps());
 		return this;
 	}
 	
-	public LocateCommand maxMatchesPerSubgraph(int matches) {
-		element("--max_matches_per_subgraph=" + matches);
+	public LocateCommand maxMatchesPerSubgraph() {
+		element("--max_matches_per_subgraph=" + Preferences.getMaxMatchesPerSubgraph());
 		return this;
 	}
 	
-	public LocateCommand maxMatchesPerToken(int matches) {
-		element("--max_matches_at_token_pos=" + matches);
+	public LocateCommand maxMatchesPerToken() {
+		element("--max_matches_at_token_pos=" + Preferences.getMaxMatchesPerToken());
 		return this;
 	}
 	

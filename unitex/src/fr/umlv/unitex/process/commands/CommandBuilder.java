@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.console.Console;
 import fr.umlv.unitex.console.ConsoleEntry;
 import fr.umlv.unitex.console.Couple;
@@ -124,6 +125,17 @@ public abstract class CommandBuilder implements AbstractCommand {
 		return null;
 	}
 
+	public String getCassysOptionMatches() {
+		if (!unitexProgram || getType() != PROGRAM) {
+			/* This is meaningful only for Unitex programs */
+			return null;
+		}
+		String stack = " --stack_max=" + Preferences.getMaxExplorationSteps();
+		String subgraph = " --max_matches_per_subgraph=" + Preferences.getMaxMatchesPerSubgraph();
+		String token = " --max_matches_at_token_pos=" + Preferences.getMaxMatchesPerToken();
+		return stack+subgraph+token;
+	}
+
 	public void time(File f) {
 		list.add(programNamePosition, "\"--time=" + f.getAbsolutePath() + "\"");
 		programNamePosition++;
@@ -137,6 +149,9 @@ public abstract class CommandBuilder implements AbstractCommand {
 		if (getOutputEncoding() != null) {
 			res = res + getOutputEncoding();
 		}
+		if (getCassysOptionMatches() != null) {
+			res = res + getCassysOptionMatches();
+		}
 		return res;
 	}
 
@@ -147,6 +162,9 @@ public abstract class CommandBuilder implements AbstractCommand {
 		}
 		if (getOutputEncoding() != null) {
 			res = res + getOutputEncoding();
+		}
+		if (getCassysOptionMatches() != null) {
+			res = res + getCassysOptionMatches();
 		}
 		return res;
 	}
