@@ -52,6 +52,7 @@ import javax.swing.border.TitledBorder;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.config.Preferences;
 import fr.umlv.unitex.config.PreferencesListener;
 import fr.umlv.unitex.config.PreferencesManager;
 import fr.umlv.unitex.files.FileUtil;
@@ -110,9 +111,9 @@ public class LocateFrame extends JInternalFrame {
 			"Backtrack on variable error");
 	private final JCheckBox debug = new JCheckBox("Activate debug mode", false);
 
-	private final JTextField maxExplorationSteps = new JTextField("1000");
-	private final JTextField maxMatchesPerSubgraph = new JTextField("200");
-	private final JTextField maxMatchesPerToken = new JTextField("400");
+	private JTextField maxExplorationSteps = new JTextField(Preferences.getMaxExplorationSteps());
+	private JTextField maxMatchesPerSubgraph = new JTextField(Preferences.getMaxMatchesPerToken());
+	private JTextField maxMatchesPerToken = new JTextField(Preferences.getMaxMatchesPerToken());
 	private final JRadioButton defaultTolerance = new JRadioButton(
 			"Apply search bounds above", true);
 	private final JRadioButton lessTolerant = new JRadioButton(
@@ -189,15 +190,84 @@ public class LocateFrame extends JInternalFrame {
 				.setToolTipText("Stop exploring the current path of the grammar");
 		box.add(panel2);
 		
-		final JPanel panel3 = new JPanel(new GridLayout(3, 2));
+		final JPanel panel3 = new JPanel(new GridLayout(6, 1));
+		panel3.setPreferredSize(new Dimension(200, 200));
 		panel3.setBorder(BorderFactory
 				.createTitledBorder("Search bounds"));
-		panel3.add(new JLabel("Max exploration steps"));
-		panel3.add(maxExplorationSteps);
-		panel3.add(new JLabel("Max matches per subgraph"));
-		panel3.add(maxMatchesPerSubgraph);
-		panel3.add(new JLabel("Max matches per token"));
-		panel3.add(maxMatchesPerToken);
+		final JPanel option = new JPanel(new GridLayout(1, 2));
+		final JPanel note = new JPanel(new BorderLayout());
+		final JPanel valueSteps = new JPanel(new GridLayout(1, 2));
+		final JPanel valueSubgraph = new JPanel(new GridLayout(1, 2));
+		final JPanel valueToken = new JPanel(new GridLayout(1, 2));
+		final JPanel save = new JPanel(new BorderLayout());
+		panel3.add(option);
+		panel3.add(note);
+		panel3.add(valueSteps);
+		panel3.add(valueSubgraph );
+		panel3.add(valueToken);
+		panel3.add(save);
+		final Action defaultAction = new AbstractAction("Minimum") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int optionMaxExplorationSteps = 1000;
+				int optionMaxMatchesPerSubgraph = 200;
+				int optionMaxMatchesPerToken = 400;
+				
+				Integer refreshExplorationSteps = optionMaxExplorationSteps;
+				Integer refreshMatchesPerSubgraph = optionMaxMatchesPerSubgraph;
+				Integer refreshMatchesPerToken = optionMaxMatchesPerToken;
+				
+				String ExplorationSteps = String.valueOf(refreshExplorationSteps);
+				String MatchesPerSubgraph = String.valueOf(refreshMatchesPerSubgraph);
+				String MatchesPerToken = String.valueOf(refreshMatchesPerToken);
+				
+				maxExplorationSteps.setText(ExplorationSteps);
+				maxMatchesPerSubgraph.setText(MatchesPerSubgraph);
+				maxMatchesPerToken.setText(MatchesPerToken);
+			}
+		};
+		final JButton defaultButton = new JButton(defaultAction);
+		option.add(defaultButton);
+		final Action maxAction = new AbstractAction("Maximum") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int optionMaxExplorationSteps = 8000;
+				int optionMaxMatchesPerSubgraph = 800;
+				int optionMaxMatchesPerToken = 8000;
+				
+				Integer refreshExplorationSteps = optionMaxExplorationSteps;
+				Integer refreshMatchesPerSubgraph = optionMaxMatchesPerSubgraph;
+				Integer refreshMatchesPerToken = optionMaxMatchesPerToken;
+				
+				String ExplorationSteps = String.valueOf(refreshExplorationSteps);
+				String MatchesPerSubgraph = String.valueOf(refreshMatchesPerSubgraph);
+				String MatchesPerToken = String.valueOf(refreshMatchesPerToken);
+				
+				maxExplorationSteps.setText(ExplorationSteps);
+				maxMatchesPerSubgraph.setText(MatchesPerSubgraph);
+				maxMatchesPerToken.setText(MatchesPerToken);
+			}
+		};
+		final JButton maxButton = new JButton(maxAction);
+		option.add(maxButton);
+		note.add(new JLabel(
+				"Note: Default options are the minimum values."));
+		valueSteps.add(new JLabel("Max exploration steps"));
+		valueSteps.add(maxExplorationSteps);
+		
+		valueSubgraph.add(new JLabel("Max matches per subgraph"));
+		valueSubgraph.add(maxMatchesPerSubgraph);
+		
+		valueToken.add(new JLabel("Max matches per token"));
+		valueToken.add(maxMatchesPerToken);
+		final Action saveValuesAction = new AbstractAction("Save search bounds") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveCassysOptionValues();
+			}
+		};
+		final JButton saveValuesButton = new JButton(saveValuesAction);
+		save.add(saveValuesButton);
 		box.add(panel3);
 
 		final JPanel panel4 = new JPanel(new GridLayout(4, 1));
@@ -347,6 +417,58 @@ public class LocateFrame extends JInternalFrame {
 		return searchLimitationPanel;
 	}
 
+	void saveCassysOptionValues() {
+		String ExplorationStepsValues = maxExplorationSteps.getText();
+		String MatchesPerSubgraphValues = maxMatchesPerSubgraph.getText();
+		String MatchesPerTokenValues = maxMatchesPerToken.getText();
+		
+		if (isNumeric(ExplorationStepsValues)==true) {
+			if (isNumeric(MatchesPerSubgraphValues)==true) {
+				if (isNumeric(MatchesPerTokenValues)==true) {
+					int  ExplorationSteps=Integer.parseInt(ExplorationStepsValues);
+					int  MatchesPerSubgraph=Integer.parseInt(MatchesPerSubgraphValues);
+					int  MatchesPerToken=Integer.parseInt(MatchesPerTokenValues);
+					
+					if (ExplorationSteps >= 1000 && ExplorationSteps <= 8000){
+						if (MatchesPerSubgraph >= 200 && MatchesPerSubgraph <= 800){
+							if (MatchesPerToken >= 400 && MatchesPerToken <= 8000){
+								Preferences.setMaxExplorationSteps(ExplorationSteps);
+								Preferences.setMaxMatchesPerSubgraph(MatchesPerSubgraph);
+								Preferences.setMaxMatchesPerToken(MatchesPerToken);
+							}
+						}
+					}
+					else {
+						//message d'erreur => les valeur doivent 괲e comprise entre le min et le max
+						JOptionPane.showMessageDialog(null,
+								"Values need to be betwen minimum and maximum !", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+			}
+		}
+		else {
+			//message d'erreur => les valeur doivent 괲es des nombres
+			JOptionPane.showMessageDialog(null,
+					"Value need to be number !", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+	}
+	
+	public static boolean isNumeric(String strNum) {
+	    if (strNum == null) {
+	        return false;
+	    }
+	    try {
+	        double d = Double.parseDouble(strNum);
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	    return true;
+	}
+
 	void launchLocate() {
 		final MultiCommands commands = new MultiCommands();
 		File fst2;
@@ -484,41 +606,11 @@ public class LocateFrame extends JInternalFrame {
 				locateCmd = locateCmd.backtrackOnVariableErrors();
 			}
 			
-			int maxExplorationStepsValue = 1000;
-			try {
-				maxExplorationStepsValue = Integer.parseInt(maxExplorationSteps
-						.getText());
-			} catch (final NumberFormatException e) {
-				JOptionPane.showMessageDialog(null,
-						"Invalid max exploration steps value !", "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			locateCmd = locateCmd.maxExplorationSteps(maxExplorationStepsValue);
+			locateCmd = locateCmd.maxExplorationSteps();
 			
-			int maxMatchesPerSubgraphValue = 200;
-			try {
-				maxMatchesPerSubgraphValue = Integer.parseInt(maxMatchesPerSubgraph
-						.getText());
-			} catch (final NumberFormatException e) {
-				JOptionPane.showMessageDialog(null,
-						"Invalid max matches per subgraph value !", "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			locateCmd = locateCmd.maxMatchesPerSubgraph(maxMatchesPerSubgraphValue);
+			locateCmd = locateCmd.maxMatchesPerSubgraph();
 			
-			int maxMatchesPerTokenValue = 400;
-			try {
-				maxMatchesPerTokenValue = Integer.parseInt(maxMatchesPerToken
-						.getText());
-			} catch (final NumberFormatException e) {
-				JOptionPane.showMessageDialog(null,
-						"Invalid max matches per token value !", "Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			locateCmd = locateCmd.maxMatchesPerToken(maxMatchesPerTokenValue);
+			locateCmd = locateCmd.maxMatchesPerToken();
 			
 			if (lessTolerant.isSelected()) {
 				locateCmd = locateCmd.lessTolerant();

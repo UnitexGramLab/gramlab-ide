@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import javax.swing.JTextField;
+
 import fr.umlv.unitex.FontInfo;
 import fr.umlv.unitex.grf.GraphPresentationInfo;
 import fr.umlv.unitex.io.Encoding;
@@ -115,6 +117,14 @@ public class Preferences {
 	private GraphPresentationInfo info;
 	private Encoding encoding;
 
+	/**
+	 * locate_argument for max matches size
+	 */
+	
+	public static int maxExplorationSteps;
+	public static int maxMatchesPerSubgraph;
+	public static int maxMatchesPerToken;
+	
 	/**
 	 * Properties for current language
 	 */
@@ -605,6 +615,38 @@ public class Preferences {
 
 	public FontInfo getConcordanceFont() {
 		return concordanceFont;
+	}
+
+	public static int getMaxExplorationSteps() {
+		if (maxExplorationSteps==0) {
+			maxExplorationSteps=1000;
+		}
+		return maxExplorationSteps;
+	}
+	public static int getMaxMatchesPerSubgraph() {
+		if (maxMatchesPerSubgraph==0) {
+			maxMatchesPerSubgraph=200;
+		}
+		return maxMatchesPerSubgraph;
+	}
+	public static int getMaxMatchesPerToken() {
+		if (maxMatchesPerToken==0) {
+			maxMatchesPerToken=400;
+		}
+		return maxMatchesPerToken;
+	}
+	
+	public static int setMaxExplorationSteps(int maxMatches) {
+		maxExplorationSteps = maxMatches;
+		return maxExplorationSteps;
+	}
+	public static int setMaxMatchesPerSubgraph(int maxMatches) {
+		maxMatchesPerSubgraph = maxMatches;
+		return maxExplorationSteps;
+	}
+	public static int setMaxMatchesPerToken(int maxMatches) {
+		maxMatchesPerToken = maxMatches;
+		return maxMatchesPerToken;
 	}
 
 }

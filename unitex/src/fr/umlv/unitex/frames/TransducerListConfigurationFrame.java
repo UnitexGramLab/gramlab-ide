@@ -45,6 +45,7 @@ import fr.umlv.unitex.cassys.ShareTransducerList;
 import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
+import fr.umlv.unitex.files.PersonalFileFilter;
 import fr.umlv.unitex.process.Launcher;
 import fr.umlv.unitex.process.commands.Grf2Fst2Command;
 import fr.umlv.unitex.process.commands.MultiCommands;
@@ -767,12 +768,15 @@ public class TransducerListConfigurationFrame extends JInternalFrame implements
 			saveFileChooser = new JFileChooser(Config
 					.getCurrentTransducerList().getParentFile());
 			saveFileChooser.setSelectedFile(Config.getCurrentTransducerList());
+			saveFileChooser.addChoosableFileFilter(new PersonalFileFilter("csc", "CasSys configuration file"));
 		} else {
 			saveFileChooser = new JFileChooser(Config.getCassysDir());
+			saveFileChooser.addChoosableFileFilter(new PersonalFileFilter("csc", "CasSys configuration file"));
 		}
 		final int returnVal = saveFileChooser.showSaveDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			Config.setCurrentTransducerList(saveFileChooser.getSelectedFile());
+			saveFileChooser.addChoosableFileFilter(new PersonalFileFilter("csc", "CasSys configuration file"));
 			saveListToFile();
 		}
 	}

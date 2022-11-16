@@ -115,12 +115,12 @@ public class Config {
     private static String currentSystemName;
     /**
      * Path of the user's current sentence delimitation graph
-     * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Sentence/grf</code>
+     * <code>.../(user dir)/(current language)/Graphs/Preprocessing/grf</code>
      */
     private static File currentSentenceGraph;
     /**
      * Path of the user's current replace graph
-     * <code>.../(user dir)/(current language)/Graphs/Preprocessing/Replace/Replace.grf</code>
+     * <code>.../(user dir)/(current language)/Graphs/Preprocessing/grf</code>
      */
     private static File currentReplaceGraph;
     /**
@@ -1467,8 +1467,8 @@ public class Config {
     private static void setDefaultPreprocessingGraphs() {
         File sentence = new File(getUserCurrentLanguageDir(), "Graphs");
         sentence = new File(sentence, "Preprocessing");
-        File replace = new File(sentence, "Replace");
-        sentence = new File(sentence, "Sentence");
+        File replace = new File(getUserCurrentLanguageDir(), "Replace");
+        replace = new File(replace, "Replace");
         if (getCurrentLanguage().equals("Thai")) {
             // this is an exception because we do not have anymore
             // the .grf file

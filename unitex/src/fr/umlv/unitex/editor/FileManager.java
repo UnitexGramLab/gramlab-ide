@@ -75,9 +75,6 @@ public class FileManager {
 					+ " is empty", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		JOptionPane.showMessageDialog(null,
-				"This is not necessarily the text being processed by Unitex",
-				"Warning", JOptionPane.WARNING_MESSAGE);
 		load(file);
 	}
 
