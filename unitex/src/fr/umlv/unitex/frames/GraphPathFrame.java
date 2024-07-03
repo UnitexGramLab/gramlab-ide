@@ -21,6 +21,7 @@
 
 package fr.umlv.unitex.frames;
 
+import fr.umlv.unitex.common.project.manager.GlobalProjectManager;
 import fr.umlv.unitex.config.Config;
 import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.files.FileUtil;
@@ -37,16 +38,25 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 
-public class GraphPathFrame extends JInternalFrame {
+public class GraphPathFrame extends JInternalFrame implements
+  MultiInstanceFrameFactoryObserver<GraphFrame> {
+    private List<GraphFrame> graphFrames;
+    private GraphFrame currentFrame;
     MultiCommands preprocessCommands;
     Boolean flattenMode = false;
     String flattenDepth = "10";
@@ -95,9 +105,37 @@ public class GraphPathFrame extends JInternalFrame {
      * Creates new form GPF
      */
     public GraphPathFrame() {
-        initComponents();
+        currentFrame = GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedGraphFrame();
+        graphFrames = GlobalProjectManager.search(null)
+          .getFrameManagerAs(InternalFrameManager.class)
+          .getGraphFrames();
+        setGraphPathFrame();
     }
 
+    private void setGraphPathFrame() {
+        if (graphFrames.isEmpty()) {
+            throw new AssertionError("graphFrames should not be empty in construction of GraphPathFrame");
+        }
+        if (currentFrame == null) {
+            currentFrame = graphFrames.get(0);
+        }
+        initComponents();
+        fillComboBox();
+        setOutputFileDefaultName(currentFrame);
+    }
+
+    /**
+     * This method return an empty string if the selected graph is null or unsaved, otherwise the selected graph name
+     * */
+    private String getSelectedGraphName() {
+        GraphFrame graphFrame = (GraphFrame) inputGraphName.getSelectedItem();
+        if (graphFrame == null || graphFrame.getGraph() == null) {
+            return "";
+        }
+        return FileUtil.getFileNameWithoutExtension(graphFrame.getGraph());
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,7 +149,7 @@ public class GraphPathFrame extends JInternalFrame {
         buttonGroup2 = new javax.swing.ButtonGroup();
         graphFileLabel = new javax.swing.JLabel();
         outputFileLabel = new javax.swing.JLabel();
-        inputGraphName = new javax.swing.JTextField();
+        inputGraphName = new javax.swing.JComboBox<GraphFrame>();
         outputFileName = new javax.swing.JTextField();
         setFileButton = new javax.swing.JButton();
         optionSeparator = new javax.swing.JSeparator();
@@ -150,7 +188,6 @@ public class GraphPathFrame extends JInternalFrame {
         outputFileLabel.setText("Output file:");
 
         inputGraphName.setEditable(false);
-        inputGraphName.setText("jTextField1");
         inputGraphName.setPreferredSize(new java.awt.Dimension(70, 25));
         inputGraphName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -402,62 +439,87 @@ public class GraphPathFrame extends JInternalFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void exploreRecButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreRecButtonActionPerformed
+        String selectedGraphName = getSelectedGraphName();
+        if (selectedGraphName.isEmpty()) {
+            outputFileName.setText("");
+            return;
+        }
         if(!makeDicCheckBox.isSelected()) {
-            outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                          .getText()) + "-recursive-paths.txt");
+            outputFileName.setText(selectedGraphName + "-recursive-paths.txt");
         }
         else {
-            outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                          .getText()) + "-recursive-paths.dic");
+            outputFileName.setText(selectedGraphName + "-recursive-paths.dic");
         }
     }//GEN-LAST:event_exploreRecButtonActionPerformed
 
     private void inputGraphNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputGraphNameActionPerformed
-        // TODO add your handling code here:
+        GraphFrame f = (GraphFrame) inputGraphName.getSelectedItem();
+        setOutputFileDefaultName(f);
     }//GEN-LAST:event_inputGraphNameActionPerformed
 
     private void exploreIndepButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exploreIndepButtonActionPerformed
+        String selectedGraphName = getSelectedGraphName();
+        if (selectedGraphName.isEmpty()) {
+            outputFileName.setText("");
+            return;
+        }
         if(!makeDicCheckBox.isSelected()) {
-            outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                    .getText()) + "-paths.txt");
+            outputFileName.setText(selectedGraphName + "-paths.txt");
         }
         else {
-            outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                    .getText()) + "-paths.dic");
+            outputFileName.setText(selectedGraphName + "-paths.dic");
         }
     }//GEN-LAST:event_exploreIndepButtonActionPerformed
 
     private void makeDicCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputGraphNameActionPerformed
+        String selectedGraphName = getSelectedGraphName();
         if(makeDicCheckBox.isSelected()) {
                 separateOutputsButton.setEnabled(false);
                 alternateOutputsButton.setEnabled(false);
                 ignoreOutputsButton.setEnabled(false);
                 separateOutputsButton.setSelected(true);
+                if (selectedGraphName.isEmpty()) {
+                    outputFileName.setText("");
+                    return;
+                }
             if(exploreRecButton.isSelected()) {
-                outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                        .getText()) + "-recursive-paths.dic");
+                outputFileName.setText(selectedGraphName + "-recursive-paths.dic");
             }
             else {
-                outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                        .getText()) + "-paths.dic");
+                outputFileName.setText(selectedGraphName+ "-paths.dic");
             }
         }
         else {
                 separateOutputsButton.setEnabled(true);
                 alternateOutputsButton.setEnabled(true);
                 ignoreOutputsButton.setEnabled(true);
+                if (selectedGraphName.isEmpty()) {
+                    outputFileName.setText("");
+                    return;
+                }
             if(exploreRecButton.isSelected()) {
-                outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                        .getText()) + "-recursive-paths.txt");
+                outputFileName.setText(selectedGraphName + "-recursive-paths.txt");
             }
             else {
-                outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                        .getText()) + "-paths.txt");
+                outputFileName.setText(selectedGraphName + "-paths.txt");
             }
         }
     }//GEN-LAST:event_inputGraphNameActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        if (inputGraphName.getSelectedItem() == null ||
+          ((GraphFrame) inputGraphName.getSelectedItem()).getGraph() == null) {
+            JOptionPane.showMessageDialog(UnitexFrame.mainFrame, 
+              "Cannot explore graph paths for graph with no name, save the graph first", "Error",
+              JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (outputFileName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(UnitexFrame.mainFrame, 
+              "Cannot explore graph paths with empty file output", "Error",
+              JOptionPane.ERROR_MESSAGE);
+          return;
+        }
         Fst2ListCommand cmd = new Fst2ListCommand();
         final Grf2Fst2Command grfCmd = new Grf2Fst2Command();
         File fst2;
@@ -469,7 +531,7 @@ public class GraphPathFrame extends JInternalFrame {
                     maxSeqSpinner.commitEdit();
                     n = (Integer) maxSeqSpinner.getValue();
                 } catch (final NumberFormatException | ParseException e) {
-                        JOptionPane.showMessageDialog(null,
+                        JOptionPane.showMessageDialog(UnitexFrame.mainFrame,
                                         "You must specify a valid limit", "Error",
                                         JOptionPane.ERROR_MESSAGE);
                         return;
@@ -494,14 +556,15 @@ public class GraphPathFrame extends JInternalFrame {
         if ( !checkLoopsCheckbox.isSelected() ) {
             cmd = cmd.noLoopCheck();
 	      }
+        String selectedGraphName = getSelectedGraphName();
         // check if flatten was checked or not
         if( !flattenCheckbox.isSelected() ) {
-                grfCmd.grf(new File(inputGraphName.getText()))
+                grfCmd.grf(new File(selectedGraphName))
                         .enableLoopAndRecursionDetection(true).repositories()
                         .emitEmptyGraphWarning().displayGraphNames();
         } else if ( preprocessCommands == null ) {
                 // if no specific option were given, preprocess with default
-                File graphFile = new File(inputGraphName.getText());
+                File graphFile = new File(selectedGraphName);
                 String name_fst2 = FileUtil.getFileNameWithoutExtension(graphFile);
                 name_fst2 = name_fst2 + ".fst2";
                 final MultiCommands commands = new MultiCommands();
@@ -516,8 +579,7 @@ public class GraphPathFrame extends JInternalFrame {
                 Launcher.exec(preprocessCommands, false);
         }
 
-        fst2 = new File(FileUtil.getFileNameWithoutExtension(inputGraphName
-                        .getText()) + ".fst2");
+        fst2 = new File(FileUtil.getFileNameWithoutExtension(selectedGraphName) + ".fst2");
         if (exploreRecButton.isSelected()) {
                 // set file to user input
                 list = new File(outputFileName.getText());
@@ -527,9 +589,7 @@ public class GraphPathFrame extends JInternalFrame {
                 // if we change it here ShowPathsDo will throw a FileNotFoundException 
                 // we will rename the file once the UnitexToolLogger process has completed
                 // alternatively that process could be changed to remove the hard coding
-                list = new File(
-                                FileUtil.getFileNameWithoutExtension(inputGraphName
-                                                .getText()) + "autolst.txt");
+                list = new File(selectedGraphName + "autolst.txt");
                 cmd = cmd.listsOfSubgraph(fst2);
         }
         final MultiCommands commands = new MultiCommands();
@@ -542,7 +602,7 @@ public class GraphPathFrame extends JInternalFrame {
     }//GEN-LAST:event_runButtonActionPerformed
 
     private void flattenOptionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flattenOptionButtonActionPerformed
-        File graphFile = new File(inputGraphName.getText());
+        File graphFile = new File(inputGraphName.getSelectedItem().toString());
         Map<String,Object> flattenOptions = UnitexFrame
                         .flattenGraph(graphFile,flattenMode,flattenDepth);
         if( flattenOptions != null ) {
@@ -605,6 +665,59 @@ public class GraphPathFrame extends JInternalFrame {
         outputArea.getModel().removeListDataListener(listListener);
     }
     
+    @Override
+    public void onUpdate(ArrayList<GraphFrame> frames) {
+        if (frames == null || frames.isEmpty()) {
+            dispose();
+            return;
+        }
+        graphFrames = frames;
+        currentFrame = GlobalProjectManager.search(null).getFrameManagerAs(InternalFrameManager.class)
+          .getCurrentFocusedGraphFrame();
+        if (currentFrame == null || currentFrame.getGraph() == null) {
+            currentFrame = graphFrames.get(0);
+        }
+        fillComboBox();
+        setOutputFileDefaultName(currentFrame);
+    }
+
+    private void fillComboBox() {
+        ComboBoxToolTipRenderer renderer = new ComboBoxToolTipRenderer();
+        ArrayList<String> tooltips = new ArrayList<String>();
+        DefaultComboBoxModel<GraphFrame> model = new DefaultComboBoxModel<GraphFrame>();
+        for (GraphFrame f : graphFrames) {
+            model.addElement(f);
+            if (f.getGraph() == null) {
+                tooltips.add(f.toString());
+            }
+            else {
+                tooltips.add(f.getGraph().getPath());
+            }
+        }
+        renderer.setTooltips(tooltips);
+        inputGraphName.setRenderer(renderer);
+        inputGraphName.setModel(model);
+    }
+
+    public class ComboBoxToolTipRenderer extends DefaultListCellRenderer {
+  
+        private ArrayList<String> tooltips;
+        @Override
+        public JComponent getListCellRendererComponent(JList list, Object value,
+          int index, boolean isSelected, boolean cellHasFocus) {
+            JComponent comp = (JComponent) super.getListCellRendererComponent(list,
+              value, index, isSelected, cellHasFocus);
+      
+            if (-1 < index && null != value && null != tooltips) {
+              list.setToolTipText(tooltips.get(index));
+            }
+            return comp;
+        }
+        public void setTooltips(ArrayList<String> tooltips) {
+          this.tooltips = tooltips;
+        }
+    }
+
     class ShowPathsDo implements ToDo {
 		private final File name;
 
@@ -634,18 +747,20 @@ public class GraphPathFrame extends JInternalFrame {
 	}
     
     void setInputGraphName(String string) {
-        inputGraphName.setText(string);
     }
     
-    public void setOutputFileDefaultName(String graphFileName) {
+    private void setOutputFileDefaultName(GraphFrame graphFrame) {
+      if (graphFrame == null || graphFrame.getGraph() == null) {
+          outputFileName.setText("");
+          return;
+      }
+      String graphName = FileUtil.getFileNameWithoutExtension(graphFrame.getGraph().getPath());
     	String extension = makeDicCheckBox.isSelected() ? ".dic" : ".txt";
     	 if(exploreRecButton.isSelected()) {
-             outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                     .getText()) + "-recursive-paths" + extension);
+             outputFileName.setText(graphName + "-recursive-paths" + extension);
          }
          else {
-             outputFileName.setText(FileUtil.getFileNameWithoutExtension(inputGraphName
-                     .getText()) + "-paths" + extension);
+             outputFileName.setText(graphName + "-paths" + extension);
          }
     }
     
@@ -679,7 +794,7 @@ public class GraphPathFrame extends JInternalFrame {
     private javax.swing.JLabel graphFileLabel;
     private javax.swing.JButton helpButton;
     private javax.swing.JRadioButton ignoreOutputsButton;
-    private javax.swing.JTextField inputGraphName;
+    private javax.swing.JComboBox<GraphFrame> inputGraphName;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JCheckBox maxSeqCheckbox;
     private javax.swing.JSpinner maxSeqSpinner;
