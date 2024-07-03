@@ -25,8 +25,12 @@ for your platform. After this you should do:
     export UNITEX_BUILD_RELEASE_DIR=/path/to/unitexgramlab-release
     ant install
 
-If you encounter a problem, make sure that `UnitexToolLogger` is 
-located at `/path/to/unitexgramlab-release/App/UnitexToolLogger`.
+Before testing,
+- make sure that `UnitexToolLogger` is 
+located at `/path/to/unitexgramlab-release/App/UnitexToolLogger`
+- download one or several of the available languages directly
+from https://unitexgramlab.org/releases/latest-stable/lingua/
+into `/path/to/unitexgramlab-release/`, as sibling directories to `App`.
 
 ## Documentation
 
