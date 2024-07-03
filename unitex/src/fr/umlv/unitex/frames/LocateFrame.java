@@ -541,6 +541,8 @@ public class LocateFrame extends JInternalFrame {
 			}
 			locateCmd = locateCmd.maxErrors(maxErrorsValue);
 			
+                        locateCmd = locateCmd.elgExtensionsPath();
+
 			commands.addCommand(locateCmd);
 			toDo = new LocateDo(Config.getCurrentSntDir());
 		} else {

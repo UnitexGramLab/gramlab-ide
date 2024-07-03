@@ -23,6 +23,7 @@ package fr.umlv.unitex.process.commands;
 import java.io.File;
 import java.util.ArrayList;
 
+import fr.umlv.unitex.config.ConfigManager;
 import fr.umlv.unitex.config.InjectedVariable;
 
 /**
@@ -200,6 +201,15 @@ public class LocateCommand extends CommandBuilder {
 		return this;
 	}
 	
+        public LocateCommand elgExtensionsPath() {
+                final File f = ConfigManager.getManager()
+                                .getDefaultELGExtensionsPath(null);
+                if (f != null) {
+                        protectElement("--elg_extensions_path=" + f.getAbsolutePath());
+                }
+                return this;
+        }
+
 	public File getFst2Path() {
 		return fst2Path;
 	}

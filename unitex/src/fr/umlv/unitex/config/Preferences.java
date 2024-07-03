@@ -87,6 +87,10 @@ public class Preferences {
 	 * Path of the graph package repository
 	 */
 	private File graphRepositoryPath;
+        /**
+         * Path of the ELG extensios directory
+         */
+        private File elgExtensionsPath;
 	// public File lexicalPackagePath;
 	/**
 	 * Path of the logging directory
@@ -175,6 +179,7 @@ public class Preferences {
 		defaultProperties.setProperty("CHAR BY CHAR", "false");
 		defaultProperties.setProperty("MORPHOLOGICAL USE OF SPACE", "false");
 		defaultProperties.setProperty("PACKAGE PATH", "");
+                defaultProperties.setProperty("ELG EXTENSIONS PATH", "");
 		defaultProperties.setProperty("LOGGING DIR", "");
 		defaultProperties.setProperty("MUST LOG", "false");
 		defaultProperties.setProperty("SVN MONITORING", "true");
@@ -278,6 +283,8 @@ public class Preferences {
 				.getProperty("MORPHOLOGICAL USE OF SPACE")));
 		s = prop.getProperty("PACKAGE PATH");
 		setGraphRepositoryPath((s == null || s.equals("")) ? null : new File(s));
+                s = prop.getProperty("ELG EXTENSIONS PATH");
+                setELGExtensionsPath((s == null || s.equals("")) ? null : new File(s));
 		/*
 		 * s = prop.getProperty("LEXICAL PACKAGE PATH"); lexicalPackagePath = (s
 		 * == null || s.equals("")) ? null : new File(s);
@@ -375,6 +382,9 @@ public class Preferences {
 		prop.setProperty("PACKAGE PATH",
 				(getGraphRepositoryPath() == null) ? ""
 						: getGraphRepositoryPath().getAbsolutePath());
+                prop.setProperty("ELG EXTENSIONS PATH",
+                                (getELGExtensionsPath() == null) ? ""
+                                                : getELGExtensionsPath().getAbsolutePath());
 		// prop.setProperty("LEXICAL PACKAGE PATH", (lexicalPackagePath == null)
 		// ? "" : lexicalPackagePath.getAbsolutePath());
 		prop.setProperty("LOGGING DIR", (getLoggingDir() == null) ? ""
@@ -419,6 +429,7 @@ public class Preferences {
 		p.setSemitic(semitic);
 		p.setMatchWordBoundaries(matchWordBoundaries);
 		p.setGraphRepositoryPath(graphRepositoryPath);
+                p.setELGExtensionsPath(elgExtensionsPath);
 		p.setLoggingDir(loggingDir);
 		p.setMustLog(mustLog);
 		p.setSvnMonitoring(svnMonitoring);
@@ -558,6 +569,14 @@ public class Preferences {
 	public File getGraphRepositoryPath() {
 		return graphRepositoryPath;
 	}
+
+        public void setELGExtensionsPath(File elgExtensionsPath) {
+                this.elgExtensionsPath = elgExtensionsPath;
+        }
+
+        public File getELGExtensionsPath() {
+                return elgExtensionsPath;
+        }
 
 	public void setLoggingDir(File loggingDir) {
 		this.loggingDir = loggingDir;

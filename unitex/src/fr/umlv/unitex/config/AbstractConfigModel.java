@@ -80,4 +80,8 @@ public abstract class AbstractConfigModel implements ConfigModel {
 		return null;
 	}
 
+        @Override
+        public File getELGExtensionsPath(String language) {
+                return getDefaultELGExtensionsPath(language);
+        }
 }
