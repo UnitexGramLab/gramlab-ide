@@ -90,6 +90,7 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 	final JCheckBox morphologicalUseOfSpaceCheckBox = new JCheckBox(
 			"Enable morphological use of space");
 	final JTextField packageDirectory = new JTextField("");
+        final JTextField elgExtensionsDirectory = new JTextField("");
 	final JTextField lexicalPackageDirectory = new JTextField("");
 	final DefaultListModel morphoDicListModel = new DefaultListModel();
 	private Preferences pref;
@@ -265,6 +266,27 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 					}
 					getPref().setGraphRepositoryPath(f);
 				}
+                                if (elgExtensionsDirectory.getText().equals("")) {
+                                        getPref().setELGExtensionsPath(null);
+                                }
+                                else {
+                                        final File f = new File(elgExtensionsDirectory.getText());
+                                        if (!f.exists()) {
+                                                JOptionPane.showMessageDialog(null,
+                                                                "The Extended Local Grammar extensions directory\ndoes not exist.",
+                                                                "Error", JOptionPane.ERROR_MESSAGE);
+                                                return;
+                                        }
+                                        if (!f.isDirectory()) {
+                                                JOptionPane
+                                                                .showMessageDialog(
+                                                                                null,
+                                                                                "The path given for the Extended Local Grammar extensions\n is invalid.",
+                                                                                "Error", JOptionPane.ERROR_MESSAGE);
+                                                return;
+                                        }
+                                        getPref().setELGExtensionsPath(f);
+                                }
 				if (loggingDirectory.getText().equals("")
 						&& mustLogCheckBox.isSelected()) {
 					JOptionPane.showMessageDialog(null,
@@ -421,6 +443,36 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		page1.add(setPackageDirectory, gbc);
+                final JLabel label3 = new JLabel("Extend Local Grammars extensions directory:");
+                elgExtensionsDirectory.setBackground(Color.WHITE);
+                final Action elgExtensionsDirAction = new AbstractAction("Set...") {
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        final JFileChooser f = new JFileChooser();
+                        f.setDialogTitle("Choose your Local Grammars extensions directory");
+                        f.setDialogType(JFileChooser.OPEN_DIALOG);
+                        f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                        if (f.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+                            return;
+                        }
+                        elgExtensionsDirectory.setText(f.getSelectedFile().getAbsolutePath());
+                    }
+                };
+                final JButton setLocalGrammarsDirectory = new JButton(elgExtensionsDirAction);
+                gbc.insets = new Insets(20, 2, 2, 2);
+                gbc.anchor = GridBagConstraints.WEST;
+                gbc.gridwidth = GridBagConstraints.REMAINDER;
+                gbc.fill = GridBagConstraints.NONE;
+                page1.add(label3, gbc);
+                gbc.insets = new Insets(2, 2, 2, 2);
+                gbc.gridwidth = 1;
+                gbc.weightx = 1;
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                page1.add(elgExtensionsDirectory, gbc);
+                gbc.weightx = 0;
+                gbc.fill = GridBagConstraints.NONE;
+                gbc.gridwidth = GridBagConstraints.REMAINDER;
+                page1.add(setLocalGrammarsDirectory, gbc);
 		loggingDirectory.setEditable(false);
 		loggingDirectory.setBackground(Color.WHITE);
 		final Action loggingDirAction = new AbstractAction("Set...") {
@@ -621,6 +673,12 @@ public class GlobalPreferencesFrame extends JInternalFrame {
 			packageDirectory.setText(getPref().getGraphRepositoryPath()
 					.getAbsolutePath());
 		}
+                if (getPref().getELGExtensionsPath() == null) {
+                        elgExtensionsDirectory.setText("");
+                } else {
+                        elgExtensionsDirectory.setText(getPref().getELGExtensionsPath()
+                                        .getAbsolutePath());
+                }
 		mustLogCheckBox.setSelected(getPref().isMustLog());
 		if (getPref().getLoggingDir() == null) {
 			loggingDirectory.setText("");

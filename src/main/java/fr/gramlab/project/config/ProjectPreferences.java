@@ -194,6 +194,12 @@ public class ProjectPreferences extends AbstractConfigModel {
 		return p.getNamedRepositories();
 	}
 
+        @Override
+        public File getDefaultELGExtensionsPath(String project) {
+                // TODO
+                return null;
+        }
+
 	@Override
 	public boolean displayGraphNames(String project) {
 		GramlabProject p=GlobalProjectManager.getAs(GramlabProjectManager.class).getProject(project);

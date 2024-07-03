@@ -70,6 +70,11 @@ public interface ConfigModel {
 	/* name==null -> default repository */
 	public File getGraphRepositoryPath(String language, String repositoryName);
 
+        public File getDefaultELGExtensionsPath(String language);
+
+        /* name==null -> default directory */
+        public File getELGExtensionsPath(String language);
+
 	public ArrayList<NamedRepository> getNamedRepositories(String language);
 
 	public File getLogDirectory(String language);

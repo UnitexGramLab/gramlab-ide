@@ -181,6 +181,14 @@ public class ConfigManager extends AbstractConfigModel {
 		return p.getGraphRepositoryPath();
 	}
 
+        @Override
+        public File getDefaultELGExtensionsPath(String language) {
+                if (language == null)
+                        language = getCurrentLanguage();
+                final Preferences p = PreferencesManager.getPreferences(language);
+                return p.getELGExtensionsPath();
+        }
+
 	@Override
 	public ArrayList<NamedRepository> getNamedRepositories(String language) {
 		/* In Unitex, we ignore repository names */
